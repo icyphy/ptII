@@ -110,7 +110,7 @@ public class MultiwayBranchController extends AbstractBranchController implement
      */
     public boolean executeBranches(ConditionalBranch[] branches) throws IllegalActionException {
         try {
-            synchronized (_internalLock) {
+            synchronized (_getDirector()) {
                 _failed = false;
 
                 if (_debugging) {
@@ -195,7 +195,7 @@ public class MultiwayBranchController extends AbstractBranchController implement
                         thread.start();
                     }
                 }
-            } // synchronized (_internalLock)
+            } // synchronized
                 
             // Wait for each of the threads to die.
             // It is essential that this occur outside
@@ -269,18 +269,17 @@ public class MultiwayBranchController extends AbstractBranchController implement
      *   to rendezvous, otherwise false.
      */
     protected boolean _isBranchReady(int branchNumber) {
-        // FIXME: Can't do this... leads to deadlock. Is synchronization necessary?
-        // What to synchronize on?  Need a mechanism like the _group in CSPReceiver.
-        // synchronized (_internalLock) {
-        for (int i = 0; i < _branches.length; i++) {
-            if (!_branches[i]._isReady()) {
-                if (_debugging) {
-                    _debug("** Branch is not ready: " + i);
+        synchronized (_getDirector()) {
+            for (int i = 0; i < _branches.length; i++) {
+                if (!_branches[i]._isReady()) {
+                    if (_debugging) {
+                        _debug("** Branch is not ready: " + i);
+                    }
+                    return false;
                 }
-                return false;
             }
+            return true;
         }
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -291,7 +290,7 @@ public class MultiwayBranchController extends AbstractBranchController implement
      * so that it starts with a consistent state each time.
      */
     private void _resetConditionalState() {
-        synchronized (_internalLock) {
+        synchronized (_getDirector()) {
             _branchesActive = 0;
             _branchesBlocked = 0;
             _threadList = null;

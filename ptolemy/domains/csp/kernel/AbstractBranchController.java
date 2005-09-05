@@ -33,8 +33,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.Receiver;
-import ptolemy.actor.process.NotifyThread;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.Debuggable;
@@ -119,7 +117,7 @@ public abstract class AbstractBranchController implements Debuggable {
      *  this method does not allow the threads to terminate gracefully.
      */
     public void terminate() {
-        synchronized (_internalLock) {
+        synchronized (_getDirector()) {
             // Now stop any threads created by this director.
             if (_threadList != null) {
                 Iterator threads = _threadList.iterator();
@@ -141,9 +139,7 @@ public abstract class AbstractBranchController implements Debuggable {
     /** Notify the director that the current thread is blocked.
      */
     protected void _branchBlocked(CSPReceiver receiver) {
-        synchronized(_internalLock) {
-            _getDirector().threadBlocked(Thread.currentThread(), receiver);
-        }
+        _getDirector().threadBlocked(Thread.currentThread(), receiver);
     }
 
     /** Register the calling branch as failed. This reduces the count
@@ -158,11 +154,12 @@ public abstract class AbstractBranchController implements Debuggable {
         if (_debugging) {
             _debug("** Branch failed: " + branchNumber);
         }
-        synchronized (_internalLock) {
+        Object director = _getDirector();
+        synchronized (director) {
             _branchesActive--;
 
             if (_branchesActive == 0) {
-                _internalLock.notifyAll();
+                director.notifyAll();
             }
         }
     }
@@ -178,23 +175,22 @@ public abstract class AbstractBranchController implements Debuggable {
      *  @param branchID The ID assigned to the calling branch upon creation.
      */
     protected void _branchSucceeded(int branchID) {
-        synchronized (_internalLock) {
+        Object director = _getDirector();
+        synchronized (director) {
             if (_debugging) {
                 _debug("** Branch succeeded: " + branchID);
             }
             _branchesActive--;
 
             // wakes up chooseBranch() which wakes up parent thread
-            _internalLock.notifyAll();
+            director.notifyAll();
         }
     }
 
     /** Notify the director that the current thread is unblocked.
      */
     protected void _branchUnblocked(CSPReceiver receiver) {
-        synchronized(_internalLock) {
-            _getDirector().threadUnblocked(Thread.currentThread(), receiver);
-        }
+        _getDirector().threadUnblocked(Thread.currentThread(), receiver);
     }
 
     /** Send a debug message to all debug listeners that have registered.
@@ -236,26 +232,6 @@ public abstract class AbstractBranchController implements Debuggable {
      */
     protected abstract boolean _isBranchReady(int branchNumber);
 
-    /** Notify all receivers for the branches currently being
-     *  executed. This method defers this notification to
-     *  a separate thread.
-     */
-    protected void _notifyReceivers() {
-        if (_branches != null) {
-            LinkedList receivers = new LinkedList();
-            for (int i = 0; i < _branches.length; i++) {
-                if (_branches[i].getGuard()) {
-                    Receiver[] branchReceivers = _branches[i].getReceivers();
-                    for (int j = 0; j < branchReceivers.length; j++) {
-                        receivers.add(0, branchReceivers[j]);
-                    }
-                }
-            }
-            // Now wake up all the receivers.
-            (new NotifyThread(receivers)).start();            
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
     
@@ -271,13 +247,6 @@ public abstract class AbstractBranchController implements Debuggable {
 
     /** Flag that is true if there are debug listeners. */
     protected boolean _debugging = false;
-
-    /** The lock used internally by this controller. It is used to
-     *  avoid having to synchronize on the actor itself. The chooseBranch()
-     *  method waits on it so it knows when a branch has succeeded and when
-     *  the last branch it created has died.
-     */
-    protected Object _internalLock = new Object();
 
     /** List of threads created by this actor to perform a conditional rendezvous.
      *  Need to keep a list of them in case the execution of the model is

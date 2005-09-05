@@ -34,7 +34,6 @@ import java.util.LinkedList;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.process.NotifyThread;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.Debuggable;
@@ -117,7 +116,8 @@ public class ConditionalBranchController extends AbstractBranchController implem
      */
     public int chooseBranch(ConditionalBranch[] branches) throws IllegalActionException {
         try {
-            synchronized (_internalLock) {
+            CSPDirector director = _getDirector();
+            synchronized (director) {
                 if (_debugging) {
                     _debug("** Choosing branches.");
                 }
@@ -193,48 +193,56 @@ public class ConditionalBranchController extends AbstractBranchController implem
                     while (threads.hasNext()) {
                         Thread thread = (Thread) threads.next();
                         _branchesActive++;
-                        _getDirector().addThread(thread);
+                        director.addThread(thread);
                         thread.start();
                     }
 
                     if (_debugging) {
                         _debug("** Waiting for branch to succeed.");
                     }
-                    _getDirector().threadBlocked(Thread.currentThread(), null);
+                    _blockedController = Thread.currentThread();
+                    director.threadBlocked(_blockedController, null);
                     // wait for a branch to succeed
-                    while ((_successfulBranch == -1) && (_branchesActive > 0)) {
-                        _internalLock.wait();
+                    while ((_successfulBranch == -1)
+                            && (_branchesActive > 0)
+                            && !director.isStopRequested()) {
+                        director.wait();
                     }
-                    _getDirector().threadUnblocked(Thread.currentThread(), null);
+                    // In case the successful branch didn't mark this unblocked...
+                    if (_blockedController != null) {
+                        director.threadUnblocked(_blockedController, null);
+                        _blockedController = null;
+                    }
                 }
                 // NOTE: Below used to be outside the synchronized block. Why?
                 // EAL 8/05
 
                 // If we get to here, we have more than one conditional branch,
                 // at most one of which has succeeded.
-                // Create a list of receivers to notify.
-                LinkedList receivers = new LinkedList();
-
-                // Now terminate non-successful branches
+                // Now terminate non-successful branches.
                 for (int i = 0; i < branches.length; i++) {
                     // If the guard for a branch is false, it means a
                     // thread was not created for that branch.
                     if ((i != _successfulBranch) && (branches[i].getGuard())) {
-                        // To terminate a branch, need to set a flag
-                        // on the receiver it is rendezvousing with & wake it up.
-                        Receiver[] branchReceivers = branches[i].getReceivers();
-                        for (int j = 0; j < branchReceivers.length; j++) {
-                            receivers.add(0, branchReceivers[j]);
-                        }
                         branches[i]._setAlive(false);
                         if (_debugging) {
                             _debug("** Killing branch: " + branches[i].getID());
                         }
                     }
                 }
+                // Mark each of the threads unblocked, since
+                // they will all terminate when awakened.
+                // This has to be done in this thread, or for
+                // a transitory time, it will appear as if there
+                // were a deadlock.
+                Iterator threads = _threadList.iterator();
+                while (threads.hasNext()) {
+                    Thread thread = (Thread) threads.next();
+                    director.threadUnblocked(thread, null);
+                }
 
-                // Now wake up all the receivers.
-                (new NotifyThread(receivers)).start();
+                // Now wake up anyone waiting for something to change.
+                director.notifyAll();
 
                 // When there are no more active branches, branchFailed()
                 // should issue a notifyAll() on the internal lock.
@@ -242,7 +250,7 @@ public class ConditionalBranchController extends AbstractBranchController implem
                     _debug("** Waiting for branches to die.");
                 }
                 while (_branchesActive != 0) {
-                    _internalLock.wait();
+                    director.wait();
                 }
             }
             if (_successfulBranch == -1) {
@@ -301,12 +309,20 @@ public class ConditionalBranchController extends AbstractBranchController implem
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
     protected void _branchNotReady(int branchNumber) {
-        synchronized (_internalLock) {
+        Object director = _getDirector();
+        synchronized (director) {
             if (branchNumber == _branchTrying) {
                 _branchTrying = -1;
-                // Are these needed?
-                // _internalLock.notifyAll();
-                // _notifyReceivers();
+                // FIXME: This has the potential of unblocking a blocked
+                // thread, but we will need to mark that thread unblocked
+                // in this thread or we will get a spurious deadlock detection.
+                // How do we do that? How do we tell what thread will
+                // be unblocked?  I guess it is associated with the
+                // _branchTrying ID, but are we sure it will unblock?
+                // Find out whether _isBranchReady() is called only
+                // when the other thread can actually succeed, and
+                // consider using the thread instead of the branch ID.
+                director.notifyAll();
                 return;
             }
         }
@@ -324,7 +340,8 @@ public class ConditionalBranchController extends AbstractBranchController implem
      *  @param branchID The ID assigned to the calling branch upon creation.
      */
     protected void _branchSucceeded(int branchID) {
-        synchronized (_internalLock) {
+        CSPDirector director = _getDirector();
+        synchronized (director) {
             if (_branchTrying != branchID) {
                 throw new InvalidStateException(((Nameable) getParent())
                         .getName()
@@ -335,6 +352,12 @@ public class ConditionalBranchController extends AbstractBranchController implem
                         + _branchTrying);
             }
             _successfulBranch = _branchTrying;
+            // Have to mark the controller thread unblocked in this thread
+            // to prevent spurious deadlock detection.
+            if (_blockedController != null) {
+                director.threadUnblocked(_blockedController, null);
+                _blockedController = null;
+            }
             super._branchSucceeded(branchID);
         }
     }
@@ -350,13 +373,12 @@ public class ConditionalBranchController extends AbstractBranchController implem
      *   to rendezvous, otherwise false.
      */
     protected boolean _isBranchReady(int branchNumber) {
-        synchronized (_internalLock) {
+        Object director = _getDirector();
+        synchronized (director) {
             if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
                 // store branchNumber
                 _branchTrying = branchNumber;
-                // Are these needed?
-                // _internalLock.notifyAll();
-                // _notifyReceivers();
+                director.notifyAll();
                 return true;
             }
 
@@ -372,7 +394,7 @@ public class ConditionalBranchController extends AbstractBranchController implem
      * so that it starts with a consistent state each time.
      */
     private void _resetConditionalState() {
-        synchronized (_internalLock) {
+        synchronized (_getDirector()) {
             _branchesActive = 0;
             _branchTrying = -1;
             _successfulBranch = -1;
@@ -390,4 +412,7 @@ public class ConditionalBranchController extends AbstractBranchController implem
     
     /** The ID of the branch that has successfully completed a rendezvous. */
     private int _successfulBranch = -1;
+    
+    /** The thread running chooseBranch if it is blocked. */
+    private Thread _blockedController = null;
 }

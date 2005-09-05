@@ -31,6 +31,7 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.csp.kernel.AbstractBranchController;
 import ptolemy.domains.csp.kernel.ConditionalBranch;
 import ptolemy.domains.csp.kernel.ConditionalBranchActor;
@@ -85,9 +86,19 @@ public class Barrier extends TypedAtomicActor implements
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
+        // Create a parameter that indicates to the director that the
+        // receivers in this port should be treated as a group for the
+        // purposes of synchronizing their send and receive actions.
+        Parameter groupReceivers = new Parameter(input, "_groupReceivers");
+        groupReceivers.setPersistent(false);
 
         output = new TypedIOPort(this, "release", false, true);
         output.setMultiport(true);
+        // Create a parameter that indicates to the director that the
+        // receivers in this port should be treated as a group for the
+        // purposes of synchronizing their send and receive actions.
+        groupReceivers = new Parameter(output, "_groupReceivers");
+        groupReceivers.setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -133,6 +144,10 @@ public class Barrier extends TypedAtomicActor implements
         super.fire();
         if (_debugging && _VERBOSE_DEBUGGING && !_listeningToBranchController) {
             _branchController.addDebugListener(this);
+            _listeningToBranchController = true;
+        } else {
+            _branchController.removeDebugListener(this);
+            _listeningToBranchController = false;
         }
         // FIXME: What if the input width is zero?
         ConditionalBranch[] branches = new ConditionalBranch[input.getWidth()];
@@ -192,11 +207,11 @@ public class Barrier extends TypedAtomicActor implements
             }
             if (executeBranches(branches)) {
                 if (_debugging) {
-                    _debug("Onput channels completed.");
+                    _debug("Output channels completed.");
                 }
             } else {
                 if (_debugging) {
-                    _debug("Onput channels failed.");
+                    _debug("Output channels failed.");
                 }
             }                
             if (_debugging && _VERBOSE_DEBUGGING) {

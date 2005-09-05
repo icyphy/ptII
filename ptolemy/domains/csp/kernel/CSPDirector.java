@@ -28,6 +28,7 @@
  */
 package ptolemy.domains.csp.kernel;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +43,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -213,14 +215,18 @@ public class CSPDirector extends CompositeProcessDirector implements
         }
     }
     
-    /** Override the base class to create receiver groups for forked
-     *  connections.
-     *  @exception IllegalActionException If the preinitialize() method of
-     *   one of the associated actors throws it.
+    /** Override the base class to first create receiver groups,
+     *  then delegate to the base class to start threads for all
+     *  actors that have not had threads started
+     *  already (this might include actors initialized since the last
+     *  invocation of prefire). This starts the threads, corresponding
+     *  to all the actors that were created in a mutation.
+     *  @return True.
+     *  @exception IllegalActionException If a derived class throws it.
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
+    public boolean prefire() throws IllegalActionException {
         _createReceiverGroups();
+        return super.prefire();
     }
 
     /** Return an array of suggested directors to be used with ModalModel.
@@ -300,8 +306,8 @@ public class CSPDirector extends CompositeProcessDirector implements
     /** Returns true if all active processes are either blocked or
      *  delayed, false otherwise.
      */
-    protected synchronized boolean _areActorsDeadlocked() {
-        if (_getActiveThreadsCount() == (_getBlockedActorsCount() + _actorsDelayed)) {
+    protected synchronized boolean _areThreadsDeadlocked() {
+        if (_getActiveThreadsCount() == (_getBlockedThreadsCount() + _actorsDelayed)) {
             return true;
         }
 
@@ -309,16 +315,13 @@ public class CSPDirector extends CompositeProcessDirector implements
     }
     
     /** Return true if the count of active processes equals the number
-     *  of stopped threads.  Otherwise return false.
-     *
-     *  @return true if there are no active processes in the container.
+     *  of stopped, blocked, and delayed threads.  Otherwise return false.
+     *  @return True if all threads are stopped.
      */
-    /* FIXME: Should the following be overridden as follows to account for actors delayed?
-     * otherwise, pause might not work.
-    protected synchronized boolean _areAllActorsStopped() {
-        return (_getActiveActorCount() == (_getStoppedActorCount() + _getBlockedActorCount() + _actorsDelayed));
+    protected synchronized boolean _areAllThreadsStopped() {
+        return (_getActiveThreadsCount()
+                == (_getStoppedThreadsCount() + _getBlockedThreadsCount() + _actorsDelayed));
     }
-    */
 
     /** Return a string describing the status of each receiver.
      *  @return A string describing the status of each receiver.
@@ -441,7 +444,7 @@ public class CSPDirector extends CompositeProcessDirector implements
                     done = true;
                 }
             }
-        } else if (_getBlockedActorsCount() == _getActiveThreadsCount()) {
+        } else if (_getBlockedThreadsCount() == _getActiveThreadsCount()) {
             // Report deadlock.
             Parameter suppress = (Parameter)getContainer().getAttribute(
                     "SuppressDeadlockReporting", Parameter.class);
@@ -464,9 +467,23 @@ public class CSPDirector extends CompositeProcessDirector implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     
-    /** Create receiver groups for any forked connections.
+    /** Create receiver groups for any forked connections, multiway
+     *  rendezvous ports, and conditional rendezvous ports. This is
+     *  a major complication of the CSP domain, and is necessary
+     *  because various methods in the receivers must be synchronized
+     *  so that they can be accessed by multiple threads. When
+     *  performing a multiway rendezvous or conditional rendezvous
+     *  that involves several receivers, then all those methods need
+     *  to be synchronized on the same object, which is called the
+     *  group master. The group master is always the first receiver
+     *  in the group. An alternative design would synchronize all
+     *  these methods on a single object, like the director. But
+     *  this sequentialize all communication, even in the presence
+     *  of multiprocessors.
+     *  @exception IllegalActionException If a port contains a malformed
+     *   parameter named "_groupReceivers".
      */
-    private void _createReceiverGroups() {
+    private void _createReceiverGroups() throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         
         // Start with the input ports of the composite, which
@@ -505,6 +522,38 @@ public class CSPDirector extends CompositeProcessDirector implements
                 }
             }
         }
+        
+        // In a second pass, merge the groups of all receivers
+        // contained by ports that contain a parameter named
+        // "_groupReceivers".
+        try {
+            actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Entity actor = (Entity)actors.next();
+                Iterator ports = actor.portList().iterator();
+                while (ports.hasNext()) {
+                    IOPort port = (IOPort)(ports.next());
+                    Parameter groupReceivers = (Parameter)
+                    port.getAttribute("_groupReceivers", Parameter.class);
+                    if (groupReceivers != null) {
+                        // Need to merge the receiver groups of all receivers associated
+                        // with this port.
+                        LinkedList receivers = new LinkedList();
+                        // Note that if the port is not an input
+                        // port, then the following will be an empty array.
+                        receivers.add(port.getReceivers());
+                        // If the port is not an output port, then the following
+                        // will be an empty array.
+                        receivers.add(port.getRemoteReceivers());
+                        _mergeReceivers(receivers);
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            // If an exception occurs above, it is not reported.
+            // FIXME: Why not?
+            ex.printStackTrace();
+        }
     }
 
     /** Get the earliest time which an actor has been delayed to. This
@@ -517,6 +566,51 @@ public class CSPDirector extends CompositeProcessDirector implements
             throw new InvalidStateException("CSPDirector.getNextTime(): "
                     + " called in error.");
         }
+    }
+    
+    /** Merge the receiver groups of all the receivers passed as an
+     *  argument, and set the merged group as the group for all of
+     *  those receivers.
+     *  @param receivers A list of arrays of receivers to merge.
+     */
+    private void _mergeReceivers(List receivers) {
+        // First, accumulate the receivers that go in the merged group.
+        ArrayList result = new ArrayList();
+        Iterator batches = receivers.iterator();
+        while (batches.hasNext()) {
+            Receiver[][] batch = (Receiver[][])batches.next();
+            for (int i = 0; i < batch.length; i++) {
+                if (batch[i] != null) {
+                    for (int j = 0; j < batch[i].length; j++) {
+                        if (batch[i][j] != null) {
+                            // Got a live receiver.
+                            // Find out whether it already has a group.
+                            Receiver[] priorGroup = ((CSPReceiver)batch[i][j])._getGroup();
+                            if (priorGroup == null || priorGroup.length < 2) {
+                                // Just this one receiver to add to the group.
+                                if (!result.contains(batch[i][j])) {
+                                    result.add(batch[i][j]);
+                                } else {
+                                    // Add all receivers in the group.
+                                    for (int k = 0; k < priorGroup.length; k++) {
+                                        if (!result.contains(priorGroup[k])) {
+                                            result.add(priorGroup[k]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Next, set the group of all these receivers.
+        // Regrettably, in Java, you can't cast arrays, so we have
+        // to copy into a new array.
+        Receiver[] group = new Receiver[result.size()];
+        System.arraycopy(result.toArray(), 0, group, 0, result.size());
+        CSPReceiver._groupReceivers(group);
     }
     
     /** Used to keep track of when and for how long processes are delayed.

@@ -188,8 +188,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         try {
             // Note that the lock has to be in the first receiver
             // in a group, if this receiver is part of a group.
-            CSPReceiver masterReceiver = (CSPReceiver)receiver._getLock();
-            synchronized (masterReceiver) {
+            Object lock = receiver._getLock();
+            synchronized (lock) {
                 String identifier = "";
                 if (_debugging) {
                     identifier = "ConditionalReceive: get() on " + _port.getFullName() + " on channel " + _channel;
@@ -217,7 +217,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         }
                         receiver._setConditionalReceive(false, null, -1);
                         controller._branchFailed(getID());
-                        masterReceiver.notifyAll();
+                        lock.notifyAll();
                         return;
                     } else if (receiver._isPutWaiting()) {
                         if (_debugging) {
@@ -246,14 +246,20 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             if ((side2 != null) && side2._isBranchReady(receiver._getOtherID())) {
                                 // Convert the conditional receive to a get().
                                 receiver._setConditionalReceive(false, null, -1);
+                                // FIXME: Should the other side be marked unblocked now?
                                 _setToken(receiver.get());
                                 // Reset the conditional send flag on the other side.
                                 receiver._setConditionalSend(false, null, -1);
                                 controller._branchSucceeded(getID());
                                 return;
                             } else {
+                                // Release the first position here since the
+                                // other side is not first.
+                                // FIXME: This could unblock another thread,
+                                // but which one???  We need to mark it unblocked...
+                                // Is it the branch on the other side?
                                 controller._branchNotReady(getID());
-                                masterReceiver.notifyAll();
+                                lock.notifyAll();
                             }
                         }
                     }
@@ -264,17 +270,17 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     receiver._setConditionalReceive(true, controller, getID());
                     
                     // FIXME: Is this necessary?
-                    // masterReceiver.notifyAll();
+                    receiver._getDirector().notifyAll();
 
                     // Wait for something to happen.
                     if (_debugging) {
                         _debug("ConditionalReceive: Waiting for new information.");
                     }
                     controller._branchBlocked(receiver);
-                    masterReceiver._checkFlagsAndWait();
+                    receiver._checkFlagsAndWait();
                     controller._branchUnblocked(receiver);
                 } // while(true)
-            } // synchronized(masterReceiver)
+            } // synchronized(lock)
         } catch (InterruptedException ex) {
             receiver._setConditionalReceive(false, null, -1);
             controller._branchFailed(getID());
@@ -295,7 +301,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      */
     protected boolean _isReady() {
         Receiver[] receivers = getReceivers();
-        synchronized(receivers[0]) {
+        synchronized(((CSPReceiver)receivers[0])._getLock()) {
             for (int i = 0; i < receivers.length; i++) {
                 if (!((CSPReceiver)receivers[i])._isPutWaiting()
                         && !((CSPReceiver)receivers[i])._isConditionalSendWaiting()) {

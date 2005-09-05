@@ -225,7 +225,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
     public void run() {
         // Get the array of receivers to send to.
         Receiver[] receivers = getReceivers();
-        CSPReceiver masterReceiver = ((CSPReceiver)receivers[0]);
+        CSPDirector director = ((CSPReceiver)receivers[0])._getDirector();
         AbstractBranchController controller = getController();
         String identifier = "";
         if (_debugging) {
@@ -242,7 +242,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             // may win out, in which case this send will "fail".
             // For the multi-way rendezvous, we always synchronize
             // on the first receiver in the group.
-            synchronized(masterReceiver) {
+            synchronized(director) {
                 // Check that none of the receivers already has a put or conditional send waiting
                 for (int copy = 0; copy < receivers.length; copy++) {
                     if (((CSPReceiver)receivers[copy])._isConditionalSendWaiting()
@@ -269,7 +269,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             ((CSPReceiver)receivers[copy])._setConditionalSend(false, null, -1);
                         }
                         controller._branchFailed(getID());
-                        masterReceiver.notifyAll();
+                        director.notifyAll();
                         // Nothing more to do.
                         return;
                     }
@@ -355,7 +355,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                     AbstractBranchController side2 = receiver._getOtherController();
                                     side2._branchNotReady(receiver._getOtherID());
                                 }
-                                masterReceiver.notifyAll();
+                                director.notifyAll();
                             }
                         }
                     }
@@ -364,20 +364,22 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     // nor a conditional receive waiting, so we mark the receivers
                     // as having a conditional send waiting and then wait.
                     for (int copy = 0; copy < receivers.length; copy++) {
-                        ((CSPReceiver)receivers[copy])._setConditionalSend(false, null, -1);
+                        ((CSPReceiver)receivers[copy])._setConditionalSend(true, controller, getID());
                     }
                     
                     // FIXME: Is this necessary?
-                    masterReceiver.notifyAll();
+                    director.notifyAll();
 
                     if (_debugging) {
                         _debug("ConditionalSend: Waiting for new information.");
                     }
 
                     // Wait for something to happen.
-                    controller._branchBlocked(masterReceiver);
-                    masterReceiver._checkFlagsAndWait();
-                    controller._branchUnblocked(masterReceiver);
+                    // The null argument is because we are not blocked on a specific
+                    // receiver, but rather on multiple receivers.
+                    controller._branchBlocked(null);
+                    ((CSPReceiver)receivers[0])._checkFlagsAndWait();
+                    controller._branchUnblocked(null);
                 } // while(true)
                 
                 // Have to reset the conditional send flag _before_ the put().
@@ -392,8 +394,10 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 
                 // Regrettably, the code below is an exact copy of CSPReceiver.putToAll,
                 // with the exception that the Thread.join() is performed outside the
-                // synchronized(masterReceiver) block, in order to prevent deadlock.
+                // synchronized block, in order to prevent deadlock.
                 // Is there any better way to do this?
+                // FIXME: Now that all synchronization in on the director,
+                // we can probably change this and just use CSPReceiver.putToAll().
                 
                 // Spawn a thread for each rendezvous.
                 // If an exception occurs in one of the threads,
@@ -440,7 +444,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 
                 receivers[0].put(port.convert(getToken()));
                 
-            } // synchronized(masterReceiver)
+            } // synchronized
             
             // This has to be done outside the synchronized block
             // because Thread.join() grabs a lock on the thread, and if it is
@@ -491,7 +495,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             _setToken(null);
             
             // Notify the director that this thread has exited.
-            masterReceiver._getDirector().removeThread(Thread.currentThread());
+            director.removeThread(Thread.currentThread());
         }
     }
     
