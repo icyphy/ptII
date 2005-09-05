@@ -472,16 +472,16 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @return false If the number of blocked processes is less than
      *   the number of active actors; return true otherwise.
      */
-    protected synchronized boolean _areActorsDeadlocked() {
+    protected synchronized boolean _areThreadsDeadlocked() {
         if (_debugging) {
             _debug("Checking for deadlock:");
-            _debug("There are " + _getBlockedActorsCount()
-                    + " Blocked actors, " + _getStoppedActorsCount()
+            _debug("There are " + _getBlockedThreadsCount()
+                    + " Blocked actors, " + _getStoppedThreadsCount()
                     + " Stopped actors, and " + _getActiveThreadsCount()
                     + " active threads.");
         }
 
-        if (_getBlockedActorsCount() >= _getActiveThreadsCount()) {
+        if (_getBlockedThreadsCount() >= _getActiveThreadsCount()) {
             return true;
         } else {
             return false;
@@ -614,7 +614,7 @@ public class CompositeProcessDirector extends ProcessDirector {
         Director execDir = ((Actor) getContainer()).getExecutiveDirector();
         Workspace workspace = workspace();
 
-        if (_areActorsDeadlocked()) {
+        if (_areThreadsDeadlocked()) {
             if (_areActorsExternallyBlocked()) {
                 // There are actors that are blocked on a communication
                 // (send or receive) to the outside world.

@@ -180,7 +180,7 @@ public class ProcessDirector extends Director {
         }
 
         synchronized (this) {
-            while (!_areActorsDeadlocked() && !_areAllActorsStopped() && !_stopRequested) {
+            while (!_areThreadsDeadlocked() && !_areAllThreadsStopped() && !_stopRequested) {
                 // Added to get thread to stop reliably on pushing stop button.
                 // EAL 8/05
                 if (_stopRequested) {
@@ -214,7 +214,7 @@ public class ProcessDirector extends Director {
             // Don't resolve deadlock if we are just pausing
             // or if a stop has been requested.
             // NOTE: Added !_stopRequested.  EAL 3/12/03.
-            if (_areActorsDeadlocked() && !_stopRequested) {
+            if (_areThreadsDeadlocked() && !_stopRequested) {
                 if (_debugging) {
                     _debug("Deadlock detected.");
                 }
@@ -332,8 +332,8 @@ public class ProcessDirector extends Director {
     /** Start threads for all actors that have not had threads started
      *  already (this might include actors initialized since the last
      *  invocation of prefire). This starts the threads, corresponding
-     *  to all the actors, that were created in the initialize() method.
-     *  @return true.
+     *  to all the actors, that were created in a mutation.
+     *  @return True.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean prefire() throws IllegalActionException {
@@ -610,7 +610,7 @@ public class ProcessDirector extends Director {
      *  return true to any other forms of deadlocks that they might introduce.
      *  @return True if there are no active processes in the container.
      */
-    protected synchronized boolean _areActorsDeadlocked() {
+    protected synchronized boolean _areThreadsDeadlocked() {
         return (_activeThreads.size() == 0);
     }
 
@@ -618,8 +618,8 @@ public class ProcessDirector extends Director {
      *  of paused and blocked threads.  Otherwise return false.
      *  @return True if there are no active processes in the container.
      */
-    protected synchronized boolean _areAllActorsStopped() {
-        return (_getActiveThreadsCount() == (_getStoppedActorsCount() + _getBlockedActorsCount()));
+    protected synchronized boolean _areAllThreadsStopped() {
+        return (_getActiveThreadsCount() == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
     }
 
     /** Return the number of active threads under the control of this
@@ -633,14 +633,14 @@ public class ProcessDirector extends Director {
     /** Return the number of threads that are currently blocked.
      *  @return Return the number of threads that are currently blocked.
      */
-    protected final synchronized int _getBlockedActorsCount() {
+    protected final synchronized int _getBlockedThreadsCount() {
         return _blockedThreads.size();
     }
 
     /** Return the number of threads that are currently stopped.
      *  @return Return the number of threads that are currently stopped.
      */
-    protected final synchronized int _getStoppedActorsCount() {
+    protected final synchronized int _getStoppedThreadsCount() {
         return _pausedThreads.size();
     }
 

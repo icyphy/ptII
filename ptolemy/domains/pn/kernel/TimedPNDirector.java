@@ -243,7 +243,7 @@ public class TimedPNDirector extends PNDirector implements TimedDirector {
      *  read-blocked, write-blocked or delay-blocked.
      *  @return true if a deadlock is detected.
      */
-    protected synchronized boolean _areActorsDeadlocked() {
+    protected synchronized boolean _areThreadsDeadlocked() {
         if ((_readBlockedQueues.size()
                 + _writeBlockedQueues.size()
                 + _delayBlockCount)
