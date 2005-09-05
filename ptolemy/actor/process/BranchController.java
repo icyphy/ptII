@@ -56,7 +56,6 @@ import ptolemy.kernel.util.Nameable;
  are then instantiated and assigned to the receivers according to whether
  the receivers are producer or consumer receivers.
 
-
  @author John S. Davis II
  @version $Id$
  @since Ptolemy II 1.0
