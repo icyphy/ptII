@@ -166,7 +166,7 @@ public class MultiPageCompilationUnitEditor extends PtolemyEditor {
             IProject[] projects = workspace.getProjects();
             String[] extraClassPaths = new String[projects.length];
             for (int i = 0; i < projects.length; i++)
-                extraClassPaths[0] = projects[i].getLocation().toOSString();
+                extraClassPaths[i] = projects[i].getLocation().toOSString();
             
             String extraClassPathsInOptions = store.getString(
                     PreferenceConstants.BACKTRACK_EXTRA_CLASSPATHS);
