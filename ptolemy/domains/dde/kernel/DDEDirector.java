@@ -367,7 +367,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * @param readOrWrite
      *            Either READ_BLOCKED or WRITE_BLOCKED to indicate whether the
      *            thread is blocked on read or write.
-     * @see #threadBlocked(Thread)
+     *  @see CompositeProcessDirector#threadBlocked(Thread, ProcessReceiver)
      */
     public synchronized void threadBlocked(Thread thread,
             ProcessReceiver receiver, boolean readOrWrite) {
@@ -390,7 +390,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * @param readOrWrite
      *            Either READ_BLOCKED or WRITE_BLOCKED to indicate whether the
      *            thread is blocked on read or write.
-     * @see #threadBlocked(Thread)
+     *  @see CompositeProcessDirector#threadUnblocked(Thread, ProcessReceiver)
      */
     public synchronized void threadUnblocked(Thread thread,
             ProcessReceiver receiver, boolean readOrWrite) {

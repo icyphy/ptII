@@ -529,7 +529,7 @@ public class ProcessDirector extends Director {
      *  @param thread The thread.
      *  @param receiver The receiver handling the I/O operation,
      *   or null if it is not a specific receiver.
-     *  @see #threadBlocked(Thread)
+     *  @see #threadBlocked(Thread, ProcessReceiver)     *   
      */
     public synchronized void threadUnblocked(
             Thread thread, ProcessReceiver receiver) {
