@@ -132,7 +132,8 @@ test StringUtilities-2.5.2 {ellipsis 11 lines} {
  line 8 
  line 9 
  line 10 
-...}
+ line 11 
+}
 
 
 
