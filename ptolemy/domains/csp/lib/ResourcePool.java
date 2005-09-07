@@ -46,6 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// 
@@ -158,6 +159,23 @@ public class ResourcePool extends CSPActor {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    /** Override the base class to set the type constraints.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new ResourcePool actor.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        ResourcePool newObject = (ResourcePool)super.clone(workspace);
+        // set type constraints.
+        ArrayType paramType = (ArrayType) newObject.initialPool.getType();
+        InequalityTerm elementTerm = paramType.getElementTypeTerm();
+        newObject.grant.setTypeAtLeast(elementTerm);
+        newObject.grant.setTypeAtLeast(newObject.release);
+        return newObject;
     }
     
     /** If there are available resources, then perform a conditional
