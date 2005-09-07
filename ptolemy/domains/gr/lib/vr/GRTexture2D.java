@@ -31,6 +31,7 @@ package ptolemy.domains.gr.lib.vr;
 import java.awt.image.ColorModel;
 import java.awt.Point;
 import java.awt.image.ComponentSampleModel;
+import java.awt.image.SampleModel;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 
@@ -40,6 +41,8 @@ import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferFloat;
 import java.awt.image.DataBufferInt;
 import java.awt.Transparency;
 import java.awt.image.Raster;
@@ -84,7 +87,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** 
     An actor that performs volume rendering using 2D textures.
     The <i>xResolution</i> and <i>yResolution</i> parameters are used to specifiy
-    the resoltion of the image.
+    the resolution of the image.
     <p>
     
     @author Tiffany Crawford
@@ -366,6 +369,8 @@ public class GRTexture2D extends GRGeometry {
      * @throws IllegalActionException
      */
     protected void _loadTexture() throws IllegalActionException {
+         int arrayLength = _sSize*_tSize;
+        
     	//Debug statement
         if (_debugging) {
             _debug("About to loadTexture");
@@ -384,55 +389,157 @@ public class GRTexture2D extends GRGeometry {
             System.err.println(e);
             _bufferedImage = null;
         }
-        
+            System.out.println("AlphaRaster = " + _bufferedImage.getAlphaRaster());
+            System.out.println("PixelStride = " + ((ComponentSampleModel)_bufferedImage.getSampleModel()).getPixelStride());
+            System.out.println("ScanlineStride = " + ((ComponentSampleModel)_bufferedImage.getSampleModel()).getScanlineStride());
         //Create WritableRaster
         //FIXME Are the parameters for ComponentSampleModel correct?
+        int pixelStride = 3;
+        int scanlineStride = _sSize*3;
         ComponentSampleModel componentSampleModel = 
-            new ComponentSampleModel(0, _sSize, _tSize, 0, _sSize, new int[]{0,0,0,0});
+            new ComponentSampleModel(0, _sSize, _tSize, pixelStride, scanlineStride, new int[]{0,0,0,0});
+        
+        //Create ColorModel and SampleModel
+        ComponentColorModel componentColorModel = new ComponentColorModel 
+        (ColorSpace.getInstance(ColorSpace.CS_sRGB) ,
+                   new int[] {32,32,32,32} , // bits
+                   true, // alpha
+                   false , // alpha pre-multiplied
+                   Transparency.TRANSLUCENT ,
+                  // DataBuffer.TYPE_BYTE 
+                   DataBuffer.TYPE_FLOAT);
+               
+       /* SampleModel sampleModel = componentColorModel.createCompatibleSampleModel(_sSize, _tSize); 
+        System.out.println("# dataElements = " + sampleModel.getNumDataElements());
+        System.out.println("# Bands = " + sampleModel.getNumBands());
+        System.out.println("SampleModel width = " + sampleModel.getWidth());
+        System.out.println("SampleModel height = " + sampleModel.getHeight());
+        System.out.println("SampleModel dataType = " + sampleModel.getDataType());
+        System.out.println("SampleModel transferType = " + sampleModel.getTransferType());
+        System.out.println("SampleModel size = " + sampleModel.getSampleSize(0)+
+                sampleModel.getSampleSize(1)+ sampleModel.getSampleSize(2)+
+                sampleModel.getSampleSize(3));
+        System.out.println("SampleModel  = " + sampleModel);
+        System.out.println("SampleModel pixelStride = " 
+                + ((ComponentSampleModel) sampleModel).getPixelStride());
+        System.out.println("SampleModel scanlineStride = " 
+                + ((ComponentSampleModel) sampleModel).getScanlineStride());
+        
+        int bankIndices[] = ((ComponentSampleModel) sampleModel).getBankIndices();
+        System.out.println("SampleModel # bank Indices = " 
+                + bankIndices[0] + ", " + bankIndices[1] + ", " + bankIndices[2]+ ", " + bankIndices[3]);
+        
+        
+        int offset[] = ((ComponentSampleModel) sampleModel).getBandOffsets();
+        System.out.println("SampleModel band offsets = " 
+                + offset[0] +", " + offset[1]+ ", " + offset[2]+", " + offset[3]);*/
+       
+     
+        //Create Writable Raster
         Raster raster = _bufferedImage.getData();
         DataBuffer dataBuffer = raster.getDataBuffer();
         WritableRaster writableRaster = Raster.createWritableRaster(componentSampleModel, 
                 dataBuffer, new Point()); 
-        
-        System.out.println("Data buffer type = " + dataBuffer.getDataType());
-        
-        
-        //Create ColorModel
-        //FIXME Are the parameters for ComponentColorModel correct?
-        ComponentColorModel componentColorModel = new ComponentColorModel 
-         (ColorSpace.getInstance(ColorSpace.CS_sRGB) ,
-                    new int[] {8,8,8,8} , // bits
-                    true, // alpha
-                    false , // alpha pre-multiplied
-                    Transparency.TRANSLUCENT ,
-                    DataBuffer.TYPE_BYTE );
+        System.out.println("DataBufferSize = " + dataBuffer.getSize());
         Hashtable hashtable = new Hashtable();
+        
         //_bufferedImage = new BufferedImage( componentColorModel, writableRaster,
            //     false, hashtable); 
       
     
         //      Get alpha raster and manipulate values
-   /*     int arrayLength = _sSize*_tSize;
-        double fraction = 1/255;
-        double[] pixelArray = new double[arrayLength*4];
-        double[] alphaArray = new double[arrayLength]; */
-        
-       
+        float fraction = 1/255;
+        //float[] pixelArray = new float[arrayLength*4];
+        float[] pixelArray = new float[arrayLength*4];
+        //double[] alphaArray = new double[arrayLength]; 
+        float[] alphaArray = new float[arrayLength];
+     
+      
         //Create alpha array and set as function of pixel values
-      /*  writableRaster.getPixels(writableRaster.getMinX(),writableRaster.getMinY(),
+        System.out.println("pixelArray length = " + pixelArray.length);
+        System.out.println("min, max = " + writableRaster.getMinX()+ ", "+ writableRaster.getMinY());
+       writableRaster.getPixels(writableRaster.getMinX(),writableRaster.getMinY(),
                 _sSize,_tSize, pixelArray ); 
-        for (int i=1; i == arrayLength; i ++){
-        	//alphaArray[i] = 1 - pixelArray[i*4 -2]*fraction;
-            alphaArray[i]= 0.5;
+       System.out.println("pixelArray length = " + pixelArray.length);
+        for (int i=1; i <= arrayLength; i ++){
+            //pixelArray[i*4 - 1]= 0; //when left uncommented only, gives black (alpha channel)
+           //pixelArray[i*4 - 2]= 0; //when left uncommented only, gives green (blue)
+           // pixelArray[i*4 - 3]= 0; //when left uncommented only, gives purple (green)
+           //pixelArray[i*4 - 4]= 0; //when left uncommented only, gives yellowish green (red)
+           //pixelArray[i*4-1] = 1 - pixelArray[i*4 -1]*fraction;
+            //alphaArray[i] = 1 - pixelArray[i*4 -2]*fraction;
+            //alphaArray[i]= 0.5;
+            //Normalize values
+           // pixelArray[i*4-2] = pixelArray[i*4-2]* fraction; 
+         //   pixelArray[i*4-3] = pixelArray[i*4-3]* fraction;
+         //   pixelArray[i*4-4] = pixelArray[i*4-4]* fraction;
+            //pixelArray[i*4] = pixelArray[i*4]* fraction; 
+            //pixelArray[i*4+1] = pixelArray[i*4+1]* fraction;
+            //pixelArray[i*4+2] = pixelArray[i*4+2]* fraction;
         }
-        writableRaster.setSamples(0,0,_sSize,_tSize,3, alphaArray);*/
+       //float[] dataArray =  new float[arrayLength*4];
+        SampleModel sampleModel = componentColorModel.createCompatibleSampleModel(_sSize, _tSize);
+        System.out.println("# dataElements = " + sampleModel.getNumDataElements());
+        System.out.println("# Bands = " + sampleModel.getNumBands());
+        System.out.println("SampleModel width = " + sampleModel.getWidth());
+        System.out.println("SampleModel height = " + sampleModel.getHeight());
+        System.out.println("SampleModel dataType = " + sampleModel.getDataType());
+        System.out.println("SampleModel transferType = " + sampleModel.getTransferType());
+        System.out.println("SampleModel size = " + sampleModel.getSampleSize(0)+
+                sampleModel.getSampleSize(1)+ sampleModel.getSampleSize(2)+
+                sampleModel.getSampleSize(3));
+        System.out.println("SampleModel  = " + sampleModel);
+        System.out.println("SampleModel pixelStride = " 
+                + ((ComponentSampleModel) sampleModel).getPixelStride());
+        System.out.println("SampleModel scanlineStride = " 
+                + ((ComponentSampleModel) sampleModel).getScanlineStride());
+        
+        int bankIndices[] = ((ComponentSampleModel) sampleModel).getBankIndices();
+        System.out.println("SampleModel # bank Indices = " 
+                + bankIndices[0] + ", " + bankIndices[1] + ", " + bankIndices[2]+ ", " + bankIndices[3]);
+        
+        
+        int offset[] = ((ComponentSampleModel) sampleModel).getBandOffsets();
+        System.out.println("SampleModel band offsets = " 
+                + offset[0] +", " + offset[1]+ ", " + offset[2]+", " + offset[3]);    
+       //Create DataBuffer with alpha channel
+       DataBufferFloat dataBufferFloat = new DataBufferFloat(pixelArray, pixelArray.length);
+       
+       System.out.println("pixel array values = " + pixelArray[20480] + ", " 
+            + pixelArray[20481] + ", " + pixelArray[20482]+ ", " +
+            pixelArray[20483]);
+       
+       System.out.println("DataBuffer values = " + dataBufferFloat.getElemFloat(20480) + ", " 
+            + dataBufferFloat.getElemFloat(20481) + ", " + dataBufferFloat.getElemFloat(20482)+ ", " +
+            dataBufferFloat.getElemFloat(20483));
+       
+       System.out.println("DataBuffer values = " + dataBufferFloat.getElemFloat(30720) + ", " 
+            + dataBufferFloat.getElemFloat(30721) + ", " + dataBufferFloat.getElemFloat(30722)+ ", " +
+            dataBufferFloat.getElemFloat(30723));
+       
+       
+       System.out.println("DataBuffer values = " + dataBufferFloat.getElemFloat(21504) + ", " 
+            + dataBufferFloat.getElemFloat(21505) + ", " + dataBufferFloat.getElemFloat(21506)+ ", " +
+            dataBufferFloat.getElemFloat(21507));
+       
+       System.out.println("DataBuffer values = " + dataBufferFloat.getElemFloat(31744) + ", " 
+            + dataBufferFloat.getElemFloat(31745) + ", " + dataBufferFloat.getElemFloat(31746)+ ", " +
+            dataBufferFloat.getElemFloat(31747));
+      
+       //Create Writable RAaster with new DataBuffer
+       writableRaster = Raster.createWritableRaster(sampleModel, 
+            dataBufferFloat, new Point());
+       //writableRaster.setSamples(0,0,_sSize,_tSize,0, alphaArray);
         
         //Create bufferedImage and Load
         _bufferedImage = new BufferedImage(componentColorModel, writableRaster,
                 false, hashtable);
+        
         TextureLoader loader = new TextureLoader(_bufferedImage,_viewScreen.getCanvas());
-       
-
+        System.out.println("AlphaRaster = " + _bufferedImage.getAlphaRaster());
+        System.out.println("Alpha Raster values = " + _bufferedImage.getAlphaRaster().getSample(2,2,0));
+        System.out.println("AlphaArray[4] = "+ alphaArray[4]);
+        
         /* Set loaded texture*/
         Texture loadedTexture = loader.getTexture();
         TextureAttributes attributes = null; 
