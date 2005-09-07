@@ -423,7 +423,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      *                If an error occurs while instantiating the new
      *                ProcessThread.
      */
-    protected ProcessThread _getProcessThread(Actor actor,
+    protected ProcessThread _newProcessThread(Actor actor,
             ProcessDirector director) throws IllegalActionException {
         return new DDEThread(actor, director);
     }

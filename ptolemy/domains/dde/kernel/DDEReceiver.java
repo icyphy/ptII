@@ -151,7 +151,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
                             + "have the earliest time stamp.");
         }
 
-        synchronized (this) {
+        synchronized (_director) {
             if (_terminate) {
                 throw new TerminateProcessException("");
             }
@@ -215,7 +215,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
 
         boolean sendNullTokens = false;
 
-        synchronized (this) {
+        synchronized (_director) {
             //////////////////////
             // Update the ReceiverList
             //////////////////////
@@ -272,7 +272,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
                 _director.threadBlocked(thread, this, DDEDirector.READ_BLOCKED);
                 while ((_readPending != null) && !_terminate) {
                     try {
-                        workspace.wait(this);
+                        workspace.wait(_director);
                     } catch (InterruptedException e) {
                         _terminate = true;
                         break;
@@ -331,8 +331,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
@@ -346,8 +344,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  contained by a composite actor. If this receiver is connected
      *  to the inside of a boundary port, then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
@@ -361,8 +357,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  contained by a composite actor. If this receiver is connected
      *  to the outside of a boundary port, then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is connected to the outside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
@@ -391,8 +385,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  contained by a composite actor. If this receiver is contained
      *  on the inside of a boundary port then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the inside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
@@ -406,8 +398,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  contained by a composite actor. If this receiver is contained
      *  on the outside of a boundary port then return true; otherwise
      *  return false.
-     *  <P>
-     *  This method is not synchronized so the caller should be.
      *  @return True if this receiver is contained on the outside of
      *   a boundary port; return false otherwise.
      *  @see BoundaryDetector
@@ -422,9 +412,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  receiver or not.
      */
     public boolean isReadBlocked() {
-        // NOTE: This method used to be synchronized on this
-        // receiver, but since it is called by synchronized methods in
-        // the director, that can cause deadlock.
         synchronized (_director) {
             return _readPending != null;
         }
@@ -436,9 +423,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  receiver or not.
      */
     public boolean isWriteBlocked() {
-        // NOTE: This method used to be synchronized on this
-        // receiver, but since it is called by synchronized methods in
-        // the director, that can cause deadlock.
         synchronized (_director) {
             return _writePending != null;
         }
@@ -498,7 +482,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
     public void put(Token token, Time time) {
         Workspace workspace = getContainer().workspace();
 
-        synchronized (this) {
+        synchronized (_director) {
             if ((time.compareTo(_getCompletionTime()) > 0)
                     && (_getCompletionTime().getDoubleValue() != ETERNITY)
                     && !_terminate) {
@@ -529,7 +513,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
                 _director.threadBlocked(_writePending, this, DDEDirector.WRITE_BLOCKED);
                 while ((_writePending != null) && !_terminate) {
                     try {
-                        workspace.wait(this);
+                        workspace.wait(_director);
                     } catch (InterruptedException e) {
                         _terminate = true;
                         break;
@@ -555,9 +539,11 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  called, a TerminateProcessException will be thrown during
      *  the next call to get() or put() of this class.
      */
-    public synchronized void requestFinish() {
-        _terminate = true;
-        notifyAll();
+    public void requestFinish() {
+        synchronized(_director) {
+            _terminate = true;
+            _director.notifyAll();
+        }
     }
 
     /** Reset local flags. The local flag of this receiver indicates
