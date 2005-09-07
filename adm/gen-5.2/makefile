@@ -1460,7 +1460,7 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 #		remote4done \
 #		 >& $(REMOTE4LOG)" &
 	if [ ! -d $(GENLOGDIR) ]; then mkdir $(GENLOGDIR); fi
-	cd $(GENDIR); cp $(REMOTE4LOG) $(REMOTE4LOG).old
+	-(cd $(GENDIR); cp $(REMOTE4LOG) $(REMOTE4LOG).old)
 	cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote4nuke remote4ptiidist remote4configure \
 		remote4distclean remote4build \
@@ -1569,7 +1569,7 @@ remote5: $(PTII_FULL) $(GENLOGDIR)
 #		remote5done \
 #		 >& $(REMOTE5LOG)" &
 	if [ ! -d $(GENLOGDIR) ]; then mkdir $(GENLOGDIR); fi
-	cd $(GENDIR); cp $(REMOTE5LOG) $(REMOTE5LOG).old
+	-(cd $(GENDIR); cp $(REMOTE5LOG) $(REMOTE5LOG).old)
 	cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
 		remote5nuke remote5ptiidist remote5configure \
 		remote5build \
