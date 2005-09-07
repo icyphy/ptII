@@ -86,6 +86,19 @@ if test  ! -w "$PTII"; then
     echo "try upgrading to cygwin1.1.0 or later"
 fi
 
+AC_MSG_CHECKING([if \$PTII ('$PTII') has backslashes])
+echo "$PTII" | egrep '\\' > /dev/null
+status=$?
+if test "$status" -eq 1 ; then
+       AC_MSG_RESULT([ok
+    '$PTII' does not contain backslashes])
+else
+    AC_MSG_ERROR([
+    \$PTII == $PTII,
+    which contains backslashes.  Even under Windows, please set
+    PTII to use forward slashes.])
+fi
+
 AC_MSG_CHECKING([if \$PTII ('$PTII') contains "cygdrive"])
 echo "$PTII" | egrep 'cygdrive|cygwin' > /dev/null
 status=$?
