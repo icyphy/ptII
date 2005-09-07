@@ -42,4 +42,4 @@ test RateErrorChecking-1.0 {} {
   in .badFSMRateChanges.SDF Director
 Because:
 The SDF rate parameter may change. This is not allowed in SDF models that will be run through the code generator.  If you don't care about code generation, then you might consider setting the allowRateChanges parameter of the SDF director to false.
-    in .badFSMRateChanges.typed composite actor.output.tokenProductionRate}}
+    in .badFSMRateChanges.typed composite actor.output.tokenProductionRate}} {Known failure, Steve was going to fix this some day}
