@@ -52,9 +52,20 @@ test SDFDirector-1.1 {Call generateCode(StringBuffer)} {
     $codeGenerator generateCode $results
     list [$results toString]
 } {{/* Variable Declarations .top */
-main(int argc, char *argv[]) {
+/* Generate shared code for .top */
+
+struct array {
+    void* data;
+    unsigned int length;
+};
+
+typedef struct array Array;
+typedef struct array String;
+
+/* Finished generate shared code for .top */
 /* The preinitialization of the director. */
 int iteration = 0;
+main(int argc, char *argv[]) {
 /* Initialize .top */
 /* The initialization of the director. */
 /* Wrapup .top */
