@@ -549,7 +549,8 @@ javaflag="$ALL_JFLAG"
 # this sets the ptolemy.ptII.dir environment variable.
 # NOTE: vergil will override this property with the value from 
 # $CLASSPATH/lib/ptII.properties.  However, other apps need this property.
-ptflag="\"-Dptolemy.ptII.dir=$PTII\""
+PTII_NO_TRAILING_SLASH="`echo "$PTII" |  sed 's@\\\\$@@'`"
+ptflag="\"-Dptolemy.ptII.dir=$PTII_NO_TRAILING_SLASH\""
 
 # Start up with the US Locale so as to avoid problems with , instead
 # of . in floating point numbers in German and Swedish locales
