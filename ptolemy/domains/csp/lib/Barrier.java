@@ -31,10 +31,9 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.domains.csp.kernel.AbstractBranchController;
+import ptolemy.domains.csp.kernel.BranchActor;
 import ptolemy.domains.csp.kernel.ConditionalBranch;
-import ptolemy.domains.csp.kernel.ConditionalBranchActor;
 import ptolemy.domains.csp.kernel.ConditionalReceive;
 import ptolemy.domains.csp.kernel.ConditionalSend;
 import ptolemy.domains.csp.kernel.MultiwayBranchController;
@@ -57,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  If there are fewer input channels than output channels,
  then the last input channel provides the token for the
  remaining ones. If there are no input channels,
- then the output is an instance of Token.
+ then an exception is thrown.
  
  @author Edward A. Lee
  @version $Id$
@@ -66,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  */
 public class Barrier extends TypedAtomicActor implements
-        ConditionalBranchActor {
+        BranchActor {
     
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -86,57 +85,30 @@ public class Barrier extends TypedAtomicActor implements
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        // Create a parameter that indicates to the director that the
-        // receivers in this port should be treated as a group for the
-        // purposes of synchronizing their send and receive actions.
-        Parameter groupReceivers = new Parameter(input, "_groupReceivers");
-        groupReceivers.setPersistent(false);
 
-        output = new TypedIOPort(this, "release", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setMultiport(true);
-        // Create a parameter that indicates to the director that the
-        // receivers in this port should be treated as a group for the
-        // purposes of synchronizing their send and receive actions.
-        groupReceivers = new Parameter(output, "_groupReceivers");
-        groupReceivers.setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port.
+    /** The input port, which is a multiport that can accept any data type.
      */
     public TypedIOPort input;
 
-    /** The output port.
+    /** The output port, which is a multiport whose type is at least that
+     *  of the input port.
      */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Determine which branch succeeds with a rendezvous. Pass
-     *  the branches to ConditionalBranchController to decide.
-     *  <p>
-     *  @param branches The set of conditional branches involved.
-     *  @return True if the branches all succeed, false if any
-     *   them was terminated before completing the rendezvous.
-     *  @exception IllegalActionException If the rendezvous fails
-     *   (e.g. because of incompatible types).
-     */
-    public boolean executeBranches(ConditionalBranch[] branches) throws IllegalActionException {
-        return _branchController.executeBranches(branches);
-    }
-
-    /** If there are available resources, then perform a conditional
-     *  branch on any <i>release</i> input or <i>grant</i> output. If the selected
-     *  branch is a release input, then add the provided token to the
-     *  end of the resource pool. If it is a grant output, then remove
-     *  the first element from the resource pool and send it to the output.
-     *  If there are no available resources, then perform a conditional branch
-     *  only on the release inputs.
-     *  @exception IllegalActionException If an error occurs during
-     *   executing the process.
+    /** Perform a multiway rendezvous with all input channels, collect
+     *  one input token from each channel, and then perform a multiway
+     *  rendezvous with the output channels, providing that data.
+     *  @exception IllegalActionException If the input width is zero.
      *  @exception TerminateProcessException If the process termination
      *   is requested by the director.
      */
@@ -149,7 +121,9 @@ public class Barrier extends TypedAtomicActor implements
             _branchController.removeDebugListener(this);
             _listeningToBranchController = false;
         }
-        // FIXME: What if the input width is zero?
+        if (input.getWidth() == 0) {
+            throw new IllegalActionException(this, "Barrier requires at least one input.");
+        }
         ConditionalBranch[] branches = new ConditionalBranch[input.getWidth()];
         for (int i = 0; i < input.getWidth(); i++) {
             // The branch has channel i and ID i.
@@ -161,7 +135,7 @@ public class Barrier extends TypedAtomicActor implements
         if (_debugging) {
             _debug("Performing multiway rendezvous on the input channels.");
         }
-        if (!executeBranches(branches)) {
+        if (!_branchController.executeBranches(branches)) {
             if (_debugging) {
                 _debug("At least one input rendezvous was terminated.");
             }
@@ -188,8 +162,7 @@ public class Barrier extends TypedAtomicActor implements
         
         if (output.getWidth() > 0) {
             branches = new ConditionalBranch[output.getWidth()];
-            // FIXME: Is this the right default?
-            Token token = new Token();
+            Token token = null;
             for (int i = 0; i < output.getWidth(); i++) {
                 if (i < input.getWidth()) {
                     token = data[i];
@@ -205,7 +178,7 @@ public class Barrier extends TypedAtomicActor implements
             if (_debugging) {
                 _debug("Performing multiway rendezvous on the output channels.");
             }
-            if (executeBranches(branches)) {
+            if (_branchController.executeBranches(branches)) {
                 if (_debugging) {
                     _debug("Output channels completed.");
                 }
