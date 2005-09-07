@@ -43,6 +43,7 @@ import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferFloat;
+import java.awt.image.DataBufferDouble;
 import java.awt.image.DataBufferInt;
 import java.awt.Transparency;
 import java.awt.image.Raster;
@@ -448,11 +449,11 @@ public class GRTexture2D extends GRGeometry {
       
     
         //      Get alpha raster and manipulate values
-        float fraction = 1/255;
+        double fraction = 1/255;
         //float[] pixelArray = new float[arrayLength*4];
-        float[] pixelArray = new float[arrayLength*4];
+        double[] pixelArray = new double[arrayLength*4];
         //double[] alphaArray = new double[arrayLength]; 
-        float[] alphaArray = new float[arrayLength];
+        double[] alphaArray = new double[arrayLength];
      
       
         //Create alpha array and set as function of pixel values
@@ -462,7 +463,7 @@ public class GRTexture2D extends GRGeometry {
                 _sSize,_tSize, pixelArray ); 
        System.out.println("pixelArray length = " + pixelArray.length);
         for (int i=1; i <= arrayLength; i ++){
-            //pixelArray[i*4 - 1]= 0; //when left uncommented only, gives black (alpha channel)
+            pixelArray[i*4 - 1]= 0.0; //when left uncommented only, gives black (alpha channel)
            //pixelArray[i*4 - 2]= 0; //when left uncommented only, gives green (blue)
            // pixelArray[i*4 - 3]= 0; //when left uncommented only, gives purple (green)
            //pixelArray[i*4 - 4]= 0; //when left uncommented only, gives yellowish green (red)
@@ -503,32 +504,32 @@ public class GRTexture2D extends GRGeometry {
         System.out.println("SampleModel band offsets = " 
                 + offset[0] +", " + offset[1]+ ", " + offset[2]+", " + offset[3]);    
        //Create DataBuffer with alpha channel
-       DataBufferFloat dataBufferFloat = new DataBufferFloat(pixelArray, pixelArray.length);
+       DataBufferDouble dataBufferDouble = new DataBufferDouble(pixelArray, pixelArray.length);
        
        System.out.println("pixel array values = " + pixelArray[20480] + ", " 
             + pixelArray[20481] + ", " + pixelArray[20482]+ ", " +
             pixelArray[20483]);
        
-       System.out.println("DataBuffer values = " + dataBufferFloat.getElemFloat(20480) + ", " 
-            + dataBufferFloat.getElemFloat(20481) + ", " + dataBufferFloat.getElemFloat(20482)+ ", " +
-            dataBufferFloat.getElemFloat(20483));
+       System.out.println("DataBuffer values = " + dataBufferDouble.getElemDouble(20480) + ", " 
+            + dataBufferDouble.getElemDouble(20481) + ", " + dataBufferDouble.getElemDouble(20482)+ ", " +
+            dataBufferDouble.getElemDouble(20483));
        
-       System.out.println("DataBuffer values = " + dataBufferFloat.getElemFloat(30720) + ", " 
-            + dataBufferFloat.getElemFloat(30721) + ", " + dataBufferFloat.getElemFloat(30722)+ ", " +
-            dataBufferFloat.getElemFloat(30723));
+       System.out.println("DataBuffer values = " + dataBufferDouble.getElemDouble(30720) + ", " 
+            + dataBufferDouble.getElemDouble(30721) + ", " + dataBufferDouble.getElemDouble(30722)+ ", " +
+            dataBufferDouble.getElemDouble(30723));
        
        
-       System.out.println("DataBuffer values = " + dataBufferFloat.getElemFloat(21504) + ", " 
-            + dataBufferFloat.getElemFloat(21505) + ", " + dataBufferFloat.getElemFloat(21506)+ ", " +
-            dataBufferFloat.getElemFloat(21507));
+       System.out.println("DataBuffer values = " + dataBufferDouble.getElemDouble(21504) + ", " 
+            + dataBufferDouble.getElemDouble(21505) + ", " + dataBufferDouble.getElemDouble(21506)+ ", " +
+            dataBufferDouble.getElemDouble(21507));
        
-       System.out.println("DataBuffer values = " + dataBufferFloat.getElemFloat(31744) + ", " 
-            + dataBufferFloat.getElemFloat(31745) + ", " + dataBufferFloat.getElemFloat(31746)+ ", " +
-            dataBufferFloat.getElemFloat(31747));
+       System.out.println("DataBuffer values = " + dataBufferDouble.getElemDouble(31744) + ", " 
+            + dataBufferDouble.getElemDouble(31745) + ", " + dataBufferDouble.getElemDouble(31746)+ ", " +
+            dataBufferDouble.getElemDouble(31747));
       
        //Create Writable RAaster with new DataBuffer
        writableRaster = Raster.createWritableRaster(sampleModel, 
-            dataBufferFloat, new Point());
+            dataBufferDouble, new Point());
        //writableRaster.setSamples(0,0,_sSize,_tSize,0, alphaArray);
         
         //Create bufferedImage and Load
