@@ -119,7 +119,7 @@ public class DDEGetNToken extends DDEGet {
         int cnt = 0;
 
         while (cnt < _numTokens) {
-            System.out.println("##### " + cnt);
+            //System.out.println("##### " + cnt);
             boolean finished = false;
             Thread thread = Thread.currentThread();
 
