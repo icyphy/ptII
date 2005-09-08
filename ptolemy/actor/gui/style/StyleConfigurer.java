@@ -93,7 +93,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             // Note that fixing this will probably move the accept method
             // into some sort of factory object (instead of cloning
             // existing styles).
-            _parameterStyles = new ParameterEditorStyle[8];
+            _parameterStyles = new ParameterEditorStyle[7];
             _parameterStyles[0] = new LineStyle();
             _parameterStyles[0].setName("Line");
             _parameterStyles[1] = new CheckBoxStyle();
@@ -147,7 +147,8 @@ public class StyleConfigurer extends Query implements QueryListener {
                 int count = 0;
 
                 // Reduce the list of parameters
-                for (int i = 0; i < _parameterStyles.length; i++) {
+                for (int i = 0; i < _parameterStyles.length
+                         && _parameterStyles[i] != null; i++) {
                     if (foundOne
                             && (_parameterStyles[i].getClass() == foundStyle
                                     .getClass())) {
