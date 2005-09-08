@@ -146,7 +146,8 @@ public class StyleConfigurer extends Query implements QueryListener {
                 int count = 0;
 
                 // Reduce the list of parameters
-                for (int i = 0; i < _parameterStyles.length; i++) {
+                for (int i = 0; i < _parameterStyles.length
+                         && _parameterStyles[i] != null; i++) {
                     if (foundOne
                             && (_parameterStyles[i].getClass() == foundStyle
                                     .getClass())) {
