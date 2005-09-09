@@ -50,7 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	AbstractBranchController.java \
 	ConditionalBranch.java \
-	ConditionalBranchActor.java \
+	BranchActor.java \
 	ConditionalBranchController.java \
 	ConditionalReceive.java \
 	ConditionalSend.java \

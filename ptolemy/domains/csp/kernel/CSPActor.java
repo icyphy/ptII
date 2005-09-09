@@ -109,7 +109,7 @@ import ptolemy.kernel.util.Workspace;
  @see ConditionalSend
  */
 public class CSPActor extends TypedAtomicActor implements
-        ConditionalBranchActor {
+        BranchActor {
     /** Construct a CSPActor in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.

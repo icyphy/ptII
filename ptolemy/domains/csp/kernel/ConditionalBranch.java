@@ -43,15 +43,25 @@ import ptolemy.kernel.util.Nameable;
 //// ConditionalBranch
 
 /**
- Base class for classes representing guarded communication statements. A
- guarded communication statement is of the form
+ Base class for classes representing guarded communication that occurs
+ either conditionally (one statement from a group is executed) or as a multiway
+ rendezvous (all statements from a group are executed).
+ Concrete subclasses are expected to implement the Runnable interface,
+ and the "execution" of the communication is in the run() method.
+ A guarded communication statement is of the form
  <P>
  <CENTER>guard; communication => statements </CENTER>
  <P>
  If the guard is true, or absent which implies true, then the branch
- is enabled. Guarded communication statements are used to perform
- both forms of conditional communication constructs: "conditional if" (CIF)
- and "conditional do" (CDO). These constructs are analogous to,
+ is enabled. If a branch is not enabled, then this it does not participate
+ in the group (equivalently, it could not be created or put in the group).
+ A group is formed and executed by calling chooseBranch() in a ConditionalBranchController
+ or MultiwayBranchController.
+ <p>
+ Guarded communication statements of the conditional sort are used to perform
+ two forms of conditional communication constructs from classical
+ CSP: "conditional if" (CIF) and
+ "conditional do" (CDO). These constructs are analogous to,
  but different from, the common <I>if</I> and <I>do</I> statements.
  Each guarded communication statement is one branch of a CIF or CDO.
  <p>
@@ -87,8 +97,7 @@ import ptolemy.kernel.util.Nameable;
  ConditionalReceive.
  <p>
  If more than one branch is enabled, each enabled branch is executed
- in a separate thread. For rendezvous, the receiver is the key
- synchronization point.
+ in a separate thread.
  <p>
  Conditional branches are designed to be used once. Upon instantiation,
  they are given the guard, the port and channel over which to communicate,
@@ -97,7 +106,7 @@ import ptolemy.kernel.util.Nameable;
  rendezvous. The ConditionalBranchController, that controls this branch,
  is assumed to be contained by the container of the port.
  <p>
- @author  Neil Smyth
+ @author  Neil Smyth and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (nsmyth)
@@ -130,7 +139,7 @@ public abstract class ConditionalBranch implements Debuggable {
      *  communication. The receiver is set in the subclass as it
      *  is subject to communication specific tests.
      *  This constructor allows actors which do not implement the
-     *  ConditionalBranchActor interface access to CSP functionality
+     *  BranchActor interface access to CSP functionality
      *  by passing their own ConditionalBranchController.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
@@ -142,7 +151,7 @@ public abstract class ConditionalBranch implements Debuggable {
      *   null to use the one provided by the container of the port.
      *  @exception IllegalActionException If the actor that contains
      *   the port is not of type CSPActor, or if no controller is
-     *   provided, and the actor is not an instance of ConditionalBranchActor.
+     *   provided, and the actor is not an instance of BranchActor.
      */
     public ConditionalBranch(
             boolean guard, IOPort port, int branchID, ConditionalBranchController controller)
@@ -152,12 +161,12 @@ public abstract class ConditionalBranch implements Debuggable {
         _controller = controller;
         if (_controller == null) {
             Nameable portContainer = port.getContainer();
-            if (!(portContainer instanceof ConditionalBranchActor)) {
+            if (!(portContainer instanceof BranchActor)) {
                 throw new IllegalActionException(port,
                         "A conditional branch can only be created"
-                                + "with a port contained by ConditionalBranchActor.");
+                                + "with a port contained by BranchActor.");
             }
-            _controller = ((ConditionalBranchActor) portContainer)
+            _controller = ((BranchActor) portContainer)
                     .getBranchController();
         }
     }

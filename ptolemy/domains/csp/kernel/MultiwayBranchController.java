@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Nameable;
  domain. Any CSP actors (either atomic or composite) that
  multiway rendezvous should contain an instance of this class.
  In addition, they also needs to implement the
- ConditionalBranchActor interface.
+ BranchActor interface.
  <p>
  The multiway branches are created within the parent
  actor that contains this controller.
@@ -71,14 +71,14 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (bilung)
  @see ConditionalBranch
- @see ConditionalBranchActor
+ @see BranchActor
  @see ConditionalReceive
  @see ConditionalSend
  */
 public class MultiwayBranchController extends AbstractBranchController implements Debuggable {
     
     /** Construct a controller in the specified container, which should
-     *  be an actor that implements ConditionalBranchActor.
+     *  be an actor that implements BranchActor.
      *  @param container The parent actor that contains this object.
      */
     public MultiwayBranchController(Actor container) {
@@ -104,7 +104,7 @@ public class MultiwayBranchController extends AbstractBranchController implement
      *  <p>
      *  @param branches The set of branches involved.
      *  @return True if the branches all succeed, false if any
-     *   them was terminated before completing the rendezvous.
+     *   them is terminated before completing the rendezvous.
      *  @exception IllegalActionException If the rendezvous fails
      *   (e.g. because of incompatible types).
      */

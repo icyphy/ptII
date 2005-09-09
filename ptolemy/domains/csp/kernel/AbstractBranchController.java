@@ -47,21 +47,21 @@ import ptolemy.kernel.util.Debuggable;
  domain. Any CSP actors (either atomic or composite) that
  multiway rendezvous should contain an instance of this class.
  In addition, they also needs to implement the
- ConditionalBranchActor interface.
+ BranchActor interface.
 
  @author Edward A. Lee
  @version $Id$
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (bilung)
  @see ConditionalBranch
- @see ConditionalBranchActor
+ @see BranchActor
  @see ConditionalReceive
  @see ConditionalSend
  */
 public abstract class AbstractBranchController implements Debuggable {
     
     /** Construct a controller in the specified container, which should
-     *  be an actor that implements ConditionalBranchActor.
+     *  be an actor that implements BranchActor.
      *  @param container The parent actor that contains this object.
      */
     public AbstractBranchController(Actor container) {

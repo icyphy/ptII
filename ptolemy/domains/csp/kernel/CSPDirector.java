@@ -28,7 +28,6 @@
  */
 package ptolemy.domains.csp.kernel;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,7 +42,6 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -215,20 +213,6 @@ public class CSPDirector extends CompositeProcessDirector implements
         }
     }
     
-    /** Override the base class to first create receiver groups,
-     *  then delegate to the base class to start threads for all
-     *  actors that have not had threads started
-     *  already (this might include actors initialized since the last
-     *  invocation of prefire). This starts the threads, corresponding
-     *  to all the actors that were created in a mutation.
-     *  @return True.
-     *  @exception IllegalActionException If a derived class throws it.
-     */
-    public boolean prefire() throws IllegalActionException {
-        _createReceiverGroups();
-        return super.prefire();
-    }
-
     /** Return an array of suggested directors to be used with ModalModel.
      *  This is the FSMDirector followed by the NonStrictFSMDirector.
      *  @return An array of suggested directors to be used with ModalModel.
@@ -466,95 +450,6 @@ public class CSPDirector extends CompositeProcessDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
-    /** Create receiver groups for any forked connections, multiway
-     *  rendezvous ports, and conditional rendezvous ports. This is
-     *  a major complication of the CSP domain, and is necessary
-     *  because various methods in the receivers must be synchronized
-     *  so that they can be accessed by multiple threads. When
-     *  performing a multiway rendezvous or conditional rendezvous
-     *  that involves several receivers, then all those methods need
-     *  to be synchronized on the same object, which is called the
-     *  group master. The group master is always the first receiver
-     *  in the group. An alternative design would synchronize all
-     *  these methods on a single object, like the director. But
-     *  this sequentialize all communication, even in the presence
-     *  of multiprocessors.
-     *  @exception IllegalActionException If a port contains a malformed
-     *   parameter named "_groupReceivers".
-     */
-    private void _createReceiverGroups() throws IllegalActionException {
-        CompositeActor container = (CompositeActor)getContainer();
-        
-        // Start with the input ports of the composite, which
-        // may have forked connections on the inside.
-        Iterator inputPorts = container.inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)(inputPorts.next());
-            Receiver[][] destinations = inputPort.deepGetReceivers();
-            for (int channel = 0; channel < destinations.length; channel++) {
-                if (destinations[channel] != null) {
-                    if (destinations[channel].length > 1) {
-                        CSPReceiver._groupReceivers(destinations[channel]);
-                    } else if (destinations[channel].length == 1) {
-                        ((CSPReceiver)destinations[channel][0])._groupCancel();
-                    }
-                }
-            }
-        }
-        
-        // Next do the output ports of all contained actors.
-        Iterator actors = container.deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            Iterator outputPorts = actor.outputPortList().iterator();
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort)(outputPorts.next());
-                Receiver[][] destinations = outputPort.getRemoteReceivers();
-                for (int channel = 0; channel < destinations.length; channel++) {
-                    if (destinations[channel] != null) {
-                        if (destinations[channel].length > 1) {
-                            CSPReceiver._groupReceivers(destinations[channel]);
-                        } else if (destinations[channel].length == 1) {
-                            ((CSPReceiver)destinations[channel][0])._groupCancel();
-                        }
-                    }
-                }
-            }
-        }
-        
-        // In a second pass, merge the groups of all receivers
-        // contained by ports that contain a parameter named
-        // "_groupReceivers".
-        try {
-            actors = container.deepEntityList().iterator();
-            while (actors.hasNext()) {
-                Entity actor = (Entity)actors.next();
-                Iterator ports = actor.portList().iterator();
-                while (ports.hasNext()) {
-                    IOPort port = (IOPort)(ports.next());
-                    Parameter groupReceivers = (Parameter)
-                    port.getAttribute("_groupReceivers", Parameter.class);
-                    if (groupReceivers != null) {
-                        // Need to merge the receiver groups of all receivers associated
-                        // with this port.
-                        LinkedList receivers = new LinkedList();
-                        // Note that if the port is not an input
-                        // port, then the following will be an empty array.
-                        receivers.add(port.getReceivers());
-                        // If the port is not an output port, then the following
-                        // will be an empty array.
-                        receivers.add(port.getRemoteReceivers());
-                        _mergeReceivers(receivers);
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            // If an exception occurs above, it is not reported.
-            // FIXME: Why not?
-            ex.printStackTrace();
-        }
-    }
 
     /** Get the earliest time which an actor has been delayed to. This
      *  should always be the top link on the list.
@@ -568,52 +463,7 @@ public class CSPDirector extends CompositeProcessDirector implements
         }
     }
     
-    /** Merge the receiver groups of all the receivers passed as an
-     *  argument, and set the merged group as the group for all of
-     *  those receivers.
-     *  @param receivers A list of arrays of receivers to merge.
-     */
-    private void _mergeReceivers(List receivers) {
-        // First, accumulate the receivers that go in the merged group.
-        ArrayList result = new ArrayList();
-        Iterator batches = receivers.iterator();
-        while (batches.hasNext()) {
-            Receiver[][] batch = (Receiver[][])batches.next();
-            for (int i = 0; i < batch.length; i++) {
-                if (batch[i] != null) {
-                    for (int j = 0; j < batch[i].length; j++) {
-                        if (batch[i][j] != null) {
-                            // Got a live receiver.
-                            // Find out whether it already has a group.
-                            Receiver[] priorGroup = ((CSPReceiver)batch[i][j])._getGroup();
-                            if (priorGroup == null || priorGroup.length < 2) {
-                                // Just this one receiver to add to the group.
-                                if (!result.contains(batch[i][j])) {
-                                    result.add(batch[i][j]);
-                                } else {
-                                    // Add all receivers in the group.
-                                    for (int k = 0; k < priorGroup.length; k++) {
-                                        if (!result.contains(priorGroup[k])) {
-                                            result.add(priorGroup[k]);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        // Next, set the group of all these receivers.
-        // Regrettably, in Java, you can't cast arrays, so we have
-        // to copy into a new array.
-        Receiver[] group = new Receiver[result.size()];
-        System.arraycopy(result.toArray(), 0, group, 0, result.size());
-        CSPReceiver._groupReceivers(group);
-    }
-    
-    /** Used to keep track of when and for how long processes are delayed.
+    /** Keep track of when and for how long processes are delayed.
      *  @param actor The delayed actor.
      *  @param actorTime The time at which to resume the actor.
      */
@@ -642,8 +492,10 @@ public class CSPDirector extends CompositeProcessDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Count of the number of processes delayed until time
-    // sufficiently advances.
+    
+    /** Count of the number of processes delayed until time
+     *  sufficiently advances.
+     */
     private int _actorsDelayed = 0;
 
     // A sorted list of the times of delayed actors. The time the model

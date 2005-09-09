@@ -103,16 +103,18 @@ import ptolemy.kernel.util.Nameable;
  at a receiver, it is the responsibility of the branch arriving second to
  check that the rendezvous can proceed(see case 2).
  <p>
- @author  Neil Smyth
+ @author  Neil Smyth and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (nsmyth)
- @Pt.AcceptedRating Green (kienhuis)
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Red (eal)
  <p>
  @see ptolemy.domains.csp.kernel.ConditionalBranch
  */
 public class ConditionalReceive extends ConditionalBranch implements Runnable {
 
+    // FIXME: Downgraded from green with major redesign. EAL.
+    
     /** Create a conditional receive.
      *  @param port The IOPort containing the channel (and thus receiver)
      *   that this branch will try to rendezvous with.
@@ -188,7 +190,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         try {
             // Note that the lock has to be in the first receiver
             // in a group, if this receiver is part of a group.
-            Object lock = receiver._getLock();
+            Object lock = receiver._getDirector();
             synchronized (lock) {
                 String identifier = "";
                 if (_debugging) {
@@ -246,7 +248,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             if ((side2 != null) && side2._isBranchReady(receiver._getOtherID())) {
                                 // Convert the conditional receive to a get().
                                 receiver._setConditionalReceive(false, null, -1);
-                                // FIXME: Should the other side be marked unblocked now?
                                 _setToken(receiver.get());
                                 // Reset the conditional send flag on the other side.
                                 receiver._setConditionalSend(false, null, -1);
@@ -255,9 +256,6 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             } else {
                                 // Release the first position here since the
                                 // other side is not first.
-                                // FIXME: This could unblock another thread,
-                                // but which one???  We need to mark it unblocked...
-                                // Is it the branch on the other side?
                                 controller._branchNotReady(getID());
                                 lock.notifyAll();
                             }
@@ -269,8 +267,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     // as having a conditional receive waiting and then wait.
                     receiver._setConditionalReceive(true, controller, getID());
                     
-                    // FIXME: Is this necessary?
-                    receiver._getDirector().notifyAll();
+                    // NOTE: This may not be necessary, but it seems harmless.
+                    // receiver._getDirector().notifyAll();
 
                     // Wait for something to happen.
                     if (_debugging) {
@@ -278,7 +276,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     }
                     controller._branchBlocked(receiver);
                     receiver._checkFlagsAndWait();
-                    controller._branchUnblocked(receiver);
+                    // FIXME: This is probably too soon to mark this unblocked!
+                    // controller._branchUnblocked(receiver);
                 } // while(true)
             } // synchronized(lock)
         } catch (InterruptedException ex) {
@@ -301,7 +300,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      */
     protected boolean _isReady() {
         Receiver[] receivers = getReceivers();
-        synchronized(((CSPReceiver)receivers[0])._getLock()) {
+        synchronized(((CSPReceiver)receivers[0])._getDirector()) {
             for (int i = 0; i < receivers.length; i++) {
                 if (!((CSPReceiver)receivers[i])._isPutWaiting()
                         && !((CSPReceiver)receivers[i])._isConditionalSendWaiting()) {

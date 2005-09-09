@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Nameable;
  domain. Any CSP actors (either atomic or composite) that need the
  functionality of conditional communication must contain and instantiate
  an object of this class. In addition, they also needs to implement the
- interface ConditionalBranchActor.
+ interface BranchActor.
  <p>
  The conditional branches are supposed to be created within the parent
  actor that contains this controller.
@@ -76,7 +76,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (bilung)
  @see ConditionalBranch
- @see ConditionalBranchActor
+ @see BranchActor
  @see ConditionalReceive
  @see ConditionalSend
  */

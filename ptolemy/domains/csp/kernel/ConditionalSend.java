@@ -109,8 +109,8 @@ import ptolemy.kernel.util.Nameable;
  @author  Neil Smyth and Edward A. Lee
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Green (kienhuis)
+ @Pt.ProposedRating Green (eal)
+ @Pt.AcceptedRating Red (eal)
  <p>
  @see ptolemy.domains.csp.kernel.ConditionalBranch
  */

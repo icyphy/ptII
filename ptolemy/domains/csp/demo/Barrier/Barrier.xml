@@ -62,7 +62,7 @@
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={875, 4, 148, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={875, 4, 150, 227}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 90.0]">
         </property>
@@ -76,7 +76,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 265.0]">
         </property>
     </entity>
     <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
@@ -116,7 +116,7 @@
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={873, 231, 149, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={873, 231, 150, 227}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 160.0]">
         </property>
@@ -135,15 +135,15 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <vertex name="vertex1" value="[475.0, 160.0]">
         </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Display.input" relation="relation2"/>
@@ -154,7 +154,7 @@
     <link port="Round.output" relation="relation"/>
     <link port="Barrier.input" relation="relation5"/>
     <link port="Barrier.input" relation="relation2"/>
-    <link port="Barrier.release" relation="relation4"/>
+    <link port="Barrier.output" relation="relation4"/>
     <link port="Ramp2.output" relation="relation5"/>
     <link port="Display2.input" relation="relation5"/>
 </entity>

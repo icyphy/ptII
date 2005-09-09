@@ -61,7 +61,7 @@ JSRCS = \
 
 
 EXTRA_SRCS =	$(JSRCS) \
-	BarrierIcon.xml \
+	BufferIcon.xml \
 	ResourcePoolIcon.xml
 
 # Sources that may or may not be present, but if they are present, we don't

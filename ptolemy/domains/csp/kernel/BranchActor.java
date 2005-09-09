@@ -30,10 +30,10 @@ package ptolemy.domains.csp.kernel;
 import ptolemy.actor.Actor;
 
 //////////////////////////////////////////////////////////////////////////
-//// ConditionalBranchActor
+//// BranchActor
 
 /**
- ConditionalBranchActor is an actor that contain a controller to manage
+ BranchActor is an actor that contain a controller to manage
  the conditional branches for performing conditional communication within
  CSP domain.
 
@@ -45,7 +45,8 @@ import ptolemy.actor.Actor;
  @see ConditionalBranch
  @see ConditionalBranchController
  */
-public interface ConditionalBranchActor extends Actor {
+public interface BranchActor extends Actor {
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

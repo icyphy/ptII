@@ -1,4 +1,4 @@
-<property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+<property name="BufferIcon" class="ptolemy.vergil.icon.EditorIcon">
     <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -8.0]">
         </property>
