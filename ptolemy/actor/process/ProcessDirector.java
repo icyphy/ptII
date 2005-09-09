@@ -275,7 +275,7 @@ public class ProcessDirector extends Director {
         }
 
         // Create threads.
-        ProcessThread processThread = new ProcessThread(actor, this);
+        ProcessThread processThread = _newProcessThread(actor, this);
         _activeThreads.add(processThread);
         _newActorThreadList.addFirst(processThread);
     }
@@ -636,12 +636,30 @@ public class ProcessDirector extends Director {
     protected final synchronized int _getBlockedThreadsCount() {
         return _blockedThreads.size();
     }
-
+    
     /** Return the number of threads that are currently stopped.
      *  @return Return the number of threads that are currently stopped.
      */
     protected final synchronized int _getStoppedThreadsCount() {
         return _pausedThreads.size();
+    }
+
+    /** Create a new ProcessThread for controlling the actor that
+     *  is passed as a parameter of this method. Subclasses are
+     *  encouraged to override this method as necessary for domain
+     *  specific functionality.
+     *  @param actor The actor that the created ProcessThread will
+     *   control.
+     *  @param director The director that manages the model that the
+     *   created thread is associated with.
+     *  @return Return a new ProcessThread that will control the
+     *   actor passed as a parameter for this method.
+     *  @exception IllegalActionException If creating an new ProcessThread
+     *  throws it.
+     */
+    protected ProcessThread _newProcessThread(Actor actor,
+            ProcessDirector director) throws IllegalActionException {
+        return new ProcessThread(actor, director);
     }
 
     /** Call requestFinish() on all receviers.
