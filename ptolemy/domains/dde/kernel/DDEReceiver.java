@@ -297,6 +297,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             timeKeeper.sendOutNullTokens(this);
         }
 
+        // FIXME: This is a silly way to implement while(true).
         return hasToken();
     }
 
