@@ -152,7 +152,7 @@ DSP_JNLP_JARS =	\
 HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	doc/design/hyvisual.jar \
 	doc/codeDocHyVisual.jar \
-	lib/saxon7.jar \
+	lib/saxon8.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/fsm/fsm.jar \
@@ -268,7 +268,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/x10/demo/demo.jar \
 	vendors/misc/x10/tjx10p-12/lib/x10.jar \
 	lib/ptCal.jar \
-	lib/saxon7.jar \
+	lib/saxon8.jar \
 	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/demo/demo.jar \
