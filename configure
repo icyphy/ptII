@@ -1567,10 +1567,10 @@ fi
     if test -f "$CALTROP_DIR/ptCal.jar"; then
 	echo "$ac_t""$CALTROP_DIR" 1>&6
 	# We found cal
-	echo $ac_n "checking for saxon7.jar (used by caltrop)""... $ac_c" 1>&6
-echo "configure:1572: checking for saxon7.jar (used by caltrop)" >&5
-	if test -f "$CALTROP_DIR/saxon7.jar"; then
-	   echo "$ac_t""$CALTROP_DIR/saxon7.jar" 1>&6
+	echo $ac_n "checking for saxon8.jar (used by caltrop)""... $ac_c" 1>&6
+echo "configure:1572: checking for saxon8.jar (used by caltrop)" >&5
+	if test -f "$CALTROP_DIR/saxon8.jar"; then
+	   echo "$ac_t""$CALTROP_DIR/saxon8.jar" 1>&6
 	   echo $ac_n "checking for java_cup.jar (used by caltrop)""... $ac_c" 1>&6
 echo "configure:1576: checking for java_cup.jar (used by caltrop)" >&5
 	   if test -f "$CALTROP_DIR/java_cup.jar"; then
@@ -1587,7 +1587,7 @@ echo "configure:1576: checking for java_cup.jar (used by caltrop)" >&5
 	       CALTROP_DIR='${PTII}/lib/'
 	   fi    
 	else   
-           echo "configure: warning: Failed to find $CALTROP_DIR/saxon7.jar
+           echo "configure: warning: Failed to find $CALTROP_DIR/saxon8.jar
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
@@ -1612,7 +1612,7 @@ else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/ptCal.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/java_cup.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon7.jar\"/> "
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8.jar\"/> "
 fi 
 
 #--------------------------------------------------------------------
