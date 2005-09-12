@@ -190,4 +190,4 @@ test FixPointQuantization-4.1 {getMaximumUnscaledValue} {
     set fixedPoint [java::new ptolemy.math.FixPoint [expr {7.0/8}] $q8]
 
     list [$fixedPoint toString] [$fixedPoint toBitString]
-} {0.875 0.11100000}
+} {0.49609375 0.01111111}
