@@ -431,7 +431,7 @@ JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR
 
 # Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
 # At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif uses Saxon.
-SAXON_JAR =	$(ROOT)/lib/saxon8.jar
+SAXON_JAR =	$(ROOT)/lib/saxon7.jar
 
 # Set to jai and used in 
 # $PTII/ptolemy/actor/lib/makefile if Java Advanced Imaging was found
