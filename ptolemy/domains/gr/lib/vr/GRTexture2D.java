@@ -400,42 +400,49 @@ public class GRTexture2D extends GRGeometry {
         ComponentSampleModel componentSampleModel = 
             new ComponentSampleModel(0, _sSize, _tSize, pixelStride, scanlineStride, new int[]{0,0,0,0});
         
-        //Create ColorModel and SampleModel
-        ComponentColorModel componentColorModel = new ComponentColorModel 
+        System.out.println("# dataElements = " + componentSampleModel.getNumDataElements());
+        System.out.println("# Bands = " + componentSampleModel.getNumBands());
+        System.out.println("componentSampleModel width = " + componentSampleModel.getWidth());
+        System.out.println("componentSampleModel height = " + componentSampleModel.getHeight());
+        System.out.println("componentSampleModel dataType = " + componentSampleModel.getDataType());
+        System.out.println("componentSampleModel transferType = " + componentSampleModel.getTransferType());
+        System.out.println("componentSampleModel size = " + componentSampleModel.getSampleSize(0)+
+                componentSampleModel.getSampleSize(1)+ componentSampleModel.getSampleSize(2)+
+                componentSampleModel.getSampleSize(3));
+        System.out.println("componentSampleModel  = " + componentSampleModel);
+        System.out.println("componentSampleModel pixelStride = " 
+                + ((ComponentSampleModel) componentSampleModel).getPixelStride());
+        System.out.println("componentSampleModel scanlineStride = " 
+                + ((ComponentSampleModel) componentSampleModel).getScanlineStride());
+        
+        int bankIndices1[] = ((ComponentSampleModel) componentSampleModel).getBankIndices();
+        System.out.println("componentSampleModel # bank Indices = " 
+                + bankIndices1[0] + ", " + bankIndices1[1] + ", " + bankIndices1[2]+ ", " + bankIndices1[3]);
+        
+        
+        int offset1[] = ((ComponentSampleModel) componentSampleModel).getBandOffsets();
+        System.out.println("componentSampleModel band offsets = " 
+                + offset1[0] +", " + offset1[1]+ ", " + offset1[2]+", " + offset1[3]);    
+        //Create ColorModel and componentSampleModel
+       ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel 
         (ColorSpace.getInstance(ColorSpace.CS_sRGB) ,
-                   new int[] {32,32,32,32} , // bits
+                   new int[] {8,8,8,8} , // bits
                    true, // alpha
                    false , // alpha pre-multiplied
                    Transparency.TRANSLUCENT ,
-                  // DataBuffer.TYPE_BYTE 
-                   DataBuffer.TYPE_FLOAT);
-               
-       /* SampleModel sampleModel = componentColorModel.createCompatibleSampleModel(_sSize, _tSize); 
-        System.out.println("# dataElements = " + sampleModel.getNumDataElements());
-        System.out.println("# Bands = " + sampleModel.getNumBands());
-        System.out.println("SampleModel width = " + sampleModel.getWidth());
-        System.out.println("SampleModel height = " + sampleModel.getHeight());
-        System.out.println("SampleModel dataType = " + sampleModel.getDataType());
-        System.out.println("SampleModel transferType = " + sampleModel.getTransferType());
-        System.out.println("SampleModel size = " + sampleModel.getSampleSize(0)+
-                sampleModel.getSampleSize(1)+ sampleModel.getSampleSize(2)+
-                sampleModel.getSampleSize(3));
-        System.out.println("SampleModel  = " + sampleModel);
-        System.out.println("SampleModel pixelStride = " 
-                + ((ComponentSampleModel) sampleModel).getPixelStride());
-        System.out.println("SampleModel scanlineStride = " 
-                + ((ComponentSampleModel) sampleModel).getScanlineStride());
-        
-        int bankIndices[] = ((ComponentSampleModel) sampleModel).getBankIndices();
-        System.out.println("SampleModel # bank Indices = " 
-                + bankIndices[0] + ", " + bankIndices[1] + ", " + bankIndices[2]+ ", " + bankIndices[3]);
-        
-        
-        int offset[] = ((ComponentSampleModel) sampleModel).getBandOffsets();
-        System.out.println("SampleModel band offsets = " 
-                + offset[0] +", " + offset[1]+ ", " + offset[2]+", " + offset[3]);*/
+                   DataBuffer.TYPE_BYTE 
+                   );
+        ComponentColorModel componentColorModel = new ComponentColorModel 
+        (ColorSpace.getInstance(ColorSpace.CS_sRGB) ,
+                   //new int[] {64,64,64,64} , // bits
+                   true, // alpha
+                   false , // alpha pre-multiplied
+                   Transparency.TRANSLUCENT ,
+                   //DataBuffer.TYPE_BYTE 
+                  // DataBuffer.TYPE_FLOAT
+                   DataBuffer.TYPE_DOUBLE
+                   ); 
        
-     
         //Create Writable Raster
         Raster raster = _bufferedImage.getData();
         DataBuffer dataBuffer = raster.getDataBuffer();
@@ -444,8 +451,9 @@ public class GRTexture2D extends GRGeometry {
         System.out.println("DataBufferSize = " + dataBuffer.getSize());
         Hashtable hashtable = new Hashtable();
         
-        //_bufferedImage = new BufferedImage( componentColorModel, writableRaster,
-           //     false, hashtable); 
+        
+        BufferedImage bufferedImagewoAlpha = new BufferedImage( componentColorModelwoAlpha,
+                writableRaster, false, hashtable); 
       
     
         //      Get alpha raster and manipulate values
@@ -528,15 +536,24 @@ public class GRTexture2D extends GRGeometry {
             dataBufferDouble.getElemDouble(31747));
       
        //Create Writable RAaster with new DataBuffer
-       writableRaster = Raster.createWritableRaster(sampleModel, 
+       /*writableRaster = Raster.createWritableRaster(componentSampleModelwAlpha, 
+            dataBufferDouble, new Point());*/
+       
+       ComponentSampleModel componentSampleModelwAlpha = 
+        new ComponentSampleModel(5, _sSize, _tSize, pixelStride+1, scanlineStride+ 256,
+                                 new int[]{0,0,0,0}, new int[]{0,1,2,3});
+       int offset2[] = ((ComponentSampleModel) componentSampleModelwAlpha).getBandOffsets();
+                       System.out.println("componentSampleModelwAlpha band offsets = " 
+                       		+ offset2[0] +", " + offset2[1]+ ", " + offset2[2]+", " + offset2[3]); 
+       writableRaster = Raster.createWritableRaster(componentSampleModelwAlpha, 
             dataBufferDouble, new Point());
        //writableRaster.setSamples(0,0,_sSize,_tSize,0, alphaArray);
         
         //Create bufferedImage and Load
-        _bufferedImage = new BufferedImage(componentColorModel, writableRaster,
+        _bufferedImage = new BufferedImage(componentColorModel, writableRaster,     
                 false, hashtable);
         
-        TextureLoader loader = new TextureLoader(_bufferedImage,_viewScreen.getCanvas());
+        TextureLoader loader = new TextureLoader(bufferedImagewoAlpha,_viewScreen.getCanvas());
         System.out.println("AlphaRaster = " + _bufferedImage.getAlphaRaster());
         System.out.println("Alpha Raster values = " + _bufferedImage.getAlphaRaster().getSample(2,2,0));
         System.out.println("AlphaArray[4] = "+ alphaArray[4]);
