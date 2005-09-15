@@ -33,7 +33,6 @@ import java.util.List;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
-import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -233,16 +232,16 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             _debug(identifier + ": Trying conditional send.");
         }
         List threads = null;
-        try {
-            // Note that there are two distinct sources of complexity here.
-            // First, this conditional send may have multiple destinations.
-            // This means that it will need to perform a multi-way rendezvous
-            // with each of those destinations. Second, it is part of conditional
-            // send, which means that another conditional branch (send or receive)
-            // may win out, in which case this send will "fail".
-            // For the multi-way rendezvous, we always synchronize
-            // on the first receiver in the group.
-            synchronized(director) {
+        // Note that there are two distinct sources of complexity here.
+        // First, this conditional send may have multiple destinations.
+        // This means that it will need to perform a multi-way rendezvous
+        // with each of those destinations. Second, it is part of conditional
+        // send, which means that another conditional branch (send or receive)
+        // may win out, in which case this send will "fail".
+        // For the multi-way rendezvous, we always synchronize
+        // on the first receiver in the group.
+        synchronized(director) {
+            try {
                 // Check that none of the receivers already has a put or conditional send waiting
                 for (int copy = 0; copy < receivers.length; copy++) {
                     if (((CSPReceiver)receivers[copy])._isConditionalSendWaiting()
@@ -285,10 +284,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 _debug("ConditionalSend: send() on channel " + _channel + ": Putting token.");
                             }
                             // Convert the conditional send to a put.
-                            // This has to be done outside the synchronized block because
-                            // Thread.join() will block on the thread. If we are holding
-                            // a lock on the receiver when this happens, then we will
-                            // deadlock.  Hence, we simply fall out of the loop.
+                            // Do this by falling out of the loop.
                             break; // exit while(true).
                         }
                     } else if (_isGetOrConditionalReceiveWaitingOnAll(receivers)) {
@@ -339,11 +335,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                     _debug("ConditionalSend: send() on channel " + _channel + ": Putting token.");
                                 }
                                 // Convert the conditional send to a put.
-                                // This has to be done outside the synchronized block because
-                                // Thread.join() will block on the thread. If we are holding
-                                // a lock on the receiver when this happens, then we will
-                                // deadlock.  Hence, we simply fall out of the loop.
-                                break;
+                                // Do this by falling out of the loop.
+                                break; // exit while(true).
                             } else {
                                 // At least one conditional receive is not first.
                                 // Release those that have grabbed the "first" flag,
@@ -382,6 +375,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     controller._branchUnblocked(null);
                 } // while(true)
                 
+                // When we get here, it is time to convert the conditional
+                // send to a put.
+                
                 // Have to reset the conditional send flag _before_ the put().
                 for (int copy = 0; copy < receivers.length; copy++) {
                     ((CSPReceiver)receivers[copy])._setConditionalSend(false, null, -1);
@@ -392,111 +388,31 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     ((CSPReceiver)receivers[copy])._setConditionalReceive(false, null, -1);
                 }
                 
-                // Regrettably, the code below is an exact copy of CSPReceiver.putToAll,
-                // with the exception that the Thread.join() is performed outside the
-                // synchronized block, in order to prevent deadlock.
-                // Is there any better way to do this?
-                // FIXME: Now that all synchronization in on the director,
-                // we can probably change this and just use CSPReceiver.putToAll().
-                
-                // Spawn a thread for each rendezvous.
-                // If an exception occurs in one of the threads,
-                // then this thread will find out about it and
-                // report it.
-                _exception = null;
-                
-                threads = null;
-                if (receivers.length > 1) {
-                    // Create a thread for each destination after the first
-                    // one (the first one is handled in the calling thread).
-                    // Note that these threads are not counted in the active
-                    // count because the actor will be marked blocked if
-                    // any one or more of the threads is blocked.
-                    
-                    // List to keep track of created threads.
-                    threads = new LinkedList();
-                    for (int j = 1; j < receivers.length; j++) {
-                        final CSPReceiver receiver = (CSPReceiver)receivers[j];
-                        String name = "Send to " + receiver.getContainer().getFullName();
-                        Thread putThread = new Thread(name) {
-                            public void run() {
-                                // System.out.println("**** starting thread on: " + CSPDirector._receiverStatus(receiver));
-                                try {
-                                    IOPort port = receiver.getContainer();
-                                    receiver.put(port.convert(getToken()));
-                                } catch (IllegalActionException e) {
-                                    _exception = e;
-                                } catch (TerminateProcessException e) {
-                                    // Ignore this one, as this is the normal
-                                    // to stop this thread.
-                                } finally {
-                                    receiver._getDirector().removeThread(this);
-                                }
-                            }
-                        };
-                        threads.add(putThread);
-                        receiver._getDirector().addThread(putThread);
-                        putThread.start();
-                    }
+                receivers[0].putToAll(getToken(), receivers);
+
+                if (_debugging) {
+                    _debug("ConditionalSend: put is complete.");
                 }
-                IOPort port = receivers[0].getContainer();
-                // System.out.println("**** performing put() on: " + CSPDirector._receiverStatus(this));
-                
-                receivers[0].put(port.convert(getToken()));
-                
-            } // synchronized
             
-            // This has to be done outside the synchronized block
-            // because Thread.join() grabs a lock on the thread, and if it is
-            // holding a lock on the masterReceiver, then nobody else can get
-            // that lock... Deadlock.
-            if (threads != null && receivers.length > 1) {
-                // Wait for each of the threads to die.
-                // Seems like the multi-way rendezvous
-                // would take care of this, i.e., the put() above should not
-                // return until all are complete.  However, each of the put
-                // calls blocks on the completion of the rendezvous, and they
-                // have to return in some order. This ensures that this thread
-                // finishes last.
-                Iterator threadsIterator = threads.iterator();
-                while (threadsIterator.hasNext()) {
-                    Thread thread = (Thread) threadsIterator.next();
-                    try {
-                        thread.join();
-                    } catch (InterruptedException ex) {
-                        // Ignore and continue to the next thread.
-                    }
+                // This should be called at most once, after all puts in
+                // a forked set have suceeded.
+                controller._branchSucceeded(getID());
+            } catch (Exception ex) {
+                controller._branchFailed(getID());
+                // If we exited with an exception, we may not have set the
+                // state of the receiver properly.
+                for (int copy = 0; copy < receivers.length; copy++) {
+                    ((CSPReceiver)receivers[copy])._setConditionalSend(false, null, -1);
                 }
+            } finally {
+                // Make sure that the current token doesn't get used
+                // in the next rendezvous.
+                _setToken(null);
+                
+                // Notify the director that this thread has exited.
+                director.removeThread(Thread.currentThread());
             }
-            // System.out.println("**** put() returned on: " + CSPDirector._receiverStatus(this));
-            if (_exception != null) {
-                throw _exception;
-            }
-
-
-            if (_debugging) {
-                _debug("ConditionalSend: put is complete.");
-            }
-            
-            // This should be called at most once, after all puts in
-            // a forked set have suceeded.
-            controller._branchSucceeded(getID());
-
-        } catch (Exception ex) {
-            controller._branchFailed(getID());
-            // If we exited with an exception, we may not have set the
-            // state of the receiver properly.
-            for (int copy = 0; copy < receivers.length; copy++) {
-                ((CSPReceiver)receivers[copy])._setConditionalSend(false, null, -1);
-            }
-        } finally {
-            // Make sure that the current token doesn't get used
-            // in the next rendezvous.
-            _setToken(null);
-            
-            // Notify the director that this thread has exited.
-            director.removeThread(Thread.currentThread());
-        }
+        } // synchronized
     }
     
     ///////////////////////////////////////////////////////////////////

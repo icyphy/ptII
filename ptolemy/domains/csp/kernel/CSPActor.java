@@ -199,7 +199,8 @@ public class CSPActor extends TypedAtomicActor implements
      */
     public void delay(double delta) throws IllegalActionException {
         try {
-            synchronized (_internalLock) {
+            CSPDirector director = (CSPDirector) getDirector();
+            synchronized (director) {
                 if (delta == 0.0) {
                     return;
                 } else if (delta < 0.0) {
@@ -207,10 +208,10 @@ public class CSPActor extends TypedAtomicActor implements
                             "delay() called with a negative argument: " + delta);
                 } else {
                     _delayed = true;
-                    ((CSPDirector) getDirector())._actorDelayed(delta, this);
+                    director._actorDelayed(delta, this);
 
                     while (_delayed) {
-                        _internalLock.wait();
+                        director.wait();
                     }
 
                     if (_cancelDelay) {
@@ -250,6 +251,9 @@ public class CSPActor extends TypedAtomicActor implements
      *  @return True if another iteration can occur.
      */
     public boolean postfire() {
+        if (_debugging) {
+            _debug("Invoking postfire.");
+        }
         return false;
     }
 
@@ -257,7 +261,7 @@ public class CSPActor extends TypedAtomicActor implements
      *  this method does not allow the threads to terminate gracefully.
      */
     public void terminate() {
-        synchronized (_internalLock) {
+        synchronized (getDirector()) {
             _conditionalBranchController.terminate();
         }
     }
@@ -271,11 +275,12 @@ public class CSPActor extends TypedAtomicActor implements
      *  a TerminateProcessException.
      */
     protected void _cancelDelay() {
-        synchronized (_internalLock) {
+        Object director = getDirector();
+        synchronized (director) {
             if (_delayed) {
                 _cancelDelay = true;
                 _delayed = false;
-                _internalLock.notifyAll();
+                director.notifyAll();
             }
         }
     }
@@ -288,13 +293,10 @@ public class CSPActor extends TypedAtomicActor implements
             throw new InvalidStateException("CSPActor._continue() "
                     + "called on an actor that was not delayed: " + getName());
         }
-
-        // NOTE: perhaps this notifyAll() should be called in another
-        // thread?  However, the internal lock is private, so it seems
-        // that if this class is correctly written, that is not necessary.
-        synchronized (_internalLock) {
+        Object director = getDirector();
+        synchronized (director) {
             _delayed = false;
-            _internalLock.notifyAll();
+            director.notifyAll();
         }
     }
 
@@ -305,12 +307,13 @@ public class CSPActor extends TypedAtomicActor implements
      */
     protected void _waitForDeadlock() {
         try {
-            synchronized (_internalLock) {
+            CSPDirector director = (CSPDirector)getDirector();
+            synchronized (director) {
                 _delayed = true;
-                ((CSPDirector) getDirector())._actorDelayed(0.0, this);
+                director._actorDelayed(0.0, this);
 
                 while (_delayed) {
-                    _internalLock.wait();
+                    director.wait();
                 }
             }
         } catch (InterruptedException ex) {
@@ -321,17 +324,13 @@ public class CSPActor extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Flag that causes the delay() method to abort with an exception.
+
+    /** Flag that causes the delay() method to abort with an exception. */
     private boolean _cancelDelay = false;
 
-    // This object is in charge of all conditional rendezvous issues.
+    /** This object is in charge of all conditional rendezvous issues. */
     private ConditionalBranchController _conditionalBranchController = null;
 
-    // Flag indicating this actor is delayed. It needs to be accessible
-    // by the director.
+    /** Flag indicating this actor is delayed. */
     private boolean _delayed = false;
-
-    // This lock is only used internally by the actor. It is used to
-    // control a delayed actor.
-    private Object _internalLock = new Object();
 }

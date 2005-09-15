@@ -43,6 +43,7 @@ import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPReceiver
@@ -99,8 +100,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  does not return until the rendezvous has been completed.
      *  This method is internally synchronized on the director.
      *  @return The token contained by this receiver.
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs has been terminated while still
+     *   running i.e it was not allowed to run to completion.
      */
-    public Token get() {
+    public Token get() throws TerminateProcessException {
         CSPDirector director = _getDirector();
         synchronized(director) {
             Token result = null;
@@ -355,8 +359,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  not return until the rendezvous is complete.
      *  This method is internally synchronized on the director.
      *  @param token The token.
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs has been terminated while still
+     *   running i.e it was not allowed to run to completion.
      */
-    public void put(Token token) {
+    public void put(Token token) throws TerminateProcessException {
         CSPDirector director = _getDirector();
         synchronized(director) {
             try {
@@ -460,10 +467,13 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type), or if the tokens array
      *   does not have at least the specified number of tokens.
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs has been terminated while still
+     *   running i.e it was not allowed to run to completion.
      */
     public void putArrayToAll(
             Token[] tokens, int numberOfTokens, Receiver[] receivers)
-            throws NoRoomException, IllegalActionException {
+            throws NoRoomException, IllegalActionException, TerminateProcessException {
         if (numberOfTokens > tokens.length) {
             IOPort container = getContainer();
             throw new IllegalActionException(container,
@@ -487,9 +497,12 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @exception NoRoomException If there is no room for the token.
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs has been terminated while still
+     *   running i.e it was not allowed to run to completion.
      */
     public void putToAll(final Token token, final Receiver[] receivers)
-            throws NoRoomException, IllegalActionException {
+            throws NoRoomException, IllegalActionException, TerminateProcessException {
         if (receivers == null || receivers.length == 0) {
             return;
         }
@@ -499,71 +512,98 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         // then this thread will find out about it and
         // report it.
         _exception = null;
+        _terminateException = null;
         
         List threads = null;
-        if (receivers.length > 1) {
-            // Create a thread for each destination after the first
-            // one (the first one is handled in the calling thread).
-            // Note that these threads are not counted in the active
-            // count because the actor will be marked blocked if
-            // any one or more of the threads is blocked.
-            
-            // List to keep track of created threads.
-            threads = new LinkedList();
-            for (int j = 1; j < receivers.length; j++) {
-                final CSPReceiver receiver = (CSPReceiver)receivers[j];
-                String name = "Send to " + receiver.getContainer().getFullName();
-                Thread putThread = new Thread(name) {
-                    public void run() {
-                        // System.out.println("**** starting thread on: " + CSPDirector._receiverStatus(receiver));
-                        try {
-                            IOPort port = receiver.getContainer();
-                            receiver.put(port.convert(token));
-                        } catch (IllegalActionException e) {
-                            _exception = e;
-                        } catch (TerminateProcessException e) {
-                            // Ignore this one, as this is the normal
-                            // to stop this thread.
-                        } finally {
-                            _getDirector().removeThread(this);
-                        }
-                        // System.out.println("**** exiting thread on: " + CSPDirector._receiverStatus(receiver));
-                    }
-                };
-                threads.add(putThread);
-                _getDirector().addThread(putThread);
-                putThread.start();
-            }
-        }
-        IOPort port = getContainer();
-        // System.out.println("**** performing put() on: " + CSPDirector._receiverStatus(this));
-        
-        receivers[0].put(port.convert(token));
-        
-        if (receivers.length > 1) {
-            // Wait for each of the threads to die.
-            // Seems like the multi-way rendezvous
-            // would take care of this, i.e., the put() above should not
-            // return until all are complete.  However, each of the put
-            // calls blocks on the completion of the rendezvous, and they
-            // have to return in some order. This ensures that this thread
-            // finishes last.  First notify the director that this
-            // actor is blocked.
-            _getDirector().threadBlocked(Thread.currentThread(), this);
-            Iterator threadsIterator = threads.iterator();
-            while (threadsIterator.hasNext()) {
-                Thread thread = (Thread) threadsIterator.next();
-                try {
-                    thread.join();
-                } catch (InterruptedException ex) {
-                    // Ignore and continue to the next thread.
+        final CSPDirector director = _getDirector();
+        synchronized(director) {
+            if (receivers.length == 1) {
+                receivers[0].put(getContainer().convert(token));
+            } else {
+                // Create a thread for each destination.
+                // List to keep track of created threads.
+                threads = new LinkedList();
+                final Thread putToAllThread = Thread.currentThread();
+                // NOTE: Use _threadCount to determine when the last
+                // thread exits.  This assumes that we do not have
+                // more than one invocation of this method active at
+                // a time.  Check to be sure.
+                if (_threadCount != 0) {
+                    throw new InternalErrorException(
+                            "putToAll() method is simultaneously active in more than one thread!" +
+                            " This is not permitted.");
                 }
+                _threadCount = receivers.length;
+                for (int j = 0; j < receivers.length; j++) {
+                    final CSPReceiver receiver = (CSPReceiver)receivers[j];
+                    String name = "Send to " + receiver.getContainer().getFullName();
+                    Thread putThread = new Thread(name) {
+                        public void run() {
+                            // System.out.println("**** starting thread on: " + CSPDirector._receiverStatus(receiver));
+                            try {
+                                IOPort port = receiver.getContainer();
+                                receiver.put(port.convert(token));
+                            } catch (IllegalActionException e) {
+                                _exception = e;
+                            } catch (TerminateProcessException e) {
+                                // To stop the actor thread, we have
+                                // to throw this exception.
+                                _terminateException = e;
+                            } finally {
+                                // Have to synchronize on the director to avoid
+                                // race condition between decrement of _threadCount
+                                // and testing it.
+                                synchronized(director) {
+                                    director.removeThread(this);
+                                    _threadCount--;
+                                    if (_threadCount == 0) {
+                                        // The last thread to complete has to mark the
+                                        // thread calling putToAll() unblocked. It has to
+                                        // done in this last thread to complete or a
+                                        // spurious deadlock will be detected between the
+                                        // time this thread completes and the time that
+                                        // that the putToAllThread gets around to marking
+                                        // itself unblocked.
+                                        director.threadUnblocked(putToAllThread, CSPReceiver.this);
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    threads.add(putThread);
+                    director.addThread(putThread);
+                    putThread.start();
+                }
+                // Wait for each of the threads to die.
+                // First notify the director that this actor is blocked.
+                // The last thread to complete will unblock it.
+                director.threadBlocked(Thread.currentThread(), this);
+                Iterator threadsIterator = threads.iterator();
+                while (threadsIterator.hasNext()) {
+                    Thread thread = (Thread) threadsIterator.next();
+                    try {
+                        // NOTE: Cannot use Thread.join() here because we
+                        // have to be in a synchronized block to prevent
+                        // a race condition (see below), and if we call
+                        // thread.join(), then we will block while holding
+                        // a lock on the director, which will lead to deadlock.
+                        while(director.isThreadActive(thread)) {
+                            director.wait();
+                        }
+                    } catch (InterruptedException ex) {
+                        // Ignore and continue to the next thread.
+                    }
+                }
+                // This should be zero, but just in case.
+                _threadCount = 0;
             }
-            _getDirector().threadUnblocked(Thread.currentThread(), this);
-        }
-        // System.out.println("**** put() returned on: " + CSPDirector._receiverStatus(this));
-        if (_exception != null) {
-            throw _exception;
+            // System.out.println("**** put() returned on: " + CSPDirector._receiverStatus(this));
+            if (_exception != null) {
+                throw _exception;
+            }
+            if (_terminateException != null) {
+                throw _terminateException;
+            }
         }
     }
 
@@ -828,6 +868,12 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Flag indicating whether state of rendezvous. */
     private boolean _rendezvousComplete = false;
+    
+    /** Exception that might be set in putToAll(). */
+    private TerminateProcessException _terminateException = null;
+
+    /** Thread count used in putToAll(). */
+    private int _threadCount = 0;
 
     /** The token being transferred during the rendezvous. */
     private Token _token;

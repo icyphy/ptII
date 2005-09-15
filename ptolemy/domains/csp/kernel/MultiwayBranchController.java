@@ -109,8 +109,9 @@ public class MultiwayBranchController extends AbstractBranchController implement
      *   (e.g. because of incompatible types).
      */
     public boolean executeBranches(ConditionalBranch[] branches) throws IllegalActionException {
-        try {
-            synchronized (_getDirector()) {
+        CSPDirector director = _getDirector();
+        synchronized (director) {
+            try {
                 _failed = false;
 
                 if (_debugging) {
@@ -190,52 +191,56 @@ public class MultiwayBranchController extends AbstractBranchController implement
 
                     while (threads.hasNext()) {
                         Thread thread = (Thread) threads.next();
-                        _getDirector().addThread(thread);
+                        director.addThread(thread);
                         _branchesActive++;
                         thread.start();
                     }
                 }
-            } // synchronized
-                
-            // Wait for each of the threads to die.
-            // It is essential that this occur outside
-            // the synchronized block or we get deadlock.
-            if (_debugging) {
-                _debug("** Waiting for branches to succeed.");
-            }
-            _getDirector().threadBlocked(Thread.currentThread(), null);
+                // Wait for each of the threads to die.
+                if (_debugging) {
+                    _debug("** Waiting for branches to succeed.");
+                }
+                director.threadBlocked(Thread.currentThread(), null);
 
-            Iterator threadsIterator = _threadList.iterator();
-            while (threadsIterator.hasNext()) {
-                Thread thread = (Thread) threadsIterator.next();
-                try {
-                    thread.join();
-                    if (_debugging) {
-                        _debug("** Thread completed: " + thread);
+                Iterator threadsIterator = _threadList.iterator();
+                while (threadsIterator.hasNext()) {
+                    Thread thread = (Thread) threadsIterator.next();
+                    try {
+                        // NOTE: Cannot use Thread.join() here because we
+                        // have to be in a synchronized block to prevent
+                        // a race condition (see below), and if we call
+                        // thread.join(), then we will block while holding
+                        // a lock on the director, which will lead to deadlock.
+                        while(director.isThreadActive(thread)) {
+                            director.wait();
+                        }
+                        if (_debugging) {
+                            _debug("** Thread completed: " + thread);
+                        }
+                    } catch (InterruptedException ex) {
+                        // Ignore and continue to the next thread.
                     }
-                } catch (InterruptedException ex) {
-                    // Ignore and continue to the next thread.
                 }
-            }
-            _getDirector().threadUnblocked(Thread.currentThread(), null);
+                director.threadUnblocked(Thread.currentThread(), null);
 
-            // If we get to here, all the branches have succeeded
-            // or been terminated.
-            if (_failed) {
-                if (_debugging) {
-                    _debug("** At least one thread was terminated.");
+                // If we get to here, all the branches have succeeded
+                // or been terminated.
+                if (_failed) {
+                    if (_debugging) {
+                        _debug("** At least one thread was terminated.");
+                    }
+                    return false;
+                } else {
+                    if (_debugging) {
+                        _debug("** All threads completed their rendezvous.");
+                    }
+                    return true;
                 }
-                return false;
-            } else {
-                if (_debugging) {
-                    _debug("** All threads completed their rendezvous.");
-                }
-                return true;
+            } finally {
+                _branches = null;
+                _threadList = null;
             }
-        } finally {
-            _branches = null;
-            _threadList = null;
-        }
+        } // synchronized                
     }
 
     ///////////////////////////////////////////////////////////////////

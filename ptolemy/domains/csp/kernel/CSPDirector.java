@@ -260,7 +260,7 @@ public class CSPDirector extends CompositeProcessDirector implements
      *  <P>
      *  The method waitForDeadlock() in CSPActor calls this method
      *  with a zero argument. Thus the process will continue the
-     *  next occasion time deadlock occurs. *  <p>
+     *  next occasion time deadlock occurs.
      *  @param delta The length of time to delay the actor.
      *  @param actor The actor being delayed.
      *  @exception InvalidStateException If an actor is delayed for

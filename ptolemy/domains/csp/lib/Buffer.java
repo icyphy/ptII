@@ -113,7 +113,7 @@ public class Buffer extends CSPActor {
      *  output, then take the first token from the buffer and send
      *  it to the output.
      *  @exception IllegalActionException If an error occurs during
-     *   executing the process.
+     *   executing the process, or if the capacity is zero.
      *  @exception TerminateProcessException If the process termination
      *   is requested by the director.
      */
@@ -124,21 +124,31 @@ public class Buffer extends CSPActor {
             _debug("Buffer size: " + bufferSize);
         }
         int capacityValue = ((IntToken)capacity.getToken()).intValue();
+        if (capacityValue == 0) {
+            throw new IllegalActionException(this,
+                    "Capacity is required to be greater than zero.");
+        }
         
         // Deal with simple cases first.
         // If the buffer is full and there is a token, send it to the output.
-        if (capacityValue >= 0 // Capacity value is finite.
-                && bufferSize >= capacityValue // Buffer is full.
+        if (bufferSize >= capacityValue // Buffer is full.
                 && bufferSize >= 1) {  // There is a token.
             Token token = (Token)_buffer.remove(0);
+            if (_debugging) {
+                _debug("Sending token: " + token);
+            }
             output.send(0, token);
-        } else if (bufferSize == 0 // Buffer is empty.
-                && capacityValue != 0) { // There is room.
-            _buffer.add(input.get(0));
-        } else if (bufferSize == 0 // Buffer is empty.
-                && capacityValue == 0) { // No room.
-            // Need to perform a synchronous transation.
-            // FIXME
+            _branchEnabled = true;
+        } else if (bufferSize == 0) { // Buffer is empty.
+            if (_debugging) {
+                _debug("Waiting for input.");
+            }
+            Token token = input.get(0);
+            if (_debugging) {
+                _debug("Received token: " + token);
+            }
+            _buffer.add(token);
+            _branchEnabled = true;
         } else {
             // Rendezvous with either the input or output
             // and act accordingly.
@@ -149,6 +159,9 @@ public class Buffer extends CSPActor {
             if (_debugging && _VERBOSE_DEBUGGING) {
                 branches[0].addDebugListener(this);
                 branches[1].addDebugListener(this);
+            }
+            if (_debugging) {
+                _debug("Waiting for input, or to send output token: " + token);
             }
             int successfulBranch = chooseBranch(branches);
             if (_debugging && _VERBOSE_DEBUGGING) {
@@ -161,10 +174,10 @@ public class Buffer extends CSPActor {
                 // Rendezvous occurred with the input.
                 _branchEnabled = true;
                 Token received = branches[0].getToken();
-                _buffer.add(received);
                 if (_debugging) {
-                    _debug("Token received: " + received);
+                    _debug("Received token: " + received);
                 }
+                _buffer.add(received);
             } else {
                 // Rendezvous occurred with the output.
                 _branchEnabled = true;
@@ -176,12 +189,24 @@ public class Buffer extends CSPActor {
         }
     }
     
+    /** Clear the buffer.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but might be in a derived class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _buffer.clear();
+    }
+    
     /** Return true unless none of the branches were enabled in
      *  the most recent invocation of fire().
      *  @return True if another iteration can occur.
      */
     public boolean postfire() {
         super.postfire();
+        if (_debugging) {
+            _debug("Postfire returns: " + _branchEnabled);
+        }
         return _branchEnabled;
     }
     

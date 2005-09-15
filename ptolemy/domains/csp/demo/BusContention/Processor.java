@@ -115,7 +115,7 @@ public class Processor extends CSPActor {
     public TypedIOPort requestInput;
 
     /** The resource request output port. Resource requests are made
-     *  through this port with a token that include's the requestor's
+     *  through this port with a token that includebs the requestor's
      *  priority level. The type of this port is BaseType.INT.
      */
     public TypedIOPort requestOutput;
@@ -199,23 +199,8 @@ public class Processor extends CSPActor {
         accessMemory(read);
     }
 
-    /** Return true when the time of the director has exceeded
-     *  50; return false otherwise.
-     * @return True when the global time has exceeded 50; return
-     *  false otherwise.
-     */
-    public boolean endYet() {
-        double time = _dir.getModelTime().getDoubleValue();
-
-        if (time > 50.0) {
-            return true;
-        }
-
-        return false;
-    }
-
     /** Execute this actor by requesting and accepting access
-     *  to a shared resource until endYet() returns true.
+     *  to a shared resource until b() returns true.
      * @exception IllegalActionException If an error occurs
      *  during communication through one of the ports.
      */
@@ -225,10 +210,6 @@ public class Processor extends CSPActor {
                 accessMemory(true);
             } else {
                 accessMemory(false);
-            }
-
-            if (endYet()) {
-                return;
             }
         }
     }
