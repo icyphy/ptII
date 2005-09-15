@@ -297,6 +297,16 @@ public class ProcessDirector extends Director {
     public boolean isStopRequested() {
         return _stopRequested;
     }
+    
+    /** Return true if the specified thread has been registered
+     *  with addThread() and has not been removed with removeThread().
+     *  @return True if the specified thread is active.
+     *  @see #addThread(Thread)
+     *  @see #removeThread(Thread)
+     */
+    public synchronized boolean isThreadActive(Thread thread) {
+        return _activeThreads.contains(thread);
+    }
 
     /** Return a new receiver of a type compatible with this director.
      *  In class, this returns a new Mailbox.
@@ -643,7 +653,7 @@ public class ProcessDirector extends Director {
     protected final synchronized int _getStoppedThreadsCount() {
         return _pausedThreads.size();
     }
-
+    
     /** Create a new ProcessThread for controlling the actor that
      *  is passed as a parameter of this method. Subclasses are
      *  encouraged to override this method as necessary for domain
@@ -688,6 +698,9 @@ public class ProcessDirector extends Director {
                 }
             }
         }
+        
+        // FIXME: Should this also set a flag on inside receivers
+        // of the ports of the composite actor?
     }
 
     /** Return false indicating that deadlock has not been resolved
