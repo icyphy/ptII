@@ -442,7 +442,8 @@ public class BusContentionApplet extends PtolemyApplet {
 
             // Color the graph
             try {
-                SwingUtilities.invokeAndWait(new Runnable() {
+                // Used to use invokeAndWait() here, but this leads to deadlock!
+                SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         if (state == ExecEvent.WAITING) {
                             figure.setFillPaint(Color.yellow);
