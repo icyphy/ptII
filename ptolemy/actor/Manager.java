@@ -621,39 +621,49 @@ public class Manager extends NamedObj implements Runnable {
         notifyListenersOfThrowable(exception);
     }
 
-    /** Notify all the execution listeners of a Throwable
+    /** Notify all the execution listeners of a Throwable.
      *  If there are no listeners, then print the throwable information
      *  to the standard error stream. This is intended to be used by threads
      *  that are involved in an execution as a mechanism for reporting
      *  errors.  As an example, in a threaded domain, each thread
      *  should catch all exceptions and report them using this method.
+     *  This method defers the actual reporting to a new thread
+     *  because it requires obtaining a lock on this manager, and that
+     *  could cause deadlock.
      *  @param throwable The throwable
      */
-    public synchronized void notifyListenersOfThrowable(Throwable throwable) {
-        // We use Throwables instead of Exceptions so that we can catch
-        // Errors like java.lang.UnsatisfiedLink.
-        String errorMessage = shortDescription(throwable) + " occurred: "
-                + throwable.getClass() + "(" + throwable.getMessage() + ")";
-        _debug("-- Manager notifying listeners of exception: " + throwable);
-
-        if (_executionListeners == null) {
-            System.err.println(errorMessage);
-            throwable.printStackTrace();
-        } else {
-            ListIterator listeners = _executionListeners.listIterator();
-
-            while (listeners.hasNext()) {
-                WeakReference reference = (WeakReference) listeners.next();
-                ExecutionListener listener = (ExecutionListener) reference
-                        .get();
-
-                if (listener != null) {
-                    listener.executionError(this, throwable);
-                } else {
-                    listeners.remove();
+    public void notifyListenersOfThrowable(final Throwable throwable) {
+        Thread thread = new Thread("Error reporting thread") {
+            public void run() {
+                synchronized(Manager.this) {
+                    // We use Throwables instead of Exceptions so that we can catch
+                    // Errors like java.lang.UnsatisfiedLink.
+                    String errorMessage = shortDescription(throwable) + " occurred: "
+                    + throwable.getClass() + "(" + throwable.getMessage() + ")";
+                    _debug("-- Manager notifying listeners of exception: " + throwable);
+                    
+                    if (_executionListeners == null) {
+                        System.err.println(errorMessage);
+                        throwable.printStackTrace();
+                    } else {
+                        ListIterator listeners = _executionListeners.listIterator();
+                        
+                        while (listeners.hasNext()) {
+                            WeakReference reference = (WeakReference) listeners.next();
+                            ExecutionListener listener = (ExecutionListener) reference
+                            .get();
+                            
+                            if (listener != null) {
+                                listener.executionError(Manager.this, throwable);
+                            } else {
+                                listeners.remove();
+                            }
+                        }
+                    }
                 }
             }
-        }
+        };
+        thread.start();
     }
 
     /** Set a flag requesting that execution pause at the next opportunity
@@ -997,7 +1007,7 @@ public class Manager extends NamedObj implements Runnable {
         // where finish() might be called before the spawned thread
         // actually starts up.
         _finishRequested = false;
-        _thread = new PtolemyThread(this) {
+        _thread = new PtolemyThread(this, _container.getName()) {
             public void run() {
                 // The run() method will set _thread to null
                 // upon completion of the run.
