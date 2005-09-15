@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradleAnimated" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
@@ -13,7 +13,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 45.0}">
         </property>
     </property>
     <property name="acceleration" class="ptolemy.data.expr.Parameter" value="9.8">
@@ -111,7 +111,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 841, 606}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[626, 488]">
     </property>
@@ -200,7 +200,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 445.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 445.0}">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -835,7 +835,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 195.5}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-3.4244686567002E-9">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -854,7 +854,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 225.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-2.7391269293225E-9">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -873,7 +873,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.431850838468">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.43185085045">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1136,6 +1136,8 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         <link port="state.theta_3" relation="theta_3Relation"/>
     </entity>
     <entity name="positions" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x_1, x_2, x_3">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 462, 502, 278}, maximized=false}">
@@ -1151,12 +1153,14 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
 <title>positions</title>
 <xLabel>time</xLabel>
 <yLabel>displacements</yLabel>
-<xRange min="0.0" max="3.2"/>
-<yRange min="-3.0614674589207183" max="7.0594714844309525"/>
+<xRange min="0.0" max="30.0"/>
+<yRange min="-3.0614674589207183" max="7.061461701373169"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta_1_dot, theta_2_dot, theta_3_dot">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 461, 515, 280}, maximized=false}">
@@ -1178,13 +1182,13 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
 <title>velocities</title>
 <xLabel>time</xLabel>
 <yLabel>velocities</yLabel>
-<xRange min="0.0" max="3.2"/>
-<yRange min="-0.1532660952935663" max="0.43185083846796907"/>
+<xRange min="0.0" max="30.0"/>
+<yRange min="-0.43185086529707406" max="0.43185086231124886"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Graphic Animation" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 410.0]">
         </property>
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -1475,7 +1479,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
             <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
             </property>
-            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="400">
+            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="600">
             </property>
             <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
