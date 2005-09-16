@@ -61,6 +61,7 @@ JSRCS = \
 
 
 EXTRA_SRCS =	$(JSRCS) \
+	BarrierIcon.xml \
 	BufferIcon.xml \
 	ResourcePoolIcon.xml
 

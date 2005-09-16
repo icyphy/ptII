@@ -159,6 +159,7 @@ public abstract class ConditionalBranch implements Debuggable {
         _branchID = branchID;
         _guard = guard;
         _controller = controller;
+        _port = port;
         if (_controller == null) {
             Nameable portContainer = port.getContainer();
             if (!(portContainer instanceof BranchActor)) {
@@ -214,6 +215,13 @@ public abstract class ConditionalBranch implements Debuggable {
      */
     public AbstractBranchController getController() {
         return _controller;
+    }
+    
+    /** Return the port associated with this conditional branch.
+     *  @return The port specified in the constructor.
+     */
+    public IOPort getPort() {
+        return _port;
     }
 
     /** Return an array with all the receivers that
@@ -352,6 +360,9 @@ public abstract class ConditionalBranch implements Debuggable {
 
     /** The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
+    
+    /** The port specified in the constructor. */
+    private IOPort _port;
 
     /** The receivers that this thread is trying to rendezvous with. */
     private Receiver[] _receivers;

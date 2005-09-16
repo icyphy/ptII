@@ -184,14 +184,15 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  takes place in the CSP domain.
      */
     public void run() {
+        _completed = false;
         CSPReceiver receiver = (CSPReceiver)getReceivers()[0];
         AbstractBranchController controller = getController();
 
-        try {
-            // Note that the lock has to be in the first receiver
-            // in a group, if this receiver is part of a group.
-            Object lock = receiver._getDirector();
-            synchronized (lock) {
+        // Note that the lock has to be in the first receiver
+        // in a group, if this receiver is part of a group.
+        Object lock = receiver._getDirector();
+        synchronized (lock) {
+            try {
                 String identifier = "";
                 if (_debugging) {
                     identifier = "ConditionalReceive: get() on " + _port.getFullName() + " on channel " + _channel;
@@ -231,6 +232,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             // Have to reset this flag _before_ the get().
                             receiver._setConditionalReceive(false, null, -1);
                             _setToken(receiver.get());
+                            _completed = true;
                             controller._branchSucceeded(getID());
                             
                             // Rendezvous complete.
@@ -251,6 +253,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                 _setToken(receiver.get());
                                 // Reset the conditional send flag on the other side.
                                 receiver._setConditionalSend(false, null, -1);
+                                _completed = true;
                                 controller._branchSucceeded(getID());
                                 return;
                             } else {
@@ -279,26 +282,30 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     // FIXME: This is probably too soon to mark this unblocked!
                     // controller._branchUnblocked(receiver);
                 } // while(true)
-            } // synchronized(lock)
-        } catch (InterruptedException ex) {
-            receiver._setConditionalReceive(false, null, -1);
-            controller._branchFailed(getID());
-        } catch (TerminateProcessException ex) {
-            receiver._setConditionalReceive(false, null, -1);
-            controller._branchFailed(getID());
-        } finally {
-            receiver._getDirector().removeThread(Thread.currentThread());
-        }
+            } catch (InterruptedException ex) {
+                receiver._setConditionalReceive(false, null, -1);
+                controller._branchFailed(getID());
+            } catch (TerminateProcessException ex) {
+                receiver._setConditionalReceive(false, null, -1);
+                controller._branchFailed(getID());
+            } finally {
+                receiver._getDirector().removeThread(Thread.currentThread());
+            }
+        } // synchronized(lock)
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
-    /** Return true if this conditional branch is ready to rendezvous.
+    /** Return true if this conditional branch is ready to rendezvous
+     *  or has already completed its rendezvous.
      *  @return True if the associated receivers have either a pending
      *   conditional send or a put waiting.
      */
     protected boolean _isReady() {
+        if (_completed) {
+            return true;
+        }
         Receiver[] receivers = getReceivers();
         synchronized(((CSPReceiver)receivers[0])._getDirector()) {
             for (int i = 0; i < receivers.length; i++) {
@@ -364,6 +371,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
 
     /** The channel on which we are sending. */
     private int _channel;
+    
+    /** Flag indicating that this rendezvous has completed successfully. */
+    private boolean _completed = false;
     
     /** The port from which we are sending. */
     private IOPort _port;

@@ -429,7 +429,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     }
                     _checkFlags();
 
-                    // If _putWaiting is still true, then there
+                    // If _putWaiting is still non-null, then there
                     // was no conditional receiver, or it wasn't chosen.
                     // Wait for the corresponding get() to occur.
                     while (_putWaiting != null) {

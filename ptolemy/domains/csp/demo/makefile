@@ -31,7 +31,11 @@
 
 ME =		ptolemy/domains/csp/demo
 
-DIRS =		BusContention DiningPhilosophers
+DIRS =		Barrier \
+			BusContention \
+			DiningPhilosophers \
+			ResourcePool \
+			WriteRegulator
 
 # Root of the Java directory
 ROOT =		../../../..

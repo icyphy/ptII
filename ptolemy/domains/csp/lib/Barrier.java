@@ -114,9 +114,11 @@ public class Barrier extends TypedAtomicActor implements
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (_debugging && _VERBOSE_DEBUGGING && !_listeningToBranchController) {
-            _branchController.addDebugListener(this);
-            _listeningToBranchController = true;
+        if (_debugging && _VERBOSE_DEBUGGING) {
+            if (!_listeningToBranchController) {
+                _branchController.addDebugListener(this);
+                _listeningToBranchController = true;
+            }
         } else {
             _branchController.removeDebugListener(this);
             _listeningToBranchController = false;
@@ -139,6 +141,7 @@ public class Barrier extends TypedAtomicActor implements
             if (_debugging) {
                 _debug("At least one input rendezvous was terminated.");
             }
+            _terminate = true;
             return;
         }
         if (_debugging) {
@@ -201,11 +204,33 @@ public class Barrier extends TypedAtomicActor implements
         return _branchController;
     }
     
+    /** Initialize this actor.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _terminate = false;
+    }
+
+    /** Return true unless one of the branches was terminated
+     *  during the execution of the fire() method.
+     *  @return True if another iteration can occur.
+     */
+    public boolean postfire() {
+        if (_debugging) {
+            _debug("Invoking postfire, which returns " + !_terminate);
+        }
+        return !_terminate;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     /** The controller for multiway branches. */
     private MultiwayBranchController _branchController;
+    
+    /** Flag indicating whether a branch was terminated during fire(). */
+    private boolean _terminate = false;
     
     /** Boolean flag indicating that we are already listening to the branch controller. */
     private boolean _listeningToBranchController = false;

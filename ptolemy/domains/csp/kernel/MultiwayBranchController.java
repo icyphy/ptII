@@ -133,7 +133,8 @@ public class MultiwayBranchController extends AbstractBranchController implement
                         // Create a thread for this enabled branch
                         Nameable actor = (Nameable) branches[i].getController()
                                 .getParent();
-                        String name = actor.getName() + " channel " + branches[i].getID();
+                        String name = branches[i].getPort().getFullName()
+                                + " channel " + branches[i].getID();
                         if (_debugging) {
                             _debug("** Creating branch: " + name);
                         }
@@ -200,7 +201,11 @@ public class MultiwayBranchController extends AbstractBranchController implement
                 if (_debugging) {
                     _debug("** Waiting for branches to succeed.");
                 }
-                director.threadBlocked(Thread.currentThread(), null);
+                _controllerThread = Thread.currentThread();
+                if (_debugging) {
+                    _debug("** Marking thread blocked: " + _controllerThread);
+                }
+                director.threadBlocked(_controllerThread, null);
 
                 Iterator threadsIterator = _threadList.iterator();
                 while (threadsIterator.hasNext()) {
@@ -209,19 +214,26 @@ public class MultiwayBranchController extends AbstractBranchController implement
                         // NOTE: Cannot use Thread.join() here because we
                         // have to be in a synchronized block to prevent
                         // a race condition (see below), and if we call
-                        // thread.join(), then we will block while holding
+                        // thread.join(), then we will block while holdingb
                         // a lock on the director, which will lead to deadlock.
                         while(director.isThreadActive(thread)) {
+                            if (_debugging) {
+                                _debug("** Waiting for thread to exit: " + thread.getName());
+                            }
                             director.wait();
                         }
                         if (_debugging) {
-                            _debug("** Thread completed: " + thread);
+                            _debug("** Thread completed: " + thread.getName());
                         }
                     } catch (InterruptedException ex) {
                         // Ignore and continue to the next thread.
                     }
                 }
-                director.threadUnblocked(Thread.currentThread(), null);
+                if (_debugging) {
+                    _debug("** Marking thread unblocked: " + _controllerThread);
+                }
+                director.threadUnblocked(_controllerThread, null);
+                _controllerThread = null;
 
                 // If we get to here, all the branches have succeeded
                 // or been terminated.
@@ -266,6 +278,41 @@ public class MultiwayBranchController extends AbstractBranchController implement
     protected void _branchNotReady(int branchNumber) {
     }
 
+    /** Register the calling branch as a successful branch. This
+     *  reduces the count of active branches, and notifies the internal
+     *  lock so that any threads blocked on it can continue.
+     *  @param branchID The ID assigned to the calling branch upon creation.
+     */
+    protected void _branchSucceeded(int branchID) {
+        CSPDirector director = _getDirector();
+        synchronized (director) {
+            if (_debugging) {
+                _debug("** Branch succeeded: " + branchID);
+            }
+            // If one branch succeeds in a multiway rendezvous, then
+            // we should mark all unblocked, or we
+            // could get spurious deadlock detection as they
+            // exit one by one (as the count of active threads
+            // decreases).
+            Iterator threads = _threadList.iterator();
+            while (threads.hasNext()) {
+                Thread thread = (Thread) threads.next();
+                if (_debugging) {
+                    _debug("** Marking thread unblocked: " + thread.getName());
+                }
+                director.threadUnblocked(thread, null);
+            }
+            // We also need to mark the actor unblocked.
+            if (_controllerThread != null) {
+                if (_debugging) {
+                    _debug("** Marking thread unblocked: " + _controllerThread);
+                }
+                director.threadUnblocked(_controllerThread, null);
+            }
+            super._branchSucceeded(branchID);
+        }
+    }
+
     /** Return true if all branches under the control of this controller
      *  are ready.
      *  @param branchNumber The ID assigned to the calling branch
@@ -274,14 +321,22 @@ public class MultiwayBranchController extends AbstractBranchController implement
      *   to rendezvous, otherwise false.
      */
     protected boolean _isBranchReady(int branchNumber) {
-        synchronized (_getDirector()) {
+        CSPDirector director = _getDirector();
+        synchronized (director) {
             for (int i = 0; i < _branches.length; i++) {
+                // FIXME: Branch may have already succeeded!
+                // But in this case, it returns not ready!
                 if (!_branches[i]._isReady()) {
                     if (_debugging) {
                         _debug("** Branch is not ready: " + i);
                     }
                     return false;
+                } else if (_debugging) {
+                    _debug("** Branch is ready: " + i);
                 }
+            }
+            if (_debugging) {
+                _debug("** All branches are ready.");
             }
             return true;
         }
@@ -297,7 +352,6 @@ public class MultiwayBranchController extends AbstractBranchController implement
     private void _resetConditionalState() {
         synchronized (_getDirector()) {
             _branchesActive = 0;
-            _branchesBlocked = 0;
             _threadList = null;
         }
     }
@@ -305,8 +359,8 @@ public class MultiwayBranchController extends AbstractBranchController implement
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    /** The number of conditional branches that are blocked. */
-    private int _branchesBlocked = 0;
+    /** The controller thread, when it is blocked. */
+    private Thread _controllerThread = null;
     
     /** Indicator of whether branches were terminated. */
     private boolean _failed = false;
