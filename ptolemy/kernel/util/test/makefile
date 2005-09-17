@@ -125,7 +125,8 @@ OPTIONAL_FILES = \
 # in this directory
 JCLASS_DEPENDENCIES = \
 	$(ROOT)/ptolemy/data/expr/UtilityFunctions.class \
-	$(ROOT)/ptolemy/data/expr/FixPointFunctions.class
+	$(ROOT)/ptolemy/data/expr/FixPointFunctions.class \
+	'$(ROOT)/ptolemy/actor/util/DFUtilities$$NamedObjComparator.class'
 
 JCLASS=	$(JSRCS:%.java=%.class)
 
@@ -148,6 +149,9 @@ $(ROOT)/ptolemy/data/expr/UtilityFunctions.class:
 	(cd $(ROOT)/ptolemy/data/expr; $(MAKE) UtilityFunctions.class)
 $(ROOT)/ptolemy/data/expr/FixPointFunctions.class:
 	(cd $(ROOT)/ptolemy/data/expr; $(MAKE) FixPointFunctions.class)
+'$(ROOT)/ptolemy/actor/util/DFUtilities$$NamedObjComparator.class':
+	(cd $(ROOT)/ptolemy/actor/util; rm -rf DFUtilities.class; \
+		$(MAKE) DFUtilities.class)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
