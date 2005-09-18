@@ -89,7 +89,7 @@ public class ImageCrop extends TypedAtomicActor {
 
         stack = new Parameter(this, "stack");
         stack.setExpression("true");
-        stack.setTypeEquals(BaseType.BOOLEAN_MATRIX);
+        stack.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,219 +111,48 @@ public class ImageCrop extends TypedAtomicActor {
      *  "Return the most recently recorded event.", not
      *  "Returns the most recently recorded event."
      *  @param parameterName Description of the parameter.
-     *  @return Description of the returned value.
      *  @exception ExceptionClass If ... (describe what
      *   causes the exception to be thrown).
      */
+
     public void fire() throws IllegalActionException {
+        
+        //Get input values from respective tokens
+        ObjectToken imageToken = (ObjectToken) imageInput.get(0);
+        _imagePlus = (ImagePlus) imageToken.getValue();
+        ObjectToken roiToken = (ObjectToken) roi.get(0);
+        Roi roi = (Roi) roiToken.getValue();
+        
         //Do cropping
-        ObjectToken objectToken = (ObjectToken) roi.get(0);
-        Roi roi = (Roi) objectToken.getValue();
         ImageProcessor imageProcessor = _imagePlus.getProcessor();
-        imageProcessor.setRoi(roi);
+        imageProcessor.setRoi(_roi);
         ImageProcessor croppedProcessor = imageProcessor.crop();
-        _imagePlus = new ImagePlus("Cropped Image", croppedProcessor);
-    }
-
-    public void initialize() throws IllegalActionException {
-        _stack = ((BooleanToken) stack.getToken()).booleanValue();
-
+        _croppedImage = new ImagePlus("Cropped Image", croppedProcessor);
+        output.broadcast(new ObjectToken(_croppedImage));
     }
 
     public boolean prefire() throws IllegalActionException {
-        //Do the listening in this section, and when approrpiate tokens
-        //are receieved return true.
-        if (imageInput.hasToken(0)) {
-            ObjectToken objectToken = (ObjectToken) imageInput.get(0);
-            _imagePlus = (ImagePlus) objectToken.getValue();
 
-            //Check to see if stack of image and show user proper frame
-            if (_stack) {
-                _stackWindow = new StackWindow(_imagePlus);
-            } else {
-                _imageWindow = new ImageWindow(_imagePlus);
-            }
-        }
-        if (_stack) {
-            _stackWindow.addMouseListener(new mousePressHandler());
-            _stackWindow.addMouseListener(new mouseReleaseHandler());
-            _stackWindow.addMouseMotionListener(new mouseMotionHandler());
-        } else {
-            _imageWindow.addMouseListener(new mousePressHandler());
-            _imageWindow.addMouseListener(new mouseReleaseHandler());
-            _imageWindow.addMouseMotionListener(new mouseMotionHandler());
-        }
-        //Create roi
-        int height = _finalY - _startY;
-        int width = _finalX = _startX;
-        _roi = new Roi(_startX, _startY, width, height);
-
-        //Send ROI to input to be used in firing
-        output.broadcast(new ObjectToken(_roi));
-
-        //Always returns true
-        return true;
-
-    }
-
-    public boolean postfire() throws IllegalActionException {
-        //   check for to see if user is finished if not return true
-        //if so return false, and broadcast new ImagePlus
-
-        //Show user cropped image and listen for keyboard to return true of false
-        //FIXME Is this safe?  Will image wait for keyboard input
-        if (_stack) {
-
-            _stackWindow = new StackWindow(_imagePlus);
-            _stackWindow.addKeyListener(new keyPressHandler());
-
-        } else {
-            _imageWindow = new ImageWindow(_imagePlus);
-            _imageWindow.addKeyListener(new keyPressHandler());
-        }
-
-        //Send the new _imagePlus to output
-        if (_cropFinish) {
-            output.broadcast(new ObjectToken(_imagePlus));
-        }
-        return !_cropFinish;
-
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Describe your method, again using imperative case.
-     *  @see RelevantClass#methodName()
-     *  @param parameterName Description of the parameter.
-     *  @return Description of the returned value.
-     *  @exception ExceptionClass If ... (describe what
-     *   causes the exception to be thrown).
-     */
-    protected int _protectedMethodName() throws IllegalActionException {
-        return 1;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Description of the variable. */
-    protected int _aProtectedVariable;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Private methods need not have Javadoc comments, although it can
-    // be more convenient if they do, since they may at some point
-    // become protected methods.
-    //MouseEvent buttonPressed;
-    class mousePressHandler extends MouseAdapter {
-        public void mousePressed(MouseEvent startRoi) {
-            int button;
-            //double startX, startY;
-            _tracking = true;
-            button = startRoi.getButton();
-            _startX = startRoi.getX();
-            _startY = startRoi.getY();
-            System.out.println("press startX=" + _startX + "   startY="
-                    + _startY + "   button=" + button);
-            if (button == 1) {
-                if (_stack) {
-                    _stackWindow.requestFocus();
-                    _stackWindow.repaint();
-                } else {
-                    _imageWindow.requestFocus();
-                    _imageWindow.repaint();
-                }
-            }
+    	//Check for proper inputs and if available return true
+        if (imageInput.hasToken(0) && roi.hasToken(0)) {
+            return true;
+        }else{
+        	return false;   
         }
     }
-
-    class mouseMotionHandler extends MouseMotionAdapter {
-        public void mouseDragged(MouseEvent drawRoi) {
-            int button;
-            int x, y;
-            //double currentX, currentY, x, y;
-
-            button = drawRoi.getButton();
-            x = drawRoi.getX();
-            y = drawRoi.getY();
-            if (_tracking) {
-                _currentX = x;
-                _currentY = y;
-            }
-            System.out.println("press currentX= " + x + "   currentY=" + y
-                    + "   button=" + button);
-
-            if (_stack) {
-                _stackWindow.requestFocus();
-                _stackWindow.repaint();
-            } else {
-                _imageWindow.requestFocus();
-                _imageWindow.repaint();
-            }
-
-        }
-    }
-
-    class mouseReleaseHandler extends MouseAdapter {
-        public void mouseReleased(MouseEvent finishRoi) {
-            int button;
-            //double finalX, finalY;
-            _tracking = false;
-            button = finishRoi.getButton();
-            _finalX = finishRoi.getX();
-            _finalY = finishRoi.getY();
-            System.out.println("press finalX= " + _finalX + "   finalY="
-                    + _finalY + "   button=" + button);
-            if (button == 1) {
-                if (_stack) {
-                    _stackWindow.requestFocus();
-                    _stackWindow.repaint();
-                } else {
-                    _imageWindow.requestFocus();
-                    _imageWindow.repaint();
-                }
-            }
-        }
-    }
-
-    class keyPressHandler extends KeyAdapter {
-        public void keyPressed(KeyEvent finishKey) {
-            int z = finishKey.getKeyCode();
-            //Press enter key to end session or space bar to continue
-            if (z == 10) {
-                _cropFinish = true;
-            } else if (z == 32) {
-                _cropFinish = false;
-            }
-
-        }
-    }
-
+  
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // Private variables need not have Javadoc comments, although it can
-    // be more convenient if they do, since they may at some point
-    // become protected variables.
-
     private ImagePlus _croppedImage;
 
     private ImagePlus _imagePlus;
 
     private Roi _roi;
 
-    private boolean _stack;
 
-    private StackWindow _stackWindow;
 
-    private ImageWindow _imageWindow;
 
-    private boolean _tracking;
 
-    private int _startX, _startY, _finalX, _finalY, _currentX, _currentY;
 
-    private boolean _cropFinish;
 
 }
