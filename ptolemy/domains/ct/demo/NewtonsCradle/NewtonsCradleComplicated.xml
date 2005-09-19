@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradleComplicated" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
@@ -226,12 +226,12 @@
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is a modified version of the Newton's cradle demo to
 show more complicated dynamic behaviors. The key difference 
 between this model and the normal Newton's cradle demo is 
-the initial states of the balls. In this demo, both ball #1 
+the initial states of balls. In this demo, both ball #1 
 and ball #2 are moved away from their equilibrium positions 
-with different initial angles of PI/8 and PI/16.
+but with different initial angles of PI/8 and PI/16.
 
-Because the period of the pendulum depends on not only the 
-geometric sizes but also the initial angles. Ball #1 and #2
+Because the period of a pendulum depends on not only the 
+geometric sizes but also the initial angle, ball #1 and #2
 reach their equilibrium positions at the different times with 
 different velocities. Therefore, the collisions between ball 
 #1 and #2 and between ball #2 and #3 do not happen at the same 
@@ -643,7 +643,7 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 11, 885, 479}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 144, 885, 479}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[670, 361]">
             </property>

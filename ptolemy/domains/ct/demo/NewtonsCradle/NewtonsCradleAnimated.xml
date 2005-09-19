@@ -111,7 +111,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 841, 606}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[626, 488]">
     </property>
@@ -645,11 +645,11 @@ other initial states are set to 0.0.
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">When any two adjacent balls have contact and the difference of their velocities 
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">When any two adjacent balls have contact and their relative velocities 
 is bigger than 0.0, there exists a collision. The collision is perfectly elastic. 
 Because the two balls have the same mass, they simply exchange their velocities.
 
-With the initial settings of states, the first collision happens when the ball #1
+With the initial settings of states, the first collision happens when ball #1
 reaches its equilibrium point. Although ball #2 and #3 have contact initially, 
 because the collision happens instantaneously, only ball #1 and #2 will be involved 
 in this collision, where they exchange their velocities. After this collision, ball 

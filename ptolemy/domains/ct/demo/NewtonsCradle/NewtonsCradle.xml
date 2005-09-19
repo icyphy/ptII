@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradle" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
@@ -624,11 +624,11 @@ other initial states are set to 0.0.
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">When any two adjacent balls have contact and the difference of their velocities 
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">When any two adjacent balls have contact and their relative velocities 
 is bigger than 0.0, there exists a collision. The collision is perfectly elastic. 
 Because the two balls have the same mass, they simply exchange their velocities.
 
-With the initial settings of states, the first collision happens when the ball #1
+With the initial settings of states, the first collision happens when ball #1
 reaches its equilibrium point. Although ball #2 and #3 have contact initially, 
 because the collision happens instantaneously, only ball #1 and #2 will be involved 
 in this collision, where they exchange their velocities. After this collision, ball 
