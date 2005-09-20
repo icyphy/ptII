@@ -342,7 +342,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
         _terminate = false;
         _boundaryDetector.reset();
     }
-    
+
     /** Set the container. This overrides the base class to record
      *  the director.
      *  @param port The container.
@@ -379,10 +379,10 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** The boundary detector. */
     private BoundaryDetector _boundaryDetector;
-    
+
     /** The director in charge of this receiver. */
     private ProcessDirector _director;
 

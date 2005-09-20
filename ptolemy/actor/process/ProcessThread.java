@@ -207,9 +207,9 @@ public class ProcessThread extends PtolemyThread {
                     thrownWhenWrapup = e;
                 } finally {
                     _debug("-- Thread stopped.");
-                    
+
                     boolean rethrow = false;
-                    
+
                     if (thrownWhenIterate instanceof TerminateProcessException) {
                         // Process was terminated.
                         _debug("-- Blocked Receiver call threw TerminateProcessException.");
@@ -228,7 +228,7 @@ public class ProcessThread extends PtolemyThread {
                     } else if (thrownWhenIterate != null) {
                         rethrow = true;
                     }
-                    
+
                     if (thrownWhenWrapup instanceof IllegalActionException) {
                         _debug("-- Exception: " + thrownWhenWrapup);
                         _manager.notifyListenersOfException((IllegalActionException) thrownWhenWrapup);

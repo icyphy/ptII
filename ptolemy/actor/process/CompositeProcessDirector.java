@@ -421,7 +421,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @param thread The thread.
      *  @param receiver The receiver handling the I/O operation,
      *   or null if it is not a specific receiver.
-     *  @see #threadBlocked(Thread, ProcessReceiver)     *   
+     *  @see #threadBlocked(Thread, ProcessReceiver)     *
      */
     public synchronized void threadUnblocked(
             Thread thread, ProcessReceiver receiver) {
@@ -627,10 +627,10 @@ public class CompositeProcessDirector extends ProcessDirector {
                             throw new IllegalActionException(this, "Interrupted.");
                         }
                     }
-                    
+
                     stopInputBranchController();
                     stopOutputBranchController();
-                    
+
                     if (execDir == null) {
                         // This is the top level director - problem!!!
                         throw new IllegalActionException(
@@ -649,7 +649,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                 } else if (_outputBranchController.isBlocked()) {
                     stopInputBranchController();
                     stopOutputBranchController();
-                    
+
                     if (execDir == null) {
                         // This is the top level director - problem!!!
                         throw new IllegalActionException(
@@ -694,7 +694,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                             throw new IllegalActionException(this, "Interrupted.");
                         }
                     }
-                    
+
                     stopInputBranchController();
                     stopOutputBranchController();
                     return _resolveInternalDeadlock();

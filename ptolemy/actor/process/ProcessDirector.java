@@ -170,7 +170,7 @@ public class ProcessDirector extends Director {
         }
 
         Workspace workspace = workspace();
-        
+
         // In case we have an eclosing process director,
         // we identify it so that we can notify it when we are blocked.
         CompositeActor container = (CompositeActor)getContainer();
@@ -297,7 +297,7 @@ public class ProcessDirector extends Director {
     public boolean isStopRequested() {
         return _stopRequested;
     }
-    
+
     /** Return true if the specified thread has been registered
      *  with addThread() and has not been removed with removeThread().
      *  @return True if the specified thread is active.
@@ -427,7 +427,7 @@ public class ProcessDirector extends Director {
             if (thread instanceof ProcessThread) {
                 // NOTE: We used to catch and ignore all exceptions
                 // here, but that doesn't look right to me. EAL 8/05.
-                ((ProcessThread)thread).getActor().stop();                    
+                ((ProcessThread)thread).getActor().stop();
             }
             // NOTE: Used to call thread.interrupt() here, with a comment
             // about how it probably wasn't necessary.  But
@@ -485,7 +485,7 @@ public class ProcessDirector extends Director {
             ((Thread) threads.next()).stop();
         }
     }
-    
+
     /** Notify the director that the specified thread is blocked
      *  on an I/O operation.  If the thread has
      *  not been registered with addThread(), then this call is
@@ -539,7 +539,7 @@ public class ProcessDirector extends Director {
      *  @param thread The thread.
      *  @param receiver The receiver handling the I/O operation,
      *   or null if it is not a specific receiver.
-     *  @see #threadBlocked(Thread, ProcessReceiver)     *   
+     *  @see #threadBlocked(Thread, ProcessReceiver)     *
      */
     public synchronized void threadUnblocked(
             Thread thread, ProcessReceiver receiver) {
@@ -646,14 +646,14 @@ public class ProcessDirector extends Director {
     protected final synchronized int _getBlockedThreadsCount() {
         return _blockedThreads.size();
     }
-    
+
     /** Return the number of threads that are currently stopped.
      *  @return Return the number of threads that are currently stopped.
      */
     protected final synchronized int _getStoppedThreadsCount() {
         return _pausedThreads.size();
     }
-    
+
     /** Create a new ProcessThread for controlling the actor that
      *  is passed as a parameter of this method. Subclasses are
      *  encouraged to override this method as necessary for domain
@@ -698,7 +698,7 @@ public class ProcessDirector extends Director {
                 }
             }
         }
-        
+
         // FIXME: Should this also set a flag on inside receivers
         // of the ports of the composite actor?
     }
