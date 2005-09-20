@@ -57,14 +57,15 @@ import ptolemy.kernel.util.Workspace;
  of the actor. Before termination, this calls the wrapup() method of
  the actor.
  <P>
- If an actor returns false in its postfire() methods, the
- actor is never fired again and the thread or process terminates
- after calling wrapup() on the actor.
+ If an actor returns false in its postfire() methods, the actor is
+ never fired again and the thread or process terminates after calling
+ wrapup() on the actor.
  <P>
- An instance of this class is associated with an instance of ProcessDirector
- as well as an instance of Actor. The _increaseActiveCount() of the director
- is called from the constructor of this class, and the _decreaseActiveCount()
- method is called at the end of the run() method, just before the thread terminates.
+ An instance of this class is associated with an instance of
+ ProcessDirector as well as an instance of Actor. The
+ _increaseActiveCount() of the director is called from the constructor
+ of this class, and the _decreaseActiveCount() method is called at the
+ end of the run() method, just before the thread terminates.
 
  @author Mudit Goel, Neil Smyth, John S. Davis II
  @version $Id$
@@ -151,16 +152,19 @@ public class ProcessThread extends PtolemyThread {
                             // to a stopFire, then stop execution
                             // altogether and skip to wrapup().
                             if (_director.isStopRequested()) {
-                                _debug("-- Thread stop requested, so cancel iteration.");
+                                _debug("-- Thread stop requested, "
+                                        + "so cancel iteration.");
                                 break;
                             }
 
-                            _debug("-- Thread waiting for canceled pause request.");
+                            _debug("-- Thread waiting for "
+                                    + "canceled pause request.");
 
                             try {
                                 workspace.wait(_director);
                             } catch (InterruptedException ex) {
-                                _debug("-- Thread interrupted, so cancel iteration.");
+                                _debug("-- Thread interrupted, "
+                                        + "so cancel iteration.");
                                 break;
                             }
                         }
@@ -210,28 +214,37 @@ public class ProcessThread extends PtolemyThread {
 
                     boolean rethrow = false;
 
-                    if (thrownWhenIterate instanceof TerminateProcessException) {
+                    if (thrownWhenIterate
+                            instanceof TerminateProcessException) {
                         // Process was terminated.
-                        _debug("-- Blocked Receiver call threw TerminateProcessException.");
-                    } else if (thrownWhenIterate instanceof InterruptedException) {
+                        _debug("-- Blocked Receiver call "
+                                + "threw TerminateProcessException.");
+                    } else if (thrownWhenIterate
+                            instanceof InterruptedException) {
                         // Process was terminated by call to stop();
-                        _debug("-- Thread was interrupted: " + thrownWhenIterate);
-                    } else if (thrownWhenIterate instanceof InterruptedIOException
-                            || ((thrownWhenIterate != null) && thrownWhenIterate
-                                    .getCause() instanceof InterruptedIOException)) {
+                        _debug("-- Thread was interrupted: "
+                                + thrownWhenIterate);
+                    } else if (thrownWhenIterate
+                            instanceof InterruptedIOException
+                            || ((thrownWhenIterate != null)
+                                    && thrownWhenIterate.getCause()
+                                    instanceof InterruptedIOException)) {
                         // PSDF has problems here when run with JavaScope
                         _debug("-- IO was interrupted: " + thrownWhenIterate);
-                    } else if (thrownWhenIterate instanceof IllegalActionException) {
+                    } else if (thrownWhenIterate
+                            instanceof IllegalActionException) {
                         _debug("-- Exception: " + thrownWhenIterate);
                         _manager
-                        .notifyListenersOfException((IllegalActionException) thrownWhenIterate);
+                        .notifyListenersOfException(
+                                (IllegalActionException) thrownWhenIterate);
                     } else if (thrownWhenIterate != null) {
                         rethrow = true;
                     }
 
                     if (thrownWhenWrapup instanceof IllegalActionException) {
                         _debug("-- Exception: " + thrownWhenWrapup);
-                        _manager.notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
+                        _manager.notifyListenersOfException(
+                                (IllegalActionException) thrownWhenWrapup);
                     } else if (thrownWhenWrapup != null) {
                         // Must be a runtime exception.
                         // Call notifyListenerOfThrowable() here so that

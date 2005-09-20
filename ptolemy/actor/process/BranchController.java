@@ -176,16 +176,18 @@ public class BranchController implements Runnable {
             if ((producerReceivers.length > i)
                     && (consumerReceivers.length > i)) {
                 try {
-                    producerReceiver = (ProcessReceiver) producerReceivers[i][0];
-                    consumerReceiver = (ProcessReceiver) consumerReceivers[i][0];
+                    producerReceiver =
+                        (ProcessReceiver) producerReceivers[i][0];
+                    consumerReceiver =
+                        (ProcessReceiver) consumerReceivers[i][0];
                 } catch (ClassCastException ex) {
                     // See [Bug 5] and pn/test/PNInsideDE.xml
                     throw new IllegalActionException(
                             port,
                             ex,
                             "At the current time, process-oriented domains "
-                                    + "(PN and CSP) cannot be nested inside "
-                                    + "firing-based domains (SDF, DE, CT, etc.).");
+                            + "(PN and CSP) cannot be nested inside "
+                            + "firing-based domains (SDF, DE, CT, etc.).");
                 }
 
                 branch = new Branch(producerReceiver, consumerReceiver, this);

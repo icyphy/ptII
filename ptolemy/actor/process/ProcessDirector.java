@@ -180,7 +180,8 @@ public class ProcessDirector extends Director {
         }
 
         synchronized (this) {
-            while (!_areThreadsDeadlocked() && !_areAllThreadsStopped() && !_stopRequested) {
+            while (!_areThreadsDeadlocked()
+                    && !_areAllThreadsStopped() && !_stopRequested) {
                 // Added to get thread to stop reliably on pushing stop button.
                 // EAL 8/05
                 if (_stopRequested) {
@@ -497,7 +498,8 @@ public class ProcessDirector extends Director {
      */
     public synchronized void threadBlocked(
             Thread thread, ProcessReceiver receiver) {
-        if (_activeThreads.contains(thread) && !_blockedThreads.contains(thread)) {
+        if (_activeThreads.contains(thread)
+                && !_blockedThreads.contains(thread)) {
             _blockedThreads.add(thread);
             notifyAll();
         }
@@ -513,7 +515,8 @@ public class ProcessDirector extends Director {
      *  @see #addThread(Thread)
      */
     public synchronized void threadHasPaused(Thread thread) {
-        if (_activeThreads.contains(thread) && !_pausedThreads.contains(thread)) {
+        if (_activeThreads.contains(thread)
+                && !_pausedThreads.contains(thread)) {
             _pausedThreads.add(thread);
             _blockedThreads.remove(thread);
             notifyAll();
@@ -615,6 +618,15 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return true if the count of active processes equals the number
+     *  of paused and blocked threads.  Otherwise return false.
+     *  @return True if there are no active processes in the container.
+     */
+    protected synchronized boolean _areAllThreadsStopped() {
+        return (_getActiveThreadsCount()
+                == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
+    }
+
     /** Return true if the count of active processes in the container is 0.
      *  Otherwise return false. Derived classes must override this method to
      *  return true to any other forms of deadlocks that they might introduce.
@@ -622,14 +634,6 @@ public class ProcessDirector extends Director {
      */
     protected synchronized boolean _areThreadsDeadlocked() {
         return (_activeThreads.size() == 0);
-    }
-
-    /** Return true if the count of active processes equals the number
-     *  of paused and blocked threads.  Otherwise return false.
-     *  @return True if there are no active processes in the container.
-     */
-    protected synchronized boolean _areAllThreadsStopped() {
-        return (_getActiveThreadsCount() == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
     }
 
     /** Return the number of active threads under the control of this
@@ -672,6 +676,35 @@ public class ProcessDirector extends Director {
         return new ProcessThread(actor, director);
     }
 
+    /** Return false indicating that deadlock has not been resolved
+     *  and that execution will be discontinued. In derived classes,
+     *  override this method to obtain domain specific handling of
+     *  deadlocks. Return false if a real deadlock has occurred and
+     *  the simulation can be ended. Return true if the simulation
+     *  can proceed given additional data and need not be terminated.
+     *  @return False.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected boolean _resolveDeadlock() throws IllegalActionException {
+        return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** A flag for determining whether successive iterations will be
+     *  permitted.
+     */
+    protected boolean _notDone = true;
+
+    /** Indicator that a stopFire has been requested by a call to
+     *  stopFire().
+     */
+    protected boolean _stopFireRequested = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /** Call requestFinish() on all receviers.
      */
     private void _requestFinishOnReceivers() {
@@ -702,32 +735,6 @@ public class ProcessDirector extends Director {
         // FIXME: Should this also set a flag on inside receivers
         // of the ports of the composite actor?
     }
-
-    /** Return false indicating that deadlock has not been resolved
-     *  and that execution will be discontinued. In derived classes,
-     *  override this method to obtain domain specific handling of
-     *  deadlocks. Return false if a real deadlock has occurred and
-     *  the simulation can be ended. Return true if the simulation
-     *  can proceed given additional data and need not be terminated.
-     *  @return False.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    protected boolean _resolveDeadlock() throws IllegalActionException {
-        return false;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** A flag for determining whether successive iterations will be
-     *  permitted.
-     */
-    protected boolean _notDone = true;
-
-    /** Indicator that a stopFire has been requested by a call to
-     *  stopFire().
-     */
-    protected boolean _stopFireRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

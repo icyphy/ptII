@@ -462,32 +462,6 @@ public class CompositeProcessDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return false if the number of blocked processes is less than
-     *  the number of active actors; return true otherwise. Note that
-     *  if the number of active actors is 0 then this method will
-     *  return true. Derived classes may override this method to add
-     *  domain specific functionality. Implementations of this method
-     *  must be synchronized.
-     *
-     *  @return false If the number of blocked processes is less than
-     *   the number of active actors; return true otherwise.
-     */
-    protected synchronized boolean _areThreadsDeadlocked() {
-        if (_debugging) {
-            _debug("Checking for deadlock:");
-            _debug("There are " + _getBlockedThreadsCount()
-                    + " Blocked actors, " + _getStoppedThreadsCount()
-                    + " Stopped actors, and " + _getActiveThreadsCount()
-                    + " active threads.");
-        }
-
-        if (_getBlockedThreadsCount() >= _getActiveThreadsCount()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     /** Return true if one or more contained actor is externally
      *  blocked; return false otherwise. We say an actor is
      *  externally blocked if it is blocked attempting data transfer
@@ -516,6 +490,32 @@ public class CompositeProcessDirector extends ProcessDirector {
         return false;
     }
 
+    /** Return false if the number of blocked processes is less than
+     *  the number of active actors; return true otherwise. Note that
+     *  if the number of active actors is 0 then this method will
+     *  return true. Derived classes may override this method to add
+     *  domain specific functionality. Implementations of this method
+     *  must be synchronized.
+     *
+     *  @return false If the number of blocked processes is less than
+     *   the number of active actors; return true otherwise.
+     */
+    protected synchronized boolean _areThreadsDeadlocked() {
+        if (_debugging) {
+            _debug("Checking for deadlock:");
+            _debug("There are " + _getBlockedThreadsCount()
+                    + " Blocked actors, " + _getStoppedThreadsCount()
+                    + " Stopped actors, and " + _getActiveThreadsCount()
+                    + " active threads.");
+        }
+
+        if (_getBlockedThreadsCount() >= _getActiveThreadsCount()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /** Register that the specified controller is blocked. Pass the
      *  specified controller in as an argument. Note that if the
      *  controller passed in as an argument is not contained by this
@@ -526,7 +526,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @param controller The controller for which registration of a
      *   blocked state will occur.
      */
-    protected synchronized void _controllerBlocked(BranchController controller) {
+    protected synchronized void _controllerBlocked(
+            BranchController controller) {
         if (controller == _inputBranchController) {
             _inputControllerIsBlocked = controller.isBlocked();
         }
@@ -606,7 +607,8 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   iterations are not allowed; return true otherwise.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    protected synchronized boolean _resolveDeadlock() throws IllegalActionException {
+    protected synchronized boolean _resolveDeadlock()
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Resolving Deadlock");
         }
@@ -624,7 +626,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                             workspace.wait(this);
                         } catch (InterruptedException e) {
                             // TODO: determine best way to handle the exception
-                            throw new IllegalActionException(this, "Interrupted.");
+                            throw new IllegalActionException(this,
+                                    "Interrupted.");
                         }
                     }
 
@@ -640,7 +643,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                                 + "deadlocked.");
                     } else if (execDir instanceof CompositeProcessDirector) {
                         // This is contained by a process-oriented MoC
-                        ((CompositeProcessDirector)execDir).threadBlocked(Thread.currentThread(), null);
+                        ((CompositeProcessDirector)execDir)
+                            .threadBlocked(Thread.currentThread(), null);
                         return true;
                     } else {
                         // This is contained by a schedule-oriented MoC
@@ -659,7 +663,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                                 + "deadlocked.");
                     } else if (execDir instanceof CompositeProcessDirector) {
                         // This is contained by a process-oriented MoC
-                        ((CompositeProcessDirector)execDir).threadBlocked(Thread.currentThread(), null);
+                        ((CompositeProcessDirector)execDir)
+                            .threadBlocked(Thread.currentThread(), null);
                         return true;
                     } else {
                         // This is contained by a schedule-oriented MoC
@@ -675,7 +680,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                             workspace.wait(this);
                         } catch (InterruptedException e) {
                             // TODO: determine best way to handle the exception
-                            throw new IllegalActionException(this, "Interrupted.");
+                            throw new IllegalActionException(this,
+                                    "Interrupted.");
                         }
                     }
                     stopInputBranchController();
@@ -691,7 +697,8 @@ public class CompositeProcessDirector extends ProcessDirector {
                             workspace.wait(this);
                         } catch (InterruptedException e) {
                             //TODO: determine best way to handle the exception
-                            throw new IllegalActionException(this, "Interrupted.");
+                            throw new IllegalActionException(this,
+                                    "Interrupted.");
                         }
                     }
 

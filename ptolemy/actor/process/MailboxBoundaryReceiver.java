@@ -76,7 +76,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.process.BranchController
 
  */
-public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver {
+public class MailboxBoundaryReceiver extends Mailbox
+    implements ProcessReceiver {
     /** Construct an empty MailboxBoundaryReceiver with no container.
      */
     public MailboxBoundaryReceiver() {
@@ -119,11 +120,13 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
                 // Try to read.
                 if (super.hasToken()) {
                     result = super.get();
-                    // Need to mark any thread that is write blocked on
-                    // this receiver unblocked now, before any notification,
-                    // or we will detect deadlock and increase the buffer sizes.
-                    // Note that there is no need to clear the _readPending
-                    // reference because that will have been cleared by the write.
+                    // Need to mark any thread that is write blocked
+                    // on this receiver unblocked now, before any
+                    // notification, or we will detect deadlock and
+                    // increase the buffer sizes.  Note that there is
+                    // no need to clear the _readPending reference
+                    // because that will have been cleared by the
+                    // write.
                     if (_writePending != null) {
                         _director.threadUnblocked(_writePending, this);
                         _writePending = null;
@@ -294,10 +297,11 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
                         _readPending = null;
                     }
                     // Normally, the _writePending reference will have
-                    // been cleared by the read that unblocked this write.
-                    // However, it might be that the director increased the
-                    // buffer size, which would also have the affect of unblocking
-                    // this write. Hence, we clear it here if it is set.
+                    // been cleared by the read that unblocked this
+                    // write.  However, it might be that the director
+                    // increased the buffer size, which would also
+                    // have the affect of unblocking this
+                    // write. Hence, we clear it here if it is set.
                     if (_writePending != null) {
                         _director.threadUnblocked(_writePending, this);
                         _writePending = null;
