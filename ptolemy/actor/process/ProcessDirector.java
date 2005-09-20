@@ -171,7 +171,7 @@ public class ProcessDirector extends Director {
 
         Workspace workspace = workspace();
 
-        // In case we have an eclosing process director,
+        // In case we have an enclosing process director,
         // we identify it so that we can notify it when we are blocked.
         CompositeActor container = (CompositeActor)getContainer();
         Director outsideDirector = container.getExecutiveDirector();
@@ -705,7 +705,7 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Call requestFinish() on all receviers.
+    /** Call requestFinish() on all receivers.
      */
     private void _requestFinishOnReceivers() {
         CompositeActor container = (CompositeActor)getContainer();
