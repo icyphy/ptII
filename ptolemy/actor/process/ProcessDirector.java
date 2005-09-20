@@ -302,6 +302,7 @@ public class ProcessDirector extends Director {
     /** Return true if the specified thread has been registered
      *  with addThread() and has not been removed with removeThread().
      *  @return True if the specified thread is active.
+     *  @param thread The thread.
      *  @see #addThread(Thread)
      *  @see #removeThread(Thread)
      */
