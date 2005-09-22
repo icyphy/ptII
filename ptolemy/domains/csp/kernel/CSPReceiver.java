@@ -63,7 +63,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Red (nsmyth)
- @Pt.AcceptedRating Green (kienhuis)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     

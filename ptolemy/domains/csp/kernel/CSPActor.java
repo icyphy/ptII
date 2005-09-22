@@ -103,7 +103,7 @@ import ptolemy.kernel.util.Workspace;
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (nsmyth)
- @Pt.AcceptedRating Yellow (liuj)
+ @Pt.AcceptedRating Red (cxh)
  @see ConditionalBranch
  @see ConditionalReceive
  @see ConditionalSend

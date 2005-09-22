@@ -113,7 +113,7 @@ import ptolemy.util.MessageHandler;
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (nsmyth)
- @Pt.AcceptedRating Green (kienhuis)
+ @Pt.AcceptedRating Red (cxh)
  @see ptolemy.actor.Director
  */
 public class CSPDirector extends CompositeProcessDirector implements
