@@ -225,7 +225,7 @@ public class Configuration extends CompositeEntity {
                         // we display the error message here.
                         //
                         // We will get to here if
-                        //vergil.kernel.AnimationRenderer.isRenderedSelected() 
+                        // diva.graph.AbstractGraphController.rerender()
                         // throws an NullPointerException when starting
                         // vergil.
                         MessageHandler.error(
