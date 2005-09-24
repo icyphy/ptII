@@ -219,12 +219,24 @@ public class Configuration extends CompositeEntity {
                 // ex.printStackTrace();
                 // Remove the effigy.  We were unable to open a tableau for it.
                 try {
+                    if (effigy.getContainer() instanceof ModelDirectory) {
+                        // This is the master.
+                        // Calling setContainer() = null will exit, so
+                        // we display the error message here.
+                        //
+                        // We will get to here if
+                        //vergil.kernel.AnimationRenderer.isRenderedSelected() 
+                        // throws an NullPointerException when starting
+                        // vergil.
+                        MessageHandler.error(
+                                "Failed to open "
+                                + ((PtolemyEffigy) effigy).getModel().getFullName(), ex);
+                    }
                     effigy.setContainer(null);
-                } catch (KernelException kernelException) {
-                    throw new InternalErrorException(this, kernelException,
+                } catch (Throwable throwable) {
+                    throw new InternalErrorException(this, throwable,
                             null);
                 }
-
                 // As a last resort, attempt to open source code
                 // associated with the object.
                 if (effigy instanceof PtolemyEffigy) {
@@ -233,7 +245,6 @@ public class Configuration extends CompositeEntity {
                     // Source code is found by name.
                     String filename = StringUtilities
                             .objectToSourceFileName(object);
-
                     try {
                         URL toRead = getClass().getClassLoader().getResource(
                                 filename);
