@@ -77,8 +77,16 @@ import ptolemy.kernel.util.Workspace;
  output port. When such a rendezvous occurs, it sends
  the first token in the resource pool to that output port
  and removes that token from the resource pool.
+ <p>
+ The behavior of this actor is similar to that of the Merge
+ actor in CSP, except that the Merge actor does no buffering.
+ That is, while this actor is always ready to rendezvous with
+ any input, the Merge actor is ready to rendezvous with an
+ input only after it has delivered the previous input to
+ the output.
  
  @author Edward A. Lee
+ @see Merge
  @version $Id$
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
