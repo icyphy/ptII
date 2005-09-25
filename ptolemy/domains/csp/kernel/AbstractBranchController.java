@@ -143,12 +143,14 @@ public abstract class AbstractBranchController implements Debuggable {
     }
 
     /** Register the calling branch as failed. This reduces the count
-     *  of active branches, and if all the active branches have
-     *  finished, it notifies the internal lock so any threads
-     *  that are blocked on it can continue.
-     *  This is called by a conditional branch just before it dies.
+     *  of active branches, and waits until the count of active
+     *  branches reaches zero. That is, the calling thread is
+     *  blocked until all the branches either call _branchFailed()
+     *  or _branchSucceeded(). Thus, either this or _branchSucceeded()
+     *  must be called by a conditional branch just before it dies.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
+     *  @see _branchSucceeded(int)
      */
     protected void _branchFailed(int branchNumber) {
         if (_debugging) {
@@ -157,9 +159,14 @@ public abstract class AbstractBranchController implements Debuggable {
         Object director = _getDirector();
         synchronized (director) {
             _branchesActive--;
-
-            if (_branchesActive == 0) {
-                director.notifyAll();
+            director.notifyAll();
+            while (_branchesActive > 0) {
+                try {
+                    director.wait();
+                } catch (InterruptedException e) {
+                    // Fall out of while loop.
+                    break;
+                }
             }
         }
     }
@@ -170,9 +177,14 @@ public abstract class AbstractBranchController implements Debuggable {
     protected abstract void _branchNotReady(int branchNumber);
 
     /** Register the calling branch as a successful branch. This
-     *  reduces the count of active branches, and notifies the internal
-     *  lock so that any threads blocked on it can continue.
-     *  @param branchID The ID assigned to the calling branch upon creation.
+     *  reduces the count of active branches, and waits until the count
+     *  of active branches reaches zero. That is, the calling thread is
+     *  blocked until all the branches either call _branchFailed()
+     *  or _branchSucceeded(). Thus, either this or _branchSucceeded()
+     *  must be called by a conditional branch just before it dies.
+     *  @param branchNumber The ID assigned to the calling branch
+     *   upon creation.
+     *  @see _branchFailed(int)
      */
     protected void _branchSucceeded(int branchID) {
         Object director = _getDirector();
@@ -181,15 +193,23 @@ public abstract class AbstractBranchController implements Debuggable {
                 _debug("** Branch succeeded: " + branchID);
             }
             _branchesActive--;
-
-            // wakes up chooseBranch() which wakes up parent thread
             director.notifyAll();
+            while (_branchesActive > 0) {
+                try {
+                    director.wait();
+                } catch (InterruptedException e) {
+                    // Fall out of while loop.
+                    break;
+                }
+            }
         }
     }
 
     /** Notify the director that the current thread is unblocked.
      */
     protected void _branchUnblocked(CSPReceiver receiver) {
+        // FIXME: This is never called. Instead, the threads all
+        // remove themselves from the active list.
         _getDirector().threadUnblocked(Thread.currentThread(), receiver);
     }
 

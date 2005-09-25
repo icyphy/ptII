@@ -139,7 +139,7 @@ public class MultiwayBranchController extends AbstractBranchController implement
                             _debug("** Creating branch: " + name);
                         }
                         Thread thread = new Thread((Runnable) branches[i], name);
-                        _threadList.add(0, thread);
+                        _threadList.add(thread);
                         onlyBranch = branches[i];
                     }
                 }
@@ -216,14 +216,14 @@ public class MultiwayBranchController extends AbstractBranchController implement
                         // a race condition (see below), and if we call
                         // thread.join(), then we will block while holdingb
                         // a lock on the director, which will lead to deadlock.
+                        if (_debugging) {
+                            _debug("** Waiting for thread to exit: " + thread.getName());
+                        }
                         while(director.isThreadActive(thread)) {
-                            if (_debugging) {
-                                _debug("** Waiting for thread to exit: " + thread.getName());
-                            }
                             director.wait();
                         }
                         if (_debugging) {
-                            _debug("** Thread completed: " + thread.getName());
+                            _debug("** Thread has exited: " + thread.getName());
                         }
                     } catch (InterruptedException ex) {
                         // Ignore and continue to the next thread.

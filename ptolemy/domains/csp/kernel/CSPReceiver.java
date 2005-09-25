@@ -577,7 +577,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // Wait for each of the threads to die.
                 // First notify the director that this actor is blocked.
                 // The last thread to complete will unblock it.
-                director.threadBlocked(Thread.currentThread(), this);
+                director.threadBlocked(putToAllThread, this);
                 Iterator threadsIterator = threads.iterator();
                 while (threadsIterator.hasNext()) {
                     Thread thread = (Thread) threadsIterator.next();
@@ -592,6 +592,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                         }
                     } catch (InterruptedException ex) {
                         // Ignore and continue to the next thread.
+                        // System.out.println("**** Thread spawned by putToAll() interrupted.");
                     }
                 }
                 // This should be zero, but just in case.
@@ -771,17 +772,19 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     protected void _setConditionalSend(boolean ready,
             AbstractBranchController controller, int otherID) {
-        synchronized(_getDirector()) {
+        CSPDirector director = _getDirector();
+        synchronized(director) {
             if (ready) {
                 _conditionalSendWaiting = Thread.currentThread();
             } else {
                 if (_conditionalSendWaiting != null) {
-                    _getDirector().threadUnblocked(_conditionalSendWaiting, this);
+                    director.threadUnblocked(_conditionalSendWaiting, this);
                 }
                 _conditionalSendWaiting = null;
             }
             _otherController = controller;
             _otherID = otherID;
+            director.notifyAll();
         }
     }
 
@@ -799,17 +802,19 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     protected void _setConditionalReceive(boolean ready,
             AbstractBranchController controller, int otherID) {
-        synchronized(_getDirector()) {
+        CSPDirector director = _getDirector();
+        synchronized(director) {
             if (ready) {
                 _conditionalReceiveWaiting = Thread.currentThread();
             } else {
                 if (_conditionalReceiveWaiting != null) {
-                    _getDirector().threadUnblocked(_conditionalReceiveWaiting, this);
+                    director.threadUnblocked(_conditionalReceiveWaiting, this);
                 }
                 _conditionalReceiveWaiting = null;
             }
             _otherController = controller;
             _otherID = otherID;
+            director.notifyAll();
         }
     }
 

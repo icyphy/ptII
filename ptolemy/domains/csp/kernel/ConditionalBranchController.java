@@ -249,8 +249,28 @@ public class ConditionalBranchController extends AbstractBranchController implem
                 if (_debugging) {
                     _debug("** Waiting for branches to die.");
                 }
-                while (_branchesActive != 0) {
-                    director.wait();
+                // Wait for all the threads to exit.
+                Iterator threadsIterator = _threadList.iterator();
+                while (threadsIterator.hasNext()) {
+                    Thread thread = (Thread) threadsIterator.next();
+                    try {
+                        // NOTE: Cannot use Thread.join() here because we
+                        // have to be in a synchronized block to prevent
+                        // a race condition (see below), and if we call
+                        // thread.join(), then we will block while holdingb
+                        // a lock on the director, which will lead to deadlock.
+                        if (_debugging) {
+                            _debug("** Waiting for thread to exit: " + thread.getName());
+                        }
+                        while(director.isThreadActive(thread)) {
+                            director.wait();
+                        }
+                        if (_debugging) {
+                            _debug("** Thread has exited: " + thread.getName());
+                        }
+                    } catch (InterruptedException ex) {
+                        // Ignore and continue to the next thread.
+                    }
                 }
             }
             if (_successfulBranch == -1) {

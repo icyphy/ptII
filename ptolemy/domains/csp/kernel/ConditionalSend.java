@@ -238,11 +238,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         // with each of those destinations. Second, it is part of conditional
         // send, which means that another conditional branch (send or receive)
         // may win out, in which case this send will "fail".
-        // For the multi-way rendezvous, we always synchronize
-        // on the first receiver in the group.
         synchronized(director) {
             try {
-                // Check that none of the receivers already has a put or conditional send waiting
+                // Check that none of the receivers already has a put or conditional send waiting.
                 for (int copy = 0; copy < receivers.length; copy++) {
                     if (((CSPReceiver)receivers[copy])._isConditionalSendWaiting()
                             || ((CSPReceiver)receivers[copy])._isPutWaiting()) {
@@ -256,7 +254,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 + "ConditionalSend waiting.");
                     }
                 }
-                // Loop until either the rendezvous succeeds or the branch
+                // Loop until either the rendezvous is ready to succeed or the branch
                 // is no longer alive (presumably because some other branch succeeded).
                 // I.e., the branch "fails".
                 while (true) {
@@ -268,39 +266,45 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             ((CSPReceiver)receivers[copy])._setConditionalSend(false, null, -1);
                         }
                         controller._branchFailed(getID());
-                        director.notifyAll();
                         // Nothing more to do.
                         return;
                     }
                     if (_isGetWaitingOnAll(receivers)) {
                         if (_debugging) {
-                            _debug("ConditionalSend: send() on channel " + _channel + ": get() is waiting on all receivers.");
+                            _debug("ConditionalSend: send() on channel "
+                                    + _channel
+                                    + ": get() is waiting on all receivers.");
                         }
                         if (controller._isBranchReady(getID())) {
                             // I am the branch that succeeds, so convert the conditional send
                             // to a put on each receiver.
                             // The order doesn't matter here, since all recipients are waiting.
                             if (_debugging) {
-                                _debug("ConditionalSend: send() on channel " + _channel + ": Putting token.");
+                                _debug("ConditionalSend: send() on channel "
+                                        + _channel
+                                        + ": Putting token.");
                             }
                             // Convert the conditional send to a put.
                             // Do this by falling out of the loop.
                             break; // exit while(true).
                         }
+                        // else continue while(true).
                     } else if (_isGetOrConditionalReceiveWaitingOnAll(receivers)) {
                         if (_debugging) {
-                            _debug("ConditionalSend: send() on channel " + _channel
+                            _debug("ConditionalSend: send() on channel "
+                                    + _channel
                                     + ": conditional receive or get is waiting on each destination.");
                         }
                         if (controller._isBranchReady(getID())) {
                             if (_debugging) {
-                                _debug("ConditionalSend: send() on channel " + _channel
+                                _debug("ConditionalSend: send() on channel "
+                                        + _channel
                                         + ": send branch is first.");
                             }
                             // Send side OK, need to check that receive side also OK.
                             // It has to be OK for all the receivers, so we have to keep
                             // track of which ones say they are first so we can release
-                            // the flag indicating their first if we don't have unanimity.
+                            // the flag indicating they are first if we don't have unanimity.
                             List markedFirst = new LinkedList();
                             boolean succeeded = true;
                             for (int copy = 0; copy < receivers.length; copy++) {
@@ -349,6 +353,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                     side2._branchNotReady(receiver._getOtherID());
                                 }
                                 director.notifyAll();
+                                // not ready.
                             }
                         }
                     }
@@ -359,9 +364,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     for (int copy = 0; copy < receivers.length; copy++) {
                         ((CSPReceiver)receivers[copy])._setConditionalSend(true, controller, getID());
                     }
-                    
-                    // FIXME: Is this necessary?
-                    director.notifyAll();
 
                     if (_debugging) {
                         _debug("ConditionalSend: Waiting for new information.");
@@ -372,7 +374,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     // receiver, but rather on multiple receivers.
                     controller._branchBlocked(null);
                     ((CSPReceiver)receivers[0])._checkFlagsAndWait();
-                    controller._branchUnblocked(null);
                 } // while(true)
                 
                 // When we get here, it is time to convert the conditional

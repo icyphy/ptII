@@ -220,24 +220,23 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         }
                         receiver._setConditionalReceive(false, null, -1);
                         controller._branchFailed(getID());
-                        lock.notifyAll();
-                        return;
+                        break; // exit while(true).
                     } else if (receiver._isPutWaiting()) {
                         if (_debugging) {
                             _debug(identifier + ": Put is waiting.");
                         }
                         if (controller._isBranchReady(getID())) {
-                            // I am the branch that succeeds, so convert the conditional receive
-                            // to a get.
+                            // I am the branch that succeeds, so convert the
+                            // conditional receive to a get.
                             // Have to reset this flag _before_ the get().
                             receiver._setConditionalReceive(false, null, -1);
                             _setToken(receiver.get());
                             _completed = true;
                             controller._branchSucceeded(getID());
-                            
                             // Rendezvous complete.
                             break; // exit while(true).
                         }
+                        // else continue while(true).
                     } else if (receiver._isConditionalSendWaiting()) {
                         if (_debugging) {
                             _debug(identifier + ": Conditional send is waiting!");
@@ -255,7 +254,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                 receiver._setConditionalSend(false, null, -1);
                                 _completed = true;
                                 controller._branchSucceeded(getID());
-                                return;
+                                break; // exit while(true).
                             } else {
                                 // Release the first position here since the
                                 // other side is not first.
@@ -270,17 +269,12 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     // as having a conditional receive waiting and then wait.
                     receiver._setConditionalReceive(true, controller, getID());
                     
-                    // NOTE: This may not be necessary, but it seems harmless.
-                    // receiver._getDirector().notifyAll();
-
                     // Wait for something to happen.
                     if (_debugging) {
                         _debug("ConditionalReceive: Waiting for new information.");
                     }
                     controller._branchBlocked(receiver);
                     receiver._checkFlagsAndWait();
-                    // FIXME: This is probably too soon to mark this unblocked!
-                    // controller._branchUnblocked(receiver);
                 } // while(true)
             } catch (InterruptedException ex) {
                 receiver._setConditionalReceive(false, null, -1);
