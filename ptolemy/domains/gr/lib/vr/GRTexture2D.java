@@ -67,7 +67,7 @@ import java.util.Hashtable;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.ImageToken;
+import ptolemy.data.AWTImageToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.IntToken;
@@ -567,13 +567,6 @@ public class GRTexture2D extends GRGeometry {
             _appearance.setTextureAttributes(attributes);
             _appearance.setTexture(loadedTexture);
         }
-        
-        /*  MyTextureLoader loader;
-        //     if (_token.getClass().toString() == "class ptolemy.data.AWTImageToken"){
-        loader = new MyTextureLoader(_image, _viewScreen.getCanvas());
-        //   }else {
-        //  loader = new MyTextureLoader(_fileRoot, _viewScreen.getCanvas());
-        // }*/
 
     }
 
@@ -592,8 +585,8 @@ public class GRTexture2D extends GRGeometry {
         _fileRoot = _url.getFile();
         
         /**Use if input is an ImageToken */
-        /*   _token = input.get(0);
-            ImageToken imageToken = (ImageToken) _token;
+       /*    _token = input.get(0);
+            AWTImageToken imageToken = (AWTImageToken) _token;
             _image = imageToken.asAWTImage();
             System.out.println("token = " + _token.getType());
             System.out.println("token = " + _token.getClass().toString());*/
