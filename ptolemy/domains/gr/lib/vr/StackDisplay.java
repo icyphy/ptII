@@ -1,4 +1,4 @@
-/* Display a java.awt.Image
+/* Display a stack of images using NIH ImageJ.
 
  @Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
@@ -47,30 +47,9 @@ import ptolemy.media.Picture;
 //////////////////////////////////////////////////////////////////////////
 //// StackDisplay
 
-/**
- Display an image on the screen using the ptolemy.media.Picture
- class.  For a sequence of images that are all the same size, this class
- will continually update the picture with new data.   If the size of the
- input image changes, then a new Picture object is created.  This class
- will only accept a IntMatrixToken on its input, and assumes that the
- input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 
- @author James Yeh, Edward A. Lee
- @version $Id$
- @since Ptolemy II 3.0
- @Pt.ProposedRating Red
- @Pt.AcceptedRating Red
- */
 public class StackDisplay extends Sink {
-    // FIXME:
-    // This actor and sdf.lib.vq.StackDisplay are very similar except that this
-    // actor takes an Object token that wraps a java.awt.Image object.
-    // That actor should be removed, and instead, we need an actor that
-    // converts matrices to java.awt.Image.
-    // FIXME: We need to create an ImageEffigy and ImageTableau,
-    // similar to TokenEffigy and MatrixTokenTableau, and then associate
-    // them with this class in ways similar to what MatrixViewer does.
-
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -84,16 +63,6 @@ public class StackDisplay extends Sink {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
-
-        _oldxsize = 0;
-        _oldysize = 0;
-        _frame = null;
-        _container = null;
-
-        _windowProperties = new WindowPropertiesAttribute(this,
-                "_windowProperties");
-
-        _paneSize = new SizeAttribute(this, "_paneSize");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,63 +79,39 @@ public class StackDisplay extends Sink {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StackDisplay newObject = (StackDisplay) super.clone(workspace);
 
-        newObject._container = null;
-        newObject._frame = null;
-        newObject._oldxsize = 0;
-        newObject._oldysize = 0;
-        //newObject._picture = null;
-
         return newObject;
     }
 
     /** Fire this actor.
-     *  Consume an IntMatrixToken from the input port.  If the image is
-     *  not the same size as the previous image, or this is the first
-     *  image, then create a new Picture object to represent the image,
-     *  and put it in the appropriate container (either the container
-     *  set using place, or the frame created during the initialize
-     *  phase).
-     *  Convert the pixels from greyscale to RGBA triples (setting the
-     *  image to be opaque) and update the picture.
+     *  Display stack in ImageJ StackWindow
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
      */
     public void fire() throws IllegalActionException {
-        //  for(int i =0; i<50; i++){
-        if (_debugging) {
-            _debug("StackDisplay actor firing");
-        }
 
-        if (input.hasToken(0)) {
-            ObjectToken objectToken = (ObjectToken) input.get(0);
+       	if (_debugging) {
+       		_debug("StackDisplay actor firing");
+       	}
 
-            //ImageToken imageToken;
-            ImagePlus imagePlus;
-            imagePlus = (ImagePlus) objectToken.getValue();
-
-            //FIXME What type of catch do I need?
-            /*   try {
-             imageToken = (ImageToken) token;
-             } catch (ClassCastException ex) {
-             throw new IllegalActionException(this, ex,
-             "Failed to cast " + token.getClass()
-             + " to an ImageToken.\nToken was: " + token);
-             }*/
-
-            //FIXME Do I need a container and a frame?
-            //_container = _frame = new StackWindow(imagePlus);
-            _frame = new StackWindow(imagePlus);
-            //_frame.showSlice(i);
-            //                System.out.println("Slice shown = slice " + i );
-            //}
+       	if (input.hasToken(0)) {
+       		ObjectToken objectToken = (ObjectToken) input.get(0);
+          
+       		//ImageToken imageToken;
+       		ImagePlus imagePlus;
+       		imagePlus = (ImagePlus)objectToken.getValue();
+           
+       		//FIXME What type of catch do I need?
+       		/*   try {
+       		 imageToken = (ImageToken) token;
+       		 } catch (ClassCastException ex) {
+       		     throw new IllegalActionException(this, ex,
+                       "Failed to cast " + token.getClass()
+                       + " to an ImageToken.\nToken was: " + token);
+                 }*/
+       		_frame = new StackWindow(imagePlus);        		
 
         }
 
-    }
-
-    /** Get the background */
-    public Color getBackground() {
-        return _container.getBackground();
     }
 
     /** Initialize this actor.
@@ -177,8 +122,8 @@ public class StackDisplay extends Sink {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        _oldxsize = 0;
-        _oldysize = 0;
+        //_oldxsize = 0;
+//        _oldysize = 0;
 
         //FIXME Do I need a container and a frame?
         /*   if (_container == null) {
@@ -192,10 +137,6 @@ public class StackDisplay extends Sink {
          }*/
     }
 
-    /** Set the background */
-    public void setBackground(Color background) {
-        _container.setBackground(background);
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -203,29 +144,15 @@ public class StackDisplay extends Sink {
     /** A specification of the size of the pane if it is in its own window. */
     protected SizeAttribute _paneSize;
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The container for the image display. */
-    private Container _container;
-
+    
     /** The frame, if one is used. */
     private StackWindow _frame;
 
-    /** The horizontal size of the previous image. */
-    private int _oldxsize = 0;
-
-    /** The vertical size of the previous image. */
-    private int _oldysize;
-
-    // FIXME: Probably don't want to use Picture here.
-
-    /** A panel that displays the image. */
-    private Picture _picture;
-
-    /** A specification for the window properties of the frame. */
-    private WindowPropertiesAttribute _windowProperties;
-
     private int _index = 0;
+
 
 }
