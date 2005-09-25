@@ -269,6 +269,25 @@ As of version 5.0, we have extended this model of computation with a
 nondeterministic merge actor, illustrated in
 <a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>.
 
+<br>
+
+<li><i>Communicating Sequential Processes</i>:
+<a href="../../domains/csp/demo/Barrier/Barrier.xml">Barrier</a>
+(see also
+<a href="../../domains/csp/demo/ResourcePool/ResourcePool.xml">ResourcePool</a>,
+<a href="../../domains/csp/demo/WriteRegulator/WriteRegulator.xml">WriteRegulator</a>).
+<br>
+The communicating sequential processes (CSP) domain implements the classic
+CSP semantics introduced by Tony Hoare, with some extensions. In the CSP domain,
+every actor executes in its own thread, and communication is by rendezvous.
+The CSP domain supports conditional rendezvous (where an actor communicates
+nondeterministically with one of several other actors), multi-way rendezvous
+(where an actor communicates simulateneously with all of several other actors),
+and timing (where an actor pauses to allow time to pass). The 
+<a href="../../domains/csp/demo/Barrier/Barrier.xml">Barrier</a> example shows
+the use of multi-way rendezvous to achieve a classic concurrency design pattern
+called barrier synchronization.
+
 <!--/vergilDocs-->
 <!--Ptiny does not include ddf-->
 <br>
