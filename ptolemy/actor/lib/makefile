@@ -212,6 +212,7 @@ OTHER_FILES_TO_BE_JARED = \
 	SwitchIcon.xml \
 	TimedSine.xml \
 	UnaryMathFunctionIcon.xml \
+	UniformIcon.xml \
 	aggregators.xml \
 	array.xml \
 	booleanflowcontrol.xml \
