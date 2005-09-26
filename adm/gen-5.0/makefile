@@ -33,10 +33,10 @@
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
 MAJOR_VERSION = 	5.0
-#MINOR_VERSION =		beta
+MINOR_VERSION =		.1
 
 #VERSION=	$(MAJOR_VERSION)-$(MINOR_VERSION)
-VERSION=	$(MAJOR_VERSION)
+VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
 WINDOWS_VERSION =	5_0
 
