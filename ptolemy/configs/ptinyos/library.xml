@@ -37,7 +37,7 @@
         <?moml
           <group>
             <input source="ptolemy/domains/ptinyos/lib/lib-simple.xml"/>
-            <input source="TOSIndex.xml"/>
+            <input source="_index.moml"/>
           </group>
         ?>
       </configure>

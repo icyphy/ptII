@@ -1,0 +1,91 @@
+#!/usr/bin/perl
+
+# Usage: helper-get-args <input prefix> <output prefix> <filenames with prefix>
+
+# Creates correct options to pass to ncc.
+
+# FIXME: assumes helper-run-ncc is in path (cwd)
+$helper_run_ncc = "$ENV{PWD}/helper-run-ncc";
+
+if ($#ARGV < 1) {
+  die "Usage: helper-get-args <input prefix> <output prefix> <output suffix> <filenames with prefix>";
+}
+
+@args = @ARGV;
+$inputprefix = shift @args;
+$outputprefix = shift @args;
+$outputsuffix = shift @args;
+@files = @args;
+
+#$here = $ENV{PWD};
+foreach (@files) {
+  chdir $inputprefix;
+  chomp;
+  split / /;
+  $mod = $_[0];
+  $dir = $mod;
+  $dir =~ s![^/]+$!!;
+  @opts = ();
+  if (-f "$dir/Makefile") {
+    $sb=`grep '^SENSORBOARD=' $dir/Makefile | head -1`;
+    chomp $sb;
+    if ($sb) {
+      $sb =~ s/SENSORBOARD=//;
+      push @opts, "-board=$sb";
+    }
+
+    #print("grep '^PFLAGS[^=]*=' $dir/Makefile | grep -v '\\\$' | head -1");
+    $pf=`grep '^PFLAGS[^=]*=' $dir/Makefile | grep -v '\\\$' | head -1`;
+    chomp $pf;
+    if ($pf) {
+      $pf =~ s/[^=]*=//;
+      push @opts, "$pf";
+    }
+  }
+  if ($dir =~ m!platform/([^/]+)/! && $1 ne "avrmote") {
+    push @opts, "-target=$1";
+  } else {
+    if ($mod =~ /2420/) {
+      push @opts, "-target=micaz";
+    } else {
+      push @opts, "-target=mica2";
+    }
+  }
+  push @opts, "-fnesc-include=AM";
+  push @opts, "-I$dir";
+  $odir = $dir;
+  while ($odir) {
+    if (-f "$odir/opts") {
+      die unless open OPTS, "$odir/opts";
+      while (<OPTS>) {
+        chomp;
+        if (/includes (.*);/) {
+          push @opts, "-fnesc-include=$1";
+        } else {
+          push @opts, $_;
+        }
+      }
+      close OPTS;
+    }
+    if ($odir =~ m!/!) {
+      $odir =~ s!/[^/]*$!!;
+    } else {
+      last;
+    }
+  }
+  for ($i = 1; $i <= $#_; $i++) {
+    if ($_[$i] =~ /^-/) {
+      push @opts, $_[$i];
+    } else {
+      $file = $_[$i];
+      die "$file" unless $file =~ m!(.*)/([^/]+).h$!;
+      push @opts, "-I$1";
+      push @opts, "-fnesc-include=$2";
+    }
+  }
+  $opts = join(' ', @opts);
+
+  system("$helper_run_ncc $inputprefix $outputprefix $outputsuffix $mod $opts") == 0
+    or die "call to $helper_run_ncc failed in @args: $?";
+}
+

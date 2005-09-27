@@ -61,16 +61,79 @@ fi
 # $PTII with forward slashes
 PTII_CLEAN="`echo "$PTII" | sed 's@\\\@/@g'`"
 
+# Determine if we are on windows and try to set JAVAHOME
+windows=no
+if [ "${OSTYPE-no}" = "no" ]; then
+    case "`uname -s`" in
+    CYGWIN*) 
+	windows=yes;;
+    # Tcsh
+    Windows*)
+	windows=yes;;
+    esac
+else    
+    case "${OSTYPE-no}" in
+    # Cygwin Bash
+    cygwin*)
+	windows=yes;;
+    # Tcsh
+    Windows*)
+	windows=yes;;
+    esac
+fi
+
+# Unfortunately, there are issues around setting PTII if your
+# Cygwin installation is installed in c:/cygwin.  
+# Briefly, if Cygwin is installed in c:/cygwin, and your ptII tree
+# is installed in c:/ptII, then if you cd to c:/ptII and do 'pwd',
+# in bash, you will get something like /cygdrive/c/ptII/, which
+# will not work with the JDK.  For details, see
+# $PTII/doc/install.htm#setting.htm 
+if [ "$windows" = "yes" ]; then
+    # Windows via Cygwin32
+    # chdir prints the current directory in DOS format.
+    # The tr command deletes the \r at the end
+    case "`uname -s`" in
+    CYGWIN_ME-*) 
+	# Windows ME is not a real os, and it does not have CMD.
+        # So, we punt
+	PTII_DIR=$PTII;;
+    CYGWIN_98-*) 
+	# Windows 98 is not a real os, and it does not have CMD.
+        # So, we punt
+	PTII_DIR=$PTII;;
+    *)
+	PTII_DIR=`(cd "$PTII"; cmd /c chdir) | tr -d '\r'`
+    esac
+
+    # Set the path to include $PTII/bin so that the Matlab interface
+    # will work.  
+
+    # Unfortunately, we need to change things like d: to /cygdrive/d,
+    # and deal with backslashes.  Note that java does not understand
+    # /cygdrive, so we can't use PTII_CYGDRIVE when we invoke java.
+    PTII_CYGDRIVE=`echo "$PTII_DIR" | sed 's@^\([a-zA-Z]\):@/cygdrive/\1@' | sed 's@\\\\@//@'`
+    
+    # It would be nice to check if the PTII_CYGDRIVE was already in the PATH.
+    PATH="${PTII_CYGDRIVE}:$PATH"
+    export PATH
+    base=`/usr/bin/basename "$0"`
+else
+    PTII_DIR=$PTII
+    base=`basename "$0"`
+fi
+
 # Default JDK Home, may have /cygdrive in it
-PTJAVA_DIR="/j2sdk1.4.2_02"
+PTJAVA_DIR="/usr/java/j2sdk1.4.2_09"
 
 # PTJAVA_DIR without /cygdrive
-PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)@\1:@'`"
+PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 
 # Java CLASSPATH separator
 # For Unix, this would be :
 # For Cygwin, this would be ;
-CLASSPATHSEPARATOR=";"
+CLASSPATHSEPARATOR=":"
+
 
 ##################################################################
 # Below here, we set up for each of the optional packages.
@@ -87,31 +150,6 @@ CLASSPATHSEPARATOR=";"
 # they add an optional package.
 ##################################################################
 
-#### Jini stuff.
-# PTJSPACES_DIR is set to jspaces if configure found jini
-PTJSPACES_DIR=
-JINI_JARS=""
-if [ "$PTJSPACES_DIR" = "jspaces" ]; then
-    # Jini directory
-    JINI_DIR="$PTII/vendors/sun/jini/jini1_0_1"
-
-    # Jini lib directory
-    JINI_LIB_DIR="$JINI_DIR/lib"
-
-    # Flags needed for Jini
-    JINI_JFLAG=\""-Djava.security.policy=${PTII}/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=http://localhost:4444/"\"
-    # 4/03: Sun is not making Jini-1.0.1 available, so I removed it from ptII
-    JINI_JFLAG=
-
-    # Jini Jar files
-    JINI_CORE_JAR="${JINI_LIB_DIR}/jini-core.jar"
-    JINI_JSPACES_JAR="${JINI_LIB_DIR}/jini-jspaces.jar"
-    JINI_MAHALO_JAR="${JINI_LIB_DIR}/mahalo-dl.jar"
-    JINI_JARS="${JINI_JSPACES_JAR}${CLASSPATHSEPARATOR}${JINI_MAHALO_JAR}"
-    JINI_JARS=
-fi
-
-
 #### Jacl stuff
 # Location of ptjacl.jar
 # PTJACL_DIR is set to ptjacl if configure found ptjacl
@@ -119,7 +157,7 @@ PTJACL_DIR=ptjacl
 PTJACL_JARS=""
 if [ "$PTJACL_DIR" = "ptjacl" ]; then
 
-    PTJACL_JARS="${CLASSPATHSEPARATOR}c:/users/neuendor/ptII/lib/ptjacl.jar"
+    PTJACL_JARS="${CLASSPATHSEPARATOR}/home/celaine/ptII/lib/ptjacl.jar"
 
     # Flag to pass to java.  Solaris JDK1.2 reference version needs -native
     PTJACL_JFLAG="@PTJACL_JFLAG@"
@@ -127,8 +165,19 @@ fi
 
 
 # Jar file for JHDL
-JHDL_JAR="c:/users/neuendor/ptII/vendors/jhdl/ptjhdllib/JHDL.jar"
+JHDL_JAR="${PTII}/vendors/jhdl/ptjhdllib/JHDL.jar"
 
+
+#### Backtracking facility
+# The Backtracking facility uses Eclipse jar files
+# Set to backtrack and used in $PTII/ptolemy/makefile if Eclipse was found
+PTBACKTRACK_DIR=
+BACKTRACK_JARS=""
+if [ "$PTBACKTRACK_DIR" = "backtrack" ]; then
+    PTBACKTRACK_JARS=""
+    # PTBACKTRACK_JARS will always have a CLASSPATHSEPARATOR prefix
+    BACKTRACK_JARS="${PTBACKTRACK_JARS}"
+fi
 
 #### Cal 
 # Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
@@ -137,9 +186,33 @@ CALTROP_JARS=""
 if [ "$PTCALTROP_DIR" = "caltrop" ]; then
     # Directory that contains the Cal jar file ptCal.jar
     # used by bin/ptinvoke.in
-    CALTROP_DIR="c:/users/neuendor/ptII/lib"
-    CALTROP_JARS="${CLASSPATHSEPARATOR}${CALTROP_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/saxon7.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/java_cup.jar"
+    CALTROP_DIR="/home/celaine/ptII/lib"
+    CALTROP_JARS="${CLASSPATHSEPARATOR}${CALTROP_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/java_cup.jar"
 fi
+
+#### Chic stuff
+# The Chic jar file.
+# PTCHIC_DIR is set to chic if configure found chic
+PTCHIC_DIR=chic
+CHIC_JARS=""
+if [ "$PTCHIC_DIR" = "chic" ]; then
+    CHIC_DIR="/home/celaine/ptII/lib"
+    CHIC_JARS="${CLASSPATHSEPARATOR}${CHIC_DIR}/chic.jar"
+fi
+
+#### Colt "Open Source Libraries for High Performance Scientific and Technical
+# Computing in Java"
+# For more information, see http://hoschek.home.cern.ch/hoschek/colt/
+# Set to colt and used in $PTII/ptolemy/actor/lib/makefile if Colt was found.
+PTCOLT_DIR=colt
+COLT_JARS=""
+if [ "$PTCOLT_DIR" = "colt" ]; then
+    # Colt jar files.  We ship $PTII/lib/ptcolt.jar, which is a subset
+    # of $PTII/vendors/misc/colt.jar
+    PTCOLT_JARS="/home/celaine/ptII/lib/ptcolt.jar"
+    COLT_JARS="${CLASSPATHSEPARATOR}${PTCOLT_JARS}"
+fi
+
 
 #### Serial port stuff
 # If Commapi is present, then set to yes, otherwise set to no
@@ -149,10 +222,27 @@ COMMAPI_JARS=""
 if [ "$COMMAPI_PRESENT" = "yes" ]; then
     # Directory that contains the Java Serial Comm API, see
     # http://java.sun.com/products/javacomm/
-    COMMAPI_DIR="c:/users/neuendor/ptII/vendors/sun/commapi"
+    COMMAPI_DIR="/home/celaine/ptII/vendors/sun/commapi"
 
     COMMAPI_JARS="${CLASSPATHSEPARATOR}${COMMAPI_DIR}/comm.jar"
 fi
+
+
+#### Jini stuff.
+# PTDISTRIBUTED_DIR is set to distributed if configure found jini
+PTDISTRIBUTED_DIR=""
+JINI_JARS=""
+if [ "$PTDISTRIBUTED_DIR" = "distributed" ]; then
+    # Jini directory
+    JINI_DIR="/home/celaine/ptII/ptolemy/distributed/jini"
+
+    # Flags needed for Jini
+    JINI_JFLAG='"-Djava.security.policy=${PTII}/bin/policy.all" "-Doutrigger.spacename=JavaSpaces" "-Dcom.sun.jini.lookup.groups=public" "-Djava.rmi.server.codebase=http://localhost:4444/"'
+
+    # Jini Jar files
+    JINI_JARS=""
+fi
+
 
 
 #### Diva stuff
@@ -163,16 +253,16 @@ DIVA_JFLAG=
 
 #### Tini board stuff
 # The tini jar file.
-TINI_DIR='c:/users/neuendor/ptII/vendors/dalsemi/tini'
+TINI_DIR='${PTII}/vendors/dalsemi/tini'
 # Jar file containing tini design tools
 TINI_JAR='${TINI_DIR}/bin/tini.jar${COMMAPI_JAR}'
 # Jar file containing embedded tini libraries.
-TINICLASSES_JAR='c:/users/neuendor/ptII/vendors/dalsemi/tini/bin/tiniclasses.jar'
+TINICLASSES_JAR='${PTII}/vendors/dalsemi/tini/bin/tiniclasses.jar'
    
 TINI_JFLAG=
 
 # JDK Version determined by running confTest.class and getting java.version
-JVERSION=1.4.2_02
+JVERSION=1.4.2_09
 
 # See if we are running under JDK1.4.1 with XP
 if test "`uname -s`" = "CYGWIN_NT-5.1"; then
@@ -204,7 +294,7 @@ fi
 # The jode jar file.
 # JODE_JAR might contain ${JODE_DIR)
 JODE_DIR="@JODE_DIR@"
-JODE_JAR="c:/users/neuendor/ptII/vendors/jode/1.1.1/jode.jar"
+JODE_JAR="/home/celaine/ptII/vendors/jode/1.1.1/jode.jar"
 
 JODE_JFLAG=
 
@@ -213,19 +303,19 @@ JODE_JFLAG=
 # c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
 
 # PTQUICKTIME_DIR is set to quicktime by configure if QTJava.zip was found
-PTQUICKTIME_DIR=quicktime
+PTQUICKTIME_DIR=
 QTJAVA_JARS=""
 if [ "$PTQUICKTIME_DIR" = "quicktime" ]; then
-    QTJAVA_ZIP="C:/Program Files/java/j2re1.4.1_02/lib/ext/QTJava.zip"
+    QTJAVA_ZIP=""
     QTJAVA_JARS="${CLASSPATHSEPARATOR}$QTJAVA_ZIP"
 fi
 
 
 #### Soot..  Java compiler and optimizer package.  Jasmin: a java assembler.
 # The soot and jasmin jar files.
-SOOT_DIR="c:/users/neuendor/ptII/lib"
-JAVA_SYSTEM_JAR="C:\j2sdk1.4.2_02\jre\lib\rt.jar"
-SOOT_JAR="${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}"
+SOOT_DIR="/home/celaine/ptII/lib"
+JAVA_SYSTEM_JAR="/usr/java/j2sdk1.4.2_09/jre/lib/rt.jar"
+SOOT_JAR="${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}"
 
 SOOT_JFLAG=
 
@@ -248,6 +338,16 @@ if [ "$PTCOPERNICUS_DIR" = "copernicus" ]; then
 fi
 
 
+#### JNI
+# PTJNI_DIR is set to jni if configure found gcc or cc
+PTJNI_DIR=jni
+PTJNI_PROPERTIES=""
+#if [ "$PTJNI_DIR" = "jni" ]; then
+    # Properties for compiling
+    # These properties are now set in $PTII/lib/ptII.properties
+    #JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=linux -Dptolemy.ptII.java.dir=\"${PTJAVA_DIR_CLEAN}\""
+#fi
+
 #### Joystick
 # PTJOYSTICK_DIR is set to joystick if configure found joystick
 PTJOYSTICK_DIR=
@@ -255,7 +355,7 @@ JOYSTICK_JARS=""
 if [ "$PTJOYSTICK_DIR" = "joystick" ]; then
     # Jar file that contains Joystick interface,
     # see http://sourceforge.net/projects/javajoystick/
-    JOYSTICK_JARS="$(CLASSPATHSEPARATOR)${PTII}/vendors/misc/joystick/Joystick.jar"
+    JOYSTICK_JARS="${CLASSPATHSEPARATOR}${PTII}/vendors/misc/joystick/Joystick.jar"
 fi
 
 
@@ -264,7 +364,7 @@ fi
 PTJYTHON_DIR=python
 JYTHON_JARS=""
 if [ "$PTJYTHON_DIR" = "python" ]; then
-    JYTHON_DIR="c:/users/neuendor/ptII/lib"
+    JYTHON_DIR="/home/celaine/ptII/lib"
     # Jar file that contains Joystick interface,
     # see http://sourceforge.net/projects/javajoystick/
     JYTHON_JARS="${CLASSPATHSEPARATOR}${JYTHON_DIR}/jython.jar"
@@ -284,32 +384,62 @@ if [ "$PTJXTA_DIR" = "jxta" ]; then
 fi
 
 #### PSDF is Parameterized Synchronous Data Flow
-# PTPSDF_DIR is set to psdf if configure found synthesis.jar
+# PTPSDF_DIR is set to psdf if configure found mapss.jar
 PTPSDF_DIR=psdf
 PSDF_JARS=""
 if [ "$PTPSDF_DIR" = "psdf" ]; then 
-    PSDF_DIR="c:/users/neuendor/ptII/lib"
-    PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/synthesis.jar"
+    PSDF_DIR="/home/celaine/ptII/lib"
+    PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/mapss.jar"
+fi
+
+#### Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
+# At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif use Saxon.
+SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
+
+#### TinyOS - Used by the PtinyOS domain
+# FIXME: configure needs to find TinyOS and use a variable like PTTOSROOT
+# In the short term, we just use TOSROOT, which the user should have
+# set during the installation of TinyOS.
+#
+# The problem is that the nesc/configure script does not understand
+# "c:/" style syntax, it works with "/cygdrive/c/", yet Java
+# does not understand /cygdrive/c syntax, so we hack
+TOSJARS=
+TOS_PROPERTIES=
+if [ ! -z "$TOSROOT" ]; then 
+    TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+    TOSJARS=${CLASSPATHSEPARATOR}${TOSROOT_NO_CYGDRIVE}
+    # This property is now set in $PTII/lib/ptII.properties
+    #TOS_PROPERTIES="-Dptolemy.ptII.tosroot=\"${TOSROOT_NO_CYGDRIVE}\""
+fi
+
+# PTINYOS_MOMLROOT differs from TOSROOT (contains .nc files) because if specified,
+# contains the associated .moml files separately.
+if [ ! -z "$PTINYOS_MOMLROOT" ]; then
+    PTINYOS_MOMLROOT_NO_CYGDRIVE=`echo "$PTINYOS_MOMLROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+    TOSJARS=${TOSJARS}${CLASSPATHSEPARATOR}${PTINYOS_MOMLROOT_NO_CYGDRIVE}
+fi
+
+#### NC2MOML - Used by the PtinyOS Domain
+NC2MOML_JARS=${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/jdom.jar${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/nesc-dump.jar
+
+#### PTVR is the Volume Rendering interface
+# http://www.j3d.org/tutorials/quick_fix/volume.html
+# PTVR_DIR is set to vr if configure found $PTII/lib/ptvr.jar
+PTVR_DIR=
+PTVR_JARS=""
+if [ "$PTVR_DIR" = "vr" ]; then 
+    PTVR_JARS="${CLASSPATHSEPARATOR}"
 fi
 
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
 # PTX10_DIR is set to x10 if configure found x10
-PTX10_DIR=x10
+PTX10_DIR=
 X10_JARS=""
 if [ "$PTX10_DIR" = "x10" ]; then 
-    X10_DIR="c:/users/neuendor/ptII/vendors/misc/x10"
-    X10_JARS="${CLASSPATHSEPARATOR}c:/users/neuendor/ptII/vendors/misc/x10/tjx10p-11/lib/x10.jar"
-fi
-
-#### Chic stuff
-# The Chic jar file.
-# PTCHIC_DIR is set to chic if configure found chic
-PTCHIC_DIR=chic
-CHIC_JARS=""
-if [ "$PTCHIC_DIR" = "chic" ]; then
-    CHIC_DIR="c:/users/neuendor/ptII/lib"
-    CHIC_JARS="${CLASSPATHSEPARATOR}${CHIC_DIR}/chic.jar"
+    X10_DIR="${PTII}/vendors/misc/x10"
+    X10_JARS="${CLASSPATHSEPARATOR}${X10_DIR}/tjx10p-12/lib/x10.jar"
 fi
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
@@ -318,27 +448,48 @@ fi
 # Note that CALTROP_JARS should be before SOOT_JARS because
 # CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${X10_JARS}${CHIC_JARS}"
+#
+# If you update ALL_JARS, please update ptolemy/configs/test/makefile
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
 # Use a fairly tight sandbox to provide security when running models
 
-if [ "$1" = "-sandbox" ]; then
+# Default policy file used by -sandbox
+POLICYFILE="$PTII/bin/sandbox"
+
+# Set POLICY_FILE_SET to yes if we see -policyfile policyfile
+POLICY_FILE_SET=no
+if [ "$1" = "-policyfile" ]; then
     shift
-    ALL_JFLAG="-Djava.security.manager \"-Djava.security.policy=${PTII}/bin/sandbox.policy\""
+    POLICY_FILE="$1"
+    shift
+    POLICY_FILE_SET=yes
+fi
+
+# We need the x$1 in case $1 is -x
+if [ "x$1" = "x-sandbox" -o "$POLICY_FILE_SET" = "yes" ]; then
+    # Note that when running "vergil -sandbox" or "vergil -policyfile ...",
+    # merging properties from lib/ptII.properties.in might not work.
+    if [ "$1" = "-sandbox" ]; then
+	shift
+    fi
+    ALL_JFLAG="-Djava.security.manager \"-Djava.security.policy=${POLICY_FILE}\""
     ALL_JAR="${DIVA_JAR}"
     echo "Running in sandbox mode with minimal set of jars."
     if [ $# -eq 0 ]; then
 	echo "Note that the file browser does not work well in the sandbox"
 	echo "  To run a model, specify the model on the command line:"
 	echo "  vergil -sandbox \"$PTII/ptolemy/moml/demo/modulation.xml\""
+	echo "  vergil -sandbox -hyvisual \"$PTII/ptolemy/moml/demo/modulation.xml\""
+	echo "  vergil -policyfile \"$PTII/bin/comm.policy\""
 	echo "  -----"
     fi	
 fi
 
 # Default invocation help string, used by -help, overridden as necessary.
-invokeHelp="$0: Usage: $0 [commonOptions] [commandSpecificOptions] [modelOrClass]"
+invokeHelp="Usage: $base [commonOptions] [commandSpecificOptions] [modelOrClass]"
 
 # Set to no if we should not pass the -help argument to the exec'd process
 # For example, ptjacl does not handle the -help arg, so we exit rather
@@ -347,6 +498,43 @@ passHelpArgument=yes
 
 # Optional jar file
 jarfile="$ALL_JAR"
+
+# If JAVAHOME is not set, then try to set it
+if [ -z "$JAVAHOME" ]; then
+    if [ -d "$PTJAVA_DIR" ]; then
+	JAVAHOME="$PTJAVA_DIR"
+	export JAVAHOME
+    else
+	if [ "$windows" = "yes" ]; then
+	    searchfile=java.exe
+	else
+	    searchfile=java
+	fi
+	oldifs="$IFS"; IFS=":"
+	for i in $PATH
+	do
+	    if [ -x "$i/$searchfile" -a ! -d "$i/$searchfile" ]; then
+		JAVAHOME=`dirname $i`
+		export JAVAHOME
+		break
+	    fi
+	done
+	IFS="$oldifs"
+    fi
+    if [ -z "$JAVAHOME" ]; then
+	if [ -d "/usr/eesww/lang/jdk1.1latest" ]; then
+		# Locally, Java can sometimes be found here.
+		JAVAHOME=/usr/eesww/lang/jdk1.1latest
+	fi
+    fi
+    if [ -z "$JAVAHOME" ]; then
+	echo "$0: Could not find $searchfile in your \$PATH"
+	echo " Please set \$JAVAHOME to the directory that contains your"
+	echo " Java distribution"
+	exit 3
+    fi
+fi
+
 
 # The Java process to run.
 javac="$JAVAHOME/bin/java"
@@ -367,17 +555,33 @@ javaflag="$ALL_JFLAG"
 
 # Flags that are specific to invoking ptolemy programs.  By default,
 # this sets the ptolemy.ptII.dir environment variable.
+# NOTE: vergil will override this property with the value from 
+# $CLASSPATH/lib/ptII.properties.  However, other apps need this property.
 ptflag="\"-Dptolemy.ptII.dir=$PTII\""
 
+# Start up with the US Locale so as to avoid problems with , instead
+# of . in floating point numbers in German and Swedish locales
+# NOTE: vergil will override this property with the value from 
+# $CLASSPATH/lib/ptII.properties.  However, other apps need this property.
+localeflag="-Duser.language=en -Duser.region=US" 
 
-# See $PTII/doc/coding/debuggin.htm for details about using Emacs as an editor.
+# See $PTII/doc/coding/debugging.htm for details about using Emacs as an editor
 # Uncomment this line to pass java this flag to use Emacs as a text editor.
 #USERJAVAPROPERTIES=-Dptolemy.user.texteditor=emacs
+
+quiet=1
 
 commandname=`basename "$0"`
 # check to see if we are building bat files.
 case $commandname in
     makebat)
+	if [ "$1" = "-q" ]; then
+	    # Do not echo the command. Useful for batch mode (repeated
+	    # test runs) to reduce stdout clutter
+	    quiet=1
+	    shift
+	    continue
+	fi
 	help="Make a DOS batch file"
 	makebat="1"
 	commandname=$1
@@ -392,7 +596,10 @@ case $commandname in
 	help="Do deep codegen"
 	javastartupclass=ptolemy.copernicus.kernel.Copernicus
 	javasourcedir=
-	javaflag="-Xmx256M"
+        # Shallow cg of fsm/test/auto/ABPTest.xml,
+	# hdf/kernel/test/auto/TwoLevelHierarchyNullStates.xml
+	# wireless/test/auto/performance.xml all fail if we use Xmx256
+	javaflag="-Xmx384M"
         ;;
     copernicusjhdl)
 	help="Do deep jhdl codegen"
@@ -403,8 +610,8 @@ case $commandname in
     decompile)
 	if [ -f "$JODE_JAR" ]; then
 	    help="Decompile by calling jode, for example: \
-                  $0 ptolemy.util.StringUtilities"
-	    invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] className"
+                  $commandname ptolemy.util.StringUtilities"
+	    invokeHelp="Usage: $commandname [commonOptions] [momlSpecificOptions] className"
 	    javastartupclass=jode.decompiler.Main
 	    javasourcedir=
 	    jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
@@ -445,24 +652,14 @@ and run:
         ;;
     histogram)
 	help="Histogram Plotter"
-	invokeHelp="$0: Usage: $0 [commonOptions] [histogramOptions] [PlotMLOrASCIIFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [histogramOptions] [PlotMLOrASCIIFile]"
 	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
-    htmlconverter)
-	help="Java Plug-in applet converter"
-	javastartupclass=HTMLConverter
-	jarfile="$PTJAVA_DIR_CLEAN/lib/htmlconverter.jar"
-	if [ ! -f "$jarfile" ]; then
-	    echo "$0: '$jarfile' does not exist or is not a file"
-	    exit 2
-	fi    
-	applicationflags="-template \"$PTII_CLEAN/doc/coding/templates/ptExtend.tpl\""
-	;;
     jode)
 	help="Decompile by calling jode, for example: \
-                  $0 ptolemy.util.StringUtilities"
-	invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] className"
+                  $commandname ptolemy.util.StringUtilities"
+	invokeHelp="Usage: $commandname [commonOptions] [momlSpecificOptions] className"
 	javastartupclass=jode.decompiler.Main
 	javasourcedir=
 	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$JODE_JAR${CLASSPATHSEPARATOR}$JHDL_JAR"
@@ -479,38 +676,65 @@ and run:
         help="Mescal UI"
 	javastartupclass=mescal.MescalApplication
 	javasourcedir=mescal
-	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$PTII/mescal/lib/jsat.jar${CLASSPATHSEPARATOR}$PTII/mescal/lib/mescal_java_cup.jar"
+	jarfile="$ALL_JAR${CLASSPATHSEPARATOR}$PTII/mescal/lib/jsat.jar${CLASSPATHSEPARATOR}$PTII/mescal/lib/mescal_java_cup.jar${CLASSPATHSEPARATOR}${PTII}/mescal/lib/chloe.jar"
 	javaflag="$ALL_JFLAG \"-DmescalBinaries=$PTII/mescal/bin\""
+	if [ "$windows" = "yes" ]; then
+	    PATH="${PTII_CYGDRIVE}/mescal/bin;$PATH"
+	    echo "PATH = $PATH" 
+	else    
+	    LD_LIBRARY_PATH="${PTII}/mescal/lib:${PTII}/mescal/bin:/usr/local/lib:${LD_LIBRARY_PATH}"
+	    echo "LD_LIBRARY_PATH = $LD_LIBRARY_PATH" 
+        fi
 	;;	
     moml)
 	help="This command has no default configuration, use this command \
             when you want to run your own graphical editor, for example: \
-	    $0 $PTII_CLEAN/ptolemy/configs/vergilConfigurationDSP.xml"
-	invokeHelp="$0: Usage: $0 [commonOptions] [momlSpecificOptions] configuration.xml [model.xml]"
+	    $commandname $PTII_CLEAN/ptolemy/configs/vergilConfigurationDSP.xml"
+	invokeHelp="Usage: $commandname [commonOptions] [momlSpecificOptions] configuration.xml [model.xml]"
 	javastartupclass=ptolemy.actor.gui.MoMLApplication
 	javasourcedir=
 	jarfile="$ALL_JAR"
 	javaflag="$ALL_JFLAG"
 	;;
+    momllib)
+        help="Invoke the momllib tool to search for .moml files and create \
+            index files in each directory."
+        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.MoMLLib
+        javasourcedir=
+        jarfile="${ALL_JAR}"
+        javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
+        ;;
+    nc2moml)
+        help="Invoke the nc2moml tool to transform .nc components into .moml files."
+        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.Nc2Moml
+        javasourcedir=
+        jarfile="${ALL_JAR}"
+        javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
+        ;;
     ptexecute)
-        help="This command takes one or more models as command line \
-	    arguments.  The models may be either class files or MoMLFiles.  \
+        help="This command takes one or more models as command line arguments. \
+            The models may be either class files or MoMLFiles.  \
 	    This command instantiate models, and if a model is an instance \
 	    of CompositeActor, runs it without a control panel. For example: \
-            \"$0\" \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
-	    This command als understands some of the same arguments as \
+            \"$commandname\" \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
+	    This command also understands some of the same arguments as \
 	    the vergil command, so for example	
-            \"$0\" -full \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
+            \"$commandname\" -full \"$PTII_CLEAN/ptolemy/moml/demo/modulation.xml\"
             will display the model using vergil and run the model."
-	invokeHelp="$0: Usage: $0 [commonOptions] [ptexecuteSpecificOptions] classOrMoMLFile [classOrMoMLFile...]"
+	invokeHelp="Usage: $commandname [commonOptions] [ptexecuteSpecificOptions] classOrMoMLFile [classOrMoMLFile...]"
 	javastartupclass=ptolemy.actor.gui.PtExecuteApplication
 	javasourcedir=
 	;;
     ptinvoke)
 	help="Invoke the class named by the first argument, for example \
-            $0 ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.Butterfly.Butterfly"
-	invokeHelp="$0: Usage: $0 className [commonOptions] [ptinvokeSpecificOptions][classNameOptions]"
+            $commandname ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.Butterfly.Butterfly"
+	invokeHelp="Usage: $commandname className [commonOptions] [ptinvokeSpecificOptions][classNameOptions]"
 	passHelpArgument=no
+	# FIXME: need to process command line args here?
+	if [ "$1" = "-q" ]; then
+	    quiet=1
+	    shift
+	fi
 	javastartupclass=$1
 	javasourcedir=
 	jarfile="$ALL_JAR"
@@ -522,26 +746,26 @@ and run:
     ptjacl)
 	help="Bring up Jacl (a 100% Java implementation of Tcl) in the \
 	    current window"
-	invokeHelp="$0: Usage: $0 [commonOptions] [tclOptions] [TclFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [tclOptions] [TclFile]"
 	passHelpArgument=no
 	javastartupclass=tcl.lang.Shell
 	javasourcedir=
-	jarfile="$PTJACL_JAR${CLASSPATHSEPARATOR}$ALL_JAR${CLASSPATHSEPARATOR}$SOOT_JAR"
+	jarfile="$ALL_JAR"
 	javaflag="$PTJACL_FLAG"
 	;;
     ptjaclapp)
 	help="Bring up Jacl (a 100% Java implementation of Tcl) in a \
 	    separate window"
-	invokeHelp="$0: Usage: $0 [commonOptions] [tclOptions] [TclFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [tclOptions] [TclFile]"
 	passHelpArgument=no
 	javastartupclass=tcl.lang.PanelShellApp
 	javasourcedir=
-	jarfile="$PTJACL_JAR"
+	jarfile="$ALL_JAR"
 	javaflag="$PTJACL_FLAG"
 	;;
     ptstartjini)
 	help="Start up Jini" 
-	invokeHelp="$0: Usage: $0"
+	invokeHelp="Usage: $commandname"
 	passHelpArgument=no
 	javastartupclass=com.sun.jini.example.service.StartService
 	javasourcedir=ptolemy/actor/gui
@@ -560,7 +784,7 @@ and run:
     ptolemy)
         help="Bring up a control panel for each model rather than running it \
 	    like ptexecute, for example: \
-            $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml"
+            $commandname $PTII_CLEAN/ptolemy/moml/demo/modulation.xml"
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
 	jarfile="$ALL_JAR"
@@ -568,19 +792,19 @@ and run:
 	;;
     ptplot)
 	help="Signal Plotter, see \$PTII/ptolemy/plot/doc"
-	invokeHelp="$0: Usage: $0 [commonOptions] [ptplotOptions] [PlotMLOrASCIIFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [ptplotOptions] [PlotMLOrASCIIFile]"
 	javastartupclass=ptolemy.plot.plotml.EditablePlotMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
     pxgraph)
 	help="Plotter compatible with old X11 pxgraph"
-	invokeHelp="$0: Usage: $0 [commonOptions] [pxgraphOptions] [pxgraphOrASCIIFile]"
+	invokeHelp="Usage: $commandname [commonOptions] [pxgraphOptions] [pxgraphOrASCIIFile]"
 	javastartupclass=ptolemy.plot.compat.PxgraphApplication
 	javasourcedir=ptolemy/plot/compat
 	;;
     soot)
 	help="Soot optimizer"
-	invokeHelp="$0: Usage: $0 [commonOptions] [sootOptions]"
+	invokeHelp="Usage: $commandname [commonOptions] [sootOptions]"
 	javastartupclass=soot.Main
 	javasourcedir=
 	jarfile="$SOOT_JAR"
@@ -588,7 +812,7 @@ and run:
 	;;
     tinicomm)
 	help="Tini board communications shell"
-	invokeHelp="$0: Usage: $0 [commonOptions]"
+	invokeHelp="Usage: $commandname [commonOptions]"
 	javastartupclass=JavaKit
 	javasourcedir=
 	jarfile="$TINI_JAR"
@@ -598,7 +822,7 @@ and run:
 	javac="$JAVAHOME/bin/javac"
 	ptflag="" # setting ptII environment variable is not valid under javac
 	help="Tini compiler using embedded libraries"
-	invokeHelp="$0: Usage: $0 [commonOptions]"
+	invokeHelp="Usage: $commandname [commonOptions]"
 	javastartupclass=
 	javasourcedir=
 	jarfile="$TINI_JAR"
@@ -606,7 +830,7 @@ and run:
 	;;	
     tiniconverter)
 	help="Tini board static linker, creates .tini files"
-	invokeHelp="$0: Usage: $0 [commonOptions]"
+	invokeHelp="Usage: $commandname [commonOptions]"
 	javastartupclass=TINIConvertor
 	javasourcedir=
 	jarfile="$TINI_JAR"
@@ -614,17 +838,20 @@ and run:
 	;;
     vergil)
 	help="Invoke the Ptolemy II User Interface, for example: \
-              $0 \
-              or \
-              $0 $PTII_CLEAN/ptolemy/moml/demo/modulation.xml
-              $0 -single    bring up a singleWindow interface"
+              $commandname \
+              $commandname $PTII_CLEAN/ptolemy/moml/demo/modulation.xml \
+              $commandname -single \
+              where the latter brings up a singleWindow interface. \
+              NOTE: properties are read from \$CLASSPATH/lib/ptII.properties \
+              "
+              
 	javastartupclass=ptolemy.vergil.VergilApplication
 
         # Single Window Interface
 	SINGLE_WINDOW_JARS=
 	if [ "$1" = "-single" ]; then
 	    shift
-	    SINGLE_WINDOW_JARS=${CLASSPATHSEPARATOR}${PTII}/lib/xml-apis.jar${CLASSPATHSEPARATOR}${PTII}/lib/xercesImpl.jar
+	    #SINGLE_WINDOW_JARS=${CLASSPATHSEPARATOR}${PTII}/lib/xml-apis.jar${CLASSPATHSEPARATOR}${PTII}/lib/xercesImpl.jar
 	    javastartupclass=thales.vergil.SingleWindowApplication
         fi
 
@@ -634,76 +861,8 @@ and run:
 	;;
 esac
 
-# Special check for Jacl with a better error message
-if [ "$jarfile" = "$PTJACL_JAR" ]; then
-    if [ ! -f "$PTJACL_JAR" ]; then
-	echo "$0: Warning '$PTJACL_JAR' not found."
-	echo "    ptjacl.jar can be found at"
-	echo "	  http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html"
-	echo "    You only need run Jacl if you want to run the Ptolemy II"
-	echo "    test suites."
-    fi
-fi
-
-# Determine if we are on windows and try to set JAVAHOME
-windows=no
-if [ "${OSTYPE-no}" = "no" ]; then
-    case "`uname -s`" in
-    CYGWIN*) 
-	windows=yes;;
-    # Tcsh
-    Windows*)
-	windows=yes;;
-    esac
-else    
-    case "${OSTYPE-no}" in
-    # Cygwin Bash
-    cygwin*)
-	windows=yes;;
-    # Tcsh
-    Windows*)
-	windows=yes;;
-    esac
-fi
-
-# If JAVAHOME is not set, then try to set it
-if [ -z "$JAVAHOME" ]; then
-    if [ -d "$PTJAVA_DIR" ]; then
-	JAVAHOME="$PTJAVA_DIR"
-	export JAVAHOME
-    else
-	if [ "$windows" = "yes" ]; then
-	    searchfile=java.exe
-	else
-	    searchfile=java
-	fi
-	oldifs="$IFS"; IFS=":"
-	for i in $PATH
-	do
-	    if [ -x "$i/$searchfile" -a ! -d "$i/$searchfile" ]; then
-		JAVAHOME=`dirname $i`
-		export JAVAHOME
-		break
-	    fi
-	done
-	IFS="$oldifs"
-    fi
-    if [ -z "$JAVAHOME" ]; then
-	if [ -d "/usr/eesww/lang/jdk1.1latest" ]; then
-		# Locally, Java can sometimes be found here.
-		JAVAHOME=/usr/eesww/lang/jdk1.1latest
-	fi
-    fi
-    if [ -z "$JAVAHOME" ]; then
-	echo "$0: Could not find $searchfile in your \$PATH"
-	echo " Please set \$JAVAHOME to the directory that contains your"
-	echo " Java distribution"
-	exit 3
-    fi
-fi
 
 jdbflags=""
-quiet=0
 # ${1#-} will not work under Solaris 8
 #while [ "${1#-}" != "$1" ]; do
 # jode takes a -d argument, which causes problems unless we use "x..."
@@ -713,23 +872,27 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" ]; do
 	if [ "$help"x != "x" ]; then
 	    # Deal with multiline help messages
 	    echo "$help" | sed 's/   */ \
-/g'
+  /g'
 	fi    
-	echo " Where commonOptions is one or more of:"
-	echo " -debug   Enable debugging, see \$PTII/doc/coding/debugging.htm"
-	echo " -help    Print this help message"
-	echo " -helpall List the Ptolemy II commands that can be invoked"
-	echo " -jdb     Run jdb instead of java, see \$PTII/doc/coding/debugging.htm"
-	echo " -profiler Run under cpu sample profiling"
-        echo " -q       Do not echo the command being run"
-	echo " -sandbox Run model under tight security, see \$PTII/bin/sandbox.policy" 
-	echo " Note that not all combinations above the above arguments make sense."
+	echo "The [commonOptions] can be one or more of:"
+	echo " -debug     Enable debugging with jdb, see \$PTII/doc/coding/debugging.htm"
+	echo " -help      Print this help message"
+	echo " -helpall   List the Ptolemy II commands that can be invoked"
+	echo " -jdb       Run jdb instead of java, see \$PTII/doc/coding/debugging.htm"
+	echo " -profiler  Run under cpu sample profiling"
+        echo " -q         Do not echo the command being run"
+	echo " -sandbox   Run model under tight security, see \$PTII/bin/sandbox.policy" 
+	echo " -policyfile policyfile  Run model with a specified policyfile" 
+	echo " -v         Echo the command being run"
+	echo "Note that not all combinations above the above arguments make sense."
+	echo "Note that [commonOptions] are usually appear early in the command"
+	echo ""
 	# Most commands have their own help built in, but some do not. 
 	if [ "$passHelpArgument" = "no" ]; then
 	    exit
 	else    
 	    echo ""
-	    echo "Now invoking $0 -help for further help and usage information"
+	    echo "Now invoking $commandname -help for command-specific options:"
 	    echo ""
 	fi    
 
@@ -812,56 +975,27 @@ EOF
         shift
         continue
     fi
+    case $1 in
+        -v|-verbose|--verbose)
+	    shift
+            quiet=0
+	    continue
+            ;;
+    esac
+
     # If we get to here, we saw an argument with a leading -, but it
     # was not one of the args we were looking for.
     break;
 done
 
-# Unfortunately, there are issues around setting PTII if your
-# Cygwin installation is installed in c:/cygwin.  
-# Briefly, if Cygwin is installed in c:/cygwin, and your ptII tree
-# is installed in c:/ptII, then if you cd to c:/ptII and do 'pwd',
-# in bash, you will get something like /cygdrive/c/ptII/, which
-# will not work with the JDK.  For details, see
-# $PTII/doc/install.htm#setting.htm 
-if [ "$windows" = "yes" ]; then
-    # Windows via Cygwin32
-    # chdir prints the current directory in DOS format.
-    # The tr command deletes the \r at the end
-    case "`uname -s`" in
-    CYGWIN_ME-*) 
-	# Windows ME is not a real os, and it does not have CMD.
-        # So, we punt
-	PTII_DIR=$PTII;;
-    CYGWIN_98-*) 
-	# Windows 98 is not a real os, and it does not have CMD.
-        # So, we punt
-	PTII_DIR=$PTII;;
-    *)
-	PTII_DIR=`(cd "$PTII"; cmd /c chdir) | tr -d '\r'`
-    esac
-
-    # Set the path to include $PTII/bin so that the Matlab interface
-    # will work.  
-
-    # Unfortunately, we need to change things like d: to /cygdrive/d,
-    # and deal with backslashes.  Note that java does not understand
-    # /cygdrive, so we can't use PTII_CYGDRIVE when we invoke java.
-    PTII_CYGDRIVE=`echo "$PTII_DIR" | sed 's@^\([a-zA-Z]\):@/cygdrive/\1@' | sed 's@\\\\@//@'`
-    
-    # It would be nice to check if the PTII_CYGDRIVE was already in the PATH.
-    PATH="${PTII_CYGDRIVE};$PATH"
-    export PATH
-    base=`/usr/bin/basename "$0"`
-else
-    PTII_DIR=$PTII
-    base=`basename "$0"`
-fi
-
 # Add the user classpath (we prepend to be able to override classes,
-# but Berkeley prefers to append, so append)
+# but Berkeley prefers to append, so that the user does not 
+# accidentally override the path to the Ptolemy II classes, so we append)
 if [ "$CLASSPATH" != "" ]; then
-    CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}${CLASSPATH}"
+	# $CLASSPATH may have double quotes in it.  Sadly, installing
+	# the Quicktime Java tool sets CLASSPATH to something like
+        # .:"C:\Program Files\Java\j2re1.4.2_06\lib\ext\QTJava.zip"
+    CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile${CLASSPATHSEPARATOR}`echo "${CLASSPATH}" | sed 's/"/\\\\"/g'`"
 else
     CLASSPATH="$PTII_DIR${CLASSPATHSEPARATOR}$jarfile"
 fi
@@ -873,16 +1007,29 @@ if [ "$error" = "none" ]; then
     else
     # If JAVAHOME has spaces in it, we need to jump through hoops
     # Use double quotes around ptflag to handle the case where PTII=c:\\ptII
-	str="\"$javac\" $jdbflags $javaflag $ptflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+	str="\"$javac\" $jdbflags $javaflag $ptflag $localeflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
     fi 
     if [ "$quiet" = "0" ]; then echo $str; fi
     
     if [ "$makebat" = "1" ]; then   
+	# Pathname to java binary without forward slashes or /cygdrive/c/
+	backslashJava=`echo ${PTJAVA_DIR_CLEAN}/bin/java | sed 's@/@\\\@g'`
+
+	makebatstr="\"${backslashJava}\" $jdbflags $javaflag $ptflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
+
 	echo "@echo off" > $commandname.bat
 	echo "rem This script was automatically generated by makebat." >> $commandname.bat
 	echo "rem DO NOT EDIT.  Instead, edit ptinvoke.in, and run make." >> $commandname.bat
 	echo "" >> $commandname.bat
-	echo "$str %1 %2 %3 %4 %5 %6 %7 %8 %9" >> $commandname.bat
+	echo "set params=" >> $commandname.bat
+	echo ":start" >> $commandname.bat
+	echo "if \"%1\" == \"\" goto stop" >> $commandname.bat
+	echo "set params=%params% %1" >> $commandname.bat
+	echo "shift" >> $commandname.bat
+	echo "goto start" >> $commandname.bat
+	echo ":stop" >> $commandname.bat
+	echo "" >> $commandname.bat
+	echo "$makebatstr %params%" >> $commandname.bat
 	echo "pause" >> $commandname.bat
     else
 	eval exec $str

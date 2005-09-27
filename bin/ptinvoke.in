@@ -398,7 +398,7 @@ fi
 # At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif use Saxon.
 SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
 
-#### TinyOS - Used by the NC domain
+#### TinyOS - Used by the PtinyOS domain
 # FIXME: configure needs to find TinyOS and use a variable like PTTOSROOT
 # In the short term, we just use TOSROOT, which the user should have
 # set during the installation of TinyOS.
@@ -414,6 +414,16 @@ if [ ! -z "$TOSROOT" ]; then
     # This property is now set in $PTII/lib/ptII.properties
     #TOS_PROPERTIES="-Dptolemy.ptII.tosroot=\"${TOSROOT_NO_CYGDRIVE}\""
 fi
+
+# PTINYOS_MOMLROOT differs from TOSROOT (contains .nc files) because if specified,
+# contains the associated .moml files separately.
+if [ ! -z "$PTINYOS_MOMLROOT" ]; then
+    PTINYOS_MOMLROOT_NO_CYGDRIVE=`echo "$PTINYOS_MOMLROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+    TOSJARS=${TOSJARS}${CLASSPATHSEPARATOR}${PTINYOS_MOMLROOT_NO_CYGDRIVE}
+fi
+
+#### NC2MOML - Used by the PtinyOS Domain
+NC2MOML_JARS=${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/jdom.jar${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/nesc-dump.jar
 
 #### PTVR is the Volume Rendering interface
 # http://www.j3d.org/tutorials/quick_fix/volume.html
@@ -442,7 +452,7 @@ fi
 # a version of java cup
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${PTVR_JARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
@@ -689,6 +699,21 @@ and run:
 	jarfile="$ALL_JAR"
 	javaflag="$ALL_JFLAG"
 	;;
+    momllib)
+        help="Invoke the momllib tool to search for .moml files and create \
+            index files in each directory."
+        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.MoMLLib
+        javasourcedir=
+        jarfile="${ALL_JAR}"
+        javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
+        ;;
+    nc2moml)
+        help="Invoke the nc2moml tool to transform .nc components into .moml files."
+        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.Nc2Moml
+        javasourcedir=
+        jarfile="${ALL_JAR}"
+        javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
+        ;;
     ptexecute)
         help="This command takes one or more models as command line arguments. \
             The models may be either class files or MoMLFiles.  \

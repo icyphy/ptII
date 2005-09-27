@@ -59,6 +59,8 @@ SHELL_FILES = \
 	jode \
 	mescal \
 	moml \
+	momllib \
+	nc2moml \
 	obfuscate \
 	ptexecute \
 	ptjacl \
