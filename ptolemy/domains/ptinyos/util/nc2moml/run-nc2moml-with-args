@@ -12,7 +12,8 @@ fi
 
 MOML_OUTPUT_DIR=$PTII/vendors/ptinyos/moml
 
-DIR_LIST=tos/lib/Counters
+DIR_LIST="tos/lib tos/system tos/platform tos/sensorboards"
+
 
 echo "./run-nc2moml $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST"
 
