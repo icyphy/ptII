@@ -150,7 +150,7 @@ public abstract class AbstractBranchController implements Debuggable {
      *  must be called by a conditional branch just before it dies.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
-     *  @see _branchSucceeded(int)
+     *  @see #_branchSucceeded(int)
      */
     protected void _branchFailed(int branchNumber) {
         if (_debugging) {
@@ -184,7 +184,7 @@ public abstract class AbstractBranchController implements Debuggable {
      *  must be called by a conditional branch just before it dies.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
-     *  @see _branchFailed(int)
+     *  @see #_branchFailed(int)
      */
     protected void _branchSucceeded(int branchID) {
         Object director = _getDirector();
