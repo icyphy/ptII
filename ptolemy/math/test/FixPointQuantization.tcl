@@ -68,26 +68,18 @@ test FixPointQuantization-1.0 {constructor-string} {
 (4.-1,grow,half_ceiling) }}
 
 test FixPointQuantization-1.1 {constructor-bad} {
-    catch { set q [java::new ptolemy.math.FixPointQuantization "" ] } msg1
-    catch { set q [java::new ptolemy.math.FixPointQuantization "1" ] } msg2
-    catch { set q [java::new ptolemy.math.FixPointQuantization "1+2" ] } msg3
-    catch { set q [java::new ptolemy.math.FixPointQuantization "1.-2" ] } msg4
+    #catch { set q [java::new ptolemy.math.FixPointQuantization "" ] } msg1
+    #catch { set q [java::new ptolemy.math.FixPointQuantization "1" ] } msg2
+    #catch { set q [java::new ptolemy.math.FixPointQuantization "1+2" ] } msg3
+    #catch { set q [java::new ptolemy.math.FixPointQuantization "1.-2" ] } msg4
     catch { set q [java::new ptolemy.math.FixPointQuantization "1.1,zzz" ] } msg5
     catch { set q [java::new ptolemy.math.FixPointQuantization "1.1,clip,zzz" ] } msg6
     catch { set q [java::new ptolemy.math.FixPointQuantization "1.1,clip,up,zzz" ] } msg7
     list "
-$msg1
-$msg2
-$msg3
-$msg4
 $msg5
 $msg6
 $msg7 "
 } {{
-java.lang.IllegalArgumentException: A precision string consisting of two integers separated  by a '/', or '.' token is required
-java.lang.IllegalArgumentException: The precision string 1 uses an incorrect precision format
-java.lang.IllegalArgumentException: The precision string 1+2 uses an incorrect precision format
-java.lang.IllegalArgumentException: Incorrect definition of Precision. Do not use negative total length 
 java.lang.IllegalArgumentException: Unknown overflow strategy "zzz".
 java.lang.IllegalArgumentException: Unknown rounding strategy "zzz".
 java.lang.IllegalArgumentException: FixPointQuantization requires at most a precision overflow and rounding, }}
