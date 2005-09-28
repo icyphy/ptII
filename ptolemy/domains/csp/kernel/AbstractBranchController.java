@@ -182,7 +182,7 @@ public abstract class AbstractBranchController implements Debuggable {
      *  blocked until all the branches either call _branchFailed()
      *  or _branchSucceeded(). Thus, either this or _branchSucceeded()
      *  must be called by a conditional branch just before it dies.
-     *  @param branchNumber The ID assigned to the calling branch
+     *  @param branchID The ID assigned to the calling branch
      *   upon creation.
      *  @see #_branchFailed(int)
      */
