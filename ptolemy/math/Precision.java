@@ -31,48 +31,85 @@ package ptolemy.math;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- This class describes the precision of an instance of FixPoint.
- An instance of FixPoint represents a fixed point number as
- two finite bit sequences: an integer part and a fractional part.
- The total length of a fixed point value is the combined length
- of the integer part and the fractional part.
+ This class defines the precision of a signed or unsigned 
+ fixed point value.
+ The precision of a fixed point value is represented as
+ internally as three fields: the number of bits (<i>n</i>), the
+ binary exponent (<i>e</i>), and a sign bit (<i>s</i>).
+ 
+ The number of bits (<i>n</i>) defines the dynamic range of 
+ the format (2^n).
+ 
+ The exponent (<i>e</i>) determines the placement of the 
+ binary point for all values of this format. This binary
+ point placement
+ is "fixed" and is specified within the precision format
+ rather than within individual Fixed point values. 
+ The mantissa bits of all fixed point values
+ using this this precision format are 
+ multiplied by 2^m. Note that <i>m</i> can take on a positive, 
+ negative, 
+ or zero value. This allows the binary point to be placed
+ anywhere necessary and even beyond the bounds of the mantissa
+ (i.e. to the right of the lsb or to the left of the msb). 
+ 
+ The sign value <i>s</i> is used to indicate whether the 
+ fixed point precision value is
+ treated as signed (s=1) or unsigned (s=0). <p>
+ 
+ <b>Signed</b> fixed point formats are represented in a 2's complement
+ format. As a consequence, a single bit is used to represent the 
+ sign of the number. The value of a multi-bit signed
+ number is: <p>
+ 
+ Signed(B)   = 2^m x (- b_{n-1} x 2^{n-1} + \sum_{i=0}^{n-2} b_i x 2^i),
+ 
+ where b_i is the value of bit i of the bit vector. <p> 
+ 
+ <b>Unsigned</b> fixed formats are represented as unsigned binary
+ values. 
+ No bits are used to represent the sign and all values are
+ positive. The actual value of a multi-bit unsigned fixed
+ point number is:<p> 
+  
+ Unsigned(B) = 2^m x (\sum_{i=0}^{n-1} b_i x 2^i) <p>
+
  <p>
- There are two string formats for precision, either of which is
- understood by the constructor that takes a string argument:
- <ul>
- <li>
- (<i>m</i>/<i>n</i>): The total precision of the output is <i>m</i> bits,
- with the integer part having <i>n</i> bits.
- The fractional part thus has <i>m</i>-<i>n</i> bits.
- <li>
- (<i>m</i>.<i>n</i>): The total precision of the output is <i>n</i> + <i>m</i>
- bits, with the integer part having m bits, and the fractional part
- having <i>n</i> bits.
- </ul>
- In both cases, the parentheses are optional.
- <p>
- The FixPoint class represents signed numbers in a 2's complement
- format. As a consequence, a
- single bit is used to represent the sign of the number.
- Therefore, when a precision is
- given of, for example, <i>(6, 3)</i>, then 6 bits are used for the
- integer part and 3 are used for the fractional part. Of the 6 integer
- bits, 5 are used to represent a number and 1 is used for the sign.
- <p>
- In giving a precision, at least a single bit is required to describe
- the sign and thus the minimum precision that can be given to a
- FixPoint is equal to (1.0). Since a single bit is used, the
- FixPoint represents the numbers 0 and -1. Note that a
- precision of (2.0) represents the numbers 1, 0, -1, and -2.
- The representation is two's complement.
+ This class supports several different String formats for specifying and displaying
+ the Precision. These String formats are supported by classes that extend the 
+ {@link PrecisionFormat} class. Several such classes have been created.
+ Any given precision string format can be represented in any of the
+ valid precision string formats. The four supported Precision String formats
+ are shown in the table below. Each String Representation column of the 
+ table represent equivalent Precision formats:
+ 
+ <table border=1>
+   <tr><td><b>Format Name</b></td> <td><b>Format Spec</b></td>
+       <td colspan="6"><center><b>String Representation</b></center></td>
+    </tr>
+   <tr><td>{@link IntegerFractionPrecisionFormat}</td> <td> [integer bits].[fraction bits] </td>   
+       <td>3.2</td>  <td>0.7</td>   <td>-2.12</td>  <td>12.-4</td> <td>32.0</td> <td>U1.7</td> 
+    </tr>
+   <tr><td>{@link LengthIntegerPrecisionFormat}</td><td>[total bits]/[integer bits]</td>     
+       <td>5/3</td>  <td>7/0</td>   <td>10/-2</td>  <td>8/12</td>  <td>32/32</td> <td>U8/1</td>
+    </tr>
+   <tr><td>{@link VHDLPrecisionFormat}</td><td>[MSb position]:[LSb poistion]</td>           
+       <td>2:-2</td> <td>-1:-7</td> <td>-3:-12</td> <td>11:4</td>  <td>31:0</td> <td>U0:-7</td> 
+    </tr>
+   <tr><td>{@link LengthExponentPrecisionFormat}</td><td>[total bits]e[binary point position]</td>
+       <td>5e-2</td> <td>7e-7</td>  <td>10e-12</td> <td>8e4</td>   <td>32e0</td> <td>U8e-7</td>
+    </tr>
+ </table>
+ 
  <p>
  An instance of the class is immutable, meaning
  that its value is set in the constructor and cannot then be modified.
 
- @author Bart Kienhuis
+ @author Bart Kienhuis, Contributor: Mike Wirthlin
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Yellow (kienhuis)
@@ -80,71 +117,42 @@ import java.util.StringTokenizer;
  @see FixPoint
  */
 public class Precision implements Cloneable, Serializable {
+
     /** Construct a Precision object based on the provided string. The
-     *  string can describe the precision in either of the syntaxes
-     *  explained in the description of this class.
+     *  string can describe the precision in any of the 
+     *  syntaxes explained in the description of this class.
      *
      *  @param precision The string representing the precision.
      *  @exception IllegalArgumentException If the precision string
      *   supplied does not match one of the known formats.
      */
-    public Precision(String precision) throws IllegalArgumentException {
-        // Check which format is used
-        boolean done = false;
-        int type = 0;
-        StringTokenizer st = new StringTokenizer(precision);
+    public Precision(String str) throws IllegalArgumentException {
 
-        if (precision.indexOf('/', 0) != -1) {
-            done = true;
-            type = 1;
-            st = new StringTokenizer(precision, "/()\"");
+        Precision p = null;
+        if ( (p = INTEGER_FRACTION.parseString(str)) != null) {
+            _format = INTEGER_FRACTION;
+        } else if ( (p = LENGTH_INTEGER.parseString(str)) != null) {
+            _format = LENGTH_INTEGER;
+        } else if ( (p = LENGTH_EXPONENT.parseString(str)) != null) {
+            _format = LENGTH_EXPONENT;
+        } else if ( (p = VHDL.parseString(str)) != null) {
+            _format = VHDL;
         }
-
-        if (precision.indexOf('.', 0) != -1) {
-            done = true;
-            type = 2;
-            st = new StringTokenizer(precision, ".()\"");
+        if (p != null) {
+            _length = p._length;
+            _exponent = p._exponent;
+            _sign = p._sign;
+            return;
         }
-
-        // throw an exception
-        if ((done == false) || (st.countTokens() < 1) || (st.countTokens() > 2)) {
-            throw new IllegalArgumentException("The precision string "
-                    + precision + " uses an incorrect " + "precision format");
-        }
-
-        int first = 0;
-        int second = 0;
-
-        // The string might contain only a single number...
-        try {
-            first = (new Integer(st.nextToken())).intValue();
-            second = (new Integer(st.nextToken())).intValue();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("A precision string "
-                    + " consists of two integers separated "
-                    + " by a '/', or '.' token");
-        }
-
-        // Depending on the type, interpret the two values
-        if (type == 1) {
-            _length = first;
-            _integerBits = second;
-        }
-
-        if (type == 2) {
-            _length = first + second;
-            _integerBits = first;
-        }
-
-        _fraction = _length - _integerBits;
-
-        if (_length <= 0) {
-            throw new IllegalArgumentException("Incorrect definition of "
-                    + "Precision. Do not use negative total length ");
-        }
+            
+        throw new IllegalArgumentException("Unrecognized Precision String:"+str);
     }
 
-    /** Construct a Precision object based on the provided numbers.
+    /** Construct a Precision object based on the length/integer
+     *  bits format. This constructor will create
+     *  a new <i>signed</i> Precision object with <i>length</i>
+     *  bits and an exponent of <i>-fracBits</i>.
+     *  
      *  @param length The total number of bits.
      *  @param integerBits The number of integer bits.
      *  @exception IllegalArgumentException If the given values are
@@ -153,14 +161,30 @@ public class Precision implements Cloneable, Serializable {
      */
     public Precision(int length, int integerBits)
             throws IllegalArgumentException {
+        this(1, length, integerBits-length);
+    }
+
+    /** Construct a Precision object based on the sign, length, and
+     *  exponent format.
+     * 
+     *  @param sign The presence of a sign bit (1=signed, 0=unsigned).
+     *  @param length The total number of bits.
+     *  @param exponent The bit location of the exponent. 
+     *  @exception IllegalArgumentException Illegal Precision specification.
+     */
+    public Precision(int sign, int length, int exponent)
+            throws IllegalArgumentException {
+        if (sign != 0 && sign != 1)
+            throw new IllegalArgumentException("Incorrect definition of "
+                    + "Precision. Sign must be 0 or 1");
         if (length <= 0) {
             throw new IllegalArgumentException("Incorrect definition of "
                     + "Precision. Do not use negative total length ");
         }
 
+        _sign = sign;
         _length = length;
-        _integerBits = integerBits;
-        _fraction = length - integerBits;
+        _exponent = exponent;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -174,15 +198,16 @@ public class Precision implements Cloneable, Serializable {
     }
 
     /** Return true if the indicated object is an instance of Precision
-     *  and the number of integer and fractional bits both match.
+     *  and the precision format matches exactly.
      *  @return True if the precisions are equal.
      */
     public boolean equals(Object object) {
         if (object instanceof Precision) {
             Precision other = (Precision) object;
 
-            if ((other._fraction == _fraction)
-                    && (other._integerBits == _integerBits)) {
+            if ((other._length== _length)
+                    && (other._exponent == _exponent)
+                    && (other._sign == _sign)) {
                 return true;
             }
         }
@@ -190,56 +215,126 @@ public class Precision implements Cloneable, Serializable {
         return false;
     }
 
-    /** Return the maximum obtainable value in this precision. When
-     *  <i>m</i> represents the total number of bits and <i>n</i> the
-     *  number of integer bits, this is equal to 2^(n-1) -
-     *  1/(2^(m-n)).
-     *  NOTE: This method should be package friendly, not public.
-     *  It is not intended to be used outside this package.
+    /** Return the maximum obtainable value in this precision. 
+     *  
+     *  For signed values, this number is 2^e x (2^(n-1)-1).
+     *  For unsigned values, this number is 2^e x (2^n - 1).
+     *
      *  @return The maximum value obtainable for this precision.
      */
     public BigDecimal findMaximum() {
-        // FIXME: Why does this return a BigDecimal instead of a FixPoint?
-        // Because it's intended for internal use.
-        // It should be package friendly.
-        BigInteger intValue = BigInteger.ZERO.setBit(_length - 1);
+
+        BigInteger intValue = BigInteger.ZERO.setBit(_length - _sign);
         intValue = intValue.subtract(BigInteger.ONE);
 
-        double val = intValue.doubleValue() * Math.pow(0.5, _fraction);
+        double val = intValue.doubleValue() * Math.pow(2, _exponent);
         return new BigDecimal(val);
     }
 
-    /** Return the minimum obtainable value for this precision. When
-     *  <i>m</i> represents the total number of bits and <i>n</i> the
-     *  number of integer bits, this is equal to -2^(n-1).
-     *  NOTE: This method should be package friendly, not public.
-     *  It is not intended to be used outside this package.
+    /** Return the minimum obtainable value for this precision. 
+     * 
+     *  For signed values, this number is -(2^(n-1)) x 2^e
+     *  For unsigned values, this number is 0.
+     *  
      *  @return The minimum value obtainable for the given precision..
      */
     public BigDecimal findMinimum() {
-        // FIXME: Why does this return a BigDecimal instead of a FixPoint?
-        // Because it's intended for internal use.
-        // It should be package friendly.
+
+        if (!isSigned())
+            return new BigDecimal(0);
+        
         BigInteger intValue = BigInteger.ZERO.setBit(_length - 1);
         intValue = intValue.negate();
 
-        double val = intValue.doubleValue() * Math.pow(0.5, _fraction);
+        double val = intValue.doubleValue() * Math.pow(2, _exponent);
         return new BigDecimal(val);
     }
 
+    /** Return the incremental value between discrete values under
+     * the given Precision format. This is calculated as 2^exponent.
+     * 
+     * @return Incremental (epsilon) value.
+     */
+    public BigDecimal getEpsilon() {
+        return new BigDecimal(Math.pow(2, _exponent));
+    }
+    
+    /** Return the location of the binary exponent.
+     *  @return the location of the fixed binary exponent.
+     */
+    public int getExponent() {
+        return _exponent;
+    }
+
+
     /** Return the number of bits representing the fractional part.
+     *  The is computed as -exponent.
      *  @return The length of the fractional part.
      */
     public int getFractionBitLength() {
-        return _fraction;
+        return - _exponent;
     }
 
     /** Return the number of bits representing the integer part.
+     *  This is computed as length + exponent.
      *  @return the length of the integer part.
      */
     public int getIntegerBitLength() {
-        return _integerBits;
+        return _length + _exponent;
     }
+
+    /**
+     * Return the bit position of the least significant bit of the
+     * given fixed point precision. This value is the same as
+     * the exponent value of this format. Bit 0 refers to
+     * the bit just to the left of the binary point. 
+     *  
+     * @return Least significant bit position.
+     */
+    public int getLeastSignificantBitPosition() {
+        return _exponent;
+    }
+    
+    
+    /** Return the maximum integer value <i>before</i> scaling so that
+     *  quantization levels are represented by adjacent integers.
+     *  
+     *  For signed values, this number is 2^(n-1) - 1
+     *  For unsigned values, this number is 2^(n) - 1
+     *  @return The maximum inclusive value.
+     */
+    public BigInteger getMaximumUnscaledValue() {
+        
+        BigInteger val = BigInteger.ZERO.setBit(_length-_sign);        
+        return val.subtract(BigInteger.ONE);
+    }
+
+    /** Return the minimum integer value <i>before</i> scaling so
+     * that quantization levels are represented by adjacent
+     * integers. 
+     * 
+     *  For signed values, this number is -(2^(n-1))
+     *  For unsigned values, this number is 0.
+     *  
+     *  @return The minimum unscaled value value obtainable for the given precision.
+     */
+    public BigInteger getMinimumUnscaledValue() {
+        if (isSigned())
+            return BigInteger.ZERO.setBit(_length-1).negate();
+        return BigInteger.ZERO;
+    }
+
+    /**
+     * Return the bit position of the most significant bit of the
+     * given fixed point precision. Bit 0 refers to
+     * the bit just to the left of the binary point.
+     *  
+     * @return Least significant bit position.
+     */
+    public int getMostSignificantBitPosition() {
+        return _exponent + _length - 1;
+    }
+    
 
     /** Return the total number of bits.
      *  @return the total number of bits.
@@ -248,24 +343,59 @@ public class Precision implements Cloneable, Serializable {
         return _length;
     }
 
+    /** Return the total number of discrete values possible.
+     *  @return the total number of levels.
+     */
+    public double getNumberOfLevels() {
+        return Math.pow(2.0, _length);
+    }
+
+
+    /** Return the sign (0=unsigned, 1=signed).
+     *  @return the sign status.
+     */
+    public int getSign() {
+        return _sign;
+    }
+    
+    
+    /**
+     * Determine if the fixed point format is signed or not.
+     * 
+     * @return true if format is signed
+     */
+    public boolean isSigned() {
+        return _sign == 1;
+    }
+    
     /** Return the precision that is the maximum of the two supplied
-     *  precisions in both the integer and fractional part. This
+     *  precisions in both the length and exponent. This
      *  method is used to align instances of FixPoint onto a single
-     *  precision representation.
+     *  precision representation. If either Precision object is
+     *  signed, the new Precision object will be signed.
+     *  
      *  @param precisionA A precision
      *  @param precisionB Another precision
      *  @return A precision at least as precise as the two arguments.
      */
     public static Precision matchThePoint(Precision precisionA,
             Precision precisionB) {
-        int bitright = Math.max(precisionA.getFractionBitLength(), precisionB
-                .getFractionBitLength());
-        int newIntLength = Math.max(precisionA.getIntegerBitLength(),
-                precisionB.getIntegerBitLength());
-        int newLength = newIntLength + bitright;
-        return new Precision(newLength, newIntLength);
+ 
+        int minExponent = (precisionA._exponent < precisionB._exponent) ?
+            precisionA._exponent : precisionB._exponent;
+
+        int aMax = precisionA.getMostSignificantBitPosition();
+        int bMax = precisionB.getMostSignificantBitPosition();
+        
+        int maxMSb = (aMax > bMax) ? aMax : bMax; 
+        int newLength = maxMSb - minExponent + 1; 
+
+        int newSign = ( precisionA._sign == 1 || precisionB._sign == 1) ?
+                1 : 0;
+        return new Precision(newSign,newLength,minExponent);
     }
 
+    
     /** Return a string representing this precision. The string is
      *  expressed as "(<i>m.n</i>)", where <i>m</i>
      *  indicates the number of integer bits and <i>n</i> represents
@@ -273,19 +403,468 @@ public class Precision implements Cloneable, Serializable {
      *  @return A string representing this precision.
      */
     public String toString() {
-        String x = "(" + _integerBits + "." + (_length - _integerBits) + ")";
-        return x;
+        return _format.printPrecisionFormat(this);
     }
 
+    /**
+     * Return a string representation of this format in one of several
+     * styles. 
+     * @param format The String format represented desired for printing.
+     * @return
+     */
+    public String toString(PrecisionFormat format) {
+        return format.printPrecisionFormat(this);
+    }
+
+    /** Defines a String format for specifying a Precision object.
+     * This abstract class defines a method for parsing the string
+     * format and a method for creating a valid String representation
+     * of a Precision object. The printing and parsing methods should
+     * be consistent (i.e. the parsing method should successfully parse
+     * the result of the printing method).  
+     */
+    public abstract class PrecisionFormat {
+
+        /** 
+         * Parse the given String argument using the rules of the specific
+         * PrecisionFormat that is defined. This method will return a
+         * valid Precision object from the STring. If the String parsing
+         * does not produce a valid match, this method will return a null. 
+         * If the String match is succesful but there is a problem in
+         * the interpretation of the match, this method will throw
+         * a IllegalArgumentException.  
+         *  
+         * @param str
+         * @return A Precision object. Returns a null if the String does
+         * not match the particular string format.
+         * @throws IllegalArgumentException This Exception is thrown when
+         * a match occurs but there is a problem interrpreting the matching
+         * String.
+         */
+        public abstract Precision parseString(String str) throws IllegalArgumentException;
+        
+        /** Creates a valid String representation of the Precision object
+         * based on the rules of the given string format. The format of this
+         * String should be consistent with the format used in the 
+         * parseString method.
+         * 
+         * @param p Precision object to represent as a String.
+         * @return String representing the Precision object
+         */
+        public abstract String printPrecisionFormat(Precision p);
+
+        /** Parse a String as an integer. This method calls the
+         * Integer.parseInt method but throws the IllegalArgumentException
+         * instead of the NumberFormatException when there is a problem. 
+         * 
+         * @param str
+         * @return
+         * @throws IllegalArgumentException
+         */
+        public int parseInteger(String str) throws IllegalArgumentException {
+            int value = 0;
+            try  {
+                value = Integer.parseInt(str);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid integer number:"+str+" "+e);
+            }
+            return value;
+        }
+
+        /** Parse the 'U' or 'S' sign specifier.
+         * 
+         * @return Return a 0 for unsigned and a 1 for signed.
+         * @throws IllegalArgumentException Exception thrown when the 
+         * string does not match the 'U' or 'S' characters.
+         */
+        public int parseSignString(String str) throws IllegalArgumentException {
+            //System.out.println("str="+str);
+            if (str.equalsIgnoreCase("U"))
+                return 0;
+            else if (str.equalsIgnoreCase("S"))
+                return 1;
+            throw new IllegalArgumentException("Invalid signed format string:'"+str+
+                    "'. Expecting 'U' or 'S'");
+        }
+        
+        /** Regular expression definition for an optional left parenthesis. **/
+        public final String OPTIONAL_L_PARAN = "\\(?";
+
+        /** Regular expression definition for an optional left parenthesis
+         *  or left bracket. **/        
+        public final String OPTIONAL_L_PARANBRACKET = "[\\(\\[]?";
+
+        /** Regular expression definition for an optional right parenthesis. **/
+        public final String OPTIONAL_R_PARAN = "\\)?";
+
+        /** Regular expression definition for an optional right parenthesis
+         *  or left bracket. **/        
+        public final String OPTIONAL_R_PARANBRACKET = "[\\)\\]]?";
+
+        /** Regular expression for a grouped signed integer (positive or negative). **/
+        public final String SIGNED_INTEGER_GROUP = "(-?\\d+)";
+
+        /** Regular expression for an optional 'S' or 'U'. **/
+        public final String US_OPT_GROUP = "([USus])?";
+
+        /** Regular expression for a grouped unsigned integer. **/
+        public final String UNSIGNED_INTEGER_GROUP = "(\\d+)";
+
+        /** Regular expression for optional white space. **/ 
+        public final String WHITE_SPACE = "\\s*";
+
+    }
+        
+    /** Defines a Precision string format using the INTEGER.FRACTION
+     * precision format. The INTEGER value specifies the number of 
+     * integer bits and the FRACTION value specifies the number of
+     * fractional bits. Negative values are allowed for either INTEGER
+     * or FRACTION (but not both). <p>
+     * 
+     * This format supports the specification of either signed or 
+     * unsigned values. The character 'U' must preceed the 
+     * integer.fraction format to specify an unsigned value. An 'S' character
+     * may be applied to specify a signed number. If no 'U' or 'S'
+     * signed specification is provided, the precision will default
+     * to a signed value. <p>
+     *
+     * The exponent in this format is set to -fraction.
+     * <p>
+     * Parenthesis or brackets are optional around this specification. 
+     * 
+     * Examples: 
+     * <ul>
+     *   <li> (3.5)
+     *   <li> (U2.1) 
+     *   <li> [S2.1] 
+     *   <li> [S6.-2] 
+     *   <li> S-2.4 
+     * </ul>
+     * 
+     * When printed, this format will always use paranthesis and 
+     * only use the signed format specification for unsigned numbers
+     * (i.e. 'U' used for unsigned numbers and NO 'S' for signed
+     * numbers).
+     * 
+     */
+    public class IntegerFractionPrecisionFormat extends PrecisionFormat {
+        
+        protected final String regex = 
+            //(S3.2)
+            WHITE_SPACE + OPTIONAL_L_PARANBRACKET + WHITE_SPACE + US_OPT_GROUP +
+            WHITE_SPACE + SIGNED_INTEGER_GROUP + "\\." + SIGNED_INTEGER_GROUP + 
+            WHITE_SPACE + OPTIONAL_R_PARANBRACKET + WHITE_SPACE;                    
+
+        public Precision parseString(String str) throws IllegalArgumentException {
+            int sign=1;
+            int intLength = 0;
+            int fracLength = 0;
+            Matcher matcher;
+
+            matcher = Pattern.compile(regex).matcher(str);
+            if (matcher.matches())  {
+                //for (int i = 0; i <= matcher.groupCount();i++)
+                //    System.out.println(i+":"+matcher.group(i));
+                String signString = matcher.group(1);
+                if (signString != null)
+                    sign = parseSignString(signString);
+                intLength = parseInteger(matcher.group(2));
+                fracLength = parseInteger(matcher.group(3));
+                int length = fracLength + intLength;
+                int exponent = -fracLength;
+                if (length < 1)
+                    throw new IllegalArgumentException("Precision format must be at least 1 bit:"+str);
+                return new Precision(sign, length, exponent);
+                
+            }
+            return null;
+        }
+        
+        public String printPrecisionFormat(Precision p) {
+            String sign = (p.isSigned()) ? "" : "U";
+            return "(" + sign + p.getIntegerBitLength() + "." + 
+                p.getFractionBitLength() + ")";
+        }
+    }
+    
+    /** Defines a Precision string format using the LENGTH/INTEGER
+     * precision format. The LENGTH value specifies the length 
+     * of the format in bits. The INTEGER field specifies the
+     * number of integer bits (i.e. bits to the left of the
+     * binary point). Negative values are allowed for the INTEGER
+     * field. <p>
+     * 
+     * The exponent in this format is set to -(length - integer);
+     * <p>
+     * 
+     * This format supports the specification of either signed or 
+     * unsigned values. The character 'U' must preceed the 
+     * LENGTH/INTEGER format to specify an unsigned value. An 'S' character
+     * may be applied to specify a signed number. If no 'U' or 'S'
+     * signed specification is provided, the precision will default
+     * to a signed value. <p>
+     *
+     * Parenthesis or brackets are optional around this specification. 
+     * A comma (,) may be used in place of the slash ('/').
+     * 
+     * Examples: 
+     * <ul>
+     *   <li> (3/2)
+     *   <li> (U5/0) 
+     *   <li> [8,-2] 
+     *   <li> [S6,6] 
+     *   <li> S8/4 
+     * </ul>
+     * 
+     * When printed, this format will always use paranthesis, always
+     * use the slash '/', and
+     * only use the signed format specification for unsigned numbers
+     * (i.e. 'U' used for unsigned numbers and NO 'S' for signed
+     * numbers). 
+     * 
+     */
+    public class LengthIntegerPrecisionFormat extends PrecisionFormat {
+        
+        protected final String regex = 
+            //(S3,2) or (S3/2)
+            WHITE_SPACE + OPTIONAL_L_PARANBRACKET + WHITE_SPACE + US_OPT_GROUP +
+            WHITE_SPACE + UNSIGNED_INTEGER_GROUP + "[,/]" + SIGNED_INTEGER_GROUP + 
+            WHITE_SPACE + OPTIONAL_R_PARANBRACKET + WHITE_SPACE;                    
+
+        public Precision parseString(String str) throws IllegalArgumentException {
+            int sign=1;
+            int intLength = 0;
+            int length = 0;
+            Matcher matcher;
+
+            matcher = Pattern.compile(regex).matcher(str);
+            if (matcher.matches())  {
+                
+                String signString = matcher.group(1);
+                if (signString != null)
+                    sign = parseSignString(signString);
+                length = parseInteger(matcher.group(2));
+                intLength = parseInteger(matcher.group(3));
+                int exponent = -(length - intLength);
+                if (length < 1)
+                    throw new IllegalArgumentException("Precision format must be at least 1 bit:"+str);
+                return new Precision(sign, length, exponent);
+                
+            }
+            return null;
+        }
+        
+        public String printPrecisionFormat(Precision p) {
+            String sign = (p.isSigned()) ? "" : "U";
+            return "(" + sign + p.getNumberOfBits() + "/" + 
+                p.getIntegerBitLength() + ")";
+        }
+    }
+
+    /** Defines a Precision string format using the LENGTHeEXPONENT
+     * precision format. The LENGTH value specifies the length 
+     * of the format in bits and the EXPONENT specifies the
+     * location of the exponent. Negative values are allowed for the 
+     * EXPONENT field. <p>
+     * 
+     * This format supports the specification of either signed or 
+     * unsigned values. The character 'U' must preceed the 
+     * LENGTH/INTEGER format to specify an unsigned value. An 'S' character
+     * may be applied to specify a signed number. If no 'U' or 'S'
+     * signed specification is provided, the precision will default
+     * to a signed value. <p>
+     *
+     * Parenthesis or brackets are optional around this specification. 
+     * 
+     * Examples: 
+     * <ul>
+     *   <li> (3e2)
+     *   <li> (U5e0) 
+     *   <li> [8e-2] 
+     *   <li> [S6e6] 
+     *   <li> S8e-4 
+     * </ul>
+     * 
+     * When printed, this format will always use paranthesis and
+     * only use the signed format specification for unsigned numbers
+     * (i.e. 'U' used for unsigned numbers and NO 'S' for signed
+     * numbers). 
+     * 
+     */
+    public class LengthExponentPrecisionFormat extends PrecisionFormat {
+        
+        protected final String regex = 
+            //(S3e2)
+            WHITE_SPACE + OPTIONAL_L_PARANBRACKET + WHITE_SPACE + US_OPT_GROUP +
+            WHITE_SPACE + UNSIGNED_INTEGER_GROUP + "e" + SIGNED_INTEGER_GROUP + 
+            WHITE_SPACE + OPTIONAL_R_PARANBRACKET + WHITE_SPACE;                    
+
+        public Precision parseString(String str) throws IllegalArgumentException {
+            int sign=1;
+            int exponent = 0;
+            int length = 0;
+            Matcher matcher;
+
+            matcher = Pattern.compile(regex).matcher(str);
+            if (matcher.matches())  {
+                
+                String signString = matcher.group(1);
+                if (signString != null)
+                    sign = parseSignString(signString);
+                length = parseInteger(matcher.group(2));
+                exponent = parseInteger(matcher.group(3));
+                if (length < 1)
+                    throw new IllegalArgumentException("Precision format must be at least 1 bit:"+str);
+                return new Precision(sign, length, exponent);
+                
+            }
+            return null;
+        }
+        
+        public String printPrecisionFormat(Precision p) {
+            String sign = (p.isSigned()) ? "" : "U";
+            return "(" + sign + p.getNumberOfBits() + "e" + 
+                p.getExponent() + ")";
+        }
+    }
+
+    /** Defines a Precision string format using the VHDL MSB:LSB
+     * precision format. The MSB value specifies the location
+     * of the most significant bit and LSB specifies the location
+     * of the least significatn bit. 
+     * Negative values are allowed for both MSB and LSB so long as
+     * the MSB is greather than the LSB. <p>
+     * 
+     * This format supports the specification of either signed or 
+     * unsigned values. The character 'U' must preceed the 
+     * MSB:LSB format to specify an unsigned value. An 'S' character
+     * may be applied to specify a signed number. If no 'U' or 'S'
+     * signed specification is provided, the precision will default
+     * to a signed value. <p>
+     *
+     * Parenthesis or brackets are optional around this specification. 
+     * 
+     * Examples: 
+     * <ul>
+     *   <li> (2:3)
+     *   <li> (4:-3) 
+     *   <li> [7:0] 
+     *   <li> [-3:-8] 
+     *   <li> 4:3 
+     * </ul>
+     * 
+     * When printed, this format will always use paranthesis and
+     * only use the signed format specification for unsigned numbers
+     * (i.e. 'U' used for unsigned numbers and NO 'S' for signed
+     * numbers). 
+     * 
+     */
+    public class VHDLPrecisionFormat extends PrecisionFormat {
+        
+        protected final String regex = 
+            // ([US]<digit>:<digit>)
+            WHITE_SPACE + OPTIONAL_L_PARAN + WHITE_SPACE + US_OPT_GROUP +
+            WHITE_SPACE + SIGNED_INTEGER_GROUP + WHITE_SPACE + 
+            ":" + WHITE_SPACE + SIGNED_INTEGER_GROUP + WHITE_SPACE +
+            OPTIONAL_R_PARAN + WHITE_SPACE;                    
+
+        public Precision parseString(String str) {
+            int sign = 1;
+            int msb = 0;
+            int lsb = 0;
+            Matcher matcher;
+
+            matcher = Pattern.compile(regex).matcher(str);
+            if (matcher.matches())  {
+                String signString = matcher.group(1);
+                if (signString != null)
+                    sign = parseSignString(signString);
+                msb = parseInteger(matcher.group(2));
+                lsb = parseInteger(matcher.group(3));
+
+                if (msb <= lsb)
+                    throw new IllegalArgumentException("MSb of VHDL format must be greater than LSb:"+str);
+                int length = msb - lsb + 1;
+                int exponent = lsb;
+                return new Precision(sign, length, exponent);
+            }
+            return null;
+        }
+        
+        public String printPrecisionFormat(Precision p) {
+            String sign = (p.isSigned()) ? "" : "U";
+            return "(" + sign + p.getMostSignificantBitPosition()+":"+
+            p.getLeastSignificantBitPosition() + ")";            
+        }
+    }
+
+    public final PrecisionFormat INTEGER_FRACTION = new IntegerFractionPrecisionFormat();
+    public final PrecisionFormat LENGTH_INTEGER = new LengthIntegerPrecisionFormat();
+    public final PrecisionFormat VHDL = new VHDLPrecisionFormat();
+    public final PrecisionFormat LENGTH_EXPONENT = new LengthExponentPrecisionFormat();
+
+    public static void precision(String str) {
+        System.out.print(str+"=");
+        Precision p = null;
+        try {
+            p = new Precision(str);
+            System.out.println(p+" max="+p.findMaximum()+" min="+p.findMinimum()+
+                    " eps="+p.getEpsilon()+" levels="+p.getNumberOfLevels());
+        } catch (IllegalArgumentException e){
+            System.out.println(e);
+        }
+    }
+
+    public static void main(String args[]) {
+      
+        precision("(3.2)");
+        precision("( U1.2)");
+        precision("(8.-2)");
+        
+        precision("(8/2)");
+        precision("[ 7,3 ]");
+        precision("[U 9,9 ]");
+        
+        precision("5e-2");
+        precision("U8e-1");
+        
+        precision("(3:1)");
+        precision("(U2:-1)");
+        
+        /*
+        precision("(1,34,0)");
+        precision(" (1,7,3)");
+        precision(" (1, 12,-3 ) ");
+        precision("(0,34,0)");
+        precision("0,7,3");
+        precision(" 1, 12 , -3");
+        
+        precision("(4/5)");
+        precision(" ( 4/ 6)");
+        precision("4 / 1");
+        precision("  5  / -2 ");
+
+        precision("[9,9]");
+        
+        precision("(4.5)");
+        precision("4.-1");
+        precision("  (4.9  )");
+    */
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The total number of bits. */
     private int _length = 0;
 
-    /** The number of bits in the integer part. */
-    private int _integerBits = 0;
+    /** The exponent for all values of this type. */
+    private int _exponent = 0;
 
-    /** The number of bits in the fractional part. */
-    private int _fraction = 0;
+    /** The presence of a sign bit (0=unsigned, 1=signed) */
+    private int _sign = 0;
+    
+    /** The precision format used for parsing/printing precision information */
+    private PrecisionFormat _format = INTEGER_FRACTION;
+
 }
