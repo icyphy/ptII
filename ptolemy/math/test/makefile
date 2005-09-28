@@ -80,6 +80,7 @@ JSIMPLE_TESTS = \
 	LongMatrixMath.tcl \
 	MatrixMath.tcl \
 	Overflow.tcl \
+	Precision.tcl \
 	Quantization.tcl \
 	Quantizer.tcl \
 	SignalProcessing.tcl
