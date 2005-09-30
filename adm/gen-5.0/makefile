@@ -367,6 +367,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
 		ptolemy/moml/jxta/JXTAClassLoader.class \
 		ptolemy/moml/jxta/JXTALibrary.class \
+	        ptolemy/plot/ptplotlocales \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
 		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
 
