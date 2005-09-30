@@ -449,6 +449,17 @@ public class CSPDirector extends CompositeProcessDirector implements
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Set to true when the director enters the wrapup() method. Any call
+     *  to _actorDelayed() when this flag is true will simply cancel the
+     *  delay and return. The purpose is to avoid the deadlock that happens
+     *  when an actor is delayed after the director calls super.wrapup() in
+     *  which it waits for all actors to stop.
+     */
+    protected boolean _inWrapup = false;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Get the earliest time which an actor has been delayed to. This
@@ -501,13 +512,6 @@ public class CSPDirector extends CompositeProcessDirector implements
     // A sorted list of the times of delayed actors. The time the model
     // will next be advanced to is the time at the top of the list.
     private List _delayedActorList;
-
-    // Set to true when the director enters the wrapup() method. Any call
-    // to _actorDelayed() when this flag is true will simply cancel the
-    // delay and return. The purpose is to avoid the deadlock that happens
-    // when an actor is delayed after the director calls super.wrapup() in
-    // which it waits for all actors to stop.
-    private boolean _inWrapup = false;
 
     private static double TOLERANCE = Math.pow(10, -10);
 

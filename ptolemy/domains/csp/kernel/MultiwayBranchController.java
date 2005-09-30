@@ -166,9 +166,9 @@ public class MultiwayBranchController extends AbstractBranchController implement
                         if (receivers != null && receivers.length >= 1) {
                             receivers[0].putToAll(token, receivers);
                         }
-                        int result = onlyBranch.getID();
                         if (_debugging) {
-                            _debug("** The only enabled branch (a ConditionalSend) has succeeded: " + result);
+                            _debug("** The only enabled branch (a ConditionalSend) has succeeded: "
+                                    + onlyBranch.getID());
                         }
                         return true;
                     } else {
@@ -176,9 +176,9 @@ public class MultiwayBranchController extends AbstractBranchController implement
                         Receiver[] receivers = onlyBranch.getReceivers();
                         Token token = receivers[0].get();
                         onlyBranch._setToken(token);
-                        int result = onlyBranch.getID();
                         if (_debugging) {
-                            _debug("** The only enabled branch (a ConditionalReceive) has succeeded: " + result);
+                            _debug("** The only enabled branch (a ConditionalReceive) has succeeded: "
+                                    + onlyBranch.getID());
                         }
                         return true;
                     }

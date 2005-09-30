@@ -373,7 +373,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     // The null argument is because we are not blocked on a specific
                     // receiver, but rather on multiple receivers.
                     controller._branchBlocked(null);
-                    ((CSPReceiver)receivers[0])._checkFlagsAndWait();
+                    CSPReceiver._waitForChange(director);
                 } // while(true)
                 
                 // When we get here, it is time to convert the conditional

@@ -28,17 +28,12 @@
  */
 package ptolemy.domains.csp.kernel;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.BoundaryDetector;
-import ptolemy.actor.process.Branch;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
@@ -75,6 +70,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     public CSPReceiver() {
         super();
         _boundaryDetector = new BoundaryDetector(this);
+        _thisReceiver[0][0] = this;
     }
 
     /** Construct a CSPReceiver with the specified container.
@@ -85,6 +81,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     public CSPReceiver(IOPort container) throws IllegalActionException {
         super(container);
         _boundaryDetector = new BoundaryDetector(this);
+        _thisReceiver[0][0] = this;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,101 +102,91 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   running i.e it was not allowed to run to completion.
      */
     public Token get() throws TerminateProcessException {
-        CSPDirector director = _getDirector();
+        return getFromAll(_thisReceiver, _getDirector())[0][0];
+    }
+
+    /** Get from all receivers in the specified array.
+     *  This method does not return until all the gets are complete.
+     *  @param receivers The receivers, which are assumed to
+     *   all be instances of CSPReceiver.
+     *  @param director The director, on which this method synchronizes.
+     *  @return An array of arrays tokens, where the structure of the array is
+     *   the same as the structure of the specified array of receivers. Note that
+     *   if the argument has any null values in the array of arrays, then so will
+     *   the returned array or arrays.
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs is to be terminated.
+     */
+    public static Token[][] getFromAll(Receiver[][] receivers, CSPDirector director)
+            throws TerminateProcessException {
+        if (receivers == null || receivers.length == 0) {
+            throw new InternalErrorException(
+                    "No receivers!");
+        }
         synchronized(director) {
-            Token result = null;
-            try {
-                if (_putWaiting != null) {
-                    Thread otherThread = _putWaiting;
-                    // This will unblock the put() thread.
-                    _putWaiting = null;
-                    // Notify the director that the put() is no longer blocked.
-                    // NOTE: This should be done here rather than
-                    // in the put() method because since the put()
-                    // method is running in another thread, it could
-                    // take arbitrarily long for it to resume and
-                    // notify the director. This could result in
-                    // spurious deadlock detection.
-                    director.threadUnblocked(otherThread, this);
-
-                    result = _token;
-                    // When the corresponding put() completes, it will reset this to true.
-                    _rendezvousComplete = false;
-                    // This will wake up the put() thread.
-                    director.notifyAll();
-                    
-                    // Wait for the put() thread to wake up.
-                    while (!_rendezvousComplete) {
-                        _checkFlagsAndWait();
+            Thread getFromAllThread = Thread.currentThread();
+            for (int i = 0; i < receivers.length; i++) {
+                if (receivers[i] != null) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        if (receivers[i][j] != null) {
+                            CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                            castReceiver._getWaiting = getFromAllThread;
+                            castReceiver._getReceivers = receivers;
+                            // If this particular get unblocks a getting thread,
+                            // then mark it unblocked now.
+                            if (_isGetPendingOnAll(castReceiver._putReceivers)) {
+                                director.threadUnblocked(castReceiver._putWaiting, null);
+                            }                            
+                        }
                     }
-                } else {
-                    // System.out.println("++++++++ get got here first");
-
-                    // get() got there first, so have to wait for a put;
-                    _getWaiting = Thread.currentThread();
-                    if (_isConditionalSendWaiting()) {
-                        // Mark the other thread unblocked. This must be done
-                        // in this thread to prevent spurious deadlock detection.
-                        director.threadUnblocked(_conditionalSendWaiting, this);
-                    }
-                    // Notify the director that we are blocked.
-                    // NOTE: Spurious deadlock detection is prevented by
-                    // notifying the director above that the other thread
-                    // is unblocked.
-                    director.threadBlocked(_getWaiting, this);
-
-                    // Wake other receivers, possibly causing a conditional
-                    // send to call put(), which will result in resetting
-                    // _getWaiting and notifying the director that we are
-                    // no longer blocked.
-                    director.notifyAll();
-                    // Give the above notify a chance to work.
-                    // System.out.println("++++++++ waiting to clear _conditionalSendWaiting.");
-
-                    while (_conditionalSendWaiting != null) {
-                        _checkFlagsAndWait();
-                    }
-                    _checkFlags();
-
-                    // System.out.println("++++++++ cleared");
-
-                    // If _getWaiting is still true, then there was no
-                    // conditional send pending, so we just have to wait
-                    // for a put() or a conditional send. Do that now.
-
-                    // System.out.println("++++++++ waiting to clear _getWaiting.");
-
-                    while (_getWaiting != null) {
-                        _checkFlagsAndWait();
-                    }
-                    _checkFlags();
-
-                    // System.out.println("++++++++ cleared");
-
-                    // By the time we get here, the put() is complete,
-                    // and _token has the value sent.
-                    result = _token;
-                    
-                    _rendezvousComplete = true;
-
-                    // Notify any receivers that might be waiting for
-                    // the rendevous to complete.
-                    director.notifyAll();
                 }
-            } catch (InterruptedException ex) {
-                throw new TerminateProcessException(
-                        "CSPReceiver.get() interrupted.");
-            } finally {
-                if (_getWaiting != null) {
-                    // If the _getWaiting flag is still true, then this
-                    // process was blocked, woken up and terminated.
-                    // Notify the director that this is unblocked.
-                    director.threadUnblocked(_getWaiting, this);
-                    _getWaiting = null;
+            }
+            while (!_isPutPendingOnAll(receivers)) {
+                try {
+                    // The following does a notifyAll() on the director.
+                    director.threadBlocked(getFromAllThread, null);
+                    _waitForChange(director);
+                } finally {
+                    director.threadUnblocked(getFromAllThread, null);
+                }
+            }
+            // At this point, _putWaiting is non-null on all receivers.
+            // This should mean that _putReceivers is also non-null on all receivers.
+            Token[][] result = new Token[receivers.length][];
+            
+            for (int i = 0; i < receivers.length; i++) {
+                if (receivers[i] != null) {
+                    result[i] = new Token[receivers[i].length];
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        if (receivers[i][j] != null) {
+                            // Perform the transfer.
+                            CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                            result[i][j] = castReceiver._token;
+                            // Indicate to the corresponding put() thread that the put completed.
+                            Thread putThread = castReceiver._putWaiting;
+                            Receiver[][] putReceivers = castReceiver._putReceivers;
+                            castReceiver._putWaiting = null;
+                            castReceiver._putReceivers = null;
+                            // If this will unblock another thread, notify the director.
+                            if (!_isPutPendingOnAny(putReceivers)) {
+                                // The following does a notifyAll() on the director.
+                                director.threadUnblocked(putThread, null);
+                            }
+                        }
+                    }
+                }
+            }
+            while (_isGetPendingOnAny(receivers)) {
+                try {
+                    // The following does a notifyAll() on the director.
+                    director.threadBlocked(getFromAllThread, null);
+                    _waitForChange(director);
+                } finally {
+                    director.threadUnblocked(getFromAllThread, null);
                 }
             }
             return result;
-        }
+        } // synchronized(director)
     }
 
     /** Return true. This method returns true in all cases
@@ -359,101 +346,16 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  not return until the rendezvous is complete.
      *  This method is internally synchronized on the director.
      *  @param token The token.
+     *  @exception IllegalActionException If the token is not acceptable
+     *   to the port (e.g., wrong type).
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
      */
-    public void put(Token token) throws TerminateProcessException {
-        CSPDirector director = _getDirector();
-        synchronized(director) {
-            try {
-                // Perform the transfer.
-                _token = token;
-
-                if (_getWaiting != null) {
-                    
-                    // System.out.println("-------- get waiting");
-                    
-                    // Reset the get waiting flag in this thread
-                    // rather than the other one.
-                    Thread otherThread = _getWaiting;
-                    _getWaiting = null;
-                    
-                    // A get() is waiting on this receiver.
-                    // Notify the director that the get() is no longer blocked.
-                    // NOTE: This should be done here rather than
-                    // in the get() method because since the get()
-                    // method is running in another thread, it could
-                    // take arbitrarily long for it to resume and
-                    // notify the director. This could result in
-                    // spurious deadlock detection.
-                    director.threadUnblocked(otherThread, this);
-
-                    // Wake up the waiting get(s).
-                    director.notifyAll();
-
-                    // Wait for the get() to complete.
-                    // When the corresponding get() completes, it will reset this to true.
-                    // System.out.println("-------- waiting for rendezvous to complete on " + this);
-                    _rendezvousComplete = false;
-                    while (!_rendezvousComplete) {
-                        _checkFlagsAndWait();
-                    }
-                    // System.out.println("-------- rendezvous complete");
-
-                    return;
-                } else {
-                    // No get() is waiting on this receiver.
-                    _putWaiting = Thread.currentThread();
-                    if (_isConditionalReceiveWaiting()) {
-                        // Mark the other thread unblocked. This
-                        // must be done here to prevent spurious
-                        // deadlock detection.
-                        director.threadUnblocked(_conditionalReceiveWaiting, this);
-                    }
-                    // Notify the director that we are blocked.
-                    // NOTE: Spurious deadlock detection is prevented by
-                    // notifying the director above that the other thread
-                    // is unblocked.
-                    director.threadBlocked(_putWaiting, this);
-
-                    // There might be a conditional receive pending,
-                    // in which case, we wake it up. It will see that
-                    // _putWaiting is true, and call get(), which
-                    // will reset _putWaiting and notify the director
-                    // that we are no longer blocked.
-                    director.notifyAll();
-                    // Give the above notify a chance to work.
-                    while (_conditionalReceiveWaiting != null) {
-                        _checkFlagsAndWait();
-                    }
-                    _checkFlags();
-
-                    // If _putWaiting is still non-null, then there
-                    // was no conditional receiver, or it wasn't chosen.
-                    // Wait for the corresponding get() to occur.
-                    while (_putWaiting != null) {
-                        _checkFlagsAndWait();
-                    }
-                    _checkFlags();
-                    _rendezvousComplete = true;
-                    // Notify any receivers that might be waiting for
-                    // the rendezvous to complete.
-                    director.notifyAll();
-                    return;
-                }
-            } catch (InterruptedException ex) {
-                throw new TerminateProcessException(
-                        "CSPReceiver.put() interrupted.");
-            } finally {
-                if (_putWaiting != null) {
-                    // If the put is still marked as waiting, then
-                    // process was blocked, awakened and terminated.
-                    // Notify the director that this actor is not blocked.
-                    director.threadUnblocked(_putWaiting, this);
-                }
-            }            
-        }
+    public void put(Token token) throws IllegalActionException, TerminateProcessException {
+        Token[][] tokens = new Token[1][1];
+        tokens[0][0] = token;
+        putToAll(tokens, _thisReceiver, _getDirector());
     }
 
     /** Put a sequence of tokens to all receivers in the specified array.
@@ -485,127 +387,115 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
     
     /** Put to all receivers in the specified array.
-     *  This method starts a thread for each receiver
-     *  after the first one to perform the put() on that
-     *  receiver, and then calls put() on the first receiver.
-     *  Thus, each of the put() calls occurs in a different
-     *  thread. This method does not return until all the
-     *  put() calls have succeeded.
+     *  This method does not return until all the puts are complete.
      *  @param token The token to put.
      *  @param receivers The receivers, which are assumed to
      *   all be instances of CSPReceiver.
-     *  @exception NoRoomException If there is no room for the token.
+     *  @param director The director, on which this method synchronizes.
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
      *  @exception TerminateProcessException If the actor to
-     *   which this receiver belongs has been terminated while still
-     *   running i.e it was not allowed to run to completion.
+     *   which this receiver belongs is to be terminated.
      */
-    public void putToAll(final Token token, final Receiver[] receivers)
-            throws NoRoomException, IllegalActionException, TerminateProcessException {
+    public void putToAll(Token token, Receiver[] receivers, CSPDirector director)
+            throws IllegalActionException, TerminateProcessException {
         if (receivers == null || receivers.length == 0) {
             return;
         }
-        
-        // Spawn a thread for each rendezvous.
-        // If an exception occurs in one of the threads,
-        // then this thread will find out about it and
-        // report it.
-        _exception = null;
-        _terminateException = null;
-        
-        List threads = null;
-        final CSPDirector director = _getDirector();
+        Receiver[][] argument = new Receiver[1][];
+        argument[0] = receivers;
+        Token[][] tokens = new Token[1][1];
+        tokens[0][0] = token;
+        putToAll(tokens, argument, director);
+    }
+    
+    /** Put to all receivers in the specified array.
+     *  This method does not return until all the puts are complete.
+     *  The tokens argument can have fewer tokens than receivers argument
+     *  has receivers. If only one token is given (the argument has
+     *  dimension [1][1]), then that one token is copied to all
+     *  destination receivers (with possible type changes).
+     *  If only one token in each dimension is given, then that
+     *  one token is copied to all destination receivers in the
+     *  corresponding dimension of the <i>receivers</i> array.
+     *  @param tokens The tokens to put.
+     *  @param receivers The receivers, which are assumed to
+     *   all be instances of CSPReceiver.
+     *  @param director The director, on which this method synchronizes.
+     *  @exception IllegalActionException If the token is not acceptable
+     *   to one of the ports (e.g., wrong type).
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs is to be terminated.
+     */
+    public static void putToAll(Token[][] tokens, Receiver[][] receivers, CSPDirector director)
+            throws IllegalActionException, TerminateProcessException {
+        if (receivers == null || receivers.length == 0) {
+            return;
+        }
         synchronized(director) {
-            if (receivers.length == 1) {
-                receivers[0].put(getContainer().convert(token));
-            } else {
-                // Create a thread for each destination.
-                // List to keep track of created threads.
-                threads = new LinkedList();
-                final Thread putToAllThread = Thread.currentThread();
-                // NOTE: Use _threadCount to determine when the last
-                // thread exits.  This assumes that we do not have
-                // more than one invocation of this method active at
-                // a time.  Check to be sure.
-                if (_threadCount != 0) {
-                    throw new InternalErrorException(
-                            "putToAll() method is simultaneously active in more than one thread!" +
-                            " This is not permitted.");
-                }
-                _threadCount = receivers.length;
-                for (int j = 0; j < receivers.length; j++) {
-                    final CSPReceiver receiver = (CSPReceiver)receivers[j];
-                    String name = "Send to " + receiver.getContainer().getFullName();
-                    Thread putThread = new Thread(name) {
-                        public void run() {
-                            // System.out.println("**** starting thread on: " + CSPDirector._receiverStatus(receiver));
-                            try {
-                                IOPort port = receiver.getContainer();
-                                receiver.put(port.convert(token));
-                            } catch (IllegalActionException e) {
-                                _exception = e;
-                            } catch (TerminateProcessException e) {
-                                // To stop the actor thread, we have
-                                // to throw this exception.
-                                _terminateException = e;
-                            } finally {
-                                // Have to synchronize on the director to avoid
-                                // race condition between decrement of _threadCount
-                                // and testing it.
-                                synchronized(director) {
-                                    director.removeThread(this);
-                                    _threadCount--;
-                                    if (_threadCount == 0) {
-                                        // The last thread to complete has to mark the
-                                        // thread calling putToAll() unblocked. It has to
-                                        // done in this last thread to complete or a
-                                        // spurious deadlock will be detected between the
-                                        // time this thread completes and the time that
-                                        // that the putToAllThread gets around to marking
-                                        // itself unblocked.
-                                        director.threadUnblocked(putToAllThread, CSPReceiver.this);
-                                    }
-                                }
+            Thread putToAllThread = Thread.currentThread();
+            Token token = null;
+            for (int i = 0; i < receivers.length; i++) {
+                if (receivers[i] != null) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        if (receivers[i][j] != null) {
+                            if (tokens.length > i && tokens[i] != null && tokens[i].length > j) {
+                                token = tokens[i][j];
+                            }
+                            CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                            castReceiver._putWaiting = putToAllThread;
+                            castReceiver._putReceivers = receivers;
+                            // Perform the transfer.
+                            IOPort port = castReceiver.getContainer();
+                            castReceiver._token = port.convert(token);
+                            // If this particular put unblocks a getting thread,
+                            // then mark it unblocked now.
+                            if (_isPutPendingOnAll(castReceiver._getReceivers)) {
+                                director.threadUnblocked(castReceiver._getWaiting, null);
                             }
                         }
-                    };
-                    threads.add(putThread);
-                    director.addThread(putThread);
-                    putThread.start();
-                }
-                // Wait for each of the threads to die.
-                // First notify the director that this actor is blocked.
-                // The last thread to complete will unblock it.
-                director.threadBlocked(putToAllThread, this);
-                Iterator threadsIterator = threads.iterator();
-                while (threadsIterator.hasNext()) {
-                    Thread thread = (Thread) threadsIterator.next();
-                    try {
-                        // NOTE: Cannot use Thread.join() here because we
-                        // have to be in a synchronized block to prevent
-                        // a race condition (see below), and if we call
-                        // thread.join(), then we will block while holding
-                        // a lock on the director, which will lead to deadlock.
-                        while(director.isThreadActive(thread)) {
-                            director.wait();
-                        }
-                    } catch (InterruptedException ex) {
-                        // Ignore and continue to the next thread.
-                        // System.out.println("**** Thread spawned by putToAll() interrupted.");
                     }
                 }
-                // This should be zero, but just in case.
-                _threadCount = 0;
             }
-            // System.out.println("**** put() returned on: " + CSPDirector._receiverStatus(this));
-            if (_exception != null) {
-                throw _exception;
+            while (!_isGetPendingOnAll(receivers)) {
+                try {
+                    // The following does a notifyAll() on the director.
+                    director.threadBlocked(putToAllThread, null);
+                    _waitForChange(director);
+                } finally {
+                    director.threadUnblocked(putToAllThread, null);
+                }
             }
-            if (_terminateException != null) {
-                throw _terminateException;
+            // When we get here, get is pending on all receivers.
+            for (int i = 0; i < receivers.length; i++) {
+                if (receivers[i] != null) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        if (receivers[i][j] != null) {
+                            CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                            // Indicate to the corresponding get() thread that the put completed.
+                            Thread getThread = castReceiver._getWaiting;
+                            Receiver[][] getReceivers = castReceiver._getReceivers;
+                            castReceiver._getWaiting = null;
+                            castReceiver._getReceivers = null;
+                            // If this will unblock another thread, notify the director.
+                            if (!_isGetPendingOnAny(getReceivers)) {
+                                // The following does a notify on the director.
+                                director.threadUnblocked(getThread, null);
+                            }
+                        }
+                    }
+                }
             }
-        }
+            while (_isPutPendingOnAny(receivers)) {
+                try {
+                    // The following does a notifyAll() on the director.
+                    director.threadBlocked(putToAllThread, null);
+                    _waitForChange(director);
+                } finally {
+                    director.threadUnblocked(putToAllThread, null);
+                }
+            }
+        } // synchronized(director)
     }
 
     /** The model has finished executing, so set a flag so that the
@@ -615,8 +505,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     public void requestFinish() {
         Object lock = _getDirector();
         synchronized(lock) {
-            _modelFinished = true;
-            
             // Need to reset the state of the receiver.
             _setConditionalReceive(false, null, -1);
             _setConditionalSend(false, null, -1);
@@ -628,7 +516,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             }
             _putWaiting = null;
             _getWaiting = null;
-            _rendezvousComplete = false;
             
             // Wake up any pending threads. EAL 12/04
             lock.notifyAll();
@@ -644,8 +531,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             _putWaiting = null;
             _setConditionalReceive(false, null, -1);
             _setConditionalSend(false, null, -1);
-            _rendezvousComplete = false;
-            _modelFinished = false;
             _boundaryDetector.reset();
         }
     }
@@ -653,28 +538,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** This method wraps the wait() call between checks on the state
-     *  of the receiver. The flags checked are whether the receiver
-     *  has been finished. The actions taken depending on the flags
-     *  apply to whatever process this method was invoked from.
-     *  <p>
-     *  This method is internally synchronized on the director.
-     *  @exception TerminateProcessException If the actor to
-     *   which this receiver belongs has been terminated while still
-     *   running i.e it was not allowed to run to completion.
-     *  @exception InterruptedException If the actor is
-     *   interrupted while waiting(for a rendezvous to complete).
-     */
-    protected void _checkFlagsAndWait()
-            throws TerminateProcessException, InterruptedException {
-        Object lock = _getDirector();
-        synchronized(lock) {
-            _checkFlags();
-            lock.wait();
-            _checkFlags();
-        }
-    }
-    
     /** Return the controller of the conditional branch to reach the
      *  rendezvous point first. For a rendezvous to occur when both
      *  communications at the receiver are from conditional branches,
@@ -741,6 +604,57 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     protected boolean _isConditionalSendWaiting() {
         return _conditionalSendWaiting != null;
     }
+    
+    /** Return true if a get() is pending on all the specified
+     *  receivers. If the argument is null, then this method
+     *  returns false.
+     *  @param receivers The receivers, which are assumed to be
+     *   instances of CSPReceiver.
+     *  @return True if a get() is pending on the specified receivers.
+     */
+    protected static boolean _isGetPendingOnAll(Receiver[][] receivers) {
+        if (receivers == null) {
+            return false;
+        }
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != null) {
+                        if (((CSPReceiver)receivers[i][j])._getWaiting == null) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /** Return true if a get() is pending on any of the specified
+     *  receivers. If the argument is null, then this method
+     *  returns false.
+     *  @param receivers The receivers, which are assumed to be
+     *   instances of CSPReceiver.
+     *  @return True if a get() is pending on any of the
+     *   specified receivers.
+     */
+    protected static boolean _isGetPendingOnAny(Receiver[][] receivers) {
+        if (receivers == null) {
+            return false;
+        }
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != null) {
+                        if (((CSPReceiver)receivers[i][j])._getWaiting != null) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     /** Return whether a get() is waiting to rendezvous
      *  at this receiver.
@@ -756,6 +670,57 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     protected boolean _isPutWaiting() {
         return _putWaiting != null;
+    }
+
+    /** Return true if a put() is pending on all the specified
+     *  receivers. If the argument is null, then this method
+     *  returns false.
+     *  @param receivers The receivers, which are assumed to be
+     *   instances of CSPReceiver.
+     *  @return True if a put() is pending on the specified receivers.
+     */
+    protected static boolean _isPutPendingOnAll(Receiver[][] receivers) {
+        if (receivers == null) {
+            return false;
+        }
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != null) {
+                        if (((CSPReceiver)receivers[i][j])._putWaiting == null) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /** Return true if a put() is pending on any of the specified
+     *  receivers. If the argument is null, then this method
+     *  returns false.
+     *  @param receivers The receivers, which are assumed to be
+     *   instances of CSPReceiver.
+     *  @return True if a put() is pending on any of
+     *   the specified receivers.
+     */
+    protected static boolean _isPutPendingOnAny(Receiver[][] receivers) {
+        if (receivers == null) {
+            return false;
+        }
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != null) {
+                        if (((CSPReceiver)receivers[i][j])._putWaiting != null) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /** Set a flag so that a ConditionalReceive branch knows whether or
@@ -818,30 +783,30 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Check the flags controlling the state of the receiver and
-     *  hence the actor process trying to rendezvous with it. If the
-     *  model has finished executing, the _modelFinished flag will
-     *  have been set and a TerminateProcessException will be thrown
-     *  causing the actor process to finish.
-     *  @exception TerminateProcessException If the actor to
-     *   which this receiver belongs has been terminated while still
-     *   running i.e. it was not allowed to run to completion.
+    /** Wait on the specified director.
+     *  This is not synchronized on the specified director, so the called should be.
+     *  @param director The director on which to wait.
+     *  @exception TerminateProcessException If a finish has been requested
+     *   of the specified director, or if the calling thread is interrupted while waiting.
      */
-    private void _checkFlags() throws TerminateProcessException {
-        synchronized(_getDirector()) {
-            if (_modelFinished) {
-                throw new TerminateProcessException(getContainer().getName()
-                        + ": terminated.");
-            }
+    protected static void _waitForChange(CSPDirector director) throws TerminateProcessException {
+        if (director.isStopRequested() || director._inWrapup) {
+            throw new TerminateProcessException("Thread terminated.");
+        }
+        try {
+            director.wait();
+        } catch (InterruptedException e) {
+            throw new TerminateProcessException("Thread interrupted.");
+        }
+        if (director.isStopRequested() || director._inWrapup) {
+            throw new TerminateProcessException("Thread terminated.");
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
+    /** The boundary detector. */
     private BoundaryDetector _boundaryDetector;
 
     /** Flag indicating whether or not a conditional receive is waiting to rendezvous. */
@@ -850,36 +815,27 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     /** Flag indicating whether or not a conditional send is waiting to rendezvous. */
     private Thread _conditionalSendWaiting = null;
     
-    /** Exception that might be set in putToAll(). */
-    private IllegalActionException _exception = null;
-    
-    /** Thread blocked on a get(), if any. */
+    /** The receivers currently being gotten data from. */
+    private Receiver[][] _getReceivers = null;
+
+    /** Indicator that a get() is waiting on this receiver. */
     private Thread _getWaiting = null;
 
-    /** Flag indicating that any subsequent attempts to rendezvous
-     * at this receiver should cause the attempting processes to terminate.
-     */
-    private boolean _modelFinished = false;
-
-    private Branch _otherBranch = null;
-
-    /** obsolete when implement containment */
+    /** The controller in charge of the conditional send or get. */
     private AbstractBranchController _otherController = null;
 
+    /** The ID of the branch in a conditional send or get. */
     private int _otherID = -1;
 
-    /** Thread waiting on a put(), if any. */
+    /** The receivers currently being put data to. */
+    private Receiver[][] _putReceivers = null;
+
+    /** Indicator that a put() is waiting on this receiver. */
     private Thread _putWaiting = null;
-
-    /** Flag indicating whether state of rendezvous. */
-    private boolean _rendezvousComplete = false;
     
-    /** Exception that might be set in putToAll(). */
-    private TerminateProcessException _terminateException = null;
-
-    /** Thread count used in putToAll(). */
-    private int _threadCount = 0;
-
+    /** Array with just one receiver, this one, for convenience. */
+    private Receiver[][] _thisReceiver = new Receiver[1][1];
+    
     /** The token being transferred during the rendezvous. */
     private Token _token;
 }

@@ -120,15 +120,15 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *   that this branch will try to rendezvous with.
      *  @param channel The channel in the IOPort that this branch is
      *   trying to rendezvous with.
-     *  @param branch The identification number assigned to this branch
+     *  @param branchID The identification number assigned to this branch
      *   upon creation by the CSPActor.
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalReceive(
-            IOPort port, int channel, int branch)
+            IOPort port, int channel, int branchID)
             throws IllegalActionException {
-        this(true, port, channel, branch);
+        this(true, port, channel, branchID);
     }
 
     /** Create a guarded communication with a get() communication.
@@ -138,14 +138,14 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *   that this branch will try to rendezvous with.
      *  @param channel The channel in the IOPort that this branch is
      *   trying to rendezvous with.
-     *  @param branch The identification number assigned to this branch
+     *  @param branchID The identification number assigned to this branch
      *   upon creation by the CSPActor.
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalReceive(boolean guard, IOPort port, int channel,
-            int branch) throws IllegalActionException {
-        super(guard, port, branch);
+            int branchID) throws IllegalActionException {
+        super(guard, port, branchID);
         _init(port, channel);
     }
 
@@ -158,16 +158,16 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *   that this branch will try to rendezvous with.
      *  @param channel The channel in the IOPort that this branch is
      *   trying to rendezvous with.
-     *  @param branch The identification number assigned to this branch
+     *  @param branchID The identification number assigned to this branch
      *   upon creation by the CSPActor.
-     *  @param cbc The ConditionalBranchController that this branch uses.
+     *  @param controller The ConditionalBranchController that this branch uses.
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
     public ConditionalReceive(boolean guard, IOPort port, int channel,
-            int branch, ConditionalBranchController cbc)
+            int branchID, ConditionalBranchController controller)
             throws IllegalActionException {
-        super(guard, port, branch, cbc);
+        super(guard, port, branchID, controller);
         _init(port, channel);
     }
 
@@ -190,8 +190,8 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
 
         // Note that the lock has to be in the first receiver
         // in a group, if this receiver is part of a group.
-        Object lock = receiver._getDirector();
-        synchronized (lock) {
+        CSPDirector director = receiver._getDirector();
+        synchronized (director) {
             try {
                 String identifier = "";
                 if (_debugging) {
@@ -230,6 +230,17 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             // conditional receive to a get.
                             // Have to reset this flag _before_ the get().
                             receiver._setConditionalReceive(false, null, -1);
+                            // NOTE: If the sending side is performing a
+                            // multiway rendezvous, then this will not return
+                            // until all those rendezvous complete.
+                            // FIXME: If the controller is a ConditionalBranchController,
+                            // then this behavior is wrong... It prematurely commits to
+                            // this being the winning branch! If another branch becomes
+                            // enabled while we are waiting for this get() to return,
+                            // then we should allow that other branch to succeed!
+                            // How to do that?  The warning sign is that _blockGetReturn
+                            // in the receiver will be true, indicating that the get()
+                            // could block even though there is a put() waiting!
                             _setToken(receiver.get());
                             _completed = true;
                             controller._branchSucceeded(getID());
@@ -259,7 +270,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                 // Release the first position here since the
                                 // other side is not first.
                                 controller._branchNotReady(getID());
-                                lock.notifyAll();
+                                director.notifyAll();
                             }
                         }
                     }
@@ -274,18 +285,15 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         _debug("ConditionalReceive: Waiting for new information.");
                     }
                     controller._branchBlocked(receiver);
-                    receiver._checkFlagsAndWait();
+                    CSPReceiver._waitForChange(director);
                 } // while(true)
-            } catch (InterruptedException ex) {
-                receiver._setConditionalReceive(false, null, -1);
-                controller._branchFailed(getID());
             } catch (TerminateProcessException ex) {
                 receiver._setConditionalReceive(false, null, -1);
                 controller._branchFailed(getID());
             } finally {
                 receiver._getDirector().removeThread(Thread.currentThread());
             }
-        } // synchronized(lock)
+        } // synchronized(director)
     }
 
     ///////////////////////////////////////////////////////////////////

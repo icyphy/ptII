@@ -396,10 +396,20 @@ public class ConditionalBranchController extends AbstractBranchController implem
         Object director = _getDirector();
         synchronized (director) {
             if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
-                // store branchNumber
+                // Nother branch holds the first position, so
+                // give this branch the first position.
                 _branchTrying = branchNumber;
                 director.notifyAll();
                 return true;
+            } else {
+                // If the branch holding the first position is blocked,
+                // then cancel its transaction and give this branch the
+                // first position.
+                // FIXME: Need a reference to the receiver for the branch
+                // in the first position.
+                // FIXME: Worse: The branch in the first position might
+                // have more than one receiver (if the conditional
+                // branch is a conditional send).
             }
 
             return false;
