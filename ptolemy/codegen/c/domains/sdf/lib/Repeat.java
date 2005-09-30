@@ -63,15 +63,17 @@ public class Repeat extends CCodeGeneratorHelper {
         ptolemy.domains.sdf.lib.Repeat actor = (ptolemy.domains.sdf.lib.Repeat) getComponent();
         StringBuffer code = new StringBuffer();
 
-        // FIXME: haven't dealt with <i>blockSize</i>. Assumed input
-        // consume rate to be 1.
-        for (int i = 0; i < ((IntToken) actor.numberOfTimes.getToken())
-                .intValue(); i++) {
-            code.append("$ref(output," + i + ") = ");
+        int numberOfTimes = ((IntToken) actor.numberOfTimes.getToken()).intValue();
+        int blockSize = ((IntToken) actor.blockSize.getToken()).intValue();
+        for (int i = 0; i < blockSize; i++) {
+            for(int j = 0; j < numberOfTimes; j++) {
+                code.append("$ref(output," + (j * blockSize + i) + ") = ");
+            }
+            code.append("$ref(input," + i + ");\n");
         }
-
-        code.append("$ref(input);\n");
+       
         _codeBlock = code.toString();
+        stream.append("\n/* fire " + getComponent().getName() + " */\n");
         stream.append(processCode(_codeBlock));
     }
 
