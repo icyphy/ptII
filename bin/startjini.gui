@@ -315,6 +315,8 @@ fi
 # The soot and jasmin jar files.
 SOOT_DIR="/home/celaine/ptII/lib"
 JAVA_SYSTEM_JAR="/usr/java/j2sdk1.4.2_09/jre/lib/rt.jar"
+# Java 1.5 has javax.crypto.Cipher in jce.jar, Soot needs this
+JAVAX_CRYPTO_JAR="${PTJAVA_HOME}/lib/jce.jar"
 SOOT_JAR="${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}"
 
 SOOT_JFLAG=
@@ -325,7 +327,7 @@ SOOT_JFLAG=
 GIOTTO_CLASSES="${GIOTTO_DIR}/gdk.jar"
 GIOTTO_JARS=""
 if [ ! -f "$GIOTTO_CLASSES" ]; then
-    GIOTTO_JARS="${CLASSPATHSEPARATOR}$GIOTTOCLASSES"
+    GIOTTO_JARS="${CLASSPATHSEPARATOR}$GIOTTO_CLASSES"
 fi
 
 
@@ -557,7 +559,8 @@ javaflag="$ALL_JFLAG"
 # this sets the ptolemy.ptII.dir environment variable.
 # NOTE: vergil will override this property with the value from 
 # $CLASSPATH/lib/ptII.properties.  However, other apps need this property.
-ptflag="\"-Dptolemy.ptII.dir=$PTII\""
+PTII_NO_TRAILING_SLASH="`echo "$PTII" |  sed 's@\\\\$@@'`"
+ptflag="\"-Dptolemy.ptII.dir=$PTII_NO_TRAILING_SLASH\""
 
 # Start up with the US Locale so as to avoid problems with , instead
 # of . in floating point numbers in German and Swedish locales

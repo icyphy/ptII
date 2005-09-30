@@ -7563,7 +7563,7 @@ fi
 # The problem is that the nesc/configure script does not understand
 # "c:/" style syntax, it works with "/cygdrive/c/", yet Java
 # does not understand /cygdrive/c syntax, so we hack
-PTINYOS_DIR="ptolemy/domains/ptinyos"
+PTINYOS_DIR=$PTII/ptolemy/domains/ptinyos
 if test -z "$TOSROOT" ; then
     echo "$as_me:$LINENO: result: The TOSROOT environment variable is not present,
     so we need not set up for TinyOS." >&5
@@ -7585,7 +7585,7 @@ echo "${ECHO_T}TOSROOT = $TOSROOT, so we will set up for TinyOS." >&6
         # Use changequote to protect the square brackets in sed
         TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
 
-        # Add TOSROOT to the classpath
+        # Add TOSROOT and jars to the classpath
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
         <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/nesc-dump.jar\"/> \
         <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/jdom.jar\"/>"
