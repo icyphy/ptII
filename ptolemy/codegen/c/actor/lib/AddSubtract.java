@@ -86,7 +86,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
         }
 
         _codeStream.append(";\n");
-
+        code.append("\n/* fire " + getComponent().getName() + " */\n");
         code.append(processCode(_codeStream.toString()));
     }
 }
