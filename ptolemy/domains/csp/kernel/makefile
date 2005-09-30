@@ -56,8 +56,7 @@ JSRCS = \
 	ConditionalSend.java \
 	CSPActor.java \
 	CSPDirector.java \
-	CSPReceiver.java \
-	MultiwayBranchController.java
+	CSPReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)
 
