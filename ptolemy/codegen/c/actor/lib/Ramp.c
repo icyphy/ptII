@@ -1,7 +1,4 @@
-/***initBlock***/
-    $ref(output) = $val(init) - $val(step);
-/**/
-
 /***fireBlock***/
-    $ref(output) += $val(step);
+    $ref(output) = $ref(init);
+    $ref(init) += $val(step);
 /**/
