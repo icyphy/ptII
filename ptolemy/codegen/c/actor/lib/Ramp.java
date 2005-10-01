@@ -61,21 +61,8 @@ public class Ramp extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
+        code.append("\n/* fire " + getComponent().getName() + " */\n");
         code.append(_generateBlockCode("fireBlock"));
     }
 
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initBlock</code> from Ramp.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-        CodeStream tmpStream = new CodeStream(this);
-        tmpStream.appendCodeBlock("initBlock");
-        return processCode(tmpStream.toString());
-    }
 }
