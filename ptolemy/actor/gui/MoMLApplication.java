@@ -588,8 +588,6 @@ public class MoMLApplication implements ExecutionListener {
             ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
             File[] configurationDirectories = configurationDirectory.listFiles(filter);
 
-            System.out.println("MoMLApplication: " + configurationURI);
-
             if (configurationDirectories != null) {
                 result.append("\nThe following (mutually exclusive) flags "
                         + "specify alternative configurations:\n");
