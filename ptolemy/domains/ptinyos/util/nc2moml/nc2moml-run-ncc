@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+
+# Note: Do not call this script directly.  Use nc2moml instead.
+# Modification of the arguments to this script is for development
+# purposes only.
+
+# Usage: nc2moml-run-ncc <input prefix> <output prefix> <output suffix> <.nc file name with full path> <options>
+
+# Runs ncc on .nc files to create xml files.
+# Note: .xml cannot be used because ptII cannot use this type of input.
+
+# FIXME: assumes ncc is in path
+#$ncc = "ncc";
+
+@args = @ARGV;
+$inputprefix = shift @args;
+$outputprefix = shift @args;
+$outputsuffix = shift @args;
+
+# Create names of output file (complete path).
+$filename = $args[0];
+$output = $filename;
+$output =~ s/^$inputprefix/$outputprefix/;
+
+# Rename .nc input file to xml output file.
+$outputxmlfile = $output;
+$outputxmlfile =~ s/\.nc$/$outputsuffix/;
+
+# Rename .nc input file to .txt output file.
+$outputresultsfile = $output;
+$outputresultsfile =~ s/\.nc$/\.txt/;
+
+# Create directory
+$outputdir = $output;
+$outputdir =~ s/\/[\d\w.]+$//;
+system("mkdir -p $outputdir") == 0
+  or die "call to mkdir failed in @args: $?";
+
+# Write command to .txt file
+system("echo \"ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args\" > $outputresultsfile");
+
+# Run command and append errors to .txt file.
+$results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> $outputresultsfile 2>&1");
+
+if ($results eq 0) {
+  #print STDERR "$filename Ok\n"
+  system("echo \"$filename Ok\" >> $outputprefix/command.txt 2>&1");
+} else {
+  #print STDERR "$filename ERRORS\n"
+  system("echo \"$filename ERRORS\" >> $outputprefix/command.txt 2>&1");
+}

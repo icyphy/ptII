@@ -595,6 +595,21 @@ esac
 error="none"
 # Keep these alphabetical
 case $commandname in
+    .momllib-util)
+        help="Invoke the momllib tool to search for .moml files and create \
+            index files in each directory."
+        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.MoMLLib
+        javasourcedir=
+        jarfile="${ALL_JAR}"
+        javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
+        ;;
+    .nc2moml-util)
+        help="Invoke the nc2moml tool to transform .nc components into .moml files."
+        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.Nc2Moml
+        javasourcedir=
+        jarfile="${ALL_JAR}"
+        javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
+        ;;
     copernicus)
 	help="Do deep codegen"
 	javastartupclass=ptolemy.copernicus.kernel.Copernicus
@@ -699,21 +714,6 @@ and run:
 	jarfile="$ALL_JAR"
 	javaflag="$ALL_JFLAG"
 	;;
-    momllib)
-        help="Invoke the momllib tool to search for .moml files and create \
-            index files in each directory."
-        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.MoMLLib
-        javasourcedir=
-        jarfile="${ALL_JAR}"
-        javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
-        ;;
-    nc2moml)
-        help="Invoke the nc2moml tool to transform .nc components into .moml files."
-        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.Nc2Moml
-        javasourcedir=
-        jarfile="${ALL_JAR}"
-        javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
-        ;;
     ptexecute)
         help="This command takes one or more models as command line arguments. \
             The models may be either class files or MoMLFiles.  \

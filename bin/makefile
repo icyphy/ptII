@@ -50,6 +50,8 @@ include $(CONFIG)
 # Note that this does not contain ptinvoke and makebat,
 # which are generated independently by this makefile.
 SHELL_FILES = \
+	.momllib-util \
+	.nc2moml-util \
 	copernicus \
 	copernicusjhdl \
 	decompile \
@@ -59,8 +61,6 @@ SHELL_FILES = \
 	jode \
 	mescal \
 	moml \
-	momllib \
-	nc2moml \
 	obfuscate \
 	ptexecute \
 	ptjacl \
