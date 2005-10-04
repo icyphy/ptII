@@ -17,6 +17,7 @@ mentioned below are not included in the Ptolemy II distribution.
 <LI> <A HREF="#testing documentation">Testing Documentation</A>
 <li> <a href="#testingxml">Testing XML</a>
 <li> <a href="#proofreading">Proofreading</a>
+<li> <a href="#installer">Installer</a>
 </MENU>
 
 <H2><A NAME="test suite">Test Suite</A></H2>
@@ -706,6 +707,24 @@ so that editors can easily find the typo.
 
 <li> Proofreading symbols can be found at<a href="http://webster.commnet.edu/writing/symbols.htm" target="_top"><CODE>http://webster.commnet.edu/writing/symbols.htm</CODE></a>
 </ol>
+
+<h2><a name="installer">How to test the installer</a></h2>
+For each case
+<ol>
+<li> Install with the included JVM but don't include the sources
+<li> Install without the included JVM but don't include the sources
+<li> Install with the included JVM but include the sources
+<li> WebStart
+</ol>
+
+Do the following:
+<ol>
+<li> Start up all the menu choices
+
+<li> Start up vergil, check the copyrights by expanding the configuration
+and run all the demos
+</ol>
+
 
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
