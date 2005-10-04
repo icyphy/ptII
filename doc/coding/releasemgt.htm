@@ -279,6 +279,42 @@ mv ptII ptII5.1-devel
 to build the release.  Copy the most recent makefile and
 set up a new tree for the release tree.
 
+
+<li> We build a separate src.tar.gz file under Unix so that the line
+endings are correct. 
+<pre>
+cvs co -r rel-5.1-devel ptII
+mv ptII ptII5.1-devel
+cd ptII5.1-devel
+setenv PTII=`pwd`
+cd $PTII/adm/gen-5.1
+make USER=cxh PTIIHOME=/tmp/ptII5.1-devel PTIIADM=/tmp/ptII5.1-devel/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar clean all >& make.out &
+</pre>
+
+<li> We build the webstart jar files under Windows
+<pre>
+cvs co -r rel-5.1-devel ptII
+mv ptII ptII5.1-devel
+cd ptII5.1-devel
+setenv PTII=`pwd`
+./configure
+<I>Set up missing packages</I>
+./configure
+make fast
+make jnlp_all
+</pre>
+
+
+<li> Create the src.jar file: 
+<pre>
+cd $PTII/adm/gen-5.1
+make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII5.1-devel COMPRESS=gzip TAR=tar clean all src.jar 
+</pre>
+
+
+<li> Run InstallAnywhere and create the installer
+
+<li> <a href="testing.htm#installer">Test the installer</a>
 </ol>
 
 
