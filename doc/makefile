@@ -210,6 +210,7 @@ DIVAPACKAGES = \
 # Experimental packages that are not shipped
 EXPERIMENTALPACKAGES =
 #EXPERIMENTALPACKAGES = \
+#			jni \
 #			ptolemy.domains.ptinyos.kernel \
 #			ptolemy.domains.ptinyos.lib \
 #			ptolemy.domains.rtp.kernel \
@@ -296,7 +297,6 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			$(SUPERBPACKAGES) \
 			$(THALESPACKAGES) \
 			$(VISUALSENSEPACKAGES) \
-			jni \
 			ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \
