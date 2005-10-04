@@ -34,7 +34,7 @@ print("Converting .nc to nesc xml files.  See results in $outputprefix/command.t
 foreach $mydir (@mydirs) {
   # Find all .nc files.
   $mydir = "$inputprefix/$mydir";
-  $files=`find $mydir -name "*.nc" -print`;
+  $files=`/usr/bin/find $mydir -name "*.nc" -print`;
 
   # Call script to convert .nc files into .xml files.
   $filesnonewline = $files;
