@@ -208,11 +208,12 @@ DIVAPACKAGES = \
 	diva.util.xml
 
 # Experimental packages that are not shipped
-EXPERIMENTALPACKAGES = \
-			ptolemy.domains.ptinyos.kernel \
-			ptolemy.domains.ptinyos.lib \
-			ptolemy.domains.rtp.kernel \
-			ptolemy.domains.rtp.lib
+EXPERIMENTALPACKAGES =
+#EXPERIMENTALPACKAGES = \
+#			ptolemy.domains.ptinyos.kernel \
+#			ptolemy.domains.ptinyos.lib \
+#			ptolemy.domains.rtp.kernel \
+#			ptolemy.domains.rtp.lib
 
 
 # Packages used by HyVisual
