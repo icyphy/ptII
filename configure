@@ -7564,6 +7564,8 @@ fi
 # "c:/" style syntax, it works with "/cygdrive/c/", yet Java
 # does not understand /cygdrive/c syntax, so we hack
 PTINYOS_DIR=$PTII/ptolemy/domains/ptinyos
+echo "$as_me:$LINENO: checking the for TinyOS" >&5
+echo $ECHO_N "checking the for TinyOS... $ECHO_C" >&6
 if test -z "$TOSROOT" ; then
     echo "$as_me:$LINENO: result: The TOSROOT environment variable is not present,
     so we need not set up for TinyOS." >&5
@@ -7572,16 +7574,15 @@ echo "${ECHO_T}The TOSROOT environment variable is not present,
 
     # Nothing to exclude
     # ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/nc/"
-
 else
     if test ! -d "$TOSROOT"; then
-        { echo "$as_me:$LINENO: WARNING: TOSROOT is set to $TOSROOT,
-     but there is no directory by that name, so we will not set up for PtinyOS" >&5
-echo "$as_me: WARNING: TOSROOT is set to $TOSROOT,
-     but there is no directory by that name, so we will not set up for PtinyOS" >&2;}
+        { echo "$as_me:$LINENO: WARNING: \$TOSROOT is set to '$TOSROOT',
+     but there is no directory by that name, so we will not set up for PtinyOS." >&5
+echo "$as_me: WARNING: \$TOSROOT is set to '$TOSROOT',
+     but there is no directory by that name, so we will not set up for PtinyOS." >&2;}
     else
-        echo "$as_me:$LINENO: result: TOSROOT = $TOSROOT, so we will set up for TinyOS." >&5
-echo "${ECHO_T}TOSROOT = $TOSROOT, so we will set up for TinyOS." >&6
+        echo "$as_me:$LINENO: result: $TOSROOT" >&5
+echo "${ECHO_T}$TOSROOT" >&6
         # Use changequote to protect the square brackets in sed
         TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
 
@@ -7593,6 +7594,9 @@ echo "${ECHO_T}TOSROOT = $TOSROOT, so we will set up for TinyOS." >&6
     fi
 fi
 
+if test ! -d "$TOSROOT"; then
+      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/ptinyos/"
+fi
 
 #--------------------------------------------------------------------
 #       GiottoSDK is an embedded implementation of the Giotto language
@@ -8490,9 +8494,10 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Add them.
-  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
+  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
+  #    will be set to the directory where LIBOBJS objects are built.
+  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
