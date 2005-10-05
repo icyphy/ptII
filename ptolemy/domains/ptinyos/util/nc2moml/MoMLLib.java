@@ -40,12 +40,12 @@ import java.io.*;
 import java.util.*;
 
 /** Searches tree files with <input suffix> (e.g., *.moml).  Creates <output filename> (e.g., index.moml) in each dir that contains those files and all parent directories.
-  
+
   Usage:
     MoMLLib <input suffix> <output filename> <root dir of input files>
-    
+
   Example: MoMLLib .moml index.moml /home/celaine/trash/todayoutput2
-    
+
 */
 public class MoMLLib {
     /** components is in short path format relative to root
@@ -54,7 +54,7 @@ public class MoMLLib {
      *    Example: subdir/index.moml
      *  outputFile is in long path format
      *    Example: /home/celaine/trash/todayoutput2/tos/lib/Counters/Counter/index.moml
-         
+
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
      "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
@@ -74,10 +74,10 @@ public class MoMLLib {
   ?>
   </configure>
 </entity>
-         
+
      */
     public static void generateIndex(String[] components, String[] indexFiles, String libraryName, String outputFile) {
-        
+
         Element root = new Element("entity");
         root.setAttribute("name", libraryName);
         root.setAttribute("class", "ptolemy.moml.EntityLibrary");
@@ -122,7 +122,7 @@ public class MoMLLib {
             group.addContent(entity);
         }
 
-        
+
         // Setup format for xml serializer.
         XMLOutputter serializer = new XMLOutputter(Format.getPrettyFormat());
         Format format = serializer.getFormat();
@@ -134,7 +134,7 @@ public class MoMLLib {
         ProcessingInstruction moml = new ProcessingInstruction("moml", "\n" + serializer.outputString(group) + "\n");
         configure.addContent(moml);
 
-        // Generate index file. 
+        // Generate index file.
         try {
             FileOutputStream out = null;
             if (outputFile != null) {
@@ -153,7 +153,7 @@ public class MoMLLib {
             System.err.println(e);
         }
     }
-    
+
     public static void main(String[] args) throws IOException {
         if (args.length < 2) {
             System.err.println("Usage: java MoMLLib <input suffix> <output filename> <root dir of input files>");
@@ -177,7 +177,7 @@ public class MoMLLib {
             String root,
             String currentDir) throws Exception {
         File dir = new File(currentDir);
-    
+
         // Filter for directories only.
         FileFilter filterForDirs = new FileFilter() {
                 public boolean accept(File file) {
@@ -199,7 +199,7 @@ public class MoMLLib {
             };
 
         ArrayList indexFiles = new ArrayList();
-            
+
         // Look for outputFilename in children directories.
         for (int i = 0; i < children.length; i++) {
             File[] grandchildren = children[i].listFiles(filterForOutputFilename);
@@ -224,7 +224,7 @@ public class MoMLLib {
                     return name.endsWith(inputSuffix) && !name.equals(outputFilename);
                 }
             };
-        
+
         String[] ncFiles = dir.list(filterForInputSuffix);
         String[] components = {};
         if (ncFiles.length > 0) {

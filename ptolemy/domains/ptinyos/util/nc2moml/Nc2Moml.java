@@ -41,17 +41,17 @@ import java.io.*;
 import java.util.*;
 import org.xml.sax.*;
 
-/** 
+/**
  * Generate a .moml file for each .nc file in the input list.
- * 
+ *
   Usage:
     Nc2Moml <xml input prefix> <xml input suffix> <nc sub prefix> <moml output prefix>
            [long path to file containing list of .nc files using short path]
-    
+
   Example: Nc2Moml /home/celaine/trash/todayoutput .ncxml \'$CLASSPATH\' /home/celaine/trash/todayoutput /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
 
   Input file contains: tos/lib/Counters/Counter.nc
-    
+
     Expects an xml dump of:
       interfaces(file(filename.nc))
 */
@@ -69,13 +69,13 @@ public class Nc2Moml {
         root.addContent(source);
 
         root.setAttribute("extends", "ptolemy.domains.ptinyos.lib.NCComponent");
-        
+
         DocType plot = new DocType("plot",
                 "-//UC Berkeley//DTD MoML 1//EN",
                 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd");
         Document doc = new Document(root, plot);
-        
-        
+
+
         // FIXME comment
 
         ListIterator interfaces = Xnesc.interfaceList.listIterator();
@@ -87,18 +87,18 @@ public class Nc2Moml {
             Element port = new Element("port");
             port.setAttribute("name", intf.name);
             port.setAttribute("class", "ptolemy.actor.IOPort");
-            
+
             Element portType = new Element("property");
             String portTypeValue = (intf.provided) ? "input" : "output";
             portType.setAttribute("name", portTypeValue);
             port.addContent(portType);
-            
+
             if (intf.parameters != null) {
                 Element multiport = new Element("property");
                 multiport.setAttribute("name", "multiport");
                 port.addContent(multiport);
             }
-            
+
             Element showName = new Element("property");
             showName.setAttribute("name", "_showName");
             showName.setAttribute("class", "ptolemy.kernel.util.SingletonAttribute");
@@ -116,11 +116,11 @@ public class Nc2Moml {
                 out = new FileOutputStream(outputFile);
             }
             XMLOutputter serializer = new XMLOutputter(Format.getPrettyFormat());
-            
+
             Format format = serializer.getFormat();
             format.setOmitEncoding(true);
             format.setLineSeparator("\n");
-            
+
             serializer.setFormat(format);
 
             if (out != null) {
@@ -161,10 +161,10 @@ public class Nc2Moml {
                 String[] subdirs = inputfilename.split(_FILESEPARATOR);
                 String componentName = subdirs[subdirs.length - 1];
                 componentName = componentName.replaceFirst("\\.nc$", "");
-            
+
                 String momlSuffix = inputfilename.replaceFirst("\\.nc$", "\\.moml");
                 String momlOutputFile = outputPrefix + _FILESEPARATOR + momlSuffix;
-            
+
                 try {
                     if (new NDReader().parse(xmlInputFile)) {
                         System.out.println("parse ok: " + xmlInputFile);
@@ -187,7 +187,7 @@ public class Nc2Moml {
                             + xmlInputFile);
                     System.err.println("because of exception: " + e);
                 }
-                
+
             }
             in.close();
         } catch (IOException e) {
