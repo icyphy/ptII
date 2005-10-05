@@ -27,9 +27,7 @@ COPYRIGHTENDKEY
 */
 package ptolemy.codegen.kernel;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -81,7 +79,7 @@ public class Director implements ActorCodeGenerator {
            throws IllegalActionException {
        code.append("/* The firing of the director. */\n");
 
-       Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
+       Iterator actors = ((CompositeActor) _director.getContainer())
                .deepEntityList().iterator();
 
        while (actors.hasNext()) {
@@ -103,7 +101,7 @@ public class Director implements ActorCodeGenerator {
        StringBuffer code = new StringBuffer();
        code.append("/* The initialization of the director. */\n");
 
-       Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
+       Iterator actors = ((CompositeActor) _director.getContainer())
                .deepEntityList().iterator();
        //Iterator actors = actorsList.iterator();
        while (actors.hasNext()) {
@@ -128,7 +126,7 @@ public class Director implements ActorCodeGenerator {
    public String generatePreinitializeCode() throws IllegalActionException {
        StringBuffer code = new StringBuffer();
        code.append("/* The preinitialization of the director. */\n");
-       Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
+       Iterator actors = ((CompositeActor) _director.getContainer())
                .deepEntityList().iterator();
        //Iterator actors = actorsList.iterator();
        while (actors.hasNext()) {
@@ -138,28 +136,56 @@ public class Director implements ActorCodeGenerator {
            CodeGeneratorHelper helperObject = 
                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
            //helperObject.createBufferAndOffsetMap();
-           code.append(helperObject.generatePreinitializeCode());
-
-           Set inputPortsSet = new HashSet();
-           inputPortsSet.addAll(actor.inputPortList());
-           //The buffer size of output ports actually is not needed.
-           //The buffers are not allocated per output port.
-           //inputAndOutputPortsSet.addAll(actor.outputPortList());
-
-           Iterator inputPorts = inputPortsSet.iterator();
-
-           while (inputPorts.hasNext()) {
-               IOPort port = (IOPort) inputPorts.next();
-
-               for (int i = 0; i < port.getWidth(); i++) {
-                   int bufferSize = getBufferSize(port, i);
-                   helperObject.setBufferSize(port, i, bufferSize);
-               }
-           }
+           code.append(helperObject.generatePreinitializeCode());          
        }
+       
        return code.toString();
    }
 
+   public void generateTransferInputsCode(IOPort inputPort, StringBuffer code) 
+           throws IllegalActionException {
+    
+       ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper
+               = (ptolemy.codegen.c.actor.TypedCompositeActor)
+               _getHelper(_director.getContainer());
+       
+       for (int i = 0; i < inputPort.getWidth(); i++) {
+            if (i < inputPort.getWidthInside()) {   
+                String name = inputPort.getName();
+                if (inputPort.isMultiport()) {
+                    name = name + '#' + i;   
+                }               
+                
+                code.append(_compositeActorHelper.getReference("@" + name));
+                code.append(" = ");
+                code.append(_compositeActorHelper.getReference(name));
+                code.append(";\n");
+            }
+       }      
+   }
+   
+   public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+           throws IllegalActionException {
+    
+       ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper
+               = (ptolemy.codegen.c.actor.TypedCompositeActor)
+               _getHelper(_director.getContainer());
+   
+       for (int i = 0; i < outputPort.getWidthInside(); i++) {
+           if (i < outputPort.getWidth()) {   
+               String name = outputPort.getName();
+               if (outputPort.isMultiport()) {
+                   name = name + '#' + i;   
+               }             
+               
+               code.append(_compositeActorHelper.getReference(name));
+               code.append(" = ");
+               code.append(_compositeActorHelper.getReference("@" + name));
+               code.append(";\n");
+           }
+       }          
+   }
+   
    /** Generate the wrapup code of the director associated with this helper
     *  class. For this base class, this method just generate the wrapup code
     *  for each actor.
@@ -172,7 +198,7 @@ public class Director implements ActorCodeGenerator {
            throws IllegalActionException {
        code.append("/* The wrapup of the director. */\n");
 
-       Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
+       Iterator actors = ((CompositeActor) _director.getContainer())
                .deepEntityList().iterator();
 
        while (actors.hasNext()) {

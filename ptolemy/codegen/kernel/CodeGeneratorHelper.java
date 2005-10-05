@@ -38,6 +38,7 @@ import java.util.StringTokenizer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -76,45 +77,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
 
-   /** Create the buffer and offset map, which is associated with this
-    *  helper object. A key of the map is an IOPort of the actor. The
-    *  corresponding value is an array of Channel objects. The i-th channel
-    *  object corresponds to the i-th channel of that IOPort. This method
-    *  is used to maintain a internal HashMap of channels of the actor. The
-    *  channel objects in the map are used to keep track of the offsets in
-    *  their buffer.
-    */
-   public void createBufferAndOffsetMap() {
-       Set inputPortsSet = new HashSet();
-       inputPortsSet.addAll(((Actor) _component).inputPortList());
-       //We only care about input ports where data are actually stored
-       //except when an output port is not connected to any input port.
-       //In that case the variable corresponding to the unconnected output
-       //port always has size 1 and the assignment to this variable is 
-       //performed just for the side effect.
-       //ioPortsSet.addAll(((Actor) _component).outputPortList());
-
-       Iterator inputPorts = inputPortsSet.iterator();
-
-       while (inputPorts.hasNext()) {
-           IOPort port = (IOPort) inputPorts.next();
-           int length = port.getWidth();
-
-           if (length == 0) {
-               length = 1;
-           }
-
-           int[] bufferSizes = new int[length];
-           _bufferSizes.put(port, bufferSizes);
-
-           Object[] readOffsets = new Object[length];
-           _readOffsets.put(port, readOffsets);
-           
-           Object[] writeOffsets = new Object[length];
-           _writeOffsets.put(port, writeOffsets);
-       }
-   }
-
    /** 
     * Generate the fire code. In this base class, do nothing. Subclasses
     * may extend this method to generate the fire code of the associated
@@ -137,7 +99,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    public String generateInitializeCode() throws IllegalActionException {
        return "";
    }
-
+   
    /** 
     * Generate the preinitialize code. In this base class, return an empty
     * string. This method generally does not generate any execution code
@@ -147,23 +109,104 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     * @exception IllegalActionException Not thrown in this base class.
     */
    public String generatePreinitializeCode() throws IllegalActionException {
-       createBufferAndOffsetMap();
-       resetOffsets();
+       _createBufferAndOffsetMap();
        return "";
    }
 
    /** 
     * Generate the shared code. In this base class, return an empty
-    * string. This method generally does not generate any execution code
+    * set. This method generally does not generate any execution code
     * and returns an empty string. Subclasses may generate code for variable
     * declaration, defining constants, etc.
-    * @return A string of the preinitialize code for the helper.
+    * @return a set of shared codes.
     * @exception IllegalActionException Not thrown in this base class.
     */
-   public String generateSharedCode() throws IllegalActionException {
-       return "";
+   public Set generateSharedCode() throws IllegalActionException {
+      Set sharedCodes = new HashSet();
+      return sharedCodes;
    }
 
+   /** Generate variable declarations for inputs and outputs and parameters.
+    *  Append the declarations to the given string buffer.
+    *  @param code The given string buffer.
+    *  @exception IllegalActionException If the helper class for the model
+    *   director cannot be found.
+    */
+   public void generateVariableDeclaration(StringBuffer code) 
+           throws IllegalActionException {
+     
+       //  Generate variable declarations for referenced parameters.    
+       if (_referencedParameters != null) {
+           Iterator parameters = _referencedParameters.iterator();
+
+           while (parameters.hasNext()) {
+               Parameter parameter = (Parameter) parameters.next();
+               boolean isArrayType = _generateType(parameter, code);
+
+               if (isArrayType) {
+                   code.append("[ ]");
+               }
+
+               code.append(" = ");
+               code.append(parameter.getToken().toString());
+               code.append(";\n");
+           }
+       }
+
+       //  Generate variable declarations for input ports.
+       Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+
+       while (inputPorts.hasNext()) {
+           TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+
+           if (inputPort.getWidth() == 0) {
+            break;
+           }
+
+           // FIXME: What if port is ArrayType.
+           _generateType(inputPort, code);
+
+           if (inputPort.isMultiport()) {
+               code.append("[" + inputPort.getWidth() + "]");
+           }
+
+           int bufferSize = getBufferSize(inputPort);
+
+           //int bufferSize = directorHelper.getBufferSize(inputPort);
+           if (bufferSize > 1) {
+               code.append("[" + bufferSize + "]");
+           }
+
+           code.append(";\n");
+       }
+      
+       // Generate variable declarations for output ports.
+       Iterator outputPorts = ((Actor) _component).outputPortList().iterator();
+
+       while (outputPorts.hasNext()) {
+           TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+           
+           if (outputPort.getWidth() == 0 || outputPort.getWidthInside() != 0) {
+               
+               // FIXME: What if port is ArrayType.
+               _generateType(outputPort, code);
+               
+               if (outputPort.isMultiport()) {
+                   code.append("[" + outputPort.getWidthInside() + "]");
+               }
+               
+               int bufferSize = getBufferSize(outputPort);
+
+               if (bufferSize > 1) {
+                   code.append("[" + bufferSize + "]");
+               }
+               
+               code.append(";\n");
+           }
+       } 
+       
+   }
+   
    /** 
     * Generate the wrapup code. In this base class, do nothing. Subclasses
     * may extend this method to generate the wrapup code of the associated
@@ -187,7 +230,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
        int bufferSize = 1;
 
        if (port.getContainer() == _component) {
-           for (int i = 0; i < port.getWidth(); i++) {
+           int length = 0;
+           if (port.isInput()) {
+                length = port.getWidth();
+           } else {
+                length = port.getWidthInside();
+           }
+           for (int i = 0; i < length; i++) {
                int channelBufferSize = getBufferSize(port, i);
 
                if (channelBufferSize > bufferSize) {
@@ -233,7 +282,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     *  @return A set of strings that are header files needed by the code
     *  generated from this helper class.
     */
-   public Set getHeaderFiles() {
+   public Set getHeaderFiles() throws IllegalActionException {
        Set files = new HashSet();
        return files;
    }
@@ -361,14 +410,45 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
        // Get the referenced name.
        String refName = tokenizer.nextToken().trim();
+       
+       boolean forComposite = false;
+       if (refName.charAt(0) == '@') {
+           forComposite = true;
+           refName = refName.substring(1);      
+       }
 
+       IOPort port = null;
+       
        Iterator inputPorts = actor.inputPortList().iterator();
 
        while (inputPorts.hasNext()) {
-           IOPort port = (IOPort) inputPorts.next();
+           IOPort inputPort = (IOPort) inputPorts.next();
 
            // The channel is specified as $ref(port#channelNumber).
-           if (port.getName().equals(refName)) {
+           if (inputPort.getName().equals(refName)) {
+               port = inputPort;
+               break;
+           }
+       }
+       
+       Iterator outputPorts = actor.outputPortList().iterator();
+       
+       if (port == null) {
+           while (outputPorts.hasNext()) {
+               IOPort outputPort = (IOPort) outputPorts.next();
+
+               // The channel is specified as $ref(port#channelNumber).
+               if (outputPort.getName().equals(refName)) {
+                   port = outputPort;
+                   break;
+               }
+           }
+       }
+       
+       if (port != null) {
+           if ((port.isInput() && !forComposite) || 
+                   (port.isOutput() && forComposite)) {
+       
                result.append(port.getFullName().replace('.', '_'));
 
                String[] channelAndOffset = _getChannelAndOffset(name);
@@ -408,6 +488,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                    }
 
                    result.append("[" + temp + "]");
+               
                } else if (getBufferSize(port) > 1) {
                    // Did not specify offset, so the receiver buffer
                    // size is 1. This is multiple firing.
@@ -428,16 +509,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                }
 
                return result.toString();
-           }
-       }
-
-       Iterator outputPorts = actor.outputPortList().iterator();
-
-       while (outputPorts.hasNext()) {
-           IOPort port = (IOPort) outputPorts.next();
-
-           if (port.getName().equals(refName)) {
-               Receiver[][] remoteReceivers = (port.getRemoteReceivers());
+           
+           } else {
+            
+               Receiver[][] remoteReceivers;
+               if (port.isInput()) {       
+                   remoteReceivers = port.deepGetReceivers();               
+               } else {
+                   remoteReceivers = port.getRemoteReceivers();
+               }
 
                if (remoteReceivers.length == 0) {
                    // This channel of this output port doesn't have any sink.
@@ -453,8 +533,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                int channelNumber = 0;
 
                if (!channelAndOffset[0].equals("")) {
-                   channelNumber = (new Integer(channelAndOffset[0]))
-                           .intValue();
+                   channelNumber = (new Integer(channelAndOffset[0])).intValue();
                }
 
                sinkChannels = getSinkChannels(port, channelNumber);
@@ -558,26 +637,22 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                + name);
    }
 
-   /** 
-    * Return the parameters referenced in the code. The return parameters
-    * are in a HashSet wher each element is of type Attribute. 
-    *  @return The the parameters referenced in the code.
-    */
-   public HashSet getReferencedParameter() {
-       return _referencedParameters;
-   }
-
    /** Return a list of channel objects that are the sink input ports given
-    *  an output port and channel. Note the returned channels are newly
+    *  a port and channel. Note the returned channels are newly
     *  created objects and therefore not associated with the helper class.
     *  @param outputPort The given output port.
     *  @param channelNumber The given channel number.
     *  @return The list of channel objects that are the sink channels
     *   of the given output channel.
     */
-   public List getSinkChannels(IOPort outputPort, int channelNumber) {
+   public List getSinkChannels(IOPort port, int channelNumber) {
        List sinkChannels = new LinkedList();
-       Receiver[][] remoteReceivers = (outputPort.getRemoteReceivers());
+       Receiver[][] remoteReceivers;
+       if (port.isInput()) {       
+           remoteReceivers = port.deepGetReceivers();               
+       } else {
+           remoteReceivers = port.getRemoteReceivers();
+       }
 
        if (remoteReceivers.length == 0) {
            // This is an escape method. This class will not call this
@@ -587,8 +662,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
        for (int i = 0; i < remoteReceivers[channelNumber].length; i++) {
            IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
-           Receiver[][] portReceivers = sinkPort.getReceivers();
-
+           Receiver[][] portReceivers;
+           if (sinkPort.isInput()) {
+               portReceivers = sinkPort.getReceivers();
+           } else {
+               portReceivers = sinkPort.getInsideReceivers();
+           }
            for (int j = 0; j < portReceivers.length; j++) {
                for (int k = 0; k < portReceivers[j].length; k++) {
                    if (remoteReceivers[channelNumber][i] == portReceivers[j][k]) {
@@ -599,7 +678,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                }
            }
        }
-
+       
        return sinkChannels;
    }
 
@@ -711,15 +790,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
        return result.toString();
    }
 
-   /** Reset the offsets of all channels of the associated actor to the
-    *  default value of 0.
+   /** Reset the offsets of all channels of all input ports of the 
+    *  associated actor to the default value of 0.
     */
-   public void resetOffsets() 
+   public void resetInputPortsOffset() 
            throws IllegalActionException {
-       Set inputPortsSet = new HashSet();
-       inputPortsSet.addAll(((Actor) _component).inputPortList());
-
-       Iterator inputPorts = inputPortsSet.iterator();
+ 
+       Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
 
        while (inputPorts.hasNext()) {
            IOPort port = (IOPort) inputPorts.next();
@@ -731,6 +808,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
        }
    }
 
+   
    /** Set the buffer size of a given port.
     *  @param port The given port.
     *  @param channelNumber The given channel.
@@ -833,6 +911,52 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
    ///////////////////////////////////////////////////////////////////
    ////                     protected methods.                    ////
+      
+   /** Create the buffer and offset map for each input port, which is 
+    *  associated with this helper object. A key of the map is an IOPort 
+    *  of the actor. The corresponding value is an array of Channel objects. 
+    *  The i-th channel object corresponds to the i-th channel of that IOPort. 
+    *  This method is used to maintain a internal HashMap of channels of the 
+    *  actor. The channel objects in the map are used to keep track of the 
+    *  offsets in their buffer.
+    */
+   protected void _createBufferAndOffsetMap() 
+           throws IllegalActionException {
+
+       //We only care about input ports where data are actually stored
+       //except when an output port is not connected to any input port.
+       //In that case the variable corresponding to the unconnected output
+       //port always has size 1 and the assignment to this variable is 
+       //performed just for the side effect.
+       Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+
+       while (inputPorts.hasNext()) {
+           IOPort port = (IOPort) inputPorts.next();
+           int length = port.getWidth();
+
+           //if (length == 0) {
+           //    length = 1;
+           //}
+
+           int[] bufferSizes = new int[length];
+           _bufferSizes.put(port, bufferSizes);
+           Director directorHelper = (Director) _getHelper((NamedObj)
+                   (((Actor) _component).getExecutiveDirector()));
+           for (int i = 0; i < port.getWidth(); i++) {
+               int bufferSize = directorHelper.getBufferSize(port, i);
+               setBufferSize(port, i, bufferSize);
+           }
+
+           Object[] readOffsets = new Object[length];
+           _readOffsets.put(port, readOffsets);
+           
+           Object[] writeOffsets = new Object[length];
+           _writeOffsets.put(port, writeOffsets);
+       }
+       
+   }
+
+   
    /** Get the code generator helper associated with the given component.
     *  @param component The given component.
     *  @return The code generator helper.
@@ -842,7 +966,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
            throws IllegalActionException {
        return _codeGenerator._getHelper(component);
    }
-
+   
    ///////////////////////////////////////////////////////////////////
    ////                         private methods                   ////
 
@@ -908,6 +1032,44 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
        return -1;
    }
+   
+   /** Given a port or parameter, append a string in the form
+    *  "static <i>type</i> <i>objectName</i>" to the given string buffer.
+    *  Return true if the type of the port or parameter is ArrayType. This
+    *  method is only called in the generateVariableDeclarations() method.
+    *  @param namedobj The port or parameter.
+    *  @param code The string buffer that contains the generated code.
+    *  @return True if the type the port or parameter is ArrayType.
+    */
+   private boolean _generateType(NamedObj namedobj, StringBuffer code) {
+       String type = "";
+
+       if (namedobj instanceof Parameter) {
+           type = ((Parameter) namedobj).getType().toString();
+       } else if (namedobj instanceof TypedIOPort) {
+           type = ((TypedIOPort) namedobj).getType().toString();
+       }
+
+       boolean isArrayType = false;
+
+       if (type.charAt(0) == '{') {
+           // This is an ArrayType.
+           StringTokenizer tokenizer = new StringTokenizer(type, "{}");
+           type = tokenizer.nextToken();
+           isArrayType = true;
+       }
+
+       if (type.equals("boolean")) {
+           type = "unsigned char";
+       }
+
+       code.append("static ");
+       code.append(type);
+       code.append(" ");
+       code.append(namedobj.getFullName().replace('.', '_'));
+       return isArrayType;
+   }
+
 
    /** Return the channel number and offset given in a string.
     *  The result is an integer array of length 2. The first element
@@ -943,18 +1105,32 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
        return result;
    }
-
+   
    ///////////////////////////////////////////////////////////////////
-   ////                         private variables                 ////
-
+   ////                         potected variables                ////
+   
+   /** The code generator that contains this helper class.
+    */
+   protected CodeGenerator _codeGenerator;
+   
    /** A hashmap that keeps track of the bufferSizes of each channel
     *  of the actor.
     */
-   private HashMap _bufferSizes = new HashMap();
+   protected HashMap _bufferSizes = new HashMap();
 
-   /** The code generator that contains this helper class.
+   /** A hashmap that keeps track of the read offsets of each input channel of
+    *  the actor.
     */
-   private CodeGenerator _codeGenerator;
+   protected HashMap _readOffsets = new HashMap();
+   
+   /** A hashmap that keeps track of the write offsets of each input channel of
+    *  the actor.
+    */
+   protected HashMap _writeOffsets = new HashMap();
+
+
+   ///////////////////////////////////////////////////////////////////
+   ////                         private variables                 ////
 
    /** The associated component. */
    private NamedObj _component;
@@ -962,14 +1138,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    /** A hashmap that keeps track of the read offsets of each input channel of
     *  the actor.
     */
-   private HashMap _readOffsets = new HashMap();
-   
-   /** A hashmap that keeps track of the write offsets of each input channel of
-    *  the actor.
-    */
-   private HashMap _writeOffsets = new HashMap();
 
-   /** A set of parameters that have been referenced.
-    */
    private HashSet _referencedParameters = new HashSet();
 }

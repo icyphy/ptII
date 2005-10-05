@@ -31,7 +31,11 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.codegen.c.actor.TypedCompositeActor;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -135,9 +139,33 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                     + model.getName() + " is not a StaticSchedulingDirector.");
         }
 
-        ComponentCodeGenerator directorHelper = 
-            _getHelper((NamedObj) director);
-        ((Director) directorHelper).generateFireCode(code);
+        
+        Attribute iterations = director.getAttribute("iterations");
+
+        if (iterations == null) {
+            throw new IllegalActionException(director,
+                    "The Director does not have an attribute name: " +
+                    "\"iterations\"");
+        } else {
+            int iterationCount = 
+                ((IntToken) ((Variable) iterations).getToken()).intValue();
+
+            if (iterationCount <= 0) {
+                code.append("while (true) {\n");
+            } else {
+                // Declare iteration outside of the loop to avoid
+                // "error: `for' loop initial declaration used outside C99
+                // mode" with gcc-3.3.3
+                code.append("for (iteration = 0; iteration < " + iterationCount
+                        + "; iteration ++) {\n");
+            }
+        }    
+                
+        TypedCompositeActor compositeActorHelper 
+                = (TypedCompositeActor) _getHelper(getContainer());
+        compositeActorHelper.generateFireCode(code);
+        
+        code.append("}\n");
     }
 
     /** Set the container of this object to be the given container.
