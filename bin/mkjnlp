@@ -49,6 +49,11 @@ if [ ! -d $basedirectory ]; then
     exit 5
 fi
 
+# Cygwin might have /cygdrive/c/WINDOWS/system32/sort in the path
+# before /usr/bin/sort
+
+SORT=/usr/bin/sort
+
 for file in $otherjars
 do
     if [ ! -f $basedirectory/$file ]; then
@@ -61,7 +66,7 @@ do
 
     # Determine what packages are in the jar file
     echo "$file"
-    packages=`jar -tf $basedirectory/$file | 
+    packages=`jar -tf $basedirectory/$file | tee mkjnlpfiles.0 |
 	grep -v '/$' | grep -v META | grep -v JNLP-INF |
 	awk -F / '{
 		   for(i = 1; i < NF; i++) {
@@ -72,13 +77,14 @@ do
 			}
 		   } 
                    printf(".*\n")
-	}' | sort | uniq |
+	}' | $SORT | uniq | tee mkjnlp.files |
 	awk '{if (NR > 1) {
 		printf(",%s", $0)
 	     } else {
 	        printf("%s",$0)
              }
-	}'`
+	}' - `
+    echo "packages: $packages"
     otherjarspackages="$otherjarspackages $file:${packages}"
 done
 
