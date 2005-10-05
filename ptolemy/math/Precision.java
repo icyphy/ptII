@@ -88,7 +88,7 @@ import java.util.regex.Pattern;
  are shown in the table below. Each String Representation column of the
  table represent equivalent Precision formats:
 
- <table border=1>
+ <table border = 1>
    <tr><td><b>Format Name</b></td> <td><b>Format Spec</b></td>
        <td colspan = "6"><center><b>String Representation</b></center></td>
     </tr>
@@ -850,17 +850,33 @@ public class Precision implements Cloneable, Serializable {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
     /**
-     * IntegerFractionPrecisionFormat object
+     * static IntegerFractionPrecisionFormat object
      */
     public final static PrecisionFormat INTEGER_FRACTION =
         new IntegerFractionPrecisionFormat();
-    public final static PrecisionFormat LENGTH_INTEGER =
-        new LengthIntegerPrecisionFormat();
-    public final static PrecisionFormat VHDL =
-        new VHDLPrecisionFormat();
+
+    /**
+     * static LengthExponentPrecisionFormat object
+     */
     public final static PrecisionFormat LENGTH_EXPONENT =
         new LengthExponentPrecisionFormat();
+
+    /**
+     * static LengthIntegerPrecisionFormat object
+     */
+    public final static PrecisionFormat LENGTH_INTEGER =
+        new LengthIntegerPrecisionFormat();
+
+    /**
+     * static VHDLPrecisionFormat object
+     */
+    public final static PrecisionFormat VHDL =
+        new VHDLPrecisionFormat();
+
 
 
     ///////////////////////////////////////////////////////////////////
