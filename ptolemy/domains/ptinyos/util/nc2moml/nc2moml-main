@@ -14,20 +14,25 @@ if ($#ARGV < 2) {
 $SRC_DIR = "$ENV{PTII}/ptolemy/domains/ptinyos/util/nc2moml";
 $outputsuffix = ".ncxml";
 $indexfilename = "_TOSIndex.moml";
+$tempfilename = ".tempfile";
 ####################
 
+# Get the command line argument list.
 @args = @ARGV;
 
+# Put the arguments into variables.
 $inputprefix = shift @args;
 $subprefix = shift @args;
 $outputprefix = shift @args;
 @mydirs = @args;
 
-# .nc file names in short format.
-@ncfiles = ();
-
+# Create the output directory.
 system("mkdir -p $outputprefix") == 0
   or die "call to mkdir failed in @args: $?";
+
+# Create the temporary file that will contain the .nc file names in short format.
+open(TEMPFILE, ">$outputprefix/$tempfilename")
+  or die "Can't create .tempfile: $!";
 
 print("Converting .nc to nesc xml files.  See results in $outputprefix/command.txt\n");
 
@@ -37,35 +42,39 @@ foreach $mydir (@mydirs) {
   $files=`/usr/bin/find $mydir -name "*.nc" -print`;
 
   # Call script to convert .nc files into .xml files.
-  $filesnonewline = $files;
-  $filesnonewline =~ s/\n/\ /g;
-  system("echo \"$SRC_DIR/nc2moml-get-args $inputprefix $outputprefix $outputsuffix $filesnonewline\" >> $outputprefix/command.txt 2>&1");
-  system("$SRC_DIR/nc2moml-get-args $inputprefix $outputprefix $outputsuffix $filesnonewline") == 0
+  # Append the command and its output to the .txt file
+  foreach $file (split /\n/, $files) {
+    system("echo \"$SRC_DIR/nc2moml-get-args $inputprefix $outputprefix $outputsuffix $file\" >> $outputprefix/command.txt 2>&1");
+    system("$SRC_DIR/nc2moml-get-args $inputprefix $outputprefix $outputsuffix $file") == 0
       or die "system @args failed: $?";
+  }
 
   # Convert .xml files into .moml files.
   foreach $file (split /\n/, $files) {
     $ncfilename = $file;
     $ncfilename =~ s/^$inputprefix\///;
-    push @ncfiles, $ncfilename;
+    # Log the filename to the temporary file.
+    print TEMPFILE "$ncfilename\n";
   }
 }
 
+# Close (and flush) the temporary file.
+close(TEMPFILE);
+
 print("Converted .nc files to nesc xml files.  See results in $outputprefix/.../*.txt.\n");
 
-# Append nc2moml command (converts xml files into .moml files) to .txt file.
-system("echo \"$ENV{PTII}/bin/.nc2moml-util $outputprefix $outputsuffix $subprefix $outputprefix @ncfiles\" >> $outputprefix/command.txt 2>&1");
-
-# Run nc2moml command and append errors to .txt file.
-$nc2momlcmd = "$ENV{PTII}/bin/.nc2moml-util $outputprefix $outputsuffix $subprefix $outputprefix @ncfiles >> $outputprefix/command.txt 2>&1";
+# Call utility to convert nesC xml files to .moml files.
+# Append the command and its output to the .txt file.
+system("echo \"$ENV{PTII}/bin/.nc2moml-util $outputprefix $outputsuffix $subprefix $outputprefix $outputprefix/$tempfilename\" >> $outputprefix/command.txt 2>&1");
+$nc2momlcmd = "$ENV{PTII}/bin/.nc2moml-util $outputprefix $outputsuffix $subprefix $outputprefix $outputprefix/$tempfilename >> $outputprefix/command.txt 2>&1";
 system($nc2momlcmd) == 0
   or die "system @args failed: $?";
 
 print("Converted nesc xml files to .moml files.  See results in $outputprefix/command.txt\n");
 
-# Append momllib command (creates index files from .moml files) to .txt file.
+# Call utility to create index files from .moml files.
+# Append the command and its output to the .txt file.
 system("echo \"$ENV{PTII}/bin/.momllib-util .moml $indexfilename $outputprefix\" >> $outputprefix/command.txt 2>&1");
-
 $momllibcmd = "$ENV{PTII}/bin/.momllib-util .moml $indexfilename $outputprefix >> $outputprefix/command.txt 2>&1";
 system($momllibcmd) == 0
   or die "system @args failed: $?";

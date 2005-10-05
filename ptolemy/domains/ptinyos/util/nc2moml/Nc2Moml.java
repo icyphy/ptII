@@ -18,9 +18,11 @@ import org.xml.sax.*;
  * 
   Usage:
     Nc2Moml <xml input prefix> <xml input suffix> <nc sub prefix> <moml output prefix>
-           [short path to .nc files]
+           [long path to file containing list of .nc files using short path]
     
-  Example: Nc2Moml /home/celaine/trash/todayoutput .ncxml \'$CLASSPATH\' /home/celaine/trash/todayoutput tos/lib/Counters/Counter.nc
+  Example: Nc2Moml /home/celaine/trash/todayoutput .ncxml \'$CLASSPATH\' /home/celaine/trash/todayoutput /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
+
+  Input file contains: tos/lib/Counters/Counter.nc
     
     Expects an xml dump of:
       interfaces(file(filename.nc))
@@ -107,8 +109,8 @@ public class Nc2Moml {
     }
 
     public static void main(String[] args) throws IOException {
-        if (args.length < 3) {
-            System.err.println("Usage: java Nc2Moml <xml input prefix> <xml input suffix> <nc sub prefix> <moml output prefix> [short path to .nc files]");
+        if (args.length < 5) {
+            System.err.println("Usage: java Nc2Moml <xml input prefix> <xml input suffix> <nc sub prefix> <moml output prefix> [long path to file containing list of .nc files using short path]");
             return;
         }
 
@@ -117,42 +119,52 @@ public class Nc2Moml {
         String inputSuffix = args[index++].trim();
         String subPrefix = args[index++].trim();
         String outputPrefix = args[index++].trim();
+        String inputfilelist = args[index++].trim();
 
-        for (int i = index; i < args.length; i++) {
-            String xmlSuffix = args[i].replaceFirst("\\.nc$", inputSuffix);
-            String xmlInputFile = inputPrefix + _FILESEPARATOR + xmlSuffix;
+        try {
+            BufferedReader in = new BufferedReader(new FileReader(inputfilelist));
+            String inputfilename;
+            while ((inputfilename = in.readLine()) != null) {
+                String xmlSuffix = inputfilename.replaceFirst("\\.nc$", inputSuffix);
+                String xmlInputFile = inputPrefix + _FILESEPARATOR + xmlSuffix;
 
-            String pathToNCFile = subPrefix + _FILESEPARATOR + args[i];
+                String pathToNCFile = subPrefix + _FILESEPARATOR + inputfilename;
 
-            String[] subdirs = args[i].split(_FILESEPARATOR);
-            String componentName = subdirs[subdirs.length - 1];
-            componentName = componentName.replaceFirst("\\.nc$", "");
+                String[] subdirs = inputfilename.split(_FILESEPARATOR);
+                String componentName = subdirs[subdirs.length - 1];
+                componentName = componentName.replaceFirst("\\.nc$", "");
             
-            String momlSuffix = args[i].replaceFirst("\\.nc$", "\\.moml");
-            String momlOutputFile = outputPrefix + _FILESEPARATOR + momlSuffix;
+                String momlSuffix = inputfilename.replaceFirst("\\.nc$", "\\.moml");
+                String momlOutputFile = outputPrefix + _FILESEPARATOR + momlSuffix;
             
-            try {
-                if (new NDReader().parse(xmlInputFile)) {
-                    System.out.println("parse ok: " + xmlInputFile);
-                } else {
-                    System.out.println("parse exceptions occurred: " + xmlInputFile);
-                }
-
                 try {
-                    generateComponent(pathToNCFile, componentName, momlOutputFile);
+                    if (new NDReader().parse(xmlInputFile)) {
+                        System.out.println("parse ok: " + xmlInputFile);
+                    } else {
+                        System.out.println("parse exceptions occurred: " + xmlInputFile);
+                    }
+
+                    try {
+                        generateComponent(pathToNCFile, componentName, momlOutputFile);
+                    } catch (Exception e) {
+                        System.err.println("Errors while generating " + momlOutputFile
+                                + "because of exception: " + e);
+                    }
+                } catch (SAXException e) {
+                    System.err.println("No xml reader found for" + xmlInputFile);
+                } catch (FileNotFoundException e) {
+                    System.err.println("Could not find file " + xmlInputFile);
                 } catch (Exception e) {
-                    System.err.println("Errors while generating " + momlOutputFile
-                            + "because of exception: " + e);
+                    System.err.println("Did not complete nc2moml for file: "
+                            + xmlInputFile);
+                    System.err.println("because of exception: " + e);
                 }
-            } catch (SAXException e) {
-                System.err.println("No xml reader found for" + xmlInputFile);
-            } catch (FileNotFoundException e) {
-                System.err.println("Could not find file " + xmlInputFile);
-            } catch (Exception e) {
-                System.err.println("Did not complete nc2moml for file: "
-                        + xmlInputFile);
-                System.err.println("because of exception: " + e);
+                
             }
+            in.close();
+        } catch (IOException e) {
+            System.err.println("Could not open file: " + inputfilelist);
+            System.err.println("because of exception: " + e);
         }
     }
 

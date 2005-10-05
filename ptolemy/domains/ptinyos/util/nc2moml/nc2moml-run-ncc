@@ -43,9 +43,7 @@ system("echo \"ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\'
 $results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> $outputresultsfile 2>&1");
 
 if ($results eq 0) {
-  #print STDERR "$filename Ok\n"
   system("echo \"$filename Ok\" >> $outputprefix/command.txt 2>&1");
 } else {
-  #print STDERR "$filename ERRORS\n"
   system("echo \"$filename ERRORS\" >> $outputprefix/command.txt 2>&1");
 }
