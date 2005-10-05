@@ -225,6 +225,7 @@ public class Precision implements Cloneable, Serializable {
 
     /** Return true if the indicated object is an instance of Precision
      *  and the precision format matches exactly.
+     *  @param object Object to test for equality
      *  @return True if the precisions are equal.
      */
     public boolean equals(Object object) {
@@ -462,7 +463,7 @@ public class Precision implements Cloneable, Serializable {
          * the interpretation of the match, this method will throw
          * a IllegalArgumentException.
          *
-         * @param str
+         * @param str String to parse
          * @return A Precision object. Returns a null if the String does
          * not match the particular string format.
          * @exception IllegalArgumentException Thrown when
@@ -505,6 +506,7 @@ public class Precision implements Cloneable, Serializable {
 
         /** Parse the 'U' or 'S' sign specifier.
          *
+         * @param str String to parse for a sign indicator.
          * @return Return a 0 for unsigned and a 1 for signed.
          * @expection IllegalArgumentException Exception thrown when the
          * string does not match the 'U' or 'S' characters.
@@ -584,8 +586,9 @@ public class Precision implements Cloneable, Serializable {
      */
     public static class IntegerFractionPrecisionFormat extends PrecisionFormat {
 
+        /** Regular expression for IntegerFractionPrecisionFormat. 
+         *  Example: (S3.2) */
         protected final static String _regex =
-            //(S3.2)
             WHITE_SPACE + OPTIONAL_L_PARANBRACKET + WHITE_SPACE +
             US_OPT_GROUP +
             WHITE_SPACE + SIGNED_INTEGER_GROUP + "\\." +
@@ -664,8 +667,9 @@ public class Precision implements Cloneable, Serializable {
      */
     public static class LengthIntegerPrecisionFormat extends PrecisionFormat {
 
+        /** Regular expression for IntegerFractionPrecisionFormat. 
+         *   Example (S3,2) or (S3/2) */
         protected final static String _regex =
-            //(S3,2) or (S3/2)
             WHITE_SPACE + OPTIONAL_L_PARANBRACKET + WHITE_SPACE +
             US_OPT_GROUP +
             WHITE_SPACE + UNSIGNED_INTEGER_GROUP + "[,/]" +
@@ -738,8 +742,9 @@ public class Precision implements Cloneable, Serializable {
      */
     public static class LengthExponentPrecisionFormat extends PrecisionFormat {
 
+        /** Regular expression for IntegerFractionPrecisionFormat. 
+         *   Example (S3e2) */
         protected final String _regex =
-            //(S3e2)
             WHITE_SPACE + OPTIONAL_L_PARANBRACKET + WHITE_SPACE +
             US_OPT_GROUP +
             WHITE_SPACE + UNSIGNED_INTEGER_GROUP + "e" +
@@ -812,8 +817,10 @@ public class Precision implements Cloneable, Serializable {
      */
     public static class VHDLPrecisionFormat extends PrecisionFormat {
 
+        /** Regular expression for IntegerFractionPrecisionFormat. 
+         *   Example ([US]<digit>:<digit>) */
         protected final String _regex =
-            // ([US]<digit>:<digit>)
+
             WHITE_SPACE + OPTIONAL_L_PARAN + WHITE_SPACE + US_OPT_GROUP +
             WHITE_SPACE + SIGNED_INTEGER_GROUP + WHITE_SPACE +
             ":" + WHITE_SPACE + SIGNED_INTEGER_GROUP + WHITE_SPACE +
