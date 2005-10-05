@@ -68,4 +68,9 @@ public interface ComponentCodeGenerator {
      *  @return The component for which this is a helper to generate code.
      */
     public NamedObj getComponent();
+    
+    /** Set the code generator for the helper class implementing this interface.
+     *  @param codeGenerator The code generator to be set.
+     */
+    public void setCodeGenerator(CodeGenerator codeGenerator);
 }
