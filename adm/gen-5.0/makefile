@@ -58,7 +58,7 @@ SPLITTAR =	/users/ptolemy/adm/bin/splittar
 
 # FTP Directory
 # Use this for release
-PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
+PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # Name and directory of distribution.  For testing, use ptdesign
 # For release, use ptolemy
@@ -280,7 +280,9 @@ $(PTII_SRC): $(PTII_FULL)
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
+		echo "About to remove unneeded sources"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
+		ls $(PTII_SRC_TO_BE_REMOVED); \
 		$(FINDCLEAN); \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
@@ -578,10 +580,10 @@ update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
-		messier:$(PTII_FTP)
+		bennett:$(PTII_FTP)
 untar:
-	ssh messier rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh messier "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
+	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
+	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
 
 
