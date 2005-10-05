@@ -508,7 +508,7 @@ public class Precision implements Cloneable, Serializable {
          *
          * @param str String to parse for a sign indicator.
          * @return Return a 0 for unsigned and a 1 for signed.
-         * @expection IllegalArgumentException Exception thrown when the
+         * @exception IllegalArgumentException Exception thrown when the
          * string does not match the 'U' or 'S' characters.
          */
         public static int parseSignString(String str)
@@ -818,7 +818,7 @@ public class Precision implements Cloneable, Serializable {
     public static class VHDLPrecisionFormat extends PrecisionFormat {
 
         /** Regular expression for IntegerFractionPrecisionFormat. 
-         *   Example ([US]<digit>:<digit>) */
+         *   Example ([US]{digit}:{digit}) */
         protected final String _regex =
 
             WHITE_SPACE + OPTIONAL_L_PARAN + WHITE_SPACE + US_OPT_GROUP +
@@ -861,25 +861,25 @@ public class Precision implements Cloneable, Serializable {
     ////                         public variables                  ////
 
     /**
-     * static IntegerFractionPrecisionFormat object
+     * static IntegerFractionPrecisionFormat object.
      */
     public final static PrecisionFormat INTEGER_FRACTION =
         new IntegerFractionPrecisionFormat();
 
     /**
-     * static LengthExponentPrecisionFormat object
+     * static LengthExponentPrecisionFormat object.
      */
     public final static PrecisionFormat LENGTH_EXPONENT =
         new LengthExponentPrecisionFormat();
 
     /**
-     * static LengthIntegerPrecisionFormat object
+     * static LengthIntegerPrecisionFormat object.
      */
     public final static PrecisionFormat LENGTH_INTEGER =
         new LengthIntegerPrecisionFormat();
 
     /**
-     * static VHDLPrecisionFormat object
+     * static VHDLPrecisionFormat object.
      */
     public final static PrecisionFormat VHDL =
         new VHDLPrecisionFormat();
