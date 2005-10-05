@@ -1,0 +1,126 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Composite2" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95, 40}">
+        </property>
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 60.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={170, 98, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{295, 205}">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 45}">
+            </property>
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+            </property>
+        </port>
+        <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 200.0]">
+            </property>
+            <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 55}">
+                </property>
+            </property>
+            <port name="port" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+                </property>
+            </port>
+            <port name="port2" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 200.0}">
+                </property>
+            </port>
+            <entity name="Scale" class="ptolemy.actor.lib.Scale">
+                <property name="factor" class="ptolemy.data.expr.Parameter" value="2">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{290, 205}">
+                </property>
+            </entity>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
+            <link port="port" relation="relation2"/>
+            <link port="port2" relation="relation"/>
+            <link port="Scale.input" relation="relation2"/>
+            <link port="Scale.output" relation="relation"/>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="port" relation="relation"/>
+        <link port="port2" relation="relation2"/>
+        <link port="CompositeActor.port" relation="relation"/>
+        <link port="CompositeActor.port2" relation="relation2"/>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 205.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 205.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="CompositeActor.port" relation="relation2"/>
+    <link port="CompositeActor.port2" relation="relation"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
+</entity>
