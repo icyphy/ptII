@@ -67,6 +67,7 @@ print("Converted .nc files to nesc xml files.  See results in $outputprefix/.../
 # Append the command and its output to the .txt file.
 system("echo \"$ENV{PTII}/bin/.nc2moml-util $outputprefix $outputsuffix $subprefix $outputprefix $outputprefix/$tempfilename\" >> $outputprefix/command.txt 2>&1");
 $nc2momlcmd = "$ENV{PTII}/bin/.nc2moml-util $outputprefix $outputsuffix $subprefix $outputprefix $outputprefix/$tempfilename >> $outputprefix/command.txt 2>&1";
+print("$nc2momlcmd");
 system($nc2momlcmd) == 0
   or die "system @args failed: $?";
 

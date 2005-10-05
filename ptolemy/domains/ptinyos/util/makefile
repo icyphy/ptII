@@ -1,10 +1,9 @@
-# Makefile for the PtinyOS domain kernel
-#
-# @Authors: Christopher Hylands
+# Makefile for PtolemyII PtinyOS Domain
 #
 # @Version: $Id$
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,45 +28,40 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptinyos/util/nc2moml
+ME =		ptolemy/domains/ptinyos/util
 
-DIRS =
+DIRS =		nc2moml
 
-# Root of the Java directory
-ROOT =		../../../../..
-
-CLASSPATH =	$(ROOT)
+# Root of Ptolemy II directory
+ROOT =		../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+
 # Used to build jar files
-PTPACKAGE = 	nc2moml
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	util
+PTCLASSJAR =
 
-JSRCS = \
-	MoMLLib.java \
-	Nc2Moml.java
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		nc2moml/nc2moml.jar
 
-EXTRA_SRCS =	$(JSRCS)
 
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-JCLASS = $(JSRCS:%.java=%.class)
+all: jclass
+install: jclass jars
 
-all: jclass run
-
-run:
-	#./run-nc2moml-with-args
-
+# Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
