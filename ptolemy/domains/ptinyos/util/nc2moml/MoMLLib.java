@@ -57,7 +57,7 @@ import ptolemy.util.FileUtilities;
 
   Example: MoMLLib .moml _TOSIndex.moml /home/celaine/ptII/vendors/ptinyos/moml
 
- @author Elaine Cheong, contributor: Crhistopher Brooks
+ @author Elaine Cheong, contributor: Christopher Brooks
  @version $Id$
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)

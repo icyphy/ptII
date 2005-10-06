@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 # Perl script that converts PtinyOS .nc files to Ptolemy .moml files
-# Authors:  Elaine Cheong, Christopher Brooks
+# Authors:  Elaine Cheong
 # Version: $Id$
 #
 # Copyright (c) 2005 The Regents of the University of California.

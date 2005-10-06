@@ -39,9 +39,10 @@ DIR_LIST="tos/lib tos/system tos/platform tos/sensorboards"
 # turn on verbose output.
 export NC2MOML_VERBOSE=0
 
+# Name of log file.  This is used in the perl scripts that get called
+# from this script.
 export NC2MOML_LOG=nc2moml-log.txt
-
-####################
+# ####################
 
 # ${1#-} will not work under Solaris 8
 #while [ "${1#-}" != "$1" ]; do
