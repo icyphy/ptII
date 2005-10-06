@@ -35,9 +35,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.regex.PatternSyntaxException;
 
 import org.jdom.Comment;
 import org.jdom.DocType;
@@ -136,33 +134,31 @@ public class MoMLLib {
             if (File.separator.equals("\\")) {
                 indexFiles[i] = indexFiles[i].replace('\\', '/');
             }
-            //FIXME: this should be relative to $PTII
-            input.setAttribute("source",
+            // FIXME: this should be relative to $PTII
+            try {
+            	input.setAttribute("source",
                     FileUtilities.nameToURL(indexFiles[i],
                             null, null).toString());
+            } catch (MalformedURLException e) {
+            	input.setAttribute("source", indexFiles[i]);
+            }
             group.addContent(input);
         }
 
         // Make entries for component files.
         for (int i = 0; i < components.length; i++) {
-            try {
-                String c = components[i];
-                if (File.separator.equals("\\")) {
-                    c = c.replace('\\', '/');
-                }
-                String[] subNames = c.split("/");
-                String componentName = subNames[subNames.length - 1];
-                String className = c.replaceAll("/", ".");
-
-                Element entity = new Element("entity");
-                entity.setAttribute("name", componentName);
-                entity.setAttribute("class", className);
-                group.addContent(entity);
-            } catch (PatternSyntaxException e) {
-                // FIXME: Just throw the exception?
-                System.err.println("Error in regular expression: " + e);
-                e.printStackTrace();
+            String c = components[i];
+            if (File.separator.equals("\\")) {
+                c = c.replace('\\', '/');
             }
+            String[] subNames = c.split("/");
+            String componentName = subNames[subNames.length - 1];
+            String className = c.replaceAll("/", ".");
+
+            Element entity = new Element("entity");
+            entity.setAttribute("name", componentName);
+            entity.setAttribute("class", className);
+            group.addContent(entity);
         }
 
         // Setup format for xml serializer.
@@ -189,15 +185,13 @@ public class MoMLLib {
             } else {
                 serializer.output(doc, System.out);
             }
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             IOException ioException =
                 new IOException ("Error writing index file \""
                         + outputFile + "\"");
             ioException.initCause(ex);
             throw ioException;
-        }
-        finally {
+        } finally {
             if (out != null) {
                 try {
                     out.close();
@@ -223,7 +217,6 @@ public class MoMLLib {
         try {
             MoMLLib.proc(inputSuffix, outputFilename, rootDir, rootDir);
         } catch (Throwable throwable) {
-            // FIXME: Just throw the exception?
             System.err.println("Command failed: " + throwable);
             throwable.printStackTrace();
         }
@@ -257,9 +250,9 @@ public class MoMLLib {
         File[] children = dir.listFiles(filterForDirs);
 
         // Recursive call.
-         for (int i = 0; i < children.length; i++) {
-             proc(inputSuffix, outputFilename, root, children[i].toString());
-         }
+        for (int i = 0; i < children.length; i++) {
+            proc(inputSuffix, outputFilename, root, children[i].toString());
+        }
 
         // Filter for files with name == outputFilename.
         FilenameFilter filterForOutputFilename = new FilenameFilter() {
@@ -276,15 +269,14 @@ public class MoMLLib {
                 children[i].listFiles(filterForOutputFilename);
             if (grandchildren.length == 1) {
                 String indexFile = grandchildren[0].toString();
-                try {
-                    indexFile = indexFile.replaceFirst("^" + "/", "");
-                    indexFile = indexFile.replaceFirst("^" + "/", "");
-                    indexFiles.add(indexFile);
-                } catch (PatternSyntaxException ex) {
-                    // FIXME: Just throw the exception?
-                    System.err.println("Error in regular expression: " + ex);
-                    ex.printStackTrace();
-                }
+                // Transform into relative path.
+                String[] indexFileSubNames = indexFile.split("/");
+                String newIndexFileName = 
+                    indexFileSubNames[indexFileSubNames.length - 2] 
+                              + "/" 
+                              + indexFileSubNames[indexFileSubNames.length - 1];
+                indexFiles.add(newIndexFileName);
+
             } else {
                 if (grandchildren.length > 1) {
                     throw new Exception("Duplicate file "
@@ -303,62 +295,50 @@ public class MoMLLib {
                         !name.equals(outputFilename);
                 }
             };
+ 
+        String[] ncFiles = dir.list(filterForInputSuffix);
+        String[] components = {};
+        if (ncFiles.length > 0) {
+            components = new String[ncFiles.length];
 
-        try {
-            String[] ncFiles = dir.list(filterForInputSuffix);
-            String[] components = {};
-            if (ncFiles.length > 0) {
-                components = new String[ncFiles.length];
+            for (int i = 0; i < ncFiles.length; i++) {
+                // Make short path format for component name, w/o suffix
 
-                for (int i = 0; i < ncFiles.length; i++) {
-                    // Make short path format for component name, w/o suffix
-                    try {
-                        String shortpath =
-                            currentDir.replaceFirst("^" + root, "");
-                        shortpath =
-                            shortpath.replaceFirst("^" + "/", "");
-                        shortpath = shortpath + "/" + ncFiles[i];
-                        shortpath =
-                            shortpath.replaceFirst(inputSuffix + "$", "");
-                        components[i] = shortpath;
-                    } catch (PatternSyntaxException e) {
-                        // FIXME: Just throw the exception?
-                        System.err.println("Error in regular expression: " + e);
-                        e.printStackTrace();
-                    }
-                }
+                String shortpath =
+                    currentDir.replaceFirst("^" + root, "");
+                shortpath =
+                    shortpath.replaceFirst("^" + "/", "");
+                shortpath = shortpath + "/" + ncFiles[i];
+                shortpath =
+                    shortpath.replaceFirst(inputSuffix + "$", "");
+                components[i] = shortpath;
             }
-
-            // Create libraryName
-            String[] currentDirSubnames = null;
-            try {
-                currentDirSubnames = currentDir.split("/");
-                if (currentDirSubnames.length < 1) {
-                    throw new Exception("Problem with currentDir name: "
-                            + currentDir);
-                }
-            } catch (java.util.regex.PatternSyntaxException ex) {
-                throw new Exception("Failed to split \"" + currentDir 
-                        + "\" on '" + "/" + "'", ex);
-            }
-            String libraryName =
-                currentDirSubnames[currentDirSubnames.length - 1];
-
-            // Create full output file name.
-            String fullOutputFilename = currentDir + "/" + outputFilename;
-
-            // Create index file.
-            String[] stringArrayType = {};
-            MoMLLib.generateIndex(
-                    components,
-                    (String[]) indexFiles.toArray(stringArrayType),
-                    libraryName,
-                    fullOutputFilename);
-        } catch (PatternSyntaxException e) {
-            // FIXME: Just throw the exception?
-            System.err.println("Error in regular expression: " + e);
-            e.printStackTrace();
         }
+
+        // Create libraryName
+        String[] currentDirSubnames = null;
+        try {
+            currentDirSubnames = currentDir.split("/");
+            if (currentDirSubnames.length < 1) {
+                throw new Exception("Problem with currentDir name: "
+                        + currentDir);
+            }
+        } catch (java.util.regex.PatternSyntaxException ex) {
+            throw new Exception("Failed to split \"" + currentDir 
+                    + "\" on '" + "/" + "'", ex);
+        }
+        String libraryName =
+            currentDirSubnames[currentDirSubnames.length - 1];
+
+        // Create full output file name.
+        String fullOutputFilename = currentDir + "/" + outputFilename;
+
+        // Create index file.
+        String[] stringArrayType = {};
+        MoMLLib.generateIndex(
+                components,
+                (String[]) indexFiles.toArray(stringArrayType),
+                libraryName,
+                fullOutputFilename);
     }
 }
-
