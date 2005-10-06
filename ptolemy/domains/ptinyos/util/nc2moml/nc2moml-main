@@ -64,9 +64,14 @@ system("mkdir -p $outputprefix") == 0
 open(TEMPFILE, ">$outputprefix/$tempfilename")
   or die "Can't create .tempfile: $!";
 
-print("\nConverting .nc files to nesc xml files.  Any errors will be redirected to $outputprefix/$ENV{NC2MOML_LOG}\n");
+print("\nConverting .nc files to nesc xml files.  Any errors will be redirected \
+to $outputprefix/$ENV{NC2MOML_LOG}\n");
 
-print("\nYou will see a series of \"+\" and \"-\".  A \"+\" means that the .nc file had no parse errors.  A \"-\" means that the .nc file had parse problems.  Most errors or warnings can be ignored here, since some files in the TinyOS tree do not compile properly or the correct compiler arguments or include files cannot be found.\n");
+print("\nYou will see a series of \"+\" and \"-\".  A \"+\" means that the .nc \
+file had no parse errors.  A \"-\" means that the .nc file had parse \
+problems.  Most errors or warnings can be ignored here, since some files \
+in the TinyOS tree do not compile properly or the correct compiler arguments \
+or include files cannot be found.\n");
 
 foreach $mydir (@mydirs) {
   # Find all .nc files.
@@ -99,27 +104,32 @@ if (!$VERBOSE) {
   print("\n");
 }
 
-print("\nFinished converting .nc files to nesc xml files.  See results in $outputprefix/.../*.txt.\n");
+print("\nFinished converting .nc files to nesc xml files.  See results in \
+$outputprefix/.../*.txt.\n");
 
 # Call utility to convert nesC xml files to .moml files.
 # Append the command and its output to the .txt file.
 system("echo \"$ENV{PTII}/bin/.nc2moml-util $outputprefix $outputsuffix $subprefix $outputprefix $outputprefix/$tempfilename\" >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1");
 $nc2momlcmd = "$ENV{PTII}/bin/.nc2moml-util $outputprefix $outputsuffix $subprefix $outputprefix $outputprefix/$tempfilename >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1";
-print("\nConverting nesc xml files to .moml files.  Any errors will be redirected to $outputprefix/$ENV{NC2MOML_LOG}\n");
+print("\nConverting nesc xml files to .moml files.  Any errors will be \
+redirected to $outputprefix/$ENV{NC2MOML_LOG}\n");
 system($nc2momlcmd) == 0
   or die "system @args failed: $?";
 
-print("\nFinished converting nesc xml files to .moml files.  See results in $outputprefix/$ENV{NC2MOML_LOG}\n");
+print("\nFinished converting nesc xml files to .moml files.  See results in \
+$outputprefix/$ENV{NC2MOML_LOG}\n");
 
 # Call utility to create index files from .moml files.
 # Append the command and its output to the .txt file.
 system("echo \"$ENV{PTII}/bin/.momllib-util .moml $indexfilename $outputprefix\" >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1");
-print("\nCreating index files from .moml files.  Any errors will be redirected to $outputprefix/$ENV{NC2MOML_LOG}\n");
+print("\nCreating index files from .moml files.  Any errors will be redirected \
+to $outputprefix/$ENV{NC2MOML_LOG}\n");
 $momllibcmd = "$ENV{PTII}/bin/.momllib-util .moml $indexfilename $outputprefix >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1";
 system($momllibcmd) == 0
   or die "system @args failed: $?";
 
-print("\nFinished creating index files from .moml files.  See results in $outputprefix/$ENV{NC2MOML_LOG}\n");
+print("\nFinished creating index files from .moml files.  See results in \
+$outputprefix/$ENV{NC2MOML_LOG}\n");
 
 print("\nFinished.  See results in $outputprefix/$ENV{NC2MOML_LOG}\n");
 

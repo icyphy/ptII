@@ -131,7 +131,6 @@ public class MoMLLib {
         //     <input source="Counters/index.moml"/>
         for (int i = 0; i< indexFiles.length; i++) {
             Element input = new Element("input");
-            // FIXME: this should be relative to $PTII
             try {
             	input.setAttribute("source",
                     FileUtilities.nameToURL(indexFiles[i],
