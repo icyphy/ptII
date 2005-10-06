@@ -137,9 +137,12 @@ public class MoMLLib {
         for (int i = 0; i < components.length; i++) {
             try {
                 String c = components[i];
-                String[] subNames = c.split(File.separator);
+                if (File.separator.equals("\\")) {
+                    c = c.replace('\\', '/');
+                }
+                String[] subNames = c.split("/");
                 String componentName = subNames[subNames.length - 1];
-                String className = c.replaceAll(File.separator, ".");
+                String className = c.replaceAll("/", ".");
 
                 Element entity = new Element("entity");
                 entity.setAttribute("name", componentName);
@@ -196,8 +199,9 @@ public class MoMLLib {
 
         try {
             MoMLLib.proc(inputSuffix, outputFilename, rootDir, rootDir);
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (Throwable throwable) {
+            System.err.println("Command failed: " + throwable);
+            throwable.printStackTrace();
         }
     }
 
@@ -215,6 +219,9 @@ public class MoMLLib {
             final String outputFilename,
             String root,
             String currentDir) throws Exception {
+        if (File.separator.equals("\\")) {
+            currentDir = currentDir.replace('\\', '/');
+        }
         File dir = new File(currentDir);
 
         // Filter for directories only.
@@ -246,12 +253,12 @@ public class MoMLLib {
             if (grandchildren.length == 1) {
                 String indexFile = grandchildren[0].toString();
                 try {
-                    indexFile = indexFile.replaceFirst("^" + currentDir, "");
-                    indexFile = indexFile.replaceFirst("^" + File.separator, "");
+                    indexFile = indexFile.replaceFirst("^" + "/", "");
+                    indexFile = indexFile.replaceFirst("^" + "/", "");
                     indexFiles.add(indexFile);
-                } catch (PatternSyntaxException e) {
-                    System.err.println("Error in regular expression: " + e);
-                    e.printStackTrace();
+                } catch (PatternSyntaxException ex) {
+                    System.err.println("Error in regular expression: " + ex);
+                    ex.printStackTrace();
                 }
             } else {
                 if (grandchildren.length > 1) {
@@ -284,8 +291,8 @@ public class MoMLLib {
                         String shortpath =
                             currentDir.replaceFirst("^" + root, "");
                         shortpath =
-                            shortpath.replaceFirst("^" + File.separator, "");
-                        shortpath = shortpath + File.separator + ncFiles[i];
+                            shortpath.replaceFirst("^" + "/", "");
+                        shortpath = shortpath + "/" + ncFiles[i];
                         shortpath =
                             shortpath.replaceFirst(inputSuffix + "$", "");
                         components[i] = shortpath;
@@ -297,16 +304,22 @@ public class MoMLLib {
             }
 
             // Create libraryName
-            String[] currentDirSubnames = currentDir.split(File.separator);
-            if (currentDirSubnames.length < 1) {
-                throw new Exception("Problem with currentDir name: "
-                        + currentDir);
+            String[] currentDirSubnames = null;
+            try {
+                currentDirSubnames = currentDir.split("/");
+                if (currentDirSubnames.length < 1) {
+                    throw new Exception("Problem with currentDir name: "
+                            + currentDir);
+                }
+            } catch (java.util.regex.PatternSyntaxException ex) {
+                throw new Exception("Failed to split \"" + currentDir 
+                        + "\" on '" + "/" + "'", ex);
             }
             String libraryName =
                 currentDirSubnames[currentDirSubnames.length - 1];
 
             // Create full output file name.
-            String fullOutputFilename = currentDir + File.separator + outputFilename;
+            String fullOutputFilename = currentDir + "/" + outputFilename;
 
             // Create index file.
             String[] stringArrayType = {};
