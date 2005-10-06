@@ -12,6 +12,10 @@
 # FIXME: assumes ncc is in path
 #$ncc = "ncc";
 
+##### SETTINGS #####
+$VERBOSE = $ENV{NC2MOML_VERBOSE};
+####################
+
 @args = @ARGV;
 $inputprefix = shift @args;
 $outputprefix = shift @args;
@@ -37,13 +41,27 @@ system("mkdir -p $outputdir") == 0
   or die "call to mkdir failed in @args: $?";
 
 # Write command to .txt file
-system("echo \"ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args\" > $outputresultsfile");
+if ($verbose) {
+  system("echo \"ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args\" > $outputresultsfile");
+}
 
 # Run command and append errors to .txt file.
-$results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> $outputresultsfile 2>&1");
+if ($verbose) {
+  $results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> $outputresultsfile 2>&1");
+} else {
+  $results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> /dev/null 2>&1");
+}
 
 if ($results eq 0) {
-  system("echo \"$filename Ok\" >> $outputprefix/command.txt 2>&1");
+  if ($verbose) {
+    system("echo \"$filename Ok\" >> $outputprefix/command.txt 2>&1");
+  } else {
+    print("+");
+  }
 } else {
-  system("echo \"$filename ERRORS\" >> $outputprefix/command.txt 2>&1");
+  if ($verbose) {
+    system("echo \"$filename ERRORS\" >> $outputprefix/command.txt 2>&1");
+  } else {
+    print("-");
+  }
 }

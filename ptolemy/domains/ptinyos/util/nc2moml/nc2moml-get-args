@@ -39,7 +39,6 @@ foreach (@files) {
       push @opts, "-board=$sb";
     }
 
-    #print("grep '^PFLAGS[^=]*=' $dir/Makefile | grep -v '\\\$' | head -1");
     $pf=`grep '^PFLAGS[^=]*=' $dir/Makefile | grep -v '\\\$' | head -1`;
     chomp $pf;
     if ($pf) {

@@ -1,7 +1,16 @@
 #!/bin/sh
 
+# Set up the args to convert .nc files to .moml files.
+
 ##### SETTINGS #####
 SRC_DIR=${PTII}/ptolemy/domains/ptinyos/util/nc2moml
+MOML_OUTPUT_DIR=$PTII/vendors/ptinyos/moml
+DIR_LIST="tos/lib tos/system tos/platform tos/sensorboards"
+
+# Note: You should set NC2MOML_VERBOSE environment variable to 1 to
+# turn on verbose output.
+export NC2MOML_VERBOSE=0
+
 ####################
 
 if [ -z $TOSROOT ]; then
@@ -13,11 +22,6 @@ TOS_INPUT_DIR=$TOSROOT
 if [ -z $PTII ]; then
   echo "Error: \$PTII must be defined"
 fi
-
-MOML_OUTPUT_DIR=$PTII/vendors/ptinyos/moml
-
-DIR_LIST="tos/lib tos/system tos/platform tos/sensorboards"
-
 
 echo "$SRC_DIR/nc2moml-main $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST"
 

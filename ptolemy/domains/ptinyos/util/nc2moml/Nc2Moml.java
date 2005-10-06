@@ -97,11 +97,14 @@ tos/lib/Counters/SenseToInt.nc
    @Pt.AcceptedRating Red (celaine)
 */
 public class Nc2Moml {
-    /** fixme  method comment
+    /** Generate the .moml file for this nesC component.
+     *
+     *  @param sourcePath The path to the component source file (.nc).
+     *  @param componentName The name of the component (no suffix).
+     *  @param outputFile The file to generate.
      */
     public static void generateComponent(
-            String sourcePath, String componentName, String outputFile)
-            throws Exception {
+            String sourcePath, String componentName, String outputFile) {
         // Set the name of this class to the name of this nesC component.
         Element root = new Element("class");
         root.setAttribute("name", componentName);
