@@ -58,8 +58,6 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 
-import com.sun.tools.corba.se.idl.constExpr.Not;
-
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerator
 
