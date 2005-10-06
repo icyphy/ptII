@@ -34,6 +34,8 @@ import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.regex.PatternSyntaxException;
 
@@ -96,9 +98,10 @@ public class MoMLLib {
      *    Example: subdir/_TOSIndex.moml
      *  @param outputFile The file to generate in long path format.
      *    Example: /home/celaine/ptII/vendors/ptinyos/moml/tos/lib/Counters/Counter/index.moml
+     *  @exception IOException If there is a problem writing files.
      */
     public static void generateIndex(String[] components, String[] indexFiles,
-            String libraryName, String outputFile) {
+            String libraryName, String outputFile) throws IOException {
 
         Element root = new Element("entity");
         root.setAttribute("name", libraryName);
@@ -128,7 +131,18 @@ public class MoMLLib {
         //     <input source="Counters/index.moml"/>
         for (int i = 0; i< indexFiles.length; i++) {
             Element input = new Element("input");
-            input.setAttribute("source", indexFiles[i]);
+            if (File.separator.equals("\\")) {
+                indexFiles[i] = indexFiles[i].replace('\\', '/');
+            }
+            try {
+                input.setAttribute("source", (new URL(indexFiles[i])).toString());
+            } catch (MalformedURLException ex) {
+                IOException ioException =
+                    new IOException("Failed to create url for \""
+                            + indexFiles[i] + "\"");
+                ioException.initCause(ex);
+                throw ioException;
+            }
             group.addContent(input);
 
         }
@@ -167,22 +181,34 @@ public class MoMLLib {
         configure.addContent(moml);
 
         // Generate index file.
+        FileOutputStream out = null;
         try {
-            FileOutputStream out = null;
             if (outputFile != null) {
                 out = new FileOutputStream(outputFile);
             }
 
             if (out != null) {
                 serializer.output(doc, out);
-                out.flush();
-                out.close();
             } else {
                 serializer.output(doc, System.out);
             }
         }
-        catch (IOException e) {
-            System.err.println("Error writing index file: " + e);
+        catch (IOException ex) {
+            IOException ioException =
+                new IOException ("Error writing index file \""
+                        + outputFile + "\"");
+            ioException.initCause(ex);
+            throw ioException;
+        }
+        finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException ex) {
+                    System.err.println("Failed to close " + outputFile
+                            + ": " + ex);
+                }
+            }
         }
     }
 
