@@ -131,9 +131,6 @@ public class MoMLLib {
         //     <input source="Counters/index.moml"/>
         for (int i = 0; i< indexFiles.length; i++) {
             Element input = new Element("input");
-            if (File.separator.equals("\\")) {
-                indexFiles[i] = indexFiles[i].replace('\\', '/');
-            }
             // FIXME: this should be relative to $PTII
             try {
             	input.setAttribute("source",
@@ -269,14 +266,20 @@ public class MoMLLib {
                 children[i].listFiles(filterForOutputFilename);
             if (grandchildren.length == 1) {
                 String indexFile = grandchildren[0].toString();
+                if (File.separator.equals("\\")) {
+                    indexFile = indexFile.replace('\\', '/');
+                }
                 // Transform into relative path.
                 String[] indexFileSubNames = indexFile.split("/");
-                String newIndexFileName = 
-                    indexFileSubNames[indexFileSubNames.length - 2] 
-                              + "/" 
-                              + indexFileSubNames[indexFileSubNames.length - 1];
-                indexFiles.add(newIndexFileName);
-
+                if (indexFileSubNames.length < 2) {
+                    throw new Exception("Invalid index file path.");
+                } else {
+                    String newIndexFileName = 
+                        indexFileSubNames[indexFileSubNames.length - 2] 
+                        + "/" 
+                        + indexFileSubNames[indexFileSubNames.length - 1];
+                    indexFiles.add(newIndexFileName);
+                }
             } else {
                 if (grandchildren.length > 1) {
                     throw new Exception("Duplicate file "
