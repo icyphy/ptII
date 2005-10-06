@@ -82,13 +82,13 @@ if ($verbose) {
 
 if ($results eq 0) {
   if ($verbose) {
-    system("echo \"$filename Ok\" >> $outputprefix/command.txt 2>&1");
+    system("echo \"$filename Ok\" >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1");
   } else {
     print("+");
   }
 } else {
   if ($verbose) {
-    system("echo \"$filename ERRORS\" >> $outputprefix/command.txt 2>&1");
+    system("echo \"$filename ERRORS\" >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1");
   } else {
     print("-");
   }

@@ -39,6 +39,10 @@ DIR_LIST="tos/lib tos/system tos/platform tos/sensorboards"
 # turn on verbose output.
 export NC2MOML_VERBOSE=0
 
+export NC2MOML_LOG=nc2moml-log.txt
+
+####################
+
 # ${1#-} will not work under Solaris 8
 #while [ "${1#-}" != "$1" ]; do
 # jode takes a -d argument, which causes problems unless we use "x..."
@@ -54,7 +58,7 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
 	    echo "    Flags:"
 	    echo "        -h print this help message"
 	    echo "        -v verbose"
-	    echo "    Debugging output ends up in $MOML_OUTPUT_DIR/command.txt"
+	    echo "    Debugging output ends up in $MOML_OUTPUT_DIR/$NC2MOML_LOG"
 	    echo "    This script requires that \$TOSROOT be set to the"
 	    echo "    location of the TinyOS tree,"
 	    echo "    typically \"\$PTII/vendors/ptinyos/tinyos-1.x\"."
@@ -85,8 +89,6 @@ if [ $# -gt 0 ]; then
     done
 fi
 
-####################
-
 if [ -z $TOSROOT ]; then
   echo "$0: Error: \$TOSROOT must be defined"
   echo "    \$TOSROOT should be set to the tinyos tree,"
@@ -110,8 +112,8 @@ if [ $status -ne 0 ]; then
     exit 3
 fi
 
-# Clear command.txt
-rm -f "$MOML_OUTPUT_DIR/command.txt"
+# Clear $NC2MOML_LOG
+rm -f "$MOML_OUTPUT_DIR/$NC2MOML_LOG"
 
 echo "Running $SRC_DIR/nc2moml-main $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST"
 
