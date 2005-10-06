@@ -100,6 +100,9 @@ if [ -z $PTII ]; then
   exit 2
 fi
 
+# Clear command.txt
+rm -f "$MOML_OUTPUT_DIR/command.txt"
+
 echo "Running $SRC_DIR/nc2moml-main $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST"
 
 $SRC_DIR/nc2moml-main $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST
