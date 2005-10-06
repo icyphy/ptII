@@ -116,6 +116,7 @@ fi
 # Clear $NC2MOML_LOG
 rm -f "$MOML_OUTPUT_DIR/$NC2MOML_LOG"
 
+echo ""
 echo "Running $SRC_DIR/nc2moml-main $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST"
 
 $SRC_DIR/nc2moml-main $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST
