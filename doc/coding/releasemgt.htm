@@ -290,6 +290,26 @@ setenv PTII `pwd`
 cd $PTII/adm/gen-5.1
 make USER=cxh PTIIHOME=/tmp/ptII5.1-devel PTIIADM=/tmp/ptII5.1-devel/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar clean all >& make.out &
 </pre>
+The resulting file with the .class files gets copied to the website
+and untar'd.
+<pre>
+make USER=cxh PTIIHOME=/tmp/ptII5.1-devel PTIIADM=/tmp/ptII5.1-devel/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar update_ftp
+</pre>
+<ol>
+<li> Fix the links to ptplot downloads:
+<pre>
+cd /export/home/pt0/ptweb/ptolemyII/ptII5.0/ptII5.0.1/ptolemy/plot
+ln -s ../../../../../java/ptplot5.5/ptolemy/plot/ptplot5.5* .
+cd doc
+rm -rf download
+ln -s ../../../../../../java/ptplot5.5-beta/ptolemy/plot/doc/download .
+</pre>
+
+<li> Copy gr.jar from a Windows box to <CODE>ptolemy/domains/gr</CODE>
+
+<li> Copy codeDoc.jar from a Windows box and unjar it
+</ol>
+
 
 <li> We build the webstart jar files under Windows
 <pre>
@@ -298,12 +318,15 @@ mv ptII ptII5.1-devel
 cd ptII5.1-devel
 export PTII=c:/src/ptII5.1-devel
 ./configure
-<I>Set up missing packages such as joystick, JAI, JMF, serialIO, quicktime</I>
+<I>Set up missing packages such as joystick, JAI, JMF, javacomm, quicktime</I>
 ./configure
 make fast
-make jnlp_all
-</pre>
 
+<I>Copy <CODE>~ptII/adm/certs/ptkeystore</CODE> to $PTII.  Note you will
+need access to the ptII account on bennett </I>
+make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx"
+</pre>
+<I>xxx</I> is the ptkeystore password.
 
 <li> Create the src.jar file: 
 <pre>
