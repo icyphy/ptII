@@ -36,7 +36,9 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+PTINYOS_DIR =   $(ROOT)/ptolemy/domains/ptinyos
+
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/jdom.jar$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/nesc-dump.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -64,10 +66,11 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass run
+all: jclass
+	@echo "Run 'make install' to convert nc files to moml"
 
-run:
-	#./run-nc2moml-with-args
+install:
+	./nc2moml
 
 include $(ROOT)/mk/ptcommon.mk
 
