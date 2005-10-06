@@ -290,7 +290,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    /** Get the read offset in the buffer of a given channel from which a token
     *  should be read. The channel is given by its containing port and
     *  the channel number in that port.
-    *  @param port The given port.
+    *  @param inputPort The given port.
     *  @param channelNumber The given channel number.
     *  @return The offset in the buffer of a given channel from which a token
     *   should be read.
@@ -309,7 +309,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    /** Get the write offset in the buffer of a given channel to which a token
     *  should be put. The channel is given by its containing port and
     *  the channel number in that port.
-    *  @param port The given port.
+    *  @param inputPort The given port.
     *  @param channelNumber The given channel number.
     *  @return The offset in the buffer of a given channel to which a token
     *   should be put.
@@ -640,7 +640,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    /** Return a list of channel objects that are the sink input ports given
     *  a port and channel. Note the returned channels are newly
     *  created objects and therefore not associated with the helper class.
-    *  @param outputPort The given output port.
+    *  @param port The given output port.
     *  @param channelNumber The given channel number.
     *  @return The list of channel objects that are the sink channels
     *   of the given output channel.
@@ -832,9 +832,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
    /** Set the read offset in a buffer of a given channel from which a token 
     *  should be read.
-    *  @param port The given port.
+    *  @param inputPort The given port.
     *  @param channelNumber The given channel.
-    *  @param offset The offset to be set to the buffer of that channel.
+    *  @param readOffset The offset to be set to the buffer of that channel.
     */
    public void setReadOffset(IOPort inputPort, int channelNumber, Object readOffset)
            throws IllegalActionException {
@@ -849,9 +849,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    }
    
    /** Set the write offset in the downstream buffers connected to the given channel.
-    *  @param port The given port.
+    *  @param outputPort The given port.
     *  @param channelNumber The given channel.
-    *  @param offset The offset to be set to the buffer of that channel.
+    *  @param writeOffset The offset to be set to the buffer of that channel.
     */
    public void setSinkActorsWriteOffset(IOPort outputPort, int channelNumber, 
            Object writeOffset) throws IllegalActionException {
@@ -868,9 +868,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    
    /** Set the write offset in a buffer of a given channel to which a token 
     *  should be put.
-    *  @param port The given port.
+    *  @param inputPort The given port.
     *  @param channelNumber The given channel.
-    *  @param offset The offset to be set to the buffer of that channel.
+    *  @param writeOffset The offset to be set to the buffer of that channel.
     */
    public void setWriteOffset(IOPort inputPort, int channelNumber, Object writeOffset) 
            throws IllegalActionException {
