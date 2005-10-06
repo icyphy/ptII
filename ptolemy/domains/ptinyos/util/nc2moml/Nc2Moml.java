@@ -42,17 +42,20 @@ import java.util.*;
 import org.xml.sax.*;
 
 /**
- * Generate a .moml file for each .nc file in the input list.
- *
+  Generate a .moml file for each .nc file in the input list.
+
   Usage:
-    Nc2Moml <xml input prefix> <xml input suffix> <nc sub prefix> <moml output prefix>
+    Nc2Moml <xml input prefix> <xml input suffix> <nc sub prefix>
+            <moml output prefix>
            [long path to file containing list of .nc files using short path]
 
-  Example: Nc2Moml /home/celaine/trash/todayoutput .ncxml \'$CLASSPATH\' /home/celaine/trash/todayoutput /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
+  Example: Nc2Moml /home/celaine/trash/todayoutput .ncxml \'$CLASSPATH\'
+    /home/celaine/trash/todayoutput
+    /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
 
   Input file contains: tos/lib/Counters/Counter.nc
 
-    Expects an xml dump of:
+  Expects an xml dump of:
       interfaces(file(filename.nc))
 */
 public class Nc2Moml {
@@ -101,7 +104,8 @@ public class Nc2Moml {
 
             Element showName = new Element("property");
             showName.setAttribute("name", "_showName");
-            showName.setAttribute("class", "ptolemy.kernel.util.SingletonAttribute");
+            showName.setAttribute("class",
+                    "ptolemy.kernel.util.SingletonAttribute");
             port.addContent(showName);
 
             root.addContent(port);
@@ -115,7 +119,8 @@ public class Nc2Moml {
             if (outputFile != null) {
                 out = new FileOutputStream(outputFile);
             }
-            XMLOutputter serializer = new XMLOutputter(Format.getPrettyFormat());
+            XMLOutputter serializer =
+                new XMLOutputter(Format.getPrettyFormat());
 
             Format format = serializer.getFormat();
             format.setOmitEncoding(true);
@@ -137,11 +142,17 @@ public class Nc2Moml {
     }
 
     public static void main(String[] args) throws IOException {
+        // Check to make sure all necessary arguments have been passed
+        // to program.
         if (args.length < 5) {
-            System.err.println("Usage: java Nc2Moml <xml input prefix> <xml input suffix> <nc sub prefix> <moml output prefix> [long path to file containing list of .nc files using short path]");
+            System.err.println("Usage: java Nc2Moml <xml input prefix> "
+                    + "<xml input suffix> <nc sub prefix> <moml output prefix> "
+                    + "[long path to file containing list of .nc files using "
+                    + "short path]");
             return;
         }
 
+        // Extract arguments into variables.
         int index = 0;
         String inputPrefix = args[index++].trim();
         String inputSuffix = args[index++].trim();
@@ -150,33 +161,52 @@ public class Nc2Moml {
         String inputfilelist = args[index++].trim();
 
         try {
-            BufferedReader in = new BufferedReader(new FileReader(inputfilelist));
+            // Open the file containing the list of .nc files.
+            BufferedReader in =
+                new BufferedReader(new FileReader(inputfilelist));
+
             String inputfilename;
+
+            // Read each line of the file.
             while ((inputfilename = in.readLine()) != null) {
-                String xmlSuffix = inputfilename.replaceFirst("\\.nc$", inputSuffix);
+                // Determine the nesC xml name (with path) of the file.
+                String xmlSuffix =
+                    inputfilename.replaceFirst("\\.nc$", inputSuffix);
                 String xmlInputFile = inputPrefix + _FILESEPARATOR + xmlSuffix;
 
-                String pathToNCFile = subPrefix + _FILESEPARATOR + inputfilename;
+                // Determine the substituted path to the .nc file.
+                String pathToNCFile =
+                    subPrefix + _FILESEPARATOR + inputfilename;
 
+                // Determine the component name.
                 String[] subdirs = inputfilename.split(_FILESEPARATOR);
                 String componentName = subdirs[subdirs.length - 1];
                 componentName = componentName.replaceFirst("\\.nc$", "");
 
-                String momlSuffix = inputfilename.replaceFirst("\\.nc$", "\\.moml");
-                String momlOutputFile = outputPrefix + _FILESEPARATOR + momlSuffix;
+                // Determine the .moml name (with path) of the file.
+                String momlSuffix =
+                    inputfilename.replaceFirst("\\.nc$", "\\.moml");
+                String momlOutputFile =
+                    outputPrefix + _FILESEPARATOR + momlSuffix;
 
                 try {
+                    // Parse the nesC xml file.
                     if (new NDReader().parse(xmlInputFile)) {
                         System.out.println("parse ok: " + xmlInputFile);
                     } else {
-                        System.out.println("parse exceptions occurred: " + xmlInputFile);
+                        System.out.println("parse exceptions occurred: "
+                                + xmlInputFile);
                     }
 
+                    // Generate the .moml file.
                     try {
-                        generateComponent(pathToNCFile, componentName, momlOutputFile);
+                        generateComponent(pathToNCFile, componentName,
+                                momlOutputFile);
                     } catch (Exception e) {
-                        System.err.println("Errors while generating " + momlOutputFile
-                                + "because of exception: " + e);
+                        System.err.println("Errors while generating "
+                                + momlOutputFile
+                                + " because of exception: "
+                                + e);
                     }
                 } catch (SAXException e) {
                     System.err.println("No xml reader found for" + xmlInputFile);
@@ -184,12 +214,14 @@ public class Nc2Moml {
                     System.err.println("Could not find file " + xmlInputFile);
                 } catch (Exception e) {
                     System.err.println("Did not complete nc2moml for file: "
-                            + xmlInputFile);
-                    System.err.println("because of exception: " + e);
+                            + xmlInputFile
+                            + " because of exception: " + e);
                 }
-
             }
+
+            // Close the input file.
             in.close();
+
         } catch (IOException e) {
             System.err.println("Could not open file: " + inputfilelist);
             System.err.println("because of exception: " + e);
