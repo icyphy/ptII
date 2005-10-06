@@ -67,10 +67,15 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "Run 'make install' to convert nc files to moml"
+	@echo "Run \"make install\" to convert nc files to moml"
+	@echo "Run \"make test\" for a quick test"
 
-install:
+install: jclass
 	./nc2moml
+
+test: jclass
+	./nc2moml tos/lib/Counters
+	"$(PTII)/bin/vergil" -ptinyos
 
 include $(ROOT)/mk/ptcommon.mk
 
