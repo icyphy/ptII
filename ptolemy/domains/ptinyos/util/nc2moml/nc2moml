@@ -100,6 +100,16 @@ if [ -z $PTII ]; then
   exit 2
 fi
 
+# Check for ncc
+NCC_VERSION=`ncc -v 2>&1`
+status=$?
+if [ $status -ne 0 ]; then
+    echo "$0: Error: Running \"ncc -v\" returned non-zero: \"$NCC_VERSION\""
+    echo "    You may need to install ncc by going to tinyos-1.x/tools/src/ncc"
+    echo "    and doing \"configure; make; make install\"."
+    exit 3
+fi
+
 # Clear command.txt
 rm -f "$MOML_OUTPUT_DIR/command.txt"
 
