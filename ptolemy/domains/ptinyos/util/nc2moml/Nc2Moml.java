@@ -26,6 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
 */
+
 package ptolemy.domains.ptinyos.util.nc2moml;
 
 import java.io.BufferedReader;
@@ -54,90 +55,132 @@ import org.xml.sax.SAXException;
             <moml output prefix>
            [long path to file containing list of .nc files using short path]
 
-  Example: Nc2Moml /home/celaine/trash/todayoutput .ncxml \'$CLASSPATH\'
-    /home/celaine/trash/todayoutput
-    /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
+  Example: Nc2Moml /home/celaine/ptII/vendors/ptinyos/moml .ncxml \'$CLASSPATH\' /home/celaine/ptII/vendors/ptinyos/moml /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
 
-  Input file contains: tos/lib/Counters/Counter.nc
+  .tempfile contains:
+tos/lib/Counters/Counter.nc
+tos/lib/Counters/IntToLeds.nc
+tos/lib/Counters/IntToLedsM.nc
+tos/lib/Counters/IntToRfm.nc
+tos/lib/Counters/IntToRfmM.nc
+tos/lib/Counters/RfmToInt.nc
+tos/lib/Counters/RfmToIntM.nc
+tos/lib/Counters/SenseToInt.nc
 
-  Expects an xml dump of:
+   Example output for Counter.nc:
+<?xml version="1.0"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<class name="Counter" extends="ptolemy.domains.ptinyos.lib.NCComponent">
+  <property name="source" value="$CLASSPATH/tos/lib/Counters/Counter.nc" />
+  <port name="IntOutput" class="ptolemy.actor.IOPort">
+    <property name="output" />
+    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" />
+  </port>
+  <port name="StdControl" class="ptolemy.actor.IOPort">
+    <property name="input" />
+    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" />
+  </port>
+  <port name="Timer" class="ptolemy.actor.IOPort">
+    <property name="output" />
+    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" />
+  </port>
+</class>
+
+  Expects <xml input prefix> to contain files with <xml input suffix> containing
+  an xml dump of:
       interfaces(file(filename.nc))
+
+   @author Elaine Cheong
+   @version $Id$
+   @Pt.ProposedRating Red (celaine)
+   @Pt.AcceptedRating Red (celaine)
 */
 public class Nc2Moml {
+    /** fixme  method comment
+     */
     public static void generateComponent(
             String sourcePath, String componentName, String outputFile)
             throws Exception {
+        // Set the name of this class to the name of this nesC component.
         Element root = new Element("class");
-        // Set the name of this class.
         root.setAttribute("name", componentName);
+        root.setAttribute("extends", "ptolemy.domains.ptinyos.lib.NCComponent");
 
+        // Set the path to the .nc source file.
         Element source = new Element("property");
         source.setAttribute("name", "source");
         source.setAttribute("value", sourcePath);
         root.addContent(source);
 
-        root.setAttribute("extends", "ptolemy.domains.ptinyos.lib.NCComponent");
-
+        // Set the doc type.
         DocType plot = new DocType("plot",
                 "-//UC Berkeley//DTD MoML 1//EN",
                 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd");
         Document doc = new Document(root, plot);
 
 
-        // FIXME comment
-
+        // Get the list of interfaces for this nesC component.
         ListIterator interfaces = Xnesc.interfaceList.listIterator();
 
         while (interfaces.hasNext()) {
+            // Get the next interface for this nesC component.
             Xinterface intf = (Xinterface)interfaces.next();
 
-            // Add the info for this interface
+            // Set the port name and class.
             Element port = new Element("port");
             port.setAttribute("name", intf.name);
             port.setAttribute("class", "ptolemy.actor.IOPort");
 
+            // Set the port type.
+            // Note: nesC provides == ptII input
             Element portType = new Element("property");
             String portTypeValue = (intf.provided) ? "input" : "output";
             portType.setAttribute("name", portTypeValue);
             port.addContent(portType);
 
+            // If this is a nesC parameterized interface, then set this as a
+            // multiport in ptII.
             if (intf.parameters != null) {
                 Element multiport = new Element("property");
                 multiport.setAttribute("name", "multiport");
                 port.addContent(multiport);
             }
 
+            // Set the port name to be shown in vergil.
             Element showName = new Element("property");
             showName.setAttribute("name", "_showName");
             showName.setAttribute("class",
                     "ptolemy.kernel.util.SingletonAttribute");
             port.addContent(showName);
 
+            // Add the port.
             root.addContent(port);
         }
 
-
-        // FIXME comment
-        // serialize it into a file
+        // Output the moml code to a file.
         try {
+            // Open the file.
             FileOutputStream out = null;
             if (outputFile != null) {
                 out = new FileOutputStream(outputFile);
             }
+
+            // Set up the serializer.
             XMLOutputter serializer =
                 new XMLOutputter(Format.getPrettyFormat());
-
             Format format = serializer.getFormat();
             format.setOmitEncoding(true);
             format.setLineSeparator("\n");
-
             serializer.setFormat(format);
 
+            // Write, flush, and close the file.
             if (out != null) {
                 serializer.output(doc, out);
                 out.flush();
                 out.close();
             } else {
+                // If a file was not specified, write to stdout.
                 serializer.output(doc, System.out);
             }
         }
