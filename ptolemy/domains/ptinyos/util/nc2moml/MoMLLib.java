@@ -1,5 +1,5 @@
 /*
-@Copyright (c) 1998-2005 The Regents of the University of California.
+@Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -47,6 +47,8 @@ import org.jdom.ProcessingInstruction;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import ptolemy.util.FileUtilities;
+
 /**
    Searches tree files with <input suffix> (e.g., *.moml).  Creates
    <output filename> (e.g., index.moml) in each dir that contains
@@ -57,7 +59,7 @@ import org.jdom.output.XMLOutputter;
 
   Example: MoMLLib .moml _TOSIndex.moml /home/celaine/ptII/vendors/ptinyos/moml
 
- @author Elaine Cheong
+ @author Elaine Cheong, contributor: Crhistopher Brooks
  @version $Id$
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
@@ -134,17 +136,11 @@ public class MoMLLib {
             if (File.separator.equals("\\")) {
                 indexFiles[i] = indexFiles[i].replace('\\', '/');
             }
-            try {
-                input.setAttribute("source", (new URL(indexFiles[i])).toString());
-            } catch (MalformedURLException ex) {
-                IOException ioException =
-                    new IOException("Failed to create url for \""
-                            + indexFiles[i] + "\"");
-                ioException.initCause(ex);
-                throw ioException;
-            }
+            //FIXME: this should be relative to $PTII
+            input.setAttribute("source",
+                    FileUtilities.nameToURL(indexFiles[i],
+                            null, null).toString());
             group.addContent(input);
-
         }
 
         // Make entries for component files.
@@ -163,6 +159,7 @@ public class MoMLLib {
                 entity.setAttribute("class", className);
                 group.addContent(entity);
             } catch (PatternSyntaxException e) {
+                // FIXME: Just throw the exception?
                 System.err.println("Error in regular expression: " + e);
                 e.printStackTrace();
             }
@@ -226,6 +223,7 @@ public class MoMLLib {
         try {
             MoMLLib.proc(inputSuffix, outputFilename, rootDir, rootDir);
         } catch (Throwable throwable) {
+            // FIXME: Just throw the exception?
             System.err.println("Command failed: " + throwable);
             throwable.printStackTrace();
         }
@@ -283,6 +281,7 @@ public class MoMLLib {
                     indexFile = indexFile.replaceFirst("^" + "/", "");
                     indexFiles.add(indexFile);
                 } catch (PatternSyntaxException ex) {
+                    // FIXME: Just throw the exception?
                     System.err.println("Error in regular expression: " + ex);
                     ex.printStackTrace();
                 }
@@ -323,6 +322,7 @@ public class MoMLLib {
                             shortpath.replaceFirst(inputSuffix + "$", "");
                         components[i] = shortpath;
                     } catch (PatternSyntaxException e) {
+                        // FIXME: Just throw the exception?
                         System.err.println("Error in regular expression: " + e);
                         e.printStackTrace();
                     }
@@ -355,6 +355,7 @@ public class MoMLLib {
                     libraryName,
                     fullOutputFilename);
         } catch (PatternSyntaxException e) {
+            // FIXME: Just throw the exception?
             System.err.println("Error in regular expression: " + e);
             e.printStackTrace();
         }
