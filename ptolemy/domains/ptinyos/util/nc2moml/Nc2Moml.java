@@ -28,18 +28,23 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.domains.ptinyos.util.nc2moml;
 
-import net.tinyos.nesc.dump.xml.*;
-import net.tinyos.nesc.dump.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ListIterator;
+
+import net.tinyos.nesc.dump.NDReader;
+import net.tinyos.nesc.dump.xml.Xinterface;
+import net.tinyos.nesc.dump.xml.Xnesc;
 
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
-
-import java.io.*;
-import java.util.*;
-import org.xml.sax.*;
+import org.xml.sax.SAXException;
 
 /**
   Generate a .moml file for each .nc file in the input list.
@@ -209,7 +214,8 @@ public class Nc2Moml {
                                 + e);
                     }
                 } catch (SAXException e) {
-                    System.err.println("No xml reader found for" + xmlInputFile);
+                    System.err.println("No xml reader found for"
+                            + xmlInputFile);
                 } catch (FileNotFoundException e) {
                     System.err.println("Could not find file " + xmlInputFile);
                 } catch (Exception e) {
