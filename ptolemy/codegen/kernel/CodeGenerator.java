@@ -169,21 +169,26 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *   or write-to-file throw any exception.
      */
     public void generateCode(StringBuffer code) throws KernelException {
- 
+
+        // We separate the generation and the appending into 2 phases.
+        // This would be convenience for making addition passes, and
+        // for adding additional code into different sections.
         String includeFiles = generateIncludeFiles();
         String sharedCode = generateSharedCode();
         String preinitializeCode = generatePreinitializeCode();
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
-        generateVariableDeclarations(code);
-        
+        String wrapupCode = generateWrapupCode();
+
+        // The appending phase.
         code.append(includeFiles);
         code.append(sharedCode);
-        code.append(preinitializeCode);
+        generateVariableDeclarations(code);
+        code.append(preinitializeCode);        
         code.append("main(int argc, char *argv[]) {\n");
         code.append(initializeCode);
         code.append(bodyCode);
-        generateWrapupCode(code);
+        code.append(wrapupCode);
         code.append("}\n");
 
         // Write the code to the file specified by codeDirectory.
@@ -304,9 +309,25 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment("Generate shared code for " + 
                 getContainer().getFullName()));
         
-        CodeStream tmpStream = new CodeStream("$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
+        // FIXME: this is the section for determining the proper
+        // code put into the source to support dynamic type resolution.
+        // 1. find out the different types used in the model.
+        // 2. find out the different polymorphic functions used.
+        //    (note: types and functions are independent of each other)
+        // 3. append code blocks according to the functions used,
+        //    and read from files according to the types referenced.
+        // 4. generate type resolution code:
+        //     a. constants (MAX_NUM_TYPE, MAX_NUM_FUNC)
+        //     b. type map, 
+        //     c. function map,
+        //     d. function definitions read from the files, and 
+        //     e. function table
+        CodeStream tmpStream = new CodeStream(
+                "$CLASSPATH/ptolemy/codegen/kernel/type/SharedCode.c");
         tmpStream.appendCodeBlock("globalBlock");
         code.append(tmpStream.toString());   
+
+        
         
         TypedCompositeActor compositeActorHelper 
                 = (TypedCompositeActor) _getHelper(getContainer());
@@ -345,17 +366,18 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  wrapping up the container composite actor. This method calls the
      *  generateWrapupCode() method of the code generator helper associated
      *  with the director of this container.
-     *  @param code The code stream into which to generate the code.
+     *  @return The wrapup code of the containing composite actor.
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
      */
-    public void generateWrapupCode(StringBuffer code)
-            throws IllegalActionException {
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         code.append(comment("Wrapup " + getContainer().getFullName()));
 
         TypedCompositeActor compositeActorHelper 
                 = (TypedCompositeActor) _getHelper(getContainer());
-        compositeActorHelper.generateWrapupCode(code);
+        code.append(compositeActorHelper.generateWrapupCode());
+        return code.toString();
     }
 
     /** Return the associated component, which is always the container.
