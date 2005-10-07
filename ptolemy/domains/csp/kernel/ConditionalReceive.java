@@ -285,7 +285,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         _debug("ConditionalReceive: Waiting for new information.");
                     }
                     controller._branchBlocked(receiver);
-                    CSPReceiver._waitForChange(director);
+                    CSPReceiver.waitForChange(director);
                 } // while(true)
             } catch (TerminateProcessException ex) {
                 receiver._setConditionalReceive(false, null, -1);

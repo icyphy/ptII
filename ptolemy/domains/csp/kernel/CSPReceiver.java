@@ -132,20 +132,26 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
                             castReceiver._getWaiting = getFromAllThread;
                             castReceiver._getReceivers = receivers;
+                            castReceiver._getConditional = false;
                             // If this particular get unblocks a getting thread,
                             // then mark it unblocked now.
-                            if (_isGetPendingOnAll(castReceiver._putReceivers)) {
+                            // Note that if the put side is multiway,
+                            // then this may not actually unblock it.
+                            // But this is harmless since that thread will be
+                            // notified in any case, and it will mark itself
+                            // blocked if it is still blocked.
+                            if (castReceiver._putWaiting != null) {
                                 director.threadUnblocked(castReceiver._putWaiting, null);
-                            }                            
+                            }
                         }
                     }
                 }
             }
-            while (!_isPutPendingOnAll(receivers)) {
+            while (!_isPutWaitingOnAll(receivers)) {
                 try {
                     // The following does a notifyAll() on the director.
                     director.threadBlocked(getFromAllThread, null);
-                    _waitForChange(director);
+                    waitForChange(director);
                 } finally {
                     director.threadUnblocked(getFromAllThread, null);
                 }
@@ -168,7 +174,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             castReceiver._putWaiting = null;
                             castReceiver._putReceivers = null;
                             // If this will unblock another thread, notify the director.
-                            if (!_isPutPendingOnAny(putReceivers)) {
+                            if (!_isPutWaitingOnAny(putReceivers)) {
                                 // The following does a notifyAll() on the director.
                                 director.threadUnblocked(putThread, null);
                             }
@@ -176,16 +182,139 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     }
                 }
             }
-            while (_isGetPendingOnAny(receivers)) {
+            // Wait for the put to complete on all my receivers.
+            while (_isGetWaitingOnAny(receivers)) {
                 try {
                     // The following does a notifyAll() on the director.
                     director.threadBlocked(getFromAllThread, null);
-                    _waitForChange(director);
+                    waitForChange(director);
                 } finally {
                     director.threadUnblocked(getFromAllThread, null);
                 }
             }
             return result;
+        } // synchronized(director)
+    }
+    
+    /** Get from any receiver in the specified array.
+     *  This method does not return until one of the gets is complete.
+     *  @param receivers The receivers, which are assumed to
+     *   all be instances of CSPReceiver.
+     *  @param director The director, on which this method synchronizes.
+     *  @return A token from one of the receivers.
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs is to be terminated.
+     */
+    public static Token getFromAny(Receiver[][] receivers, CSPDirector director)
+            throws TerminateProcessException {
+        if (receivers == null || receivers.length == 0) {
+            throw new InternalErrorException(
+                    "No receivers!");
+        }
+        synchronized(director) {
+            Thread getFromAnyThread = Thread.currentThread();
+            for (int i = 0; i < receivers.length; i++) {
+                if (receivers[i] != null) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        if (receivers[i][j] != null) {
+                            CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                            castReceiver._getWaiting = getFromAnyThread;
+                            castReceiver._getReceivers = receivers;
+                            castReceiver._getConditional = true;
+                            // Any receiver that is blocked could get unblocked by this.
+                            // NOTE: If the put side is multiway, we could be more
+                            // specific here, but there is no harm in marking unblocked.
+                            // It will be notified in any case, and will mark itself
+                            // blocked again if it is still blocked.
+                            if (castReceiver._putWaiting != null) {
+                                director.threadUnblocked(castReceiver._putWaiting, null);
+                            }
+                        }
+                    }
+                }
+            }
+            // Iterate until a receiver is found whose put side is
+            // ready to commit.
+            while (true) {
+                // If there are no puts pending on any of these receivers, then wait
+                // until there is at least one.
+                while (!_isPutWaitingOnAny(receivers)) {
+                    try {
+                        // The following does a notifyAll() on the director.
+                        director.threadBlocked(getFromAnyThread, null);
+                        waitForChange(director);
+                    } finally {
+                        director.threadUnblocked(getFromAnyThread, null);
+                    }
+                }
+                // At this point, we have a put waiting on at least one
+                // sender.  Iterate through the receivers
+                // until we find one that is ready to complete
+                // the rendezvous.
+                // FIXME: Here, we could implement some fairness
+                // scheme rather than always selecting the first receiver
+                // that is ready to commit.
+                for (int i = 0; i < receivers.length; i++) {
+                    if (receivers[i] != null) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            if (receivers[i][j] != null) {
+                                CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                                if (_isReadyToPut(castReceiver)) {
+                                    // The put is ready to complete.
+                                    // We are now committed.
+                                    // Complete the rendezvous.
+
+                                    // First, retract the _getWaiting on all receivers
+                                    // except the one to which we are committing.
+                                    for (int k = 0; k < receivers.length; k++) {
+                                        if (receivers[k] != null) {
+                                            for (int m = 0; m < receivers[k].length; m++) {
+                                                if (receivers[k][m] != castReceiver) {
+                                                    CSPReceiver otherCastReceiver = (CSPReceiver)receivers[k][m];
+                                                    otherCastReceiver._getWaiting = null;
+                                                    otherCastReceiver._getReceivers = null;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // Mark the put thread unblocked.
+                                    // Note that although all blocked threads were marked blocked
+                                    // above, this one may have become blocked since then.
+                                    director.threadUnblocked(castReceiver._putWaiting, null);
+                                    // Indicate to the corresponding put() thread that the put completed.
+                                    castReceiver._putWaiting = null;
+                                    castReceiver._putReceivers = null;
+                                    
+                                    // Have to read the token before waiting for the put
+                                    // to complete, or we end up with a race condition
+                                    // where the token may be overwritten before we get to it.
+                                    Token result = castReceiver._token;
+                                    
+                                    // Wait for the put to complete on the selected receiver.
+                                    while (castReceiver._getWaiting != null) {
+                                        try {
+                                            // The following does a notifyAll() on the director.
+                                            director.threadBlocked(getFromAnyThread, null);
+                                            waitForChange(director);
+                                        } finally {
+                                            director.threadUnblocked(getFromAnyThread, null);
+                                        }                                
+                                    }
+                                    return result;
+                                }
+                            }
+                        }
+                    }
+                }
+                // Wait for a change.
+                try {
+                    // The following does a notifyAll() on the director.
+                    director.threadBlocked(getFromAnyThread, null);
+                    waitForChange(director);
+                } finally {
+                    director.threadUnblocked(getFromAnyThread, null);
+                }
+            } // while(true)
         } // synchronized(director)
     }
 
@@ -448,20 +577,27 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             // Perform the transfer.
                             IOPort port = castReceiver.getContainer();
                             castReceiver._token = port.convert(token);
-                            // If this particular put unblocks a getting thread,
-                            // then mark it unblocked now.
-                            if (_isPutPendingOnAll(castReceiver._getReceivers)) {
-                                director.threadUnblocked(castReceiver._getWaiting, null);
+                            // If the get side is not a conditional get and this put
+                            // is its last required put, then the get side thread is
+                            // now unblocked. Mark it so.
+                            // NOTE: If the get side is conditional, then it is not
+                            // assured that this action will unblock it, but it might.
+                            // There is no harm in marking it unblocked.
+                            if (castReceiver._getWaiting != null) {
+                                if (castReceiver._getConditional
+                                        || _isPutWaitingOnAll(castReceiver._getReceivers)) {
+                                    director.threadUnblocked(castReceiver._getWaiting, null);
+                                }
                             }
                         }
                     }
                 }
             }
-            while (!_isGetPendingOnAll(receivers)) {
+            while (!_isGetWaitingOnAll(receivers)) {
                 try {
                     // The following does a notifyAll() on the director.
                     director.threadBlocked(putToAllThread, null);
-                    _waitForChange(director);
+                    waitForChange(director);
                 } finally {
                     director.threadUnblocked(putToAllThread, null);
                 }
@@ -477,8 +613,32 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             Receiver[][] getReceivers = castReceiver._getReceivers;
                             castReceiver._getWaiting = null;
                             castReceiver._getReceivers = null;
-                            // If this will unblock another thread, notify the director.
-                            if (!_isGetPendingOnAny(getReceivers)) {
+                            // This action may unblock the far side thread (the get side).
+                            if (!castReceiver._getConditional) {
+                                // If the far side is a multiway rendezvous and this was
+                                // the last of the puts it was waiting for, then the far side
+                                // (the get side) is now unblocked.
+                                if (!_isGetWaitingOnAny(getReceivers)) {
+                                    // The following does a notify on the director.
+                                    director.threadUnblocked(getThread, null);
+                                }
+                            } else {
+                                // The far side (get side) is conditional.
+                                // Since this put succeeds, we now need to retract
+                                // all the _getWaiting flags on far side receivers.
+                                for (int k = 0; k < getReceivers.length; k++) {
+                                    if (getReceivers[k] != null) {
+                                        for (int m = 0; m < getReceivers[k].length; m++) {
+                                            if (getReceivers[k][m] != null) {
+                                                CSPReceiver castFarReceiver = (CSPReceiver)getReceivers[k][m];
+                                                castFarReceiver._getWaiting = null;
+                                                castFarReceiver._getReceivers = null;
+                                            }
+                                        }
+                                    }
+                                }
+                                // Since the far side is conditional, this put
+                                // always unblocks it.
                                 // The following does a notify on the director.
                                 director.threadUnblocked(getThread, null);
                             }
@@ -486,15 +646,142 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     }
                 }
             }
-            while (_isPutPendingOnAny(receivers)) {
+            while (_isPutWaitingOnAny(receivers)) {
                 try {
                     // The following does a notifyAll() on the director.
                     director.threadBlocked(putToAllThread, null);
-                    _waitForChange(director);
+                    waitForChange(director);
                 } finally {
                     director.threadUnblocked(putToAllThread, null);
                 }
             }
+        } // synchronized(director)
+    }
+    
+    /** Put the specified token to any receiver in the specified array.
+     *  This method does not return until one of the puts is complete.
+     *  @param token The token to put.
+     *  @param receivers The receivers, which are assumed to
+     *   all be instances of CSPReceiver.
+     *  @param director The director, on which this method synchronizes.
+     *  @exception IllegalActionException If the token is not acceptable
+     *   to one of the ports (e.g., wrong type).
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs is to be terminated.
+     */
+    public static void putToAny(Token token, Receiver[][] receivers, CSPDirector director)
+            throws IllegalActionException, TerminateProcessException {
+        if (receivers == null || receivers.length == 0) {
+            throw new InternalErrorException(
+                    "No receivers!");
+        }
+        synchronized(director) {
+            Thread putToAnyThread = Thread.currentThread();
+            for (int i = 0; i < receivers.length; i++) {
+                if (receivers[i] != null) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        if (receivers[i][j] != null) {
+                            CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                            castReceiver._putWaiting = putToAnyThread;
+                            castReceiver._putReceivers = receivers;
+                            castReceiver._putConditional = true;
+                            
+                            // Perform the transfer.
+                            // Note that this makes the token available to all
+                            // receivers, although the one that completes the
+                            // rendezvous will use it.
+                            IOPort port = castReceiver.getContainer();
+                            castReceiver._token = port.convert(token);
+
+                            // Any receiver that is blocked could get unblocked by this.
+                            // NOTE: If the get side is multiway, we could be more
+                            // specific here, but there is no harm in marking unblocked.
+                            // It will be notified in any case, and will mark itself
+                            // blocked again if it is still blocked.
+                            if (castReceiver._getWaiting != null) {
+                                director.threadUnblocked(castReceiver._getWaiting, null);
+                            }
+                        }
+                    }
+                }
+            }
+            // Iterate until a receiver is found whose get side is
+            // ready to commit.
+            while (true) {
+                // If there are no gets pending on any of these receivers, then wait
+                // until there is at least one.
+                while (!_isGetWaitingOnAny(receivers)) {
+                    try {
+                        // The following does a notifyAll() on the director.
+                        director.threadBlocked(putToAnyThread, null);
+                        waitForChange(director);
+                    } finally {
+                        director.threadUnblocked(putToAnyThread, null);
+                    }
+                }
+                // At this point, we have a get waiting on at least one
+                // recipient.  Iterate through the receivers
+                // until we find one that is ready to complete
+                // the rendezvous.
+                // FIXME: Here, we could implement some fairness
+                // scheme rather than always selecting the first receiver
+                // that is ready to commit.
+                for (int i = 0; i < receivers.length; i++) {
+                    if (receivers[i] != null) {
+                        for (int j = 0; j < receivers[i].length; j++) {
+                            if (receivers[i][j] != null) {
+                                CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                                if (_isReadyToGet(castReceiver)) {
+                                    // The get is ready to complete.
+                                    // We are now committed.
+                                    // Complete the rendezvous.
+
+                                    // First, retract the _putWaiting on all receivers
+                                    // except the one to which we are committing.
+                                    for (int k = 0; k < receivers.length; k++) {
+                                        if (receivers[k] != null) {
+                                            for (int m = 0; m < receivers[k].length; m++) {
+                                                if (receivers[k][m] != castReceiver) {
+                                                    CSPReceiver otherCastReceiver = (CSPReceiver)receivers[k][m];
+                                                    otherCastReceiver._putWaiting = null;
+                                                    otherCastReceiver._putReceivers = null;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    // Mark the put thread unblocked.
+                                    // Note that although all blocked threads were marked blocked
+                                    // above, this one may have become blocked since then.
+                                    director.threadUnblocked(castReceiver._getWaiting, null);
+                                    // Indicate to the corresponding put() thread that the put completed.
+                                    castReceiver._getWaiting = null;
+                                    castReceiver._getReceivers = null;
+                                    
+                                    // Wait for the get to complete on the selected receiver.
+                                    while (castReceiver._putWaiting != null) {
+                                        try {
+                                            // The following does a notifyAll() on the director.
+                                            director.threadBlocked(putToAnyThread, null);
+                                            waitForChange(director);
+                                        } finally {
+                                            director.threadUnblocked(putToAnyThread, null);
+                                        }                                
+                                    }
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                // Wait for a change.
+                try {
+                    // The following does a notifyAll() on the director.
+                    director.threadBlocked(putToAnyThread, null);
+                    waitForChange(director);
+                } finally {
+                    director.threadUnblocked(putToAnyThread, null);
+                }
+            } // while(true)
         } // synchronized(director)
     }
 
@@ -532,6 +819,27 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             _setConditionalReceive(false, null, -1);
             _setConditionalSend(false, null, -1);
             _boundaryDetector.reset();
+        }
+    }
+
+    /** Wait on the specified director.
+     *  This is not synchronized on the specified director, so the called should be.
+     *  @param director The director on which to wait.
+     *  @exception TerminateProcessException If a finish has been requested
+     *   of the specified director, or if the calling thread is interrupted while waiting.
+     */
+    public static void waitForChange(CSPDirector director)
+            throws TerminateProcessException {
+        if (director.isStopRequested() || director._inWrapup) {
+            throw new TerminateProcessException("Thread terminated.");
+        }
+        try {
+            director.wait();
+        } catch (InterruptedException e) {
+            throw new TerminateProcessException("Thread interrupted.");
+        }
+        if (director.isStopRequested() || director._inWrapup) {
+            throw new TerminateProcessException("Thread terminated.");
         }
     }
 
@@ -587,22 +895,18 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         }
     }
     
-    /** Return whether a ConditionalReceive is trying
-     *  to rendezvous with this receiver.
-     *  @return True if a ConditionalReceive branch is trying to
-     *   rendezvous with this receiver.
+    /** Return whether a getFromAny() is pending on this receiver.
+     *  @return True if a getFromAny() is pending on this receiver.
      */
     protected boolean _isConditionalReceiveWaiting() {
-        return _conditionalReceiveWaiting != null;
+        return (_getWaiting != null) && _getConditional;
     }
 
-    /** Return whether a ConditionalSend is trying
-     *  to rendezvous with this receiver.
-     *  @return True if a ConditionalSend branch is trying to
-     *   rendezvous with this receiver.
+    /** Return whether a putToAny() is pending on this receiver.
+     *  @return True if a putToAny() is pending on this receiver.
      */
     protected boolean _isConditionalSendWaiting() {
-        return _conditionalSendWaiting != null;
+        return (_putWaiting != null) && _putConditional;
     }
     
     /** Return true if a get() is pending on all the specified
@@ -612,14 +916,27 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   instances of CSPReceiver.
      *  @return True if a get() is pending on the specified receivers.
      */
-    protected static boolean _isGetPendingOnAll(Receiver[][] receivers) {
+    protected static boolean _isGetWaitingOnAll(Receiver[][] receivers) {
+        return _isGetWaitingOnAll(receivers, null);
+    }
+
+    /** Return true if a get() is pending on all the specified
+     *  receivers. If the argument is null, then this method
+     *  returns false.
+     *  @param receivers The receivers, which are assumed to be
+     *   instances of CSPReceiver.
+     *  @param except A receiver to not consider, or null to
+     *   consider all receivers.
+     *  @return True if a get() is pending on the specified receivers.
+     */
+    protected static boolean _isGetWaitingOnAll(Receiver[][] receivers, Receiver except) {
         if (receivers == null) {
             return false;
         }
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != null) {
+                    if (receivers[i][j] != except) {
                         if (((CSPReceiver)receivers[i][j])._getWaiting == null) {
                             return false;
                         }
@@ -638,7 +955,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return True if a get() is pending on any of the
      *   specified receivers.
      */
-    protected static boolean _isGetPendingOnAny(Receiver[][] receivers) {
+    protected static boolean _isGetWaitingOnAny(Receiver[][] receivers) {
         if (receivers == null) {
             return false;
         }
@@ -679,7 +996,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   instances of CSPReceiver.
      *  @return True if a put() is pending on the specified receivers.
      */
-    protected static boolean _isPutPendingOnAll(Receiver[][] receivers) {
+    protected static boolean _isPutWaitingOnAll(Receiver[][] receivers) {
         if (receivers == null) {
             return false;
         }
@@ -705,7 +1022,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  @return True if a put() is pending on any of
      *   the specified receivers.
      */
-    protected static boolean _isPutPendingOnAny(Receiver[][] receivers) {
+    protected static boolean _isPutWaitingOnAny(Receiver[][] receivers) {
         if (receivers == null) {
             return false;
         }
@@ -721,6 +1038,64 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             }
         }
         return false;
+    }
+
+    /** Return true if the specified receiver is ready to complete
+     *  a rendezvous, assuming it is ready to put.  It is ready if
+     *  <ul>
+     *  <li> it has a get waiting, and
+     *  <li> if it is not conditional, then all its get receivers
+     *       are ready to put.
+     *  </ul>
+     *  If this method is returned true, then any receivers that are
+     *  involved that are doing a conditional put or conditional get
+     *  commit to this particular rendezvous. That is, they become
+     *  unwilling to perform an alternative rendezvous. Thus, if this
+     *  method returns true, the caller is obligated to complete
+     *  the rendezvous.
+     *  @param receiver The receiver.
+     *  @return True if the specified receiver is ready to complete
+     *   a rendezvous.
+     */
+    protected static boolean _isReadyToGet(CSPReceiver receiver) {
+        // We assume the specified receiver is ready to get, so
+        // we don't need to check the _getReceivers.
+        // Check the _putReceivers, but without commiting to
+        // this transaction.
+        boolean result = _checkReadyToGet(receiver);
+        if (result) {
+            _commitGet(receiver);
+        }
+        return result;
+    }
+
+    /** Return true if the specified receiver is ready to complete
+     *  a rendezvous, assuming it is ready to get.  It is ready if
+     *  <ul>
+     *  <li> it has a put waiting, and
+     *  <li> if it is not conditional, then all its put receivers
+     *       are ready to get.
+     *  </ul>
+     *  If this method is returned true, then any receivers that are
+     *  involved that are doing a conditional put or conditional get
+     *  commit to this particular rendezvous. That is, they become
+     *  unwilling to perform an alternative rendezvous. Thus, if this
+     *  method returns true, the caller is obligated to complete
+     *  the rendezvous.
+     *  @param receiver The receiver.
+     *  @return True if the specified receiver is ready to complete
+     *   a rendezvous.
+     */
+    protected static boolean _isReadyToPut(CSPReceiver receiver) {
+        // We assume the specified receiver is ready to get, so
+        // we don't need to check the _getReceivers.
+        // Check the _putReceivers, but without commiting to
+        // this transaction.
+        boolean result = _checkReadyToPut(receiver);
+        if (result) {
+            _commitPut(receiver);
+        }
+        return result;
     }
 
     /** Set a flag so that a ConditionalReceive branch knows whether or
@@ -783,23 +1158,164 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
         }
     }
 
-    /** Wait on the specified director.
-     *  This is not synchronized on the specified director, so the called should be.
-     *  @param director The director on which to wait.
-     *  @exception TerminateProcessException If a finish has been requested
-     *   of the specified director, or if the calling thread is interrupted while waiting.
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return true if the specified receiver is ready to complete
+     *  a rendezvous, assuming it is ready to put.  It is ready if
+     *  <ul>
+     *  <li> it has a get waiting, and
+     *  <li> if it is not conditional, then all its get receivers
+     *       are ready to get, as indicated by the _isReadyToGet() method.
+     *  </ul>
+     *  This method does not commit. The caller should call _commitPut()
+     *  if the rendezvous is ready to complete.
+     *  @param receiver The receiver.
+     *  @return True if the specified receiver is ready to complete
+     *   a rendezvous.
      */
-    protected static void _waitForChange(CSPDirector director) throws TerminateProcessException {
-        if (director.isStopRequested() || director._inWrapup) {
-            throw new TerminateProcessException("Thread terminated.");
+    private static boolean _checkReadyToGet(CSPReceiver receiver) {
+        // We assume the specified receiver is ready to put, so
+        // we don't need to check the _putReceivers.
+        // First check that there is a get waiting. If not, return false.
+        if (receiver._getWaiting == null) {
+            return false;
         }
-        try {
-            director.wait();
-        } catch (InterruptedException e) {
-            throw new TerminateProcessException("Thread interrupted.");
+        // If the get is conditional, then having a get waiting
+        // is sufficient, and we don't have to go any further.
+        if (receiver._getConditional) {
+            return true;
         }
-        if (director.isStopRequested() || director._inWrapup) {
-            throw new TerminateProcessException("Thread terminated.");
+        // The get is not conditional. All other get receivers
+        // have to be ready.
+        // Check the _getReceivers, but without commiting to
+        // this transaction. Skip the argument receiver when checking
+        // (or we'll get an infinite loop).
+        Receiver[][] receivers = receiver._getReceivers;
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != receiver) {
+                        // Check that each receiver is ready to get.
+                        if (_checkReadyToPut((CSPReceiver)receivers[i][j])) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        // If we haven't returned false by now, then we are ready to commit.
+        return true;
+    }
+
+    /** Return true if the specified receiver is ready to complete
+     *  a rendezvous, assuming it is ready to get.  It is ready if
+     *  <ul>
+     *  <li> it has a put waiting, and
+     *  <li> if it is not conditional, then all its put receivers
+     *       are ready to get, as indicated by the _isReadyToGet() method.
+     *  </ul>
+     *  This method does not commit. The caller should call _commitPut()
+     *  if the rendezvous is ready to complete.
+     *  @param receiver The receiver.
+     *  @return True if the specified receiver is ready to complete
+     *   a rendezvous.
+     */
+    private static boolean _checkReadyToPut(CSPReceiver receiver) {
+        // We assume the specified receiver is ready to get, so
+        // we don't need to check the _getReceivers.
+        // First check that there is a put waiting. If not, return false.
+        if (receiver._putWaiting == null) {
+            return false;
+        }
+        // If the put is conditional, then having a put waiting
+        // is sufficient, and we don't have to go any further.
+        if (receiver._putConditional) {
+            return true;
+        }
+        // The put is not conditional. All other put receivers
+        // have to be ready.
+        // Check the _putReceivers, but without commiting to
+        // this transaction. Skip the argument receiver when checking
+        // (or we'll get an infinite loop).
+        Receiver[][] receivers = receiver._putReceivers;
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != receiver) {
+                        // Check that each receiver is ready to get.
+                        if (_checkReadyToGet((CSPReceiver)receivers[i][j])) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        // If we haven't returned false by now, then we are ready to commit.
+        return true;
+    }
+
+    /** Commit the specified receiver to a get.  If its get is
+     *  conditional, then this will retract the get waiting flag
+     *  on all other get receivers.
+     *  @param receiver The receiver.
+     */
+    private static void _commitGet(CSPReceiver receiver) {
+        if (receiver._getWaiting == null) {
+            // Nothing to do.
+            return;
+        }
+        Receiver[][] receivers = receiver._getReceivers;
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != receiver) {
+                        CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                        // If the get is conditional, then retract get waiting
+                        // on all other get receivers.
+                        if (receiver._getConditional) {
+                            castReceiver._getWaiting = null;
+                            castReceiver._getReceivers = null;
+                        } else {
+                            // If the get is not conditional, then propagate
+                            // the commit to the other getReceivers.
+                            _commitPut(castReceiver);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /** Commit the specified receiver to a put.  If its put is
+     *  conditional, then this will retract the put waiting flag
+     *  on all other put receivers.
+     *  @param receiver The receiver.
+     */
+    private static void _commitPut(CSPReceiver receiver) {
+        if (receiver._putWaiting == null) {
+            // Nothing to do.
+            return;
+        }
+        Receiver[][] receivers = receiver._putReceivers;
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != receiver) {
+                        CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
+                        // If the get is conditional, then retract get waiting
+                        // on all other get receivers.
+                        if (receiver._getConditional) {
+                            castReceiver._getWaiting = null;
+                            castReceiver._getReceivers = null;
+                        } else {
+                            // If the get is not conditional, then propagate
+                            // the commit to the other getReceivers.
+                            _commitGet(castReceiver);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -810,10 +1326,15 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     private BoundaryDetector _boundaryDetector;
 
     /** Flag indicating whether or not a conditional receive is waiting to rendezvous. */
+    // FIXME: Obsolete.
     private Thread _conditionalReceiveWaiting = null;
 
     /** Flag indicating whether or not a conditional send is waiting to rendezvous. */
+    // FIXME: Obsolete.
     private Thread _conditionalSendWaiting = null;
+    
+    /** Flag indicating that the _getWaiting thread is a conditional rendezvous. */
+    private boolean _getConditional = false;
     
     /** The receivers currently being gotten data from. */
     private Receiver[][] _getReceivers = null;
@@ -822,10 +1343,15 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     private Thread _getWaiting = null;
 
     /** The controller in charge of the conditional send or get. */
+    // FIXME: Obsolete.
     private AbstractBranchController _otherController = null;
 
     /** The ID of the branch in a conditional send or get. */
+    // FIXME: Obsolete.
     private int _otherID = -1;
+
+    /** Flag indicating that the _putWaiting thread is a conditional rendezvous. */
+    private boolean _putConditional = false;
 
     /** The receivers currently being put data to. */
     private Receiver[][] _putReceivers = null;
