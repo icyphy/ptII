@@ -27,12 +27,13 @@
  */
 package ptolemy.domains.csp.lib;
 
+import ptolemy.actor.Director;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
-import ptolemy.domains.csp.kernel.CSPActor;
-import ptolemy.domains.csp.kernel.ConditionalBranch;
-import ptolemy.domains.csp.kernel.ConditionalReceive;
+import ptolemy.domains.csp.kernel.CSPDirector;
+import ptolemy.domains.csp.kernel.CSPReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -64,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cxh)
 
  */
-public class Merge extends CSPActor {
+public class Merge extends TypedAtomicActor {
     
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -115,57 +116,20 @@ public class Merge extends CSPActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        Director director = getDirector();
+        if (!(director instanceof CSPDirector)) {
+            throw new IllegalActionException(this,
+                    "Barrier can only be used with CSPDirector.");
+        }
         if (_debugging) {
             _debug("Ready to rendezvous with an input.");
         }
-        int numberOfConditionals = input.getWidth();
-        ConditionalBranch[] branches = new ConditionalBranch[numberOfConditionals];
-        for (int i = 0; i < input.getWidth(); i++) {
-            // The branch has channel i and ID i.
-            branches[i] = new ConditionalReceive(input, i, i);
-            if (_debugging && _VERBOSE_DEBUGGING) {
-                branches[i].addDebugListener(this);
-            }
+        Token received = CSPReceiver.getFromAny(
+                input.getReceivers(), (CSPDirector)director);
+        if (_debugging) {
+            _debug("Received input: " + received);
+            _debug("Sending to the output.");
         }
-        int successfulBranch = chooseBranch(branches);
-        if (_debugging && _VERBOSE_DEBUGGING) {
-            for (int i = 0; i < branches.length; i++) {
-                branches[i].removeDebugListener(this);
-            }
-        }
-        if (successfulBranch < 0) {
-            // No input rendezvous preformed.
-            _branchEnabled = false;
-        } else {
-            // Rendezvous occurred with a input.
-            _branchEnabled = true;
-            Token received = branches[successfulBranch].getToken();
-            if (_debugging) {
-                _debug("Received input on channel "
-                        + successfulBranch
-                        + ": "
-                        + received);
-                _debug("Sending to the output.");
-            }
-            output.send(0, received);
-        }
+        output.send(0, received);
     }
-    
-    /** Return true unless no input was received in
-     *  the most recent invocation of fire().
-     *  @return True if another iteration can occur.
-     */
-    public boolean postfire() {
-        super.postfire();
-        return _branchEnabled;
-    }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    
-    /** Indicator that a branch was successfully enabled in the fire() method. */
-    private boolean _branchEnabled;
-    
-    /** Flag to set verbose debugging messages. */
-    private static boolean _VERBOSE_DEBUGGING = true;
 }

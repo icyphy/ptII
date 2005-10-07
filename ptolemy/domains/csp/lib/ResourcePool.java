@@ -30,6 +30,7 @@ package ptolemy.domains.csp.lib;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.ArrayToken;
@@ -37,10 +38,8 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.csp.kernel.CSPActor;
-import ptolemy.domains.csp.kernel.ConditionalBranch;
-import ptolemy.domains.csp.kernel.ConditionalReceive;
-import ptolemy.domains.csp.kernel.ConditionalSend;
+import ptolemy.domains.csp.kernel.CSPDirector;
+import ptolemy.domains.csp.kernel.CSPReceiver;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -92,7 +91,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (cxh)
 
  */
-public class ResourcePool extends CSPActor {
+public class ResourcePool extends TypedAtomicActor {
     
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -186,13 +185,12 @@ public class ResourcePool extends CSPActor {
         return newObject;
     }
     
-    /** If there are available resources, then perform a conditional
-     *  branch on any <i>release</i> input or <i>grant</i> output. If the selected
-     *  branch is a release input, then add the provided token to the
-     *  end of the resource pool. If it is a grant output, then remove
-     *  the first element from the resource pool and send it to the output.
-     *  If there are no available resources, then perform a conditional branch
-     *  only on the release inputs.
+    /** If the input width is greater than zero and it has not already
+     *  been done, start a thread to read a token from the
+     *  <i>release</i> input port and store it in the pool.
+     *  Then, in the calling thread, if there is at least one
+     *  resource in the pool, write the first resource in the pool
+     *  to any <i>grant</i> output channel.
      *  @exception IllegalActionException If an error occurs during
      *   executing the process.
      *  @exception TerminateProcessException If the process termination
@@ -200,71 +198,94 @@ public class ResourcePool extends CSPActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if (_debugging) {
-            _debug("Resources available: " + _pool);
+        final CSPDirector director = (CSPDirector)getDirector();
+        final Thread writeThread = Thread.currentThread();
+        
+        if (!(getDirector() instanceof CSPDirector)) {
+            throw new IllegalActionException(this,
+            "ResourcePool actor can only be used with CSPDirector.");
         }
-        int numberOfConditionals = release.getWidth();
-        if (_pool.size() > 0) {
-            numberOfConditionals += grant.getWidth();
+        _postfireReturns = true;
+        if (release.getWidth() > 0 && _readThread == null) {
+            _readThread = new Thread(getFullName() + "_readThread") {
+                public void run() {
+                    try {
+                        while (!_stopRequested) {
+                            // Synchronize on the director since all read/write
+                            // operations do.
+                            synchronized(director) {
+                                if (_debugging) {
+                                    _debug("Resources available: " + _pool);
+                                }
+                                Token resource = CSPReceiver.getFromAny(release.getReceivers(), director);
+                                _pool.add(resource);
+                                director.threadUnblocked(writeThread, null);
+                                director.notifyAll();
+                            }
+                        }
+                    } catch (TerminateProcessException ex) {
+                        // OK, just exit
+                        _postfireReturns = false;
+                    } finally {
+                        director.removeThread(_readThread);
+                    }
+                }
+            };
+            director.addThread(_readThread);
+            _readThread.start();
+        } else if (release.getWidth() == 0 && _readThread != null) {
+            // A mutation has eliminated the sources.
+            _readThread.interrupt();
         }
-        ConditionalBranch[] branches = new ConditionalBranch[numberOfConditionals];
-        for (int i = 0; i < release.getWidth(); i++) {
-            // The branch has channel i and ID i.
-            branches[i] = new ConditionalReceive(release, i, i);
-            if (_debugging && _VERBOSE_DEBUGGING) {
-                branches[i].addDebugListener(this);
-            }
-        }
-        if (_pool.size() > 0) {
-            Token token = (Token)_pool.get(0);
-            for (int i = release.getWidth(); i < numberOfConditionals; i++) {
-                int channel = i - release.getWidth();
-                branches[i] = new ConditionalSend(grant, channel, i, token);
-                if (_debugging && _VERBOSE_DEBUGGING) {
-                    branches[i].addDebugListener(this);
+        // Synchronize on the director since all read/write
+        // operations do.
+        synchronized(director) {
+            while (_pool.size() == 0) {
+                if (_stopRequested || !_postfireReturns) {
+                    _postfireReturns = false;
+                    return;
+                }
+                try {
+                    director.threadBlocked(writeThread, null);
+                    CSPReceiver.waitForChange(director);
+                } catch (TerminateProcessException ex) {
+                    _postfireReturns = false;
+                    return;
+                } finally {
+                    director.threadUnblocked(writeThread, null);
                 }
             }
-        }
-        int successfulBranch = chooseBranch(branches);
-        if (_debugging && _VERBOSE_DEBUGGING) {
-            for (int i = 0; i < branches.length; i++) {
-                branches[i].removeDebugListener(this);
-            }
-        }
-        if (successfulBranch < 0) {
-            _branchEnabled = false;
-        } else if (successfulBranch < release.getWidth()) {
-            // Rendezvous occurred with a release input.
-            _branchEnabled = true;
-            Token received = branches[successfulBranch].getToken();
-            _pool.add(received);
-            if (_debugging) {
-                _debug("Resource released on channel "
-                        + successfulBranch
-                        + ": "
-                        + received);
-            }
-        } else {
-            // Rendezvous occurred with a grant output.
-            _branchEnabled = true;
-            if (_debugging) {
-                _debug("Resource granted on channel "
-                        + (successfulBranch - release.getWidth())
-                        + ": "
-                        + _pool.get(0));
+            // There is a token.
+            Token token = (Token)_pool.get(0);
+            // If this put blocks for any reason, it will block on
+            // a director.wait(), so the lock will not be held.
+            try {
+                CSPReceiver.putToAny(token, grant.getRemoteReceivers(), director);
+            } catch (TerminateProcessException e) {
+                _postfireReturns = false;
+                return;
             }
             _pool.remove(0);
         }
     }
     
-    /** Return true unless none of the branches were enabled in
-     *  the most recent invocation of fire().
-     *  @return True if another iteration can occur.
+    /** Initialize.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _readThread = null;
+        _postfireReturns = true;
+    }
+    
+    /** Return false if it is time to stop the process.
+     *  @return False a TerminateProcessException was thrown during I/O.
      */
     public boolean postfire() {
-        super.postfire();
-        return _branchEnabled;
+        return _postfireReturns;
     }
+    
+    // FIXME: What should be done in reaction to stopFire()?
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -272,9 +293,9 @@ public class ResourcePool extends CSPActor {
     /** The current resource pool. */
     private List _pool = new LinkedList();
     
-    /** Indicator that a branch was successfully enabled in the fire() method. */
-    private boolean _branchEnabled;
+    /** Flag indicating what postfire should return. */
+    private boolean _postfireReturns = true;
     
-    /** Flag to set verbose debugging messages. */
-    private static boolean _VERBOSE_DEBUGGING = true;
+    /** The read thread, if it exists. */
+    private Thread _readThread = null;
 }
