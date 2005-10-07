@@ -436,6 +436,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/giotto \
 		ptolemy/domains/gr \
 		ptolemy/domains/hde \
+		ptolemy/domains/hdf \
 		ptolemy/domains/petrinet \
 		ptolemy/domains/psdf \
 		ptolemy/domains/pn \
@@ -507,7 +508,7 @@ src_jar/hyvisual$(VERSION): $(PTII_SRC_JAR)
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
 	(cd src_jar/hyvisual$(VERSION); \
-		$(JAR) -xf $(PTII_SRC_JAR))
+		cat $(PTII_SRC_JAR) | $(JAR) -xf -)
 	(cd src_jar/hyvisual$(VERSION); \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		rm -rf $(HYVISUAL_SRC_TO_BE_REMOVED) thales; \
