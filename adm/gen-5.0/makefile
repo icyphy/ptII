@@ -83,7 +83,10 @@ PTII_FTP = /export/home/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII PTIIADM=/vol/maury/maury2/cxh/ptII/adm TAR=/usr/local/bin/tar
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII-5.0 PTIIADM=/tmp/cxh/ptII-5.0/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
+
+# make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII5.0-beta PTIIADM=/export/home1/cxh/src/ptII5.0-beta/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar
 #make USER=cxh PTIIHOME=/tmp/ptII PTIIADM=/tmp/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/bin/jar clean all
+
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar clean all src.jar hyvisual.jar hyvisual.tar
 
 USER =		ptII
@@ -508,7 +511,7 @@ src_jar/hyvisual$(VERSION): $(PTII_SRC_JAR)
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
 	(cd src_jar/hyvisual$(VERSION); \
-		cat $(PTII_SRC_JAR) | $(JAR) -xf -)
+		cat $(PTII_SRC_JAR) | $(JAR) -x)
 	(cd src_jar/hyvisual$(VERSION); \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		rm -rf $(HYVISUAL_SRC_TO_BE_REMOVED) thales; \
