@@ -462,7 +462,7 @@ $(PTII_SRC_JAR): src_jar
 # The directory we jar up.
 src_jar: #$(PTII_SRC) 
 	mkdir src_jar;
-	(cd src_jar; tar -xf $(PTII_SRC))
+	(cd src_jar; $(TAR) -xf $(PTII_SRC))
 	rm -f src_jar/ptII$(VERSION)/doc/design/hyvisual.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign1-intro.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
@@ -502,17 +502,15 @@ $(HYVISUAL_SRC_TAR): src_jar/hyvisual$(VERSION)
 # The directory we jar up.
 # We include DE because some of the kernel/util tests use it.  CT demos also.
 hyvisual_src_jar: src_jar/hyvisual$(VERSION)
-src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
+src_jar/hyvisual$(VERSION): $(PTII_SRC_JAR)
 	if [ ! -d src_jar/hyvisual$(VERSION) ]; then \
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
 	(cd src_jar/hyvisual$(VERSION); \
-		$(JAR) -xf ../../ptII$(VERSION).src.jar)
-
+		$(JAR) -xf $(PTII_SRC_JAR))
 	(cd src_jar/hyvisual$(VERSION); \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
-		rm -rf $(HYVISUAL_SRC_TO_BE_REMOVED); \
-		thales; \
+		rm -rf $(HYVISUAL_SRC_TO_BE_REMOVED) thales; \
 	   touch configure; \
 	   chmod a+rx configure util/testsuite/chkextra; \
 	)
@@ -583,7 +581,7 @@ update_ptii_ftp:
 		bennett:$(PTII_FTP)
 untar:
 	ssh bennett rm -rf $(PTII_FTP)/ptII$(VERSION)
-	ssh bennett "cd $(PTII_FTP); /usr/local/bin/tar -xf ptII$(VERSION).tar$(SUFFIX)"
+	ssh bennett "cd $(PTII_FTP); /usr/sfw/bin/gtar -xf ptII$(VERSION).tar$(SUFFIX)"
 	-echo "Copy gr.jar and codeDoc in from a windows box"
 
 
