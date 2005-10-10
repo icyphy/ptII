@@ -1466,7 +1466,7 @@ remote4: $(PTII_FULL) $(GENLOGDIR)
 		remote4distclean remote4build \
 		remote4javatest \
 		remote4done \
-		 >& $(REMOTE4LOG)
+		 > $(REMOTE4LOG) 2>&1
 
 
 # Remove the remote dist
@@ -1575,7 +1575,7 @@ remote5: $(PTII_FULL) $(GENLOGDIR)
 		remote5build \
 		remote5shallowtest \
 		remote5done \
-		 >& $(REMOTE5LOG)
+		 > $(REMOTE5LOG) 2>&1
 
 
 # Remove the remote dist
