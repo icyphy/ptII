@@ -49,7 +49,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  a node in the resulting Java3D scene graph. This actor will only
  have meaning in the GR domain.
 
- @author C. Fong
+ @author C. Fong, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 1.0
  @Pt.ProposedRating Red (chf)
@@ -135,16 +135,18 @@ public class Translate3D extends GRTransform {
         super.fire();
 
         boolean applyTransform = false;
-        double xOffset = _initialXTranslation;
-        double yOffset = _initialYTranslation;
-        double zOffset = _initialZTranslation;
-        boolean isAccumulating = _isAccumulating();
+        double xOffset = 0.0;
+        double yOffset = 0.0;
+        double zOffset = 0.0;
 
+        // read new inputs for offsets if there are any. 
         if (xTranslate.getWidth() != 0) {
             if (xTranslate.hasToken(0)) {
                 double in = ((DoubleToken) xTranslate.get(0)).doubleValue();
                 applyTransform = true;
-                xOffset = xOffset + in;
+                xOffset = in;
+            } else {
+                xOffset = _accumulatedX;
             }
         }
 
@@ -152,7 +154,9 @@ public class Translate3D extends GRTransform {
             if (yTranslate.hasToken(0)) {
                 double in = ((DoubleToken) yTranslate.get(0)).doubleValue();
                 applyTransform = true;
-                yOffset = yOffset + in;
+                yOffset = in;
+            } else {
+                yOffset = _accumulatedY;
             }
         }
 
@@ -160,18 +164,24 @@ public class Translate3D extends GRTransform {
             if (zTranslate.hasToken(0)) {
                 double in = ((DoubleToken) zTranslate.get(0)).doubleValue();
                 applyTransform = true;
-                zOffset = zOffset + in;
+                zOffset = in;
+            } else {
+                zOffset = _accumulatedZ;
             }
         }
 
-        if (isAccumulating) {
-            xOffset = (xOffset + _accumulatedX) - _initialXTranslation;
-            _accumulatedX = xOffset;
-            yOffset = (yOffset + _accumulatedY) - _initialYTranslation;
-            _accumulatedY = yOffset;
-            zOffset = (zOffset + _accumulatedZ) - _initialZTranslation;
-            _accumulatedZ = zOffset;
-        }
+        // if accumulating, add the new inputs to the accumulated values, 
+        // which are saved old states.
+        if (_isAccumulating()) {
+            xOffset = (xOffset + _accumulatedX);
+            yOffset = (yOffset + _accumulatedY);
+            zOffset = (zOffset + _accumulatedZ);
+        } 
+        
+        // use the resutls as the new states and save them
+        _accumulatedX = xOffset;
+        _accumulatedY = yOffset;
+        _accumulatedZ = zOffset;
 
         if (applyTransform) {
             Transform3D transform = new Transform3D();
@@ -201,12 +211,6 @@ public class Translate3D extends GRTransform {
                 _initialYTranslation, _initialZTranslation));
         _transformNode.setTransform(transform);
 
-        /*
-         _accumulatedX = 0.0;
-         _accumulatedY = 0.0;
-         _accumulatedZ = 0.0;
-         */
-        //Modified by Gang Zhou
         _accumulatedX = _initialXTranslation;
         _accumulatedY = _initialYTranslation;
         _accumulatedZ = _initialZTranslation;
