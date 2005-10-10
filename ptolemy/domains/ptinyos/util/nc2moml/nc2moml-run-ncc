@@ -40,14 +40,24 @@
 # FIXME: assumes ncc is in path
 #$ncc = "ncc";
 
-##### SETTINGS #####
-$VERBOSE = $ENV{NC2MOML_VERBOSE};
-####################
-
 @args = @ARGV;
 $inputprefix = shift @args;
 $outputprefix = shift @args;
 $outputsuffix = shift @args;
+
+##### SETTINGS #####
+if (-z "$ENV{NC2MOML_VERBOSE}") {
+    $verbose = 1;
+} else {
+    $verbose = $ENV{NC2MOML_VERBOSE};
+}
+
+if ( -z "$ENV{NC2MOML_LOG}") {
+    $masterlog = "$outputprefix/nc2mom-log.txt";
+} else {
+    $masterlog = "$outputprefix/$ENV{NC2MOML_LOG}";
+}
+####################
 
 # Create names of output file (complete path).
 $filename = $args[0];
@@ -65,29 +75,35 @@ $outputresultsfile =~ s/\.nc$/\.txt/;
 # Create directory
 $outputdir = $output;
 $outputdir =~ s/\/[\d\w.]+$//;
+
 system("mkdir -p $outputdir") == 0
   or die "call to mkdir failed in @args: $?";
 
+# Don't concatenate output to the log file each time.
+system("rm -rf $outputdirresultsfile");
+
 # Write command to .txt file
 if ($verbose) {
-  system("echo \"ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args\" > $outputresultsfile");
+    system("echo \"ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args\" > $outputresultsfile");
 }
 
 # Run command and append errors to .txt file.
 if ($verbose) {
-  $results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> $outputresultsfile 2>&1");
+    system("echo \"ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args\" >> $outputresultsfile");
+
+    $results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> $outputresultsfile 2>&1");
 } else {
-  $results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> /dev/null 2>&1");
+    $results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> /dev/null 2>&1");
 }
 
 if ($results eq 0) {
-  if ($verbose) {
-    system("echo \"$filename Ok\" >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1");
-  }
-  print("+");
+    if ($verbose) {
+        system("echo \"$filename Ok\" >> $masterlog 2>&1");
+    }
+    print("+");
 } else {
-  if ($verbose) {
-    system("echo \"$filename ERRORS\" >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1");
-  }
-  print("-");
+    if ($verbose) {
+	system("echo \"$filename ERRORS\" >> $masterlog 2>&1");
+    }
+    print("-");
 }
