@@ -136,20 +136,23 @@ public class LineWriter extends CCodeGeneratorHelper {
      * This method reads the <code>wrapupBlock</code> from LineWriter.c,
      * replaces macros with their values and put the processed code block
      * into the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateWrapupCode(StringBuffer code)
-            throws IllegalActionException {
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();        
+        super.generateWrapupCode();
         code.append(_generateBlockCode("wrapUpBlock"));
+        return code.toString();
     }
     /** 
      * Get the files needed by the code generated for the LineWriter actor.
      * @return A set of strings that are names of the files
      *  needed by the code generated for the LineWriter actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getHeaderFiles() {
+    public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("\"stdio.h\"");
         return files;

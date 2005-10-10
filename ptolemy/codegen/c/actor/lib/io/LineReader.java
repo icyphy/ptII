@@ -133,15 +133,17 @@ public class LineReader extends CCodeGeneratorHelper {
      * Generate wrap up code.
      * This method reads the <code>wrapUpBlock</code> from LineReader.c,
      * replaces macros with their values and appends to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateWrapupCode(StringBuffer code)
-            throws IllegalActionException {
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        super.generateWrapupCode();
         if (_fileOpen) {
             code.append(_generateBlockCode("wrapUpBlock"));
         }
+        return code.toString();
     }
 
     /** 
@@ -149,8 +151,9 @@ public class LineReader extends CCodeGeneratorHelper {
      * LineReader actor.
      * @return A set of strings that are names of the files
      *  needed by the code generated for the LineReader actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getHeaderFiles() {
+    public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("\"stdio.h\"");
         return files;

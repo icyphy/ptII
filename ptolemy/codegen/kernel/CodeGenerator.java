@@ -32,10 +32,12 @@ import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.actor.lib.CodeStream;
@@ -180,6 +182,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String bodyCode = generateBodyCode();
         String wrapupCode = generateWrapupCode();
 
+        String typeResolutionCode = generateTypeResolutionCode();
+        
         // The appending phase.
         code.append(includeFiles);
         code.append(sharedCode);
@@ -216,7 +220,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
     
-    /** Generate include files.   
+	/** Generate include files.   
      *  @return The include files.
      *  @throws IllegalActionException If the helper class for some actor cannot 
      *  be found.
@@ -309,21 +313,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment("Generate shared code for " + 
                 getContainer().getFullName()));
         
-        // FIXME: this is the section for determining the proper
-        // code put into the source to support dynamic type resolution.
-        // 1. find out the different types used in the model.
-        // 2. find out the different polymorphic functions used.
-        //    (note: types and functions are independent of each other)
-        // 3. append code blocks according to the functions used,
-        //    and read from files according to the types referenced.
-        // 4. generate type resolution code:
-        //     a. constants (MAX_NUM_TYPE, MAX_NUM_FUNC)
-        //     b. type map, 
-        //     c. function map,
-        //     d. function definitions read from the files, and 
-        //     e. function table
         CodeStream tmpStream = new CodeStream(
-                "$CLASSPATH/ptolemy/codegen/kernel/type/SharedCode.c");
+                "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
         tmpStream.appendCodeBlock("globalBlock");
         code.append(tmpStream.toString());   
 
@@ -344,6 +335,103 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 getContainer().getFullName()));
 
         return code.toString();
+    }
+
+    /**
+     * Generate type resolution code. 
+     * Determine the proper code put into the source to support dynamic type
+     * resolution. First, find out the different types used in the model.
+     * Second, find out the different polymorphic functions used. (note: types
+     * and functions are independent of each other). Third, append code blocks
+     * according to the functions used, and read from files according to the
+     * types referenced. Fourth, generate type resolution code, which consists
+     * of constants (MAX_NUM_TYPE, MAX_NUM_FUNC), the type map, the function
+     * map, function definitions read from the files, and function table.
+     * @return The type resolution code.
+     * @throws IllegalActionException If an error ocurrs when generating
+     *  the type resolution code, or if the helper class for the model
+     *  director cannot be found, or if an error occurs when the helper
+     *  actor generates the type resolution code. 
+     */
+    public String generateTypeResolutionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(comment("TypeResolution " + getContainer().getFullName()));
+
+        TypedCompositeActor compositeActorHelper 
+                = (TypedCompositeActor) _getHelper(getContainer());
+
+        Iterator actors = ((ptolemy.actor.CompositeActor) compositeActorHelper
+                .getComponent()).deepEntityList().iterator();
+
+        HashSet functions = new HashSet();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject =
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            functions.addAll((HashSet) helperObject
+                    .getInfo(CodeGeneratorHelper.FIELD_TYPEFUNC));
+        }
+        
+        // FIXME: we need to find out how to determine the referenced types.
+        // A possible method is to look at the accepted input types of the
+        // functions.
+        HashSet types = new HashSet();
+        types.add("array");
+        types.add("int");
+        types.add("double");
+        types.add("matrix");
+        types.add("string");
+        
+        Object[] typesArray = types.toArray();
+        CodeStream streams[] = new CodeStream[types.size()];
+
+        for (int i = 0; i < types.size(); i++) {            
+            // Open the .c file for each type.
+            streams[i] = new CodeStream(
+            "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i] + ".c");   
+            
+            // Generate type map.
+            code.append("#define TYPE_" + typesArray[i] + " " + i + "\n");
+        }
+        
+        Object[] functionsArray = functions.toArray();
+
+        for (int i = 0; i < functions.size(); i++) {
+            // Generate type map.
+            code.append("#define FUNC_" + functionsArray[i] + " " + i + "\n");
+            
+            // Generate function definitions.
+            for (int j = 0; j < streams.length; j++) {
+                // The code block declaration has to follow this convention:
+                // /*** [function name]Block ***/ 
+                //     .....
+                // /**/
+                try {   
+                    // We have to catch the exception if some code blocks are
+                    // not found.
+                    streams[i].appendCodeBlock(functionsArray[i] + "Block");
+                } catch (IllegalActionException ex) {
+                	// It is ok because this polymorphic function may not be
+                    // supported by all types. 
+                }
+            }
+        }
+        // Generate function table.
+        code.append("#define NUM_TYPE " + types.size() + "\n");
+        code.append("#define NUM_FUNC " + functions.size() + "\n");
+        code.append("void (*functionTable[NUM_TYPE][NUM_FUNC])()= {\n");
+        for (int i = 0; i < types.size(); i++) {            
+            for (int j = 0; j < functions.size(); j++) {
+                code.append(typesArray[i] + "_" + functionsArray[j]);
+                if (i != types.size() - 1 || j != functions.size() - 1) {
+                    code.append(", ");
+                }
+            }
+            code.append("\n");
+        }
+        code.append("}\n");
+        return code.toString();
+
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.

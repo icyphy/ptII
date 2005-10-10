@@ -35,6 +35,7 @@ import java.util.Set;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -73,38 +74,39 @@ public class Display extends CCodeGeneratorHelper {
         _codeStream.clear();
         ArrayList args = new ArrayList();
         List connectedPorts = actor.input.connectedPortList();
+
+        args.add(new Integer(0));           
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.add(Integer.toString(i));
             TypedIOPort port = (TypedIOPort) connectedPorts.get(i);
             
-            if (port.getType().toString().equals("int")) {
+            args.set(0, Integer.toString(i));
+            if (port.getType() == BaseType.INT) {
                 _codeStream.appendCodeBlock("printInt", args);
-            }
-            else if (port.getType().toString().equals("double")) {
+            } else if (port.getType() == BaseType.DOUBLE) {
                 _codeStream.appendCodeBlock("printDouble", args);
-            }
-            else if (port.getType().toString().equals("string")) {
+            } else if (port.getType() == BaseType.STRING) {
                 _codeStream.appendCodeBlock("printString", args);
-            }
-            else {
-                _codeStream.appendCodeBlock("printArray", args);
+            } else {
+                _codeStream.appendCodeBlock("printToken", args);
             }
         }
         code.append(processCode(_codeStream.toString()));
     }
 
     /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from Display.c,
+     * Generate shared code.
+     * This method reads the <code>sharedBlock</code> from Display.c,
      * replaces macros with their values and returns the processed code string.
+     * @return A set of strings that are code shared by multiple instances of
+     *  the same actor.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
-     * @return The processed code string.
      */
-    public String generatePreinitializeCode()
-        throws IllegalActionException {
+    public Set generateSharedCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-        return _generateBlockCode("preinitBlock");
+        Set codeBlocks = new HashSet();
+        codeBlocks.add(_generateBlockCode("sharedBlock", false));
+        return codeBlocks;
     }
 
     /**
@@ -112,8 +114,9 @@ public class Display extends CCodeGeneratorHelper {
      * Display actor.
      * @return A set of strings that are names of the header files
      *  needed by the code generated for the Display actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getHeaderFiles() {
+    public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("\"stdio.h\"");
         return files;

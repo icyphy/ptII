@@ -103,13 +103,14 @@ public class XYPlotter extends CCodeGeneratorHelper {
      * This method reads the <code>closeFile</code> and <code>graphPlot</code>
      * from XYPlotter.c, replaces macros with their values and appends to the
      * given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateWrapupCode(StringBuffer code)
-            throws IllegalActionException {
-
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        super.generateWrapupCode();
+        
         ptolemy.actor.lib.gui.XYPlotter actor = 
             (ptolemy.actor.lib.gui.XYPlotter) getComponent();
 
@@ -120,6 +121,7 @@ public class XYPlotter extends CCodeGeneratorHelper {
             _codeStream.appendCodeBlock("graphPlot");
         }
         code.append(processCode(_codeStream.toString()));
+        return code.toString();
     }
 
     /** 
@@ -127,8 +129,9 @@ public class XYPlotter extends CCodeGeneratorHelper {
      * XYPlotter actor.
      * @return A set of strings that are names of the files
      *  needed by the code generated for the XYPlotter actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getHeaderFiles() {
+    public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("\"stdio.h\"");
         return files;

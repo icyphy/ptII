@@ -75,8 +75,9 @@ public class AudioWriter extends CCodeGeneratorHelper {
      *  AudioWriter actor.
      *  @return A set of strings that are names of the files
      *   needed by the code generated for the AudioWriter actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getHeaderFiles() {
+    public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("\"math.h\"");
         files.add("\"stdio.h\"");

@@ -1,31 +1,63 @@
-/*** preinitBlock ***/
-    int $actorSymbol(i);
+/*** sharedBlock ***/
+void Display_print(Token* token) {
+    int i, j;
+    char type = token->type;
+    switch (type) {
+    case INT_TYPE:
+        printf("%d", ((Int*) token)->value);
+        break;
+    case DOUBLE_TYPE:
+        printf("%f", ((Double*) token)->value);
+        break;
+    case STRING_TYPE:
+        printf("\"%s\"", ((String*) token)->value);
+        break;
+    case ARRAY_TYPE:            
+        printf("{");
+        //printf("length: %d\n", ((Array*) data)->length);
+        for (i = 0; i < ((Array*) token)->size; i++) {
+            if (i != 0) {
+                printf(", ");
+            }
+            Display_print(((Array*) token)->elements[i]);
+        }
+        printf("}");
+        break;
+    case MATRIX_TYPE:
+        printf("[");
+        for (i = 0; i < ((Matrix*) token)->row; i++) {
+            if (i != 0) {
+                printf("; ");
+            }            
+            for (j = 0; j < ((Matrix*) token)->column; j++) {
+                if (j != 0) {
+                    printf(", ");
+                }
+                Display_print(((Matrix*) token)->elements[i * ((Matrix*) token)->column + j]);
+            }
+        }
+        printf("]");
+        break;
+    }
+}
+
 /**/
 
+
 /*** printInt(<channel>) ***/
-    fprintf(stdout, "Display: %d\n", $ref(input#<channel>));
+    printf("Display: %d\n", $ref(input#<channel>).intPort);
 /**/
 
 /*** printDouble(<channel>) ***/
-    fprintf(stdout, "Display: %g\n", $ref(input#<channel>));
+    printf("Display: %g\n", $ref(input#<channel>).doublePort);
 /**/
 
 /*** printString(<channel>) ***/
-    fprintf(stdout, "Display: %s\n", $ref(input#<channel>));
+    printf("Display: %s\n", $ref(input#<channel>).stringPort);
 /**/
 
-// FIXME: how do we handle different types??
-/*** printArray(<channel>) ***/
-    fprintf(stdout, "Display: {");
-    for ($actorSymbol(i) = 0; $actorSymbol(i) < 4; $actorSymbol(i)++) {
-        if ($actorSymbol(i) == 0) {
-            printf("%g", $ref(input#<channel>)[$actorSymbol(i)]);
-            //fprintf(stdout, "%g", $ref(input#<channel>)[$actorSymbol(i)]);
-        }
-        else {
-            fprintf(", %g", $ref(input#<channel>)[$actorSymbol(i)]);            
-        }
-    }
-    fprintf(stdout, "}\n");
+/*** printToken(<channel>) ***/
+    printf("Display: ");
+    Display_print($ref(input)[<channel>].generalPort);            
+    printf("\n");
 /**/
-

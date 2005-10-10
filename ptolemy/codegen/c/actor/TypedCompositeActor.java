@@ -156,7 +156,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         }
         return sharedCode;
     }
-    
+
+
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
      *  @param code The given string buffer.
@@ -181,13 +182,13 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /** Generate the wrapup code of the associated composite actor.
      *  @exception IllegalActionException 
      */   
-    public void generateWrapupCode(StringBuffer code)
-            throws IllegalActionException {
-        
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         Director directorHelper = (Director) _getHelper
                 ((NamedObj) ((ptolemy.actor.CompositeActor) 
                 getComponent()).getDirector());
-        directorHelper.generateWrapupCode(code);   
+        code.append(directorHelper.generateWrapupCode());   
+        return code.toString();
     }
     
     /** Get the files needed by the code generated from this helper class.

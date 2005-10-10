@@ -3,11 +3,6 @@
 // generates the same list of random numbers as the java.util.Random object.
 
 /*** sharedBlock ***/
-    // Shared block contains code that is shared by multiple instances
-    // of the helper from the same type, so it should not contain any
-    // $actorSymbol(), $val(), $ref(), or any actor specific marcos.
-    // Any method or type declarations should be prefixed with the actor
-    // type name followed by an underscore (e.g. ActorName_method)./**/
     int Gaussian_next(int bits, double* seed) {
         *seed = (((long long) *seed * 0x5DEECE66DLL) + 0xBLL) & ((1LL << 48) - 1);
         return (int)((signed long long) *seed >> (48 - bits));

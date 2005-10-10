@@ -123,15 +123,18 @@ public class Gaussian extends CCodeGeneratorHelper {
      * Reads the <code>sharedBlock</code> from Gaussian.c,
      * replace macros with their values and append the processed code
      * block to the given code buffer.
-     * @return The processed code string.
+     * @return A set of strings that are code shared by multiple instances of
+     *  the same actor.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateSharedCode() throws IllegalActionException {
+    public Set generateSharedCode() throws IllegalActionException {
         // We don't need to process the code block here because the
         // sharedCode do not contain any macros.
         super.generateSharedCode();
-        return _generateBlockCode("sharedBlock", false);
+        Set codeBlocks = new HashSet();
+        codeBlocks.add(_generateBlockCode("sharedBlock", false));
+        return codeBlocks;
     }
 
     /**
@@ -139,8 +142,9 @@ public class Gaussian extends CCodeGeneratorHelper {
      * Gaussian actor.
      * @return A set of Strings that are names of the files
      *  needed by the code generated for the Gaussian actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getHeaderFiles() {
+    public Set getHeaderFiles() throws IllegalActionException {
         super.getHeaderFiles();
         Set files = new HashSet();
         files.add("<time.h>");

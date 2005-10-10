@@ -122,15 +122,18 @@ public class AudioReader extends CCodeGeneratorHelper {
     * Read the <code>sharedBlock</code> from AudioReader.c,
     * replace macros with their values and append the processed code
     * block to the given code buffer.
-    * @return The processed code string.
+     * @return A set of strings that are code shared by multiple instances of
+     *  the same actor.
     * @exception IllegalActionException If the code stream encounters an
     *  error in processing the specified code block(s).
     */
-   public String generateSharedCode() throws IllegalActionException {
+   public Set generateSharedCode() throws IllegalActionException {
    	   super.generateSharedCode();
        // We don't need to process the code block here because the
        // sharedCode do not contain any macros.
-       return _generateBlockCode("sharedBlock", false);
+       Set codeBlocks = new HashSet();
+       codeBlocks.add(_generateBlockCode("sharedBlock", false));
+       return codeBlocks;
    }
 
    /** 
@@ -138,22 +141,25 @@ public class AudioReader extends CCodeGeneratorHelper {
     * Read the <code>wrapupBlock</code> from AudioReader.c, replace
     * macros with their values and append the processed code block
     * to the given code buffer.
-    * @param code the given buffer to append the code to.
+    * @return The processed code string.
     * @exception IllegalActionException If the code stream encounters an
     *  error in processing the specified code block(s).
     */
-   public void generateWrapupCode(StringBuffer code)
+   public String generateWrapupCode()
            throws IllegalActionException {
-   	   super.generateWrapupCode(code);
+   	   StringBuffer code = new StringBuffer();
+   	   super.generateWrapupCode();
        code.append(_generateBlockCode("wrapupBlock"));
+       return code.toString();
    }
    /** 
     * Get the files needed by the code generated for the
     * AudioReader actor.
     * @return A set of Strings that are names of the files
     *  needed by the code generated for the AudioReader actor.
-    */
-   public Set getHeaderFiles() {
+     * @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
        super.getHeaderFiles();
        Set files = new HashSet();
        files.add("<math.h>");

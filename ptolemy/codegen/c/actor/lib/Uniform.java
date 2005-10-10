@@ -111,8 +111,9 @@ public class Uniform extends CCodeGeneratorHelper {
     * Uniform actor.
     * @return A set of strings that are names of the files
     *  needed by the code generated for the Uniform actor.
-    */
-   public Set getHeaderFiles() {
+     * @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
        Set files = new HashSet();
        files.add("\"time.h\"");
        files.add("\"math.h\"");

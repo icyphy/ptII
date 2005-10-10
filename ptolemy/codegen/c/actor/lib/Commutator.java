@@ -1,4 +1,4 @@
-/* A code generation helper class for actor.lib.Quantizer
+/* A code generation helper class for actor.lib.Commutator
  @Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -29,33 +29,32 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for ptolemy.actor.lib.Quantizer. 
+ * A code generation helper class for ptolemy.actor.lib.Commutator. 
  *
- * @author Man-Kit Leung, Shamik B
+ * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
  * @Pt.ProposedRating Red (mankit) 
  * @Pt.AcceptedRating Red (mankit)
  */
-public class Quantizer extends CCodeGeneratorHelper {
+public class Commutator extends CCodeGeneratorHelper {
 
     /**
-     * Constructor method for the Quantizer helper.
+     * Constructor method for the Commutator helper.
      * @param actor The associated actor.
      */
-    public Quantizer(ptolemy.actor.lib.Quantizer actor) {
+    public Commutator(ptolemy.actor.lib.Commutator actor) {
         super(actor);
     }
 
     /**
      * Generate fire code.
-     * Read the <code>fireBlock</code> from Quantizer.c,
+     * Read the <code>fireBlock</code> from Commutator.c,
      * replace macros with their values and append the processed code              
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
@@ -65,22 +64,15 @@ public class Quantizer extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer code)
         throws IllegalActionException {
         super.generateFireCode(code);
-        _codeStream.clear();
-        ptolemy.actor.lib.Quantizer actor = 
-            (ptolemy.actor.lib.Quantizer) getComponent();
-        
-        ArrayList arguments = new ArrayList();
-        StringTokenizer tokenizer = new StringTokenizer(
-                actor.levels.getExpression(), ",");
-        arguments.add(new Integer(tokenizer.countTokens()));
-        
-        _codeStream.appendCodeBlock("fireBlock", arguments);
-        code.append(processCode(_codeStream.toString()));
-    }
+        ArrayList args = new ArrayList();
+        args.add(new Integer(((ptolemy.actor.lib.Commutator) 
+                getComponent()).input.getWidth()));
+        code.append(_generateBlockCode("fireBlock", args));
+   }
 
     /**
      * Generate initialize code.
-     * Read the <code>initBlock</code> from Quantizer.c,
+     * Read the <code>initBlock</code> from Commutator.c,
      * replace macros with their values and return the processed code string.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
@@ -89,22 +81,12 @@ public class Quantizer extends CCodeGeneratorHelper {
     public String generateInitializeCode()
         throws IllegalActionException {
         super.generateInitializeCode();
-        _codeStream.clear();
-        ptolemy.actor.lib.Quantizer actor = 
-            (ptolemy.actor.lib.Quantizer) getComponent();
-        
-        ArrayList arguments = new ArrayList();
-        StringTokenizer tokenizer = new StringTokenizer(
-                actor.levels.getExpression(), ",");
-        arguments.add(new Integer(tokenizer.countTokens()));
-        
-        _codeStream.appendCodeBlock("initBlock", arguments);
-        return processCode(_codeStream.toString());
+        return _generateBlockCode("initBlock");
     }
    
     /**
      * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from Quantizer.c,
+     * Reads the <code>preinitBlock</code> from Commutator.c,
      * replace macros with their values and return the processed code string.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
@@ -116,18 +98,16 @@ public class Quantizer extends CCodeGeneratorHelper {
         return _generateBlockCode("preinitBlock");
     }
 
-
     /**
      * Generate wrap up code.
-     * Read the <code>wrapupBlock</code> from Quantizer.c, 
+     * Read the <code>wrapupBlock</code> from Commutator.c, 
      * replace macros with their values and append the processed code block
      * to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generateWrapupCode()
-        throws IllegalActionException {
+    public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
         code.append(_generateBlockCode("wrapupBlock"));
@@ -136,15 +116,14 @@ public class Quantizer extends CCodeGeneratorHelper {
 
     /**
      * Get the files needed by the code generated for the
-     * Quantizer actor.
+     * Commutator actor.
      * @return A set of Strings that are names of the header files
-     *  needed by the code generated for the Quantizer actor.
+     *  needed by the code generated for the Commutator actor.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
         super.getHeaderFiles();
         Set files = new HashSet();
-        files.add("<stdio.h>");
         files.add("<math.h>");
 
         return files;

@@ -29,6 +29,7 @@ package ptolemy.codegen.kernel;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -118,13 +119,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     * set. This method generally does not generate any execution code
     * and returns an empty string. Subclasses may generate code for variable
     * declaration, defining constants, etc.
-    * @return a set of shared codes.
+    * @return An empty set in this base class.
     * @exception IllegalActionException Not thrown in this base class.
     */
-   public Set generateSharedCode() throws IllegalActionException {
-      Set sharedCodes = new HashSet();
-      return sharedCodes;
-   }
+    public Set generateSharedCode() throws IllegalActionException {
+        Set codeBlocks = new HashSet();
+        return codeBlocks;
+    }
 
    /** Generate variable declarations for inputs and outputs and parameters.
     *  Append the declarations to the given string buffer.
@@ -214,8 +215,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     * @param code The given string buffer.
     * @exception IllegalActionException Not thrown in this base class.
     */
-   public void generateWrapupCode(StringBuffer code)
-           throws IllegalActionException {
+   public String generateWrapupCode() throws IllegalActionException {
+   	    return "";
    }
 
    /** 
@@ -277,6 +278,46 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
        return _component;
    }
 
+   /** Return the translated function call string.
+    *  @param name The string within the $typeFunc() macro.
+    *  @return The translate function call string.
+    *  @exception IllegalActionException The given function string is
+    *   not well-formed.
+    */
+   public String getFunctionCall(String functionString) 
+       throws IllegalActionException {
+        // i.e. "$typeFunc(token.add(arg1, arg2, ...))"
+        // this transforms to ==> 
+        // "functionTable[token->type][FUNC_add] (arg1, arg2, ...)"
+        int dotIndex = functionString.indexOf('.');
+        int openFuncParenIndex = functionString.indexOf('(');
+        int closeFuncParenIndex = functionString.lastIndexOf(')');
+        
+        // Syntax checking.
+        if (dotIndex == -1 ||
+            openFuncParenIndex == -1 ||
+            closeFuncParenIndex != functionString.length() - 1) {
+        	throw new IllegalActionException(
+                    "Bad Syntax with the $typeFunc() macro. " +
+                    "[i.e. -- $typeFunc(token.func(arg1, arg2, ...))]");
+        }
+        
+        String typedToken = functionString.substring(0, dotIndex).trim();
+        String functionName = functionString.substring(
+                dotIndex + 1, openFuncParenIndex).trim();
+           
+        // Record the referenced type function in the infoTable.
+        HashSet functions = (HashSet) _infoTable.get(FIELD_TYPEFUNC);
+        if (functions == null) {
+            functions = new HashSet();
+        	_infoTable.put(FIELD_TYPEFUNC, functions);
+        }
+        functions.add(functionName);
+        
+        return "functionTable[" + typedToken + "->type][FUNC_" + functionName
+            + "]" + processCode(functionString.substring(openFuncParenIndex));
+   }
+   
    /** Get the files needed by the code generated from this helper class.
     *  This base class returns an empty set.
     *  @return A set of strings that are header files needed by the code
@@ -287,42 +328,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
        return files;
    }
 
-   /** Get the read offset in the buffer of a given channel from which a token
-    *  should be read. The channel is given by its containing port and
-    *  the channel number in that port.
-    *  @param inputPort The given port.
-    *  @param channelNumber The given channel number.
-    *  @return The offset in the buffer of a given channel from which a token
-    *   should be read.
+   /**
+    * Get information from the helper's info table. The kernel should use
+    * this method to retrieve information from the helper.  
     */
-   public Object getReadOffset(IOPort inputPort, int channelNumber) 
-           throws IllegalActionException{
-       if (inputPort.getContainer() == _component) {            
-           return ((Object[]) _readOffsets.get(inputPort))[channelNumber];
-       } else {
-           CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
-                   _getHelper(inputPort.getContainer());
-           return actorHelper.getReadOffset(inputPort, channelNumber);       
-       }       
-   }
-   
-   /** Get the write offset in the buffer of a given channel to which a token
-    *  should be put. The channel is given by its containing port and
-    *  the channel number in that port.
-    *  @param inputPort The given port.
-    *  @param channelNumber The given channel number.
-    *  @return The offset in the buffer of a given channel to which a token
-    *   should be put.
-    */
-   public Object getWriteOffset(IOPort inputPort, int channelNumber) 
-           throws IllegalActionException {
-       if (inputPort.getContainer() == _component) {            
-           return ((Object[]) _writeOffsets.get(inputPort))[channelNumber];
-       } else {
-           CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
-                   _getHelper(inputPort.getContainer());
-           return actorHelper.getWriteOffset(inputPort, channelNumber);       
-       }
+   public Object getInfo(String field) {
+       return _infoTable.get(field);
    }
 
    /** Return the value of the specified parameter of the associated actor.
@@ -381,6 +392,25 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
        }
    }
 
+   /** Get the read offset in the buffer of a given channel from which a token
+    *  should be read. The channel is given by its containing port and
+    *  the channel number in that port.
+    *  @param inputPort The given port.
+    *  @param channelNumber The given channel number.
+    *  @return The offset in the buffer of a given channel from which a token
+    *   should be read.
+    */
+   public Object getReadOffset(IOPort inputPort, int channelNumber) 
+           throws IllegalActionException{
+       if (inputPort.getContainer() == _component) {            
+           return ((Object[]) _readOffsets.get(inputPort))[channelNumber];
+       } else {
+           CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
+                   _getHelper(inputPort.getContainer());
+           return actorHelper.getReadOffset(inputPort, channelNumber);       
+       }       
+   }
+   
    /** Return the reference to the specified parameter or port of the
     *  associated actor. For a parameter, the returned string is in
     *  the form "fullName_parameterName". For a port, the returned string
@@ -713,6 +743,25 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                + name);
    }
 
+   /** Get the write offset in the buffer of a given channel to which a token
+    *  should be put. The channel is given by its containing port and
+    *  the channel number in that port.
+    *  @param inputPort The given port.
+    *  @param channelNumber The given channel number.
+    *  @return The offset in the buffer of a given channel to which a token
+    *   should be put.
+    */
+   public Object getWriteOffset(IOPort inputPort, int channelNumber) 
+           throws IllegalActionException {
+       if (inputPort.getContainer() == _component) {            
+           return ((Object[]) _writeOffsets.get(inputPort))[channelNumber];
+       } else {
+           CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
+                   _getHelper(inputPort.getContainer());
+           return actorHelper.getWriteOffset(inputPort, channelNumber);       
+       }
+   }
+
    /** Process the specified code, replacing macros with their values.
     * @param code The code to process.
     * @return The processed code.
@@ -759,8 +808,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
            String macro = code.substring(currentPos + 1, openParenIndex);
            macro = macro.trim();
 
-           if ((macro.equals("ref") || macro.equals("val")
-                   || macro.equals("actorSymbol") || macro.equals("size"))) {
+           if ((macro.equals("ref") || 
+                macro.equals("val") || 
+                macro.equals("actorSymbol") || 
+                macro.equals("actorClass") || 
+                macro.equals("typeFunc") || 
+                macro.equals("size"))) {
+            
                String name = code.substring(openParenIndex + 1,
                        closeParenIndex);
                name = name.trim();
@@ -774,8 +828,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                } else if (macro.equals("actorSymbol")) {
                    result.append(_component.getFullName().replace('.', '_'));
                    result.append("_" + name);
+               } else if (macro.equals("actorClass")) {
+               	   result.append(_component.getContainer().getName());
+                   result.append("_" + name);
+               } else if (macro.equals("typeFunc")) {   
+                   result.append(getFunctionCall(name));
                }
-
                foundIt = true;
                result.append(code.substring(closeParenIndex + 1, nextPos));
            }
@@ -883,7 +941,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
            actorHelper.setWriteOffset(inputPort, channelNumber, writeOffset);       
        }        
    }
-
+   /////////////////////////////////////////////////////////////////////
+   ////                      public variables                       ////
+   
+   /**
+    * The type function field key to access the info table. 
+    */
+   public static final String FIELD_TYPEFUNC = "typeFunc";
+   
    /////////////////////////////////////////////////////////////////////
    ////                      public inner classes                   ////
 
@@ -1138,6 +1203,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    /** A hashmap that keeps track of the read offsets of each input channel of
     *  the actor.
     */
-
    private HashSet _referencedParameters = new HashSet();
+   
+   /**
+    * The table about information of the helper's generated code. The
+    * kernel can use this table to retrieve information from the helper.  
+    */
+   private Hashtable _infoTable = new Hashtable();
 }

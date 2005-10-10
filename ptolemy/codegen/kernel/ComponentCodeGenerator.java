@@ -58,10 +58,10 @@ public interface ComponentCodeGenerator {
 
     /** Generate into the specified code stream the code associated
      *  with wrapping up the container composite actor.
-     *  @param code The code stream into which to generate the code.
      *  @exception IllegalActionException If something goes wrong.
+     *  @return The wrapup code of the containing composite actor.
      */
-    public void generateWrapupCode(StringBuffer code)
+    public String generateWrapupCode()
             throws IllegalActionException;
 
     /** Return the associated component.

@@ -121,15 +121,18 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     * Read the <code>sharedBlock</code> from AudioPlayer.c,
     * replaces macros with their values and appends the processed code
     * block to the given code buffer.
-    * @return The processed code block.
+     * @return A set of strings that are code shared by multiple instances of
+     *  the same actor.
     * @exception IllegalActionException If the code stream encounters an
     *  error in processing the specified code block(s).
     */
-   public String generateSharedCode() throws IllegalActionException {
+   public Set generateSharedCode() throws IllegalActionException {
         // We don't need to process the code block here because the
         // sharedCode do not contain any macros.
        super.generateSharedCode();
-       return _generateBlockCode("sharedBlock", false);
+       Set codeBlocks = new HashSet();
+       codeBlocks.add(_generateBlockCode("sharedBlock", false));
+       return codeBlocks;
    }
 
    /** 
@@ -137,14 +140,14 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     * Read the <code>wrapupBlock</code> from AudioPlayer.c,
     * replace macros with their values and append the processed code block
     * to the given code buffer.
-    * @param code the given buffer to append the code to.
+    * @return The processed code string.
     * @exception IllegalActionException If the code stream encounters an
     *  error in processing the specified code block(s).
     */
-   public void generateWrapupCode(StringBuffer code)
-           throws IllegalActionException {
-   	   super.generateWrapupCode(code);
-       code.append(_generateBlockCode("wrapupBlock")); 
+   public String generateWrapupCode() throws IllegalActionException {
+   	   StringBuffer code = new StringBuffer();
+   	   super.generateWrapupCode();
+       return code.toString();
    }
 
    /** 
@@ -152,8 +155,9 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     * AudioPlayer actor.
     * @return A set of strings that are names of the files
     *  needed by the code generated for the AudioPlayer actor.
-    */
-   public Set getHeaderFiles() {
+     * @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
    	   super.getHeaderFiles();
        Set files = new HashSet();
        files.add("<stdio.h>");

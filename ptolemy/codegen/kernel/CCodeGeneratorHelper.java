@@ -27,6 +27,8 @@
  */
 package ptolemy.codegen.kernel;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -77,6 +79,24 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
     /** Given a block name, generate code for that block.
      *  This method is called by actors helpers that have simple blocks
+     *  that do not take parameters or have widths.
+     *  @param blockName The name of the block.
+     *  @param args The arguments for the block.
+     *  @return The code for the given block.
+     *  @exception IllegalActionException If illegal macro names are
+     *  found, or if there is a problem parsing the code block from
+     *  the helper .c file.
+     */
+    protected String _generateBlockCode(String blockName, ArrayList args) 
+            throws IllegalActionException {
+        // We use this method to reduce code duplication for simple blocks.
+        _codeStream.clear();
+        _codeStream.appendCodeBlock(blockName, args);
+        return processCode(_codeStream.toString());
+    }
+
+    /** Given a block name, generate code for that block.
+     *  This method is called by actors helpers that have simple blocks
      *  that do not take parameters or have widths. This method gives user
      *  the freedom to indicate if the code block needs marco-processing.
      *  @param blockName The name of the block.
@@ -102,4 +122,5 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * The code stream associated with this helper.
      */
     protected CodeStream _codeStream = new CodeStream(this);
+
 }

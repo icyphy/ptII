@@ -194,8 +194,9 @@ public class Director implements ActorCodeGenerator {
     *  cannot be found, or if an error occurs while the helper generate the
     *  wrapup code.
     */
-   public void generateWrapupCode(StringBuffer code)
+   public String generateWrapupCode()
            throws IllegalActionException {
+   	   StringBuffer code = new StringBuffer();
        code.append("/* The wrapup of the director. */\n");
 
        Iterator actors = ((CompositeActor) _director.getContainer())
@@ -204,8 +205,9 @@ public class Director implements ActorCodeGenerator {
        while (actors.hasNext()) {
            Actor actor = (Actor) actors.next();
            ComponentCodeGenerator helperObject = _getHelper((NamedObj) actor);
-           helperObject.generateWrapupCode(code);
+           code.append(helperObject.generateWrapupCode());
        }
+       return code.toString();
    }
 
    /** Return the buffer size of a given channel (i.e, a given port

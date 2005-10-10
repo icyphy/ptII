@@ -86,8 +86,9 @@ public class TrigFunction extends CCodeGeneratorHelper {
      * TrigFunction actor.
      * @return A set of strings that are names of the files
      *  needed by the code generated for the TrigFunction actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getHeaderFiles() {
+    public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("\"math.h\"");
         return files;

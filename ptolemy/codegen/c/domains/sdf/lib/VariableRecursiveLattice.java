@@ -97,9 +97,9 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      * This method reads the <code>preinitBlock</code> from
      * VariableRecursiveLattice.c, replaces macros with their values
      * and returns the processed code string.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
-     * @return The processed code string.
      */
     public String generatePreinitializeCode()
         throws IllegalActionException {
@@ -116,18 +116,20 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      * from VariableRecursiveLattice.c,
      * replaces macros with their values and appends the processed code block
      * to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateWrapupCode(StringBuffer code)
-        throws IllegalActionException {
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        super.generateWrapupCode();
         ptolemy.domains.sdf.lib.VariableRecursiveLattice actor =
             (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("wrapupBlock");
 
         code.append(processCode(_codeStream.toString()));
+        return code.toString();
     }
 
     /**
@@ -135,8 +137,9 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      * VariableRecursiveLattice actor.
      * @return A set of strings that are names of the header files
      *  needed by the code generated for the VariableRecursiveLattice actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getHeaderFiles() {
+    public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("\"math.h\"");
 

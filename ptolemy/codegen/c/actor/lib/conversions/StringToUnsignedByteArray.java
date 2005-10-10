@@ -88,8 +88,9 @@ public class StringToUnsignedByteArray extends CCodeGeneratorHelper {
      * StringToUnsignedByteArray actor.
      * @return A set of strings that are names of the files
      *  needed by the code generated for the Round actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
      */
-    public Set getHeaderFiles() {
+    public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("\"string.h\"");
         return files;
