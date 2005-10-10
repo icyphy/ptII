@@ -444,7 +444,7 @@ public class ComponentPort extends Port {
             Iterator relations = r.relationGroupList().iterator();
             while (relations.hasNext()) {
                 Relation groupRelation = (Relation) relations.next();
-                if (_insideLinks.isLinked(groupRelation)) {
+                if (isInsideLinked(groupRelation)) {
                     return true;
                 }
             }
