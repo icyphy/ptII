@@ -3284,7 +3284,7 @@ public class IOPort extends ComponentPort {
     }
 
     /** Return the sums of the widths of the relations linked on the
-     *  inside, except the specified port.  If any of these relations
+     *  inside, except the specified relation.  If any of these relations
      *  has not had its width specified, throw an exception.  This is
      *  used by IORelation to infer the width of a bus with
      *  unspecified width and to determine whether more than one
