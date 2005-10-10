@@ -89,8 +89,6 @@ if ($verbose) {
 
 # Run command and append errors to .txt file.
 if ($verbose) {
-    system("echo \"ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args\" >> $outputresultsfile");
-
     $results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> $outputresultsfile 2>&1");
 } else {
     $results = system("ncc -fsyntax-only \'-fnesc-dump=interfaces\(file\($filename\)\)\' -fnesc-dumpfile=$outputxmlfile -Wnesc-all @args >> /dev/null 2>&1");
