@@ -743,18 +743,17 @@ public class IORelation extends ComponentRelation {
 
             Iterator ports = linkedPortList().iterator();
             
-            // Warning! Depending on the order of the ports get iterated,
+            // Note that depending on the order of the ports get iterated,
             // the inferred width may be different if different ports have
             // different widths. This is nondeterministic.
-            // One way to exclude this nondeterministic behavior is to
-            // disallow dangling ports. In other words, for a port, we 
-            // constrain that the sum of the widths of all input relations 
-            // equal to the sum of those of all output relations.
+            // However, the model behavior is not affected by this because
+            // the relation with the smallest width along a path decides
+            // the number of signals that can be passed through.
             
             while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
 
-                // Infer the width of this port from the associated connections.
+                // Infer the width of this port from the linked connections.
                 // Note we assume that this method is only called upon a 
                 // multiport. 
                 
