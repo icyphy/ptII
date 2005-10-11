@@ -29,7 +29,6 @@ package ptolemy.domains.fsm.modal;
 
 import java.util.Iterator;
 
-import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
@@ -82,17 +81,6 @@ public class ModalPort extends TypedIOPort {
     public ModalPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }
-
-    /** Set the connected relation to a bus if this port is a multiport.
-     */
-    public void link(Relation relation) throws IllegalActionException {
-        super.link(relation);
-
-        // NOTE: the following procedure is also performed in a refinement port.
-        if (isMultiport()) {
-            ((IORelation) relation).setWidth(0);
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
