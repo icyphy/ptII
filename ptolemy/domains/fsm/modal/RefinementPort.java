@@ -108,7 +108,6 @@ public class RefinementPort extends TypedIOPort {
     public void link(Relation relation) throws IllegalActionException {
         super.link(relation);
 
-        // NOTE: the following procedure is also performed in a modal port.
         if (isMultiport()) {
             ((IORelation) relation).setWidth(0);
         }
