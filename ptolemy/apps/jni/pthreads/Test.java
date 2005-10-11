@@ -44,13 +44,10 @@ class Main
         System.out.println("before start");
         test.start ();
         System.out.println("after start");
-        try
-        {
+        try {
             System.in.read ();
-        }
-        catch (Exception e)
-        {
-            System.err.println (e);
+        } catch (Exception e) {
+            e.printStackTrace(); 
             System.exit (1);
         }
         test.stop ();

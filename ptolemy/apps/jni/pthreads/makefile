@@ -12,11 +12,11 @@ include $(PTII)/mk/ptII.mk
 all:
 	javac Test.java
 	javah -jni Test
-	gcc -Wall \
+	gcc -Wall $(PTJNI_SHAREDLIBRARY_CFLAG) \
 		"-I$(PTJAVA_HOME)/../include" \
 		"-I$(PTJAVA_HOME)/../include/$(PTJNI_ARCHITECTURE)" \
 		 -c test_jni.c
-	gcc -shared test_jni.o -fno-exceptions \
+	gcc -shared $(PTJNI_SHAREDLIBRARY_LDFLAG)  test_jni.o -fno-exceptions \
 		-o ${PTJNI_SHAREDLIBRARY_PREFIX}test.${PTJNI_SHAREDLIBRARY_SUFFIX} \
-		-lpthread
-	PATH=".;${PATH}" java -verbose -Xcheck:jni -classpath . Test
+		-lpthread -lc 
+	LD_LIBRARY_PATH=`pwd` PATH=".:${PATH}" java -classpath . Main
