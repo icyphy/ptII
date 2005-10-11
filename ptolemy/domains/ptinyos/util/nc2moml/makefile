@@ -67,10 +67,11 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "Run \"make install\" to convert nc files to moml"
+	@echo "Run \"make install\" to convert nc files to moml (take about 20 minutes)"
 	@echo "Run \"make test\" for a quick test"
 
 install: jclass
+	@echo "Warning: nc2moml takes about 20 minutes to run" 
 	./nc2moml
 
 test: jclass
