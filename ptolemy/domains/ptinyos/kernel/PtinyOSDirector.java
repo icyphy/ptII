@@ -756,7 +756,7 @@ public class PtinyOSDirector extends Director {
         // path to contrib
         // FIXME use pathseparator?
         // FIXME make sure no trailing / before /../
-        text.addLine("TOSMAKE_PATH += $(TOSDIR)/../contrib/ptII/ptinyos/tools/make");
+        text.addLine("TOSMAKE_PATH += \"$(TOSDIR)/../contrib/ptII/ptinyos/tools/make\"");
 
         text.addLine("COMPONENT=" + toplevelName);
 
@@ -774,17 +774,20 @@ public class PtinyOSDirector extends Director {
         for (int i = 0; i < targets.length; i++) {
             if (targets[i].equals("ptII") || targets[i].equals("all")) {
                 // FIXME will this work for "all"?
-                //text.addLine("PFLAGS += -I$(TOSDIR)/../contrib/ptII/ptinyos/tos/platform/ptII/packet");
-                text.addLine("PFLAGS += -I$(TOSDIR)/../contrib/ptII/ptinyos/beta/TOSSIM-packet");
-                text.addLine("include $(PTII)/mk/ptII.mk");
+                text.addLine("PFLAGS += \"-I$(TOSDIR)/../contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
+                // Expand $PTII, substitute / for \, and backslash space for space.
+                String ptIImk = StringUtilities.getProperty("ptolemy.ptII.dir") + "/mk/ptII.mk";
+                text.addLine("include " + ptIImk.replaceAll(" ", "\\\\ "));
                 break;
             }
         }
 
-        text.addLine("include " + tosDir.stringValue()
+        // Handle pathnames with spaces: substitute / for \ and backslash space for space.
+        text.addLine("include " + tosDir.stringValue().replace('\\', '/').replaceAll(" ", "\\\\ ")
                 + "/../tools/make/Makerules");
 
-        String makefileName = "makefile-" + toplevelName;
+        // Use .mk so that Emacs will be in the right mode
+        String makefileName = toplevelName + ".mk";
         File directory = destinationDirectory.asFile();
 
         // Open file for the generated makefile.
