@@ -168,9 +168,9 @@ $msg10 "
 java.lang.IllegalArgumentException: Unrecognized Precision String:1
 java.lang.IllegalArgumentException: Unrecognized Precision String:1+2
 java.lang.IllegalArgumentException: Unrecognized Precision String:1\2
-java.lang.IllegalArgumentException: Precision format must be at least 1 bit:-22.12
-java.lang.IllegalArgumentException: Precision format must be at least 1 bit:3.-4
-java.lang.IllegalArgumentException: Precision format must be at least 1 bit:3.-3
+java.lang.IllegalArgumentException: Precision format  must be at least 1 bit:-22.12
+java.lang.IllegalArgumentException: Precision format  must be at least 1 bit:3.-4
+java.lang.IllegalArgumentException: Precision format  must be at least 1 bit:3.-3
 java.lang.IllegalArgumentException: Precision format must be at least 1 bit:0/2
 java.lang.IllegalArgumentException: MSb of VHDL format must be greater than LSb:-2:1
 java.lang.IllegalArgumentException: MSb of VHDL format must be greater than LSb:0:0
