@@ -394,7 +394,12 @@ public class PtinyOSDirector extends Director {
                 // Load in the class; MyClass.class should be located in
                 // the directory file:/c:/myclasses/com/mycompany
                 //Class cls = Class.forName("Loader" + toplevelName, true, cl);
-                Class cls = cl.loadClass("Loader" + toplevelName);
+                String className = "Loader" + toplevelName;
+                if (_debugging) {
+                    _debug("About to load '" + className + "'");
+                }
+
+                Class cls = cl.loadClass(className);
                 Object o = cls.newInstance();
 
                 if (o instanceof PtinyOSLoader) {
@@ -406,19 +411,31 @@ public class PtinyOSDirector extends Director {
                             "-b=" + bootTimeRange.getToken().toString(),
                             numNodes.getToken().toString() };
 
+                    if (_debugging) {
+                        _debug("Done loading '" + className
+                                + "', about to load(" + outputDir + ")");
+                    }
+
                     // Load the library with the native methods for TOSSIM.
                     _loader.load(outputDir, this);
 
+                    if (_debugging) {
+                        _debug("Done with load(), about to call main("
+                                + argsToMain[0] + " " + argsToMain[1]);
+                    }
                     if (_loader.main(argsToMain) < 0) {
                         throw new InternalErrorException(
                                 "Could not initialize TOSSIM.");
+                    } 
+                    if (_debugging) {
+                        _debug("call to main completed");
                     }
                 } else {
                     throw new InternalErrorException(
                             "Loader was not instance of PtinyOSLoader.");
                 }
-            } catch (Exception e) {
-                throw new InternalErrorException(e);
+            } catch (Throwable throwable) {
+                throw new InternalErrorException(throwable);
             }
         }
     }
@@ -648,8 +665,15 @@ public class PtinyOSDirector extends Director {
         text
                 .addLine("        String fileSeparator = System.getProperty(\"file.separator\");");
         text
-                .addLine("        System.load(path + fileSeparator + System.mapLibraryName(\""
-                        + toplevelName + "\"));");
+                .addLine("        String toBeLoaded = path + fileSeparator + System.mapLibraryName(\""
+                        + toplevelName + "\");");
+        text.addLine("        toBeLoaded = toBeLoaded.replace('\\\\', '/');");
+        text.addLine("        System.out.println(\"" + toplevelName + ".java : about to load \" + toBeLoaded);");
+
+        text
+            .addLine("        System.load(toBeLoaded);");
+
+
         text.addLine("        this.director = director;");
         text.addLine("    }");
 
