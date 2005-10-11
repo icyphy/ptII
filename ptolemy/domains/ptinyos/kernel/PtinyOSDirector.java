@@ -756,7 +756,8 @@ public class PtinyOSDirector extends Director {
         // path to contrib
         // FIXME use pathseparator?
         // FIXME make sure no trailing / before /../
-        text.addLine("TOSMAKE_PATH += \"$(TOSDIR)/../contrib/ptII/ptinyos/tools/make\"");
+        // FIXME: this will not work if TOSDIR has spaces in it.
+        text.addLine("TOSMAKE_PATH += $(TOSDIR)/../contrib/ptII/ptinyos/tools/make");
 
         text.addLine("COMPONENT=" + toplevelName);
 
