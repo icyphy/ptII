@@ -742,20 +742,58 @@ public class IORelation extends ComponentRelation {
             _inferredWidth = 1;
 
             Iterator ports = linkedPortList().iterator();
-
+            
+            // Warning! Depending on the order of the ports get iterated,
+            // the inferred width may be different if different ports have
+            // different widths. This is nondeterministic.
+            // One way to exclude this nondeterministic behavior is to
+            // disallow dangling ports. In other words, for a port, we 
+            // constrain that the sum of the widths of all input relations 
+            // equal to the sum of those of all output relations.
+            
             while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
 
+                // Infer the width of this port from the associated connections.
+                // Note we assume that this method is only called upon a 
+                // multiport. 
+                
+                // To guarantee this method successfully infer widths, we have
+                // to check and ensure that there is at most one input relation 
+                // or one output relation whose width is not fixed (unknown).
+                // This requirement is conservative. For example, an output 
+                // port may have two buses with their widths not fixed. 
+                // Furthermore, if one of the buses is connected to an input 
+                // port and its width can be determined from the internal 
+                // connections associated with that input port, the width of 
+                // the other bus can also be resolved. However, to support this,
+                // a fixed-point iteration has to be performed, but there is
+                // no guarantee of existence of a useful fixed-point whose 
+                // widths are all non-zero. Therefore, we take the conservative
+                // approach.
+                
+                // To infer the unknown width, we resolve the equation where 
+                // the sum of the widths of input relations equals the sum of 
+                // those of output relations.
+                
+                int portInsideWidth = 0;
+                int portOutsideWidth = 0;
+                int difference = 0;
                 if (p.isInsideGroupLinked(this)) {
                     // I am linked on the inside...
-                    int portInsideWidth = p._getInsideWidth(this);
-                    int portOutsideWidth = p.getWidth();
-                    int difference = portOutsideWidth - portInsideWidth;
-
-                    if (difference > _inferredWidth) {
-                        _inferredWidth = difference;
-                    }
+                    portInsideWidth = p._getInsideWidth(this);
+                    portOutsideWidth = p._getOutsideWidth(null); 
+                    // the same as portOutsideWidth = p.getWidth();
+                    difference = portOutsideWidth - portInsideWidth;
+                } else if (p.isLinked(this)) {
+                    // I am linked on the outside...
+                    portInsideWidth = p._getInsideWidth(null);
+                    portOutsideWidth = p._getOutsideWidth(this);
+                    difference = portInsideWidth - portOutsideWidth;
                 }
+                if (difference > _inferredWidth) {
+                    _inferredWidth = difference;
+                } 
             }
 
             _inferredWidthVersion = version;

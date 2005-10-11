@@ -3319,6 +3319,42 @@ public class IOPort extends ComponentPort {
         return result;
     }
 
+    /** Return the sums of the widths of the relations linked on the
+     *  outside, except the specified relation.  If any of these relations
+     *  has not had its width specified, throw an exception.  This is
+     *  used by IORelation to infer the width of a bus with
+     *  unspecified width and to determine whether more than one
+     *  relation with unspecified width is linked on the outside, and
+     *  by the liberalLink() method to check validity of the link.  If
+     *  the argument is null, all relations linked on the inside are
+     *  checked.  This method is not read-synchronized on the
+     *  workspace, so the caller should be.
+     *
+     *  @param except The relation to exclude.
+     *  @return The sums of the width of the relations linked on the outside,
+     *  except for the specified port.
+     */
+    protected int _getOutsideWidth(IORelation except) {
+        int result = 0;
+        Iterator relations = linkedRelationList().iterator();
+
+        while (relations.hasNext()) {
+            IORelation relation = (IORelation) relations.next();
+
+            if (relation != except) {
+                if (!relation.isWidthFixed()) {
+                    throw new InvalidStateException(this,
+                            "Width of outside relations cannot "
+                                    + "be determined.");
+                }
+
+                result += relation.getWidth();
+            }
+        }
+
+        return result;
+    }
+
     /** If the port is an input, return receivers that handle incoming
      *  channels from the specified relation or any relation in its
      *  relation group. If the port is an opaque output

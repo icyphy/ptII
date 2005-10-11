@@ -1056,10 +1056,10 @@ test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 0
     $p0 link $r1
-    # ourside relation, *
+    # outside relation, *
     set r2 [java::new ptolemy.actor.IORelation]
     $r2 setName R2
-    $r2 setWidth 0
+    $r2 setWidth 2
     catch {$p0 link $r2} msg1
     list $msg1
 } {{}}
@@ -1077,6 +1077,25 @@ test IOPort-11.6 {Check cannot link a relation twice to a single port} {
     list $msg1
 } {{ptolemy.kernel.util.IllegalActionException: Attempt to link more than one relation to a single port.
   in .<Unnamed Object>.P0 and .<Unnamed Object>.R1}}
+
+test IOPort-11.7 {No two relations from both inside and outside can be a bus} {
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    set p0 [java::new ptolemy.actor.IOPort $e0 P0 false true]
+    $p0 setMultiport true
+    # inside relation, *
+    set r1 [java::new ptolemy.actor.IORelation $e0 R1]
+    $r1 setWidth 0
+    $p0 link $r1
+    # outside relation, *
+    set r2 [java::new ptolemy.actor.IORelation]
+    $r2 setName R2
+    $r2 setWidth 0
+    catch {$p0 link $r2} msg1
+    list $msg1
+} {{ptolemy.kernel.util.InvalidStateException: Width of outside relations cannot be determined.
+  in .<Unnamed Object>.P0}}
 
 ######################################################################
 ####

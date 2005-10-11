@@ -246,6 +246,27 @@ test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
     $e0 setManager $manager
     $e0 setName E0
     set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
+    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
+    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+    set r2 [java::new ptolemy.actor.IORelation $e0 R2]
+    set p1 [java::new ptolemy.actor.IOPort $e2 P1]
+    set p2 [java::new ptolemy.actor.IOPort $e1 P2]
+    $p1 link $r1
+    $p2 link $r1
+    $p2 link $r2
+    $p1 setMultiport true
+    $p2 setMultiport true
+    $r1 setWidth 4
+    $r2 setWidth 0
+    list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth] [$r2 getWidth]
+} {4 4 4 4}
+
+test IORelation-3.13 {Test getWidth of a port with inferred relation width} {
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
+    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
     set e2 [java::new ptolemy.actor.AtomicActor $e0 E2]
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $r1 setWidth 0
@@ -258,7 +279,46 @@ test IORelation-3.12 {Test getWidth of a port with inferred relation width} {
     list [$p1 getWidth] [$r1 getWidth] [$p2 getWidth]
 } {1 1 1}
 
-test IORelation-3.13 {Resolve width through three levels} {
+test IORelation-3.14 {No two relations from both inside and outside can be a bus} {
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
+    set p0 [java::new ptolemy.actor.IOPort $e1 P0 false true]
+    $p0 setMultiport true
+    # inside relation, *
+    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+    $r1 setWidth 0
+    $p0 link $r1
+    # outside relation, *
+    set r2 [java::new ptolemy.actor.IORelation $e0 R2]
+    $r2 setWidth 0
+    $p0 link $r2
+    catch {$r2 getWidth} msg1
+    list $msg1
+} {{ptolemy.kernel.util.InvalidStateException: Width of inside relations cannot be determined.
+  in .<Unnamed Object>.E1.P0}}
+
+test IORelation-3.15 {No two relations from both inside and outside can be a bus} {
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
+    set p0 [java::new ptolemy.actor.IOPort $e1 P0 false true]
+    $p0 setMultiport true
+    # inside relation, *
+    set r1 [java::new ptolemy.actor.IORelation $e1 R1]
+    $r1 setWidth 0
+    $p0 link $r1
+    # outside relation, *
+    set r2 [java::new ptolemy.actor.IORelation $e0 R2]
+	$p0 link $r2
+    catch {$r2 setWidth 0} msg1
+    list $msg1
+} {{ptolemy.kernel.util.IllegalActionException: Cannot use unspecified width on this relation because of its links.
+  in .<Unnamed Object>.R2}}
+
+test IORelation-3.16 {Resolve width through three levels} {
     # E0 contains E1 contains E2
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
@@ -281,13 +341,78 @@ test IORelation-3.13 {Resolve width through three levels} {
     $r2 setWidth 0
     $p2 link $r2
     $p1 link $r1
+    # it is okay to not specify widths of relations at the same level
+    $p1 link $r2
+    # it is not okay to not specify widths of relations across different levels
+    catch {$p0 link $r1} msg1
+    list $msg1
+} {{ptolemy.kernel.util.InvalidStateException: Width of inside relations cannot be determined.
+  in .E0.E1.P1}}
+
+test IORelation-3.17 {Resolve width through three levels} {
+    # E0 contains E1 contains E2
+    set e0 [java::new ptolemy.actor.CompositeActor]
+    $e0 setDirector $director
+    $e0 setManager $manager
+    $e0 setName E0
+    set p0 [java::new ptolemy.actor.IOPort $e0 P0]
+    $p0 setMultiport true
+    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
+    set p1 [java::new ptolemy.actor.IOPort $e1 P1]
+    $p1 setMultiport true
+    set e2 [java::new ptolemy.actor.AtomicActor $e1 E2]
+    set p2 [java::new ptolemy.actor.IOPort $e2 P2]
+    $p2 setMultiport true
+    set r0 [java::new ptolemy.actor.IORelation]
+    $r0 setName R0
+    $r0 setWidth 5
+    set r1 [java::new ptolemy.actor.IORelation $e0 R1]
+    $r1 setWidth 3
+    set r2 [java::new ptolemy.actor.IORelation $e1 R2]
+    $r2 setWidth 0
+    $p2 link $r2
+    $p1 link $r1
     $p1 link $r2
     $p0 link $r1
     $p0 link $r0
-    $r0 setWidth 3
+#note: we don't constrain that the sum of input widths equals the sum of the
+#output widths because we allow dangling ports.
     list [$p0 getWidth] [$p1 getWidth] [$p2 getWidth] \
-         [$r0 getWidth] [$r1 getWidth] [$r2 getWidth]
-} {3 3 3 3 3 3}
+         [$r0 getWidth] [$r1 getWidth] [$r2 getWidth] 
+} {5 3 3 5 3 3}
+
+test IORelation-3.18 {Resolve width through three levels} {
+	# use the above settings
+    $r0 setWidth 5
+    catch {$r1 setWidth 0} msg1
+#note: This test is similar to 3.19 except the order or settings widths.
+#This test throws an exception because r2 has a width 0 (from the previous 
+#settings in 3.17, which makes the width of port p1 undecidable. 
+    list $msg1
+} {{ptolemy.kernel.util.IllegalActionException: Cannot use unspecified width on this relation because of its links.
+  in .E0.R1}}
+
+test IORelation-3.19 {Resolve width through three levels} {
+	# use the above settings
+    $r0 setWidth 5
+    $r2 setWidth 3
+    $r1 setWidth 0
+#note: we don't constrain that the sum of input widths equals the sum of the
+#output widths because we allow dangling ports.
+    list [$p0 getWidth] [$p1 getWidth] [$p2 getWidth] \
+         [$r0 getWidth] [$r1 getWidth] [$r2 getWidth] 
+} {5 5 3 5 5 3}
+
+test IORelation-3.20 {Resolve width through three levels} {
+	# use the above settings
+    $r1 setWidth 2
+    $r0 setWidth 0
+    $r2 setWidth 3
+#note: we don't constrain that the sum of input widths equals the sum of the
+#output widths because we allow dangling ports.
+    list [$p0 getWidth] [$p1 getWidth] [$p2 getWidth] \
+         [$r0 getWidth] [$r1 getWidth] [$r2 getWidth] 
+} {2 2 3 2 2 3}
 
 ######################################################################
 ####
