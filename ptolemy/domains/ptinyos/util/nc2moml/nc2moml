@@ -51,14 +51,15 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
     case $1 in
         -h|-help|--help)
 	    shift    
-	    echo "$0: Usage: $0 -v|-h [PtinyOS_Directory] . . ."
+	    echo "$0: Usage: $0 -v|-h|-d [PtinyOS_Directory] . . ."
 	    echo "    Convert the PtinyOS files in 'PtinyOS_Directory' to moml."
 	    echo "    If no directory names are present in the command line,"
 	    echo "    then we process these directories:"
 	    echo "        $DIR_LIST"
 	    echo "    Flags:"
-	    echo "        -h print this help message"
-	    echo "        -v verbose"
+	    echo "        -d  show the execution of this script"
+	    echo "        -h  print this help message"
+	    echo "        -v  verbose output of subscripts"
 	    echo "    Debugging output ends up in $MOML_OUTPUT_DIR/$NC2MOML_LOG"
 	    echo "    This script requires that \$TOSROOT be set to the"
 	    echo "    location of the TinyOS tree,"
@@ -69,10 +70,14 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
 
         -v|-verbose|--verbose)
             shift
-	    set -x
             NC2MOML_VERBOSE=1
             continue
             ;;
+        -d|-debug)
+	    shift
+	    set -x
+	    continue
+	    ;;
 	*)
 	    echo "$0: Error: Don't understand '$1' argument, run with -h for help"
 	    exit 3
