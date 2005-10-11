@@ -1431,7 +1431,7 @@ REMOTE4HOST = source
 
 # Remote location of Ptolemy II tree for testing
 #REMOTE4HOME = /vol/$(REMOTE4HOST)/$(REMOTE4HOST)2/ptII
-REMOTE4HOME = $(REMOTE1HOME)
+REMOTE4HOME = /export/home1/bldmastr/pttmp/remote4
 REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 
 # Log file to save the results in
@@ -1547,7 +1547,7 @@ REMOTE5HOST = source
 
 # Directory to build in
 #REMOTE5HOME = /vol/$(REMOTE5HOST)/$(REMOTE5HOST)1/ptIIsrc
-REMOTE5HOME = $(REMOTE1HOME)
+REMOTE5HOME = /export/home1/bldmastr/pttmp/remote5
 
 REMOTE5PTIIDIST = $(REMOTE5HOME)/ptII$(VERSION)
 
