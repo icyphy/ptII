@@ -812,15 +812,21 @@ public class PtinyOSDirector extends Director {
         try {
             // make
             // -C : change to the destination directory before reading
-            // the makefile
+            // the makefile (FIXME: This is a GNU make extension)
             // -f : Use makefileName as the makefile
-            // FIXME: what if there are spaces in the filename?
-            String cmd = "make -C " + destinationDirectory.stringValue()
-                    + " -f " + makefileName + " " + target.stringValue();
-            System.out.println(cmd);
+            // Use an array so we can handle strings
+            String command[] = {
+                    "make", "-C", destinationDirectory.stringValue().replace('\\', '/'),
+                    "-f" , makefileName, target.stringValue()
+            };
+            System.out.print(command[0]);
+            for (int i = 1; i < command.length; i++) {
+                System.out.print(" " + command[i]);
+            }
+            System.out.println("\n");
 
             Runtime rt = Runtime.getRuntime();
-            Process proc = rt.exec(cmd);
+            Process proc = rt.exec(command);
 
             // Connect a thread to the error stream of the cmd process.
             _StreamReaderThread errorGobbler = new _StreamReaderThread(proc
