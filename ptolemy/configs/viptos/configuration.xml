@@ -24,6 +24,11 @@
             class="ptolemy.kernel.util.StringAttribute"
             value="ptolemy/configs/viptos/copyright.htm"/>
 
+  <!-- Specify copyrights for actors, used by actor/gui/GenerateCopyrights.java -->
+  <property name="_applicationCopyrights"
+            class="ptolemy.data.expr.Parameter"
+            value="{{actor=&quot;ptolemy.domains.ptinyos.lib.MicaLeds&quot;, copyright=&quot;ptolemy/domains/ptinyos/lib/ptinyos-copyright.htm&quot;}}"/>
+
   <!-- Specify name of this application, used by actor/gui/HTMLAbout.java -->
   <property name="_applicationName"
             class="ptolemy.kernel.util.StringAttribute"
