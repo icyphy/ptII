@@ -41,6 +41,8 @@ bin/histogram
 bin/jode
 bin/mescal
 bin/moml
+bin/momllib
+bin/nc2moml
 bin/obfuscate
 bin/ptexecute
 bin/ptjacl
