@@ -1,0 +1,4 @@
+#!/bin/sh
+# $Id$
+# Invoke vergil -ptinyos
+$PTII/bin/vergil -ptinyos $@
