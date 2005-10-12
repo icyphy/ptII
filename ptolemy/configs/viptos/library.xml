@@ -25,7 +25,7 @@
       <configure>
         <?moml
           <group>
-            <input source="ptolemy/configs/ptinyos/directors.xml"/>
+            <input source="ptolemy/configs/viptos/directors.xml"/>
           </group>
         ?>
       </configure>
