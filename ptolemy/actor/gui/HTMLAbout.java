@@ -41,6 +41,10 @@ import javax.swing.event.HyperlinkEvent;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
 
@@ -71,10 +75,14 @@ public class HTMLAbout {
      *  features.
      *
      *  <p>If the configuration contains an _applicationName attribute
-     *  then that attributed is used as the name of the application
+     *  then that attribute is used as the name of the application
      *  in the generated text.  If _applicationName is not present,
      *  then the default name is "Ptolemy II".
      *
+     *  <p>If the configuration contains an _applicationDemos Parameter
+     *  then that parameter is assumed to be an array of strings name
+     *  naming HTML files that should be searched for demos and expanded.
+
      *  @param configuration The configuration to look for the
      *  _applicationName attribute in
      */
@@ -140,6 +148,28 @@ public class HTMLAbout {
             htmlBuffer
                     .append("<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
                             + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
+        }
+
+        try {
+            // Check for the _applicationDemos parameter
+            Parameter applicationDemos = (Parameter) configuration
+                .getAttribute("_applicationDemos", Parameter.class);
+
+            if (applicationDemos != null) {
+                htmlBuffer.append(
+                        "<tr rowspan=4><center><b>" + applicationName
+                        + "</b></center></tr>\n");
+                ArrayToken demoTokens =
+                    (ArrayToken) applicationDemos.getToken();
+                for (int i = 0; i < demoTokens.length(); i++) {
+                    StringToken demoToken =
+                        (StringToken) demoTokens.getElement(i);
+                    htmlBuffer.append(_aboutHTML(demoToken.stringValue()));
+                }
+            }
+        } catch (Exception ex) {
+            throw new InternalErrorException(configuration, ex,
+                    "Bad configuration for " + applicationName);
         }
 
         htmlBuffer.append("</table>\n");
