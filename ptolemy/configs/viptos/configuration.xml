@@ -34,6 +34,11 @@
             class="ptolemy.kernel.util.StringAttribute"
             value="Viptos"/>
 
+  <!-- Specify file to be expanded, used by actor/gui/HTMLAbout.java -->
+  <property name="_applicationDemos"
+            class="ptolemy.data.expr.Parameter"
+            value="{&quot;ptolemy/configs/viptos/intro.htm&quot;}"/>
+
   <!-- Specify the help file to open. -->
   <property name="_help"
             class="ptolemy.data.expr.FileParameter"
