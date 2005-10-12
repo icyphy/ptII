@@ -33,6 +33,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.StringAttribute;
 
@@ -74,6 +78,15 @@ public class GenerateCopyrights {
      *  as the location of the copyright html file.  If
      *  _applicationCopyright is not present, then
      *  "ptolemy/configs/doc/copyright.htm" is used.
+     *
+     *  <p>If the configuration has a parameter called
+     *  _applicationCopyrights that is an array of records where
+     *  each element is a record 
+     *  <pre>
+     *  {actor="ptolemy.actor.lib.Foo", copyright="foo.htm"}
+     *  </pre>
+     *  then we add that actor/copyright pair to the list of potential 
+     *  copyrights.
      *
      *  @param configuration The configuration to look for the
      *  _applicationName and _applicationCopyright attributes in.
@@ -146,6 +159,31 @@ public class GenerateCopyrights {
         _addIfPresent(copyrightsMap,
                 "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
+
+        // Check for the _applicationCopyrights parameter
+        try {
+            Parameter applicationCopyrights = (Parameter) configuration
+                    .getAttribute("_applicationCopyrights", Parameter.class);
+
+            if (applicationCopyrights != null) {
+                ArrayToken copyrightTokens =
+                    (ArrayToken) applicationCopyrights.getToken();
+                for (int i = 0; i < copyrightTokens.length(); i++) {
+                    StringToken actorToken =
+                        (StringToken) (((RecordToken) copyrightTokens
+                            .getElement(i)).get("actor"));
+                    StringToken copyrightToken =
+                        (StringToken) (((RecordToken) copyrightTokens
+                            .getElement(i)).get("copyright"));
+                    _addIfPresent(copyrightsMap,
+                            actorToken.stringValue(),
+                            copyrightToken.stringValue());
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+            // Ignore and use the default applicationName
+        }
 
         // Now generate the HTML
         String applicationName = "Ptolemy II";
