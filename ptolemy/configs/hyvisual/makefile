@@ -67,7 +67,9 @@ OTHER_FILES_TO_BE_JARED = \
 	docs.htm \
 	flowcontrol.xml \
 	help.htm \
+        hyvisualEffigies.xml \
 	hyvisualPlanet.gif \
+        hyvisualRefinements.xml \
 	io.xml \
 	intro.htm \
 	math.xml \

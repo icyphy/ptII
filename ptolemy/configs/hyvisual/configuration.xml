@@ -38,30 +38,9 @@
   <!-- Note that this begins empty. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
 
-  <!-- An entity giving alternative state refinements for modal models. -->
-  <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
-    <entity name="Continuous Time Refinement"
-            class="ptolemy.domains.fsm.modal.Refinement">
-      <property name="Refinement Solver"
-                class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
-      </property>
-    </entity>
-    <entity name="State Machine Refinement"
-            class="ptolemy.domains.fsm.modal.ModalController">
-    </entity>               
-  </entity>
-
-  <!-- An entity giving alternative transition refinements for modal models. -->
-  <entity name="_transitionRefinements" class="ptolemy.kernel.CompositeEntity">
-    <entity name="Default Refinement"
-            class="ptolemy.domains.fsm.modal.Refinement">
-      <property name="Refinement Director (SDF)"
-                class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
-      </property>
-    </entity>
-  </entity>
+  <!-- NOTE: we must do this as an input to avoid expanding the actors -->
+  <!-- in cases where the Matlab actor does not exist -->
+  <input source="ptolemy/configs/hyvisual/hyvisualRefinements.xml"/>
 
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->
@@ -72,57 +51,10 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-    <!-- An effigy factory to open HSIF file. -->
-    <entity name="HSIF Opener" class="ptolemy.hsif.HSIFEffigyFactory">
-    </entity>
-    <!-- Use a custom graph editor with a CT director already in it. -->
-    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-      <!-- Call this "Continuous Time (CT) Solver" instead of "Solver"
-           the name matches the name in the demos. -->
-        <property name="Continuous Time (CT) Solver"
-                  class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
-          <property name="_location"
-                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
-          </property>
-          <!-- Set the initStepSize and stopTime to get 100 samples. -->
-          <property name="initStepSize" value="0.1"/>
-          <property name="stopTime" value="10.0"/>
-        </property>
-      </entity>
-    </entity>
-    <!-- We need an FSM editor, but do not want it to appear in the -->
-    <!-- File->New menu. -->
-    <entity name="FSM Editor"
-            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
-      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <input source="ptolemy/configs/fsmLibrary.xml"/>
-      </entity>
-    </entity>
-    <entity name="Modal Model"
-            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
-      <entity name="blank" class="ptolemy.domains.fsm.modal.ModalModel">
-        <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
-          <input source="ptolemy/configs/fsmLibrary.xml"/>
-          <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName"
-                      class="ptolemy.kernel.util.SingletonAttribute"/>
-            <property name="_iconDescription"
-                      class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Create transitions
-by holding the control key and dragging from one state
-to another. Then delete this annotation.</text></svg></configure></property>
-            <property name="_location"
-                      class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
-            <property name="_controllerFactory"
-                      class="ptolemy.vergil.basic.NodeControllerFactory"/>
-            <property name="_editorFactory"
-                      class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
-          </property>
-        </entity>
-      </entity>
-    </entity>
-
+    <!-- Import HSIF, Graph Editor w/ CT Director, FSM Editor, Modal Model -->
+    <!-- NOTE: we must do this as an input to avoid expanding the actors -->
+    <!-- in cases where the Matlab actor does not exist -->
+    <input source="ptolemy/configs/hyvisual/hyvisualEffigies.xml"/>
     <!-- Import HTML viewer, text editor, etc. -->
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
