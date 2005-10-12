@@ -276,7 +276,9 @@ $(PTII_SRC): $(PTII_FULL)
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
+		echo "About to remove unneeded sources"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
+		ls $(PTII_SRC_TO_BE_REMOVED); \
 		$(FINDCLEAN); \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
@@ -332,6 +334,8 @@ PTII_SRC_TO_BE_REMOVED = \
 		doc/img/banner.psd \
 		doc/img/ptIIbanner2.psd \
 		doc/img/PtolemyIISplash.psd \
+		doc/design/hyvisual.jar \
+		doc/design/visualsense.jar \
 		lib/cachedir \
 		lib/ptII.properties \
 		mk/ptII.mk \
@@ -341,10 +345,27 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/security/test/foo.keystore \
 		ptolemy/actor/lib/test/Const.txt \
 		ptolemy/actor/lib/test/ReadFile1Output.txt \
+		ptolemy/actor/lib/x10/ApplianceController.class \
+		ptolemy/actor/lib/x10/CommandListener.class \
+		ptolemy/actor/lib/x10/LampController.class \
+		ptolemy/actor/lib/x10/LevelListener.class \
+		ptolemy/actor/lib/x10/Listener.class \
+		ptolemy/actor/lib/x10/Receiver$$1.class \
+		ptolemy/actor/lib/x10/Receiver.class \
+		ptolemy/actor/lib/x10/Receiver$$CommandListener.class \
+		ptolemy/actor/lib/x10/Sender.class \
+		ptolemy/actor/lib/x10/X10Interface.class \
 		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
 		ptolemy/codegen \
+		ptolemy/matlab/ptmatlab.exp \
+		ptolemy/matlab/ptmatlab.lib \
+		ptolemy/matlab/ptmatlab.obj \
 		ptolemy/media/test/tmp2_7.au \
+		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
+		ptolemy/moml/jxta/JXTAClassLoader.class \
+		ptolemy/moml/jxta/JXTALibrary.class \
+	        ptolemy/plot/ptplotlocales \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
 		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
 
@@ -410,6 +431,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/giotto \
 		ptolemy/domains/gr \
 		ptolemy/domains/hde \
+		ptolemy/domains/hdf \
 		ptolemy/domains/petrinet \
 		ptolemy/domains/psdf \
 		ptolemy/domains/pn \
@@ -436,7 +458,7 @@ $(PTII_SRC_JAR): src_jar
 # The directory we jar up.
 src_jar: #$(PTII_SRC) 
 	mkdir src_jar;
-	(cd src_jar; tar -xf $(PTII_SRC))
+	(cd src_jar; $(tar) -xf $(PTII_SRC))
 	rm -f src_jar/ptII$(VERSION)/doc/design/hyvisual.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign1-intro.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
@@ -476,8 +498,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 
 	(cd src_jar/hyvisual$(VERSION); \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
-		rm -rf $(HYVISUAL_SRC_TO_BE_REMOVED); \
-		thales; \
+		rm -rf $(HYVISUAL_SRC_TO_BE_REMOVED) thales; \
 	   touch configure; \
 	   chmod a+rx configure util/testsuite/chkextra; \
 	)
