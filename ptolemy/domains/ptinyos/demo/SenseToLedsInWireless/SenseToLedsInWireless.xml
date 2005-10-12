@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SenseToLedsInWireless" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 152, 739, 527}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 152, 732, 536}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[517, 418]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8759928370427">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{249.2967694256756, 209.827491554054}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{249.2967694256755, 209.827491554054}">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
@@ -25,7 +25,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 200.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={456, 547, 822, 509}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={188, 159, 815, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -45,6 +45,8 @@
         <entity name="MicaActor" class="ptolemy.domains.ptinyos.lib.MicaActor">
             <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
                 <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SenseToLedsInWireless/output">
+                </property>
+                <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 150.0]">

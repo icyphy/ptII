@@ -115,6 +115,7 @@ foreach (@files) {
   }
   $opts = join(' ', @opts);
 
+
   system("$SRC_DIR/nc2moml-run-ncc $inputprefix $outputprefix $outputsuffix $mod $opts") == 0
     or die "call to $nc2moml_run_ncc failed in @args: $?";
 }
