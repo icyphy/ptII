@@ -147,6 +147,28 @@ to another. Then delete this annotation.</text></svg></configure></property>
 
     <input source="ptolemy/configs/hyvisual/utilitiesLibrary.xml"/>
 
+    <!-- Domains library for HyVisual . -->
+    <entity name="Directors" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <property name="Continuous Time (CT) Solver"
+                      class="ptolemy.domains.ct.kernel.CTMixedSignalDirector"/>
+            <property name="CTEmbedded Director"
+    	          class="ptolemy.domains.ct.kernel.CTEmbeddedDirector"/>
+            <property name="DE Director"
+                      class="ptolemy.domains.de.kernel.DEDirector"/>
+            <property name="FSM Director"
+    	          class="ptolemy.domains.fsm.kernel.FSMDirector"/>
+            <property name="GR Director"
+    	          class="ptolemy.domains.gr.kernel.GRDirector"/>
+            <property name="SDF Director"
+    	          class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+
     <!-- Custom actor library. -->
     <entity name="Actors" class="ptolemy.moml.EntityLibrary">
       <configure>
@@ -174,6 +196,7 @@ to another. Then delete this annotation.</text></svg></configure></property>
 <!-- Modified library -->
 <input source="ptolemy/configs/hyvisual/flowcontrol.xml"/>
 
+  <input source="ptolemy/domains/gr/gr.xml"/>
   <input source="ptolemy/actor/lib/hoc/hoc.xml"/>
 
 <!-- Modified library -->
