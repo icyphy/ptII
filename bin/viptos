@@ -1,4 +1,4 @@
 #!/bin/sh
 # $Id$
-# Invoke vergil -ptinyos
-$PTII/bin/vergil -ptinyos $@
+# Invoke vergil -viptos
+$PTII/bin/vergil -viptos $@
