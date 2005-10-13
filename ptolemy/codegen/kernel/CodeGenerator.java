@@ -368,8 +368,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject =
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            functions.addAll((HashSet) helperObject
-                    .getInfo(CodeGeneratorHelper.FIELD_TYPEFUNC));
+            Object info = helperObject.getInfo(CodeGeneratorHelper.FIELD_TYPEFUNC);
+            if (info != null) {
+                functions.addAll((HashSet) info);
+            }    
         }
         
         // FIXME: we need to find out how to determine the referenced types.
