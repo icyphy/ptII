@@ -692,7 +692,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _reachedFinalState = false;
         _newIteration = true;
         _createReceivers();
-        _hdfArrays = new Hashtable();
+        _tokenListArrays = new Hashtable();
 
         // Populate a map from identifier to the input port represented.
         _identifierToPort.clear();
@@ -1154,11 +1154,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                     tokenListArray[i] = new LinkedList();
                 }
 
-                _hdfArrays.put(port, tokenListArray);
+                _tokenListArrays.put(port, tokenListArray);
             }
 
             // Get the list of tokens for the given port.
-            List[] tokenListArray = (LinkedList[]) _hdfArrays.get(port);
+            List[] tokenListArray = (LinkedList[]) _tokenListArrays.get(port);
 
             // Update the value variable if there is/are token(s) in
             // the channel. The HDF(SDF) schedule will gurantee there
@@ -1550,9 +1550,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // names that result in ambiguous identifier bindings.
     private HashMap _identifierToPort;
 
-    // Version of the workspace when the last input variables were created.
-    private long _inputVariableVersion = -1;
-
     // The set of names of final states.
     private HashSet _finalStateNames;
 
@@ -1567,5 +1564,5 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // Hashtable to save an array of tokens for each port.
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
-    private Hashtable _hdfArrays;
+    private Hashtable _tokenListArrays;
 }
