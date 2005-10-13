@@ -42,6 +42,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.Attribute;
@@ -364,8 +365,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
        
        Attribute attribute = _component.getAttribute(attributeName);
        if (attribute == null) {
-           throw new IllegalActionException(_component, "No attribute named: "
+           attribute = ModelScope.getScopedVariable(null, _component, attributeName);
+           if (attribute == null) {
+               throw new IllegalActionException(_component, "No attribute named: "
                    + name);
+           }
        }
        
        if (offset == null) {   
