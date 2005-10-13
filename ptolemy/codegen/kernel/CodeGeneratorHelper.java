@@ -344,6 +344,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     */
    public String getParameterValue(String name) throws IllegalActionException {
     
+       // FIXME: The following code assumes all parameter values are fixed
+       // during the execution. Otherwise, we need to generate C code for
+       // the expression contained by a parameter and re-evaluate it before its use.
+    
        Actor actor = (Actor) _component;
        StringTokenizer tokenizer = new StringTokenizer(name, ",");
        
