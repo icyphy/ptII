@@ -259,7 +259,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                         for (int j = 0; j < receivers[i].length; j++) {
                             if (receivers[i][j] != null) {
                                 CSPReceiver castReceiver = (CSPReceiver)receivers[i][j];
-                                if (_isReadyToPut(castReceiver)) {
+                                if (castReceiver._isConditionalSendStarted && _isReadyToPut(castReceiver)) {
                                     // The put is ready to complete.
                                     // We are now committed.
                                     // Complete the rendezvous.
@@ -281,6 +281,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                                     // Note that although all blocked threads were marked blocked
                                     // above, this one may have become blocked since then.
                                     director.threadUnblocked(castReceiver._putWaiting, null);
+                                    // Reset the conditional send flag.
+                                    castReceiver._isConditionalSendStarted = false;
                                     // Indicate to the corresponding put() thread that the put completed.
                                     castReceiver._putWaiting = null;
                                     castReceiver._putReceivers = null;
@@ -611,6 +613,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             // Indicate to the corresponding get() thread that the put completed.
                             Thread getThread = castReceiver._getWaiting;
                             Receiver[][] getReceivers = castReceiver._getReceivers;
+                            castReceiver._isConditionalSendStarted = true;
                             castReceiver._getWaiting = null;
                             castReceiver._getReceivers = null;
                             // This action may unblock the far side thread (the get side).
@@ -1364,4 +1367,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     
     /** The token being transferred during the rendezvous. */
     private Token _token;
+    
+    /** Whether the sender agrees to output tokens to this receiver. **/
+    private boolean _isConditionalSendStarted = false;
 }
