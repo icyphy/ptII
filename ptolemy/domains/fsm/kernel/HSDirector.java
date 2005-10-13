@@ -225,16 +225,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 return;
             }
 
-            // Check whether there exits some enabled preemptive transition.
-            // If so, we need to skip the firing of refinements and return
-            // immediately.
-            List enabledPreemptiveTransitions = _ctrl
-                    ._checkTransition(_currentState.preemptiveTransitionList());
-
-            if (enabledPreemptiveTransitions.size() > 0) {
-                return;
-            }
-
             boolean visited = _currentState.isVisited();
 
             // Fire the refinements of the current state.
@@ -324,8 +314,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                             transitionActors[i].fire();
                             transitionActors[i].postfire();
                         }
-
-                        _ctrl._readOutputsFromRefinement();
                     }
                 }
             }
