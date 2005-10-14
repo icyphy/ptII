@@ -1,0 +1,348 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FSMActor" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={164, 113, 815, 518}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
+        </property>
+    </property>
+    <property name="_generator" class="ptolemy.copernicus.kernel.GeneratorAttribute">
+        <property name="initialParametersURL" class="ptolemy.data.expr.StringParameter" value="ptolemy/copernicus/kernel/Generator.xml">
+        </property>
+        <property name="codeGenerator" class="ptolemy.data.expr.StringParameter" value="java">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="java" class="ptolemy.kernel.util.StringAttribute" value="java">
+                </property>
+                <property name="applet" class="ptolemy.kernel.util.StringAttribute" value="applet">
+                </property>
+                <property name="c" class="ptolemy.kernel.util.StringAttribute" value="c">
+                </property>
+                <property name="interpreted" class="ptolemy.kernel.util.StringAttribute" value="interpreted">
+                </property>
+                <property name="jhdl" class="ptolemy.kernel.util.StringAttribute" value="jhdl">
+                </property>
+                <property name="shallow" class="ptolemy.kernel.util.StringAttribute" value="shallow">
+                </property>
+            </property>
+            <doc>The code generator to run.</doc>
+        </property>
+        <property name="codeGeneratorClassName" class="ptolemy.data.expr.StringParameter" value="ptolemy.copernicus.$codeGenerator.Main">
+            <doc>The class that is instantiated to execute a particular code generator.  This class is expected to be a subclass of ptolemy.copernicus.kernel.KernelMain.</doc>
+        </property>
+        <property name="compile" class="ptolemy.data.expr.StringParameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc>If true, compile the generated code.  The default is true.</doc>
+        </property>
+        <property name="show" class="ptolemy.data.expr.StringParameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc> If true, then show the generated code.  The default is true.</doc>
+        </property>
+        <property name="run" class="ptolemy.data.expr.StringParameter" value="true">
+            <property name="style" class="ptolemy.actor.gui.style.CheckBoxStyle">
+            </property>
+            <doc> If true, then run the generated code.  The default is true.</doc>
+        </property>
+        <property name="ptII" class="ptolemy.data.expr.Parameter" value="property(&quot;ptolemy.ptII.dir&quot;)">
+            <doc>The location of the Ptolemy II classes.  The default is the value of the ptolemy.ptII.dir java system property</doc>
+        </property>
+        <property name="ptIIUserDirectory" class="ptolemy.data.expr.StringParameter" value="$ptII">
+            <doc>The top level directory to write the code in. The default is the value of the ptII parameter. The code will appear in 'ptIIUserDirectory/targetPath'.</doc>
+        </property>
+        <property name="targetPackage" class="ptolemy.data.expr.StringParameter" value="$modelName">
+            <doc>The package to generate code in. Defaults to the model name</doc>
+        </property>
+        <property name="targetPath" class="ptolemy.data.expr.StringParameter" value="ptolemy/copernicus/$codeGenerator/cg/$modelName">
+            <doc>The path relative to the ptIIUserDirectory to generate code in.</doc>
+        </property>
+        <property name="outputDirectory" class="ptolemy.data.expr.StringParameter" value="$ptIIUserDirectory/$targetPath">
+            <doc>The directory that code will be generated in.</doc>
+        </property>
+        <property name="modelPath" class="ptolemy.data.expr.StringParameter" value="file:/C:/ptII/ptolemy/codegen/demo/Ramp/Sequence.xml">
+            <doc>The path to the model, including the .xml extension.  modelPath is converted to a URL internally before use.</doc>
+        </property>
+        <property name="modelName" class="ptolemy.data.expr.StringParameter" value="Sequence">
+            <doc> The name of the model, read from the .xml file and sanitized.</doc>
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.StringParameter" value="0">
+            <doc>Number of iterations to run the model for. Usually, the model itself contains the number of iterations to run for. Defaults to 1000.</doc>
+        </property>
+        <property name="iterationsParameter" class="ptolemy.data.expr.StringParameter" value=",iterations:$iterations">
+            <doc>Defaults to &quot;iterations:&quot; + iterations.  Set this to the empty string if the model has the number of iterations built in.</doc>
+        </property>
+        <property name="compileOptions" class="ptolemy.data.expr.StringParameter">
+            <doc>User supplied arguments to be passed to the code generator.  Defaults to the empty string.</doc>
+        </property>
+        <property name="javaClassPath" class="ptolemy.data.expr.Parameter" value="property(&quot;java.class.path&quot;)">
+        </property>
+        <property name="classPath" class="ptolemy.data.expr.StringParameter" value="$ptIIUserDirectory${classPathSeparator}$javaClassPath${classPathSeparator}$sootClasses${classPathSeparator}$necessaryClassPath">
+            <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
+        </property>
+        <property name="necessaryClasses" class="ptolemy.data.expr.Parameter" value="{&quot;ptolemy.domains.sdf.kernel.SDFScheduler&quot;,&quot;ptolemy.copernicus.java.Main&quot;,&quot;ptolemy.kernel.util.NamedObj&quot;,&quot;jasmin.Main&quot;,&quot;ptolemy.vergil.MoMLViewerApplet&quot;,&quot;diva.graph.GraphController&quot;}">
+            <doc>An array of Strings, where each element names a class that needs to be present in the classpath </doc>
+        </property>
+        <property name="necessaryClassPath" class="ptolemy.data.expr.StringParameter" value="C:/ptII;C:/ptII/lib/jasminclasses.jar">
+            <doc>Class path that refers to necessary classes. Derived from necessaryClasses</doc>
+        </property>
+        <property name="classPathSeparator" class="ptolemy.data.expr.Parameter" value="property(&quot;path.separator&quot;)">
+            <doc>The classpath separator. Under Windows, the default is ';'. Under Unix, the default is ':'</doc>
+        </property>
+        <property name="javaHome" class="ptolemy.data.expr.Parameter" value="property(&quot;java.home&quot;)">
+            <doc>Defaults to the value of the java.home property</doc>
+        </property>
+        <property name="java" class="ptolemy.data.expr.StringParameter" value="$javaHome/bin/java">
+            <doc>Defaults to the value of the java.home property + bin/java, for example: c:/jdk1.3.1/bin/java</doc>
+        </property>
+        <property name="javaPtIIProperty" class="ptolemy.data.expr.StringParameter" value="-Dptolemy.ptII.dir=$ptII">
+            <doc>The flag to pass to the java process that defines the value of the ptolemy.ptII.dir property.  Defaults to &quot;-Dptolemy.ptII.dir=&quot; + ptII</doc>
+        </property>
+        <property name="javaSystemJar" class="ptolemy.data.expr.StringParameter" value="$javaHome/lib/rt.jar">
+            <doc>Defaults to the value of the java.home property + &quot;/lib/rt.jar&quot;</doc>
+        </property>
+        <property name="jvmSize" class="ptolemy.data.expr.StringParameter" value="-Xmx256m">
+            <doc>The command line arguments to pass to the java interpreter that control the size.  The default is -Xmx256m</doc>
+        </property>
+        <property name="templateDirectory" class="ptolemy.data.expr.StringParameter" value="ptolemy/copernicus/$codeGenerator">
+            <doc>The directory for finding template files.</doc>
+        </property>
+        <property name="runCommandTemplateFile" class="ptolemy.data.expr.StringParameter" value="ptolemy/copernicus/$codeGenerator/runCommandTemplate.txt">
+            <doc>The template file that contains the command to run the generated code.</doc>
+        </property>
+        <property name="runOptions" class="ptolemy.data.expr.StringParameter">
+            <doc>User supplied arguments to be passed to the command that will run the generated code. Defaults to the empty string.</doc>
+        </property>
+        <property name="sootDir" class="ptolemy.data.expr.StringParameter" value="$ptII/lib">
+            <doc>The directory that contains the soot jar files. Defaults to the value of the ptII parameter  + &quot;/lib&quot;</doc>
+        </property>
+        <property name="sootClasses" class="ptolemy.data.expr.StringParameter" value="$sootDir/sootclasses.jar${classPathSeparator}$sootDir/jasminclasses.jar${classPathSeparator}$javaSystemJar">
+            <doc>The location of sootclasses.jar, jasminclasses.jar and the Java system jar (usually rt.jar).  The necessaryClassPath parameter may end up duplicating some of the elements of this parameter.</doc>
+        </property>
+        <property name="ptIIUserDirectoryAsURL" class="ptolemy.data.expr.StringParameter" value="file:/C:/ptII">
+            <doc>The top level directory to write the code in as a URL.  Derived from the value of the ptIIUserDirectory parameter.</doc>
+        </property>
+        <property name="watchDogTimeout" class="ptolemy.data.expr.StringParameter" value="720000">
+            <doc>The number of milliseconds that code generation will run for. Defaults to 720000, which is 12 minutes.</doc>
+        </property>
+        <property name="output" class="ptolemy.data.expr.StringParameter">
+            <doc>The filename to redirect the standard output stream of the code generator to.  This is used, for example, in the nightly build to provide easily parseable error messages.  If the value is not set, then the output will not be redirected. </doc>
+        </property>
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 70.0]">
+        </property>
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 185.0]">
+        </property>
+    </entity>
+    <entity name="FSMActor" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="State0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 185.0]">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 50.0]">
+            </property>
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 80.0]">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 180.0]">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <entity name="State0" class="ptolemy.domains.fsm.kernel.State">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{250, 90}">
+            </property>
+        </entity>
+        <entity name="State1" class="ptolemy.domains.fsm.kernel.State">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 240}">
+            </property>
+        </entity>
+        <entity name="State2" class="ptolemy.domains.fsm.kernel.State">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 240.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(y !=1) || (input == 0)  ">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = input">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="y = input">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.2279425246331748">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="y = 2; output = 100">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.04721077832706918">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input &lt; 0">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = 1">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.9136501289566187">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(x == 9) &amp;&amp; (input ==3)">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = 1000">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="y = 5">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-2.0987780819729327">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input + y == 4">
+            </property>
+            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = x + y">
+            </property>
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="x = 9; y = 10">
+            </property>
+            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2573311629056434">
+            </property>
+            <property name="gamma" class="ptolemy.data.expr.Parameter" value="-1.1707148347740997">
+            </property>
+            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+        </relation>
+        <link port="State0.incomingPort" relation="relation4"/>
+        <link port="State0.incomingPort" relation="relation6"/>
+        <link port="State0.outgoingPort" relation="relation"/>
+        <link port="State1.incomingPort" relation="relation"/>
+        <link port="State1.outgoingPort" relation="relation2"/>
+        <link port="State1.outgoingPort" relation="relation4"/>
+        <link port="State2.incomingPort" relation="relation2"/>
+        <link port="State2.incomingPort" relation="relation3"/>
+        <link port="State2.outgoingPort" relation="relation6"/>
+        <link port="State2.outgoingPort" relation="relation3"/>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 100, 3, 1000}">
+        </property>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 185.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="FSMActor.input" relation="relation"/>
+    <link port="FSMActor.output" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
+</entity>
