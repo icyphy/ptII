@@ -33,6 +33,7 @@ package ptolemy.domains.ptinyos.lib;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -69,8 +70,8 @@ public class MicaLeds extends TypedAtomicActor {
         EditorIcon node_icon = new EditorIcon(this, "_icon");
 
         // The icon has 3 LEDs: red, yellow, and green.
+        red = new Parameter(this, "red");
         _ledRed = new RectangleAttribute(node_icon, "_ledRed");
-
         Location ledRedLoc = new Location(_ledRed, "_location");
         double[] ledRedLocVal = { -20.0, 0.0 };
         ledRedLoc.setLocation(ledRedLocVal);
@@ -79,8 +80,8 @@ public class MicaLeds extends TypedAtomicActor {
         _ledRed.centered.setToken("true");
         _redOff();
 
+        green = new Parameter(this, "green");
         _ledGreen = new RectangleAttribute(node_icon, "_ledGreen");
-
         Location ledGreenLoc = new Location(_ledGreen, "_location");
         double[] ledGreenLocVal = { 0.0, 0.0 };
         ledGreenLoc.setLocation(ledGreenLocVal);
@@ -89,8 +90,8 @@ public class MicaLeds extends TypedAtomicActor {
         _ledGreen.centered.setToken("true");
         _greenOff();
 
+        yellow = new Parameter(this, "yellow");
         _ledYellow = new RectangleAttribute(node_icon, "_ledYellow");
-
         Location ledYellowLoc = new Location(_ledYellow, "_location");
         double[] ledYellowLocVal = { 20.0, 0.0 };
         ledYellowLoc.setLocation(ledYellowLocVal);
@@ -118,6 +119,11 @@ public class MicaLeds extends TypedAtomicActor {
     public TypedIOPort ledGreen;
 
     public TypedIOPort ledYellow;
+
+    /** The color of this LED.  The initial value is set to off. */
+    public Parameter red;
+    public Parameter green;
+    public Parameter yellow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -173,26 +179,32 @@ public class MicaLeds extends TypedAtomicActor {
     ////                         private methods                 ////
     private void _redOn() throws IllegalActionException {
         _ledRed.fillColor.setToken("{1.0,0.0,0.0,1.0}");
+        red.setToken("{1.0,0.0,0.0,1.0}");
     }
 
     private void _redOff() throws IllegalActionException {
         _ledRed.fillColor.setToken("{0.5,0.0,0.0,1.0}");
+        red.setToken("{0.5,0.0,0.0,1.0}");
     }
 
     private void _greenOn() throws IllegalActionException {
         _ledGreen.fillColor.setToken("{0.0,1.0,0.0,1.0}");
+        green.setToken("{0.0,1.0,0.0,1.0}");
     }
 
     private void _greenOff() throws IllegalActionException {
         _ledGreen.fillColor.setToken("{0.0,0.5,0.0,1.0}");
+        green.setToken("{0.0,0.5,0.0,1.0}");
     }
 
     private void _yellowOn() throws IllegalActionException {
         _ledYellow.fillColor.setToken("{1.0,1.0,0.0,1.0}");
+        yellow.setToken("{1.0,1.0,0.0,1.0}");
     }
 
     private void _yellowOff() throws IllegalActionException {
         _ledYellow.fillColor.setToken("{0.5,0.5,0.0,1.0}");
+        yellow.setToken("{0.5,0.5,0.0,1.0}");
     }
 
     ///////////////////////////////////////////////////////////////////
