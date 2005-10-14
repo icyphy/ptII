@@ -643,12 +643,13 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         ptolemy.data.Token result = _evaluatedChildToken;
 
+        /*
         if (!(result instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot perform logical "
                     + "operation on " + result + " which is a "
                     + result.getClass().getName());
         }
-
+        */
         // Make sure that exactly one of AND or OR is set.
         _assert(node.isLogicalAnd() ^ node.isLogicalOr(), node,
                 "Invalid operation");
@@ -670,19 +671,20 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             
             // Get its value.
             ptolemy.data.Token nextToken = _evaluatedChildToken;
-
+            /*
             if (!(nextToken instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
                         + "operation on " + nextToken + " which is a "
                         + result.getClass().getName());
             }
-
+            
             if (flag != ((BooleanToken) nextToken).booleanValue()) {
                 _evaluatedChildToken = (BooleanToken.getInstance(!flag));
 
                 // Note short-circuit eval.
                 return;
             }
+            */
         }
         _fireCode.append(")");
 
@@ -1035,7 +1037,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             //result = leftToken.isEqualTo(rightToken);
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
             //result = leftToken.isEqualTo(rightToken).not();
-        } else {
+        } else {/*
             if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException("The " + operator.image
                         + " operator can only be applied between scalars.");
@@ -1043,7 +1045,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
             ScalarToken leftScalar = (ScalarToken) leftToken;
             ScalarToken rightScalar = (ScalarToken) rightToken;
-
+            */
             if (operator.kind == PtParserConstants.GTE) {
                 //result = leftScalar.isLessThan(rightScalar).not();
             } else if (operator.kind == PtParserConstants.GT) {
