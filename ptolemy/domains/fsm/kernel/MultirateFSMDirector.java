@@ -460,8 +460,6 @@ public class MultirateFSMDirector extends FSMDirector {
         }
 
         TypedCompositeActor currentRefinement = (TypedCompositeActor) (currentRefinements[0]);
-        Director refinementDir = currentRefinement.getDirector();
-
         _updateInputTokenConsumptionRates(currentRefinement);
         _updateOutputTokenProductionRates(currentRefinement);
 
