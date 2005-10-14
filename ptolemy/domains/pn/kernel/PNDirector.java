@@ -332,6 +332,15 @@ public class PNDirector extends CompositeProcessDirector {
                 "ptolemy.domains.fsm.kernel.FSMDirector" };
     }
 
+    /** Return true to indicate that a ModalModel under control 
+     *  of this director supports multirate firing. 
+     *  @return True indicating a ModalModel under control of this director
+     *  supports multirate firing.
+     */
+    public boolean supportMultirateFiring() {
+        return true;
+    }
+
     /** Notify the director that the specified thread is blocked
      *  on an I/O operation.
      *  @param thread The thread.

@@ -133,7 +133,7 @@ import ptolemy.util.MessageHandler;
  fired. A non-preemptive transition can only be chosen after the
  refinement of its source state is fired.
 
- @author Xiaojun Liu
+ @author Xiaojun Liu, Haiyang Zheng, Ye Zhou
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Yellow (liuxj)
@@ -690,8 +690,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
         _reachedFinalState = false;
-        _newIteration = true;
         _createReceivers();
+        _newIteration = true;
         _tokenListArrays = new Hashtable();
 
         // Populate a map from identifier to the input port represented.
@@ -749,6 +749,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      */
     public void setNewIteration(boolean newIteration) {
         _newIteration = newIteration;
+    }
+
+    /** Set true indicating that this actor supports multirate firing. 
+     *  @param supportMultirate A boolean variable indicating whether this 
+     *  actor supports multirate firing.
+     */
+    public void setSupportMultirate(boolean supportMultirate) {
+        _supportMultirate = supportMultirate;
     }
 
     /** Request that execution of the current iteration stop as soon
@@ -1142,70 +1150,97 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             return;
         }
 
-        int width = port.getWidth();
-
         if (port.isKnown(channel)) {
-            // If we're in a new iteration, reallocate arrays to keep
-            // track of hdf data.
-            if (_newIteration && (channel == 0)) {
-                List[] tokenListArray = new LinkedList[width];
-
-                for (int i = 0; i < width; i++) {
-                    tokenListArray[i] = new LinkedList();
+            if (_supportMultirate) {
+                int width = port.getWidth();
+                // If we're in a new iteration, reallocate arrays to keep
+                // track of hdf data.
+                if (_newIteration && (channel == 0)) {
+                    List[] tokenListArray = new LinkedList[width];
+        
+                    for (int i = 0; i < width; i++) {
+                        tokenListArray[i] = new LinkedList();
+                    }
+        
+                    _tokenListArrays.put(port, tokenListArray);
                 }
-
-                _tokenListArrays.put(port, tokenListArray);
-            }
-
-            // Get the list of tokens for the given port.
-            List[] tokenListArray = (LinkedList[]) _tokenListArrays.get(port);
-
-            // Update the value variable if there is/are token(s) in
-            // the channel. The HDF(SDF) schedule will gurantee there
-            // are always enough tokens.
-            while (port.hasToken(channel)) {
-                Token token = port.get(channel);
-
+        
+                // Get the list of tokens for the given port.
+                List[] tokenListArray = (LinkedList[]) _tokenListArrays.get(port);
+        
+                // Update the value variable if there is/are token(s) in
+                // the channel. The HDF(SDF) schedule will gurantee there
+                // are always enough tokens.
+                while (port.hasToken(channel)) {
+                    Token token = port.get(channel);
+        
+                    if (_debugging) {
+                        _debug("---", port.getName(), "(" + channel + ") has ",
+                                token.toString());
+                    }
+        
+                    tokenListArray[channel].add(0, token);
+                }
+        
                 if (_debugging) {
-                    _debug("---", port.getName(), "(" + channel + ") has ",
-                            token.toString());
+                    _debug("Total tokens available at port: " + port.getFullName()
+                            + "  ");
                 }
-
-                tokenListArray[channel].add(0, token);
-            }
-
-            if (_debugging) {
-                _debug("Total tokens available at port: " + port.getFullName()
-                        + "  ");
-            }
-
-            // FIXME: The "portName_isPresent" is true if there
-            // is at least one token.
-            int length = tokenListArray[channel].size();
-
-            if (length > 0) {
-                Token[] tokens = new Token[length];
-                tokenListArray[channel].toArray(tokens);
-
-                _setInputTokenMap(portName + "_isPresent", port,
-                        BooleanToken.TRUE);
-                _setInputTokenMap(portChannelName + "_isPresent", port,
-                        BooleanToken.TRUE);
-                _setInputTokenMap(portName, port, tokens[0]);
-                _setInputTokenMap(portChannelName, port, tokens[0]);
-
-                ArrayToken arrayToken = new ArrayToken(tokens);
-                _setInputTokenMap(portName + "Array", port, arrayToken);
-                _setInputTokenMap(portChannelName + "Array", port, arrayToken);
+        
+                // FIXME: The "portName_isPresent" is true if there
+                // is at least one token.
+                int length = tokenListArray[channel].size();
+        
+                if (length > 0) {
+                    Token[] tokens = new Token[length];
+                    tokenListArray[channel].toArray(tokens);
+        
+                    _setInputTokenMap(portName + "_isPresent", port,
+                            BooleanToken.TRUE);
+                    _setInputTokenMap(portChannelName + "_isPresent", port,
+                            BooleanToken.TRUE);
+                    _setInputTokenMap(portName, port, tokens[0]);
+                    _setInputTokenMap(portChannelName, port, tokens[0]);
+        
+                    ArrayToken arrayToken = new ArrayToken(tokens);
+                    _setInputTokenMap(portName + "Array", port, arrayToken);
+                    _setInputTokenMap(portChannelName + "Array", port, arrayToken);
+                } else {
+                    _setInputTokenMap(portName + "_isPresent", port,
+                            BooleanToken.FALSE);
+                    _setInputTokenMap(portChannelName + "_isPresent", port,
+                            BooleanToken.FALSE);
+        
+                    if (_debugging) {
+                        _debug("---", port.getName(), "(" + channel
+                                + ") has no token.");
+                    }
+                }
             } else {
-                _setInputTokenMap(portName + "_isPresent", port,
-                        BooleanToken.FALSE);
-                _setInputTokenMap(portChannelName + "_isPresent", port,
-                        BooleanToken.FALSE);
-
-                if (_debugging) {
-                    _debug("---", port.getName(), "(" + channel
-                            + ") has no token.");
+                // If not supporting multirate firing,
+                // Update the value variable if there is a token in the channel. 
+                if (port.hasToken(channel)) {
+                    Token token = port.get(channel);
+    
+                    if (_debugging) {
+                        _debug("---", port.getName(), "(" + channel + ") has ",
+                                token.toString());
+                    }
+                    _setInputTokenMap(portName + "_isPresent", port,
+                            BooleanToken.TRUE);
+                    _setInputTokenMap(portChannelName + "_isPresent", port,
+                            BooleanToken.TRUE);
+                    _setInputTokenMap(portName, port, token);
+                    _setInputTokenMap(portChannelName, port, token);
+                } else {
+                    _setInputTokenMap(portName + "_isPresent", port,
+                            BooleanToken.FALSE);
+                    _setInputTokenMap(portChannelName + "_isPresent", port,
+                            BooleanToken.FALSE);
+                    if (_debugging) {
+                        _debug("---", port.getName(), "(" + channel
+                                + ") has no token.");
+                    }
                 }
             }
         } else {
@@ -1235,9 +1270,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
 
     /** Current state. */
     protected State _currentState = null;
@@ -1398,30 +1430,27 @@ public class FSMActor extends CompositeEntity implements TypedActor,
          */
     }
 
-    // Ensure that the given identifier can only be associated with
-    // the given port, and then set it's value in the _inputTokenMap
-    // to the given token.
-    private void _setInputTokenMap(String name, Port inputPort, Token token)
-            throws IllegalActionException {
-        _setIdentifierToPort(name, inputPort);
-        _inputTokenMap.put(name, token);
-    }
-
     // Associate the given identifier as referring to some aspect of
     // the given input port.  If the given identifier is already
     // associated with another port, then throw an exception.
     private void _setIdentifierToPort(String name, Port inputPort)
             throws IllegalActionException {
         Port previousPort = (Port) _identifierToPort.get(name);
-
+    
         if ((previousPort != null) && (previousPort != inputPort)) {
             throw new IllegalActionException("Name conflict in finite state"
                     + " machine.  The identifier \"" + name
                     + "\" is associated with the port " + previousPort
                     + " and with the port " + inputPort);
         }
-
+    
         _identifierToPort.put(name, inputPort);
+    }
+
+    private void _setInputTokenMap(String name, Port inputPort, Token token)
+            throws IllegalActionException {
+        _setIdentifierToPort(name, inputPort);
+        _inputTokenMap.put(name, token);
     }
 
     /** This class implements a scope, which is used to evaluate the
@@ -1553,14 +1582,17 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     // The set of names of final states.
     private HashSet _finalStateNames;
 
-    // True if the current state is a final state.
-    private boolean _reachedFinalState;
-
     // A flag indicating whether this is at the beginning
     // of one iteration (firing). Normally it is set to true.
     // It is only set to false in HDF.
     private boolean _newIteration = true;
 
+    // True if the current state is a final state.
+    private boolean _reachedFinalState;
+
+    // A flag indicating whether this actor supports multirate firing.
+    private boolean _supportMultirate = false;
+    
     // Hashtable to save an array of tokens for each port.
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.

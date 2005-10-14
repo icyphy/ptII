@@ -574,6 +574,15 @@ public class SDFDirector extends StaticSchedulingDirector {
                 "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
+    /** Return true to indicate that a ModalModel under control 
+     *  of this director supports multirate firing. 
+     *  @return True indicating a ModalModel under control of this director
+     *  supports multirate firing.
+     */
+    public boolean supportMultirateFiring() {
+        return true;
+    }
+
     /** Override the base class method to transfer enough tokens to
      *  complete an internal iteration.  If there are not enough tokens,
      *  then throw an exception.  If the port is not connected on the

@@ -1092,6 +1092,16 @@ public class Director extends Attribute implements Executable {
         return defaultSuggestions;
     }
 
+    /** Return a boolean to indicate whether a ModalModel under control 
+     *  of this director supports multirate firing. In this class, false
+     *  is always returned. Subclasses may override this method to return true.
+     *  @return False indicating a ModalModel under control of this director
+     *  does not support multirate firing.
+     */
+    public boolean supportMultirateFiring() {
+        return false;
+    }
+
     /** Terminate any currently executing model with extreme prejudice.
      *  This method is not intended to be used as a normal route of
      *  stopping execution. To normally stop execution, call the finish()

@@ -670,6 +670,15 @@ public class DDFDirector extends Director {
         return defaultSuggestions;
     }
 
+    /** Return true to indicate that a ModalModel under control 
+     *  of this director supports multirate firing. 
+     *  @return True indicating a ModalModel under control of this director
+     *  supports multirate firing.
+     */
+    public boolean supportMultirateFiring() {
+        return true;
+    }
+
     /** Override the base class method to transfer enough tokens to complete
      *  an internal iteration. If the token consumption rate is defined for
      *  the port and there are not enough tokens, throw an exception. If the
