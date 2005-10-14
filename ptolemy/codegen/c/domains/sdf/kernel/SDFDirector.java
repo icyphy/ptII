@@ -207,7 +207,12 @@ public class SDFDirector extends Director {
        return initializeCode.toString();
    }
 
-   
+   /** Generate code for transferring enough tokens to complete an internal 
+    *  iteration.
+    *  @param inputPort The port to transfer tokens.
+    *  @param code The string buffer that the generated code is appended to.
+    *  @exception IllegalActionException
+    */
    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code) 
            throws IllegalActionException {
     
@@ -240,6 +245,12 @@ public class SDFDirector extends Director {
        
    }
 
+   /** Generate code for transferring enough tokens to fulfill the output 
+    *  production rate.
+    *  @param outputPort The port to transfer tokens.
+    *  @param code The string buffer that the generated code is appended to.
+    *  @exception IllegalActionException
+    */
    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
            throws IllegalActionException {
 
@@ -276,7 +287,7 @@ public class SDFDirector extends Director {
    /** Return the buffer size of a given channel (i.e, a given port
     *  and a given channel number). The default value is 1. If the
     *  port is an output port, then the buffer size is obtained
-    *  from the remote receiver. If it is an input port, then it
+    *  from the inside receiver. If it is an input port, then it
     *  is obtained from the specified port.
     *  @param port The given port.
     *  @param channelNumber The given channel number.
@@ -314,6 +325,20 @@ public class SDFDirector extends Director {
        }
    }
    
+   /** Check for each channel of the given port to see if variables are needed
+    *  for recording read offset and write offset. If the buffer size of a 
+    *  channel divides the total number of tokens transferred in one firing 
+    *  of this director, then there is no need for the variables. Otherwise the
+    *  integer offsets are replaced with variables and the code to initialize 
+    *  these variables are generated.
+    *   
+    *  @param port The port to be checked.
+    *  @param initializeCode The string buffer that the generated code 
+    *   is appended to.
+    *  @param totalTokens The number of tokens transferred in one firing of 
+    *   this director.
+    *  @exception IllegalActionException
+    */
    protected void _checkBufferSize(IOPort port, StringBuffer initializeCode, 
            int totalTokens) throws IllegalActionException {
     
