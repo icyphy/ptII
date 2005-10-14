@@ -1053,6 +1053,8 @@ public class DEDirector extends Director implements TimedDirector {
         super.stopFire();
     }
 
+    // FIXME: it is questionable whether the multirate FSMActor and FSMDirector
+    // should be used in DE as the default? I will say NO.
     /** Return an array of suggested directors to use with
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default
