@@ -200,6 +200,15 @@ public abstract class AbstractActionsAttribute extends Action implements
         return writer.printParseTree((ASTPtRootNode) _parseTrees
                 .get(_destinationNames.indexOf(name)));
     }
+    
+    /** Return the parse tree referred to by the given name.  
+     *  @param name The name of a parse tree.
+     *  @return The parse tree referred to by the given name.
+     */
+    public ASTPtRootNode getParseTree(String name) {
+        return (ASTPtRootNode) _parseTrees
+                .get(_destinationNames.indexOf(name));
+    }
 
     /** Test if a channel number is associated with the given name.
      *  @param name The channel name.
@@ -210,6 +219,8 @@ public abstract class AbstractActionsAttribute extends Action implements
                 .indexOf(name));
         return integer != null;
     }
+    
+    
 
     /** Set the action and notify the container
      *  that the action has changed by calling attributeChanged(),
