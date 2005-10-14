@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.codegen.kernel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -278,46 +281,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    public NamedObj getComponent() {
        return _component;
    }
-
-   /** Return the translated function call string.
-    *  @param name The string within the $typeFunc() macro.
-    *  @return The translate function call string.
-    *  @exception IllegalActionException The given function string is
-    *   not well-formed.
-    */
-   public String getFunctionCall(String functionString) 
-       throws IllegalActionException {
-        // i.e. "$typeFunc(token.add(arg1, arg2, ...))"
-        // this transforms to ==> 
-        // "functionTable[token->type][FUNC_add] (arg1, arg2, ...)"
-        int dotIndex = functionString.indexOf('.');
-        int openFuncParenIndex = functionString.indexOf('(');
-        int closeFuncParenIndex = functionString.lastIndexOf(')');
-        
-        // Syntax checking.
-        if (dotIndex == -1 ||
-            openFuncParenIndex == -1 ||
-            closeFuncParenIndex != functionString.length() - 1) {
-        	throw new IllegalActionException(
-                    "Bad Syntax with the $typeFunc() macro. " +
-                    "[i.e. -- $typeFunc(token.func(arg1, arg2, ...))]");
-        }
-        
-        String typedToken = functionString.substring(0, dotIndex).trim();
-        String functionName = functionString.substring(
-                dotIndex + 1, openFuncParenIndex).trim();
-           
-        // Record the referenced type function in the infoTable.
-        HashSet functions = (HashSet) _infoTable.get(FIELD_TYPEFUNC);
-        if (functions == null) {
-            functions = new HashSet();
-        	_infoTable.put(FIELD_TYPEFUNC, functions);
-        }
-        functions.add(functionName);
-        
-        return "functionTable[" + typedToken + "->type][FUNC_" + functionName
-            + "]" + processCode(functionString.substring(openFuncParenIndex));
-   }
    
    /** Get the files needed by the code generated from this helper class.
     *  This base class returns an empty set.
@@ -335,6 +298,47 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     */
    public Object getInfo(String field) {
        return _infoTable.get(field);
+   }
+
+   /** Return the translated new constructor invocation string. Keep the types
+    *  referenced in the info table of this helper. The kernel will retrieve
+    *  this information to determine the total number of referenced types in
+    *  the model.
+    *  @param name The string within the $new() macro.
+    *  @return The translated new constructor invocation string.
+    *  @exception IllegalActionException The given constructor string is
+    *   not well-formed.
+    */
+   public String getNewInvocation(String constructorString) 
+       throws IllegalActionException {
+   	    constructorString = processCode(constructorString);
+        // i.e. "$new(Array(8, arg1, arg2, ...))"
+        // this transforms to ==> 
+        // "Array_new(8, arg1, arg2, ...)"
+        int openFuncParenIndex = constructorString.indexOf('(');
+        int closeFuncParenIndex = constructorString.lastIndexOf(')');
+        
+        // Syntax checking.
+        if (openFuncParenIndex == -1 ||
+            closeFuncParenIndex != constructorString.length() - 1) {
+            throw new IllegalActionException(
+                    "Bad Syntax with the $new() macro. " +
+                    "[i.e. -- $new(Array(8, arg1, arg2, ...))]");
+        }
+        
+        String typeName = constructorString.substring(
+                0, openFuncParenIndex).trim();
+           
+        // Record the referenced type function in the infoTable.
+        HashSet types = (HashSet) _infoTable.get(FIELD_NEW);
+        if (types == null) {
+            types = new HashSet();
+            _infoTable.put(FIELD_NEW, types);
+        }
+        types.add(typeName);
+        
+        return typeName + "_new" + 
+            constructorString.substring(openFuncParenIndex);
    }
 
    /** Return the value of the specified parameter of the associated actor.
@@ -751,6 +755,53 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                + name);
    }
 
+   /** Return the translated type function invocation string.
+    *  @param name The string within the $typeFunc() macro.
+    *  @return The translated type function invocation string.
+    *  @exception IllegalActionException The given function string is
+    *   not well-formed.
+    */
+   public String getTypeFuncInvocation(String functionString) 
+       throws IllegalActionException {
+   	    functionString = processCode(functionString);
+        
+        // i.e. "$typeFunc(token, add(arg1, arg2, ...))"
+        // this transforms to ==> 
+        // "functionTable[token->type][FUNC_add] (token, arg1, arg2, ...)"
+   	    // FIXME: we need to do some more smart parsing to find the following
+   	    // indexes.
+        int commaIndex = functionString.indexOf(',');
+        int openFuncParenIndex = 
+            functionString.indexOf('(', commaIndex);
+        int closeFuncParenIndex = 
+            functionString.lastIndexOf(')');
+        
+        // Syntax checking.
+        if (commaIndex == -1 ||
+            openFuncParenIndex == -1 ||
+            closeFuncParenIndex != functionString.length() - 1) {
+            throw new IllegalActionException(
+                    "Bad Syntax with the $typeFunc() macro. " +
+                    "[i.e. -- $typeFunc(token.func(arg1, arg2, ...))]");
+        }
+        
+        String typedToken = functionString.substring(0, commaIndex).trim();
+        String functionName = functionString.substring(
+                commaIndex + 1, openFuncParenIndex).trim();
+           
+        // Record the referenced type function in the infoTable.
+        HashSet functions = (HashSet) _infoTable.get(FIELD_TYPEFUNC);
+        if (functions == null) {
+            functions = new HashSet();
+            _infoTable.put(FIELD_TYPEFUNC, functions);
+        }
+        functions.add(functionName);
+        
+        return "functionTable[" + typedToken + "->type][FUNC_" + functionName
+            + "](" + typedToken + ", " +
+                    functionString.substring(openFuncParenIndex + 1);
+   }
+
    /** Get the write offset in the buffer of a given channel to which a token
     *  should be put. The channel is given by its containing port and
     *  the channel number in that port.
@@ -816,12 +867,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
            String macro = code.substring(currentPos + 1, openParenIndex);
            macro = macro.trim();
 
-           if ((macro.equals("ref") || 
-                macro.equals("val") || 
-                macro.equals("actorSymbol") || 
-                macro.equals("actorClass") || 
-                macro.equals("typeFunc") || 
-                macro.equals("size"))) {
+           List macroList = Arrays.asList(new String[] {
+                "ref", "val", "actorSymbol", "actorClass", 
+                "new", "typeFunc", "size"});
+           
+           if (macroList.contains(macro)) {
             
                String name = code.substring(openParenIndex + 1,
                        closeParenIndex);
@@ -839,8 +889,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                } else if (macro.equals("actorClass")) {
                	   result.append(_component.getContainer().getName());
                    result.append("_" + name);
+               } else if (macro.equals("new")) {
+               	   result.append(getNewInvocation(name));
                } else if (macro.equals("typeFunc")) {   
-                   result.append(getFunctionCall(name));
+                   result.append(getTypeFuncInvocation(name));
+               }else {
+               	   // This macro is not handled.
+               	   throw new IllegalActionException("Macro is not handled.");
                }
                foundIt = true;
                result.append(code.substring(closeParenIndex + 1, nextPos));
@@ -952,6 +1007,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    /////////////////////////////////////////////////////////////////////
    ////                      public variables                       ////
    
+   /**
+    * The new constructor field key to access the info table. 
+    */
+   public static final String FIELD_NEW = "new";
+
    /**
     * The type function field key to access the info table. 
     */
@@ -1132,7 +1192,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
            isArrayType = true;
        }
 
-       if (type.equals("boolean")) {
+       if (type.equals("general")) {
+       	   type = "Token";
+       } else if (type.equals("string")) {
+           type = "char*";
+       } else if (type.equals("boolean")) {
            type = "unsigned char";
        }
 
