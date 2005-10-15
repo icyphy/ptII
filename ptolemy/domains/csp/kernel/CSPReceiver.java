@@ -204,8 +204,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                                 // We also need to mark this receiver as the
                                 // winning one to ensure that the putToAny()
                                 // selects the same winner.
-                                castReceiver._putInProgress = true;
+                                castReceiver._winsThePut = true;
                             }
+                            // Indicate that a put is in progress.
+                            castReceiver._putInProgress = true;
                             // The following does a notify on the director.
                             director.threadUnblocked(putThread, null);
                         }
@@ -229,6 +231,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
                             ((CSPReceiver)receivers[i][j])._getInProgress = false;
+                            ((CSPReceiver)receivers[i][j])._winsTheGet = false;
                         }
                     }
                 }
@@ -305,7 +308,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // sender.  If this method was called before any put()
                 // was ready, then by the time we get here, some other thread
                 // will have picked the winning receiver by setting
-                // _getInProgress. Iterate through the receivers
+                // _winsTheGet. Iterate through the receivers
                 // until we find one that won the put, or if there
                 // is none, one that is ready to complete
                 // the rendezvous.
@@ -319,7 +322,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             if (receivers[i][j] != null) {
                                 winner = (CSPReceiver)receivers[i][j];
                                 if (_isReadyToPut(winner)) {
-                                    if (winner._getInProgress) {
+                                    if (winner._winsTheGet) {
                                         // Do not search any further.
                                         // This receiver won the get by
                                         // getting there first on the other side.
@@ -331,7 +334,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             }
                         }
                     }
-                    if (winner != null && winner._getInProgress) {
+                    if (winner != null && winner._winsTheGet) {
                         break;
                     }
                 }
@@ -385,8 +388,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                         // We also need to mark this receiver as the
                         // winning one to ensure that the putToAny()
                         // selects the same winner.
-                        winner._putInProgress = true;
+                        winner._winsThePut = true;
                     }
+                    // Indicate that a put is in progress.
+                    winner._putInProgress = true;
                     // The following does a notify on the director.
                     director.threadUnblocked(putThread, null);
 
@@ -402,6 +407,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     }
                     // Finally, reset the _getInProgress flag.
                     winner._getInProgress = false;
+                    winner._winsTheGet = false;
 
                     return result;
                 }
@@ -743,8 +749,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                                 // We also need to mark this receiver as the
                                 // winning one to ensure that the getFromAny()
                                 // selects the same winner.
-                                castReceiver._getInProgress = true;
+                                castReceiver._winsTheGet = true;
                             }
+                            // Indicate that a get is in progress.
+                            castReceiver._getInProgress = true;
                             // The following does a notify on the director.
                             director.threadUnblocked(getThread, null);
                         }
@@ -766,6 +774,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
                             ((CSPReceiver)receivers[i][j])._putInProgress = false;
+                            ((CSPReceiver)receivers[i][j])._winsThePut = false;
                         }
                     }
                 }
@@ -863,7 +872,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             if (receivers[i][j] != null) {
                                 winner = (CSPReceiver)receivers[i][j];
                                 if (_isReadyToGet(winner)) {
-                                    if (winner._putInProgress) {
+                                    if (winner._winsThePut) {
                                         // Do not search any further.
                                         // This receiver won the get by
                                         // getting there first on the other side.
@@ -875,7 +884,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                             }
                         }
                     }
-                    if (winner != null && winner._putInProgress) {
+                    if (winner != null && winner._winsThePut) {
                         break;
                     }
                 }
@@ -924,8 +933,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                         // We also need to mark this receiver as the
                         // winning one to ensure that the getFromAny()
                         // selects the same winner.
-                        winner._getInProgress = true;
+                        winner._winsTheGet = true;
                     }
+                    // Indicate that a get is in progress.
+                    winner._getInProgress = true;
                     // The following does a notify on the director.
                     director.threadUnblocked(getThread, null);
                     
@@ -941,6 +952,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                     }
                     // Finally, reset the _putInProgress flag.
                     winner._putInProgress = false;
+                    winner._winsThePut = false;
 
                     return;
                 }
@@ -992,6 +1004,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             _boundaryDetector.reset();
             _putInProgress = false;
             _getInProgress = false;
+            _winsThePut = false;
+            _winsTheGet = false;
         }
     }
 
@@ -1580,7 +1594,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             // Nothing to do. This should not happen.
             return;
         }
-        receiver._getInProgress = true;
+        receiver._winsTheGet = true;
         Receiver[][] receivers = receiver._getReceivers;
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
@@ -1605,7 +1619,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 
     /** Commit the specified receiver to a put.  If its put is
      *  conditional, then this will retract the put waiting flag
-     *  on all other put receivers and set the _putInProgress flag.
+     *  on all other put receivers and set the _winsThePut flag.
      *  @param receiver The receiver.
      */
     private static void _commitPut(CSPReceiver receiver) {
@@ -1613,7 +1627,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             // Nothing to do. This should not happen.
             return;
         }
-        receiver._putInProgress = true;
+        receiver._winsThePut = true;
         Receiver[][] receivers = receiver._putReceivers;
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
@@ -1687,4 +1701,10 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     
     /** The token being transferred during the rendezvous. */
     private Token _token;
+    
+    /** Flag indicating that this receiver wins a conditional get competition. */
+    private boolean _winsTheGet = false;
+
+    /** Flag indicating that this receiver wins a conditional put competition. */
+    private boolean _winsThePut = false;
 }
