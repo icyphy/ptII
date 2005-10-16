@@ -33,7 +33,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.domains.fsm.kernel.FSMDirector;
-import ptolemy.domains.fsm.kernel.HSDirector;
+import ptolemy.domains.fsm.kernel.HSFSMDirector;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.Entity;
@@ -123,7 +123,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements
 
             if (model.getDirector() instanceof SDFDirector) {
                 inliner = new SDFDirectorInliner();
-            } else if (model.getDirector() instanceof HSDirector
+            } else if (model.getDirector() instanceof HSFSMDirector
                     || model.getDirector() instanceof FSMDirector) {
                 inliner = new HSDirectorInliner();
             } else if (model.getDirector() instanceof GiottoDirector) {

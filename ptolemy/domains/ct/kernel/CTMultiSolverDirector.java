@@ -85,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
  an opaque composite actor inside another model, use
  CTMixedSignalDirector (if the outer model is a discrete-event
  model) or CTEmbeddedDirector (if the outer model is a CT model or a Modal
- model with a HSDirector.)
+ model with a HSFSMDirector.)
  <P>
  This director recognizes actors that implement the CTStepSizeControlActor
  interface and adjusts the step size by polling such actors. If all actors
@@ -742,7 +742,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Set the flag indicating that the initial states are not ready.
-     *  This method should only be used by the HSDirector.
+     *  This method should only be used by the HSFSMDirector.
      */
     public void setInitialStatesNotReady() {
         _initialStatesNotReady = true;

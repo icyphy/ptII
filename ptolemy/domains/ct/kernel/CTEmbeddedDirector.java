@@ -160,8 +160,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector implements
         // indicates this director does not need to construct the initial
         // states. Instead, the upper level CTDirector will establish the
         // initial states.
-        // The _initialStatesNotReady variable can be changed by the HSDirector.
-        // The HSDirector will set this variable to true to force a process to
+        // The _initialStatesNotReady variable can be changed by the HSFSMDirector.
+        // The HSFSMDirector will set this variable to true to force a process to
         // construct initial states, if the container of this director is
         // firstly visited, or this container needs reinitialization,
         if (_initialStatesNotReady) {

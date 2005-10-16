@@ -1,4 +1,4 @@
-/* An HSDirector governs the execution of the discrete dynamics of a
+/* An HSFSMDirector governs the execution of the discrete dynamics of a
  hybrid system model.
 
  Copyright (c) 1999-2005 The Regents of the University of California.
@@ -54,10 +54,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// HSDirector
+//// HSFSMDirector
 
 /**
- An HSDirector governs the execution of the discrete dynamics of a hybrid
+ An HSFSMDirector governs the execution of the discrete dynamics of a hybrid
  system model.
  <p>
  <a href="
@@ -74,12 +74,12 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (liuxj)
  */
-public class HSDirector extends FSMDirector implements CTTransparentDirector {
+public class HSFSMDirector extends FSMDirector implements CTTransparentDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
-    public HSDirector() {
+    public HSFSMDirector() {
         super();
     }
 
@@ -95,7 +95,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @exception NameDuplicationException If the container is not a
      *   CompositeActor and the name collides with an entity in the container.
      */
-    public HSDirector(CompositeEntity container, String name)
+    public HSFSMDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -105,7 +105,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this director.
      */
-    public HSDirector(Workspace workspace) {
+    public HSFSMDirector(Workspace workspace) {
         super(workspace);
     }
 
@@ -176,7 +176,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // inside CT models only, we can further constraint the enabled
             // transitions to be executed only in generating-event phase.
             // However, to support the backwards compatibility such that
-            // HSDirector can be also used inside DE models, we also allow the
+            // HSFSMDirector can be also used inside DE models, we also allow the
             // enabled transitions to be executed at the
             // iterating-purely-discrete-actors phase.
             // Check enabled transitions at the end of a continuous phase
@@ -267,7 +267,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // inside CT models only, we can further constraint the enabled
             // transitions to be executed only in generating-event phase.
             // However, to support the backwards
-            // compatibility such that HSDirector can be also used inside DE
+            // compatibility such that HSFSMDirector can be also used inside DE
             // models, we also allow the enabled transitions to be executed at
             // the iterating-purely-discrete-actors phase.
             // Check enabled transitions at the end of a continuous
@@ -334,9 +334,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             return executiveDirector.getCurrentStepSize();
         } else {
             // This should never happen because a modal model with
-            // an HSDirector must be used inside a CT model.
+            // an HSFSMDirector must be used inside a CT model.
             throw new InternalErrorException("A modal model with "
-                    + "an HSDirector must be used inside a CT model.");
+                    + "an HSFSMDirector must be used inside a CT model.");
         }
     }
 
@@ -351,9 +351,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             return ((CTGeneralDirector) executiveDirector).getErrorTolerance();
         } else {
             // This should never happen because a modal model with
-            // an HSDirector must be used inside a CT model.
+            // an HSFSMDirector must be used inside a CT model.
             throw new InternalErrorException("A modal model with "
-                    + "an HSDirector must be used inside a CT model.");
+                    + "an HSFSMDirector must be used inside a CT model.");
         }
     }
 
@@ -403,9 +403,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             return executiveDirector.getIterationBeginTime();
         } else {
             // This should never happen because a modal model with
-            // an HSDirector must be used inside a CT model.
+            // an HSFSMDirector must be used inside a CT model.
             throw new InternalErrorException("A modal model with "
-                    + "an HSDirector must be used inside a CT model.");
+                    + "an HSFSMDirector must be used inside a CT model.");
         }
     }
 
@@ -454,9 +454,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             return executiveDirector.getNormalODESolver();
         } else {
             // This should never happen because a modal model with
-            // an HSDirector must be used inside a CT model.
+            // an HSFSMDirector must be used inside a CT model.
             throw new InternalErrorException("A modal model with "
-                    + "an HSDirector must be used inside a CT model.");
+                    + "an HSFSMDirector must be used inside a CT model.");
         }
     }
 
@@ -526,9 +526,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             return executiveDirector.isDiscretePhase();
         } else {
             // This should never happen because a modal model with
-            // an HSDirector must be used inside a CT model.
+            // an HSFSMDirector must be used inside a CT model.
             throw new InternalErrorException("A modal model with "
-                    + "an HSDirector must be used inside a CT model.");
+                    + "an HSFSMDirector must be used inside a CT model.");
         }
     }
 
@@ -810,7 +810,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             }
         }
 
-        // If there is one transition enabled, the HSDirector requests
+        // If there is one transition enabled, the HSFSMDirector requests
         // to be fired again at the same time to see whether the next state
         // has some outgoing transition enabled.
         Transition tr = _enabledTransition;
@@ -848,7 +848,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                             + " requests refiring at " + getModelTime());
                 }
 
-                // If there is one transition enabled, the HSDirector requests
+                // If there is one transition enabled, the HSFSMDirector requests
                 // to be fired again at the same time to see whether the next
                 // state has some outgoing transition enabled.
                 executiveDirector.fireAt(container, getModelTime());

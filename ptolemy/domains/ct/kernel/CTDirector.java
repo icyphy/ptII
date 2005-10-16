@@ -798,7 +798,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
     }
 
     /** Return an array of suggested ModalModel directors  to use
-     *  with CTDirector. The default director is HSDirector, which
+     *  with CTDirector. The default director is HSFSMDirector, which
      *  is used in hybrid system. FSMDirector could also be used
      *  with CTDirector in some simple cases.
      *  @return An array of suggested directors to be used with ModalModel.
@@ -807,9 +807,9 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
     public String[] suggestedModalModelDirectors() {
         // This method does not call the method defined in the super class,
         // because this method provides complete new information.
-        // Default is a HSDirector, while FSMDirector is also in the array.
+        // Default is a HSFSMDirector, while FSMDirector is also in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.HSDirector";
+        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.HSFSMDirector";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
@@ -1009,9 +1009,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Indicate whether this is a breakpoint iteration.
-    private boolean _breakpointIteration = false;
-
     // A table for breakpoints.
     private TotallyOrderedSet _breakpoints;
 

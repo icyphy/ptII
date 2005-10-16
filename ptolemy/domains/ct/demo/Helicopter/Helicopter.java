@@ -47,7 +47,7 @@ import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
 import ptolemy.domains.ct.lib.Integrator;
 import ptolemy.domains.ct.lib.ThresholdMonitor;
 import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.HSDirector;
+import ptolemy.domains.fsm.kernel.HSFSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.ComponentPort;
@@ -88,7 +88,7 @@ public class Helicopter extends TypedCompositeActor {
         // Create the controller actors.
         // ---------------------------------
         CTCompositeActor sub = new CTCompositeActor(this, "Controllers");
-        HSDirector hsdir = new HSDirector(sub, "HSDirector");
+        HSFSMDirector hsdir = new HSFSMDirector(sub, "HSFSMDirector");
 
         TypedIOPort subinPx = new TypedIOPort(sub, "inputPx");
         subinPx.setInput(true);

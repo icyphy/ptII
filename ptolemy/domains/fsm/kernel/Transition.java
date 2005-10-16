@@ -516,7 +516,7 @@ public class Transition extends ComponentRelation {
      */
     public boolean isEnabled() throws IllegalActionException {
         try {
-            if (_exeDirectorIsHSDirector && !_relationList.isEmpty()) {
+            if (_exeDirectorIsHSFSMDirector && !_relationList.isEmpty()) {
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
                         .setConstructionMode(false);
             }
@@ -789,7 +789,7 @@ public class Transition extends ComponentRelation {
         nondeterministic.setTypeEquals(BaseType.BOOLEAN);
         nondeterministic.setToken(BooleanToken.FALSE);
 
-        _exeDirectorIsHSDirector = false;
+        _exeDirectorIsHSFSMDirector = false;
 
         //CompositeEntity container = (CompositeEntity) getContainer();
         _parseTreeEvaluator = new ParseTreeEvaluator();
@@ -845,17 +845,17 @@ public class Transition extends ComponentRelation {
                 if (modalModel != null) {
                     Director director = modalModel.getDirector();
 
-                    if (director instanceof HSDirector) {
-                        errorTolerance = ((HSDirector) director)
+                    if (director instanceof HSFSMDirector) {
+                        errorTolerance = ((HSFSMDirector) director)
                                 .getErrorTolerance();
-                        _exeDirectorIsHSDirector = true;
+                        _exeDirectorIsHSFSMDirector = true;
                     } else {
-                        _exeDirectorIsHSDirector = false;
+                        _exeDirectorIsHSFSMDirector = false;
                     }
                 }
             }
 
-            if (_exeDirectorIsHSDirector) {
+            if (_exeDirectorIsHSFSMDirector) {
                 // associate the relation list with the
                 // ParseTreeEvaluatorForGuardExpression
                 _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
@@ -891,8 +891,8 @@ public class Transition extends ComponentRelation {
     // Cached destination state of this transition.
     private State _destinationState = null;
 
-    // Flag to indicate whether the executive director is HSDirector.
-    private boolean _exeDirectorIsHSDirector = false;
+    // Flag to indicate whether the executive director is HSFSMDirector.
+    private boolean _exeDirectorIsHSFSMDirector = false;
 
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;

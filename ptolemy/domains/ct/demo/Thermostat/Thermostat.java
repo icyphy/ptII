@@ -44,7 +44,7 @@ import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
 import ptolemy.domains.ct.lib.Integrator;
 import ptolemy.domains.ct.lib.ZeroCrossingDetector;
 import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.HSDirector;
+import ptolemy.domains.fsm.kernel.HSFSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.Relation;
@@ -160,7 +160,7 @@ public class Thermostat extends TypedCompositeActor {
         ctrlSt.setInput(true);
 
         // the hybrid system director
-        HSDirector hsdir = new HSDirector(hs, "HSDirector");
+        HSFSMDirector hsdir = new HSFSMDirector(hs, "HSFSMDirector");
 
         //hs.setDirector(hsdir);
         hsdir.controllerName.setExpression("Controller");
