@@ -34,6 +34,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////
 ////Director
@@ -145,6 +146,8 @@ public class Director implements ActorCodeGenerator {
    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code) 
            throws IllegalActionException {
     
+       code.append("\n/* Transfer tokens to the inside */\n\n");
+    
        ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper
                = (ptolemy.codegen.c.actor.TypedCompositeActor)
                _getHelper(_director.getContainer());
@@ -166,6 +169,8 @@ public class Director implements ActorCodeGenerator {
    
    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
            throws IllegalActionException {
+    
+       code.append("\n/* Transfer tokens to the outside */\n\n");
     
        ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper
                = (ptolemy.codegen.c.actor.TypedCompositeActor)
@@ -251,6 +256,15 @@ public class Director implements ActorCodeGenerator {
    protected ComponentCodeGenerator _getHelper(NamedObj component)
            throws IllegalActionException {
        return _codeGenerator._getHelper(component);
+   }
+   
+   /** Return a number of spaces that is proportional to the argument.
+    *  If the argument is negative or zero, return an empty string.
+    *  @param level The level of indenting represented by the spaces.
+    *  @return A string with zero or more spaces.
+    */
+   protected static String _getIndentPrefix(int level) {
+       return StringUtilities.getIndentPrefix(level);
    }
 
    ////////////////////////////////////////////////////////////////////

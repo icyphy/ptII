@@ -216,6 +216,8 @@ public class SDFDirector extends Director {
    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code) 
            throws IllegalActionException {
     
+       code.append("\n/* Transfer tokens to the inside */\n\n");
+    
        int rate = DFUtilities.getTokenConsumptionRate(inputPort);  
        
        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper
@@ -253,6 +255,8 @@ public class SDFDirector extends Director {
     */
    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
            throws IllegalActionException {
+    
+       code.append("\n/* Transfer tokens to the outside */\n\n");
 
        int rate = DFUtilities.getTokenProductionRate(outputPort);
     
