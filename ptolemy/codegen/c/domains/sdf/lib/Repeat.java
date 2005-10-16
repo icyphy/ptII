@@ -60,7 +60,9 @@ public class Repeat extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
-        ptolemy.domains.sdf.lib.Repeat actor = (ptolemy.domains.sdf.lib.Repeat) getComponent();
+        super.generateFireCode(stream);
+        ptolemy.domains.sdf.lib.Repeat actor = 
+                (ptolemy.domains.sdf.lib.Repeat) getComponent();
         StringBuffer code = new StringBuffer();
 
         int numberOfTimes = ((IntToken) actor.numberOfTimes.getToken()).intValue();
@@ -71,13 +73,7 @@ public class Repeat extends CCodeGeneratorHelper {
             }
             code.append("$ref(input," + i + ");\n");
         }
-       
-        _codeBlock = code.toString();
-        stream.append("\n/* fire " + getComponent().getName() + " */\n");
-        stream.append(processCode(_codeBlock));
+        stream.append(processCode(code.toString()));
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variable                ////
-    protected String _codeBlock;
 }

@@ -61,7 +61,7 @@ public class Ramp extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        code.append("\n/* fire " + getComponent().getName() + " */\n");
+        super.generateFireCode(code);
         code.append(_generateBlockCode("fireBlock"));
     }
 

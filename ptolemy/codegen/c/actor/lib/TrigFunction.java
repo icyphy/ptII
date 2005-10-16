@@ -65,6 +65,8 @@ public class TrigFunction extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
+        
+        super.generateFireCode(code);
         ptolemy.actor.lib.TrigFunction actor =
             (ptolemy.actor.lib.TrigFunction) getComponent();
 

@@ -61,6 +61,7 @@ public class Scale extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
+        super.generateFireCode(code);
         code.append(_generateBlockCode("fireBlock"));
     }
 }

@@ -62,31 +62,34 @@ public class AddSubtract extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
+        
+        super.generateFireCode(code);
+        
         ptolemy.actor.lib.AddSubtract actor =
             (ptolemy.actor.lib.AddSubtract) getComponent();
-        StringBuffer _codeStream = new StringBuffer();
-        _codeStream.append("$ref(output) = ");
+        StringBuffer codeBuffer = new StringBuffer();
+        codeBuffer.append("\n    ");
+        codeBuffer.append("$ref(output) = ");
 
         for (int i = 0; i < actor.plus.getWidth(); i++) {
-            _codeStream.append("$ref(plus#" + i + ")");
+            codeBuffer.append("$ref(plus#" + i + ")");
 
             if (i < (actor.plus.getWidth() - 1)) {
-                _codeStream.append(" + ");
+                codeBuffer.append(" + ");
             } else if (actor.minus.getWidth() > 0) {
-                _codeStream.append(" - ");
+                codeBuffer.append(" - ");
             }
         }
 
         for (int i = 0; i < actor.minus.getWidth(); i++) {
-            _codeStream.append("$ref(minus#" + i + ")");
+            codeBuffer.append("$ref(minus#" + i + ")");
 
             if (i < (actor.minus.getWidth() - 1)) {
-                _codeStream.append(" - ");
+                codeBuffer.append(" - ");
             }
         }
 
-        _codeStream.append(";\n");
-        code.append("\n/* fire " + getComponent().getName() + " */\n");
-        code.append(processCode(_codeStream.toString()));
+        codeBuffer.append(";\n");
+        code.append(processCode(codeBuffer.toString()));
     }
 }

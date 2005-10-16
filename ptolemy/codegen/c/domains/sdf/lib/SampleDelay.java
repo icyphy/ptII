@@ -62,9 +62,9 @@ public class SampleDelay extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
+        super.generateFireCode(stream);
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("codeBlock1");
-        stream.append("\n/* fire " + getComponent().getName() + " */\n");
         stream.append(processCode(_codeStream.toString()));
 
         //stream.append(processCode("$ref(output) = $ref(input);\n"));

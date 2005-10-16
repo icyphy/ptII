@@ -68,6 +68,8 @@ public class Test extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
+        
+        super.generateFireCode(code);
         // FIXME: handle widths greater than 1.
         if (_testActor.input.getWidth() > 1) {
             throw new IllegalActionException(_testActor,
@@ -78,7 +80,6 @@ public class Test extends CCodeGeneratorHelper {
 
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("fireBlock");
-        code.append("\n/* fire " + getComponent().getName() + " */\n");
         code.append(processCode(_codeStream.toString()));
     }
 

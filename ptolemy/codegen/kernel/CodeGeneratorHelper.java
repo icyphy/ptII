@@ -27,9 +27,7 @@ COPYRIGHTENDKEY
 */
 package ptolemy.codegen.kernel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -52,6 +50,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 ////CodeGeneratorHelper
@@ -83,14 +82,17 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    ////                         public methods                    ////
 
    /** 
-    * Generate the fire code. In this base class, do nothing. Subclasses
-    * may extend this method to generate the fire code of the associated
-    * component and append the code to the given string buffer.
+    * Generate the fire code. In this base class, add the name of the 
+    * associated component in the comment. Subclasses may extend this 
+    * method to generate the fire code of the associated component and 
+    * append the code to the given string buffer.
     * @param code The given string buffer.
     * @exception IllegalActionException Not thrown in this base class.
     */
    public void generateFireCode(StringBuffer code)
            throws IllegalActionException {
+       code.append("\n/* fire " + getComponent().getName() + " */\n");
+           
    }
 
    /** 
@@ -1098,6 +1100,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    protected ComponentCodeGenerator _getHelper(NamedObj component)
            throws IllegalActionException {
        return _codeGenerator._getHelper(component);
+   }
+   
+   /** Return a number of spaces that is proportional to the argument.
+    *  If the argument is negative or zero, return an empty string.
+    *  @param level The level of indenting represented by the spaces.
+    *  @return A string with zero or more spaces.
+    */
+   protected static String _getIndentPrefix(int level) {
+       return StringUtilities.getIndentPrefix(level);
    }
    
    ///////////////////////////////////////////////////////////////////
