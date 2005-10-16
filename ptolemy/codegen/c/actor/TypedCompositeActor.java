@@ -67,7 +67,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */  
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        
+        super.generateFireCode(code);
         Director directorHelper = (Director) _getHelper
                 ((NamedObj) ((ptolemy.actor.CompositeActor) 
                 getComponent()).getDirector());
