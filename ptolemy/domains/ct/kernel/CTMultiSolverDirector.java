@@ -234,6 +234,11 @@ public class CTMultiSolverDirector extends CTDirector {
      *  can not ODE solver can not be set.
      */
     public void establishInitialStates() throws IllegalActionException {
+        // In this method, we only need to establish the initial states for
+        // continuous variables. 
+        // Discrete events happening at this time should be generated during
+        // the initialize method, like de.lib.SingleEvent.
+
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
 
         if (_debugging) {
@@ -242,6 +247,10 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("  ---> " + getName(),
                     ": iterating waveform generators (discrete -> continuous)");
         }
+
+        _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
+        prefireDynamicActors();
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
         _iterateWaveformGenerators(schedule);
 
@@ -254,20 +263,6 @@ public class CTMultiSolverDirector extends CTDirector {
         }
 
         _propagateResolvedStates();
-
-        if (_debugging) {
-            _debug("  ---> " + getName(),
-                    ": iterating event generators (continuous -> discrete)");
-        }
-
-        _iterateEventGenerators(schedule);
-
-        if (_debugging) {
-            _debug("  ---> " + getName(),
-                    ": iterating purely discrete actors (discrete -> discrete)");
-        }
-
-        _iteratePurelyDiscreteActors(schedule);
     }
 
     /** Fire the system for one iteration. One iteration is defined as
@@ -1399,10 +1394,6 @@ public class CTMultiSolverDirector extends CTDirector {
                     + " to propagate states.");
         }
 
-        _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
-        prefireDynamicActors();
-        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
-
         // build history information. In particular, the derivative.
         _setExecutionPhase(CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE);
         solver.fireStateTransitionActors();
@@ -1468,6 +1459,9 @@ public class CTMultiSolverDirector extends CTDirector {
         // NOTE: We need to prefire dynamic actors again even though they have
         // been prefired in the _propagateResolvedStates method, because ODE
         // solver changes and the Integrator Aux Variables need updated.
+        // FIXME: this suggests to use only one solver and allow the solver to
+        // take a 0 step size (with only one step firing). In this way, the
+        // prefiring is unnecessary.
         prefireDynamicActors();
 
         // If stop is not requested, keep trying to resolve states, where
@@ -1475,21 +1469,6 @@ public class CTMultiSolverDirector extends CTDirector {
         // states and outputs are inaccurate.
         while (!_stopRequested) {
             while (!_stopRequested) {
-                // Restore the saved state of the stateful actors.
-                CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-                Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
-                        .actorIterator();
-
-                while (actors.hasNext()) {
-                    CTStatefulActor actor = (CTStatefulActor) actors.next();
-
-                    if (_debugging) {
-                        _debug("Restore states " + (Nameable) actor);
-                    }
-
-                    actor.goToMarkedState();
-                }
-
                 // Reset the round counts and the convergencies to false.
                 // NOTE: some solvers have their convergencies depending on
                 // the round counts. For example, it takes 3 rounds for a
@@ -1545,6 +1524,21 @@ public class CTMultiSolverDirector extends CTDirector {
                 // iteration.
                 setModelTime(getIterationBeginTime());
 
+                // Restore the saved state of the stateful actors.
+                CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
+                Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
+                        .actorIterator();
+
+                while (actors.hasNext()) {
+                    CTStatefulActor actor = (CTStatefulActor) actors.next();
+
+                    if (_debugging) {
+                        _debug("Restore states " + (Nameable) actor);
+                    }
+
+                    actor.goToMarkedState();
+                }
+
                 if (_debugging && _verbose) {
                     _debug("Execute the system from " + getModelTime()
                             + " with a smaller step size"
@@ -1576,6 +1570,21 @@ public class CTMultiSolverDirector extends CTDirector {
             if (!_isOutputAccurate()) {
                 setModelTime(getIterationBeginTime());
                 setCurrentStepSize(_refinedStepWRTOutput());
+
+                // Restore the saved state of the stateful actors.
+                CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
+                Iterator actors = schedule.get(CTSchedule.STATEFUL_ACTORS)
+                        .actorIterator();
+
+                while (actors.hasNext()) {
+                    CTStatefulActor actor = (CTStatefulActor) actors.next();
+
+                    if (_debugging) {
+                        _debug("Restore states " + (Nameable) actor);
+                    }
+
+                    actor.goToMarkedState();
+                }
 
                 if (_debugging && _verbose) {
                     _debug("Refine the current step size"
