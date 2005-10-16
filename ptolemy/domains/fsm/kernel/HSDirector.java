@@ -254,9 +254,10 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 actor.fire();
             }
 
-            _currentState.setVisited(true);
-
-            _ctrl._readOutputsFromRefinement();
+            if(!visited) {
+                _ctrl._readOutputsFromRefinement();
+                _currentState.setVisited(true);
+            }
 
             //////////////////////////////////////////////////////////////////
             // Handle nonpreemptive transitions
