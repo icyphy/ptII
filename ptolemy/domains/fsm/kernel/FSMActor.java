@@ -476,18 +476,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // called here.
         reset();
 
-        // reset the visited status of all states except the current state
-        // to not visited.
+        // reset the visited status of all states to not visited.
         Iterator states = deepEntityList().iterator();
 
         while (states.hasNext()) {
             State state = (State) states.next();
-
-            if (state == _currentState) {
-                state.setVisited(true);
-            } else {
-                state.setVisited(false);
-            }
+            state.setVisited(false);
         }
     }
 
@@ -1063,6 +1057,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
             }
 
+            // NOTE: The initialize method clears all receivers, we have to 
+            // set the visited flag to false to enforce the reconstruction of 
+            // continuous signals.
             _currentState.setVisited(false);
         }
 
