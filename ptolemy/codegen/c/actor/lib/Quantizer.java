@@ -122,7 +122,7 @@ public class Quantizer extends CCodeGeneratorHelper {
      * Read the <code>wrapupBlock</code> from Quantizer.c, 
      * replace macros with their values and append the processed code block
      * to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated wrapup code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */

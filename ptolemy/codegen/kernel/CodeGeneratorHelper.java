@@ -218,7 +218,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     * Generate the wrapup code. In this base class, do nothing. Subclasses
     * may extend this method to generate the wrapup code of the associated
     * component and append the code to the given string buffer.
-    * @param code The given string buffer.
+    * @return The generated wrapup code.
     * @exception IllegalActionException Not thrown in this base class.
     */
    public String generateWrapupCode() throws IllegalActionException {
@@ -306,7 +306,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     *  referenced in the info table of this helper. The kernel will retrieve
     *  this information to determine the total number of referenced types in
     *  the model.
-    *  @param name The string within the $new() macro.
+    *  @param constructorString The string within the $new() macro.
     *  @return The translated new constructor invocation string.
     *  @exception IllegalActionException The given constructor string is
     *   not well-formed.
@@ -758,7 +758,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    }
 
    /** Return the translated type function invocation string.
-    *  @param name The string within the $typeFunc() macro.
+    *  @param functionString The string within the $typeFunc() macro.
     *  @return The translated type function invocation string.
     *  @exception IllegalActionException The given function string is
     *   not well-formed.

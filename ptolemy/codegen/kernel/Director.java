@@ -194,7 +194,7 @@ public class Director implements ActorCodeGenerator {
    /** Generate the wrapup code of the director associated with this helper
     *  class. For this base class, this method just generate the wrapup code
     *  for each actor.
-    *  @param code The string buffer that the generated code is appended to.
+    *  @return The generated wrapup code.
     *  @exception IllegalActionException If the helper class for each actor
     *  cannot be found, or if an error occurs while the helper generate the
     *  wrapup code.
