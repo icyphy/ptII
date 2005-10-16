@@ -1,4 +1,5 @@
-/* A director for generating nesC code from TinyOS components.
+/*  A director for generating, compiling, and simulating nesC code from
+ TinyOS components.
 
  Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
@@ -86,10 +87,10 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (celaine)
  */
 public class PtinyOSDirector extends Director {
-    /** Construct a code generator with the specified container and name.
+    /** Construct a director with the specified container and name.
      *  @param container The container.
-     *  @param name The name of the code generator.
-     *  @exception IllegalActionException If the code generator is not of an
+     *  @param name The name of the director.
+     *  @exception IllegalActionException If the director is not of an
      *   acceptable attribute for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
@@ -119,10 +120,15 @@ public class PtinyOSDirector extends Director {
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
 
         // Set path to tos directory.
-        tosDir = new FileParameter(this, "TOSDIR");
-        new Parameter(tosDir, "allowFiles", BooleanToken.FALSE);
-        new Parameter(tosDir, "allowDirectories", BooleanToken.TRUE);
-        tosDir.setExpression("$PTII/vendors/ptinyos/tinyos-1.x/tos");
+        tosroot = new FileParameter(this, "TOSROOT");
+        new Parameter(tosroot, "allowFiles", BooleanToken.FALSE);
+        new Parameter(tosroot, "allowDirectories", BooleanToken.TRUE);
+        String tosrootProperty = System.getProperty("ptolemy.ptII.tosroot");
+        if (tosrootProperty != null) {
+            tosroot.setExpression(tosrootProperty);
+        } else {
+            tosroot.setExpression("$PTII/vendors/ptinyos/tinyos-1.x/tos");
+        }
 
         // Set additional make flags.
         pflags = new StringParameter(this, "pflags");
@@ -166,9 +172,9 @@ public class PtinyOSDirector extends Director {
      */
     public FileParameter destinationDirectory;
 
-    /** Path to the tinyos-1.x/tos directory.
+    /** Path to the TinyOS tree.
      */
-    public FileParameter tosDir;
+    public FileParameter tosroot;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file
@@ -371,10 +377,7 @@ public class PtinyOSDirector extends Director {
             String toplevelName = _sanitizedName(toplevel);
 
             // Add the destinationDirectory to the classpath.
-            //String oldClasspath = System.getProperty("java.class.path");
-            //String pathSeparator = System.getProperty("path.separator");
             String fileSeparator = System.getProperty("file.separator");
-
             String outputDir = destinationDirectory.stringValue()
                     + fileSeparator + "build" + fileSeparator + "ptII";
 
@@ -564,6 +567,11 @@ public class PtinyOSDirector extends Director {
     }
 
     /** Return true if sendToPort succeeded
+     *
+     *  The loader class has a method with the same name that calls
+     *  this method.  The C code (ptII.c) calls <loader>.sendToPort in
+     *  order to send data from the C code to the Java (Ptolemy II)
+     *  simulation.
      *
      *  FIXME comment
      */
@@ -757,16 +765,17 @@ public class PtinyOSDirector extends Director {
     }
 
     /** Generate makefile.
-
-     TOSDIR=/home/celaine/tinyos/tinyos/tinyos-1.x/tos
-
-     COMPONENT=SenseToLeds
-     PFLAGS=-I%T/lib/Counters
-
-     PFLAGS += -I/usr/java/j2sdk1.4.2_03/include -I/usr/java/j2sdk1.4.2_03/include/linux
-
-     #include $(MAKERULES)
-     include /home/celaine/tinyos/tinyos/tinyos-1.x/tools/make/Makerules
+        // FIXME example
+        
+TOSROOT=/home/celaine/tinyos/tinyos/tinyos-1.x-scratch
+TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
+COMPONENT=MicaActor3056
+PFLAGS += -I%T/lib/Counters
+PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
+MY_PTCC_FLAGS += -D_PTII_NODE_NUM=MicaActor3056
+PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
+include /home/celaine/ptII/mk/ptII.mk
+include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
 
      */
     private String _generateMakefile() throws IllegalActionException {
@@ -775,13 +784,13 @@ public class PtinyOSDirector extends Director {
         String toplevelName = _sanitizedName(toplevel);
 
         _CodeString text = new _CodeString();
-        text.addLine("TOSDIR=" + tosDir.stringValue());
+        text.addLine("TOSROOT=" + tosroot.stringValue());
 
         // path to contrib
         // FIXME use pathseparator?
         // FIXME make sure no trailing / before /../
-        // FIXME: this will not work if TOSDIR has spaces in it.
-        text.addLine("TOSMAKE_PATH += $(TOSDIR)/../contrib/ptII/ptinyos/tools/make");
+        // FIXME: this will not work if TOSROOT has spaces in it.
+        text.addLine("TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make");
 
         text.addLine("COMPONENT=" + toplevelName);
 
@@ -799,7 +808,7 @@ public class PtinyOSDirector extends Director {
         for (int i = 0; i < targets.length; i++) {
             if (targets[i].equals("ptII") || targets[i].equals("all")) {
                 // FIXME will this work for "all"?
-                text.addLine("PFLAGS += \"-I$(TOSDIR)/../contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
+                text.addLine("PFLAGS += \"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
                 // Expand $PTII, substitute / for \, and backslash space for space.
                 String ptIImk = StringUtilities.getProperty("ptolemy.ptII.dir") + "/mk/ptII.mk";
                 text.addLine("include " + ptIImk.replaceAll(" ", "\\\\ "));
@@ -808,8 +817,8 @@ public class PtinyOSDirector extends Director {
         }
 
         // Handle pathnames with spaces: substitute / for \ and backslash space for space.
-        text.addLine("include " + tosDir.stringValue().replace('\\', '/').replaceAll(" ", "\\\\ ")
-                + "/../tools/make/Makerules");
+        text.addLine("include " + tosroot.stringValue().replace('\\', '/').replaceAll(" ", "\\\\ ")
+                + "/tools/make/Makerules");
 
         // Use .mk so that Emacs will be in the right mode
         String makefileName = toplevelName + ".mk";

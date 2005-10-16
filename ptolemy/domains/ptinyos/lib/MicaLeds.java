@@ -45,11 +45,19 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 //////////////////////////////////////////////////////////////////////////
 //// MicaLeds
 
-/** FIXME comment
+/** An actor to display the LEDs of the simulated mote.  There are
+ three LEDS -- red, yellow, and green.
+
+ The actor has a boolean port for each LED.  A value of true will
+ cause the corresponding LED on the icon to light up.
+
+ The actor also has a parameter for each LED, which allows the
+ container to use the value.
+    
  @author Elaine Cheong
  @version $Id$
  @since Ptolemy II 4.0
- @Pt.ProposedRating Red(celaine)
+ @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
 public class MicaLeds extends TypedAtomicActor {
@@ -66,10 +74,12 @@ public class MicaLeds extends TypedAtomicActor {
             java.lang.Exception {
         super(container, name);
 
-        //create the node icon.
+        // Create the node icon.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
 
-        // The icon has 3 LEDs: red, yellow, and green.
+        // The icon of this actor has 3 LEDs: red, yellow, and green.
+        // For each LED, create the corresponding parameter and
+        // graphical icon.  Then initialize the LED to the off setting.
         red = new Parameter(this, "red");
         _ledRed = new RectangleAttribute(node_icon, "_ledRed");
         Location ledRedLoc = new Location(_ledRed, "_location");
@@ -100,6 +110,7 @@ public class MicaLeds extends TypedAtomicActor {
         _ledYellow.centered.setToken("true");
         _yellowOff();
 
+        // Create the input ports and set the token type to boolean.
         ledRed = new TypedIOPort(this, "ledRed", true, false);
         ledRed.setTypeEquals(BaseType.BOOLEAN);
         ledGreen = new TypedIOPort(this, "ledGreen", true, false);
@@ -111,35 +122,44 @@ public class MicaLeds extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** input port
-     FIXME comment
+    /** Input port for the red LED.  The token type is boolean.
      */
     public TypedIOPort ledRed;
 
+    /** Input port for the green LED.  The token type is boolean.
+     */
     public TypedIOPort ledGreen;
 
+    /** Input port for the yellow LED.  The token type is boolean.
+     */    
     public TypedIOPort ledYellow;
 
-    /** The color of this LED.  The initial value is set to off. */
+    /** The color of the "red" LED.  The initial value is set to off
+     *  ({0.5,0.0,0.0,1.0}).
+     */
     public Parameter red;
+
+    /** The color of the "green" LED.  The initial value is set to off
+     *  ({0.0,0.5,0.0,1.0}).
+     */
     public Parameter green;
+
+    /** The color of the "yellow" LED.  The initial value is set to off
+     *  ({0.5,0.5,0.0,1.0}).
+     */
     public Parameter yellow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** FIXME
-     *  @exception IllegalActionException If the parent class throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    }
 
-    /** FIXME comment
-     *  @exception IllegalActionException something goes wrong.
+    /** For each LED port, if it is connected and has a token, read
+     *  the token.  If the token is true, turn the LED on, otherwise
+     *  turn the LED off.
+     *  @exception IllegalActionException If any of the LED ports
+     *  cannot be read.
      */
     public void fire() throws IllegalActionException {
-        // FIXME comment
         if (_debugging) {
             _debug("Called fire()");
         }
@@ -176,46 +196,71 @@ public class MicaLeds extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                 ////
+    ////                         private methods                   ////
+
+    /** Turn the red LED on by changing the color of the graphical
+     *  icon and reflecting the color value in the corresponding
+     *  parameter.
+     */
     private void _redOn() throws IllegalActionException {
         _ledRed.fillColor.setToken("{1.0,0.0,0.0,1.0}");
         red.setToken("{1.0,0.0,0.0,1.0}");
     }
 
+    /** Turn the red LED off by changing the color of the graphical
+     *  icon and reflecting the color value in the corresponding
+     *  parameter.
+     */
     private void _redOff() throws IllegalActionException {
         _ledRed.fillColor.setToken("{0.5,0.0,0.0,1.0}");
         red.setToken("{0.5,0.0,0.0,1.0}");
     }
 
+    /** Turn the green LED on by changing the color of the graphical
+     *  icon and reflecting the color value in the corresponding
+     *  parameter.
+     */    
     private void _greenOn() throws IllegalActionException {
         _ledGreen.fillColor.setToken("{0.0,1.0,0.0,1.0}");
         green.setToken("{0.0,1.0,0.0,1.0}");
     }
 
+    /** Turn the green LED off by changing the color of the graphical
+     *  icon and reflecting the color value in the corresponding
+     *  parameter.
+     */    
     private void _greenOff() throws IllegalActionException {
         _ledGreen.fillColor.setToken("{0.0,0.5,0.0,1.0}");
         green.setToken("{0.0,0.5,0.0,1.0}");
     }
 
+    /** Turn the yellow LED on by changing the color of the graphical
+     *  icon and reflecting the color value in the corresponding
+     *  parameter.
+     */    
     private void _yellowOn() throws IllegalActionException {
         _ledYellow.fillColor.setToken("{1.0,1.0,0.0,1.0}");
         yellow.setToken("{1.0,1.0,0.0,1.0}");
     }
 
+    /** Turn the yellow LED off by changing the color of the graphical
+     *  icon and reflecting the color value in the corresponding
+     *  parameter.
+     */  
     private void _yellowOff() throws IllegalActionException {
         _ledYellow.fillColor.setToken("{0.5,0.5,0.0,1.0}");
         yellow.setToken("{0.5,0.5,0.0,1.0}");
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                ////
+    ////                         private variables                 ////
 
-    /** Red LED */
+    /** Graphical icon for red LED */
     private RectangleAttribute _ledRed;
 
-    /** Green LED */
+    /** Graphical icon for green LED */
     private RectangleAttribute _ledGreen;
 
-    /** Yellow LED */
+    /** Graphical icon for yellow LED */
     private RectangleAttribute _ledYellow;
 }

@@ -150,19 +150,22 @@ to another. Then delete this annotation.</text></svg></configure></property>
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
     <!-- Override utilities library. -->
-	<entity name="Utilities" class="ptolemy.moml.EntityLibrary">
-	  <class name="WirelessCompositeClass" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
-		<!-- The inside MUST have a director, so we create one. -->
-		<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
-			<property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]"/>
-		</property>
-	  </class>
-	  <entity name="WirelessComposite" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-		<!-- The inside MUST have a director, so we create one. -->
-		<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
-			<property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]"/>
-		</property>
-	  </entity>
+    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
+
+      <input source="ptolemy/domains/ptinyos/lib/MicaBoard.xml"/>
+
+      <class name="WirelessCompositeClass" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
+        <!-- The inside MUST have a director, so we create one. -->
+	<property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+	  <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]"/>
+	  </property>
+      </class>
+      <entity name="WirelessComposite" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+        <!-- The inside MUST have a director, so we create one. -->
+        <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+          <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]"/>
+        </property>
+      </entity>
       <class name="CompositeClass" extends="ptolemy.actor.TypedCompositeActor"/>
       <input source="ptolemy/configs/utilityCompositeActor.xml"/>
       

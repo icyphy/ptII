@@ -1,4 +1,5 @@
-/* FIXME comment
+/* This composite actor represents the hardware interface to the Mica
+ mote and is designed for use in the PtinyOS domain.
 
  Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
@@ -40,15 +41,32 @@ import ptolemy.kernel.util.Workspace;
 //// MicaActor
 
 /**
- * This composite actor is designed for use in the PtinyOS domain.
- *
- * FIXME comment
- *
- * @author Elaine Cheong
- * @version $Id$
- * @Pt.ProposedRating Red (celaine)
- * @Pt.AcceptedRating Red (celaine)
- */
+ This composite actor represents the hardware interface to the Mica
+ mote and is designed for use in the PtinyOS domain.  It contains
+ input ports for the photosensor, temperature sensor, microphone,
+ accelerometer (x- and y-axis), magnetometer (x- and y-axis); and
+ output ports for the LEDs (red, green, and yellow).
+
+ Note: the ports are actually of type unsigned short (uint16_t),
+ although we implement them with double tokens.
+   
+ Port information from tinyos-1.x/tos/platform/pc/sensorboard.h:
+     enum {
+     TOS_ADC_PHOTO_PORT = 1,
+     TOS_ADC_TEMP_PORT = 2,
+     TOS_ADC_MIC_PORT = 3,
+     TOS_ADC_ACCEL_X_PORT = 4,
+     TOS_ADC_ACCEL_Y_PORT = 5,
+     TOS_ADC_MAG_X_PORT = 6,
+     // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
+     TOS_ADC_MAG_Y_PORT = 8,
+     };
+     
+ @author Elaine Cheong
+ @version $Id$
+ @Pt.ProposedRating Red (celaine)
+ @Pt.AcceptedRating Red (celaine)
+*/
 public class MicaActor extends PtinyOSActor {
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
@@ -82,41 +100,50 @@ public class MicaActor extends PtinyOSActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Photo input port.
-        // FIXME why is the name hidden in Vergil?
+        // Persistent photo input port.
         photo = new PortParameter(this, "photo");
         photo.setExpression("0");
-
-        // FIXME this is really an unsigned short (uint16_t), not an int.
         photo.setTypeEquals(BaseType.DOUBLE);
 
+        // Persistent temperature input port.
         temperature = new PortParameter(this, "temperature");
         temperature.setExpression("0");
         temperature.setTypeEquals(BaseType.DOUBLE);
 
+        // Persistent microphone input port.
+        microphone = new PortParameter(this, "microphone");
+        microphone.setExpression("0");
+        microphone.setTypeEquals(BaseType.DOUBLE);
+        
+        // Persistent accelerometer (x-axis) input port.
         accelx = new PortParameter(this, "accelx");
         accelx.setExpression("0");
         accelx.setTypeEquals(BaseType.DOUBLE);
 
+        // Persistent accelerometer (y-axis) input port.
         accely = new PortParameter(this, "accely");
         accely.setExpression("0");
         accely.setTypeEquals(BaseType.DOUBLE);
 
+        // Persistent magnetometer (x-axis) input port.
         magx = new PortParameter(this, "magx");
         magx.setExpression("0");
         magx.setTypeEquals(BaseType.DOUBLE);
 
+        // Persistent magnetometer (y-axis) input port.
         magy = new PortParameter(this, "magy");
         magy.setExpression("0");
         magy.setTypeEquals(BaseType.DOUBLE);
 
-        // LED output ports.
+        // Red LED output port.
         ledRed = new TypedIOPort(this, "ledRed", false, true);
         ledRed.setTypeEquals(BaseType.BOOLEAN);
 
+        // Green LED output port.
         ledGreen = new TypedIOPort(this, "ledGreen", false, true);
         ledGreen.setTypeEquals(BaseType.BOOLEAN);
 
+        // Yellow LED output port.
         ledYellow = new TypedIOPort(this, "ledYellow", false, true);
         ledYellow.setTypeEquals(BaseType.BOOLEAN);
     }
@@ -128,44 +155,39 @@ public class MicaActor extends PtinyOSActor {
      */
     public PortParameter photo;
 
-    /** FIXME comment
+    /** Persistent temperature input data.
      */
     public PortParameter temperature;
 
+    /** Persistent microphone input data.
+     */    
     public PortParameter microphone;
 
+    /** Persistent accelerometer (x-axis) input data.
+     */    
     public PortParameter accelx;
 
+    /** Persistent accelerometer (y-axis) input data.
+     */    
     public PortParameter accely;
 
+    /** Persistent magnetometer (x-axis) input data.
+     */    
     public PortParameter magx;
 
+    /** Persistent magnetometer (y-axis) input data.
+     */    
     public PortParameter magy;
 
-    /* From tinyos-1.x/tos/platform/pc/sensorboard.h
-
-     enum {
-     TOS_ADC_PHOTO_PORT = 1,
-     TOS_ADC_TEMP_PORT = 2,
-     TOS_ADC_MIC_PORT = 3,
-     TOS_ADC_ACCEL_X_PORT = 4,
-     TOS_ADC_ACCEL_Y_PORT = 5,
-     TOS_ADC_MAG_X_PORT = 6,
-     // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
-     TOS_ADC_MAG_Y_PORT = 8,
-     };
-     */
-
-    /** LED output ports
+    /** Red LED output port.
      */
     public TypedIOPort ledRed;
 
+    /** Green LED output port.
+     */    
     public TypedIOPort ledGreen;
 
+    /** Yellow LED output port.
+     */
     public TypedIOPort ledYellow;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 }
