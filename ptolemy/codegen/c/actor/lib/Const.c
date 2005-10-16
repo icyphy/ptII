@@ -1,3 +1,3 @@
-/***initBlock***/
+/***fireBlock***/
     $ref(output) = $val(value);
 /**/

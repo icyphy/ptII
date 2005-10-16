@@ -51,17 +51,17 @@ public class Const extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate initialize code.
-     * This method reads the <code>initBlock</code> from Const.c, replaces
+     * Generate fire code.
+     * This method reads the <code>fireBlock</code> from Const.c, replaces
      * macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      * @return The processed code string.
      */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
+    public void generateFireCode(StringBuffer code) throws IllegalActionException {
+        super.generateFireCode(code);
         CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("initBlock");
-        return processCode(_codeStream.toString());
+        _codeStream.appendCodeBlock("fireBlock");
+        code.append(processCode(_codeStream.toString()));
     }
 }
