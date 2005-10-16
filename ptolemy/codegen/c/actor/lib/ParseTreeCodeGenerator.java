@@ -1221,6 +1221,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         //ptolemy.data.Token result = tokens[0];
         ptolemy.data.Token result = _evaluateChild(node, 0);
         
+        /*
         if (node.isMinus()) {
             result = result.zero().subtract(result);
         } else if (node.isNot()) {
@@ -1243,7 +1244,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         } else {
             _assert(false, node, "Unrecognized unary node");
         }
-
+        */
         _evaluatedChildToken = (result);
 
         if (node.isConstant()) {
