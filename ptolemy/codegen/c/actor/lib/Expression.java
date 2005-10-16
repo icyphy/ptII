@@ -62,6 +62,7 @@ public class Expression extends CCodeGeneratorHelper {
      */
     public Expression(ptolemy.actor.lib.Expression actor) {
         super(actor);
+ 
     }
 
     /**
@@ -76,6 +77,8 @@ public class Expression extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer code)
         throws IllegalActionException {
         
+        super.generateFireCode(code);
+        
         Type portType = ((ptolemy.actor.lib.Expression) 
                 this.getComponent()).output.getType();
 
@@ -84,8 +87,10 @@ public class Expression extends CCodeGeneratorHelper {
                 portType != BaseType.STRING && portType != BaseType.BOOLEAN) {
         	portType = BaseType.GENERAL;
         }
-        code.append(processCode("    $ref(output)." + portType + "Port = ("
-                + _parseTreeCodeGenerator.generateFireCode()) + ");\n");
+        //code.append(processCode("    $ref(output)." + portType + "Port = ("
+        //        + _parseTreeCodeGenerator.generateFireCode()) + ");\n");
+        code.append(processCode("    $ref(output) = "
+                + _parseTreeCodeGenerator.generateFireCode()) + ";\n");
     }
 
     /**
@@ -124,9 +129,7 @@ public class Expression extends CCodeGeneratorHelper {
             // requires a large amount of memory.
             PtParser parser = new PtParser();
             ASTPtRootNode parseTree = 
-                parser.generateParseTree(actor.expression.getExpression());
-
-            _parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                parser.generateParseTree(actor.expression.getExpression());            
             
             result = _parseTreeCodeGenerator.evaluateParseTree(
                     parseTree, new VariableScope(actor));
@@ -156,6 +159,9 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public Set generateSharedCode() throws IllegalActionException {
+        
+        _parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+        
         Set codeBlocks = new HashSet();
         codeBlocks.add(processCode(
                 _parseTreeCodeGenerator.generateSharedCode()));
@@ -230,13 +236,23 @@ public class Expression extends CCodeGeneratorHelper {
                         return new ObjectToken("$ref(" + name + ")");
                     }
                 }
-    
+                
+                
+                Attribute attribute = _actor.getAttribute(name);
+                if (attribute == null) {
+                    attribute = ModelScope.getScopedVariable(null, _actor, name);
+                }
+                if (attribute != null) {
+                    return new ObjectToken("$val(" + name + ")") ;  
+                }
+                /*    
                 for (int i = 0; i < _actor.attributeList().size(); i++) {
                     if (((Attribute) _actor.attributeList().get(i))
                             .getName().equals(name)) {
                         return new ObjectToken("$val(" + name + ")");
                     }
                 }
+                */
             } catch (IllegalActionException ex) {
             	// Not thrown here.
             }
