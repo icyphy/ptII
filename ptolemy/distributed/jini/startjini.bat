@@ -28,4 +28,4 @@ rem HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 rem ENHANCEMENTS, OR MODIFICATIONS.
 
 cd %PTII%/ptolemy/distributed/jini/ 
-java -Djava.security.policy=./config/jsk-all.policy -jar ./jar/start.jar ./config/start-transient-jeri-services-local.config
+java -Djava.security.policy=./config/jsk-all.policy -jar ./jar/start.jar ./config/start-transient-jeri-services.config
