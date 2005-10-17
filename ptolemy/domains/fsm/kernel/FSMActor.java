@@ -1149,6 +1149,9 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         if (port.isKnown(channel)) {
             if (_supportMultirate) {
+                // FIXME: The following implementation to support multirate is 
+                // rather expensive. Try to optimize it.
+                
                 int width = port.getWidth();
                 // If we're in a new iteration, reallocate arrays to keep
                 // track of hdf data.
