@@ -36,7 +36,7 @@
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="11">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 140}">
