@@ -122,7 +122,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 160.0]">
             </property>
         </entity>
-        <entity name="MicaActor" class="ptolemy.domains.ptinyos.lib.MicaActor">
+        <entity name="CntToLedsAndRfm" class="ptolemy.domains.ptinyos.lib.MicaActor">
             <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
                 <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/output">
                 </property>
@@ -253,13 +253,13 @@
         <link port="MicaLeds.ledRed" relation="relation"/>
         <link port="MicaLeds.ledGreen" relation="relation2"/>
         <link port="MicaLeds.ledYellow" relation="relation3"/>
-        <link port="MicaActor.packetOut" relation="relation4"/>
-        <link port="MicaActor.ledRed" relation="relation"/>
-        <link port="MicaActor.ledGreen" relation="relation2"/>
-        <link port="MicaActor.ledYellow" relation="relation3"/>
+        <link port="CntToLedsAndRfm.packetOut" relation="relation4"/>
+        <link port="CntToLedsAndRfm.ledRed" relation="relation"/>
+        <link port="CntToLedsAndRfm.ledGreen" relation="relation2"/>
+        <link port="CntToLedsAndRfm.ledYellow" relation="relation3"/>
         <link port="Display.input" relation="relation4"/>
     </entity>
-    <entity name="MicaBoard" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+    <entity name="RfmToLeds" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
         </property>
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">

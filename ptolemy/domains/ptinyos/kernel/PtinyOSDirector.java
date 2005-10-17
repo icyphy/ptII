@@ -374,7 +374,7 @@ public class PtinyOSDirector extends Director {
 
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
             NamedObj toplevel = _toplevelNC();
-            String toplevelName = _sanitizedName(toplevel);
+            String toplevelName = _sanitizedFullName(toplevel);
 
             // Add the destinationDirectory to the classpath.
             String fileSeparator = System.getProperty("file.separator");
@@ -498,7 +498,7 @@ public class PtinyOSDirector extends Director {
         //   if (_isTopLevelNC()) {
         NamedObj toplevel = _toplevelNC(); //container.toplevel();
 
-        String filename = _sanitizedName(toplevel);
+        String filename = _sanitizedFullName(toplevel);
         if (container != toplevel) {
             filename = filename + "_" + container.getName(toplevel);
             filename = StringUtilities.sanitizeName(filename);
@@ -657,7 +657,7 @@ public class PtinyOSDirector extends Director {
     private void _generateLoader() throws IllegalActionException {
         // Use filename relative to toplevel PtinyOSDirector.
         NamedObj toplevel = _toplevelNC();
-        String toplevelName = _sanitizedName(toplevel);
+        String toplevelName = _sanitizedFullName(toplevel);
 
         _CodeString text = new _CodeString();
 
@@ -781,7 +781,7 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
     private String _generateMakefile() throws IllegalActionException {
         // Use filename relative to toplevel PtinyOSDirector.
         NamedObj toplevel = _toplevelNC();
-        String toplevelName = _sanitizedName(toplevel);
+        String toplevelName = _sanitizedFullName(toplevel);
 
         _CodeString text = new _CodeString();
         text.addLine("TOSROOT=" + tosroot.stringValue());
@@ -934,7 +934,7 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
         //NamedObj toplevel = _toplevelNC();
         _CodeString generatedCode = new _CodeString();
 
-        String containerName = _sanitizedName(model);
+        String containerName = _sanitizedFullName(model);
         
         generatedCode.addLine("configuration " + containerName + " {");
 
@@ -1231,12 +1231,29 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
         }
     }
 
+    /** Get the sanitized full name with workspace version number appended,
+     *  or "Unnamed" with version number appended if no name.
+     */
+    private String _sanitizedFullName(NamedObj obj) {
+        String objName = obj.getFullName();
+        objName = StringUtilities.sanitizeName(objName);
+
+        if (objName == "") {
+            objName = _unnamed;
+        }
+
+        objName = objName + _version;
+
+        return objName;
+    }
+    
     /** Get the sanitized name with workspace version number appended,
      *  or "Unnamed" if no name.
      */
     private String _sanitizedName(NamedObj obj) {
         String objName = obj.getName();
         objName = StringUtilities.sanitizeName(objName);
+
         if (objName == "") {
             objName = _unnamed;
         }
