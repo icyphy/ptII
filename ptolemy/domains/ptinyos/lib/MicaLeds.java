@@ -1,7 +1,6 @@
 /* An actor to display the LEDs of the simulated mote.
 
- Copyright (c) 2004-2005 The Regents of the University of California and
- Research in Motion Limited.
+ Copyright (c) 2005 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,7 +55,7 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
     
  @author Elaine Cheong
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */

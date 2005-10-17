@@ -1,7 +1,7 @@
 /* This composite actor represents the hardware interface to the Mica
  mote and is designed for use in the PtinyOS domain.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -66,6 +66,7 @@ import ptolemy.kernel.util.Workspace;
  @version $Id$
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
+ @since Ptolemy II 5.1
 */
 public class MicaActor extends PtinyOSActor {
     /** Construct an actor in the default workspace with an empty string

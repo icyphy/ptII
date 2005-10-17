@@ -1,6 +1,6 @@
 /* FIXME Interface for
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,10 +36,9 @@ package ptolemy.domains.ptinyos.kernel;
 
  @author Elaine Cheong
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
-
  */
 import ptolemy.kernel.util.IllegalActionException;
 
