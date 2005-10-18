@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	NCCompositeActor.java \
 	PtinyOSActor.java \
 	PtinyOSDirector.java \
 	PtinyOSLoader.java
