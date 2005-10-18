@@ -101,21 +101,27 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+ECSL2MOML = 	./ecsl2moml
+XML2ECSL = 	../XML2ECSL/bin/Xml2Ecsl
+MDL2XML = 	../MDL2XML/bin/MDL2XML
+
 all: jclass
 install: jclass jars
 
 cruiseControlECSL.moml: cruiseControlECSL.xml ecsl2moml
-	./ecsl2moml $<
+	$(ECSL2MOML) $<
 
 cruiseControlECSL.xml: cruiseControl.xml
-	../XML2ECSL/bin/Xml2Ecsl_d $< cruiseControlECSL.xml
+	$(XML2ECSL) $< cruiseControlECSL.xml
 
 cruiseControl.xml: cruiseControl.mdl
-	../MDL2XML/bin/MDL2XMLd $<
-
+	$(MDL2XML) $<
 
 demo: all cruiseControlECSL.moml
 	$(PTII)/bin/vergil cruiseControlECSL.moml
+
+demo_clean:
+	rm -f cruiseControl.xml cruiseControlECSL.mdl cruiseControlECSL.moml
 
 ##################################################
 # CruiseControl with Discrete Time (DT) semantics, for use with Ptolemy CGC
@@ -123,13 +129,16 @@ demo_cruiseControlDT: all cruiseControlDT_ECSL.moml
 	$(PTII)/bin/vergil cruiseControlDT_ECSL.moml
 
 cruiseControlDT_ECSL.moml: cruiseControlDT_ECSL.xml ecsl2moml
-	./ecsl2moml $<
+	$(ECSL2MOML) $<
 
 cruiseControlDT_ECSL.xml: cruiseControlDT.xml
-	../XML2ECSL/bin/Xml2Ecsl_d $< $@
+	$(XML2ECSL) $< $@
 
 cruiseControlDT.xml: cruiseControlDT.mdl
-	../MDL2XML/bin/MDL2XMLd $<
+	$(MDL2XML) $<
+
+demo_clean_cruiseControlDT:
+	rm -f cruiseControlDT.xml cruiseControlDT_ECSL.mdl cruiseControlDT_ECSL.moml
 
 
 ##################################################
@@ -138,13 +147,17 @@ demo_sbw: all sbw_ECSL.moml
 	$(PTII)/bin/vergil sbw_ECSL.moml
 
 sbw_ECSL.moml: sbw_ECSL.xml ecsl2moml
-	./ecsl2moml $<
+	$(ECSL2MOML) $<
 
 sbw_ECSL.xml: ../sbw/sbw_data_flow_12_1.xml
-	../XML2ECSL/bin/Xml2Ecsl_d $< $@
+	$(XML2ECSL) $< $@
 
 ../sbw/sbw_data_flow_12_1.xml: ../sbw/sbw_data_flow_12_1.mdl
-	../MDL2XML/bin/MDL2XMLd $<
+	$(MDL2XML) $<
+
+demo_clean_sbw:
+	rm -f ../sbw/sbw_data_flow_12_1.xml sbw_ECSL.xml sbw_ECSL.monl
+
 
 ##################################################
 # Electronic Throttle Control (sbw) demo
@@ -152,11 +165,13 @@ demo_etc: all etc_controlECSL.moml
 	$(PTII)/bin/vergil etc_controlECSL.moml
 
 etc_controlECSL.moml: etc_controlECSL.xml ecsl2moml
-	./ecsl2moml $<
+	$(ECSL2MOML) $<
 
 etc_controlECSL.xml: ../XML2ECSL/bin/etc_control.xml
-	../XML2ECSL/bin/Xml2Ecsl_d $< $@
+	$(XML2ECSL)_d $< $@
 
+demo_clean_etc:
+	rm -f etc_controlECSL.xml etc_controlECSL.moml
 
 TARGETPATH = $(ME)/cg
 cg/cruiseControlECSL:
