@@ -1,4 +1,4 @@
-# Makefile for ECSL actor classes
+# Makefile for ECSL actor classesv
 #
 # @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
@@ -160,6 +160,25 @@ demo_clean_sbw:
 
 
 ##################################################
+# SROM demo
+demo_SROM: all SROM_ECSL.moml
+	$(PTII)/bin/vergil SROM_ECSL.moml
+
+SROM_ECSL.moml: SROM_ECSL.xml ecsl2moml
+	$(ECSL2MOML) $<
+
+SROM_ECSL.xml: SROM.xml
+	$(XML2ECSL) $< $@
+
+SROM.xml: SROM.mdl
+	$(MDL2XML) $<
+
+demo_clean_SROM:
+	rm -f SROM.xml SROM_ECSL.xml SROM_ECSL.moml
+
+
+
+##################################################
 # Electronic Throttle Control (sbw) demo
 demo_etc: all etc_controlECSL.moml
 	$(PTII)/bin/vergil etc_controlECSL.moml
@@ -168,7 +187,7 @@ etc_controlECSL.moml: etc_controlECSL.xml ecsl2moml
 	$(ECSL2MOML) $<
 
 etc_controlECSL.xml: ../XML2ECSL/bin/etc_control.xml
-	$(XML2ECSL)_d $< $@
+	$(XML2ECSL) $< $@
 
 demo_clean_etc:
 	rm -f etc_controlECSL.xml etc_controlECSL.moml
