@@ -42,7 +42,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /GR /GX /Zd /O2 /I "." /I "$(UDM_PATH)/include" /I "..\include" /I "$(UDM_PATH)/3rdparty/antlr/antlr-2.7.1/lib/cpp" /I "$(UDM_PATH)/3rdparty/stl" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "WITH_SGI_STL" /D "UDM_DYNAMIC_LINKING" /YX /FD /Zm200 /c
+# ADD CPP /nologo /MD /W3 /GR /GX /Zd /O2 /I "$(UDM_PATH)/3rdparty/stl" /I "." /I "$(UDM_PATH)/include" /I "..\include" /I "$(UDM_PATH)\3rdparty\antlr\antlr-2.7.1\lib\cpp" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "WITH_SGI_STL" /D "UDM_DYNAMIC_LINKING" /YX /FD /Zm200 /c
 # SUBTRACT CPP /Fr
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
@@ -51,7 +51,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
-# ADD LINK32 antlr.lib xerces-c_2.lib UdmDll.lib zlib.lib /nologo /subsystem:console /machine:I386 /out:"../bin/MDL2XML.exe" /libpath:"$(UDM_PATH)\Lib" /libpath:"$(UDM_PATH)\3rdParty\xerces\xerces-c_2_5_0-windows_nt-msvc_60\lib" /libpath:"$(UDM_PATH)\3rdParty\zlib" /libpath:"$(UDM_PATH)\3rdParty\antlr\antlr-2.7.1\lib"
+# ADD LINK32 antlr.lib xerces-c_2.lib UdmDll.lib zlib.lib /nologo /subsystem:console /machine:I386 /out:"../bin/MDL2XML.exe" /libpath:"$(UDM_PATH)\Lib" /libpath:"$(UDM_PATH)\3rdParty\xerces\xerces-c2_2_0-win32\lib" /libpath:"$(UDM_PATH)\3rdParty\zlib" /libpath:"$(UDM_PATH)\3rdParty\antlr\antlr-2.7.1\lib"
 # SUBTRACT LINK32 /verbose /pdb:none
 
 !ELSEIF  "$(CFG)" == "Matlab2XML - Win32 Debug"
@@ -68,7 +68,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GR /GX /ZI /Od /I "." /I "$(UDM_PATH)/include" /I "..\include" /I "$(UDM_PATH)/3rdparty/antlr-2.7.1/lib/cpp" /I "$(UDM_PATH)\3rdparty\stl" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "WITH_SGI_STL" /D "UDM_DYNAMIC_LINKING" /FR /YX /FD /I /gme/include" /I /gme/interfaces" /GZ /Zm200 " " /c
+# ADD CPP /nologo /MDd /W3 /Gm /GR /GX /ZI /Od /I "$(UDM_PATH)/3rdparty/stl" /I "." /I "$(UDM_PATH)/include" /I "..\include" /I "$(UDM_PATH)\3rdparty\antlr\antlr-2.7.1\lib\cpp" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "WITH_SGI_STL" /D "UDM_DYNAMIC_LINKING" /FR /YX /FD /I /gme/include" /I /gme/interfaces" /GZ /Zm200 " " /c
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -76,7 +76,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 antlr_D.lib xerces-c_2D.lib UdmDll_D.lib zlibD.lib /nologo /subsystem:console /debug /machine:I386 /out:"../bin/MDL2XMLd.exe" /pdbtype:sept /libpath:"$(UDM_PATH)\Lib" /libpath:"$(UDM_PATH)\3rdParty\xerces\xerces-c2_2_0-win32\lib" /libpath:"$(UDM_PATH)\3rdParty\zlib" /libpath:"$(UDM_PATH)\3rdParty\antlr-2.7.1\lib"
+# ADD LINK32 antlr_D.lib xerces-c_2D.lib UdmDll_D.lib zlibD.lib /nologo /subsystem:console /debug /machine:I386 /out:"../bin/MDL2XMLd.exe" /pdbtype:sept /libpath:"$(UDM_PATH)\Lib" /libpath:"$(UDM_PATH)\3rdParty\xerces\xerces-c2_2_0-win32\lib" /libpath:"$(UDM_PATH)\3rdParty\zlib" /libpath:"$(UDM_PATH)\3rdParty\antlr\antlr-2.7.1\lib"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ENDIF 
@@ -245,7 +245,7 @@ BuildCmds= \
 InputPath=.\mdl.g
 
 BuildCmds= \
-	java antlr.Tool $(InputPath)
+	java -classpath "c:/Program Files/ISIS/UDM/3rdparty/antlr/antlr-2.7.1/antlr.jar" antlr.Tool $(InputPath)
 
 "MDLLexer.cpp" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
    $(BuildCmds)
