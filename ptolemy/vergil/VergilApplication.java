@@ -147,6 +147,8 @@ public class VergilApplication extends MoMLApplication {
                     try {
                         new VergilApplication(args);
                     } catch (Throwable throwable) {
+                        System.err.println("xxxxxxxxxxxxxxxxxxxx");
+                        
                         // If we get an Error or and Exception while
                         // configuring, we will end up here.
                         _errorAndExit("Command failed", args, throwable);
@@ -332,7 +334,9 @@ public class VergilApplication extends MoMLApplication {
             }
         }
 
-        Configuration configuration = null;
+        // This has the side effect of merging properties from ptII.properties.
+        Configuration configuration = super._createDefaultConfiguration();
+
 
         try {
             configuration = readConfiguration(_configurationURL);

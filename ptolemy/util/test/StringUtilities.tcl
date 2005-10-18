@@ -216,6 +216,13 @@ test StringUtilities-3.8.4 {getProperty: ptolemy.ptII.dirAsURL} {
     $dirAsURL2 sameFile $ptIIURL
 } {1}
 
+test StringUtilities-3.8.6 {mergePropertiesFile} {
+    java::call ptolemy.util.StringUtilities mergePropertiesFile
+    set property [java::call ptolemy.util.StringUtilities \
+		      getProperty ptolemy.ptII.java.home]
+    expr {[string length $property] > 0} 
+} {1}
+
 test StringUtilities-3.9.1 {propertiesFileName} {
    set propertiesFileName \
 	[java::call ptolemy.util.StringUtilities propertiesFileName]
