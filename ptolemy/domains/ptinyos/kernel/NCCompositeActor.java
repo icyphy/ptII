@@ -41,8 +41,6 @@ import ptolemy.kernel.util.Workspace;
  A composite actor in the PtinyOS domain.
  This actor is always a opaque composite actor.
 
- // FIXME is this class needed?
-
  @author  Elaine Cheong
  @version $Id$
  @since Ptolemy II 5.1
