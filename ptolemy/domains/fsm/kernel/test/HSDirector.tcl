@@ -43,11 +43,11 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test HSDirector-1.1 {test constructors} {
+test HSFSMDirector-1.1 {test constructors} {
     set w [java::new ptolemy.kernel.util.Workspace]
-    set dir1 [java::new ptolemy.domains.fsm.kernel.HSDirector]
-    set dir2 [java::new ptolemy.domains.fsm.kernel.HSDirector $w]
+    set dir1 [java::new ptolemy.domains.fsm.kernel.HSFSMDirector]
+    set dir2 [java::new ptolemy.domains.fsm.kernel.HSFSMDirector $w]
     set e0 [java::new ptolemy.actor.CompositeActor]
-    set dir3 [java::new ptolemy.domains.fsm.kernel.HSDirector $e0 dir]
+    set dir3 [java::new ptolemy.domains.fsm.kernel.HSFSMDirector $e0 dir]
     list [$dir1 getFullName] [$dir2 getFullName] [$dir3 getFullName]
 } {. . ..dir}
