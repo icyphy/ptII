@@ -1044,7 +1044,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  unwilling to perform an alternative rendezvous. Thus, if this
      *  method returns true, the caller is obligated to complete
      *  the rendezvous.
-     *  @param receiver The receiver.
+     *  @param receivers The receivers.
      *  @return True if the specified receiver is ready to complete
      *   a rendezvous.
      */
@@ -1087,7 +1087,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  unwilling to perform an alternative rendezvous. Thus, if this
      *  method returns true, the caller is obligated to complete
      *  the rendezvous.
-     *  @param receiver The receiver.
+     *  @param receivers The receiver.
      *  @return True if the specified receiver is ready to complete
      *   a rendezvous.
      */
@@ -1124,7 +1124,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *  unwilling to perform an alternative rendezvous. Thus, if this
      *  method returns true, the caller is obligated to complete
      *  the rendezvous.
-     *  @param receiver The receiver.
+     *  @param receivers The receiver.
      *  @return True if the specified receiver is ready to complete
      *   a rendezvous.
      */

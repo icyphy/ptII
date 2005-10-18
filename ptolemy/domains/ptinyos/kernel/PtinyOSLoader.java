@@ -51,8 +51,9 @@ public interface PtinyOSLoader {
 
     /** A callback method (from C code) for the application to enqueue the
      *  next event.
-     *  @param newTime.  The next event, which should be a long long in C.
-     *  @IllegalActionException If there is a problem calling fireAt().
+     *  @param newTime The next event, which should be a long long in C.
+     *  @exception IllegalActionException If there is a problem calling
+     *  fireAt().
      */
     public void enqueueEvent(String newTime) throws IllegalActionException;
 
@@ -112,7 +113,7 @@ public interface PtinyOSLoader {
      *  @param message A char * in C
      *  @param nodeNumber is a short in C
      */
-    public void tosDebug(String debugMode, String messge, String nodeNumber);
+    public void tosDebug(String debugMode, String message, String nodeNumber);
 
     /** Invoke the wrapup() method of the toplevel Director.
      */

@@ -368,7 +368,7 @@ public class PtinyOSDirector extends Director {
     }
 
     /** Load TOSSIM library and call main().
-     *  @param IllegalActionException If there is a problem initializing
+     *  @exception IllegalActionException If there is a problem initializing
      *  the director, such as a problem loading the JNI loader.   
      */
     public void initialize() throws IllegalActionException {
