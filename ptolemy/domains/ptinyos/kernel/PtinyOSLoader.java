@@ -1,4 +1,4 @@
-/* FIXME Interface for
+/* Interface for the Ptolemy/TinyOS Loader.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -32,7 +32,10 @@ package ptolemy.domains.ptinyos.kernel;
 //// PtinyOSLoader
 
 /**
- FIXME A PtinyOSLoader
+ Interface for the Ptolemy/TinyOS Loader.
+ <p>The {@link ptolemy.domains.ptinyos.kernel.PtinyOSDirector#preinitialize()}
+ method creates a .java file that implements this class and then compiles
+ the .java file
 
  @author Elaine Cheong
  @version $Id$
@@ -46,30 +49,72 @@ public interface PtinyOSLoader {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** FIXME
+    /** A callback method (from C code) for the application to enqueue the
+     *  next event.
+     *  @param newTime.  The next event, which should be a long long in C.
+     *  @IllegalActionException If there is a problem calling fireAt().
+     */
+    public void enqueueEvent(String newTime) throws IllegalActionException;
+
+    /** Get a Boolean value from PortParameter named parameter.
+     *  @param parameter The parameter
+     *  @return The Boolean value of the parameter, or 0 if there is an error.
+     *  @exception IllegalActionException If there is an error.
+     */
+    public boolean getBooleanParameterValue(String parameter)
+            throws IllegalActionException;
+
+    /** Get a char value from PortParameter named parameter.
+     *  @param parameter The parameter
+     *  @return The char value of the parameter, or 0 if there is an error.
+     *  @exception IllegalActionException If there is an error.
+     */
+    public char getCharParameterValue(String parameter)
+            throws IllegalActionException;
+
+    /** Load the JNI shared object associated with the toplevel
+     *  PtinyOSDirector.
+     *  @param path The directory that contains the JNI shared object.
+     *  @param director The directory (FIXME: currently ignored?)
      */
     public void load(String path, PtinyOSDirector director);
 
+    /** Invoke the main() method associated with the toplevel PtinyOSDirector.
+     *  @param argsToMain Arguments to pass.
+     */
     public int main(String[] argsToMain);
 
-    // Called from C.
-    public void enqueueEvent(String newtime) throws IllegalActionException;
-
-    public void tosdbg(String dbgmode, String msg, String nodenum);
-
-    public char getCharParameterValue(String param)
-            throws IllegalActionException;
-
-    public boolean getBooleanParameterValue(String param)
-            throws IllegalActionException;
-
-    public int sendToPort(String portname, String expression)
-            throws IllegalActionException;
-
-    // Called from Java.
-    public void wrapup();
-    
+    /** Process an event.
+     *  @param currentTime The current time.
+     */
     public void processEvent(long currentTime);
 
+    /** Receive a packet.
+     *  @param currentTime The current time.
+     *  @param packet The packet.
+     */
     public void receivePacket(long currentTime, String packet);
+
+    /** Send an expression to a port.
+     *  @param portName The name of the port
+     *  @param expression The expression
+     *  @return 1 if the expression was successfully sent, 0 if the
+     *  port is not connected or not found and -1 if the port is
+     *  of any type other than Boolean or String.
+     *  @exception IllegalActionException If thrown by the director.
+     */ 
+    public int sendToPort(String portName, String expression)
+            throws IllegalActionException;
+
+    /** A callback method (from C code) for the application to print a debug
+     *  message.
+     *  @param debugMode A long long in C (currently unused)
+     *  @param message A char * in C
+     *  @param nodeNumber is a short in C
+     */
+    public void tosDebug(String debugMode, String messge, String nodeNumber);
+
+    /** Invoke the wrapup() method of the toplevel Director.
+     */
+    public void wrapup();
 }
