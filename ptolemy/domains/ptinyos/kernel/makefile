@@ -50,9 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	PtinyOSActor.java \
 	PtinyOSDirector.java \
-	PtinyOSLoader.java \
-	NCCompositeActor.java \
-	NCCompositeActorTableauFactory.java
+	PtinyOSLoader.java
 
 EXTRA_SRCS =	$(JSRCS)
 
