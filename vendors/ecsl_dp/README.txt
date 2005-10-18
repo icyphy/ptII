@@ -1,5 +1,27 @@
 $Id$
+
 This directory contains the ECSL_DP release from Vanderbilt.
+
+10/18/2005 - How to build!
+1. Download UDM from
+   http://escher.isis.vanderbilt.edu/downloads?tool=UDM
+   We used UDM-2.20
+   http://escher.isis.vanderbilt.edu/downloads/adown?tool=UDM/2.20/UdmBinary-2.20_setup.exe
+
+2. You will need to replace
+ c:/Program Files/ISIS/UDM/3rdparty/antlr/antlr-2.7.1/antlr_D.lib with
+   antlr/antlr-2.7.1/lib/antlr_D.lib
+
+cp antlr/antlr-2.7.1/lib/antlr_D.lib c:/Program\ Files/ISIS/UDM/3rdparty/antlr/antlr-2.7.1/lib/
+
+3. In Microsoft Visual Studio 6, open up MDL2XML/src/MDL2XML.dsw
+   and compile.
+
+4. In Microsoft Visual Studio 6, open up XML2ECSL/src/Xml2Ecsl.dsw
+   and compile.
+
+5. cd to ptolemy and run 'make demo'
+
 
 on 8/19, Attila Vizhanyo <viza@isis.vanderbilt.edu> wrote: 
 
