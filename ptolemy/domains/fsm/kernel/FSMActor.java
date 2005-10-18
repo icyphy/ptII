@@ -967,6 +967,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // enabled trnasitions.
         int length = enabledTransitions.size();
 
+        // FIXME: can be optimized when length == 1
         if (length != 0) {
             // Since the size of the list of enabled transitions usually (almost
             // always) is less than the maximum value of integer. We can safely
