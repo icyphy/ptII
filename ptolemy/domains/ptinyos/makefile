@@ -1,9 +1,9 @@
 # Makefile for PtolemyII NC Domain
 #
 # @Version: $Id$
-# @Author: Christopher Hylands Brooks (makefile only)
+# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2003-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/ptinyos
 
-DIRS =		kernel lib demo doc util
+DIRS =		kernel gui lib demo doc util
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -47,6 +47,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		kernel/kernel.jar \
+		gui/gui.jar \
 		lib/lib.jar \
 		util/util.jar
 
