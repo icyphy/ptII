@@ -687,7 +687,7 @@ $0 ~ /<entity/ {
             if (relationPortMap[name] != "") { 
                 print indent "<!-- " NR, $0, " 1 --><link port=\"" relationPortMap[name] "\" relation=\"" name "\"/>"
             }
-        } else {
+c        } else {
             print $0   
         }
     }
@@ -696,7 +696,8 @@ $1 ~ /<\/entity>/ {
     container = containerStack[containerCount] 
     containerCount -= 1         
     indent = substr($0, 0, index($0,"<") - 1)  
-
+    inputCount = 0
+    outputCount = 0
 
     # Handle places where we need to add a relation
     for (addRelation in addRelations) {
