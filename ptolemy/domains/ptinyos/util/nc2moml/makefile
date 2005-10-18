@@ -1,4 +1,4 @@
-# Makefile for the PtinyOS domain kernel
+# Makefile for the PtinyOS domain nc2moml utility.
 #
 # @Authors: Christopher Hylands
 #
