@@ -50,7 +50,7 @@ output="$modelname.moml"
 tmpfile1=/tmp/ecsl2moml.$$.1
 tmpfile2=/tmp/ecsl2moml.$$.2
 
-# Add the MoML Header and get rid of RootFolder
+echo " Add the MoML Header and get rid of RootFolder"
 awk '{
     if ($0 ~ /<RootFolder/) {
         print "<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -63,14 +63,14 @@ awk '{
     }
 }' modelname=${modelname} $input > $tmpfile1
 
-# Get rid of the StateFlow section.  FIXME: eventually, deal with this
+echo " Get rid of the StateFlow section.  FIXME: eventually, deal with this"
 awk '
     $0 ~ /<Stateflow/ { sawStateFlow = 1 }
     sawStateFlow == 0 { print $0}
     $0 ~ /<\/Stateflow/ { sawStateFlow = 0 }
 ' < $tmpfile1 > $tmpfile2
 
-# Get rid of the HardwareModels section.  FIXME: eventually, deal with this
+echo " Get rid of the HardwareModels section.  FIXME: eventually, deal with this"
 awk '
     $0 ~ /<HardwareModels/ { sawHardwareModels = 1 }
     sawHardwareModels == 0 { print $0}
@@ -84,7 +84,7 @@ grep -v "<ComponentModels" $tmpfile1 | grep -v "</ComponentModels" > $tmpfile2
 # Get rid of the enclosing <Dataflow..> </Dataflow>
 grep -v "<Dataflow" $tmpfile2 | grep -v "</Dataflow" > $tmpfile1
 
-# Convert <System ... or <ComponentSheet to <entity
+echo " Convert <System ... or <ComponentSheet to <entity"
 awk ' {
     if ($0 ~ /<System/ || $0 ~ /<ComponentSheet/ || $0 ~ /<Component/ ) {
        # Get the value of the name field
@@ -136,7 +136,7 @@ awk ' {
            } # wcet if
        } # contains wcet
 
-       useCTDirector = 0
+       useCTDirector = 1
        if (sawFirstEntity == 0 && useCTDirector == 1) {
            sawFirstEntity = 1
            # Add the director
@@ -180,7 +180,7 @@ awk ' {
            print "    </property>"
        }  
 
-       useGiottoCodeGenerator = 1
+       useGiottoCodeGenerator = 0
        if (sawFirstEntity == 0 && useGiottoCodeGenerator == 1) {
            sawFirstEntity = 1
            print indent "    <property name=\"Giotto Director\" class=\"ptolemy.domains.giotto.kernel.GiottoDirector\">"
@@ -202,7 +202,7 @@ awk ' {
 }' < $tmpfile1 > $tmpfile2
 
 
-# Convert <Annotation to MoML Annotation
+echo " Convert <Annotation to MoML Annotation"
 awk ' {
     if ($0 ~ /<Annotation/) {
 
@@ -263,7 +263,7 @@ awk ' {
 } ' < $tmpfile2 > $tmpfile1
 
 
-# Convert <Line or <Signal to <relation
+echo " Convert <Line or <Signal to <relation"
 awk ' {
     if ( $1 ~ /<Line/ || $1 ~ /<Signal/ ) {
        # Get the value of the _id field
@@ -325,7 +325,7 @@ awk ' {
 }' < $tmpfile1 > $tmpfile2
 
 
-# Convert <Primitive to <entity
+echo " Convert <Primitive to <entity"
 awk 'BEGIN {
     map["Abs"] = "vendors.ecsl_dp.ptolemy.ECSLAbs"
     map["Clock"] = "vendors.ecsl_dp.ptolemy.ECSLClock"
@@ -430,7 +430,7 @@ awk 'BEGIN {
 relationsFile=ecsl2moml.relations
 rm -f $relationsFile
 
-# Convert OutputPort and InputPort
+echo " Convert OutputPort and InputPort"
 awk '
 $0 ~ /<entity/ {
 
@@ -739,9 +739,11 @@ $1 ~ /<\/entity>/ {
                                # for processing in the next step.
  
                                # Delete the creation of the relation
+                               #print "s/[ 	]*<relation name=\"" relations[i] "\".*$//" >"ecsl2moml.relations"
                                print "s/[ 	]*<relation name=\"" relations[i] "\".*$//" >"ecsl2moml.relations"
 
                                # Substitute our relation in 
+                               #print "s/relation=\"" relations[i] "\"/relation=\"" addRelationsFullName "\"/" >"ecsl2moml.relations"
                                print "s/relation=\"" relations[i] "\"/relation=\"" addRelationsFullName "\"/" >"ecsl2moml.relations"
 
                            }
@@ -764,13 +766,23 @@ $1 ~ /<\/entity>/ {
 }' < $tmpfile1 > $tmpfile2
 
 if [ -f ecsl2moml.relations ]; then 
-    # Substitute relation names for relations where we had to add a port
-    sed -f ecsl2moml.relations < $tmpfile2 > $tmpfile1 
+    echo " Substitute relation names for relations where we had to add a port"
+    #sed -f ecsl2moml.relations < $tmpfile2 > $tmpfile1 
+    # We use multiple invocations of sed so that we can handle large files.
+    # Formerly, we used one sed with lots of expressions, which was slow.
+    seds=`wc -l ecsl2moml.relations | awk '{print $1}'`
+    awk 'NR%2 == 0 {printf("sed %c%s%c <tmp1 >tmp2\n", 39, $0, 39)}
+         NR%2 == 1 {printf("sed %c%s%c <tmp2 >tmp1\n", 39, $0, 39)}
+         {print "echo", NR, "of", seds} 
+         ' seds=${seds} ecsl2moml.relations > ecsl2moml.relations2
+    cp $tmpfile2 tmp2
+    sh ecsl2moml.relations2
+    cp tmp2 $tmpfile1
 else
     cp $tmpfile2 $tmpfile1
 fi
 
-# Parameter
+echo " Parameter"
 awk '{
     if ($1 ~ /<entity/) {
        # Get the value of the class field
