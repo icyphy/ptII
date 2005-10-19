@@ -50,7 +50,7 @@ output="$modelname.moml"
 tmpfile1=/tmp/ecsl2moml.$$.1
 tmpfile2=/tmp/ecsl2moml.$$.2
 
-STEPS=10 
+STEPS=10
 echo "1 of $STEPS: Add the MoML Header and get rid of RootFolder"
 awk '{
     if ($0 ~ /<RootFolder/) {
@@ -337,6 +337,50 @@ awk 'BEGIN {
     map["DataStoreWrite"] = "vendors.ecsl_dp.ptolemy.ECSLDataStoreWrite"
     map["DeadZone"] = "vendors.ecsl_dp.ptolemy.ECSLDeadZone"
     map["Demux"] = "vendors.ecsl_dp.ptolemy.ECSLDemux"
+    map["DiscreteFilter"] = "vendors.ecsl_dp.ptolemy.ECSLDiscreteFilter"
+    map["DiscreteIntegrator"] = "vendors.ecsl_dp.ptolemy.ECSLDiscreteIntegrator"
+    map["DiscretePulseGenerator"] = "vendors.ecsl_dp.ptolemy.ECSLDiscretePulseGenerator"
+    map["Display"] = "vendors.ecsl_dp.ptolemy.ECSLDisplay"
+    map["From"] = "vendors.ecsl_dp.ptolemy.ECSLFrom"
+    map["Gain"] = "vendors.ecsl_dp.ptolemy.ECSLGain"
+    map["Goto"] = "vendors.ecsl_dp.ptolemy.ECSLGoto"
+    map["Ground"] = "vendors.ecsl_dp.ptolemy.ECSLGround"
+    map["If"] = "vendors.ecsl_dp.ptolemy.ECSLIf"
+    map["Integrator"] = "vendors.ecsl_dp.ptolemy.ECSLIntegrator"
+    map["Interpolator"] = "vendors.ecsl_dp.ptolemy.ECSLInterpolator"
+    map["Logic"] = "vendors.ecsl_dp.ptolemy.ECSLLogic"
+    map["Math"] = "vendors.ecsl_dp.ptolemy.ECSLMath"
+    map["Memory"] = "vendors.ecsl_dp.ptolemy.ECSLMemory"
+    map["Merge"] = "vendors.ecsl_dp.ptolemy.ECSLMerge"
+    map["MinMax"] = "vendors.ecsl_dp.ptolemy.ECSLMinMax"
+    map["MultiPortSwitch"] = "vendors.ecsl_dp.ptolemy.ECSLMultiPortSwitch"
+    map["Mux"] = "vendors.ecsl_dp.ptolemy.ECSLMux"
+    map["Product"] = "vendors.ecsl_dp.ptolemy.ECSLProduct"
+    map["Reference"] = "vendors.ecsl_dp.ptolemy.ECSLReference"
+    map["RelationalOperator"] = "vendors.ecsl_dp.ptolemy.ECSLRelationalOperator"
+    map["Rounding"] = "vendors.ecsl_dp.ptolemy.ECSLRounding"
+    map["SFunction"] = "vendors.ecsl_dp.ptolemy.ECSLSFunction"
+    map["Saturate"] = "vendors.ecsl_dp.ptolemy.ECSLSaturate"
+    map["SignalSpecification"] = "vendors.ecsl_dp.ptolemy.ECSLSignalSpecification"
+    map["Signum"] = "vendors.ecsl_dp.ptolemy.ECSLSignum"
+    map["Sin"] = "vendors.ecsl_dp.ptolemy.ECSLSin"
+    map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLStep"
+    map["Stop"] = "vendors.ecsl_dp.ptolemy.ECSLStop"
+    map["Sum"] = "vendors.ecsl_dp.ptolemy.ECSLSum"
+    map["Switch"] = "vendors.ecsl_dp.ptolemy.ECSLSwitch"
+    map["Terminator"] = "vendors.ecsl_dp.ptolemy.ECSLTerminator"
+    map["ToWorkspace"] = "vendors.ecsl_dp.ptolemy.ECSLToWorkspace"
+    map["TransportDelay"] = "vendors.ecsl_dp.ptolemy.ECSLTransportDelay"
+    map["UniformRandomNumber"] = "vendors.ecsl_dp.ptolemy.ECSLUniformRandomNumber"
+    map["UnitDelay"] = "vendors.ecsl_dp.ptolemy.ECSLUnitDelay"
+    map["VariableTransportDelay"] = "vendors.ecsl_dp.ptolemy.ECSLVariableTransportDelay"
+    map["ZeroOrderHold"] = "vendors.ecsl_dp.ptolemy.ECSLZeroOrderHold"
+
+
+    map["Abs"] = "vendors.ecsl_dp.ptolemy.ECSLAbs"
+    map["Clock"] = "vendors.ecsl_dp.ptolemy.ECSLClock"
+    map["Constant"] = "vendors.ecsl_dp.ptolemy.ECSLConstant"
+    map["Demux"] = "vendors.ecsl_dp.ptolemy.ECSLDemux"
     # FIXME
     map["DiscreteFilter"] = "vendors.ecsl_dp.ptolemy.ECSLDiscreteFilter"
     map["DiscreteIntegrator"] = "vendors.ecsl_dp.ptolemy.ECSLDiscreteIntegrator"
@@ -348,12 +392,8 @@ awk 'BEGIN {
     # FIXME
     map["Goto"] = "vendors.ecsl_dp.ptolemy.ECSLGoto"
     map["Ground"] = "vendors.ecsl_dp.ptolemy.ECSLGround"
-    map["If"] = "vendors.ecsl_dp.ptolemy.ECSLIf"
-    #map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
-    map["Integrator"] = "vendors.ecsl_dp.ptolemy.ECSLIntegrator"
+    map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
     map["Logic"] = "vendors.ecsl_dp.ptolemy.ECSLLogic"
-    map["Math"] = "vendors.ecsl_dp.ptolemy.ECSLMath"
-    map["Memory"] = "vendors.ecsl_dp.ptolemy.ECSLMemory"
     map["Merge"] = "vendors.ecsl_dp.ptolemy.ECSLMerge"
     # FIXME: should be Minimum or Maximum 
     map["MinMax"] = "vendors.ecsl_dp.ptolemy.ECSLMinMax"
@@ -361,11 +401,8 @@ awk 'BEGIN {
     map["MultiPortSwitch"] = "vendors.ecsl_dp.ptolemy.ECSLMultiPortSwitch"
     map["Mux"] = "vendors.ecsl_dp.ptolemy.ECSLMux"
     map["Product"] = "vendors.ecsl_dp.ptolemy.ECSLProduct"
-    # FIXME: need to handle Simulink References
-    map["Reference"] = "vendors.ecsl_dp.ptolemy.ECSLReference"
     # FIXME
     map["RelationalOperator"] = "vendors.ecsl_dp.ptolemy.ECSLRelationalOperator"
-    map["Rounding"] = "vendors.ecsl_dp.ptolemy.ECSLRounding"
     map["S-Function"] = "vendors.ecsl_dp.ptolemy.ECSLSFunction"
     # FIXME
     map["Saturate"] = "vendors.ecsl_dp.ptolemy.ECSLSaturate"
@@ -373,8 +410,6 @@ awk 'BEGIN {
     # Generate SDF
     #map["Scope"] = "vendors.ecsl_dp.ptolemy.ECSLTimedPlotter"
     map["Scope"] = "vendors.ecsl_dp.ptolemy.ECSLSequenceScope"
-
-    map["SignalSpecification"] = "vendors.ecsl_dp.ptolemy.ECSLSignalSpecification"
 
     map["Signum"] = "vendors.ecsl_dp.ptolemy.ECSLSignum"
     # FIXME: set to Sin
@@ -384,19 +419,14 @@ awk 'BEGIN {
     # Generate SDF
     #map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLStep"
     map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLInterpolator"
-    map["Stop"] = "vendors.ecsl_dp.ptolemy.ECSLStop"
+
     map["Sum"] = "vendors.ecsl_dp.ptolemy.ECSLSum"
     map["Switch"] = "vendors.ecsl_dp.ptolemy.ECSLSwitch"
-    map["TransportDelay"] = "vendors.ecsl_dp.ptolemy.ECSLTransportDelay"
-
     map["Terminator"] = "vendors.ecsl_dp.ptolemy.ECSLTerminator"
     # FIXME
     map["ToWorkspace"] = "vendors.ecsl_dp.ptolemy.ECSLToWorkspace"
     #map["UnitDelay"] = "vendors.ecsl_dp.ptolemy.ECSLUnitDelay"
-    map["UniformRandomNumber"] = "vendors.ecsl_dp.ptolemy.ECSLUniformRandomNumber"
-
     map["UnitDelay"] = "ptolemy.domains.sdf.lib.SampleDelay"
-    map["VariableTransportDelay"] = "vendors.ecsl_dp.ptolemy.ECSLVariableTransportDelay"
     map["ZeroOrderHold"] = "vendors.ecsl_dp.ptolemy.ECSLZeroOrderHold"
 }
 {
@@ -436,12 +466,7 @@ awk 'BEGIN {
            }
        }
        indent = substr($0, 0, index($0,"<") - 1)  
-       mapClass = map[blockType]
-       if (mapClass == "") {
-           mapClass = "UNKNOWN " blockType
-       }
-
-       print indent "<entity name=\"" name "\" class=\"" mapClass "\">"
+       print indent "<entity name=\"" name "\" class=\"" map[blockType] "\">"
        print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
        print indent "     </property>"
     } else if ($1 ~ /<\/Primitive>/) {
@@ -617,7 +642,6 @@ $0 ~ /<entity/ {
 
            } else { 
                # The relation name has spaces in it, so this is a multiport
-               print indent "    <!-- Relation " relation " has spaces, so this is a multiport-->"
                print indent "    <property name=\"multiport\"/>"
            }
        }
@@ -765,9 +789,11 @@ $1 ~ /<\/entity>/ {
                                # for processing in the next step.
  
                                # Delete the creation of the relation
+                               #print "s/[ 	]*<relation name=\"" relations[i] "\".*$//" >"ecsl2moml.relations"
                                print "s/[ 	]*<relation name=\"" relations[i] "\".*$//" >"ecsl2moml.relations"
 
                                # Substitute our relation in 
+                               #print "s/relation=\"" relations[i] "\"/relation=\"" addRelationsFullName "\"/" >"ecsl2moml.relations"
                                print "s/relation=\"" relations[i] "\"/relation=\"" addRelationsFullName "\"/" >"ecsl2moml.relations"
 
                            }
@@ -790,10 +816,10 @@ $1 ~ /<\/entity>/ {
 }' < $tmpfile1 > $tmpfile2
 
 if [ -f ecsl2moml.relations ]; then 
-    echo "9 of $STEPS: Substitute relation names for relations where we had to add a port"
-    seds=`wc -l < ecsl2moml.relations` 
-    echo "         Running $seds expressions, this could take a moment. `date`"
-    sed -f ecsl2moml.relations < $tmpfile2 > $tmpfile1 
+    echo "9 of $STEPS: Substitute relation names fo relations"
+    seds=`wc -l < ecsl2moml.relations`
+    echo "         Running $seds expressions `date`"
+    sed -f ecsl2moml.relations < $tmpfile2 > $tmpfile1
     echo "         `date`"
 else
     cp $tmpfile2 $tmpfile1
