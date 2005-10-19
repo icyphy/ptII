@@ -26,6 +26,7 @@
 package ptolemy.distributed.client;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 import ptolemy.kernel.util.KernelException;
 
@@ -67,14 +68,19 @@ public class ThreadSynchronizer {
     public synchronized void commandsProcessed() {
         while (!notReadyMap.isEmpty()) {
             try {
-                System.out.println("commandsEmpty: waiting for readyMap to "
+                if (VERBOSE) {
+                    System.out.println(
+                          "commandsEmpty: waiting for readyMap to "
                         + "be empty");
+                }
                 wait();
             } catch (InterruptedException e) {
                 KernelException.stackTraceToString(e);
             }
         }
-        System.out.println("commandsProcessed!");
+        if (VERBOSE) {
+            System.out.println("commandsProcessed!");
+        }
     }
 
     /** Synchronizes access to the commands by the ClientThreads. They will
@@ -88,7 +94,9 @@ public class ThreadSynchronizer {
     public synchronized int getCommand(Object key) {
         while (commandsMap.get(key) == null) {
             try {
-                System.out.println("getCommand waiting for " + key);
+                if (VERBOSE) {
+                    System.out.println("getCommand waiting for " + key);
+                }
                 wait();
             } catch (InterruptedException e) {
                 KernelException.stackTraceToString(e);
@@ -108,7 +116,9 @@ public class ThreadSynchronizer {
      *  @param commands HashMap representing the commands.
      */
     public synchronized void setCommands(HashMap commands) {
-        System.out.println("Commands set!");
+        if (true) {
+            System.out.println("Commands set!" + commands.size());
+        }
         commandsMap.putAll(commands);
         notReadyMap.putAll(commands);
         notifyAll();
@@ -127,6 +137,9 @@ public class ThreadSynchronizer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** It states whether debugging messages should be printed. */
+    private boolean VERBOSE = false;
+    
     /** The Map containing the commands to be executed.*/
     private HashMap commandsMap = new HashMap();
 

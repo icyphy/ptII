@@ -153,7 +153,7 @@ public class DistributedDirector extends Director {
     private int lastId = 1000;
 
     /** When true depicts debugging messages. */
-    private boolean VERBOSE = true;
+    private boolean VERBOSE = false;
 
     /** Map from IDs to the receiver containing the ID. */
     private HashMap idsReceiversMap = new HashMap();

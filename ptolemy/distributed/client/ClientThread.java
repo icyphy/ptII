@@ -86,11 +86,15 @@ public class ClientThread extends Thread {
 
     public void run() {
         super.run();
-        System.out.println(service.serviceID + " starts running...");
+        if (VERBOSE) {
+            System.out.println(service.serviceID + " starts running...");            
+        }
         DistributedActor distributedActor;
         int command;
         while ((command = synchronizer.getCommand(this)) != EXIT) {
-            System.out.println(service.serviceID + " -> Command: " + command);
+            if (VERBOSE) {
+                System.out.println(service.serviceID + " -> Command: " + command);
+            }
             distributedActor = (DistributedActor) service.service;
             try {
                 switch (command) {
@@ -109,7 +113,9 @@ public class ClientThread extends Thread {
             }
             synchronizer.setReady(this);
         }
-        System.out.println(this + "Exits...");
+        if (VERBOSE) {
+            System.out.println(this + "Exits...");
+        }
         synchronizer.setReady(this);
     }
 
@@ -142,6 +148,9 @@ public class ClientThread extends Thread {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables               ////
 
+    /** It states whether debugging messages should be printed. */
+    private boolean VERBOSE = false;
+    
     /** The ThreadSynchronizer that synchronizes access to the commands.*/
     private ThreadSynchronizer synchronizer;
 

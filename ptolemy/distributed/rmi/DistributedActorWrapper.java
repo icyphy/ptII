@@ -84,7 +84,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      */
 
     public void fire() throws java.rmi.RemoteException {
-        if (VERBOSE) {
+        if (VERBOSE) { 
             System.out.println(actor.toString() + " fire()");
         }
         try {
@@ -139,8 +139,8 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      */
 
     public int iterate(int count) throws java.rmi.RemoteException {
-        if (VERBOSE) {
-            System.out.println(actor.toString() + " iterate()");
+        if (true) { 
+            System.out.println(actor.getName() + " iterate(" + count + ")");
         }
         try {
             return actor.iterate(count);

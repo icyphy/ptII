@@ -387,8 +387,10 @@ public class ClientServerInteractionManager implements DiscoveryListener,
                 }
             } else {
                 groups = LookupDiscovery.ALL_GROUPS;
-                System.out.println("    No groups specified, "
-                        + "using LookupDiscovery.ALL_GROUPS.");
+                if (VERBOSE) {
+                    System.out.println("    No groups specified, "
+                            + "using LookupDiscovery.ALL_GROUPS.");
+                }    
             }
 
         } catch (ConfigurationException e) {

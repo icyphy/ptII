@@ -41,6 +41,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.distributed.client.ClientServerInteractionManager;
@@ -186,6 +187,13 @@ public class DistributedSDFDirector extends SDFDirector {
      *  The default value is false BooleanToken.
      */
     public Parameter parallelSchedule;
+    
+    /** A Parameter representing whether a pipelined parallel execution
+     *  will be performed.
+     *  This parameter must be a boolean.
+     *  The default value is false BooleanToken.
+     */
+    public Parameter pipelining;
 
     /** A Parameter representing whether a sequential or parallel execution
      *  will be performed.
@@ -210,6 +218,17 @@ public class DistributedSDFDirector extends SDFDirector {
         if (attribute == parallelSchedule) {
             invalidateSchedule();
         }
+
+        if (attribute == parallelExecution) {
+            invalidateSchedule();
+            System.out.println(parallelExecution.getToken());
+            if (((BooleanToken) parallelExecution.getToken()) == BooleanToken.FALSE) {
+                System.out.println("equals FALSE");
+                pipelining.setToken(BooleanToken.FALSE);
+                //notify();
+            }
+        }
+        
         super.attributeChanged(attribute);
     }
 
@@ -244,15 +263,23 @@ public class DistributedSDFDirector extends SDFDirector {
 
         boolean parallelExecutionValue = ((BooleanToken) parallelExecution
                 .getToken()).booleanValue();
+        boolean pipeliningValue = ((BooleanToken) pipelining
+                .getToken()).booleanValue();
 
         if (VERBOSE) {
             System.out.println("parallelExecution: " + parallelExecutionValue);
+            System.out.println("pipelining: " + pipelining);
         }
 
         if (!parallelExecutionValue)
             super.fire();
         else {
-            parallelFire();
+            if (pipeliningValue) {
+                pipelinedParallelFire();
+            } else {
+                parallelFire();
+            }
+                
         }
     }
 
@@ -279,6 +306,10 @@ public class DistributedSDFDirector extends SDFDirector {
             mapActorsOntoServers();
             distributeActorsOntoServers();
             connectActors();
+        }
+        
+        if (((BooleanToken) pipelining.getToken()).booleanValue()) {
+            bufferingPhase();
         }
     }
 
@@ -308,12 +339,12 @@ public class DistributedSDFDirector extends SDFDirector {
             System.out.println("> DistributedSDFDirector: preinitialize");
         }
         super.preinitialize();
-        if (true) {
+        if (VERBOSE) {
             System.out.println("parallelSchedule: "
                     + ((BooleanToken) parallelSchedule.getToken())
                             .booleanValue());
-            System.out.println(getScheduler().getSchedule().toString());
         }
+        System.out.println(getScheduler().getSchedule().toString());
     }
 
     /** Invoke the wrapup() method of all the actors contained in the
@@ -332,7 +363,9 @@ public class DistributedSDFDirector extends SDFDirector {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        System.out.println(">Director: wrapup");
+        if (VERBOSE) {
+            System.out.println(">Director: wrapup");
+        }
         boolean parallelExecutionValue = ((BooleanToken) parallelExecution
                 .getToken()).booleanValue();
         if (parallelExecutionValue) {
@@ -343,6 +376,49 @@ public class DistributedSDFDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** TODO:
+     * @throws IllegalActionException
+     */
+    private void bufferingPhase() throws IllegalActionException {
+
+        System.out.println("Buffering...");
+
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException("Attempted to fire "
+                    + "system with no scheduler");
+        }
+
+        // This will throw IllegalActionException if this director
+        // does not have a container.
+        Schedule schedule = scheduler.getSchedule();
+        Iterator levels = schedule.iterator();
+        
+        commandsMap = new HashMap();
+        
+        while (levels.hasNext() && !_stopRequested) {
+
+            Schedule level = (Schedule) levels.next();
+            
+            Iterator firings = level.firingIterator();
+
+            while (firings.hasNext()) {
+                Firing firing = (Firing) firings.next();
+                Actor actor = (Actor) firing.getActor();
+                ClientThread clientThread = (ClientThread) actorsThreadsMap
+                        .get(actor);
+                clientThread.setIterationCount(firing.getIterationCount());
+                commandsMap
+                        .put(clientThread, new Integer(ClientThread.ITERATE));
+            }
+            if (levels.hasNext()) {
+                synchronizer.setCommands(commandsMap);
+                // Here is where the synchronization takes place.
+                synchronizer.commandsProcessed();
+            }
+        }        
+    }
+    
     /** Interconnect all the remote actors in the same manner as the
      *  model's topology. In other words, the connections defined by the
      *  model's topology are created virtually over the distributed
@@ -566,8 +642,8 @@ public class DistributedSDFDirector extends SDFDirector {
 
     /** Initialize the object. In this case, we give the
      *  DistributedSDFDirector a default scheduler of the class
-     *  DistributedSDFScheduler, an parallelSchedule parameter and a
-     *  parallelExecution parameter.
+     *  DistributedSDFScheduler, a parallelSchedule parameter, a
+     *  pipelining parameter and parallelExecution parameter.
      */
     private void init() throws IllegalActionException, NameDuplicationException {
 
@@ -578,11 +654,14 @@ public class DistributedSDFDirector extends SDFDirector {
         parallelSchedule = new Parameter(this, "parallelSchedule",
                 new BooleanToken(true));
         parallelSchedule.setTypeEquals(BaseType.BOOLEAN);
+        
+        pipelining = new Parameter(this, "pipelining",
+                new BooleanToken(true));
+        pipelining.setTypeEquals(BaseType.BOOLEAN);
 
         parallelExecution = new Parameter(this, "parallelExecution",
                 new BooleanToken(true));
         parallelExecution.setTypeEquals(BaseType.BOOLEAN);
-
     }
 
     /** Initializes Jini. It creates an instance of
@@ -693,6 +772,8 @@ public class DistributedSDFDirector extends SDFDirector {
 
     private void parallelFire() throws IllegalActionException {
 
+//        System.out.println("ParallelFire");        
+        
         Scheduler scheduler = getScheduler();
         if (scheduler == null) {
             throw new IllegalActionException("Attempted to fire "
@@ -703,7 +784,7 @@ public class DistributedSDFDirector extends SDFDirector {
         // does not have a container.
         Schedule schedule = scheduler.getSchedule();
         Iterator levels = schedule.iterator();
-
+        
         while (levels.hasNext() && !_stopRequested) {
 
             Schedule level = (Schedule) levels.next();
@@ -726,6 +807,61 @@ public class DistributedSDFDirector extends SDFDirector {
             synchronizer.commandsProcessed();
         }
     }
+    
+    /** TODO: Perform the dispatching of the schedule in parallel to the distributed
+     *  platform.
+     *  For each level of the Schedule, a commandMap is created and issued to
+     *  the synchronizer.
+     *  //TODO: This can be made real static, precalculate and issue might
+     *  yield slight better results? Is it worth the effort?
+     * @throws IllegalActionException
+     *
+     *  @see ptolemy.distributed.client.ThreadSynchronizer
+     *  @exception IllegalActionException If port methods throw it.
+     */
+
+    
+    private void pipelinedParallelFire() throws IllegalActionException {
+
+//        System.out.println("pipelinedParallelFire");
+        
+//        System.out.println("Iteration Count:" + _iterationCount);
+        
+        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException("Attempted to fire "
+                    + "system with no scheduler");
+        }
+
+        // This will throw IllegalActionException if this director
+        // does not have a container.
+        Schedule schedule = scheduler.getSchedule();
+        
+//        System.out.println("Schedule size:" + schedule.size());
+        
+        int aux = iterationsValue - _iterationCount;
+        
+        if ( aux < schedule.size()) {
+            Iterator firings = schedule.get(schedule.size() - aux - 1).firingIterator();            
+            while (firings.hasNext()) {
+                Firing firing = (Firing) firings.next();
+                Actor actor = (Actor) firing.getActor();
+//                System.out.println("removing: " + actor.getFullName());
+                ClientThread clientThread = (ClientThread) actorsThreadsMap
+                        .get(actor);
+                clientThread.setIterationCount(firing.getIterationCount());
+                commandsMap.remove(clientThread);
+            }
+        }
+        
+        
+        
+        synchronizer.setCommands(commandsMap);
+        // Here is where the synchronization takes place.
+        synchronizer.commandsProcessed();
+    }
 
     /** Print the actors-services mapping.
      */
@@ -747,7 +883,7 @@ public class DistributedSDFDirector extends SDFDirector {
     ////                         private variables                 ////
 
     /** It states whether debugging messages should be printed. */
-    private boolean VERBOSE = true;
+    private boolean VERBOSE = false;
 
     /** The name of the Jini configuration file to be provided to the
      *  ClientServerInteractionManager.  The name should be relative
@@ -766,4 +902,9 @@ public class DistributedSDFDirector extends SDFDirector {
      *  commandMaps.
      */
     private ThreadSynchronizer synchronizer = new ThreadSynchronizer();
+    
+    /** TODO: Performs synchronization of the ClientThreads and used to issue
+     *  commandMaps.
+     */
+    HashMap commandsMap = new HashMap();
 }
