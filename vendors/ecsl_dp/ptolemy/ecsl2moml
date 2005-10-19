@@ -50,7 +50,8 @@ output="$modelname.moml"
 tmpfile1=/tmp/ecsl2moml.$$.1
 tmpfile2=/tmp/ecsl2moml.$$.2
 
-echo " Add the MoML Header and get rid of RootFolder"
+STEPS=10 
+echo "1 of $STEPS: Add the MoML Header and get rid of RootFolder"
 awk '{
     if ($0 ~ /<RootFolder/) {
         print "<?xml version=\"1.0\" standalone=\"no\"?>"
@@ -63,14 +64,14 @@ awk '{
     }
 }' modelname=${modelname} $input > $tmpfile1
 
-echo " Get rid of the StateFlow section.  FIXME: eventually, deal with this"
+echo "2 of $STEPS: Get rid of the StateFlow section.  FIXME: eventually, deal with this"
 awk '
     $0 ~ /<Stateflow/ { sawStateFlow = 1 }
     sawStateFlow == 0 { print $0}
     $0 ~ /<\/Stateflow/ { sawStateFlow = 0 }
 ' < $tmpfile1 > $tmpfile2
 
-echo " Get rid of the HardwareModels section.  FIXME: eventually, deal with this"
+echo "3 of $STEPS: Get rid of the HardwareModels section.  FIXME: eventually, deal with this"
 awk '
     $0 ~ /<HardwareModels/ { sawHardwareModels = 1 }
     sawHardwareModels == 0 { print $0}
@@ -84,7 +85,7 @@ grep -v "<ComponentModels" $tmpfile1 | grep -v "</ComponentModels" > $tmpfile2
 # Get rid of the enclosing <Dataflow..> </Dataflow>
 grep -v "<Dataflow" $tmpfile2 | grep -v "</Dataflow" > $tmpfile1
 
-echo " Convert <System ... or <ComponentSheet to <entity"
+echo "4 of $STEPS: Convert <System ... or <ComponentSheet to <entity"
 awk ' {
     if ($0 ~ /<System/ || $0 ~ /<ComponentSheet/ || $0 ~ /<Component/ ) {
        # Get the value of the name field
@@ -202,7 +203,7 @@ awk ' {
 }' < $tmpfile1 > $tmpfile2
 
 
-echo " Convert <Annotation to MoML Annotation"
+echo "5 of $STEPS: Convert <Annotation to MoML Annotation"
 awk ' {
     if ($0 ~ /<Annotation/) {
 
@@ -263,7 +264,7 @@ awk ' {
 } ' < $tmpfile2 > $tmpfile1
 
 
-echo " Convert <Line or <Signal to <relation"
+echo "6 of $STEPS: Convert <Line or <Signal to <relation"
 awk ' {
     if ( $1 ~ /<Line/ || $1 ~ /<Signal/ ) {
        # Get the value of the _id field
@@ -325,11 +326,16 @@ awk ' {
 }' < $tmpfile1 > $tmpfile2
 
 
-echo " Convert <Primitive to <entity"
+echo "7 of $STEPS: Convert <Primitive to <entity"
 awk 'BEGIN {
     map["Abs"] = "vendors.ecsl_dp.ptolemy.ECSLAbs"
+    map["ActionPort"] = "vendors.ecsl_dp.ptolemy.ECSLActionPort"
     map["Clock"] = "vendors.ecsl_dp.ptolemy.ECSLClock"
     map["Constant"] = "vendors.ecsl_dp.ptolemy.ECSLConstant"
+    map["DataStoreMemory"] = "vendors.ecsl_dp.ptolemy.ECSLDataStoreMemory"
+    map["DataStoreRead"] = "vendors.ecsl_dp.ptolemy.ECSLDataStoreRead"
+    map["DataStoreWrite"] = "vendors.ecsl_dp.ptolemy.ECSLDataStoreWrite"
+    map["DeadZone"] = "vendors.ecsl_dp.ptolemy.ECSLDeadZone"
     map["Demux"] = "vendors.ecsl_dp.ptolemy.ECSLDemux"
     # FIXME
     map["DiscreteFilter"] = "vendors.ecsl_dp.ptolemy.ECSLDiscreteFilter"
@@ -342,8 +348,12 @@ awk 'BEGIN {
     # FIXME
     map["Goto"] = "vendors.ecsl_dp.ptolemy.ECSLGoto"
     map["Ground"] = "vendors.ecsl_dp.ptolemy.ECSLGround"
-    map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
+    map["If"] = "vendors.ecsl_dp.ptolemy.ECSLIf"
+    #map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
+    map["Integrator"] = "vendors.ecsl_dp.ptolemy.ECSLIntegrator"
     map["Logic"] = "vendors.ecsl_dp.ptolemy.ECSLLogic"
+    map["Math"] = "vendors.ecsl_dp.ptolemy.ECSLMath"
+    map["Memory"] = "vendors.ecsl_dp.ptolemy.ECSLMemory"
     map["Merge"] = "vendors.ecsl_dp.ptolemy.ECSLMerge"
     # FIXME: should be Minimum or Maximum 
     map["MinMax"] = "vendors.ecsl_dp.ptolemy.ECSLMinMax"
@@ -351,8 +361,11 @@ awk 'BEGIN {
     map["MultiPortSwitch"] = "vendors.ecsl_dp.ptolemy.ECSLMultiPortSwitch"
     map["Mux"] = "vendors.ecsl_dp.ptolemy.ECSLMux"
     map["Product"] = "vendors.ecsl_dp.ptolemy.ECSLProduct"
+    # FIXME: need to handle Simulink References
+    map["Reference"] = "vendors.ecsl_dp.ptolemy.ECSLReference"
     # FIXME
     map["RelationalOperator"] = "vendors.ecsl_dp.ptolemy.ECSLRelationalOperator"
+    map["Rounding"] = "vendors.ecsl_dp.ptolemy.ECSLRounding"
     map["S-Function"] = "vendors.ecsl_dp.ptolemy.ECSLSFunction"
     # FIXME
     map["Saturate"] = "vendors.ecsl_dp.ptolemy.ECSLSaturate"
@@ -360,6 +373,8 @@ awk 'BEGIN {
     # Generate SDF
     #map["Scope"] = "vendors.ecsl_dp.ptolemy.ECSLTimedPlotter"
     map["Scope"] = "vendors.ecsl_dp.ptolemy.ECSLSequenceScope"
+
+    map["SignalSpecification"] = "vendors.ecsl_dp.ptolemy.ECSLSignalSpecification"
 
     map["Signum"] = "vendors.ecsl_dp.ptolemy.ECSLSignum"
     # FIXME: set to Sin
@@ -369,14 +384,19 @@ awk 'BEGIN {
     # Generate SDF
     #map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLStep"
     map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLInterpolator"
-
+    map["Stop"] = "vendors.ecsl_dp.ptolemy.ECSLStop"
     map["Sum"] = "vendors.ecsl_dp.ptolemy.ECSLSum"
     map["Switch"] = "vendors.ecsl_dp.ptolemy.ECSLSwitch"
+    map["TransportDelay"] = "vendors.ecsl_dp.ptolemy.ECSLTransportDelay"
+
     map["Terminator"] = "vendors.ecsl_dp.ptolemy.ECSLTerminator"
     # FIXME
     map["ToWorkspace"] = "vendors.ecsl_dp.ptolemy.ECSLToWorkspace"
     #map["UnitDelay"] = "vendors.ecsl_dp.ptolemy.ECSLUnitDelay"
+    map["UniformRandomNumber"] = "vendors.ecsl_dp.ptolemy.ECSLUniformRandomNumber"
+
     map["UnitDelay"] = "ptolemy.domains.sdf.lib.SampleDelay"
+    map["VariableTransportDelay"] = "vendors.ecsl_dp.ptolemy.ECSLVariableTransportDelay"
     map["ZeroOrderHold"] = "vendors.ecsl_dp.ptolemy.ECSLZeroOrderHold"
 }
 {
@@ -416,7 +436,12 @@ awk 'BEGIN {
            }
        }
        indent = substr($0, 0, index($0,"<") - 1)  
-       print indent "<entity name=\"" name "\" class=\"" map[blockType] "\">"
+       mapClass = map[blockType]
+       if (mapClass == "") {
+           mapClass = "UNKNOWN " blockType
+       }
+
+       print indent "<entity name=\"" name "\" class=\"" mapClass "\">"
        print indent "    <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"[" x ", " y "]\">"
        print indent "     </property>"
     } else if ($1 ~ /<\/Primitive>/) {
@@ -430,7 +455,7 @@ awk 'BEGIN {
 relationsFile=ecsl2moml.relations
 rm -f $relationsFile
 
-echo " Convert OutputPort and InputPort"
+echo "8 of $STEPS: Convert OutputPort and InputPort"
 awk '
 $0 ~ /<entity/ {
 
@@ -592,6 +617,7 @@ $0 ~ /<entity/ {
 
            } else { 
                # The relation name has spaces in it, so this is a multiport
+               print indent "    <!-- Relation " relation " has spaces, so this is a multiport-->"
                print indent "    <property name=\"multiport\"/>"
            }
        }
@@ -739,11 +765,9 @@ $1 ~ /<\/entity>/ {
                                # for processing in the next step.
  
                                # Delete the creation of the relation
-                               #print "s/[ 	]*<relation name=\"" relations[i] "\".*$//" >"ecsl2moml.relations"
                                print "s/[ 	]*<relation name=\"" relations[i] "\".*$//" >"ecsl2moml.relations"
 
                                # Substitute our relation in 
-                               #print "s/relation=\"" relations[i] "\"/relation=\"" addRelationsFullName "\"/" >"ecsl2moml.relations"
                                print "s/relation=\"" relations[i] "\"/relation=\"" addRelationsFullName "\"/" >"ecsl2moml.relations"
 
                            }
@@ -766,23 +790,16 @@ $1 ~ /<\/entity>/ {
 }' < $tmpfile1 > $tmpfile2
 
 if [ -f ecsl2moml.relations ]; then 
-    echo " Substitute relation names for relations where we had to add a port"
-    #sed -f ecsl2moml.relations < $tmpfile2 > $tmpfile1 
-    # We use multiple invocations of sed so that we can handle large files.
-    # Formerly, we used one sed with lots of expressions, which was slow.
-    seds=`wc -l ecsl2moml.relations | awk '{print $1}'`
-    awk 'NR%2 == 0 {printf("sed %c%s%c <tmp1 >tmp2\n", 39, $0, 39)}
-         NR%2 == 1 {printf("sed %c%s%c <tmp2 >tmp1\n", 39, $0, 39)}
-         {print "echo", NR, "of", seds} 
-         ' seds=${seds} ecsl2moml.relations > ecsl2moml.relations2
-    cp $tmpfile2 tmp2
-    sh ecsl2moml.relations2
-    cp tmp2 $tmpfile1
+    echo "9 of $STEPS: Substitute relation names for relations where we had to add a port"
+    seds=`wc -l < ecsl2moml.relations` 
+    echo "         Running $seds expressions, this could take a moment. `date`"
+    sed -f ecsl2moml.relations < $tmpfile2 > $tmpfile1 
+    echo "         `date`"
 else
     cp $tmpfile2 $tmpfile1
 fi
 
-echo " Parameter"
+echo "10 of $STEPS: Parameter"
 awk '{
     if ($1 ~ /<entity/) {
        # Get the value of the class field

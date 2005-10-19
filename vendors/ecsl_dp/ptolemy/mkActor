@@ -1,5 +1,5 @@
 #!/bin/sh
-names="Abs DiscreteFilter Display From Goto Ground Integrator Logic MinMax Product Signum Sin Terminator ToWorkspace UnitDelay ZeroOrderHold"
+names="Reference"
 
 for name in $names
 do
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Settable;
 
    @author Christopher Brooks.
    @version $Id$name.java,v 1.1 2004/10/25 22:56:07 cxh Exp $
-   @since Ptolemy II 4.1
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */

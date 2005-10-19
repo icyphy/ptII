@@ -51,8 +51,13 @@ PTCLASSJAR =    ecslptolemy.jar
 # Keep this list alphabetized.
 JSRCS = \
 	ECSLAbs.java \
+	ECSLActionPort.java \
 	ECSLClock.java \
 	ECSLConstant.java \
+	ECSLDataStoreMemory.java \
+	ECSLDataStoreRead.java \
+	ECSLDataStoreWrite.java \
+	ECSLDeadZone.java \
 	ECSLDemux.java \
 	ECSLDiscreteFilter.java \
 	ECSLDiscreteIntegrator.java \
@@ -62,26 +67,36 @@ JSRCS = \
 	ECSLGain.java \
 	ECSLGoto.java \
 	ECSLGround.java \
+	ECSLIf.java \
 	ECSLIntegrator.java \
 	ECSLInterpolator.java \
 	ECSLLogic.java \
+	ECSLMath.java \
+	ECSLMemory.java \
 	ECSLMerge.java \
 	ECSLMinMax.java \
 	ECSLMultiPortSwitch.java \
 	ECSLMux.java \
 	ECSLProduct.java \
+	ECSLReference.java \
 	ECSLRelationalOperator.java \
+	ECSLRounding.java \
 	ECSLSFunction.java \
 	ECSLSaturate.java \
+	ECSLSignalSpecification.java \
 	ECSLSignum.java \
 	ECSLSin.java \
 	ECSLStep.java \
+	ECSLStop.java \
 	ECSLSum.java \
 	ECSLSwitch.java \
 	ECSLTerminator.java \
 	ECSLToWorkspace.java \
+	ECSLTransportDelay.java \
+	ECSLUniformRandomNumber.java \
 	ECSLUnitDelay.java \
-	ECSLZeroOrderHold.java
+	ECSLVariableTransportDelay.java \
+	ECSLZeroOrderHold.java \
 
 OTHER_FILES_TO_BE_JARED = \
 	ECSLSequenceScope.moml \
