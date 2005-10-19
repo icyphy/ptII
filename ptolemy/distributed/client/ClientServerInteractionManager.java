@@ -191,7 +191,7 @@ public class ClientServerInteractionManager implements DiscoveryListener,
 
         while (aliveServices.size() < requiredServices) {
 
-            if (VERBOSE) {
+            if (true) {
                 System.out.println("Not enough services yet, found: "
                         + aliveServices.size() + " required: "
                         + requiredServices);

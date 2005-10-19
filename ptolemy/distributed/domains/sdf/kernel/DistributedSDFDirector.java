@@ -416,7 +416,8 @@ public class DistributedSDFDirector extends SDFDirector {
                 // Here is where the synchronization takes place.
                 synchronizer.commandsProcessed();
             }
-        }        
+        }      
+        System.out.println("Finished Buffering...");
     }
     
     /** Interconnect all the remote actors in the same manner as the
@@ -754,7 +755,7 @@ public class DistributedSDFDirector extends SDFDirector {
             System.out.println("Not enough servers");
         }
 
-        if (VERBOSE) {
+        if (true) {
             printActorsOntoServersMap();
         }
     }
