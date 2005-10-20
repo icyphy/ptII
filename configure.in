@@ -2714,6 +2714,10 @@ changequote([, ])dnl
     fi
 fi 
 
+if test -d "$PTINYOS_MOMLROOT"; then
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT\"/>"
+fi
 if test ! -d "$TOSROOT"; then
       ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/ptinyos/" 
 fi
