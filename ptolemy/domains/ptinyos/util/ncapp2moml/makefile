@@ -1,10 +1,10 @@
 # Makefile for the PtinyOS domain ncapp2moml utility
 #
-# @Authors: Christopher Hylands
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -66,16 +66,6 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "Run \"make install\" to convert nc files to moml (take about 20 minutes)"
-	@echo "Run \"make test\" for a quick test"
-
-install: jclass
-	@echo "Warning: nc2moml takes about 20 minutes to run" 
-	./nc2moml
-
-test: jclass
-	./nc2moml -v tos/lib/Counters
-	"$(PTII)/bin/vergil" -ptinyos ../../demo/SenseToLedsInWireless/SenseToLedsInWireless.xml 
 
 include $(ROOT)/mk/ptcommon.mk
 
