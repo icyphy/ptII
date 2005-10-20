@@ -1,4 +1,8 @@
+/***initBlock***/
+    $actorSymbol(state) = $val(init);
+/**/
+
 /***fireBlock***/
-    $ref(output) = $ref(init);
-    $ref(init) += $val(step);
+    $ref(output) = $actorSymbol(state);
+    $actorSymbol(state) += $val(step);
 /**/

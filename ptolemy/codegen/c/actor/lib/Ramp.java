@@ -27,6 +27,9 @@
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -42,27 +45,58 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Red (eal)
  */
 public class Ramp extends CCodeGeneratorHelper {
-    /**
-     * Constructor method for the Ramp helper.
-     * @param actor the associated actor
+    /** Constructor method for the Ramp helper.
+     *  @param actor the associated actor
      */
     public Ramp(ptolemy.actor.lib.Ramp actor) {
         super(actor);
     }
 
-    /**
-     * Generate fire code.
-     * The method reads in <code>fireBlock</code> from Ramp.c,
-     * replaces macros with their values and appends the processed code
-     * block to the given code buffer.
-     * @param code the given buffer to append the code to.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
+    /** Generate fire code.
+     *  The method reads in <code>fireBlock</code> from Ramp.c,
+     *  replaces macros with their values and appends the processed code
+     *  block to the given code buffer.
+     *  @param code the given buffer to append the code to.
+     *  @exception IllegalActionException If the code stream encounters an
+     *   error in processing the specified code block(s).
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         super.generateFireCode(code);
         code.append(_generateBlockCode("fireBlock"));
     }
-
+    
+    /** Generate the initialize code.
+     *  @return The initialize code.
+     *  @exception IllegalActionException 
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateInitializeCode());
+        code.append(_generateBlockCode("initBlock"));
+        return processCode(code.toString());
+    }
+    
+    /** Generate the preinitialize code. Declare the variable state.
+     *  @return The preinitialize code.
+     *  @exception IllegalActionException 
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        
+        // FIXME: so far the code only works for primitive types.
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
+        Type initType = actor.init.getType();
+        Type stepType = actor.step.getType();
+        int comparison = TypeLattice.compare(initType, stepType);
+        if (comparison == CPO.HIGHER || comparison == CPO.SAME) {
+            code.append(initType.toString() + " $actorSymbol(state);\n");
+        } else if (comparison == CPO.LOWER) {
+            code.append(stepType.toString() + " $actorSymbol(state);\n");   
+        } else {
+            throw new IllegalActionException(actor, "type incomparable.");
+        }
+        return processCode(code.toString());
+    }
 }
