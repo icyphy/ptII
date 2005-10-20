@@ -27,11 +27,14 @@ COPYRIGHTENDKEY
 */
 package ptolemy.codegen.kernel;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
@@ -234,6 +237,25 @@ public class Director implements ActorCodeGenerator {
     */
    public NamedObj getComponent() {
        return _director;
+   }
+   
+   public Set getModifiedVariables() 
+           throws IllegalActionException {
+    
+       Set set = new HashSet();
+       if (_director instanceof ExplicitChangeContext) {
+           set.addAll(((ExplicitChangeContext) _director).getModifiedVariables());
+       }
+       Iterator actors = ((CompositeActor) _director.getContainer())
+               .deepEntityList().iterator();
+
+       while (actors.hasNext()) {
+           Actor actor = (Actor) actors.next();
+           CodeGeneratorHelper helperObject = 
+                   (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+           set.addAll(helperObject.getModifiedVariables());
+       }
+       return set;
    }
 
    /** Set the code generator associated with this helper class.

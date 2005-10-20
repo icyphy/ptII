@@ -190,7 +190,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(typeResolutionCode);
         generateVariableDeclarations(code);
         code.append(preinitializeCode);        
-        code.append("main(int argc, char *argv[]) {\n");
+        code.append("\n\nmain(int argc, char *argv[]) {\n");
         code.append(initializeCode);
         code.append(bodyCode);
         code.append(wrapupCode);
@@ -286,6 +286,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         TypedCompositeActor compositeActorHelper 
                 = (TypedCompositeActor) _getHelper(getContainer());
         code.append(compositeActorHelper.generatePreinitializeCode());
+        
+        _modifiedVariables = compositeActorHelper.getModifiedVariables();
              
         Attribute iterations = director.getAttribute("iterations");
         if (iterations != null) {
@@ -459,8 +461,26 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public void generateVariableDeclarations(StringBuffer code)
             throws IllegalActionException {
+        code.append("\n\n");
         code.append(comment("Variable Declarations "
                 + getContainer().getFullName()));
+        
+        // Generate variable declarations for modified variables.
+        Iterator modifiedVariables = _modifiedVariables.iterator();
+        while (modifiedVariables.hasNext()) {
+            
+            Variable variable = (Variable) modifiedVariables.next();
+            boolean isArrayType = 
+                    CodeGeneratorHelper._generateType(variable, code);
+
+            if (isArrayType) {
+                code.append("[ ]");
+            }
+
+            code.append(" = ");
+            code.append(variable.getToken().toString());
+            code.append(";\n");
+         }
 
         TypedCompositeActor compositeActorHelper 
                 = (TypedCompositeActor) _getHelper(getContainer());
@@ -670,6 +690,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         return castHelperObject;
     }
+    
+    protected Set _modifiedVariables;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

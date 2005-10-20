@@ -136,13 +136,15 @@ public class FSMDirector extends Director {
             depth++;
             State state = (State) states.next();
             Actor[] actors = state.getRefinement();
-            for (int i = 0; i < actors.length; i++) {
             
-                ActorCodeGenerator actorHelper = 
-                        (ActorCodeGenerator) _getHelper((NamedObj) actors[i]); 
-                actorHelper.generateFireCode(code);                
+            if (actors != null) {
+                for (int i = 0; i < actors.length; i++) {
+            
+                    ActorCodeGenerator actorHelper = 
+                            (ActorCodeGenerator) _getHelper((NamedObj) actors[i]); 
+                    actorHelper.generateFireCode(code);                
+                }
             }
-            
             code.append(_getIndentPrefix(depth));
             code.append("break;\n");//end of case statement
             depth--;

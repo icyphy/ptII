@@ -27,23 +27,20 @@ COPYRIGHTENDKEY
 */
 package ptolemy.codegen.c.domains.fsm.kernel;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
+import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.data.ObjectToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.fsm.kernel.AbstractActionsAttribute;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -117,23 +114,12 @@ public class FSMActor extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        _scope = new PortScope();
+        _scope = new HelperScope();
         code.append(super.generatePreinitializeCode());
         code.append("int $actorSymbol(currentState);\n");
         code.append("unsigned char $actorSymbol(transitionFlag);\n");
         return processCode(code.toString());
     }
-    
-    /** Generate the shared code. 
-     *  @return the shared code.
-     *  @exception IllegalActionException
-     */
-    public Set generateSharedCode() throws IllegalActionException {
-        Set codeBlocks = new HashSet();
-        String codeBlock = "#define true 1\n#define false 0\n";
-        codeBlocks.add(codeBlock);
-        return codeBlocks;
-     }
           
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -195,7 +181,9 @@ public class FSMActor extends CCodeGeneratorHelper {
                     Iterator destinationNameList 
                             = action.getDestinationNameList().iterator();
                     while (destinationNameList.hasNext()) {
-                        String destinationName = (String) destinationNameList.next();   
+                        String destinationName = (String) destinationNameList.next();
+                        NamedObj destination = (NamedObj) 
+                                action.getDestination(destinationName);
                         int channel = -1;
                         if (action.isChannelSpecified(destinationName)) {
                             channel = action.getChannel(destinationName);
@@ -205,14 +193,31 @@ public class FSMActor extends CCodeGeneratorHelper {
                         codeBuffer.append(_getIndentPrefix(depth));
                         if (channel >= 0) {
                             codeBuffer.append("$ref(" + 
-                                    destinationName + "#" + channel + ") = ");       
+                                    destinationName + "#" + channel + ") = ");
+                            // During choice action, an output port receives tokens
+                            // sent by itself if it is also an input port
+                            if (((IOPort) destination).isInput()) {
+                                codeBuffer.append(destination.getFullName().replace('.', '_'));
+                                if (((IOPort) destination).isMultiport()) {
+                                    codeBuffer.append( "[" + channel + "]");
+                                }
+                                codeBuffer.append( " = ");
+                            }
                         } else {// broadcast
                             int width = ((IOPort) action.getDestination
                                     (destinationName)).getWidth();;
                             for (int i = 0; i < width; i++) {
                                 codeBuffer.append("$ref(" + 
-                                        destinationName + "#" + i + ") = ");    
-                       
+                                        destinationName + "#" + i + ") = ");
+                                // During choice action, an output port receives tokens
+                                // sent by itself if it is also an input port
+                                if (((IOPort) destination).isInput()) {
+                                    codeBuffer.append(destination.getFullName().replace('.', '_'));
+                                    if (((IOPort) destination).isMultiport()) {
+                                        codeBuffer.append( "[" + i + "]");
+                                    }
+                                    codeBuffer.append( " = ");
+                                }                               
                             }
                         }
                 
@@ -220,6 +225,16 @@ public class FSMActor extends CCodeGeneratorHelper {
                         parseTreeCodeGenerator.evaluateParseTree(parseTree, _scope);
                         codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
                         codeBuffer.append(";\n");                       
+                    }
+                }
+                
+                // generate code for transition refinement
+                Actor[] actors = transition.getRefinement();
+                if (actors != null) {
+                    for (int i = 0; i < actors.length; ++i) {
+                        ActorCodeGenerator helper = 
+                                (ActorCodeGenerator) _getHelper((NamedObj) actors[i]);
+                        helper.generateFireCode(codeBuffer);
                     }
                 }
         
@@ -255,8 +270,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 }
                             }
                         } else if(destination instanceof Variable) {
-                            // FIXME: what if the variable belongs to one refinement
-                            codeBuffer.append("$ref(" + destinationName + ") = ");
+                            codeBuffer.append(destination.getFullName().replace('.', '_') + " = ");
                         }
                 
                         parseTreeCodeGenerator = new ParseTreeCodeGenerator();
@@ -279,6 +293,20 @@ public class FSMActor extends CCodeGeneratorHelper {
                     }
                     counter++;
                 }
+                
+                // generate code for reinitialization if reset is true
+                BooleanToken resetToken = (BooleanToken) transition.reset.getToken();
+                if (resetToken.booleanValue()) {
+                    actors = destinationState.getRefinement();
+                    if (actors != null) {
+                        for (int i = 0; i < actors.length; ++i) {
+                            ActorCodeGenerator helper = 
+                                    (ActorCodeGenerator) _getHelper((NamedObj) actors[i]);
+                            codeBuffer.append(helper.generateInitializeCode());
+                        }
+                    }
+                }
+                
                 depth--;
                 codeBuffer.append(_getIndentPrefix(depth));
                 codeBuffer.append("} ");
@@ -302,7 +330,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         }
         depth--;
         codeBuffer.append(_getIndentPrefix(depth));
-        codeBuffer.append("}\n");//end of switch statement      
+        codeBuffer.append("}\n");//end of switch statement   
         code.append(processCode(codeBuffer.toString()));
     }
     
@@ -312,74 +340,10 @@ public class FSMActor extends CCodeGeneratorHelper {
    
     }
     
-    /** This class implements a scope, which is used to generate the
-     *  parsed expressions in target language.
-     */
-    private class PortScope extends ModelScope {
-        /** Look up and return the macro corresponding to the specified 
-         *  name in the scope. Return null if such a macro does not exist.
-         *  @return The macro with the specified name in the scope.
-         * @throws IllegalActionException
-         *  @exception IllegalActionException Not thrown here.
-         */
-        public ptolemy.data.Token get(String name) 
-            throws IllegalActionException {
-            
-            Actor actor = (Actor) FSMActor.this.getComponent();
-            Iterator inputPorts = actor.inputPortList().iterator();
-           
-            // FIXME: need to consider multiport, multiple token consumption
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort)inputPorts.next();
-                if (inputPort.getName().equals(name)) {
-                    return new ObjectToken("$ref(" + name + ")");    
-                }
-            }
-            
-            // FIXME: if a parameter is never re-assigned in any commit actions,
-            // then we should only use $val(name). This requires two parses.
-            Attribute attribute = ((NamedObj) actor).getAttribute(name);
-            if (attribute != null) {
-                return new ObjectToken("$ref(" + name + ")") ;  
-            } else { 
-                attribute = getScopedVariable(null, (NamedObj) actor, name);
-            }
-            if (attribute != null) {
-                return new ObjectToken("$val(" + name + ")") ;  
-            } else {
-                return null;
-            }
-        }
-
-        /** This method should not be called.
-         *  @exception IllegalActionException If it is called.
-         */
-        public ptolemy.data.type.Type getType(String name)
-                throws IllegalActionException {
-            throw new IllegalActionException("This method should not be called."); 
-        }
-
-        /** This method should not be called.
-         *  @exception IllegalActionException If it is called.
-         */
-        public ptolemy.graph.InequalityTerm getTypeTerm(String name)
-                throws IllegalActionException {
-            throw new IllegalActionException("This method should not be called.");
-        }
-
-        /** This method should not be called.
-         *  @throws IllegalActionException If it is called.
-         */
-        public Set identifierSet() throws IllegalActionException {
-            throw new IllegalActionException("This method should not be called.");
-        }
-    }
-
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    private PortScope _scope = null;
+    private HelperScope _scope = null;
 
     
 }    

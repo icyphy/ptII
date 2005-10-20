@@ -1,4 +1,7 @@
 /***globalBlock***/
+#define true 1
+#define false 0
+
 #define BOOLEAN_TYPE    0
 #define INT_TYPE        1
 #define DOUBLE_TYPE     2

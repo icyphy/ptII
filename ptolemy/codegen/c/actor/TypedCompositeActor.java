@@ -210,6 +210,17 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return files;
     }
     
+    public Set getModifiedVariables() 
+            throws IllegalActionException {
+        
+        Set set = new HashSet();
+        set.addAll(super.getModifiedVariables());
+        Director directorHelper = (Director) _getHelper
+                ((NamedObj) ((ptolemy.actor.CompositeActor) 
+                getComponent()).getDirector());
+        set.addAll(directorHelper.getModifiedVariables());
+        return set;
+    }
     
     /** Reset the offsets of all inside channels of all output ports of the 
      *  associated actor to the default value of 0.
