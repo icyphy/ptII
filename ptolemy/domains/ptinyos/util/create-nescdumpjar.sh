@@ -10,7 +10,7 @@
 ###########################################################################
 
 # Source directory for the nesc java tools.
-SRC_DIR=/home/celaine/tinyos/nesc/tools/java
+SRC_DIR=$PTII/vendors/ptinyos/nesc/tools/java
 
 # Note: if using the nc2moml install instructions, use this SRC_DIR instead.
 #SRC_DIR=$PTII/vendors/ptinyos/nesc/tools/java
