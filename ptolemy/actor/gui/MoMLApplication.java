@@ -249,8 +249,10 @@ public class MoMLApplication implements ExecutionListener {
             } catch (Exception ex2) {
                 //Ignored
             }
-            String errorMessage = "Failed to parse \""
-                    + argsStringBuffer.toString() + "\"";
+            // Make sure we throw an exception if one is caught.
+            // If we don't, then running vergil -foo will just exit.
+            throw new Exception("Failed to parse \""
+                    + argsStringBuffer.toString() + "\"", ex);
         }
     }
 
