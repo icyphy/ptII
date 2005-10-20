@@ -125,7 +125,7 @@ to another. Then delete this annotation.</text></svg></configure></property>
       <input source="ptolemy/configs/fsmTableauFactory.xml"/>
 
       <property name="NCCompositeActor Editor"
-          class="ptolemy.domains.ptinyos.kernel.NCCompositeActorTableauFactory">
+          class="ptolemy.domains.ptinyos.gui.NCCompositeActorTableauFactory">
           <property name="_library" class="ptolemy.moml.LibraryAttribute">
               <input source="ptolemy/configs/viptos/library.xml"/>
           </property>

@@ -934,7 +934,9 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
         String toplevelName = _sanitizedFullName(toplevel);
 
         _CodeString text = new _CodeString();
-        text.addLine("TOSROOT=" + tosroot.stringValue());
+        String tosrootNoSlashAtEnd = tosroot.stringValue().replaceFirst("/$", "");
+        text.addLine("TOSROOT=" + tosrootNoSlashAtEnd);
+        text.addLine("TOSDIR=" + tosrootNoSlashAtEnd + "/tos");
 
         // path to contrib
         // FIXME use pathseparator?

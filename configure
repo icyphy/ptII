@@ -1621,7 +1621,7 @@ if test "${with_find+set}" = set; then
   withval="$with_find"
   FIND=$withval
 else
-  FIND=/bin/find
+  FIND=/usr/bin/find
 fi;
 # Extract the first word of "find", so it can be a program name with args.
 set dummy find; ac_word=$2
@@ -1671,10 +1671,8 @@ echo "$as_me: WARNING: \"Your path is probably messed up, you have a system32
 fi
 
 if test ! -f "$FIND"; then
-    { echo "$as_me:$LINENO: WARNING: "Could not find the "find" command,
-    looked in \"$FIND\""" >&5
-echo "$as_me: WARNING: "Could not find the "find" command,
-    looked in \"$FIND\""" >&2;}
+    { echo "$as_me:$LINENO: WARNING: "Could not find the "find" command, looked in \"$FIND\""" >&5
+echo "$as_me: WARNING: "Could not find the "find" command, looked in \"$FIND\""" >&2;}
 fi
 
 
@@ -8494,10 +8492,9 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
-  #    will be set to the directory where LIBOBJS objects are built.
-  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 

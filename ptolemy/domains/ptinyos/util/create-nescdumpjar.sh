@@ -10,8 +10,10 @@
 ###########################################################################
 
 # Source directory for the nesc java tools.
-# FIXME: if using the nc2moml install instructions, SRC_DIR should be $PTII/vendors/ptinyos/nesc/tools/java
 SRC_DIR=/home/celaine/tinyos/nesc/tools/java
+
+# Note: if using the nc2moml install instructions, use this SRC_DIR instead.
+#SRC_DIR=$PTII/vendors/ptinyos/nesc/tools/java
 
 # Temporary directory for storing the jar sources.
 # Warning!!! This directory will be automatically deleted!!!
@@ -32,8 +34,8 @@ OUTPUT_FILENAME=nesc-dump
 # Create the output directory.
 mkdir $TEMP_DIR
 
-# Archive the files, but not CVS directories or files with pattern *.java~
-gtar -C $SRC_DIR --exclude=CVS --exclude=*.java\~ -czf $TEMP_DIR/$OUTPUT_FILENAME.tgz net
+# Archive the files, but not CVS directories or files with pattern *~
+gtar -C $SRC_DIR --exclude=CVS --exclude=*\~ -czf $TEMP_DIR/$OUTPUT_FILENAME.tgz net
 echo "Created $OUTPUT_FILENAME.tgz in $TEMP_DIR"
 
 # Extract the files.

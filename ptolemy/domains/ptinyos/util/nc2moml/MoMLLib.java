@@ -53,9 +53,9 @@ import ptolemy.util.FileUtilities;
    those files and all parent directories.
 
   Usage:
-    MoMLLib <input suffix> <output filename> <root dir of input files>
+    MoMLLib <input suffix> <top-level output filename> <output filename> <root dir of input files>
 
-  Example: MoMLLib .moml _TOSIndex.moml /home/celaine/ptII/vendors/ptinyos/moml
+  Example: MoMLLib .moml _TOSIndex.moml _index.moml /home/celaine/ptII/vendors/ptinyos/moml
 
  @author Elaine Cheong, contributor: Christopher Brooks
  @version $Id$
@@ -149,7 +149,7 @@ public class MoMLLib {
             }
             String[] subNames = c.split("/");
             String componentName = subNames[subNames.length - 1];
-            String className = c.replaceAll("/", ".");
+            String className = c.replace('/', '.');
 
             Element entity = new Element("entity");
             entity.setAttribute("name", componentName);
@@ -200,18 +200,20 @@ public class MoMLLib {
     }
 
     public static void main(String[] args) {
-        if (args.length < 2) {
+        if (args.length < 3) {
             System.err.println("Usage: java MoMLLib <input suffix> " +
-                    "<output filename> <root dir of input files>");
+                    "<top-level output filename> <output filename> <root dir of input files>");
             return;
         }
 
-        String inputSuffix = args[0].trim();
-        String outputFilename = args[1].trim();
-        String rootDir = args[2].trim();
+        int i = 0;
+        String inputSuffix = args[i++].trim();
+        String toplevelOutputFilename = args[i++].trim();
+        String outputFilename = args[i++].trim();
+        String rootDir = args[i++].trim();
 
         try {
-            MoMLLib.proc(inputSuffix, outputFilename, rootDir, rootDir);
+            MoMLLib.proc(inputSuffix, outputFilename, toplevelOutputFilename, rootDir, rootDir);
         } catch (Throwable throwable) {
             System.err.println("Command failed: " + throwable);
             throwable.printStackTrace();
@@ -221,6 +223,7 @@ public class MoMLLib {
     /** Traverse the directory tree recursively and generate .moml index files.
      *
      *  @param inputSuffix Suffix for the input files to look for.
+     *  @param indexFilename Name of the index file to look for.
      *  @param outputFilename Name of the index file to generate.
      *  @param root Root dir of the input files.
      *  @param currentDir The current directory in this call to proc().
@@ -229,7 +232,8 @@ public class MoMLLib {
      */
     public static void proc(
             final String inputSuffix,
-            final String outputFilename,
+            final String indexFilename,
+            String outputFilename,
             String root,
             String currentDir) throws Exception {
         if (File.separator.equals("\\")) {
@@ -247,22 +251,24 @@ public class MoMLLib {
 
         // Recursive call.
         for (int i = 0; i < children.length; i++) {
-            proc(inputSuffix, outputFilename, root, children[i].toString());
+            // Output filename same as index filename for non-top level.
+            proc(inputSuffix, indexFilename, indexFilename, root,
+                    children[i].toString());
         }
 
-        // Filter for files with name == outputFilename.
-        FilenameFilter filterForOutputFilename = new FilenameFilter() {
+        // Filter for files with name == indexFilename.
+        FilenameFilter filterForIndexFilename = new FilenameFilter() {
                 public boolean accept(File dir, String name) {
-                    return name.equals(outputFilename);
+                    return name.equals(indexFilename);
                 }
             };
 
         ArrayList indexFiles = new ArrayList();
 
-        // Look for outputFilename in children directories.
+        // Look for indexFilename in children directories.
         for (int i = 0; i < children.length; i++) {
             File[] grandchildren =
-                children[i].listFiles(filterForOutputFilename);
+                children[i].listFiles(filterForIndexFilename);
             if (grandchildren.length == 1) {
                 String indexFile = grandchildren[0].toString();
                 if (File.separator.equals("\\")) {
@@ -282,7 +288,7 @@ public class MoMLLib {
             } else {
                 if (grandchildren.length > 1) {
                     throw new Exception("Duplicate file "
-                            + outputFilename
+                            + indexFilename
                             + " in "
                             + children[i]);
                 }
@@ -290,11 +296,11 @@ public class MoMLLib {
         }
 
         // Filter for files with name ending in inputSuffix and not
-        // outputFilename.
+        // indexFilename.
         FilenameFilter filterForInputSuffix = new FilenameFilter() {
                 public boolean accept(File dir, String name) {
                     return name.endsWith(inputSuffix) &&
-                        !name.equals(outputFilename);
+                        !name.equals(indexFilename);
                 }
             };
  

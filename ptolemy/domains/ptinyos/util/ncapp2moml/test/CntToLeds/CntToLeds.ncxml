@@ -1,0 +1,149 @@
+<nesc xmlns="http://www.tinyos.net/nesC">
+  <components>
+    <component qname="CntToLeds" loc="35:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/CntToLeds/CntToLeds.nc">
+      <documentation loc="35:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/CntToLeds/CntToLeds.nc">
+        <short> This application is built by wiring the TimerC, IntToLeds and&#10;Counter components together.&#10;</short>
+      </documentation>
+      <configuration/>
+      <wiring>
+        <wire loc="42:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/CntToLeds/CntToLeds.nc">
+          <from><interface-ref name="StdControl" scoped="" ref="0xf6e6b010"/></from>
+          <to><interface-ref name="StdControl" scoped="" ref="0xf6e1b3e0"/></to>
+        </wire>
+        <wire loc="41:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/CntToLeds/CntToLeds.nc">
+          <from><interface-ref name="StdControl" scoped="" ref="0xf6e6b010"/></from>
+          <to><interface-ref name="StdControl" scoped="" ref="0xf6e687d0"/></to>
+        </wire>
+        <wire loc="40:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/CntToLeds/CntToLeds.nc">
+          <from><interface-ref name="StdControl" scoped="" ref="0xf6e6b010"/></from>
+          <to><interface-ref name="StdControl" scoped="" ref="0xf6e3d240"/></to>
+        </wire>
+        <wire loc="43:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/CntToLeds/CntToLeds.nc">
+          <from><interface-ref name="Timer" scoped="" ref="0xf6e462d0"/></from>
+          <to><interface-ref name="Timer" scoped="" ref="0xf6e3eef8"/>
+          <arguments>
+            <value cst="I:0">
+              <type-int cname="unsigned int" unsigned="" size="I:2" alignment="I:1"/>
+            </value>
+          </arguments>
+          </to>
+        </wire>
+        <wire loc="44:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/CntToLeds/CntToLeds.nc">
+          <from><interface-ref name="IntOutput" scoped="" ref="0xf6e42148"/></from>
+          <to><interface-ref name="IntOutput" scoped="" ref="0xf6e6edd8"/></to>
+        </wire>
+      </wiring>
+    </component>
+  </components>
+  <interfaces>
+    <interface provided="0" name="StdControl" ref="0xf6e6b010" loc="45:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/system/Main.nc">
+      <component-ref qname="Main"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="StdControl" scoped="" ref="0xf6e6b010"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="StdControl"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="init" scoped="" ref="0xf6e6b1d8"/>
+        <function-ref name="start" scoped="" ref="0xf6e6b2a8"/>
+        <function-ref name="stop" scoped="" ref="0xf6e6b378"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="StdControl" ref="0xf6e1b3e0" loc="53:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/system/TimerC.nc">
+      <component-ref qname="TimerC"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="StdControl" scoped="" ref="0xf6e1b3e0"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="StdControl"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="init" scoped="" ref="0xf6e1b5a8"/>
+        <function-ref name="start" scoped="" ref="0xf6e1b678"/>
+        <function-ref name="stop" scoped="" ref="0xf6e1b748"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="StdControl" ref="0xf6e687d0" loc="46:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/lib/Counters/Counter.nc">
+      <component-ref qname="Counter"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="StdControl" scoped="" ref="0xf6e687d0"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="StdControl"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="init" scoped="" ref="0xf6e68998"/>
+        <function-ref name="start" scoped="" ref="0xf6e68a68"/>
+        <function-ref name="stop" scoped="" ref="0xf6e68b38"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="StdControl" ref="0xf6e3d240" loc="47:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/lib/Counters/IntToLeds.nc">
+      <component-ref qname="IntToLeds"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="StdControl" scoped="" ref="0xf6e3d240"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="StdControl"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="init" scoped="" ref="0xf6e3d408"/>
+        <function-ref name="start" scoped="" ref="0xf6e3d4d8"/>
+        <function-ref name="stop" scoped="" ref="0xf6e3d5a8"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="Timer" ref="0xf6e462d0" loc="49:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/lib/Counters/Counter.nc">
+      <component-ref qname="Counter"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Timer" scoped="" ref="0xf6e462d0"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Timer"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="fired" scoped="" ref="0xf6e46498"/>
+        <function-ref name="start" scoped="" ref="0xf6e46568"/>
+        <function-ref name="stop" scoped="" ref="0xf6e46638"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="Timer" ref="0xf6e3eef8" loc="52:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/system/TimerC.nc">
+      <component-ref qname="TimerC"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Timer" scoped="" ref="0xf6e3eef8"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Timer"/>
+      </instance>
+      <interface-parameters>
+        <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1"/>
+      </interface-parameters>
+      <interface-functions>
+        <function-ref name="fired" scoped="" ref="0xf6e1b0e0"/>
+        <function-ref name="start" scoped="" ref="0xf6e1b1b0"/>
+        <function-ref name="stop" scoped="" ref="0xf6e1b280"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="IntOutput" ref="0xf6e42148" loc="50:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/lib/Counters/Counter.nc">
+      <component-ref qname="Counter"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="IntOutput" scoped="" ref="0xf6e42148"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="IntOutput"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="outputComplete" scoped="" ref="0xf6e42310"/>
+        <function-ref name="output" scoped="" ref="0xf6e423e0"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="IntOutput" ref="0xf6e6edd8" loc="46:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/lib/Counters/IntToLeds.nc">
+      <component-ref qname="IntToLeds"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="IntOutput" scoped="" ref="0xf6e6edd8"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="IntOutput"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="outputComplete" scoped="" ref="0xf6e3d010"/>
+        <function-ref name="output" scoped="" ref="0xf6e3d0e0"/>
+      </interface-functions>
+    </interface>
+  </interfaces>
+  <interfacedefs>
+  </interfacedefs>
+  <tags>
+  </tags>
+  <variables>
+  </variables>
+  <constants>
+  </constants>
+  <functions>
+  </functions>
+  <typedefs>
+  </typedefs>
+</nesc>

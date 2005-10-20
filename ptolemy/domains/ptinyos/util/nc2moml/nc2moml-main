@@ -43,7 +43,8 @@ if ($#ARGV < 2) {
 $VERBOSE = $ENV{NC2MOML_VERBOSE};
 $SRC_DIR = "$ENV{PTII}/ptolemy/domains/ptinyos/util/nc2moml";
 $outputsuffix = ".ncxml";
-$indexfilename = "_TOSIndex.moml";
+$toplevelindexfilename = "_TOSIndex.moml";
+$indexfilename = "_index.moml";
 $tempfilename = ".tempfile";
 ####################
 
@@ -121,10 +122,10 @@ $outputprefix/$ENV{NC2MOML_LOG}\n");
 
 # Call utility to create index files from .moml files.
 # Append the command and its output to the .txt file.
-system("echo \"$ENV{PTII}/bin/.momllib-util .moml $indexfilename $outputprefix\" >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1");
+system("echo \"$ENV{PTII}/bin/.momllib-util .moml $toplevelindexfilename $indexfilename $outputprefix\" >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1");
 print("\nCreating index files from .moml files.  Any errors will be redirected \
 to $outputprefix/$ENV{NC2MOML_LOG}\n");
-$momllibcmd = "$ENV{PTII}/bin/.momllib-util .moml $indexfilename $outputprefix >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1";
+$momllibcmd = "$ENV{PTII}/bin/.momllib-util .moml $toplevelindexfilename $indexfilename $outputprefix >> $outputprefix/$ENV{NC2MOML_LOG} 2>&1";
 system($momllibcmd) == 0
   or die "system @args failed: $?";
 

@@ -215,7 +215,7 @@ esac
 AC_ARG_WITH(find, [  --with-find=PATH         use the find command from PATH,
                            PTJAVA_DIR environment variable],
     FIND=$withval,
-    FIND=/bin/find)
+    FIND=/usr/bin/find)
 AC_PATH_PROG(FIND, find)
 if test `echo "$FIND" | grep system32`; then
     AC_MSG_WARN(["Your path is probably messed up, you have a system32
@@ -224,8 +224,7 @@ if test `echo "$FIND" | grep system32`; then
 fi
 
 if test ! -f "$FIND"; then
-    AC_MSG_WARN(["Could not find the "find" command,
-    looked in \"$FIND\""])
+    AC_MSG_WARN(["Could not find the "find" command, looked in \"$FIND\""])
 fi    
 
 
