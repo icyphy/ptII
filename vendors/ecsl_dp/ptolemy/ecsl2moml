@@ -31,6 +31,25 @@
 
 # Usage: ecsl2moml ecslfile
 
+# Limitations:
+#     Looks like the conversion tool loses the connection between
+#     ports of a hierarchical actor and the inside relation...
+#    
+#     The Switch block is not properly translated because the
+#     corresponding actor has a multiport, and it appears that
+#     the order of connections is different. But for the Switch
+#     block, the order matters.
+#    
+#     Also, forked connections are not properly translated.
+#     They seem to translate into multiple connections to the
+#     originating port.
+#    
+#     Also, for many blocks like Sum, Product, it would be better
+#     to translate these into native PtII actors like AddSubtract,
+#     MultiplyDivide.  This requires being smarter about which
+#     ports to connect to, however, so it could be a good bit
+#     of work to do this.
+
 if [ $# -ne 1 ]; then
     echo "$0: Usage: $0 ecslfile"
     echo "   Read in ecslfile, generate a MoML file with the same base name"
