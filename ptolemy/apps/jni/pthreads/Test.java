@@ -1,4 +1,5 @@
 // Test.java
+package ptolemy.apps.jni.pthreads;
 class Test
 {
     long c = 0;
