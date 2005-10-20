@@ -175,7 +175,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 50.0]">
             </property>
         </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="y" class="ptolemy.data.expr.Parameter" value="5">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -194,13 +194,19 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 80.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={100, 160, 815, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
+        <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="y is re-assigned value in transtion, therefore&#10;the reference for y is created, but not for x.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 20.0]">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -279,7 +285,7 @@
             </property>
         </relation>
         <relation name="relation6" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(x == 9) &amp;&amp; (input ==3)">
+            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(x == 1) &amp;&amp; (input ==3)">
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = 1000">
             </property>
@@ -301,7 +307,7 @@
             </property>
             <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="output = x + y">
             </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="x = 9; y = 10">
+            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="y = 10">
             </property>
             <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.2573311629056434">
             </property>
@@ -330,7 +336,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{490.0, 185.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
