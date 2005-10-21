@@ -7575,14 +7575,61 @@ echo "${ECHO_T}The TOSROOT environment variable is not present,
 else
     if test ! -d "$TOSROOT"; then
         { echo "$as_me:$LINENO: WARNING: \$TOSROOT is set to '$TOSROOT',
-     but there is no directory by that name, so we will not set up for PtinyOS." >&5
+     but there is no directory by that name, so we will not set up for PtinyOS.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&5
 echo "$as_me: WARNING: \$TOSROOT is set to '$TOSROOT',
-     but there is no directory by that name, so we will not set up for PtinyOS." >&2;}
+     but there is no directory by that name, so we will not set up for PtinyOS.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&2;}
     else
         echo "$as_me:$LINENO: result: $TOSROOT" >&5
 echo "${ECHO_T}$TOSROOT" >&6
         # Use changequote to protect the square brackets in sed
         TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+
+        echo "$as_me:$LINENO: checking for TOSDIR directory" >&5
+echo $ECHO_N "checking for TOSDIR directory... $ECHO_C" >&6
+        if test ! -d "$TOSDIR"; then
+	    { echo "$as_me:$LINENO: WARNING: \$TOSDIR is set to '$TOSDIR',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&5
+echo "$as_me: WARNING: \$TOSDIR is set to '$TOSDIR',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&2;}
+        else
+	    echo "$as_me:$LINENO: result: $TOSDIR" >&5
+echo "${ECHO_T}$TOSDIR" >&6
+        fi
+
+        echo "$as_me:$LINENO: checking for PTINYOS_MOMLROOT" >&5
+echo $ECHO_N "checking for PTINYOS_MOMLROOT... $ECHO_C" >&6
+	if test -z "$PTINYOS_MOMLROOT"; then
+	    { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT is not set.
+    For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&5
+echo "$as_me: WARNING: \$PTINYOS_MOMLROOT is not set.
+    For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&2;}
+        else
+            echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+            if test ! -d "$PTINYOS_MOMLROOT"; then
+                # Try to make the directory
+	        mkdir -p "$PTINYOS_MOMLROOT"
+            fi
+            echo "$as_me:$LINENO: checking for PTINYOS_MOMLROOT directory" >&5
+echo $ECHO_N "checking for PTINYOS_MOMLROOT directory... $ECHO_C" >&6
+            if test ! -d "$PTINYOS_MOMLROOT"; then
+	        { echo "$as_me:$LINENO: WARNING: \$PTINYOS_MOMLROOT is set to '$PTINYOS_MOMLROOT',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&5
+echo "$as_me: WARNING: \$PTINYOS_MOMLROOT is set to '$PTINYOS_MOMLROOT',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&2;}
+            else
+                ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                    <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT\"/>"
+	        echo "$as_me:$LINENO: result: $PTINYOS_MOMLROOT" >&5
+echo "${ECHO_T}$PTINYOS_MOMLROOT" >&6
+            fi
+        fi
 
         # Add TOSROOT and jars to the classpath
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
@@ -7592,10 +7639,6 @@ echo "${ECHO_T}$TOSROOT" >&6
     fi
 fi
 
-if test -d "$PTINYOS_MOMLROOT"; then
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-        <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT\"/>"
-fi
 if test ! -d "$TOSROOT"; then
       ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/ptinyos/"
 fi
