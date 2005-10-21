@@ -27,6 +27,18 @@
 
     <h2>Installation instructions</h2>
 
+ <p><BLOCKQUOTE>
+	<B>Note: As of 10/05, Windows users will not be able
+       to run TinyOS models inside Ptolemy.</B>
+	The reason is that reloading the TinyOS shared objects
+	into the running Ptolemy interface fails because the
+	TinyOS shared objects use pthreads and under Windows, Java
+	is using Windows native threads.  We are working on a
+	solution.  In the interim, Windows users can convert 
+	.nc files to .moml files and create models, but running
+	the model fails.
+</BLOCKQUOTE>
+
     <p> These installation instructions assume that you already have
     Ptolemy II installed, and that if you are running on Windows, you
     already have Cygwin installed.  These instructions also assume
