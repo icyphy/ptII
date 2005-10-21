@@ -47,10 +47,11 @@ import ptolemy.kernel.util.Workspace;
  accelerometer (x- and y-axis), magnetometer (x- and y-axis); and
  output ports for the LEDs (red, green, and yellow).
 
- Note: the ports are actually of type unsigned short (uint16_t),
+ <p>Note: the ports are actually of type unsigned short (uint16_t),
  although we implement them with double tokens.
    
- Port information from tinyos-1.x/tos/platform/pc/sensorboard.h:
+ <p>Port information from tinyos-1.x/tos/platform/pc/sensorboard.h:
+<pre>
      enum {
      TOS_ADC_PHOTO_PORT = 1,
      TOS_ADC_TEMP_PORT = 2,
@@ -61,7 +62,8 @@ import ptolemy.kernel.util.Workspace;
      // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
      TOS_ADC_MAG_Y_PORT = 8,
      };
-     
+</pre>     
+
  @author Elaine Cheong
  @version $Id$
  @Pt.ProposedRating Red (celaine)
