@@ -69,8 +69,7 @@ public class MicaLeds extends TypedAtomicActor {
      *   actor with this name.
      */
     public MicaLeds(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException,
-            java.lang.Exception {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create the node icon.
