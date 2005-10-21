@@ -51,7 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	MoMLLib.java \
-	Nc2Moml.java
+	NC2MoML.java
 
 EXTRA_SRCS =	$(JSRCS)
 

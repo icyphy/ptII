@@ -51,13 +51,22 @@ import org.xml.sax.SAXException;
   Generate a .moml file for each .nc file in the input list.
 
   Usage:
-    Nc2Moml <xml input prefix> <xml input suffix> <nc sub prefix>
-            <moml output prefix>
-           [long path to file containing list of .nc files using short path]
-
-  Example: Nc2Moml /home/celaine/ptII/vendors/ptinyos/moml .ncxml \'$CLASSPATH\' /home/celaine/ptII/vendors/ptinyos/moml /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
-
+  <pre>
+  java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
+     &lt;<i>xml input prefix</i>&gt; &lt;<i>xml input suffix<i>&gt; \
+     &lt;<i>nc sub prefix</i>&gt;
+     &lt;<i>moml output prefix</i>&gt;
+     <i>long path to file containing list of .nc files using short path</i>
+  <pre>
+  Example:
+  <pre>
+java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
+    /home/celaine/ptII/vendors/ptinyos/moml .ncxml \'$CLASSPATH\' \
+    /home/celaine/ptII/vendors/ptinyos/moml \
+   /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
+  </pre>
   .tempfile contains:
+  <pre>
 tos/lib/Counters/Counter.nc
 tos/lib/Counters/IntToLeds.nc
 tos/lib/Counters/IntToLedsM.nc
@@ -66,37 +75,42 @@ tos/lib/Counters/IntToRfmM.nc
 tos/lib/Counters/RfmToInt.nc
 tos/lib/Counters/RfmToIntM.nc
 tos/lib/Counters/SenseToInt.nc
+  </pre>
 
    Example output for Counter.nc:
-<?xml version="1.0"?>
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<pre>
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
 
-<class name="Counter" extends="ptolemy.domains.ptinyos.lib.NCComponent">
-  <property name="source" value="$CLASSPATH/tos/lib/Counters/Counter.nc" />
-  <port name="IntOutput" class="ptolemy.actor.IOPort">
-    <property name="output" />
-    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" />
-  </port>
-  <port name="StdControl" class="ptolemy.actor.IOPort">
-    <property name="input" />
-    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" />
-  </port>
-  <port name="Timer" class="ptolemy.actor.IOPort">
-    <property name="output" />
-    <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" />
-  </port>
-</class>
-
-  Expects <xml input prefix> to contain files with <xml input suffix> containing
+&lt;class name="Counter" extends="ptolemy.domains.ptinyos.lib.NCComponent"&gt;
+  &lt;property name="source" value="$CLASSPATH/tos/lib/Counters/Counter.nc" /&gt;
+  &lt;port name="IntOutput" class="ptolemy.actor.IOPort"&gt;
+    &lt;property name="output" /&gt;
+    &lt;property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" /&gt;
+  &lt;/port&gt;
+  &lt;port name="StdControl" class="ptolemy.actor.IOPort"&gt;
+    &lt;property name="input" /&gt;
+    &lt;property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" /&gt;
+  &lt;/port&gt;
+  &lt;port name="Timer" class="ptolemy.actor.IOPort"&gt;
+    &lt;property name="output" /&gt;
+    &lt;property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" /&gt;
+  &lt;/port&gt;
+&lt;/class&gt;
+</pre>
+  Expects &lt;<i>xml input prefix</i>&gt;
+   to contain files with &lt;<i>xml input suffix</i>&gt; containing
   an xml dump of:
+<pre>
       interfaces(file(filename.nc))
+</pre>
 
    @author Elaine Cheong
    @version $Id$
    @Pt.ProposedRating Red (celaine)
    @Pt.AcceptedRating Red (celaine)
 */
-public class Nc2Moml {
+public class NC2MoML {
     /** Generate the .moml file for this nesC component.
      *
      *  @param sourcePath The path to the component source file (.nc).
@@ -108,7 +122,8 @@ public class Nc2Moml {
         // Set the name of this class to the name of this nesC component.
         Element root = new Element("class");
         root.setAttribute("name", componentName);
-        root.setAttribute("extends", "ptolemy.domains.ptinyos.lib.NCComponent");
+        root.setAttribute("extends",
+                "ptolemy.domains.ptinyos.lib.NCComponent");
 
         // Set the path to the .nc source file.
         Element source = new Element("property");
@@ -192,12 +207,21 @@ public class Nc2Moml {
         }
     }
 
+    /** Read in .nc files, generate .moml files.
+     *  @param args A series of command line arguments, see the
+     *  class comment for details.
+     *  @exception IOException If there is a problem reading or
+     *  writing a file.   
+     */
     public static void main(String[] args) throws IOException {
         // Check to make sure all necessary arguments have been passed
         // to program.
         if (args.length < 5) {
-            System.err.println("Usage: java Nc2Moml <xml input prefix> "
-                    + "<xml input suffix> <nc sub prefix> <moml output prefix> "
+            System.err.println("Usage: java -classpath $PTII "
+                    + "ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl "
+                    + "<xml input prefix> "
+                    + "<xml input suffix> <nc sub prefix> "
+                    + "<moml output prefix> "
                     + "[long path to file containing list of .nc files using "
                     + "short path]");
             return;
@@ -209,34 +233,35 @@ public class Nc2Moml {
         String inputSuffix = args[index++].trim();
         String subPrefix = args[index++].trim();
         String outputPrefix = args[index++].trim();
-        String inputfilelist = args[index++].trim();
+        String inputFiles = args[index++].trim();
 
+        BufferedReader in = null;
+        
         try {
             // Open the file containing the list of .nc files.
-            BufferedReader in =
-                new BufferedReader(new FileReader(inputfilelist));
+            in = new BufferedReader(new FileReader(inputFiles));
 
-            String inputfilename;
+            String inputFileName;
 
             // Read each line of the file.
-            while ((inputfilename = in.readLine()) != null) {
+            while ((inputFileName = in.readLine()) != null) {
                 // Determine the nesC xml name (with path) of the file.
                 String xmlSuffix =
-                    inputfilename.replaceFirst("\\.nc$", inputSuffix);
+                    inputFileName.replaceFirst("\\.nc$", inputSuffix);
                 String xmlInputFile = inputPrefix + _FILESEPARATOR + xmlSuffix;
 
                 // Determine the substituted path to the .nc file.
                 String pathToNCFile =
-                    subPrefix + _FILESEPARATOR + inputfilename;
+                    subPrefix + _FILESEPARATOR + inputFileName;
 
                 // Determine the component name.
-                String[] subdirs = inputfilename.split(_FILESEPARATOR);
+                String[] subdirs = inputFileName.split(_FILESEPARATOR);
                 String componentName = subdirs[subdirs.length - 1];
                 componentName = componentName.replaceFirst("\\.nc$", "");
 
                 // Determine the .moml name (with path) of the file.
                 String momlSuffix =
-                    inputfilename.replaceFirst("\\.nc$", "\\.moml");
+                    inputFileName.replaceFirst("\\.nc$", "\\.moml");
                 String momlOutputFile =
                     outputPrefix + _FILESEPARATOR + momlSuffix;
 
@@ -253,32 +278,39 @@ public class Nc2Moml {
                     try {
                         generateComponent(pathToNCFile, componentName,
                                 momlOutputFile);
-                    } catch (Exception e) {
-                        System.err.println("Errors while generating "
+                    } catch (Exception ex) {
+                        System.err.println("Errors while generating \""
                                 + momlOutputFile
-                                + " because of exception: "
-                                + e);
+                                + "\" because of exception: "
+                                + ex);
                     }
-                } catch (SAXException e) {
-                    System.err.println("No xml reader found for"
-                            + xmlInputFile);
-                } catch (FileNotFoundException e) {
-                    System.err.println("Could not find file " + xmlInputFile);
-                } catch (Exception e) {
-                    System.err.println("Did not complete nc2moml for file: "
+                } catch (SAXException ex) {
+                    System.err.println("No xml reader found for \""
+                            + xmlInputFile + "\"");
+                } catch (FileNotFoundException ex) {
+                    System.err.println("Could not find file \""
+                            + xmlInputFile + "\"");
+                } catch (Exception ex) {
+                    System.err.println("Did not complete nc2moml for file: \""
                             + xmlInputFile
-                            + " because of exception: " + e);
+                            + "\" because of exception: " + ex);
                 }
             }
 
-            // Close the input file.
-            in.close();
-
-        } catch (IOException e) {
-            System.err.println("Could not open file: " + inputfilelist);
-            System.err.println("because of exception: " + e);
+        } catch (IOException ex) {
+            System.err.println("Could not open file: \"" + inputFiles);
+            System.err.println("\" because of exception: " + ex);
+        } finally {
+            if (in != null) {
+                // Close the input file.
+                in.close();            
+            }
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** File separator to use, currently "/". */
     private static String _FILESEPARATOR = "/";
 }
