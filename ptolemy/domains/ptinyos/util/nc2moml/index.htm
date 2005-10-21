@@ -3,22 +3,21 @@
   <head>
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
     <title>nc2moml</title>
-    <link href="../../lib/default.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <h1>nc2moml</h1> 
 
-    <p> <a href="http://www.tinyos.net" target="_top">TinyOS</a> is an
+    <p> <a href="http://www.tinyos.net#in_browser" target="_top">TinyOS</a> is an
     event-driven operating system designed for sensor network nodes
     that have very limited resources (e.g., 8K bytes of program
     memory, 512 bytes of RAM).  TinyOS, is used, for example, on the
     Berkeley MICA motes, which are small wireless sensor nodes.  <a
-    href="httP://nescc.sourceforge.net" target="_top">nesC</a> is an
+    href="httP://nescc.sourceforge.net#in_browser" target="_top">nesC</a> is an
     extension to the C programming language designed to embody the
     structuring concepts and execution model of TinyOS.
 
     <p>nc2moml is used to convert nesC files (.nc) into <a
-    href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/moml">MoML</a>
+    href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/moml#in_browser" target="_top">MoML</a>
     (.moml) files.  This will create the Ptolemy II libraries of
     components that are used to assemble models.  TinyOS provides a
     rich library of nesC components. If you install TinyOS 1.x in
@@ -59,9 +58,9 @@
           <li> rpm 
         </ul>
         
-        <p>For help with how to install these in Cygwin, see the <a
-        href="../../../../doc/install.htm#cygwin">Ptolemy II Cygwin
-        Instructions</a>. Note that most installations will not have
+        <p>For help with how to install these in Cygwin, see the
+	<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/install.htm#cygwin">Ptolemy II Cygwin Instructions</a>.
+	 Note that most installations will not have
         gperf on them, at least, so you will likely need to install at
         least that.</p>
 
@@ -81,7 +80,7 @@
               <li> Download WinAVR
    	       <ol> 
                   <li>Go to 
-                    <a href="http://winavr.sourceforge.net/" target="_top"><code>http://winavr.sourceforge.net/</code></a>              
+                    <a href="http://winavr.sourceforge.net/#in_browser" target="_top"><code>http://winavr.sourceforge.net/</code></a>              
                   <li>Click on "Package"
                   <li>Download the latest release
                     <br> The link should be at the top of the page 
@@ -115,8 +114,8 @@
 
 	      <br><b>Note</b>: If your Cygwin installation has
 	      'Default Text File Type' of Unix instead of DOS, then
-	      you will likely have <a
-	      href="http://www.gigascale.org/softdevel/faq/23.html"
+	      you will likely have 
+	      <a href="http://www.gigascale.org/softdevel/faq/23.html#in_browser"
 	      target="_top">Cygwin CR/NL problems</a> with CVS.
 	
              <p><B>Installing the rpms under Cygwin is not recommended</B>,
@@ -158,12 +157,12 @@
 
                 <p>
                   The rpms are also available
-                  <a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/" target="_top">here</a>.  
+                  <a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/#in_browser" target="_top">here</a>.  
             </ul>
 
           <li> If you are running Linux (Redhat 9), download the rpms from
           <a
-          href="http://webs.cs.berkeley.edu/tos/dist-1.1.0/tools/linux" target="_top">here</a>.  More convenient links are included here:
+          href="http://webs.cs.berkeley.edu/tos/dist-1.1.0/tools/linux#in_browser" target="_top">here</a>.  More convenient links are included here:
             <ul>
 <li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avarice-2.0.20030825cvs-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avarice-2.0.20030825cvs-1.i386.rpm</a>
 <li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-binutils-2.13.2.1-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-binutils-2.13.2.1-1.i386.rpm</a>
@@ -176,7 +175,8 @@
             in the directory where you saved the files.
         </ul>
 
-        (The directions above were modified from the <a href="http://webs.cs.berkeley.edu/tos/download.html" target="_top">original TinyOS installation directions</a>).
+        (The directions above were modified from the
+	 <a href="http://webs.cs.berkeley.edu/tos/download.html#in_browser" target="_top">original TinyOS installation directions</a>).
 
       <li>Make a directory into which to store the source code, for
       example:
@@ -201,7 +201,7 @@ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos co tinyos-1.x
 
         This will create a directory <code>tinyos-1.x</code>.  For more
         information, see <a
-        href="http://sourceforge.net/cvs/?group_id=28656"><code>http://sourceforge.net/cvs/?group_id=28656</code></a>.
+        href="http://sourceforge.net/cvs/?group_id=28656#in_browser"><code>http://sourceforge.net/cvs/?group_id=28656</code></a>.
 
       <li> Set up the necessary environment variables.  TOSROOT sets the location of the TinyOS source tree.  TOSDIR sets the subdirectory in the TinyOS source tree.  PTINYOS_MOMLROOT sets the MoML output directory.
         <ul>
@@ -246,7 +246,7 @@ cd $PTII
 	<CODE>TOSROOT</CODE>.
 
       <li> Get the nesC CVS Tree, see <a
-      href="http://sourceforge.net/cvs/?group_id=56288"><CODE>http://sourceforge.net/cvs/?group_id=56288</CODE></a>
+      href="http://sourceforge.net/cvs/?group_id=56288#in_browser" target="_top"><CODE>http://sourceforge.net/cvs/?group_id=56288</CODE></a>
 
         <pre>
 cd $PTII/vendors/ptinyos
