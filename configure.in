@@ -2698,14 +2698,45 @@ if test -z "$TOSROOT" ; then
 else
     if test ! -d "$TOSROOT"; then
         AC_MSG_WARN([\$TOSROOT is set to '$TOSROOT',
-     but there is no directory by that name, so we will not set up for PtinyOS
-     for details, see $PTII/ptolemy/domains/ptinyos/README.txt.])
+     but there is no directory by that name, so we will not set up for PtinyOS.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt.])
     else
         AC_MSG_RESULT([$TOSROOT])
         # Use changequote to protect the square brackets in sed
 changequote(<<, >>)dnl
         TOSROOT_NO_CYGDRIVE=`echo "$TOSROOT" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
 changequote([, ])dnl
+
+        AC_MSG_CHECKING([for TOSDIR directory])
+        if test ! -d "$TOSDIR"; then
+	    AC_MSG_WARN([\$TOSDIR is set to '$TOSDIR',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt.])
+        else 
+	    AC_MSG_RESULT([$TOSDIR])
+        fi
+
+        AC_MSG_CHECKING([for PTINYOS_MOMLROOT])
+	if test -z "$PTINYOS_MOMLROOT"; then
+	    AC_MSG_WARN([\$PTINYOS_MOMLROOT is not set.
+    For details, see $PTII/ptolemy/domains/ptinyos/README.txt.])
+        else 
+            AC_MSG_RESULT(ok)
+            if test ! -d "$PTINYOS_MOMLROOT"; then
+                # Try to make the directory
+	        mkdir -p "$PTINYOS_MOMLROOT"
+            fi
+            AC_MSG_CHECKING([for PTINYOS_MOMLROOT directory])
+            if test ! -d "$PTINYOS_MOMLROOT"; then
+	        AC_MSG_WARN([\$PTINYOS_MOMLROOT is set to '$PTINYOS_MOMLROOT',
+     but there is no directory by that name.
+     For details, see $PTII/ptolemy/domains/ptinyos/README.txt.])
+            else 
+                ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                    <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT\"/>"
+	        AC_MSG_RESULT([$PTINYOS_MOMLROOT])
+            fi
+        fi
 
         # Add TOSROOT and jars to the classpath
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
@@ -2715,10 +2746,6 @@ changequote([, ])dnl
     fi
 fi 
 
-if test -d "$PTINYOS_MOMLROOT"; then
-        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-        <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT\"/>"
-fi
 if test ! -d "$TOSROOT"; then
       ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/ptinyos/" 
 fi
