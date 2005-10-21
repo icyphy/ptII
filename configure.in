@@ -2698,7 +2698,8 @@ if test -z "$TOSROOT" ; then
 else
     if test ! -d "$TOSROOT"; then
         AC_MSG_WARN([\$TOSROOT is set to '$TOSROOT',
-     but there is no directory by that name, so we will not set up for PtinyOS.])
+     but there is no directory by that name, so we will not set up for PtinyOS
+     for details, see $PTII/ptolemy/domains/ptinyos/README.txt.])
     else
         AC_MSG_RESULT([$TOSROOT])
         # Use changequote to protect the square brackets in sed
