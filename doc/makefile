@@ -212,6 +212,7 @@ DIVAPACKAGES = \
 EXPERIMENTALPACKAGES = \
 			ptolemy.domains.ptinyos.kernel \
 			ptolemy.domains.ptinyos.lib \
+			ptolemy.domains.ptinyos.util.nc2moml \
 			ptolemy.domains.rtp.kernel \
 			ptolemy.domains.rtp.lib
 
