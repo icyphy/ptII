@@ -202,11 +202,11 @@ public class PtinyOSDirector extends Director {
      */
     public Parameter simulate;
 
-    /** Port for TOSSIM to accept commands
+    /** Port for TOSSIM to accept commands.
      */
     public Parameter commandPort;
 
-    /** Port for TOSSIM to publish events
+    /** Port for TOSSIM to publish events.
      */
     public Parameter eventPort;
 
@@ -215,10 +215,11 @@ public class PtinyOSDirector extends Director {
 
     /** A callback method (from C code) for the application to enqueue
      *  the next event.
-     *
-     *  newtime is a long long in C
+     *  
+     *  @param newTime The time of the next event, a long long in C.
+     *  @exception IllegalActionException If Director.fireAt() throws it.
      */
-    public void enqueueEvent(String newtime) throws IllegalActionException {
+    public void enqueueEvent(String newTime) throws IllegalActionException {
         // Assumes that we already checked in preinitialize() that the
         // container is a CompositeActor.
         CompositeActor container = (CompositeActor) getContainer();
@@ -231,7 +232,7 @@ public class PtinyOSDirector extends Director {
         }
 
         //System.out.println("PtinyOSDirector.enqueueEvent : " + newtime);
-        Time t = new Time(director, Long.parseLong(newtime));
+        Time t = new Time(director, Long.parseLong(newTime));
         director.fireAt(container, t);
     }
 
@@ -272,6 +273,8 @@ public class PtinyOSDirector extends Director {
      *  NOTE: gets a BooleanToken from port and converts to boolean.
      *  @param param The parameter.
      *  @return FALSE if there is an error.
+     *  @exception IllegalActionException If there is a problem getting
+     *  a token from the input parameter port.
      */
     public boolean getBooleanParameterValue(String param)
             throws IllegalActionException {
@@ -316,12 +319,11 @@ public class PtinyOSDirector extends Director {
         return false;
     }
 
-    /** Get a char value from PortParameter named parameter.
-     *
-     *  NOTE: gets a DoubleToken from port and converts to char.
-     *
-     *  NOTE: returns 0 if error.
+    /** Get a DoubleToken from PortParameter and convert it to a char.
      *  @param parameter The parameter.
+     *  @return 0 if there is an error.
+     *  @exception IllegalActionException If there is a problem getting
+     *  a token from the input parameter port.
      */
     public char getCharParameterValue(String parameter)
             throws IllegalActionException {
@@ -450,6 +452,8 @@ public class PtinyOSDirector extends Director {
 
     /** Return true if simulation is requested.
      *  @return The value of the <i>simulate</i> parameter
+     *  @exception IllegalActionException If thrown while reading the
+     *  <i>simulate</i> parameter.
      */
     public boolean postfire() throws IllegalActionException {
         return ((BooleanToken) simulate.getToken()).booleanValue();
@@ -590,7 +594,7 @@ public class PtinyOSDirector extends Director {
     /** 
      *  Send an expression to a port.
      *  <p>The loader class has a method with the same name that calls
-     *  this method.  The C code (ptII.c) calls <loader>.sendToPort in
+     *  this method.  The C code (ptII.c) calls <i>loader</i>.sendToPort in
      *  order to send data from the C code to the Java (Ptolemy II)
      *  simulation.
      *
@@ -599,6 +603,7 @@ public class PtinyOSDirector extends Director {
      *  @return 1 if the expression was successfully sent, 0 if the
      *  port is not connected or not found and -1 if the port is
      *  of any type other than Boolean or String.
+     *  @exception IllegalActionException If throw while sending to the port.
      */
     public int sendToPort(String portName, String expression)
             throws IllegalActionException {

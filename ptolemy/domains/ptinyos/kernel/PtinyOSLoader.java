@@ -32,7 +32,9 @@ package ptolemy.domains.ptinyos.kernel;
 //// PtinyOSLoader
 
 /**
- Interface for the Ptolemy/TinyOS Loader.
+ Defines the requirements for an object that loads a C based
+ TinyOS shared object into a running Java Ptolemy environment.
+ 
  <p>The {@link ptolemy.domains.ptinyos.kernel.PtinyOSDirector#preinitialize()}
  method creates a .java file that implements this class and then compiles
  the .java file
@@ -82,6 +84,7 @@ public interface PtinyOSLoader {
 
     /** Invoke the main() method associated with the toplevel PtinyOSDirector.
      *  @param argsToMain Arguments to pass.
+     *  @return non-zero if there are problems.
      */
     public int main(String[] argsToMain);
 
