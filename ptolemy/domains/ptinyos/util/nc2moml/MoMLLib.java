@@ -50,7 +50,8 @@ import ptolemy.util.FileUtilities;
 /**
    Searches tree files with <input suffix> (e.g., *.moml).  Creates
    <output filename> (e.g., index.moml) in each dir that contains
-   those files and all parent directories.
+   those files and all parent directories.  Ignores and overwrites
+   existing index.moml and _TOSIndex.moml files.
 
   Usage:
     MoMLLib <input suffix> <top-level output filename> <output filename> <root dir of input files>
@@ -213,7 +214,7 @@ public class MoMLLib {
         String rootDir = args[i++].trim();
 
         try {
-            MoMLLib.proc(inputSuffix, outputFilename, toplevelOutputFilename, rootDir, rootDir);
+            MoMLLib.proc(inputSuffix, outputFilename, toplevelOutputFilename, true, rootDir, rootDir);
         } catch (Throwable throwable) {
             System.err.println("Command failed: " + throwable);
             throwable.printStackTrace();
@@ -223,8 +224,11 @@ public class MoMLLib {
     /** Traverse the directory tree recursively and generate .moml index files.
      *
      *  @param inputSuffix Suffix for the input files to look for.
-     *  @param indexFilename Name of the index file to look for.
-     *  @param outputFilename Name of the index file to generate.
+     *  @param indexFilename Name of the index file to look for and
+     *  generate for non-top level.
+     *  @param indexFilenameTopLevel Name of the top-level index file
+     *  to generate.
+     *  @param toplevel True if this is the top-level call to proc().
      *  @param root Root dir of the input files.
      *  @param currentDir The current directory in this call to proc().
      *  @exception Exception If internal error (duplicate file found
@@ -233,7 +237,8 @@ public class MoMLLib {
     public static void proc(
             final String inputSuffix,
             final String indexFilename,
-            String outputFilename,
+            final String indexFilenameTopLevel,
+            boolean toplevel,
             String root,
             String currentDir) throws Exception {
         if (File.separator.equals("\\")) {
@@ -252,8 +257,8 @@ public class MoMLLib {
         // Recursive call.
         for (int i = 0; i < children.length; i++) {
             // Output filename same as index filename for non-top level.
-            proc(inputSuffix, indexFilename, indexFilename, root,
-                    children[i].toString());
+            proc(inputSuffix, indexFilename, indexFilenameTopLevel, false,
+                    root, children[i].toString());
         }
 
         // Filter for files with name == indexFilename.
@@ -296,11 +301,12 @@ public class MoMLLib {
         }
 
         // Filter for files with name ending in inputSuffix and not
-        // indexFilename.
+        // indexFilename or indexFilenameTopLevel.
         FilenameFilter filterForInputSuffix = new FilenameFilter() {
                 public boolean accept(File dir, String name) {
                     return name.endsWith(inputSuffix) &&
-                        !name.equals(indexFilename);
+                        !name.equals(indexFilename) &&
+                        !name.equals(indexFilenameTopLevel);
                 }
             };
  
@@ -316,7 +322,12 @@ public class MoMLLib {
                     currentDir.replaceFirst("^" + root, "");
                 shortpath =
                     shortpath.replaceFirst("^" + "/", "");
-                shortpath = shortpath + "/" + ncFiles[i];
+                if (shortpath.equals("")) {
+                    // Don't add beginning slash if this is the toplevel.
+                    shortpath = ncFiles[i];
+                } else {
+                    shortpath = shortpath + "/" + ncFiles[i];
+                }
                 shortpath =
                     shortpath.replaceFirst(inputSuffix + "$", "");
                 components[i] = shortpath;
@@ -339,7 +350,12 @@ public class MoMLLib {
             currentDirSubnames[currentDirSubnames.length - 1];
 
         // Create full output file name.
-        String fullOutputFilename = currentDir + "/" + outputFilename;
+        String fullOutputFilename;
+        if (toplevel) {
+            fullOutputFilename = currentDir + "/" + indexFilenameTopLevel;
+        } else {
+            fullOutputFilename = currentDir + "/" + indexFilename;
+        }
 
         // Create index file.
         String[] stringArrayType = {};
