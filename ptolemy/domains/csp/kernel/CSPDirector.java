@@ -190,12 +190,12 @@ public class CSPDirector extends CompositeProcessDirector implements
         super.initialize();
     }
 
-    /** Return a new CSPReceiver compatible with this director.
-     *  In the CSP domain, we use CSPReceivers.
-     *  @return A new CSPReceiver.
+    /** Return a new RendezvousReceiver compatible with this director.
+     *  In the CSP domain, we use RendezvousReceiver.
+     *  @return A new RendezvousReceiver.
      */
     public Receiver newReceiver() {
-        return new CSPReceiver();
+        return new RendezvousReceiver();
     }
 
     /** Return false if deadlock has occurred and there are no
@@ -360,8 +360,8 @@ public class CSPDirector extends CompositeProcessDirector implements
     protected static String _receiverStatus(Receiver receiver) {
         StringBuffer result = new StringBuffer();
         result.append(receiver.getContainer().getFullName());
-        if (receiver instanceof CSPReceiver) {
-            CSPReceiver castReceiver = (CSPReceiver)receiver;
+        if (receiver instanceof RendezvousReceiver) {
+            RendezvousReceiver castReceiver = (RendezvousReceiver)receiver;
             if (castReceiver._isGetWaiting()) {
                 result.append(" get() waiting");
             }

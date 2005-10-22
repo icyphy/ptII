@@ -59,6 +59,7 @@ import ptolemy.kernel.util.InternalErrorException;
  @since Ptolemy II 0.2
  @Pt.ProposedRating Red (nsmyth)
  @Pt.AcceptedRating Red (cxh)
+ @deprecated Use RendezvousReceiver instead.
  */
 public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     

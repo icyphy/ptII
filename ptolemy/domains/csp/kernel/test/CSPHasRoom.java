@@ -30,7 +30,7 @@ package ptolemy.domains.csp.kernel.test;
 
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.domains.csp.kernel.CSPReceiver;
+import ptolemy.domains.csp.kernel.RendezvousReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -61,11 +61,11 @@ public class CSPHasRoom extends CSPPut {
      */
     public void fire() throws IllegalActionException {
         Receiver[][] rcvrs = (Receiver[][]) outputPort.getRemoteReceivers();
-        CSPReceiver rcvr = null;
+        RendezvousReceiver rcvr = null;
 
         for (int i = 0; i < rcvrs.length; i++) {
             for (int j = 0; j < rcvrs[i].length; j++) {
-                rcvr = (CSPReceiver) rcvrs[i][j];
+                rcvr = (RendezvousReceiver) rcvrs[i][j];
             }
         }
 

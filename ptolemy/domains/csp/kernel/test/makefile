@@ -62,7 +62,8 @@ JSIMPLE_TESTS = \
 	ConditionalSend.tcl \
 	CSPActor.tcl \
 	CSPDirector.tcl \
-	CSPReceiver.tcl
+	CSPReceiver.tcl \
+	RendezvousReceiver.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

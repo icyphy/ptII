@@ -39,7 +39,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.csp.kernel.CSPDirector;
-import ptolemy.domains.csp.kernel.CSPReceiver;
+import ptolemy.domains.csp.kernel.RendezvousReceiver;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -217,7 +217,7 @@ public class ResourcePool extends TypedAtomicActor {
                                 if (_debugging) {
                                     _debug("Resources available: " + _pool);
                                 }
-                                Token resource = CSPReceiver.getFromAny(release.getReceivers(), director);
+                                Token resource = RendezvousReceiver.getFromAny(release.getReceivers(), director);
                                 _pool.add(resource);
                                 director.threadUnblocked(writeThread, null);
                                 director.notifyAll();
@@ -247,7 +247,7 @@ public class ResourcePool extends TypedAtomicActor {
                 }
                 try {
                     director.threadBlocked(writeThread, null);
-                    CSPReceiver.waitForChange(director);
+                    RendezvousReceiver.waitForChange(director);
                 } catch (TerminateProcessException ex) {
                     _postfireReturns = false;
                     return;
@@ -259,8 +259,10 @@ public class ResourcePool extends TypedAtomicActor {
             Token token = (Token)_pool.get(0);
             // If this put blocks for any reason, it will block on
             // a director.wait(), so the lock will not be held.
+            // FIXME: ACK!  putToAny() should only select among
+            // the first dimension, and then should do a broadcast!
             try {
-                CSPReceiver.putToAny(token, grant.getRemoteReceivers(), director);
+                RendezvousReceiver.putToAny(token, grant.getRemoteReceivers(), director);
             } catch (TerminateProcessException e) {
                 _postfireReturns = false;
                 return;

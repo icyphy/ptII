@@ -33,7 +33,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.domains.csp.kernel.CSPDirector;
-import ptolemy.domains.csp.kernel.CSPReceiver;
+import ptolemy.domains.csp.kernel.RendezvousReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -124,7 +124,7 @@ public class Merge extends TypedAtomicActor {
         if (_debugging) {
             _debug("Ready to rendezvous with an input.");
         }
-        Token received = CSPReceiver.getFromAny(
+        Token received = RendezvousReceiver.getFromAny(
                 input.getReceivers(), (CSPDirector)director);
         if (_debugging) {
             _debug("Received input: " + received);

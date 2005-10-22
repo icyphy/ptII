@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Sequencing2" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Sequencing3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="CSP Director" class="ptolemy.domains.csp.kernel.CSPDirector">
@@ -38,7 +38,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example comes from:&#10;Arbab, Farhad (2006), &quot;A Behavioral Model for Composition&#10;of Software Components,&quot; to appear, L'Object.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 345.0]">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -56,7 +56,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 85.0]">
         </property>
     </entity>
     <entity name="Barrier" class="ptolemy.domains.csp.lib.Barrier">
@@ -76,7 +76,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 300.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -84,11 +84,31 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 140.0]">
         </property>
     </entity>
     <entity name="Merge" class="ptolemy.domains.csp.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="ResourcePool" class="ptolemy.domains.csp.lib.ResourcePool">
+        <property name="ResourcePoolIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={34, 236, 937, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120, 300}">
+        </property>
+    </entity>
+    <entity name="Barrier2" class="ptolemy.domains.csp.lib.Barrier">
+        <property name="BarrierIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 205.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -97,28 +117,47 @@
         <vertex name="vertex1" value="{175.0, 140.0}">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[180.0, 265.0]">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="{190.0, 300.0}">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex1" value="{325.0, 300.0}">
+        </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <vertex name="vertex1" value="{305.0, 85.0}">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[325.0, 330.0]">
+        </vertex>
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="Ramp2.output" relation="relation3"/>
     <link port="Barrier.input" relation="relation"/>
-    <link port="Barrier.input" relation="relation3"/>
-    <link port="Buffer.input" relation="relation3"/>
+    <link port="Barrier.input" relation="relation5"/>
+    <link port="Buffer.input" relation="relation5"/>
     <link port="Buffer.output" relation="relation2"/>
     <link port="Test.input" relation="relation4"/>
     <link port="Merge.output" relation="relation4"/>
+    <link port="Merge.input" relation="relation3"/>
     <link port="Merge.input" relation="relation"/>
-    <link port="Merge.input" relation="relation2"/>
+    <link port="ResourcePool.grant" relation="relation5"/>
+    <link port="ResourcePool.release" relation="relation6"/>
+    <link port="Barrier2.input" relation="relation3"/>
+    <link port="Barrier2.input" relation="relation2"/>
+    <link relation1="relation2" relation2="relation6"/>
 </entity>

@@ -33,7 +33,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
 import ptolemy.domains.csp.kernel.CSPDirector;
-import ptolemy.domains.csp.kernel.CSPReceiver;
+import ptolemy.domains.csp.kernel.RendezvousReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -119,7 +119,7 @@ public class Barrier extends TypedAtomicActor {
         if (_debugging) {
             _debug("Performing multiway rendezvous on the input channels.");
         }
-        Token[][] tokens = CSPReceiver.getFromAll(
+        Token[][] tokens = RendezvousReceiver.getFromAll(
                 input.getReceivers(), (CSPDirector)director);
         if (_debugging) {
             _debug("Input yielded the tokens: " + tokens);
@@ -128,7 +128,7 @@ public class Barrier extends TypedAtomicActor {
             if (_debugging) {
                 _debug("Performing multiway rendezvous on the output channels.");
             }
-            CSPReceiver.putToAll(
+            RendezvousReceiver.putToAll(
                     tokens, output.getRemoteReceivers(), (CSPDirector)director);
         }
     }

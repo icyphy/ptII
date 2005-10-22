@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
-//// CSPReceiver
+//// RendezvousReceiver
 
 /**
  Receiver for CSP style communication. In CSP all communication is via
@@ -65,8 +65,8 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 public class RendezvousReceiver extends AbstractReceiver implements ProcessReceiver {
     
-    // FIXME: Downgraded to Red when changing deadlock detection mechanism.
-    // EAL 8/05
+    // This receiver is based on the CSPReceiver class by
+    // John S. Davis II, Thomas Feng, Edward A. Lee, Neil Smyth, and Yang Zhao.
     
     /** Construct a RendezvousReceiver with no container.
      */
