@@ -112,7 +112,7 @@ apps/CntToLeds/CntToLeds.nc
    @Pt.ProposedRating Red (celaine)
    @Pt.AcceptedRating Red (celaine)
 */
-public class NcApp2MoML {
+public class NCApp2MoML {
     /** Store the container of the interface (a component) and path to source file.
      * 
      * @param intf interface of the component to be stored
@@ -312,7 +312,7 @@ public class NcApp2MoML {
 
                     // Generate the .moml file.
                     try {
-                        new NcApp2MoML().generatePtinyOSModel(pathToNCFile, componentName,
+                        new NCApp2MoML().generatePtinyOSModel(pathToNCFile, componentName,
                                 momlOutputFile);
                     } catch (Exception e) {
                         System.err.println("Errors while generating "
