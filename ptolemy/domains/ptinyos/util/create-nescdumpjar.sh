@@ -35,6 +35,8 @@ OUTPUT_FILENAME=nesc-dump
 mkdir $TEMP_DIR
 
 # Archive the files, but not CVS directories or files with pattern *~
+# -C means change to directory $SRC_DIR first so that we don't include 
+#   the full path.
 gtar -C $SRC_DIR --exclude=CVS --exclude=*\~ -czf $TEMP_DIR/$OUTPUT_FILENAME.tgz net
 echo "Created $OUTPUT_FILENAME.tgz in $TEMP_DIR"
 

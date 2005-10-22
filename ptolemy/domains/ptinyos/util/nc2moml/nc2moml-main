@@ -71,8 +71,10 @@ to $outputprefix/$ENV{NC2MOML_LOG}\n");
 print("\nYou will see a series of \"+\" and \"-\".  A \"+\" means that the .nc \
 file had no parse errors.  A \"-\" means that the .nc file had parse \
 problems.  Most errors or warnings can be ignored here, since some files \
-in the TinyOS tree do not compile properly or the correct compiler arguments \
-or include files cannot be found.\n");
+in the TinyOS tree do not compile properly (many warnings are from unconnected \
+components) or the correct compiler arguments or include files cannot be found.\
+Detailed warnings can be viewed in <outputdir>/component.txt if you are running
+nc2moml with the -v (verbose) option. \n");
 
 foreach $mydir (@mydirs) {
   # Find all .nc files.
