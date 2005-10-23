@@ -16,7 +16,7 @@
       <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector"/>
       <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
       <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector"/>
-      <property name="CSP Director" class="ptolemy.domains.csp.kernel.CSPDirector"/>
+      <property name="Rendezvous Director" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector"/>
       <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector"/>
       <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector"/>
       <property name="Director" class="ptolemy.actor.Director">

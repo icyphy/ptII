@@ -7,10 +7,11 @@
       <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector"/>
       <!-- No DT -->
       <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector"/>
+      <property name="Rendezvous Director" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector"/>
       <property name="FSM Director" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
       <!-- No Giotto -->
       <!-- No TM -->
-      <property name="CSP Director" class="ptolemy.domains.csp.kernel.CSPDirector"/>
+      <!-- No CSP -->
       <!-- No DDE -->
       <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
       </property>

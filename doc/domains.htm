@@ -21,6 +21,7 @@
 <li> <a href="#hdf">HDF (Heterochronous Dataflow)</a>
 <li> <a href="#pn">PN (Process Networks)</a>
 <li> <a href="#psdf">PSDF (Parameterized Synchronous Dataflow)</a>
+<li> <a href="#rendezvous">Rendezvous</a>
 <li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
 <li> <a href="#sr">SR (Synchronous/Reactive)</a>
 <li> <a href="#tm">TM (Timed Multitasking)</a>
@@ -380,6 +381,31 @@ interoperation with timed domains much more practical.
    would be ruled out by the SDF checks are allowed.
 
 <p> The PSDF domain is experimental and is shipped only with the full Ptolemy II release.
+
+<h2><a name="rendezvous">Rendezvous</a></h2>
+
+<p>
+In the rendezvous domain, actors represent concurrently executing processes,
+implemented as Java threads.
+These processes communicate by atomic,
+instantaneous actions called "rendezvous" (or sometimes, "synchronous
+message passing"). If two processes are to communicate, and one reaches
+the point first at which it is ready to communicate, then it stalls
+until the other process is ready to communicate. "Atomic" means that
+the two processes are simultaneously involved in the exchange, and that
+the exchange is initiated and completed in a single uninterruptable
+step. Examples of rendezvous models include Hoare’s communicating
+sequential processes (CSP) and Milner’s calculus of communicating
+systems (CCS). This implementation supports both conditional
+rendezvous (where an actor is willing to rendezvous nondeterministically
+with any of a set of other actors) and multiway rendezvous (where
+a rendezvous involves more than two actors).
+<p>
+Rendezvous models are particularly well-matched to applications where
+resource sharing is a key element, such as client-server database
+models and multitasking or multiplexing of hardware resources. A key
+feature of rendezvous-based models is their ability to cleanly model
+nondeterminate interactions.
 
 <h2><a name="sdf">SDF</a></h2>
 <p>

@@ -7,6 +7,7 @@
       <group>
       <doc>experimental director library</doc>
       <property name="CI Director" class="ptolemy.domains.ci.kernel.CIDirector"/>
+      <property name="CSP Director" class="ptolemy.domains.csp.kernel.CSPDirector"/>
       <property name="DT Director" class="ptolemy.domains.dt.kernel.DTDirector"/>
       <property name="DDF Director" class="ptolemy.domains.ddf.kernel.DDFDirector"/>
       <!-- HDE is not shipping in 4.0 -->

@@ -1,9 +1,9 @@
-# Makefile for Java classes used to implement Ptolemy domains
+# Makefile for PtolemyII Rendezvous Domain
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
+# @Author: Christopher Hylands, Neil Smyth
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 1998-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,94 +29,41 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/domains
+ME =		ptolemy/domains/rendezvous
 
-# Domains we do not ship
-EXPERIMENTAL_DOMAINS = \
-		hdf ptinyos rtp 
-
-# Domains, in alphabetical order.  If you change this, change
-# PTCLASSALLJARS below
-# DT has to come after SDF, sorry.
-# PTPSDF_DIR is set by configure in $PTII/mk/ptII.mk to psdf if
-#   $PTII/lib/mapss.jar was found
-# PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
-#   Java 3D was found
-# The tm domain uses java.util.Timer, so it requires JDK 1.3
-DOMAINS =	ci csp ct dde ddf de fsm pn sdf dt giotto petrinet rendezvous \
-		$(PTPSDF_DIR) \
-		sr tm $(PTJAVA3D_DIR) wireless
-
-DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS)
+DIRS =		kernel lib demo doc test
 
 # Root of Ptolemy II directory
-ROOT =		../..
+ROOT =		../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	domains
+PTPACKAGE = 	rendezvous
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
-# Include these jars in PTAUXALLJAR
-# Don't include rtp/rtp.jar, it is not being shipped
-
-# PTGRDOMAIN_JAR is the name of the jar file that includes the GR
-# domain if Java 3D was found.  PTGRDOMAIN_JAR is set by configure.
-
-PTAUXALLJARS = \
-		ci/ci.jar \
-		dde/dde.jar \
-		ddf/ddf.jar \
-                dt/dt.jar \
-		giotto/giotto.jar \
-		$(PTGRDOMAIN_JAR) \
-		hdf/hdf.jar \
-		petrinet/petrinet.jar \
-		tm/tm.jar \
-		sr/sr.jar \
-		wireless/wireless.jar
-
-# Are we shipping these domains?
-#		ptinyos/ptinyos.jar 
-#		pbo/pbo.jar
-#		petrinet/petrinet.jar
-
-# Experimental domains 
-PTAUXALLJAR =	experimentalDomains.jar
-
 # Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
 PTCLASSALLJARS = \
-		csp/csp.jar \
-		ct/ct.jar \
-		de/de.jar \
-		fsm/fsm.jar \
-		pn/pn.jar \
-		sdf/sdf.jar
+		kernel/kernel.jar \
+		lib/lib.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = \
-	domains.xml \
-	ptinyDomains.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
-
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DOMAINS) test
+# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
+MISC_FILES =	kernel lib doc test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(EXPERIMENTAL_DOMAINS) \
-	dfm \
-	generic \
-	gr
+	demo \
+	doc
 
 all: jclass
 install: jclass jars

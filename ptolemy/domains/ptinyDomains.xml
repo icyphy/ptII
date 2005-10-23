@@ -12,9 +12,9 @@
 	     files if they are in a jar file besides the jar file that
 	     contains this file. -->
             <input source="ptolemy/domains/ct/lib/ctentities.xml"/>
-            <input source="ptolemy/domains/csp/lib/cspentities.xml"/>
             <input source="ptolemy/domains/de/lib/deentities.xml"/>
             <input source="ptolemy/domains/pn/lib/pnentities.xml"/>
+            <input source="ptolemy/domains/rendezvous/lib/rendezvousentities.xml"/>
        </group>
     ?>
   </configure>

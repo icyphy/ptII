@@ -1,0 +1,39 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II Rendezvous Domain</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Rendezvous</h1>
+<P>
+In the Rendezvous domain in Ptolemy II, each actor executes in
+its own thread of control, and communication between actors is
+by rendezvous.  If an actor is ready to send a message,
+it blocks until the receiving actor is ready to receive it. Similarly if
+an actor is ready to receive a message, it blocks until the sending actor
+is ready to send it.
+<p>
+This domain supports both conditional and multi-way rendezvous.
+In conditional rendezvous, an actor is willing to rendezvous with
+any one of several other actors. In multiway rendezvous, an actor requires
+rendezvous with multiple other actors at the same time.
+When using conditional rendezvous, the choice of which rendezvous
+occurs is nondeterministic, in general.
+<P>
+The model of computation is based on the CSP model
+first proposed by Hoare[1] in 1978. Rendezvous-based communication
+is also known as synchronous message passing, but we avoid this
+term to aboive confusion with the SR (synchronous/reactive) domain.
+
+<BR>
+<BR>
+
+<B>References:</B>
+<OL>
+<LI>Hoare, C. A. R., "Communicating Sequential Processes," <I>Communications
+of the ACM</I>, vol. 21, no. 8, August 1978.
+</OL>
+</body>
+</html>
