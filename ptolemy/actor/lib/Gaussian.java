@@ -27,8 +27,8 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,10 +66,10 @@ public class Gaussian extends RandomSource {
 
         output.setTypeEquals(BaseType.DOUBLE);
 
-        mean = new Parameter(this, "mean", new DoubleToken(0.0));
+        mean = new PortParameter(this, "mean", new DoubleToken(0.0));
         mean.setTypeEquals(BaseType.DOUBLE);
 
-        standardDeviation = new Parameter(this, "standardDeviation");
+        standardDeviation = new PortParameter(this, "standardDeviation");
         standardDeviation.setExpression("1.0");
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
     }
@@ -78,14 +78,14 @@ public class Gaussian extends RandomSource {
     ////                     ports and parameters                  ////
 
     /** The mean of the random number.
-     *  This parameter contains a DoubleToken, initially with value 0.
+     *  This has type double, initially with value 0.
      */
-    public Parameter mean;
+    public PortParameter mean;
 
     /** The standard deviation of the random number.
-     *  This parameter contains a DoubleToken, initially with value 1.
+     *  This has type double, initially with value 1.
      */
-    public Parameter standardDeviation;
+    public PortParameter standardDeviation;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -97,6 +97,8 @@ public class Gaussian extends RandomSource {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        mean.update();
+        standardDeviation.update();
         output.send(0, new DoubleToken(_current));
     }
 
