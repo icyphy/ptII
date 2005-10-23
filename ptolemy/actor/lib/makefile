@@ -201,11 +201,12 @@ JSRCS = \
 	Writer.java
 
 OTHER_FILES_TO_BE_JARED = \
+	BooleanSelectIcon.xml \
+	BooleanSwitchIcon.xml \
 	CommutatorIcon.xml \
 	ComputeHistogramIcon.xml \
 	DistributorIcon.xml \
-	BooleanSelectIcon.xml \
-	BooleanSwitchIcon.xml \
+	GaussianIcon.xml \
 	PowerEstimate.xml \
 	SelectIcon.xml \
 	Sinewave.xml \
