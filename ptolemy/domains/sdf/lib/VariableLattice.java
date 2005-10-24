@@ -44,8 +44,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-import com.sun.tools.corba.se.idl.constExpr.Not;
-
 //////////////////////////////////////////////////////////////////////////
 //// VariableLattice
 
@@ -198,7 +196,7 @@ public class VariableLattice extends Lattice implements ExplicitChangeContext {
      * more complex cases, directors may implement this interface, or entities
      * may modify parameters according to a different change context (i.e. HDF)
      * @return The change context being made explicit.
-     * @exception Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public Entity getContext() throws IllegalActionException {
         return this;
