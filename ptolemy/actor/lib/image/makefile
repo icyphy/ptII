@@ -72,7 +72,9 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ImageDisplay$$1.class' \
+	'ImageDisplay$$2.class' \
 	'ImageDisplay$$_PictureFrame.class' \
+	'ImageDisplay$$Factory.class' \
 	'ImageDisplay$$ImageWindow.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
