@@ -435,6 +435,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                    attributeName + " is not a parameter.");
        }
    }
+   
+   public int[][] getRates() {
+        return null;
+   }
 
    /** Get the read offset in the buffer of a given channel from which a token
     *  should be read. The channel is given by its containing port and

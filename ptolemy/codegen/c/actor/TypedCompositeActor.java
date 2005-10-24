@@ -223,6 +223,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return set;
     }
     
+    public int[][] getRates() {
+        return _rates;   
+    }
+    
     /** Reset the offsets of all inside channels of all output ports of the 
      *  associated actor to the default value of 0.
      */
@@ -241,6 +245,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         }
     }
     
+    public void setRates(int[][] rates) {
+        _rates = rates;   
+    }
   
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
@@ -280,5 +287,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             _writeOffsets.put(port, writeOffsets);
         }
     }
+    
+    private int[][] _rates;
 
 }

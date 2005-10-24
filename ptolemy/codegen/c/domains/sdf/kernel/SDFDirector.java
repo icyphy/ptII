@@ -143,14 +143,13 @@ public class SDFDirector extends Director {
        StringBuffer initializeCode = new StringBuffer();
        initializeCode.append(super.generateInitializeCode());
            
-       ptolemy.actor.CompositeActor compositeActor 
+       ptolemy.actor.CompositeActor container 
                = (ptolemy.actor.CompositeActor) getComponent().getContainer();
        
-       ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper
-               = (ptolemy.codegen.c.actor.TypedCompositeActor)
-               _getHelper(compositeActor);
+       CodeGeneratorHelper containerHelper = 
+               (CodeGeneratorHelper) _getHelper(container);
        
-       Iterator outputPorts = compositeActor.outputPortList().iterator();
+       Iterator outputPorts = container.outputPortList().iterator();
        while (outputPorts.hasNext()) {
            IOPort outputPort = (IOPort) outputPorts.next();
            int rate = DFUtilities.getTokenInitProduction(outputPort);
@@ -165,10 +164,10 @@ public class SDFDirector extends Director {
         
                    for (int k = 0; k < rate; k++) {
        
-                       initializeCode.append(compositeActorHelper
+                       initializeCode.append(containerHelper
                                .getReference(name + "," + k));
                        initializeCode.append(" = ");
-                       initializeCode.append(compositeActorHelper
+                       initializeCode.append(containerHelper
                                .getReference("@" + name + "," + k));
                        initializeCode.append(";\n");
                    }    
@@ -176,34 +175,10 @@ public class SDFDirector extends Director {
            }
            _updatePortOffset(outputPort, initializeCode, rate);
            _updateConnectedPortsOffset(outputPort, initializeCode, rate);
-           
-           int totalTokens = DFUtilities.getRate(outputPort);
-           _checkBufferSize(outputPort, initializeCode, totalTokens);
-       }
-             
-       
-       Iterator actors = ((CompositeActor) getComponent().getContainer())
-               .deepEntityList().iterator();
-       while (actors.hasNext()) {
-           Actor actor = (Actor) actors.next();
-           Variable firings = (Variable) ((NamedObj) actor)
-                   .getAttribute("firingsPerIteration");
-           int firingsPerIteration = ((IntToken) firings.getToken())
-                   .intValue();
-           Set inputPortsSet = new HashSet();
-           inputPortsSet.addAll(actor.inputPortList());
-           //ioPortsSet.addAll(actor.outputPortList());
-
-           Iterator inputPorts = inputPortsSet.iterator();
-
-           while (inputPorts.hasNext()) {
-               IOPort port = (IOPort) inputPorts.next();
-               int totalTokens = DFUtilities.getRate(port)
-                       * firingsPerIteration;
-               _checkBufferSize(port, initializeCode, totalTokens);               
-           }
        }
        
+       _checkBufferSize(initializeCode);
+                           
        return initializeCode.toString();
    }
 
@@ -243,6 +218,7 @@ public class SDFDirector extends Director {
            }
        } 
  
+       // The offset of the input port itself is updated by outside director.
        _updateConnectedPortsOffset(inputPort, code, rate);
        
    }
@@ -283,9 +259,10 @@ public class SDFDirector extends Director {
            }
        } 
        
+       // The offset of the ports connected to the output port is 
+       // updated by outside director.
        _updatePortOffset(outputPort, code, rate);
    }
-
    
 
    /** Return the buffer size of a given channel (i.e, a given port
@@ -329,6 +306,38 @@ public class SDFDirector extends Director {
        }
    }
    
+   protected void _checkBufferSize(StringBuffer initializeCode) 
+           throws IllegalActionException {
+    
+       CompositeActor container 
+               = (CompositeActor) getComponent().getContainer();
+
+       Iterator outputPorts = container.outputPortList().iterator();
+       while (outputPorts.hasNext()) {
+           IOPort outputPort = (IOPort) outputPorts.next();
+           int totalTokens = DFUtilities.getRate(outputPort);
+           _checkBufferSize(outputPort, initializeCode, totalTokens);
+       }
+    
+       Iterator actors = container.deepEntityList().iterator();
+       while (actors.hasNext()) {
+           Actor actor = (Actor) actors.next();
+           Variable firings = (Variable) ((NamedObj) actor)
+                   .getAttribute("firingsPerIteration");
+           int firingsPerIteration = ((IntToken) firings.getToken())
+                   .intValue();
+           
+           Iterator inputPorts = actor.inputPortList().iterator();
+           while (inputPorts.hasNext()) {
+               IOPort inputPort = (IOPort) inputPorts.next();
+               int totalTokens = DFUtilities.getRate(inputPort)
+                       * firingsPerIteration;
+               _checkBufferSize(inputPort, initializeCode, totalTokens);               
+           } 
+       }     
+   }
+
+   
    /** Check for each channel of the given port to see if variables are needed
     *  for recording read offset and write offset. If the buffer size of a 
     *  channel divides the total number of tokens transferred in one firing 
@@ -356,14 +365,14 @@ public class SDFDirector extends Director {
            length = port.getWidthInside();
        } 
        for (int channel = 0; channel < length; channel++) {
-           int portOffset = 
-                   totalTokens % getBufferSize(port, channel);
+           int portOffset = totalTokens 
+                   % actorHelper.getBufferSize(port, channel);
 
            if (portOffset != 0) {
                // Increase the buffer size of that channel to the
                // power of two.
-               int bufferSize = _ceilToPowerOfTwo(getBufferSize(port,
-                       channel));
+               int bufferSize = _ceilToPowerOfTwo(actorHelper
+                       .getBufferSize(port, channel));
                actorHelper.setBufferSize(port, channel, bufferSize);
             
                //As optimization, we could check again if the new 
@@ -422,7 +431,7 @@ public class SDFDirector extends Director {
    protected void _updatePortOffset(IOPort port, StringBuffer code, int rate) 
            throws IllegalActionException {
     
-       CodeGeneratorHelper helperObject = 
+       CodeGeneratorHelper helper = 
                (CodeGeneratorHelper) _getHelper(port.getContainer());
        
        int length = 0;
@@ -434,18 +443,18 @@ public class SDFDirector extends Director {
     
        for (int j = 0; j < length; j++) {
            // Update the offset for each channel.
-           if (helperObject.getReadOffset(port, j) 
+           if (helper.getReadOffset(port, j) 
                    instanceof Integer) {
-               int offset = ((Integer) helperObject
+               int offset = ((Integer) helper
                        .getReadOffset(port, j)).intValue();
                offset = (offset + rate)
-                       % helperObject.getBufferSize(port, j);
-               helperObject.setReadOffset(port, j, new Integer(
+                       % helper.getBufferSize(port, j);
+               helper.setReadOffset(port, j, new Integer(
                        offset));
            } else {
-               int modulo = helperObject.getBufferSize(port, j) - 1;
+               int modulo = helper.getBufferSize(port, j) - 1;
                String offsetVariable = 
-                       (String) helperObject.getReadOffset(port, j);
+                       (String) helper.getReadOffset(port, j);
                code.append((String) 
                        offsetVariable + " = (" + offsetVariable 
                        + " + " + rate 
@@ -464,7 +473,7 @@ public class SDFDirector extends Director {
    protected void _updateConnectedPortsOffset(IOPort port, 
            StringBuffer code, int rate) throws IllegalActionException {
    
-       CodeGeneratorHelper helperObject = 
+       CodeGeneratorHelper helper = 
                (CodeGeneratorHelper) _getHelper(port.getContainer());
        
        int length = 0;
@@ -475,27 +484,27 @@ public class SDFDirector extends Director {
        }
 
        for (int j = 0; j < length; j++) {
-           List sinkChannels = helperObject.getSinkChannels(port, j);
+           List sinkChannels = helper.getSinkChannels(port, j);
 
            for (int k = 0; k < sinkChannels.size(); k++) {
                Channel channel = (Channel) sinkChannels.get(k);
                IOPort sinkPort = (IOPort) channel.port;
                int sinkChannelNumber = channel.channelNumber;
         
-               Object offsetObject = helperObject
+               Object offsetObject = helper
                        .getWriteOffset(sinkPort, sinkChannelNumber);
                if (offsetObject instanceof Integer) {
                    int offset = ((Integer) offsetObject).intValue();
                    offset = (offset + rate)
-                           % helperObject.getBufferSize
+                           % helper.getBufferSize
                            (sinkPort, sinkChannelNumber);
-                   helperObject.setWriteOffset(sinkPort, 
+                   helper.setWriteOffset(sinkPort, 
                            sinkChannelNumber, new Integer(offset));
                } else {
-                   int modulo = helperObject.getBufferSize
+                   int modulo = helper.getBufferSize
                            (sinkPort, sinkChannelNumber) - 1;
                    String offsetVariable = 
-                           (String) helperObject.getWriteOffset
+                           (String) helper.getWriteOffset
                            (sinkPort, sinkChannelNumber);
                    code.append((String) 
                            offsetVariable + " = (" + offsetVariable 
@@ -516,7 +525,7 @@ public class SDFDirector extends Director {
     *   equal to the given integer.
     *  @exception IllegalActionException If the given integer is not positive.
     */
-   private int _ceilToPowerOfTwo(int value) throws IllegalActionException {
+   protected int _ceilToPowerOfTwo(int value) throws IllegalActionException {
        if (value < 1) {
            throw new IllegalActionException(getComponent(),
                    "The given integer must be a positive integer.");
