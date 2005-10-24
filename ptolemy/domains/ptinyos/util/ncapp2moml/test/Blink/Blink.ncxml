@@ -1,0 +1,145 @@
+<nesc xmlns="http://www.tinyos.net/nesC">
+  <components>
+    <component qname="Blink" loc="39:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/Blink.nc">
+      <documentation loc="39:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/Blink.nc">
+        <short>&#10; Blink is a basic application that toggles the leds on the mote&#10; on every clock interrupt. </short>
+        <long>&#10; Blink is a basic application that toggles the leds on the mote&#10; on every clock interrupt.  The clock interrupt is scheduled to&#10; occur every second.  The initialization of the clock can be seen&#10; in the Blink initialization function, StdControl.start().&#60;p>&#10;&#10; @author tinyos-help@millennium.berkeley.edu&#10;</long>
+      </documentation>
+      <configuration/>
+      <wiring>
+        <wire loc="44:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/Blink.nc">
+          <from><interface-ref name="StdControl" scoped="" ref="0xf6e11a60"/></from>
+          <to><interface-ref name="StdControl" scoped="" ref="0xf6e0b660"/></to>
+        </wire>
+        <wire loc="43:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/Blink.nc">
+          <from><interface-ref name="StdControl" scoped="" ref="0xf6e11a60"/></from>
+          <to><interface-ref name="StdControl" scoped="" ref="0xf6de6ee0"/></to>
+        </wire>
+        <wire loc="45:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/Blink.nc">
+          <from><interface-ref name="Timer" scoped="" ref="0xf6ded198"/></from>
+          <to><interface-ref name="Timer" scoped="" ref="0xf6de6a18"/></to>
+        </wire>
+        <wire loc="46:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/Blink.nc">
+          <from><interface-ref name="Leds" scoped="" ref="0xf6de8148"/></from>
+          <to><interface-ref name="Leds" scoped="" ref="0xf6dad9b8"/></to>
+        </wire>
+      </wiring>
+    </component>
+  </components>
+  <interfaces>
+    <interface provided="0" name="StdControl" ref="0xf6e11a60" loc="45:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/system/Main.nc">
+      <component-ref qname="Main"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="StdControl" scoped="" ref="0xf6e11a60"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="StdControl"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="init" scoped="" ref="0xf6e11c28"/>
+        <function-ref name="start" scoped="" ref="0xf6e11cf8"/>
+        <function-ref name="stop" scoped="" ref="0xf6e11dc8"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="StdControl" ref="0xf6e0b660" loc="38:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/BlinkM.nc">
+      <component-ref qname="BlinkM"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="StdControl" scoped="" ref="0xf6e0b660"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="StdControl"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="init" scoped="" ref="0xf6e0b828"/>
+        <function-ref name="start" scoped="" ref="0xf6e0b8f8"/>
+        <function-ref name="stop" scoped="" ref="0xf6e0b9c8"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="StdControl" ref="0xf6de6ee0" loc="48:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/SingleTimer.nc">
+      <component-ref qname="SingleTimer"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="StdControl" scoped="" ref="0xf6de6ee0"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="StdControl"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="init" scoped="" ref="0xf6de50c0"/>
+        <function-ref name="start" scoped="" ref="0xf6de5190"/>
+        <function-ref name="stop" scoped="" ref="0xf6de5260"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="Timer" ref="0xf6ded198" loc="41:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/BlinkM.nc">
+      <component-ref qname="BlinkM"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Timer" scoped="" ref="0xf6ded198"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Timer"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="fired" scoped="" ref="0xf6ded360"/>
+        <function-ref name="start" scoped="" ref="0xf6ded430"/>
+        <function-ref name="stop" scoped="" ref="0xf6ded500"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="Timer" ref="0xf6de6a18" loc="47:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/SingleTimer.nc">
+      <component-ref qname="SingleTimer"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Timer" scoped="" ref="0xf6de6a18"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Timer"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="fired" scoped="" ref="0xf6de6be0"/>
+        <function-ref name="start" scoped="" ref="0xf6de6cb0"/>
+        <function-ref name="stop" scoped="" ref="0xf6de6d80"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="Leds" ref="0xf6de8148" loc="42:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/apps/Blink/BlinkM.nc">
+      <component-ref qname="BlinkM"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Leds" scoped="" ref="0xf6de8148"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Leds"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="yellowOff" scoped="" ref="0xf6de8310"/>
+        <function-ref name="yellowOn" scoped="" ref="0xf6de83e0"/>
+        <function-ref name="init" scoped="" ref="0xf6de84b0"/>
+        <function-ref name="greenOff" scoped="" ref="0xf6de8580"/>
+        <function-ref name="redOff" scoped="" ref="0xf6de8650"/>
+        <function-ref name="greenToggle" scoped="" ref="0xf6de8720"/>
+        <function-ref name="get" scoped="" ref="0xf6de87f0"/>
+        <function-ref name="yellowToggle" scoped="" ref="0xf6de88c0"/>
+        <function-ref name="redToggle" scoped="" ref="0xf6de8990"/>
+        <function-ref name="set" scoped="" ref="0xf6de8a60"/>
+        <function-ref name="redOn" scoped="" ref="0xf6de8b30"/>
+        <function-ref name="greenOn" scoped="" ref="0xf6de8c00"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="Leds" ref="0xf6dad9b8" loc="46:/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos/system/LedsC.nc">
+      <component-ref qname="LedsC"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Leds" scoped="" ref="0xf6dad9b8"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Leds"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="yellowOff" scoped="" ref="0xf6dadb80"/>
+        <function-ref name="yellowOn" scoped="" ref="0xf6dadc50"/>
+        <function-ref name="init" scoped="" ref="0xf6dadd20"/>
+        <function-ref name="greenOff" scoped="" ref="0xf6daddf0"/>
+        <function-ref name="redOff" scoped="" ref="0xf6dadec0"/>
+        <function-ref name="greenToggle" scoped="" ref="0xf6d6f010"/>
+        <function-ref name="get" scoped="" ref="0xf6d6f0e0"/>
+        <function-ref name="yellowToggle" scoped="" ref="0xf6d6f1b0"/>
+        <function-ref name="redToggle" scoped="" ref="0xf6d6f280"/>
+        <function-ref name="set" scoped="" ref="0xf6d6f350"/>
+        <function-ref name="redOn" scoped="" ref="0xf6d6f420"/>
+        <function-ref name="greenOn" scoped="" ref="0xf6d6f4f0"/>
+      </interface-functions>
+    </interface>
+  </interfaces>
+  <interfacedefs>
+  </interfacedefs>
+  <tags>
+  </tags>
+  <variables>
+  </variables>
+  <constants>
+  </constants>
+  <functions>
+  </functions>
+  <typedefs>
+  </typedefs>
+</nesc>

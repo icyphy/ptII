@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<entity name="Blink" class="ptolemy.domains.ptinyos.kernel.NCCompositeActor">
+  <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector" />
+  <entity name="BlinkM" class="apps.Blink.BlinkM" />
+  <entity name="Main" class="tos.system.Main" />
+  <entity name="SingleTimer" class="apps.Blink.SingleTimer" />
+  <entity name="LedsC" class="tos.system.LedsC" />
+  <relation name="relation1" class="ptolemy.actor.IORelation" />
+  <relation name="relation2" class="ptolemy.actor.IORelation" />
+  <relation name="relation3" class="ptolemy.actor.IORelation" />
+  <link port="BlinkM.StdControl" relation="relation1" />
+  <link port="BlinkM.Leds" relation="relation3" />
+  <link port="Main.StdControl" relation="relation1" />
+  <link port="LedsC.Leds" relation="relation3" />
+  <link port="BlinkM.Timer" relation="relation2" />
+  <link port="SingleTimer.Timer" relation="relation2" />
+  <link port="SingleTimer.StdControl" relation="relation1" />
+</entity>
+
