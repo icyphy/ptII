@@ -33,13 +33,13 @@ ME =		ptolemy/domains/ct/demo
 
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
 DIRS = 		BouncingBall Brownian \
-		CarTracking ComparedClocks ContinuousClock \
+		CarTracking CartPendulum ComparedClocks ContinuousClock \
 		Helicopter HierarchicalExecution Hysteresis \
 		LevelCrossingDetector \
 		LevelCrossingDetectorDetectsGlitches \
-		Lorenz NewtonsCradle \
-		SampledClocks Satellite SigmaDelta Spontaneous \
-		SquareWave StickyMasses Switch \
+		Lorenz NewtonsCradle Pendulum3D\
+		SampledClocks Satellite SigmaDelta SinuBouncingBall \
+		Spontaneous SquareWave StickyMasses Switch \
 		Transmission Thermostat V2V Corba #$(PTJSPACES_DIR)
 
 # Root of the Java directory
@@ -62,6 +62,7 @@ PTCLASSALLJARS = \
 	BouncingBall/BouncingBall.jar \
 	Brownian/Brownian.jar \
 	CarTracking/CarTracking.jar \
+	CartPendulum/CartPendulum \
 	ComparedClocks/ComparedClocks.jar \
 	ContinuousClock/ContinuousClock.jar \
 	Helicopter/Helicopter.jar \
@@ -71,9 +72,11 @@ PTCLASSALLJARS = \
 	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
 	Lorenz/Lorenz.jar \
 	NewtonsCradle/NewtonsCradle.jar \
+	Pendulum3D/Pendulum3D.jar
 	SampledClocks/SampledClocks.jar \
 	Satellite/Satellite.jar \
 	SigmaDelta/SigmaDelta.jar \
+	SinuBouncingBall/SinuBouncingBall \
 	Spontaneous/Spontaneous.jar \
 	SquareWave/SquareWave.jar \
 	StickyMasses/StickyMasses.jar \
