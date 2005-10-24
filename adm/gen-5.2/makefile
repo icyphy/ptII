@@ -665,6 +665,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	# Fix up doc/makefile
 	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/viptos$(VERSION)/doc/makefile \
+		| sed 's/codeDocHyVisual.jar codeDocVisualSense.jar//' \
 		> src_jar/viptos$(VERSION)/doc/makefile.tmp
 	mv src_jar/viptos$(VERSION)/doc/makefile.tmp \
 		src_jar/viptos$(VERSION)/doc/makefile
