@@ -62,6 +62,7 @@ JSRCS = \
 	Typeable.java \
 	TypeConstant.java \
 	TypeLattice.java \
+	UnionType.java \
 	UnsizedMatrixType.java
 
 EXTRA_SRCS =	$(JSRCS)
