@@ -84,8 +84,8 @@ demo4: GraphicsConfigurationTest.class
 	$(JAVA) -classpath . GraphicsConfigurationTest
 
 #See http://java.sun.com/products/jfc/tsc/articles/timer/
-demo5: FadeDemo.class
-	$(JAVA) -classpath . FadeDemo
+#demo5: FadeDemo.class
+#	$(JAVA) -classpath . FadeDemo
 
 # http://java.sun.com/products/java-media/2D/samples/suite/Composite/FadeAnim.java
 demo6: FadeAnim.class
