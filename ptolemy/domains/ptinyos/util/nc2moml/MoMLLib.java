@@ -59,9 +59,9 @@ import ptolemy.util.FileUtilities;
 
  @author Elaine Cheong, contributor: Christopher Brooks
  @version $Id$
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
-
  */
 public class MoMLLib {
     /** Generate the .moml index file for the given arguments.

@@ -125,6 +125,7 @@ import org.xml.sax.SAXException;
 
  @author Elaine Cheong
  @version $Id$
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
