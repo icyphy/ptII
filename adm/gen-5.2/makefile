@@ -468,6 +468,10 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 # Files to be removed from HyVisual source distributions
 VIPTOS_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
+		doc/codeDocHyVisual \
+		doc/codeDocHyVisual.jar \
+		doc/codeDocVisualSense \
+		doc/codeDocVisualSense.jar \
 		ptolemy/configs/hyvisual
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
