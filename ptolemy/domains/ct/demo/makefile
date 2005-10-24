@@ -62,7 +62,7 @@ PTCLASSALLJARS = \
 	BouncingBall/BouncingBall.jar \
 	Brownian/Brownian.jar \
 	CarTracking/CarTracking.jar \
-	CartPendulum/CartPendulum \
+	CartPendulum/CartPendulum.jar \
 	ComparedClocks/ComparedClocks.jar \
 	ContinuousClock/ContinuousClock.jar \
 	Helicopter/Helicopter.jar \
@@ -76,7 +76,7 @@ PTCLASSALLJARS = \
 	SampledClocks/SampledClocks.jar \
 	Satellite/Satellite.jar \
 	SigmaDelta/SigmaDelta.jar \
-	SinuBouncingBall/SinuBouncingBall \
+	SinuBouncingBall/SinuBouncingBall.jar \
 	Spontaneous/Spontaneous.jar \
 	SquareWave/SquareWave.jar \
 	StickyMasses/StickyMasses.jar \
