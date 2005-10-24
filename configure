@@ -7624,8 +7624,8 @@ echo "$as_me: WARNING: \$PTINYOS_MOMLROOT is set to '$PTINYOS_MOMLROOT',
      but there is no directory by that name.
      For details, see $PTII/ptolemy/domains/ptinyos/README.txt." >&2;}
             else
-                ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-                    <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT\"/>"
+                #ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+                #    <classpathentry kind=\"lib\" path=\"$PTINYOS_MOMLROOT\"/>"
 	        echo "$as_me:$LINENO: result: $PTINYOS_MOMLROOT" >&5
 echo "${ECHO_T}$PTINYOS_MOMLROOT" >&6
             fi
