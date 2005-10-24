@@ -61,8 +61,6 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
 
-import com.sun.tools.corba.se.idl.constExpr.Not;
-
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerator
 
@@ -149,7 +147,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate the body code that lies between initialize and wrapup.
      *  In this base class, nothing is generated.
-     *  @exception Not Thrown in this base class.
      *  @return The empty string.
      *  @exception IllegalActionException Not thrown in this base class.
      */
