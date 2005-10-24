@@ -27,7 +27,9 @@ COPYRIGHTENDKEY
 */
 package ptolemy.codegen.c.domains.fsm.kernel;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
@@ -121,6 +123,13 @@ public class FSMActor extends CCodeGeneratorHelper {
         return processCode(code.toString());
     }
           
+    public Set generateSharedCode() throws IllegalActionException {
+        Set set = new HashSet();
+        set.addAll(super.generateSharedCode());
+        set.add("#define true 1\n#define false 0\n");
+        return set;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
