@@ -67,6 +67,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'NCApp2MoML$$1.class' \
+	'NCApp2MoML$$_ComponentFile.class' \
+	'NCApp2MoML$$_Relations.class' \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
