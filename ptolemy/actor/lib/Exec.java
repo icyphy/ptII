@@ -291,10 +291,26 @@ public class Exec extends TypedAtomicActor {
             if (processReturnCode != 0) {
                 // We could have a parameter that would enable
                 // or disable this.
+                
+                String outputString = "";
+                String errorString = "";
+                try {
+                    errorString = _errorGobbler.getAndReset();
+                } catch (Exception ex) {
+                    errorString = ex.toString();
+                }
+                try {
+                    outputString = _outputGobbler.getAndReset();
+                } catch (Exception ex) {
+                    outputString = ex.toString();
+                }
                 throw new IllegalActionException(this, "Executing command \""
                         + ((StringToken) command.getToken()).stringValue()
                         + "\" returned a non-zero return value of "
-                        + processReturnCode);
+                        + processReturnCode
+                        + ".\nThe last input was: " + line
+                        + ".\nThe standard output was: " + outputString
+                        + "\nThe error output was: " + errorString);
             }
         } catch (InterruptedException interrupted) {
             throw new InternalErrorException(this, interrupted,
