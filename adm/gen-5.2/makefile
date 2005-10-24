@@ -78,9 +78,9 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
-# make USER=cxh PTIIHOME=/vol/maury/maury2/cxh/ptII PTIIADM=/vol/maury/maury2/cxh/ptII/adm TAR=/usr/local/bin/tar
-# make USER=cxh PTIIHOME=/tmp/ptII PTIIADM=/tmp/ptII/adm TAR=/bin/tar clean all src.jar
+# make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar clean all src.jar 
+
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
 
 USER =		ptII
@@ -359,6 +359,8 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
 		ptolemy/codegen \
+		ptolemy/distributed \
+		ptolemy/hsif \
 		ptolemy/matlab/ptmatlab.exp \
 		ptolemy/matlab/ptmatlab.lib \
 		ptolemy/matlab/ptmatlab.obj \
@@ -370,8 +372,8 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
 		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
 
-# Files to be removed from HyVisual source distributions
-HYVISUAL_SRC_TO_BE_REMOVED = \
+
+BASE_SRC_TO_BE_REMOVED = \
 		doc/usingVergil \
 		doc/design/usingVergil \
 		lib/hsif \
@@ -411,7 +413,6 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/full \
 		ptolemy/configs/jni \
 		ptolemy/configs/jxta \
-		ptolemy/configs/ptiny \
 		ptolemy/configs/SingleWindow \
 		ptolemy/configs/visualsense \
 		ptolemy/configs/copernicus \
@@ -448,6 +449,17 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/plot/plotml/build.xml \
 		thales
 
+# Files to be removed from HyVisual source distributions
+HYVISUAL_SRC_TO_BE_REMOVED = \
+		$(BASE_SRC_TO_BE_REMOVED) \
+		ptolemy/configs/ptiny \
+		ptolemy/domains/ptinyos
+
+# Files to be removed from HyVisual source distributions
+VIPTOS_SRC_TO_BE_REMOVED = \
+		$(BASE_SRC_TO_BE_REMOVED) \
+		ptolemy/configs/hyvisual
+
 # Location of the jar binary.  Cygwin /bin/jar is broken.
 JAR=c:/j2sdk1.4.2_05/bin/jar
 
@@ -468,6 +480,9 @@ src_jar: #$(PTII_SRC)
 	(cd src_jar/ptII$(VERSION); $(FINDCLEAN))
 	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
 	(cd src_jar/ptII$(VERSION); rm -rf $(PTII_SRC_TO_BE_REMOVED))
+
+############################################
+# HyVisual
 
 HYVISUAL_SRC_JAR = hyvisual$(VERSION).src.jar
 
@@ -561,6 +576,102 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	(cd src_jar/hyvisual$(VERSION); rm -rf `cat ../../src.ex`)
 
 ###############
+# Viptos
+
+VIPTOS_SRC_JAR = viptos$(VERSION).src.jar
+
+# The Jar file that we create.
+viptos.jar: $(VIPTOS_SRC_JAR)
+$(VIPTOS_SRC_JAR): src_jar/viptos$(VERSION)
+	(cd src_jar/viptos$(VERSION); $(JAR) -cf ../../viptos$(VERSION).src.jar .)
+
+VIPTOS_SRC_TAR = viptos$(VERSION).src.tar.gz
+# The Jar file that we create.
+viptos: $(VIPTOS_SRC_TAR)
+viptos.tar: $(VIPTOS_SRC_TAR)
+$(VIPTOS_SRC_TAR): src_jar/viptos$(VERSION)
+	(cd src_jar; \
+		$(TAR) -czf ../viptos$(VERSION).src.tar.gz \
+		viptos$(VERSION) \
+	)
+		#cp $(PTIIHOME)/doc/design/viptos.pdf \
+		#	viptos$(VERSION)/doc/design/viptos.pdf; \
+
+
+# The directory we jar up.
+# We include DE because some of the kernel/util tests use it.  CT demos also.
+viptos_src_jar: src_jar/viptos$(VERSION)
+src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
+	if [ ! -d src_jar/viptos$(VERSION) ]; then \
+		 mkdir -p src_jar/viptos$(VERSION); \
+	fi
+	(cd src_jar/viptos$(VERSION); \
+		$(JAR) -xf ../../ptII$(VERSION).src.jar)
+
+	(cd src_jar/viptos$(VERSION); \
+		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
+		rm -rf $(VIPTOS_SRC_TO_BE_REMOVED) thales; \
+	   touch configure; \
+	   chmod a+rx configure util/testsuite/chkextra; \
+	)
+	egrep -v "copernicus|decompile|emachine|hyvisual|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/viptos$(VERSION)/bin/makefile \
+		> src_jar/viptos$(VERSION)/bin/makefile.tmp
+	mv src_jar/viptos$(VERSION)/bin/makefile.tmp \
+		src_jar/viptos$(VERSION)/bin/makefile
+	# Fix up actor/lib/makefile
+	egrep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
+		src_jar/viptos$(VERSION)/ptolemy/actor/lib/makefile \
+		> src_jar/viptos$(VERSION)/ptolemy/actor/lib/makefile.tmp
+	mv src_jar/viptos$(VERSION)/ptolemy/actor/lib/makefile.tmp \
+		src_jar/viptos$(VERSION)/ptolemy/actor/lib/makefile
+	# Fix up domains/makefile
+	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
+		src_jar/viptos$(VERSION)/ptolemy/domains/makefile \
+		> src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp
+	mv src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp \
+		src_jar/viptos$(VERSION)/ptolemy/domains/makefile
+	# Fix up configs/makefile
+	egrep -v "dsp.jar|full.jar|hyvisual.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+		src_jar/viptos$(VERSION)/ptolemy/configs/makefile \
+		> src_jar/viptos$(VERSION)/ptolemy/configs/makefile.tmp
+	mv src_jar/viptos$(VERSION)/ptolemy/configs/makefile.tmp \
+		src_jar/viptos$(VERSION)/ptolemy/configs/makefile \
+	# Fix up doc/design/makefile
+	egrep -v "ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
+		src_jar/viptos$(VERSION)/doc/design/makefile \
+		> src_jar/viptos$(VERSION)/doc/design/makefile.tmp
+	mv src_jar/viptos$(VERSION)/doc/design/makefile.tmp \
+		src_jar/viptos$(VERSION)/doc/design/makefile
+	# Fix up doc/makefile
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
+		src_jar/viptos$(VERSION)/doc/makefile \
+		> src_jar/viptos$(VERSION)/doc/makefile.tmp
+	mv src_jar/viptos$(VERSION)/doc/makefile.tmp \
+		src_jar/viptos$(VERSION)/doc/makefile
+	# Fix up actor/lib/test/makefile
+	egrep -v OrderedMerge.tcl \
+		src_jar/viptos$(VERSION)/ptolemy/actor/lib/test/makefile \
+		> src_jar/viptos$(VERSION)/ptolemy/actor/lib/test/makefile.tmp
+	mv src_jar/viptos$(VERSION)/ptolemy/actor/lib/test/makefile.tmp \
+		src_jar/viptos$(VERSION)/ptolemy/actor/lib/test/makefile
+	# Fix up ptolemy/makefile
+	sed -e 's/\$$(PTCALTROP_DIR)//' \
+	    -e 's/\$$(PTCOPERNICUS_DIR)//' \
+		< src_jar/viptos$(VERSION)/ptolemy/makefile \
+		> src_jar/viptos$(VERSION)/ptolemy/makefile.tmp
+	mv src_jar/viptos$(VERSION)/ptolemy/makefile.tmp \
+		src_jar/viptos$(VERSION)/ptolemy/makefile
+	# Fix up makefile
+	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
+		src_jar/viptos$(VERSION)/makefile | \
+		sed 's/\$$(PTJNI_DIR)//' \
+		> src_jar/viptos$(VERSION)/makefile.tmp
+	mv src_jar/viptos$(VERSION)/makefile.tmp \
+		src_jar/viptos$(VERSION)/makefile \
+	#cd src_jar/viptos$(VERSION); $(FINDCLEAN))
+	(cd src_jar/viptos$(VERSION); rm -rf `cat ../../src.ex`)
+
+##########
 
 
 update_ftp: update_ptii_ftp untar
