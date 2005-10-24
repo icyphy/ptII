@@ -134,9 +134,6 @@ c:/Program: not found
    80 characters so that when we print out the software for review,
    the lines print properly.
  <li>Close the Jalopy Settings window, you are now ready to indent.
- From within Eclipse, to format using Jalopy, go to the Java view,
- open a file, right click and select "Format with Jalopy".  The
- keyboard short cut is Ctrl+Alt+F10.
 
  </ol>
 
@@ -158,11 +155,16 @@ cd $PTII/ptolemy/copernicus/kernel/fragment
 rm `make echo_OPTIONAL_JSRCS`
 # Create a file that contains the names of the java files to include
 cd $PTII
+rm -rf vendors apps
+rm -rf ptolemy/domains/ct/demo/corba/util/*.java
 adm/bin/ptIItxtfiles > /tmp/f
 egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
-# Edit /tmp/j and remove:
-#   Everything in ct/demo/corba/util
+</pre>
 
+Run jalopy on the directory that has the pared down ptII tree:
+<pre>
+cd <i>path_to_jalopy</i>
+bin/jalopy.sh -r $PTII
 </pre>
 
 <li> Add trailing newlines to files with
@@ -170,15 +172,15 @@ egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
 <pre>
 cd $PTII
 # Run addtrailingnl without actually doing anything:
-cat /tmp/j | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
+cat /tmp/j | xargs $PTII/adm/bin/addtrailingnl -n
 # Run addtrailingnl with adding the new lines:
-cat /tmp/j | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl
+cat /tmp/j | xargs $PTII/adm/bin/addtrailingnl
 # Run with -n and then without:
-cat /tmp/f | egrep '*.[ch]$' | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep README | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep '*.htm' | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep '*.tcl' | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
-cat /tmp/f | egrep '*.xml' | xargs /tmp/cxh/ptII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*.[ch]$' | xargs $PTII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep README | xargs $PTII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*.htm' | xargs $PTII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*.tcl' | xargs $PTII/adm/bin/addtrailingnl -n
+cat /tmp/f | egrep '*.xml' | xargs $PTII/adm/bin/addtrailingnl -n
 </pre>
 <li> On a Unix box, check for files with control-Ms:
 <pre>
