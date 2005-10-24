@@ -20,6 +20,8 @@
 
             <input source="ptolemy/domains/giotto/giotto.xml"/>
             
+            <input source="ptolemy/domains/hs/lib/hsentities.xml"/>
+
 	    <!-- HDE is not shipping in 4.0 -->
             <!-- input source="ptolemy/domains/hde/lib/hdeentities.xml"/-->
 	    <!-- HDF is not shipping in 4.0 -->
