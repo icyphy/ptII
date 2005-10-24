@@ -47,11 +47,13 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
+	ComparingDeterministicandNonDeterministicModels.xml \
 	Hysteresis.xml \
 	HysteresisWithBernouliLosses.xml \
 	HysteresisWithNoise.xml \
 	HysteresisWithRandomDelay.xml \
-	HysteresisWithRandomLosses.xml
+	HysteresisWithRandomLosses.xml \
+	ModifiedNondeterministicHysteresis_2.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
