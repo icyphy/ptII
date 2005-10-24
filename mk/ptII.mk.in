@@ -528,6 +528,10 @@ PTQUICKTIME_PACKAGES = 	@PTQUICKTIME_PACKAGES@
 # TINI was found
 PTTINI_DIR =	@PTINI_DIR@
 
+# PTTINYOS_DIR is set to ptinyos and used in
+# $PTII/ptolemy/domains/makefile if TinyOS is found
+PTTINYOS_DIR =	@PTTINYOS_DIR@
+
 # Set to waba and used in $PTII/ptolemy/makefile if the PalmOS WABA was found
 PTWABA_DIR =	@PTWABA_DIR@
 

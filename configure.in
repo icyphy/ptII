@@ -2684,6 +2684,10 @@ fi
 #--------------------------------------------------------------------
 #	TinyOS	
 #--------------------------------------------------------------------
+# PTTINYOS_DIR is set to ptinyos and used in
+# $PTII/ptolemy/domains/makefile if TinyOS is found
+PTTINYOS_DIR=
+
 # The problem is that the nesc/configure script does not understand
 # "c:/" style syntax, it works with "/cygdrive/c/", yet Java
 # does not understand /cygdrive/c syntax, so we hack
@@ -2747,7 +2751,9 @@ changequote([, ])dnl
 fi 
 
 if test ! -d "$TOSROOT"; then
-      ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/ptinyos/" 
+       ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/ptinyos/" 
+else
+       PTTINYOS_DIR=ptinyos
 fi
 
 #--------------------------------------------------------------------
@@ -3371,6 +3377,10 @@ AC_SUBST(PTQUICKTIME_PACKAGES)
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found
 AC_SUBST(PTTINI_DIR)
+
+# PTTINYOS_DIR is set to ptinyos and used in
+# $PTII/ptolemy/domains/makefile if TinyOS is found
+AC_SUBST(PTTINYOS_DIR)
 
 # Set to giotto and used in
 # $PTII/ptolemy/apps/makefile if Giotto was found
