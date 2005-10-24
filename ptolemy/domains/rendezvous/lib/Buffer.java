@@ -129,13 +129,15 @@ public class Buffer extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        final RendezvousDirector director = (RendezvousDirector)getDirector();
         final Thread writeThread = Thread.currentThread();
         
         if (!(getDirector() instanceof RendezvousDirector)) {
             throw new IllegalActionException(this,
             "Buffer actor can only be used with RendezvousDirector.");
         }
+        
+        final RendezvousDirector director = (RendezvousDirector)getDirector();
+        
         _postfireReturns = true;
         if (_readThread == null) {
             _readThread = new Thread(getFullName() + "_readThread") {
@@ -243,6 +245,12 @@ public class Buffer extends TypedAtomicActor {
             _buffer.remove(0);
             if (_debugging) {
                 _debug("Buffer contents: " + _buffer);
+            }
+            
+            int capacityValue = ((IntToken)capacity.getToken()).intValue();
+            if (_buffer.size() == capacityValue - 1 && !_stopRequested) {
+                director.threadUnblocked(_readThread, null);
+                director.notifyAll();
             }
         }
     }
