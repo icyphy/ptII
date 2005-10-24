@@ -29,13 +29,9 @@ package ptolemy.codegen.kernel;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import ptolemy.actor.Actor;
 import ptolemy.codegen.c.actor.lib.CodeStream;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
