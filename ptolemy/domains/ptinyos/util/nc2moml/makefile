@@ -53,7 +53,14 @@ JSRCS = \
 	MoMLLib.java \
 	NC2MoML.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	index.htm \
+	nc2moml \
+	nc2moml-get-args \
+	nc2moml-main \
+	nc2moml-run-ncc
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -62,7 +69,10 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'MoMLLib$$1.class' \
+	'MoMLLib$$2.class' \
+	'MoMLLib$$3.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
