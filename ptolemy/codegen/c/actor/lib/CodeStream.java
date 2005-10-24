@@ -189,7 +189,7 @@ public class CodeStream {
             else if (parameters.size() - arguments.size() > 0) {
             	for (int i = arguments.size(); i < parameters.size(); i++) {
                     throw new IllegalActionException(blockName + " in "
-                            + _filePath + "expects parameter (" + 
+                            + _filePath + " expects parameter (" + 
                             parameters.get(i) + ").");
                 }
             }

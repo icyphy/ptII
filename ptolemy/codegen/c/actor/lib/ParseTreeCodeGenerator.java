@@ -172,7 +172,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
-        _fireCode.append("((Object*) newArray(" + numChildren);
+        _fireCode.append("$new(Array(" + numChildren);
 
         // Convert up to LUB. 
         // Assume UNKNOWN is the lower type.
@@ -188,20 +188,20 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             Type valueType = tokens[i].getType();
 
             if (valueType.equals(BaseType.INT)) { 
-                _fireCode.insert(nextIndex, "newInt(");
-                _fireCode.append("), INT_TYPE");
+                _fireCode.insert(nextIndex, "$new(Int(");
+                _fireCode.append(")), TYPE_Int");
             } else if (valueType.equals(BaseType.DOUBLE)) {            
-                _fireCode.insert(nextIndex, "newDouble(");
-                _fireCode.append("), DOUBLE_TYPE");
+                _fireCode.insert(nextIndex, "$new(Double(");
+                _fireCode.append(")), TYPE_Double");
             } else if (valueType.equals(BaseType.STRING)) {            
-                _fireCode.insert(nextIndex, "newString(");
-                _fireCode.append("), STRING_TYPE");
+                _fireCode.insert(nextIndex, "$new(String(");
+                _fireCode.append(")), TYPE_String");
             } else if (valueType instanceof ArrayType) {
-                _fireCode.append(", ARRAY_TYPE");
+                _fireCode.append(", TYPE_Array");
             } else if (valueType instanceof TopMatrixType ||
                        valueType instanceof SizedMatrixType ||
 					   valueType instanceof UnsizedMatrixType) {
-                _fireCode.append(", MATRIX_TYPE");
+                _fireCode.append(", TYPE_Matrix");
             }
             
             if (!elementType.equals(valueType)) {   // find max type
@@ -712,7 +712,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         int row = node.getRowCount();
         int column = node.getColumnCount();
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[row * column];
-        _fireCode.append("((Object*) newMatrix(" + row + ", " + column);
+        _fireCode.append("((Token*) $new(Matrix(" + row + ", " + column);
         
         ptolemy.data.Token result = null;
 
@@ -728,16 +728,16 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                     Type valueType = tokens[index].getType();
 
                     if (valueType.equals(BaseType.INT)) { 
-                        _fireCode.insert(nextIndex, "newInt(");
-                        _fireCode.append("), INT_TYPE");
+                        _fireCode.insert(nextIndex, "$new(Int(");
+                        _fireCode.append(")), TYPE_Int");
                     } else if (valueType.equals(BaseType.DOUBLE)) {            
-                        _fireCode.insert(nextIndex, "newDouble(");
-                        _fireCode.append("), DOUBLE_TYPE");
+                        _fireCode.insert(nextIndex, "$new(Double(");
+                        _fireCode.append(")), TYPE_Double");
                     } else if (valueType.equals(BaseType.STRING)) {            
-                        _fireCode.insert(nextIndex, "newString(");
-                        _fireCode.append("), STRING_TYPE");
+                        _fireCode.insert(nextIndex, "$new(String(");
+                        _fireCode.append(")), TYPE_String");
                     } else if (valueType instanceof ArrayType) {
-                        _fireCode.append(", ARRAY_TYPE");
+                        _fireCode.append(", TYPE_Array");
                     }
                 }
             }
@@ -792,7 +792,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
-        _fireCode.append("))");
+        _fireCode.append(")))");
     }
 
     /** Apply a method to the children of the specified node, where the

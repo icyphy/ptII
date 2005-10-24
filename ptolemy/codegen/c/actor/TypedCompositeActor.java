@@ -143,6 +143,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  @exception IllegalActionException 
      */
     public Set generateSharedCode() throws IllegalActionException {
+        super.generateSharedCode();
         Set sharedCode = new HashSet();
         
         Iterator actors = ((ptolemy.actor.CompositeActor) 

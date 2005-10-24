@@ -1,5 +1,3 @@
-/*** sharedBlock ***//**/
-
 /*** preinitBlock ***//**/
 
 /***fireBlock***//**/
