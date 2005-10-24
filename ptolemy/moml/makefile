@@ -60,6 +60,7 @@ JSRCS =	Documentation.java \
 	HandlesInternalLinks.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
+	LibraryBuilder.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
 	MoMLFilter.java \
