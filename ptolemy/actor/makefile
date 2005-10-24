@@ -107,6 +107,7 @@ OPTIONAL_FILES = \
 	'FiringEvent$$FiringEventType.class' \
 	'Manager$$1.class' \
 	'Manager$$2.class' \
+	'Manager$$3.class' \
 	'Manager$$State.class' \
 	'TypedIOPort$$1.class' \
 	'TypedIOPort$$TypeTerm.class'
