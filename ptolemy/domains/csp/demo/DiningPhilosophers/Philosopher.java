@@ -1,30 +1,30 @@
 /* A philosopher in the Dining Philosophers demo.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.csp.demo.DiningPhilosophers;
 
 import java.util.Iterator;
@@ -44,35 +44,34 @@ import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Philosopher in the Dining Philosophers demo.
 
 /**
-   A philosopher sits at a table with 4 other philosophers. Between
-   each two philosophers there is a fork. A Philosopher eats when he has
-   both forks next to him. A Philosopher thinks for a while, then tries
-   to eat. When he succeeds in obtaining both forks he eats for a while,
-   then puts both forks back on the table and continues thinking.
-   <p>
-   Due to the rendezvous nature of communication in the CSP domain, a
-   philosopher stalls if it tries to get a chopstick but cannot. When
-   it acquires the chopstick, it eats for a while and then sends a
-   message to the chopstick to say that it is finished using it.
-   Note this actor has been slowed down with Thread.sleep() statements to
-   mimic the eating nature of the philosophers in real time.
-   <p>
-   This actor is parameterized by three parameters: "eatingRate" which
-   controls the distribution of the eating times, and "thinkingRate"
-   which controls the distribution of the thinking times. Both these
-   rates characterize a uniform distribution between 0 and the rate.
-   <p>
-   @author Neil Smyth
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (nsmyth)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ A philosopher sits at a table with 4 other philosophers. Between
+ each two philosophers there is a chopstick. A Philosopher eats when he has
+ both chopsticks next to him. A Philosopher thinks for a while, then tries
+ to eat. When he succeeds in obtaining both chopsticks he eats for a while,
+ then puts both chopsticks back on the table and continues thinking.
+ <p>
+ Due to the rendezvous nature of communication in the CSP domain, a
+ philosopher stalls if it tries to get a chopstick but cannot. When
+ it acquires the chopstick, it eats for a while and then sends a
+ message to the chopstick to say that it is finished using it.
+ Note this actor has been slowed down with Thread.sleep() statements to
+ mimic the eating nature of the philosophers in real time.
+ <p>
+ This actor is parameterized by three parameters: "eatingRate" which
+ controls the distribution of the eating times, and "thinkingRate"
+ which controls the distribution of the thinking times. Both these
+ rates characterize a uniform distribution between 0 and the rate.
+ <p>
+ @author Neil Smyth
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Red (nsmyth)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Philosopher extends CSPActor {
     /** Construct a Philosopher in the specified container with the
      *  specified name.  The name must be unique within the container or
@@ -183,7 +182,7 @@ public class Philosopher extends CSPActor {
                 Thread.sleep((long) interval * 1000);
                 delay(interval);
 
-                // Obtain the forks
+                // Obtain the chopsticks
                 if (_random.nextDouble() > 0.5) {
                     leftIn.get(0);
                     gotLeft = true;
@@ -210,7 +209,7 @@ public class Philosopher extends CSPActor {
                 Thread.sleep((long) interval * 1000);
                 delay(interval);
 
-                // Release the forks.
+                // Release the chopsticks.
                 leftOut.send(0, t);
                 gotLeft = false;
                 rightOut.send(0, t);
@@ -251,8 +250,11 @@ public class Philosopher extends CSPActor {
     // Variables that are used by the applet to get the state of
     // the philosopher.
     public boolean gotLeft = false;
+
     public boolean gotRight = false;
+
     public boolean waitingLeft = false;
+
     public boolean waitingRight = false;
 
     ///////////////////////////////////////////////////////////////////
@@ -277,5 +279,6 @@ public class Philosopher extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private List _listeners;
+
     private static Random _random = new Random();
 }

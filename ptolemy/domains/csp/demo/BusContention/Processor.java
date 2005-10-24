@@ -1,32 +1,31 @@
 /* A CSP actor that contends for a shared resource.
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.domains.csp.demo.BusContention;
-
 
 // Ptolemy imports.
 import ptolemy.actor.TypedCompositeActor;
@@ -42,44 +41,43 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Processor
 
 /**
-   A CSP actor that contends for a shared resource. A Processor actor
-   is granted access to the shared resource via a Controller actor.
-   The processor must connect to a Controller via its requestInput
-   and requestOutput ports. The shared resource that the Processor
-   attempts to gain access to is a Memory actor. The memory actor
-   is connected to via the Processor's memoryInput and memoryOutput
-   ports.
+ A CSP actor that contends for a shared resource. A Processor actor
+ is granted access to the shared resource via a Controller actor.
+ The processor must connect to a Controller via its requestInput
+ and requestOutput ports. The shared resource that the Processor
+ attempts to gain access to is a Memory actor. The memory actor
+ is connected to via the Processor's memoryInput and memoryOutput
+ ports.
 
-   The Processor actor has four informal states. In state one it
-   determines at what time it will next attempt to access the
-   shared resource. It will then place a request at the determined
-   time. In state two, it will wait to see if it has been granted
-   the request. The Processor enters state three if it is granted
-   the request. It remains in state three for 300 milliseconds,
-   accesses the shared resource and then returns to state two. If
-   the Processor is denied its request, then it enters four and
-   remains in that state for 300 milliseconds after which it returns
-   to state four.
+ The Processor actor has four informal states. In state one it
+ determines at what time it will next attempt to access the
+ shared resource. It will then place a request at the determined
+ time. In state two, it will wait to see if it has been granted
+ the request. The Processor enters state three if it is granted
+ the request. It remains in state three for 300 milliseconds,
+ accesses the shared resource and then returns to state two. If
+ the Processor is denied its request, then it enters four and
+ remains in that state for 300 milliseconds after which it returns
+ to state four.
 
-   In addition to the resource contention features of Processor,
-   it can also notify an ExecEventListener as this actor jumps between
-   its three states. Such notification is enabled by adding an
-   ExecEventListener to this actor's listener list via the addListeners()
-   method. Listeners can be removed via the removeListeners() method.
-   ExecEventListeners are currently implemented to serve as conduits
-   between Ptolemy II and the Diva graphical user interface.
+ In addition to the resource contention features of Processor,
+ it can also notify an ExecEventListener as this actor jumps between
+ its three states. Such notification is enabled by adding an
+ ExecEventListener to this actor's listener list via the addListeners()
+ method. Listeners can be removed via the removeListeners() method.
+ ExecEventListeners are currently implemented to serve as conduits
+ between Ptolemy II and the Diva graphical user interface.
 
-   @author John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.3
-   @Pt.ProposedRating Red (davisj)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @author John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.3
+ @Pt.ProposedRating Red (davisj)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class Processor extends CSPActor {
     /** Construct a Processor actor with the specified container,
      *  name and priority code of this actor.
@@ -117,7 +115,7 @@ public class Processor extends CSPActor {
     public TypedIOPort requestInput;
 
     /** The resource request output port. Resource requests are made
-     *  through this port with a token that include's the requestor's
+     *  through this port with a token that includebs the requestor's
      *  priority level. The type of this port is BaseType.INT.
      */
     public TypedIOPort requestOutput;
@@ -201,23 +199,8 @@ public class Processor extends CSPActor {
         accessMemory(read);
     }
 
-    /** Return true when the time of the director has exceeded
-     *  50; return false otherwise.
-     * @return True when the global time has exceeded 50; return
-     *  false otherwise.
-     */
-    public boolean endYet() {
-        double time = _dir.getModelTime().getDoubleValue();
-
-        if (time > 50.0) {
-            return true;
-        }
-
-        return false;
-    }
-
     /** Execute this actor by requesting and accepting access
-     *  to a shared resource until endYet() returns true.
+     *  to a shared resource until b() returns true.
      * @exception IllegalActionException If an error occurs
      *  during communication through one of the ports.
      */
@@ -227,10 +210,6 @@ public class Processor extends CSPActor {
                 accessMemory(true);
             } else {
                 accessMemory(false);
-            }
-
-            if (endYet()) {
-                return;
             }
         }
     }
@@ -276,5 +255,6 @@ public class Processor extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private int _code;
+
     private CSPDirector _dir;
 }

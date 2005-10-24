@@ -31,7 +31,11 @@
 
 ME =		ptolemy/domains/csp/demo
 
-DIRS =		BusContention DiningPhilosophers
+DIRS =		Barrier \
+		BusContention \
+		DiningPhilosophers \
+		ResourcePool \
+		WriteRegulator
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -41,6 +45,20 @@ CLASSPATH =	$(ROOT)
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	demo
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		Barrier/Barrier.jar \
+		BusContention/BusContention.jar \
+		DiningPhilosophers/DiningPhilosophers.jar \
+		ResourcePool/ResourcePool.jar \
+		WriteRegulator/WriteRegulator.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS =
 

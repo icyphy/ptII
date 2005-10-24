@@ -1,41 +1,46 @@
 /* A CSPDirector governs the execution of a CompositeActor with CSP semantics.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
+ */
 package ptolemy.domains.csp.kernel;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -43,76 +48,76 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-
+import ptolemy.util.MessageHandler;
 
 // Java imports.
 //////////////////////////////////////////////////////////////////////////
 //// CSPDirector
 
 /**
-   CSPDirector governs the execution of a composite actor with the semantics
-   of the Communicating Sequential Processes (CSP) domain.
-   <p>
-   In the CSP domain, the director creates a thread for executing each
-   actor under its control. Each actor corresponds to a
-   process in the model. The threads are created in the initialize
-   method and started in the prefire method.  After the thread for an actor
-   is started it is <i>active</i> until the thread finishes. While the
-   process is active, it can also be <i>blocked</i> or <i>delayed</i>, but
-   not both. A process is blocked if it is trying to communicate but
-   the process with which it is trying to communicate is not
-   ready to do so yet. A process is delayed if it is waiting for
-   time to advance, or if it is waiting for a deadlock to occur.
-   <p>
-   The director is responsible for handling deadlocks, both real
-   and timed.  It is also responsible for carrying out any requests for
-   changes to the topology that have been made when a deadlock occurs.
-   It maintains counts of the number of active
-   processes, the number of blocked processes, and the number of
-   delayed processes. <i>Deadlock</i> occurs when the number of blocked processes
-   plus the number of delayed processes equals the number of active processes.
-   <i>Time deadlock</i> occurs if at least one of the active processes
-   is delayed. <i>Real deadlock</i> occurs if all of the active processes
-   under the control of this director are blocked trying to communicate.
-   The fire method controls and responds to deadlocks and carries out
-   changes to the topology when it is appropriate.
-   <p>
-   If real deadlock occurs, the fire method returns. If there are no
-   levels above this level in the hierarchy then this marks the end
-   of execution of the model. The model execution is terminated by setting
-   a flag in every receiver contained in actors controlled by this director.
-   When a process tries to send or receive from a receiver with the terminated
-   flag set, a TerminateProcessException is thrown which causes the
-   actors execution thread to terminate.
-   <p>
-   Time is controlled by the director. Each process can delay for some
-   delta time, and it will continue when the director has advanced time
-   by that length of time from the current time. A process is delayed by
-   calling delay(double) method. The director <i>advances</i> time each
-   occasion a time deadlock occurs and no changes to the topology  are
-   pending. If a process specifies zero delay, then the process
-   continues immediately. A process may delay itself until the next
-   time deadlock occurs by calling waitForDeadlock(). Then the next
-   occasion time deadlock occurs, the director wakes up any processes
-   waiting for deadlock, and does not advance the current time. Otherwise
-   the current model time is increased as well as being advanced.  By default
-   the model of computation used in the CSP domain is timed. To use CSP
-   without a notion of time, do not use the delay(double) method in any process.
-   <p>
-   Changes to the topology can occur when deadlock, real or timed, is
-   reached. The director carries out any changes that have been queued
-   with it. Note that the result of the topology changes may remove the
-   deadlock that caused the changes to be carried out.
-   <p>
-   @author Neil Smyth, Mudit Goel, John S. Davis II
-   @version $Id$
-   @since Ptolemy II 0.2
-   @Pt.ProposedRating Green (nsmyth)
-   @Pt.AcceptedRating Green (kienhuis)
-   @see ptolemy.actor.Director
-*/
-public class CSPDirector extends CompositeProcessDirector
-    implements TimedDirector {
+ CSPDirector governs the execution of a composite actor with the semantics
+ of the Communicating Sequential Processes (CSP) domain.
+ <p>
+ In the CSP domain, the director creates a thread for executing each
+ actor under its control. Each actor corresponds to a
+ process in the model. The threads are created in the initialize
+ method and started in the prefire method.  After the thread for an actor
+ is started it is <i>active</i> until the thread finishes. While the
+ process is active, it can also be <i>blocked</i> or <i>delayed</i>, but
+ not both. A process is blocked if it is trying to communicate but
+ the process with which it is trying to communicate is not
+ ready to do so yet. A process is delayed if it is waiting for
+ time to advance, or if it is waiting for a deadlock to occur.
+ <p>
+ The director is responsible for handling deadlocks, both real
+ and timed.  It is also responsible for carrying out any requests for
+ changes to the topology that have been made when a deadlock occurs.
+ It maintains counts of the number of active
+ processes, the number of blocked processes, and the number of
+ delayed processes. <i>Deadlock</i> occurs when the number of blocked processes
+ plus the number of delayed processes equals the number of active processes.
+ <i>Time deadlock</i> occurs if at least one of the active processes
+ is delayed. <i>Real deadlock</i> occurs if all of the active processes
+ under the control of this director are blocked trying to communicate.
+ The fire method controls and responds to deadlocks and carries out
+ changes to the topology when it is appropriate.
+ <p>
+ If real deadlock occurs, the fire method returns. If there are no
+ levels above this level in the hierarchy then this marks the end
+ of execution of the model. The model execution is terminated by setting
+ a flag in every receiver contained in actors controlled by this director.
+ When a process tries to send or receive from a receiver with the terminated
+ flag set, a TerminateProcessException is thrown which causes the
+ actors execution thread to terminate.
+ <p>
+ Time is controlled by the director. Each process can delay for some
+ delta time, and it will continue when the director has advanced time
+ by that length of time from the current time. A process is delayed by
+ calling delay(double) method. The director <i>advances</i> time each
+ occasion a time deadlock occurs and no changes to the topology  are
+ pending. If a process specifies zero delay, then the process
+ continues immediately. A process may delay itself until the next
+ time deadlock occurs by calling waitForDeadlock(). Then the next
+ occasion time deadlock occurs, the director wakes up any processes
+ waiting for deadlock, and does not advance the current time. Otherwise
+ the current model time is increased as well as being advanced.  By default
+ the model of computation used in the CSP domain is timed. To use CSP
+ without a notion of time, do not use the delay(double) method in any process.
+ <p>
+ Changes to the topology can occur when deadlock, real or timed, is
+ reached. The director carries out any changes that have been queued
+ with it. Note that the result of the topology changes may remove the
+ deadlock that caused the changes to be carried out.
+ <p>
+ @author Neil Smyth, Mudit Goel, John S. Davis II
+ @version $Id$
+ @since Ptolemy II 0.2
+ @Pt.ProposedRating Green (nsmyth)
+ @Pt.AcceptedRating Red (cxh)
+ @see ptolemy.actor.Director
+ */
+public class CSPDirector extends CompositeProcessDirector implements
+        TimedDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -185,12 +190,12 @@ public class CSPDirector extends CompositeProcessDirector
         super.initialize();
     }
 
-    /** Return a new CSPReceiver compatible with this director.
-     *  In the CSP domain, we use CSPReceivers.
-     *  @return A new CSPReceiver.
+    /** Return a new RendezvousReceiver compatible with this director.
+     *  In the CSP domain, we use RendezvousReceiver.
+     *  @return A new RendezvousReceiver.
      */
     public Receiver newReceiver() {
-        return new CSPReceiver();
+        return new RendezvousReceiver();
     }
 
     /** Return false if deadlock has occurred and there are no
@@ -207,8 +212,9 @@ public class CSPDirector extends CompositeProcessDirector
             return _notDone && !_stopRequested;
         }
     }
-
-    /** (non-Javadoc)
+    
+    /** Return an array of suggested directors to be used with ModalModel.
+     *  This is the FSMDirector followed by the NonStrictFSMDirector.
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
@@ -247,13 +253,6 @@ public class CSPDirector extends CompositeProcessDirector
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Increase the count of blocked processes and check if the actors
-     *  are deadlocked or stopped.
-     */
-    protected synchronized void _actorBlocked(CSPReceiver receiver) {
-        super._actorBlocked(receiver);
-    }
-
     /** Called by a CSPActor when it wants to delay. When the
      *  director has advanced time to "getCurrentTime() + delta", the process
      *  corresponding to the actor will continue. Note that actors
@@ -261,7 +260,7 @@ public class CSPDirector extends CompositeProcessDirector
      *  <P>
      *  The method waitForDeadlock() in CSPActor calls this method
      *  with a zero argument. Thus the process will continue the
-     *  next occasion time deadlock occurs. *  <p>
+     *  next occasion time deadlock occurs.
      *  @param delta The length of time to delay the actor.
      *  @param actor The actor being delayed.
      *  @exception InvalidStateException If an actor is delayed for
@@ -288,22 +287,95 @@ public class CSPDirector extends CompositeProcessDirector
         }
     }
 
-    /** An actor has unblocked, decrease the count of blocked actors.
-     */
-    protected synchronized void _actorUnBlocked(CSPReceiver receiver) {
-        super._actorUnBlocked(receiver);
-    }
-
     /** Returns true if all active processes are either blocked or
      *  delayed, false otherwise.
      */
-    protected synchronized boolean _areActorsDeadlocked() {
-        if (_getActiveActorsCount() == (_getBlockedActorsCount()
-                    + _actorsDelayed)) {
+    protected synchronized boolean _areThreadsDeadlocked() {
+        if (_getActiveThreadsCount() == (_getBlockedThreadsCount() + _actorsDelayed)) {
             return true;
         }
 
         return false;
+    }
+    
+    /** Return true if the count of active processes equals the number
+     *  of stopped, blocked, and delayed threads.  Otherwise return false.
+     *  @return True if all threads are stopped.
+     */
+    protected synchronized boolean _areAllThreadsStopped() {
+        return (_getActiveThreadsCount()
+                == (_getStoppedThreadsCount() + _getBlockedThreadsCount() + _actorsDelayed));
+    }
+
+    /** Return a string describing the status of each receiver.
+     *  @return A string describing the status of each receiver.
+     */
+    private String _receiverStatus() {
+        StringBuffer result = new StringBuffer();
+        CompositeActor container = (CompositeActor)getContainer();
+        
+        // Start with the input ports of the composite, which
+        // may have forked connections on the inside.
+        Iterator inputPorts = container.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort)(inputPorts.next());
+            result.append("Send inside from " + inputPort.getFullName() + "\n");
+            Receiver[][] destinations = inputPort.deepGetReceivers();
+            for (int channel = 0; channel < destinations.length; channel++) {
+                if (destinations[channel] != null) {
+                    result.append("   on channel " + channel + ":\n");
+                    for (int copy = 0; copy < destinations[channel].length; copy++) {
+                        result.append("-- to " + _receiverStatus(destinations[channel][copy]) + "\n");
+                    }
+                }
+            }
+        }
+        
+        // Next do the output ports of all contained actors.
+        Iterator actors = container.deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort)(outputPorts.next());
+                result.append("Send from " + outputPort.getFullName() + "\n");
+                Receiver[][] destinations = outputPort.getRemoteReceivers();
+                for (int channel = 0; channel < destinations.length; channel++) {
+                    if (destinations[channel] != null) {
+                        result.append("   on channel " + channel + ":\n");
+                        for (int copy = 0; copy < destinations[channel].length; copy++) {
+                            result.append("-- to " + _receiverStatus(destinations[channel][copy]) + "\n");
+                        }
+                    }
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    /** Return a string describing the status of the specified receiver.
+     *  @param receiver The receiver to describe.
+     *  @return A string describing the status of the specified receiver.
+     */
+    protected static String _receiverStatus(Receiver receiver) {
+        StringBuffer result = new StringBuffer();
+        result.append(receiver.getContainer().getFullName());
+        if (receiver instanceof RendezvousReceiver) {
+            RendezvousReceiver castReceiver = (RendezvousReceiver)receiver;
+            if (castReceiver._isGetWaiting()) {
+                result.append(" get() waiting");
+            }
+            if (castReceiver._isPutWaiting()) {
+                result.append(" put() waiting");
+            }
+            if (castReceiver._isConditionalReceiveWaiting()) {
+                result.append(" conditional receive waiting");
+            }
+            if (castReceiver._isConditionalSendWaiting()) {
+                result.append(" conditional send waiting");
+            }
+        }
+        return result.toString();
     }
 
     /** Respond to a deadlock. This is where nearly all the control for the
@@ -356,12 +428,19 @@ public class CSPDirector extends CompositeProcessDirector
                     done = true;
                 }
             }
-
-            // } else if ( _actorsBlocked == _getActiveActorsCount() ) {
-        } else if (_getBlockedActorsCount() == _getActiveActorsCount()) {
-            // Real deadlock.
-            System.out.println("REAL DEADLOCK. Number of active actors: "
-                    + _getActiveActorsCount());
+        } else if (_getBlockedThreadsCount() == _getActiveThreadsCount()) {
+            // Report deadlock.
+            Parameter suppress = (Parameter)getContainer().getAttribute(
+                    "SuppressDeadlockReporting", Parameter.class);
+            if (suppress == null
+                    || !(suppress.getToken() instanceof BooleanToken)
+                    || !((BooleanToken)suppress.getToken()).booleanValue()) {
+                String message = "Model ended with a deadlock (this may be normal for this model).\n"
+                        + "A parameter with name SuppressDeadlockReporting and value true will suppress this message.\n"
+                        + "Status of receivers:\n"
+                        + _receiverStatus();
+                MessageHandler.message(message);
+            }
             return false;
         }
 
@@ -370,9 +449,32 @@ public class CSPDirector extends CompositeProcessDirector
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Set to true when the director enters the wrapup() method. Any call
+     *  to _actorDelayed() when this flag is true will simply cancel the
+     *  delay and return. The purpose is to avoid the deadlock that happens
+     *  when an actor is delayed after the director calls super.wrapup() in
+     *  which it waits for all actors to stop.
+     */
+    protected boolean _inWrapup = false;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /*  Used to keep track of when and for how long processes are delayed.
+    /** Get the earliest time which an actor has been delayed to. This
+     *  should always be the top link on the list.
+     */
+    private Time _getNextTime() {
+        if (_delayedActorList.size() > 0) {
+            return ((DelayListLink) _delayedActorList.get(0))._resumeTime;
+        } else {
+            throw new InvalidStateException("CSPDirector.getNextTime(): "
+                    + " called in error.");
+        }
+    }
+    
+    /** Keep track of when and for how long processes are delayed.
      *  @param actor The delayed actor.
      *  @param actorTime The time at which to resume the actor.
      */
@@ -399,34 +501,18 @@ public class CSPDirector extends CompositeProcessDirector
         }
     }
 
-    /* Get the earliest time which an actor has been delayed to. This
-     * should always be the top link on the list.
-     */
-    private Time _getNextTime() {
-        if (_delayedActorList.size() > 0) {
-            return ((DelayListLink) _delayedActorList.get(0))._resumeTime;
-        } else {
-            throw new InvalidStateException("CSPDirector.getNextTime(): "
-                    + " called in error.");
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Count of the number of processes delayed until time
-    // sufficiently advances.
+    
+    /** Count of the number of processes delayed until time
+     *  sufficiently advances.
+     */
     private int _actorsDelayed = 0;
 
     // A sorted list of the times of delayed actors. The time the model
     // will next be advanced to is the time at the top of the list.
     private List _delayedActorList;
 
-    // Set to true when the director enters the wrapup() method. Any call
-    // to _actorDelayed() when this flag is true will simply cancel the
-    // delay and return. The purpose is to avoid the deadlock that happens
-    // when an actor is delayed after the director calls super.wrapup() in
-    // which it waits for all actors to stop.
-    private boolean _inWrapup = false;
     private static double TOLERANCE = Math.pow(10, -10);
 
     ///////////////////////////////////////////////////////////////////
@@ -436,6 +522,7 @@ public class CSPDirector extends CompositeProcessDirector
     // at which to resume it.
     private class DelayListLink {
         public Time _resumeTime;
+
         public CSPActor _actor;
     }
 }

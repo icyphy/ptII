@@ -49,15 +49,22 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Place CSPMultiSink at the end to work around a javadoc problem
 JSRCS = \
+	Barrier.java \
+	Buffer.java \
 	CSPBuffer.java \
 	CSPMultiSource.java \
 	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
-	CSPMultiSink.java
+	CSPMultiSink.java \
+	Merge.java \
+	ResourcePool.java
 
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	BarrierIcon.xml \
+	BufferIcon.xml \
+	ResourcePoolIcon.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

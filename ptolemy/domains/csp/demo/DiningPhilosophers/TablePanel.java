@@ -1,30 +1,30 @@
 /* A panel that graphical represents the Dining Philosophers
 
-Copyright (c) 1998-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1998-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 /**
  * A panel that graphically represents the Dining Philosophers.
  * This contains all the objects and controls the whole thing.
@@ -40,7 +40,6 @@ package ptolemy.domains.csp.demo.DiningPhilosophers;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Panel;
-
 
 class TablePanel extends Panel {
     ///////////////////////////////////////////////////////////////////
@@ -85,13 +84,15 @@ class TablePanel extends Panel {
                 if (!(_philosophers[i].gotLeft || _philosophers[j].gotRight)) {
                     // chopstick is on the table.
                     g.drawLine(chopsticksLoc[i].pos[0].X,
-                            chopsticksLoc[i].pos[0].Y, chopsticksLoc[i].pos[1].X,
+                            chopsticksLoc[i].pos[0].Y,
+                            chopsticksLoc[i].pos[1].X,
                             chopsticksLoc[i].pos[1].Y);
                 } else {
                     if (_philosophers[i].gotLeft) {
                         // the philosopher on the right has it.
                         g.drawLine(philsLoc[i].leftPos[0].X,
-                                philsLoc[i].leftPos[0].Y, philsLoc[i].leftPos[1].X,
+                                philsLoc[i].leftPos[0].Y,
+                                philsLoc[i].leftPos[1].X,
                                 philsLoc[i].leftPos[1].Y);
 
                         if (_philosophers[j].waitingRight) {
@@ -103,7 +104,8 @@ class TablePanel extends Panel {
                         // the philosopher on the left has it.
                         g.drawLine(philsLoc[j].rightPos[0].X,
                                 philsLoc[j].rightPos[0].Y,
-                                philsLoc[j].rightPos[1].X, philsLoc[j].rightPos[1].Y);
+                                philsLoc[j].rightPos[1].X,
+                                philsLoc[j].rightPos[1].Y);
 
                         if (_philosophers[i].waitingLeft) {
                             // the philosopher on the right is waiting for it.
@@ -147,6 +149,7 @@ class TablePanel extends Panel {
 
     // Coordinates of philosophers
     private PhilosopherCoords[] philsLoc = new PhilosopherCoords[5];
+
     private Philosopher[] _philosophers;
 
     /*
@@ -171,7 +174,9 @@ class TablePanel extends Panel {
 
     // Length of the chopsticks
     private final double l = 10d;
+
     private final int tableGap = 30;
+
     private final int tableR = (int) r1 - tableGap;
 
     /**
@@ -194,78 +199,78 @@ class TablePanel extends Panel {
         Coordinate r_2;
 
         p = new Coordinate(origin.X - pR, origin.Y - (int) r1 - pR);
-        l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18),
-                p.Y + pR + (int) (r3 * cos18));
-        l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18),
-                p.Y + pR + (int) ((r3 + l) * cos18));
-        r_1 = new Coordinate((p.X + pR) - (int) (r3 * sin18),
-                p.Y + pR + (int) (r3 * cos18));
-        r_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * sin18),
-                p.Y + pR + (int) ((r3 + l) * cos18));
+        l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18), p.Y + pR
+                + (int) (r3 * cos18));
+        l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18), p.Y + pR
+                + (int) ((r3 + l) * cos18));
+        r_1 = new Coordinate((p.X + pR) - (int) (r3 * sin18), p.Y + pR
+                + (int) (r3 * cos18));
+        r_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * sin18), p.Y + pR
+                + (int) ((r3 + l) * cos18));
         philsLoc[0].setPos(p, l_1, l_2, r_1, r_2);
-        p = new Coordinate(origin.X - (int) (r1 * cos18) - pR,
-                origin.Y - (int) (r1 * sin18) - pR);
+        p = new Coordinate(origin.X - (int) (r1 * cos18) - pR, origin.Y
+                - (int) (r1 * sin18) - pR);
         l_1 = new Coordinate(p.X + pR + (int) r3, p.Y + pR);
         l_2 = new Coordinate(p.X + pR + (int) (r3 + l), p.Y + pR);
-        r_1 = new Coordinate(p.X + pR + (int) (r3 * cos36),
-                p.Y + pR + (int) (r3 * sin36));
-        r_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * cos36),
-                p.Y + pR + (int) ((r3 + l) * sin36));
+        r_1 = new Coordinate(p.X + pR + (int) (r3 * cos36), p.Y + pR
+                + (int) (r3 * sin36));
+        r_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * cos36), p.Y + pR
+                + (int) ((r3 + l) * sin36));
         philsLoc[1].setPos(p, l_1, l_2, r_1, r_2);
         p = new Coordinate(origin.X - (int) (r1 * sin36) - pR,
                 (origin.Y + (int) (r1 * cos36)) - pR);
-        l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18),
-                (p.Y + pR) - (int) (r3 * cos18));
-        l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18),
-                (p.Y + pR) - (int) ((r3 + l) * cos18));
-        r_1 = new Coordinate(p.X + pR + (int) (r3 * cos36),
-                (p.Y + pR) - (int) (r3 * sin36));
-        r_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * cos36),
-                (p.Y + pR) - (int) ((r3 + l) * sin36));
+        l_1 = new Coordinate(p.X + pR + (int) (r3 * sin18), (p.Y + pR)
+                - (int) (r3 * cos18));
+        l_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * sin18), (p.Y + pR)
+                - (int) ((r3 + l) * cos18));
+        r_1 = new Coordinate(p.X + pR + (int) (r3 * cos36), (p.Y + pR)
+                - (int) (r3 * sin36));
+        r_2 = new Coordinate(p.X + pR + (int) ((r3 + l) * cos36), (p.Y + pR)
+                - (int) ((r3 + l) * sin36));
         philsLoc[2].setPos(p, l_1, l_2, r_1, r_2);
         p = new Coordinate((origin.X + (int) (r1 * sin36)) - pR,
                 (origin.Y + (int) (r1 * cos36)) - pR);
-        l_1 = new Coordinate((p.X + pR) - (int) (r3 * cos36),
-                (p.Y + pR) - (int) (r3 * sin36));
-        l_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * cos36),
-                (p.Y + pR) - (int) ((r3 + l) * sin36));
-        r_1 = new Coordinate((p.X + pR) - (int) (r3 * sin18),
-                (p.Y + pR) - (int) (r3 * cos18));
-        r_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * sin18),
-                (p.Y + pR) - (int) ((r3 + l) * cos18));
+        l_1 = new Coordinate((p.X + pR) - (int) (r3 * cos36), (p.Y + pR)
+                - (int) (r3 * sin36));
+        l_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * cos36), (p.Y + pR)
+                - (int) ((r3 + l) * sin36));
+        r_1 = new Coordinate((p.X + pR) - (int) (r3 * sin18), (p.Y + pR)
+                - (int) (r3 * cos18));
+        r_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * sin18), (p.Y + pR)
+                - (int) ((r3 + l) * cos18));
         philsLoc[3].setPos(p, l_1, l_2, r_1, r_2);
-        p = new Coordinate((origin.X + (int) (r1 * cos18)) - pR,
-                origin.Y - (int) (r1 * sin18) - pR);
-        l_1 = new Coordinate((p.X + pR) - (int) (r3 * cos36),
-                p.Y + pR + (int) (r3 * sin36));
-        l_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * cos36),
-                p.Y + pR + (int) ((r3 + l) * sin36));
+        p = new Coordinate((origin.X + (int) (r1 * cos18)) - pR, origin.Y
+                - (int) (r1 * sin18) - pR);
+        l_1 = new Coordinate((p.X + pR) - (int) (r3 * cos36), p.Y + pR
+                + (int) (r3 * sin36));
+        l_2 = new Coordinate((p.X + pR) - (int) ((r3 + l) * cos36), p.Y + pR
+                + (int) ((r3 + l) * sin36));
         r_1 = new Coordinate((p.X + pR) - (int) r3, p.Y + pR);
         r_2 = new Coordinate((p.X + pR) - (int) (r3 + l), p.Y + pR);
         philsLoc[4].setPos(p, l_1, l_2, r_1, r_2);
 
-        p = new Coordinate(origin.X + (int) (r2 * sin36),
-                origin.Y - (int) (r2 * cos36));
-        q = new Coordinate(origin.X + (int) ((r2 + l) * sin36),
-                origin.Y - (int) ((r2 + l) * cos36));
+        p = new Coordinate(origin.X + (int) (r2 * sin36), origin.Y
+                - (int) (r2 * cos36));
+        q = new Coordinate(origin.X + (int) ((r2 + l) * sin36), origin.Y
+                - (int) ((r2 + l) * cos36));
         chopsticksLoc[0].setPos(p, q);
-        p = new Coordinate(origin.X - (int) (r2 * sin36),
-                origin.Y - (int) (r2 * cos36));
-        q = new Coordinate(origin.X - (int) ((r2 + l) * sin36),
-                origin.Y - (int) ((r2 + l) * cos36));
+        p = new Coordinate(origin.X - (int) (r2 * sin36), origin.Y
+                - (int) (r2 * cos36));
+        q = new Coordinate(origin.X - (int) ((r2 + l) * sin36), origin.Y
+                - (int) ((r2 + l) * cos36));
         chopsticksLoc[1].setPos(p, q);
-        p = new Coordinate(origin.X - (int) (r2 * cos18),
-                origin.Y + (int) (r2 * sin18));
-        q = new Coordinate(origin.X - (int) ((r2 + l) * cos18),
-                origin.Y + (int) ((r2 + l) * sin18));
+        p = new Coordinate(origin.X - (int) (r2 * cos18), origin.Y
+                + (int) (r2 * sin18));
+        q = new Coordinate(origin.X - (int) ((r2 + l) * cos18), origin.Y
+                + (int) ((r2 + l) * sin18));
         chopsticksLoc[2].setPos(p, q);
         p = new Coordinate(origin.X, origin.Y + (int) r2);
         q = new Coordinate(origin.X, origin.Y + (int) (r2 + l));
         chopsticksLoc[3].setPos(p, q);
-        p = new Coordinate(origin.X + (int) (r2 * cos18),
-                origin.Y + (int) (r2 * sin18));
-        q = new Coordinate(origin.X + (int) ((r2 + l) * cos18),
-                origin.Y + (int) ((r2 + l) * sin18));
+        p = new Coordinate(origin.X + (int) (r2 * cos18), origin.Y
+                + (int) (r2 * sin18));
+        q = new Coordinate(origin.X + (int) ((r2 + l) * cos18), origin.Y
+                + (int) ((r2 + l) * sin18));
         chopsticksLoc[4].setPos(p, q);
     }
 
@@ -283,7 +288,9 @@ class TablePanel extends Panel {
 
     public class PhilosopherCoords {
         Coordinate[] leftPos = new Coordinate[2];
+
         Coordinate[] rightPos = new Coordinate[2];
+
         Coordinate pos;
 
         public void setPos(Coordinate p, Coordinate l_1, Coordinate l_2,
