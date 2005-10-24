@@ -334,11 +334,15 @@ PTII_SRC_TO_BE_REMOVED = \
 		diva/util/test/alljsimpletests.tcl \
 		doc/img/banner.psd \
 		doc/img/ptIIbanner2.psd \
+		doc/img/PtolemyIICD.ec3 \
 		doc/img/PtolemyIISplash.psd \
 		doc/design/hyvisual.jar \
 		doc/design/visualsense.jar \
 		lib/cachedir \
 		lib/ptII.properties \
+		lib/ptvr.jar \
+		lib/saxon8.jar \
+		jni \
 		mk/ptII.mk \
 		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
 		ptolemy/actor/gui/test/alljsimpletests.tcl \
@@ -359,6 +363,12 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
 		ptolemy/codegen \
+		ptolemy/component \
+		ptolemy/domains/giotto/cgc \
+		ptolemy/domains/gr/demo/Demo1 \
+		ptolemy/domains/gr/lib/vr \
+		ptolemy/domains/hs \
+		ptolemy/domains/rendezvous \
 		ptolemy/distributed \
 		ptolemy/hsif \
 		ptolemy/matlab/ptmatlab.exp \
