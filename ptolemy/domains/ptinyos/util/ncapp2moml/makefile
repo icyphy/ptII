@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/ptinyos/util/ncapp2moml
 
-DIRS =
+DIRS =		test
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -52,7 +52,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	NCApp2MoML.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	ncapp2moml \
+	ncapp2moml-get-args \
+	ncapp2moml-main \
+	ncapp2moml-run-ncc
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
