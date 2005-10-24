@@ -115,6 +115,8 @@ foreach $mydir (@mydirs) {
         system("$SRC_DIR/ncapp2moml-get-args $inputprefix $outputprefix $outputsuffix $ncfile") == 0
           or die "system @args failed: $?";
       }
+    } else {
+      system("echo \"Could not find the component name in $makefile\" >> $outputprefix/$ENV{NCAPP2MOML_LOG} 2>&1");
     }
   }
 
