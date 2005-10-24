@@ -133,11 +133,11 @@ public class MoMLLib {
         for (int i = 0; i< indexFiles.length; i++) {
             Element input = new Element("input");
             try {
-            	input.setAttribute("source",
+                    input.setAttribute("source",
                     FileUtilities.nameToURL(indexFiles[i],
                             null, null).toString());
             } catch (MalformedURLException e) {
-            	input.setAttribute("source", indexFiles[i]);
+                    input.setAttribute("source", indexFiles[i]);
             }
             group.addContent(input);
         }
