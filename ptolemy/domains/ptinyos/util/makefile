@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/ptinyos/util
 
-DIRS =		nc2moml
+DIRS =		nc2moml ncapp2moml
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -51,10 +51,17 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
+OTHER_FILES_TO_BE_JARED = \
+	create-nescdumpjar.sh \
+	unzip-opts.sh \
+	zip-opts.sh
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
