@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<!-- Library of actors which realize continuous dynamics. -->
+<entity name="Dynamics" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+        <entity name="Integrator"
+                class="ptolemy.domains.hs.lib.Integrator"/>
+        <entity name="ContinuousTransferFunction"
+                class="ptolemy.domains.hs.lib.ContinuousTransferFunction"/>
+        <entity name="LinearStateSpace"
+                class="ptolemy.domains.hs.lib.LinearStateSpace"/>
+        <entity name="DifferentialSystem"
+                class="ptolemy.domains.hs.lib.DifferentialSystem"/>
+        <entity name="RateLimiter"
+                class="ptolemy.domains.hs.lib.RateLimiter"/>
+      </group>
+    ?>
+  </configure>
+</entity>
+

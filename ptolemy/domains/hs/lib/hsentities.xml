@@ -1,0 +1,29 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+
+<entity name="HybridSystems" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Hybrid Systems actors</doc>
+
+<entity name="ContinuousClock" 
+        class="ptolemy.domains.hs.lib.ContinuousClock"/>
+<entity name="TriggeredContinuousClock" 
+        class="ptolemy.domains.hs.lib.TriggeredContinuousClock"/>
+<entity name="ContinuousSinewave"
+        class="ptolemy.domains.hs.lib.ContinuousSinewave"/>
+
+<entity name="CTCompositeActor"
+        class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
+
+<input source="ptolemy/domains/hs/lib/dynamics.xml"/>
+<input source="ptolemy/domains/hs/lib/eventgenerators.xml"/>
+<input source="ptolemy/domains/hs/lib/wavegenerators.xml"/>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
