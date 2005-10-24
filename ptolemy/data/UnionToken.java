@@ -1,6 +1,6 @@
 /* A token that contains a label/token pairs in a union.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (cxh)
  */

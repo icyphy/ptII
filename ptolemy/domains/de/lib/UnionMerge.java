@@ -1,6 +1,6 @@
 /* A merge actor whose output type is the union of input types.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Edward A. Lee, Haiyang Zheng, Yuhong Xiong
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (yuhongx)
  @Pt.AcceptedRating Red (yuhongx)
  */

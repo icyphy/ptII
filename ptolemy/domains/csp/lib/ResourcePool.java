@@ -1,6 +1,6 @@
 /* An actor representing a resource pool with a specified number of resources.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -87,6 +87,7 @@ import ptolemy.kernel.util.Workspace;
  @author Edward A. Lee
  @see Merge
  @version $Id$
+@since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 

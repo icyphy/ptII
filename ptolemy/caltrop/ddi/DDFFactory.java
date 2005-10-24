@@ -42,7 +42,7 @@ import caltrop.interpreter.environment.Environment;
 
  @author Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

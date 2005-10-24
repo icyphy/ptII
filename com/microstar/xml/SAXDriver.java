@@ -43,7 +43,7 @@ import org.xml.sax.SAXParseException;
  * @author Copyright (c) 1998 by Microstar Software Ltd.
  * @author written by David Megginson &lt;dmeggins@microstar.com&gt;
  * @version 1.1
- * @since Ptolemy II 4.1
+ * @since Ptolemy II 5.1
  * @see XmlParser
  */
 public class SAXDriver implements XmlHandler, Locator, AttributeList, Parser {

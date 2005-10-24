@@ -1,7 +1,7 @@
 /* An HSFSMDirector governs the execution of the discrete dynamics of a
  hybrid system model.
 
- Copyright (c) 1999-2005 The Regents of the University of California.
+ Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -69,7 +69,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Xiaojun Liu, Haiyang Zheng
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (liuxj)
  */

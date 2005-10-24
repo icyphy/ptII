@@ -7,7 +7,7 @@
  *  For Details:
  *  http://www.kepler-project.org
  *
- *  Copyright (c) 2004-2005 The Regents of the
+ *  Copyright (c) 2005 The Regents of the
  *  University of California. All rights reserved. Permission is hereby granted,
  *  without written agreement and without license or royalty fees, to use, copy,
  *  modify, and distribute this software and its documentation for any purpose,
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Workspace;
  * be to create a library from a directory of ksw files.
  * @author Chad Berkley
  * @version $Id$
- * @since Ptolemy II 5.0
+ * @since Ptolemy II 5.1
  * @Pt.ProposedRating Red (berkley)
  * @Pt.AcceptedRating Red (berkley)
  */

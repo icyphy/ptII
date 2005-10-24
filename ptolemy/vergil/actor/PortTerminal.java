@@ -28,6 +28,7 @@ import diva.canvas.connector.TerminalFigure;
 
  @author Edward A. Lee
  @version $Id$
+@since Ptolemy II 5.1
  @see PortSite
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
