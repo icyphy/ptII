@@ -1,0 +1,106 @@
+<!-- $Id$
+  @author: Xiaojun Liu, Jie Liu
+ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>StickyMasses</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<H1>Sticky Point Masses: A Hybrid System</H1>
+<P>
+<center>
+<!-- HTML CONVERTER -->
+<SCRIPT LANGUAGE="JavaScript"><!--
+    var _info = navigator.userAgent; 
+    var _ns = false; 
+    var _ns6 = false;
+    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
+//--></SCRIPT>
+    <COMMENT>
+        <SCRIPT LANGUAGE="JavaScript1.1"><!--
+        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
+        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
+//--></SCRIPT>
+    </COMMENT>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+    if (_ie == true) document.writeln('\
+        <OBJECT \
+            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
+            width = "700" \
+            height = "400"  \
+            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
+            <PARAM NAME = "code" \
+                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
+	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
+	    <PARAM NAME = "archive" \
+                   VALUE = "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/domains/ct/ct.jar,ptolemy/domains/fsm/fsm.jar" > \
+            <PARAM NAME = "type" \
+                   VALUE = "application/x-java-applet;version=1.4.2" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
+            <PARAM NAME = "scriptable" VALUE = "false" > \
+            <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "model" VALUE = "StickyMasses.xml"> \
+	    <PARAM NAME = "controls" VALUE = "buttons" > \
+	    <PARAM NAME = "name" VALUE = "StickyMasses" > \
+            <a href="StickyMasses.xml">MoML specification for this model.</a> \
+        </OBJECT> \
+        ');
+    else if (_ns == true || _ns6 == true)
+         document.writeln('\
+        <COMMENT> \
+          <EMBED \
+            type = "application/x-java-applet;version=1.4.2" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/domains/ct/ct.jar,ptolemy/domains/fsm/fsm.jar" \
+            width = "700" \
+            height = "400" \
+            background = "#faf0e6" model = "StickyMasses.xml" controls = "buttons" name = "StickyMasses"  \
+            progressbar = "true" \
+            scriptable = "false" \
+            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
+              <NOEMBED> \
+              <a href="StickyMasses.xml">MoML specification for this model.</a> \
+              </NOEMBED> \
+           </EMBED> \
+        <COMMENT> \
+        ');
+    else document.writeln('\
+        <APPLET \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/ptsupport.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/domains/ct/ct.jar,ptolemy/domains/fsm/fsm.jar" \
+            width = "700" \
+            height = "400" \
+            > \
+            <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "model" VALUE = "StickyMasses.xml"> \
+	    <PARAM NAME = "controls" VALUE = "buttons" > \
+	    <PARAM NAME = "name" VALUE = "StickyMasses" > \
+            <a href="StickyMasses.xml">MoML specification for this model.</a> \
+        </APPLET> \
+        ');
+//--></SCRIPT>
+<!-- /HTML CONVERTER -->
+</center>
+This applet models two (sticky) masses on a flat frictionless table, as
+shown in the figure below.
+Each of the masses is attached to a spring with distinct spring constant.
+If the balls are not stuck together, they will independently
+swing back and forth.
+If they collide, they stick together, and swing together depending on
+their momentum when they collided.
+The stickiness is assumed to exponentially decay with rate
+controlled by the parameter "Stickiness Decay."
+With reasonable decay values, after a while, the masses will separate.
+The plot above shows the positions of the two masses as a function of time.
+<P>
+<CENTER><img src="SMphysics.gif" width="400"></center>
+<P>
+See the <a href="StickyMassesVergil.htm">Ptolemy II implementation</a>.
+<P>
+</body>
+</html>

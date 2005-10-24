@@ -1,0 +1,120 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+<TITLE>CarTracking</TITLE>
+</HEAD>
+<BODY>
+
+<H1>CarTracking</H1>
+This model shows a following car tracking a leading car in an unreliable 
+communication environment.
+
+<P>
+ <!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen-->
+<center>
+<!-- The HTML below is for the Java Plugin.  The first
+     section is for IE, the second is for Netscape
+ -->
+<!-- HTML CONVERTER -->
+<SCRIPT LANGUAGE="JavaScript"><!--
+    var _info = navigator.userAgent; 
+    var _ns = false; 
+    var _ns6 = false;
+    var _ie = (_info.indexOf("MSIE") > 0 && _info.indexOf("Win") > 0 && _info.indexOf("Windows 3.1") < 0);
+//--></SCRIPT>
+    <COMMENT>
+        <SCRIPT LANGUAGE="JavaScript1.1"><!--
+        var _ns6 = (_info.indexOf("Mozilla/5") >= 0);
+        var _ns = (navigator.appName.indexOf("Netscape") >= 0 && ((_info.indexOf("Win") > 0     && _info.indexOf("Win16") < 0 && java.lang.System.getProperty("os.version").indexOf("3.5") < 0) || (_info.indexOf("Sun") > 0) || (_info.indexOf("Linux") > 0) || (_info.indexOf("AIX") > 0) || (_info.indexOf("OS/2") > 0) || (_info.indexOf("IRIX") > 0 )));
+//--></SCRIPT>
+    </COMMENT>
+
+<SCRIPT LANGUAGE="JavaScript"><!--
+    if (_ie == true) document.writeln('\
+        <OBJECT \
+            classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
+            width = "600" \
+            height = "800"  \
+            codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
+            <PARAM NAME = "code" \
+                   VALUE = "ptolemy.actor.gui.MoMLApplet" > \
+	    <PARAM NAME = "codebase"   VALUE = "../../../../.." > \
+	    <PARAM NAME = "archive" \
+                   VALUE = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/ct/ct.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/de/de.jar" > \
+            <PARAM NAME = "type" \
+                   VALUE = "application/x-java-applet;version=1.4.2" > \
+            <PARAM NAME = "progressbar" VALUE = "true"> \
+            <PARAM NAME = "scriptable" VALUE = "false" > \
+            <PARAM NAME = "NAME" VALUE = "CarTracking" > \
+	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, topParameters" > \
+	    <PARAM NAME = "model" VALUE = "CarTracking.xml" > \
+            <a href="CarTracking.xml">MoML specification for this model.</a> \
+        </OBJECT> \
+        ');
+    else if (_ns == true || _ns6 == true)
+         document.writeln('\
+        <COMMENT> \
+          <EMBED \
+            type = "application/x-java-applet;version=1.4.2" \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/ct/ct.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/de/de.jar" \
+            width = "600" \
+            height = "800" \
+            NAME = "CarTracking" background = "#faf0e6" controls = "buttons, topParameters" model = "CarTracking.xml"  \
+            progressbar = "true" \
+            scriptable = "false" \
+            pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
+              <NOEMBED> \
+              <a href="CarTracking.xml">MoML specification for this model.</a> \
+              </NOEMBED> \
+           </EMBED> \
+        <COMMENT> \
+        ');
+    else document.writeln('\
+        <APPLET \
+            code = "ptolemy.actor.gui.MoMLApplet" \
+            codebase = "../../../../.." \
+            archive = "ptolemy/ptsupport.jar,lib/diva.jar,ptolemy/domains/ct/ct.jar,ptolemy/domains/sdf/sdf.jar,ptolemy/domains/fsm/fsm.jar,ptolemy/domains/de/de.jar" \
+            width = "600" \
+            height = "800" \
+            > \
+            <PARAM NAME = "NAME" VALUE = "CarTracking" > \
+	    <PARAM NAME = "background" VALUE = "#faf0e6" > \
+	    <PARAM NAME = "controls" VALUE = "buttons, topParameters" > \
+	    <PARAM NAME = "model" VALUE = "CarTracking.xml" > \
+            <a href="CarTracking.xml">MoML specification for this model.</a> \
+        </APPLET> \
+        ');
+//--></SCRIPT>
+<!-- /HTML CONVERTER -->
+</CENTER>
+This model shows a following car tracking a leading car in an unreliable 
+communication environment. In normal operation, the leading car informs
+the following car about its position, speed, acceleration, and a time 
+stamp for this information. The following car does a sanity check to make
+sure that the data are coherent. If so, the following car will apply the
+same acceleration, and thus (in this simple model) tracks the leading 
+car perfectly. 
+<br>A user can determine when the communication channel fault
+will occur and when it well end by setting the faultStartTime and 
+faultStopTime parameters. 
+<br>If the following car receives incorrect information, it abandons the 
+received acceleration, and relies on distance measurements for tracking. 
+In this mode, the following car will apply zero acceleration, if it is too
+close to the leading car, and maximum acceleration if it is too far from 
+the leading car. This (simple-minded) control law results in a rather
+jerky ride.
+
+<p>The <a href="CarTrackingVergil.htm">block diagram</a>
+for the model was constructed using the Ptolemy II schematic editor
+called Vergil.
+<p> An alternate version of this model is called the
+<a href="../V2V/V2V.htm">V2V (Vehicle 2 Vehicle) model</a>
+</p>
+</BODY>
+</HTML>
