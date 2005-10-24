@@ -51,6 +51,10 @@ OTHER_FILES_TO_BE_JARED = \
 	NewtonsCradleComplicated.xml \
 	NewtonsCradleNondeterministic.xml \
 	NewtonsCradleAnimated.xml \
+	NewtonsCradlePerfectlyInelastic1.xml \
+	NewtonsCradlePerfectlyInelastic2.xml \
+	ParameterizedNewtonsCradleAnimatedNondeterministic.xml \
+	ParameterizedNewtonsCradleAnimated.xml \
 	pendulum.gif
 
 EXTRA_SRCS = \
