@@ -33,7 +33,7 @@
 ##### SETTINGS #####
 SRC_DIR=${PTII}/ptolemy/domains/ptinyos/util/nc2moml
 MOML_OUTPUT_DIR=$PTII/vendors/ptinyos/moml
-DIR_LIST="tos/lib tos/system tos/platform tos/sensorboards"
+DIR_LIST="tos/lib tos/system tos/platform tos/sensorboards apps"
 
 # Note: You should set NC2MOML_VERBOSE environment variable to 1 to
 # turn on verbose output.
