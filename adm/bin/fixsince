@@ -11,8 +11,8 @@
 # The first thing to do is to generate a list of new files
 # by running diff between the old release and the new release
 
-oldVersion=2.0.1
-newVersion=2.1devel
+oldVersion=5.0.1
+newVersion=5.1
 
 diffOutput=/tmp/fixsince.diffOutput.$$
 diffOutput=/tmp/pt.diffs
@@ -48,21 +48,21 @@ do
     echo "$file does not have an @since tag"
     awk '{  if ($0 ~ /@version/) {
 	       print $0
-	       print "@since Ptolemy II 4.1"
+	       print "@since Ptolemy II 5.1"
 	    } else {
 	       print $0
             }
          }' <$file >$tmpfile
   else
     echo $file  
-    sed -e 's/@since.*/@since Ptolemy II 4.1/' \
+    sed -e 's/@since.*/@since Ptolemy II 5.1/' \
 	$file > $tmpfile
 
   fi
-  sed -e 's/Copyright (c) 200[0-9]-200[0-9]/Copyright (c) 2003-2004/' \
-      -e 's/Copyright (c) 199[0-9]-200[0-9]/Copyright (c) 2003-2004/' \
+  sed -e 's/Copyright (c) 200[0-9]-200[0-9]/Copyright (c) 2005/' \
+      -e 's/Copyright (c) 199[0-9]-200[0-9]/Copyright (c) 2005/' \
 	< $tmpfile > $tmpfile2
     diff $file $tmpfile2
   cp $tmpfile2 $file
-  cvs commit -m "This file is new since Ptolemy 4.1, so the copyright and @since tag should reflect that" $file
+  cvs commit -m "This file is new since Ptolemy 5.1, so the copyright and @since tag should reflect that" $file
 done
