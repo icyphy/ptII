@@ -109,6 +109,11 @@ OPTIONAL_FILES = \
 	'Overflow$$ToZero.class' \
 	'Overflow$$Trap.class' \
 	'Overflow$$Unknown.class' \
+	'Precision$$IntegerFractionPrecisionFormat.class' \
+	'Precision$$LengthExponentPrecisionFormat.class' \
+	'Precision$$LengthIntegerPrecisionFormat.class' \
+	'Precision$$PrecisionFormat.class' \
+	'Precision$$VHDLPrecisionFormat.class' \
 	'Rounding$$1.class' \
 	'Rounding$$General.class' \
 	'Rounding$$RoundCeiling.class' \

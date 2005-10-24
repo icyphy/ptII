@@ -119,9 +119,11 @@ OPTIONAL_FILES = \
 	'ClassDefinitionController$$CreateInstanceAction.class' \
 	'ClassDefinitionController$$CreateSubclassAction.class' \
 	'ExternalIOPortController$$1.class' \
+	'ExternalIOPortController$$2.class' \
 	'ExternalIOPortController$$NameWrapper.class' \
 	'ExternalIOPortController$$PortRenderer.class' \
 	'IOPortController$$1.class' \
+	'IOPortController$$2.class' \
 	'IOPortController$$EntityPortRenderer.class' \
 	'IOPortController$$ListenToPortAction.class' \
 	'LinkController$$1.class' \

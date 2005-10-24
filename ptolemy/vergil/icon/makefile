@@ -119,6 +119,7 @@ OPTIONAL_FILES = \
 	'ShapeIcon$$3.class' \
 	'ShapeIcon$$4.class' \
 	'ShapeIcon$$5.class' \
+	'ShapeIcon$$6.class' \
 	'TextIcon$$1.class' \
 	'TextIcon$$2.class' \
 	'TextIcon$$3.class' \

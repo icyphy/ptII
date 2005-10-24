@@ -90,6 +90,7 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$4.class' \
 	'BasicGraphFrame$$CopyAction.class' \
 	'BasicGraphFrame$$CutAction.class' \
+	'BasicGraphFrame$$EditPreferencesAction.class' \
 	'BasicGraphFrame$$ExecuteSystemAction.class' \
 	'BasicGraphFrame$$ImportLibraryAction.class' \
 	'BasicGraphFrame$$LayoutAction.class' \

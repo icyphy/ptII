@@ -85,6 +85,8 @@ OPTIONAL_FILES = \
 	'GraphicalMessageHandler$$3.class' \
 	'GraphicalMessageHandler$$4.class' \
 	'GraphicalMessageHandler$$5.class' \
+	'GraphicalMessageHandler$$6.class' \
+	'GraphicalMessageHandler$$7.class' \
 	'JTextAreaExec$$10.class' \
 	'JTextAreaExec$$1.class' \
 	'JTextAreaExec$$2.class' \
