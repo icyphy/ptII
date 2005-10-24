@@ -121,7 +121,7 @@ public class CircuitTransformer extends SceneTransformer {
      **/
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("CircuitTransformer.internalTransform(" + phaseName
-                + ", " + options + ")");
+            + ", " + options + ")");
 
         //_outDir = Options.getString(options, "outDir");
         _outDir = PhaseOptions.getString(options, "outDir");
@@ -130,7 +130,7 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("*** START JHDL");
         System.out.println("**************************************************");
         System.out.println("\nCircuitTransformer.internalTransform("
-                + phaseName + ", " + options + ")");
+            + phaseName + ", " + options + ")");
 
         //          ModelGraph dg = new CompositeModelGraph(_model,options);
         //          PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
@@ -141,16 +141,16 @@ public class CircuitTransformer extends SceneTransformer {
         try {
             System.out.println("here");
             c = ptolemy.copernicus.jhdl.circuit.CompositeActor2JHDLCompositeActor
-                .build(_model, options);
+                        .build(_model, options);
             System.out.println("here");
 
             boolean resolve = c.resolve();
             System.out.println("here");
 
             int descriptionLevel = NamedObj.LINKS | NamedObj.FULLNAME
-                |
-                //NamedObj.ATTRIBUTES |
-                NamedObj.CONTENTS | NamedObj.DEEP;
+                        | 
+                        //NamedObj.ATTRIBUTES |
+                        NamedObj.CONTENTS | NamedObj.DEEP;
             System.out.println(c.description(descriptionLevel));
 
             if (resolve) {
@@ -169,32 +169,32 @@ public class CircuitTransformer extends SceneTransformer {
         //HWSystem hw = new HWSystem();
         //JHDLTestbench jtb = new JHDLTestbench(hw);
         /*
-//////////////////////////////////////////////
-// Step 1. Create a DirectedGraph that matches
-//         the topology of the model
-//////////////////////////////////////////////
-DirectedGraph combinedGraph = _createModelGraph(_model);
+        //////////////////////////////////////////////
+        // Step 1. Create a DirectedGraph that matches
+        //         the topology of the model
+        //////////////////////////////////////////////
+        DirectedGraph combinedGraph = _createModelGraph(_model);
 
-//////////////////////////////////////////////
-// Step 2. Create a DFG for each entity in the model.
-//////////////////////////////////////////////
-Map entityGraphMap = _createEntityGraphs(_model, options);
+        //////////////////////////////////////////////
+        // Step 2. Create a DFG for each entity in the model.
+        //////////////////////////////////////////////
+        Map entityGraphMap = _createEntityGraphs(_model, options);
 
-//////////////////////////////////////////////
-// Step 3. Create top-level testbench
-//////////////////////////////////////////////
-HWSystem hw = new HWSystem();
-JHDLTestbench _jtb = new JHDLTestbench(hw);
+        //////////////////////////////////////////////
+        // Step 3. Create top-level testbench
+        //////////////////////////////////////////////
+        HWSystem hw = new HWSystem();
+        JHDLTestbench _jtb = new JHDLTestbench(hw);
 
-//        Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
+        //        Cell _cell = _createTopLevelCell(_jtb,combinedGraph);
 
-//////////////////////////////////////////////
-// Step 3. Insert each DFG into the top-level graph
-//////////////////////////////////////////////
-_insertEntityGraphs(_model,combinedGraph,entityGraphMap);
+        //////////////////////////////////////////////
+        // Step 3. Insert each DFG into the top-level graph
+        //////////////////////////////////////////////
+        _insertEntityGraphs(_model,combinedGraph,entityGraphMap);
 
-PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
-toDotty.writeDotFile(".", _model.getName(), combinedGraph);
+        PtDirectedGraphToDotty toDotty = new PtDirectedGraphToDotty();
+        toDotty.writeDotFile(".", _model.getName(), combinedGraph);
         */
         System.out.println("**************************************************");
         System.out.println("*** END JHDL");
@@ -233,10 +233,10 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
             // iterate over all outPorts and add Node corresponding
             // to port. Also add edge between entity and port
             for (Iterator outPorts = ((TypedAtomicActor) entity).outputPortList()
-                     .iterator(); outPorts.hasNext();) {
+                                              .iterator(); outPorts.hasNext();) {
                 Object port = outPorts.next();
                 System.out.println("     Adding outport "
-                        + ((Nameable) port).getName());
+                    + ((Nameable) port).getName());
                 combinedGraph.addNodeWeight(port);
                 combinedGraph.addEdge(entity, port);
             }
@@ -244,10 +244,10 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
             // iterate over all inPorts and add Node corresponding
             // to port. Also add edge between entity and port
             for (Iterator inPorts = ((TypedAtomicActor) entity).inputPortList()
-                     .iterator(); inPorts.hasNext();) {
+                                             .iterator(); inPorts.hasNext();) {
                 Object port = inPorts.next();
                 System.out.println("     Adding inport "
-                        + ((Nameable) port).getName());
+                    + ((Nameable) port).getName());
                 combinedGraph.addNodeWeight(port);
                 combinedGraph.addEdge(port, entity);
             }
@@ -258,14 +258,14 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
         System.out.println("   Add top-level input ports");
 
         for (Iterator inputPorts = model.inputPortList().iterator();
-             inputPorts.hasNext();) {
+                    inputPorts.hasNext();) {
             IOPort port = (IOPort) inputPorts.next();
             System.out.println("    Input Port = " + port + " inside sinks="
-                    + port.insideSinkPortList().size());
+                + port.insideSinkPortList().size());
             combinedGraph.addNodeWeight(port);
 
             for (Iterator insideSinks = port.insideSinkPortList().iterator();
-                 insideSinks.hasNext();) {
+                        insideSinks.hasNext();) {
                 IOPort insideSink = (IOPort) insideSinks.next();
                 System.out.println("     remote port=" + insideSink);
                 combinedGraph.addEdge(port, insideSink);
@@ -280,14 +280,14 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
             Entity entity = (Entity) i.next();
 
             for (Iterator outPorts = ((TypedAtomicActor) entity).outputPortList()
-                     .iterator(); outPorts.hasNext();) {
+                                              .iterator(); outPorts.hasNext();) {
                 IOPort port = (IOPort) outPorts.next();
                 System.out.println("    Entity output Port=" + port + " sinks="
-                        + port.sinkPortList().size());
+                    + port.sinkPortList().size());
 
                 // insideSinkPortList(), sinkPortList()
                 for (Iterator sinkPorts = port.sinkPortList().iterator();
-                     sinkPorts.hasNext();) {
+                            sinkPorts.hasNext();) {
                     IOPort sinkPort = (IOPort) sinkPorts.next();
                     System.out.println("     Sink Port=" + sinkPort);
 
@@ -338,7 +338,7 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
         //              entityClassName.equals("ptolemy.actor.lib.FileWriter"))
         //              return null;
         System.out.println("Creating graph for class " + className
-                + " (entity=" + entityClassName + ")");
+            + " (entity=" + entityClassName + ")");
 
         SootClass entityClass = Scene.v().loadClassAndSupport(className);
 
@@ -364,7 +364,7 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
     // This method will insert the directed graph for each actor into
     // the top-level model
     protected void _insertEntityGraphs(CompositeActor model,
-            DirectedGraph topGraph, Map entityGraphMap) {
+        DirectedGraph topGraph, Map entityGraphMap) {
         for (Iterator i = model.entityList().iterator(); i.hasNext();) {
             Entity entity = (Entity) i.next();
             DirectedGraph entityGraph = (DirectedGraph) entityGraphMap.get(entity);
@@ -377,7 +377,7 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
      * entity into the top-level model graph.
      **/
     protected void _insertEntityGraph(DirectedGraph graph, Entity entity,
-            DirectedGraph entityGraph) {
+        DirectedGraph entityGraph) {
         System.out.println("3. Inserting Entity Graph ");
 
         TypedAtomicActor actor = (TypedAtomicActor) entity;
@@ -496,7 +496,7 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
     // The key to the map is a IOPort and the Value is a List of
     // Nodes
     protected Map _getPortCallNodes(TypedAtomicActor actor,
-            DirectedGraph entityGraph) {
+        DirectedGraph entityGraph) {
         Map portNodeMap = new HashMap();
 
         // Create a mapping between port name and IOPort object
@@ -522,7 +522,7 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
         }
 
         for (Iterator entityNodes = entityGraph.nodes().iterator();
-             entityNodes.hasNext();) {
+                    entityNodes.hasNext();) {
             Node node = (Node) entityNodes.next();
             Object weight = node.getWeight();
 
@@ -558,10 +558,10 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
             } else {
                 // "sendInt" method call
                 for (Iterator i = entityGraph.predecessors(node).iterator();
-                     i.hasNext();) {
+                            i.hasNext();) {
                     Node n = (Node) i.next();
                     Edge e = (Edge) entityGraph.predecessorEdges(node, n)
-                        .iterator().next();
+                                                       .iterator().next();
 
                     if (e.hasWeight()) {
                         portNode = n;
@@ -605,7 +605,8 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
                 for (Iterator j = l.iterator(); j.hasNext();) {
                     Node node = (Node) j.next();
                     Node predecessor = (Node) entityGraph.predecessors(node)
-                        .iterator().next();
+                                                                 .iterator()
+                                                                 .next();
                     _deleteLeafBranch(entityGraph, predecessor);
                 }
             } else {
@@ -617,11 +618,11 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
 
                     // find successors
                     Node successor = (Node) entityGraph.successors(node)
-                        .iterator().next();
+                                                               .iterator().next();
 
                     // remove edge from node to sucessor
                     Edge e = (Edge) entityGraph.successorEdges(node, successor)
-                        .iterator().next();
+                                                       .iterator().next();
                     entityGraph.removeEdge(e);
 
                     // Remove branch
@@ -671,7 +672,7 @@ toDotty.writeDotFile(".", _model.getName(), combinedGraph);
         }
 
         Node fieldRefNode = (Node) graph.predecessors(predecessor).iterator()
-            .next();
+                                                .next();
 
         return (FieldRef) fieldRefNode.getWeight();
     }

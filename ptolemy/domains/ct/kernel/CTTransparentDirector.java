@@ -36,10 +36,10 @@ import ptolemy.kernel.util.IllegalActionException;
  CTGeneralDirector interface.
  <p>
  Transparent directors in the CT domain can transfer their internal step size
- control information to the executive director. This interface defines methods 
- to support the step size control queries by the executive CTDirector, 
- such that after the internal CT subsystem finishes one integration step, 
- its step size control information will be accessible by the outside 
+ control information to the executive director. This interface defines methods
+ to support the step size control queries by the executive CTDirector,
+ such that after the internal CT subsystem finishes one integration step,
+ its step size control information will be accessible by the outside
  CT director.
  <P>
  Directors that implement this interface are typically contained by
@@ -64,7 +64,7 @@ public interface CTTransparentDirector extends CTGeneralDirector {
      */
     public void emitCurrentStates() throws IllegalActionException;
 
-    /** Implementations of this method should ask all stateful actors 
+    /** Implementations of this method should ask all stateful actors
      *  executed by this director to go to their marked states.
      *  If there's no marked state, throws an exception.
      *  @exception IllegalActionException If there is no marked state.
@@ -105,8 +105,8 @@ public interface CTTransparentDirector extends CTGeneralDirector {
     /** Implementations of this method should prefire
      *  the dynamic actors under the control of this director.
      *  @return True if all dynamic actors are prefired.
-     *  @exception IllegalActionException If the scheduler throws it, or a 
-     *  dynamic actor throws it in its prefire() method, or it can not be 
+     *  @exception IllegalActionException If the scheduler throws it, or a
+     *  dynamic actor throws it in its prefire() method, or it can not be
      *  prefired.
      */
     public boolean prefireDynamicActors() throws IllegalActionException;

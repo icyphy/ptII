@@ -441,13 +441,17 @@ public class ComponentPort extends Port {
     public boolean isInsideGroupLinked(Relation r) {
         try {
             _workspace.getReadAccess();
+
             Iterator relations = r.relationGroupList().iterator();
+
             while (relations.hasNext()) {
                 Relation groupRelation = (Relation) relations.next();
+
                 if (isInsideLinked(groupRelation)) {
                     return true;
                 }
             }
+
             return false;
         } finally {
             _workspace.doneReading();
@@ -468,16 +472,20 @@ public class ComponentPort extends Port {
      *  @return True if the container entity is opaque.
      */
     public boolean isOpaque() {
-        long workspaceVersion = _workspace.getVersion(); 
+        long workspaceVersion = _workspace.getVersion();
+
         if (_isOpaqueVersion != workspaceVersion) {
             ComponentEntity entity = (ComponentEntity) getContainer();
+
             if (entity == null) {
                 _isOpqaue = true;
             } else {
                 _isOpqaue = entity.isOpaque();
             }
+
             _isOpaqueVersion = workspaceVersion;
         }
+
         return _isOpqaue;
     }
 
@@ -1131,9 +1139,9 @@ public class ComponentPort extends Port {
     private transient List _deepLinkedInPorts;
 
     private transient long _deepLinkedInPortsVersion = -1;
-    
+
     // A cache of the opqaueness of this port.
     private transient boolean _isOpqaue;
-    
+
     private transient long _isOpaqueVersion = -1;
 }

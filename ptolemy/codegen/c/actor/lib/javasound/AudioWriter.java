@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib.javasound;
 
 import java.util.HashSet;
@@ -46,7 +45,6 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  */
 public class AudioWriter extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the AudioWriter helper.
      * @param actor the associated actor.

@@ -69,7 +69,6 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (cxh)
  */
 public class RendezvousDirector extends CompositeProcessDirector {
-    
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -131,7 +130,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
             return _notDone && !_stopRequested;
         }
     }
-    
+
     /** Return an array of suggested directors to be used with ModalModel.
      *  This is the FSMDirector followed by the NonStrictFSMDirector.
      *  @return An array of suggested directors to be used with ModalModel.
@@ -174,14 +173,13 @@ public class RendezvousDirector extends CompositeProcessDirector {
             return false;
         }
     }
-    
+
     /** Return true if the count of active threads equals the number
      *  of stopped (paused) or blocked threads.  Otherwise return false.
      *  @return True if all threads are stopped or blocked.
      */
     protected synchronized boolean _areAllThreadsStopped() {
-        return (_getActiveThreadsCount()
-                == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
+        return (_getActiveThreadsCount() == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
     }
 
     /** Return a string describing the status of each receiver.
@@ -189,44 +187,59 @@ public class RendezvousDirector extends CompositeProcessDirector {
      */
     private String _receiverStatus() {
         StringBuffer result = new StringBuffer();
-        CompositeActor container = (CompositeActor)getContainer();
-        
+        CompositeActor container = (CompositeActor) getContainer();
+
         // Start with the input ports of the composite, which
         // may have forked connections on the inside.
         Iterator inputPorts = container.inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)(inputPorts.next());
+            IOPort inputPort = (IOPort) (inputPorts.next());
             result.append("Send inside from " + inputPort.getFullName() + "\n");
+
             Receiver[][] destinations = inputPort.deepGetReceivers();
+
             for (int channel = 0; channel < destinations.length; channel++) {
                 if (destinations[channel] != null) {
                     result.append("   on channel " + channel + ":\n");
+
                     for (int copy = 0; copy < destinations[channel].length; copy++) {
-                        result.append("-- to " + _receiverStatus(destinations[channel][copy]) + "\n");
+                        result.append("-- to "
+                                + _receiverStatus(destinations[channel][copy])
+                                + "\n");
                     }
                 }
             }
         }
-        
+
         // Next do the output ports of all contained actors.
         Iterator actors = container.deepEntityList().iterator();
+
         while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
+            Actor actor = (Actor) actors.next();
             Iterator outputPorts = actor.outputPortList().iterator();
+
             while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort)(outputPorts.next());
+                IOPort outputPort = (IOPort) (outputPorts.next());
                 result.append("Send from " + outputPort.getFullName() + "\n");
+
                 Receiver[][] destinations = outputPort.getRemoteReceivers();
+
                 for (int channel = 0; channel < destinations.length; channel++) {
                     if (destinations[channel] != null) {
                         result.append("   on channel " + channel + ":\n");
+
                         for (int copy = 0; copy < destinations[channel].length; copy++) {
-                            result.append("-- to " + _receiverStatus(destinations[channel][copy]) + "\n");
+                            result
+                                    .append("-- to "
+                                            + _receiverStatus(destinations[channel][copy])
+                                            + "\n");
                         }
                     }
                 }
             }
         }
+
         return result.toString();
     }
 
@@ -237,21 +250,27 @@ public class RendezvousDirector extends CompositeProcessDirector {
     protected static String _receiverStatus(Receiver receiver) {
         StringBuffer result = new StringBuffer();
         result.append(receiver.getContainer().getFullName());
+
         if (receiver instanceof RendezvousReceiver) {
-            RendezvousReceiver castReceiver = (RendezvousReceiver)receiver;
+            RendezvousReceiver castReceiver = (RendezvousReceiver) receiver;
+
             if (castReceiver._isGetWaiting()) {
                 result.append(" get() waiting");
             }
+
             if (castReceiver._isPutWaiting()) {
                 result.append(" put() waiting");
             }
+
             if (castReceiver._isConditionalReceiveWaiting()) {
                 result.append(" conditional receive waiting");
             }
+
             if (castReceiver._isConditionalSendWaiting()) {
                 result.append(" conditional send waiting");
             }
         }
+
         return result.toString();
     }
 
@@ -264,22 +283,24 @@ public class RendezvousDirector extends CompositeProcessDirector {
             throws IllegalActionException {
         if (_getBlockedThreadsCount() == _getActiveThreadsCount()) {
             // Report deadlock.
-            Parameter suppress = (Parameter)getContainer().getAttribute(
+            Parameter suppress = (Parameter) getContainer().getAttribute(
                     "SuppressDeadlockReporting", Parameter.class);
-            if (suppress == null
+
+            if ((suppress == null)
                     || !(suppress.getToken() instanceof BooleanToken)
-                    || !((BooleanToken)suppress.getToken()).booleanValue()) {
+                    || !((BooleanToken) suppress.getToken()).booleanValue()) {
                 String message = "Model ended with a deadlock (this may be normal for this model).\n"
                         + "A parameter with name SuppressDeadlockReporting and value true will suppress this message.\n"
-                        + "Status of receivers:\n"
-                        + _receiverStatus();
+                        + "Status of receivers:\n" + _receiverStatus();
                 MessageHandler.message(message);
             }
+
             return false;
         }
+
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

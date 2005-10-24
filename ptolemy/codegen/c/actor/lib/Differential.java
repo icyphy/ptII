@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
@@ -74,6 +73,7 @@ public class Differential extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
+
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("preinitBlock");
         return processCode(_codeStream.toString());

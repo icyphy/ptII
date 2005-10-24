@@ -28,7 +28,6 @@ it is less than 0, return -1.0, otherwise return 0.0.
 @ProposedRating Red (chf@eecs.berkeley.edu)
 @AcceptedRating Red (janneck@eecs.berkeley.edu)
 */
-
 package ptolemy.apps.throttle.cg;
 
 import ptolemy.actor.AtomicActor;
@@ -37,8 +36,8 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -46,8 +45,10 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// Sign
+
 /**
 If the argument is greater than 0, return 1.0, if
 it is less than 0, return -1.0, otherwise return 0.0.
@@ -62,7 +63,6 @@ with the MathFunction Actor.
 @see ptolemy.actor.lib.MathFunction
 */
 public class Sign extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -72,7 +72,7 @@ public class Sign extends Transformer {
      *   actor with this name.
      */
     public Sign(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input.setTypeEquals(BaseType.DOUBLE);
@@ -82,7 +82,6 @@ public class Sign extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Consume at most one input token from each input channel, and
      *  compute the specified math function of the input.
      *  If there is no input, then produce no output.
@@ -90,9 +89,9 @@ public class Sign extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            double inputValue =
-		((DoubleToken) input.get(0)).doubleValue();
-	    double result;
+            double inputValue = ((DoubleToken) input.get(0)).doubleValue();
+            double result;
+
             if (inputValue > 0) {
                 result = 1.0;
             } else if (inputValue < 0) {
@@ -100,6 +99,7 @@ public class Sign extends Transformer {
             } else {
                 result = 0.0;
             }
+
             output.send(0, new DoubleToken(result));
         }
     }
@@ -121,8 +121,7 @@ public class Sign extends Transformer {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public int iterate(int count) throws IllegalActionException {
-	// Check whether we need to reallocate the output token array.
-
+        // Check whether we need to reallocate the output token array.
         Token[] inArray1;
 
         if (count > _resultArray.length) {
@@ -130,31 +129,34 @@ public class Sign extends Transformer {
         }
 
         if (input.hasToken(0, count)) {
-	    inArray1 = input.get(0, count);
-	    for(int i = 0; i < count ; i++) {
-		double inputValue = ((DoubleToken)(inArray1[i])).doubleValue();
-		double result;
-		if (inputValue > 0) {
-		    result = 1.0;
-		} else if (inputValue < 0) {
-		    result = -1.0;
-		} else {
-		    result = 0.0;
-		}
-		_resultArray[i] = new DoubleToken(result);
-	    }
-	    output.send(0, _resultArray, count);
-	    return COMPLETED;
+            inArray1 = input.get(0, count);
+
+            for (int i = 0; i < count; i++) {
+                double inputValue = ((DoubleToken) (inArray1[i])).doubleValue();
+                double result;
+
+                if (inputValue > 0) {
+                    result = 1.0;
+                } else if (inputValue < 0) {
+                    result = -1.0;
+                } else {
+                    result = 0.0;
+                }
+
+                _resultArray[i] = new DoubleToken(result);
+            }
+
+            output.send(0, _resultArray, count);
+            return COMPLETED;
         } else {
             return NOT_READY;
         }
+
         // Note: constants COMPLETED and NOT_READY are defined in
         // ptolemy.actor.Executable
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private DoubleToken[] _resultArray = new DoubleToken[0];
 }
-

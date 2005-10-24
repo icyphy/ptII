@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -28,12 +28,11 @@
 package ptolemy.codegen.c.actor.lib.gui;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,7 +47,6 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  */
 public class Display extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Display helper.
      * @param actor The associated actor.
@@ -67,20 +65,23 @@ public class Display extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void  generateFireCode(StringBuffer code)
-        throws IllegalActionException {
+    public void generateFireCode(StringBuffer code)
+            throws IllegalActionException {
         super.generateFireCode(code);
-        ptolemy.actor.lib.gui.Display actor =
-            (ptolemy.actor.lib.gui.Display) getComponent();
+
+        ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
         _codeStream.clear();
+
         ArrayList args = new ArrayList();
         List connectedPorts = actor.input.connectedPortList();
 
-        args.add(new Integer(0));           
+        args.add(new Integer(0));
+
         for (int i = 0; i < actor.input.getWidth(); i++) {
             TypedIOPort port = (TypedIOPort) connectedPorts.get(i);
-            
+
             args.set(0, Integer.toString(i));
+
             if (port.getType() == BaseType.INT) {
                 _codeStream.appendCodeBlock("printInt", args);
             } else if (port.getType() == BaseType.DOUBLE) {
@@ -91,6 +92,7 @@ public class Display extends CCodeGeneratorHelper {
                 _codeStream.appendCodeBlock("printToken", args);
             }
         }
+
         code.append(processCode(_codeStream.toString()));
     }
 
@@ -105,7 +107,9 @@ public class Display extends CCodeGeneratorHelper {
      */
     public Set generateSharedCode() throws IllegalActionException {
         super.generateSharedCode();
+
         Set codeBlocks = new HashSet();
+
         //codeBlocks.add(_generateBlockCode("sharedBlock", false));
         return codeBlocks;
     }
@@ -119,6 +123,7 @@ public class Display extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         super.getHeaderFiles();
+
         Set files = new HashSet();
         files.add("\"stdio.h\"");
         return files;

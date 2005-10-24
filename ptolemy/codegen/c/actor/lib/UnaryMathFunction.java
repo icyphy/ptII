@@ -65,15 +65,13 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.UnaryMathFunction actor =
-            (ptolemy.actor.lib.UnaryMathFunction) getComponent();
+        ptolemy.actor.lib.UnaryMathFunction actor = (ptolemy.actor.lib.UnaryMathFunction) getComponent();
 
         String function = actor.function.getExpression();
-        String codeBlockName = (function.equals("exp")) ? "expBlock" :
-                              ((function.equals("log")) ? "logBlock" :
-                              ((function.equals("sign")) ? "signBlock" :
-                              ((function.equals("square")) ? "squareBlock" :
-                               "sqrtBlock")));
+        String codeBlockName = (function.equals("exp")) ? "expBlock"
+                : ((function.equals("log")) ? "logBlock" : ((function
+                        .equals("sign")) ? "signBlock" : ((function
+                        .equals("square")) ? "squareBlock" : "sqrtBlock")));
 
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock(codeBlockName);

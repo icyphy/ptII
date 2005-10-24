@@ -61,7 +61,7 @@ import java.util.*;
 */
 public class JHDLActorTestbench extends JHDLCompositeActor {
     public JHDLActorTestbench(ComponentEntity e)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super();
         setName("testbench");
         _e = e;

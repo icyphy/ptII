@@ -138,8 +138,8 @@ public abstract class AbstractCompoundExpression
         if (o instanceof AbstractCompoundExpression) {
             AbstractCompoundExpression abe = (AbstractCompoundExpression) o;
             return op1Box.getValue().equivTo(abe.op1Box.getValue())
-                && op2Box.getValue().equivTo(abe.op2Box.getValue())
-                && getSymbol().equals(abe.getSymbol());
+                    && op2Box.getValue().equivTo(abe.op2Box.getValue())
+                    && getSymbol().equals(abe.getSymbol());
         }
 
         return false;
@@ -148,7 +148,7 @@ public abstract class AbstractCompoundExpression
     /** Returns a hash code for this object, consistent with structural equality. */
     public int equivHashCode() {
         return ((op1Box.getValue().equivHashCode() * 101)
-                + op2Box.getValue().equivHashCode() + 17) ^ getSymbol().hashCode();
+        + op2Box.getValue().equivHashCode() + 17) ^ getSymbol().hashCode();
     }
 
     /** Returns the unique symbol for an operator. */

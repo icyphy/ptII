@@ -81,11 +81,11 @@ public class GenerateCopyrights {
      *
      *  <p>If the configuration has a parameter called
      *  _applicationCopyrights that is an array of records where
-     *  each element is a record 
+     *  each element is a record
      *  <pre>
      *  {actor="ptolemy.actor.lib.Foo", copyright="foo.htm"}
      *  </pre>
-     *  then we add that actor/copyright pair to the list of potential 
+     *  then we add that actor/copyright pair to the list of potential
      *  copyrights.
      *
      *  @param configuration The configuration to look for the
@@ -166,22 +166,21 @@ public class GenerateCopyrights {
                     .getAttribute("_applicationCopyrights", Parameter.class);
 
             if (applicationCopyrights != null) {
-                ArrayToken copyrightTokens =
-                    (ArrayToken) applicationCopyrights.getToken();
+                ArrayToken copyrightTokens = (ArrayToken) applicationCopyrights
+                        .getToken();
+
                 for (int i = 0; i < copyrightTokens.length(); i++) {
-                    StringToken actorToken =
-                        (StringToken) (((RecordToken) copyrightTokens
+                    StringToken actorToken = (StringToken) (((RecordToken) copyrightTokens
                             .getElement(i)).get("actor"));
-                    StringToken copyrightToken =
-                        (StringToken) (((RecordToken) copyrightTokens
+                    StringToken copyrightToken = (StringToken) (((RecordToken) copyrightTokens
                             .getElement(i)).get("copyright"));
-                    _addIfPresent(copyrightsMap,
-                            actorToken.stringValue(),
+                    _addIfPresent(copyrightsMap, actorToken.stringValue(),
                             copyrightToken.stringValue());
                 }
             }
         } catch (Exception ex) {
             System.out.println(ex);
+
             // Ignore and use the default applicationName
         }
 

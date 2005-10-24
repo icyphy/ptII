@@ -59,22 +59,22 @@ import java.util.*;
 */
 public class JHDLIORelation extends IORelation implements Signal {
     public JHDLIORelation(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, Signal.UNRESOLVED);
     }
 
     public JHDLIORelation(CompositeEntity container, int width)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, container.uniqueName("R"), width);
     }
 
     public JHDLIORelation(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, container.uniqueName("R"), Signal.UNRESOLVED);
     }
 
     public JHDLIORelation(CompositeEntity container, String name, int width)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _portWidth = width;
     }
@@ -124,7 +124,7 @@ public class JHDLIORelation extends IORelation implements Signal {
     public Wire buildJHDLWire(Logic parent) {
         _wire = parent.wire(getSignalWidth(), getName());
         System.out.println("Creating JHDL Wire for relation " + this + " wire="
-                + _wire);
+            + _wire);
         return _wire;
     }
 
@@ -134,7 +134,7 @@ public class JHDLIORelation extends IORelation implements Signal {
 
     protected String _description(int detail, int indent, int bracket) {
         return super._description(detail, indent, bracket)
-            + " { relationWidth=" + _portWidth + "}";
+        + " { relationWidth=" + _portWidth + "}";
     }
 
     protected int _portWidth;

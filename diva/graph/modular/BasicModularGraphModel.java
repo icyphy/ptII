@@ -245,7 +245,7 @@ public class BasicModularGraphModel extends MutableModularGraphModel {
             CompositeNode compositePeer = (CompositeNode) composite;
             return compositePeer.nodes();
         }
-        
+
         /**
          * Provide an iterator over the nodes that should
          * be rendered prior to the edges. This iterator

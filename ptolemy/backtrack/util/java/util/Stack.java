@@ -1,48 +1,51 @@
 /* Stack.java - Class that provides a Last In First Out (LIFO)
-   datatype, known more commonly as a Stack
-   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
+ datatype, known more commonly as a Stack
+ Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ 02111-1307 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
+
+import ptolemy.backtrack.Rollbackable;
+import ptolemy.backtrack.util.FieldRecord;
 
 /* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
  * "The Java Language Specification", ISBN 0-201-63451-1
  * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
  * Status:  Believed complete and correct
 
-/**
+ /**
  * Stack provides a Last In First Out (LIFO) data type, commonly known
  * as a Stack.  Stack itself extends Vector and provides the additional
  * methods for stack manipulation (push, pop, peek). You can also seek for
@@ -57,26 +60,24 @@ package ptolemy.backtrack.util.java.util;
  * @status updated to 1.4
  */
 import java.util.EmptyStackException;
-import ptolemy.backtrack.Rollbackable;
-import ptolemy.backtrack.util.FieldRecord;
 
 public class Stack extends Vector implements Rollbackable {
-
     // We could use Vector methods internally for the following methods,
     // but have used Vector fields directly for efficiency (i.e. this
     // often reduces out duplicate bounds checking).
-    /**     
+
+    /**
      * Compatible with JDK 1.0+.
      */
     private static final long serialVersionUID = 1224463164541339165L;
 
-    /**     
+    /**
      * This constructor creates a new Stack, initially empty
      */
     public Stack() {
     }
 
-    /**     
+    /**
      * Pushes an Object onto the top of the stack.  This method is effectively
      * the same as addElement(item).
      * @param item the Object to push onto the stack
@@ -91,35 +92,41 @@ public class Stack extends Vector implements Rollbackable {
         return item;
     }
 
-    /**     
+    /**
      * Pops an item from the stack and returns it.  The item popped is
      * removed from the Stack.
      * @return the Object popped from the stack
      * @throws EmptyStackException if the stack is empty
      */
     public synchronized Object pop() {
-        if (getElementCount() == 0)
+        if (getElementCount() == 0) {
             throw new EmptyStackException();
+        }
+
         setModCount(getModCount() + 1);
         setElementCount(getElementCount() - 1);
+
         Object obj = getElementData()[getElementCount()];
+
         // Set topmost element to null to assist the gc in cleanup.
         getElementData()[getElementCount()] = null;
         return obj;
     }
 
-    /**     
+    /**
      * Returns the top Object on the stack without removing it.
      * @return the top Object on the stack
      * @throws EmptyStackException if the stack is empty
      */
     public synchronized Object peek() {
-        if (getElementCount() == 0)
+        if (getElementCount() == 0) {
             throw new EmptyStackException();
+        }
+
         return getElementData()[getElementCount() - 1];
     }
 
-    /**     
+    /**
      * Tests if the stack is empty.
      * @return true if the stack contains no items, false otherwise
      */
@@ -127,7 +134,7 @@ public class Stack extends Vector implements Rollbackable {
         return getElementCount() == 0;
     }
 
-    /**     
+    /**
      * Returns the position of an Object on the stack, with the top
      * most Object being at position 1, and each Object deeper in the
      * stack at depth + 1.
@@ -137,14 +144,19 @@ public class Stack extends Vector implements Rollbackable {
      */
     public synchronized int search(Object o) {
         int i = getElementCount();
-        while (--i >= 0) 
-            if (equals(o, getElementData()[i]))
+
+        while (--i >= 0) {
+            if (equals(o, getElementData()[i])) {
                 return getElementCount() - i;
+            }
+        }
+
         return -1;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -152,8 +164,5 @@ public class Stack extends Vector implements Rollbackable {
         super.$RESTORE(timestamp, trim);
     }
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
-
+    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 }
-

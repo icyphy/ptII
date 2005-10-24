@@ -1,31 +1,30 @@
 /* State of a type analyzer.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-
+ */
 package ptolemy.backtrack.ast;
 
 import java.util.HashSet;
@@ -35,21 +34,21 @@ import java.util.Stack;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeAnalyzerState
+
 /**
-   The state of a type analyzer. As the type analyzer traverses an Eclipse
-   Abstract Syntax Tree (AST), it records its state in an object of this
-   class. This state is passed to the handlers that handle special events
-   in the traversal. The handlers may then retrieve information about the
-   current state of the analyzer.
+ The state of a type analyzer. As the type analyzer traverses an Eclipse
+ Abstract Syntax Tree (AST), it records its state in an object of this
+ class. This state is passed to the handlers that handle special events
+ in the traversal. The handlers may then retrieve information about the
+ current state of the analyzer.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class TypeAnalyzerState {
-
     ///////////////////////////////////////////////////////////////////
     ////                        constructor                        ////
 
@@ -70,17 +69,17 @@ public class TypeAnalyzerState {
      *  @param type The type of the variable.
      */
     public void addVariable(String name, Type type) {
-        Hashtable table = (Hashtable)_variableStack.peek();
+        Hashtable table = (Hashtable) _variableStack.peek();
         table.put(name, type);
     }
 
     /** Enter the scope of a block.
-    *
-    *  @see #leaveBlock()
-    */
-   public void enterBlock() {
-       _previousClasses.push(new Hashtable());
-   }
+     *
+     *  @see #leaveBlock()
+     */
+    public void enterBlock() {
+        _previousClasses.push(new Hashtable());
+    }
 
     /** Enter the scope of a class. The current class is set to the class
      *  entered and the last current class is pushed to the previous class
@@ -180,18 +179,22 @@ public class TypeAnalyzerState {
      */
     public Type getVariable(String name, boolean variablesOnly) {
         int i = _variableStack.size() - 1;
-        if (i == -1)
-            return null;
 
-        Hashtable table = (Hashtable)_variableStack.peek();
-        while (!table.containsKey(name) && i >= 1) {
-            i--;
-            if (!variablesOnly ||
-                    !_classScopes.contains(new Integer(i)))
-                table = (Hashtable)_variableStack.get(i);
+        if (i == -1) {
+            return null;
         }
 
-        return (Type)table.get(name);
+        Hashtable table = (Hashtable) _variableStack.peek();
+
+        while (!table.containsKey(name) && (i >= 1)) {
+            i--;
+
+            if (!variablesOnly || !_classScopes.contains(new Integer(i))) {
+                table = (Hashtable) _variableStack.get(i);
+            }
+        }
+
+        return (Type) table.get(name);
     }
 
     /** Get the variable stack. The variable stack is a stack of scopes.
@@ -210,15 +213,19 @@ public class TypeAnalyzerState {
 
     public boolean isVariable(String name) {
         int i = _variableStack.size() - 1;
-        if (i == -1)
+
+        if (i == -1) {
             return false;
+        }
 
-        Hashtable table = (Hashtable)_variableStack.peek();
-        while (!table.containsKey(name) && i >= 1)
-            table = (Hashtable)_variableStack.get(--i);
+        Hashtable table = (Hashtable) _variableStack.peek();
 
-        return table.containsKey(name) &&
-            !_classScopes.contains(new Integer(i));
+        while (!table.containsKey(name) && (i >= 1)) {
+            table = (Hashtable) _variableStack.get(--i);
+        }
+
+        return table.containsKey(name)
+                && !_classScopes.contains(new Integer(i));
     }
 
     /** Leave a block declaration.
@@ -237,9 +244,12 @@ public class TypeAnalyzerState {
      */
     public void leaveClass() {
         int i = _previousClasses.size() - 1;
-        while (i >= 0 && !(_previousClasses.get(i) instanceof Class))
+
+        while ((i >= 0) && !(_previousClasses.get(i) instanceof Class)) {
             i--;
-        _currentClass = i >= 0 ? (Class)_previousClasses.get(i) : null;
+        }
+
+        _currentClass = (i >= 0) ? (Class) _previousClasses.get(i) : null;
         _previousClasses.pop();
         _anonymousCounts.pop();
         _loader.setCurrentClass(_currentClass, false);
@@ -250,7 +260,7 @@ public class TypeAnalyzerState {
      *  @return The count.
      */
     public int nextAnonymousCount() {
-        int lastCount = ((Integer)_anonymousCounts.pop()).intValue();
+        int lastCount = ((Integer) _anonymousCounts.pop()).intValue();
         _anonymousCounts.push(new Integer(++lastCount));
         return lastCount;
     }

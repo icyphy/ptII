@@ -59,12 +59,12 @@ import java.util.*;
 */
 public class JHDLIOPort extends IOPort implements Signal {
     public JHDLIOPort(ComponentEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, name, Signal.UNRESOLVED);
     }
 
     public JHDLIOPort(ComponentEntity container, String name, int width)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _portWidth = width;
     }
@@ -215,7 +215,7 @@ public class JHDLIOPort extends IOPort implements Signal {
 
     protected String _description(int detail, int indent, int bracket) {
         return super._description(detail, indent, bracket) + " { portWidth="
-            + _portWidth + (isInput() ? " input" : " output") + " }";
+        + _portWidth + (isInput() ? " input" : " output") + " }";
     }
 
     protected int _portWidth;

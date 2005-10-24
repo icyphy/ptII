@@ -112,9 +112,8 @@ import ptolemy.kernel.util.Nameable;
  @see ptolemy.domains.csp.kernel.ConditionalBranch
  */
 public class ConditionalReceive extends ConditionalBranch implements Runnable {
-
     // FIXME: Downgraded from green with major redesign. EAL.
-    
+
     /** Create a conditional receive.
      *  @param port The IOPort containing the channel (and thus receiver)
      *   that this branch will try to rendezvous with.
@@ -125,8 +124,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
-    public ConditionalReceive(
-            IOPort port, int channel, int branchID)
+    public ConditionalReceive(IOPort port, int channel, int branchID)
             throws IllegalActionException {
         this(true, port, channel, branchID);
     }
@@ -185,24 +183,31 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
      */
     public void run() {
         _completed = false;
-        CSPReceiver receiver = (CSPReceiver)getReceivers()[0];
+
+        CSPReceiver receiver = (CSPReceiver) getReceivers()[0];
         AbstractBranchController controller = getController();
 
         // Note that the lock has to be in the first receiver
         // in a group, if this receiver is part of a group.
         CSPDirector director = receiver._getDirector();
+
         synchronized (director) {
             try {
                 String identifier = "";
+
                 if (_debugging) {
-                    identifier = "ConditionalReceive: get() on " + _port.getFullName() + " on channel " + _channel;
+                    identifier = "ConditionalReceive: get() on "
+                            + _port.getFullName() + " on channel " + _channel;
                     _debug(identifier + ": Trying conditional receive.");
                 }
 
-                if (receiver._isConditionalReceiveWaiting() || receiver._isGetWaiting()) {
+                if (receiver._isConditionalReceiveWaiting()
+                        || receiver._isGetWaiting()) {
                     if (_debugging) {
-                        _debug(identifier + ": A receive or get is already waiting!");
+                        _debug(identifier
+                                + ": A receive or get is already waiting!");
                     }
+
                     // Should never happen that a get or a ConditionalReceive
                     // is already at the receiver.
                     throw new InvalidStateException(((Nameable) controller
@@ -218,6 +223,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         if (_debugging) {
                             _debug(identifier + ": No longer alive");
                         }
+
                         receiver._setConditionalReceive(false, null, -1);
                         controller._branchFailed(getID());
                         break; // exit while(true).
@@ -225,11 +231,13 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         if (_debugging) {
                             _debug(identifier + ": Put is waiting.");
                         }
+
                         if (controller._isBranchReady(getID())) {
                             // I am the branch that succeeds, so convert the
                             // conditional receive to a get.
                             // Have to reset this flag _before_ the get().
                             receiver._setConditionalReceive(false, null, -1);
+
                             // NOTE: If the sending side is performing a
                             // multiway rendezvous, then this will not return
                             // until all those rendezvous complete.
@@ -244,23 +252,32 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             _setToken(receiver.get());
                             _completed = true;
                             controller._branchSucceeded(getID());
+
                             // Rendezvous complete.
                             break; // exit while(true).
                         }
+
                         // else continue while(true).
                     } else if (receiver._isConditionalSendWaiting()) {
                         if (_debugging) {
-                            _debug(identifier + ": Conditional send is waiting!");
+                            _debug(identifier
+                                    + ": Conditional send is waiting!");
                         }
+
                         if (controller._isBranchReady(getID())) {
                             // receive side ok, need to check that send
                             // side also ok
-                            AbstractBranchController side2 = receiver._getOtherController();
+                            AbstractBranchController side2 = receiver
+                                    ._getOtherController();
 
-                            if ((side2 != null) && side2._isBranchReady(receiver._getOtherID())) {
+                            if ((side2 != null)
+                                    && side2._isBranchReady(receiver
+                                            ._getOtherID())) {
                                 // Convert the conditional receive to a get().
-                                receiver._setConditionalReceive(false, null, -1);
+                                receiver
+                                        ._setConditionalReceive(false, null, -1);
                                 _setToken(receiver.get());
+
                                 // Reset the conditional send flag on the other side.
                                 receiver._setConditionalSend(false, null, -1);
                                 _completed = true;
@@ -274,16 +291,18 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             }
                         }
                     }
+
                     // If we get here, then the receiver has neither a put()
                     // nor a conditional send waiting, or the conditional
                     // send is not first, so we mark the receiver
                     // as having a conditional receive waiting and then wait.
                     receiver._setConditionalReceive(true, controller, getID());
-                    
+
                     // Wait for something to happen.
                     if (_debugging) {
                         _debug("ConditionalReceive: Waiting for new information.");
                     }
+
                     controller._branchBlocked(receiver);
                     CSPReceiver.waitForChange(director);
                 } // while(true)
@@ -308,14 +327,18 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
         if (_completed) {
             return true;
         }
+
         Receiver[] receivers = getReceivers();
-        synchronized(((CSPReceiver)receivers[0])._getDirector()) {
+
+        synchronized (((CSPReceiver) receivers[0])._getDirector()) {
             for (int i = 0; i < receivers.length; i++) {
-                if (!((CSPReceiver)receivers[i])._isPutWaiting()
-                        && !((CSPReceiver)receivers[i])._isConditionalSendWaiting()) {
+                if (!((CSPReceiver) receivers[i])._isPutWaiting()
+                        && !((CSPReceiver) receivers[i])
+                                ._isConditionalSendWaiting()) {
                     return false;
                 }
             }
+
             return true;
         }
     }
@@ -328,6 +351,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
     private void _init(IOPort port, int channel) throws IllegalActionException {
         _port = port;
         _channel = channel;
+
         Receiver[][] receivers;
 
         try {
@@ -367,17 +391,16 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             port.workspace().doneReading();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The channel on which we are sending. */
     private int _channel;
-    
+
     /** Flag indicating that this rendezvous has completed successfully. */
     private boolean _completed = false;
-    
+
     /** The port from which we are sending. */
     private IOPort _port;
-
 }

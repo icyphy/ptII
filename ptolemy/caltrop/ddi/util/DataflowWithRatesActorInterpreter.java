@@ -68,7 +68,6 @@ import caltrop.interpreter.environment.Environment;
  @see #actionClear
  */
 public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter {
-
     /**
      * Defines a new actor interpreter for the specified actor.
      *
@@ -142,6 +141,7 @@ public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter 
         final Action action = envAction;
 
         final InputPattern[] inputPatterns = action.getInputPatterns();
+
         for (int i = 0; i < inputPatterns.length; i++) {
             final InputPattern inputPattern = inputPatterns[i];
 
@@ -162,8 +162,7 @@ public class DataflowWithRatesActorInterpreter extends DataflowActorInterpreter 
                         * repeatVal)) {
                     throw new InterpreterException(
                             "Not enough repeated inputs:"
-                                    + inputPattern.getVariables().length
-                                    * repeatVal);
+                                    + (inputPattern.getVariables().length * repeatVal));
                 }
             }
         }

@@ -111,7 +111,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire all continuous actors. Derived classes may advance the model time. 
+    /** Fire all continuous actors. Derived classes may advance the model time.
      *  The amount of time increment depends on the solving algorithms.
      *  @exception IllegalActionException If schedule can not be found or
      *  continuous actors throw it from their fire() methods.
@@ -126,6 +126,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
         HSDirector director = (HSDirector) getContainer();
         double currentStepSize = director.getCurrentStepSize();
+
         if (currentStepSize == 0) {
             return;
         }
@@ -152,11 +153,12 @@ public class TrapezoidalRuleSolver extends ODESolver {
         }
 
         _incrementRoundCount();
+
         if (_isConverged()) {
             _resetRoundCount();
         }
     }
-        
+
     /** Return 0 to indicate that this solver needs no
      *  history information.
      *  @return 0.
@@ -334,6 +336,6 @@ public class TrapezoidalRuleSolver extends ODESolver {
     private boolean _recalculatingWithTwoSteps = false;
 
     private boolean _firstStep = true;
-    
+
     private double _f1 = 0.0;
 }

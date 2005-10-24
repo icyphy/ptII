@@ -408,9 +408,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         _moveToBackAction = new MoveToBackAction();
         _moveToFrontAction = new MoveToFrontAction();
-        
+
         _editPreferencesAction = new EditPreferencesAction();
-        
+
         // Add a weak reference to this to keep track of all
         // the graph frames that have been created.
         _openGraphFrames.add(this);
@@ -1250,10 +1250,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // original model to make sure that the change propagates
             // back to the file from which the library is loaded from.
             Tableau libraryTableau = configuration.openModel(libraryInstance);
-            PtolemyEffigy libraryEffigy =
-                (PtolemyEffigy)libraryTableau.getContainer();
-            CompositeEntity library =
-                (CompositeEntity)libraryEffigy.getModel();
+            PtolemyEffigy libraryEffigy = (PtolemyEffigy) libraryTableau
+                    .getContainer();
+            CompositeEntity library = (CompositeEntity) libraryEffigy
+                    .getModel();
 
             StringWriter buffer = new StringWriter();
 
@@ -1406,7 +1406,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addMenuItem(_editMenu, _moveToBackAction);
         GUIUtilities.addHotKey(_jgraph, _moveToFrontAction);
         GUIUtilities.addMenuItem(_editMenu, _moveToFrontAction);
-        
+
         _editMenu.addSeparator();
         GUIUtilities.addMenuItem(_editMenu, _editPreferencesAction);
 
@@ -1745,7 +1745,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The edit menu. */
     protected JMenu _editMenu;
-    
+
     /** The action to edit preferences. */
     protected EditPreferencesAction _editPreferencesAction;
 
@@ -1865,7 +1865,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
             moml = _offsetValue(moml, xOffset, yOffset, index);
         }
-        
+
         // Repeat the process for vertex entries, which give the
         // locations of relations.
         index = 0;
@@ -1877,8 +1877,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // Look for all vertices, and break when there are no more.
                 break;
             }
+
             // Skip to the close quotation mark.
             index = moml.indexOf("\"", index + 1);
+
             if (index == -1) {
                 // Syntax error, but don't catch it here.
                 break;
@@ -1902,15 +1904,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     private String _offsetValue(String moml, int xOffset, int yOffset, int index) {
         int valStartIndex = moml.indexOf("value=\"", index);
         int valEndIndex = moml.indexOf("\"", valStartIndex + 8);
-        String position = moml
-                .substring(valStartIndex + 8, valEndIndex - 1);
+        String position = moml.substring(valStartIndex + 8, valEndIndex - 1);
 
         // Get the int representation of the numbers
         float xpos = new Float(position.substring(0, position.indexOf(","))
                 .trim()).floatValue();
-        float ypos = new Float(position.substring(
-                position.indexOf(",") + 1, position.length()).trim())
-                .floatValue();
+        float ypos = new Float(position.substring(position.indexOf(",") + 1,
+                position.length()).trim()).floatValue();
         xpos += xOffset;
         ypos += yOffset;
 
@@ -1924,7 +1924,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         moml = firstPart + lastPart;
         return moml;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -2010,20 +2010,26 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         public void actionPerformed(ActionEvent e) {
             Configuration configuration = getConfiguration();
             VergilPreferences preferences = null;
+
             try {
-                preferences = (VergilPreferences)configuration.getAttribute(
+                preferences = (VergilPreferences) configuration.getAttribute(
                         VergilPreferences.PREFERENCES_WITHIN_CONFIGURATION,
                         VergilPreferences.class);
             } catch (IllegalActionException ex) {
-                MessageHandler.error(
-                        "Preferences attribute found, but not of the right class.", ex);
+                MessageHandler
+                        .error(
+                                "Preferences attribute found, but not of the right class.",
+                                ex);
             }
+
             if (preferences == null) {
-                MessageHandler.message("No preferences given in the configuration.");
+                MessageHandler
+                        .message("No preferences given in the configuration.");
             } else {
                 // Open a modal dialog to edit the parameters.
-                new EditParametersDialog(BasicGraphFrame.this, preferences, "Edit Vergil Preferences");
-                
+                new EditParametersDialog(BasicGraphFrame.this, preferences,
+                        "Edit Vergil Preferences");
+
                 // Make the current global variables conform with the new values.
                 try {
                     preferences.setAsDefault();
@@ -2035,22 +2041,28 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 // If any parameter has changed, all open vergil
                 // windows need to be notified.
                 Iterator frames = _openGraphFrames.iterator();
+
                 while (frames.hasNext()) {
-                    BasicGraphFrame frame = (BasicGraphFrame)frames.next();
-                    GraphModel graphModel = frame._getGraphController().getGraphModel();
-                    graphModel.dispatchGraphEvent(new GraphEvent(this,
-                            GraphEvent.STRUCTURE_CHANGED, graphModel.getRoot()));
+                    BasicGraphFrame frame = (BasicGraphFrame) frames.next();
+                    GraphModel graphModel = frame._getGraphController()
+                            .getGraphModel();
+                    graphModel
+                            .dispatchGraphEvent(new GraphEvent(this,
+                                    GraphEvent.STRUCTURE_CHANGED, graphModel
+                                            .getRoot()));
+
                     if (frame._graphPanner != null) {
                         frame._graphPanner.repaint();
                     }
                 }
-                
+
                 // Make the changes persistent.
                 try {
-                    preferences.save();                        
+                    preferences.save();
                 } catch (IOException ex) {
                     try {
-                        MessageHandler.warning("Failed to save preferences.", ex);
+                        MessageHandler.warning("Failed to save preferences.",
+                                ex);
                     } catch (CancelException e1) {
                         // Ignore cancel.
                     }

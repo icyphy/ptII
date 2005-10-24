@@ -53,7 +53,6 @@ import diva.util.java2d.ShapeUtilities;
  * @author      Nick Zamora
  */
 public class PaintedFigure extends AbstractFigure {
-
     // Note that this class was deprecated becase we were to use
     // diva.compat.canvas instead.  However, the Ptolemy sources
     // do not include diva.compat.canvas, so I'm making this class

@@ -745,8 +745,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         _newIteration = newIteration;
     }
 
-    /** Set true indicating that this actor supports multirate firing. 
-     *  @param supportMultirate A boolean variable indicating whether this 
+    /** Set true indicating that this actor supports multirate firing.
+     *  @param supportMultirate A boolean variable indicating whether this
      *  actor supports multirate firing.
      */
     public void setSupportMultirate(boolean supportMultirate) {
@@ -910,10 +910,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition) transitionRelations.next();
+
             if (transition.isEnabled()) {
                 enabledTransitions.add(transition);
             }
         }
+
         // NOTE: It is the _chooseTransition method that decides which
         // enabled transition is actually taken. This method simply returns
         // all enabled transitions.
@@ -1148,66 +1150,68 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             if (_supportMultirate) {
                 // FIXME: The following implementation to support multirate is 
                 // rather expensive. Try to optimize it.
-                
                 int width = port.getWidth();
+
                 // If we're in a new iteration, reallocate arrays to keep
                 // track of hdf data.
                 if (_newIteration && (channel == 0)) {
                     List[] tokenListArray = new LinkedList[width];
-        
+
                     for (int i = 0; i < width; i++) {
                         tokenListArray[i] = new LinkedList();
                     }
-        
+
                     _tokenListArrays.put(port, tokenListArray);
                 }
-        
+
                 // Get the list of tokens for the given port.
-                List[] tokenListArray = (LinkedList[]) _tokenListArrays.get(port);
-        
+                List[] tokenListArray = (LinkedList[]) _tokenListArrays
+                        .get(port);
+
                 // Update the value variable if there is/are token(s) in
                 // the channel. The HDF(SDF) schedule will gurantee there
                 // are always enough tokens.
                 while (port.hasToken(channel)) {
                     Token token = port.get(channel);
-        
+
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel + ") has ",
                                 token.toString());
                     }
-        
+
                     tokenListArray[channel].add(0, token);
                 }
-        
+
                 if (_debugging) {
-                    _debug("Total tokens available at port: " + port.getFullName()
-                            + "  ");
+                    _debug("Total tokens available at port: "
+                            + port.getFullName() + "  ");
                 }
-        
+
                 // FIXME: The "portName_isPresent" is true if there
                 // is at least one token.
                 int length = tokenListArray[channel].size();
-        
+
                 if (length > 0) {
                     Token[] tokens = new Token[length];
                     tokenListArray[channel].toArray(tokens);
-        
+
                     _setInputTokenMap(portName + "_isPresent", port,
                             BooleanToken.TRUE);
                     _setInputTokenMap(portChannelName + "_isPresent", port,
                             BooleanToken.TRUE);
                     _setInputTokenMap(portName, port, tokens[0]);
                     _setInputTokenMap(portChannelName, port, tokens[0]);
-        
+
                     ArrayToken arrayToken = new ArrayToken(tokens);
                     _setInputTokenMap(portName + "Array", port, arrayToken);
-                    _setInputTokenMap(portChannelName + "Array", port, arrayToken);
+                    _setInputTokenMap(portChannelName + "Array", port,
+                            arrayToken);
                 } else {
                     _setInputTokenMap(portName + "_isPresent", port,
                             BooleanToken.FALSE);
                     _setInputTokenMap(portChannelName + "_isPresent", port,
                             BooleanToken.FALSE);
-        
+
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel
                                 + ") has no token.");
@@ -1218,11 +1222,12 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 // Update the value variable if there is a token in the channel. 
                 if (port.hasToken(channel)) {
                     Token token = port.get(channel);
-    
+
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel + ") has ",
                                 token.toString());
                     }
+
                     _setInputTokenMap(portName + "_isPresent", port,
                             BooleanToken.TRUE);
                     _setInputTokenMap(portChannelName + "_isPresent", port,
@@ -1234,6 +1239,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                             BooleanToken.FALSE);
                     _setInputTokenMap(portChannelName + "_isPresent", port,
                             BooleanToken.FALSE);
+
                     if (_debugging) {
                         _debug("---", port.getName(), "(" + channel
                                 + ") has no token.");
@@ -1433,14 +1439,14 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     private void _setIdentifierToPort(String name, Port inputPort)
             throws IllegalActionException {
         Port previousPort = (Port) _identifierToPort.get(name);
-    
+
         if ((previousPort != null) && (previousPort != inputPort)) {
             throw new IllegalActionException("Name conflict in finite state"
                     + " machine.  The identifier \"" + name
                     + "\" is associated with the port " + previousPort
                     + " and with the port " + inputPort);
         }
-    
+
         _identifierToPort.put(name, inputPort);
     }
 
@@ -1589,7 +1595,7 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
     // A flag indicating whether this actor supports multirate firing.
     private boolean _supportMultirate = false;
-    
+
     // Hashtable to save an array of tokens for each port.
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.

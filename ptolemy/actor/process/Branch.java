@@ -197,7 +197,6 @@ public class Branch implements Runnable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private boolean _active = false;
 
     private BranchController _controller;

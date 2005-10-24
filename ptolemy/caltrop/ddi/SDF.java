@@ -151,7 +151,6 @@ public class SDF extends DataflowWithRates {
 
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
-
     private ActionRateSignature[] _actionRates;
 
     private ActionRateSignature[] _initializerRates;

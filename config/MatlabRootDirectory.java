@@ -29,6 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 
+
 /** Given the pathname to the matlab executable, return
     the pathname to the Matlab installation.
 
@@ -51,7 +52,7 @@ import java.net.URI;
     @Pt.AcceptedRating Red
 */
 public class MatlabRootDirectory {
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
         try {
             System.out.print(_getMatlabRootDirectory(args[0]));
         } catch (Exception exception) {
@@ -61,36 +62,32 @@ public class MatlabRootDirectory {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Given the pathname to the matlab executable, return the path name
     // of the Matlab directory.
     private static String _getMatlabRootDirectory(String matlabExecutable)
-            throws Exception {
+        throws Exception {
         // Return the directory above the bin/ directory in
         // the path to the matlab executable
-
         // Under Solaris, we might pass this:
         //   /usr/sww/bin/matlab
         // Under Windows:
         //   /cygdrive/c/matlab6p1/bin/win32/matlab
-
         if (File.separatorChar == '\\') {
             // We are under Windows.  Messing with cygdrive paths
             // is just too complex.  Autoconf will pass in something
             // that starts with /cygdrive/c, which Java will not
             // know how to interpret
-
             // We could use java.io.File here, but the problem is that
             // if we pass in /cygwin/c/ptII/bin/matlab, then
             // the name we will return will be \cygwin\c\ptII, which
             // will cause problems with the backslash when we do
             // 'if test -d \cygwin\c\ptII'
-
             // We could call cygpath -m and pass in the results, but
             // cygpath -m does not work in the version of Cygwin that
             // we shipped with Ptolemy II 2.0.1
             _checkForBin(matlabExecutable);
-            return matlabExecutable.substring(0,matlabExecutable.lastIndexOf("/bin/"));
+            return matlabExecutable.substring(0,
+                matlabExecutable.lastIndexOf("/bin/"));
         }
 
         // matlabExecutable might be a symbolic link, so dereference it.
@@ -98,16 +95,15 @@ public class MatlabRootDirectory {
         String matlabCanonicalPath = matlabFile.getCanonicalPath();
 
         _checkForBin(matlabCanonicalPath);
-        return matlabCanonicalPath.substring(0,matlabCanonicalPath.lastIndexOf("/bin/"));
-
+        return matlabCanonicalPath.substring(0,
+            matlabCanonicalPath.lastIndexOf("/bin/"));
     }
 
     // Throw an exception if the path does not contain /bin/
     private static void _checkForBin(String path) throws Exception {
         if (path.indexOf("/bin/") == -1) {
-            throw new Exception("Cannot determine Matlab directory: '"
-                    + path + "' does not contain "
-                    + "/bin/");
+            throw new Exception("Cannot determine Matlab directory: '" + path
+                + "' does not contain " + "/bin/");
         }
     }
 }

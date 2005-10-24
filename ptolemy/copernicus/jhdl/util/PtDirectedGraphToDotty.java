@@ -64,8 +64,8 @@ public class PtDirectedGraphToDotty extends GraphToDotty {
 
             if (source.hasWeight()) {
                 sb.append(" [label=\""
-                        + convertSpecialsToEscapes(source.getWeight().toString())
-                        + "\"]");
+                    + convertSpecialsToEscapes(source.getWeight().toString())
+                    + "\"]");
             }
 
             sb.append(";\r\n");
@@ -78,16 +78,16 @@ public class PtDirectedGraphToDotty extends GraphToDotty {
             Node source = (Node) nodes.next();
 
             for (Iterator succs = g.outputEdges(source).iterator();
-                 succs.hasNext();) {
+                        succs.hasNext();) {
                 Edge edge = (Edge) succs.next();
                 Node dest = edge.sink();
                 sb.append("\t\"" + hm.get(source) + "\" -> \"" + hm.get(dest)
-                        + "\"");
+                    + "\"");
 
                 if (edge.hasWeight()) {
                     sb.append(" [label=\""
-                            + convertSpecialsToEscapes(edge.getWeight().toString())
-                            + "\"]");
+                        + convertSpecialsToEscapes(edge.getWeight().toString())
+                        + "\"]");
                 }
 
                 sb.append(";\r\n");

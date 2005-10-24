@@ -195,7 +195,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setDashArray(float[] dashArray) {
         // Avoid calling swing if things haven't actually changed.
-        if (_dashArray != null && _dashArray.equals(dashArray)) {
+        if ((_dashArray != null) && _dashArray.equals(dashArray)) {
             return;
         }
 
@@ -348,7 +348,7 @@ public class ShapeIcon extends DynamicEditorIcon {
     ////                         private variables                 ////
     // Indicator of whether the figure should be centered on its origin.
     private boolean _centered = false;
-    
+
     // Dash array, if specified.
     private float[] _dashArray;
 

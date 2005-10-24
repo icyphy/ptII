@@ -23,7 +23,6 @@
  ENHANCEMENTS, OR MODIFICATIONS.
 
  */
-
 package ptolemy.distributed.common;
 
 import java.net.InetAddress;
@@ -51,9 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.actor.Actor
  @see ptolemy.actor.Executable
  */
-
 public interface DistributedActor {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,7 +68,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public InetAddress getAddress() throws java.rmi.RemoteException;
 
     /** Begin execution of the actor.
@@ -79,7 +75,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void initialize() throws java.rmi.RemoteException;
 
     /** Invoke a specified number of iterations of the actor.
@@ -89,7 +84,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public int iterate(int count) throws java.rmi.RemoteException;
 
     /** Load a moml representation of an actor.
@@ -99,7 +93,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public boolean loadMoML(String moml) throws java.rmi.RemoteException;
 
     /** This method should be invoked once per iteration, after the last
@@ -109,7 +102,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public boolean postfire() throws java.rmi.RemoteException;
 
     /** This method should be invoked once per iteration, before the first
@@ -119,7 +111,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public boolean prefire() throws java.rmi.RemoteException;
 
     /** This method should be invoked exactly once per execution
@@ -128,7 +119,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void preinitialize() throws java.rmi.RemoteException;
 
     /** Puts copies of the token received into the Receivers included in the
@@ -140,8 +130,8 @@ public interface DistributedActor {
      *  @exception IllegalActionException If the transaction fails (e.g.
      *   the data type is incompatible).
      */
-
-    public void put(HashMap data) throws java.rmi.RemoteException, IllegalActionException;
+    public void put(HashMap data) throws java.rmi.RemoteException,
+            IllegalActionException;
 
     /** Set the "virtual connections" concerning the wrapped actor.
      *  The connections HashMap contains a list of ports, and for each
@@ -171,7 +161,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void setConnections(HashMap connections)
             throws java.rmi.RemoteException;
 
@@ -181,7 +170,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void setPortTypes(HashMap portTypes) throws java.rmi.RemoteException;
 
     /** Request that execution of the wrapped actor to stop as
@@ -190,7 +178,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void stop() throws java.rmi.RemoteException;
 
     /** Request that execution of the current iteration of the
@@ -199,7 +186,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void stopFire() throws java.rmi.RemoteException;
 
     /** Terminate any currently executing model with extreme prejudice.
@@ -207,7 +193,6 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void terminate() throws java.rmi.RemoteException;
 
     /** This method is invoked exactly once per execution
@@ -216,6 +201,5 @@ public interface DistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void wrapup() throws java.rmi.RemoteException;
 }

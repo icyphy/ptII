@@ -59,7 +59,6 @@ import ptolemy.kernel.util.Debuggable;
  @see ConditionalSend
  */
 public abstract class AbstractBranchController implements Debuggable {
-    
     /** Construct a controller in the specified container, which should
      *  be an actor that implements BranchActor.
      *  @param container The parent actor that contains this object.
@@ -80,11 +79,13 @@ public abstract class AbstractBranchController implements Debuggable {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
         }
+
         if (_debugListeners.contains(listener)) {
             return;
         } else {
             _debugListeners.add(listener);
         }
+
         _debugging = true;
     }
 
@@ -106,6 +107,7 @@ public abstract class AbstractBranchController implements Debuggable {
         if (_debugListeners == null) {
             return;
         }
+
         _debugListeners.remove(listener);
 
         if (_debugListeners.size() == 0) {
@@ -156,10 +158,13 @@ public abstract class AbstractBranchController implements Debuggable {
         if (_debugging) {
             _debug("** Branch failed: " + branchNumber);
         }
+
         Object director = _getDirector();
+
         synchronized (director) {
             _branchesActive--;
             director.notifyAll();
+
             while (_branchesActive > 0) {
                 try {
                     director.wait();
@@ -188,12 +193,15 @@ public abstract class AbstractBranchController implements Debuggable {
      */
     protected void _branchSucceeded(int branchID) {
         Object director = _getDirector();
+
         synchronized (director) {
             if (_debugging) {
                 _debug("** Branch succeeded: " + branchID);
             }
+
             _branchesActive--;
             director.notifyAll();
+
             while (_branchesActive > 0) {
                 try {
                     director.wait();
@@ -221,12 +229,13 @@ public abstract class AbstractBranchController implements Debuggable {
     protected final void _debug(String message) {
         if (_debugging) {
             Iterator listeners = _debugListeners.iterator();
+
             while (listeners.hasNext()) {
                 ((DebugListener) listeners.next()).message(message);
             }
         }
     }
-    
+
     /** Get the director that controls the execution of its parent actor.
      *  @return The executive director if the actor is composite, and
      *   otherwise, the director.
@@ -242,7 +251,7 @@ public abstract class AbstractBranchController implements Debuggable {
                     + "director => terminate.");
         }
     }
-    
+
     /** Called by ConditionalSend and ConditionalReceive to check whether
      *  the calling branch is ready to rendezvous.
      *  @param branchNumber The ID assigned to the calling branch
@@ -254,7 +263,7 @@ public abstract class AbstractBranchController implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The set of branches currently being chosen from in
      *  chooseBranch().
      */
@@ -276,7 +285,7 @@ public abstract class AbstractBranchController implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
 

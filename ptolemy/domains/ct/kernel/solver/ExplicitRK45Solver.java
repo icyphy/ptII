@@ -71,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
  (512.0/1771 - 0.25)*K5]*h.
  </pre>
  <P>
- If the LTE is less than the error tolerance, then this step size h is 
+ If the LTE is less than the error tolerance, then this step size h is
  considered successful, and the next integration step size h' is predicted as:
  <pre>
  h' = h * Math.pow((ErrorTolerance/LTE), 1.0/5.0)
@@ -80,7 +80,7 @@ import ptolemy.kernel.util.Workspace;
  the local truncation error.
  <p>
  It takes 6 steps for this solver to resolve a state with an integration
- step size. A round counter is used to record which step this solver performs. 
+ step size. A round counter is used to record which step this solver performs.
 
  @author  Haiyang Zheng
  @version $Id$
@@ -269,21 +269,25 @@ public class ExplicitRK45Solver extends ODESolver {
 
             //store the Local Truncation Error into k[6]
             integrator.setAuxVariables(6, error);
+
             if (_debugging) {
                 _debug("Integrator: " + integrator.getName()
                         + " local truncation error = " + error);
             }
+
             if (error < tolerance) {
                 if (_debugging) {
                     _debug("Integrator: " + integrator.getName()
                             + " report a success.");
                 }
+
                 return true;
             } else {
                 if (_debugging) {
                     _debug("Integrator: " + integrator.getName()
                             + " reports a failure.");
                 }
+
                 return false;
             }
         } catch (IllegalActionException e) {
@@ -316,6 +320,7 @@ public class ExplicitRK45Solver extends ODESolver {
             _debug("integrator: " + integrator.getName()
                     + " suggests next step size = " + newh);
         }
+
         return newh;
     }
 

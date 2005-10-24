@@ -13,11 +13,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -46,51 +46,51 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for ptolemy.actor.lib.Expression. 
+ * A code generation helper class for ptolemy.actor.lib.Expression.
  *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Red (mankit) 
+ * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
 public class Expression extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Expression helper.
      * @param actor The associated actor.
      */
     public Expression(ptolemy.actor.lib.Expression actor) {
         super(actor);
- 
     }
 
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Expression.c,
-     * replaces macros with their values and appends the processed code              
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void  generateFireCode(StringBuffer code)
-        throws IllegalActionException {
-        
+    public void generateFireCode(StringBuffer code)
+            throws IllegalActionException {
         super.generateFireCode(code);
-        
-        Type portType = ((ptolemy.actor.lib.Expression) 
-                this.getComponent()).output.getType();
+
+        Type portType = ((ptolemy.actor.lib.Expression) this.getComponent()).output
+                .getType();
 
         // if port type is not primitive, then we use token type
-        if (portType != BaseType.DOUBLE && portType != BaseType.INT &&
-                portType != BaseType.STRING && portType != BaseType.BOOLEAN) {
-        	portType = BaseType.GENERAL;
+        if ((portType != BaseType.DOUBLE) && (portType != BaseType.INT)
+                && (portType != BaseType.STRING)
+                && (portType != BaseType.BOOLEAN)) {
+            portType = BaseType.GENERAL;
         }
+
         //code.append(processCode("    $ref(output)." + portType + "Port = ("
         //        + _parseTreeCodeGenerator.generateFireCode()) + ");\n");
         code.append(processCode("    $ref(output) = "
-                + _parseTreeCodeGenerator.generateFireCode()) + ";\n");
+                + _parseTreeCodeGenerator.generateFireCode())
+                + ";\n");
     }
 
     /**
@@ -101,12 +101,11 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      * @return The processed code string.
      */
-    public String generateInitializeCode()
-        throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
         return processCode(_parseTreeCodeGenerator.generateInitializeCode());
     }
-   
+
     /**
      * Generate preinitialize code.
      * This method reads the <code>preinitBlock</code> from Expression.c,
@@ -115,12 +114,10 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      * @return The processed code string.
      */
-    public String generatePreinitializeCode() 
-        throws IllegalActionException {
+    public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 
-        ptolemy.actor.lib.Expression actor =
-            (ptolemy.actor.lib.Expression) getComponent();
+        ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
         Token result;
 
         try {
@@ -128,25 +125,23 @@ public class Expression extends CCodeGeneratorHelper {
             // cases the expression doesn't change, and the parser
             // requires a large amount of memory.
             PtParser parser = new PtParser();
-            ASTPtRootNode parseTree = 
-                parser.generateParseTree(actor.expression.getExpression());            
-            
-            result = _parseTreeCodeGenerator.evaluateParseTree(
-                    parseTree, new VariableScope(actor));
-            
+            ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
+                    .getExpression());
+
+            result = _parseTreeCodeGenerator.evaluateParseTree(parseTree,
+                    new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
             throw new IllegalActionException(null, ex, "Expression invalid.");
         }
-        
+
         if (result == null) {
             throw new IllegalActionException(null,
                     "Expression yields a null result: "
                             + actor.expression.getExpression());
         }
 
-        return processCode(
-                _parseTreeCodeGenerator.generatePreinitializeCode());
+        return processCode(_parseTreeCodeGenerator.generatePreinitializeCode());
     }
 
     /**
@@ -159,19 +154,18 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public Set generateSharedCode() throws IllegalActionException {
-        
         _parseTreeCodeGenerator = new ParseTreeCodeGenerator();
-        
+
         Set codeBlocks = new HashSet();
-        codeBlocks.add(processCode(
-                _parseTreeCodeGenerator.generateSharedCode()));
+        codeBlocks
+                .add(processCode(_parseTreeCodeGenerator.generateSharedCode()));
         return codeBlocks;
     }
 
     /**
      * Generate wrap up code.
      * This method reads the <code>wrapupBlock</code>
-     * from Expression.c, 
+     * from Expression.c,
      * replaces macros with their values and appends the processed code block
      * to the given code buffer.
      * @return The processed code string.
@@ -179,10 +173,10 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();        
+        StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
         code.append(processCode(_parseTreeCodeGenerator.generateWrapupCode()));
-        
+
         // Free up memory
         _parseTreeCodeGenerator = null;
         return code.toString();
@@ -202,23 +196,22 @@ public class Expression extends CCodeGeneratorHelper {
         files.add("<time.h>");
         return files;
     }
-    
+
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
-    
+
     /**
      * Variable scope class customized for the ParseTreeCodeGenerator.
      */
     private class VariableScope extends ModelScope {
-        
         /**
          * Constructor of a VariableScope.
          * @param actor The named ptolemy actor.
          */
-        public VariableScope (AtomicActor actor) {
-            _actor = actor;    
+        public VariableScope(AtomicActor actor) {
+            _actor = actor;
         }
-        
-        /** Look up and return the attribute with the specified name. 
+
+        /** Look up and return the attribute with the specified name.
          *  Return null if such an attribute does not exist.
          *  @return The attribute with the specified name in the scope.
          */
@@ -229,33 +222,37 @@ public class Expression extends CCodeGeneratorHelper {
                 } else if (name.equals("iteration")) {
                     return new ObjectToken("(iteration + 1)");
                 }
-    
+
                 for (int i = 0; i < _actor.inputPortList().size(); i++) {
-                	if (((IOPort) _actor.inputPortList().get(i))
-                            .getName().equals(name)) {
+                    if (((IOPort) _actor.inputPortList().get(i)).getName()
+                            .equals(name)) {
                         return new ObjectToken("$ref(" + name + ")");
                     }
                 }
-                
-                
+
                 Attribute attribute = _actor.getAttribute(name);
+
                 if (attribute == null) {
-                    attribute = ModelScope.getScopedVariable(null, _actor, name);
+                    attribute = ModelScope
+                            .getScopedVariable(null, _actor, name);
                 }
+
                 if (attribute != null) {
-                    return new ObjectToken("$val(" + name + ")") ;  
+                    return new ObjectToken("$val(" + name + ")");
                 }
-                /*    
-                for (int i = 0; i < _actor.attributeList().size(); i++) {
-                    if (((Attribute) _actor.attributeList().get(i))
-                            .getName().equals(name)) {
-                        return new ObjectToken("$val(" + name + ")");
-                    }
-                }
-                */
+
+                /*
+                 for (int i = 0; i < _actor.attributeList().size(); i++) {
+                 if (((Attribute) _actor.attributeList().get(i))
+                 .getName().equals(name)) {
+                 return new ObjectToken("$val(" + name + ")");
+                 }
+                 }
+                 */
             } catch (IllegalActionException ex) {
-            	// Not thrown here.
+                // Not thrown here.
             }
+
             return null;
         }
 
@@ -315,6 +312,7 @@ public class Expression extends CCodeGeneratorHelper {
             if (result != null) {
                 return result.getTypeTerm();
             }
+
             return null;
         }
 
@@ -324,8 +322,7 @@ public class Expression extends CCodeGeneratorHelper {
         public Set identifierSet() {
             return getAllScopedVariableNames(null, _actor);
         }
-        
+
         private AtomicActor _actor;
     }
-
 }

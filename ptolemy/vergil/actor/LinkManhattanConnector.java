@@ -12,15 +12,14 @@ import diva.canvas.connector.ManhattanConnector;
 //// LinkManhattanConnector
 
 /**
-An extension to BasicManhattanRouter supporting links to multiports.
+ An extension to BasicManhattanRouter supporting links to multiports.
 
-@author Edward A. Lee
-@version $Id$
-@Pt.ProposedRating Yellow (eal)
-@Pt.AcceptedRating Red (eal)
-*/
+ @author Edward A. Lee
+ @version $Id$
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (eal)
+ */
 public class LinkManhattanConnector extends ManhattanConnector {
-
     /** Construct a new connector with the given tail and head
      *  for the specified link. The head and tail sites may be
      *  representative sites for multiport, in which case they are
@@ -34,28 +33,35 @@ public class LinkManhattanConnector extends ManhattanConnector {
      */
     public LinkManhattanConnector(Site tail, Site head, Link link) {
         super(tail, head, _router);
+
         Object headObject = link.getHead();
+
         if (headObject instanceof IOPort) {
-            _headPort = (IOPort)headObject;
+            _headPort = (IOPort) headObject;
         } else if (headObject instanceof Location) {
             // If this is an external port, the object might be an
             // instance of Location contained by the port.
-            NamedObj container = ((Location)headObject).getContainer();
+            NamedObj container = ((Location) headObject).getContainer();
+
             if (container instanceof IOPort) {
-                _headPort = (IOPort)container;
+                _headPort = (IOPort) container;
             }
         }
+
         Object tailObject = link.getTail();
+
         if (tailObject instanceof IOPort) {
-            _tailPort = (IOPort)tailObject;
+            _tailPort = (IOPort) tailObject;
         } else if (tailObject instanceof Location) {
             // If this is an external port, the object might be an
             // instance of Location contained by the port.
-            NamedObj container = ((Location)tailObject).getContainer();
+            NamedObj container = ((Location) tailObject).getContainer();
+
             if (container instanceof IOPort) {
-                _tailPort = (IOPort)container;
+                _tailPort = (IOPort) container;
             }
         }
+
         _link = link;
     }
 
@@ -67,21 +73,25 @@ public class LinkManhattanConnector extends ManhattanConnector {
      *  @return The connection site.
      */
     public Site getHeadSite() {
-        if (_headPort == null || !_headPort.isMultiport()) {
+        if ((_headPort == null) || !_headPort.isMultiport()) {
             return super.getHeadSite();
         }
+
         Site result = super.getHeadSite();
+
         if (result instanceof PortConnectSite) {
-            PortTerminal terminal = ((PortConnectSite)result).getTerminal();
+            PortTerminal terminal = ((PortConnectSite) result).getTerminal();
             int orderIndex = terminal.getOrderIndex(this);
+
             if (orderIndex >= 0) {
-                return new PortConnectSite(
-                        result.getFigure(), terminal, orderIndex + 1, result.getNormal());
+                return new PortConnectSite(result.getFigure(), terminal,
+                        orderIndex + 1, result.getNormal());
             }
         }
+
         return result;
     }
-    
+
     /** Return the associated link.
      *  @return The associated link.
      */
@@ -94,30 +104,34 @@ public class LinkManhattanConnector extends ManhattanConnector {
      *  @return The connection site.
      */
     public Site getTailSite() {
-        if (_tailPort == null || !_tailPort.isMultiport()) {
+        if ((_tailPort == null) || !_tailPort.isMultiport()) {
             return super.getTailSite();
         }
+
         Site result = super.getTailSite();
+
         if (result instanceof PortConnectSite) {
-            PortTerminal terminal = ((PortConnectSite)result).getTerminal();
+            PortTerminal terminal = ((PortConnectSite) result).getTerminal();
             int orderIndex = terminal.getOrderIndex(this);
+
             if (orderIndex >= 0) {
-                return new PortConnectSite(
-                        result.getFigure(), terminal, orderIndex + 1, result.getNormal());
+                return new PortConnectSite(result.getFigure(), terminal,
+                        orderIndex + 1, result.getNormal());
             }
         }
+
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private members                       ////
 
     /** The port at the head, if there is one and it's an IOPort. */
     private IOPort _headPort = null;
-    
+
     /** The link. */
     private Link _link;
-    
+
     /** Specialized router. */
     private static BasicManhattanRouter _router = new BasicManhattanRouter();
 

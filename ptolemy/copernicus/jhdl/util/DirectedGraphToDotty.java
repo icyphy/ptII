@@ -61,7 +61,7 @@ public class DirectedGraphToDotty extends GraphToDotty {
             Object source = nodes.next();
             String name = "v" + count++;
             sb.append("\t\"" + name + "\" [label=\""
-                    + convertSpecialsToEscapes(source.toString()) + "\"];\r\n");
+                + convertSpecialsToEscapes(source.toString()) + "\"];\r\n");
             hm.put(source, name);
         }
 
@@ -71,10 +71,10 @@ public class DirectedGraphToDotty extends GraphToDotty {
             Object source = nodes.next();
 
             for (Iterator succs = g.getSuccsOf(source).iterator();
-                 succs.hasNext();) {
+                        succs.hasNext();) {
                 Object dest = succs.next();
                 sb.append("\t\"" + hm.get(source) + "\" -> \"" + hm.get(dest)
-                        + "\";\r\n");
+                    + "\";\r\n");
             }
         }
 

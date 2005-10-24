@@ -68,7 +68,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * object from an IntervalChain object.
      **/
     public IntervalBlockDirectedGraph(IntervalChain ic)
-            throws JHDLUnsupportedException, SootASTException {
+        throws JHDLUnsupportedException, SootASTException {
         // Create DFG from the Block object associated with the root
         // Node of the given IntervalChain
         super(ic.getRootBlock());
@@ -98,13 +98,13 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * object from a SootMethod.
      **/
     public IntervalBlockDirectedGraph(SootMethod method)
-            throws JHDLUnsupportedException, SootASTException,
+        throws JHDLUnsupportedException, SootASTException, 
             IllegalActionException {
         this(new IntervalChain(method));
     }
 
     protected void _processChain()
-            throws JHDLUnsupportedException, SootASTException {
+        throws JHDLUnsupportedException, SootASTException {
         // 1. Create graph for next inverval in chain if there is one.
         //    (This algorithm works bottom up so that all required
         //     definitions downstream are known before upstream
@@ -136,7 +136,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * construct.
      **/
     protected void _simpleMerge()
-            throws JHDLUnsupportedException, SootASTException {
+        throws JHDLUnsupportedException, SootASTException {
         if (DEBUG) {
             System.out.println(toShortString() + ":Merge children");
         }
@@ -178,16 +178,16 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
             // merge root w/child
             ValueMap childMap = (ValueMap) childMapIterator.next();
             IntervalBlockDirectedGraph childDFG = (IntervalBlockDirectedGraph) childDFGs
-                .next();
+                        .next();
             joinOneChild(childDFG, childMap);
         } else if (numChildren == 2) {
             // merge two children
             ValueMap childMap1 = (ValueMap) childMapIterator.next();
             ValueMap childMap2 = (ValueMap) childMapIterator.next();
             IntervalBlockDirectedGraph child1DFG = (IntervalBlockDirectedGraph) childDFGs
-                .next();
+                        .next();
             IntervalBlockDirectedGraph child2DFG = (IntervalBlockDirectedGraph) childDFGs
-                .next();
+                        .next();
             joinTwoChildren(childMap1, child1DFG, childMap2, child2DFG);
         } else {
             // A switch.
@@ -232,10 +232,10 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      *     be childDFG._valueMap since it isn't in graph)
      **/
     public void joinOneChild(IntervalBlockDirectedGraph childDFG,
-            ValueMap childMap) {
+        ValueMap childMap) {
         if (DEBUG) {
             System.out.println("Merge single fork " + childDFG.toShortString()
-                    + " with parent " + toShortString());
+                + " with parent " + toShortString());
         }
 
         // Determine which branch is true
@@ -294,12 +294,12 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
     }
 
     public void joinTwoChildren(ValueMap child1Map,
-            IntervalBlockDirectedGraph child1DFG, ValueMap child2Map,
-            IntervalBlockDirectedGraph child2DFG) {
+        IntervalBlockDirectedGraph child1DFG, ValueMap child2Map,
+        IntervalBlockDirectedGraph child2DFG) {
         if (DEBUG) {
             System.out.println("Merge dual forks " + child1DFG.toShortString()
-                    + " and " + child2DFG.toShortString() + " with parent "
-                    + toShortString());
+                + " and " + child2DFG.toShortString() + " with parent "
+                + toShortString());
         }
 
         // Determine which branch is true
@@ -326,7 +326,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
         // Iterate over all assignment Nodes in child1
         for (Iterator i = child1DFG._valueMap.getAssignedNodes().iterator();
-             i.hasNext();) {
+                    i.hasNext();) {
             Node childNode = (Node) i.next();
             Value nodeValue = (Value) childNode.getWeight();
 
@@ -353,7 +353,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
         // Iterate over all assignment Nodes in child2
         for (Iterator i = child2DFG._valueMap.getAssignedNodes().iterator();
-             i.hasNext();) {
+                    i.hasNext();) {
             Node childNode = (Node) i.next();
             Value nodeValue = (Value) childNode.getWeight();
 
@@ -391,11 +391,11 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
     }
 
     protected Node _multiplexTwoNodes(Node trueNode, Node falseNode,
-            ValueMap map) {
+        ValueMap map) {
         if (DEBUG) {
             System.out.println("\tMultiplex: True=" + trueNode + "("
-                    + System.identityHashCode(trueNode) + ")" + " False="
-                    + falseNode + "(" + System.identityHashCode(trueNode) + ")");
+                + System.identityHashCode(trueNode) + ")" + " False="
+                + falseNode + "(" + System.identityHashCode(trueNode) + ")");
         }
 
         // Get the edges associated with the original CFG.
@@ -463,7 +463,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
      * TODO: modify this method to use the SootMethod constructor
      **/
     public static IntervalBlockDirectedGraph createIntervalBlockDirectedGraph(
-            String[] args, boolean writeGraphs) throws JHDLUnsupportedException {
+        String[] args, boolean writeGraphs) throws JHDLUnsupportedException {
         IntervalChain ic = IntervalChain.createIntervalChain(args, writeGraphs);
         IntervalBlockDirectedGraph ibdg = null;
 
@@ -486,7 +486,7 @@ public class IntervalBlockDirectedGraph extends SootBlockDirectedGraph {
 
     public static void main(String[] args) {
         SootBlockDirectedGraph[] graphs = ControlSootDFGBuilder
-            .createDataFlowGraphs(args, true);
+                    .createDataFlowGraphs(args, true);
 
         /*
           for (int i = 0; i<graphs.length;i++) {

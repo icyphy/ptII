@@ -469,6 +469,7 @@ public class RecordType extends StructuredType {
             if (this.equals(newType)) {
                 return;
             }
+
             throw new IllegalActionException("RecordType.updateType: "
                     + "This type is a constant and the argument is not the"
                     + " same as this type. This type: " + this.toString()

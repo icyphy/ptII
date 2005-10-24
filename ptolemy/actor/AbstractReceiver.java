@@ -221,7 +221,8 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception IllegalActionException If the put fails
      *   (e.g. because of incompatible types).
      */
-    public abstract void put(Token token) throws NoRoomException, IllegalActionException;
+    public abstract void put(Token token) throws NoRoomException,
+            IllegalActionException;
 
     /** Put a portion of the specified token array into this receiver.
      *  The first <i>numberOfTokens</i> elements of the token array are put
@@ -252,18 +253,19 @@ public abstract class AbstractReceiver implements Receiver {
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException, IllegalActionException {
         IOPort container = getContainer();
+
         // If there is no container, then perform no conversion.
         if (container == null) {
             for (int i = 0; i < numberOfTokens; i++) {
                 put(tokenArray[i]);
-            }            
+            }
         } else {
             for (int i = 0; i < numberOfTokens; i++) {
                 put(container.convert(tokenArray[i]));
             }
         }
     }
-    
+
     /** Put a sequence of tokens to all receivers in the specified array.
      *  Implementers will assume that all such receivers
      *  are of the same class.
@@ -276,14 +278,15 @@ public abstract class AbstractReceiver implements Receiver {
      *   to one of the ports (e.g., wrong type), or if the tokens array
      *   does not have at least the specified number of tokens.
      */
-    public void putArrayToAll(
-            Token[] tokens, int numberOfTokens, Receiver[] receivers)
-            throws NoRoomException, IllegalActionException {
+    public void putArrayToAll(Token[] tokens, int numberOfTokens,
+            Receiver[] receivers) throws NoRoomException,
+            IllegalActionException {
         if (numberOfTokens > tokens.length) {
             IOPort container = getContainer();
             throw new IllegalActionException(container,
                     "Not enough tokens supplied.");
         }
+
         for (int j = 0; j < receivers.length; j++) {
             receivers[j].putArray(tokens, numberOfTokens);
         }
@@ -302,6 +305,7 @@ public abstract class AbstractReceiver implements Receiver {
             throws NoRoomException, IllegalActionException {
         for (int j = 0; j < receivers.length; j++) {
             IOPort container = receivers[j].getContainer();
+
             // If there is no container, then perform no conversion.
             if (container == null) {
                 receivers[j].put(token);

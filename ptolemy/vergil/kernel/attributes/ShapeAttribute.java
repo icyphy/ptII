@@ -33,10 +33,8 @@ import java.awt.geom.Rectangle2D;
 
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -45,7 +43,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ShapeIcon;
 
@@ -101,7 +98,7 @@ public abstract class ShapeAttribute extends VisibleAttribute {
 
         lineColor = new ColorAttribute(this, "lineColor");
         lineColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
-        
+
         dashArray = new Parameter(this, "dashArray");
         dashArray.setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
@@ -116,7 +113,7 @@ public abstract class ShapeAttribute extends VisibleAttribute {
      *  This is an array of doubles that by default is empty.
      */
     public Parameter dashArray;
-    
+
     /** The line color.  This is a string representing an array with
      *  four elements, red, green, blue, and alpha, where alpha is
      *  transparency. The default is "{0.0, 0.0, 0.0, 1.0}", which
@@ -144,14 +141,18 @@ public abstract class ShapeAttribute extends VisibleAttribute {
                     .doubleValue();
             _icon.setLineWidth((float) lineWidthValue);
         } else if (attribute == dashArray) {
-            ArrayToken value = (ArrayToken)dashArray.getToken();
-            if (value == null || value.length() == 0) {
+            ArrayToken value = (ArrayToken) dashArray.getToken();
+
+            if ((value == null) || (value.length() == 0)) {
                 _icon.setDashArray(null);
             } else {
                 float[] floatValue = new float[value.length()];
+
                 for (int i = 0; i < value.length(); i++) {
-                    floatValue[i] = (float) ((DoubleToken)value.getElement(i)).doubleValue();
+                    floatValue[i] = (float) ((DoubleToken) value.getElement(i))
+                            .doubleValue();
                 }
+
                 _icon.setDashArray(floatValue);
             }
         } else if (attribute == lineColor) {

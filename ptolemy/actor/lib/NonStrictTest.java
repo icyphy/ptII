@@ -345,6 +345,7 @@ public class NonStrictTest extends Sink {
             } else {
                 for (int i = 0; i < newValues.length; i++) {
                     ArrayList entry = (ArrayList) newValues[i];
+
                     // Entry may be an empty array, in which case,
                     // we cannot do the update, so we return.
                     if (entry.size() < 1) {
@@ -353,6 +354,7 @@ public class NonStrictTest extends Sink {
                                 + "Zero tokens received in iteration " + i);
                         return;
                     }
+
                     Object[] entries = entry.toArray();
                     Token[] newEntry = new Token[entries.length];
 

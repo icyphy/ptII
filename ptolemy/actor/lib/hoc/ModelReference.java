@@ -452,6 +452,7 @@ public class ModelReference extends TypedAtomicActor implements
             // the referenced model parameters.
             _readInputs();
         }
+
         // Set the flag to false for the next firing.
         _alreadyReadInputs = false;
 
@@ -733,6 +734,7 @@ public class ModelReference extends TypedAtomicActor implements
 
             if ((port.getWidth() > 0) && port.hasToken(0)) {
                 Token token = port.get(0);
+
                 if (_model != null) {
                     Attribute attribute = _model.getAttribute(port.getName());
 

@@ -160,7 +160,7 @@ public class GRDirector extends StaticSchedulingDirector {
         return newObject;
     }
 
-    /** Override the super class method. This method does nothing and 
+    /** Override the super class method. This method does nothing and
      *  everything is postponed to the postfire() method.
      */
     public void fire() throws IllegalActionException {
@@ -321,6 +321,7 @@ public class GRDirector extends StaticSchedulingDirector {
     public boolean postfire() throws IllegalActionException {
         // iterate all actors under control of this director and fire them.
         _fire();
+
         // Note: actors return false on postfire(), if they wish never
         // to be fired again during the execution. This can be
         // interpreted as the actor being dead.
@@ -445,7 +446,7 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     private void _fire() throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
-    
+
         // FIXME: This code works differently than all other
         // synchronizeToRealTime implementations.
         long currentTime = System.currentTimeMillis();
@@ -453,7 +454,7 @@ public class GRDirector extends StaticSchedulingDirector {
                 .intValue();
         long timeElapsed = currentTime - _lastIterationTime;
         long timeRemaining = frameRate - timeElapsed;
-    
+
         if (timeRemaining > 0) {
             try {
                 java.lang.Thread.sleep(timeRemaining);
@@ -461,76 +462,76 @@ public class GRDirector extends StaticSchedulingDirector {
                 // Ignored.
             }
         }
-    
+
         _lastIterationTime = currentTime;
-    
+
         if (container == null) {
             throw new InvalidStateException(this, getName()
                     + " fired, but it has no container!");
         }
-    
+
         Scheduler scheduler = getScheduler();
-    
+
         if (scheduler == null) {
             throw new IllegalActionException(this, "Attempted to fire "
                     + "GR system with no scheduler");
         }
-    
+
         Schedule schedule = scheduler.getSchedule();
-    
+
         Iterator actors = schedule.actorIterator();
-    
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-    
+
             // If an actor returns true to prefire(), fire() and postfire()
             // will be called.
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_PREFIRE,
                         1));
             }
-    
+
             if (actor instanceof CompositeActor) {
                 CompositeActor compositeActor = (CompositeActor) actor;
                 Director insideDirector = compositeActor.getDirector();
-    
+
                 _insideDirector = insideDirector;
                 _pseudoTimeEnabled = true;
             }
-    
+
             boolean flag = actor.prefire();
-    
+
             if (_debugging) {
                 _debug(new FiringEvent(this, actor, FiringEvent.AFTER_PREFIRE,
                         1));
             }
-    
+
             if (flag) {
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
                             FiringEvent.BEFORE_FIRE, 1));
                 }
-    
+
                 actor.fire();
-    
+
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor, FiringEvent.AFTER_FIRE,
                             1));
                     _debug(new FiringEvent(this, actor,
                             FiringEvent.BEFORE_POSTFIRE, 1));
                 }
-    
+
                 actor.postfire();
-    
+
                 if (_debugging) {
                     _debug(new FiringEvent(this, actor,
                             FiringEvent.AFTER_POSTFIRE, 1));
                 }
             }
-    
+
             // Make sure we reset the pseudotime flag.
             _pseudoTimeEnabled = false;
-    
+
             // FIXME: should remove actor from schedule
             // if it returns false on postfire()
         }

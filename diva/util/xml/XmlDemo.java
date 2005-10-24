@@ -42,6 +42,7 @@ public class XmlDemo {
         XmlReader reader;
         XmlWriter writer;
         XmlDocument document;
+
         // Construct a document and parse it
         System.out.println("We are going to parse from " + file + ".");
         System.out.println("The parser will be set to verbose mode\n");

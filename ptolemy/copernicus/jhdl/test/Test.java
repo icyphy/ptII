@@ -112,7 +112,7 @@ public class Test {
         }
 
         soot.SootClass testClass = ptolemy.copernicus.jhdl.test.Test
-            .getApplicationClass(classname);
+                    .getApplicationClass(classname);
 
         if (testClass == null) {
             System.err.println("Class " + classname + " not found");
@@ -120,7 +120,7 @@ public class Test {
         }
 
         System.out.println("Loading class " + classname + " method "
-                + methodname);
+            + methodname);
 
         if (!testClass.declaresMethodByName(methodname)) {
             System.err.println("Method " + methodname + " not found");

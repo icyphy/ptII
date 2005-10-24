@@ -40,12 +40,9 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Variable;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Relation;
 import ptolemy.util.StringUtilities;
 import soot.ArrayType;
 import soot.IntType;
@@ -1812,21 +1809,25 @@ public class SDFPortInliner implements PortInliner {
     private static int _getBufferSize(TypedIORelation relation) {
         int bufferSize = 1;
         Receiver[][] receivers = relation.deepReceivers(null);
+
         for (int channel = 0; channel < receivers.length; channel++) {
             if (receivers[channel] != null) {
                 for (int copy = 0; copy < receivers[channel].length; copy++) {
                     if (receivers[channel][copy] instanceof SDFReceiver) {
-                        int oneBufferSize = ((SDFReceiver)receivers[channel][copy]).getCapacity();
+                        int oneBufferSize = ((SDFReceiver) receivers[channel][copy])
+                                .getCapacity();
+
                         if (oneBufferSize == SDFReceiver.INFINITE_CAPACITY) {
-                            System.out.println(
-                                    "Warning: Buffer with infinite capacity in channel "
-                                    + channel
-                                    + " copy "
-                                    + copy
-                                    + " of port "
-                                    + receivers[channel][copy].getContainer().getFullName()
-                                    + "...  Assuming 1.");
-                            
+                            System.out
+                                    .println("Warning: Buffer with infinite capacity in channel "
+                                            + channel
+                                            + " copy "
+                                            + copy
+                                            + " of port "
+                                            + receivers[channel][copy]
+                                                    .getContainer()
+                                                    .getFullName()
+                                            + "...  Assuming 1.");
                         } else if (oneBufferSize > bufferSize) {
                             bufferSize = oneBufferSize;
                         }
@@ -1834,6 +1835,7 @@ public class SDFPortInliner implements PortInliner {
                 }
             }
         }
+
         return bufferSize;
     }
 

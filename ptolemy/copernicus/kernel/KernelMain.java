@@ -137,6 +137,7 @@ public abstract class KernelMain {
                     + "the outputDirectory parameter was: \""
                     + attribute.getParameter("outputDirectory") + "\"");
         }
+
         // Parse any copernicus args.
         String[] sootArgs = _parseArgs(attribute);
 

@@ -25,7 +25,6 @@
  COPYRIGHTENDKEY
 
  */
-
 package ptolemy.util.test;
 
 /** This class has an inner class so that we can test objectToSourceFileName

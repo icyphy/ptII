@@ -24,13 +24,13 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package MyPackageName;
 
-// Imports go here, in alphabetical order, with no wildcards.
 
+// Imports go here, in alphabetical order, with no wildcards.
 //////////////////////////////////////////////////////////////////////////
 //// ClassName
+
 /**
    Describe your class here, in complete sentences.
    What does it do?  What is its intended use?
@@ -42,9 +42,7 @@ package MyPackageName;
    @Pt.ProposedRating Red (yourname)
    @Pt.AcceptedRating Red (reviewmoderator)
 */
-
 public class ClassName {
-
     /** Create an instance with ... (describe the properties of the
      *  instance). Use the imperative case here.
      *  @param parameterName Description of the parameter.
@@ -72,7 +70,7 @@ public class ClassName {
      *   causes the exception to be thrown).
      */
     public int publicMethodName(ParameterClass parameterName)
-            throws ExceptionClass {
+        throws ExceptionClass {
         return 1;
     }
 
@@ -87,7 +85,7 @@ public class ClassName {
      *   causes the exception to be thrown).
      */
     protected int _protectedMethodName(ParameterClass parameterName)
-            throws ExceptionClass {
+        throws ExceptionClass {
         return 1;
     }
 
@@ -99,7 +97,6 @@ public class ClassName {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Private methods need not have Javadoc comments, although it can
     // be more convenient if they do, since they may at some point
     // become protected methods.
@@ -109,7 +106,6 @@ public class ClassName {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Private variables need not have Javadoc comments, although it can
     // be more convenient if they do, since they may at some point
     // become protected variables.

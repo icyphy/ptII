@@ -63,6 +63,7 @@ public class SampleDelay extends CCodeGeneratorHelper {
     public void generateFireCode(StringBuffer stream)
             throws IllegalActionException {
         super.generateFireCode(stream);
+
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("codeBlock1");
         stream.append(processCode(_codeStream.toString()));
@@ -81,56 +82,52 @@ public class SampleDelay extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        
         StringBuffer code = new StringBuffer();
         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
+
         /*
-        Token[] initialOutputs = ((ArrayToken) actor.initialOutputs.getToken())
-                .arrayValue();
-        List sinkChannels = getSinkChannels(actor.output, 0);
-        */
-        
-        int length = ((ArrayToken) actor.initialOutputs.getToken())
-                .length();
-        
+         Token[] initialOutputs = ((ArrayToken) actor.initialOutputs.getToken())
+         .arrayValue();
+         List sinkChannels = getSinkChannels(actor.output, 0);
+         */
+        int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
+
         for (int i = 0; i < length; i++) {
-            
-            code.append("$ref(output, " + i + ") = " 
-                    + "$val(initialOutputs, " + i + ");\n");
-            
+            code.append("$ref(output, " + i + ") = " + "$val(initialOutputs, "
+                    + i + ");\n");
+
             /*
-            for (int j = 0; j < sinkChannels.size(); j++) {
-                Channel channel = (Channel) sinkChannels.get(j);
-                IOPort port = (IOPort) channel.port;
-                code.append(port.getFullName().replace('.', '_'));
+             for (int j = 0; j < sinkChannels.size(); j++) {
+             Channel channel = (Channel) sinkChannels.get(j);
+             IOPort port = (IOPort) channel.port;
+             code.append(port.getFullName().replace('.', '_'));
 
-                if (port.isMultiport()) {
-                    code.append("[" + channel.channelNumber + "]");
-                }
+             if (port.isMultiport()) {
+             code.append("[" + channel.channelNumber + "]");
+             }
 
-                int bufferSize = getBufferSize(port);
+             int bufferSize = getBufferSize(port);
 
-                if (bufferSize > 1) {
-                    code.append("[" + i + "]");
-                }
+             if (bufferSize > 1) {
+             code.append("[" + i + "]");
+             }
 
-                code.append(" = ");
-            }
+             code.append(" = ");
+             }
 
-            code.append(initialOutputs[i].toString() + ";\n");
-            */
+             code.append(initialOutputs[i].toString() + ";\n");
+             */
         }
 
         // FIXME: Do we need /Should we update the offset of input of
         // the SampleDelay?
         //setOffset(actor.input, 0, new Integer(initialOutputs.length));
-        
         //This line must happen before next line because next line will
         //set the new write offset.
         String processedCode = processCode(code.toString());
-        
+
         setSinkActorsWriteOffset(actor.output, 0, new Integer(length));
-        
+
         return processedCode;
     }
 }

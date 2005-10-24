@@ -1261,7 +1261,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     xmlFileWasNull = true;
                     _xmlFile = new URL(base.toExternalForm());
                 }
-                try {  
+
+                try {
                     _parser.parse(base.toExternalForm(), null, buffered);
                 } finally {
                     if (xmlFileWasNull) {
@@ -2314,9 +2315,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //// link
             } else if (elementName.equals("link")) {
                 String portName = (String) _attributes.get("port");
+
                 // Port can be null if we are linking two vertices.
                 // _checkForNull(portName, "No port for element \"link\"");
-
                 // Relation attribute now optional
                 String relationName = (String) _attributes.get("relation");
                 String insertAtSpec = (String) _attributes.get("insertAt");
@@ -2325,6 +2326,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 // Link is stored and processed last, but before deletions.
                 LinkRequest request;
+
                 if (portName != null) {
                     request = new LinkRequest(portName, relationName,
                             insertAtSpec, insertInsideAtSpec);
@@ -2798,9 +2800,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 //// unlink
             } else if (elementName.equals("unlink")) {
                 String portName = (String) _attributes.get("port");
+
                 // Port may not be specified if we are unlinking two vertices.
                 // _checkForNull(portName, "No port for element \"unlink\"");
-
                 String relationName = (String) _attributes.get("relation");
                 String indexSpec = (String) _attributes.get("index");
                 String insideIndexSpec = (String) _attributes
@@ -2808,6 +2810,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 // Unlink is stored and processed last.
                 UnlinkRequest request;
+
                 if (portName != null) {
                     request = new UnlinkRequest(portName, relationName,
                             indexSpec, insideIndexSpec);
@@ -4002,6 +4005,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private NamedObj _findOrParse(MoMLParser parser, URL base, String file,
             String className, String source) throws Exception {
         URL previousXmlFile = parser._xmlFile;
+
         // Cache the modified flag so that if the file
         // we are opening is modified we don't accidentally
         // mark container file as modified.  
@@ -4731,8 +4735,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     private boolean _isLinkInClass(NamedObj context, Relation relation1,
             Relation relation2) {
-        return (relation1.getDerivedLevel() < Integer.MAX_VALUE && relation2
-                .getDerivedLevel() < Integer.MAX_VALUE);
+        return ((relation1.getDerivedLevel() < Integer.MAX_VALUE) && (relation2
+                .getDerivedLevel() < Integer.MAX_VALUE));
     }
 
     /** Return whether or not the given element name is undoable. NOTE: we need
@@ -4945,18 +4949,21 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _checkClass(_current, CompositeEntity.class,
                 "Element \"link\" found inside an element that "
                         + "is not a CompositeEntity. It is: " + _current);
+
         // Check that required arguments are given
-        if (relation1Name == null || relation2Name == null) {
+        if ((relation1Name == null) || (relation2Name == null)) {
             throw new XmlException("Element link requires two relations.",
                     _currentExternalEntity(), _parser.getLineNumber(), _parser
                             .getColumnNumber());
         }
+
         CompositeEntity context = (CompositeEntity) _current;
 
         // Get relations.
         ComponentRelation relation1 = context.getRelation(relation1Name);
         _checkForNull(relation1, "No relation named \"" + relation1Name
                 + "\" in " + context.getFullName());
+
         // Get relations.
         ComponentRelation relation2 = context.getRelation(relation2Name);
         _checkForNull(relation2, "No relation named \"" + relation2Name
@@ -4971,6 +4978,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     "Cannot link relations when both"
                             + " are part of the class definition.");
         }
+
         relation1.link(relation2);
 
         // Propagate. Get the derived list for relation1,
@@ -5267,19 +5275,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     private void _processUnlink(String relation1Name, String relation2Name)
             throws XmlException, IllegalActionException {
-
         // Check that required arguments are given
-        if (relation1Name == null || relation2Name == null) {
+        if ((relation1Name == null) || (relation2Name == null)) {
             throw new XmlException("Element unlink requires two relations.",
                     _currentExternalEntity(), _parser.getLineNumber(), _parser
                             .getColumnNumber());
         }
+
         CompositeEntity context = (CompositeEntity) _current;
 
         // Get relations.
         ComponentRelation relation1 = context.getRelation(relation1Name);
         _checkForNull(relation1, "No relation named \"" + relation1Name
                 + "\" in " + context.getFullName());
+
         // Get relations.
         ComponentRelation relation2 = context.getRelation(relation2Name);
         _checkForNull(relation2, "No relation named \"" + relation2Name
@@ -5294,6 +5303,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     "Cannot unlink relations when both"
                             + " are part of the class definition.");
         }
+
         relation1.unlink(relation2);
 
         // Propagate. Get the derived list for relation1,

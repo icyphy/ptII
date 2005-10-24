@@ -82,7 +82,6 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
  */
 public class ViewScreen3D extends GRActor3D implements Placeable,
         ViewScreenInterface {
-
     // FIXME: Need a reset button to reset the viewpoint to the original.
 
     /** Construct a ViewScreen in the given container with the given name.
@@ -212,10 +211,11 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
     /** Fire this actor.*/
     public void fire() throws IllegalActionException {
-
         boolean _hasToken = sceneGraphIn.hasToken(0);
+
         if (_debugging) {
             _debug("Called fire()");
+
             //_debug("hasToken = " + _hasToken);
         }
 
@@ -232,6 +232,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
             _canvas.startRenderer();
             _canvas.stopRenderer();
         }
+
         //  _counter = _counter + 1;
     }
 
@@ -253,6 +254,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         //  _counter =1;
         //boolean _hasToken = sceneGraphIn.hasToken(0);
         // Create a frame, if necessary, along with the canvas and
@@ -285,6 +287,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         _userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
         _userTransformation.setCapability(TransformGroup.ALLOW_CHILDREN_EXTEND);
         _branchRoot.addChild(_userTransformation);
+
         //To allow multiple shapes to be added
         /*        _root = new BranchGroup();
          _root.setCapability(BranchGroup.ALLOW_DETACH);
@@ -292,7 +295,6 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
          _root.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
          _root.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
          _userTransformation.addChild(_root); */
-
         _bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
 
         Background backg = _makeBackground();
@@ -417,7 +419,6 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         }
 
         return !_stopRequested;
-
     }
 
     /** Wrapup an execution
@@ -449,9 +450,10 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     protected void _addChild(Node node) {
         if (_debugging) {
             _debug("Called _addChild(Node node)");
-
         }
+
         _userTransformation.addChild(node);
+
         //_root.addChild(node);
     }
 
@@ -553,10 +555,10 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     }
 
     protected void _makeNodeConnection() throws IllegalActionException {
-
         if (_debugging) {
             _debug("Called _makeNodeConnection()");
         }
+
         int width = sceneGraphIn.getWidth();
 
         for (int i = 0; i < width; i++) {
@@ -564,7 +566,6 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
             Node node = (Node) objectToken.getSceneGraphNode();
             _addChild(node);
         }
-
     }
 
     /** Setup the scene graph connections of this actor.
@@ -573,16 +574,19 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         if (_debugging) {
             _debug("Called _makeSceneGraphConnection()");
         }
+
         int width = sceneGraphIn.getWidth();
 
         for (int i = 0; i < width; i++) {
             SceneGraphToken objectToken = (SceneGraphToken) sceneGraphIn.get(i);
+
             // node = objectToken.getSceneGraphNode();
             Node node = (Node) objectToken.getSceneGraphNode();
+
             //((BranchGroup) node).detach();
             /* if (_debugging) {
              _debug("Node parent = " + node.getParent());
-             
+
              }*/
             //System.out.println("Node parent = " + node.getParent());
             _addChild(node);
@@ -709,6 +713,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     protected SimpleUniverse _simpleUniverse;
 
     protected TransformGroup _userTransformation = new TransformGroup();
+
     //  protected int _counter;
     //protected boolean _hasToken;
 }

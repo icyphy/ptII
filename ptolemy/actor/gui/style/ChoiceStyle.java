@@ -130,8 +130,9 @@ public class ChoiceStyle extends ParameterEditorStyle {
         }
 
         String defaultChoice = container.getExpression();
-        query.addChoice(name, container.getDisplayName(), values, defaultChoice, _isEditable,
-                PtolemyQuery.preferredBackgroundColor(container), PtolemyQuery
+        query.addChoice(name, container.getDisplayName(), values,
+                defaultChoice, _isEditable, PtolemyQuery
+                        .preferredBackgroundColor(container), PtolemyQuery
                         .preferredForegroundColor(container));
         query.attachParameter(container, name);
     }

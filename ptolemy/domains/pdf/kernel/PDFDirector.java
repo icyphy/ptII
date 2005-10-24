@@ -1,31 +1,31 @@
 /* Director for the synchronous dataflow model of computation.
 
-Copyright (c) 1997-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 1997-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor)
-@AcceptedRating Red (johnr)
-*/
+ @ProposedRating Red (neuendor)
+ @AcceptedRating Red (johnr)
+ */
 package ptolemy.domains.pdf.kernel;
 
 import ptolemy.actor.*;
@@ -40,48 +40,47 @@ import ptolemy.kernel.util.*;
 
 import java.util.*;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// PDFDirector
 
 /**
-   <h1>PDF overview</h1>
-   The Synchronous Dataflow(PDF) domain supports the efficient
-   execution of Dataflow graphs that
-   lack control structures.   Dataflow graphs that contain control structures
-   should be executed using the Process Networks(PN) domain instead.
-   PDF allows efficient execution, with very little overhead at runtime.  It
-   requires that the rates on the ports of all actors be known before hand.
-   PDF also requires that the rates on the ports not change during
-   execution.  In addition, in some cases (namely systems with feedback) delays,
-   which are represented by initial tokens on relations must be explicitly
-   noted.  PDF uses this rate and delay information to determine
-   the execution sequence of the actors before execution begins.
-   <h2>Schedule Properties</h2>
-   <ul>
-   <li>The number of tokens accumulated on every relation is bounded, given
-   an infinite number of executions of the schedule.
-   <li>Deadlock will never occur, given and infinite number of executions of
-   the schedule.
-   </ul>
-   <h1>Class comments</h1>
-   An PDFDirector is the class that controls execution of actors under the
-   PDF domain.  By default, actor scheduling is handled by the PDFScheduler
-   class.  Furthermore, the newReceiver method creates Receivers of type
-   PDFReceiver, which extends QueueReceiver to support optimized gets
-   and puts of arrays of tokens.
-   <p>
-   The PDF director has a single parameter, "iterations", corresponding to a
-   limit on the number of times the director will fire its hierarchy
-   before it returns false in postfire.  If this number is not greater
-   than zero, then no limit is set and postfire will always return true.
-   The default value of the iterations parameter is an IntToken with value zero.
-   @see ptolemy.domains.sdf.kernel.PDFScheduler
-   @see ptolemy.domains.sdf.kernel.PDFReceiver
+ <h1>PDF overview</h1>
+ The Synchronous Dataflow(PDF) domain supports the efficient
+ execution of Dataflow graphs that
+ lack control structures.   Dataflow graphs that contain control structures
+ should be executed using the Process Networks(PN) domain instead.
+ PDF allows efficient execution, with very little overhead at runtime.  It
+ requires that the rates on the ports of all actors be known before hand.
+ PDF also requires that the rates on the ports not change during
+ execution.  In addition, in some cases (namely systems with feedback) delays,
+ which are represented by initial tokens on relations must be explicitly
+ noted.  PDF uses this rate and delay information to determine
+ the execution sequence of the actors before execution begins.
+ <h2>Schedule Properties</h2>
+ <ul>
+ <li>The number of tokens accumulated on every relation is bounded, given
+ an infinite number of executions of the schedule.
+ <li>Deadlock will never occur, given and infinite number of executions of
+ the schedule.
+ </ul>
+ <h1>Class comments</h1>
+ An PDFDirector is the class that controls execution of actors under the
+ PDF domain.  By default, actor scheduling is handled by the PDFScheduler
+ class.  Furthermore, the newReceiver method creates Receivers of type
+ PDFReceiver, which extends QueueReceiver to support optimized gets
+ and puts of arrays of tokens.
+ <p>
+ The PDF director has a single parameter, "iterations", corresponding to a
+ limit on the number of times the director will fire its hierarchy
+ before it returns false in postfire.  If this number is not greater
+ than zero, then no limit is set and postfire will always return true.
+ The default value of the iterations parameter is an IntToken with value zero.
+ @see ptolemy.domains.sdf.kernel.PDFScheduler
+ @see ptolemy.domains.sdf.kernel.PDFReceiver
 
-   @author Steve Neuendorffer
-   @version $Id$
-*/
+ @author Steve Neuendorffer
+ @version $Id$
+ */
 public class PDFDirector extends Director {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -304,7 +303,7 @@ public class PDFDirector extends Director {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque"
-                    + "input port.");
+                            + "input port.");
         }
 
         boolean trans = false;
@@ -319,8 +318,8 @@ public class PDFDirector extends Director {
 
                     if ((insiderecs != null) && (insiderecs[i] != null)) {
                         if (_debugging) {
-                            _debug(getName(),
-                                    "transferring input from " + port.getName());
+                            _debug(getName(), "transferring input from "
+                                    + port.getName());
                         }
 
                         for (int j = 0; j < insiderecs[i].length; j++) {
@@ -333,7 +332,7 @@ public class PDFDirector extends Director {
                     // this shouldn't happen.
                     throw new InternalErrorException(
                             "PDFDirector.transferInputs: Not enough tokens "
-                            + ex.getMessage());
+                                    + ex.getMessage());
                 }
             }
         }
@@ -360,14 +359,16 @@ public class PDFDirector extends Director {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not "
-                    + "an opaque output port.");
+                            + "an opaque output port.");
         }
 
-        System.out.println("transferring Outputs for port" + port.getFullName());
+        System.out
+                .println("transferring Outputs for port" + port.getFullName());
 
         TypedCompositeActor container = ((TypedCompositeActor) getContainer());
         Entity initEntity = (Entity) container.getEntity(init.getExpression());
-        Entity modelEntity = (Entity) container.getEntity(model.getExpression());
+        Entity modelEntity = (Entity) container
+                .getEntity(model.getExpression());
         Attribute attribute = modelEntity.getAttribute(port.getName());
         boolean trans = false;
         Receiver[][] insiderecs = port.getInsideReceivers();
@@ -404,7 +405,8 @@ public class PDFDirector extends Director {
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
                                         "Director.transferOutputs: "
-                                        + "Internal error: " + ex.getMessage());
+                                                + "Internal error: "
+                                                + ex.getMessage());
                             }
                         }
                     }

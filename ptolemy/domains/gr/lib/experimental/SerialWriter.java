@@ -45,7 +45,7 @@ import javax.comm.*;
 
 public class SerialWriter extends TypedAtomicActor {
     public SerialWriter(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init();
 
@@ -125,8 +125,8 @@ public class SerialWriter extends TypedAtomicActor {
 
                     try {
                         serialPort.setSerialPortParams(9600,
-                                SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
-                                SerialPort.PARITY_NONE);
+                            SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
+                            SerialPort.PARITY_NONE);
                         serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
                     } catch (UnsupportedCommOperationException e) {
                         System.out.println("setup failed");

@@ -26,12 +26,12 @@
 package ptolemy.distributed.client;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
 ////ThreadSynchronizer
+
 /**
  Synchronizes the access to the commandsMap. In order to allow parallel
  execution of commands, the ClientThreads that manage remote actors locally
@@ -51,9 +51,7 @@ import ptolemy.kernel.util.KernelException;
  @Pt.AcceptedRating Red (cxh)
  @see ptolemy.distributed.client.ClientThread
  */
-
 public class ThreadSynchronizer {
-
     /** Construct a ThreadSynchronizer.
      */
     public ThreadSynchronizer() {
@@ -69,15 +67,17 @@ public class ThreadSynchronizer {
         while (!notReadyMap.isEmpty()) {
             try {
                 if (VERBOSE) {
-                    System.out.println(
-                          "commandsEmpty: waiting for readyMap to "
-                        + "be empty");
+                    System.out
+                            .println("commandsEmpty: waiting for readyMap to "
+                                    + "be empty");
                 }
+
                 wait();
             } catch (InterruptedException e) {
                 KernelException.stackTraceToString(e);
             }
         }
+
         if (VERBOSE) {
             System.out.println("commandsProcessed!");
         }
@@ -97,11 +97,13 @@ public class ThreadSynchronizer {
                 if (VERBOSE) {
                     System.out.println("getCommand waiting for " + key);
                 }
+
                 wait();
             } catch (InterruptedException e) {
                 KernelException.stackTraceToString(e);
             }
         }
+
         int auxCommand = ((Integer) commandsMap.get(key)).intValue();
         commandsMap.remove(key);
         notifyAll();
@@ -119,6 +121,7 @@ public class ThreadSynchronizer {
         if (true) {
             System.out.println("Commands set!" + commands.size());
         }
+
         commandsMap.putAll(commands);
         notReadyMap.putAll(commands);
         notifyAll();
@@ -139,7 +142,7 @@ public class ThreadSynchronizer {
 
     /** It states whether debugging messages should be printed. */
     private boolean VERBOSE = false;
-    
+
     /** The Map containing the commands to be executed.*/
     private HashMap commandsMap = new HashMap();
 

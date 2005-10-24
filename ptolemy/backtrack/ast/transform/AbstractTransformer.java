@@ -1,37 +1,31 @@
 /* The abstract superclass of Java source code transformers.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-
+ */
 package ptolemy.backtrack.ast.transform;
-
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -42,33 +36,38 @@ import org.eclipse.jdt.core.dom.PrimitiveType;
 import org.eclipse.jdt.core.dom.StructuralPropertyDescriptor;
 
 import ptolemy.backtrack.ast.LocalClassLoader;
+import ptolemy.backtrack.ast.LocalClassLoader.ClassImport;
 import ptolemy.backtrack.ast.Type;
 import ptolemy.backtrack.ast.TypeAnalyzerState;
-import ptolemy.backtrack.ast.LocalClassLoader.ClassImport;
+
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractTransformer
+
 /**
-   The abstract superclass of Java source code transformers. A transformer is a
-   class that defines transformation on Java Abstract Syntax Trees (ASTs). It
-   modifies the input AST and produces the output according to a certain
-   transformation semantics.
-   <p>
-   Static methods that can be used in any transformer are defined in this
-   class. It is also safe to call them in non-transformer classes to modify the
-   AST.
-   <p>
-   This abstract class has no protected methods that need to be overridden by
-   subclasses. It is stateless. States may be introduced by subclasses.
+ The abstract superclass of Java source code transformers. A transformer is a
+ class that defines transformation on Java Abstract Syntax Trees (ASTs). It
+ modifies the input AST and produces the output according to a certain
+ transformation semantics.
+ <p>
+ Static methods that can be used in any transformer are defined in this
+ class. It is also safe to call them in non-transformer classes to modify the
+ AST.
+ <p>
+ This abstract class has no protected methods that need to be overridden by
+ subclasses. It is stateless. States may be introduced by subclasses.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public abstract class AbstractTransformer {
-
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -80,11 +79,13 @@ public abstract class AbstractTransformer {
      *  @param value The value to be added.
      */
     public static void addToLists(Hashtable lists, Object key, Object value) {
-        List list = (List)lists.get(key);
+        List list = (List) lists.get(key);
+
         if (list == null) {
             list = new LinkedList();
             lists.put(key, list);
         }
+
         list.add(value);
     }
 
@@ -98,27 +99,32 @@ public abstract class AbstractTransformer {
     public static Name createName(AST ast, String name) {
         int oldPos = 0;
         Name fullName = null;
+
         while (oldPos != -1) {
-            int pos = indexOf(name, new char[]{'.', '$'}, oldPos);
-            String subname =
-                pos == -1 ?
-                        name.substring(oldPos) :
-                        name.substring(oldPos, pos);
+            int pos = indexOf(name, new char[] { '.', '$' }, oldPos);
+            String subname = (pos == -1) ? name.substring(oldPos) : name
+                    .substring(oldPos, pos);
             char c = subname.charAt(0);
-            while (c >= '0' && c <= '9') {
+
+            while ((c >= '0') && (c <= '9')) {
                 subname = subname.substring(1);
                 c = subname.charAt(0);
             }
-            if (fullName == null)
+
+            if (fullName == null) {
                 fullName = ast.newSimpleName(subname);
-            else
-                fullName = ast.newQualifiedName(fullName,
-                        ast.newSimpleName(subname));
-            if (pos == -1)
+            } else {
+                fullName = ast.newQualifiedName(fullName, ast
+                        .newSimpleName(subname));
+            }
+
+            if (pos == -1) {
                 oldPos = -1;
-            else
+            } else {
                 oldPos = pos + 1;
+            }
         }
+
         return fullName;
     }
 
@@ -129,22 +135,24 @@ public abstract class AbstractTransformer {
      *  @param type The type.
      *  @return The AST type node.
      */
-    public static org.eclipse.jdt.core.dom.Type createType(AST ast,
-            String type) {
+    public static org.eclipse.jdt.core.dom.Type createType(AST ast, String type) {
         String elementName = Type.getElementType(type);
 
         org.eclipse.jdt.core.dom.Type elementType;
-        if (Type.isPrimitive(elementName))
-            elementType =
-                ast.newPrimitiveType(PrimitiveType.toCode(elementName));
-        else {
+
+        if (Type.isPrimitive(elementName)) {
+            elementType = ast.newPrimitiveType(PrimitiveType
+                    .toCode(elementName));
+        } else {
             Name element = createName(ast, elementName);
             elementType = ast.newSimpleType(element);
         }
 
         org.eclipse.jdt.core.dom.Type returnType = elementType;
-        for (int i = 0; i < Type.dimensions(type); i++)
+
+        for (int i = 0; i < Type.dimensions(type); i++) {
             returnType = ast.newArrayType(returnType);
+        }
 
         return returnType;
     }
@@ -179,15 +187,23 @@ public abstract class AbstractTransformer {
     public static String getClassName(String name, TypeAnalyzerState state,
             CompilationUnit root) {
         int dimensions = Type.dimensions(name);
-        if (dimensions > 0)
+
+        if (dimensions > 0) {
             name = Type.getElementType(name);
+        }
+
         name = _getNonarrayClassName(name, state, root);
+
         if (dimensions > 0) {
             Type type = Type.createType(name);
-            for (int i = 0; i < dimensions; i++)
+
+            for (int i = 0; i < dimensions; i++) {
                 type = type.addOneDimension();
+            }
+
             name = type.getName();
         }
+
         return name;
     }
 
@@ -216,10 +232,12 @@ public abstract class AbstractTransformer {
     public static boolean hasMethod(Class c, String methodName,
             Class[] parameters, boolean thisClassOnly) {
         try {
-            if (thisClassOnly)
+            if (thisClassOnly) {
                 c.getMethod(methodName, parameters);
-            else
+            } else {
                 c.getDeclaredMethod(methodName, parameters);
+            }
+
             return true;
         } catch (NoSuchMethodException e) {
             return false;
@@ -236,11 +254,15 @@ public abstract class AbstractTransformer {
      */
     public static int indexOf(String s, char[] chars, int startPos) {
         int pos = -1;
+
         for (int i = 0; i < chars.length; i++) {
             int newPos = s.indexOf(chars[i], startPos);
-            if (newPos != -1 && (pos == -1 || newPos < pos))
+
+            if ((newPos != -1) && ((pos == -1) || (newPos < pos))) {
                 pos = newPos;
+            }
         }
+
         return pos;
     }
 
@@ -269,11 +291,15 @@ public abstract class AbstractTransformer {
      */
     public static int lastIndexOf(String s, char[] chars) {
         int pos = -1;
+
         for (int i = 0; i < chars.length; i++) {
             int newPos = s.lastIndexOf(chars[i]);
-            if (pos == -1 || newPos > pos)
+
+            if ((pos == -1) || (newPos > pos)) {
                 pos = newPos;
+            }
         }
+
         return pos;
     }
 
@@ -284,11 +310,11 @@ public abstract class AbstractTransformer {
     public static void removeNode(ASTNode node) {
         ASTNode parent = node.getParent();
         StructuralPropertyDescriptor location = node.getLocationInParent();
-        if (location.isChildProperty())
+
+        if (location.isChildProperty()) {
             parent.setStructuralProperty(location, null);
-        else {
-            List properties =
-                (List)parent.getStructuralProperty(location);
+        } else {
+            List properties = (List) parent.getStructuralProperty(location);
             int position = properties.indexOf(node);
             properties.remove(position);
         }
@@ -303,11 +329,11 @@ public abstract class AbstractTransformer {
     public static void replaceNode(ASTNode node, ASTNode newNode) {
         ASTNode parent = node.getParent();
         StructuralPropertyDescriptor location = node.getLocationInParent();
-        if (location.isChildProperty())
+
+        if (location.isChildProperty()) {
             parent.setStructuralProperty(location, newNode);
-        else {
-            List properties =
-                (List)parent.getStructuralProperty(location);
+        } else {
+            List properties = (List) parent.getStructuralProperty(location);
             int position = properties.indexOf(node);
             properties.set(position, newNode);
         }
@@ -381,58 +407,72 @@ public abstract class AbstractTransformer {
             TypeAnalyzerState state, CompilationUnit root) {
         LocalClassLoader loader = state.getClassLoader();
         int lastDot = name.lastIndexOf('.');
-        String packageName = lastDot == -1 ? "" : name.substring(0, lastDot);
+        String packageName = (lastDot == -1) ? "" : name.substring(0, lastDot);
         String className = name.substring(lastDot + 1);
         String simpleName;
-        int lastSeparator = lastIndexOf(name, new char[]{'.', '$'});
-        if (lastSeparator == -1)
+        int lastSeparator = lastIndexOf(name, new char[] { '.', '$' });
+
+        if (lastSeparator == -1) {
             return name;
-        else
+        } else {
             simpleName = name.substring(lastSeparator + 1);
+        }
 
         String currentClassName = state.getCurrentClass().getName();
-        if (name.equals(currentClassName))
+
+        if (name.equals(currentClassName)) {
             return simpleName;
-        else {
+        } else {
             int dollarPos = currentClassName.length();
+
             while (dollarPos >= 0) {
-                String baseName =
-                    currentClassName.substring(0, dollarPos) + "$";
-                if (name.startsWith(baseName))
+                String baseName = currentClassName.substring(0, dollarPos)
+                        + "$";
+
+                if (name.startsWith(baseName)) {
                     return name.substring(baseName.length());
+                }
+
                 dollarPos = currentClassName.lastIndexOf('$', dollarPos - 1);
             }
         }
 
         Iterator importedClasses = loader.getImportedClasses().iterator();
+
         while (importedClasses.hasNext()) {
-            ClassImport importedClass = (ClassImport)importedClasses.next();
-            if (importedClass.getPackageName().equals(packageName) &&
-                    importedClass.getClassName().equals(className))
+            ClassImport importedClass = (ClassImport) importedClasses.next();
+
+            if (importedClass.getPackageName().equals(packageName)
+                    && importedClass.getClassName().equals(className)) {
                 // Already imported.
                 return simpleName;
-            else {
+            } else {
                 String importedName = importedClass.getClassName();
                 int lastDollar = importedName.lastIndexOf('$');
-                if (lastDollar == -1 && importedName.equals(simpleName))
+
+                if ((lastDollar == -1) && importedName.equals(simpleName)) {
                     return name;
-                else if (lastDollar >= 0 &&
-                        importedName.substring(lastDollar + 1)
-                        .equals(simpleName))
+                } else if ((lastDollar >= 0)
+                        && importedName.substring(lastDollar + 1).equals(
+                                simpleName)) {
                     return name;
+                }
             }
         }
 
         Iterator importedPackages = loader.getImportedPackages().iterator();
+
         while (importedPackages.hasNext()) {
-            String importedPackage = (String)importedPackages.next();
-            if (importedPackage.equals(packageName))    // Already imported.
+            String importedPackage = (String) importedPackages.next();
+
+            if (importedPackage.equals(packageName)) { // Already imported.
                 return simpleName;
-            else {
+            } else {
                 try {
                     // Test if a class with the same name exists in the
                     // package.
                     loader.loadClass(importedPackage + "." + simpleName);
+
                     // If exists, conflict.
                     return name;
                 } catch (ClassNotFoundException e) {

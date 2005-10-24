@@ -61,7 +61,7 @@ public class Accum extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public Accum(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

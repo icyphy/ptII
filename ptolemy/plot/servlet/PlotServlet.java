@@ -36,12 +36,12 @@ import javax.servlet.http.*;
  */
 public class PlotServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         doPost(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         String fName = request.getParameter("file");
 
         if (fName == null) {
@@ -50,12 +50,12 @@ public class PlotServlet extends HttpServlet {
 
         if (fName.indexOf("..") >= 0) {
             throw new ServletException("Security problem with filename: "
-                    + fName);
+                + fName);
         }
 
         InputStream fileStream = this.getClass().getClassLoader()
-            .getResourceAsStream("ptolemy/plot/servlet/"
-                    + fName);
+                                             .getResourceAsStream("ptolemy/plot/servlet/"
+                        + fName);
 
         Plot ptPlot;
 
@@ -105,7 +105,7 @@ public class PlotServlet extends HttpServlet {
      *    CATALINA_OPTS='-Djava.awt.headless=true'
      */
     static public void writeAsJPEG(OutputStream out, Component cnt)
-            throws IOException {
+        throws IOException {
         Dimension s = cnt.getSize();
         BufferedImage bufferedImage = new BufferedImage((int) s.getWidth(),
                 (int) s.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
@@ -127,7 +127,7 @@ public class PlotServlet extends HttpServlet {
      * Parse PlotML file into plot.
      */
     private static void read(Plot plot, InputStream in)
-            throws IOException {
+        throws IOException {
         PlotMLParser parser;
         parser = new PlotMLParser(plot);
 

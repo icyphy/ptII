@@ -176,7 +176,6 @@ public class MoMLViewerApplet extends MoMLApplet {
                 //URL docBase = getDocumentBase();
                 //URL inURL = new URL(docBase, _modelURL);
                 //String key = inURL.toExternalForm();
-
                 // Now defer to the model reader.
                 //Tableau tableau = _configuration.openModel(inURL, inURL,
                 //        key);

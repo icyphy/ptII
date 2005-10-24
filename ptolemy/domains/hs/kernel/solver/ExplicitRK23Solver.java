@@ -105,7 +105,7 @@ public class ExplicitRK23Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire all continuous actors. Derived classes may advance the model time. 
+    /** Fire all continuous actors. Derived classes may advance the model time.
      *  The amount of time increment depends on the solving algorithms.
      *  @exception IllegalActionException If schedule can not be found or
      *  continuous actors throw it from their fire() methods.
@@ -115,25 +115,27 @@ public class ExplicitRK23Solver extends ODESolver {
 
         HSDirector director = (HSDirector) getContainer();
         double currentStepSize = director.getCurrentStepSize();
+
         if (currentStepSize == 0) {
             _setConverged(true);
             return;
         }
+
         // NOTE: why is the current model time changed here?
         // Some state transition actors may be some functions
         // defined on the current time, such as the CurrentTime actor.
         Time iterationBeginTime = director.getIterationBeginTime();
         director.setModelTime(iterationBeginTime.add(currentStepSize
                 * _timeInc[_getRoundCount()]));
-        
+
         _incrementRoundCount();
+
         if (_getRoundCount() == _timeInc.length) {
             _resetRoundCount();
             _setConverged(true);
         }
-        
     }
-        
+
     /** Return 0 to indicate that no history information is needed
      *  by this solver.
      *  @return 0.

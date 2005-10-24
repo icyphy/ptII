@@ -151,21 +151,27 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 // Try to read.
                 if (super.hasToken()) {
                     result = super.get();
+
                     // Need to mark any thread that is write blocked on
                     // this receiver unblocked now, before any notification,
                     // or we will detect deadlock and increase the buffer sizes.
                     // Note that there is no need to clear the _readPending
                     // reference because that will have been cleared by the write.
                     if (_writePending != null) {
-                        _director.threadUnblocked(_writePending, this, PNDirector.WRITE_BLOCKED);
+                        _director.threadUnblocked(_writePending, this,
+                                PNDirector.WRITE_BLOCKED);
                         _writePending = null;
                     }
+
                     break;
                 }
+
                 // Wait to try again.
                 try {
                     _readPending = Thread.currentThread();
-                    _director.threadBlocked(Thread.currentThread(), this, PNDirector.READ_BLOCKED);
+                    _director.threadBlocked(Thread.currentThread(), this,
+                            PNDirector.READ_BLOCKED);
+
                     Workspace workspace = getContainer().workspace();
                     workspace.wait(_director);
                 } catch (InterruptedException e) {
@@ -356,28 +362,36 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 // Try to write.
                 if (super.hasRoom()) {
                     super.put(token);
+
                     // If any thread is blocked on a get(), then it will become
                     // unblocked. Notify the director now so that there isn't a
                     // spurious deadlock detection.
                     if (_readPending != null) {
-                        _director.threadUnblocked(_readPending, this, PNDirector.READ_BLOCKED);
+                        _director.threadUnblocked(_readPending, this,
+                                PNDirector.READ_BLOCKED);
                         _readPending = null;
                     }
+
                     // Normally, the _writePending reference will have
                     // been cleared by the read that unblocked this write.
                     // However, it might be that the director increased the
                     // buffer size, which would also have the affect of unblocking
                     // this write. Hence, we clear it here if it is set.
                     if (_writePending != null) {
-                        _director.threadUnblocked(_writePending, this, PNDirector.WRITE_BLOCKED);
+                        _director.threadUnblocked(_writePending, this,
+                                PNDirector.WRITE_BLOCKED);
                         _writePending = null;
                     }
+
                     break;
                 }
+
                 // Wait to try again.
                 try {
                     _writePending = Thread.currentThread();
-                    _director.threadBlocked(_writePending, this, PNDirector.WRITE_BLOCKED);
+                    _director.threadBlocked(_writePending, this,
+                            PNDirector.WRITE_BLOCKED);
+
                     Workspace workspace = getContainer().workspace();
                     workspace.wait(_director);
                 } catch (InterruptedException e) {
@@ -395,11 +409,15 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void reset() {
         if (_readPending != null) {
-            _director.threadUnblocked(_readPending, this, PNDirector.READ_BLOCKED);
+            _director.threadUnblocked(_readPending, this,
+                    PNDirector.READ_BLOCKED);
         }
+
         if (_writePending != null) {
-            _director.threadUnblocked(_writePending, this, PNDirector.WRITE_BLOCKED);
+            _director.threadUnblocked(_writePending, this,
+                    PNDirector.WRITE_BLOCKED);
         }
+
         _readPending = null;
         _writePending = null;
         _terminate = false;

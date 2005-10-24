@@ -129,7 +129,7 @@ public class Expression extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         expression = new StringAttribute(this, "expression");
         expression.setExpression("");
-        
+
         Parameter hide = new Parameter(expression, "_hide");
         hide.setExpression("true");
 

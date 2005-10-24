@@ -615,6 +615,7 @@ public final class ArrayFIFOQueue implements Cloneable {
             System.arraycopy(_queueArray, 0, newArray, _queueArray.length
                     - _queueBack, _queueFront);
             _queueFront = _queueArray.length - _queueBack + _queueFront;
+
             // NOTE: The following is probably not needed, but paranoid programming.
             if (_queueFront >= newArray.length) {
                 _queueFront = _queueFront % newArray.length;
@@ -623,6 +624,7 @@ public final class ArrayFIFOQueue implements Cloneable {
             System.arraycopy(_queueArray, _queueBack, newArray, 0, _queueFront
                     - _queueBack);
             _queueFront = _queueFront - _queueBack;
+
             if (_queueFront >= newArray.length) {
                 _queueFront = _queueFront % newArray.length;
             }

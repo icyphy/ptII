@@ -1,50 +1,51 @@
 /* AbstractCollection.java -- Abstract implementation of most of Collection
-   Copyright (C) 1998, 2000, 2001 Free Software Foundation, Inc.
+ Copyright (C) 1998, 2000, 2001 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ 02111-1307 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
-import java.lang.Object;
-import java.lang.reflect.Array;
-import java.util.Iterator;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 import ptolemy.backtrack.util.CheckpointRecord;
 import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+import java.lang.Object;
+import java.lang.reflect.Array;
+import java.util.Iterator;
+
+/**
  * A basic implementation of most of the methods in the Collection interface to
  * make it easier to create a collection. To create an unmodifiable Collection,
  * just subclass AbstractCollection and provide implementations of the
@@ -71,16 +72,15 @@ import ptolemy.backtrack.util.FieldRecord;
  * @status updated to 1.4
  */
 public abstract class AbstractCollection implements Collection, Rollbackable {
-
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-    /**     
+    /**
      * The main constructor, for use by subclasses.
      */
     protected AbstractCollection() {
     }
 
-    /**     
+    /**
      * Return an Iterator over this collection. The iterator must provide the
      * hasNext and next methods and should in addition provide remove if the
      * collection is modifiable.
@@ -88,14 +88,14 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      */
     public abstract Iterator iterator();
 
-    /**     
+    /**
      * Return the number of elements in this collection. If there are more than
      * Integer.MAX_VALUE elements, return Integer.MAX_VALUE.
      * @return the size
      */
     public abstract int size();
 
-    /**     
+    /**
      * Add an object to the collection (optional operation). This implementation
      * always throws an UnsupportedOperationException - it should be
      * overridden if the collection is to be modifiable. If the collection
@@ -114,7 +114,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         throw new UnsupportedOperationException();
     }
 
-    /**     
+    /**
      * Add all the elements of a given collection to this collection (optional
      * operation). This implementation obtains an Iterator over the given
      * collection and iterates over it, adding each element with the
@@ -138,12 +138,15 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = c.iterator();
         boolean modified = false;
         int pos = c.size();
-        while (--pos >= 0) 
+
+        while (--pos >= 0) {
             modified |= add(itr.next());
+        }
+
         return modified;
     }
 
-    /**     
+    /**
      * Remove all elements from the collection (optional operation). This
      * implementation obtains an iterator over the collection and calls next
      * and remove on it repeatedly (thus this method will fail with an
@@ -157,13 +160,14 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public void clear() {
         Iterator itr = iterator();
         int pos = size();
+
         while (--pos >= 0) {
             itr.next();
             itr.remove();
         }
     }
 
-    /**     
+    /**
      * Test whether this collection contains a given object. That is, if the
      * collection has an element e such that (o == null ? e == null :
      * o.equals(e)). This implementation obtains an iterator over the collection
@@ -176,13 +180,17 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean contains(Object o) {
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0) 
-            if (equals(o, itr.next()))
+
+        while (--pos >= 0) {
+            if (equals(o, itr.next())) {
                 return true;
+            }
+        }
+
         return false;
     }
 
-    /**     
+    /**
      * Tests whether this collection contains all the elements in a given
      * collection. This implementation iterates over the given collection,
      * testing whether each element is contained in this collection. If any one
@@ -196,13 +204,17 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean containsAll(Collection c) {
         Iterator itr = c.iterator();
         int pos = c.size();
-        while (--pos >= 0) 
-            if (!contains(itr.next()))
+
+        while (--pos >= 0) {
+            if (!contains(itr.next())) {
                 return false;
+            }
+        }
+
         return true;
     }
 
-    /**     
+    /**
      * Test whether this collection is empty. This implementation returns
      * size() == 0.
      * @return true if this collection is empty.
@@ -212,7 +224,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return size() == 0;
     }
 
-    /**     
+    /**
      * Remove a single instance of an object from this collection (optional
      * operation). That is, remove one element e such that
      * <code>(o == null ? e == null : o.equals(e))</code>, if such an element
@@ -233,15 +245,18 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public boolean remove(Object o) {
         Iterator itr = iterator();
         int pos = size();
-        while (--pos >= 0) 
+
+        while (--pos >= 0) {
             if (equals(o, itr.next())) {
                 itr.remove();
                 return true;
             }
+        }
+
         return false;
     }
 
-    /**     
+    /**
      * Remove from this collection all its elements that are contained in a given
      * collection (optional operation). This implementation iterates over this
      * collection, and for each element tests if it is contained in the given
@@ -258,7 +273,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return removeAllInternal(c);
     }
 
-    /**     
+    /**
      * Remove from this collection all its elements that are contained in a given
      * collection (optional operation). This implementation iterates over this
      * collection, and for each element tests if it is contained in the given
@@ -276,15 +291,18 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         boolean modified = false;
         int pos = size();
-        while (--pos >= 0) 
+
+        while (--pos >= 0) {
             if (c.contains(itr.next())) {
                 itr.remove();
                 modified = true;
             }
+        }
+
         return modified;
     }
 
-    /**     
+    /**
      * Remove from this collection all its elements that are not contained in a
      * given collection (optional operation). This implementation iterates over
      * this collection, and for each element tests if it is contained in the
@@ -301,7 +319,7 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         return retainAllInternal(c);
     }
 
-    /**     
+    /**
      * Remove from this collection all its elements that are not contained in a
      * given collection (optional operation). This implementation iterates over
      * this collection, and for each element tests if it is contained in the
@@ -320,15 +338,18 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         boolean modified = false;
         int pos = size();
-        while (--pos >= 0) 
+
+        while (--pos >= 0) {
             if (!c.contains(itr.next())) {
                 itr.remove();
                 modified = true;
             }
+        }
+
         return modified;
     }
 
-    /**     
+    /**
      * Return an array containing the elements of this collection. This
      * implementation creates an Object array of size size() and then iterates
      * over the collection, setting each element of the array from the value
@@ -340,12 +361,15 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
         Iterator itr = iterator();
         int size = size();
         Object[] a = new Object[size];
-        for (int pos = 0; pos < size; pos++) 
+
+        for (int pos = 0; pos < size; pos++) {
             a[pos] = itr.next();
+        }
+
         return a;
     }
 
-    /**     
+    /**
      * Copy the collection into a given array if it will fit, or into a
      * dynamically created array of the same run-time type as the given array if
      * not. If there is space remaining in the array, the first element after the
@@ -368,17 +392,24 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
      */
     public Object[] toArray(Object[] a) {
         int size = size();
-        if (a.length < size)
-            a = (Object[])Array.newInstance(a.getClass().getComponentType(), size);
-        else if (a.length > size)
+
+        if (a.length < size) {
+            a = (Object[]) Array.newInstance(a.getClass().getComponentType(),
+                    size);
+        } else if (a.length > size) {
             a[size] = null;
+        }
+
         Iterator itr = iterator();
-        for (int pos = 0; pos < size; pos++) 
+
+        for (int pos = 0; pos < size; pos++) {
             a[pos] = itr.next();
+        }
+
         return a;
     }
 
-    /**     
+    /**
      * Creates a String representation of the Collection. The string returned is
      * of the form "[a, b, ...]" where a and b etc are the results of calling
      * toString on the elements of the collection. This implementation obtains an
@@ -389,46 +420,54 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public String toString() {
         Iterator itr = iterator();
         StringBuffer r = new StringBuffer("[");
+
         for (int pos = size(); pos > 0; pos--) {
             r.append(itr.next());
-            if (pos > 1)
+
+            if (pos > 1) {
                 r.append(", ");
+            }
         }
+
         r.append("]");
         return r.toString();
     }
 
-    /**     
+    /**
      * Compare two objects according to Collection semantics.
      * @param o1 the first object
      * @param o2 the second object
      * @return o1 == null ? o2 == null : o1.equals(o2)
      */
+
     // Package visible for use throughout java.util.
     // It may be inlined since it is final.
     static final boolean equals(Object o1, Object o2) {
-        return o1 == null?o2 == null:o1.equals(o2);
+        return (o1 == null) ? (o2 == null) : o1.equals(o2);
     }
 
-    /**     
+    /**
      * Hash an object according to Collection semantics.
      * @param o the object to hash
      * @return o1 == null ? 0 : o1.hashCode()
      */
+
     // Package visible for use throughout java.util.
     // It may be inlined since it is final.
     static final int hashCode(Object o) {
-        return o == null?0:o.hashCode();
+        return (o == null) ? 0 : o.hashCode();
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -441,21 +480,21 @@ public abstract class AbstractCollection implements Collection, Rollbackable {
     public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
         if ($CHECKPOINT != checkpoint) {
             Checkpoint oldCheckpoint = $CHECKPOINT;
+
             if (checkpoint != null) {
                 $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
                 FieldRecord.pushState($RECORDS);
             }
+
             $CHECKPOINT = checkpoint;
             oldCheckpoint.setCheckpoint(checkpoint);
             checkpoint.addObject(this);
         }
+
         return this;
     }
 
     protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
-
+    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 }
-

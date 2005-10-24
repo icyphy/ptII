@@ -76,8 +76,7 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.process.BranchController
 
  */
-public class MailboxBoundaryReceiver extends Mailbox
-    implements ProcessReceiver {
+public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver {
     /** Construct an empty MailboxBoundaryReceiver with no container.
      */
     public MailboxBoundaryReceiver() {
@@ -120,6 +119,7 @@ public class MailboxBoundaryReceiver extends Mailbox
                 // Try to read.
                 if (super.hasToken()) {
                     result = super.get();
+
                     // Need to mark any thread that is write blocked
                     // on this receiver unblocked now, before any
                     // notification, or we will detect deadlock and
@@ -131,8 +131,10 @@ public class MailboxBoundaryReceiver extends Mailbox
                         _director.threadUnblocked(_writePending, this);
                         _writePending = null;
                     }
+
                     break;
                 }
+
                 // Wait to try again.
                 try {
                     _readPending = Thread.currentThread();
@@ -147,6 +149,7 @@ public class MailboxBoundaryReceiver extends Mailbox
                 throw new TerminateProcessException("");
             }
         }
+
         return result;
     }
 
@@ -289,6 +292,7 @@ public class MailboxBoundaryReceiver extends Mailbox
                 // Try to write.
                 if (super.hasRoom()) {
                     super.put(token);
+
                     // If any thread is blocked on a get(), then it will become
                     // unblocked. Notify the director now so that there isn't a
                     // spurious deadlock detection.
@@ -296,6 +300,7 @@ public class MailboxBoundaryReceiver extends Mailbox
                         _director.threadUnblocked(_readPending, this);
                         _readPending = null;
                     }
+
                     // Normally, the _writePending reference will have
                     // been cleared by the read that unblocked this
                     // write.  However, it might be that the director
@@ -306,12 +311,15 @@ public class MailboxBoundaryReceiver extends Mailbox
                         _director.threadUnblocked(_writePending, this);
                         _writePending = null;
                     }
+
                     break;
                 }
+
                 // Wait to try again.
                 try {
                     _writePending = Thread.currentThread();
                     _director.threadBlocked(_writePending, this);
+
                     Workspace workspace = getContainer().workspace();
                     workspace.wait(_director);
                 } catch (InterruptedException e) {
@@ -340,9 +348,11 @@ public class MailboxBoundaryReceiver extends Mailbox
         if (_readPending != null) {
             _director.threadUnblocked(_readPending, this);
         }
+
         if (_writePending != null) {
             _director.threadUnblocked(_writePending, this);
         }
+
         _terminate = false;
         _boundaryDetector.reset();
     }

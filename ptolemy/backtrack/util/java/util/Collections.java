@@ -1,40 +1,48 @@
 /* Collections.java -- Utility class with methods to operate on collections
-   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+ Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ 02111-1307 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
+
+import ptolemy.backtrack.Checkpoint;
+import ptolemy.backtrack.Rollbackable;
+import ptolemy.backtrack.util.CheckpointRecord;
+import ptolemy.backtrack.util.FieldRecord;
+import ptolemy.backtrack.util.java.util.Collection;
+import ptolemy.backtrack.util.java.util.Set;
+import ptolemy.backtrack.util.java.util.SortedSet;
 
 import java.io.Serializable;
 import java.lang.Object;
@@ -45,15 +53,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.RandomAccess;
-import ptolemy.backtrack.Checkpoint;
-import ptolemy.backtrack.Rollbackable;
-import ptolemy.backtrack.util.CheckpointRecord;
-import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.Collection;
-import ptolemy.backtrack.util.java.util.Set;
-import ptolemy.backtrack.util.java.util.SortedSet;
 
-/** 
+/**
  * Utility class consisting of static methods that operate on, or return
  * Collections. Contains methods to sort, search, reverse, fill and shuffle
  * Collections, methods to facilitate interoperability with legacy APIs that
@@ -62,11 +63,11 @@ import ptolemy.backtrack.util.java.util.SortedSet;
  * them extra properties, such as thread-safety and unmodifiability.
  * <p>
  * All methods which take a collection throw a {
-@link NullPointerException}
+ @link NullPointerException}
  if
  * that collection is null. Algorithms which can change a collection may, but
  * are not required, to throw the {
-@link UnsupportedOperationException}
+ @link UnsupportedOperationException}
  that
  * the underlying collection would throw during an attempt at modification.
  * For example,
@@ -85,10 +86,9 @@ import ptolemy.backtrack.util.java.util.SortedSet;
  * @status updated to 1.4
  */
 public class Collections implements Rollbackable {
-
     protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-    /**     
+    /**
      * Constant used to decide cutoff for when a non-RandomAccess list should
      * be treated as sequential-access. Basically, quadratic behavior is
      * acceptible for small lists when the overhead is so small in the first
@@ -96,7 +96,7 @@ public class Collections implements Rollbackable {
      */
     private static final int LARGE_LIST_SIZE = 16;
 
-    /**     
+    /**
      * An immutable, serializable, empty Set.
      * @see Serializable
      */
@@ -105,6 +105,7 @@ public class Collections implements Rollbackable {
     // This is really cheating! I think it's perfectly valid, though.
     // The remaining methods are optional, but provide a performance
     // advantage by not allocating unnecessary iterators in AbstractSet.
+
     /**         // class EmptySet
 
      * An immutable, serializable, empty List, which implements RandomAccess.
@@ -116,7 +117,8 @@ public class Collections implements Rollbackable {
     // The remaining methods are optional, but provide a performance
     // advantage by not allocating unnecessary iterators in AbstractList.
     // class EmptyList
-    /**     
+
+    /**
      * An immutable, serializable, empty Map.
      * @see Serializable
      */
@@ -125,20 +127,21 @@ public class Collections implements Rollbackable {
     // The remaining methods are optional, but provide a performance
     // advantage by not allocating unnecessary iterators in AbstractMap.
     // class EmptyMap
+
     /**         // We use a linear search with log(n) comparisons using an iterator
-    // if the list is sequential-access.
+     // if the list is sequential-access.
 
      *     // This gets the insertion point right on the last loop
-The object for     // This gets the insertion point right on the last loop
-    // If we failed to find it, we do the same whichever search we did.
-{
-@link         // throws NoSuchElementException
-#        // throws NoSuchElementExcception
-reverseOrder        // The remaining methods are optional, but provide a performance
-        // advantage by not allocating unnecessary iterators in AbstractList.
-()        // class CopiesList
-    }
-.
+     The object for     // This gets the insertion point right on the last loop
+     // If we failed to find it, we do the same whichever search we did.
+     {
+     @link         // throws NoSuchElementException
+     #        // throws NoSuchElementExcception
+     reverseOrder        // The remaining methods are optional, but provide a performance
+     // advantage by not allocating unnecessary iterators in AbstractList.
+     ()        // class CopiesList
+     }
+     .
      */
     private static final ReverseComparator rcInstance = new ReverseComparator();
 
@@ -146,7 +149,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
     // are (distance / LCM) loops to cycle through.
     // Now, make the swaps. We must take the remainder every time through
     // the inner loop so that we don't overflow i to negative values.
-    /**     
+
+    /**
      * Cache a single Random object for use by shuffle(List). This improves
      * performance as well as ensuring that sequential calls to shuffle() will
      * not result in the same shuffle order occurring: the resolution of
@@ -154,106 +158,108 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      */
     private static Random defaultRandom = null;
 
-    /**     
+    /**
      * The implementation of {
-@link #EMPTY_SET    }
-. This class name is required
+     @link #EMPTY_SET    }
+     . This class name is required
      * for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class EmptySet extends AbstractSet implements Serializable, Rollbackable {
-
-        /**         
+    private static final class EmptySet extends AbstractSet implements
+            Serializable, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 1582296315990362920L;
 
-        /**         
+        /**
          * A private constructor adds overhead.
          */
         EmptySet() {
         }
 
-        /**         
+        /**
          * The size: always 0!
          */
         public int size() {
             return 0;
         }
 
-        /**         
+        /**
          * Returns an iterator that does not iterate.
          */
         public Iterator iterator() {
             return EMPTY_LIST.iterator();
         }
 
-        /**         
+        /**
          * The empty set never contains anything.
          */
         public boolean contains(Object o) {
             return false;
         }
 
-        /**         
+        /**
          * This is true only if the given collection is also empty.
          */
         public boolean containsAll(Collection c) {
             return c.isEmpty();
         }
 
-        /**         
+        /**
          * Equal only if the other set is empty.
          */
         public boolean equals(Object o) {
-            return o instanceof Set && ((Set)o).isEmpty();
+            return o instanceof Set && ((Set) o).isEmpty();
         }
 
-        /**         
+        /**
          * The hashcode is always 0.
          */
         public int hashCode() {
             return 0;
         }
 
-        /**         
+        /**
          * Always succeeds with false result.
          */
         public boolean remove(Object o) {
             return false;
         }
 
-        /**         
+        /**
          * Always succeeds with false result.
          */
         public boolean removeAll(Collection c) {
             return false;
         }
 
-        /**         
+        /**
          * Always succeeds with false result.
          */
         public boolean retainAll(Collection c) {
             return false;
         }
 
-        /**         
+        /**
          * The array is always empty.
          */
         public Object[] toArray() {
             return new Object[0];
         }
 
-        /**         
+        /**
          * We don't even need to use reflection!
          */
         public Object[] toArray(Object[] a) {
-            if (a.length > 0)
+            if (a.length > 0) {
                 a[0] = null;
+            }
+
             return a;
         }
 
-        /**         
+        /**
          * The string never changes.
          */
         public String toString() {
@@ -261,7 +267,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -269,125 +276,125 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
-    /**     
+    /**
      * The implementation of {
-@link #EMPTY_LIST    }
-. This class name is required
+     @link #EMPTY_LIST    }
+     . This class name is required
      * for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class EmptyList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
-
-        /**         
+    private static final class EmptyList extends AbstractList implements
+            Serializable, RandomAccess, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 8842843931221139166L;
 
-        /**         
+        /**
          * A private constructor adds overhead.
          */
         EmptyList() {
         }
 
-        /**         
+        /**
          * The size is always 0.
          */
         public int size() {
             return 0;
         }
 
-        /**         
+        /**
          * No matter the index, it is out of bounds.
          */
         public Object get(int index) {
             throw new IndexOutOfBoundsException();
         }
 
-        /**         
+        /**
          * Never contains anything.
          */
         public boolean contains(Object o) {
             return false;
         }
 
-        /**         
+        /**
          * This is true only if the given collection is also empty.
          */
         public boolean containsAll(Collection c) {
             return c.isEmpty();
         }
 
-        /**         
+        /**
          * Equal only if the other set is empty.
          */
         public boolean equals(Object o) {
-            return o instanceof List && ((List)o).isEmpty();
+            return o instanceof List && ((List) o).isEmpty();
         }
 
-        /**         
+        /**
          * The hashcode is always 1.
          */
         public int hashCode() {
             return 1;
         }
 
-        /**         
+        /**
          * Returns -1.
          */
         public int indexOf(Object o) {
             return -1;
         }
 
-        /**         
+        /**
          * Returns -1.
          */
         public int lastIndexOf(Object o) {
             return -1;
         }
 
-        /**         
+        /**
          * Always succeeds with false result.
          */
         public boolean remove(Object o) {
             return false;
         }
 
-        /**         
+        /**
          * Always succeeds with false result.
          */
         public boolean removeAll(Collection c) {
             return false;
         }
 
-        /**         
+        /**
          * Always succeeds with false result.
          */
         public boolean retainAll(Collection c) {
             return false;
         }
 
-        /**         
+        /**
          * The array is always empty.
          */
         public Object[] toArray() {
             return new Object[0];
         }
 
-        /**         
+        /**
          * We don't even need to use reflection!
          */
         public Object[] toArray(Object[] a) {
-            if (a.length > 0)
+            if (a.length > 0) {
                 a[0] = null;
+            }
+
             return a;
         }
 
-        /**         
+        /**
          * The string never changes.
          */
         public String toString() {
@@ -395,7 +402,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -403,95 +411,93 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
-    /**     
+    /**
      * The implementation of {
-@link #EMPTY_MAP    }
-. This class name is required
+     @link #EMPTY_MAP    }
+     . This class name is required
      * for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class EmptyMap extends AbstractMap implements Serializable, Rollbackable {
-
-        /**         
+    private static final class EmptyMap extends AbstractMap implements
+            Serializable, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 6428348081105594320L;
 
-        /**         
+        /**
          * A private constructor adds overhead.
          */
         EmptyMap() {
         }
 
-        /**         
+        /**
          * There are no entries.
          */
         public Set entrySet() {
             return EMPTY_SET;
         }
 
-        /**         
+        /**
          * No entries!
          */
         public boolean containsKey(Object key) {
             return false;
         }
 
-        /**         
+        /**
          * No entries!
          */
         public boolean containsValue(Object value) {
             return false;
         }
 
-        /**         
+        /**
          * Equal to all empty maps.
          */
         public boolean equals(Object o) {
-            return o instanceof Map && ((Map)o).isEmpty();
+            return o instanceof Map && ((Map) o).isEmpty();
         }
 
-        /**         
+        /**
          * No mappings, so this returns null.
          */
         public Object get(Object o) {
             return null;
         }
 
-        /**         
+        /**
          * The hashcode is always 0.
          */
         public int hashCode() {
             return 0;
         }
 
-        /**         
+        /**
          * No entries.
          */
         public Set keySet() {
             return EMPTY_SET;
         }
 
-        /**         
+        /**
          * Remove always succeeds, with null result.
          */
         public Object remove(Object o) {
             return null;
         }
 
-        /**         
+        /**
          * Size is always 0.
          */
         public int size() {
             return 0;
         }
 
-        /**         
+        /**
          * No entries. Technically, EMPTY_SET, while more specific than a general
          * Collection, will work. Besides, that's what the JDK uses!
          */
@@ -499,7 +505,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             return EMPTY_SET;
         }
 
-        /**         
+        /**
          * The string never changes.
          */
         public String toString() {
@@ -507,7 +513,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -515,97 +522,101 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
-    /**     
+    /**
      * The implementation of {
-@link #nCopies(int, Object)    }
-. This class name
+     @link #nCopies(int, Object)    }
+     . This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class CopiesList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
-
-        /**         
+    private static final class CopiesList extends AbstractList implements
+            Serializable, RandomAccess, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 2739099268398711800L;
 
-        /**         
+        /**
          * The count of elements in this list.
          * @serial the list size
          */
         private final int n;
 
-        /**         
+        /**
          * The repeated list element.
          * @serial the list contents
          */
         private final Object element;
 
-        /**         
+        /**
          * Constructs the list.
          * @param n the count
          * @param o the object
          * @throws IllegalArgumentException if n &lt; 0
          */
         CopiesList(int n, Object o) {
-            if (n < 0)
+            if (n < 0) {
                 throw new IllegalArgumentException();
+            }
+
             this.n = n;
             element = o;
         }
 
-        /**         
+        /**
          * The size is fixed.
          */
         public int size() {
             return n;
         }
 
-        /**         
+        /**
          * The same element is returned.
          */
         public Object get(int index) {
-            if (index < 0 || index >= n)
+            if ((index < 0) || (index >= n)) {
                 throw new IndexOutOfBoundsException();
+            }
+
             return element;
         }
 
-        /**         
+        /**
          * This list only contains one element.
          */
         public boolean contains(Object o) {
-            return n > 0 && equals(o, element);
+            return (n > 0) && equals(o, element);
         }
 
-        /**         
+        /**
          * The index is either 0 or -1.
          */
         public int indexOf(Object o) {
-            return (n > 0 && equals(o, element))?0:-1;
+            return ((n > 0) && equals(o, element)) ? 0 : (-1);
         }
 
-        /**         
+        /**
          * The index is either n-1 or -1.
          */
         public int lastIndexOf(Object o) {
-            return equals(o, element)?n - 1:-1;
+            return equals(o, element) ? (n - 1) : (-1);
         }
 
-        /**         
+        /**
          * A subList is just another CopiesList.
          */
         public List subList(int from, int to) {
-            if (from < 0 || to > n)
+            if ((from < 0) || (to > n)) {
                 throw new IndexOutOfBoundsException();
+            }
+
             return new CopiesList(to - from, element);
         }
 
-        /**         
+        /**
          * The array is easy.
          */
         public Object[] toArray() {
@@ -614,19 +625,23 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             return a;
         }
 
-        /**         
+        /**
          * The string is easy to generate.
          */
         public String toString() {
             StringBuffer r = new StringBuffer("{");
-            for (int i = n - 1; --i > 0; ) 
+
+            for (int i = n - 1; --i > 0;) {
                 r.append(element).append(", ");
+            }
+
             r.append(element).append("}");
             return r.toString();
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -639,53 +654,52 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$element = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$n,
-                $RECORD$element
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$n,
+                $RECORD$element };
     }
 
-    /**     
+    /**
      * The implementation of {
-@link #reverseOrder()    }
-. This class name
+     @link #reverseOrder()    }
+     . This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class ReverseComparator implements Comparator, Serializable, Rollbackable {
-
+    private static final class ReverseComparator implements Comparator,
+            Serializable, Rollbackable {
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 7207038068494060240L;
 
-        /**         
+        /**
          * A private constructor adds overhead.
          */
         ReverseComparator() {
         }
 
-        /**         
+        /**
          * Compare two objects in reverse natural order.
          * @param a the first object
          * @param b the second object
          * @return &lt;, ==, or &gt; 0 according to b.compareTo(a)
          */
         public int compare(Object a, Object b) {
-            return ((Comparable)b).compareTo(a);
+            return ((Comparable) b).compareTo(a);
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -698,49 +712,52 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
+
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
+
                 $CHECKPOINT = checkpoint;
                 oldCheckpoint.setCheckpoint(checkpoint);
                 checkpoint.addObject(this);
             }
+
             return this;
         }
 
         protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // stores a copy of the list for the sequential case
     // Obtain a random position to swap with. pos + 1 is used so that the
     // range of the random number includes the current position.
+
     /**         // Swap the desired element.
 
      * The implementation of {
-@link #singleton(Object)    }
-. This class name
+     @link #singleton(Object)    }
+     . This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class SingletonSet extends AbstractSet implements Serializable, Rollbackable {
-
-        /**         
+    private static final class SingletonSet extends AbstractSet implements
+            Serializable, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 3193687207550431679L;
 
-        /**         
+        /**
          * The single element; package visible for use in nested class.
          * @serial the singleton
          */
         final Object element;
 
-        /**         
+        /**
          * Construct a singleton.
          * @param o the element
          */
@@ -748,14 +765,14 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             element = o;
         }
 
-        /**         
+        /**
          * The size: always 1!
          */
         public int size() {
             return 1;
         }
 
-        /**         
+        /**
          * Returns an iterator over the lone element.
          */
         public Iterator iterator() {
@@ -770,8 +787,9 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                     if (hasNext) {
                         $ASSIGN$hasNext(false);
                         return element;
-                    } else
+                    } else {
                         throw new NoSuchElementException();
+                    }
                 }
 
                 public void remove() {
@@ -779,7 +797,6 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                 }
 
                 final class _PROXY_ implements Rollbackable {
-
                     public final void $COMMIT(long timestamp) {
                         $COMMIT_ANONYMOUS(timestamp);
                     }
@@ -796,25 +813,30 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
-
                 }
 
                 private final boolean $ASSIGN$hasNext(boolean newValue) {
-                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$hasNext.add(null, hasNext, $CHECKPOINT.getTimestamp());
+                    if (($CHECKPOINT != null)
+                            && ($CHECKPOINT.getTimestamp() > 0)) {
+                        $RECORD$hasNext.add(null, hasNext, $CHECKPOINT
+                                .getTimestamp());
                     }
+
                     return hasNext = newValue;
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     $RECORD$$CHECKPOINT.commit(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
                     hasNext = $RECORD$hasNext.restore(hasNext, timestamp, trim);
+
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                                new _PROXY_(), timestamp, trim);
                         FieldRecord.popState($RECORDS);
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -824,79 +846,85 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
+
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
+
                         $CHECKPOINT = checkpoint;
                         oldCheckpoint.setCheckpoint(checkpoint);
                         checkpoint.addObject(new _PROXY_());
                     }
+
                     return this;
                 }
 
                 private FieldRecord $RECORD$hasNext = new FieldRecord(0);
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        $RECORD$hasNext
-                    };
+                private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$hasNext };
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
                 }
-
             };
         }
+
         // The remaining methods are optional, but provide a performance
         // advantage by not allocating unnecessary iterators in AbstractSet.
 
-        /**         
+        /**
          * The set only contains one element.
          */
         public boolean contains(Object o) {
             return equals(o, element);
         }
 
-        /**         
+        /**
          * This is true if the other collection only contains the element.
          */
         public boolean containsAll(Collection c) {
             Iterator i = c.iterator();
             int pos = c.size();
-            while (--pos >= 0) 
-                if (!equals(i.next(), element))
+
+            while (--pos >= 0) {
+                if (!equals(i.next(), element)) {
                     return false;
+                }
+            }
+
             return true;
         }
 
-        /**         
+        /**
          * The hash is just that of the element.
          */
         public int hashCode() {
             return hashCode(element);
         }
 
-        /**         
+        /**
          * Returning an array is simple.
          */
         public Object[] toArray() {
-            return new Object[] {
-                    element
-                };
+            return new Object[] { element };
         }
 
-        /**         
+        /**
          * Obvious string.
          */
         public String toString() {
-            return "[" + element+"]";
+            return "[" + element + "]";
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -904,33 +932,32 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // class SingletonSet
-    /**     
+
+    /**
      * The implementation of {
-@link #singletonList(Object)    }
-. This class name
+     @link #singletonList(Object)    }
+     . This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class SingletonList extends AbstractList implements Serializable, RandomAccess, Rollbackable {
-
-        /**         
+    private static final class SingletonList extends AbstractList implements
+            Serializable, RandomAccess, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 3093736618740652951L;
 
-        /**         
+        /**
          * The single element.
          * @serial the singleton
          */
         private final Object element;
 
-        /**         
+        /**
          * Construct a singleton.
          * @param o the element
          */
@@ -938,95 +965,107 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             element = o;
         }
 
-        /**         
+        /**
          * The size: always 1!
          */
         public int size() {
             return 1;
         }
 
-        /**         
+        /**
          * Only index 0 is valid.
          */
         public Object get(int index) {
-            if (index == 0)
+            if (index == 0) {
                 return element;
+            }
+
             throw new IndexOutOfBoundsException();
         }
+
         // The remaining methods are optional, but provide a performance
         // advantage by not allocating unnecessary iterators in AbstractList.
 
-        /**         
+        /**
          * The set only contains one element.
          */
         public boolean contains(Object o) {
             return equals(o, element);
         }
 
-        /**         
+        /**
          * This is true if the other collection only contains the element.
          */
         public boolean containsAll(Collection c) {
             Iterator i = c.iterator();
             int pos = c.size();
-            while (--pos >= 0) 
-                if (!equals(i.next(), element))
+
+            while (--pos >= 0) {
+                if (!equals(i.next(), element)) {
                     return false;
+                }
+            }
+
             return true;
         }
 
-        /**         
+        /**
          * Speed up the hashcode computation.
          */
         public int hashCode() {
             return 31 + hashCode(element);
         }
 
-        /**         
+        /**
          * Either the list has it or not.
          */
         public int indexOf(Object o) {
-            return equals(o, element)?0:-1;
+            return equals(o, element) ? 0 : (-1);
         }
 
-        /**         
+        /**
          * Either the list has it or not.
          */
         public int lastIndexOf(Object o) {
-            return equals(o, element)?0:-1;
+            return equals(o, element) ? 0 : (-1);
         }
 
-        /**         
+        /**
          * Sublists are limited in scope.
          */
         public List subList(int from, int to) {
-            if (from == to && (to == 0 || to == 1))
+            if ((from == to) && ((to == 0) || (to == 1))) {
                 return EMPTY_LIST;
-            if (from == 0 && to == 1)
+            }
+
+            if ((from == 0) && (to == 1)) {
                 return this;
-            if (from > to)
+            }
+
+            if (from > to) {
                 throw new IllegalArgumentException();
+            }
+
             throw new IndexOutOfBoundsException();
         }
 
-        /**         
+        /**
          * Returning an array is simple.
          */
         public Object[] toArray() {
-            return new Object[] {
-                    element
-                };
+            return new Object[] { element };
         }
 
-        /**         
+        /**
          * Obvious string.
          */
         public String toString() {
-            return "[" + element+"]";
+            return "[" + element + "]";
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -1037,45 +1076,43 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$element = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$element
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$element };
     }
 
     // class SingletonList
-    /**     
+
+    /**
      * The implementation of {
-@link #singletonMap(Object)    }
-. This class name
+     @link #singletonMap(Object)    }
+     . This class name
      * is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class SingletonMap extends AbstractMap implements Serializable, Rollbackable {
-
-        /**         
+    private static final class SingletonMap extends AbstractMap implements
+            Serializable, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -6979724477215052911L;
 
-        /**         
+        /**
          * The single key.
          * @serial the singleton key
          */
         private final Object k;
 
-        /**         
+        /**
          * The corresponding value.
          * @serial the singleton value
          */
         private final Object v;
 
-        /**         
+        /**
          * Cache the entry set.
          */
         private transient Set entries;
 
-        /**         
+        /**
          * Construct a singleton.
          * @param key the key
          * @param value the value
@@ -1085,18 +1122,17 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             v = value;
         }
 
-        /**         
+        /**
          * There is a single immutable entry.
          */
         public Set entrySet() {
-            if (entries == null)
+            if (entries == null) {
                 $ASSIGN$entries(singleton(new AbstractMap.BasicMapEntry(k, v) {
                     public Object setValue(Object o) {
                         throw new UnsupportedOperationException();
                     }
 
                     final class _PROXY_ implements Rollbackable {
-
                         public final void $COMMIT(long timestamp) {
                             $COMMIT_ANONYMOUS(timestamp);
                         }
@@ -1109,15 +1145,16 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                             return $GET$CHECKPOINT_ANONYMOUS();
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT(
+                                Checkpoint checkpoint) {
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
-
                     }
 
                     public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        FieldRecord.commit($RECORDS, timestamp,
+                                $RECORD$$CHECKPOINT.getTopTimestamp());
                         super.$COMMIT(timestamp);
                     }
 
@@ -1129,113 +1166,127 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                         return $CHECKPOINT;
                     }
 
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(
+                            Checkpoint checkpoint) {
                         if ($CHECKPOINT != checkpoint) {
                             Checkpoint oldCheckpoint = $CHECKPOINT;
+
                             if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                        .getTimestamp());
                                 FieldRecord.pushState($RECORDS);
                             }
+
                             $CHECKPOINT = checkpoint;
                             oldCheckpoint.setCheckpoint(checkpoint);
                             checkpoint.addObject(new _PROXY_());
                         }
+
                         return this;
                     }
 
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        };
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                     {
                         $CHECKPOINT.addObject(new _PROXY_());
                     }
-
                 }));
+            }
+
             return entries;
         }
+
         // The remaining methods are optional, but provide a performance
         // advantage by not allocating unnecessary iterators in AbstractMap.
 
-        /**         
+        /**
          * Single entry.
          */
         public boolean containsKey(Object key) {
             return equals(key, k);
         }
 
-        /**         
+        /**
          * Single entry.
          */
         public boolean containsValue(Object value) {
             return equals(value, v);
         }
 
-        /**         
+        /**
          * Single entry.
          */
         public Object get(Object key) {
-            return equals(key, k)?v:null;
+            return equals(key, k) ? v : null;
         }
 
-        /**         
+        /**
          * Calculate the hashcode directly.
          */
         public int hashCode() {
             return hashCode(k) ^ hashCode(v);
         }
 
-        /**         
+        /**
          * Return the keyset.
          */
         public Set keySet() {
-            if (getKeys() == null)
+            if (getKeys() == null) {
                 setKeys(singleton(k));
+            }
+
             return getKeys();
         }
 
-        /**         
+        /**
          * The size: always 1!
          */
         public int size() {
             return 1;
         }
 
-        /**         
+        /**
          * Return the values. Technically, a singleton, while more specific than
          * a general Collection, will work. Besides, that's what the JDK uses!
          */
         public Collection values() {
-            if (getValues() == null)
+            if (getValues() == null) {
                 setValues(singleton(v));
+            }
+
             return getValues();
         }
 
-        /**         
+        /**
          * Obvious string.
          */
         public String toString() {
-            return "{" + k+"="+v+"}";
+            return "{" + k + "=" + v + "}";
         }
 
         private final Set $ASSIGN$entries(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
             }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+            if ((newValue != null)
+                    && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
+
             return entries = newValue;
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$k.restore(k, timestamp, trim);
             $RECORD$v.restore(v, timestamp, trim);
-            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
+            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
@@ -1245,40 +1296,37 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$entries = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$k,
-                $RECORD$v,
-                $RECORD$entries
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$k,
+                $RECORD$v, $RECORD$entries };
     }
 
     // class SingletonMap
-    /**     
+
+    /**
      * The implementation of {
-@link #synchronizedCollection(Collection)    }
-. This
+     @link #synchronizedCollection(Collection)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * Package visible, so that collections such as the one for
      * Hashtable.values() can specify which object to synchronize on.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    static class SynchronizedCollection implements Collection, Serializable, Rollbackable {
-
+    static class SynchronizedCollection implements Collection, Serializable,
+            Rollbackable {
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 3053995032091335093L;
 
-        /**         
+        /**
          * The wrapped collection. Package visible for use by subclasses.
          * @serial the real collection
          */
         final Collection c;
 
-        /**         
+        /**
          * The object to synchronize on.  When an instance is created via public
          * methods, it will be this; but other uses like SynchronizedMap.values()
          * must specify another mutex. Package visible for use by subclasses.
@@ -1286,7 +1334,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
          */
         final Object mutex;
 
-        /**         
+        /**
          * Wrap a given collection.
          * @param c the collection to wrap
          * @throws NullPointerException if c is null
@@ -1294,11 +1342,13 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         SynchronizedCollection(Collection c) {
             this.c = c;
             mutex = this;
-            if (c == null)
+
+            if (c == null) {
                 throw new NullPointerException();
+            }
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the
          * collection.
          * @param sync the mutex
@@ -1394,13 +1444,15 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -1413,46 +1465,48 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
+
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
+
                 $CHECKPOINT = checkpoint;
                 oldCheckpoint.setCheckpoint(checkpoint);
                 checkpoint.addObject(this);
             }
+
             return this;
         }
 
         protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // class SynchronizedCollection
-    /**     
+
+    /**
      * The implementation of the various iterator methods in the
      * synchronized classes. These iterators must "sync" on the same object
      * as the collection they iterate over.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
     private static class SynchronizedIterator implements Iterator, Rollbackable {
-
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The object to synchronize on. Package visible for use by subclass.
          */
         final Object mutex;
 
-        /**         
+        /**
          * The wrapped iterator.
          */
         private final Iterator i;
 
-        /**         
+        /**
          * Only trusted code creates a wrapper, with the specified sync.
          * @param sync the mutex
          * @param i the wrapped iterator
@@ -1481,14 +1535,17 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$i.restore(i, timestamp, trim);
+
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -1501,14 +1558,18 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
+
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
+
                 $CHECKPOINT = checkpoint;
                 oldCheckpoint.setCheckpoint(checkpoint);
                 checkpoint.addObject(this);
             }
+
             return this;
         }
 
@@ -1516,37 +1577,35 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$i = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$i
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$i };
     }
 
     // class SynchronizedIterator
-    /**     
+
+    /**
      * The implementation of {
-@link #synchronizedList(List)    }
- for sequential
+     @link #synchronizedList(List)    }
+     for sequential
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability. Package visible, so that lists such as Vector.subList()
      * can specify which object to synchronize on.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    static class SynchronizedList extends SynchronizedCollection implements List, Rollbackable {
-
-        /**         
+    static class SynchronizedList extends SynchronizedCollection implements
+            List, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -7754090372962971524L;
 
-        /**         
+        /**
          * The wrapped list; stored both here and in the superclass to avoid
          * excessive casting. Package visible for use by subclass.
          * @serial the wrapped list
          */
         final List list;
 
-        /**         
+        /**
          * Wrap a given list.
          * @param l the list to wrap
          * @throws NullPointerException if l is null
@@ -1556,7 +1615,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             list = l;
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the list.
          * @param sync the mutex
          * @param l the list
@@ -1616,7 +1675,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         public ListIterator listIterator(int index) {
             synchronized (mutex) {
-                return new SynchronizedListIterator(mutex, list.listIterator(index));
+                return new SynchronizedListIterator(mutex, list
+                        .listIterator(index));
             }
         }
 
@@ -1634,12 +1694,14 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         public List subList(int fromIndex, int toIndex) {
             synchronized (mutex) {
-                return new SynchronizedList(mutex, list.subList(fromIndex, toIndex));
+                return new SynchronizedList(mutex, list.subList(fromIndex,
+                        toIndex));
             }
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -1647,28 +1709,27 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // class SynchronizedList
-    /**     
+
+    /**
      * The implementation of {
-@link #synchronizedList(List)    }
- for random-access
+     @link #synchronizedList(List)    }
+     for random-access
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class SynchronizedRandomAccessList extends SynchronizedList implements RandomAccess, Rollbackable {
-
-        /**         
+    private static final class SynchronizedRandomAccessList extends
+            SynchronizedList implements RandomAccess, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 1530674583602358482L;
 
-        /**         
+        /**
          * Wrap a given list.
          * @param l the list to wrap
          * @throws NullPointerException if l is null
@@ -1677,7 +1738,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super(l);
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the
          * collection.
          * @param sync the mutex
@@ -1689,12 +1750,14 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         public List subList(int fromIndex, int toIndex) {
             synchronized (mutex) {
-                return new SynchronizedRandomAccessList(mutex, list.subList(fromIndex, toIndex));
+                return new SynchronizedRandomAccessList(mutex, list.subList(
+                        fromIndex, toIndex));
             }
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -1702,28 +1765,27 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // class SynchronizedRandomAccessList
-    /**     
+
+    /**
      * The implementation of {
-@link SynchronizedList#listIterator()    }
-. This
+     @link SynchronizedList#listIterator()    }
+     . This
      * iterator must "sync" on the same object as the list it iterates over.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class SynchronizedListIterator extends SynchronizedIterator implements ListIterator, Rollbackable {
-
-        /**         
+    private static final class SynchronizedListIterator extends
+            SynchronizedIterator implements ListIterator, Rollbackable {
+        /**
          * The wrapped iterator, stored both here and in the superclass to
          * avoid excessive casting.
          */
         private final ListIterator li;
 
-        /**         
+        /**
          * Only trusted code creates a wrapper, with the specified sync.
          * @param sync the mutex
          * @param li the wrapped iterator
@@ -1770,7 +1832,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -1781,36 +1844,34 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$li = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$li
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$li };
     }
 
     // class SynchronizedListIterator
-    /**     
+
+    /**
      * The implementation of {
-@link #synchronizedMap(Map)    }
-. This
+     @link #synchronizedMap(Map)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static class SynchronizedMap implements Map, Serializable, Rollbackable {
-
+    private static class SynchronizedMap implements Map, Serializable,
+            Rollbackable {
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 1978198479659022715L;
 
-        /**         
+        /**
          * The wrapped map.
          * @serial the real map
          */
         private final Map m;
 
-        /**         
+        /**
          * The object to synchronize on.  When an instance is created via public
          * methods, it will be this; but other uses like
          * SynchronizedSortedMap.subMap() must specify another mutex. Package
@@ -1819,22 +1880,22 @@ reverseOrder        // The remaining methods are optional, but provide a perform
          */
         final Object mutex;
 
-        /**         
+        /**
          * Cache the entry set.
          */
         private transient Set entries;
 
-        /**         
+        /**
          * Cache the key set.
          */
         private transient Set keys;
 
-        /**         
+        /**
          * Cache the value collection.
          */
         private transient Collection values;
 
-        /**         
+        /**
          * Wrap a given map.
          * @param m the map to wrap
          * @throws NullPointerException if m is null
@@ -1842,11 +1903,13 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         SynchronizedMap(Map m) {
             this.m = m;
             mutex = this;
-            if (m == null)
+
+            if (m == null) {
                 throw new NullPointerException();
+            }
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the map.
          * @param sync the mutex
          * @param m the map
@@ -1873,21 +1936,20 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                 return m.containsValue(value);
             }
         }
+
         // This is one of the ickiest cases of nesting I've ever seen. It just
         // means "return a SynchronizedSet, except that the iterator() method
         // returns an SynchronizedIterator whose next() method returns a
         // synchronized wrapper around its normal return value".
-
         public Set entrySet() {
             // Define this here to spare some nesting.
             class SynchronizedMapEntry implements Map.Entry, Rollbackable {
-
                 protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
                 final Map.Entry e;
 
                 SynchronizedMapEntry(Object o) {
-                    e = (Map.Entry)o;
+                    e = (Map.Entry) o;
                 }
 
                 public boolean equals(Object o) {
@@ -1927,13 +1989,15 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                 }
 
                 public void $COMMIT(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     $RECORD$$CHECKPOINT.commit(timestamp);
                 }
 
                 public void $RESTORE(long timestamp, boolean trim) {
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                                this, timestamp, trim);
                         FieldRecord.popState($RECORDS);
                         $RESTORE(timestamp, trim);
                     }
@@ -1946,45 +2010,49 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                 public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
+
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
+
                         $CHECKPOINT = checkpoint;
                         oldCheckpoint.setCheckpoint(checkpoint);
                         checkpoint.addObject(this);
                     }
+
                     return this;
                 }
 
                 protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-                private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    };
-
+                private FieldRecord[] $RECORDS = new FieldRecord[] {};
             }
 
             // class SynchronizedMapEntry
             // Now the actual code.
-            if (entries == null)
+            if (entries == null) {
                 synchronized (mutex) {
                     $ASSIGN$entries(new SynchronizedSet(mutex, m.entrySet()) {
                         public Iterator iterator() {
                             synchronized (super.mutex) {
-                                return new SynchronizedIterator(super.mutex, c.iterator()) {
+                                return new SynchronizedIterator(super.mutex, c
+                                        .iterator()) {
                                     public Object next() {
                                         synchronized (super.mutex) {
-                                            return new SynchronizedMapEntry(super.next());
+                                            return new SynchronizedMapEntry(
+                                                    super.next());
                                         }
                                     }
 
                                     final class _PROXY_ implements Rollbackable {
-
                                         public final void $COMMIT(long timestamp) {
                                             $COMMIT_ANONYMOUS(timestamp);
                                         }
 
-                                        public final void $RESTORE(long timestamp, boolean trim) {
+                                        public final void $RESTORE(
+                                                long timestamp, boolean trim) {
                                             $RESTORE_ANONYMOUS(timestamp, trim);
                                         }
 
@@ -1992,19 +2060,22 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                                             return $GET$CHECKPOINT_ANONYMOUS();
                                         }
 
-                                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                                        public final Object $SET$CHECKPOINT(
+                                                Checkpoint checkpoint) {
                                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                             return this;
                                         }
-
                                     }
 
                                     public void $COMMIT_ANONYMOUS(long timestamp) {
-                                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                        FieldRecord.commit($RECORDS, timestamp,
+                                                $RECORD$$CHECKPOINT
+                                                        .getTopTimestamp());
                                         super.$COMMIT(timestamp);
                                     }
 
-                                    public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                                    public void $RESTORE_ANONYMOUS(
+                                            long timestamp, boolean trim) {
                                         super.$RESTORE(timestamp, trim);
                                     }
 
@@ -2012,38 +2083,45 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                                         return $CHECKPOINT;
                                     }
 
-                                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                                    public final Object $SET$CHECKPOINT_ANONYMOUS(
+                                            Checkpoint checkpoint) {
                                         if ($CHECKPOINT != checkpoint) {
                                             Checkpoint oldCheckpoint = $CHECKPOINT;
+
                                             if (checkpoint != null) {
-                                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                                $RECORD$$CHECKPOINT
+                                                        .add(
+                                                                $CHECKPOINT,
+                                                                checkpoint
+                                                                        .getTimestamp());
                                                 FieldRecord.pushState($RECORDS);
                                             }
+
                                             $CHECKPOINT = checkpoint;
-                                            oldCheckpoint.setCheckpoint(checkpoint);
+                                            oldCheckpoint
+                                                    .setCheckpoint(checkpoint);
                                             checkpoint.addObject(new _PROXY_());
                                         }
+
                                         return this;
                                     }
 
-                                    private FieldRecord[] $RECORDS = new FieldRecord[] {
-                                        };
+                                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                                     {
                                         $CHECKPOINT.addObject(new _PROXY_());
                                     }
-
                                 };
                             }
                         }
 
                         final class _PROXY_ implements Rollbackable {
-
                             public final void $COMMIT(long timestamp) {
                                 $COMMIT_ANONYMOUS(timestamp);
                             }
 
-                            public final void $RESTORE(long timestamp, boolean trim) {
+                            public final void $RESTORE(long timestamp,
+                                    boolean trim) {
                                 $RESTORE_ANONYMOUS(timestamp, trim);
                             }
 
@@ -2051,19 +2129,21 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                                 return $GET$CHECKPOINT_ANONYMOUS();
                             }
 
-                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            public final Object $SET$CHECKPOINT(
+                                    Checkpoint checkpoint) {
                                 $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                                 return this;
                             }
-
                         }
 
                         public void $COMMIT_ANONYMOUS(long timestamp) {
-                            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                            FieldRecord.commit($RECORDS, timestamp,
+                                    $RECORD$$CHECKPOINT.getTopTimestamp());
                             super.$COMMIT(timestamp);
                         }
 
-                        public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
+                        public void $RESTORE_ANONYMOUS(long timestamp,
+                                boolean trim) {
                             super.$RESTORE(timestamp, trim);
                         }
 
@@ -2071,29 +2151,34 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                             return $CHECKPOINT;
                         }
 
-                        public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT_ANONYMOUS(
+                                Checkpoint checkpoint) {
                             if ($CHECKPOINT != checkpoint) {
                                 Checkpoint oldCheckpoint = $CHECKPOINT;
+
                                 if (checkpoint != null) {
-                                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                    $RECORD$$CHECKPOINT.add($CHECKPOINT,
+                                            checkpoint.getTimestamp());
                                     FieldRecord.pushState($RECORDS);
                                 }
+
                                 $CHECKPOINT = checkpoint;
                                 oldCheckpoint.setCheckpoint(checkpoint);
                                 checkpoint.addObject(new _PROXY_());
                             }
+
                             return this;
                         }
 
-                        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                            };
+                        private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                         {
                             $CHECKPOINT.addObject(new _PROXY_());
                         }
-
                     });
                 }
+            }
+
             return entries;
         }
 
@@ -2122,10 +2207,12 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public Set keySet() {
-            if (keys == null)
+            if (keys == null) {
                 synchronized (mutex) {
                     $ASSIGN$keys(new SynchronizedSet(mutex, m.keySet()));
                 }
+            }
+
             return keys;
         }
 
@@ -2160,55 +2247,70 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public Collection values() {
-            if (values == null)
+            if (values == null) {
                 synchronized (mutex) {
                     $ASSIGN$values(new SynchronizedCollection(mutex, m.values()));
                 }
+            }
+
             return values;
         }
 
         private final Set $ASSIGN$entries(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
             }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+            if ((newValue != null)
+                    && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
+
             return entries = newValue;
         }
 
         private final Set $ASSIGN$keys(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$keys.add(null, keys, $CHECKPOINT.getTimestamp());
             }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+            if ((newValue != null)
+                    && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
+
             return keys = newValue;
         }
 
         private final Collection $ASSIGN$values(Collection newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$values.add(null, values, $CHECKPOINT.getTimestamp());
             }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+            if ((newValue != null)
+                    && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
+
             return values = newValue;
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$m.restore(m, timestamp, trim);
-            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
-            keys = (Set)$RECORD$keys.restore(keys, timestamp, trim);
-            values = (Collection)$RECORD$values.restore(values, timestamp, trim);
+            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
+            keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
+            values = (Collection) $RECORD$values.restore(values, timestamp,
+                    trim);
+
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -2221,14 +2323,18 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
+
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
+
                 $CHECKPOINT = checkpoint;
                 oldCheckpoint.setCheckpoint(checkpoint);
                 checkpoint.addObject(this);
             }
+
             return this;
         }
 
@@ -2242,33 +2348,29 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$values = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$m,
-                $RECORD$entries,
-                $RECORD$keys,
-                $RECORD$values
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$m,
+                $RECORD$entries, $RECORD$keys, $RECORD$values };
     }
 
     // class SynchronizedMap
-    /**     
+
+    /**
      * The implementation of {
-@link #synchronizedSet(Set)    }
-. This class
+     @link #synchronizedSet(Set)    }
+     . This class
      * name is required for compatibility with Sun's JDK serializability.
      * Package visible, so that sets such as Hashtable.keySet()
      * can specify which object to synchronize on.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    static class SynchronizedSet extends SynchronizedCollection implements Set, Rollbackable {
-
-        /**         
+    static class SynchronizedSet extends SynchronizedCollection implements Set,
+            Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 487447009682186044L;
 
-        /**         
+        /**
          * Wrap a given set.
          * @param s the set to wrap
          * @throws NullPointerException if s is null
@@ -2277,7 +2379,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super(s);
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the set.
          * @param sync the mutex
          * @param s the set
@@ -2299,7 +2401,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -2307,34 +2410,33 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // class SynchronizedSet
-    /**     
+
+    /**
      * The implementation of {
-@link #synchronizedSortedMap(SortedMap)    }
-. This
+     @link #synchronizedSortedMap(SortedMap)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class SynchronizedSortedMap extends SynchronizedMap implements SortedMap, Rollbackable {
-
-        /**         
+    private static final class SynchronizedSortedMap extends SynchronizedMap
+            implements SortedMap, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -8798146769416483793L;
 
-        /**         
+        /**
          * The wrapped map; stored both here and in the superclass to avoid
          * excessive casting.
          * @serial the wrapped map
          */
         private final SortedMap sm;
 
-        /**         
+        /**
          * Wrap a given map.
          * @param sm the map to wrap
          * @throws NullPointerException if sm is null
@@ -2344,7 +2446,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             this.sm = sm;
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the map.
          * @param sync the mutex
          * @param sm the map
@@ -2380,7 +2482,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         public SortedMap subMap(Object fromKey, Object toKey) {
             synchronized (mutex) {
-                return new SynchronizedSortedMap(mutex, sm.subMap(fromKey, toKey));
+                return new SynchronizedSortedMap(mutex, sm.subMap(fromKey,
+                        toKey));
             }
         }
 
@@ -2391,7 +2494,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -2402,35 +2506,33 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$sm = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$sm
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$sm };
     }
 
     // class SynchronizedSortedMap
-    /**     
+
+    /**
      * The implementation of {
-@link #synchronizedSortedSet(SortedSet)    }
-. This
+     @link #synchronizedSortedSet(SortedSet)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class SynchronizedSortedSet extends SynchronizedSet implements SortedSet, Rollbackable {
-
-        /**         
+    private static final class SynchronizedSortedSet extends SynchronizedSet
+            implements SortedSet, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 8695801310862127406L;
 
-        /**         
+        /**
          * The wrapped set; stored both here and in the superclass to avoid
          * excessive casting.
          * @serial the wrapped set
          */
         private final SortedSet ss;
 
-        /**         
+        /**
          * Wrap a given set.
          * @param ss the set to wrap
          * @throws NullPointerException if ss is null
@@ -2440,7 +2542,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             this.ss = ss;
         }
 
-        /**         
+        /**
          * Called only by trusted code to specify the mutex as well as the set.
          * @param sync the mutex
          * @param l the list
@@ -2476,7 +2578,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         public SortedSet subSet(Object fromElement, Object toElement) {
             synchronized (mutex) {
-                return new SynchronizedSortedSet(mutex, ss.subSet(fromElement, toElement));
+                return new SynchronizedSortedSet(mutex, ss.subSet(fromElement,
+                        toElement));
             }
         }
 
@@ -2487,7 +2590,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -2498,44 +2602,44 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$ss = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$ss
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$ss };
     }
 
     // class SynchronizedSortedSet
-    /**     
+
+    /**
      * The implementation of {
-@link #unmodifiableCollection(Collection)    }
-. This
+     @link #unmodifiableCollection(Collection)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static class UnmodifiableCollection implements Collection, Serializable, Rollbackable {
-
+    private static class UnmodifiableCollection implements Collection,
+            Serializable, Rollbackable {
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = 1820017752578914078L;
 
-        /**         
+        /**
          * The wrapped collection. Package visible for use by subclasses.
          * @serial the real collection
          */
         final Collection c;
 
-        /**         
+        /**
          * Wrap a given collection.
          * @param c the collection to wrap
          * @throws NullPointerException if c is null
          */
         UnmodifiableCollection(Collection c) {
             this.c = c;
-            if (c == null)
+
+            if (c == null) {
                 throw new NullPointerException();
+            }
         }
 
         public boolean add(Object o) {
@@ -2595,13 +2699,15 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -2614,40 +2720,42 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
+
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
+
                 $CHECKPOINT = checkpoint;
                 oldCheckpoint.setCheckpoint(checkpoint);
                 checkpoint.addObject(this);
             }
+
             return this;
         }
 
         protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // class UnmodifiableCollection
-    /**     
+
+    /**
      * The implementation of the various iterator methods in the
      * unmodifiable classes.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
     private static class UnmodifiableIterator implements Iterator, Rollbackable {
-
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The wrapped iterator.
          */
         private final Iterator i;
 
-        /**         
+        /**
          * Only trusted code creates a wrapper.
          * @param i the wrapped iterator
          */
@@ -2668,14 +2776,17 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$i.restore(i, timestamp, trim);
+
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -2688,14 +2799,18 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
+
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
+
                 $CHECKPOINT = checkpoint;
                 oldCheckpoint.setCheckpoint(checkpoint);
                 checkpoint.addObject(this);
             }
+
             return this;
         }
 
@@ -2703,36 +2818,34 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$i = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$i
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$i };
     }
 
     // class UnmodifiableIterator
-    /**     
+
+    /**
      * The implementation of {
-@link #unmodifiableList(List)    }
- for sequential
+     @link #unmodifiableList(List)    }
+     for sequential
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static class UnmodifiableList extends UnmodifiableCollection implements List, Rollbackable {
-
-        /**         
+    private static class UnmodifiableList extends UnmodifiableCollection
+            implements List, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -283967356065247728L;
 
-        /**         
+        /**
          * The wrapped list; stored both here and in the superclass to avoid
          * excessive casting. Package visible for use by subclass.
          * @serial the wrapped list
          */
         final List list;
 
-        /**         
+        /**
          * Wrap a given list.
          * @param l the list to wrap
          * @throws NullPointerException if l is null
@@ -2791,7 +2904,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -2799,28 +2913,27 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // class UnmodifiableList
-    /**     
+
+    /**
      * The implementation of {
-@link #unmodifiableList(List)    }
- for random-access
+     @link #unmodifiableList(List)    }
+     for random-access
      * lists. This class name is required for compatibility with Sun's JDK
      * serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class UnmodifiableRandomAccessList extends UnmodifiableList implements RandomAccess, Rollbackable {
-
-        /**         
+    private static final class UnmodifiableRandomAccessList extends
+            UnmodifiableList implements RandomAccess, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -2542308836966382001L;
 
-        /**         
+        /**
          * Wrap a given list.
          * @param l the list to wrap
          * @throws NullPointerException if l is null
@@ -2830,7 +2943,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -2838,27 +2952,26 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // class UnmodifiableRandomAccessList
-    /**     
+
+    /**
      * The implementation of {
-@link UnmodifiableList#listIterator()    }
-.
+     @link UnmodifiableList#listIterator()    }
+     .
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static final class UnmodifiableListIterator extends UnmodifiableIterator implements ListIterator, Rollbackable {
-
-        /**         
+    private static final class UnmodifiableListIterator extends
+            UnmodifiableIterator implements ListIterator, Rollbackable {
+        /**
          * The wrapped iterator, stored both here and in the superclass to
          * avoid excessive casting.
          */
         private final ListIterator li;
 
-        /**         
+        /**
          * Only trusted code creates a wrapper.
          * @param li the wrapped iterator
          */
@@ -2892,7 +3005,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -2903,79 +3017,78 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$li = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$li
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$li };
     }
 
     // class UnmodifiableListIterator
-    /**     
+
+    /**
      * The implementation of {
-@link #unmodifiableMap(Map)    }
-. This
+     @link #unmodifiableMap(Map)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static class UnmodifiableMap implements Map, Serializable, Rollbackable {
-
+    private static class UnmodifiableMap implements Map, Serializable,
+            Rollbackable {
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -1034234728574286014L;
 
-        /**         
+        /**
          * The wrapped map.
          * @serial the real map
          */
         private final Map m;
 
-        /**         
+        /**
          * Cache the entry set.
          */
         private transient Set entries;
 
-        /**         
+        /**
          * Cache the key set.
          */
         private transient Set keys;
 
-        /**         
+        /**
          * Cache the value collection.
          */
         private transient Collection values;
 
-        /**         
+        /**
          * The implementation of {
-@link UnmodifiableMap#entrySet()        }
-. This class
+         @link UnmodifiableMap#entrySet()        }
+         . This class
          * name is required for compatibility with Sun's JDK serializability.
          * @author Eric Blake <ebb9@email.byu.edu>
          */
-        private static final class UnmodifiableEntrySet extends UnmodifiableSet implements Serializable, Rollbackable {
-
-            /**             
+        private static final class UnmodifiableEntrySet extends UnmodifiableSet
+                implements Serializable, Rollbackable {
+            /**
              * Compatible with JDK 1.4.
              */
             private static final long serialVersionUID = 7854390611657943733L;
 
-            /**             
+            /**
              * Wrap a given set.
              * @param s the set to wrap
              */
             UnmodifiableEntrySet(Set s) {
                 super(s);
             }
-            // The iterator must return unmodifiable map entries.
 
+            // The iterator must return unmodifiable map entries.
             public Iterator iterator() {
                 return new UnmodifiableIterator(c.iterator()) {
                     public Object next() {
-                        final Map.Entry e = (Map.Entry)super.next();
+                        final Map.Entry e = (Map.Entry) super.next();
                         return new Map.Entry() {
-                            protected Checkpoint $CHECKPOINT = new Checkpoint(this);
+                            protected Checkpoint $CHECKPOINT = new Checkpoint(
+                                    this);
 
                             public boolean equals(Object o) {
                                 return e.equals(o);
@@ -3002,13 +3115,16 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                             }
 
                             public void $COMMIT(long timestamp) {
-                                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                                FieldRecord.commit($RECORDS, timestamp,
+                                        $RECORD$$CHECKPOINT.getTopTimestamp());
                                 $RECORD$$CHECKPOINT.commit(timestamp);
                             }
 
                             public void $RESTORE(long timestamp, boolean trim) {
-                                if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                                if (timestamp <= $RECORD$$CHECKPOINT
+                                        .getTopTimestamp()) {
+                                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore(
+                                            $CHECKPOINT, this, timestamp, trim);
                                     FieldRecord.popState($RECORDS);
                                     $RESTORE(timestamp, trim);
                                 }
@@ -3018,30 +3134,32 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                                 return $CHECKPOINT;
                             }
 
-                            public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                            public final Object $SET$CHECKPOINT(
+                                    Checkpoint checkpoint) {
                                 if ($CHECKPOINT != checkpoint) {
                                     Checkpoint oldCheckpoint = $CHECKPOINT;
+
                                     if (checkpoint != null) {
-                                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                        $RECORD$$CHECKPOINT.add($CHECKPOINT,
+                                                checkpoint.getTimestamp());
                                         FieldRecord.pushState($RECORDS);
                                     }
+
                                     $CHECKPOINT = checkpoint;
                                     oldCheckpoint.setCheckpoint(checkpoint);
                                     checkpoint.addObject(this);
                                 }
+
                                 return this;
                             }
 
                             protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-                            private FieldRecord[] $RECORDS = new FieldRecord[] {
-                                };
-
+                            private FieldRecord[] $RECORDS = new FieldRecord[] {};
                         };
                     }
 
                     final class _PROXY_ implements Rollbackable {
-
                         public final void $COMMIT(long timestamp) {
                             $COMMIT_ANONYMOUS(timestamp);
                         }
@@ -3054,15 +3172,16 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                             return $GET$CHECKPOINT_ANONYMOUS();
                         }
 
-                        public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
+                        public final Object $SET$CHECKPOINT(
+                                Checkpoint checkpoint) {
                             $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                             return this;
                         }
-
                     }
 
                     public void $COMMIT_ANONYMOUS(long timestamp) {
-                        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                        FieldRecord.commit($RECORDS, timestamp,
+                                $RECORD$$CHECKPOINT.getTopTimestamp());
                         super.$COMMIT(timestamp);
                     }
 
@@ -3074,32 +3193,36 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                         return $CHECKPOINT;
                     }
 
-                    public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                    public final Object $SET$CHECKPOINT_ANONYMOUS(
+                            Checkpoint checkpoint) {
                         if ($CHECKPOINT != checkpoint) {
                             Checkpoint oldCheckpoint = $CHECKPOINT;
+
                             if (checkpoint != null) {
-                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                                $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                        .getTimestamp());
                                 FieldRecord.pushState($RECORDS);
                             }
+
                             $CHECKPOINT = checkpoint;
                             oldCheckpoint.setCheckpoint(checkpoint);
                             checkpoint.addObject(new _PROXY_());
                         }
+
                         return this;
                     }
 
-                    private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        };
+                    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 
                     {
                         $CHECKPOINT.addObject(new _PROXY_());
                     }
-
                 };
             }
 
             public void $COMMIT(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
                 super.$COMMIT(timestamp);
             }
 
@@ -3107,21 +3230,22 @@ reverseOrder        // The remaining methods are optional, but provide a perform
                 super.$RESTORE(timestamp, trim);
             }
 
-            private FieldRecord[] $RECORDS = new FieldRecord[] {
-                };
-
+            private FieldRecord[] $RECORDS = new FieldRecord[] {};
         }
 
         // class UnmodifiableEntrySet
-        /**         
+
+        /**
          * Wrap a given map.
          * @param m the map to wrap
          * @throws NullPointerException if m is null
          */
         UnmodifiableMap(Map m) {
             this.m = m;
-            if (m == null)
+
+            if (m == null) {
                 throw new NullPointerException();
+            }
         }
 
         public void clear() {
@@ -3137,8 +3261,10 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public Set entrySet() {
-            if (entries == null)
+            if (entries == null) {
                 $ASSIGN$entries(new UnmodifiableEntrySet(m.entrySet()));
+            }
+
             return entries;
         }
 
@@ -3163,8 +3289,10 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public Set keySet() {
-            if (keys == null)
+            if (keys == null) {
                 $ASSIGN$keys(new UnmodifiableSet(m.keySet()));
+            }
+
             return keys;
         }
 
@@ -3185,53 +3313,68 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public Collection values() {
-            if (values == null)
+            if (values == null) {
                 $ASSIGN$values(new UnmodifiableCollection(m.values()));
+            }
+
             return values;
         }
 
         private final Set $ASSIGN$entries(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$entries.add(null, entries, $CHECKPOINT.getTimestamp());
             }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+            if ((newValue != null)
+                    && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
+
             return entries = newValue;
         }
 
         private final Set $ASSIGN$keys(Set newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$keys.add(null, keys, $CHECKPOINT.getTimestamp());
             }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+            if ((newValue != null)
+                    && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
+
             return keys = newValue;
         }
 
         private final Collection $ASSIGN$values(Collection newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$values.add(null, values, $CHECKPOINT.getTimestamp());
             }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+            if ((newValue != null)
+                    && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
+
             return values = newValue;
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
             $RECORD$m.restore(m, timestamp, trim);
-            entries = (Set)$RECORD$entries.restore(entries, timestamp, trim);
-            keys = (Set)$RECORD$keys.restore(keys, timestamp, trim);
-            values = (Collection)$RECORD$values.restore(values, timestamp, trim);
+            entries = (Set) $RECORD$entries.restore(entries, timestamp, trim);
+            keys = (Set) $RECORD$keys.restore(keys, timestamp, trim);
+            values = (Collection) $RECORD$values.restore(values, timestamp,
+                    trim);
+
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -3244,14 +3387,18 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
+
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
+
                 $CHECKPOINT = checkpoint;
                 oldCheckpoint.setCheckpoint(checkpoint);
                 checkpoint.addObject(this);
             }
+
             return this;
         }
 
@@ -3265,31 +3412,27 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$values = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$m,
-                $RECORD$entries,
-                $RECORD$keys,
-                $RECORD$values
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$m,
+                $RECORD$entries, $RECORD$keys, $RECORD$values };
     }
 
     // class UnmodifiableMap
-    /**     
+
+    /**
      * The implementation of {
-@link #unmodifiableSet(Set)    }
-. This class
+     @link #unmodifiableSet(Set)    }
+     . This class
      * name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static class UnmodifiableSet extends UnmodifiableCollection implements Set, Rollbackable {
-
-        /**         
+    private static class UnmodifiableSet extends UnmodifiableCollection
+            implements Set, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -9215047833775013803L;
 
-        /**         
+        /**
          * Wrap a given set.
          * @param s the set to wrap
          * @throws NullPointerException if s is null
@@ -3307,7 +3450,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -3315,34 +3459,33 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
     // class UnmodifiableSet
-    /**     
+
+    /**
      * The implementation of {
-@link #unmodifiableSortedMap(SortedMap)    }
-. This
+     @link #unmodifiableSortedMap(SortedMap)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static class UnmodifiableSortedMap extends UnmodifiableMap implements SortedMap, Rollbackable {
-
-        /**         
+    private static class UnmodifiableSortedMap extends UnmodifiableMap
+            implements SortedMap, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -8806743815996713206L;
 
-        /**         
+        /**
          * The wrapped map; stored both here and in the superclass to avoid
          * excessive casting.
          * @serial the wrapped map
          */
         private final SortedMap sm;
 
-        /**         
+        /**
          * Wrap a given map.
          * @param sm the map to wrap
          * @throws NullPointerException if sm is null
@@ -3377,7 +3520,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -3388,35 +3532,33 @@ reverseOrder        // The remaining methods are optional, but provide a perform
 
         private FieldRecord $RECORD$sm = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$sm
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$sm };
     }
 
     // class UnmodifiableSortedMap
-    /**     
+
+    /**
      * The implementation of {
-@link #synchronizedSortedMap(SortedMap)    }
-. This
+     @link #synchronizedSortedMap(SortedMap)    }
+     . This
      * class name is required for compatibility with Sun's JDK serializability.
      * @author Eric Blake <ebb9@email.byu.edu>
      */
-    private static class UnmodifiableSortedSet extends UnmodifiableSet implements SortedSet, Rollbackable {
-
-        /**         
+    private static class UnmodifiableSortedSet extends UnmodifiableSet
+            implements SortedSet, Rollbackable {
+        /**
          * Compatible with JDK 1.4.
          */
         private static final long serialVersionUID = -4929149591599911165L;
 
-        /**         
+        /**
          * The wrapped set; stored both here and in the superclass to avoid
          * excessive casting.
          * @serial the wrapped set
          */
         private SortedSet ss;
 
-        /**         
+        /**
          * Wrap a given set.
          * @param ss the set to wrap
          * @throws NullPointerException if ss is null
@@ -3451,35 +3593,37 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
 
         private final SortedSet $ASSIGN$ss(SortedSet newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$ss.add(null, ss, $CHECKPOINT.getTimestamp());
             }
-            if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+            if ((newValue != null)
+                    && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                 newValue.$SET$CHECKPOINT($CHECKPOINT);
             }
+
             return ss = newValue;
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            ss = (SortedSet)$RECORD$ss.restore(ss, timestamp, trim);
+            ss = (SortedSet) $RECORD$ss.restore(ss, timestamp, trim);
             super.$RESTORE(timestamp, trim);
         }
 
         private FieldRecord $RECORD$ss = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$ss
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$ss };
     }
 
     // class UnmodifiableSortedSet
-    /**     
+
+    /**
      * Determines if a list should be treated as a sequential-access one.
      * Rather than the old method of JDK 1.3 of assuming only instanceof
      * AbstractSequentialList should be sequential, this uses the new method
@@ -3489,26 +3633,27 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      * @return true if it should be treated as sequential-access
      */
     private static boolean isSequential(List l) {
-        return !(l instanceof RandomAccess) && l.size() > LARGE_LIST_SIZE;
+        return !(l instanceof RandomAccess) && (l.size() > LARGE_LIST_SIZE);
     }
 
-    /**     
+    /**
      * This class is non-instantiable.
      */
     private Collections() {
     }
 
-    /**     
+    /**
      * Compare two objects with or without a Comparator. If c is null, uses the
      * natural ordering. Slightly slower than doing it inline if the JVM isn't
      * clever, but worth it for removing a duplicate of the search code.
      * Note: This code is also used in Arrays (for sort as well as search).
      */
     static final int compare(Object o1, Object o2, Comparator c) {
-        return c == null?((Comparable)o1).compareTo(o2):c.compare(o1, o2);
+        return (c == null) ? ((Comparable) o1).compareTo(o2) : c
+                .compare(o1, o2);
     }
 
-    /**     
+    /**
      * Perform a binary search of a List for a key, using the natural ordering of
      * the elements. The list must be sorted (as by the sort() method) - if it is
      * not, the behavior of this method is undefined, and may be an infinite
@@ -3516,12 +3661,12 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      * the list contains the key more than once, any one of them may be found.
      * <p>
      * This algorithm behaves in log(n) time for {
-@link RandomAccess    }
- lists,
+     @link RandomAccess    }
+     lists,
      * and uses a linear search with O(n) link traversals and log(n) comparisons
      * with {
-@link AbstractSequentialList    }
- lists. Note: although the
+     @link AbstractSequentialList    }
+     lists. Note: although the
      * specification allows for an infinite loop if the list is unsorted, it will
      * not happen in this (Classpath) implementation.
      * @param l the list to search (must be sorted)
@@ -3538,7 +3683,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return binarySearch(l, key, null);
     }
 
-    /**     
+    /**
      * Perform a binary search of a List for a key, using a supplied Comparator.
      * The list must be sorted (as by the sort() method with the same Comparator)
      * - if it is not, the behavior of this method is undefined, and may be an
@@ -3547,12 +3692,12 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      * found. If the comparator is null, the elements' natural ordering is used.
      * <p>
      * This algorithm behaves in log(n) time for {
-@link RandomAccess    }
- lists,
+     @link RandomAccess    }
+     lists,
      * and uses a linear search with O(n) link traversals and log(n) comparisons
      * with {
-@link AbstractSequentialList    }
- lists. Note: although the
+     @link AbstractSequentialList    }
+     lists. Note: although the
      * specification allows for an infinite loop if the list is unsorted, it will
      * not happen in this (Classpath) implementation.
      * @param l the list to search (must be sorted)
@@ -3571,40 +3716,54 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         int pos = 0;
         int low = 0;
         int hi = l.size() - 1;
+
         if (isSequential(l)) {
             ListIterator itr = l.listIterator();
             int i = 0;
+
             while (low <= hi) {
                 pos = (low + hi) >> 1;
-                if (i < pos)
-                    for (; i != pos; i++, itr.next()) 
+
+                if (i < pos) {
+                    for (; i != pos; i++, itr.next()) {
                         ;
-                else
-                    for (; i != pos; i--, itr.previous()) 
+                    }
+                } else {
+                    for (; i != pos; i--, itr.previous()) {
                         ;
+                    }
+                }
+
                 final int d = compare(key, itr.next(), c);
-                if (d == 0)
+
+                if (d == 0) {
                     return pos;
-                else if (d < 0)
+                } else if (d < 0) {
                     hi = pos - 1;
-                else
+                } else {
                     low = ++pos;
-            }        } else {
+                }
+            }
+        } else {
             while (low <= hi) {
                 pos = (low + hi) >> 1;
+
                 final int d = compare(key, l.get(pos), c);
-                if (d == 0)
+
+                if (d == 0) {
                     return pos;
-                else if (d < 0)
+                } else if (d < 0) {
                     hi = pos - 1;
-                else
+                } else {
                     low = ++pos;
+                }
             }
         }
+
         return -pos - 1;
     }
 
-    /**     
+    /**
      * Copy one list to another. If the destination list is longer than the
      * source list, the remaining elements are unaffected. This method runs in
      * linear time.
@@ -3617,17 +3776,21 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      */
     public static void copy(List dest, List source) {
         int pos = source.size();
-        if (dest.size() < pos)
+
+        if (dest.size() < pos) {
             throw new IndexOutOfBoundsException("Source does not fit in dest");
+        }
+
         Iterator i1 = source.iterator();
         ListIterator i2 = dest.listIterator();
+
         while (--pos >= 0) {
             i2.next();
             i2.set(i1.next());
         }
     }
 
-    /**     
+    /**
      * Returns an Enumeration over a collection. This allows interoperability
      * with legacy APIs that require an Enumeration as input.
      * @param c the Collection to iterate over
@@ -3643,11 +3806,10 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             public final Object nextElement() {
                 return i.next();
             }
-
         };
     }
 
-    /**     
+    /**
      * Replace every element of a list with a given value. This method runs in
      * linear time.
      * @param l the list to fill.
@@ -3657,13 +3819,14 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      */
     public static void fill(List l, Object val) {
         ListIterator itr = l.listIterator();
+
         for (int i = l.size() - 1; i >= 0; --i) {
             itr.next();
             itr.set(val);
         }
     }
 
-    /**     
+    /**
      * Returns the starting index where the specified sublist first occurs
      * in a larger list, or -1 if there is no matching position. If
      * <code>target.size() &gt; source.size()</code>, this returns -1,
@@ -3677,13 +3840,17 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      */
     public static int indexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = 0, j = target.size(); j <= ssize; i++, j++) 
-            if (source.subList(i, j).equals(target))
+
+        for (int i = 0, j = target.size(); j <= ssize; i++, j++) {
+            if (source.subList(i, j).equals(target)) {
                 return i;
+            }
+        }
+
         return -1;
     }
 
-    /**     
+    /**
      * Returns the starting index where the specified sublist last occurs
      * in a larger list, or -1 if there is no matching position. If
      * <code>target.size() &gt; source.size()</code>, this returns -1,
@@ -3697,13 +3864,17 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      */
     public static int lastIndexOfSubList(List source, List target) {
         int ssize = source.size();
-        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--) 
-            if (source.subList(i, j).equals(target))
+
+        for (int i = ssize - target.size(), j = ssize; i >= 0; i--, j--) {
+            if (source.subList(i, j).equals(target)) {
                 return i;
+            }
+        }
+
         return -1;
     }
 
-    /**     
+    /**
      * Returns an ArrayList holding the elements visited by a given
      * Enumeration. This method exists for interoperability between legacy
      * APIs and the new Collection API.
@@ -3714,12 +3885,15 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      */
     public static ArrayList list(Enumeration e) {
         ArrayList l = new ArrayList();
-        while (e.hasMoreElements()) 
+
+        while (e.hasMoreElements()) {
             l.add(e.nextElement());
+        }
+
         return l;
     }
 
-    /**     
+    /**
      * Find the maximum element in a Collection, according to the natural
      * ordering of the elements. This implementation iterates over the
      * Collection, so it works in linear time.
@@ -3733,7 +3907,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return max(c, null);
     }
 
-    /**     
+    /**
      * Find the maximum element in a Collection, according to a specified
      * Comparator. This implementation iterates over the Collection, so it
      * works in linear time.
@@ -3750,15 +3924,19 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         Iterator itr = c.iterator();
         Object max = itr.next();
         int csize = c.size();
+
         for (int i = 1; i < csize; i++) {
             Object o = itr.next();
-            if (compare(max, o, order) < 0)
+
+            if (compare(max, o, order) < 0) {
                 max = o;
+            }
         }
+
         return max;
     }
 
-    /**     
+    /**
      * Find the minimum element in a Collection, according to the natural
      * ordering of the elements. This implementation iterates over the
      * Collection, so it works in linear time.
@@ -3772,7 +3950,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return min(c, null);
     }
 
-    /**     
+    /**
      * Find the minimum element in a Collection, according to a specified
      * Comparator. This implementation iterates over the Collection, so it
      * works in linear time.
@@ -3789,15 +3967,19 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         Iterator itr = c.iterator();
         Object min = itr.next();
         int csize = c.size();
+
         for (int i = 1; i < csize; i++) {
             Object o = itr.next();
-            if (compare(min, o, order) > 0)
+
+            if (compare(min, o, order) > 0) {
                 min = o;
+            }
         }
+
         return min;
     }
 
-    /**     
+    /**
      * Creates an immutable list consisting of the same object repeated n times.
      * The returned object is tiny, consisting of only a single reference to the
      * object and a count of the number of elements. It is Serializable, and
@@ -3815,7 +3997,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new CopiesList(n, o);
     }
 
-    /**     
+    /**
      * Replace all instances of one object with another in the specified list.
      * The list does not change size. An element e is replaced if
      * <code>oldval == null ? e == null : oldval.equals(e)</code>.
@@ -3834,15 +4016,18 @@ reverseOrder        // The remaining methods are optional, but provide a perform
     public static boolean replaceAll(List list, Object oldval, Object newval) {
         ListIterator itr = list.listIterator();
         boolean replace_occured = false;
-        for (int i = list.size(); --i >= 0; ) 
+
+        for (int i = list.size(); --i >= 0;) {
             if (AbstractCollection.equals(oldval, itr.next())) {
                 itr.set(newval);
                 replace_occured = true;
             }
+        }
+
         return replace_occured;
     }
 
-    /**     
+    /**
      * Reverse a given list. This method works in linear time.
      * @param l the list to reverse
      * @throws UnsupportedOperationException if l.listIterator() does not
@@ -3853,6 +4038,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         int pos1 = 1;
         int pos2 = l.size();
         ListIterator i2 = l.listIterator(pos2);
+
         while (pos1 < pos2) {
             Object o = i1.next();
             i1.set(i2.previous());
@@ -3862,7 +4048,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         }
     }
 
-    /**     
+    /**
      * Get a comparator that implements the reverse of natural ordering. In
      * other words, this sorts Comparable objects opposite of how their
      * compareTo method would sort. This makes it easy to sort into reverse
@@ -3876,7 +4062,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return rcInstance;
     }
 
-    /**     
+    /**
      * Rotate the elements in a list by a specified distance. After calling this
      * method, the element now at index <code>i</code> was formerly at index
      * <code>(i - distance) mod list.size()</code>. The list size is unchanged.
@@ -3891,16 +4077,16 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      * result in <code>[t, n, k, a, s]</code>.
      * <p>
      * If the list is small or implements {
-@link RandomAccess    }
-, the
+     @link RandomAccess    }
+     , the
      * implementation exchanges the first element to its destination, then the
      * displaced element, and so on until a circuit has been completed. The
      * process is repeated if needed on the second element, and so forth, until
      * all elements have been swapped.  For large non-random lists, the
      * implementation breaks the list into two sublists at index
      * <code>-distance mod size</code>, calls {
-@link #reverse(List)    }
- on the
+     @link #reverse(List)    }
+     on the
      * pieces, then reverses the overall list.
      * @param list the list to rotate
      * @param distance the distance to rotate by; unrestricted in value
@@ -3910,10 +4096,15 @@ reverseOrder        // The remaining methods are optional, but provide a perform
     public static void rotate(List list, int distance) {
         int size = list.size();
         distance %= size;
-        if (distance == 0)
+
+        if (distance == 0) {
             return;
-        if (distance < 0)
+        }
+
+        if (distance < 0) {
             distance += size;
+        }
+
         if (isSequential(list)) {
             reverse(list);
             reverse(list.subList(0, distance));
@@ -3922,21 +4113,27 @@ reverseOrder        // The remaining methods are optional, but provide a perform
             int a = size;
             int lcm = distance;
             int b = a % lcm;
+
             while (b != 0) {
                 a = lcm;
                 lcm = b;
                 b = a % lcm;
             }
+
             while (--lcm >= 0) {
                 Object o = list.get(lcm);
-                for (int i = lcm + distance; i != lcm; i = (i + distance) % size) 
+
+                for (int i = lcm + distance; i != lcm; i = (i + distance)
+                        % size) {
                     o = list.set(i, o);
+                }
+
                 list.set(lcm, o);
             }
         }
     }
 
-    /**     
+    /**
      * Shuffle a list according to a default source of randomness. The algorithm
      * used iterates backwards over the list, swapping each element with an
      * element randomly selected from the elements in positions less than or
@@ -3949,8 +4146,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      * <p>
      * This method operates in linear time. To do this on large lists which do
      * not implement {
-@link RandomAccess    }
-, a temporary array is used to acheive
+     @link RandomAccess    }
+     , a temporary array is used to acheive
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
      * @throws UnsupportedOperationException if l.listIterator() does not
@@ -3959,14 +4156,16 @@ reverseOrder        // The remaining methods are optional, but provide a perform
     public static void shuffle(List l) {
         if (defaultRandom == null) {
             synchronized (Collections.class) {
-                if (defaultRandom == null)
+                if (defaultRandom == null) {
                     defaultRandom = new Random();
+                }
             }
         }
+
         shuffle(l, defaultRandom);
     }
 
-    /**     
+    /**
      * Shuffle a list according to a given source of randomness. The algorithm
      * used iterates backwards over the list, swapping each element with an
      * element randomly selected from the elements in positions less than or
@@ -3979,8 +4178,8 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      * <p>
      * This method operates in linear time. To do this on large lists which do
      * not implement {
-@link RandomAccess    }
-, a temporary array is used to acheive
+     @link RandomAccess    }
+     , a temporary array is used to acheive
      * this speed, since it would be quadratic access otherwise.
      * @param l the list to shuffle
      * @param r the source of randomness to use for the shuffle
@@ -3992,21 +4191,27 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         ListIterator i = l.listIterator(lsize);
         boolean sequential = isSequential(l);
         Object[] a = null;
-        if (sequential)
+
+        if (sequential) {
             a = l.toArray();
+        }
+
         for (int pos = lsize - 1; pos > 0; --pos) {
             int swap = r.nextInt(pos + 1);
             Object o;
+
             if (sequential) {
                 o = a[swap];
                 a[swap] = i.previous();
-            } else
+            } else {
                 o = l.set(swap, i.previous());
+            }
+
             i.set(o);
         }
     }
 
-    /**     
+    /**
      * Obtain an immutable Set consisting of a single element. The return value
      * of this method is Serializable.
      * @param o the single element
@@ -4017,7 +4222,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new SingletonSet(o);
     }
 
-    /**     
+    /**
      * Obtain an immutable List consisting of a single element. The return value
      * of this method is Serializable, and implements RandomAccess.
      * @param o the single element
@@ -4030,7 +4235,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new SingletonList(o);
     }
 
-    /**     
+    /**
      * Obtain an immutable Map consisting of a single key-value pair.
      * The return value of this method is Serializable.
      * @param key the single key
@@ -4043,7 +4248,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new SingletonMap(key, value);
     }
 
-    /**     
+    /**
      * Sort a list according to the natural ordering of its elements. The list
      * must be modifiable, but can be of fixed size. The sort algorithm is
      * precisely that used by Arrays.sort(Object[]), which offers guaranteed
@@ -4060,7 +4265,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         sort(l, null);
     }
 
-    /**     
+    /**
      * Sort a list according to a specified Comparator. The list must be
      * modifiable, but can be of fixed size. The sort algorithm is precisely that
      * used by Arrays.sort(Object[], Comparator), which offers guaranteed
@@ -4079,14 +4284,16 @@ reverseOrder        // The remaining methods are optional, but provide a perform
     public static void sort(List l, Comparator c) {
         Object[] a = l.toArray();
         Arrays.sort(a, c);
+
         ListIterator i = l.listIterator(a.length);
-        for (int pos = a.length; --pos >= 0; ) {
+
+        for (int pos = a.length; --pos >= 0;) {
             i.previous();
             i.set(a[pos]);
         }
     }
 
-    /**     
+    /**
      * Swaps the elements at the specified positions within the list. Equal
      * positions have no effect.
      * @param l the list to work on
@@ -4101,7 +4308,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         l.set(i, l.set(j, l.get(i)));
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) collection wrapper backed by the
      * given collection. Notice that element access through the iterators
      * is thread-safe, but if the collection can be structurally modified
@@ -4130,7 +4337,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new SynchronizedCollection(c);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) list wrapper backed by the
      * given list. Notice that element access through the iterators
      * is thread-safe, but if the list can be structurally modified
@@ -4155,12 +4362,14 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      * @see RandomAccess
      */
     public static List synchronizedList(List l) {
-        if (l instanceof RandomAccess)
+        if (l instanceof RandomAccess) {
             return new SynchronizedRandomAccessList(l);
+        }
+
         return new SynchronizedList(l);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) map wrapper backed by the given
      * map. Notice that element access through the collection views and their
      * iterators are thread-safe, but if the map can be structurally modified
@@ -4187,7 +4396,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new SynchronizedMap(m);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) set wrapper backed by the given
      * set. Notice that element access through the iterator is thread-safe, but
      * if the set can be structurally modified (adding or removing elements)
@@ -4213,7 +4422,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new SynchronizedSet(s);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) sorted map wrapper backed by the
      * given map. Notice that element access through the collection views,
      * subviews, and their iterators are thread-safe, but if the map can be
@@ -4245,7 +4454,7 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new SynchronizedSortedMap(m);
     }
 
-    /**     
+    /**
      * Returns a synchronized (thread-safe) sorted set wrapper backed by the
      * given set. Notice that element access through the iterator and through
      * subviews are thread-safe, but if the set can be structurally modified
@@ -4272,13 +4481,13 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new SynchronizedSortedSet(s);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given collection. This allows
      * "read-only" access, although changes in the backing collection show up
      * in this view. Attempts to modify the collection directly or via iterators
      * will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * <p>
      * Since the collection might be a List or a Set, and those have incompatible
      * equals and hashCode requirements, this relies on Object's implementation
@@ -4293,13 +4502,13 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new UnmodifiableCollection(c);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given list. This allows
      * "read-only" access, although changes in the backing list show up
      * in this view. Attempts to modify the list directly, via iterators, or
      * via sublists, will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * <p>
      * The returned List implements Serializable, but can only be serialized if
      * the list it wraps is likewise Serializable. In addition, if the wrapped
@@ -4310,18 +4519,20 @@ reverseOrder        // The remaining methods are optional, but provide a perform
      * @see RandomAccess
      */
     public static List unmodifiableList(List l) {
-        if (l instanceof RandomAccess)
+        if (l instanceof RandomAccess) {
             return new UnmodifiableRandomAccessList(l);
+        }
+
         return new UnmodifiableList(l);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given map. This allows "read-only"
      * access, although changes in the backing map show up in this view.
      * Attempts to modify the map directly, or via collection views or their
      * iterators will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * <p>
      * The returned Map implements Serializable, but can only be serialized if
      * the map it wraps is likewise Serializable.
@@ -4333,13 +4544,13 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new UnmodifiableMap(m);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given set. This allows
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly or via iterators
      * will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * <p>
      * The returned Set implements Serializable, but can only be serialized if
      * the set it wraps is likewise Serializable.
@@ -4351,13 +4562,13 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new UnmodifiableSet(s);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given sorted map. This allows
      * "read-only" access, although changes in the backing map show up in this
      * view. Attempts to modify the map directly, via subviews, via collection
      * views, or iterators, will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * <p>
      * The returned SortedMap implements Serializable, but can only be
      * serialized if the map it wraps is likewise Serializable.
@@ -4369,13 +4580,13 @@ reverseOrder        // The remaining methods are optional, but provide a perform
         return new UnmodifiableSortedMap(m);
     }
 
-    /**     
+    /**
      * Returns an unmodifiable view of the given sorted set. This allows
      * "read-only" access, although changes in the backing set show up
      * in this view. Attempts to modify the set directly, via subsets, or via
      * iterators, will fail with {
-@link UnsupportedOperationException    }
-.
+     @link UnsupportedOperationException    }
+     .
      * <p>
      * The returns SortedSet implements Serializable, but can only be
      * serialized if the set it wraps is likewise Serializable.
@@ -4388,13 +4599,15 @@ reverseOrder        // The remaining methods are optional, but provide a perform
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         $RECORD$$CHECKPOINT.commit(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
         if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+            $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                    timestamp, trim);
             FieldRecord.popState($RECORDS);
             $RESTORE(timestamp, trim);
         }
@@ -4407,22 +4620,23 @@ reverseOrder        // The remaining methods are optional, but provide a perform
     public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
         if ($CHECKPOINT != checkpoint) {
             Checkpoint oldCheckpoint = $CHECKPOINT;
+
             if (checkpoint != null) {
                 $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
                 FieldRecord.pushState($RECORDS);
             }
+
             $CHECKPOINT = checkpoint;
             oldCheckpoint.setCheckpoint(checkpoint);
             checkpoint.addObject(this);
         }
+
         return this;
     }
 
     protected CheckpointRecord $RECORD$$CHECKPOINT = new CheckpointRecord();
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-        };
-
+    private FieldRecord[] $RECORDS = new FieldRecord[] {};
 }
 
 // class Collections

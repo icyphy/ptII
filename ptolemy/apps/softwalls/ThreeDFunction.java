@@ -326,6 +326,7 @@ public class ThreeDFunction implements Serializable {
         int yIndex;
         int thetaIndex;
         double point;
+
         // Get the proper value of theta
         theta = _angleWrap(theta);
 

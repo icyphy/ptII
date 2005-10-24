@@ -27,25 +27,26 @@ COPYRIGHTENDKEY
 @ProposedRating Red (cxh)
 @AcceptedRating Red (cxh)
 */
-
 package ptolemy.apps.fullscreen;
 
-
-import java.awt.DisplayMode;        // JDK1.4
+import java.awt.DisplayMode; // JDK1.4
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferStrategy;
-import java.awt.geom.AffineTransform;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// MultiBuffer
+
 /**
 
 Java 1.4 can display images multiple buffers on multiple screens using
@@ -59,7 +60,6 @@ http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html
 @author  Christopher Hylands
 @version $Id$ */
 public class MultiBuffer {
-
     /** Query the GraphicsDevice for the best DisplayMode and
      *  set the display to that mode.  If there is no
      *  best DisplayMode then do nothing.
@@ -67,6 +67,7 @@ public class MultiBuffer {
      */
     public static void chooseBestDisplayMode(GraphicsDevice device) {
         DisplayMode best = getBestDisplayMode(device);
+
         if (best != null) {
             device.setDisplayMode(best);
         }
@@ -83,25 +84,25 @@ public class MultiBuffer {
      *  @return A Frame that can be used to display images.
      */
     public static Frame enterFullScreenMode(GraphicsDevice device,
-            int numberOfBuffers) {
-        GraphicsEnvironment graphicsEnvironment =
-            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        int numberOfBuffers) {
+        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
+                    .getLocalGraphicsEnvironment();
 
         //device = graphicsEnvironment.getDefaultScreenDevice();
-
         GraphicsConfiguration gc = device.getDefaultConfiguration();
-        Rectangle graphicsConfigurationBounds =
-            gc.getBounds();
+        Rectangle graphicsConfigurationBounds = gc.getBounds();
         Frame mainFrame = new Frame(gc);
         mainFrame.setUndecorated(true);
         mainFrame.setIgnoreRepaint(true);
         mainFrame.enableInputMethods(false);
         device.setFullScreenWindow(mainFrame);
+
         if (device.isDisplayChangeSupported()) {
             MultiBuffer.chooseBestDisplayMode(device);
         }
+
         mainFrame.setLocation(graphicsConfigurationBounds.x,
-                graphicsConfigurationBounds.y);
+            graphicsConfigurationBounds.y);
 
         mainFrame.createBufferStrategy(numberOfBuffers);
 
@@ -118,8 +119,8 @@ public class MultiBuffer {
      *  @return A Frame that can be used to display images.
      */
     public static Frame enterFullScreenMode(int numberOfBuffers) {
-        GraphicsEnvironment graphicsEnvironment =
-            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
+                    .getLocalGraphicsEnvironment();
         GraphicsDevice device = graphicsEnvironment.getDefaultScreenDevice();
         return enterFullScreenMode(device, numberOfBuffers);
     }
@@ -129,9 +130,10 @@ public class MultiBuffer {
      *  enterFullScreenMode is called in a try block.
      */
     public static void exitFullScreenMode() {
-        GraphicsEnvironment graphicsEnvironment =
-            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
+                    .getLocalGraphicsEnvironment();
         GraphicsDevice device = graphicsEnvironment.getDefaultScreenDevice();
+
         // The GraphicsDevice.setFullScreenWindow() docs say:
         // "When returning to windowed mode from an exclusive full-screen
         // window, any display changes made by calling"
@@ -139,7 +141,6 @@ public class MultiBuffer {
         // original state."
         device.setFullScreenWindow(null);
     }
-
 
     /** Return the best display mode of a graphics device.
      *  Query a graphics device for an array of possible modes and
@@ -153,12 +154,10 @@ public class MultiBuffer {
      *  matches a possible displayMode.  If there are no matches, return null.
      *  @see getBestDisplayMode(GraphicsDevice)
      */
-    public static DisplayMode
-    getBestDisplayMode(GraphicsDevice device,
-            DisplayMode[] bestDisplayModes) {
+    public static DisplayMode getBestDisplayMode(GraphicsDevice device,
+        DisplayMode[] bestDisplayModes) {
         // FIXME java.awt.GraphicsConfigTemplate might be another solution?
         // This method is based on a method from the Sun website.
-
         DisplayMode[] modes = device.getDisplayModes();
 
         for (int i = 0; i < bestDisplayModes.length; i++) {
@@ -168,24 +167,23 @@ public class MultiBuffer {
                 // anything.
                 //System.out.println("MultiBuffer.getBestDisplayMode(): "
                 //                       + displayModeToString(modes[j]));
-                if (bestDisplayModes[i].getWidth() == modes[j].getWidth()
-                        && bestDisplayModes[i].getHeight() == modes[j].getHeight()
-                        && bestDisplayModes[i].getBitDepth()
-                        == modes[j].getBitDepth()
-                    ) {
+                if ((bestDisplayModes[i].getWidth() == modes[j].getWidth())
+                            && (bestDisplayModes[i].getHeight() == modes[j]
+                            .getHeight())
+                            && (bestDisplayModes[i].getBitDepth() == modes[j]
+                            .getBitDepth())) {
                     //System.out.println("MultiBuffer.getBestDisplayMode(): "
                     //                       + "returning: "
                     //                       + displayModeToString(modes[j]));
-
                     // Here, we return the modes[] value, which has
                     // the refresh rate set.
                     return modes[j];
                 }
             }
         }
+
         return null;
     }
-
 
     /** Return the best display mode of a graphics device.
      *  Query a graphics device for an array of possible modes and
@@ -198,45 +196,37 @@ public class MultiBuffer {
      *  If there are no matches, return null.
      *  @see getBestDisplayMode(GraphicsDevice, DisplayMode[])
      */
-    public static DisplayMode
-    getBestDisplayMode(GraphicsDevice device) {
+    public static DisplayMode getBestDisplayMode(GraphicsDevice device) {
         return getBestDisplayMode(device, _BEST_DISPLAY_MODES);
     }
 
     /** Return the predefined array of best display modes */
-    public static DisplayMode [] getBestDisplayModes() {
+    public static DisplayMode[] getBestDisplayModes() {
         return _BEST_DISPLAY_MODES;
     }
 
     // Return a string representation of the DisplayMode.
     // This method is used for debugging.
     public static String displayModeToString(DisplayMode mode) {
-
-        return new String( mode.getWidth() + " x "
-                + mode.getHeight() + ", "
-                + (mode.getBitDepth()
-                        == DisplayMode.BIT_DEPTH_MULTI
-                        ? "BIT_DEPTH_MULTI"
-                        : (new Integer(mode.getBitDepth())).toString())
-                + ", "
-                + (mode.getRefreshRate()
-                        == DisplayMode.REFRESH_RATE_UNKNOWN
-                        ? "REFRESH_RATE_UNKNOWN"
-                        : (new Integer(mode.getRefreshRate())).toString())
-                           );
+        return new String(mode.getWidth() + " x " + mode.getHeight() + ", "
+            + ((mode.getBitDepth() == DisplayMode.BIT_DEPTH_MULTI)
+            ? "BIT_DEPTH_MULTI" : (new Integer(mode.getBitDepth())).toString())
+            + ", "
+            + ((mode.getRefreshRate() == DisplayMode.REFRESH_RATE_UNKNOWN)
+            ? "REFRESH_RATE_UNKNOWN"
+            : (new Integer(mode.getRefreshRate())).toString()));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // DisplayModes to compare with the array of possible DisplayModes
     // for a GraphicsDevice
     private static DisplayMode[] _BEST_DISPLAY_MODES = new DisplayMode[] {
-        new DisplayMode(1024, 768, 24, 0),
-        new DisplayMode(1024, 768, 16, 0),
-        new DisplayMode(1024, 768, 8, 0),
-        new DisplayMode(640, 480, 32, 0),
-        new DisplayMode(640, 480, 16, 0),
-        new DisplayMode(640, 480, 8, 0)
-    };
+            new DisplayMode(1024, 768, 24, 0),
+            new DisplayMode(1024, 768, 16, 0),
+            new DisplayMode(1024, 768, 8, 0),
+            new DisplayMode(640, 480, 32, 0),
+            new DisplayMode(640, 480, 16, 0),
+            new DisplayMode(640, 480, 8, 0)
+        };
 }

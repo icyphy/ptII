@@ -359,7 +359,6 @@ public class SDFReceiver extends AbstractReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // The queue containing the receiver data.
     private ArrayFIFOQueue _queue;
 

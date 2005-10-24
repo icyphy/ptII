@@ -57,7 +57,7 @@ import caltrop.interpreter.environment.Environment;
  external rate information.  This includes SDF (where the rates are
  constant) and DDF (where the rates are published once an action is
  selected.
- 
+
  @author Christopher Chang, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 4.0
@@ -95,11 +95,13 @@ public class DataflowWithRates extends Dataflow {
             try {
                 Integer integerRate = (Integer) rateMap.get(port.getName());
                 int rate;
+
                 if (integerRate == null) {
                     rate = 0;
                 } else {
                     rate = integerRate.intValue();
                 }
+
                 //  System.out.println("publishing rate " + rate
                 //        + " for port " + port.getFullName());
                 DFUtilities.setIfNotDefined(port, varName, rate);
@@ -183,6 +185,7 @@ public class DataflowWithRates extends Dataflow {
                     .getExpressions().length
                     * repeatVal);
         }
+
         return signature;
     }
 

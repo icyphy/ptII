@@ -5,7 +5,9 @@
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
+
 
 /**
  * This class wraps a graphics configuration so that it can be
@@ -29,11 +31,11 @@ class GCWrapper {
     }
 }
 
+
 /**
  * Main frame class.
  */
 public class CapabilitiesTest extends JFrame implements ItemListener {
-
     private JComboBox gcSelection = new JComboBox();
     private JCheckBox imageAccelerated = new JCheckBox("Accelerated", false);
     private JCheckBox imageTrueVolatile = new JCheckBox("Volatile", false);
@@ -54,10 +56,13 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
                 }
             });
         initComponents(getContentPane());
+
         GraphicsConfiguration[] gcs = dev.getConfigurations();
+
         for (int i = 0; i < gcs.length; i++) {
             gcSelection.addItem(new GCWrapper(gcs[i], i));
         }
+
         gcSelection.addItemListener(this);
         gcChanged();
     }
@@ -91,46 +96,55 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
         // +++++                       +                           +
         // +=======================================================+
         c.setLayout(new BorderLayout());
+
         // Graphics Config
         JPanel gcPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         c.add(gcPanel, BorderLayout.NORTH);
         gcSelection.setPreferredSize(new Dimension(400, 30));
         gcPanel.add(gcSelection);
+
         // Capabilities
         JPanel capsPanel = new JPanel(new BorderLayout());
         c.add(capsPanel, BorderLayout.CENTER);
+
         // Image Capabilities
         JPanel imageCapsPanel = new JPanel(new GridLayout(2, 1));
         capsPanel.add(imageCapsPanel, BorderLayout.NORTH);
         imageCapsPanel.setBorder(BorderFactory.createTitledBorder(
-                                         "Image Capabilities"));
+                "Image Capabilities"));
         imageAccelerated.setEnabled(false);
         imageCapsPanel.add(imageAccelerated);
         imageTrueVolatile.setEnabled(false);
         imageCapsPanel.add(imageTrueVolatile);
+
         // Buffer Capabilities
         JPanel bufferCapsPanel = new JPanel(new BorderLayout());
         capsPanel.add(bufferCapsPanel, BorderLayout.CENTER);
         bufferCapsPanel.setBorder(BorderFactory.createTitledBorder(
-                                          "Buffer Capabilities"));
+                "Buffer Capabilities"));
+
         // Buffer Access
         JPanel bufferAccessCapsPanel = new JPanel(new GridLayout(3, 1));
         bufferAccessCapsPanel.setPreferredSize(new Dimension(300, 88));
         bufferCapsPanel.add(bufferAccessCapsPanel, BorderLayout.NORTH);
+
         // Flipping
         JPanel flippingPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         bufferAccessCapsPanel.add(flippingPanel);
         flippingPanel.add(flipping);
         flipping.setEnabled(false);
         flippingPanel.add(flippingMethod);
+
         // Full-screen
         JPanel fsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         bufferAccessCapsPanel.add(fsPanel);
+
         JPanel indentPanel = new JPanel();
         indentPanel.setPreferredSize(new Dimension(30, 30));
         fsPanel.add(indentPanel);
         fsPanel.add(fullScreen);
         fullScreen.setEnabled(false);
+
         // Multi-buffering
         JPanel mbPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         bufferAccessCapsPanel.add(mbPanel);
@@ -139,23 +153,25 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
         mbPanel.add(indentPanel);
         mbPanel.add(multiBuffer);
         multiBuffer.setEnabled(false);
+
         // Front and Back Buffer Capabilities
         JPanel buffersPanel = new JPanel(new GridLayout(1, 2));
         bufferCapsPanel.add(buffersPanel, BorderLayout.CENTER);
+
         // Front Buffer
         JPanel fbPanel = new JPanel(new GridLayout(2, 1));
-        fbPanel.setBorder(BorderFactory.createTitledBorder(
-                                  "Front Buffer"));
+        fbPanel.setBorder(BorderFactory.createTitledBorder("Front Buffer"));
         buffersPanel.add(fbPanel);
         fbPanel.add(fbAccelerated);
         fbAccelerated.setEnabled(false);
         fbPanel.add(fbTrueVolatile);
         fbTrueVolatile.setEnabled(false);
+
         // Back Buffer
         JPanel bbPanel = new JPanel(new GridLayout(2, 1));
         bbPanel.setPreferredSize(new Dimension(250, 80));
         bbPanel.setBorder(BorderFactory.createTitledBorder(
-                                  "Back and Intermediate Buffers"));
+                "Back and Intermediate Buffers"));
         buffersPanel.add(bbPanel);
         bbPanel.add(bbAccelerated);
         bbAccelerated.setEnabled(false);
@@ -168,25 +184,30 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
     }
 
     private void gcChanged() {
-        GCWrapper wrap = (GCWrapper)gcSelection.getSelectedItem();
+        GCWrapper wrap = (GCWrapper) gcSelection.getSelectedItem();
+
         //assert wrap != null;
         GraphicsConfiguration gc = wrap.getGC();
+
         //assert gc != null;
         //Image Caps
         ImageCapabilities imageCaps = gc.getImageCapabilities();
         imageAccelerated.setSelected(imageCaps.isAccelerated());
         imageTrueVolatile.setSelected(imageCaps.isTrueVolatile());
+
         // Buffer Caps
         BufferCapabilities bufferCaps = gc.getBufferCapabilities();
         flipping.setSelected(bufferCaps.isPageFlipping());
         flippingMethod.setText(getFlipText(bufferCaps.getFlipContents()));
         fullScreen.setSelected(bufferCaps.isFullScreenRequired());
         multiBuffer.setSelected(bufferCaps.isMultiBufferAvailable());
+
         // Front buffer caps
         imageCaps = bufferCaps.getFrontBufferCapabilities();
         fbAccelerated.setSelected(imageCaps.isAccelerated());
         fbTrueVolatile.setSelected(imageCaps.isTrueVolatile());
         imageCaps = bufferCaps.getFrontBufferCapabilities();
+
         // Back buffer caps
         imageCaps = bufferCaps.getBackBufferCapabilities();
         bbAccelerated.setSelected(imageCaps.isAccelerated());
@@ -208,9 +229,10 @@ public class CapabilitiesTest extends JFrame implements ItemListener {
     }
 
     public static void main(String[] args) {
-        GraphicsEnvironment ge =
-            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsEnvironment ge = GraphicsEnvironment
+                    .getLocalGraphicsEnvironment();
         GraphicsDevice[] devices = ge.getScreenDevices();
+
         for (int i = 0; i < devices.length; i++) {
             CapabilitiesTest tst = new CapabilitiesTest(devices[i]);
             tst.pack();

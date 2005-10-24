@@ -39,7 +39,7 @@ public interface CompositeModel {
      * Return an iterator over the nodes that this graph contains.
      */
     public Iterator nodes(Object composite);
-    
+
     /**
      * Return an iterator over the nodes that should
      * be rendered prior to the edges. This iterator

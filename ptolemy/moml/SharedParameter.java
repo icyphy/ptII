@@ -185,12 +185,14 @@ public class SharedParameter extends Parameter {
         if (root != null) {
             Iterator sharedParameters = sharedParameterList(root).iterator();
             String value = null;
+
             while (sharedParameters.hasNext()) {
                 SharedParameter candidate = (SharedParameter) sharedParameters
                         .next();
 
                 if (candidate != this) {
                     defaultValue = candidate.getExpression();
+
                     if (value != null) {
                         if (!defaultValue.equals(value)) {
                             throw new InternalErrorException(
@@ -205,6 +207,7 @@ public class SharedParameter extends Parameter {
         }
 
         boolean previousSuppressing = _suppressingPropagation;
+
         try {
             _suppressingPropagation = true;
             setExpression(defaultValue);

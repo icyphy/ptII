@@ -123,7 +123,9 @@ public class PtinyOSDirector extends Director {
         tosroot = new FileParameter(this, "TOSROOT");
         new Parameter(tosroot, "allowFiles", BooleanToken.FALSE);
         new Parameter(tosroot, "allowDirectories", BooleanToken.TRUE);
+
         String tosrootProperty = System.getProperty("ptolemy.ptII.tosroot");
+
         if (tosrootProperty != null) {
             tosroot.setExpression(tosrootProperty);
         } else {
@@ -341,8 +343,7 @@ public class PtinyOSDirector extends Director {
         while (inPorts.hasNext()) {
             IOPort p = (IOPort) inPorts.next();
 
-            if (p.getName().equals(parameter)
-                    && (p instanceof ParameterPort)) {
+            if (p.getName().equals(parameter) && (p instanceof ParameterPort)) {
                 Token t = ((ParameterPort) p).getParameter().getToken();
 
                 if (t != null) {
@@ -404,6 +405,7 @@ public class PtinyOSDirector extends Director {
                 // the directory file:/c:/myclasses/com/mycompany
                 //Class cls = Class.forName("Loader" + toplevelName, true, cl);
                 String className = "Loader" + toplevelName;
+
                 if (_debugging) {
                     _debug("About to load '" + className + "'");
                 }
@@ -432,10 +434,12 @@ public class PtinyOSDirector extends Director {
                         _debug("Done with load(), about to call main("
                                 + argsToMain[0] + " " + argsToMain[1]);
                     }
+
                     if (_loader.main(argsToMain) < 0) {
                         throw new InternalErrorException(
                                 "Could not initialize TOSSIM.");
                     }
+
                     if (_debugging) {
                         _debug("call to main completed");
                     }
@@ -520,6 +524,7 @@ public class PtinyOSDirector extends Director {
         NamedObj toplevel = _toplevelNC(); //container.toplevel();
 
         String filename = _sanitizedFullName(toplevel);
+
         if (container != toplevel) {
             filename = filename + "_" + container.getName(toplevel);
             filename = StringUtilities.sanitizeName(filename);
@@ -674,7 +679,7 @@ public class PtinyOSDirector extends Director {
         }
 
         if (((BooleanToken) simulate.getToken()).booleanValue()) {
-            _loader.wrapup();  // SIGSTOP: man 7 signal
+            _loader.wrapup(); // SIGSTOP: man 7 signal
         }
     }
 
@@ -689,31 +694,28 @@ public class PtinyOSDirector extends Director {
      *  or if the make subprocess fails or returns a non-zero value.
      */
     private void _compile(String makefileName) throws IllegalActionException {
-
         // The command we run is:
         // make
         // -C : change to the destination directory before reading
         // the makefile (FIXME: This is a GNU make extension)
         // -f : Use makefileName as the makefile
-
         // Use an array so we can handle strings with spaces
-        String command[] = {
-            "make", "-C",
-            destinationDirectory.stringValue().replace('\\', '/'),
-            "-f" , makefileName, target.stringValue()
-        };
+        String[] command = { "make", "-C",
+                destinationDirectory.stringValue().replace('\\', '/'), "-f",
+                makefileName, target.stringValue() };
 
         // Used for error handling.
         StringBuffer commandString = new StringBuffer(command[0]);
+
         for (int i = 1; i < command.length; i++) {
             commandString.append(" " + command[i]);
         }
+
         System.out.println(commandString.toString());
 
         int exitValue = 0;
 
         try {
-
             Runtime rt = Runtime.getRuntime();
             Process proc = rt.exec(command);
 
@@ -732,18 +734,16 @@ public class PtinyOSDirector extends Director {
             // Wait for exit and see if there are any errors.
             // make returns non-zero value if there was an error
             exitValue = proc.waitFor();
-
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Could not compile generated code, \""
-                    + commandString + "\" failed.");
-        }
-        if (exitValue != 0) {
-            throw new IllegalActionException(
-                    "Running \"" + commandString +
-                    "\" returned a nonzero value.");
+                    "Could not compile generated code, \"" + commandString
+                            + "\" failed.");
         }
 
+        if (exitValue != 0) {
+            throw new IllegalActionException("Running \"" + commandString
+                    + "\" returned a nonzero value.");
+        }
     }
 
     /** Confirm overwrite of file if the confirmOverwrite parameter is
@@ -753,15 +753,14 @@ public class PtinyOSDirector extends Director {
      *  @return True if ok to write file.
      *  @exception IllegalActionException If code generation should be halted.
      */
-    private boolean _confirmOverwrite(File file)
-            throws IllegalActionException {
+    private boolean _confirmOverwrite(File file) throws IllegalActionException {
         boolean confirmOverwriteValue = ((BooleanToken) confirmOverwrite
                 .getToken()).booleanValue();
 
         if (confirmOverwriteValue && file.exists()) {
             try {
-                if (MessageHandler.yesNoCancelQuestion("Overwrite "
-                            + file + "?")) {
+                if (MessageHandler.yesNoCancelQuestion("Overwrite " + file
+                        + "?")) {
                     if (!file.delete()) {
                         throw new IllegalActionException(this,
                                 "Could not delete file " + file);
@@ -770,14 +769,16 @@ public class PtinyOSDirector extends Director {
                     return false;
                 }
             } catch (CancelException ex) {
-                throw new IllegalActionException(
-                        this, "Cancelled overwrite of " + file);
+                throw new IllegalActionException(this,
+                        "Cancelled overwrite of " + file);
             }
         }
+
         return true;
     }
 
     // FIXME comment
+
     /** Generate NC code for the given model. This does not descend
      *  hierarchically into contained composites. It simply generates
      *  code for the top level of the specified model.
@@ -827,15 +828,18 @@ public class PtinyOSDirector extends Director {
         text.addLine("public class Loader" + toplevelName
                 + " implements PtinyOSLoader {");
 
-        text.addLine("    public void load(String path, PtinyOSDirector director) {");
-        text.addLine("        String fileSeparator = System.getProperty(\"file.separator\");");
-        text.addLine("        String toBeLoaded = path + fileSeparator + System.mapLibraryName(\""
+        text
+                .addLine("    public void load(String path, PtinyOSDirector director) {");
+        text
+                .addLine("        String fileSeparator = System.getProperty(\"file.separator\");");
+        text
+                .addLine("        String toBeLoaded = path + fileSeparator + System.mapLibraryName(\""
                         + toplevelName + "\");");
         text.addLine("        toBeLoaded = toBeLoaded.replace('\\\\', '/');");
-        text.addLine("        System.out.println(\"" + toplevelName + ".java : about to load \" + toBeLoaded);");
+        text.addLine("        System.out.println(\"" + toplevelName
+                + ".java : about to load \" + toBeLoaded);");
 
         text.addLine("        System.load(toBeLoaded);");
-
 
         text.addLine("        this.director = director;");
         text.addLine("    }");
@@ -885,15 +889,15 @@ public class PtinyOSDirector extends Director {
 
         text
                 .addLine("    public void tosDebug(String debugMode, String message, String nodeNumber) {");
-        text.addLine("        this.director.tosDebug(debugMode, message, nodeNumber);");
+        text
+                .addLine("        this.director.tosDebug(debugMode, message, nodeNumber);");
         text.addLine("    }");
 
         text.addLine("    private PtinyOSDirector director;");
 
         text.addLine("    private native int main" + toplevelName
                 + "(String argsToMain[]);");
-        text.addLine("    private native void wrapup" + toplevelName
-                + "();");
+        text.addLine("    private native void wrapup" + toplevelName + "();");
         text.addLine("    private native void processEvent" + toplevelName
                 + "(long currentTime);");
         text.addLine("    private native void receivePacket" + toplevelName
@@ -920,17 +924,17 @@ public class PtinyOSDirector extends Director {
     }
 
     /** Generate makefile.
-        // FIXME example
+     // FIXME example
 
-TOSROOT=/home/celaine/tinyos/tinyos/tinyos-1.x-scratch
-TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
-COMPONENT=MicaActor3056
-PFLAGS += -I%T/lib/Counters
-PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
-MY_PTCC_FLAGS += -D_PTII_NODE_NUM=MicaActor3056
-PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
-include /home/celaine/ptII/mk/ptII.mk
-include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
+     TOSROOT=/home/celaine/tinyos/tinyos/tinyos-1.x-scratch
+     TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
+     COMPONENT=MicaActor3056
+     PFLAGS += -I%T/lib/Counters
+     PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
+     MY_PTCC_FLAGS += -D_PTII_NODE_NUM=MicaActor3056
+     PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
+     include /home/celaine/ptII/mk/ptII.mk
+     include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
 
      */
     private String _generateMakefile() throws IllegalActionException {
@@ -939,7 +943,8 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
         String toplevelName = _sanitizedFullName(toplevel);
 
         _CodeString text = new _CodeString();
-        String tosrootNoSlashAtEnd = tosroot.stringValue().replaceFirst("/$", "");
+        String tosrootNoSlashAtEnd = tosroot.stringValue().replaceFirst("/$",
+                "");
         text.addLine("TOSROOT=" + tosrootNoSlashAtEnd);
         text.addLine("TOSDIR=" + tosrootNoSlashAtEnd + "/tos");
 
@@ -947,7 +952,8 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
         // FIXME use pathseparator?
         // FIXME make sure no trailing / before /../
         // FIXME: this will not work if TOSROOT has spaces in it.
-        text.addLine("TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make");
+        text
+                .addLine("TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make");
 
         text.addLine("COMPONENT=" + toplevelName);
 
@@ -958,24 +964,29 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
 
         // Turn _ into _1 for JNI compatibility.
         String nativeMethodName = toplevelName.replaceAll("_", "_1");
-        text.addLine("MY_PTCC_FLAGS +=" + " -D_PTII_NODE_NUM=" + nativeMethodName);
+        text.addLine("MY_PTCC_FLAGS +=" + " -D_PTII_NODE_NUM="
+                + nativeMethodName);
 
         String[] targets = target.stringValue().split("\\s");
 
         for (int i = 0; i < targets.length; i++) {
             if (targets[i].equals("ptII") || targets[i].equals("all")) {
                 // FIXME will this work for "all"?
-                text.addLine("PFLAGS += \"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
+                text
+                        .addLine("PFLAGS += \"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
+
                 // Expand $PTII, substitute / for \, and backslash space for space.
-                String ptIImk = StringUtilities.getProperty("ptolemy.ptII.dir") + "/mk/ptII.mk";
+                String ptIImk = StringUtilities.getProperty("ptolemy.ptII.dir")
+                        + "/mk/ptII.mk";
                 text.addLine("include " + ptIImk.replaceAll(" ", "\\\\ "));
                 break;
             }
         }
 
         // Handle pathnames with spaces: substitute / for \ and backslash space for space.
-        text.addLine("include " + tosroot.stringValue().replace('\\', '/').replaceAll(" ", "\\\\ ")
-                + "/tools/make/Makerules");
+        text.addLine("include "
+                + tosroot.stringValue().replace('\\', '/').replaceAll(" ",
+                        "\\\\ ") + "/tools/make/Makerules");
 
         // Use .mk so that Emacs will be in the right mode
         String makefileName = toplevelName + ".mk";
@@ -1284,7 +1295,6 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
         return objName;
     }
 
-
     /** Looks for the topmost container that contains a PtinyOSDirector
      *  director.
      *
@@ -1319,7 +1329,6 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
     //private native void wrapup();
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Java loader for JNI code.
     private PtinyOSLoader _loader;
 
@@ -1329,10 +1338,8 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
     // Workspace version number at preinitialize.
     private long _version;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     // Class for creating a StringBuffer that represents generated code.
     private static class _CodeString {
         public _CodeString() {
@@ -1356,11 +1363,9 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
         private static String _endLine = "\n";
     }
 
-
     /** Private class that reads a stream in a thread.
      */
     private class _StreamReaderThread extends Thread {
-
         /** Create a _StreamReaderThread.
          *  @param inputStream The stream to read from.
          *  @param name The name of this _StreamReaderThread.
@@ -1373,7 +1378,7 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
          *  @param inputStream The stream to read from.
          *  @param name The name of this _StreamReaderThread.
          *  @param redirect The name of the output stream to redirect the
-            inputStream to.
+         inputStream to.
          */
         _StreamReaderThread(InputStream inputStream, String name,
                 OutputStream redirect) {
@@ -1398,7 +1403,6 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
                 String line = null;
 
                 while ((line = br.readLine()) != null) {
-
                     // Redirect the input.
                     if (printWriter != null) {
                         printWriter.println(line);
@@ -1408,6 +1412,7 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
                     if (_debugging) {
                         _debug(_name + ">" + line);
                     }
+
                     System.out.println(_name + ">" + line);
                 }
 

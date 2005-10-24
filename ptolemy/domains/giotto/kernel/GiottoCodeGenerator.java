@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.giotto.kernel;
 
-// Ptolemy imports.
 import java.awt.Frame;
 
 import ptolemy.actor.CompositeActor;

@@ -170,6 +170,7 @@ public class HDFDirector extends SDFDirector {
                     .intValue();
             ((CachedSDFScheduler) getScheduler()).constructCaches(cacheSize);
         }
+
         super.attributeChanged(attribute);
     }
 
@@ -179,22 +180,23 @@ public class HDFDirector extends SDFDirector {
      *  or if the super class method throws it.
      */
     public boolean postfire() throws IllegalActionException {
-
         // If this director is not at the top level, the HDFFSMDirector
         // of the modal model that it contains may change rates after
         // making a change request, which invalidates this HDF's schedule.
         // So we need to get the schedule of this HDFDirector also in a
         // change request.
-        if (!isScheduleValid() || getContainer() != toplevel()) {
+        if (!isScheduleValid() || (getContainer() != toplevel())) {
             CompositeActor container = (CompositeActor) getContainer();
             ChangeRequest request = new ChangeRequest(this, "reschedule") {
                 protected void _execute() throws KernelException {
                     getScheduler().getSchedule();
                 }
             };
+
             request.setPersistent(false);
             container.requestChange(request);
         }
+
         return super.postfire();
     }
 
@@ -223,6 +225,7 @@ public class HDFDirector extends SDFDirector {
             throw new IllegalActionException(this,
                     "Scheduler is required to be an instance of SDFScheduler");
         }
+
         // FIXME: Instead, should fix the buffer sizes calculation.
         ((SDFScheduler) scheduler).constrainBufferSizes.setExpression("false");
     }
@@ -231,17 +234,17 @@ public class HDFDirector extends SDFDirector {
     ////                         private methods                   ////
 
     /** Initialize the object. In this case, we give the HDFDirector a
-     *  default scheduler of the class CachedSDFScheduler and a 
+     *  default scheduler of the class CachedSDFScheduler and a
      *  cacheSize parameter with default value 100.
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
-
         // During construction, create the scheduleCacheSize parameter
         // with default value of 100.
         int cacheSize = 100;
         scheduleCacheSize = new Parameter(this, "scheduleCacheSize",
                 new IntToken(cacheSize));
+
         try {
             CachedSDFScheduler scheduler = new CachedSDFScheduler(this,
                     uniqueName("Scheduler"), cacheSize);

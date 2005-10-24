@@ -24,24 +24,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-
 package ptolemy.domains.gr.lib.vr;
-
-
-import com.sun.j3d.utils.image.TextureLoader;
-
-import javax.media.j3d.Appearance;
-import javax.media.j3d.BranchGroup;
-import javax.media.j3d.ColoringAttributes;
-import javax.media.j3d.Geometry;
-import javax.media.j3d.LineAttributes;
-import javax.media.j3d.Material;
-import javax.media.j3d.Node;
-import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.RenderingAttributes;
-import javax.media.j3d.Shape3D;
-import javax.media.j3d.TransparencyAttributes;
-
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.DoubleRangeParameter;
@@ -58,24 +41,36 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+import com.sun.j3d.utils.image.TextureLoader;
+
+import javax.media.j3d.Appearance;
+import javax.media.j3d.BranchGroup;
+import javax.media.j3d.ColoringAttributes;
+import javax.media.j3d.Geometry;
+import javax.media.j3d.LineAttributes;
+import javax.media.j3d.Material;
+import javax.media.j3d.Node;
+import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.RenderingAttributes;
+import javax.media.j3d.Shape3D;
+import javax.media.j3d.TransparencyAttributes;
+
 //////////////////////////////////////////////////////////////////////////
 //// GRGeometry
-/**
-   A base class for all actors in the GR domain that render arbitrary 
-   shapes in 3-D as 2-D planes.  Its purpose is to define common 
-   paramaters and methods for these actors.
-   
-   @author Tiffany Crawford
-   @version $Id$
-   @see classname (refer to relevant classes, but not the base class)
-   @since Ptolemy II x.x
-   @Pt.ProposedRating Red (tsc)
-   @Pt.AcceptedRating Red (reviewmoderator)
-*/
- 
- 
-abstract public class GRGeometry extends GRActor3D {
 
+/**
+ A base class for all actors in the GR domain that render arbitrary
+ shapes in 3-D as 2-D planes.  Its purpose is to define common
+ paramaters and methods for these actors.
+
+ @author Tiffany Crawford
+ @version $Id$
+ @see classname (refer to relevant classes, but not the base class)
+ @since Ptolemy II x.x
+ @Pt.ProposedRating Red (tsc)
+ @Pt.AcceptedRating Red (reviewmoderator)
+ */
+abstract public class GRGeometry extends GRActor3D {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -91,7 +86,7 @@ abstract public class GRGeometry extends GRActor3D {
         allowRuntimeChanges = new Parameter(this, "allowRuntimeChanges");
         allowRuntimeChanges.setExpression("false");
         allowRuntimeChanges.setTypeEquals(BaseType.BOOLEAN);
-        
+
         //FIXME How do I use static fields with this expression?
         axis = new Parameter(this, "axis");
         axis.setExpression("1");
@@ -103,20 +98,18 @@ abstract public class GRGeometry extends GRActor3D {
 
         //FIXME Decide whether to use plane spacing or nSlices
         /*nSlices = new Parameter(this, "nSlices");
-        nSlices.setExpression("50");
-        nSlices.setTypeEquals(BaseType.INT);*/
-
+         nSlices.setExpression("50");
+         nSlices.setTypeEquals(BaseType.INT);*/
         planeSpacing = new Parameter(this, "planeSpacing");
         planeSpacing.setExpression(".0125");
         planeSpacing.setTypeEquals(BaseType.DOUBLE);
-              
+
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
 
         //texture = new FilePortParameter(this, "texture");
         //texture.setExpression("");
-
         transparency = new DoubleRangeParameter(this, "transparency");
         transparency.setExpression("1.0");
         transparency.setTypeEquals(BaseType.DOUBLE);
@@ -124,8 +117,6 @@ abstract public class GRGeometry extends GRActor3D {
         /*nSlices = new Parameter(this, "nSlices");
          nSlices.setExpression("50");
          nSlices.setTypeEquals(BaseType.INT);*/
-
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -136,15 +127,16 @@ abstract public class GRGeometry extends GRActor3D {
      */
     public Parameter allowRuntimeChanges;
 
-    /** The axis in which the volume will be built upon. 
+    /** The axis in which the volume will be built upon.
      * Decides the orientation of the volume.
-     */ 
+     */
     public Parameter axis;
 
-    /** The size of the spacing between the 2-D planes 
+    /** The size of the spacing between the 2-D planes
      * that comprise the volume being rendered.
      */
     public Parameter planeSpacing;
+
     //public Parameter nSlices;
 
     /** The output port for connecting to other GR Actors in
@@ -153,14 +145,16 @@ abstract public class GRGeometry extends GRActor3D {
     public TypedIOPort sceneGraphOut;
 
     //FIXME Decide whether to define here or in actors themselves
+
     /** The input port.
      */
     public TypedIOPort input;
-    
+
     /** Texture URL, which if non-empty, specifies an image file
      *  or URL. The image from the file is mapped onto the shape
      *  as a texture.
      */
+
     //public FilePortParameter texture;
     /** The transparency, where 0.0 means opaque (the default) and 1.0
      *  means fully transparent. The type is double.
@@ -178,7 +172,6 @@ abstract public class GRGeometry extends GRActor3D {
      *  @exception ExceptionClass If ... (describe what
      *   causes the exception to be thrown).
      */
-
     /** Adjust the appearance when an attribute changes if such
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
@@ -221,6 +214,7 @@ abstract public class GRGeometry extends GRActor3D {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // _nSlices = ((IntToken)nSlices.getToken()).intValue();
         _axis = ((IntToken) axis.getToken()).intValue();
         _planeSpacing = ((DoubleToken) planeSpacing.getToken()).doubleValue();
@@ -236,22 +230,27 @@ abstract public class GRGeometry extends GRActor3D {
             _debug("Called prefire()");
             _debug("_isSceneGraphInitialized = " + _isSceneGraphInitialized);
         }
+
         if (input.hasToken(0)) {
             System.out.println("Has token");
-            
+
             //Set _isSceneGraphInitialized back to false so node
             //can be sent. fire() will set it back to true
             _createModel();
             _isSceneGraphInitialized = false;
+
             if (_debugging) {
                 _debug("Prefire returns true");
             }
+
             return true;
         } else {
             System.out.println("Does not have token");
+
             if (_debugging) {
                 _debug("Prefire returns false");
             }
+
             return false;
         }
     }
@@ -312,6 +311,7 @@ abstract public class GRGeometry extends GRActor3D {
 
             _transparencyAttributes = new TransparencyAttributes(mode,
                     transparent);
+
             //_transparencyAttributes = new TransparencyAttributes();
             //_transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
             _appearance.setTransparencyAttributes(_transparencyAttributes);
@@ -343,33 +343,29 @@ abstract public class GRGeometry extends GRActor3D {
         }
 
         _changesAllowedNow = allowChanges;
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Requires all subclasses to define a _createGeometry method */
     abstract protected void _createGeometry() throws IllegalActionException;
 
-
-    
-    /** Create the BranchGroup to be added to the scenegraph 
-     *  This has the side effect of setting the color, appearance 
+    /** Create the BranchGroup to be added to the scenegraph
+     *  This has the side effect of setting the color, appearance
      *  and geometry of this 3D object.
      *  @exception IllegalActionException If a parameter cannot be evaluated.
      */
     protected void _createModel() throws IllegalActionException {
-
         if (_debugging) {
             _debug("inside of _createModel()");
         }
+
         _createAppearance();
         _createGeometry();
         _createdNode = new Shape3D(_geometry, _appearance);
         _containedNode = new BranchGroup();
         ((BranchGroup) _containedNode).addChild(_createdNode);
-
     }
 
     /** Return the object to be added to the scene graph*/
@@ -380,6 +376,7 @@ abstract public class GRGeometry extends GRActor3D {
     /** Send the scene graph token on the output. */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
+
         if (_debugging) {
             _debug("Called _makeSceneGraphConnection()");
         }
@@ -393,24 +390,23 @@ abstract public class GRGeometry extends GRActor3D {
 
     /** The axis orientation of this 3D object */
     protected int _axis;
-    
+
     /** Indicator that changes are currently allowed. */
+
     //FIXME In SDF execution ends so changes are not possible.
     protected boolean _changesAllowedNow = false;
-    
+
     /** The coloring attributes, or null if not created. */
     protected ColoringAttributes _coloringAttributes;
 
     //protected BranchGroup _containedNode;
-    
+
     /** The 3D object in the form that may be rendered */
     protected Node _containedNode;
 
-    
     /** The 3D object */
     protected Shape3D _createdNode;
 
-    
     /** The geometry of this 3D object */
     protected Geometry _geometry;
 
@@ -421,7 +417,7 @@ abstract public class GRGeometry extends GRActor3D {
 
     /** The plane spacing of this 3D object */
     protected double _planeSpacing;
-    
+
     /** Polygon attributes. */
     protected PolygonAttributes _polygonAttributes;
 
@@ -431,7 +427,6 @@ abstract public class GRGeometry extends GRActor3D {
     /** The transparency attributes, or null if not created. */
     protected TransparencyAttributes _transparencyAttributes;
 
-    
     //FIXME Would like to connect to axis parameter
     protected static int XAXIS = 0;
 
@@ -441,17 +436,12 @@ abstract public class GRGeometry extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Private methods need not have Javadoc comments, although it can
     // be more convenient if they do, since they may at some point
     // become protected methods.
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Private variables need not have Javadoc comments, although it can
     // be more convenient if they do, since they may at some point
     // become protected variables.
-
-
 }

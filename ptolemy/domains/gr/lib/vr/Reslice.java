@@ -1,4 +1,4 @@
-/* An actor that reads an array of images. 
+/* An actor that reads an array of images.
 
  @Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -26,11 +26,12 @@
  COPYRIGHTENDKEY
 
  */
-
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
+
 import ij.plugin.Slicer;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
@@ -43,6 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 ////Slicer
+
 /**
  An actor that reads an array of images.
 
@@ -64,7 +66,6 @@ public class Reslice extends TypedAtomicActor {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-
     public Reslice(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -86,12 +87,10 @@ public class Reslice extends TypedAtomicActor {
         stackSize = new Parameter(this, "stackSize");
         stackSize.setExpression("50");
         stackSize.setTypeEquals(BaseType.INT);
-
     }
 
     ////////////////////////////////////////////////////////////////////
     ////////               ports and parameters                  ////////
-
     //public FilePortParameter input;
     public TypedIOPort input;
 
@@ -111,6 +110,7 @@ public class Reslice extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ObjectToken objectToken = (ObjectToken) input.get(0);
         ImagePlus imagePlus = (ImagePlus) objectToken.getValue();
         Slicer slicer = new Slicer();
@@ -119,16 +119,13 @@ public class Reslice extends TypedAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
-
         _xResolution = ((IntToken) xResolution.getToken()).intValue();
         _yResolution = ((IntToken) yResolution.getToken()).intValue();
         _stackSize = ((IntToken) stackSize.getToken()).intValue();
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     //Image that is readin
     private ImagePlus _imagePlus;
 

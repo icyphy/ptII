@@ -148,7 +148,7 @@ public class VergilApplication extends MoMLApplication {
                         new VergilApplication(args);
                     } catch (Throwable throwable) {
                         System.err.println("xxxxxxxxxxxxxxxxxxxx");
-                        
+
                         // If we get an Error or and Exception while
                         // configuring, we will end up here.
                         _errorAndExit("Command failed", args, throwable);
@@ -215,14 +215,17 @@ public class VergilApplication extends MoMLApplication {
             // Get the class that will build the library from the plugins
             String libraryBuilderClassName = alternateLibraryBuilderAttribute
                     .getExpression();
+
             // Dynamically load the library builder and build the library
             Class libraryBuilderClass = Class.forName(libraryBuilderClassName);
             LibraryBuilder libraryBuilder = (LibraryBuilder) libraryBuilderClass
                     .newInstance();
+
             // Set the attributes defined in the moml to the attributes of the
             // LibraryBuilder
             libraryBuilder.addAttributes(alternateLibraryBuilderAttribute
                     .attributeList());
+
             try {
                 library = libraryBuilder.buildLibrary(libraryContainer
                         .workspace());
@@ -231,6 +234,7 @@ public class VergilApplication extends MoMLApplication {
                 throw new Exception("Cannot create library with "
                         + "LibraryBuilder: ", ex);
             }
+
             System.out.println("\nActor Library built from alternative plugin");
         }
 
@@ -246,24 +250,21 @@ public class VergilApplication extends MoMLApplication {
             if (library == null) {
                 // Only do this if the library hasn't been set above
                 // by a LibraryBuilder
-
                 // No previous libraryEffigy exists that is identified
                 // by this URL.  Parse the user library into the
                 // workspace of the actor library.
-
                 MoMLParser parser = new MoMLParser(libraryContainer.workspace());
 
                 // Set the ErrorHandler so that if we have
                 // compatibility problems between devel and production
                 // versions, we can skip that element.
-
                 MoMLParser.setErrorHandler(new VergilErrorHandler());
                 parser.parse(fileURL, fileURL);
 
                 library = (CompositeEntity) parser.getToplevel();
             }
-            //library.setContainer(libraryContainer); //i don't know if this is needed
 
+            //library.setContainer(libraryContainer); //i don't know if this is needed
             // Now create the effigy with no tableau.
             final PtolemyEffigy finalLibraryEffigy = new PtolemyEffigy(
                     directory.workspace());
@@ -336,7 +337,6 @@ public class VergilApplication extends MoMLApplication {
 
         // This has the side effect of merging properties from ptII.properties.
         Configuration configuration = super._createDefaultConfiguration();
-
 
         try {
             configuration = readConfiguration(_configurationURL);
@@ -422,7 +422,7 @@ public class VergilApplication extends MoMLApplication {
                 }
             }
         }
-        
+
         // Read the user preferences, if any.
         VergilPreferences.setDefaultPreferences(configuration);
 

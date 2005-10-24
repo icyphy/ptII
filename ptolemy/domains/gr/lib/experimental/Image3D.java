@@ -67,7 +67,7 @@ public class Image3D extends GRPickActor {
      *   actor with this name.
      */
     public Image3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         imageLength = new Parameter(this, "image length", new DoubleToken(0.5));
@@ -98,7 +98,7 @@ public class Image3D extends GRPickActor {
     protected void _createModel() throws IllegalActionException {
         QuadArray plane = new QuadArray(4,
                 GeometryArray.COORDINATES | QuadArray.NORMALS
-                | GeometryArray.TEXTURE_COORDINATE_2);
+                        | GeometryArray.TEXTURE_COORDINATE_2);
 
         Point3f p = new Point3f(-1.0f, 1.0f, 0.0f);
         plane.setCoordinate(0, p);
@@ -122,7 +122,7 @@ public class Image3D extends GRPickActor {
         Appearance appear = new Appearance();
 
         String fileName = (String) ((StringToken) filename.getToken())
-            .stringValue();
+                    .stringValue();
 
         TextureLoader loader = new TextureLoader(fileName,
                 ((ViewScreen) _root).getCanvas());
@@ -142,7 +142,7 @@ public class Image3D extends GRPickActor {
         appear.setTexture(texture);
 
         appear.setTransparencyAttributes(new TransparencyAttributes(
-                                                 TransparencyAttributes.FASTEST, 0.1f));
+                TransparencyAttributes.FASTEST, 0.1f));
         top = new BranchGroup();
         _containedNode = new Shape3D(plane, appear);
         top.addChild(_containedNode);
@@ -157,7 +157,7 @@ public class Image3D extends GRPickActor {
 
         try {
             System.out.println("call "
-                    + ((StringToken) filename.getToken()).stringValue());
+                + ((StringToken) filename.getToken()).stringValue());
         } catch (Exception e) {
             System.out.println("process call back exception");
         }
@@ -202,12 +202,22 @@ public class Image3D extends GRPickActor {
     ////                         private variables                 ////
     private Shape3D _containedNode;
     private static final float[] verts = {
-
-        // front face
-        1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, -1.0f,
-        1.0f
-    };
+            
+            // front face
+            1.0f,
+            -1.0f,
+            1.0f,
+            1.0f,
+            1.0f,
+            1.0f,
+            -1.0f,
+            1.0f,
+            1.0f,
+            -1.0f,
+            -1.0f,
+            1.0f
+        };
     private static final Vector3f[] normals = {
-        new Vector3f(0.0f, 0.0f, 1.0f), // front face
-    };
+            new Vector3f(0.0f, 0.0f, 1.0f), // front face
+        };
 }

@@ -174,6 +174,7 @@ public class ProcessThread extends PtolemyThread {
 
                     _debug("-- Thread resuming.");
                 }
+
                 if (_director.isStopRequested()) {
                     break;
                 }
@@ -194,8 +195,9 @@ public class ProcessThread extends PtolemyThread {
             // This is synchronized to prevent a race condition
             // where the director might conclude before the
             // call to wrapup() below.
-            synchronized(_director) {
+            synchronized (_director) {
                 _director.removeThread(this);
+
                 try {
                     // NOTE: Deadlock risk here.
                     // Holding a lock on the _director during wrapup()
@@ -214,37 +216,31 @@ public class ProcessThread extends PtolemyThread {
 
                     boolean rethrow = false;
 
-                    if (thrownWhenIterate
-                            instanceof TerminateProcessException) {
+                    if (thrownWhenIterate instanceof TerminateProcessException) {
                         // Process was terminated.
                         _debug("-- Blocked Receiver call "
                                 + "threw TerminateProcessException.");
-                    } else if (thrownWhenIterate
-                            instanceof InterruptedException) {
+                    } else if (thrownWhenIterate instanceof InterruptedException) {
                         // Process was terminated by call to stop();
                         _debug("-- Thread was interrupted: "
                                 + thrownWhenIterate);
-                    } else if (thrownWhenIterate
-                            instanceof InterruptedIOException
-                            || ((thrownWhenIterate != null)
-                                    && thrownWhenIterate.getCause()
-                                    instanceof InterruptedIOException)) {
+                    } else if (thrownWhenIterate instanceof InterruptedIOException
+                            || ((thrownWhenIterate != null) && thrownWhenIterate
+                                    .getCause() instanceof InterruptedIOException)) {
                         // PSDF has problems here when run with JavaScope
                         _debug("-- IO was interrupted: " + thrownWhenIterate);
-                    } else if (thrownWhenIterate
-                            instanceof IllegalActionException) {
+                    } else if (thrownWhenIterate instanceof IllegalActionException) {
                         _debug("-- Exception: " + thrownWhenIterate);
                         _manager
-                        .notifyListenersOfException(
-                                (IllegalActionException) thrownWhenIterate);
+                                .notifyListenersOfException((IllegalActionException) thrownWhenIterate);
                     } else if (thrownWhenIterate != null) {
                         rethrow = true;
                     }
 
                     if (thrownWhenWrapup instanceof IllegalActionException) {
                         _debug("-- Exception: " + thrownWhenWrapup);
-                        _manager.notifyListenersOfException(
-                                (IllegalActionException) thrownWhenWrapup);
+                        _manager
+                                .notifyListenersOfException((IllegalActionException) thrownWhenWrapup);
                     } else if (thrownWhenWrapup != null) {
                         // Must be a runtime exception.
                         // Call notifyListenerOfThrowable() here so that

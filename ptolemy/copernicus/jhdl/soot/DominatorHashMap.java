@@ -64,7 +64,7 @@ public class DominatorHashMap extends HashMap {
      * be created.
      **/
     public DominatorHashMap(DirectedAcyclicCFG g, boolean postDominates)
-            throws IllegalActionException {
+        throws IllegalActionException {
         super(g.nodeCount());
         _graph = g;
         _postDominates = postDominates;
@@ -141,7 +141,7 @@ public class DominatorHashMap extends HashMap {
         StringBuffer sb = new StringBuffer();
 
         for (Iterator i = _immediateDominators.keySet().iterator();
-             i.hasNext();) {
+                    i.hasNext();) {
             Node n = (Node) i.next();
             sb.append(_graph.nodeString(n) + "=");
 

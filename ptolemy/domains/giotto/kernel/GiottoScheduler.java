@@ -197,6 +197,7 @@ public class GiottoScheduler extends Scheduler {
         while (actorListIterator.hasNext()) {
             Actor actor = (Actor) actorListIterator.next();
             int frequency = getFrequency(actor);
+
             if (Arrays.binarySearch(_candidateFrequencies, frequency) >= 0) {
                 // this frequency is a good candidate to calculate accurate
                 // _unitTimeIncrement for the director.

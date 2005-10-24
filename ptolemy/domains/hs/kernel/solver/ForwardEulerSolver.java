@@ -98,10 +98,11 @@ public class ForwardEulerSolver extends FixedStepSolver {
         // to predict the state, s(t_0 + h). 
         double tentativeState = integrator.getState();
         double f = ((DoubleToken) integrator.input.get(0)).doubleValue();
-        tentativeState = tentativeState 
-            + (f * (_director.getCurrentStepSize()));
+        tentativeState = tentativeState
+                + (f * (_director.getCurrentStepSize()));
         integrator.setTentativeState(tentativeState);
         integrator.output.broadcast(new DoubleToken(tentativeState));
+
         // Note that the FixedStepSolver sets converged to true for
         // each round by default. Therefore, we do not need to set it
         // to true here.

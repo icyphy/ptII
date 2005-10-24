@@ -45,7 +45,7 @@ import ptolemy.math.Complex;
  This actor reads two double tokens (magnitude and angle) and outputs
  a single complex token. The output is a complex token representation of
  the coordinates given at the inputs in polar form. The complex token
- has two parts: the first part correspond to the real part, which is 
+ has two parts: the first part correspond to the real part, which is
  magnitude * cos(angle, and the second part is the imaginary part, which is
  magnitude * sin(angle). Note that the angle input is
  assumed to be in radians. If either input is NaN or infinity,

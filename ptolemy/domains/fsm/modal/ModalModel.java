@@ -180,6 +180,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         "Create a new director") {
                     protected void _execute() throws Exception {
                         Director director = getDirector();
+
                         // Contruct a new director
                         Class newDirectorClass = Class.forName(directorClass
                                 .stringValue());
@@ -203,14 +204,15 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
                         // Check whether the modal controller needs to 
                         // support multirate firing.
                         Director executiveDirector = getExecutiveDirector();
+
                         if (executiveDirector != null) {
-                            boolean supportMultirateFiring = 
-                                executiveDirector.supportMultirateFiring();
+                            boolean supportMultirateFiring = executiveDirector
+                                    .supportMultirateFiring();
+
                             if (supportMultirateFiring) {
                                 getController().setSupportMultirate(true);
                             }
                         }
-                        
                     }
                 };
 

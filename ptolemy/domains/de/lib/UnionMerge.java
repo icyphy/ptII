@@ -138,17 +138,20 @@ public class UnionMerge extends DEActor {
         // the remaining ports that have tokens.
         for (int i = 0; i < size; i++) {
             IOPort port = (IOPort) portArray[i];
+
             if (port.hasToken(0)) {
                 if (firstAvailableToken == null) {
                     // we see the first available tokens
                     String label = port.getName();
                     firstAvailableToken = port.get(0);
+
                     UnionToken outputToken = new UnionToken(label,
                             firstAvailableToken);
                     output.send(0, outputToken);
 
                     while (port.hasToken(0)) {
                         label = port.getName();
+
                         Token value = port.get(0);
                         outputToken = new UnionToken(label, value);
                         output.send(0, outputToken);

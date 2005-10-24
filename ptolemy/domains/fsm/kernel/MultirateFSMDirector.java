@@ -178,6 +178,7 @@ public class MultirateFSMDirector extends FSMDirector {
             destinationState = state;
         } else {
             destinationState = transition.destinationState();
+
             Actor[] actors = transition.getRefinement();
 
             if (actors != null) {
@@ -221,6 +222,7 @@ public class MultirateFSMDirector extends FSMDirector {
                     "Current state is required to have exactly one refinement: "
                             + currentState.getName());
         }
+
         if (!_stopRequested) {
             if (actors[0].prefire()) {
                 if (_debugging) {
@@ -228,14 +230,15 @@ public class MultirateFSMDirector extends FSMDirector {
                             ((ptolemy.kernel.util.NamedObj) actors[0])
                                     .getName());
                 }
+
                 actors[0].fire();
                 _refinementPostfire = actors[0].postfire();
             }
         }
+
         _readOutputsFromRefinement();
 
         chooseNextNonTransientState(currentState);
-
     }
 
     /** Return the current state if it has a refinement. Otherwise, make
@@ -252,6 +255,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
         while (currentRefinements == null) {
             chooseTransition(currentState);
+
             // Commit the transition.
             super.postfire();
             currentState = controller.currentState();
@@ -328,13 +332,16 @@ public class MultirateFSMDirector extends FSMDirector {
             if (refinementDir instanceof MultirateFSMDirector) {
                 refinementDir.initialize();
             }
+
             /*boolean inputRateChanged = */
             _updateInputTokenConsumptionRates(currentRefinement);
+
             /* boolean outputRateChanged = */
             _updateOutputTokenProductionRates(currentRefinement);
 
             // Tell the upper level scheduler that the current schedule
             // is no longer valid.
+
             /*
              if (inputRateChanged || outputRateChanged) {
              CompositeActor actor = _getEnclosingDomainActor();
@@ -366,6 +373,7 @@ public class MultirateFSMDirector extends FSMDirector {
         // Commit the transition.
         superPostfire = super.postfire();
         currentState = controller.currentState();
+
         TypedActor[] actors = currentState.getRefinement();
 
         if ((actors == null) || (actors.length != 1)) {
@@ -396,15 +404,16 @@ public class MultirateFSMDirector extends FSMDirector {
         // remains the same but the lower level state has changed.
         /* boolean inputRateChanged = */
         _updateInputTokenConsumptionRates(actor);
+
         /* boolean outputRateChanged = */
         _updateOutputTokenProductionRates(actor);
+
         /*
          if (inputRateChanged || outputRateChanged) {
          CompositeActor compositeActor = _getEnclosingDomainActor();
          Director director = compositeActor.getExecutiveDirector();
          director.invalidateSchedule();
          }*/
-
         return superPostfire;
     }
 
@@ -665,6 +674,7 @@ public class MultirateFSMDirector extends FSMDirector {
         Token value = null;
 
         Iterator variables = refinementRateVariables.iterator();
+
         while (variables.hasNext() && isConstantAndIdentical) {
             Variable rateVariable = (Variable) variables.next();
             isConstantAndIdentical = isConstantAndIdentical
@@ -736,6 +746,7 @@ public class MultirateFSMDirector extends FSMDirector {
         List list = new LinkedList();
 
         Iterator insidePorts = port.deepInsidePortList().iterator();
+
         while (insidePorts.hasNext()) {
             IOPort insidePort = (IOPort) insidePorts.next();
             Variable variable = (Variable) DFUtilities.getRateVariable(

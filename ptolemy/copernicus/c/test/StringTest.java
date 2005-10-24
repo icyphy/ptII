@@ -54,7 +54,13 @@ public class StringTest {
         System.out.println(a);
 
         // Initialize with char Array.
-        char[] charArray = { 'a', 'b', 'c', 'd', 'e' };
+        char[] charArray = {
+                'a',
+                'b',
+                'c',
+                'd',
+                'e'
+            };
         a = new String(charArray);
         System.out.println(a);
 

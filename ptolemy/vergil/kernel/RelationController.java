@@ -36,10 +36,7 @@ import javax.swing.SwingConstants;
 import ptolemy.actor.IORelation;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.VergilPreferences;
@@ -86,7 +83,6 @@ public class RelationController extends ParameterizedNodeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
-
     private static Font _relationLabelFont = new Font("SansSerif", Font.PLAIN,
             10);
 
@@ -97,26 +93,28 @@ public class RelationController extends ParameterizedNodeController {
      *  looks like a black diamond.
      */
     public class RelationRenderer implements NodeRenderer {
-
         /**
          * Render a visual representation of the given node.
          * @param node The node to render.
          * @return The persistent object that is drawn on the screen.
-         */  
+         */
         public Figure render(Object node) {
             // Default values.
             double height = 12.0;
             double width = 12.0;
-            
+
             Relation relation = null;
+
             if (node != null) {
                 Vertex vertex = (Vertex) node;
                 relation = (Relation) vertex.getContainer();
-                
+
                 // NOTE: The preferences mechanism may set this.
-                Token relationSize = VergilPreferences.preferenceValue(relation, "_relationSize");
+                Token relationSize = VergilPreferences.preferenceValue(
+                        relation, "_relationSize");
+
                 if (relationSize instanceof DoubleToken) {
-                    height = ((DoubleToken)relationSize).doubleValue();
+                    height = ((DoubleToken) relationSize).doubleValue();
                     width = height;
                 }
             }
@@ -154,18 +152,20 @@ public class RelationController extends ParameterizedNodeController {
                     // Restore width and height to the default to get a reasonable slash.
                     width = 12.0;
                     height = 12.0;
-                    Line2D.Double line = new Line2D.Double(-width / 2, height / 2,
-                            width / 2, -height / 2);
+
+                    Line2D.Double line = new Line2D.Double(-width / 2,
+                            height / 2, width / 2, -height / 2);
                     Figure lineFigure = new BasicFigure(line, Color.black);
                     result.add(lineFigure);
 
                     LabelFigure label = new LabelFigure(""
                             + ((IORelation) relation).getWidth(),
                             _relationLabelFont, 0, SwingConstants.SOUTH_WEST);
-                    label.translateTo(width / 2 + 1.0, -height / 2 - 1.0);
+                    label.translateTo((width / 2) + 1.0, (-height / 2) - 1.0);
                     result.add(label);
                 }
             }
+
             return result;
         }
     }

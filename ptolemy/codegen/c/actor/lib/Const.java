@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
@@ -58,8 +57,10 @@ public class Const extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {
+    public void generateFireCode(StringBuffer code)
+            throws IllegalActionException {
         super.generateFireCode(code);
+
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("fireBlock");
         code.append(processCode(_codeStream.toString()));

@@ -23,7 +23,6 @@
  ENHANCEMENTS, OR MODIFICATIONS.
 
  */
-
 package ptolemy.distributed.rmi;
 
 import java.io.DataInputStream;
@@ -72,10 +71,8 @@ import ptolemy.kernel.util.KernelException;
  @Pt.ProposedRating Red (kapokasa)
  @Pt.AcceptedRating Red (cxh)
  */
-
 public class DistributedServerRMIGeneric implements ServiceIDListener,
         DiscoveryListener {
-
     /** Construct a DistributedServerRMIGeneric with a configuration file.
      *  It performs the following tasks:
      * <ul>
@@ -92,9 +89,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *
      *  @param configFileName The configuration file.
      */
-
     public DistributedServerRMIGeneric(String configFileName) {
-
         try {
             System.out.println("Starting server in: ");
             System.out.println("    "
@@ -110,6 +105,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
         System.setProperty("java.rmi.manager.codebase", codebase);
 
         System.out.println("Exporting service " + service);
+
         try {
             proxy = exporter.export(service);
         } catch (java.rmi.server.ExportException e) {
@@ -139,7 +135,6 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
                         mgr, // DiscoveryManager
                         new LeaseRenewalManager());
             }
-
         } catch (Exception e) {
             KernelException.stackTraceToString(e);
         }
@@ -154,9 +149,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *
      *  @param evt The event that describes the discovered registrars.
      */
-
     public void discarded(DiscoveryEvent evt) {
-
     }
 
     /** Called when one or more lookup service registrars has been discovered.
@@ -165,7 +158,6 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *
      *  @param evt The event that describes the discovered registrars.
      */
-
     public void discovered(DiscoveryEvent evt) {
         ServiceRegistrar[] registrars = evt.getRegistrars();
 
@@ -185,15 +177,16 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *  command-line argument (configuration file). It stays alive.
      *  @param args The command-line arguments.
      */
-
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         if (args.length == 0) {
             System.err.println("No configuration specified");
         }
+
         new DistributedServerRMIGeneric(args[0]);
 
         // stay around forever
         Object keepAlive = new Object();
+
         synchronized (keepAlive) {
             try {
                 keepAlive.wait();
@@ -209,13 +202,13 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *
      *  @param serviceID the service ID assigned by the lookup service.
      */
-
     public void serviceIDNotify(ServiceID serviceID) {
         // called as a ServiceIDListener
         // Should save the id to permanent storage
         System.out.println("Got service ID " + serviceID.toString());
 
         // try to save the service ID in a file
+
         /*
          if (serviceIdFile != null) {
          DataOutputStream dout = null;
@@ -238,11 +231,12 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *
      *  @param serviceIdFile name of the file where the serviceID is stored.
      */
-
     public void tryRetrieveServiceId(File serviceIdFile) {
         System.out.print("Trying to retrieve ServiceID from: "
                 + serviceIdFile.getAbsolutePath() + "... ");
+
         DataInputStream din = null;
+
         try {
             din = new DataInputStream(new FileInputStream(serviceIdFile));
             serviceID = new ServiceID(din);
@@ -267,9 +261,9 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
      *
      *  @param configFileName The configuration file.
      */
-
     private void getConfiguration(String configFileName) {
         System.out.println("Opening configuration file: " + configFileName);
+
         Configuration configuration = null;
 
         // We have to get a configuration file or we can't continue
@@ -307,6 +301,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
             System.out.println("Reading unicastLocators: ");
             unicastLocators = (LookupLocator[]) configuration.getEntry(SERVER,
                     "unicastLocators", LookupLocator[].class, null); // default
+
             for (int i = 0; i < unicastLocators.length; i++) {
                 System.out.println("    " + unicastLocators[i]);
             }
@@ -314,9 +309,11 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
             System.out.println("Reading entries: ");
             entries = (Entry[]) configuration.getEntry(SERVER, "entries",
                     Entry[].class, null); // default
+
             for (int i = 0; i < entries.length; i++) {
                 System.out.println("    " + entries[i]);
             }
+
             System.out.print("Reading serviceIdFile: ");
             serviceIdFile = (File) configuration.getEntry(SERVER,
                     "serviceIdFile", File.class, null); // default
@@ -324,6 +321,7 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
             System.out.println("Reading groups: ");
             groups = (String[]) configuration.getEntry(SERVER, "groups",
                     String[].class, null); // default
+
             if (groups.length != 0) {
                 for (int i = 0; i < groups.length; i++) {
                     System.out.println("    " + groups[i]);
@@ -333,7 +331,6 @@ public class DistributedServerRMIGeneric implements ServiceIDListener,
                 System.out.println("    No groups specified, using"
                         + " LookupDiscovery.ALL_GROUPS.");
             }
-
         } catch (ConfigurationException e) {
             KernelException.stackTraceToString(e);
         }

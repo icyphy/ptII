@@ -27,8 +27,8 @@ COPYRIGHTENDKEY
 @ProposedRating Red (hyzheng)
 @AcceptedRating Red (hyzheng)
 */
-
 package ptolemy.apps.charon;
+
 
 // Ptolemy imports.
 import ptolemy.kernel.util.IllegalActionException;
@@ -36,17 +36,17 @@ import ptolemy.kernel.util.IllegalActionException;
 // Java imports.
 import java.io.IOException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CharonToPtolemyII
+
 /**
    This class transfer a Charon model into a Ptolemy II model.
 
    @author Haiyang Zheng
    @version $Id:
 */
-
 public class CharonToPtolemyII {
-
     /** constructor
      */
     public CharonToPtolemyII() {
@@ -58,40 +58,37 @@ public class CharonToPtolemyII {
     /** Generate Ptolemy II xml code for the given Charon code.
      *  @return The Ptolemy II xml code.
      */
+    public static void main(String[] args) {
+        _processCommandArgs(args);
 
-    public static void main (String[] args) {
-        _processCommandArgs (args);
         try {
-            charonProcessor = new CharonProcessor(_inputFileName, _outputFileName);
+            charonProcessor = new CharonProcessor(_inputFileName,
+                    _outputFileName);
             charonProcessor.process();
             System.exit(0);
         } catch (IllegalActionException e) {
-            System.err.println ("Error in IO operations: " + e.getMessage ());
+            System.err.println("Error in IO operations: " + e.getMessage());
             System.exit(1);
         }
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////        public variables and parameters                    ////
-
     public static CharonProcessor charonProcessor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Print helpful usage message. */
-    private static void _usage () {
-        System.err.println ("Usage: java CharonToPtolemyII [input-file]\n" +
-                "          the 'input-file' should end with '.cn'\n");
+    private static void _usage() {
+        System.err.println("Usage: java CharonToPtolemyII [input-file]\n"
+            + "          the 'input-file' should end with '.cn'\n");
         System.exit(0);
     }
 
     /** process the input arguments
      *
      */
-
     private static void _processCommandArgs(String[] args) {
         if (args.length != 1) {
             _usage();
@@ -99,7 +96,9 @@ public class CharonToPtolemyII {
             String arg = args[0];
             int dotPosition = arg.indexOf(".cn");
 
-            if (dotPosition == -1) _usage();
+            if (dotPosition == -1) {
+                _usage();
+            }
 
             _inputFileName = arg;
             _outputFileName = arg.substring(0, dotPosition) + ".xml";
@@ -108,7 +107,6 @@ public class CharonToPtolemyII {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private static String _inputFileName = "";
     private static String _outputFileName = "";
 }

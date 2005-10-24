@@ -508,13 +508,17 @@ public class ComponentRelation extends Relation {
 
             LinkedList ports = new LinkedList();
             Enumeration links = _linkList.getContainers();
+
             while (links.hasMoreElements()) {
                 Object link = links.nextElement();
+
                 if (link instanceof ComponentPort) {
                     ports.add(link);
                 }
             }
+
             Iterator portsIterator = ports.iterator();
+
             while (portsIterator.hasNext()) {
                 ((ComponentPort) (portsIterator.next())).unlinkInside(this);
             }
@@ -564,6 +568,7 @@ public class ComponentRelation extends Relation {
             throw new IllegalActionException(this, relation,
                     "ComponentRelation can only link to a ComponentRelation.");
         }
+
         super._checkRelation(relation, symmetric);
     }
 

@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib;
 
 import java.util.ArrayList;
@@ -63,8 +62,7 @@ public class Maximum extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.Maximum actor =
-            (ptolemy.actor.lib.Maximum) getComponent();
+        ptolemy.actor.lib.Maximum actor = (ptolemy.actor.lib.Maximum) getComponent();
         CodeStream tmpStream = new CodeStream(this);
 
         // FIXME: we need to resolve the token type in the future
@@ -87,13 +85,14 @@ public class Maximum extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.actor.lib.Minimum actor =
-            (ptolemy.actor.lib.Minimum) getComponent();
+        ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
 
         CodeStream tmpStream = new CodeStream(this);
+
         if (actor.input.getWidth() > 0) {
             tmpStream.appendCodeBlock("initMax");
         }
+
         tmpStream.appendCodeBlock("initChannelNum");
         return processCode(tmpStream.toString());
     }
@@ -108,6 +107,7 @@ public class Maximum extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
+
         CodeStream tmpStream = new CodeStream(this);
         tmpStream.appendCodeBlock("preinitBlock");
         return processCode(tmpStream.toString());

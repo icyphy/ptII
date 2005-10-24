@@ -18,7 +18,6 @@ import java.util.Vector;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ConfigXmlTree {
-
     public ConfigXmlTree(String elementName) {
         this.elementName = elementName;
     }
@@ -37,7 +36,7 @@ public class ConfigXmlTree {
     }
 
     public String getAttribute(String name) {
-        return (String)attributes.get(name);
+        return (String) attributes.get(name);
     }
 
     public boolean hasAttribute(String name) {
@@ -53,8 +52,9 @@ public class ConfigXmlTree {
     }
 
     public void setAttribute(String name, String value) {
-        if (value != null)
+        if (value != null) {
             attributes.put(name, value);
+        }
     }
 
     public String getElementName() {
@@ -74,7 +74,7 @@ public class ConfigXmlTree {
     }
 
     public ConfigXmlTree nextChild() {
-        return (ConfigXmlTree)iterator.next();
+        return (ConfigXmlTree) iterator.next();
     }
 
     public void dump() {
@@ -83,10 +83,13 @@ public class ConfigXmlTree {
 
     public Object clone() {
         ConfigXmlTree newTree = new ConfigXmlTree(getElementName());
-        newTree.attributes = (Hashtable)attributes.clone();
+        newTree.attributes = (Hashtable) attributes.clone();
         startTraverseChildren();
-        while (hasMoreChildren())
-            newTree.addChild((ConfigXmlTree)nextChild().clone());
+
+        while (hasMoreChildren()) {
+            newTree.addChild((ConfigXmlTree) nextChild().clone());
+        }
+
         return newTree;
     }
 
@@ -94,12 +97,14 @@ public class ConfigXmlTree {
         dumpString(indent, getElementName());
 
         Enumeration attrenu = getAttributeNames();
+
         while (attrenu.hasMoreElements()) {
-            String attr = (String)attrenu.nextElement();
+            String attr = (String) attrenu.nextElement();
             dumpString(indent + 2, "+A " + attr + " = " + getAttribute(attr));
         }
 
         startTraverseChildren();
+
         while (hasMoreChildren()) {
             ConfigXmlTree child = nextChild();
             child.dump(indent + 2);
@@ -107,9 +112,13 @@ public class ConfigXmlTree {
     }
 
     private void dumpString(int indent, String s) {
-        StringBuffer buf = new StringBuffer(indent + (s == null ? 0 : s.length()));
-        for (int i=0; i<indent; i++)
+        StringBuffer buf = new StringBuffer(indent
+                + ((s == null) ? 0 : s.length()));
+
+        for (int i = 0; i < indent; i++) {
             buf.append(" ");
+        }
+
         buf.append(s);
         System.out.println(buf);
     }

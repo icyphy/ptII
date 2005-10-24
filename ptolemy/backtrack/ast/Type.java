@@ -1,32 +1,33 @@
 /* Types of nodes in an AST.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-
+ */
 package ptolemy.backtrack.ast;
+
+import org.eclipse.jdt.core.dom.ASTNode;
 
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -35,44 +36,42 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jdt.core.dom.ASTNode;
-
 //////////////////////////////////////////////////////////////////////////
 //// Type
+
 /**
-   During AST analysis, a type is assigned to each expression or
-   sub-expression (which can be as simple as reference to a local variable)
-   in a Java program. This class represents the type objects to be assigned
-   to those expressions.
-   <p>
-   This class represents primitive Java types (<tt>boolean</tt>, <tt>byte</tt>,
-   <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, <tt>int</tt>, <tt>long</tt>,
-   and <tt>short</tt>) as well as object types (including arrays). It
-   treats <tt>null</tt> and </tt>void</tt> (the "return value" of a
-   <tt>void</tt> method) as </tt>null</tt> type, which is also considered as
-   primitive.
-   <p>
-   Manipulation can also be done on those types by means of the given
-   operations.
-   <p>
-   This class cannot be directed instantiated with "<tt>new</tt>". Users should
-   use {@link #createType(String)} to create a type object with a name. If the
-   name refers to a class, it must be a full name (including the package).
-   <p>
-   Objects of this class can also be associated with AST nodes during AST
-   analysis. When the analyzer resolves the type of a node representing an
-   expression or sub-expression in the Java program, it creates a type and
-   associates it with that node with {@link #setType(ASTNode, Type)}. This
-   information can be extracted with {@link #getType(ASTNode)}.
+ During AST analysis, a type is assigned to each expression or
+ sub-expression (which can be as simple as reference to a local variable)
+ in a Java program. This class represents the type objects to be assigned
+ to those expressions.
+ <p>
+ This class represents primitive Java types (<tt>boolean</tt>, <tt>byte</tt>,
+ <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, <tt>int</tt>, <tt>long</tt>,
+ and <tt>short</tt>) as well as object types (including arrays). It
+ treats <tt>null</tt> and </tt>void</tt> (the "return value" of a
+ <tt>void</tt> method) as </tt>null</tt> type, which is also considered as
+ primitive.
+ <p>
+ Manipulation can also be done on those types by means of the given
+ operations.
+ <p>
+ This class cannot be directed instantiated with "<tt>new</tt>". Users should
+ use {@link #createType(String)} to create a type object with a name. If the
+ name refers to a class, it must be a full name (including the package).
+ <p>
+ Objects of this class can also be associated with AST nodes during AST
+ analysis. When the analyzer resolves the type of a node representing an
+ expression or sub-expression in the Java program, it creates a type and
+ associates it with that node with {@link #setType(ASTNode, Type)}. This
+ information can be extracted with {@link #getType(ASTNode)}.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class Type {
-
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -86,16 +85,17 @@ public class Type {
      *  @see #removeOneDimension()
      */
     public Type addOneDimension() {
-        if (isPrimitive())
-            if (_primitiveNum == NULL_NUM)
+        if (isPrimitive()) {
+            if (_primitiveNum == NULL_NUM) {
                 return this;
-            else
+            } else {
                 return createType(_fullName + "[]");
-        else
-            if (isArray())
-                return createType("[" + _fullName);
-            else
-                return createType(_fullName + "[]");
+            }
+        } else if (isArray()) {
+            return createType("[" + _fullName);
+        } else {
+            return createType(_fullName + "[]");
+        }
     }
 
     /** Compute the compatibility rating between this type and another formal
@@ -120,86 +120,100 @@ public class Type {
      */
     public int compatibility(Type formalType, ClassLoader loader)
             throws ClassNotFoundException {
-        if (equals(formalType))
+        if (equals(formalType)) {
             return 0;
+        }
 
         // Null type is always compatible with object types.
-        if (_primitiveNum == NULL_NUM && !formalType.isPrimitive())
+        if ((_primitiveNum == NULL_NUM) && !formalType.isPrimitive()) {
             return 0;
+        }
 
         // Check primitive types.
-        if (isPrimitive() != formalType.isPrimitive())
+        if (isPrimitive() != formalType.isPrimitive()) {
             return -1;
+        }
 
-        if (isPrimitive())
-            if (formalType.isPrimitive())
-                if (_primitiveNum == CHAR_NUM)
-                    if (formalType._primitiveNum == INT_NUM)
+        if (isPrimitive()) {
+            if (formalType.isPrimitive()) {
+                if (_primitiveNum == CHAR_NUM) {
+                    if (formalType._primitiveNum == INT_NUM) {
                         return 1;
-                    else if (formalType._primitiveNum == LONG_NUM)
+                    } else if (formalType._primitiveNum == LONG_NUM) {
                         return 2;
-                    else if (formalType._primitiveNum == FLOAT_NUM)
+                    } else if (formalType._primitiveNum == FLOAT_NUM) {
                         return 3;
-                    else if (formalType._primitiveNum == DOUBLE_NUM)
+                    } else if (formalType._primitiveNum == DOUBLE_NUM) {
                         return 4;
-                    else
+                    } else {
                         return -1;
-                else if (_primitiveNum == INT_NUM)
-                    if (formalType._primitiveNum == LONG_NUM)
+                    }
+                } else if (_primitiveNum == INT_NUM) {
+                    if (formalType._primitiveNum == LONG_NUM) {
                         return 1;
-                    else if (formalType._primitiveNum == FLOAT_NUM)
+                    } else if (formalType._primitiveNum == FLOAT_NUM) {
                         return 2;
-                    else if (formalType._primitiveNum == DOUBLE_NUM)
+                    } else if (formalType._primitiveNum == DOUBLE_NUM) {
                         return 3;
-        // We make the type checking less strict then Java to
-        // allow for declarations like "byte b = 1;".
-                    else if (formalType._primitiveNum == BYTE_NUM)
-                        return 4;   // The same as short.
-                    else if (formalType._primitiveNum == SHORT_NUM)
-                        return 4;   // The same as byte.
-                    else
+                    }
+                    // We make the type checking less strict then Java to
+                    // allow for declarations like "byte b = 1;".
+                    else if (formalType._primitiveNum == BYTE_NUM) {
+                        return 4; // The same as short.
+                    } else if (formalType._primitiveNum == SHORT_NUM) {
+                        return 4; // The same as byte.
+                    } else {
                         return -1;
-                else if (_primitiveNum == LONG_NUM)
-                    if (formalType._primitiveNum == DOUBLE_NUM)
+                    }
+                } else if (_primitiveNum == LONG_NUM) {
+                    if (formalType._primitiveNum == DOUBLE_NUM) {
                         return 1;
-                    else
+                    } else {
                         return -1;
-                else if (_primitiveNum == SHORT_NUM)
-                    if (formalType._primitiveNum == INT_NUM)
+                    }
+                } else if (_primitiveNum == SHORT_NUM) {
+                    if (formalType._primitiveNum == INT_NUM) {
                         return 1;
-                    else if (formalType._primitiveNum == LONG_NUM)
+                    } else if (formalType._primitiveNum == LONG_NUM) {
                         return 2;
-                    else if (formalType._primitiveNum == FLOAT_NUM)
+                    } else if (formalType._primitiveNum == FLOAT_NUM) {
                         return 3;
-                    else if (formalType._primitiveNum == DOUBLE_NUM)
+                    } else if (formalType._primitiveNum == DOUBLE_NUM) {
                         return 4;
-                    else
+                    } else {
                         return -1;
-                else if (_primitiveNum == BYTE_NUM)
-                    if (formalType._primitiveNum == SHORT_NUM)
+                    }
+                } else if (_primitiveNum == BYTE_NUM) {
+                    if (formalType._primitiveNum == SHORT_NUM) {
                         return 1;
-                    else if (formalType._primitiveNum == INT_NUM)
+                    } else if (formalType._primitiveNum == INT_NUM) {
                         return 2;
-                    else if (formalType._primitiveNum == LONG_NUM)
+                    } else if (formalType._primitiveNum == LONG_NUM) {
                         return 3;
-                    else if (formalType._primitiveNum == FLOAT_NUM)
+                    } else if (formalType._primitiveNum == FLOAT_NUM) {
                         return 4;
-                    else if (formalType._primitiveNum == DOUBLE_NUM)
+                    } else if (formalType._primitiveNum == DOUBLE_NUM) {
                         return 5;
-                    else
+                    } else {
                         return -1;
-                else if (_fullName.equals("float"))
-                    if (formalType._fullName.equals("double"))
+                    }
+                } else if (_fullName.equals("float")) {
+                    if (formalType._fullName.equals("double")) {
                         return 1;
-                    else
+                    } else {
                         return -1;
-                else
+                    }
+                } else {
                     return -1;
-            else
+                }
+            } else {
                 return -1;
-        else {    // Not primitive types.
+            }
+        } else { // Not primitive types.
+
             // Check number of dimensions.
             Type selfType = this;
+
             while (selfType.isArray() && formalType.isArray()) {
                 selfType = selfType.removeOneDimension();
                 formalType = formalType.removeOneDimension();
@@ -208,27 +222,39 @@ public class Type {
             Class class1 = selfType.toClass(loader);
             Class class2 = formalType.toClass(loader);
             int i = 0;
+
             while (class1 != null) {
                 List workList = new LinkedList();
                 Set handledSet = new HashSet();
                 workList.add(class1);
+
                 while (!workList.isEmpty()) {
-                    Class c = (Class)workList.remove(0);
-                    if (c.getName().equals(class2.getName()))
+                    Class c = (Class) workList.remove(0);
+
+                    if (c.getName().equals(class2.getName())) {
                         return i;
+                    }
+
                     handledSet.add(c);
+
                     Class[] interfaces = c.getInterfaces();
-                    for (int k = 0; k < interfaces.length; k++)
-                        if (!handledSet.contains(interfaces[k]))
+
+                    for (int k = 0; k < interfaces.length; k++) {
+                        if (!handledSet.contains(interfaces[k])) {
                             workList.add(interfaces[k]);
+                        }
+                    }
                 }
+
                 i++;
                 class1 = class1.getSuperclass();
             }
-            if (class2.getName().equals("java.lang.Object"))
+
+            if (class2.getName().equals("java.lang.Object")) {
                 return i;
-            else
+            } else {
                 return -1;
+            }
         }
     }
 
@@ -247,14 +273,18 @@ public class Type {
      */
     public static Type createType(String fullName) {
         fullName = toArrayType(fullName);
-        if (_typeObjects.containsKey(fullName))
-            return (Type)_typeObjects.get(fullName);
-        else {
+
+        if (_typeObjects.containsKey(fullName)) {
+            return (Type) _typeObjects.get(fullName);
+        } else {
             Type type;
-            if (PRIMITIVE_TYPES.containsKey(fullName))
-                type = (Type)PRIMITIVE_TYPES.get(fullName);
-            else
+
+            if (PRIMITIVE_TYPES.containsKey(fullName)) {
+                type = (Type) PRIMITIVE_TYPES.get(fullName);
+            } else {
                 type = new Type(fullName);
+            }
+
             _typeObjects.put(fullName, type);
             return type;
         }
@@ -279,10 +309,12 @@ public class Type {
     public static int dimensions(String type) {
         int bracketPos = type.indexOf("[");
         int dim = 0;
+
         while (bracketPos >= 0) {
             dim++;
             bracketPos = type.indexOf("[", bracketPos + 1);
         }
+
         return dim;
     }
 
@@ -293,8 +325,8 @@ public class Type {
      *   otherwise.
      */
     public boolean equals(Type type) {
-        return _primitiveNum == type._primitiveNum &&
-            _fullName.equals(type._fullName);
+        return (_primitiveNum == type._primitiveNum)
+                && _fullName.equals(type._fullName);
     }
 
     /** Convert the name of the Java run-time representation back to
@@ -310,8 +342,10 @@ public class Type {
     public static String fromArrayType(String type) {
         StringBuffer buffer = new StringBuffer(getElementType(type));
         int dimensions = dimensions(type);
-        for (int i = 0; i < dimensions; i++)
+
+        for (int i = 0; i < dimensions; i++) {
             buffer.append("[]");
+        }
 
         return buffer.toString();
     }
@@ -342,21 +376,24 @@ public class Type {
      */
     public static Type getCommonType(Type type1, Type type2) {
         try {
-            if (type1.equals(type2))
+            if (type1.equals(type2)) {
                 return type1;
-            else if (type1.getName().equals("java.lang.String"))
+            } else if (type1.getName().equals("java.lang.String")) {
                 return type1;
-            else if (type2.getName().equals("java.lang.String"))
+            } else if (type2.getName().equals("java.lang.String")) {
                 return type2;
-            else if (type1.isPrimitive() && type2.isPrimitive())
-                if (type1.compatibility(type2,
-                            ClassLoader.getSystemClassLoader()) >= 0)
+            } else if (type1.isPrimitive() && type2.isPrimitive()) {
+                if (type1.compatibility(type2, ClassLoader
+                        .getSystemClassLoader()) >= 0) {
                     return type2;
-                else if (type2.compatibility(type1,
-                                 ClassLoader.getSystemClassLoader()) >= 0)
+                } else if (type2.compatibility(type1, ClassLoader
+                        .getSystemClassLoader()) >= 0) {
                     return type1;
+                }
+            }
         } catch (ClassNotFoundException e) {
         }
+
         return null;
     }
 
@@ -372,14 +409,14 @@ public class Type {
         boolean isPrimitive = true;
 
         // Count dimensions.
-        while (length > 0 && buffer.charAt(0) == '[') {
+        while ((length > 0) && (buffer.charAt(0) == '[')) {
             buffer.deleteCharAt(0);
             length--;
             dimensions++;
         }
 
         // Special treatment for object arrays.
-        if (dimensions > 0 && buffer.charAt(length - 1) == ';') {
+        if ((dimensions > 0) && (buffer.charAt(length - 1) == ';')) {
             buffer.deleteCharAt(length - 1);
             buffer.deleteCharAt(0);
             length -= 2;
@@ -388,10 +425,13 @@ public class Type {
 
         // Resolve primitive types.
         String elementType = buffer.toString();
-        if (isPrimitive && dimensions > 0) {
+
+        if (isPrimitive && (dimensions > 0)) {
             Enumeration primitiveEnum = PRIMITIVE_ARRAY_TYPES.keys();
+
             while (primitiveEnum.hasMoreElements()) {
-                String realName = (String)primitiveEnum.nextElement();
+                String realName = (String) primitiveEnum.nextElement();
+
                 if (PRIMITIVE_ARRAY_TYPES.get(realName).equals(elementType)) {
                     elementType = realName;
                     break;
@@ -419,7 +459,7 @@ public class Type {
      *   member or there is no owner associated with it.
      */
     public static Type getOwner(ASTNode node) {
-        return (Type)node.getProperty("owner");
+        return (Type) node.getProperty("owner");
     }
 
     /** Get the type associated with an AST node.
@@ -430,7 +470,7 @@ public class Type {
      *  @see #setType(ASTNode, Type)
      */
     public static Type getType(ASTNode node) {
-        return (Type)node.getProperty("type");
+        return (Type) node.getProperty("type");
     }
 
     /** Test if this type is an array type.
@@ -499,24 +539,31 @@ public class Type {
      *  @see #dimensions()
      */
     public Type removeOneDimension() throws ClassNotFoundException {
-        if (!isArray())
+        if (!isArray()) {
             return this;
+        }
 
         String newName = _fullName.substring(1);
         int length = newName.length();
+
         if (length == 1) {
             Enumeration keys = PRIMITIVE_ARRAY_TYPES.keys();
+
             while (keys.hasMoreElements()) {
-                String key = (String)keys.nextElement();
-                String value = (String)PRIMITIVE_ARRAY_TYPES.get(key);
-                if (value.equals(newName))
+                String key = (String) keys.nextElement();
+                String value = (String) PRIMITIVE_ARRAY_TYPES.get(key);
+
+                if (value.equals(newName)) {
                     return createType(key);
+                }
             }
-        } else if (length > 2 && newName.charAt(0) == 'L' &&
-                newName.charAt(length - 1) == ';')
+        } else if ((length > 2) && (newName.charAt(0) == 'L')
+                && (newName.charAt(length - 1) == ';')) {
             return createType(newName.substring(1, length - 1));
-        else if (length > 1 && newName.charAt(0) == '[')
+        } else if ((length > 1) && (newName.charAt(0) == '[')) {
             return createType(newName);
+        }
+
         throw new ClassNotFoundException(newName);
     }
 
@@ -560,32 +607,39 @@ public class Type {
     public static String toArrayType(String type) {
         StringBuffer buffer = new StringBuffer(type);
         int length = buffer.length();
-        if (buffer.charAt(length - 1) != ']')
+
+        if (buffer.charAt(length - 1) != ']') {
             return type;
-        else {
+        } else {
             // Delete the last "[]"
             buffer.delete(length - 2, length);
             buffer.insert(0, '[');
             length -= 1;
+
             int dims = 1;
-            while (length >= 0 && buffer.charAt(length - 1) == ']') {
+
+            while ((length >= 0) && (buffer.charAt(length - 1) == ']')) {
                 length -= 1;
                 dims++;
                 buffer.insert(0, '[');
             }
+
             buffer.setLength(length);
 
             String elementType = buffer.substring(dims, length);
+
             if (PRIMITIVE_TYPES.containsKey(elementType)) {
-                if (elementType.equals("null"))
+                if (elementType.equals("null")) {
                     return "null";
-                else
-                    buffer.replace(dims, length,
-                            (String)PRIMITIVE_ARRAY_TYPES.get(elementType));
+                } else {
+                    buffer.replace(dims, length, (String) PRIMITIVE_ARRAY_TYPES
+                            .get(elementType));
+                }
             } else {
                 buffer.insert(dims, 'L');
                 buffer.append(';');
             }
+
             return buffer.toString();
         }
     }
@@ -600,15 +654,18 @@ public class Type {
      *   class loader.
      */
     public Class toClass(ClassLoader loader) throws ClassNotFoundException {
-        if (isPrimitive())
-            if (equals(NULL))
+        if (isPrimitive()) {
+            if (equals(NULL)) {
                 // Impossible to load "null" type, though primitive.
                 throw new ClassNotFoundException("null");
-            else
-                return (Class)PRIMITIVE_CLASSES.get(_fullName);
-        else {
-            if (_classObject == null)
+            } else {
+                return (Class) PRIMITIVE_CLASSES.get(_fullName);
+            }
+        } else {
+            if (_classObject == null) {
                 _classObject = loader.loadClass(_fullName);
+            }
+
             return _classObject;
         }
     }
@@ -625,13 +682,12 @@ public class Type {
 
     ///////////////////////////////////////////////////////////////////
     ////                      public fields                        ////
-
     ///////////////////////////////////////////////////////////////////
     ////              identifiers of primitive types               ////
 
     /** The integer identifier of <tt>null</tt> type.
      */
-    public static final int NULL_NUM    = 0;
+    public static final int NULL_NUM = 0;
 
     /** The integer identifier of <tt>boolean</tt> type.
      */
@@ -639,38 +695,38 @@ public class Type {
 
     /** The integer identifier of <tt>byte</tt> type.
      */
-    public static final int BYTE_NUM    = 2;
+    public static final int BYTE_NUM = 2;
 
     /** The integer identifier of <tt>char</tt> type.
      */
-    public static final int CHAR_NUM    = 3;
+    public static final int CHAR_NUM = 3;
 
     /** The integer identifier of <tt>double</tt> type.
      */
-    public static final int DOUBLE_NUM  = 4;
+    public static final int DOUBLE_NUM = 4;
 
     /** The integer identifier of <tt>float</tt> type.
      */
-    public static final int FLOAT_NUM   = 5;
+    public static final int FLOAT_NUM = 5;
 
     /** The integer identifier of <tt>int</tt> type.
      */
-    public static final int INT_NUM     = 6;
+    public static final int INT_NUM = 6;
 
     /** The integer identifier of <tt>long</tt> type.
      */
-    public static final int LONG_NUM    = 7;
+    public static final int LONG_NUM = 7;
 
     /** The integer identifier of <tt>short</tt> type.
      */
-    public static final int SHORT_NUM   = 8;
+    public static final int SHORT_NUM = 8;
 
     ///////////////////////////////////////////////////////////////////
     ////             type objects of primitive types               ////
 
     /** The type object of <tt>null</tt> type.
      */
-    public static final Type NULL    = new Type(NULL_NUM, "null");
+    public static final Type NULL = new Type(NULL_NUM, "null");
 
     /** The type object of <tt>boolean</tt> type.
      */
@@ -678,31 +734,31 @@ public class Type {
 
     /** The type object of <tt>byte</tt> type.
      */
-    public static final Type BYTE    = new Type(BYTE_NUM, "byte");
+    public static final Type BYTE = new Type(BYTE_NUM, "byte");
 
     /** The type object of <tt>char</tt> type.
      */
-    public static final Type CHAR    = new Type(CHAR_NUM, "char");
+    public static final Type CHAR = new Type(CHAR_NUM, "char");
 
     /** The type object of <tt>double</tt> type.
      */
-    public static final Type DOUBLE  = new Type(DOUBLE_NUM, "double");
+    public static final Type DOUBLE = new Type(DOUBLE_NUM, "double");
 
     /** The type object of <tt>float</tt> type.
      */
-    public static final Type FLOAT   = new Type(FLOAT_NUM, "float");
+    public static final Type FLOAT = new Type(FLOAT_NUM, "float");
 
     /** The type object of <tt>int</tt> type.
      */
-    public static final Type INT     = new Type(INT_NUM, "int");
+    public static final Type INT = new Type(INT_NUM, "int");
 
     /** The type object of <tt>long</tt> type.
      */
-    public static final Type LONG    = new Type(LONG_NUM, "long");
+    public static final Type LONG = new Type(LONG_NUM, "long");
 
     /** The type object of <tt>short</tt> type.
      */
-    public static final Type SHORT   = new Type(SHORT_NUM, "short");
+    public static final Type SHORT = new Type(SHORT_NUM, "short");
 
     ///////////////////////////////////////////////////////////////////
     ////                       constructors                        ////
@@ -807,5 +863,4 @@ public class Type {
         PRIMITIVE_ARRAY_TYPES.put("long", "J");
         PRIMITIVE_ARRAY_TYPES.put("short", "S");
     }
-
 }

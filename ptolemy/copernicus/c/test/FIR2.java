@@ -45,16 +45,32 @@ public class FIR2 {
      */
     public static void main(String[] args) {
         // Parameter values.
-        float[] taps = { 1, 2, 3, 4 };
+        float[] taps = {
+                1,
+                2,
+                3,
+                4
+            };
         int numberOfTaps = 4; // Replace this with a "length" expression.
-        float[] data = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        float[] data = {
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9
+            };
         int interpolation = 3;
         int decimation = 4;
         int decimationPhase = 0;
 
         // Initialize the fields.
         initialize(taps, numberOfTaps, data, interpolation, decimation,
-                decimationPhase);
+            decimationPhase);
 
         float[] output = new float[10];
 
@@ -135,7 +151,7 @@ public class FIR2 {
      *
      */
     public static void initialize(float[] taps, int numberOfTaps, float[] data,
-            int interpolation, int decimation, int decimationPhase) {
+        int interpolation, int decimation, int decimationPhase) {
         /* Copy the arguments */
         _taps = taps;
         _numberOfTaps = numberOfTaps;

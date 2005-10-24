@@ -88,8 +88,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
         setClassName("ptolemy.domains.ptinyos.kernel.PtinyOSActor");
 
         // Create an inside director.
-        PtinyOSDirector director =
-            new PtinyOSDirector(this, "PtinyOSDirector");
+        PtinyOSDirector director = new PtinyOSDirector(this, "PtinyOSDirector");
         Location location = new Location(director, "_location");
         location.setExpression("[65.0, 35.0]");
 

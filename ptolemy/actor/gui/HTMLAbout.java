@@ -153,17 +153,18 @@ public class HTMLAbout {
         try {
             // Check for the _applicationDemos parameter
             Parameter applicationDemos = (Parameter) configuration
-                .getAttribute("_applicationDemos", Parameter.class);
+                    .getAttribute("_applicationDemos", Parameter.class);
 
             if (applicationDemos != null) {
-                htmlBuffer.append(
-                        "<tr rowspan=4><center><b>" + applicationName
+                htmlBuffer.append("<tr rowspan=4><center><b>" + applicationName
                         + "</b></center></tr>\n");
-                ArrayToken demoTokens =
-                    (ArrayToken) applicationDemos.getToken();
+
+                ArrayToken demoTokens = (ArrayToken) applicationDemos
+                        .getToken();
+
                 for (int i = 0; i < demoTokens.length(); i++) {
-                    StringToken demoToken =
-                        (StringToken) demoTokens.getElement(i);
+                    StringToken demoToken = (StringToken) demoTokens
+                            .getElement(i);
                     htmlBuffer.append(_aboutHTML(demoToken.stringValue()));
                 }
             }

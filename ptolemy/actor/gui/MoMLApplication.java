@@ -57,7 +57,6 @@ import ptolemy.moml.Documentation;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -249,6 +248,7 @@ public class MoMLApplication implements ExecutionListener {
             } catch (Exception ex2) {
                 //Ignored
             }
+
             // Make sure we throw an exception if one is caught.
             // If we don't, then running vergil -foo will just exit.
             throw new Exception("Failed to parse \""
@@ -648,8 +648,6 @@ public class MoMLApplication implements ExecutionListener {
         return result.toString();
     }
 
-
-
     /** Return a default Configuration, or null to do without one.
      *  This configuration will be created before any command-line arguments
      *  are processed.  If there are no command-line arguments, then
@@ -666,9 +664,9 @@ public class MoMLApplication implements ExecutionListener {
         } catch (Exception ex) {
             System.out.println("Failed to load properties pile, try "
                     + "rerunning configure with:\n  cd $PTII; ./configure\n"
-                    + " Exception was:\n  "
-                    + ex);
+                    + " Exception was:\n  " + ex);
         }
+
         return null;
     }
 
@@ -777,6 +775,7 @@ public class MoMLApplication implements ExecutionListener {
                     // Assume the argument is a file name or URL.
                     // Attempt to read it.
                     URL inURL;
+
                     try {
                         inURL = specToURL(arg);
                     } catch (Exception ex) {
@@ -786,7 +785,7 @@ public class MoMLApplication implements ExecutionListener {
                             File inFile = new File(arg);
                             inURL = inFile.toURL();
                         }
-                    } 
+                    }
 
                     // Strangely, the XmlParser does not want as base the
                     // directory containing the file, but rather the
@@ -810,7 +809,7 @@ public class MoMLApplication implements ExecutionListener {
                         //long startTime = (new Date()).getTime();
                         // Now defer to the model reader.
                         Tableau tableau = _configuration.openModel(base, inURL,
-                                    key);
+                                key);
 
                         // FIXME: If the -run option was given, then start a run.
                         // FIXME: If the -fullscreen option was given, open full screen.

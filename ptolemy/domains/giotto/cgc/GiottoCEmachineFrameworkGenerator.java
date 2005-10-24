@@ -720,6 +720,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             assgtStmtString = "";
 
             boolean firstParameter = true;
+
             for (Iterator inPorts = actor.inputPortList().iterator(); inPorts
                     .hasNext();) {
                 TypedIOPort inPort = (TypedIOPort) inPorts.next();

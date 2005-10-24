@@ -41,7 +41,6 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  */
 public class StringConst extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the StringConst helper.
      * @param actor the associated actor.
@@ -60,6 +59,7 @@ public class StringConst extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("initBlock");
         return processCode(_codeStream.toString());

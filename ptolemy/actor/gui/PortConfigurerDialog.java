@@ -193,10 +193,11 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         _portTable.addFocusListener(new FocusListener() {
             public void focusGained(FocusEvent event) {
                 // Set the selected row so the remove key gets updated
-                _setSelectedRow(_portTable.getSelectionModel().getAnchorSelectionIndex());
+                _setSelectedRow(_portTable.getSelectionModel()
+                        .getAnchorSelectionIndex());
             }
+
             public void focusLost(FocusEvent event) {
-                
             }
         });
 
@@ -732,8 +733,10 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
         _setDirty(false);
         _enableApplyButton(false);
+
         // Update the remove button label.
-        _setSelectedRow(_portTable.getSelectionModel().getAnchorSelectionIndex());
+        _setSelectedRow(_portTable.getSelectionModel()
+                .getAnchorSelectionIndex());
         return true;
     }
 
@@ -773,7 +776,9 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         if (_portTable.isEditing()) {
             _portTable.editingStopped(new ChangeEvent(button));
         }
+
         _portTableModel.fireTableDataChanged();
+
         // The button semantics are
         // Add - Add a new port.
         if (button.equals("Apply")) {
@@ -963,7 +968,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
             // Now tell the GUI so that it can update itself.
             fireTableRowsInserted(getRowCount(), getRowCount());
-            
+
             // FIXME: Move the focus to the last row
         }
 
@@ -1097,7 +1102,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         public PortBooleanCellRenderer() {
             super();
         }
-        
+
         public Component getTableCellRendererComponent(JTable table,
                 Object value, boolean isSelected, boolean hasFocus, int row,
                 int col) {
@@ -1197,7 +1202,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         /** Construct a validating JTextField JTable Cell editor.
          *  @param jFormattedTextField The JTextField that provides choices.
          */
-        public ValidatingJTextFieldCellEditor(final JFormattedTextField jFormattedTextField) {
+        public ValidatingJTextFieldCellEditor(
+                final JFormattedTextField jFormattedTextField) {
             super(jFormattedTextField);
 
             _jFormattedTextField = (JFormattedTextField) getComponent();
@@ -1207,26 +1213,30 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             // JFormattedTextField's focusLostBehavior property.)
             jFormattedTextField.getInputMap().put(
                     KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "check");
-            jFormattedTextField.getActionMap().put("check", new AbstractAction() {
-                public void actionPerformed(ActionEvent e) {
-                    boolean valid = true;
+            jFormattedTextField.getActionMap().put("check",
+                    new AbstractAction() {
+                        public void actionPerformed(ActionEvent e) {
+                            boolean valid = true;
 
-                    if (_validator != null) {
-                        valid = _validator.isValid((String) (jFormattedTextField
-                                .getText()));
-                    }
+                            if (_validator != null) {
+                                valid = _validator
+                                        .isValid((String) (jFormattedTextField
+                                                .getText()));
+                            }
 
-                    if (!valid) {
-                        userSaysRevert((String) (jFormattedTextField.getText()));
-                    } else {
-                        jFormattedTextField.postActionEvent(); //stop editing
-                    }
-                }
-            });
+                            if (!valid) {
+                                userSaysRevert((String) (jFormattedTextField
+                                        .getText()));
+                            } else {
+                                jFormattedTextField.postActionEvent(); //stop editing
+                            }
+                        }
+                    });
             _jFormattedTextField.addKeyListener(new KeyAdapter() {
                 public void keyTyped(KeyEvent ke) {
                     _setDirty(true);
                     _enableApplyButton(true);
+
                     if (ke.getKeyChar() == '\n') {
                         if (_apply()) {
                             _cancel();
@@ -1237,10 +1247,11 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             _jFormattedTextField.addFocusListener(new FocusListener() {
                 public void focusGained(FocusEvent event) {
                     // Set the selected row so the remove key gets updated
-                    _setSelectedRow(_portTable.getSelectionModel().getAnchorSelectionIndex());
+                    _setSelectedRow(_portTable.getSelectionModel()
+                            .getAnchorSelectionIndex());
                 }
+
                 public void focusLost(FocusEvent event) {
-                    
                 }
             });
         }
@@ -1296,7 +1307,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             boolean valid = true;
 
             if (_validator != null) {
-                valid = _validator.isValid((String) (jFormattedTextField.getText()));
+                valid = _validator.isValid((String) (jFormattedTextField
+                        .getText()));
             }
 
             if (!valid) {
@@ -1406,7 +1418,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                 }
             });
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -1701,36 +1713,41 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         momlUpdate.append("</port>");
         return momlUpdate.toString();
     }
-    
+
     /** Create a JComboBox with the appropriate listeners. */
     private JComboBox _createComboBox() {
         JComboBox jComboBox = new JComboBox();
+
         // If the user types in the comboBox, enable Apply.
-        jComboBox.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
-            public void keyTyped(KeyEvent ke) {
-                _setDirty(true);
-                _enableApplyButton(true);
-            }
-        });
-        jComboBox.getEditor().getEditorComponent().addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent event) {
-                // Set the selected row so the remove key gets updated
-                _setSelectedRow(_portTable.getSelectionModel().getAnchorSelectionIndex());
-            }
-            public void focusLost(FocusEvent event) {
-                
-            }
-        });
+        jComboBox.getEditor().getEditorComponent().addKeyListener(
+                new KeyAdapter() {
+                    public void keyTyped(KeyEvent ke) {
+                        _setDirty(true);
+                        _enableApplyButton(true);
+                    }
+                });
+        jComboBox.getEditor().getEditorComponent().addFocusListener(
+                new FocusListener() {
+                    public void focusGained(FocusEvent event) {
+                        // Set the selected row so the remove key gets updated
+                        _setSelectedRow(_portTable.getSelectionModel()
+                                .getAnchorSelectionIndex());
+                    }
+
+                    public void focusLost(FocusEvent event) {
+                    }
+                });
         jComboBox.setEditable(true);
+
         // Add this item first so it is first on the list.
         jComboBox.addItem("");
         return jComboBox;
     }
-    
+
     /** Generate a combo box based on the type names. */
     private JComboBox _createPortTypeComboBox() {
         JComboBox jComboBox = _createComboBox();
-        
+
         // Add the types from data.expr.Constants
         TreeMap typeMap = Constants.types();
         Iterator types = typeMap.keySet().iterator();
@@ -1945,14 +1962,16 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             if (portName.length() == 0) {
                 portName = "#" + (row + 1);
             }
+
             if (portName.length() < 10) {
                 portName += "          ";
                 portName = portName.substring(0, 9);
             } else if (portName.length() > 10) {
                 portName = portName.substring(0, 7) + "...";
             }
-            
+
             _removeButton.setText("Remove " + portName);
+
             // Some ports cannot be removed.
             _removeButton.setEnabled(_portTable.isCellEditable(row, 0));
         }

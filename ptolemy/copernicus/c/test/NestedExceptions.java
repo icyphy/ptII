@@ -52,14 +52,12 @@ public class NestedExceptions {
             // Inner Exception.
             try {
                 throw new Exception();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Caught First Exception.");
             }
 
             throw new Exception();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Caught Second Exception.");
         }
     }

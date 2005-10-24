@@ -738,15 +738,16 @@ public class PxgraphParser {
             instream = System.in;
             read(instream);
         }
+
         for (i = argumentsRead; i < args.length; i++) {
             // Have a filename.  First attempt to open it as a URL.
-
             try {
                 URL inurl = new URL(base, args[i]);
                 instream = inurl.openStream();
             } catch (MalformedURLException ex) {
                 instream = new FileInputStream(args[i]);
             }
+
             read(instream);
         }
 

@@ -47,7 +47,7 @@ import ptolemy.kernel.util.StringAttribute;
  A server is either busy (serving a customer) or not busy at any given time.
  If an input arrives when the server is not busy, then the input token is
  produced on the output with a delay given by the <i>newServiceTime</i>
- parameter. 
+ parameter.
  If an input arrives while the server is busy, then that input is
  queued until the server becomes free, at which point it is produced
  on the output with a delay given by the <i>newServiceTime</i> parameter.

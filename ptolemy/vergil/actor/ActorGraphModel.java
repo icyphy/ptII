@@ -328,7 +328,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Relation relation = link.getRelation();
 
             // Undo needs this: Check that the relation hasn't been removed
-            if (relation == null || relation.getContainer() == null) {
+            if ((relation == null) || (relation.getContainer() == null)) {
                 // NOTE: We used to not do the next three lines when
                 // relation == null, but this seems better.
                 // EAL 6/26/05.
@@ -406,13 +406,11 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  link connected to the given relation.  Create links if necessary.
      */
     private void _updateLinks(ComponentRelation relation) {
-
         // FIXME: This method is expensive for large graphs.
         // It is called for each relation, it creates a new list
         // of links for each relation, it then goes through the full
         // list of all existing links, looking only at the ones
         // associated with this relation.  Ugh.
-
         // Create a list of linked objects.
         // We will remove objects from this list as we discover
         // existing links to them, and then create links to any
@@ -421,6 +419,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         int linkedObjectsCount = linkedObjects.size();
 
         Iterator links = new LinkedList(_linkSet).iterator();
+
         while (links.hasNext()) {
             Link link = (Link) links.next();
 
@@ -432,8 +431,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             Object head = link.getHead();
             Object headObj = getSemanticObject(head);
 
-            if (tailObj != relation && headObj != relation
-                    && link.getRelation() != relation) {
+            if ((tailObj != relation) && (headObj != relation)
+                    && (link.getRelation() != relation)) {
                 // The link does not involve this relation. Skip it.
                 // NOTE: Used to skip it if the relation field of the link
                 // didn't match this relation. But we need to ignore
@@ -444,6 +443,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 // EAL 6/26/05
                 continue;
             }
+
             if ((tailObj != null) && linkedObjects.contains(tailObj)) {
                 // The tail is an object in the list.
                 linkedObjects.remove(tailObj);
@@ -480,8 +480,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         // The root vertex is the one with no linked vertices.
         Vertex rootVertex = null;
         Iterator vertexes = relation.attributeList(Vertex.class).iterator();
+
         while (vertexes.hasNext()) {
             Vertex v = (Vertex) vertexes.next();
+
             if (v.getLinkedVertex() == null) {
                 rootVertex = v;
             }
@@ -549,6 +551,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             // Create any required links for this relation.
             Iterator linkedObjectsIterator = linkedObjects.iterator();
+
             while (linkedObjectsIterator.hasNext()) {
                 Object portOrRelation = linkedObjectsIterator.next();
 
@@ -563,6 +566,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
                 if (portOrRelation instanceof Port) {
                     Port port = (Port) portOrRelation;
+
                     if (port.getContainer().equals(getRoot())) {
                         head = _getLocation(port);
                     } else {
@@ -573,8 +577,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     // The root vertex is the one with no linked vertices.
                     vertexes = ((Relation) portOrRelation).attributeList(
                             Vertex.class).iterator();
+
                     while (vertexes.hasNext()) {
                         Vertex v = (Vertex) vertexes.next();
+
                         if (v.getLinkedVertex() == null) {
                             head = v;
                         }

@@ -193,9 +193,9 @@ public class NondeterministicMerge extends TypedCompositeActor {
      */
     private class ChannelActor extends TypedAtomicActor {
         /** Construct an actor in the specified container with the specified
-         *  name. The index is set to 0.  This method is used by t 
+         *  name. The index is set to 0.  This method is used by t
          *  shallow code generator, which requires a (container, name)
-         *  constructor.   
+         *  constructor.
          *  @param container The container.
          *  @param name The name.
          *  @exception NameDuplicationException If an actor
@@ -292,15 +292,16 @@ public class NondeterministicMerge extends TypedCompositeActor {
          */
         public synchronized void addThread(Thread thread) {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
                 ((PNDirector) director).addThread(thread);
             } else {
                 throw new InternalErrorException(
-                        "NondeterministicMerge actor can only execute" +
-                        " under the control of a PNDirector!");
+                        "NondeterministicMerge actor can only execute"
+                                + " under the control of a PNDirector!");
             }
         }
-        
+
         /** Do nothing.
          */
         public void fire() {
@@ -319,12 +320,13 @@ public class NondeterministicMerge extends TypedCompositeActor {
          */
         public synchronized void removeThread(Thread thread) {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
                 ((PNDirector) director).removeThread(thread);
             } else {
                 throw new InternalErrorException(
-                        "NondeterministicMerge actor can only execute" +
-                        " under the control of a PNDirector!");
+                        "NondeterministicMerge actor can only execute"
+                                + " under the control of a PNDirector!");
             }
         }
 
@@ -335,15 +337,16 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   or null if it is not a specific receiver.
          *  @see #threadBlocked(Thread)
          */
-        public synchronized void threadBlocked(
-                Thread thread, ProcessReceiver receiver) {
+        public synchronized void threadBlocked(Thread thread,
+                ProcessReceiver receiver) {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
                 ((PNDirector) director).threadBlocked(thread, receiver);
             } else {
                 throw new InternalErrorException(
-                        "NondeterministicMerge actor can only execute" +
-                        " under the control of a PNDirector!");
+                        "NondeterministicMerge actor can only execute"
+                                + " under the control of a PNDirector!");
             }
         }
 
@@ -356,15 +359,17 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   to indicate whether the thread is blocked on read or write.
          *  @see #threadBlocked(Thread)
          */
-        public synchronized void threadBlocked(
-                Thread thread, ProcessReceiver receiver, boolean readOrWrite) {
+        public synchronized void threadBlocked(Thread thread,
+                ProcessReceiver receiver, boolean readOrWrite) {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
-                ((PNDirector) director).threadBlocked(thread, receiver, readOrWrite);
+                ((PNDirector) director).threadBlocked(thread, receiver,
+                        readOrWrite);
             } else {
                 throw new InternalErrorException(
-                        "NondeterministicMerge actor can only execute" +
-                        " under the control of a PNDirector!");
+                        "NondeterministicMerge actor can only execute"
+                                + " under the control of a PNDirector!");
             }
         }
 
@@ -374,12 +379,13 @@ public class NondeterministicMerge extends TypedCompositeActor {
          */
         public synchronized void threadHasPaused(Thread thread) {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
                 ((PNDirector) director).threadHasPaused(thread);
             } else {
                 throw new InternalErrorException(
-                        "NondeterministicMerge actor can only execute" +
-                        " under the control of a PNDirector!");
+                        "NondeterministicMerge actor can only execute"
+                                + " under the control of a PNDirector!");
             }
         }
 
@@ -389,12 +395,13 @@ public class NondeterministicMerge extends TypedCompositeActor {
          */
         public synchronized void threadHasResumed(Thread thread) {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
                 ((PNDirector) director).threadHasResumed(thread);
             } else {
                 throw new InternalErrorException(
-                        "NondeterministicMerge actor can only execute" +
-                        " under the control of a PNDirector!");
+                        "NondeterministicMerge actor can only execute"
+                                + " under the control of a PNDirector!");
             }
         }
 
@@ -405,15 +412,16 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   or null if it is not a specific receiver.
          *  @see #threadBlocked(Thread)
          */
-        public synchronized void threadUnblocked(
-                Thread thread, ProcessReceiver receiver) {
+        public synchronized void threadUnblocked(Thread thread,
+                ProcessReceiver receiver) {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
                 ((PNDirector) director).threadUnblocked(thread, receiver);
             } else {
                 throw new InternalErrorException(
-                        "NondeterministicMerge actor can only execute" +
-                        " under the control of a PNDirector!");
+                        "NondeterministicMerge actor can only execute"
+                                + " under the control of a PNDirector!");
             }
         }
 
@@ -426,15 +434,17 @@ public class NondeterministicMerge extends TypedCompositeActor {
          *   to indicate whether the thread is blocked on read or write.
          *  @see #threadBlocked(Thread)
          */
-        public synchronized void threadUnblocked(
-                Thread thread, ProcessReceiver receiver, boolean readOrWrite) {
+        public synchronized void threadUnblocked(Thread thread,
+                ProcessReceiver receiver, boolean readOrWrite) {
             Director director = getExecutiveDirector();
+
             if (director instanceof PNDirector) {
-                ((PNDirector) director).threadUnblocked(thread, receiver, readOrWrite);
+                ((PNDirector) director).threadUnblocked(thread, receiver,
+                        readOrWrite);
             } else {
                 throw new InternalErrorException(
-                        "NondeterministicMerge actor can only execute" +
-                        " under the control of a PNDirector!");
+                        "NondeterministicMerge actor can only execute"
+                                + " under the control of a PNDirector!");
             }
         }
 
@@ -449,6 +459,7 @@ public class NondeterministicMerge extends TypedCompositeActor {
                 _debug("Deadlock is not real as "
                         + "NondeterministicMerge can't deadlock.");
             }
+
             return true;
         }
     }

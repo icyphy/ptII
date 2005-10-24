@@ -30,17 +30,18 @@ COPYRIGHTENDKEY
 */
 package ptolemy.apps.vergil.graph.util;
 
-import java.io.Serializable;
-
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// MouseEventToken
+
 /**
 
 
@@ -49,7 +50,6 @@ import java.awt.event.MouseEvent;
 
 */
 public class MouseEventToken extends Token {
-
     public MouseEventToken(MouseEvent mouseEvent) {
         super();
         _mouseEvent = mouseEvent;
@@ -69,7 +69,7 @@ public class MouseEventToken extends Token {
             return token;
         } else {
             throw new IllegalActionException("Attempt to convert token "
-                    + token + " into a mouseEvent token, which is not possible.");
+                + token + " into a mouseEvent token, which is not possible.");
         }
     }
 
@@ -97,11 +97,12 @@ public class MouseEventToken extends Token {
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if (token instanceof MouseEventToken) {
             return new BooleanToken(this == token);
-        } else
+        } else {
             throw new IllegalActionException(
-                    "Equality test not supported between "
-                    + this.getClass().getName() + " and "
-                    + token.getClass().getName() + ".");
+                "Equality test not supported between "
+                + this.getClass().getName() + " and "
+                + token.getClass().getName() + ".");
+        }
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -116,7 +117,6 @@ public class MouseEventToken extends Token {
     }
 
     public static class MouseEventType implements Type, Serializable {
-
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
@@ -134,8 +134,7 @@ public class MouseEventToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
-        public Token convert(Token t)
-                throws IllegalActionException {
+        public Token convert(Token t) throws IllegalActionException {
             return MouseEventToken.convert(t);
         }
 
@@ -197,6 +196,5 @@ public class MouseEventToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private MouseEvent _mouseEvent;
-
     private Type _type = new MouseEventType();
 }

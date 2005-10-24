@@ -1,30 +1,30 @@
 /* A file parameter that has an associated port.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2004-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.parameters;
 
 import java.io.BufferedReader;
@@ -44,155 +44,154 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// FilePortParameter
 
 /**
-   This file parameter creates an associated port that can be used to update
-   the current value of the parameter. The value of this
-   parameter, accessed by getExpression(), is a string that names a file
-   or URL, possibly containing references to variables defined in scope
-   using the syntax $ID, ${ID} or $(ID). The value returned by getToken()
-   is name of the file with such references resolved.
-   <p>
-   If the model containing this port
-   parameter has been saved to a MoML file, then the file name can be
-   given relative to the directory containing that MoML file.
-   If the model has not been saved to a file,
-   then the classpath is used for identifying relative file names.
-   <p>
-   Files can be given relative to a <i>base</i>, where the base is
-   the URI of the first container above this one that has a URIAttribute.
-   Normally, this URI specifies the file or URL containing the model
-   definition. Thus, files that are referred to here can be kept in the
-   same directory as the model, or in a related directory, and can
-   moved together with the model.
-   <p>
-   The following special file names are understood:
-   <ul>
-   <li> System.in: Standard input.
-   <li> System.out: Standard output.
-   </ul>
-   Note, however, that these file names cannot be converted to URLs
-   using the asURL() method.
-   A file name can also contain the following strings that start
-   with "$", which get substituted
-   with the appropriate values.
-   <table>
-   <tr>
-   <th>String</th>
-   <th>Description</th>
-   <th>Property</th>
-   </tr>
-   <tr>
-   <tr><code>$CWD</code></tr>
-   <tr>The current working directory</tr>
-   <tr><code>user.dir</code></tr>
-   </tr>
-   <tr>
-   <tr><code>$HOME</code></tr>
-   <tr>The user's home directory</tr>
-   <tr><code>user.home</code></tr>
-   </tr>
-   <tr>
-   <tr><code>$PTII</code></tr>
-   <tr>The home directory of the Ptolemy II installation</tr>
-   <tr><code>ptolemy.ptII.dir</code></tr>
-   </tr>
-   <tr>
-   <tr><code>$TMPDIR</code></tr>
-   <tr>The temporary directory</tr>
-   <tr><code>java.io.tmpdir</code></tr>
-   </tr>
-   </table>
-   The above properties are normally set when a Ptolemy II application starts.
-   <p>
-   If a file name begins with the reference "$CLASSPATH", then when
-   the file is opened for reading, the openForReading() method
-   will search for the file relative to the classpath (using the
-   getResource() method of the current class loader).  This will only
-   work for a file that exists, and thus the openForWriting() method
-   will not understand the "$CLASSPATH" string; this makes sense
-   since the classpath typically has several directories, and it
-   would not be obvious where to create the file.  The asURL()
-   method also recognizes the "$CLASSPATH" string, but not the asFile()
-   method (which is typically used when accessing a file for writing).
-   NOTE: If the container of this parameter also contains a variable
-   named CLASSPATH, then the value of that variable is used instead
-   of the Java classpath.
-   <p>
-   This parameter has two values,
-   which may not be equal, a <i>current value</i> and a <i>persistent value</i>.
-   The persistent value is returned by
-   getExpression() and is set by any of three different mechanisms:
-   <ul>
-   <li> calling setExpression();
-   <li> calling setToken(); and
-   <li> specifying a value as a constructor argument.
-   </ul>
-   All three of these will also set the current value, which is then
-   equal to the persistent value.
-   The current value is returned by get getToken()
-   and is set by any of three different mechanisms:
-   <ul>
-   <li> calling setCurrentValue();
-   <li> calling update() sets the current value if there is an associated
-   port, and that port has a token to consume; and
-   </ul>
-   These three techniques do not change the persistent value, so after
-   these are used, the persistent value and current value may be different.
-   <p>
-   When using this parameter in an actor, care must be exercised
-   to call update() exactly once per firing prior to calling getToken().
-   Each time update() is called, a new token will be consumed from
-   the associated port (if the port is connected and has a token).
-   If this is called multiple times in an iteration, it may result in
-   consuming tokens that were intended for subsequent iterations.
-   Thus, for example, update() should not be called in fire() and then
-   again in postfire().  Moreover, in some domains (such as DE),
-   it is essential that if a token is provided on a port, that it
-   is consumed.  In DE, the actor will be repeatedly fired until
-   the token is consumed.  Thus, it is an error to not call update()
-   once per iteration.  For an example of an actor that uses this
-   mechanism, see Ramp.
-   <p>
-   If this actor is placed in a container that does not implement
-   the TypedActor interface, then no associated port is created,
-   and it functions as an ordinary file parameter.  This is useful,
-   for example, if this is put in a library, where one would not
-   want the associated port to appear.
+ This file parameter creates an associated port that can be used to update
+ the current value of the parameter. The value of this
+ parameter, accessed by getExpression(), is a string that names a file
+ or URL, possibly containing references to variables defined in scope
+ using the syntax $ID, ${ID} or $(ID). The value returned by getToken()
+ is name of the file with such references resolved.
+ <p>
+ If the model containing this port
+ parameter has been saved to a MoML file, then the file name can be
+ given relative to the directory containing that MoML file.
+ If the model has not been saved to a file,
+ then the classpath is used for identifying relative file names.
+ <p>
+ Files can be given relative to a <i>base</i>, where the base is
+ the URI of the first container above this one that has a URIAttribute.
+ Normally, this URI specifies the file or URL containing the model
+ definition. Thus, files that are referred to here can be kept in the
+ same directory as the model, or in a related directory, and can
+ moved together with the model.
+ <p>
+ The following special file names are understood:
+ <ul>
+ <li> System.in: Standard input.
+ <li> System.out: Standard output.
+ </ul>
+ Note, however, that these file names cannot be converted to URLs
+ using the asURL() method.
+ A file name can also contain the following strings that start
+ with "$", which get substituted
+ with the appropriate values.
+ <table>
+ <tr>
+ <th>String</th>
+ <th>Description</th>
+ <th>Property</th>
+ </tr>
+ <tr>
+ <tr><code>$CWD</code></tr>
+ <tr>The current working directory</tr>
+ <tr><code>user.dir</code></tr>
+ </tr>
+ <tr>
+ <tr><code>$HOME</code></tr>
+ <tr>The user's home directory</tr>
+ <tr><code>user.home</code></tr>
+ </tr>
+ <tr>
+ <tr><code>$PTII</code></tr>
+ <tr>The home directory of the Ptolemy II installation</tr>
+ <tr><code>ptolemy.ptII.dir</code></tr>
+ </tr>
+ <tr>
+ <tr><code>$TMPDIR</code></tr>
+ <tr>The temporary directory</tr>
+ <tr><code>java.io.tmpdir</code></tr>
+ </tr>
+ </table>
+ The above properties are normally set when a Ptolemy II application starts.
+ <p>
+ If a file name begins with the reference "$CLASSPATH", then when
+ the file is opened for reading, the openForReading() method
+ will search for the file relative to the classpath (using the
+ getResource() method of the current class loader).  This will only
+ work for a file that exists, and thus the openForWriting() method
+ will not understand the "$CLASSPATH" string; this makes sense
+ since the classpath typically has several directories, and it
+ would not be obvious where to create the file.  The asURL()
+ method also recognizes the "$CLASSPATH" string, but not the asFile()
+ method (which is typically used when accessing a file for writing).
+ NOTE: If the container of this parameter also contains a variable
+ named CLASSPATH, then the value of that variable is used instead
+ of the Java classpath.
+ <p>
+ This parameter has two values,
+ which may not be equal, a <i>current value</i> and a <i>persistent value</i>.
+ The persistent value is returned by
+ getExpression() and is set by any of three different mechanisms:
+ <ul>
+ <li> calling setExpression();
+ <li> calling setToken(); and
+ <li> specifying a value as a constructor argument.
+ </ul>
+ All three of these will also set the current value, which is then
+ equal to the persistent value.
+ The current value is returned by get getToken()
+ and is set by any of three different mechanisms:
+ <ul>
+ <li> calling setCurrentValue();
+ <li> calling update() sets the current value if there is an associated
+ port, and that port has a token to consume; and
+ </ul>
+ These three techniques do not change the persistent value, so after
+ these are used, the persistent value and current value may be different.
+ <p>
+ When using this parameter in an actor, care must be exercised
+ to call update() exactly once per firing prior to calling getToken().
+ Each time update() is called, a new token will be consumed from
+ the associated port (if the port is connected and has a token).
+ If this is called multiple times in an iteration, it may result in
+ consuming tokens that were intended for subsequent iterations.
+ Thus, for example, update() should not be called in fire() and then
+ again in postfire().  Moreover, in some domains (such as DE),
+ it is essential that if a token is provided on a port, that it
+ is consumed.  In DE, the actor will be repeatedly fired until
+ the token is consumed.  Thus, it is an error to not call update()
+ once per iteration.  For an example of an actor that uses this
+ mechanism, see Ramp.
+ <p>
+ If this actor is placed in a container that does not implement
+ the TypedActor interface, then no associated port is created,
+ and it functions as an ordinary file parameter.  This is useful,
+ for example, if this is put in a library, where one would not
+ want the associated port to appear.
 
-   <p>There are a few situations where FilePortParameter might not do what
-   you expect:
+ <p>There are a few situations where FilePortParameter might not do what
+ you expect:
 
-   <ol>
-   <li> If it is used in a transparent composite actor, then a token provided
-   to a FilePortParameter will never be read.  A transparent composite actor
-   is one without a director.
+ <ol>
+ <li> If it is used in a transparent composite actor, then a token provided
+ to a FilePortParameter will never be read.  A transparent composite actor
+ is one without a director.
 
-   <br>Workaround: Put a director in the composite.
+ <br>Workaround: Put a director in the composite.
 
-   <li> Certain actors read parameter
-   values only during initialization.  During initialization, a
-   FilePortParameter can only have a value set via the parameter (it
-   can't have yet received a token).  So if the initial value
-   is set to the value of the FilePortParameter, then it will
-   see only the parameter value, never the value provided via the
-   port.
+ <li> Certain actors read parameter
+ values only during initialization.  During initialization, a
+ FilePortParameter can only have a value set via the parameter (it
+ can't have yet received a token).  So if the initial value
+ is set to the value of the FilePortParameter, then it will
+ see only the parameter value, never the value provided via the
+ port.
 
-   <br>Workaround: Use a RunCompositeActor to contain the model.
+ <br>Workaround: Use a RunCompositeActor to contain the model.
 
-   </ol>
+ </ol>
 
-   @see ptolemy.data.expr.FileParameter
-   @see ParameterPort
-   @author Edward A. Lee
-   @version $Id$
-   @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ @see ptolemy.data.expr.FileParameter
+ @see ParameterPort
+ @author Edward A. Lee
+ @version $Id$
+ @since Ptolemy II 4.1
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (cxh)
+ */
 public class FilePortParameter extends PortParameter {
     /** Construct a parameter with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -232,8 +231,8 @@ public class FilePortParameter extends PortParameter {
      *   an parameter already in the container.
      */
     public FilePortParameter(NamedObj container, String name,
-            ptolemy.data.Token token)
-            throws IllegalActionException, NameDuplicationException {
+            ptolemy.data.Token token) throws IllegalActionException,
+            NameDuplicationException {
         super(container, name, token);
         setStringMode(true);
         setTypeEquals(BaseType.STRING);
@@ -275,15 +274,16 @@ public class FilePortParameter extends PortParameter {
         String name = stringValue();
 
         try {
-            File file =
-                FileUtilities.nameToFile(name, getBaseDirectory());
-            if (file.toString().indexOf("!/") != -1 
-                    || file.toString().indexOf("!\\") != -1) {
+            File file = FileUtilities.nameToFile(name, getBaseDirectory());
+
+            if ((file.toString().indexOf("!/") != -1)
+                    || (file.toString().indexOf("!\\") != -1)) {
                 // We have a jar url, try dereferencing it.
                 // ModelReference.xml needed this under Webstart.
                 try {
-                    URL possibleJarURL =
-                        ClassUtilities.jarURLEntryResource(name);
+                    URL possibleJarURL = ClassUtilities
+                            .jarURLEntryResource(name);
+
                     if (possibleJarURL != null) {
                         file = new File(possibleJarURL.getFile());
                     }
@@ -315,11 +315,11 @@ public class FilePortParameter extends PortParameter {
         String name = stringValue();
 
         try {
-            return FileUtilities.nameToURL(name, getBaseDirectory(),
-                    getClass().getClassLoader());
+            return FileUtilities.nameToURL(name, getBaseDirectory(), getClass()
+                    .getClassLoader());
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot read file '" + name + "'");
+            throw new IllegalActionException(this, ex, "Cannot read file '"
+                    + name + "'");
         }
     }
 
@@ -331,7 +331,8 @@ public class FilePortParameter extends PortParameter {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        FilePortParameter newObject = (FilePortParameter) super.clone(workspace);
+        FilePortParameter newObject = (FilePortParameter) super
+                .clone(workspace);
         newObject._baseDirectory = null;
         newObject._reader = null;
         newObject._writer = null;
@@ -404,7 +405,8 @@ public class FilePortParameter extends PortParameter {
                     getBaseDirectory(), getClass().getClassLoader());
             return _reader;
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "Cannot open file or URL");
+            throw new IllegalActionException(this, ex,
+                    "Cannot open file or URL");
         }
     }
 

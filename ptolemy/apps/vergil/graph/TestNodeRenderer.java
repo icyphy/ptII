@@ -6,22 +6,24 @@
  */
 package ptolemy.apps.vergil.graph;
 
-import diva.graph.NodeController;
-import diva.graph.GraphController;
-import diva.graph.NodeRenderer;
-import diva.graph.GraphModel;
-import diva.canvas.Figure;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+
 import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
-import java.awt.Shape;
-import java.awt.Paint;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.NodeController;
+import diva.graph.NodeRenderer;
+
 import java.awt.Color;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
-import java.awt.geom.GeneralPath;
 
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
 
 /**
  * A factory which creates and returns a NodeFigure given a node input
@@ -32,7 +34,6 @@ import ptolemy.kernel.*;
  * @Pt.AcceptedRating  Red
  */
 public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
-
     /**
      * The shape for nodes.
      */
@@ -64,11 +65,10 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
      * Create a renderer which renders nodes square and orange.
      */
     public MetaNodeRenderer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        this(container, name,
-                new Rectangle2D.Double(0.0,0.0,40.0,40.0),
-                new Rectangle2D.Double(0.0,0.0,600.0,600.0),
-                Color.orange, Color.red, .3);
+        throws IllegalActionException, NameDuplicationException {
+        this(container, name, new Rectangle2D.Double(0.0, 0.0, 40.0, 40.0),
+            new Rectangle2D.Double(0.0, 0.0, 600.0, 600.0), Color.orange,
+            Color.red, .3);
     }
 
     /**
@@ -77,9 +77,9 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
      * cloneable.
      */
     public MetaNodeRenderer(CompositeEntity container, String name,
-            Shape nodeShape, Shape compositeShape,
-            Paint nodeFill, Paint compositeFill, double compositeScale)
-            throws IllegalActionException, NameDuplicationException {
+        Shape nodeShape, Shape compositeShape, Paint nodeFill,
+        Paint compositeFill, double compositeScale)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setNodeShape(nodeShape);
         setNodeFill(nodeFill);
@@ -115,7 +115,7 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
      * Return the graph controller.
      */
     public GraphController getGraphController() {
-        return ((NodeController)getContainer()).getController();
+        return ((NodeController) getContainer()).getController();
     }
 
     /**
@@ -138,13 +138,14 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
     public Figure render(Object node) {
         GraphModel model = getGraphController().getGraphModel();
         Shape shape = (model.isComposite(node)) ? _compositeShape : _nodeShape;
+
         if (shape instanceof RectangularShape) {
-            RectangularShape r = (RectangularShape)shape;
-            shape = (Shape)(r.clone());
-        }
-        else {
+            RectangularShape r = (RectangularShape) shape;
+            shape = (Shape) (r.clone());
+        } else {
             shape = new GeneralPath(shape);
         }
+
         Paint fill = model.isComposite(node) ? _compositeFill : _nodeFill;
 
         BasicFigure bf = new BasicFigure(shape);
@@ -180,6 +181,7 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
             String err = "Scale must be between > 0 and <= 1.";
             throw new IllegalArgumentException(err);
         }
+
         _compositeScale = scale;
     }
 
@@ -205,6 +207,4 @@ public class MetaNodeRenderer extends CompositeEntity implements NodeRenderer {
     public void setNodeShape(Shape s) {
         _nodeShape = s;
     }
-
 }
-

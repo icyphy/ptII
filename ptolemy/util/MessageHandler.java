@@ -175,7 +175,7 @@ public class MessageHandler {
     /** Ask the user a yes/no/cancel question, and return true if the
      *  answer is yes.  If the user clicks on the "Cancel" button,
      *  then throw an exception.
-     *   
+     *
      *  @param question The yes/no/cancel question.
      *  @return True if the answer is yes.
      *  @exception ptolemy.util.CancelException If the user clicks on
@@ -184,7 +184,7 @@ public class MessageHandler {
     public static boolean yesNoCancelQuestion(String question)
             throws ptolemy.util.CancelException {
         return _handler._yesNoCancelQuestion(question);
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -222,7 +222,7 @@ public class MessageHandler {
     }
 
     /** Show the specified message.  In this base class, the message
-     *  is printed to standard error.  
+     *  is printed to standard error.
      *  <p>Derived classes might show the specified message in a modal
      *  dialog.  If the user clicks on the "Cancel" button, then throw
      *  an exception.  This gives the user the option of not
@@ -272,7 +272,7 @@ public class MessageHandler {
 
         return false;
     }
-    
+
     /** Ask the user a yes/no/cancel question, and return true if the
      *  answer is yes.  If the user chooses "cancel", then throw an
      *  exception.  In this base class, this prints the question on
@@ -289,21 +289,22 @@ public class MessageHandler {
         System.out.print(" (yes or no or cancel) ");
 
         BufferedReader stdIn = new BufferedReader(new InputStreamReader(
-                                                          System.in));
+                System.in));
+
         try {
             String reply = stdIn.readLine();
 
             if (reply.trim().toLowerCase().equals("yes")) {
                 return true;
             } else if (reply.trim().toLowerCase().equals("cancel")) {
-                throw new ptolemy.util.CancelException("Cancelled: "+ question);
+                throw new ptolemy.util.CancelException("Cancelled: " + question);
             }
         } catch (IOException ex) {
         }
-        
+
         return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The message handler.

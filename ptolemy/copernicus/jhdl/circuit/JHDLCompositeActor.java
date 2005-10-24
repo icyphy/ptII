@@ -60,13 +60,13 @@ import java.util.*;
  @Pt.AcceptedRating Red (cxh)
 */
 public class JHDLCompositeActor extends CompositeActor implements Resolve,
-                                                                  ConstructJHDL {
+    ConstructJHDL {
     public JHDLCompositeActor() {
         super();
     }
 
     public ComponentRelation newRelation(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         return new JHDLIORelation(this, name);
     }
 
@@ -110,7 +110,7 @@ public class JHDLCompositeActor extends CompositeActor implements Resolve,
                 Resolve r = (Resolve) i.next();
                 boolean resolved = r.resolve();
                 System.out.println("Resolving " + ((NamedObj) r).getName()
-                        + " " + resolved);
+                    + " " + resolved);
 
                 if (resolved == true) {
                     resolvedNodes.add(r);

@@ -190,8 +190,9 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         Attribute attribute = null;
 
         // Look for the variableName anywhere in the hierarchy
-        while (attribute == null && container != null) {
+        while ((attribute == null) && (container != null)) {
             attribute = container.getAttribute(variableNameValue);
+
             if (attribute == null) {
                 container = container.getContainer();
             }
@@ -200,6 +201,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
         if (attribute == null) {
             try {
                 workspace().getWriteAccess();
+
                 // container might be null, so create the variable
                 // in the container of this actor.
                 attribute = new Variable(getContainer(), variableNameValue);

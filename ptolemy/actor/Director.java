@@ -705,7 +705,7 @@ public class Director extends Attribute implements Executable {
      */
     public void invalidateSchedule() {
     }
-    
+
     /** Return true if stop has been requested.
      *  @return True if stop() has been called.
      *  @see #stop()
@@ -1092,7 +1092,7 @@ public class Director extends Attribute implements Executable {
         return defaultSuggestions;
     }
 
-    /** Return a boolean to indicate whether a ModalModel under control 
+    /** Return a boolean to indicate whether a ModalModel under control
      *  of this director supports multirate firing. In this class, false
      *  is always returned. Subclasses may override this method to return true.
      *  @return False indicating a ModalModel under control of this director

@@ -50,7 +50,7 @@ import com.microstar.xml.XmlParser;
  * @since Ptolemy II 0.2
  * @see XmlParser
  */
-public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader//implements XmlHandler, Locator, AttributeList, Parser
+public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //implements XmlHandler, Locator, AttributeList, Parser
 {
     //
     // Variables.

@@ -1,30 +1,30 @@
 /* Reads data from a Joystick
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.joystick;
 
 import java.io.IOException;
@@ -43,41 +43,40 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import com.centralnexus.input.JoystickListener;
 
-
 //////////////////////////////////////////////////////////////////////////
 ////
 
 /**
-   This actor reads data from a Joystick using the Joystick interface
-   from
-   <a href="http://sourceforge.net/projects/javajoystick/"
-   target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>
-   and generates output ranging between -1.0 and 1.0 on the <i>x</i>
-   and <i>x</i> ports.
+ This actor reads data from a Joystick using the Joystick interface
+ from
+ <a href="http://sourceforge.net/projects/javajoystick/"
+ target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>
+ and generates output ranging between -1.0 and 1.0 on the <i>x</i>
+ and <i>x</i> ports.
 
-   <p>Currently, this actor will only work under Windows, though
-   the Joystick interface also supports Linux.
+ <p>Currently, this actor will only work under Windows, though
+ the Joystick interface also supports Linux.
 
-   <p>Under Windows, <code>jjstick.dll</code> must be in your path
-   and <code>joystick.jar</code> must be in the classpath.
+ <p>Under Windows, <code>jjstick.dll</code> must be in your path
+ and <code>joystick.jar</code> must be in the classpath.
 
-   <p>By default, $PTII/configure looks for the Joystick
-   interface in <code>$PTII/vendors/misc/joystick/lib</code>, so you could either
-   add that directory to your path, or copy <code>jjstick.dll</code>
-   to <code>$PTII/bin</code>:
-   <pre>
-   cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
-   </pre>
-   By default, if configure finds <code>joystick.jar</code>, then
-   vergil will include <code>joystick.jar<code> in the classpath.
+ <p>By default, $PTII/configure looks for the Joystick
+ interface in <code>$PTII/vendors/misc/joystick/lib</code>, so you could either
+ add that directory to your path, or copy <code>jjstick.dll</code>
+ to <code>$PTII/bin</code>:
+ <pre>
+ cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
+ </pre>
+ By default, if configure finds <code>joystick.jar</code>, then
+ vergil will include <code>joystick.jar<code> in the classpath.
 
-   @author Christopher Hylands, David Lee, Paul Yang
-   @version $Id$
-   @since Ptolemy II 3.0
-   @Pt.ProposedRating red (cxh)
-   @Pt.AcceptedRating red (cxh)
-   @see ptolemy.actor.lib.io.comm.SerialComm
-*/
+ @author Christopher Hylands, David Lee, Paul Yang
+ @version $Id$
+ @since Ptolemy II 3.0
+ @Pt.ProposedRating red (cxh)
+ @Pt.AcceptedRating red (cxh)
+ @see ptolemy.actor.lib.io.comm.SerialComm
+ */
 public class Joystick extends TypedAtomicActor implements JoystickListener {
     // The com.centralnexus.input.Joystick says that there are two
     // ways to update the axis and button values: 1) use JoystickListener
@@ -92,15 +91,16 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *   actor with this name.
      */
     public Joystick(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException, IOException {
+            throws NameDuplicationException, IllegalActionException,
+            IOException {
         super(container, name);
 
         deadZone = new Parameter(this, "deadZone", new DoubleToken("0.01"));
 
         isPolling = new Parameter(this, "isPolling", new BooleanToken("true"));
 
-        pollingInterval = new Parameter(this, "pollingInterval",
-                new IntToken("50"));
+        pollingInterval = new Parameter(this, "pollingInterval", new IntToken(
+                "50"));
 
         x = new TypedIOPort(this, "x", false, true);
         x.setTypeEquals(BaseType.DOUBLE);
@@ -156,13 +156,13 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
         // FIXME: not sure about this, but it seems like a good idea.
         if ((attribute == deadZone) && (_joy != null)) {
             double deadZoneValue = ((DoubleToken) deadZone.getToken())
-                .doubleValue();
+                    .doubleValue();
             _joy.setDeadZone(deadZoneValue);
         } else if (attribute == isPolling) {
             boolean oldIsPollingValue = _isPollingValue;
 
             _isPollingValue = ((BooleanToken) isPolling.getToken())
-                .booleanValue();
+                    .booleanValue();
 
             // If necessary, add or remove this as a JoystickListener.
             if ((_joy != null) && (_isPollingValue != oldIsPollingValue)) {
@@ -173,8 +173,8 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
                 }
             }
         } else if ((attribute == pollingInterval) && (_joy != null)) {
-            int pollingIntervalValue = ((DoubleToken) pollingInterval.getToken())
-                .intValue();
+            int pollingIntervalValue = ((DoubleToken) pollingInterval
+                    .getToken()).intValue();
             _joy.setPollInterval(pollingIntervalValue);
         } else {
             super.attributeChanged(attribute);
@@ -207,9 +207,10 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
             _debug("Joystick.initialize() start");
         }
 
-        double deadZoneValue = ((DoubleToken) deadZone.getToken()).doubleValue();
+        double deadZoneValue = ((DoubleToken) deadZone.getToken())
+                .doubleValue();
         int pollingIntervalValue = ((IntToken) pollingInterval.getToken())
-            .intValue();
+                .intValue();
 
         try {
             _joy = com.centralnexus.input.Joystick.createInstance();

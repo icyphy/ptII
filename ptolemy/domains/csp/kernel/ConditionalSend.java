@@ -114,26 +114,24 @@ import ptolemy.kernel.util.Nameable;
  @see ptolemy.domains.csp.kernel.ConditionalBranch
  */
 public class ConditionalSend extends ConditionalBranch implements Runnable {
-    
     // FIXME: Need to review for major changes to support forked connections.
-    
+
     /** Create a conditional send.
      *  @param port The IOPort containing the channel (and thus receiver)
      *   that this branch will try to rendezvous with.
      *  @param channel The channel in the IOPort that this branch is
      *   trying to rendezvous with.
      *  @param branchID The identification number assigned to this branch
-     *   upon creation by the CSPActor.  
+     *   upon creation by the CSPActor.
      *  @param token The token this branch is trying to send.
      *  @exception IllegalActionException If the channel has more
      *   than one receiver or if the receiver is not of type CSPReceiver.
      */
-    public ConditionalSend(
-            IOPort port, int channel, int branchID, Token token)
+    public ConditionalSend(IOPort port, int channel, int branchID, Token token)
             throws IllegalActionException {
         this(true, port, channel, branchID, token, null);
     }
-    
+
     /** Create a guarded communication with a send communication.
      *  @param guard The guard for the guarded communication statement
      *   represented by this object.
@@ -194,8 +192,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 throw new IllegalActionException(port, "ConditionalSend: "
                         + "Trying to rendezvous with null receiver");
             }
+
             if (!(receivers[channel][0] instanceof CSPReceiver)) {
-               throw new IllegalActionException(port, "ConditionalSend: "
+                throw new IllegalActionException(port, "ConditionalSend: "
                         + "channel " + channel + " does not have a receiver "
                         + "of type CSPReceiver.");
             }
@@ -224,70 +223,84 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
     public void run() {
         // Get the array of receivers to send to.
         Receiver[] receivers = getReceivers();
-        CSPDirector director = ((CSPReceiver)receivers[0])._getDirector();
+        CSPDirector director = ((CSPReceiver) receivers[0])._getDirector();
         AbstractBranchController controller = getController();
         String identifier = "";
+
         if (_debugging) {
-            identifier = "ConditionalSend: send() on " + _port.getFullName() + " on channel " + _channel;
+            identifier = "ConditionalSend: send() on " + _port.getFullName()
+                    + " on channel " + _channel;
             _debug(identifier + ": Trying conditional send.");
         }
+
         List threads = null;
+
         // Note that there are two distinct sources of complexity here.
         // First, this conditional send may have multiple destinations.
         // This means that it will need to perform a multi-way rendezvous
         // with each of those destinations. Second, it is part of conditional
         // send, which means that another conditional branch (send or receive)
         // may win out, in which case this send will "fail".
-        synchronized(director) {
+        synchronized (director) {
             try {
                 // Check that none of the receivers already has a put or conditional send waiting.
                 for (int copy = 0; copy < receivers.length; copy++) {
-                    if (((CSPReceiver)receivers[copy])._isConditionalSendWaiting()
-                            || ((CSPReceiver)receivers[copy])._isPutWaiting()) {
+                    if (((CSPReceiver) receivers[copy])
+                            ._isConditionalSendWaiting()
+                            || ((CSPReceiver) receivers[copy])._isPutWaiting()) {
                         // Should never happen that a put or a ConditionalSend
                         // is already at the receiver. This would mean there
                         // was more than one output connected to input port.
-                        throw new InvalidStateException(((Nameable) controller
-                                .getParent()).getName()
-                                + ": ConditionalSend branch is trying to rendezvous "
-                                + "with a receiver that already has a put or a "
-                                + "ConditionalSend waiting.");
+                        throw new InvalidStateException(
+                                ((Nameable) controller.getParent()).getName()
+                                        + ": ConditionalSend branch is trying to rendezvous "
+                                        + "with a receiver that already has a put or a "
+                                        + "ConditionalSend waiting.");
                     }
                 }
+
                 // Loop until either the rendezvous is ready to succeed or the branch
                 // is no longer alive (presumably because some other branch succeeded).
                 // I.e., the branch "fails".
                 while (true) {
                     if (!isAlive()) {
                         if (_debugging) {
-                            _debug("ConditionalSend: send() on channel " + _channel + ": No longer alive.");
+                            _debug("ConditionalSend: send() on channel "
+                                    + _channel + ": No longer alive.");
                         }
+
                         for (int copy = 0; copy < receivers.length; copy++) {
-                            ((CSPReceiver)receivers[copy])._setConditionalSend(false, null, -1);
+                            ((CSPReceiver) receivers[copy])
+                                    ._setConditionalSend(false, null, -1);
                         }
+
                         controller._branchFailed(getID());
+
                         // Nothing more to do.
                         return;
                     }
+
                     if (_isGetWaitingOnAll(receivers)) {
                         if (_debugging) {
                             _debug("ConditionalSend: send() on channel "
                                     + _channel
                                     + ": get() is waiting on all receivers.");
                         }
+
                         if (controller._isBranchReady(getID())) {
                             // I am the branch that succeeds, so convert the conditional send
                             // to a put on each receiver.
                             // The order doesn't matter here, since all recipients are waiting.
                             if (_debugging) {
                                 _debug("ConditionalSend: send() on channel "
-                                        + _channel
-                                        + ": Putting token.");
+                                        + _channel + ": Putting token.");
                             }
+
                             // Convert the conditional send to a put.
                             // Do this by falling out of the loop.
                             break; // exit while(true).
                         }
+
                         // else continue while(true).
                     } else if (_isGetOrConditionalReceiveWaitingOnAll(receivers)) {
                         if (_debugging) {
@@ -295,49 +308,66 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                     + _channel
                                     + ": conditional receive or get is waiting on each destination.");
                         }
+
                         if (controller._isBranchReady(getID())) {
                             if (_debugging) {
                                 _debug("ConditionalSend: send() on channel "
-                                        + _channel
-                                        + ": send branch is first.");
+                                        + _channel + ": send branch is first.");
                             }
+
                             // Send side OK, need to check that receive side also OK.
                             // It has to be OK for all the receivers, so we have to keep
                             // track of which ones say they are first so we can release
                             // the flag indicating they are first if we don't have unanimity.
                             List markedFirst = new LinkedList();
                             boolean succeeded = true;
+
                             for (int copy = 0; copy < receivers.length; copy++) {
-                                CSPReceiver receiver = (CSPReceiver)receivers[copy];
+                                CSPReceiver receiver = (CSPReceiver) receivers[copy];
+
                                 if (receiver._isConditionalReceiveWaiting()) {
-                                    AbstractBranchController side2 = receiver._getOtherController();
-                                    if ((side2 != null) && side2._isBranchReady(receiver._getOtherID())) {
+                                    AbstractBranchController side2 = receiver
+                                            ._getOtherController();
+
+                                    if ((side2 != null)
+                                            && side2._isBranchReady(receiver
+                                                    ._getOtherID())) {
                                         if (_debugging) {
-                                            _debug("ConditionalSend: send() on channel " + _channel
+                                            _debug("ConditionalSend: send() on channel "
+                                                    + _channel
                                                     + ": the other side is also first: "
-                                                    + side2.getParent().getFullName());
+                                                    + side2.getParent()
+                                                            .getFullName());
                                         }
+
                                         markedFirst.add(receiver);
                                     } else {
                                         if (_debugging) {
                                             if (side2 != null) {
-                                                _debug("ConditionalSend: send() on channel " + _channel
+                                                _debug("ConditionalSend: send() on channel "
+                                                        + _channel
                                                         + ": the other side is NOT first: "
-                                                        + side2.getParent().getFullName());
+                                                        + side2.getParent()
+                                                                .getFullName());
                                             } else {
-                                                _debug("ConditionalSend: send() on channel " + _channel
+                                                _debug("ConditionalSend: send() on channel "
+                                                        + _channel
                                                         + ": THERE IS NO OTHER SIDE CONTROLLER!");
                                             }
                                         }
+
                                         succeeded = false;
                                         break;
                                     }
                                 }
                             }
+
                             if (succeeded) {
                                 if (_debugging) {
-                                    _debug("ConditionalSend: send() on channel " + _channel + ": Putting token.");
+                                    _debug("ConditionalSend: send() on channel "
+                                            + _channel + ": Putting token.");
                                 }
+
                                 // Convert the conditional send to a put.
                                 // Do this by falling out of the loop.
                                 break; // exit while(true).
@@ -346,13 +376,20 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 // Release those that have grabbed the "first" flag,
                                 // including of course this controller.
                                 controller._branchNotReady(getID());
+
                                 Iterator iterator = markedFirst.iterator();
+
                                 while (iterator.hasNext()) {
-                                    CSPReceiver receiver = (CSPReceiver)iterator.next();
-                                    AbstractBranchController side2 = receiver._getOtherController();
-                                    side2._branchNotReady(receiver._getOtherID());
+                                    CSPReceiver receiver = (CSPReceiver) iterator
+                                            .next();
+                                    AbstractBranchController side2 = receiver
+                                            ._getOtherController();
+                                    side2._branchNotReady(receiver
+                                            ._getOtherID());
                                 }
+
                                 director.notifyAll();
+
                                 // not ready.
                             }
                         }
@@ -362,7 +399,8 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     // nor a conditional receive waiting, so we mark the receivers
                     // as having a conditional send waiting and then wait.
                     for (int copy = 0; copy < receivers.length; copy++) {
-                        ((CSPReceiver)receivers[copy])._setConditionalSend(true, controller, getID());
+                        ((CSPReceiver) receivers[copy])._setConditionalSend(
+                                true, controller, getID());
                     }
 
                     if (_debugging) {
@@ -375,47 +413,51 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     controller._branchBlocked(null);
                     CSPReceiver.waitForChange(director);
                 } // while(true)
-                
+
                 // When we get here, it is time to convert the conditional
                 // send to a put.
-                
                 // Have to reset the conditional send flag _before_ the put().
                 for (int copy = 0; copy < receivers.length; copy++) {
-                    ((CSPReceiver)receivers[copy])._setConditionalSend(false, null, -1);
+                    ((CSPReceiver) receivers[copy])._setConditionalSend(false,
+                            null, -1);
+
                     // Reset the other side's conditional receive flag.
                     // NOTE: This used to be done after the putToAll, outside
                     // the synchronized block, but that led to unpredictable
                     // behavior.  Why?
-                    ((CSPReceiver)receivers[copy])._setConditionalReceive(false, null, -1);
+                    ((CSPReceiver) receivers[copy])._setConditionalReceive(
+                            false, null, -1);
                 }
-                
+
                 receivers[0].putToAll(getToken(), receivers);
 
                 if (_debugging) {
                     _debug("ConditionalSend: put is complete.");
                 }
-            
+
                 // This should be called at most once, after all puts in
                 // a forked set have suceeded.
                 controller._branchSucceeded(getID());
             } catch (Exception ex) {
                 controller._branchFailed(getID());
+
                 // If we exited with an exception, we may not have set the
                 // state of the receiver properly.
                 for (int copy = 0; copy < receivers.length; copy++) {
-                    ((CSPReceiver)receivers[copy])._setConditionalSend(false, null, -1);
+                    ((CSPReceiver) receivers[copy])._setConditionalSend(false,
+                            null, -1);
                 }
             } finally {
                 // Make sure that the current token doesn't get used
                 // in the next rendezvous.
                 _setToken(null);
-                
+
                 // Notify the director that this thread has exited.
                 director.removeThread(Thread.currentThread());
             }
         } // synchronized
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -424,15 +466,17 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      *  @return True all specified receivers have either a
      *   conditional receive or a get waiting.
      */
-    protected boolean _isGetOrConditionalReceiveWaitingOnAll(Receiver[] receivers) {
+    protected boolean _isGetOrConditionalReceiveWaitingOnAll(
+            Receiver[] receivers) {
         for (int i = 0; i < receivers.length; i++) {
             // If any member of the group is not waiting,
             // we can return false.
-            if (!((CSPReceiver)receivers[i])._isConditionalReceiveWaiting()
-                    && !((CSPReceiver)receivers[i])._isGetWaiting()) {
+            if (!((CSPReceiver) receivers[i])._isConditionalReceiveWaiting()
+                    && !((CSPReceiver) receivers[i])._isGetWaiting()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -445,10 +489,11 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         for (int i = 0; i < receivers.length; i++) {
             // If any member of the group is not waiting,
             // we can return false.
-            if (!((CSPReceiver)receivers[i])._isGetWaiting()) {
+            if (!((CSPReceiver) receivers[i])._isGetWaiting()) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -458,24 +503,27 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
      */
     protected boolean _isReady() {
         Receiver[] receivers = getReceivers();
+
         for (int i = 0; i < receivers.length; i++) {
-            if (!((CSPReceiver)receivers[i])._isGetWaiting()
-                    && !((CSPReceiver)receivers[i])._isConditionalReceiveWaiting()) {
+            if (!((CSPReceiver) receivers[i])._isGetWaiting()
+                    && !((CSPReceiver) receivers[i])
+                            ._isConditionalReceiveWaiting()) {
                 return false;
             }
         }
+
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The channel on which we are sending. */
     private int _channel;
-    
+
     /** The index of the receiver currently being sent to. */
     private int _copyIndex = 0;
-    
+
     /** Exception that might be set in copy of putToAll(). */
     private IllegalActionException _exception = null;
 

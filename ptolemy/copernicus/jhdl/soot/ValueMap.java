@@ -203,8 +203,8 @@ public class ValueMap extends HashListMap {
 
         if (DEBUG) {
             System.out.print("ValueMap:Adding node=" + n + " with weight "
-                    + nodeValue + " of type " + nodeValue.getClass().getName()
-                    + "\n");
+                + nodeValue + " of type " + nodeValue.getClass().getName()
+                + "\n");
         }
 
         return n;
@@ -279,7 +279,7 @@ public class ValueMap extends HashListMap {
     // general than this class)
     public static boolean equalIFR(InstanceFieldRef ifr1, InstanceFieldRef ifr2) {
         return ifr1.getBase().equals(ifr2.getBase())
-            && ifr1.getField().equals(ifr2.getField());
+                && ifr1.getField().equals(ifr2.getField());
     }
 
     /**
@@ -519,8 +519,8 @@ public class ValueMap extends HashListMap {
 
             if (DEBUG) {
                 System.out.print("ValueMap:Merging node=" + node
-                        + " with weight " + node.getWeight() + " of type "
-                        + node.getWeight().getClass().getName() + "\n");
+                    + " with weight " + node.getWeight() + " of type "
+                    + node.getWeight().getClass().getName() + "\n");
             }
 
             Object nodeWeight = node.getWeight();

@@ -176,18 +176,16 @@ public class BranchController implements Runnable {
             if ((producerReceivers.length > i)
                     && (consumerReceivers.length > i)) {
                 try {
-                    producerReceiver =
-                        (ProcessReceiver) producerReceivers[i][0];
-                    consumerReceiver =
-                        (ProcessReceiver) consumerReceivers[i][0];
+                    producerReceiver = (ProcessReceiver) producerReceivers[i][0];
+                    consumerReceiver = (ProcessReceiver) consumerReceivers[i][0];
                 } catch (ClassCastException ex) {
                     // See [Bug 5] and pn/test/PNInsideDE.xml
                     throw new IllegalActionException(
                             port,
                             ex,
                             "At the current time, process-oriented domains "
-                            + "(PN and CSP) cannot be nested inside "
-                            + "firing-based domains (SDF, DE, CT, etc.).");
+                                    + "(PN and CSP) cannot be nested inside "
+                                    + "firing-based domains (SDF, DE, CT, etc.).");
                 }
 
                 branch = new Branch(producerReceiver, consumerReceiver, this);
@@ -203,9 +201,11 @@ public class BranchController implements Runnable {
 
         Iterator branches = _branches.iterator();
         Branch branch = null;
+
         while (branches.hasNext()) {
             branch = (Branch) branches.next();
             branch.setActive(false);
+
             Receiver receiver = branch.getConsumerReceiver();
 
             synchronized (receiver) {
@@ -218,6 +218,7 @@ public class BranchController implements Runnable {
                 receiver.notifyAll();
             }
         }
+
         notifyAll();
     }
 
@@ -270,6 +271,7 @@ public class BranchController implements Runnable {
                 return true;
             }
         }
+
         return false;
     }
 

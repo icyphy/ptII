@@ -130,6 +130,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                             ((ptolemy.kernel.util.NamedObj) actors[0])
                                     .getName());
                 }
+
                 actors[0].fire();
                 _refinementPostfire = actors[0].postfire();
             }
@@ -195,6 +196,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             ChangeRequest request = new ChangeRequest(this, "make a transition") {
                 protected void _execute() throws KernelException {
                     _sendRequest = true;
+
                     // The super.postfire() method is called here.
                     makeStateTransition();
                 }

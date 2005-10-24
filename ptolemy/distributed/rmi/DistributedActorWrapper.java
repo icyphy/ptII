@@ -65,9 +65,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.ProposedRating Red (kapokasa)
  @Pt.AcceptedRating Red (cxh)
  */
-
 public class DistributedActorWrapper implements RemoteDistributedActor {
-
     /** Construct an DistributedActorWrapper. This empty constructor
      *  is required by RMI.
      */
@@ -82,11 +80,11 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void fire() throws java.rmi.RemoteException {
-        if (VERBOSE) { 
+        if (VERBOSE) {
             System.out.println(actor.toString() + " fire()");
         }
+
         try {
             actor.fire();
         } catch (IllegalActionException e) {
@@ -102,13 +100,13 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public InetAddress getAddress() throws java.rmi.RemoteException {
         try {
             return InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
             KernelException.stackTraceToString(e);
         }
+
         return null;
     }
 
@@ -117,11 +115,11 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void initialize() throws java.rmi.RemoteException {
         if (VERBOSE) {
             System.out.println(actor.toString() + " initialize()");
         }
+
         try {
             actor.initialize();
         } catch (IllegalActionException e) {
@@ -137,11 +135,11 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public int iterate(int count) throws java.rmi.RemoteException {
-        if (true) { 
+        if (true) {
             System.out.println(actor.getName() + " iterate(" + count + ")");
         }
+
         try {
             return actor.iterate(count);
         } catch (IllegalActionException e) {
@@ -158,15 +156,14 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public boolean loadMoML(String moml) throws java.rmi.RemoteException {
-
         if (VERBOSE) {
             System.out.println("Loading: " + moml);
         }
 
         momlParser = new MoMLParser(new Workspace());
         compositeActor = null;
+
         String processedMoML = processMoML(moml);
 
         try {
@@ -195,9 +192,9 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public boolean postfire() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " postfire()");
+
         try {
             return actor.postfire();
         } catch (IllegalActionException e) {
@@ -214,9 +211,9 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public boolean prefire() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " prefire()");
+
         try {
             return actor.prefire();
         } catch (IllegalActionException e) {
@@ -232,9 +229,9 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void preinitialize() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " preinitialize()");
+
         try {
             actor.preinitialize();
         } catch (IllegalActionException e) {
@@ -252,20 +249,22 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception IllegalActionException If the transaction fails (e.g.
      *   the data type is incompatible).
      */
-
-    public void put(HashMap data) throws RemoteException, IllegalActionException {
-
+    public void put(HashMap data) throws RemoteException,
+            IllegalActionException {
         Token token = (Token) data.keySet().iterator().next();
         LinkedList idsList = (LinkedList) data.get(token);
+
         if (VERBOSE) {
             System.out.println("Received data. Token: " + token.toString()
                     + " ids: " + idsList);
         }
+
         for (Iterator ids = idsList.iterator(); ids.hasNext();) {
             Integer id = (Integer) ids.next();
             Receiver receiver = (Receiver) idsReceiversMap.get(id);
             receiver.put(token);
         }
+
         if (VERBOSE) {
             System.out.println("Data Transferred to receivers");
         }
@@ -299,7 +298,6 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void setConnections(HashMap connections)
             throws java.rmi.RemoteException {
         if (VERBOSE) {
@@ -313,7 +311,6 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
 
         for (Iterator portsIterator = connections.keySet().iterator(); portsIterator
                 .hasNext();) {
-
             String portName = (String) portsIterator.next();
             IOPort port = (IOPort) ((ComponentEntity) actor).getPort(portName);
             DistributedTypedIORelation relation = null;
@@ -321,6 +318,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
             if (port.isInput()) {
                 Integer[][] integerReceivers = (Integer[][]) connections
                         .get(portName);
+
                 if (VERBOSE) {
                     System.out.println("Receivers received for "
                             + portName
@@ -328,17 +326,19 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                             + DistributedUtilities
                                     .integersArrayToString(integerReceivers));
                 }
-                for (int i = 0; i < integerReceivers.length; i++) {
 
+                for (int i = 0; i < integerReceivers.length; i++) {
                     try {
                         relation = (DistributedTypedIORelation) compositeActor
                                 .newRelation(portName + number);
                         number += 1;
+
                         if (VERBOSE) {
                             System.out.println("> for Port : " + portName
                                     + " created Relation: "
                                     + relation.getName());
                         }
+
                         port.link(relation);
                     } catch (NameDuplicationException e) {
                         KernelException.stackTraceToString(e);
@@ -346,13 +346,16 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                         KernelException.stackTraceToString(e);
                     }
                 }
+
                 director.setListOfIds(DistributedUtilities
                         .convertIntegersToList(integerReceivers));
+
                 try {
                     port.createReceivers();
                 } catch (IllegalActionException e) {
                     KernelException.stackTraceToString(e);
                 }
+
                 if (VERBOSE) {
                     System.out.println("Receivers created for "
                             + portName
@@ -366,21 +369,26 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
                 try {
                     relation = (DistributedTypedIORelation) compositeActor
                             .newRelation(portName);
+
                     if (VERBOSE) {
                         System.out.println("> for Port : " + portName
                                 + " created Relation: " + relation.getName());
                     }
+
                     port.link(relation);
                 } catch (NameDuplicationException e) {
                     KernelException.stackTraceToString(e);
                 } catch (IllegalActionException e) {
                     KernelException.stackTraceToString(e);
                 }
+
                 relation.setServicesReceiversListMap((HashMap) connections
                         .get(portName));
             }
         }
+
         idsReceiversMap = director.getIdsReceiversMap();
+
         if (VERBOSE) {
             System.out.println("IDs Receivers Map: "
                     + idsReceiversMap.keySet().toString());
@@ -393,7 +401,6 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void setPortTypes(HashMap portTypes) throws RemoteException {
         if (VERBOSE) {
             System.out.println("Received port Types: " + portTypes.toString());
@@ -401,7 +408,6 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
 
         for (Iterator portsIterator = portTypes.keySet().iterator(); portsIterator
                 .hasNext();) {
-
             String portName = (String) portsIterator.next();
             TypedIOPort port = (TypedIOPort) ((ComponentEntity) actor)
                     .getPort(portName);
@@ -410,6 +416,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
 
             // This is not needed, does not trigger runtime type checking on
             // these ports.
+
             /*
              if (port.isOutput()) {
              DistributedTypedIORelation relation =
@@ -427,7 +434,6 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void stop() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " stop()");
         actor.stop();
@@ -439,7 +445,6 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void stopFire() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " stopFire()");
         actor.stopFire();
@@ -450,7 +455,6 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void terminate() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " terminate()");
         actor.terminate();
@@ -462,9 +466,9 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @exception RemoteException If a communication-related exception may
      *  occur during the execution of a remote method call.
      */
-
     public void wrapup() throws java.rmi.RemoteException {
         System.out.println(actor.toString() + " wrapup()");
+
         try {
             actor.wrapup();
         } catch (IllegalActionException e) {
@@ -483,9 +487,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  @param moml A String containing moml code that describes an actor.
      *  @return String Containing moml code.
      */
-
     private String processMoML(String moml) {
-
         String header = "<entity name=\"model\" class=\"ptolemy.distributed."
                 + "actor.DistributedTypedCompositeActor\">\n";
         String director = "<property name=\"Distributed Director\" class="

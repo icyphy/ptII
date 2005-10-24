@@ -118,7 +118,7 @@ public class FIR extends TypedAtomicActor {
      *   actor with this name.
      */
     public FIR(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

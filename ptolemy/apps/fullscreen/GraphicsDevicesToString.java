@@ -29,24 +29,25 @@
    @ProposedRating Red (cxh)
    @AcceptedRating Red (cxh)
 */
-
 package ptolemy.apps.fullscreen;
 
 import ptolemy.actor.lib.Transformer;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 import java.awt.GraphicsDevice;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GraphicsDevicesToString
+
 /**
    This actor that read an ArrayToken of ObjectTokens where each
    ObjectToken is a java.awt.GraphicsDevice and outputs information
@@ -56,7 +57,6 @@ import java.awt.GraphicsDevice;
    @version $Id$
 */
 public class GraphicsDevicesToString extends Transformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,7 +66,7 @@ public class GraphicsDevicesToString extends Transformer {
      *   actor with this name.
      */
     public GraphicsDevicesToString(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(new ArrayType(BaseType.OBJECT));
         output.setTypeEquals(BaseType.STRING);
@@ -84,42 +84,42 @@ public class GraphicsDevicesToString extends Transformer {
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
         StringBuffer description = new StringBuffer();
+
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-                Token[] inputArray = ((ArrayToken)input.get(0)).arrayValue();
+                Token[] inputArray = ((ArrayToken) input.get(0)).arrayValue();
 
                 System.out.println("GraphicsDevicesToString.fire(): "
-                        + "width: " + width + " token length:"
-                        + inputArray.length);
+                    + "width: " + width + " token length:" + inputArray.length);
 
-                for ( int graphicsDeviceCount = 0;
-                      graphicsDeviceCount < inputArray.length;
-                      graphicsDeviceCount++) {
-
-                    GraphicsDevice graphicsDevice =
-                        (GraphicsDevice)
-                        (((ObjectToken)inputArray[graphicsDeviceCount])
+                for (int graphicsDeviceCount = 0;
+                            graphicsDeviceCount < inputArray.length;
+                            graphicsDeviceCount++) {
+                    GraphicsDevice graphicsDevice = (GraphicsDevice) (((ObjectToken) inputArray[graphicsDeviceCount])
                                 .getValue());
 
                     String graphicsDeviceType = "UNKNOWN";
+
                     switch (graphicsDevice.getType()) {
                     case GraphicsDevice.TYPE_RASTER_SCREEN:
                         graphicsDeviceType = "TYPE_RASTER_SCREEN";
                         break;
+
                     case GraphicsDevice.TYPE_PRINTER:
                         graphicsDeviceType = "TYPE_PRINTER";
                         break;
+
                     case GraphicsDevice.TYPE_IMAGE_BUFFER:
                         graphicsDeviceType = "TYPE_IMAGE_BUFFER";
                         break;
                     }
-                    description.append("GraphicsDevice: "
-                            + graphicsDeviceCount
-                            + " "
-                            + graphicsDeviceType + "\n");
+
+                    description.append("GraphicsDevice: " + graphicsDeviceCount
+                        + " " + graphicsDeviceType + "\n");
                 }
             }
         }
+
         Token out = new StringToken(description.toString());
         output.broadcast(out);
     }

@@ -212,7 +212,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof ColorAttribute) {
-                    addColorChooser(name, displayName, attribute.getExpression());
+                    addColorChooser(name, displayName, attribute
+                            .getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
                 } else if (attribute instanceof FileParameter
@@ -278,8 +279,9 @@ public class PtolemyQuery extends Query implements QueryListener,
 
                     // FIXME: Should remember previous browse location?
                     // Next to last argument is the starting directory.
-                    addFileChooser(name, displayName, attribute.getExpression(), base,
-                            directory, allowFiles, allowDirectories,
+                    addFileChooser(name, displayName,
+                            attribute.getExpression(), base, directory,
+                            allowFiles, allowDirectories,
                             preferredBackgroundColor(attribute),
                             preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
@@ -312,8 +314,8 @@ public class PtolemyQuery extends Query implements QueryListener,
                         // and the default Line style should be used.
                         if (attribute.getExpression().equals("true")
                                 || attribute.getExpression().equals("false")) {
-                            addCheckBox(name, displayName, ((BooleanToken) current)
-                                    .booleanValue());
+                            addCheckBox(name, displayName,
+                                    ((BooleanToken) current).booleanValue());
                             attachParameter(attribute, name);
                             foundStyle = true;
                         }
@@ -333,8 +335,8 @@ public class PtolemyQuery extends Query implements QueryListener,
         }
 
         if (!(foundStyle)) {
-            addLine(attribute.getName(), attribute.getDisplayName(), defaultValue,
-                    preferredBackgroundColor(attribute),
+            addLine(attribute.getName(), attribute.getDisplayName(),
+                    defaultValue, preferredBackgroundColor(attribute),
                     preferredForegroundColor(attribute));
 
             // The style itself does this, so we don't need to do it again.

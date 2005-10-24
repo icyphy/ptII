@@ -77,7 +77,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * Add the given named object to the objects contained in this
      * transferable.  If the object already exists in this transferable,
      * then do not add it again.
-     * @param object The object to be added to this transferable. 
+     * @param object The object to be added to this transferable.
      */
     public void addObject(NamedObj object) {
         if (!_objectList.contains(object)) {

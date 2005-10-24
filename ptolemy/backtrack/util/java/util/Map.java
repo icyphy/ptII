@@ -1,50 +1,51 @@
 /* Map.java: interface Map -- An object that maps keys to values
-             interface Map.Entry -- an Entry in a Map
-   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
+ interface Map.Entry -- an Entry in a Map
+ Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ 02111-1307 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
 
-import java.lang.Object;
 import ptolemy.backtrack.Checkpoint;
 import ptolemy.backtrack.Rollbackable;
 
-/** 
+import java.lang.Object;
+
+/**
  * An object that maps keys onto values. Keys cannot be duplicated. This
  * interface replaces the obsolete {
-@link Dictionary}
+ @link Dictionary}
  abstract class.
  * <p>
  * The map has three collection views, which are backed by the map
@@ -78,8 +79,7 @@ import ptolemy.backtrack.Rollbackable;
  * @status updated to 1.4
  */
 public interface Map extends Rollbackable {
-
-    /**     
+    /**
      * A map entry (key-value pair). The Map.entrySet() method returns a set
      * view of these objects; there is no other valid way to come across them.
      * These objects are only valid for the duration of an iteration; in other
@@ -93,21 +93,20 @@ public interface Map extends Rollbackable {
      * @status updated to 1.4
      */
     static interface Entry extends Rollbackable {
-
-        /**         
+        /**
          * Get the key corresponding to this entry.
          * @return the key
          */
         Object getKey();
 
-        /**         
+        /**
          * Get the value corresponding to this entry. If you already called
          * Iterator.remove(), this is undefined.
          * @return the value
          */
         Object getValue();
 
-        /**         
+        /**
          * Replaces the value with the specified object (optional operation).
          * This writes through to the map, and is undefined if you already
          * called Iterator.remove().
@@ -121,7 +120,7 @@ public interface Map extends Rollbackable {
          */
         Object setValue(Object value);
 
-        /**         
+        /**
          * Returns the hash code of the entry.  This is defined as the
          * exclusive-or of the hashcodes of the key and value (using 0 for
          * <code>null</code>). In other words, this must be:
@@ -131,7 +130,7 @@ public interface Map extends Rollbackable {
          */
         int hashCode();
 
-        /**         
+        /**
          * Compares the specified object with this entry. Returns true only if
          * the object is a mapping of identical key and value. In other words,
          * this must be:
@@ -152,16 +151,15 @@ public interface Map extends Rollbackable {
         public Checkpoint $GET$CHECKPOINT();
 
         public Object $SET$CHECKPOINT(Checkpoint checkpoint);
-
     }
 
-    /**     
+    /**
      * Remove all entries from this Map (optional operation).
      * @throws UnsupportedOperationException if clear is not supported
      */
     void clear();
 
-    /**     
+    /**
      * Returns true if this contains a mapping for the given key.
      * @param key the key to search for
      * @return true if the map contains the key
@@ -171,7 +169,7 @@ public interface Map extends Rollbackable {
      */
     boolean containsKey(Object key);
 
-    /**     
+    /**
      * Returns true if this contains at least one mapping with the given value.
      * In other words, returns true if a value v exists where
      * <code>(value == null ? v == null : value.equals(v))</code>. This usually
@@ -181,7 +179,7 @@ public interface Map extends Rollbackable {
      */
     boolean containsValue(Object value);
 
-    /**     
+    /**
      * Returns a set view of the mappings in this Map.  Each element in the
      * set is a Map.Entry.  The set is backed by the map, so that changes in
      * one show up in the other.  Modifications made while an iterator is
@@ -196,7 +194,7 @@ public interface Map extends Rollbackable {
      */
     Set entrySet();
 
-    /**     
+    /**
      * Compares the specified object with this map for equality. Returns
      * <code>true</code> if the other object is a Map with the same mappings,
      * that is,<br>
@@ -208,7 +206,7 @@ public interface Map extends Rollbackable {
      */
     boolean equals(Object o);
 
-    /**     
+    /**
      * Returns the value mapped by the given key. Returns <code>null</code> if
      * there is no mapping.  However, in Maps that accept null values, you
      * must rely on <code>containsKey</code> to determine if a mapping exists.
@@ -220,7 +218,7 @@ public interface Map extends Rollbackable {
      */
     Object get(Object key);
 
-    /**     
+    /**
      * Associates the given key to the given value (optional operation). If the
      * map already contains the key, its value is replaced. Be aware that in
      * a map that permits <code>null</code> values, a null return does not
@@ -237,7 +235,7 @@ public interface Map extends Rollbackable {
      */
     Object put(Object key, Object value);
 
-    /**     
+    /**
      * Returns the hash code for this map. This is the sum of all hashcodes
      * for each Map.Entry object in entrySet.  This allows comparison of maps,
      * regardless of implementation, and satisfies the contract of
@@ -247,13 +245,13 @@ public interface Map extends Rollbackable {
      */
     int hashCode();
 
-    /**     
+    /**
      * Returns true if the map contains no mappings.
      * @return true if the map is empty
      */
     boolean isEmpty();
 
-    /**     
+    /**
      * Returns a set view of the keys in this Map.  The set is backed by the
      * map, so that changes in one show up in the other.  Modifications made
      * while an iterator is in progress cause undefined behavior.  If the set
@@ -266,7 +264,7 @@ public interface Map extends Rollbackable {
      */
     Set keySet();
 
-    /**     
+    /**
      * Copies all entries of the given map to this one (optional operation). If
      * the map already contains a key, its value is replaced.
      * @param m the mapping to load into this map
@@ -280,7 +278,7 @@ public interface Map extends Rollbackable {
      */
     void putAll(Map m);
 
-    /**     
+    /**
      * Removes the mapping for this key if present (optional operation). If
      * the key is not present, this returns null. Note that maps which permit
      * null values may also return null if the key was removed.
@@ -290,14 +288,14 @@ public interface Map extends Rollbackable {
      */
     Object remove(Object o);
 
-    /**     
+    /**
      * Returns the number of key-value mappings in the map. If there are more
      * than Integer.MAX_VALUE mappings, return Integer.MAX_VALUE.
      * @return the number of mappings
      */
     int size();
 
-    /**     
+    /**
      * Returns a collection (or bag) view of the values in this Map.  The
      * collection is backed by the map, so that changes in one show up in
      * the other.  Modifications made while an iterator is in progress cause
@@ -318,6 +316,4 @@ public interface Map extends Rollbackable {
     public Checkpoint $GET$CHECKPOINT();
 
     public Object $SET$CHECKPOINT(Checkpoint checkpoint);
-
 }
-

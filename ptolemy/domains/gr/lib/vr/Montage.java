@@ -25,11 +25,12 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
+
 import ij.plugin.MontageMaker;
+
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
@@ -41,6 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 ////Slicer
+
 /**
  An actor that reads an array of images.
 
@@ -62,7 +64,6 @@ public class Montage extends Sink {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-
     public Montage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -71,7 +72,6 @@ public class Montage extends Sink {
 
         //output = new TypedIOPort(this, "output", false, true);
         //output.setTypeEquals(BaseType.OBJECT);
-
         xResolution = new Parameter(this, "xResolution");
         xResolution.setExpression("256");
         xResolution.setTypeEquals(BaseType.INT);
@@ -83,14 +83,11 @@ public class Montage extends Sink {
         stackSize = new Parameter(this, "stackSize");
         stackSize.setExpression("50");
         stackSize.setTypeEquals(BaseType.INT);
-
     }
 
     ////////////////////////////////////////////////////////////////////
     ////////               ports and parameters                  ////////
-
     //public FilePortParameter input;
-
     public Parameter xResolution;
 
     public Parameter yResolution;
@@ -105,24 +102,23 @@ public class Montage extends Sink {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ObjectToken objectToken = (ObjectToken) input.get(0);
         ImagePlus imagePlus = (ImagePlus) objectToken.getValue();
         MontageMaker montageMaker = new MontageMaker();
         montageMaker.makeMontage(imagePlus);
+
         //output.broadcast(new ObjectToken(_imagePlus));
     }
 
     public void initialize() throws IllegalActionException {
-
         _xResolution = ((IntToken) xResolution.getToken()).intValue();
         _yResolution = ((IntToken) yResolution.getToken()).intValue();
         _stackSize = ((IntToken) stackSize.getToken()).intValue();
-
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     //Image that is readin
     private ImagePlus _imagePlus;
 

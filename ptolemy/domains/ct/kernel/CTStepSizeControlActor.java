@@ -44,8 +44,8 @@ import ptolemy.actor.Actor;
  the CTDirector will treat <i>t</i> as a breakpoint. Actors that only
  introduce predictable breakpoints need not implement this interface.
  <P>
- The second way of controlling step size is through checking the accuracy 
- after each integration step. We treat an integration step accurate if 
+ The second way of controlling step size is through checking the accuracy
+ after each integration step. We treat an integration step accurate if
  the numerical integration error is less than the error tolerance and
  there is no (unpredictable) breakpoints within this step.
  Actors that use this mechanism need to implement this interface.
@@ -67,7 +67,7 @@ import ptolemy.actor.Actor;
  will leave the default step size at its initial value and only deviate
  from these steps when there is a predictable breakpoint that does not
  coincide with one of these steps.
- 
+
  @author  Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2
@@ -79,14 +79,14 @@ public interface CTStepSizeControlActor extends Actor {
     ////                         public methods                    ////
 
     /** Implementations of this method should return
-     *  true if this actor declares the current integration step 
+     *  true if this actor declares the current integration step
      *  is accurate w.r.t. its output values.
      *  @return True if the current step is accurate.
      */
     public boolean isOutputAccurate();
 
     /** Implementations of this method should return
-     *  true if this actor declares the current integration step 
+     *  true if this actor declares the current integration step
      *  is accurate w.r.t. its current states.
      *  @return True if the current step is accurate.
      */

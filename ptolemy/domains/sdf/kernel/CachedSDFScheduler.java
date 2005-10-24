@@ -70,7 +70,6 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (cxh)
  */
 public class CachedSDFScheduler extends SDFScheduler {
-
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Scheduler". The cache size is the default value of 0.
@@ -121,6 +120,7 @@ public class CachedSDFScheduler extends SDFScheduler {
         if (_cacheSize > 0) {
             _scheduleKeyList.clear();
         }
+
         _scheduleCache.clear();
         _externalRatesCache.clear();
         _mostRecentRates = "";
@@ -131,9 +131,11 @@ public class CachedSDFScheduler extends SDFScheduler {
      */
     public void constructCaches(int cacheSize) {
         _scheduleCache = new HashMap();
+
         if (cacheSize > 0) {
             _scheduleKeyList = new ArrayList(cacheSize);
         }
+
         _externalRatesCache = new TreeMap();
         _cacheSize = cacheSize;
     }
@@ -153,20 +155,23 @@ public class CachedSDFScheduler extends SDFScheduler {
     protected Schedule _getSchedule() throws NotSchedulableException,
             IllegalActionException {
         Schedule schedule;
-        if (_inputPortList == null
-                || _workspaceVersion != workspace().getVersion()) {
+
+        if ((_inputPortList == null)
+                || (_workspaceVersion != workspace().getVersion())) {
             _inputPortList = _getInputPortList();
         }
 
-        if (_outputPortList == null
-                || _workspaceVersion != workspace().getVersion()) {
+        if ((_outputPortList == null)
+                || (_workspaceVersion != workspace().getVersion())) {
             _outputPortList = _getOutputPortList();
         }
+
         _workspaceVersion = workspace().getVersion();
 
         StringBuffer rates = new StringBuffer();
 
         Iterator inputPorts = _inputPortList.iterator();
+
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             int rate = DFUtilities.getTokenConsumptionRate(inputPort);
@@ -174,6 +179,7 @@ public class CachedSDFScheduler extends SDFScheduler {
         }
 
         Iterator outputPorts = _outputPortList.iterator();
+
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             int rate = DFUtilities.getTokenProductionRate(outputPort);
@@ -184,18 +190,21 @@ public class CachedSDFScheduler extends SDFScheduler {
         }
 
         String rateKey = rates.toString();
+
         if (_scheduleCache.containsKey(rateKey)) {
             // cache hit.
             schedule = (Schedule) _scheduleCache.get(rateKey);
 
             if (!rateKey.equals(_mostRecentRates)) {
                 _mostRecentRates = rateKey;
+
                 if (_cacheSize > 0) {
                     // Remove the key from its old position in
                     // the list and add it to the head of the list.
                     _scheduleKeyList.remove(rateKey);
                     _scheduleKeyList.add(0, rateKey);
                 }
+
                 Map externalRates = (Map) _externalRatesCache.get(rateKey);
                 _saveContainerRates(externalRates);
             }
@@ -211,21 +220,26 @@ public class CachedSDFScheduler extends SDFScheduler {
                     _scheduleCache.remove(key);
                     _externalRatesCache.remove(key);
                 }
+
                 // Add key to head of list.
                 _scheduleKeyList.add(0, rateKey);
             }
 
             // Compute the SDF schedule.
             schedule = super._getSchedule();
+
             // Add key/schedule to the schedule map.
             _scheduleCache.put(rateKey, schedule);
+
             // Add external rates map to the external rates cache.
             Map externalRates = getExternalRates();
             _externalRatesCache.put(rateKey, externalRates);
+
             // Note: we do not need to set the external rates of 
             // the container here. When the SDFSchedule is recomputed,
             // it will set the external rates.
         }
+
         setValid(true);
         return schedule;
     }
@@ -285,7 +299,6 @@ public class CachedSDFScheduler extends SDFScheduler {
 
     /////////////////////////////////////////////////////////////
     ////                    private variables                ////
-
     // The size of the cache.
     private int _cacheSize;
 

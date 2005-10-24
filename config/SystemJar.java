@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
 /** Print the location of the system jar file, usually rt.jar
     @author Christopher Hylands
     @version $Id$
@@ -36,7 +37,7 @@ import java.io.IOException;
     @Pt.AcceptedRating Red
 */
 public class SystemJar {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             System.out.print(_getSystemJar());
         } catch (Exception exception) {
@@ -46,14 +47,11 @@ public class SystemJar {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     // Return the path name to the system jar file, usually rt.jar.
     private static File _getSystemJar()
-            throws IOException, FileNotFoundException {
-        String systemJarPathName =
-            new String(System.getProperty("java.home") +
-                    File.separator + "lib" +
-                    File.separator + "rt.jar");
+        throws IOException, FileNotFoundException {
+        String systemJarPathName = new String(System.getProperty("java.home")
+                + File.separator + "lib" + File.separator + "rt.jar");
 
         File systemJar = new File(systemJarPathName);
 
@@ -61,24 +59,26 @@ public class SystemJar {
         // by reading a property like ptolemy.system.jar
         // However, we should wait until this is a problem.
         // The code works with Sun JDK1.2 and 1.3 and IBM JDK1.3.
-        if ( ! systemJar.isFile()) {
+        if (!systemJar.isFile()) {
             // Try this for IBM JDK 1.4.1
-            String systemJarPathName2 =
-                new String(System.getProperty("java.home") +
-                        File.separator + "lib" +
-                        File.separator + "core.jar");
+            String systemJarPathName2 = new String(System.getProperty(
+                        "java.home") + File.separator + "lib" + File.separator
+                    + "core.jar");
             systemJar = new File(systemJarPathName2);
-            if ( ! systemJar.isFile()) {
-                throw new FileNotFoundException(systemJarPathName +
-                        " and " + systemJarPathName2
-                        + "either do not exist or are not readable");
+
+            if (!systemJar.isFile()) {
+                throw new FileNotFoundException(systemJarPathName + " and "
+                    + systemJarPathName2
+                    + "either do not exist or are not readable");
             }
+
             systemJarPathName = systemJarPathName2;
         }
-        if ( ! systemJar.canRead()) {
-            throw new IOException("Can't read '" + systemJarPathName +
-                    "'");
+
+        if (!systemJar.canRead()) {
+            throw new IOException("Can't read '" + systemJarPathName + "'");
         }
+
         return systemJar;
     }
 }

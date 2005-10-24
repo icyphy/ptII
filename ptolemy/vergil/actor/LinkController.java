@@ -30,11 +30,8 @@ package ptolemy.vergil.actor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.ModelScope;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
@@ -154,7 +151,6 @@ public class LinkController extends BasicEdgeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
@@ -195,7 +191,6 @@ public class LinkController extends BasicEdgeController {
     }
 
     public static class LinkRenderer implements EdgeRenderer {
-
         /** Render a visual representation of the given edge. If the
          *  StringAttribute _color of the edge is set then use that color to
          *  highlight the node. If the StringAttribute _explanation of the edge
@@ -203,8 +198,8 @@ public class LinkController extends BasicEdgeController {
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             Link link = (Link) edge;
-            ManhattanConnector connector = new LinkManhattanConnector(
-                    tailSite, headSite, link);
+            ManhattanConnector connector = new LinkManhattanConnector(tailSite,
+                    headSite, link);
 
             if ((link.getHead() != null) && (link.getTail() != null)) {
                 connector.setLineWidth((float) 2.0);
@@ -236,11 +231,14 @@ public class LinkController extends BasicEdgeController {
                 if (_explAttr != null) {
                     connector.setToolTipText(_explAttr.getExpression());
                 }
-                
+
                 // NOTE: The preferences mechanism may set this.
-                Token radiusValue = VergilPreferences.preferenceValue(relation, "_linkBendRadius");
+                Token radiusValue = VergilPreferences.preferenceValue(relation,
+                        "_linkBendRadius");
+
                 if (radiusValue instanceof DoubleToken) {
-                    double overrideRadius = ((DoubleToken)radiusValue).doubleValue();
+                    double overrideRadius = ((DoubleToken) radiusValue)
+                            .doubleValue();
                     connector.setBendRadius(overrideRadius);
                 }
             }

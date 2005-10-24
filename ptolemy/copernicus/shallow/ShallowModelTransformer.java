@@ -831,11 +831,12 @@ public class ShallowModelTransformer extends SceneTransformer implements
     private static NamedObj _findDeferredInstance(NamedObj object) {
         // System.out.println("findDeferred = " + object.getFullName());
         NamedObj deferredObject = null;
-        // boolean isClass = false;
 
+        // boolean isClass = false;
         if (object instanceof InstantiableNamedObj) {
             deferredObject = (InstantiableNamedObj) ((InstantiableNamedObj) object)
                     .getParent();
+
             /* isClass = */((InstantiableNamedObj) object).isClassDefinition();
         }
 
@@ -923,8 +924,10 @@ public class ShallowModelTransformer extends SceneTransformer implements
                         // parsing lib/hoc/test/auto/MobileModelTest.xml
                         // resulted in trying to expand vergil.icon.EditorIcon
                         StringBuffer results = new StringBuffer("");
+
                         try {
                             int i = 0;
+
                             for (Iterator momlFilters = _reflectionParser
                                     .getMoMLFilters().iterator(); momlFilters
                                     .hasNext();) {
@@ -962,11 +965,9 @@ public class ShallowModelTransformer extends SceneTransformer implements
                     //   deferredClass);
                 }
             } catch (Exception ex) {
-
                 // Don't print a newline after printing "Exception
                 // occured during parsing:" so that the nightly build
                 // can detect errors.
-
                 System.err.println("Exception occurred during parsing: " + ex);
                 ex.printStackTrace();
                 System.out.println("done parsing:\n");

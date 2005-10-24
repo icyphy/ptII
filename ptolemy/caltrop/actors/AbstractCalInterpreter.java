@@ -98,7 +98,6 @@ import caltrop.interpreter.util.ImportUtil;
  @see PtolemyPlatform
  */
 abstract public class AbstractCalInterpreter extends TypedAtomicActor {
-
     /** Construct an actor in the given workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.

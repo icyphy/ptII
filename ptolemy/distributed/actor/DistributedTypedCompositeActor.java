@@ -49,7 +49,6 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.TypedCompositeActor
  */
 public class DistributedTypedCompositeActor extends TypedCompositeActor {
-
     /** Construct a Distributed TypedCompositeActor in the default workspace
      *  with no container and an empty string as its name. Add the actor to the
      *  workspace directory.  You should set the local director or
@@ -104,11 +103,11 @@ public class DistributedTypedCompositeActor extends TypedCompositeActor {
      *  @exception NameDuplicationException If name collides with a name
      *   already on the container's contents list.
      */
-
     public ComponentRelation newRelation(String name)
             throws NameDuplicationException {
         try {
             workspace().getWriteAccess();
+
             DistributedTypedIORelation relation = new DistributedTypedIORelation(
                     this, name);
             return relation;

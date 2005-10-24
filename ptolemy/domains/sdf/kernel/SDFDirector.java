@@ -313,7 +313,9 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public Time getModelNextIterationTime() {
         try {
-            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            double periodValue = ((DoubleToken) period.getToken())
+                    .doubleValue();
+
             if (periodValue > 0.0) {
                 return getModelTime().add(periodValue);
             } else {
@@ -347,6 +349,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
             // Create external initial production.
             int rate = DFUtilities.getTokenInitProduction(port);
+
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
                     for (int k = 0; k < rate; k++) {
@@ -372,6 +375,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                 }
             }
         }
+
         _realStartTime = System.currentTimeMillis();
     }
 
@@ -398,7 +402,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
         boolean synchronizeValue = ((BooleanToken) synchronizeToRealTime
                 .getToken()).booleanValue();
-        if (periodValue > 0.0 && synchronizeValue) {
+
+        if ((periodValue > 0.0) && synchronizeValue) {
             synchronized (this) {
                 while (true) {
                     long elapsedTime = System.currentTimeMillis()
@@ -416,6 +421,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     }
 
                     long timeToWait = (long) ((currentTime - elapsedTimeInSeconds) * 1000.0);
+
                     if (_debugging) {
                         _debug("Waiting for real time to pass: " + timeToWait);
                     }
@@ -436,6 +442,7 @@ public class SDFDirector extends StaticSchedulingDirector {
 
         TypedCompositeActor container = ((TypedCompositeActor) getContainer());
         Iterator inputPorts = container.inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
 
@@ -537,10 +544,12 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
 
         double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+
         if (periodValue > 0.0) {
             Actor container = (Actor) getContainer();
             Director executiveDirector = container.getExecutiveDirector();
             Time currentTime = getModelTime();
+
             if (executiveDirector != null) {
                 // Not at the top level.
                 executiveDirector.fireAt(container, currentTime
@@ -574,8 +583,8 @@ public class SDFDirector extends StaticSchedulingDirector {
                 "ptolemy.domains.hdf.kernel.HDFFSMDirector" };
     }
 
-    /** Return true to indicate that a ModalModel under control 
-     *  of this director supports multirate firing. 
+    /** Return true to indicate that a ModalModel under control
+     *  of this director supports multirate firing.
      *  @return True indicating a ModalModel under control of this director
      *  supports multirate firing.
      */
@@ -723,7 +732,6 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
-
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setExpression("0");

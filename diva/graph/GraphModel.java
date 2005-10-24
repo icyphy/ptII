@@ -141,7 +141,7 @@ public interface GraphModel {
      * does not necessarily support removal operations.
      */
     public Iterator nodes(Object composite);
-    
+
     /**
      * Provide an iterator over the nodes that should
      * be rendered prior to the edges. This iterator

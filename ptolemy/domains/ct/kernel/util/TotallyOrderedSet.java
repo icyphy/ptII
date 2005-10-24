@@ -54,7 +54,7 @@ import java.util.List;
  */
 public class TotallyOrderedSet {
     /** Construct a set with the given comparator.
-     *  @param comparator The Comparator with which to compare elements.  
+     *  @param comparator The Comparator with which to compare elements.
      *  Note that the comparator cannot be changed after this TotallyOrderedSet
      *  object is constructed.
      *  @see java.util.Comparator
@@ -256,6 +256,7 @@ public class TotallyOrderedSet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /** The comparator for the order.  The comparator is a blank final
      *  field that can't be changed after creation.
      */

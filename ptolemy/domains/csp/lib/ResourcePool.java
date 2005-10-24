@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
  any input, the Merge actor is ready to rendezvous with an
  input only after it has delivered the previous input to
  the output.
- 
+
  @author Edward A. Lee
  @see Merge
  @version $Id$
@@ -92,7 +92,6 @@ import ptolemy.kernel.util.Workspace;
 
  */
 public class ResourcePool extends TypedAtomicActor {
-    
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -107,13 +106,13 @@ public class ResourcePool extends TypedAtomicActor {
     public ResourcePool(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         grant = new TypedIOPort(this, "grant", false, true);
         grant.setMultiport(true);
 
         release = new TypedIOPort(this, "release", true, false);
         release.setMultiport(true);
-        
+
         initialPool = new Parameter(this, "initialPool");
         initialPool.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         initialPool.setExpression("{1}");
@@ -139,7 +138,7 @@ public class ResourcePool extends TypedAtomicActor {
      *  of the <i>initialPool</i> parameter.
      */
     public TypedIOPort release;
-    
+
     /** The initial resource pool. This is an array with default
      *  value {1} (an integer array with one entry with value 1).
      */
@@ -154,11 +153,14 @@ public class ResourcePool extends TypedAtomicActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == initialPool) {
-            ArrayToken pool = (ArrayToken)initialPool.getToken();
+            ArrayToken pool = (ArrayToken) initialPool.getToken();
+
             // Reset the pool.
             _pool.clear();
+
             // Copy the tokens into the pool.
             for (int i = 0; i < pool.length(); i++) {
                 _pool.add(pool.getElement(i));
@@ -167,7 +169,7 @@ public class ResourcePool extends TypedAtomicActor {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Override the base class to set the type constraints.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
@@ -176,7 +178,8 @@ public class ResourcePool extends TypedAtomicActor {
      *  @return A new ResourcePool actor.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ResourcePool newObject = (ResourcePool)super.clone(workspace);
+        ResourcePool newObject = (ResourcePool) super.clone(workspace);
+
         // set type constraints.
         ArrayType paramType = (ArrayType) newObject.initialPool.getType();
         InequalityTerm elementTerm = paramType.getElementTypeTerm();
@@ -184,7 +187,7 @@ public class ResourcePool extends TypedAtomicActor {
         newObject.grant.setTypeAtLeast(newObject.release);
         return newObject;
     }
-    
+
     /** If the input width is greater than zero and it has not already
      *  been done, start a thread to read a token from the
      *  <i>release</i> input port and store it in the pool.
@@ -198,26 +201,31 @@ public class ResourcePool extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        final CSPDirector director = (CSPDirector)getDirector();
+
+        final CSPDirector director = (CSPDirector) getDirector();
         final Thread writeThread = Thread.currentThread();
-        
+
         if (!(getDirector() instanceof CSPDirector)) {
             throw new IllegalActionException(this,
-            "ResourcePool actor can only be used with CSPDirector.");
+                    "ResourcePool actor can only be used with CSPDirector.");
         }
+
         _postfireReturns = true;
-        if (release.getWidth() > 0 && _readThread == null) {
+
+        if ((release.getWidth() > 0) && (_readThread == null)) {
             _readThread = new Thread(getFullName() + "_readThread") {
                 public void run() {
                     try {
                         while (!_stopRequested) {
                             // Synchronize on the director since all read/write
                             // operations do.
-                            synchronized(director) {
+                            synchronized (director) {
                                 if (_debugging) {
                                     _debug("Resources available: " + _pool);
                                 }
-                                Token resource = RendezvousReceiver.getFromAny(release.getReceivers(), director);
+
+                                Token resource = RendezvousReceiver.getFromAny(
+                                        release.getReceivers(), director);
                                 _pool.add(resource);
                                 director.threadUnblocked(writeThread, null);
                                 director.notifyAll();
@@ -233,18 +241,20 @@ public class ResourcePool extends TypedAtomicActor {
             };
             director.addThread(_readThread);
             _readThread.start();
-        } else if (release.getWidth() == 0 && _readThread != null) {
+        } else if ((release.getWidth() == 0) && (_readThread != null)) {
             // A mutation has eliminated the sources.
             _readThread.interrupt();
         }
+
         // Synchronize on the director since all read/write
         // operations do.
-        synchronized(director) {
+        synchronized (director) {
             while (_pool.size() == 0) {
                 if (_stopRequested || !_postfireReturns) {
                     _postfireReturns = false;
                     return;
                 }
+
                 try {
                     director.threadBlocked(writeThread, null);
                     RendezvousReceiver.waitForChange(director);
@@ -255,22 +265,26 @@ public class ResourcePool extends TypedAtomicActor {
                     director.threadUnblocked(writeThread, null);
                 }
             }
+
             // There is a token.
-            Token token = (Token)_pool.get(0);
+            Token token = (Token) _pool.get(0);
+
             // If this put blocks for any reason, it will block on
             // a director.wait(), so the lock will not be held.
             // FIXME: ACK!  putToAny() should only select among
             // the first dimension, and then should do a broadcast!
             try {
-                RendezvousReceiver.putToAny(token, grant.getRemoteReceivers(), director);
+                RendezvousReceiver.putToAny(token, grant.getRemoteReceivers(),
+                        director);
             } catch (TerminateProcessException e) {
                 _postfireReturns = false;
                 return;
             }
+
             _pool.remove(0);
         }
     }
-    
+
     /** Initialize.
      *  @exception IllegalActionException If a derived class throws it.
      */
@@ -279,25 +293,24 @@ public class ResourcePool extends TypedAtomicActor {
         _readThread = null;
         _postfireReturns = true;
     }
-    
+
     /** Return false if it is time to stop the process.
      *  @return False a TerminateProcessException was thrown during I/O.
      */
     public boolean postfire() {
         return _postfireReturns;
     }
-    
+
     // FIXME: What should be done in reaction to stopFire()?
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The current resource pool. */
     private List _pool = new LinkedList();
-    
+
     /** Flag indicating what postfire should return. */
     private boolean _postfireReturns = true;
-    
+
     /** The read thread, if it exists. */
     private Thread _readThread = null;
 }

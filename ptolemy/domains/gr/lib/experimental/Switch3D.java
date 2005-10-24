@@ -59,7 +59,7 @@ public class Switch3D extends GRTransform {
      *   an actor already in the container.
      */
     public Switch3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphOut.setMultiport(true);

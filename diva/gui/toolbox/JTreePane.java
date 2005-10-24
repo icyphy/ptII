@@ -293,6 +293,7 @@ public class JTreePane extends JSplitPane {
      */
     public void removeEntry(String title) {
         // FIXME: this find the entry and then does nothing?
+
         /* Entry entry = */_findEntry(title);
 
         refresh();

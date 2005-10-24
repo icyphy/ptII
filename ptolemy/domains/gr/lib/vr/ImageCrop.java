@@ -24,20 +24,15 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
+
 import ij.gui.ImageWindow;
 import ij.gui.Roi;
 import ij.gui.StackWindow;
-import ij.process.ImageProcessor;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import ij.process.ImageProcessor;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -49,8 +44,15 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageCrop
+
 /**
  Describe your class here, in complete sentences.
  What does it do?  What is its intended use?
@@ -62,9 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (yourname)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-
 public class ImageCrop extends TypedAtomicActor {
-
     /** Create an instance with ... (describe the properties of the
      *  instance). Use the imperative case here.
      *  @param parameterName Description of the parameter.
@@ -73,7 +73,6 @@ public class ImageCrop extends TypedAtomicActor {
      */
     public ImageCrop(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-
         super(container, name);
         imageInput = new TypedIOPort(this, "imageInput");
         imageInput.setInput(true);
@@ -114,33 +113,32 @@ public class ImageCrop extends TypedAtomicActor {
      *  @exception ExceptionClass If ... (describe what
      *   causes the exception to be thrown).
      */
-
     public void fire() throws IllegalActionException {
-        
         //Get input values from respective tokens
         ObjectToken imageToken = (ObjectToken) imageInput.get(0);
         _imagePlus = (ImagePlus) imageToken.getValue();
+
         ObjectToken roiToken = (ObjectToken) roi.get(0);
         Roi roi = (Roi) roiToken.getValue();
-        
+
         //Do cropping
         ImageProcessor imageProcessor = _imagePlus.getProcessor();
         imageProcessor.setRoi(_roi);
+
         ImageProcessor croppedProcessor = imageProcessor.crop();
         _croppedImage = new ImagePlus("Cropped Image", croppedProcessor);
         output.broadcast(new ObjectToken(_croppedImage));
     }
 
     public boolean prefire() throws IllegalActionException {
-
-    	//Check for proper inputs and if available return true
+        //Check for proper inputs and if available return true
         if (imageInput.hasToken(0) && roi.hasToken(0)) {
             return true;
-        }else{
-        	return false;   
+        } else {
+            return false;
         }
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ImagePlus _croppedImage;
@@ -148,11 +146,4 @@ public class ImageCrop extends TypedAtomicActor {
     private ImagePlus _imagePlus;
 
     private Roi _roi;
-
-
-
-
-
-
-
 }

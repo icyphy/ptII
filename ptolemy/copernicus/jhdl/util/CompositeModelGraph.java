@@ -70,7 +70,7 @@ public class CompositeModelGraph extends ModelGraph {
         //      port of the entity
         //    - appropriate edges between input/output ports and entity
         for (Iterator i = getCompositeActor().entityList().iterator();
-             i.hasNext();) {
+                    i.hasNext();) {
             ComponentEntity entity = (ComponentEntity) i.next();
 
             // Create Node for entity
@@ -92,7 +92,7 @@ public class CompositeModelGraph extends ModelGraph {
             // iterate over all outPorts and add Node corresponding
             // to port. Also add edge between entity and port
             for (Iterator outPorts = ((Actor) entity).outputPortList().iterator();
-                 outPorts.hasNext();) {
+                        outPorts.hasNext();) {
                 Object port = outPorts.next();
                 Node outputPortNode = addNodeWeight(port);
                 addEdge(entityNode, outputPortNode);
@@ -101,7 +101,7 @@ public class CompositeModelGraph extends ModelGraph {
             // iterate over all inPorts and add Node corresponding
             // to port. Also add edge between entity and port
             for (Iterator inPorts = ((Actor) entity).inputPortList().iterator();
-                 inPorts.hasNext();) {
+                        inPorts.hasNext();) {
                 Object port = inPorts.next();
                 Node inputPortNode = addNodeWeight(port);
                 addEdge(inputPortNode, entityNode);
@@ -110,7 +110,8 @@ public class CompositeModelGraph extends ModelGraph {
 
         // 2. Add top-level outputPorts (no connections)
         for (Iterator outputPorts = getCompositeActor().outputPortList()
-                 .iterator(); outputPorts.hasNext();) {
+                                                .iterator();
+                    outputPorts.hasNext();) {
             IOPort port = (IOPort) outputPorts.next();
             Node n = addIOPortNode(port);
         }
@@ -119,12 +120,12 @@ public class CompositeModelGraph extends ModelGraph {
         // TODO: Does this catch connections between top-level input
         // ports and top-level output ports?
         for (Iterator inputPorts = getCompositeActor().inputPortList().iterator();
-             inputPorts.hasNext();) {
+                    inputPorts.hasNext();) {
             IOPort port = (IOPort) inputPorts.next();
             Node n = addIOPortNode(port);
 
             for (Iterator insideSinks = port.insideSinkPortList().iterator();
-                 insideSinks.hasNext();) {
+                        insideSinks.hasNext();) {
                 IOPort insideSink = (IOPort) insideSinks.next();
 
                 //Node insideEntity = portEntityNodeMap.get(insideSink);
@@ -135,15 +136,15 @@ public class CompositeModelGraph extends ModelGraph {
         // 4. Iterate over all output ports and make connections in graph
         // representing topology of model
         for (Iterator i = getCompositeActor().entityList().iterator();
-             i.hasNext();) {
+                    i.hasNext();) {
             Entity entity = (Entity) i.next();
 
             for (Iterator outPorts = ((Actor) entity).outputPortList().iterator();
-                 outPorts.hasNext();) {
+                        outPorts.hasNext();) {
                 IOPort port = (IOPort) outPorts.next();
 
                 for (Iterator sinkPorts = port.sinkPortList().iterator();
-                     sinkPorts.hasNext();) {
+                            sinkPorts.hasNext();) {
                     IOPort sinkPort = (IOPort) sinkPorts.next();
 
                     addEdge(port, sinkPort);

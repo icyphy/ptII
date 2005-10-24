@@ -108,6 +108,7 @@ public class IconTutorial {
 
         // NORTH
         StraightTerminal north = new StraightTerminal();
+
         //Site connectNorth = north.getConnectSite();
         Blob blobNorth = new Blob();
         blobNorth.setSizeUnit(5.0);
@@ -116,6 +117,7 @@ public class IconTutorial {
 
         // SOUTH
         StraightTerminal south = new StraightTerminal();
+
         //Site connectSouth = south.getConnectSite();
         Blob blobSouth = new Blob();
         blobSouth.setStyle(Blob.BLOB_DIAMOND);
@@ -126,6 +128,7 @@ public class IconTutorial {
 
         // WEST
         StraightTerminal west = new StraightTerminal();
+
         //Site connectWest = west.getConnectSite();
         Arrowhead arrowWest = new Arrowhead();
         west.setEnd(arrowWest);
@@ -133,6 +136,7 @@ public class IconTutorial {
 
         // EAST
         StraightTerminal east = new StraightTerminal();
+
         //Site connectEast = east.getConnectSite();
         Arrowhead arrowEast = new Arrowhead();
         arrowEast.setFlipped(true);

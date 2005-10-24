@@ -46,12 +46,12 @@ import ptolemy.kernel.util.NamedObj;
 
 /** Base class for code generators for static scheduling models of computation.
  *
- *  FIXME: need documentation on the following: 
- *  1. Define static-scheduling, 
- *  2. what should the subclasses do. 
+ *  FIXME: need documentation on the following:
+ *  1. Define static-scheduling,
+ *  2. what should the subclasses do.
  *  3. Define body code, wrapup, initialze section.
- * 
- * 
+ *
+ *
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributor: Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 5.1
@@ -77,7 +77,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
     /** Generate the body code that lies between variable declaration
      *  and wrapup.
      *  @return The generated body code.
-     *  @exception IllegalActionException If the 
+     *  @exception IllegalActionException If the
      *  {@link #generateFireCode(StringBuffer)} method throws the exceptions.
      */
     public String generateBodyCode() throws IllegalActionException {
@@ -139,16 +139,15 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                     + model.getName() + " is not a StaticSchedulingDirector.");
         }
 
-        
         Attribute iterations = director.getAttribute("iterations");
 
         if (iterations == null) {
             throw new IllegalActionException(director,
-                    "The Director does not have an attribute name: " +
-                    "\"iterations\"");
+                    "The Director does not have an attribute name: "
+                            + "\"iterations\"");
         } else {
-            int iterationCount = 
-                ((IntToken) ((Variable) iterations).getToken()).intValue();
+            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
+                    .intValue();
 
             if (iterationCount <= 0) {
                 code.append("while (true) {\n");
@@ -159,12 +158,11 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                 code.append("for (iteration = 0; iteration < " + iterationCount
                         + "; iteration ++) {\n");
             }
-        }    
-                
-        TypedCompositeActor compositeActorHelper 
-                = (TypedCompositeActor) _getHelper(getContainer());
+        }
+
+        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
         compositeActorHelper.generateFireCode(code);
-        
+
         code.append("}\n");
     }
 
@@ -184,6 +182,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                     "StaticSchedulingCodeGenerator can only be contained "
                             + " by CompositeActor");
         }
+
         super.setContainer(container);
     }
 

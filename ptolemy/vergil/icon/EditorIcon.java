@@ -323,50 +323,68 @@ public class EditorIcon extends Attribute {
                 }
             }
         }
-        
+
         // If specified by a preference, then show parameters.
-        Token show = VergilPreferences.preferenceValue(container, "_showParameters");
+        Token show = VergilPreferences.preferenceValue(container,
+                "_showParameters");
+
         if (show instanceof StringToken) {
-            String value = ((StringToken)show).stringValue();
-            boolean showOverriddenParameters = value.equals("Overridden parameters only");
+            String value = ((StringToken) show).stringValue();
+            boolean showOverriddenParameters = value
+                    .equals("Overridden parameters only");
             boolean showAllParameters = value.equals("All");
-            if ((showOverriddenParameters && !_isPropertySet(container, "_hideAllParameters"))
+
+            if ((showOverriddenParameters && !_isPropertySet(container,
+                    "_hideAllParameters"))
                     || showAllParameters) {
                 StringBuffer parameters = new StringBuffer();
-                Iterator settables = container.attributeList(Settable.class).iterator();
+                Iterator settables = container.attributeList(Settable.class)
+                        .iterator();
+
                 while (settables.hasNext()) {
-                    Settable settable = (Settable)settables.next();
+                    Settable settable = (Settable) settables.next();
+
                     if (settable.getVisibility() != Settable.FULL) {
                         continue;
                     }
-                    if (!showAllParameters && !((NamedObj)settable).isOverridden()) {
+
+                    if (!showAllParameters
+                            && !((NamedObj) settable).isOverridden()) {
                         continue;
                     }
-                    if(!showAllParameters && _isPropertySet((NamedObj)settable, "_hide")) {
+
+                    if (!showAllParameters
+                            && _isPropertySet((NamedObj) settable, "_hide")) {
                         continue;
                     }
+
                     String name = settable.getName();
                     String displayName = settable.getDisplayName();
                     parameters.append(displayName);
+
                     if (showAllParameters && !name.equals(displayName)) {
                         parameters.append(" (" + name + ")");
                     }
+
                     parameters.append(": ");
                     parameters.append(settable.getExpression());
+
                     if (settables.hasNext()) {
                         parameters.append("\n");
                     }
                 }
+
                 LabelFigure label = new LabelFigure(parameters.toString(),
                         _parameterFont, 1.0, SwingConstants.NORTH_WEST);
-                
+
                 // Shift the label slightly right so it doesn't
                 // collide with ports.
-                label.translateTo(backBounds.getX() + 5,
-                        backBounds.getY() + backBounds.getHeight());
+                label.translateTo(backBounds.getX() + 5, backBounds.getY()
+                        + backBounds.getHeight());
                 figure.add(label);
             }
         }
+
         return figure;
     }
 
@@ -551,7 +569,7 @@ public class EditorIcon extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Font for name labels. */
     private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 

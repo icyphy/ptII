@@ -28,40 +28,37 @@
  */
 package ptolemy.actor.lib.jxta;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.Timer;
-
 import net.jxta.credential.AuthenticationCredential;
 import net.jxta.credential.Credential;
+
 import net.jxta.discovery.DiscoveryEvent;
 import net.jxta.discovery.DiscoveryListener;
 import net.jxta.discovery.DiscoveryService;
+
 import net.jxta.document.AdvertisementFactory;
 import net.jxta.document.MimeMediaType;
 import net.jxta.document.StructuredDocument;
+
 import net.jxta.exception.DiscardQueryException;
 import net.jxta.exception.NoResponseException;
 import net.jxta.exception.PeerGroupException;
 import net.jxta.exception.ResendQueryException;
+
 import net.jxta.impl.protocol.ResolverQuery;
 import net.jxta.impl.protocol.ResolverResponse;
+
 import net.jxta.membership.Authenticator;
 import net.jxta.membership.MembershipService;
+
 import net.jxta.peergroup.PeerGroup;
 import net.jxta.peergroup.PeerGroupFactory;
+
 import net.jxta.protocol.DiscoveryResponseMsg;
 import net.jxta.protocol.PeerAdvertisement;
 import net.jxta.protocol.PeerGroupAdvertisement;
 import net.jxta.protocol.ResolverQueryMsg;
 import net.jxta.protocol.ResolverResponseMsg;
+
 import net.jxta.resolver.QueryHandler;
 import net.jxta.resolver.ResolverService;
 
@@ -75,6 +72,17 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.Timer;
 
 /**
  * @author liuxj, Yang

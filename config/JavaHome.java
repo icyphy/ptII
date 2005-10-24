@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
 /** Print the value of the java.home property
     @author Christopher Hylands Brooks
     @version $Id$
@@ -36,12 +37,14 @@ import java.io.IOException;
     @Pt.AcceptedRating Red
 */
 public class JavaHome {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             String javaHome = System.getProperty("java.home");
+
             if (javaHome == null) {
                 throw new Exception("Could not get java.home property");
             }
+
             // java policy files want forward slashes.
             System.out.print(javaHome.replace('\\', '/'));
         } catch (Exception exception) {

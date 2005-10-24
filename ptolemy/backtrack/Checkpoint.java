@@ -1,31 +1,30 @@
 /* The class of checkpoint objects.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-
+ */
 package ptolemy.backtrack;
 
 import java.util.Iterator;
@@ -33,21 +32,21 @@ import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// CheckPoint
+
 /**
-   The class of checkpoint objects. A checkpoint object represents the smallest
-   entity on which checkpoints are created and managed. It monitors one or more
-   objects. When the {@link #rollback(long, boolean)} function is called, all
-   the monitored objects are rolled back to their previous states, defined by a
-   <em>timestamp</em>.
+ The class of checkpoint objects. A checkpoint object represents the smallest
+ entity on which checkpoints are created and managed. It monitors one or more
+ objects. When the {@link #rollback(long, boolean)} function is called, all
+ the monitored objects are rolled back to their previous states, defined by a
+ <em>timestamp</em>.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class Checkpoint {
-
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
 
@@ -58,8 +57,9 @@ public class Checkpoint {
      *   <tt>null</tt> if the list is intended to be empty.
      */
     public Checkpoint(Rollbackable object) {
-        if (object != null)
+        if (object != null) {
             addObject(object);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -81,8 +81,10 @@ public class Checkpoint {
      */
     public synchronized void commit(long timestamp) {
         Iterator objectsIter = _state.getMonitoredObjects().iterator();
-        while (objectsIter.hasNext())
-            ((Rollbackable)objectsIter.next()).$COMMIT(timestamp);
+
+        while (objectsIter.hasNext()) {
+            ((Rollbackable) objectsIter.next()).$COMMIT(timestamp);
+        }
     }
 
     /** Create a new checkpoint and return its handle. The current timestamp is
@@ -116,9 +118,12 @@ public class Checkpoint {
      */
     public void removeObject(Rollbackable object) {
         Iterator objectsIter = _state.getMonitoredObjects().iterator();
-        while (objectsIter.hasNext())
-            if (objectsIter.next() == object)
+
+        while (objectsIter.hasNext()) {
+            if (objectsIter.next() == object) {
                 objectsIter.remove();
+            }
+        }
     }
 
     /** Rollback all the monitored objects to their previous states defined by
@@ -142,14 +147,18 @@ public class Checkpoint {
     public synchronized void rollback(long timestamp, boolean trim) {
         List objects = _state.getMonitoredObjects();
         int size = objects.size();
+
         for (int i = 0; i < objects.size();) {
-            Rollbackable object = (Rollbackable)objects.get(i);
+            Rollbackable object = (Rollbackable) objects.get(i);
             object.$RESTORE(timestamp, trim);
+
             int newSize = objects.size();
-            if (newSize < size)
+
+            if (newSize < size) {
                 size = newSize;
-            else
+            } else {
                 i++;
+            }
         }
     }
 
@@ -162,8 +171,9 @@ public class Checkpoint {
      */
     public void setCheckpoint(Checkpoint checkpoint) {
         List objects = _state.getMonitoredObjects();
+
         while (objects.size() > 0) {
-            Rollbackable object = (Rollbackable)objects.remove(0);
+            Rollbackable object = (Rollbackable) objects.remove(0);
             object.$SET$CHECKPOINT(checkpoint);
         }
     }

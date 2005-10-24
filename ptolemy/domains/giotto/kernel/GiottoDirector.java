@@ -153,9 +153,9 @@ public class GiottoDirector extends StaticSchedulingDirector implements
 
     /** Fire a complete iteration and advance time to the current time plus
      *  the period value. A complete iteration consists of several minor cycles.
-     *  At each minor cycle, iterate actors in the corresponding minor cycle 
-     *  schedule. After iterating the actors, increment time by the minor cycle 
-     *  time. Also, update the receivers that are destinations of all actors 
+     *  At each minor cycle, iterate actors in the corresponding minor cycle
+     *  schedule. After iterating the actors, increment time by the minor cycle
+     *  time. Also, update the receivers that are destinations of all actors
      *  that will be invoked in the next minor cycle of the schedule.
      *  This works because all actors in Giotto are invoked periodically,
      *  and the ones that will be invoked in the next cycle are the ones
@@ -178,8 +178,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             return;
         }
 
-        while (_unitIndex < _schedule.size() && !_stopRequested) {
-
+        while ((_unitIndex < _schedule.size()) && !_stopRequested) {
             setModelTime(_expectedNextIterationTime);
 
             // Grab the next minor cycle (unit) schedule to execute.
@@ -291,6 +290,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                 _debug("===== Director completing unit of iteration: "
                         + _iterationCount);
             }
+
             _iterationCount++;
         }
     }
@@ -418,6 +418,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         if ((numberOfIterations > 0) && (_iterationCount >= numberOfIterations)) {
             // iterations limit is reached
             _iterationCount = 0;
+
             if (_isEmbedded()) {
                 return true;
             } else {
@@ -480,6 +481,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
                 if (_debugging) {
                     _debug("Set current time as: " + getModelTime());
                 }
+
                 _readyToFire = true;
             }
         } else {

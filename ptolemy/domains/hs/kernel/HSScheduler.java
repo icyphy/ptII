@@ -302,20 +302,16 @@ public class HSScheduler extends Scheduler {
      */
     protected Schedule _getSchedule() throws NotSchedulableException,
             IllegalActionException {
-        
         // FIXME: this method is a monster! clean it !!! 
         // Most time is spent on graph opeation, improve the performance!
-        
         // NOTE: This implementation creates new Lists every time, but since 
         // the current CT directors have static schedules, it is okay.
         // However, if dynamic schedules are necessary, we may nee to use
         // the old lists.
-        
         // NOTE: The current implementation focuses on the continuous
         // phase of execution, and only pays a little attantion to the
         // discrete phase of execution. In particular, the discrete phase
         // of execution is not as complicated as the DE domain by a SR fashion.
-        
         // Construct an empty CTScedule object that will contain a list of 
         // actual schedules, which will be constructed later in this method.
         HSSchedule ctSchedule = new HSSchedule();
@@ -335,11 +331,14 @@ public class HSScheduler extends Scheduler {
         LinkedList discreteActors = new LinkedList();
         LinkedList dynamicActors = new LinkedList();
         LinkedList arithmeticActors = new LinkedList();
-//        LinkedList sinkActors = new LinkedList();
+
+        //        LinkedList sinkActors = new LinkedList();
         LinkedList eventGenerators = new LinkedList();
         LinkedList waveformGenerators = new LinkedList();
+
         // all the opaque composite actors that have a CTEmbeddedDirector.
         LinkedList ctSubsystems = new LinkedList();
+
         // all the opaque composite actors that have a director other than
         // the CTEmbeddedDirector.
         LinkedList nonCTSubsystems = new LinkedList();
@@ -354,20 +353,20 @@ public class HSScheduler extends Scheduler {
         Schedule outputSSCActorSchedule = new Schedule();
         Schedule statefulActorSchedule = new Schedule();
         Schedule stateSSCActorSchedule = new Schedule();
-        
+
         // =======================================
         // Begin the signal type resolution.
         // =======================================
-
         // Get the composite actor that contains the CT director,
         // which contains this scheduler.
-        CompositeActor container = 
-            (CompositeActor) getContainer().getContainer();
+        CompositeActor container = (CompositeActor) getContainer()
+                .getContainer();
         boolean isCTCompositeActor = container instanceof CTCompositeActor;
 
         // Examine and propagate the signal types of the input ports of 
         // the container.
         Iterator containerInPorts = container.inputPortList().iterator();
+
         while (containerInPorts.hasNext()) {
             IOPort inPort = (IOPort) containerInPorts.next();
 
@@ -415,8 +414,8 @@ public class HSScheduler extends Scheduler {
                         throw new IllegalActionException(
                                 inPort,
                                 "Unrecognized signal type. "
-                                    + "It should be a string of "
-                                    + "either \"CONTINUOUS\" or \"DISCRETE\".");
+                                        + "It should be a string of "
+                                        + "either \"CONTINUOUS\" or \"DISCRETE\".");
                     }
                 } else {
                     // The default signal type of the input ports of a
@@ -441,6 +440,7 @@ public class HSScheduler extends Scheduler {
         // Iterate all contained actors to classify each actor and
         // resolve the signal types of its ports.
         Iterator allActors = container.deepEntityList().iterator();
+
         while (allActors.hasNext()) {
             Actor a = (Actor) allActors.next();
 
@@ -472,7 +472,7 @@ public class HSScheduler extends Scheduler {
                 if (a instanceof CTStatefulActor) {
                     statefulActorSchedule.add(new Firing(a));
                 }
-                
+
                 if (a instanceof CTWaveformGenerator) {
                     waveformGenerators.add(a);
                 } else if (a instanceof CTEventGenerator) {
@@ -494,6 +494,7 @@ public class HSScheduler extends Scheduler {
                 }
 
                 Iterator ports = ((Entity) a).portList().iterator();
+
                 while (ports.hasNext()) {
                     IOPort port = (IOPort) ports.next();
                     _signalTypeMap.setType(port, DISCRETE);
@@ -512,6 +513,7 @@ public class HSScheduler extends Scheduler {
                 // of some other actors that reside at the same hierarchical
                 // level. So we only handle output ports here.
                 Iterator ports = ((Entity) a).portList().iterator();
+
                 while (ports.hasNext()) {
                     IOPort port = (IOPort) ports.next();
 
@@ -537,6 +539,7 @@ public class HSScheduler extends Scheduler {
                 // Otherwise, the signal types of ports are obtained
                 // from the "signalType" parameter.
                 Iterator ports = ((Entity) a).portList().iterator();
+
                 while (ports.hasNext()) {
                     IOPort port = (IOPort) ports.next();
                     Parameter signalType = (Parameter) port
@@ -603,14 +606,13 @@ public class HSScheduler extends Scheduler {
         // Done with classification and port signal type assignment
         // of the sources, waveform generators, event generators,
         // sequence actors, and dynamic actors.
-        
         // In the following, we first try to resolve the signal types of
         // the ports of the rest actors including nonCTSubsystems
         // by propagating known signal types.
-        
         // First make sure that there is no causality loop of arithmetic
         // actors. This makes the graph reachability algorithms terminate.
         DirectedAcyclicGraph arithmeticGraph = _toGraph(arithmeticActors);
+
         if (!arithmeticGraph.isAcyclic()) {
             throw new NotSchedulableException(
                     "Arithmetic loops are not allowed in the CT domain.");
@@ -618,12 +620,13 @@ public class HSScheduler extends Scheduler {
 
         // We do not allow loops of dynamic actors, either.
         DirectedAcyclicGraph dynamicGraph = _toGraph(dynamicActors);
+
         // FIXME: Why is this disallowed? If we change this, change the class
         // comment (at the end) also.
         if (!dynamicGraph.isAcyclic()) {
             throw new NotSchedulableException(
                     "Loops of dynamic actors (e.g. integrators) "
-                            + "are not allowed in the CT domain. You may " 
+                            + "are not allowed in the CT domain. You may "
                             + "insert a Scale actor with factor 1.");
         }
 
@@ -633,6 +636,7 @@ public class HSScheduler extends Scheduler {
         // actors have already been propagated by one step.
         // So, we start with arithmetic actors.
         Object[] sortedArithmeticActors = arithmeticGraph.topologicalSort();
+
         for (int i = 0; i < sortedArithmeticActors.length; i++) {
             Actor actor = (Actor) sortedArithmeticActors[i];
 
@@ -647,6 +651,7 @@ public class HSScheduler extends Scheduler {
             Iterator inputPorts = actor.inputPortList().iterator();
             CTReceiver.SignalType knownInputType = UNKNOWN;
             boolean needManuallySetType = true;
+
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
 
@@ -675,6 +680,7 @@ public class HSScheduler extends Scheduler {
             }
 
             Iterator outputPorts = actor.outputPortList().iterator();
+
             while (outputPorts.hasNext()) {
                 IOPort outputPort = (IOPort) outputPorts.next();
 
@@ -715,7 +721,6 @@ public class HSScheduler extends Scheduler {
         // =======================================
         // Done with the signal type resolution.
         // =======================================
-        
         // Now the signal types of all ports are resolved and stored in the
         // SignalTypes table. We classify continuous and discrete actors.
         // NOTE: An actor is continuous if it has continuous ports;
@@ -723,6 +728,7 @@ public class HSScheduler extends Scheduler {
         // rule, the set of continuous actors and discrete actors may have
         // a non-empty intersection set.
         discreteActors = _signalTypeMap.getDiscreteActors();
+
         // ContinuousClock have only continuous ports but implement the 
         // CTEventGenerator interface
         discreteActors.removeAll(eventGenerators);
@@ -753,6 +759,7 @@ public class HSScheduler extends Scheduler {
         // create the discrete schedule.
         DirectedAcyclicGraph discreteGraph = _toGraph(discreteActors);
         Object[] discreteSorted = discreteGraph.topologicalSort();
+
         for (int i = 0; i < discreteSorted.length; i++) {
             Actor actor = (Actor) discreteSorted[i];
             discreteActorSchedule.add(new Firing(actor));
@@ -762,8 +769,10 @@ public class HSScheduler extends Scheduler {
         if (!eventGenerators.isEmpty()) {
             DirectedAcyclicGraph eventGraph = _toGraph(eventGenerators);
             Object[] eventSorted = eventGraph.topologicalSort();
+
             for (int i = 0; i < eventSorted.length; i++) {
                 Actor actor = (Actor) eventSorted[i];
+
                 if (actor instanceof CTStepSizeControlActor) {
                     // If this event generator is a step size control actor.
                     // Not all event generators are step size control actors, 
@@ -775,31 +784,34 @@ public class HSScheduler extends Scheduler {
         }
 
         // Toplogical sort on the continuous actors.
-        DirectedAcyclicGraph continuousGraph = 
-            _toArithmeticGraph(continuousActors);
+        DirectedAcyclicGraph continuousGraph = _toArithmeticGraph(continuousActors);
 
         // FIXME: create a state-related schedule and an output schedule.
-        
         LinkedList sortedContinuousActors = new LinkedList();
+
         if (!dynamicActors.isEmpty()) {
             // Dynamic actors are reverse ordered in the schedule.
             Object[] dynamicArray = dynamicActors.toArray();
             Object[] xSorted = dynamicGraph.topologicalSort(dynamicArray);
-            for (int i = xSorted.length-1; i >= 0; i--) {
-//            for (int i = 0; i < xSorted.length; i++) {
+
+            for (int i = xSorted.length - 1; i >= 0; i--) {
+                //            for (int i = 0; i < xSorted.length; i++) {
                 Actor dynamicActor = (Actor) xSorted[i];
                 dynamicActorSchedule.add(new Firing(dynamicActor));
                 stateSSCActorSchedule.add(new Firing(dynamicActor));
                 sortedContinuousActors.add(dynamicActor);
             }
 
-            for (int i = xSorted.length-1; i >= 0; i--) {
+            for (int i = xSorted.length - 1; i >= 0; i--) {
                 Actor dynamicActor = (Actor) xSorted[i];
                 Object[] fx;
                 fx = continuousGraph.backwardReachableNodes(dynamicActor);
+
                 Object[] fxSorted = continuousGraph.topologicalSort(fx);
-                for (int fxi = fxSorted.length-1; fxi >=0; fxi--) {
+
+                for (int fxi = fxSorted.length - 1; fxi >= 0; fxi--) {
                     Actor actor = (Actor) fxSorted[fxi];
+
                     if (!sortedContinuousActors.contains(actor)) {
                         sortedContinuousActors.add(0, actor);
                     }
@@ -808,6 +820,7 @@ public class HSScheduler extends Scheduler {
         }
 
         Iterator continuousSorted = sortedContinuousActors.iterator();
+
         while (continuousSorted.hasNext()) {
             Actor actor = (Actor) continuousSorted.next();
             continuousActorSchedule.add(new Firing(actor));
@@ -815,13 +828,15 @@ public class HSScheduler extends Scheduler {
 
         continuousActors.removeAll(sortedContinuousActors);
         continuousGraph = _toGraph(continuousActors);
+
         Object[] sinkActors = continuousGraph.topologicalSort();
+
         for (int i = 0; i < sinkActors.length; i++) {
             Actor actor = (Actor) sinkActors[i];
             continuousActorSchedule.add(new Firing(actor));
             outputActorSchedule.add(new Firing(actor));
         }
-        
+
         // Create the CTSchedule. Note it must be done in this order.
         ctSchedule.add(continuousActorSchedule);
         ctSchedule.add(discreteActorSchedule);

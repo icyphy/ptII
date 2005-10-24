@@ -37,7 +37,7 @@ import java.util.Comparator;
  two double number is less than the threshold, then they are considered
  equal. The default value of the fuzzy threshold is 1e-10.
  <p>
- After Ptolemy II 4.1, this class is not used any more. Use 
+ After Ptolemy II 4.1, this class is not used any more. Use
  {@link GeneralComparator} instead.
 
  @author Jie Liu
@@ -108,6 +108,7 @@ public class FuzzyDoubleComparator implements Comparator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /** The threshold that controls the fuzziness. Default value 1e-10. */
     private double _threshold;
 }

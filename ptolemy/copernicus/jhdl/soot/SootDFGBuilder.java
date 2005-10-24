@@ -64,14 +64,14 @@ public class SootDFGBuilder extends SootASTVisitor {
     }
 
     public static SootBlockDirectedGraph createGraph(Block block)
-            throws SootASTException {
+        throws SootASTException {
         SootBlockDirectedGraph graph = new SootBlockDirectedGraph(block);
         new SootDFGBuilder(graph);
         return graph;
     }
 
     public Stmt processDefinitionStmt(DefinitionStmt stmt, Value rightOp,
-            Value leftOp) {
+        Value leftOp) {
         if (DEBUG) {
             System.out.println("Definition Statment " + stmt);
             System.out.println("\tRight Op=" + rightOp);
@@ -88,7 +88,7 @@ public class SootDFGBuilder extends SootASTVisitor {
     }
 
     public Value processValue(Value val, boolean left)
-            throws SootASTException {
+        throws SootASTException {
         if (DEBUG) {
             System.out.println("SootDFGBuilder:Value=" + val);
         }
@@ -172,7 +172,7 @@ public class SootDFGBuilder extends SootASTVisitor {
     }
 
     public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base,
-            boolean left) {
+        boolean left) {
         // Node that represents field-ref Base
         Node baseNode = _valueMap.getValueNode(base);
 
@@ -200,7 +200,7 @@ public class SootDFGBuilder extends SootASTVisitor {
     // Note: processVirtualInvokeExpr & processSpecialInvokeExpr use the
     // same code. Modify for code reuse.
     public Value processVirtualInvokeExpr(VirtualInvokeExpr ie, Value[] args,
-            Value base) {
+        Value base) {
         Node invokeNode = _valueMap.getValueNode(ie);
         Node baseNode = _valueMap.getValueNode(base);
 
@@ -216,7 +216,7 @@ public class SootDFGBuilder extends SootASTVisitor {
     }
 
     public Value processSpecialInvokeExpr(SpecialInvokeExpr ie, Value[] args,
-            Value base) {
+        Value base) {
         if (ie.getMethod().getName().equals("<init>")) {
             return processConstructorInvokeExpr(ie, args, base);
         }
@@ -238,9 +238,9 @@ public class SootDFGBuilder extends SootASTVisitor {
     }
 
     public Value processConstructorInvokeExpr(SpecialInvokeExpr ie,
-            Value[] args, Value base) {
+        Value[] args, Value base) {
         System.out.println("ConstructorInvoke=" + ie + " method="
-                + ie.getMethod().getName());
+            + ie.getMethod().getName());
 
         Node invokeNode = _valueMap.getValueNode(ie);
         Node baseNode = _valueMap.getValueNode(base);
@@ -269,7 +269,7 @@ public class SootDFGBuilder extends SootASTVisitor {
      *
      **/
     public static SootBlockDirectedGraph[] createDataFlowGraphs(String[] args,
-            boolean writeGraphs) {
+        boolean writeGraphs) {
         //SootASTVisitor.DEBUG = true;
         Block[] blocks = ptolemy.copernicus.jhdl.test.Test.getMethodBlocks(args);
         SootBlockDirectedGraph[] graphs = new SootBlockDirectedGraph[blocks.length];

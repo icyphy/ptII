@@ -24,7 +24,6 @@
  ENHANCEMENTS, OR MODIFICATIONS.
 
  */
-
 package ptolemy.distributed.rmi;
 
 import java.rmi.Remote;
@@ -50,7 +49,5 @@ import ptolemy.distributed.common.DistributedActor;
  @see ptolemy.actor.Actor
  @see ptolemy.actor.Executable
  */
-
 public interface RemoteDistributedActor extends DistributedActor, Remote {
-
 }

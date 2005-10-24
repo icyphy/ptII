@@ -682,6 +682,7 @@ public class CompositeEntity extends ComponentEntity {
 
         // First, produce the inside links on contained ports.
         Iterator ports = portList().iterator();
+
         while (ports.hasNext()) {
             ComponentPort port = (ComponentPort) ports.next();
             Iterator relations = port.insideRelationList().iterator();
@@ -744,6 +745,7 @@ public class CompositeEntity extends ComponentEntity {
 
         // Next, produce the links on ports contained by contained entities.
         Iterator entities = entityList().iterator();
+
         while (entities.hasNext()) {
             ComponentEntity entity = (ComponentEntity) entities.next();
             ports = entity.portList().iterator();
@@ -824,20 +826,26 @@ public class CompositeEntity extends ComponentEntity {
         // a set of visited relations.
         Set visitedRelations = new HashSet();
         Iterator relations = relationList().iterator();
+
         while (relations.hasNext()) {
             ComponentRelation relation = (ComponentRelation) relations.next();
             visitedRelations.add(relation);
+
             Iterator portsAndRelations = relation.linkedObjectsList()
                     .iterator();
+
             while (portsAndRelations.hasNext()) {
                 Object portOrRelation = portsAndRelations.next();
+
                 if (portOrRelation instanceof Relation) {
                     Relation otherRelation = (Relation) portOrRelation;
+
                     // If we have visited the other relation already, then
                     // we have already represented the link. Skip this.
                     if (visitedRelations.contains(otherRelation)) {
                         continue;
                     }
+
                     // If both ends of the link are inherited objects, then
                     // suppress the export. This depends on the level of export
                     // because if both ends of the link are implied, then the
@@ -846,6 +854,7 @@ public class CompositeEntity extends ComponentEntity {
                             && (otherRelation.getDerivedLevel() <= depth)) {
                         continue;
                     }
+
                     // Apply filter.
                     if ((filter == null)
                             || (filter.contains(relation) && filter
@@ -853,17 +862,21 @@ public class CompositeEntity extends ComponentEntity {
                         // In order to support level-crossing links, consider the
                         // possibility that the relation is not contained by this.
                         String relationName;
+
                         if (relation.getContainer() == this) {
                             relationName = relation.getName();
                         } else {
                             relationName = relation.getFullName();
                         }
+
                         String otherRelationName;
+
                         if (otherRelation.getContainer() == this) {
                             otherRelationName = otherRelation.getName();
                         } else {
                             otherRelationName = otherRelation.getFullName();
                         }
+
                         result.append(_getIndentPrefix(depth)
                                 + "<link relation1=\"" + relationName
                                 + "\" relation2=\"" + otherRelationName

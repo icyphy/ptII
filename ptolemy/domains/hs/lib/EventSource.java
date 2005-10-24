@@ -212,8 +212,7 @@ public class EventSource extends TypedAtomicActor implements CTEventGenerator {
      */
     public boolean hasCurrentEvent() {
         HSDirector director = (HSDirector) getDirector();
-        boolean result = 
-            (director.getModelTime().compareTo(_nextOutputTime) == 0);
+        boolean result = (director.getModelTime().compareTo(_nextOutputTime) == 0);
         return result;
     }
 

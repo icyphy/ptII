@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// StringUtilities
 
@@ -114,8 +113,8 @@ public class StringUtilities {
         string = StringUtilities.split(string, 160);
 
         // Third argument being true means return the delimiters as tokens.
-        StringTokenizer tokenizer =
-            new StringTokenizer(string, LINE_SEPARATOR, true);
+        StringTokenizer tokenizer = new StringTokenizer(string, LINE_SEPARATOR,
+                true);
 
         // If there are more than 30 lines and 30 newlines, return
         // truncate after the first 60 lines and newlines.
@@ -177,7 +176,7 @@ public class StringUtilities {
             return "";
         }
 
-        StringBuffer result = new StringBuffer(level*4);
+        StringBuffer result = new StringBuffer(level * 4);
 
         for (int i = 0; i < level; i++) {
             result.append("    ");
@@ -283,13 +282,12 @@ public class StringUtilities {
                 // Return the previously calculated value
                 return _ptolemyPtIIDir;
             } else {
-
                 String stringUtilitiesPath = "ptolemy/util/StringUtilities.class";
 
                 // PTII variable was not set
                 URL namedObjURL = Thread.currentThread()
-                    .getContextClassLoader()
-                    .getResource(stringUtilitiesPath);
+                        .getContextClassLoader().getResource(
+                                stringUtilitiesPath);
 
                 if (namedObjURL != null) {
                     // Get the file portion of URL
@@ -308,7 +306,8 @@ public class StringUtilities {
                     }
 
                     String abnormalHome = namedObjFileName.substring(0,
-                            namedObjFileName.length() - stringUtilitiesPath.length());
+                            namedObjFileName.length()
+                                    - stringUtilitiesPath.length());
 
                     // abnormalHome will have values like: "/C:/ptII/"
                     // which cause no end of trouble, so we construct a File
@@ -327,33 +326,30 @@ public class StringUtilities {
                     // RMptsupport.jar or
                     // XMptsupport.jar1088483703686
                     String ptsupportJarName = File.separator + "DMptolemy"
-                        + File.separator + "RMptsupport.jar";
+                            + File.separator + "RMptsupport.jar";
 
                     if (_ptolemyPtIIDir.endsWith(ptsupportJarName)) {
                         _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
                                 _ptolemyPtIIDir.length()
-                                - ptsupportJarName.length());
+                                        - ptsupportJarName.length());
                     } else {
                         ptsupportJarName = "/DMptolemy/XMptsupport.jar";
 
-                        if (_ptolemyPtIIDir.lastIndexOf(ptsupportJarName)
-                                != -1) {
+                        if (_ptolemyPtIIDir.lastIndexOf(ptsupportJarName) != -1) {
                             _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
                                     _ptolemyPtIIDir
-                                    .lastIndexOf(ptsupportJarName));
+                                            .lastIndexOf(ptsupportJarName));
                         }
                     }
                 }
-
 
                 // Convert %20 to spaces because if a URL has %20 in it,
                 // then we know we have a space, but file names do not
                 // recognize %20 as being a single space, instead file names
                 // see %20 as three characters: '%', '2', '0'.
                 if (_ptolemyPtIIDir != null) {
-                    _ptolemyPtIIDir =
-                        StringUtilities.substitute(_ptolemyPtIIDir,
-                                "%20", " ");
+                    _ptolemyPtIIDir = StringUtilities.substitute(
+                            _ptolemyPtIIDir, "%20", " ");
                 }
 
                 if (_ptolemyPtIIDir == null) {
@@ -362,8 +358,7 @@ public class StringUtilities {
                             + "Also tried loading '" + stringUtilitiesPath
                             + "' as a resource and working from that. "
                             + "Vergil should be "
-                            + "invoked with -Dptolemy.ptII.dir"
-                            + "=\"$PTII\"");
+                            + "invoked with -Dptolemy.ptII.dir" + "=\"$PTII\"");
                 }
 
                 try {
@@ -377,7 +372,6 @@ public class StringUtilities {
                 return _ptolemyPtIIDir;
             }
         }
-                
 
         // If the property is not set then we return the empty string. 
         if (property == null) {
@@ -397,14 +391,17 @@ public class StringUtilities {
         Properties systemProperties = System.getProperties();
         Properties newProperties = new Properties();
         String propertyFileName = "$CLASSPATH/lib/ptII.properties";
+
         // FIXME: xxxxxxCLASSPATHxxxxxx is an ugly hack
-        URL propertyFileURL =
-            FileUtilities.nameToURL(
-                    "xxxxxxCLASSPATHxxxxxx/lib/ptII.properties", null, null);
+        URL propertyFileURL = FileUtilities.nameToURL(
+                "xxxxxxCLASSPATHxxxxxx/lib/ptII.properties", null, null);
+
         if (propertyFileURL == null) {
             throw new IOException("Could not find " + propertyFileName);
         }
+
         newProperties.load(propertyFileURL.openStream());
+
         // systemProperties is a HashSet, so we merge in the new properties.
         systemProperties.putAll(newProperties);
         System.setProperties(systemProperties);
@@ -414,18 +411,20 @@ public class StringUtilities {
     /** Return a string representing the name of the file expected to
      *  contain the source code for the specified object.  This method
      *  simply replaces "." with "/" and appends ".java" to the class
-     *  name.  
+     *  name.
      *  @param object The object.
      *  @return The expected source file name.
      */
     public static String objectToSourceFileName(Object object) {
-        String sourceFileNameBase =
-            object.getClass().getName().replace('.', '/');
+        String sourceFileNameBase = object.getClass().getName().replace('.',
+                '/');
+
         // Inner classes: Get rid of everything past the first $
         if (sourceFileNameBase.indexOf("$") != -1) {
-            sourceFileNameBase = sourceFileNameBase.substring(
-                    0, sourceFileNameBase.indexOf("$"));
+            sourceFileNameBase = sourceFileNameBase.substring(0,
+                    sourceFileNameBase.indexOf("$"));
         }
+
         return sourceFileNameBase + ".java";
     }
 
@@ -438,10 +437,10 @@ public class StringUtilities {
      */
     public static String preferencesDirectory() throws IOException {
         String preferencesDirectoryName = StringUtilities
-            .getProperty("user.home")
-            + File.separator
-            + StringUtilities.PREFERENCES_DIRECTORY
-            + File.separator;
+                .getProperty("user.home")
+                + File.separator
+                + StringUtilities.PREFERENCES_DIRECTORY
+                + File.separator;
         File preferencesDirectory = new File(preferencesDirectoryName);
 
         if (!preferencesDirectory.isDirectory()) {
@@ -797,7 +796,7 @@ public class StringUtilities {
 
     /** Given a string, replace all the instances of XML entities
      *  with their corresponding XML special characters.  This is necessary to
-     *  allow arbitrary strings to be encoded within XML.  
+     *  allow arbitrary strings to be encoded within XML.
      *
      *  <p>In this method, we make the following translations:
      *  <pre>
@@ -842,10 +841,8 @@ public class StringUtilities {
             String[][] commandOptions, String[] commandFlags) {
         // This method is static so that we can reuse it in places
         // like copernicus/kernel/Copernicus and actor/gui/MoMLApplication
-
-        StringBuffer result = new StringBuffer("Usage: "
-                + commandTemplate + "\n\n"
-                + "Options that take values:\n");
+        StringBuffer result = new StringBuffer("Usage: " + commandTemplate
+                + "\n\n" + "Options that take values:\n");
 
         int i;
 
@@ -872,22 +869,22 @@ public class StringUtilities {
     /** Maximum length in characters of a long string before
      *  {@link #ellipsis(String, int)} truncates and add a
      *  trailing ". . .".  This variable is used by callers
-     *  of ellipsis(String, int). 
+     *  of ellipsis(String, int).
      */
     public static final int ELLIPSIS_LENGTH_LONG = 2000;
 
     /** Maximum length in characters of a short string before
      *  {@link #ellipsis(String, int)} truncates and add a
      *  trailing ". . .". This variable is used by callers
-     *  of ellipsis(String, int). 
+     *  of ellipsis(String, int).
      */
     public static final int ELLIPSIS_LENGTH_SHORT = 400;
 
     /** The line separator string.  Under Windows, this would
      *  be "\r\n"; under Unix, "\n"; Under Macintosh, "\r".
      */
-    public static final String LINE_SEPARATOR =
-        System.getProperty("line.separator");
+    public static final String LINE_SEPARATOR = System
+            .getProperty("line.separator");
 
     /** Location of Application preferences such as the user library.
      *  This field is not final in case other applications want to

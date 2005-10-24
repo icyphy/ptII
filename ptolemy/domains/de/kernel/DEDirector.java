@@ -897,7 +897,6 @@ public class DEDirector extends Director implements TimedDirector {
         // events in the event queue are in the past. In this case, we need
         // to catch up with the current model time by discarding the old
         // events. 
-
         // The following check is commentted but not deleted because it is
         // useful for debugging a DE model without modal model.
         // If the model time is larger (later) than the first event
@@ -908,7 +907,6 @@ public class DEDirector extends Director implements TimedDirector {
         //                    + nextEventTime + ", while" + " the outside time is already "
         //                    + modelTime + ".");
         //        }
-
         //If the model time is larger (later) than the first event
         //in the queue, catch up with the current model time by discarding 
         // the old events.
@@ -1055,6 +1053,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     // FIXME: it is questionable whether the multirate FSMActor and FSMDirector
     // should be used in DE as the default? I will say NO.
+
     /** Return an array of suggested directors to use with
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default

@@ -135,6 +135,7 @@ public class CTCompositeActor extends TypedCompositeActor implements
      */
     public void emitCurrentStates() throws IllegalActionException {
         Director director = getDirector();
+
         // We do not need to check whether director is null, because
         // the preinitialize() method of the CompositeActor ensures this
         // actor to have an director.
@@ -188,7 +189,7 @@ public class CTCompositeActor extends TypedCompositeActor implements
 
     /** Call the isStateAccurate() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, return
-     *  true, which indicates the current step size is accurate w.r.t. the 
+     *  true, which indicates the current step size is accurate w.r.t. the
      *  current states.
      *  @return True if the current step size is accurate w.r.t. the current
      *  states.

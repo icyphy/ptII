@@ -106,7 +106,6 @@ import ptolemy.kernel.util.Workspace;
  */
 public class DDEReceiver extends PrioritizedTimedQueue implements
         ProcessReceiver {
-    
     /** Construct an empty receiver with no container.
      */
     public DDEReceiver() {
@@ -164,7 +163,8 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             // Note that there is no need to clear the _readPending
             // reference because that will have been cleared by the write.
             if (_writePending != null) {
-                _director.threadUnblocked(_writePending, this, DDEDirector.WRITE_BLOCKED);
+                _director.threadUnblocked(_writePending, this,
+                        DDEDirector.WRITE_BLOCKED);
                 _writePending = null;
             }
 
@@ -270,6 +270,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             if (!super.hasToken() && !_terminate && !sendNullTokens) {
                 _readPending = thread;
                 _director.threadBlocked(thread, this, DDEDirector.READ_BLOCKED);
+
                 while ((_readPending != null) && !_terminate) {
                     try {
                         workspace.wait(_director);
@@ -285,7 +286,8 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             ////////////////////
             if (_terminate) {
                 if (_readPending != null) {
-                    _director.threadUnblocked(_readPending, this, DDEDirector.READ_BLOCKED);
+                    _director.threadUnblocked(_readPending, this,
+                            DDEDirector.READ_BLOCKED);
                     _readPending = null;
                 }
 
@@ -503,15 +505,19 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
                 // unblocked. Notify the director now so that there isn't a
                 // spurious deadlock detection.
                 if (_readPending != null) {
-                    _director.threadUnblocked(_readPending, this, DDEDirector.READ_BLOCKED);
+                    _director.threadUnblocked(_readPending, this,
+                            DDEDirector.READ_BLOCKED);
                     _readPending = null;
                 }
+
                 return;
             }
 
             if (!super.hasRoom() && !_terminate) {
                 _writePending = Thread.currentThread();
-                _director.threadBlocked(_writePending, this, DDEDirector.WRITE_BLOCKED);
+                _director.threadBlocked(_writePending, this,
+                        DDEDirector.WRITE_BLOCKED);
+
                 while ((_writePending != null) && !_terminate) {
                     try {
                         workspace.wait(_director);
@@ -524,7 +530,8 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
 
             if (_terminate) {
                 if (_writePending != null) {
-                    _director.threadUnblocked(_writePending, this, DDEDirector.WRITE_BLOCKED);
+                    _director.threadUnblocked(_writePending, this,
+                            DDEDirector.WRITE_BLOCKED);
                     _writePending = null;
                 }
 
@@ -541,7 +548,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  the next call to get() or put() of this class.
      */
     public void requestFinish() {
-        synchronized(_director) {
+        synchronized (_director) {
             _terminate = true;
             _director.notifyAll();
         }
@@ -554,12 +561,17 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      */
     public void reset() {
         super.reset();
+
         if (_readPending != null) {
-            _director.threadUnblocked(_readPending, this, DDEDirector.READ_BLOCKED);
+            _director.threadUnblocked(_readPending, this,
+                    DDEDirector.READ_BLOCKED);
         }
+
         if (_writePending != null) {
-            _director.threadUnblocked(_writePending, this, DDEDirector.WRITE_BLOCKED);
+            _director.threadUnblocked(_writePending, this,
+                    DDEDirector.WRITE_BLOCKED);
         }
+
         _terminate = false;
         _hasTokenCache = false;
         _boundaryDetector.reset();
@@ -598,7 +610,7 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
 
         _director = (DDEDirector) director;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     package friendly methods              ////
 
@@ -620,10 +632,10 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The boundary detector. */
     private BoundaryDetector _boundaryDetector;
-    
+
     /** The director in charge of this receiver. */
     private DDEDirector _director;
 
@@ -641,5 +653,4 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
 
     // FIXME: Comments and ordering
     private boolean _hideNullTokens = true;
-
 }

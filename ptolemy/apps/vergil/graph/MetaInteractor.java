@@ -49,7 +49,7 @@ public class MetaInteractor extends CompositeEntity implements Interactor {
     private MouseFilter _mouseFilter = MouseFilter.defaultFilter;
 
     public MetaInteractor(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

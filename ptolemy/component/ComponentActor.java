@@ -474,7 +474,8 @@ public class ComponentActor extends TypedCompositeActor implements Component {
          *  @exception IllegalActionException If the transaction fails (e.g.
          *   the data type is incompatible).
          */
-        public synchronized TupleToken call(TupleToken token) throws IllegalActionException {
+        public synchronized TupleToken call(TupleToken token)
+                throws IllegalActionException {
             if (isInput()) {
                 int l = token.length();
 

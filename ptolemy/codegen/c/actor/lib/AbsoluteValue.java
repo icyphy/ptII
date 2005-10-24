@@ -32,12 +32,8 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
-
 
 /**
  * Generate C code for an actor that produces an output token on

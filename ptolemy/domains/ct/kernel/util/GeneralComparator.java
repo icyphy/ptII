@@ -33,7 +33,7 @@ import java.util.Comparator;
 
 /**
  This class compares two comparable objects, object_1 and object_2,
- by calling <i>compare(object_1, object_2)</i>. A comparable object 
+ by calling <i>compare(object_1, object_2)</i>. A comparable object
  implements the {@link java.lang.Comparable} interface. This method returns
  -1, 0, or 1 if object_1 is less than, equal to, or bigger than object_2.
 

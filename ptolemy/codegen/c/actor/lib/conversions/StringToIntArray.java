@@ -26,16 +26,14 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib.conversions;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.conversions.StringToIntArray.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -43,20 +41,18 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  */
 public class StringToIntArray extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the StringToIntArray helper.
      * @param actor the associated actor.
      */
-    public StringToIntArray(
-            ptolemy.actor.lib.conversions.StringToIntArray actor) {
+    public StringToIntArray(ptolemy.actor.lib.conversions.StringToIntArray actor) {
         super(actor);
     }
-    
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from StringToIntArray.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an

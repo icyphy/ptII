@@ -484,7 +484,7 @@ public class Time implements Comparable {
      *  resolution of the associated director.  Note that a Time value
      *  of positive infinity will return Long.MAX_VALUE and a Time
      *  value of negative infinity will return Long.MIN_VALUE.
-     *  @return The long representatoin of the time value.   
+     *  @return The long representatoin of the time value.
      */
     public long getLongValue() {
         if (_isPositiveInfinite) {

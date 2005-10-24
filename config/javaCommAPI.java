@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 */
 import javax.comm.CommPort;
 
+
 /** Simple class used by configure to test whether the Java Communications
     API  is present.
     If this file will not compile because the import statement fails,
@@ -39,7 +40,7 @@ import javax.comm.CommPort;
     @Pt.AcceptedRating Red
 */
 public class javaCommAPI {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         System.out.print(System.getProperty("java.version"));
     }
 }

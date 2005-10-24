@@ -60,7 +60,7 @@ import java.util.*;
 */
 public class JHDLUnOpActor extends JHDLAtomicActor {
     JHDLUnOpActor(CompositeEntity container, int operation)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container);
         input = new JHDLIOPort(this, "input");
         output = new JHDLIOPort(this, "output");

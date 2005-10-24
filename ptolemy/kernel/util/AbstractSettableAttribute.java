@@ -130,10 +130,11 @@ public abstract class AbstractSettableAttribute extends Attribute implements
         if (_displayName != null) {
             return _displayName;
         }
+
         return getName();
     }
 
-    /** Set a name to present to the user. 
+    /** Set a name to present to the user.
      *  @param name A name to present to the user.
      *  @see #getDisplayName()
      */
@@ -162,7 +163,7 @@ public abstract class AbstractSettableAttribute extends Attribute implements
 
     /** The default value.  */
     private String _default = null;
-    
+
     /** The display name, if set. */
     private String _displayName;
 }

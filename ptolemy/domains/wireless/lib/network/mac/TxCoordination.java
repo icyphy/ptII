@@ -168,6 +168,7 @@ public class TxCoordination extends MACActorBase {
 
         if (PduRequest.hasToken(0)) {
             isNetData = true;
+
             RecordToken msg = (RecordToken) PduRequest.get(0);
 
             if (_txQueue.size() >= QueueSize) {
@@ -205,7 +206,6 @@ public class TxCoordination extends MACActorBase {
                 RecordToken BkDoneMsg = (RecordToken) BkDone.get(0);
 
                 if (((IntToken) BkDoneMsg.get("cnt")).intValue() == -2) {
-
                     TXTXRequest.send(0, _rtsdu);
                     _currentState = Wait_Rts_Sent;
                 } else // channel is busy, need to backoff
@@ -233,7 +233,6 @@ public class TxCoordination extends MACActorBase {
         case Wait_Cts:
 
             if (kind == Timeout) {
-
                 if (_ccw != _aCWmax) {
                     _ccw = (2 * _ccw) + 1;
                 }
@@ -256,7 +255,6 @@ public class TxCoordination extends MACActorBase {
 
                 _currentState = TxC_Backoff;
             } else if (GotAck.hasToken(0)) {
-
                 RecordToken GotCtsMsg = (RecordToken) GotAck.get(0);
 
                 if (((IntToken) GotCtsMsg.get("kind")).intValue() == GotCts) {
@@ -533,6 +531,7 @@ public class TxCoordination extends MACActorBase {
     private void _handleData() throws IllegalActionException {
         int dest_addr;
         _time = (Time) _pduTime.removeFirst();
+
         RecordToken msg = (RecordToken) _txQueue.removeFirst();
         int msg_kind = ((IntToken) msg.get("kind")).intValue();
 

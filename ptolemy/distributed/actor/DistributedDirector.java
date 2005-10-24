@@ -54,9 +54,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Red (kapokasa)
  @Pt.AcceptedRating Red (cxh)
  */
-
 public class DistributedDirector extends Director {
-
     /** Construct a director in the default workspace with an empty string
      *  as its name.
      */
@@ -96,7 +94,6 @@ public class DistributedDirector extends Director {
     /** Return the map from ID to the receiver containing the ID.
      *  @return A HashMap from ID to the receiver containing the ID.
      */
-
     public HashMap getIdsReceiversMap() {
         return idsReceiversMap;
     }
@@ -112,11 +109,13 @@ public class DistributedDirector extends Director {
     public Receiver newReceiver() {
         Integer ID;
         DistributedSDFReceiver receiver;
+
         if (!listOfIds.isEmpty()) {
             ID = (Integer) listOfIds.getFirst();
             listOfIds.removeFirst();
             receiver = new DistributedSDFReceiver(ID);
             idsReceiversMap.put(ID, receiver);
+
             if (VERBOSE) {
                 System.out.println("DistributedDirector.Created receiver: "
                         + ID);
@@ -126,6 +125,7 @@ public class DistributedDirector extends Director {
             lastId += 1;
             receiver = new DistributedSDFReceiver(ID);
         }
+
         return receiver;
     }
 
@@ -138,6 +138,7 @@ public class DistributedDirector extends Director {
             System.out.println("DistributedDirector.setListOfIds: "
                     + list.toString());
         }
+
         listOfIds = list;
     }
 

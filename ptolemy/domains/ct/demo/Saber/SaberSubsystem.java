@@ -58,7 +58,7 @@ import java.util.*;
    @version $Id$
 */
 public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
-                                                                CTDynamicActor {
+    CTDynamicActor {
     /** Construct the actor. Default implementation has no
      *  input port, no output port. The ports can be added by
      *  creating new port with this actor as the container.
@@ -69,7 +69,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
      * @exception IllegalActionException If there is an internal error
      */
     public SaberSubsystem(TypedCompositeActor container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _netlist = new String("saber");
         paramNetlist = new Parameter(this, "Netlist", new StringToken(_netlist));
@@ -117,7 +117,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
 
             if (_porttable.put(varname, p) != null) {
                 throw new IllegalActionException(this,
-                        "two ports has the same tool variables");
+                    "two ports has the same tool variables");
             }
 
             if (p.isOutput()) {
@@ -167,7 +167,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
                     }
                 } catch (IOException e) {
                     throw new IllegalActionException(this,
-                            "IO error while in reading" + e.getMessage());
+                        "IO error while in reading" + e.getMessage());
                 }
             }
 
@@ -195,7 +195,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
                     //}
                 } catch (IOException e) {
                     throw new IllegalActionException(this,
-                            "IO error while in reading" + e.getMessage());
+                        "IO error while in reading" + e.getMessage());
                 }
             }
 
@@ -242,7 +242,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
                     }
                 } catch (IOException e) {
                     throw new IllegalActionException(this,
-                            "IO error while in reading" + e.getMessage());
+                        "IO error while in reading" + e.getMessage());
                 }
             }
         }
@@ -314,7 +314,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
                 //        "IO error while in reading" + e.getMessage());
                 if (_tool == null) {
                     throw new IllegalActionException(this,
-                            "External tool terminated.");
+                        "External tool terminated.");
                 }
 
                 _instream = _tool.getInputStream();
@@ -325,16 +325,16 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
 
                 if (_reader == null) {
                     throw new IllegalActionException(this,
-                            " Can't refresh input buffer."
-                            + " IO error while in reading " + e.getMessage());
+                        " Can't refresh input buffer."
+                        + " IO error while in reading " + e.getMessage());
                 }
 
                 _ps = new PrintWriter(_outstream, true);
 
                 if (_ps == null) {
                     throw new IllegalActionException(this,
-                            " Can't refresh output buffer."
-                            + " IO error while in reading " + e.getMessage());
+                        " Can't refresh output buffer."
+                        + " IO error while in reading " + e.getMessage());
                 }
             }
         }
@@ -400,7 +400,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
 
                             _outvar[i] = _parseNumber(line, tmp, tmp2);
                             _debug(getFullName() + "Read from Saber " + i + " "
-                                    + _outvar[i]);
+                                + _outvar[i]);
                         }
                     }
                 }
@@ -427,7 +427,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
                 //   "IO error while in reading" + e.getMessage());
                 if (_tool == null) {
                     throw new IllegalActionException(this,
-                            "External tool terminated.");
+                        "External tool terminated.");
                 }
 
                 _instream = _tool.getInputStream();
@@ -437,8 +437,8 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
 
                 if (_reader == null) {
                     throw new IllegalActionException(this,
-                            " Can't refresh input buffer."
-                            + " IO error while in reading " + e.getMessage());
+                        " Can't refresh input buffer."
+                        + " IO error while in reading " + e.getMessage());
                 }
             }
         }
@@ -454,7 +454,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
             p.broadcast(_outtoken[outi]);
             _outpvalue.put(p, _outtoken[outi]);
             _debug(getFullName() + "fires output: " + _outvar[outi]
-                    + "as token" + (_outtoken[outi]).doubleValue());
+                + "as token" + (_outtoken[outi]).doubleValue());
             outi++;
         }
     }
@@ -485,7 +485,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
     /** Override Entity addPort. Create parameters for each port.
      */
     protected void _addPort(Port p)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super._addPort(p);
         _debug(getFullName() + "Port" + p.getName() + " added");
 
@@ -528,32 +528,32 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
 
                 if ((locn > begpt) && (locn <= endpt)) {
                     number = new Double(text.substring(begpt, locn))
-                        .doubleValue();
+                                .doubleValue();
                     number *= (0.001 * 0.001 * 0.001);
                 } else {
                     locn = text.indexOf('p', begpt);
 
                     if ((locn > begpt) && (locn <= endpt)) {
                         number = new Double(text.substring(begpt, locn))
-                            .doubleValue();
+                                    .doubleValue();
                         number *= (0.001 * 0.001 * 0.001 * 0.001);
                     } else {
                         locn = text.indexOf('f', begpt);
 
                         if ((locn > begpt) && (locn <= endpt)) {
                             number = new Double(text.substring(begpt, locn))
-                                .doubleValue();
+                                        .doubleValue();
                             number *= (0.001 * 0.001 * 0.001 * 0.001 * 0.001);
                         } else {
                             locn = text.indexOf('a', begpt);
 
                             if ((locn > begpt) && (locn <= endpt)) {
                                 number = new Double(text.substring(begpt, locn))
-                                    .doubleValue();
+                                            .doubleValue();
                                 number *= 1e-18;
                             } else {
                                 number = new Double(text.substring(begpt, endpt))
-                                    .doubleValue();
+                                            .doubleValue();
                             }
                         }
                     }

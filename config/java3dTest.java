@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 */
 import javax.media.j3d.*;
 
+
 /** Simple class used by configure to test whether the Java 3D
     is present.
     If this file will not compile because the import statement fails,
@@ -39,7 +40,7 @@ import javax.media.j3d.*;
     @Pt.AcceptedRating Red
 */
 public class java3dTest {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         System.out.print(System.getProperty("java.version"));
     }
 }

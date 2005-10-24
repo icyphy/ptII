@@ -91,7 +91,7 @@ public class FireAccumulator extends Transformer {
         return newObject;
     }
 
-    /** Consume all tokens from the input channel, 
+    /** Consume all tokens from the input channel,
      *  add the tokens and send them through the output
      *  port.
      *  @exception IllegalActionException If addition is not
@@ -102,6 +102,7 @@ public class FireAccumulator extends Transformer {
             Token in = input.get(0);
             _sum = _sum.add(in);
         }
+
         output.broadcast(_sum);
     }
 
@@ -126,5 +127,4 @@ public class FireAccumulator extends Transformer {
 
     /** The running sum. */
     private Token _sum;
-
 }

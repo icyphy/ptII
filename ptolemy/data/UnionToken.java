@@ -57,10 +57,11 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If the label or the value is null.
      */
     public UnionToken(String label, Token value) throws IllegalActionException {
-        if (label == null || value == null) {
+        if ((label == null) || (value == null)) {
             throw new IllegalActionException("UnionToken: The label or the "
                     + "value is null.");
         }
+
         _label = label;
         _value = value;
     }
@@ -81,7 +82,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
             UnionToken unionToken = (UnionToken) token;
             _label = unionToken.label();
             _value = unionToken.value();
-            if (_label == null || _value == null) {
+
+            if ((_label == null) || (_value == null)) {
                 throw new IllegalActionException("UnionToken: The label "
                         + "or the value is null.");
             }
@@ -120,6 +122,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
     public Type getType() {
         String[] labels = new String[1];
         labels[0] = _label;
+
         Type[] types = new Type[1];
         types[0] = _value.getType();
         return new UnionType(labels, types);
@@ -192,6 +195,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      */
     protected Token _add(Token rightArgument) throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
+
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._add: The label "
                     + "of the argument token (" + unionToken.label()
@@ -241,6 +245,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
+
         if (!_label.equals(unionToken.label())) {
             return new BooleanToken(false);
         }
@@ -262,6 +267,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
+
         if (!_label.equals(unionToken.label())) {
             return new BooleanToken(false);
         }
@@ -280,6 +286,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      */
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
+
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._modulo: The label "
                     + "of the argument token (" + unionToken.label()
@@ -302,6 +309,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
+
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._multiply: The label "
                     + "of the argument token (" + unionToken.label()
@@ -324,6 +332,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
         UnionToken unionToken = (UnionToken) rightArgument;
+
         if (!_label.equals(unionToken.label())) {
             throw new IllegalActionException("UnionToken._subtract: The label "
                     + "of the argument token (" + unionToken.label()
@@ -336,7 +345,6 @@ public class UnionToken extends AbstractNotConvertibleToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     private String _label;
 
     private Token _value;

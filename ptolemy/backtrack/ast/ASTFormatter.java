@@ -1,51 +1,41 @@
 /* A formatter to output Java source code from eclipse AST.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-
+ */
 /******************************************************************************
-  Copyright (c) 2000, 2004 IBM Corporation and others.
-  All rights reserved. This program and the accompanying materials
-  are made available under the terms of the Common Public License v1.0
-  which accompanies this distribution, and is available at
-  http://www.eclipse.org/legal/cpl-v10.html
+ Copyright (c) 2000, 2004 IBM Corporation and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Common Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/cpl-v10.html
 
-  Contributors:
-      IBM Corporation - initial API and implementation
-*******************************************************************************/
-
+ Contributors:
+ IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package ptolemy.backtrack.ast;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
@@ -142,23 +132,31 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.WhileStatement;
 import org.eclipse.jdt.core.dom.WildcardType;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.util.Iterator;
+import java.util.List;
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTFormatter
+
 /**
-   An AST visitor that traverses an eclipse AST from a root node
-   (usually a {@link CompilationUnit} object), and outputs the formatted
-   Java source code. It is modified from {@link
-   org.eclipse.jdt.core.dom.NaiveASTFlattener} in Eclipse 3.0.
+ An AST visitor that traverses an eclipse AST from a root node
+ (usually a {@link CompilationUnit} object), and outputs the formatted
+ Java source code. It is modified from {@link
+ org.eclipse.jdt.core.dom.NaiveASTFlattener} in Eclipse 3.0.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-   @see org.eclipse.jdt.core.dom.ASTVisitor
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ @see org.eclipse.jdt.core.dom.ASTVisitor
+ */
 public class ASTFormatter extends ASTVisitor {
-
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
 
@@ -236,12 +234,13 @@ public class ASTFormatter extends ASTVisitor {
      *  @param args The names of Java source files.
      */
     public static void main(String[] args) throws Exception {
-        if (args.length == 0)
-            System.err.println("USAGE:" +
-                    "java ptolemy.backtrack.ast.ASTFormatter" +
-                    " [.java files...]");
-        else {
+        if (args.length == 0) {
+            System.err.println("USAGE:"
+                    + "java ptolemy.backtrack.ast.ASTFormatter"
+                    + " [.java files...]");
+        } else {
             Writer writer = new OutputStreamWriter(System.out);
+
             for (int i = 0; i < args.length; i++) {
                 String fileName = args[i];
                 FileInputStream stream = new FileInputStream(fileName);
@@ -250,19 +249,24 @@ public class ASTFormatter extends ASTVisitor {
                 root.accept(formatter);
                 stream.close();
             }
+
             writer.close();
         }
     }
 
     public void postVisit(ASTNode node) {
         super.postVisit(node);
-        if (!(node instanceof BlockComment || node instanceof LineComment))
+
+        if (!(node instanceof BlockComment || node instanceof LineComment)) {
             _checkComments(node.getStartPosition() + node.getLength());
+        }
     }
 
     public void preVisit(ASTNode node) {
-        if (!(node instanceof BlockComment || node instanceof LineComment))
+        if (!(node instanceof BlockComment || node instanceof LineComment)) {
             _checkComments(node.getStartPosition());
+        }
+
         super.preVisit(node);
     }
 
@@ -273,16 +277,19 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
+
         _output(_indent);
         _outputModifiers(node.modifiers());
         _output("@interface ");
         node.getName().accept(this);
         _openBrace();
-        for (Iterator it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.bodyDeclarations().iterator(); it.hasNext();) {
             BodyDeclaration d = (BodyDeclaration) it.next();
             d.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength() - 1);
+
+        _checkComments((node.getStartPosition() + node.getLength()) - 1);
         _closeBrace();
         return false;
     }
@@ -295,16 +302,19 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
+
         _output(_indent);
         _outputModifiers(node.modifiers());
         node.getType().accept(this);
         _output(" ");
         node.getName().accept(this);
         _output("()");
+
         if (node.getDefault() != null) {
             _output(" default ");
             node.getDefault().accept(this);
         }
+
         _output(";\n");
         return false;
     }
@@ -315,11 +325,13 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(AnonymousClassDeclaration node) {
         _output(" ");
         _openBrace();
-        for (Iterator it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.bodyDeclarations().iterator(); it.hasNext();) {
             BodyDeclaration b = (BodyDeclaration) it.next();
             b.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength() - 1);
+
+        _checkComments((node.getStartPosition() + node.getLength()) - 1);
         _closeBrace(false);
         return false;
     }
@@ -340,21 +352,26 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(ArrayCreation node) {
         _output("new ");
+
         ArrayType at = node.getType();
         int dims = at.getDimensions();
         Type elementType = at.getElementType();
         elementType.accept(this);
-        for (Iterator it = node.dimensions().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.dimensions().iterator(); it.hasNext();) {
             _output("[");
+
             Expression e = (Expression) it.next();
             e.accept(this);
             _output("]");
             dims--;
         }
+
         // add empty "[]" for each extra array dimension
         for (int i = 0; i < dims; i++) {
             _output("[]");
         }
+
         if (node.getInitializer() != null) {
             _newLineAfterBlock = false;
             _increaseIndent();
@@ -362,6 +379,7 @@ public class ASTFormatter extends ASTVisitor {
             _decreaseIndent();
             _newLineAfterBlock = true;
         }
+
         return false;
     }
 
@@ -371,16 +389,21 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(ArrayInitializer node) {
         _output(" ");
         _openBrace();
-        for (Iterator it = node.expressions().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.expressions().iterator(); it.hasNext();) {
             _output(_indent);
+
             Expression e = (Expression) it.next();
             e.accept(this);
+
             if (it.hasNext()) {
                 _output(",");
             }
+
             _output("\n");
         }
-        _checkComments(node.getStartPosition() + node.getLength() - 1);
+
+        _checkComments((node.getStartPosition() + node.getLength()) - 1);
         _closeBrace(false);
         return false;
     }
@@ -401,10 +424,12 @@ public class ASTFormatter extends ASTVisitor {
         _output(_indent);
         _output("assert ");
         node.getExpression().accept(this);
+
         if (node.getMessage() != null) {
             _output(" : ");
             node.getMessage().accept(this);
         }
+
         _output(";\n");
         return false;
     }
@@ -426,15 +451,18 @@ public class ASTFormatter extends ASTVisitor {
         boolean newLineAfterBlock = _newLineAfterBlock;
 
         // Indent if it is in a list of statements.
-        if (node.getLocationInParent().isChildListProperty())
+        if (node.getLocationInParent().isChildListProperty()) {
             _output(_indent);
+        }
 
         _openBrace();
-        for (Iterator it = node.statements().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.statements().iterator(); it.hasNext();) {
             Statement s = (Statement) it.next();
             s.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength() - 1);
+
+        _checkComments((node.getStartPosition() + node.getLength()) - 1);
         _closeBrace(newLineAfterBlock);
         _newLineAfterBlock = true;
         return false;
@@ -459,6 +487,7 @@ public class ASTFormatter extends ASTVisitor {
         } else {
             _output("false");
         }
+
         return false;
     }
 
@@ -468,10 +497,12 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(BreakStatement node) {
         _output(_indent);
         _output("break");
+
         if (node.getLabel() != null) {
             _output(" ");
             node.getLabel().accept(this);
         }
+
         _output(";\n");
         return false;
     }
@@ -514,37 +545,51 @@ public class ASTFormatter extends ASTVisitor {
             node.getExpression().accept(this);
             _output(".");
         }
+
         _output("new ");
+
         if (node.getAST().apiLevel() == AST.JLS2) {
             node.getName().accept(this);
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
+
                 Iterator it;
-                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
+
+                for (it = node.typeArguments().iterator(); it.hasNext();) {
                     Type t = (Type) it.next();
                     t.accept(this);
+
                     if (it.hasNext()) {
                         _output(", ");
                     }
                 }
+
                 _output(">");
             }
+
             node.getType().accept(this);
         }
+
         _output("(");
-        for (Iterator it = node.arguments().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.arguments().iterator(); it.hasNext();) {
             Expression e = (Expression) it.next();
             e.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(")");
+
         if (node.getAnonymousClassDeclaration() != null) {
             node.getAnonymousClassDeclaration().accept(this);
         }
+
         return false;
     }
 
@@ -554,23 +599,27 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(CompilationUnit node) {
         // Set up the comment iterator.
         List comments = node.getCommentList();
+
         if (!comments.isEmpty()) {
             _commentIterator = comments.iterator();
+
             try {
                 _nextComment();
             } catch (IOException e) {
                 throw new ASTIORuntimeException(e);
             }
         }
-        
+
         // Sort all the importations.
         List imports = node.imports();
         int length = imports.size();
         AST ast = node.getAST();
-        for (int i = 0; i < length - 1; i++)
+
+        for (int i = 0; i < (length - 1); i++) {
             for (int j = i + 1; j < length; j++) {
-                ImportDeclaration import1 = (ImportDeclaration)imports.get(i);
-                ImportDeclaration import2 = (ImportDeclaration)imports.get(j);
+                ImportDeclaration import1 = (ImportDeclaration) imports.get(i);
+                ImportDeclaration import2 = (ImportDeclaration) imports.get(j);
+
                 if (import1.toString().compareTo(import2.toString()) > 0) {
                     // Swap.
                     imports.remove(j);
@@ -579,19 +628,24 @@ public class ASTFormatter extends ASTVisitor {
                     imports.add(j, ASTNode.copySubtree(ast, import1));
                 }
             }
+        }
 
         if (node.getPackage() != null) {
             node.getPackage().accept(this);
         }
-        for (Iterator it = node.imports().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.imports().iterator(); it.hasNext();) {
             ImportDeclaration d = (ImportDeclaration) it.next();
             d.accept(this);
         }
+
         _output("\n");
-        for (Iterator it = node.types().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.types().iterator(); it.hasNext();) {
             AbstractTypeDeclaration d = (AbstractTypeDeclaration) it.next();
             d.accept(this);
         }
+
         return false;
     }
 
@@ -612,28 +666,37 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(ConstructorInvocation node) {
         _output(_indent);
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
+
                 Iterator it;
-                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
+
+                for (it = node.typeArguments().iterator(); it.hasNext();) {
                     Type t = (Type) it.next();
                     t.accept(this);
+
                     if (it.hasNext()) {
                         _output(", ");
                     }
                 }
+
                 _output(">");
             }
         }
+
         _output("this(");
-        for (Iterator it = node.arguments().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.arguments().iterator(); it.hasNext();) {
             Expression e = (Expression) it.next();
             e.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(");\n");
         return false;
     }
@@ -644,10 +707,12 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(ContinueStatement node) {
         _output(_indent);
         _output("continue");
+
         if (node.getLabel() != null) {
             _output(" ");
             node.getLabel().accept(this);
         }
+
         _output(";\n");
         return false;
     }
@@ -658,18 +723,23 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(DoStatement node) {
         _output(_indent);
         _output("do ");
-        if (node.getBody() instanceof Block)
+
+        if (node.getBody() instanceof Block) {
             _newLineAfterBlock = false;
-        else {
+        } else {
             _output("\n");
             _increaseIndent();
         }
+
         node.getBody().accept(this);
+
         if (!(node.getBody() instanceof Block)) {
             _decreaseIndent();
             _output(_indent);
-        } else
+        } else {
             _output(" ");
+        }
+
         _output("while (");
         node.getExpression().accept(this);
         _output(");\n");
@@ -708,30 +778,37 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
+
         _output(_indent);
         _outputModifiers(node.modifiers());
         node.getName().accept(this);
+
         if (!node.arguments().isEmpty()) {
             _output("(");
-            for (Iterator it = node.arguments().iterator(); it.hasNext(); ) {
+
+            for (Iterator it = node.arguments().iterator(); it.hasNext();) {
                 Expression e = (Expression) it.next();
                 e.accept(this);
+
                 if (it.hasNext()) {
                     _output(", ");
                 }
             }
+
             _output(")");
         }
+
         // bodyDeclarations() no longer exists in JDT 3.1.
+
         /*if (!node.bodyDeclarations().isEmpty()) {
-            _openBrace();
-            Iterator it;
-            for (it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
-                BodyDeclaration d = (BodyDeclaration) it.next();
-                d.accept(this);
-            }
-            _closeBrace();
-        }*/
+         _openBrace();
+         Iterator it;
+         for (it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
+         BodyDeclaration d = (BodyDeclaration) it.next();
+         d.accept(this);
+         }
+         _closeBrace();
+         }*/
         return false;
     }
 
@@ -743,28 +820,38 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
+
         _output(_indent);
         _outputModifiers(node.modifiers());
         _output("enum ");
         node.getName().accept(this);
         _output(" ");
+
         if (!node.superInterfaceTypes().isEmpty()) {
             _output("implements ");
+
             Iterator it;
-            for (it = node.superInterfaceTypes().iterator(); it.hasNext(); ) {
+
+            for (it = node.superInterfaceTypes().iterator(); it.hasNext();) {
                 Type t = (Type) it.next();
                 t.accept(this);
+
                 if (it.hasNext()) {
                     _output(", ");
                 }
             }
+
             _output(" ");
         }
+
         _openBrace();
+
         BodyDeclaration prev = null;
         Iterator it;
-        for (it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
+
+        for (it = node.bodyDeclarations().iterator(); it.hasNext();) {
             BodyDeclaration d = (BodyDeclaration) it.next();
+
             if (prev instanceof EnumConstantDeclaration) {
                 // enum constant declarations do not include punctuation
                 if (d instanceof EnumConstantDeclaration) {
@@ -776,9 +863,11 @@ public class ASTFormatter extends ASTVisitor {
                     _output("; ");
                 }
             }
+
             d.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength() - 1);
+
+        _checkComments((node.getStartPosition() + node.getLength()) - 1);
         _closeBrace();
         return false;
     }
@@ -810,23 +899,30 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
+
         _output(_indent);
+
         if (node.getAST().apiLevel() == AST.JLS2) {
             _outputModifiers(node.getModifiers());
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             _outputModifiers(node.modifiers());
         }
+
         node.getType().accept(this);
         _output(" ");
-        for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
-            VariableDeclarationFragment f =
-                (VariableDeclarationFragment) it.next();
+
+        for (Iterator it = node.fragments().iterator(); it.hasNext();) {
+            VariableDeclarationFragment f = (VariableDeclarationFragment) it
+                    .next();
             f.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(";\n");
         _output("\n");
         return false;
@@ -838,32 +934,47 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(ForStatement node) {
         _output(_indent);
         _output("for (");
-        for (Iterator it = node.initializers().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.initializers().iterator(); it.hasNext();) {
             Expression e = (Expression) it.next();
             e.accept(this);
-            if (it.hasNext())
+
+            if (it.hasNext()) {
                 _output(", ");
+            }
         }
+
         _output("; ");
+
         if (node.getExpression() != null) {
             node.getExpression().accept(this);
         }
+
         _output("; ");
-        for (Iterator it = node.updaters().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.updaters().iterator(); it.hasNext();) {
             Expression e = (Expression) it.next();
             e.accept(this);
-            if (it.hasNext())
+
+            if (it.hasNext()) {
                 _output(", ");
+            }
         }
+
         _output(") ");
+
         if (!(node.getBody() instanceof Block)) {
             _output("\n");
             _increaseIndent();
         }
+
         _newLineAfterBlock = true;
         node.getBody().accept(this);
-        if (!(node.getBody() instanceof Block))
+
+        if (!(node.getBody() instanceof Block)) {
             _decreaseIndent();
+        }
+
         return false;
     }
 
@@ -874,10 +985,12 @@ public class ASTFormatter extends ASTVisitor {
         Statement thenStatement = node.getThenStatement();
         Statement elseStatement = node.getElseStatement();
 
-        if (_indentIfStatement)
+        if (_indentIfStatement) {
             _output(_indent);
-        else
+        } else {
             _indentIfStatement = true;
+        }
+
         _output("if (");
         node.getExpression().accept(this);
         _output(")");
@@ -894,13 +1007,13 @@ public class ASTFormatter extends ASTVisitor {
             _decreaseIndent();
         }
 
-
         if (elseStatement != null) {
             if (thenStatement instanceof Block) {
                 _output(" ");
             } else {
                 _output(_indent);
             }
+
             if (elseStatement instanceof Block) {
                 _output("else ");
                 elseStatement.accept(this);
@@ -915,6 +1028,7 @@ public class ASTFormatter extends ASTVisitor {
                 _decreaseIndent();
             }
         }
+
         return false;
     }
 
@@ -924,15 +1038,19 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(ImportDeclaration node) {
         _output(_indent);
         _output("import ");
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (node.isStatic()) {
                 _output("static ");
             }
         }
+
         node.getName().accept(this);
+
         if (node.isOnDemand()) {
             _output(".*");
         }
+
         _output(";\n");
         return false;
     }
@@ -942,15 +1060,18 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(InfixExpression node) {
         node.getLeftOperand().accept(this);
-        _output(" ");  // for cases like x = i - -1; or x = i++ + ++i;
+        _output(" "); // for cases like x = i - -1; or x = i++ + ++i;
         _output(node.getOperator().toString());
         _output(" ");
         node.getRightOperand().accept(this);
-        for (Iterator it = node.extendedOperands().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.extendedOperands().iterator(); it.hasNext();) {
             _output(node.getOperator().toString());
+
             Expression e = (Expression) it.next();
             e.accept(this);
         }
+
         return false;
     }
 
@@ -971,12 +1092,15 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
+
         if (node.getAST().apiLevel() == AST.JLS2) {
             _outputModifiers(node.getModifiers());
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             _outputModifiers(node.modifiers());
         }
+
         _output(_indent);
         node.getBody().accept(this);
         _output("\n");
@@ -990,10 +1114,12 @@ public class ASTFormatter extends ASTVisitor {
         _output(_indent);
         _output("/** ");
         _output(_indent);
-        for (Iterator it = node.tags().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.tags().iterator(); it.hasNext();) {
             ASTNode e = (ASTNode) it.next();
             e.accept(this);
         }
+
         _output("\n");
         _output(_indent);
         _output(" */\n");
@@ -1039,6 +1165,7 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getQualifier() != null) {
             node.getQualifier().accept(this);
         }
+
         _output("#");
         node.getName().accept(this);
         return false;
@@ -1063,16 +1190,20 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getQualifier() != null) {
             node.getQualifier().accept(this);
         }
+
         _output("#");
         node.getName().accept(this);
         _output("(");
-        for (Iterator it = node.parameters().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.parameters().iterator(); it.hasNext();) {
             MethodRefParameter e = (MethodRefParameter) it.next();
             e.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(")");
         return false;
     }
@@ -1083,10 +1214,12 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(MethodRefParameter node) {
         node.getType().accept(this);
+
         if (node.getName() != null) {
             _output(" ");
             node.getName().accept(this);
         }
+
         return false;
     }
 
@@ -1097,25 +1230,34 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getJavadoc() != null) {
             node.getJavadoc().accept(this);
         }
+
         _output(_indent);
+
         if (node.getAST().apiLevel() == AST.JLS2) {
             _outputModifiers(node.getModifiers());
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             _outputModifiers(node.modifiers());
+
             if (!node.typeParameters().isEmpty()) {
                 _output("<");
+
                 Iterator it;
-                for (it = node.typeParameters().iterator(); it.hasNext(); ) {
+
+                for (it = node.typeParameters().iterator(); it.hasNext();) {
                     TypeParameter t = (TypeParameter) it.next();
                     t.accept(this);
+
                     if (it.hasNext()) {
                         _output(", ");
                     }
                 }
+
                 _output(">");
             }
         }
+
         if (!node.isConstructor()) {
             if (node.getAST().apiLevel() == AST.JLS2) {
                 node.getReturnType().accept(this);
@@ -1127,40 +1269,52 @@ public class ASTFormatter extends ASTVisitor {
                     _output("void");
                 }
             }
+
             _output(" ");
         }
+
         node.getName().accept(this);
         _output("(");
-        for (Iterator it = node.parameters().iterator(); it.hasNext(); ) {
-            SingleVariableDeclaration v =
-                (SingleVariableDeclaration) it.next();
+
+        for (Iterator it = node.parameters().iterator(); it.hasNext();) {
+            SingleVariableDeclaration v = (SingleVariableDeclaration) it.next();
             v.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(")");
+
         for (int i = 0; i < node.getExtraDimensions(); i++) {
             _output("[]");
         }
+
         if (!node.thrownExceptions().isEmpty()) {
             _output(" throws ");
+
             Iterator it;
-            for (it = node.thrownExceptions().iterator(); it.hasNext(); ) {
+
+            for (it = node.thrownExceptions().iterator(); it.hasNext();) {
                 Name n = (Name) it.next();
                 n.accept(this);
+
                 if (it.hasNext()) {
                     _output(", ");
                 }
             }
+
             _output(" ");
         }
+
         if (node.getBody() == null) {
             _output(";\n");
         } else {
             _output(" ");
             node.getBody().accept(this);
         }
+
         _output("\n");
         return false;
     }
@@ -1173,29 +1327,38 @@ public class ASTFormatter extends ASTVisitor {
             node.getExpression().accept(this);
             _output(".");
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
+
                 Iterator it;
-                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
+
+                for (it = node.typeArguments().iterator(); it.hasNext();) {
                     Type t = (Type) it.next();
                     t.accept(this);
+
                     if (it.hasNext()) {
                         _output(", ");
                     }
                 }
+
                 _output(">");
             }
         }
+
         node.getName().accept(this);
         _output("(");
-        for (Iterator it = node.arguments().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.arguments().iterator(); it.hasNext();) {
             Expression e = (Expression) it.next();
             e.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(")");
         return false;
     }
@@ -1217,13 +1380,16 @@ public class ASTFormatter extends ASTVisitor {
         _output("@");
         node.getTypeName().accept(this);
         _output("(");
-        for (Iterator it = node.values().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.values().iterator(); it.hasNext();) {
             MemberValuePair p = (MemberValuePair) it.next();
             p.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(")");
         return false;
     }
@@ -1252,14 +1418,18 @@ public class ASTFormatter extends ASTVisitor {
             if (node.getJavadoc() != null) {
                 node.getJavadoc().accept(this);
             }
+
             _output(_indent);
-            for (Iterator it = node.annotations().iterator(); it.hasNext(); ) {
+
+            for (Iterator it = node.annotations().iterator(); it.hasNext();) {
                 Annotation p = (Annotation) it.next();
                 p.accept(this);
                 _output(" ");
             }
-        } else
+        } else {
             _output(_indent);
+        }
+
         _output("package ");
         node.getName().accept(this);
         _output(";\n\n");
@@ -1273,13 +1443,16 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(ParameterizedType node) {
         node.getType().accept(this);
         _output("<");
-        for (Iterator it = node.typeArguments().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.typeArguments().iterator(); it.hasNext();) {
             Type t = (Type) it.next();
             t.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(">");
         return false;
     }
@@ -1347,10 +1520,12 @@ public class ASTFormatter extends ASTVisitor {
     public boolean visit(ReturnStatement node) {
         _output(_indent);
         _output("return");
+
         if (node.getExpression() != null) {
             _output(" ");
             node.getExpression().accept(this);
         }
+
         _output(";\n");
         return false;
     }
@@ -1390,24 +1565,31 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() == AST.JLS2) {
             _outputModifiers(node.getModifiers());
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             _outputModifiers(node.modifiers());
         }
+
         node.getType().accept(this);
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (node.isVarargs()) {
                 _output("...");
             }
         }
+
         _output(" ");
         node.getName().accept(this);
+
         for (int i = 0; i < node.getExtraDimensions(); i++) {
             _output("[]");
         }
+
         if (node.getInitializer() != null) {
             _output(" = ");
             node.getInitializer().accept(this);
         }
+
         return false;
     }
 
@@ -1424,32 +1606,42 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(SuperConstructorInvocation node) {
         _output(_indent);
+
         if (node.getExpression() != null) {
             node.getExpression().accept(this);
             _output(".");
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
+
                 Iterator it;
-                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
+
+                for (it = node.typeArguments().iterator(); it.hasNext();) {
                     Type t = (Type) it.next();
                     t.accept(this);
+
                     if (it.hasNext()) {
                         _output(", ");
                     }
                 }
+
                 _output(">");
             }
         }
+
         _output("super(");
-        for (Iterator it = node.arguments().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.arguments().iterator(); it.hasNext();) {
             Expression e = (Expression) it.next();
             e.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(");\n");
         return false;
     }
@@ -1462,6 +1654,7 @@ public class ASTFormatter extends ASTVisitor {
             node.getQualifier().accept(this);
             _output(".");
         }
+
         _output("super.");
         node.getName().accept(this);
         return false;
@@ -1475,30 +1668,40 @@ public class ASTFormatter extends ASTVisitor {
             node.getQualifier().accept(this);
             _output(".");
         }
+
         _output("super.");
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeArguments().isEmpty()) {
                 _output("<");
+
                 Iterator it;
-                for (it = node.typeArguments().iterator(); it.hasNext(); ) {
+
+                for (it = node.typeArguments().iterator(); it.hasNext();) {
                     Type t = (Type) it.next();
                     t.accept(this);
+
                     if (it.hasNext()) {
                         _output(", ");
                     }
                 }
+
                 _output(">");
             }
         }
+
         node.getName().accept(this);
         _output("(");
-        for (Iterator it = node.arguments().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.arguments().iterator(); it.hasNext();) {
             Expression e = (Expression) it.next();
             e.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(")");
         return false;
     }
@@ -1516,6 +1719,7 @@ public class ASTFormatter extends ASTVisitor {
             node.getExpression().accept(this);
             _output(":\n");
         }
+
         return false;
     }
 
@@ -1528,15 +1732,22 @@ public class ASTFormatter extends ASTVisitor {
         node.getExpression().accept(this);
         _output(") ");
         _openBrace();
-        for (Iterator it = node.statements().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.statements().iterator(); it.hasNext();) {
             Statement s = (Statement) it.next();
-            if (!(s instanceof SwitchCase))
+
+            if (!(s instanceof SwitchCase)) {
                 _increaseIndent();
+            }
+
             s.accept(this);
-            if (!(s instanceof SwitchCase))
+
+            if (!(s instanceof SwitchCase)) {
                 _decreaseIndent();
+            }
         }
-        _checkComments(node.getStartPosition() + node.getLength() - 1);
+
+        _checkComments((node.getStartPosition() + node.getLength()) - 1);
         _closeBrace();
         return false;
     }
@@ -1567,36 +1778,47 @@ public class ASTFormatter extends ASTVisitor {
             _output(_indent);
             _output(" * ");
         }
+
         boolean previousRequiresWhiteSpace = false;
+
         if (node.getTagName() != null) {
             _output(node.getTagName());
             previousRequiresWhiteSpace = true;
         }
+
         boolean previousRequiresNewLine = false;
-        for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.fragments().iterator(); it.hasNext();) {
             ASTNode e = (ASTNode) it.next();
+
             // assume text elements include necessary leading and trailing
             // whitespace but Name, MemberRef, MethodRef, and nested
             // TagElement do not include white space
             boolean currentIncludesWhiteSpace = (e instanceof TextElement);
+
             if (previousRequiresNewLine && currentIncludesWhiteSpace) {
                 _output("\n");
-                                _output(_indent);
-                                _output(" * ");
+                _output(_indent);
+                _output(" * ");
             }
+
             previousRequiresNewLine = currentIncludesWhiteSpace;
+
             // add space if required to separate
             if (previousRequiresWhiteSpace && !currentIncludesWhiteSpace) {
                 _output(" ");
             }
+
             e.accept(this);
-            previousRequiresWhiteSpace =
-                !currentIncludesWhiteSpace && !(e instanceof TagElement);
+            previousRequiresWhiteSpace = !currentIncludesWhiteSpace
+                    && !(e instanceof TagElement);
         }
+
         if (node.isNested()) {
-            _checkComments(node.getStartPosition() + node.getLength() - 1);
+            _checkComments((node.getStartPosition() + node.getLength()) - 1);
             _closeBrace();
         }
+
         return false;
     }
 
@@ -1617,6 +1839,7 @@ public class ASTFormatter extends ASTVisitor {
             node.getQualifier().accept(this);
             _output(".");
         }
+
         _output("this");
         return false;
     }
@@ -1640,15 +1863,18 @@ public class ASTFormatter extends ASTVisitor {
         _output("try ");
         _newLineAfterBlock = false;
         node.getBody().accept(this);
-        for (Iterator it = node.catchClauses().iterator(); it.hasNext(); ) {
+
+        for (Iterator it = node.catchClauses().iterator(); it.hasNext();) {
             CatchClause cc = (CatchClause) it.next();
-            _newLineAfterBlock = !it.hasNext() && node.getFinally() == null;
+            _newLineAfterBlock = !it.hasNext() && (node.getFinally() == null);
             cc.accept(this);
         }
+
         if (node.getFinally() != null) {
             _output(" finally ");
             node.getFinally().accept(this);
         }
+
         _newLineAfterBlock = true;
         return false;
     }
@@ -1658,81 +1884,108 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(TypeDeclaration node) {
         Javadoc javadoc = node.getJavadoc();
+
         if (javadoc != null) {
             javadoc.accept(this);
         }
+
         _output(_indent);
+
         if (node.getAST().apiLevel() == AST.JLS2) {
             _outputModifiers(node.getModifiers());
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             _outputModifiers(node.modifiers());
         }
+
         _output(node.isInterface() ? "interface " : "class ");
+
         //$NON-NLS-2$
         node.getName().accept(this);
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (!node.typeParameters().isEmpty()) {
                 _output("<");
+
                 Iterator it;
-                for (it = node.typeParameters().iterator(); it.hasNext(); ) {
+
+                for (it = node.typeParameters().iterator(); it.hasNext();) {
                     TypeParameter t = (TypeParameter) it.next();
                     t.accept(this);
+
                     if (it.hasNext()) {
                         _output(", ");
                     }
                 }
+
                 _output(">");
             }
         }
+
         _output(" ");
+
         if (node.getAST().apiLevel() == AST.JLS2) {
             if (node.getSuperclass() != null) {
                 _output("extends ");
                 node.getSuperclass().accept(this);
                 _output(" ");
             }
+
             if (!node.superInterfaces().isEmpty()) {
                 _output(node.isInterface() ? "extends " : "implements ");
+
                 //$NON-NLS-2$
                 Iterator it;
-                for (it = node.superInterfaces().iterator(); it.hasNext(); ) {
+
+                for (it = node.superInterfaces().iterator(); it.hasNext();) {
                     Name n = (Name) it.next();
                     n.accept(this);
+
                     if (it.hasNext()) {
                         _output(", ");
                     }
                 }
+
                 _output(" ");
             }
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             if (node.getSuperclassType() != null) {
                 _output("extends ");
                 node.getSuperclassType().accept(this);
                 _output(" ");
             }
+
             if (!node.superInterfaceTypes().isEmpty()) {
                 _output(node.isInterface() ? "extends " : "implements ");
+
                 //$NON-NLS-2$
                 Iterator it;
-                for (it = node.superInterfaceTypes().iterator();
-                     it.hasNext(); ) {
+
+                for (it = node.superInterfaceTypes().iterator(); it.hasNext();) {
                     Type t = (Type) it.next();
                     t.accept(this);
+
                     if (it.hasNext()) {
                         _output(", ");
                     }
                 }
+
                 _output(" ");
             }
         }
+
         _openBrace();
         _output("\n");
+
         BodyDeclaration prev = null;
         Iterator it;
-        for (it = node.bodyDeclarations().iterator(); it.hasNext(); ) {
+
+        for (it = node.bodyDeclarations().iterator(); it.hasNext();) {
             BodyDeclaration d = (BodyDeclaration) it.next();
+
             if (prev instanceof EnumConstantDeclaration) {
                 // enum constant declarations do not include punctuation
                 if (d instanceof EnumConstantDeclaration) {
@@ -1744,9 +1997,11 @@ public class ASTFormatter extends ASTVisitor {
                     _output("; ");
                 }
             }
+
             d.accept(this);
         }
-        _checkComments(node.getStartPosition() + node.getLength() - 1);
+
+        _checkComments((node.getStartPosition() + node.getLength()) - 1);
         _closeBrace();
         _output("\n");
         return false;
@@ -1759,9 +2014,11 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() == AST.JLS2) {
             node.getTypeDeclaration().accept(this);
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             node.getDeclaration().accept(this);
         }
+
         return false;
     }
 
@@ -1780,16 +2037,20 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(TypeParameter node) {
         node.getName().accept(this);
+
         if (!node.typeBounds().isEmpty()) {
             _output(" extends ");
-            for (Iterator it = node.typeBounds().iterator(); it.hasNext(); ) {
+
+            for (Iterator it = node.typeBounds().iterator(); it.hasNext();) {
                 Type t = (Type) it.next();
                 t.accept(this);
+
                 if (it.hasNext()) {
                     _output(" & ");
                 }
             }
         }
+
         return false;
     }
 
@@ -1800,19 +2061,24 @@ public class ASTFormatter extends ASTVisitor {
         if (node.getAST().apiLevel() == AST.JLS2) {
             _outputModifiers(node.getModifiers());
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             _outputModifiers(node.modifiers());
         }
+
         node.getType().accept(this);
         _output(" ");
-        for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
-            VariableDeclarationFragment f =
-                (VariableDeclarationFragment) it.next();
+
+        for (Iterator it = node.fragments().iterator(); it.hasNext();) {
+            VariableDeclarationFragment f = (VariableDeclarationFragment) it
+                    .next();
             f.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         return false;
     }
 
@@ -1821,13 +2087,16 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(VariableDeclarationFragment node) {
         node.getName().accept(this);
+
         for (int i = 0; i < node.getExtraDimensions(); i++) {
             _output("[]");
         }
+
         if (node.getInitializer() != null) {
             _output(" = ");
             node.getInitializer().accept(this);
         }
+
         return false;
     }
 
@@ -1836,22 +2105,28 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(VariableDeclarationStatement node) {
         _output(_indent);
+
         if (node.getAST().apiLevel() == AST.JLS2) {
             _outputModifiers(node.getModifiers());
         }
+
         if (node.getAST().apiLevel() >= AST.JLS3) {
             _outputModifiers(node.modifiers());
         }
+
         node.getType().accept(this);
         _output(" ");
-        for (Iterator it = node.fragments().iterator(); it.hasNext(); ) {
-            VariableDeclarationFragment f =
-                (VariableDeclarationFragment) it.next();
+
+        for (Iterator it = node.fragments().iterator(); it.hasNext();) {
+            VariableDeclarationFragment f = (VariableDeclarationFragment) it
+                    .next();
             f.accept(this);
+
             if (it.hasNext()) {
                 _output(", ");
             }
         }
+
         _output(";\n");
         return false;
     }
@@ -1862,15 +2137,19 @@ public class ASTFormatter extends ASTVisitor {
      */
     public boolean visit(WildcardType node) {
         _output("?");
+
         Type bound = node.getBound();
+
         if (bound != null) {
             if (node.isUpperBound()) {
                 _output(" extends ");
             } else {
                 _output(" super ");
             }
+
             bound.accept(this);
         }
+
         return false;
     }
 
@@ -1882,13 +2161,18 @@ public class ASTFormatter extends ASTVisitor {
         _output("while (");
         node.getExpression().accept(this);
         _output(") ");
+
         if (!(node.getBody() instanceof Block)) {
             _output("\n");
             _increaseIndent();
         }
+
         node.getBody().accept(this);
-        if (!(node.getBody() instanceof Block))
+
+        if (!(node.getBody() instanceof Block)) {
             _decreaseIndent();
+        }
+
         return false;
     }
 
@@ -1915,8 +2199,10 @@ public class ASTFormatter extends ASTVisitor {
         _indent.setLength(_indent.length() - 4);
         _output(_indent);
         _output("}");
-        if (newLineAfter)
+
+        if (newLineAfter) {
             _output("\n");
+        }
     }
 
     /** Decrease the indent amount.
@@ -1947,14 +2233,17 @@ public class ASTFormatter extends ASTVisitor {
      *   IO exception occurs when trying to write to the writer.
      */
     private void _output(String message) throws ASTIORuntimeException {
-        if (_buffer != null)
+        if (_buffer != null) {
             _buffer.append(message);
-        if (_writer != null)
+        }
+
+        if (_writer != null) {
             try {
                 _writer.write(message);
             } catch (IOException e) {
                 throw new ASTIORuntimeException(e);
             }
+        }
     }
 
     /** Output a message. If a {@link StringBuffer} is used, the output
@@ -1966,14 +2255,17 @@ public class ASTFormatter extends ASTVisitor {
      *   IO exception occurs when trying to write to the writer.
      */
     private void _output(StringBuffer message) throws ASTIORuntimeException {
-        if (_buffer != null)
+        if (_buffer != null) {
             _buffer.append(message);
-        if (_writer != null)
+        }
+
+        if (_writer != null) {
             try {
                 _writer.write(message.toString());
             } catch (IOException e) {
                 throw new ASTIORuntimeException(e);
             }
+        }
     }
 
     /**
@@ -1985,7 +2277,7 @@ public class ASTFormatter extends ASTVisitor {
      * (element type: <code>IExtendedModifiers</code>)
      */
     private void _outputModifiers(List ext) {
-        for (Iterator it = ext.iterator(); it.hasNext(); ) {
+        for (Iterator it = ext.iterator(); it.hasNext();) {
             ASTNode p = (ASTNode) it.next();
             p.accept(this);
             _output(" ");
@@ -2003,43 +2295,54 @@ public class ASTFormatter extends ASTVisitor {
         if (Modifier.isPublic(modifiers)) {
             _output("public ");
         }
+
         if (Modifier.isProtected(modifiers)) {
             _output("protected ");
         }
+
         if (Modifier.isPrivate(modifiers)) {
             _output("private ");
         }
+
         if (Modifier.isStatic(modifiers)) {
             _output("static ");
         }
+
         if (Modifier.isAbstract(modifiers)) {
             _output("abstract ");
         }
+
         if (Modifier.isFinal(modifiers)) {
             _output("final ");
         }
+
         if (Modifier.isSynchronized(modifiers)) {
             _output("synchronized ");
         }
+
         if (Modifier.isVolatile(modifiers)) {
             _output("volatile ");
         }
+
         if (Modifier.isNative(modifiers)) {
             _output("native ");
         }
+
         if (Modifier.isStrictfp(modifiers)) {
             _output("strictfp ");
         }
+
         if (Modifier.isTransient(modifiers)) {
             _output("transient ");
         }
     }
-    
+
     private void _checkComments(int startPosition) {
-        while (_comment != null && _commentStartPosition <= startPosition) {
+        while ((_comment != null) && (_commentStartPosition <= startPosition)) {
             // Output the comment.
             _comment.accept(this);
             startPosition = _comment.getStartPosition() + _comment.getLength();
+
             try {
                 _nextComment();
             } catch (IOException e) {
@@ -2047,60 +2350,71 @@ public class ASTFormatter extends ASTVisitor {
             }
         }
     }
-    
+
     private void _nextComment() throws IOException {
         // Get the next comment.
         if (_commentIterator.hasNext()) {
-            _comment = (Comment)_commentIterator.next();
-            while (_comment instanceof Javadoc && _commentIterator.hasNext())
-                _comment = (Comment)_commentIterator.next();
+            _comment = (Comment) _commentIterator.next();
+
+            while (_comment instanceof Javadoc && _commentIterator.hasNext()) {
+                _comment = (Comment) _commentIterator.next();
+            }
+
             if (_comment instanceof Javadoc) {
                 _comment = null;
                 _commentIterator = null;
-            } else
+            } else {
                 _commentString = _getSource(_comment.getStartPosition(),
                         _comment.getLength());
+            }
         } else {
             _comment = null;
             _commentIterator = null;
         }
     }
-    
-    private String _getSource(int startPosition, int length)
-            throws IOException {
+
+    private String _getSource(int startPosition, int length) throws IOException {
         if (_sourceStream != null) {
             byte[] skipContent;
+
             if (_sourceStreamPosition < startPosition) {
                 int skipLength = startPosition - _sourceStreamPosition;
                 skipContent = new byte[skipLength];
                 _sourceStream.read(skipContent);
-            } else
+            } else {
                 skipContent = new byte[0];
+            }
+
             byte[] buffer = new byte[length];
             int readCount = _sourceStream.read(buffer);
             _sourceStreamPosition = startPosition + readCount;
             _commentStartPosition = startPosition;
-            for (int i = skipContent.length - 1; i >= 0; i--)
-                if (skipContent[i] == ' ' ||
-                        skipContent[i] == '\t' ||
-                        skipContent[i] == '\n' ||
-                        skipContent[i] == '\r')
+
+            for (int i = skipContent.length - 1; i >= 0; i--) {
+                if ((skipContent[i] == ' ') || (skipContent[i] == '\t')
+                        || (skipContent[i] == '\n') || (skipContent[i] == '\r')) {
                     _commentStartPosition--;
-                else
+                } else {
                     break;
+                }
+            }
+
             return new String(buffer);
         } else if (_source != null) {
             _commentStartPosition = startPosition;
-            for (int i = startPosition - 1; i >= 0; i--)
-                if (_source[i] == ' ' ||
-                        _source[i] == '\t' ||
-                        _source[i] == '\n' ||
-                        _source[i] == '\r')
+
+            for (int i = startPosition - 1; i >= 0; i--) {
+                if ((_source[i] == ' ') || (_source[i] == '\t')
+                        || (_source[i] == '\n') || (_source[i] == '\r')) {
                     _commentStartPosition--;
-                else
+                } else {
                     break;
+                }
+            }
+
             return new String(_source, startPosition, length);
         }
+
         return null;
     }
 
@@ -2130,34 +2444,34 @@ public class ASTFormatter extends ASTVisitor {
      *  followed by "catch", "finally" and so on.
      */
     private boolean _newLineAfterBlock = true;
-    
+
     /** The Java source input stream, if not <tt>null</tt>. It is used to
      *  generate comments.
      */
     private InputStream _sourceStream;
-    
+
     /** The current position in the source input stream.
      */
     private int _sourceStreamPosition = 0;
-    
+
     /** The array that contains Java source, if not <tt>null</tt>. It is used
      *  to generate comments.
      */
     private char[] _source;
-    
+
     /** The iterator of comments in the whole program.
      */
     private Iterator _commentIterator;
-    
+
     /** The next comment to be output, or <tt>null</tt> if there is no more
      *  comment.
      */
     private Comment _comment;
-    
+
     /** The start position of the comment.
      */
     private int _commentStartPosition;
-    
+
     /** The content of the next comment.
      */
     private String _commentString;

@@ -461,6 +461,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
                 int index = string.indexOf(":");
+
                 // String name = string.substring(0, index);
                 // String value = string.substring(index + 1);
 
@@ -493,6 +494,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             while (t.hasMoreTokens()) {
                 String string = t.nextToken().trim();
                 int index = string.indexOf(":");
+
                 // String name = string.substring(0, index);
                 // String value = string.substring(index + 1);
 

@@ -259,7 +259,6 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
 
             // FIXME: this has problems, what if conseccutive events? the 
             // following doesn't work.            
-            
             // There are two conditions when an event is generated.
             // 1. By linear interpolation, an event is located at the current
             // time; OR,

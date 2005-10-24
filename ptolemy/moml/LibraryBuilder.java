@@ -23,7 +23,6 @@
  *  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  *  ENHANCEMENTS, OR MODIFICATIONS.
  */
-
 package ptolemy.moml;
 
 import java.util.List;

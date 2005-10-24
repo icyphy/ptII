@@ -63,13 +63,13 @@ import java.util.*;
 */
 public class JHDLConstantActor extends JHDLAtomicActor {
     JHDLConstantActor(CompositeEntity container, String name, int constant,
-            int width) throws IllegalActionException, NameDuplicationException {
+        int width) throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _constant = constant;
     }
 
     JHDLConstantActor(CompositeEntity container, int constant, int width)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         this(container, container.uniqueName("C"), constant, width);
         output = new JHDLIOPort(this, "output", width);
     }

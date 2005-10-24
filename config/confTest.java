@@ -35,8 +35,7 @@ COPYRIGHTENDKEY
     @Pt.AcceptedRating Red
 */
 public class confTest {
-
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         System.out.print(System.getProperty("java.version"));
     }
 }

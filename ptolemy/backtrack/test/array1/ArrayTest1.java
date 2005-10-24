@@ -51,6 +51,8 @@ public class ArrayTest1 {
     }
 
     private int[][] _buf;
+
     private final int _length1 = 10;
+
     private final int _length2 = 20;
 }

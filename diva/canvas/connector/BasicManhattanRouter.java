@@ -99,6 +99,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
         // end if there is one.
         int headDir = CanvasUtilities.reverseDirection(getManhattanDirection(
                 xDiff, yDiff));
+
         // FIXME: Changing the normal here has the side effect
         // of also changing the point on the head site!
         // This means that on the next call, getManhattanDirection()

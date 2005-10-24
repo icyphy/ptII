@@ -87,11 +87,13 @@ public class DDF extends DataflowWithRates {
 
         try {
             int action = _selectAction();
+
             if (action == -1) {
                 _currentSignature = _zeroRateSignature;
             } else {
                 _currentSignature = _computeActionRates(_actions[action]);
             }
+
             _annotatePortsWithRates(_ptActor.inputPortList(), _currentSignature
                     .getInputRates(), "tokenConsumptionRate");
             _annotatePortsWithRates(_ptActor.outputPortList(),
@@ -137,6 +139,7 @@ public class DDF extends DataflowWithRates {
      */
     public boolean postfire() throws IllegalActionException {
         super.postfire();
+
         try {
             int action = _selectAction();
 
@@ -145,6 +148,7 @@ public class DDF extends DataflowWithRates {
             } else {
                 _currentSignature = _computeActionRates(_actions[action]);
             }
+
             _annotatePortsWithRates(_ptActor.inputPortList(), _currentSignature
                     .getInputRates(), "tokenConsumptionRate");
             _annotatePortsWithRates(_ptActor.outputPortList(),
@@ -167,9 +171,11 @@ public class DDF extends DataflowWithRates {
      */
     public boolean prefire() throws IllegalActionException {
         _lastFiredAction = null;
+
         if (_currentSignature == null) {
             try {
                 int action = _selectAction();
+
                 if (action == -1) {
                     _currentSignature = null;
                 } else {
@@ -187,14 +193,17 @@ public class DDF extends DataflowWithRates {
                         "Error during action selection in actor '"
                                 + _actor.getName() + "'");
             }
+
             return false;
         }
+
         for (Iterator iterator = _ptActor.inputPortList().iterator(); iterator
                 .hasNext();) {
             IOPort port = (IOPort) iterator.next();
             Integer integerRate = (Integer) _currentSignature.getInputRates()
                     .get(port.getName());
-            if (integerRate != null
+
+            if ((integerRate != null)
                     && !port.hasToken(0, integerRate.intValue())) {
                 return false;
             }
@@ -217,13 +226,13 @@ public class DDF extends DataflowWithRates {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     // Return true if any action has a guard which depends on input values. 
     protected boolean _hasInputDependentGuard() {
         for (int i = 0; i < _actions.length; i++) {
             Action action = _actions[i];
 
             Expression[] guards = action.getGuards();
+
             for (int j = 0; j < guards.length; j++) {
                 List freeVars = (List) guards[j]
                         .getAttribute(AttributeKeys.KEYFREEVAR);
@@ -244,7 +253,6 @@ public class DDF extends DataflowWithRates {
 
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
-
     private ActionRateSignature _currentSignature;
 
     private static ActionRateSignature _zeroRateSignature = new ActionRateSignature();

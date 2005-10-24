@@ -105,12 +105,12 @@ public class IOPortController extends AttributeController {
      */
     public IOPortController(GraphController controller, Access access) {
         super(controller, access);
-        
+
         // Override this default value to ensure that ports are
         // not decorated to indicate that they are derived.
         // Instead, the entire actor will be decorated.
         _decoratable = false;
-        
+
         setNodeRenderer(new EntityPortRenderer());
 
         // "Listen to Actor"
@@ -130,7 +130,7 @@ public class IOPortController extends AttributeController {
 
     /** The spacing between individual connections to a multiport. */
     public static double MULTIPORT_CONNECTION_SPACING = 5.0;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -306,14 +306,18 @@ public class IOPortController extends AttributeController {
             figure.setToolTipText(port.getName());
 
             double normal = CanvasUtilities.getNormal(direction);
+
             if (port instanceof IOPort) {
                 // Create a diagonal connector for multiports, if necessary.
-                IOPort ioPort = (IOPort)port;
+                IOPort ioPort = (IOPort) port;
+
                 if (ioPort.isMultiport()) {
                     int numberOfLinks = ioPort.linkedRelationList().size();
+
                     if (numberOfLinks > 1) {
                         // The diagonal is necessary.
-                        CompositeFigure compositeFigure = new CompositeFigure(figure) {
+                        CompositeFigure compositeFigure = new CompositeFigure(
+                                figure) {
                             // Override this because we want to show the type.
                             // It doesn't work to set it once because the type
                             // has not been resolved, and anyway, it may
@@ -337,43 +341,64 @@ public class IOPortController extends AttributeController {
                                 return tipText;
                             }
                         };
-                        
+
                         // Line depends on the orientation.
-                        double startX, startY, endX, endY;
+                        double startX;
+
+                        // Line depends on the orientation.
+                        double startY;
+
+                        // Line depends on the orientation.
+                        double endX;
+
+                        // Line depends on the orientation.
+                        double endY;
                         Rectangle2D bounds = figure.getShape().getBounds2D();
                         double x = bounds.getX();
                         double y = bounds.getY();
                         double width = bounds.getWidth();
                         double height = bounds.getHeight();
                         int extent = numberOfLinks - 1;
+
                         if (direction == SwingUtilities.EAST) {
                             startX = x + width;
-                            startY = y + height/2;
-                            endX = startX + extent * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY + extent * MULTIPORT_CONNECTION_SPACING;
+                            startY = y + (height / 2);
+                            endX = startX
+                                    + (extent * MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    + (extent * MULTIPORT_CONNECTION_SPACING);
                         } else if (direction == SwingUtilities.WEST) {
                             startX = x;
-                            startY = y + height/2;
-                            endX = startX - extent * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY - extent * MULTIPORT_CONNECTION_SPACING;
+                            startY = y + (height / 2);
+                            endX = startX
+                                    - (extent * MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    - (extent * MULTIPORT_CONNECTION_SPACING);
                         } else if (direction == SwingUtilities.NORTH) {
-                            startX = x + width/2;
+                            startX = x + (width / 2);
                             startY = y;
-                            endX = startX - extent * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY - extent * MULTIPORT_CONNECTION_SPACING;
+                            endX = startX
+                                    - (extent * MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    - (extent * MULTIPORT_CONNECTION_SPACING);
                         } else {
-                            startX = x + width/2;
+                            startX = x + (width / 2);
                             startY = y + height;
-                            endX = startX + extent * MULTIPORT_CONNECTION_SPACING;
-                            endY = startY + extent * MULTIPORT_CONNECTION_SPACING;
+                            endX = startX
+                                    + (extent * MULTIPORT_CONNECTION_SPACING);
+                            endY = startY
+                                    + (extent * MULTIPORT_CONNECTION_SPACING);
                         }
-                        Line2D line = new Line2D.Double(startX, startY, endX, endY);
-                        Figure lineFigure = new BasicFigure(line, fill, (float) 2.0);
+
+                        Line2D line = new Line2D.Double(startX, startY, endX,
+                                endY);
+                        Figure lineFigure = new BasicFigure(line, fill,
+                                (float) 2.0);
                         compositeFigure.add(lineFigure);
                         figure = compositeFigure;
                     }
                 }
-                
+
                 figure = new PortTerminal(ioPort, figure, normal, false);
             } else {
                 Site tsite = new PerimeterSite(figure, 0);
@@ -384,7 +409,7 @@ public class IOPortController extends AttributeController {
             return figure;
         }
     }
-    
+
     // An action to listen to debug messages of the port.
     private class ListenToPortAction extends FigureAction {
         public ListenToPortAction() {

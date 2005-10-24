@@ -100,8 +100,10 @@ public abstract class VisibleAttribute extends Attribute {
      */
     public int moveToFirst() throws IllegalActionException {
         try {
-            SingletonAttribute render = new SingletonAttribute(this, "_renderFirst");
+            SingletonAttribute render = new SingletonAttribute(this,
+                    "_renderFirst");
             Attribute renderLast = getAttribute("_renderLast");
+
             if (renderLast != null) {
                 renderLast.setContainer(null);
             }
@@ -109,6 +111,7 @@ public abstract class VisibleAttribute extends Attribute {
             // Ignore.  This will result in a rendering error,
             // but that is better than trashing user data.
         }
+
         return super.moveToFirst();
     }
 
@@ -127,8 +130,10 @@ public abstract class VisibleAttribute extends Attribute {
      */
     public int moveToLast() throws IllegalActionException {
         try {
-            SingletonAttribute render = new SingletonAttribute(this, "_renderLast");
+            SingletonAttribute render = new SingletonAttribute(this,
+                    "_renderLast");
             Attribute renderFirst = getAttribute("_renderFirst");
+
             if (renderFirst != null) {
                 renderFirst.setContainer(null);
             }
@@ -136,6 +141,7 @@ public abstract class VisibleAttribute extends Attribute {
             // Ignore.  This will result in a rendering error,
             // but that is better than trashing user data.
         }
+
         return super.moveToFirst();
     }
 }

@@ -97,11 +97,12 @@ public class ClassUtilities {
 
         if (jarEntry == -1) {
             jarEntry = jarURLString.indexOf("!\\");
+
             if (jarEntry == -1) {
                 return null;
             }
         }
-        
+
         try {
             // !/ means that this could be in a jar file.
             String entry = jarURLString.substring(jarEntry + 2);

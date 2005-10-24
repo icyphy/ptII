@@ -795,8 +795,8 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                 }
                             }
                         } else { // if (false) { //FIXME
-                            // It's just settable, so handle get/setExpression
 
+                            // It's just settable, so handle get/setExpression
                             if (r.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.getExpressionMethod
                                             .getSubSignature())) {

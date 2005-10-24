@@ -402,13 +402,14 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   or null if it is not a specific receiver.
      *  @see #addThread(Thread)
      */
-    public synchronized void threadBlocked(
-            Thread thread, ProcessReceiver receiver) {
+    public synchronized void threadBlocked(Thread thread,
+            ProcessReceiver receiver) {
         // In case the receiver is on the boundary, add this to the
         // blocked receivers list.
         if (receiver != null) {
             _blockedReceivers.add(receiver);
         }
+
         super.threadBlocked(thread, receiver);
     }
 
@@ -423,13 +424,14 @@ public class CompositeProcessDirector extends ProcessDirector {
      *   or null if it is not a specific receiver.
      *  @see #threadBlocked(Thread, ProcessReceiver)     *
      */
-    public synchronized void threadUnblocked(
-            Thread thread, ProcessReceiver receiver) {
+    public synchronized void threadUnblocked(Thread thread,
+            ProcessReceiver receiver) {
         // In case the receiver is on the boundary, add this to the
         // blocked receivers list.
         if (receiver != null) {
             _blockedReceivers.remove(receiver);
         }
+
         super.threadUnblocked(thread, receiver);
     }
 
@@ -526,8 +528,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  @param controller The controller for which registration of a
      *   blocked state will occur.
      */
-    protected synchronized void _controllerBlocked(
-            BranchController controller) {
+    protected synchronized void _controllerBlocked(BranchController controller) {
         if (controller == _inputBranchController) {
             _inputControllerIsBlocked = controller.isBlocked();
         }
@@ -639,12 +640,12 @@ public class CompositeProcessDirector extends ProcessDirector {
                         throw new IllegalActionException(
                                 this,
                                 "No executive director exists yet this "
-                                + "director's composite actor is externally "
-                                + "deadlocked.");
+                                        + "director's composite actor is externally "
+                                        + "deadlocked.");
                     } else if (execDir instanceof CompositeProcessDirector) {
                         // This is contained by a process-oriented MoC
-                        ((CompositeProcessDirector)execDir)
-                            .threadBlocked(Thread.currentThread(), null);
+                        ((CompositeProcessDirector) execDir).threadBlocked(
+                                Thread.currentThread(), null);
                         return true;
                     } else {
                         // This is contained by a schedule-oriented MoC
@@ -659,12 +660,12 @@ public class CompositeProcessDirector extends ProcessDirector {
                         throw new IllegalActionException(
                                 this,
                                 "No executive director exists yet this "
-                                + "director's composite actor is externally "
-                                + "deadlocked.");
+                                        + "director's composite actor is externally "
+                                        + "deadlocked.");
                     } else if (execDir instanceof CompositeProcessDirector) {
                         // This is contained by a process-oriented MoC
-                        ((CompositeProcessDirector)execDir)
-                            .threadBlocked(Thread.currentThread(), null);
+                        ((CompositeProcessDirector) execDir).threadBlocked(
+                                Thread.currentThread(), null);
                         return true;
                     } else {
                         // This is contained by a schedule-oriented MoC
@@ -684,6 +685,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                                     "Interrupted.");
                         }
                     }
+
                     stopInputBranchController();
                     stopOutputBranchController();
                     return _resolveInternalDeadlock();
@@ -708,6 +710,7 @@ public class CompositeProcessDirector extends ProcessDirector {
                 }
             }
         }
+
         return false;
     }
 

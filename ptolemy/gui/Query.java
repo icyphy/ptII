@@ -817,7 +817,6 @@ public class Query extends JPanel {
         } else if (result instanceof JTextField) {
             return (new Double(((JTextField) result).getText())).doubleValue();
         } else {
-
             throw new IllegalArgumentException("Item named \"" + name
                     + "\" is not a text line, and hence cannot be converted "
                     + "to a double value.");

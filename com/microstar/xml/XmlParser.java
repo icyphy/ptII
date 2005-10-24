@@ -606,7 +606,6 @@ public class XmlParser {
             parseEq();
 
             // FIXME: Why is the literal read, but the value ignored?
-
             /* standalone = */readLiteral(0);
         }
 

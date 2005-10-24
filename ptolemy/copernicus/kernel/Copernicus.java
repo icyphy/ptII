@@ -567,7 +567,6 @@ public class Copernicus {
         // when generating an applet for moml/demo/spectrum.xml
         // However, if we remove Location, then shallow CG of Wireless fails.
         //removeGraphicalClasses.put("ptolemy.kernel.util.Location", null);
-
         // shallow/test/IIRGUI.xml has a GeneratorTableauAttribute in it.
         removeGraphicalClasses.put(
                 "ptolemy.copernicus.gui.GeneratorTableauAttribute", null);

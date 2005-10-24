@@ -1,30 +1,30 @@
 /* Code generator helper class associated with the Director class.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.codegen.kernel;
 
 import java.util.HashSet;
@@ -43,263 +43,263 @@ import ptolemy.util.StringUtilities;
 ////Director
 
 /**
-Code generator helper associated with the ptolemy.actor.Director class.
-This class is also associated with a code generator.
+ Code generator helper associated with the ptolemy.actor.Director class.
+ This class is also associated with a code generator.
 
-FIXME: need documentation on how subclasses should extend this class.
+ FIXME: need documentation on how subclasses should extend this class.
 
-@see CodeGenerator
-@author Ye Zhou
-@version $Id$ Director.java,v 1.24 2005/07/13 14:07:26 cxh Exp $
-@since Ptolemy II 5.1
-@Pt.ProposedRating Yellow (zhouye)
-@Pt.AcceptedRating Yellow (zhouye)
+ @see CodeGenerator
+ @author Ye Zhou
+ @version $Id$ Director.java,v 1.24 2005/07/13 14:07:26 cxh Exp $
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Yellow (zhouye)
+ @Pt.AcceptedRating Yellow (zhouye)
 
-*/
+ */
 public class Director implements ActorCodeGenerator {
-   /** Construct the code generator helper associated with the given director.
-    *  Note before calling the generate*() methos, you must also call
-    *  setCodeGenerator(CodeGenerator).
-    *  @param director The associated director.
-    */
-   public Director(ptolemy.actor.Director director) {
-       _director = director;
-   }
+    /** Construct the code generator helper associated with the given director.
+     *  Note before calling the generate*() methos, you must also call
+     *  setCodeGenerator(CodeGenerator).
+     *  @param director The associated director.
+     */
+    public Director(ptolemy.actor.Director director) {
+        _director = director;
+    }
 
-   /////////////////////////////////////////////////////////////////
-   ////                Public Methods                           ////
+    /////////////////////////////////////////////////////////////////
+    ////                Public Methods                           ////
 
-   /** Generate the code for the firing of actors.
-    *  In this base class, it is attempted to fire all the actors once.
-    *  In subclasses such as the helpers for SDF and Giotto directors, the
-    *  firings of actors observe the associated schedule. In addition,
-    *  some special handling is needed, e.g., the iteration limit in SDF
-    *  and time advancement in Giotto.
-    *  @param code The string buffer that the generated code is appended to.
-    *  @exception IllegalActionException If the helper associated with
-    *   an actor throws it while generating fire code for the actor.
-    */
-   public void generateFireCode(StringBuffer code)
-           throws IllegalActionException {
-       code.append("/* The firing of the director. */\n");
+    /** Generate the code for the firing of actors.
+     *  In this base class, it is attempted to fire all the actors once.
+     *  In subclasses such as the helpers for SDF and Giotto directors, the
+     *  firings of actors observe the associated schedule. In addition,
+     *  some special handling is needed, e.g., the iteration limit in SDF
+     *  and time advancement in Giotto.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating fire code for the actor.
+     */
+    public void generateFireCode(StringBuffer code)
+            throws IllegalActionException {
+        code.append("/* The firing of the director. */\n");
 
-       Iterator actors = ((CompositeActor) _director.getContainer())
-               .deepEntityList().iterator();
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
 
-       while (actors.hasNext()) {
-           Actor actor = (Actor) actors.next();
-           CodeGeneratorHelper helperObject = 
-               (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-           helperObject.generateFireCode(code);
-       }
-   }
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            helperObject.generateFireCode(code);
+        }
+    }
 
-   /** Generate the initialize code for this director.
-    *  The initialize code for the director is generated by appending the
-    *  initialize code for each actor.
-    *  @return The generated initialize code.
-    *  @exception IllegalActionException If the helper associated with
-    *   an actor throws it while generating initialize code for the actor.
-    */
-   public String generateInitializeCode() throws IllegalActionException {
-       StringBuffer code = new StringBuffer();
-       code.append("/* The initialization of the director. */\n");
+    /** Generate the initialize code for this director.
+     *  The initialize code for the director is generated by appending the
+     *  initialize code for each actor.
+     *  @return The generated initialize code.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating initialize code for the actor.
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append("/* The initialization of the director. */\n");
 
-       Iterator actors = ((CompositeActor) _director.getContainer())
-               .deepEntityList().iterator();
-       //Iterator actors = actorsList.iterator();
-       while (actors.hasNext()) {
-           Actor actor = (Actor) actors.next();
-           CodeGeneratorHelper helperObject = 
-               (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-           code.append(helperObject.generateInitializeCode());
-       }
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
 
-       return code.toString();
-   }
+        //Iterator actors = actorsList.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            code.append(helperObject.generateInitializeCode());
+        }
 
-   /** Generate the preinitialize code for this director.
-    *  The preinitialize code for the director is generated by appending
-    *  the preinitialize code for each actor. Set the buffer sizes of each
-    *  port of the actors under the associated director.
-    *  @return The generated preinitialize code.
-    *  @exception IllegalActionException If getting the helper fails,
-    *   or if generating the preinitialize code for a helper fails,
-    *   or if there is a problem getting the buffer size of a port.
-    */
-   public String generatePreinitializeCode() throws IllegalActionException {
-       StringBuffer code = new StringBuffer();
-       code.append("/* The preinitialization of the director. */\n");
-       Iterator actors = ((CompositeActor) _director.getContainer())
-               .deepEntityList().iterator();
-       //Iterator actors = actorsList.iterator();
-       while (actors.hasNext()) {
-           // Set the buffer sizes of each channel of the actor before
-           // generating initialize code.
-           Actor actor = (Actor) actors.next();
-           CodeGeneratorHelper helperObject = 
-               (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-           //helperObject.createBufferAndOffsetMap();
-           code.append(helperObject.generatePreinitializeCode());          
-       }
-       
-       return code.toString();
-   }
+        return code.toString();
+    }
 
-   public void generateTransferInputsCode(IOPort inputPort, StringBuffer code) 
-           throws IllegalActionException {
-    
-       code.append("\n/* Transfer tokens to the inside */\n\n");
-    
-       ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper
-               = (ptolemy.codegen.c.actor.TypedCompositeActor)
-               _getHelper(_director.getContainer());
-       
-       for (int i = 0; i < inputPort.getWidth(); i++) {
-            if (i < inputPort.getWidthInside()) {   
+    /** Generate the preinitialize code for this director.
+     *  The preinitialize code for the director is generated by appending
+     *  the preinitialize code for each actor. Set the buffer sizes of each
+     *  port of the actors under the associated director.
+     *  @return The generated preinitialize code.
+     *  @exception IllegalActionException If getting the helper fails,
+     *   or if generating the preinitialize code for a helper fails,
+     *   or if there is a problem getting the buffer size of a port.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append("/* The preinitialization of the director. */\n");
+
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+
+        //Iterator actors = actorsList.iterator();
+        while (actors.hasNext()) {
+            // Set the buffer sizes of each channel of the actor before
+            // generating initialize code.
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+
+            //helperObject.createBufferAndOffsetMap();
+            code.append(helperObject.generatePreinitializeCode());
+        }
+
+        return code.toString();
+    }
+
+    public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
+            throws IllegalActionException {
+        code.append("\n/* Transfer tokens to the inside */\n\n");
+
+        ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(_director
+                .getContainer());
+
+        for (int i = 0; i < inputPort.getWidth(); i++) {
+            if (i < inputPort.getWidthInside()) {
                 String name = inputPort.getName();
+
                 if (inputPort.isMultiport()) {
-                    name = name + '#' + i;   
-                }               
-                
+                    name = name + '#' + i;
+                }
+
                 code.append(_compositeActorHelper.getReference("@" + name));
                 code.append(" = ");
                 code.append(_compositeActorHelper.getReference(name));
                 code.append(";\n");
             }
-       }      
-   }
-   
-   public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
-           throws IllegalActionException {
-    
-       code.append("\n/* Transfer tokens to the outside */\n\n");
-    
-       ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper
-               = (ptolemy.codegen.c.actor.TypedCompositeActor)
-               _getHelper(_director.getContainer());
-   
-       for (int i = 0; i < outputPort.getWidthInside(); i++) {
-           if (i < outputPort.getWidth()) {   
-               String name = outputPort.getName();
-               if (outputPort.isMultiport()) {
-                   name = name + '#' + i;   
-               }             
-               
-               code.append(_compositeActorHelper.getReference(name));
-               code.append(" = ");
-               code.append(_compositeActorHelper.getReference("@" + name));
-               code.append(";\n");
-           }
-       }          
-   }
-   
-   /** Generate the wrapup code of the director associated with this helper
-    *  class. For this base class, this method just generate the wrapup code
-    *  for each actor.
-    *  @return The generated wrapup code.
-    *  @exception IllegalActionException If the helper class for each actor
-    *  cannot be found, or if an error occurs while the helper generate the
-    *  wrapup code.
-    */
-   public String generateWrapupCode()
-           throws IllegalActionException {
-   	   StringBuffer code = new StringBuffer();
-       code.append("/* The wrapup of the director. */\n");
+        }
+    }
 
-       Iterator actors = ((CompositeActor) _director.getContainer())
-               .deepEntityList().iterator();
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+            throws IllegalActionException {
+        code.append("\n/* Transfer tokens to the outside */\n\n");
 
-       while (actors.hasNext()) {
-           Actor actor = (Actor) actors.next();
-           ComponentCodeGenerator helperObject = _getHelper((NamedObj) actor);
-           code.append(helperObject.generateWrapupCode());
-       }
-       return code.toString();
-   }
+        ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(_director
+                .getContainer());
 
-   /** Return the buffer size of a given channel (i.e, a given port
-    *  and a given channel number). In this base class, this method
-    *  always returns 1.
-    *  @param port The given port.
-    *  @param channelNumber The given channel number.
-    *  @return The buffer size of the given channel. This base class
-    *   always returns 1.
-    *  @exception IllegalActionException Not thrown in this base class.
-    */
-   public int getBufferSize(IOPort port, int channelNumber)
-           throws IllegalActionException {
-       return 1;
-   }
+        for (int i = 0; i < outputPort.getWidthInside(); i++) {
+            if (i < outputPort.getWidth()) {
+                String name = outputPort.getName();
 
-   /** Return the director associated with this class.
-    *  @return The director associated with this class.
-    */
-   public NamedObj getComponent() {
-       return _director;
-   }
-   
-   public Set getModifiedVariables() 
-           throws IllegalActionException {
-    
-       Set set = new HashSet();
-       if (_director instanceof ExplicitChangeContext) {
-           set.addAll(((ExplicitChangeContext) _director).getModifiedVariables());
-       }
-       Iterator actors = ((CompositeActor) _director.getContainer())
-               .deepEntityList().iterator();
+                if (outputPort.isMultiport()) {
+                    name = name + '#' + i;
+                }
 
-       while (actors.hasNext()) {
-           Actor actor = (Actor) actors.next();
-           CodeGeneratorHelper helperObject = 
-                   (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-           set.addAll(helperObject.getModifiedVariables());
-       }
-       return set;
-   }
+                code.append(_compositeActorHelper.getReference(name));
+                code.append(" = ");
+                code.append(_compositeActorHelper.getReference("@" + name));
+                code.append(";\n");
+            }
+        }
+    }
 
-   /** Set the code generator associated with this helper class.
-    *  @param codeGenerator The code generator associated with this
-    *   helper class.
-    */
-   public void setCodeGenerator(CodeGenerator codeGenerator) {
-       _codeGenerator = codeGenerator;
-   }
+    /** Generate the wrapup code of the director associated with this helper
+     *  class. For this base class, this method just generate the wrapup code
+     *  for each actor.
+     *  @return The generated wrapup code.
+     *  @exception IllegalActionException If the helper class for each actor
+     *  cannot be found, or if an error occurs while the helper generate the
+     *  wrapup code.
+     */
+    public String generateWrapupCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append("/* The wrapup of the director. */\n");
 
-   /////////////////////////////////////////////////////////////////////
-   ////                   protected methods                         ////
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
 
-   /** Get the helper class associated with the given component.
-    *  @param component The given component.
-    *  @return the helper class associated with the given component.
-    *  @exception IllegalActionException If the code generator throws
-    *   it when getting the helper associated with the given component.
-    */
-   protected ComponentCodeGenerator _getHelper(NamedObj component)
-           throws IllegalActionException {
-       return _codeGenerator._getHelper(component);
-   }
-   
-   /** Return a number of spaces that is proportional to the argument.
-    *  If the argument is negative or zero, return an empty string.
-    *  @param level The level of indenting represented by the spaces.
-    *  @return A string with zero or more spaces.
-    */
-   protected static String _getIndentPrefix(int level) {
-       return StringUtilities.getIndentPrefix(level);
-   }
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            ComponentCodeGenerator helperObject = _getHelper((NamedObj) actor);
+            code.append(helperObject.generateWrapupCode());
+        }
 
-   ////////////////////////////////////////////////////////////////////
-   ////                     protected variables                    ////
+        return code.toString();
+    }
 
-   /** The code generator containing this director helper.
-    */
-   protected CodeGenerator _codeGenerator;
+    /** Return the buffer size of a given channel (i.e, a given port
+     *  and a given channel number). In this base class, this method
+     *  always returns 1.
+     *  @param port The given port.
+     *  @param channelNumber The given channel number.
+     *  @return The buffer size of the given channel. This base class
+     *   always returns 1.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public int getBufferSize(IOPort port, int channelNumber)
+            throws IllegalActionException {
+        return 1;
+    }
 
-   ////////////////////////////////////////////////////////////////////
-   ////                     private variables                      ////
+    /** Return the director associated with this class.
+     *  @return The director associated with this class.
+     */
+    public NamedObj getComponent() {
+        return _director;
+    }
 
-   /** The associate director.
-    */
-   private ptolemy.actor.Director _director;
+    public Set getModifiedVariables() throws IllegalActionException {
+        Set set = new HashSet();
+
+        if (_director instanceof ExplicitChangeContext) {
+            set.addAll(((ExplicitChangeContext) _director)
+                    .getModifiedVariables());
+        }
+
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            set.addAll(helperObject.getModifiedVariables());
+        }
+
+        return set;
+    }
+
+    /** Set the code generator associated with this helper class.
+     *  @param codeGenerator The code generator associated with this
+     *   helper class.
+     */
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        _codeGenerator = codeGenerator;
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    ////                   protected methods                         ////
+
+    /** Get the helper class associated with the given component.
+     *  @param component The given component.
+     *  @return the helper class associated with the given component.
+     *  @exception IllegalActionException If the code generator throws
+     *   it when getting the helper associated with the given component.
+     */
+    protected ComponentCodeGenerator _getHelper(NamedObj component)
+            throws IllegalActionException {
+        return _codeGenerator._getHelper(component);
+    }
+
+    /** Return a number of spaces that is proportional to the argument.
+     *  If the argument is negative or zero, return an empty string.
+     *  @param level The level of indenting represented by the spaces.
+     *  @return A string with zero or more spaces.
+     */
+    protected static String _getIndentPrefix(int level) {
+        return StringUtilities.getIndentPrefix(level);
+    }
+
+    ////////////////////////////////////////////////////////////////////
+    ////                     protected variables                    ////
+
+    /** The code generator containing this director helper.
+     */
+    protected CodeGenerator _codeGenerator;
+
+    ////////////////////////////////////////////////////////////////////
+    ////                     private variables                      ////
+
+    /** The associate director.
+     */
+    private ptolemy.actor.Director _director;
 }

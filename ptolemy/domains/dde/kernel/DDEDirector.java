@@ -29,12 +29,10 @@
  */
 package ptolemy.domains.dde.kernel;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
@@ -102,8 +100,8 @@ import ptolemy.kernel.util.Workspace;
  * NOTE: The current implementation of this director does not include an
  * infrastructure for mutations. Hence, ChangeRequest and other facilities for
  * changing the topology of a model are not included in this director.
- * 
- * 
+ *
+ *
  * @author John S. Davis II, Mudit Goel
  * @version $Id$
  * @since Ptolemy II 0.3
@@ -133,7 +131,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * Construct a director in the workspace with an empty string as a name. The
      * director is added to the list of objects in the workspace. Increment the
      * version number of the workspace.
-     * 
+     *
      * @param workspace
      *            The workspace of this object.
      */
@@ -152,7 +150,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * thrown. The given name must be unique with respect to the container. If
      * the name argument is null, then the name is set to the empty string.
      * Increment the version number of the workspace.
-     * 
+     *
      * @param container
      *            The container of this director.
      * @param name
@@ -189,7 +187,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * Return the current time of the DDEThread that calls this method on behalf
      * of an actor. If this method is called by other than a DDEThread, then
      * return the current time as specified by the superclass of this method.
-     * 
+     *
      * @return The current time of the DDEThread that calls this method.
      */
     public double getCurrentTime() {
@@ -200,7 +198,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * Return the current time of the DDEThread that calls this method on behalf
      * of an actor. If this method is called by other than a DDEThread, then
      * return the current time as specified by the superclass of this method.
-     * 
+     *
      * @return The current time of the DDEThread that calls this method.
      */
     public Time getModelTime() {
@@ -223,7 +221,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * <P>
      * NOTE: The current implementation of this method is such that a more
      * appropriate name might be <I>continueAt()</I> rather than <I>fireAt()</I>.
-     * 
+     *
      * @param actor
      *            The actor scheduled to fire.
      * @param time
@@ -283,7 +281,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * Return false indicating that none of the actors governed by this director
      * have a mutation. Note that the DDE domain is not equipped to properly
      * handle mutations.
-     * 
+     *
      * @return False.
      */
     public boolean hasMutation() {
@@ -294,7 +292,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * Initialize this director and the actors it contains and set variables to
      * their initial values. Create a DDEThread for each actor that this
      * director controls but do not start the thread.
-     * 
+     *
      * @exception IllegalActionException
      *                If there is an error during the creation of the threads or
      *                initialization of the actors.
@@ -312,7 +310,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * value then set the completion time of the receiver to this same value;
      * otherwise set the completion time to PrioritizedTimedQueue.ETERNITY which
      * indicates that the receivers should ignore the completion time.
-     * 
+     *
      * @return A new DDEReceiver.
      */
     public Receiver newReceiver() {
@@ -338,7 +336,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * upon whether the system is deadlocked in a manner that can not be
      * resolved even if external communication occurs. If stop() has been
      * called, then return false.
-     * 
+     *
      * @return True if execution can continue; false otherwise.
      * @exception IllegalActionException
      *                Not thrown in this base class. May be thrown in derived
@@ -358,7 +356,7 @@ public class DDEDirector extends CompositeProcessDirector implements
     /**
      * Notify the director that the specified thread is blocked on an I/O
      * operation.
-     * 
+     *
      * @param thread
      *            The thread.
      * @param receiver
@@ -374,6 +372,7 @@ public class DDEDirector extends CompositeProcessDirector implements
         if (readOrWrite == WRITE_BLOCKED) {
             _writeBlockedQueues.put(receiver, thread);
         }
+
         super.threadBlocked(thread, receiver);
     }
 
@@ -381,7 +380,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * Notify the director that the specified thread is unblocked on an I/O
      * operation. If the thread has not been registered with threadBlocked(),
      * then this call is ignored.
-     * 
+     *
      * @param thread
      *            The thread.
      * @param receiver
@@ -397,6 +396,7 @@ public class DDEDirector extends CompositeProcessDirector implements
         if (readOrWrite == WRITE_BLOCKED) {
             _writeBlockedQueues.remove(receiver);
         }
+
         super.threadUnblocked(thread, receiver);
     }
 
@@ -414,7 +414,7 @@ public class DDEDirector extends CompositeProcessDirector implements
 
     /**
      * Return a new ProcessThread of a type compatible with this director.
-     * 
+     *
      * @param actor
      *            The actor that the new ProcessThread will control.
      * @param director
@@ -431,7 +431,7 @@ public class DDEDirector extends CompositeProcessDirector implements
     /**
      * Increment the port capacity's according to Tom Parks' algorithm. Select
      * the port with the smallest capacity and double the capacity.
-     * 
+     *
      * @exception IllegalActionException
      *                If there is an error while attempting to set the capacity
      *                of a DDE receiver.
@@ -477,6 +477,7 @@ public class DDEDirector extends CompositeProcessDirector implements
                 smallestCapacityQueue, WRITE_BLOCKED);
 
         notifyAll();
+
         synchronized (smallestCapacityQueue) {
             smallestCapacityQueue.notifyAll();
         }
@@ -487,7 +488,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * algorithm is successful. If the algorithm is unsuccessful then return
      * false. The algorithm applied was created by Thomas Parks for resolving
      * internal deadlocks in which one or more actors are write blocked.
-     * 
+     *
      * @return True if an internal deadlock has been resolved; otherwise return
      *         false.
      */
@@ -509,7 +510,7 @@ public class DDEDirector extends CompositeProcessDirector implements
 
     /**
      * Return the initial time table of this director.
-     * 
+     *
      * @return The initial time table of this director.
      */
     Hashtable _getInitialTimeTable() {
@@ -542,7 +543,7 @@ public class DDEDirector extends CompositeProcessDirector implements
          * larger than the first object; return 0 if the capacities are equal
          * and return -1 if the first object's capacity is larger than the
          * second.
-         * 
+         *
          * @param object1
          *            The first object
          * @param object2

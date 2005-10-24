@@ -132,6 +132,7 @@ public class Sleep extends Transformer {
      */
     public void fire() throws IllegalActionException {
         sleepTime.update();
+
         int inputWidth = input.getWidth();
         Token[] inputs = new Token[inputWidth];
 
@@ -142,12 +143,14 @@ public class Sleep extends Transformer {
         }
 
         try {
-            long sleepTimeValue = ((LongToken) sleepTime.getToken()).longValue();
-            
+            long sleepTimeValue = ((LongToken) sleepTime.getToken())
+                    .longValue();
+
             if (_debugging) {
                 _debug(getName() + ": Wait for " + sleepTimeValue
                         + " milliseconds.");
             }
+
             Thread.sleep(sleepTimeValue);
         } catch (InterruptedException e) {
             // Ignore...

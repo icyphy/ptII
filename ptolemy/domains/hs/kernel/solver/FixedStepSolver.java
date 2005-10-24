@@ -62,24 +62,26 @@ public abstract class FixedStepSolver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire all continuous actors. Derived classes may advance the model time. 
+    /** Fire all continuous actors. Derived classes may advance the model time.
      *  The amount of time increment depends on the solving algorithms.
      *  @exception IllegalActionException If schedule can not be found or
      *  continuous actors throw it from their fire() methods.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         HSDirector director = (HSDirector) getContainer();
         double currentStepSize = director.getCurrentStepSize();
+
         if (currentStepSize != 0) {
             // At the first round, advance the time with the current step size.
             // Skip this operation if step size is 0.
             director.setModelTime(director.getModelTime().add(currentStepSize));
         }
+
         _setConverged(true);
     }
-        
+
     /** Return 0 to indicate that no history information is needed by
      *  this solver.
      *  @return 0.

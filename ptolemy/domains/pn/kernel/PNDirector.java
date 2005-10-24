@@ -280,8 +280,10 @@ public class PNDirector extends CompositeProcessDirector {
         // Probably need to recursively descend into composite actors.
         CompositeEntity container = (CompositeEntity) getContainer();
         Iterator relations = container.relationList().iterator();
+
         while (relations.hasNext()) {
             IORelation relation = (IORelation) relations.next();
+
             if (relation.linkedSourcePortList().size() > 1) {
                 throw new IllegalActionException(relation,
                         "Relation has multiple sources of data,"
@@ -332,8 +334,8 @@ public class PNDirector extends CompositeProcessDirector {
                 "ptolemy.domains.fsm.kernel.FSMDirector" };
     }
 
-    /** Return true to indicate that a ModalModel under control 
-     *  of this director supports multirate firing. 
+    /** Return true to indicate that a ModalModel under control
+     *  of this director supports multirate firing.
      *  @return True indicating a ModalModel under control of this director
      *  supports multirate firing.
      */
@@ -350,13 +352,14 @@ public class PNDirector extends CompositeProcessDirector {
      *   to indicate whether the thread is blocked on read or write.
      *  @see CompositeProcessDirector#threadBlocked(Thread, ProcessReceiver)
      */
-    public synchronized void threadBlocked(
-            Thread thread, ProcessReceiver receiver, boolean readOrWrite) {
+    public synchronized void threadBlocked(Thread thread,
+            ProcessReceiver receiver, boolean readOrWrite) {
         if (readOrWrite == READ_BLOCKED) {
             _readBlockedQueues.put(receiver, thread);
         } else {
             _writeBlockedQueues.put(receiver, thread);
         }
+
         super.threadBlocked(thread, receiver);
     }
 
@@ -371,13 +374,14 @@ public class PNDirector extends CompositeProcessDirector {
      *   to indicate whether the thread is blocked on read or write.
      *  @see CompositeProcessDirector#threadUnblocked(Thread, ProcessReceiver)
      */
-    public synchronized void threadUnblocked(
-            Thread thread, ProcessReceiver receiver, boolean readOrWrite) {
+    public synchronized void threadUnblocked(Thread thread,
+            ProcessReceiver receiver, boolean readOrWrite) {
         if (readOrWrite == READ_BLOCKED) {
             _readBlockedQueues.remove(receiver);
         } else {
             _writeBlockedQueues.remove(receiver);
         }
+
         super.threadUnblocked(thread, receiver);
     }
 
@@ -386,7 +390,7 @@ public class PNDirector extends CompositeProcessDirector {
 
     /** Indicator that a thread is read blocked. */
     public static boolean READ_BLOCKED = true;
-    
+
     /** Indicator that a thread is write blocked. */
     public static boolean WRITE_BLOCKED = false;
 
@@ -443,14 +447,15 @@ public class PNDirector extends CompositeProcessDirector {
                     .intValue();
 
             if ((maximumCapacity > 0) && ((capacity * 2) > maximumCapacity)) {
-                String msg = "Queue size "
-                        + (capacity * 2)
+                String msg = "Queue size " + (capacity * 2)
                         + " exceeds the maximum capacity in port "
                         + smallestCapacityQueue.getContainer().getFullName()
                         + ". Perhaps you have an unbounded queue?";
+
                 if (_debugging) {
                     _debug(msg);
                 }
+
                 throw new IllegalActionException(this, msg);
             }
 
@@ -468,9 +473,8 @@ public class PNDirector extends CompositeProcessDirector {
         // or we will detect deadlock all over again and
         // again increase the buffer sizes.
         threadUnblocked(
-                (Thread)_writeBlockedQueues.get(smallestCapacityQueue),
-                smallestCapacityQueue,
-                WRITE_BLOCKED);
+                (Thread) _writeBlockedQueues.get(smallestCapacityQueue),
+                smallestCapacityQueue, WRITE_BLOCKED);
 
         return;
     }
@@ -497,11 +501,13 @@ public class PNDirector extends CompositeProcessDirector {
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
-        if ((_writeBlockedQueues.size() == 0) && (_readBlockedQueues.size() > 0)) {
+        if ((_writeBlockedQueues.size() == 0)
+                && (_readBlockedQueues.size() > 0)) {
             // There is a real deadlock.
             if (_debugging) {
                 _debug("Deadlock detected: no processes blocked on write, but some are blocked on read.");
             }
+
             return false;
         } else if (_getActiveThreadsCount() == 0) {
             // There is a real deadlock as no processes are active.
@@ -531,10 +537,9 @@ public class PNDirector extends CompositeProcessDirector {
 
     /** The set of receivers blocked on a write to a receiver. */
     protected HashMap _writeBlockedQueues = new HashMap();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
     private void _init() throws IllegalActionException,
             NameDuplicationException {
         initialQueueCapacity = new Parameter(this, "initialQueueCapacity",

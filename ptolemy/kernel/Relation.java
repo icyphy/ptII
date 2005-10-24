@@ -76,7 +76,6 @@ import ptolemy.kernel.util.Workspace;
  @see Entity
  */
 public class Relation extends NamedObj {
-
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -170,6 +169,7 @@ public class Relation extends NamedObj {
 
             if (relation != null) {
                 _checkRelation(relation, true);
+
                 if (!_linkList.isLinked(relation)) {
                     _linkList.link(relation._linkList);
                 }
@@ -195,7 +195,6 @@ public class Relation extends NamedObj {
             _workspace.getReadAccess();
 
             // NOTE: This should probably be cached.
-
             // Unfortunately, CrossRefList returns an enumeration only.
             // Use it to construct a list.
             LinkedList result = new LinkedList();
@@ -205,6 +204,7 @@ public class Relation extends NamedObj {
                 Object next = links.nextElement();
                 result.add(next);
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -232,6 +232,7 @@ public class Relation extends NamedObj {
 
             while (links.hasMoreElements()) {
                 Object next = links.nextElement();
+
                 if (next instanceof Port) {
                     result.add(next);
                 } else {
@@ -240,6 +241,7 @@ public class Relation extends NamedObj {
                             exceptRelations));
                 }
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -279,6 +281,7 @@ public class Relation extends NamedObj {
                             exceptRelations));
                 }
             }
+
             return result;
         } finally {
             _workspace.doneReading();
@@ -416,7 +419,7 @@ public class Relation extends NamedObj {
      */
     protected void _checkRelation(Relation relation, boolean symmetric)
             throws IllegalActionException {
-        if (relation != null && symmetric) {
+        if ((relation != null) && symmetric) {
             // Throw an exception if this relation is not of an acceptable
             // class for the specified relation.
             relation._checkRelation(this, false);
@@ -464,6 +467,7 @@ public class Relation extends NamedObj {
 
                 while (links.hasMoreElements()) {
                     Object object = links.nextElement();
+
                     if (object instanceof Port) {
                         result.append((((Port) object)._description(detail,
                                 indent + 1, 2) + "\n"));
@@ -549,6 +553,7 @@ public class Relation extends NamedObj {
         if (exceptRelations.contains(this)) {
             return result;
         }
+
         // Prevent listing the ports connected to this relation again.
         exceptRelations.add(this);
 
@@ -564,12 +569,14 @@ public class Relation extends NamedObj {
             } else {
                 // Link must be to a relation.
                 Relation relation = (Relation) link;
+
                 if (!exceptRelations.contains(relation)) {
                     result.addAll(relation._linkedPortList(exceptPort,
                             exceptRelations));
                 }
             }
         }
+
         return result;
     }
 
@@ -583,9 +590,12 @@ public class Relation extends NamedObj {
     private void _relationGroup(List list) {
         if (!list.contains(this)) {
             list.add(this);
+
             Enumeration links = _linkList.getContainers();
+
             while (links.hasMoreElements()) {
                 Object link = links.nextElement();
+
                 if (link instanceof Relation) {
                     ((Relation) link)._relationGroup(list);
                 }

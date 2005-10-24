@@ -55,7 +55,6 @@ import ptolemy.kernel.util.KernelException;
  @see ptolemy.actor.AbstractReceiver
  */
 public class DistributedReceiver extends AbstractReceiver {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -107,7 +106,9 @@ public class DistributedReceiver extends AbstractReceiver {
             LinkedList ids = (LinkedList) servicesReceiversListMap.get(server);
             HashMap hashMap = new HashMap();
             hashMap.put(token, ids);
+
             DistributedActor distributedActor = (DistributedActor) server.service;
+
             try {
                 distributedActor.put(hashMap);
             } catch (RemoteException e) {
@@ -126,6 +127,7 @@ public class DistributedReceiver extends AbstractReceiver {
             System.out.println("> DistributedReceiver."
                     + "setServicesReceiversListMap()");
         }
+
         servicesReceiversListMap = servRecListMap;
     }
 

@@ -183,9 +183,9 @@ public interface Receiver {
      *  @exception IllegalActionException If the token is not acceptable
      *   to one of the ports (e.g., wrong type).
      */
-    public void putArrayToAll(
-            Token[] tokens, int numberOfTokens, Receiver[] receivers)
-            throws NoRoomException, IllegalActionException;
+    public void putArrayToAll(Token[] tokens, int numberOfTokens,
+            Receiver[] receivers) throws NoRoomException,
+            IllegalActionException;
 
     /** Put a single token to all receivers in the specified array.
      *  Implementers will assume that all such receivers

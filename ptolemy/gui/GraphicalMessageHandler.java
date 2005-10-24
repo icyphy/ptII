@@ -38,7 +38,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -156,7 +155,6 @@ public class GraphicalMessageHandler extends MessageHandler {
                 // Sometimes you find that errors are reported
                 // multiple times.  To find out who is calling
                 // this method, uncomment the following.
-
                 // System.out.println("------ reporting error:");
                 // (new Throwable()).printStackTrace();
                 Object[] message = new Object[1];
@@ -375,36 +373,38 @@ public class GraphicalMessageHandler extends MessageHandler {
             final Boolean[] result = new Boolean[1];
 
             Runnable doYesNo = new Runnable() {
-                    public void run() {
-                        Object[] message = new Object[1];
-                        message[0] = StringUtilities.ellipsis(question,
-                                StringUtilities.ELLIPSIS_LENGTH_LONG);
+                public void run() {
+                    Object[] message = new Object[1];
+                    message[0] = StringUtilities.ellipsis(question,
+                            StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-                        Object[] options = { "Yes", "No" };
+                    Object[] options = { "Yes", "No" };
 
-                        // Show the MODAL dialog
-                        int selected = JOptionPane.showOptionDialog(getContext(), message,
-                                "Warning", JOptionPane.YES_NO_OPTION,
-                                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+                    // Show the MODAL dialog
+                    int selected = JOptionPane.showOptionDialog(getContext(),
+                            message, "Warning", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE, null, options,
+                            options[0]);
 
-                        if (selected == 0) {
-                            result[0] = Boolean.TRUE;
-                        } else {
-                            result[0] = Boolean.FALSE;
-                        }
+                    if (selected == 0) {
+                        result[0] = Boolean.TRUE;
+                    } else {
+                        result[0] = Boolean.FALSE;
                     }
-                };
+                }
+            };
+
             try {
                 // Note: usually we use invokeLater() (see
                 // Top.deferIfNecessary()).  However, here, we need
                 // the return value.
-            	SwingUtilities.invokeAndWait(doYesNo);
+                SwingUtilities.invokeAndWait(doYesNo);
             } catch (Exception ex) {
-            	// do nothing.   
+                // do nothing.   
             }
+
             return result[0].booleanValue();
         }
-             
     }
 
     /** Ask the user a yes/no/cancel question, and return true if the answer
@@ -444,40 +444,45 @@ public class GraphicalMessageHandler extends MessageHandler {
             // results[0] is the return value ("Yes" or "No").
             // results[1] is the error value ("Cancel").
             final Boolean[] results = new Boolean[2];
-            
+
             Runnable doYesNoCancel = new Runnable() {
-                    public void run() {
-                        Object[] message = new Object[1];
-                        message[0] = StringUtilities.ellipsis(question,
-                                StringUtilities.ELLIPSIS_LENGTH_LONG);
+                public void run() {
+                    Object[] message = new Object[1];
+                    message[0] = StringUtilities.ellipsis(question,
+                            StringUtilities.ELLIPSIS_LENGTH_LONG);
 
-                        Object[] options = { "Yes", "No", "Cancel" };
+                    Object[] options = { "Yes", "No", "Cancel" };
 
-                        // Show the MODAL dialog
-                        int selected = JOptionPane.showOptionDialog(getContext(), message,
-                                "Warning", JOptionPane.YES_NO_CANCEL_OPTION,
-                                JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+                    // Show the MODAL dialog
+                    int selected = JOptionPane.showOptionDialog(getContext(),
+                            message, "Warning",
+                            JOptionPane.YES_NO_CANCEL_OPTION,
+                            JOptionPane.WARNING_MESSAGE, null, options,
+                            options[0]);
 
-                        if (selected == 0) {
-                            results[0] = Boolean.TRUE;
-                        } else if (selected == 2) {
-                            results[1] = Boolean.TRUE;
-                        } else {
-                            results[0] = Boolean.FALSE;
-                        }
+                    if (selected == 0) {
+                        results[0] = Boolean.TRUE;
+                    } else if (selected == 2) {
+                        results[1] = Boolean.TRUE;
+                    } else {
+                        results[0] = Boolean.FALSE;
                     }
-                };
+                }
+            };
+
             try {
                 // Note: usually we use invokeLater() (see
                 // Top.deferIfNecessary()).  However, here, we need
                 // the return value.
-            	SwingUtilities.invokeAndWait(doYesNoCancel);
+                SwingUtilities.invokeAndWait(doYesNoCancel);
             } catch (Exception ex) {
-            	// do nothing.   
+                // do nothing.   
             }
-            if (results[1] != null && results[1].booleanValue()) {
+
+            if ((results[1] != null) && results[1].booleanValue()) {
                 throw new ptolemy.util.CancelException();
             }
+
             return results[0].booleanValue();
         }
     }

@@ -267,6 +267,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             Token token = tokenArray[i];
             _checkType(token);
         }
+
         super.broadcast(tokenArray, vectorLength);
     }
 
@@ -508,6 +509,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             Token token = tokenArray[i];
             _checkType(token);
         }
+
         super.send(channelIndex, tokenArray, vectorLength);
     }
 

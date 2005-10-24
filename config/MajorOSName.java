@@ -35,14 +35,15 @@ COPYRIGHTENDKEY
 @Pt.AcceptedRating Red
 */
 public class MajorOSName {
-
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         String arch = System.getProperty("os.name");
+
         // See http://www.tolstoy.com/samizdat/sysprops.html
         // and http://www.vamphq.com/os.html
         if (arch.startsWith("Windows")) {
             arch = "Windows";
         }
+
         System.out.print(arch);
     }
 }

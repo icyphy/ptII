@@ -45,7 +45,7 @@ public class MuxNode implements GraphNode {
 
     //A place holder.  We probably need another class for these "specific" muxes
     public MuxNode(Object trueInput, Object falseInput, Object condition,
-            int dummy) {
+        int dummy) {
         //_trueInput = trueInput;
         //_falseInput = falseInput;
         //_conditionBlock = condition;  //WRONG
@@ -70,7 +70,7 @@ public class MuxNode implements GraphNode {
 
         Node falseResult = _falseInput.createDataFlow(graph, value);
         Object cond = ((IfStmt) _conditionBlock.getBlock().getTail())
-            .getCondition();
+                    .getCondition();
         System.out.println("Getting from condition input");
 
         Node condResult = _conditionBlock.createDataFlow(graph, cond);

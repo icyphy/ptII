@@ -26,20 +26,18 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib.io;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 /**
  * A helper class for ptolemy.actor.lib.io.LineWriter.
- * 
+ *
  * @author Jackie
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -63,12 +61,12 @@ public class LineWriter extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code) 
-        throws IllegalActionException {
+    public void generateFireCode(StringBuffer code)
+            throws IllegalActionException {
         code.append(_generateBlockCode("writeLine"));
     }
 
-    /** 
+    /**
      * Generate initialization code.
      * This method first checks if "System.out" is the file parameter. If so,
      * it reads from LineWriter.c for the <code>openForStdout</code> block,
@@ -84,8 +82,7 @@ public class LineWriter extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.actor.lib.io.LineWriter actor = 
-            (ptolemy.actor.lib.io.LineWriter) getComponent();
+        ptolemy.actor.lib.io.LineWriter actor = (ptolemy.actor.lib.io.LineWriter) getComponent();
         _codeStream.clear();
 
         if (actor.fileName.getExpression().equals("System.out")) {
@@ -99,10 +96,10 @@ public class LineWriter extends CCodeGeneratorHelper {
             fileNameString = fileNameString.replaceFirst("file:/", "");
             fileNameString = fileNameString.replaceAll("%20", " ");
 
-            boolean fileExist = 
-                FileUtilities.nameToFile(fileNameString, null).exists();
-            boolean askForOverwrite = 
-                actor.confirmOverwrite.getExpression().equals("true");
+            boolean fileExist = FileUtilities.nameToFile(fileNameString, null)
+                    .exists();
+            boolean askForOverwrite = actor.confirmOverwrite.getExpression()
+                    .equals("true");
 
             if (fileExist && askForOverwrite) {
                 _codeStream.appendCodeBlock("confirmOverwrite");
@@ -131,7 +128,7 @@ public class LineWriter extends CCodeGeneratorHelper {
         return _generateBlockCode("preinitBlock");
     }
 
-    /** 
+    /**
      * Generate wrap up code.
      * This method reads the <code>wrapupBlock</code> from LineWriter.c,
      * replaces macros with their values and put the processed code block
@@ -141,12 +138,13 @@ public class LineWriter extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();        
+        StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
         code.append(_generateBlockCode("wrapUpBlock"));
         return code.toString();
     }
-    /** 
+
+    /**
      * Get the files needed by the code generated for the LineWriter actor.
      * @return A set of strings that are names of the files
      *  needed by the code generated for the LineWriter actor.

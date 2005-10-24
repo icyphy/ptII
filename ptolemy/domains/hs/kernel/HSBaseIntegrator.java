@@ -204,15 +204,18 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
      */
     public void fire() throws IllegalActionException {
         HSDirector dir = (HSDirector) getDirector();
+
         if (dir.getCurrentStepSize() == 0) {
             // FIXME: more sophisticated computation, like reading a 
             // discrete input, goes here.
             output.broadcast(new DoubleToken(getState()));
         } else {
             ODESolver solver = (ODESolver) dir.getCurrentODESolver();
+
             if (_debugging) {
                 _debug(getName() + "fire using solver: ", solver.getName());
             }
+
             solver.integratorFire(this);
         }
     }
@@ -433,11 +436,9 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  the director has no ODE solver.
      */
     public boolean prefire() throws IllegalActionException {
-        
         //FIXME: this methid is called for each iteration of a CT director 
         //during a continuous phase of execution. Since there is only one 
         //solver, this method may be optimized for performance.
-        
         HSDirector dir = (HSDirector) getDirector();
 
         if (dir == null) {

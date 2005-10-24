@@ -24,7 +24,6 @@
  ENHANCEMENTS, OR MODIFICATIONS.
 
  */
-
 package ptolemy.distributed.client;
 
 import java.rmi.RemoteException;
@@ -35,6 +34,7 @@ import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
 ////ClientThread
+
 /**
  Thread that manages the interaction with the remote service. It is required
  to allow commands to be issued to the remote services in parallel. This
@@ -51,7 +51,6 @@ import ptolemy.kernel.util.KernelException;
  @see ptolemy.distributed.client.ThreadSynchronizer
  */
 public class ClientThread extends Thread {
-
     /** Construct a ClientThread with a given ThreadSynchronizer and a given
      *  service.
      *
@@ -83,27 +82,34 @@ public class ClientThread extends Thread {
      *  thread is set to ready in the synchronizer. This is performed until
      *  de command is exit.
      */
-
     public void run() {
         super.run();
+
         if (VERBOSE) {
-            System.out.println(service.serviceID + " starts running...");            
+            System.out.println(service.serviceID + " starts running...");
         }
+
         DistributedActor distributedActor;
         int command;
+
         while ((command = synchronizer.getCommand(this)) != EXIT) {
             if (VERBOSE) {
-                System.out.println(service.serviceID + " -> Command: " + command);
+                System.out.println(service.serviceID + " -> Command: "
+                        + command);
             }
+
             distributedActor = (DistributedActor) service.service;
+
             try {
                 switch (command) {
                 case INITIALIZE:
                     distributedActor.initialize();
                     break;
+
                 case FIRE:
                     distributedActor.fire();
                     break;
+
                 case ITERATE:
                     distributedActor.iterate(iterationCount);
                     break;
@@ -111,11 +117,14 @@ public class ClientThread extends Thread {
             } catch (RemoteException e) {
                 KernelException.stackTraceToString(e);
             }
+
             synchronizer.setReady(this);
         }
+
         if (VERBOSE) {
             System.out.println(this + "Exits...");
         }
+
         synchronizer.setReady(this);
     }
 
@@ -150,7 +159,7 @@ public class ClientThread extends Thread {
 
     /** It states whether debugging messages should be printed. */
     private boolean VERBOSE = false;
-    
+
     /** The ThreadSynchronizer that synchronizes access to the commands.*/
     private ThreadSynchronizer synchronizer;
 

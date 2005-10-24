@@ -1831,11 +1831,12 @@ public class ModelTransformer extends SceneTransformer implements
     public static NamedObj _findDeferredInstance(NamedObj object) {
         //  System.out.println("findDeferred =" + object.getFullName());
         NamedObj deferredObject = null;
-        // boolean isClass = false;
 
+        // boolean isClass = false;
         if (object instanceof InstantiableNamedObj) {
             deferredObject = (InstantiableNamedObj) ((InstantiableNamedObj) object)
                     .getParent();
+
             /* isClass = */((InstantiableNamedObj) object).isClassDefinition();
         }
 
@@ -1942,11 +1943,9 @@ public class ModelTransformer extends SceneTransformer implements
             } catch (InternalErrorException ex) {
                 throw ex;
             } catch (Exception ex) {
-
                 // Don't print a newline after printing "Exception
                 // occured during parsing:" so that the nightly build can
                 // detect errors.
-
                 System.out.println("Exception occurred during parsing:" + ex);
                 ex.printStackTrace();
                 System.out.println("done parsing:\n");

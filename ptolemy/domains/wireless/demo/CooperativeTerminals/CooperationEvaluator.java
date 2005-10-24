@@ -1,6 +1,6 @@
-/* An actor that receives packets forwarded by terminals including the group and 
+/* An actor that receives packets forwarded by terminals including the group and
  * outputs the percentage of packets received per group.
- 
+
  @Copyright (c) 2005 The Regents of Aalborg University.
  All rights reserved.
 
@@ -19,12 +19,11 @@
  AALBORG UNIVERSITY SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY 
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND AALBORG UNIVERSITY
  HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  */
-
 package ptolemy.domains.wireless.demo.CooperativeTerminals;
 
 import java.util.HashMap;
@@ -48,18 +47,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////DETransformer
 
 /**
- /* An actor that receives packets forwarded by terminals including the group and 
+ /* An actor that receives packets forwarded by terminals including the group and
  * outputs the percentage of packets received per group.
 
  @author Daniel Lazaro Cuadrado
- @version 
- @since 
+ @version
+ @since
  @Pt.ProposedRating Red (kapokasa)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
  */
-
 public class CooperationEvaluator extends DETransformer {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -71,9 +68,11 @@ public class CooperationEvaluator extends DETransformer {
     public CooperationEvaluator(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
+
         String[] labels = { "group", "packet" };
         Type[] types = { BaseType.INT, BaseType.INT };
         input.setTypeEquals(new RecordType(labels, types));
+
         String[] labels2 = { "1", "2", "3" };
         Type[] types2 = { BaseType.DOUBLE, BaseType.DOUBLE, BaseType.DOUBLE };
         output.setTypeEquals(new RecordType(labels2, types2));
@@ -83,7 +82,7 @@ public class CooperationEvaluator extends DETransformer {
     ////                     public methods                    ////
 
     /** Initialize the groupMap.
-     *  
+     *
      *  @exception IllegalActionException If the actor cannot be contained
      *  by the proposed container.
      */
@@ -96,18 +95,21 @@ public class CooperationEvaluator extends DETransformer {
     }
 
     /** Gets the new packet and updates the groupMap.
-     *  Calculate the precentage of packets received by group and 
+     *  Calculate the precentage of packets received by group and
      *  sent a token with the information.
-     *  
+     *
      *  @exception IllegalActionException If the actor cannot be contained
      *  by the proposed container.
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         RecordToken token = null;
+
         if (input.hasToken(0)) {
             token = (RecordToken) input.get(0);
         }
+
         String group = ((IntToken) token.get("group")).toString();
         Integer packet = new Integer(((IntToken) token.get("packet"))
                 .intValue());
@@ -125,10 +127,12 @@ public class CooperationEvaluator extends DETransformer {
         Iterator groups = groupMap.keySet().iterator();
 
         int i = 0;
+
         while (groups.hasNext()) {
             group = (String) groups.next();
             labels[i] = group;
             auxSet = (TreeSet) groupMap.get(group);
+
             double auxSetSize = auxSet.size();
             double auxPacketNumber = packet.doubleValue();
             double aux = (auxSetSize / auxPacketNumber) * 100;
@@ -145,5 +149,4 @@ public class CooperationEvaluator extends DETransformer {
 
     /** Map that contains the packets received per group. */
     private Map groupMap = new HashMap();
-
 }

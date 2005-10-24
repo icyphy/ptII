@@ -46,7 +46,6 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.domains.sdf.kernel.SDFReceiver
  */
 public class DistributedSDFReceiver extends SDFReceiver {
-
     /** Construct an empty receiver with no container and unique ID.
      */
     public DistributedSDFReceiver() {
@@ -115,6 +114,7 @@ public class DistributedSDFReceiver extends SDFReceiver {
     private void init() {
         ID = lastID;
         lastID = new Integer(lastID.intValue() + 1);
+
         if (VERBOSE) {
             System.out.println("Created Receiver: " + ID);
         }

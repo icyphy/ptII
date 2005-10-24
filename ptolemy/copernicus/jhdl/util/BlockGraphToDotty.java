@@ -63,8 +63,8 @@ public class BlockGraphToDotty extends GraphToDotty {
         while (it.hasNext()) {
             Block currentBlock = (Block) it.next();
             m.put(currentBlock.getHead(),
-                    "Block "
-                    + (new Integer(currentBlock.getIndexInMethod()).toString()));
+                "Block "
+                + (new Integer(currentBlock.getIndexInMethod()).toString()));
         }
 
         int count = 0;
@@ -78,9 +78,9 @@ public class BlockGraphToDotty extends GraphToDotty {
             Block source = (Block) nodes.next();
             String name = "v" + count++;
             sb.append("\t\"" + name + "\" [label=\""
-                    // soot 2.0
-                    //+convertSpecialsToEscapes(source.toString(m))
-                    + convertSpecialsToEscapes(source.toString()) + "\"];" + MYEOL);
+                // soot 2.0
+            //+convertSpecialsToEscapes(source.toString(m))
+                + convertSpecialsToEscapes(source.toString()) + "\"];" + MYEOL);
             hm.put(source, name);
         }
 
@@ -92,16 +92,16 @@ public class BlockGraphToDotty extends GraphToDotty {
 
             //System.err.println(source.toShortString());
             for (Iterator succs = g.getSuccsOf(source).iterator();
-                 succs.hasNext();) {
+                        succs.hasNext();) {
                 Block dest = (Block) succs.next();
                 sb.append("\t\"" + hm.get(source) + "\" -> \"" + hm.get(dest)
-                        + "\"");
+                    + "\"");
 
                 if (endsWithIf) {
                     sb.append(" [\"label\"=");
 
                     if (((IfStmt) source.getTail()).getTargetBox().getUnit() == dest
-                            .getHead()) {
+                                .getHead()) {
                         sb.append("\"true\"");
                     } else {
                         sb.append("\"false\"");

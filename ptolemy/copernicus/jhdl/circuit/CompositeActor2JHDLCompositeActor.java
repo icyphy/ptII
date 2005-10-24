@@ -55,7 +55,7 @@ import java.util.*;
 */
 public class CompositeActor2JHDLCompositeActor {
     public static JHDLCompositeActor build(CompositeActor oldTopEntity,
-            Map options) throws IllegalActionException, NameDuplicationException {
+        Map options) throws IllegalActionException, NameDuplicationException {
         Map old2newMap = new HashMap();
 
         // create new actor
@@ -119,7 +119,7 @@ public class CompositeActor2JHDLCompositeActor {
             old2newMap.put(oldRelation, newRelation);
 
             for (Iterator j = oldRelation.linkedPortList().iterator();
-                 j.hasNext();) {
+                        j.hasNext();) {
                 IOPort oldPort = (IOPort) j.next();
                 IOPort newPort = (IOPort) old2newMap.get(oldPort);
                 newPort.link(newRelation);
@@ -130,7 +130,7 @@ public class CompositeActor2JHDLCompositeActor {
     }
 
     public static Map copyPorts(ComponentEntity oldE, ComponentEntity newE)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         Map map = new HashMap();
 
         for (Iterator i = oldE.portList().iterator(); i.hasNext();) {
@@ -155,7 +155,7 @@ public class CompositeActor2JHDLCompositeActor {
     }
 
     public static JHDLCompositeActor build(AtomicActor actor, Map options)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         //JHDLCompositeActor newE = new JHDLCompositeActor();
         //newE.setName(actor.getName());
         //copyPorts(actor,newE);

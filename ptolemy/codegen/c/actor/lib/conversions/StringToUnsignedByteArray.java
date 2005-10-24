@@ -14,11 +14,11 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
@@ -30,12 +30,11 @@ package ptolemy.codegen.c.actor.lib.conversions;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A code generation helper class for 
+ * A code generation helper class for
  * ptolemy.actor.lib.conversions.StringToUnsignedByteArray.
  *
  * @author Man-Kit Leung
@@ -45,7 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  */
 public class StringToUnsignedByteArray extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the StringToUnsignedByteArray helper.
      * @param actor The associated actor.
@@ -57,21 +55,21 @@ public class StringToUnsignedByteArray extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>fireBlock</code> from 
+     * The method reads in <code>fireBlock</code> from
      * StringToUnsignedByteArray.c, replaces macros with their values and
      * appends the processed code block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void  generateFireCode(StringBuffer code)
-        throws IllegalActionException {
+    public void generateFireCode(StringBuffer code)
+            throws IllegalActionException {
         code.append(_generateBlockCode("fireBlock"));
     }
-    
-    /** 
+
+    /**
      * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from 
+     * This method reads the <code>preinitBlock</code> from
      * StringToUnsignedByteArray.c, replaces macros with their values and
      * returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
@@ -82,8 +80,8 @@ public class StringToUnsignedByteArray extends CCodeGeneratorHelper {
         super.generatePreinitializeCode();
         return _generateBlockCode("preinitBlock");
     }
-    
-    /** 
+
+    /**
      * Get the files needed by the code generated for the
      * StringToUnsignedByteArray actor.
      * @return A set of strings that are names of the files

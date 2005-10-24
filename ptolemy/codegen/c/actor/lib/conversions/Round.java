@@ -26,19 +26,17 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib.conversions;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.conversions.Round.
- * 
+ *
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -46,7 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  */
 public class Round extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Round helper.
      * @param actor the associated actor.
@@ -67,22 +64,21 @@ public class Round extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.actor.lib.conversions.Round actor = 
-            (ptolemy.actor.lib.conversions.Round) getComponent();
+        ptolemy.actor.lib.conversions.Round actor = (ptolemy.actor.lib.conversions.Round) getComponent();
 
         _codeStream.clear();
+
         String function = actor.function.getExpression();
-        String codeBlockName = (function.equals("ceil")) ? "ceilBlock" :
-                              ((function.equals("floor")) ? "floorBlock" :
-                              ((function.equals("round")) ? "roundBlock" :
-                               "truncateBlock"));
+        String codeBlockName = (function.equals("ceil")) ? "ceilBlock"
+                : ((function.equals("floor")) ? "floorBlock" : ((function
+                        .equals("round")) ? "roundBlock" : "truncateBlock"));
 
         _codeStream.appendCodeBlock(codeBlockName);
 
         code.append(processCode(_codeStream.toString()));
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * Round actor.
      * @return A set of strings that are names of the files

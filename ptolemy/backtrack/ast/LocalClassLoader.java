@@ -1,32 +1,33 @@
 /* A customized class loader that accepts class paths at run-time.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-
+ */
 package ptolemy.backtrack.ast;
+
+import ptolemy.backtrack.util.Strings;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -38,51 +39,49 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.backtrack.util.Strings;
-
 //////////////////////////////////////////////////////////////////////////
 //// LocalClassLoader
+
 /**
-   A customized class loader that accepts class paths at run-time. It mimics
-   the behavior of loading a class from the within of another class, as the
-   following example:
-   <pre>    package pkg;
-    class A {
-        class B {
-            class C {
-            }
-        }
-        B.C field;
-    }</pre>
-   The loading of class <tt>B.C</tt> requires some name resolving, which is
-   done in the <tt>javac</tt> compiler, so that the type of <tt>field</tt> is
-   always known as <tt>pkg.A$B$C</tt> at run-time.
-   <p>
-   Class name resolution implemented in this class also takes into account
-   importations. In the following example, <tt>Hashtable</tt> is resolved as
-   <tt>java.util.Hashtable</tt>:
-   <pre>    import java.util.*;
-    class A {
-        Hashtable table;
-    }</pre>
-   <p>
-   This class loader only loads classes from the specified class paths and
-   Java built-in classes. It does not use the <tt>CLASSPATH</tt> environment
-   variable.
-   <p>
-   All the loaded classes are cached in a hash table so that they can be
-   loaded efficiently the second time. This also means whenever two {@link
-   Class} objects with the same name are returned, they also exist in the
-   same memory location.
+ A customized class loader that accepts class paths at run-time. It mimics
+ the behavior of loading a class from the within of another class, as the
+ following example:
+ <pre>    package pkg;
+ class A {
+ class B {
+ class C {
+ }
+ }
+ B.C field;
+ }</pre>
+ The loading of class <tt>B.C</tt> requires some name resolving, which is
+ done in the <tt>javac</tt> compiler, so that the type of <tt>field</tt> is
+ always known as <tt>pkg.A$B$C</tt> at run-time.
+ <p>
+ Class name resolution implemented in this class also takes into account
+ importations. In the following example, <tt>Hashtable</tt> is resolved as
+ <tt>java.util.Hashtable</tt>:
+ <pre>    import java.util.*;
+ class A {
+ Hashtable table;
+ }</pre>
+ <p>
+ This class loader only loads classes from the specified class paths and
+ Java built-in classes. It does not use the <tt>CLASSPATH</tt> environment
+ variable.
+ <p>
+ All the loaded classes are cached in a hash table so that they can be
+ loaded efficiently the second time. This also means whenever two {@link
+ Class} objects with the same name are returned, they also exist in the
+ same memory location.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class LocalClassLoader extends URLClassLoader {
-
     ///////////////////////////////////////////////////////////////////
     ////                        constructor                        ////
 
@@ -153,9 +152,8 @@ public class LocalClassLoader extends URLClassLoader {
      */
     public void importClass(String classFullName) {
         int lastDotPos = classFullName.lastIndexOf('.');
-        _importedClasses.add(
-                new ClassImport(classFullName.substring(0, lastDotPos),
-                        classFullName.substring(lastDotPos + 1)));
+        _importedClasses.add(new ClassImport(classFullName.substring(0,
+                lastDotPos), classFullName.substring(lastDotPos + 1)));
     }
 
     /** Import a package. This function mimics the <tt>import</tt>
@@ -241,52 +239,64 @@ public class LocalClassLoader extends URLClassLoader {
      *  @see #importClass(String)
      *  @see #importPackage(String)
      */
+
     // Not supporting anonymous classes like "Class$1".
     public Class searchForClass(StringBuffer name, Class currentClass)
             throws ClassNotFoundException {
         // Nested classes requires "$" separator between classes.
-        StringBuffer dollarName =
-            new StringBuffer(name.toString().replace('.', '$'));
+        StringBuffer dollarName = new StringBuffer(name.toString().replace('.',
+                '$'));
 
         // Check if the name represents an array.
         // If c == null and no exception, it means "name" is not an array class.
         Class c = _checkArrayClass(name, true);
 
         // Check for nested classes in the current class.
-        if (c == null)
+        if (c == null) {
             c = _checkNestedClass(dollarName, currentClass);
+        }
 
-        if (c == null)
+        if (c == null) {
             c = _checkFullClassName(name);
+        }
 
         if (c == null) {
             Iterator importedClassesIter = _importedClasses.iterator();
-            while (c == null && importedClassesIter.hasNext())
+
+            while ((c == null) && importedClassesIter.hasNext()) {
                 c = _checkClassNameWithImportClass(dollarName,
-                        (ClassImport)importedClassesIter.next());
+                        (ClassImport) importedClassesIter.next());
+            }
         }
 
-        if (c == null && _packageName != null)
+        if ((c == null) && (_packageName != null)) {
             c = _checkClassNameWithImportPackage(dollarName, _packageName);
+        }
 
         if (c == null) {
             Iterator importedPackagesIter = _importedPackages.iterator();
-            while (c == null && importedPackagesIter.hasNext())
+
+            while ((c == null) && importedPackagesIter.hasNext()) {
                 c = _checkClassNameWithImportPackage(dollarName,
-                        (String)importedPackagesIter.next());
+                        (String) importedPackagesIter.next());
+            }
         }
 
-        if (c == null)
+        if (c == null) {
             c = _checkClassNameWithImportPackage(dollarName, "java.lang");
+        }
 
         // If still no success, fall back to tries by replacing "."'s
         // with "$"'s.
         if (c == null) {
             int lastDotPos = name.length();
-            while (c == null && lastDotPos != -1) {
+
+            while ((c == null) && (lastDotPos != -1)) {
                 lastDotPos = name.lastIndexOf(".", lastDotPos);
+
                 if (lastDotPos >= 0) {
                     name.setCharAt(lastDotPos, '$');
+
                     try {
                         c = super.loadClass(name.toString());
                     } catch (ClassNotFoundException e) {
@@ -296,10 +306,11 @@ public class LocalClassLoader extends URLClassLoader {
             }
         }
 
-        if (c == null)
+        if (c == null) {
             throw new ClassNotFoundException(name.toString());
-        else
+        } else {
             return c;
+        }
     }
 
     /** Set the current class within which class names are to be
@@ -340,11 +351,14 @@ public class LocalClassLoader extends URLClassLoader {
      */
     public void setCurrentClass(Class c, boolean resetPackage) {
         _currentClass = c;
-        if (resetPackage)
-            if (c == null)
+
+        if (resetPackage) {
+            if (c == null) {
                 _packageName = null;
-            else
+            } else {
                 _packageName = c.getPackage().getName();
+            }
+        }
     }
 
     /** Set the current package. The current package is the package
@@ -393,7 +407,6 @@ public class LocalClassLoader extends URLClassLoader {
      *  @author Thomas Feng
      */
     public class ClassImport {
-
         /** Construct a class importation.
          *
          *  @param packageName The package name, possibly with "." in it.
@@ -406,7 +419,7 @@ public class LocalClassLoader extends URLClassLoader {
         }
 
         /** Get the name of the package that the class is in.
-         * 
+         *
          *  @return The package name.
          */
         public String getPackageName() {
@@ -414,7 +427,7 @@ public class LocalClassLoader extends URLClassLoader {
         }
 
         /** Get the simple class name.
-         * 
+         *
          *  @return The simple class name.
          */
         public String getClassName() {
@@ -454,33 +467,41 @@ public class LocalClassLoader extends URLClassLoader {
      */
     protected Class loadClass(String name, boolean resolve)
             throws ClassNotFoundException {
-        if (_loadedClasses.containsKey(name))
-            return (Class)_loadedClasses.get(name);
+        if (_loadedClasses.containsKey(name)) {
+            return (Class) _loadedClasses.get(name);
+        }
 
         StringBuffer nameBuffer = new StringBuffer(name);
         Class c = _checkArrayClass(nameBuffer, false);
-        if (c != null)
+
+        if (c != null) {
             return c;
+        }
 
         int firstDotPos = -2;
+
         while (true) {
             try {
                 return super.loadClass(nameBuffer.toString(), resolve);
             } catch (ClassNotFoundException e) {
             }
+
             int lastDotPos = nameBuffer.lastIndexOf(".");
-            if (firstDotPos == -2)
+
+            if (firstDotPos == -2) {
                 firstDotPos = nameBuffer.indexOf(".");
-            if (lastDotPos == -1 || lastDotPos == firstDotPos)
+            }
+
+            if ((lastDotPos == -1) || (lastDotPos == firstDotPos)) {
                 throw new ClassNotFoundException(name);
-            else
+            } else {
                 nameBuffer.setCharAt(lastDotPos, '$');
+            }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////
-
     //----------------------------------------------------------------
     // All these private methods return null if no class is found.
     // They throw ClassNotFoundException only when an error is detected.
@@ -505,25 +526,31 @@ public class LocalClassLoader extends URLClassLoader {
             throws ClassNotFoundException {
         boolean isPrimitiveArray;
         int nameStart = 0;
-        int nameEnd = name.length() - 1;    // Inclusive.
+        int nameEnd = name.length() - 1; // Inclusive.
 
         // Count dimensions.
         if (name.charAt(nameStart) == '[') {
-            while (name.charAt(nameStart) == '[')
+            while (name.charAt(nameStart) == '[') {
                 nameStart++;
+            }
+
             if (name.charAt(nameStart) == 'L') {
                 nameStart++;
-                nameEnd--;  // Remove the ending ";".
+                nameEnd--; // Remove the ending ";".
                 isPrimitiveArray = false;
-            } else
+            } else {
                 isPrimitiveArray = true;
+            }
         } else if (name.charAt(nameEnd) == ']') {
-            while (name.charAt(nameEnd) == ']')
-                nameEnd -= 2;   // Remove "[]".
-            isPrimitiveArray =
-                Type.isPrimitive(name.substring(nameStart, nameEnd + 1));
-        } else
-            return null;    // Not array.
+            while (name.charAt(nameEnd) == ']') {
+                nameEnd -= 2; // Remove "[]".
+            }
+
+            isPrimitiveArray = Type.isPrimitive(name.substring(nameStart,
+                    nameEnd + 1));
+        } else {
+            return null; // Not array.
+        }
 
         if (isPrimitiveArray) {
             String typeName = Type.toArrayType(name.toString());
@@ -532,13 +559,9 @@ public class LocalClassLoader extends URLClassLoader {
             return c;
         } else {
             // Try to load the object class.
-            Class c = search ?
-                searchForClass(
-                        new StringBuffer(
-                                name.substring(nameStart, nameEnd + 1)),
-                        _currentClass) :
-                super.loadClass(name.substring(nameStart, nameEnd + 1),
-                        true);
+            Class c = search ? searchForClass(new StringBuffer(name.substring(
+                    nameStart, nameEnd + 1)), _currentClass) : super.loadClass(
+                    name.substring(nameStart, nameEnd + 1), true);
             name.delete(nameStart, nameEnd + 1);
             name.insert(nameStart, c.getName());
 
@@ -564,11 +587,15 @@ public class LocalClassLoader extends URLClassLoader {
     private Class _checkClassNameWithImportClass(StringBuffer dollarName,
             ClassImport importedClass) {
         int dotPos = dollarName.indexOf("$");
-        if (dotPos == -1)
+
+        if (dotPos == -1) {
             dotPos = dollarName.length();
+        }
+
         if (importedClass._className.equals(dollarName.substring(0, dotPos))) {
             dollarName.insert(0, '.');
             dollarName.insert(0, importedClass._packageName);
+
             try {
                 String className = dollarName.toString();
                 Class c = super.loadClass(className);
@@ -581,9 +608,9 @@ public class LocalClassLoader extends URLClassLoader {
             } finally {
                 dollarName.delete(0, importedClass._packageName.length() + 1);
             }
-        }
-        else
+        } else {
             return null;
+        }
     }
 
     /** Check if a class with the given name can be found relative to the
@@ -602,6 +629,7 @@ public class LocalClassLoader extends URLClassLoader {
             String packageName) {
         dollarName.insert(0, '.');
         dollarName.insert(0, packageName);
+
         try {
             String className = dollarName.toString();
             Class c = super.loadClass(className);
@@ -626,6 +654,7 @@ public class LocalClassLoader extends URLClassLoader {
      */
     private Class _checkFullClassName(StringBuffer name) {
         String nameString = name.toString();
+
         try {
             Class c = super.loadClass(nameString);
             _loadedClasses.put(nameString, c);
@@ -656,19 +685,20 @@ public class LocalClassLoader extends URLClassLoader {
      *   error occurs while loading, the return value is <tt>null</tt>.
      *  @see #searchForClass(StringBuffer, boolean, Class)
      */
-    private Class _checkNestedClass(StringBuffer dollarName,
-            Class currentClass) {
-        if (currentClass == null)
+    private Class _checkNestedClass(StringBuffer dollarName, Class currentClass) {
+        if (currentClass == null) {
             return null;
+        }
 
         Set handledSet = new HashSet();
         List workList = new LinkedList();
         workList.add(currentClass);
 
         while (!workList.isEmpty()) {
-            Class c = (Class)workList.remove(0);
+            Class c = (Class) workList.remove(0);
             dollarName.insert(0, "$");
             dollarName.insert(0, c.getName());
+
             try {
                 String className = dollarName.toString();
                 Class classLoaded = super.loadClass(className);
@@ -685,31 +715,35 @@ public class LocalClassLoader extends URLClassLoader {
             // Do not check for enclosing classes any more. This
             // function is shifted to TypeAnalyzer, which keeps
             // track of all the classes entered.
+
             /*try {
-              Class declaring = c.getDeclaringClass();
-              if (declaring != null && !handledSet.contains(declaring))
-              workList.add(declaring);
-              } catch (ClassCircularityError e) {
-              }*/
-
+             Class declaring = c.getDeclaringClass();
+             if (declaring != null && !handledSet.contains(declaring))
+             workList.add(declaring);
+             } catch (ClassCircularityError e) {
+             }*/
             /*if (_enclosingClasses.containsKey(c.getName()))
-            // An enclosing class is registered for an anonymous class.
-            workList.add(_enclosingClasses.get(c.getName()));*/
-
+             // An enclosing class is registered for an anonymous class.
+             workList.add(_enclosingClasses.get(c.getName()));*/
             Class superClass = c.getSuperclass();
-            if (superClass != null && !handledSet.contains(superClass))
+
+            if ((superClass != null) && !handledSet.contains(superClass)) {
                 workList.add(superClass);
+            }
 
             Class[] interfaces = c.getInterfaces();
-            for (int i = 0; i < interfaces.length; i++)
-                if (!handledSet.contains(interfaces[i]))
+
+            for (int i = 0; i < interfaces.length; i++) {
+                if (!handledSet.contains(interfaces[i])) {
                     workList.add(interfaces[i]);
+                }
+            }
         }
+
         return null;
     }
 
     //----------------------------------------------------------------
-
     ///////////////////////////////////////////////////////////////////
     ////                        private fields                     ////
 

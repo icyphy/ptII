@@ -59,12 +59,10 @@ import ptolemy.domains.sdf.lib.SampleDelay;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -629,6 +627,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
             throw new IllegalActionException(this,
                     "Scheduler is required to be an instance of SDFScheduler");
         }
+
         // FIXME: Instead, should fix the buffer sizes calculation.
         ((SDFScheduler) scheduler).constrainBufferSizes.setExpression("false");
     }

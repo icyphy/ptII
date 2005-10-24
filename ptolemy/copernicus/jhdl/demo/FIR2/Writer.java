@@ -61,7 +61,7 @@ public class Writer extends TypedAtomicActor {
      *   actor with this name.
      */
     public Writer(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);

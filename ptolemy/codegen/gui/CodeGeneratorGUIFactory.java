@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.gui;
 
-// Ptolemy imports.
 import java.awt.Frame;
 
 import ptolemy.actor.gui.EditorFactory;

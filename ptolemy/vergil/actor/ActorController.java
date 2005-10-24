@@ -171,8 +171,8 @@ public abstract class ActorController extends AttributeController {
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 _listenToActorAction));
         _listenToActorAction.setConfiguration(_configuration);
-        //}
 
+        //}
         // "Set Breakpoints"
         if (access == FULL) {
             // Add to the context menu.
@@ -370,6 +370,7 @@ public abstract class ActorController extends AttributeController {
                         southPorts.add(port);
                     } else {
                         String value = cardinal.getExpression();
+
                         if (value.equalsIgnoreCase("SOUTH")) {
                             southPorts.add(port);
                         } else if (value.equalsIgnoreCase("WEST")) {
@@ -454,8 +455,9 @@ public abstract class ActorController extends AttributeController {
             Iterator ports = portList.iterator();
             int number = 0;
             int count = portList.size();
-            
+
             Figure background = figure.getBackgroundFigure();
+
             if (background == null) {
                 // This could occur if the icon has a _hide parameter.
                 background = figure;
@@ -472,8 +474,7 @@ public abstract class ActorController extends AttributeController {
                 }
 
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
-                PortSite site = new PortSite(
-                        background, port, number, count);
+                PortSite site = new PortSite(background, port, number, count);
                 number++;
 
                 // NOTE: previous expression for port location was:

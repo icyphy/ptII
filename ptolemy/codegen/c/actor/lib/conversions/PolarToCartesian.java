@@ -24,19 +24,17 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-
 package ptolemy.codegen.c.actor.lib.conversions;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.conversions.PolarToCartesian.
- * 
+ *
  * @author Jackie
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -48,14 +46,14 @@ public class PolarToCartesian extends CCodeGeneratorHelper {
      * Constructor method for the PolarToCartesian helper.
      * @param actor the associated actor.
      */
-    public PolarToCartesian(
-            ptolemy.actor.lib.conversions.PolarToCartesian actor) {
+    public PolarToCartesian(ptolemy.actor.lib.conversions.PolarToCartesian actor) {
         super(actor);
     }
+
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from PolarToCartesian.c,
-     * replaces macros with their values and appends the processed code 
+     * replaces macros with their values and appends the processed code
      * block to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -66,7 +64,7 @@ public class PolarToCartesian extends CCodeGeneratorHelper {
         code.append(_generateBlockCode("fireBlock"));
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * PolarToCartesian actor.
      * @return A set of strings that are names of the files

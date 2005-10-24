@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib.io;
 
 import java.io.IOException;
@@ -34,14 +33,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 /**
  * A helper class for ptolemy.actor.lib.io.LineReader.
- * 
+ *
  * @author Jackie
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -67,10 +65,10 @@ public class LineReader extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        code.append(_generateBlockCode("readLine"));   
+        code.append(_generateBlockCode("readLine"));
     }
 
-    /** 
+    /**
      * Generate initialize code.
      * This method reads the <code>initBlock</code> from LineReader.c,
      * replaces macros with their values and returns the processed code string.
@@ -84,27 +82,29 @@ public class LineReader extends CCodeGeneratorHelper {
         _codeStream.clear();
         _codeStream.appendCodeBlock("initBlock");
 
-        ptolemy.actor.lib.io.LineReader actor = 
-            (ptolemy.actor.lib.io.LineReader) getComponent();
+        ptolemy.actor.lib.io.LineReader actor = (ptolemy.actor.lib.io.LineReader) getComponent();
 
         int skipLines = Integer.parseInt(actor.numberOfLinesToSkip
                 .getExpression());
 
         // FIXME: How do we fix the file path parameter of the actor?? 
         String fileNameString = actor.fileOrURL.getExpression();
-        
+
         if (fileNameString.equals("System.in")) {
             _fileOpen = false;
             _codeStream.append("openForStdin");
         } else {
             _fileOpen = true;
+
             try {
-            	fileNameString = FileUtilities.nameToFile(actor.fileOrURL.
-                        getExpression(), null).getCanonicalPath();
+                fileNameString = FileUtilities.nameToFile(
+                        actor.fileOrURL.getExpression(), null)
+                        .getCanonicalPath();
             } catch (IOException e) {
                 throw new IllegalActionException("Cannot open file: "
                         + fileNameString);
             }
+
             ArrayList args = new ArrayList();
             args.add(fileNameString);
             _codeStream.appendCodeBlock("openForRead", args);
@@ -113,10 +113,11 @@ public class LineReader extends CCodeGeneratorHelper {
                 _codeStream.appendCodeBlock("skipLine");
             }
         }
+
         return processCode(_codeStream.toString());
     }
 
-    /** 
+    /**
      * Generate preinitialize code.
      * This method reads the <code>preinitBlock</code> from LineReader.c,
      * replaces macros with their values and returns the processed code string.
@@ -129,7 +130,7 @@ public class LineReader extends CCodeGeneratorHelper {
         return processCode(_generateBlockCode("preinitBlock"));
     }
 
-    /** 
+    /**
      * Generate wrap up code.
      * This method reads the <code>wrapUpBlock</code> from LineReader.c,
      * replaces macros with their values and appends to the given code buffer.
@@ -140,13 +141,15 @@ public class LineReader extends CCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
+
         if (_fileOpen) {
             code.append(_generateBlockCode("wrapUpBlock"));
         }
+
         return code.toString();
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * LineReader actor.
      * @return A set of strings that are names of the files

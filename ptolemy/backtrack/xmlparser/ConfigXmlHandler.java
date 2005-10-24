@@ -6,16 +6,16 @@
  */
 package ptolemy.backtrack.xmlparser;
 
+import ptolemy.backtrack.util.PathFinder;
+
+import com.microstar.xml.XmlParser;
+
 import java.io.File;
 import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
-import ptolemy.backtrack.util.PathFinder;
-
-import com.microstar.xml.XmlParser;
 
 /**
  * @author tfeng
@@ -24,17 +24,16 @@ import com.microstar.xml.XmlParser;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ConfigXmlHandler extends XmlHandler {
-
     ConfigXmlHandler(ConfigXmlTree tree, String systemId, Set includedClasses) {
         super(tree, systemId);
 
         this.includedClasses = includedClasses;
     }
-    
+
     public void addExcludedFile(String canonicalPath) {
         _excludedFiles.add(canonicalPath);
     }
-    
+
     public void addExcludedFiles(Collection canonicalPaths) {
         _excludedFiles.addAll(canonicalPaths);
     }
@@ -44,9 +43,11 @@ public class ConfigXmlHandler extends XmlHandler {
 
         if (elname.equals("input")) {
             String fileName = currentTree.getAttribute("source");
+
             try {
                 String newName = PathFinder.getPtolemyPath() + fileName;
                 File newFile = new File(newName);
+
                 if (!newFile.exists()) {
                     File oldFile = new File(systemId);
                     newName = oldFile.getParent() + "/" + fileName;
@@ -54,6 +55,7 @@ public class ConfigXmlHandler extends XmlHandler {
                 }
 
                 String canonicalPath = newFile.getCanonicalPath();
+
                 if (!_excludedFiles.contains(canonicalPath)) {
                     ConfigParser subparser = new ConfigParser(currentTree);
                     subparser.addExcludedFiles(_excludedFiles);
@@ -66,22 +68,26 @@ public class ConfigXmlHandler extends XmlHandler {
     }
 
     public void endElement(String elname) throws Exception {
-        boolean keep =
-            includedClasses == null ||   // If null, every element is kept.
-            !currentTree.isLeaf() ||     // If not leaf, at least a descendant is kept.
-            (                            // A match in the set.
-                    currentTree.hasAttribute("class") &&
-                    includedClasses.contains(currentTree.getAttribute("class"))
-                    );
+        boolean keep = (includedClasses == null) // If null, every element is kept.
+                || !currentTree.isLeaf() // If not leaf, at least a descendant is kept.
+                || ( // A match in the set.
+                currentTree.hasAttribute("class") && includedClasses
+                        .contains(currentTree.getAttribute("class")));
+
         if (keep) {
             String className = currentTree.getAttribute("class");
-            if (REMOVE_ELEMENT_SET.contains(elname) ||
-                    (className != null && REMOVE_CLASS_SET.contains(className))) {   // Omit this "input" element.
+
+            if (REMOVE_ELEMENT_SET.contains(elname)
+                    || ((className != null) && REMOVE_CLASS_SET
+                            .contains(className))) { // Omit this "input" element.
                 currentTree.startTraverseChildren();
-                while (currentTree.hasMoreChildren())
+
+                while (currentTree.hasMoreChildren()) {
                     currentTree.getParent().addChild(currentTree.nextChild());
-            } else
+                }
+            } else {
                 currentTree.getParent().addChild(currentTree);
+            }
         }
 
         super.endElement(elname);
@@ -92,7 +98,8 @@ public class ConfigXmlHandler extends XmlHandler {
         if (target.equals("moml")) {
             StringReader dataReader = new StringReader(data);
             XmlParser newParser = new XmlParser();
-            ConfigXmlHandler newHandler = new ConfigXmlHandler(currentTree, systemId, includedClasses);
+            ConfigXmlHandler newHandler = new ConfigXmlHandler(currentTree,
+                    systemId, includedClasses);
             newHandler.addExcludedFiles(_excludedFiles);
             newParser.setHandler(newHandler);
             newParser.parse(systemId, null, dataReader);
@@ -100,24 +107,20 @@ public class ConfigXmlHandler extends XmlHandler {
         }
     }
 
-    public static final String[] REMOVE_ELEMENTS = new String[] {
-        "configure",
-        "input"
-    };
+    public static final String[] REMOVE_ELEMENTS = new String[] { "configure",
+            "input" };
 
     public static final String[] REMOVE_CLASSES = new String[] {
-        "ptolemy.kernel.CompositeEntity",
-        "ptolemy.actor.gui.Configuration"
-    };
-    
+            "ptolemy.kernel.CompositeEntity", "ptolemy.actor.gui.Configuration" };
+
     private Set _excludedFiles = new HashSet();
 
     private static Set REMOVE_ELEMENT_SET = new HashSet();
 
     private static Set REMOVE_CLASS_SET = new HashSet();
 
-    private Set includedClasses;    // If null, every element matches.
-    
+    private Set includedClasses; // If null, every element matches.
+
     static {
         REMOVE_ELEMENT_SET.addAll(Arrays.asList(REMOVE_ELEMENTS));
         REMOVE_CLASS_SET.addAll(Arrays.asList(REMOVE_CLASSES));

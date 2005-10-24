@@ -44,7 +44,6 @@ public class PaintedImage implements PaintedObject, ImageObserver {
     // diva.compat.canvas instead.  However, the Ptolemy sources
     // do not include diva.compat.canvas, so I'm making this class
     // undeprecated. -cxh 7/05
-
     // The image that we are drawing.
     private Image _image;
 

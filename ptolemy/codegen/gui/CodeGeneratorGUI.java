@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.gui;
 
-// Ptolemy imports.
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;

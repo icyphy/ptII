@@ -109,10 +109,9 @@ public class LineStyle extends ParameterEditorStyle {
         String name = container.getName();
         String defaultValue = "";
         defaultValue = container.getExpression();
-        query.addLine(name, container.getDisplayName(),
-                defaultValue,
-                PtolemyQuery.preferredBackgroundColor(container),
-                PtolemyQuery.preferredForegroundColor(container));
+        query.addLine(name, container.getDisplayName(), defaultValue,
+                PtolemyQuery.preferredBackgroundColor(container), PtolemyQuery
+                        .preferredForegroundColor(container));
         query.attachParameter(container, name);
     }
 }

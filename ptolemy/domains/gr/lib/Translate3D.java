@@ -176,8 +176,8 @@ public class Translate3D extends GRTransform {
             xOffset = (xOffset + _accumulatedX);
             yOffset = (yOffset + _accumulatedY);
             zOffset = (zOffset + _accumulatedZ);
-        } 
-        
+        }
+
         // use the resutls as the new states and save them
         _accumulatedX = xOffset;
         _accumulatedY = yOffset;

@@ -27,6 +27,7 @@ COPYRIGHTENDKEY
 */
 import javax.sound.sampled.*;
 
+
 /** Simple class used by configure to test whether the javasound
     is present
     @author Christopher Hylands
@@ -36,7 +37,7 @@ import javax.sound.sampled.*;
     @Pt.AcceptedRating Red
 */
 public class javasoundTest {
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         System.out.print(System.getProperty("java.version"));
     }
 }

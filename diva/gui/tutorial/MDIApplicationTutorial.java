@@ -164,6 +164,7 @@ public class MDIApplicationTutorial extends MDIApplication {
      */
     public void initializeMenuBar(JMenuBar menuBar) {
         Action action;
+
         // Create the File menu
         JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic('F');

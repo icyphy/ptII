@@ -336,7 +336,7 @@ public class LocatableNodeController extends BasicNodeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The drag interactor, which is remembered so we can change the
      *  snap resolution.
      */

@@ -318,8 +318,8 @@ public class Dataflow extends AbstractDDI implements DDI {
         QID tag = a.getTag();
 
         if ((tag != null) && (_currentStateSet != null)) {
-
             int length = _currentTransitions.length;
+
             for (int i = 0; i < length; i++) {
                 Transition t = _currentTransitions[i];
 
@@ -350,6 +350,7 @@ public class Dataflow extends AbstractDDI implements DDI {
         QID tag = a.getTag();
 
         int length = _currentTransitions.length;
+
         for (int i = 0; i < length; i++) {
             Transition t = _currentTransitions[i];
 
@@ -357,6 +358,7 @@ public class Dataflow extends AbstractDDI implements DDI {
                 ns.add(t.getDestinationState());
             }
         }
+
         _currentStateSet = ns;
 
         _computeNextTransitions();
@@ -369,10 +371,12 @@ public class Dataflow extends AbstractDDI implements DDI {
 
         for (int i = 0; i < ts.length; i++) {
             Transition t = ts[i];
+
             if (_currentStateSet.contains(t.getSourceState())) {
                 nt.add(t);
             }
         }
+
         _currentTransitions = (Transition[]) nt.toArray(new Transition[nt
                 .size()]);
     }

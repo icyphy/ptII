@@ -368,6 +368,7 @@ public abstract class AbstractGraphController implements GraphController {
 
         // Draw the nodes to be rendered before the edges.
         nodes = _model.nodesBeforeEdges(_model.getRoot());
+
         while (nodes.hasNext()) {
             Object node = nodes.next();
             drawNode(node);
@@ -376,6 +377,7 @@ public abstract class AbstractGraphController implements GraphController {
         // Draw the edges that are connected to any of the above nodes.
         edges = GraphUtilities
                 .partiallyContainedEdges(_model.getRoot(), _model);
+
         while (edges.hasNext()) {
             Object edge = edges.next();
             drawEdge(edge);
@@ -387,6 +389,7 @@ public abstract class AbstractGraphController implements GraphController {
 
         // Draw the nodes to be rendered after the edges.
         nodes = _model.nodesAfterEdges(_model.getRoot());
+
         while (nodes.hasNext()) {
             Object node = nodes.next();
             drawNode(node);
@@ -394,6 +397,7 @@ public abstract class AbstractGraphController implements GraphController {
 
         // Restore the selected nodes.
         nodes = (GraphUtilities.nodeSet(_model.getRoot(), _model)).iterator();
+
         while (nodes.hasNext()) {
             Object node = nodes.next();
 
@@ -480,7 +484,8 @@ public abstract class AbstractGraphController implements GraphController {
                     clearNode(i.next());
                 }
 
-                for (i = GraphUtilities.totallyContainedEdges(root, _model); i.hasNext();) {
+                for (i = GraphUtilities.totallyContainedEdges(root, _model); i
+                        .hasNext();) {
                     clearEdge(i.next());
                 }
             }

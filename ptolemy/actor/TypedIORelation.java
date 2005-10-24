@@ -149,6 +149,7 @@ public class TypedIORelation extends IORelation {
             throw new IllegalActionException(this, relation,
                     "TypedIORelation can only link to a TypedIORelation.");
         }
+
         super._checkRelation(relation, symmetric);
     }
 }

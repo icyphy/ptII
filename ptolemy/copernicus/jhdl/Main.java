@@ -85,59 +85,59 @@ public class Main extends KernelMain {
         // For example, to time out after 5 minutes, or 300000 ms:
         // -p wjtp.watchDog time:30000
         addTransform(pack, "wjtp.watchDog", WatchDogTimer.v(),
-                "time:" + _watchDogTimeout);
+            "time:" + _watchDogTimeout);
 
         // Create a class for the composite actor of the model, and for
         // all actors referenced by the model.
         addTransform(pack, "wjtp.mt", ModelTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            "targetPackage:" + _targetPackage);
 
         // Inline the director into the composite actor.
         addTransform(pack, "wjtp.idt", InlineDirectorTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage + " outDir:" + _outputDirectory);
+            "targetPackage:" + _targetPackage + " outDir:" + _outputDirectory);
 
         // Add a command line interface (i.e. Main)
         addTransform(pack, "wjtp.clt", CommandLineTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            "targetPackage:" + _targetPackage);
 
         addTransform(pack, "wjtp.ta1", new TransformerAdapter(TypeAssigner.v()));
         addStandardOptimizations(pack, 1);
 
         if (_snapshots) {
             addTransform(pack, "wjtp.snapshot1", JimpleWriter.v(),
-                    "outDir:" + _outputDirectory + "/jimple1");
+                "outDir:" + _outputDirectory + "/jimple1");
         }
 
         addTransform(pack, "wjtp.ib1", InvocationBinder.v());
 
         addTransform(pack, "wjtp.ls7", new TransformerAdapter(LocalSplitter.v()));
         addTransform(pack, "wjtp.ffet",
-                FieldsForEntitiesTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            FieldsForEntitiesTransformer.v(_toplevel),
+            "targetPackage:" + _targetPackage);
 
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
         addTransform(pack, "wjtp.ta2", new TransformerAdapter(TypeAssigner.v()));
         addTransform(pack, "wjtp.cie1",
-                new TransformerAdapter(CastAndInstanceofEliminator.v()));
+            new TransformerAdapter(CastAndInstanceofEliminator.v()));
         addStandardOptimizations(pack, 2);
 
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
         addTransform(pack, "wjtp.ffat1",
-                FieldsForAttributesTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            FieldsForAttributesTransformer.v(_toplevel),
+            "targetPackage:" + _targetPackage);
 
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
         // to getPort with references to those fields.
         addTransform(pack, "wjtp.ffpt", FieldsForPortsTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            "targetPackage:" + _targetPackage);
 
         addTransform(pack, "wjtp.ls2", new TransformerAdapter(LocalSplitter.v()));
         addTransform(pack, "wjtp.lns",
-                new TransformerAdapter(LocalNameStandardizer.v()));
+            new TransformerAdapter(LocalNameStandardizer.v()));
         addStandardOptimizations(pack, 3);
 
         addTransform(pack, "wjtp.ls3", new TransformerAdapter(LocalSplitter.v()));
@@ -154,7 +154,7 @@ public class Main extends KernelMain {
         // specially handled before this point, or we should detect
         // assignments to attributes and handle them differently.)
         addTransform(pack, "wjtp.iat", InlineParameterTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            "targetPackage:" + _targetPackage);
 
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
@@ -163,7 +163,7 @@ public class Main extends KernelMain {
         // often allows us to statically determine the channels
         // of port reads and writes.
         addTransform(pack, "wjtp.itt1", InlineTokenTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            "targetPackage:" + _targetPackage);
         addTransform(pack, "wjtp.ls4", new TransformerAdapter(LocalSplitter.v()));
 
         // While we still have references to ports, use the
@@ -172,25 +172,25 @@ public class Main extends KernelMain {
         // polymorphic actors.  After this step, no
         // uninstantiable types should remain.
         addTransform(pack, "wjtp.tie",
-                new TransformerAdapter(TokenInstanceofEliminator.v()));
+            new TransformerAdapter(TokenInstanceofEliminator.v()));
         addTransform(pack, "wjtp.ta4", new TransformerAdapter(TypeAssigner.v()));
         addTransform(pack, "wjtp.cp1",
-                new TransformerAdapter(CopyPropagator.v()));
+            new TransformerAdapter(CopyPropagator.v()));
 
         if (_snapshots) {
             addTransform(pack, "wjtp.snapshot2", ClassWriter.v(),
-                    "outDir:" + _outputDirectory + "/jimple2");
+                "outDir:" + _outputDirectory + "/jimple2");
             addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
-                    "outDir:" + _outputDirectory + "/jimple2");
+                "outDir:" + _outputDirectory + "/jimple2");
         }
 
         addTransform(pack, "wjtp.ta5", new TransformerAdapter(TypeAssigner.v()));
         addTransform(pack, "wjtp.nee", NamedObjEqualityEliminator.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            "targetPackage:" + _targetPackage);
 
         // Remove casts and instanceof Checks.
         addTransform(pack, "wjtp.cie2",
-                new TransformerAdapter(CastAndInstanceofEliminator.v()));
+            new TransformerAdapter(CastAndInstanceofEliminator.v()));
         addStandardOptimizations(pack, 4);
 
         // Anywhere we have a method call on a token that can be
@@ -200,9 +200,9 @@ public class Main extends KernelMain {
         // often allows us to statically determine the channels
         // of port reads and writes.
         addTransform(pack, "wjtp.itt2", InlineTokenTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            "targetPackage:" + _targetPackage);
         addTransform(pack, "wjtp.ipt", InlinePortTransformer.v(_toplevel),
-                "targetPackage:" + _targetPackage);
+            "targetPackage:" + _targetPackage);
 
         addStandardOptimizations(pack, 5);
 
@@ -211,16 +211,16 @@ public class Main extends KernelMain {
         //                  new Transform("jtp.clu",
         //                          ConstantLoopUnroller.v()));
         addTransform(pack, "wjtp.finalSnapshotJimple", JimpleWriter.v(),
-                "outDir:" + _outputDirectory);
+            "outDir:" + _outputDirectory);
 
         addTransform(pack, "wjtp.circuit",
-                ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel), "JHDL");
+            ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel), "JHDL");
     }
 
     /** Parse any code generator specific arguments.
      */
     protected String[] _parseArgs(GeneratorAttribute attribute)
-            throws Exception {
+        throws Exception {
         //  String snapshots = attribute.getParameter("snapshots");
         //         if (snapshots.equals("true")) {
         //             _snapshots = true;

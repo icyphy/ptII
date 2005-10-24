@@ -46,9 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (kapokasa)
  @Pt.AcceptedRating Red (cxh)
  */
-
 public class DistributedLineWriter extends Sink {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -75,6 +73,7 @@ public class DistributedLineWriter extends Sink {
             Token token = input.get(0);
             System.out.println(token.toString());
         }
+
         return super.postfire();
     }
 }

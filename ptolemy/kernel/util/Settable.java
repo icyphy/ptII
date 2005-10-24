@@ -101,7 +101,7 @@ public interface Settable extends Nameable {
      *   if there is none.
      */
     public String getDefaultExpression();
-    
+
     /** Return a name to present to the user.
      *  @return A name to present to the user.
      */

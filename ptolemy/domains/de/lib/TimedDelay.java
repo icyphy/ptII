@@ -50,26 +50,26 @@ import ptolemy.kernel.util.Workspace;
  must be the same as that of the input.
  <p>
  This actor keeps a local FIFO queue to store all received but not processed
- inputs. The behavior of this actor on each firing is to read a token from 
- the input, if there is one, store it into the local queue, and output the 
- previously received token that is scheduled to be produced at the current 
- time. 
- <p> During the postfire() method, this actor schedules itself to fire again 
- to produce the just received token on the corresponding output channel after 
- the appropriate time delay. Note that if the value of delay is 0.0, the 
- actor schedules itself to fire at the current model time. 
+ inputs. The behavior of this actor on each firing is to read a token from
+ the input, if there is one, store it into the local queue, and output the
+ previously received token that is scheduled to be produced at the current
+ time.
+ <p> During the postfire() method, this actor schedules itself to fire again
+ to produce the just received token on the corresponding output channel after
+ the appropriate time delay. Note that if the value of delay is 0.0, the
+ actor schedules itself to fire at the current model time.
  <p>
  Occasionally, this actor is used inside a feedback loop just for scheduling
  purpose, where the delay parameter is set to 0.0. This implies that no
  output token is produced earlier than the time its trigger input arrives.
- Therefore the actor declares that there is a delay at microstep between the 
+ Therefore the actor declares that there is a delay at microstep between the
  input and the output, and the DE director will leverage this when
  determining the precedences of the actors. It is sometimes useful to think
- of this zero-valued delay as an infinitesimal delay. 
+ of this zero-valued delay as an infinitesimal delay.
  <p>
- Note that the output always has a large tag, either bigger time or bigger 
- microstep than that of the input. This guarantees that a DE signal is 
- functional in the sense that for any tag (a tuple of time and microstep), 
+ Note that the output always has a large tag, either bigger time or bigger
+ microstep than that of the input. This guarantees that a DE signal is
+ functional in the sense that for any tag (a tuple of time and microstep),
  there is at most one value.
 
  @see ptolemy.actor.util.FunctionDependencyOfAtomicActor

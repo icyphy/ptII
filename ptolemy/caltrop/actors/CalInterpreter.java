@@ -66,7 +66,6 @@ import caltrop.interpreter.ast.Actor;
  @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
  */
 public class CalInterpreter extends AbstractCalInterpreter {
-
     /** Construct an actor in the given workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.

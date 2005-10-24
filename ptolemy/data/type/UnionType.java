@@ -98,6 +98,7 @@ public class UnionType extends StructuredType {
         if (isConstant()) {
             return this;
         }
+
         // empty union is a constant, so this record type is not empty.
         // construct the labels and declared types array
         Object[] labelsObj = _fields.keySet().toArray();
@@ -438,6 +439,7 @@ public class UnionType extends StructuredType {
             if (this.equals(newType)) {
                 return;
             }
+
             throw new IllegalActionException("UnionType.updateType: "
                     + "This type is a constant and the argument is not the"
                     + " same as this type. This type: " + this.toString()
@@ -629,7 +631,6 @@ public class UnionType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // Mapping from label to field information.
     private Map _fields = new HashMap();
 
@@ -639,7 +640,6 @@ public class UnionType extends StructuredType {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
-
     // A class that encapsulates the declared and resolved types of a
     // field and implements the InequalityTerm interface.
     private class FieldType implements InequalityTerm {

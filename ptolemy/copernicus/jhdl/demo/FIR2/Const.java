@@ -63,7 +63,7 @@ public class Const extends TypedAtomicActor {
      *   actor with this name.
      */
     public Const(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
         value = new Parameter(this, "value", new IntToken(1));
         output = new TypedIOPort(this, "output", false, true);
@@ -72,9 +72,9 @@ public class Const extends TypedAtomicActor {
         output.setTypeAtLeast(value);
 
         _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
-                + "</svg>\n");
+            "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+            + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
+            + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

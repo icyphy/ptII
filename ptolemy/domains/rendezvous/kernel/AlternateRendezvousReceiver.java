@@ -61,11 +61,11 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.AcceptedRating Red (cxh)
  @deprecated Use RendezvousReceiver instead.
  */
-public class AlternateRendezvousReceiver extends AbstractReceiver implements ProcessReceiver {
-    
+public class AlternateRendezvousReceiver extends AbstractReceiver implements
+        ProcessReceiver {
     // FIXME: Downgraded to Red when changing deadlock detection mechanism.
     // EAL 8/05
-    
+
     /** Construct a AlternateRendezvousReceiver with no container.
      */
     public AlternateRendezvousReceiver() {
@@ -79,7 +79,8 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *  @exception IllegalActionException If this receiver cannot be
      *   contained by the proposed container.
      */
-    public AlternateRendezvousReceiver(IOPort container) throws IllegalActionException {
+    public AlternateRendezvousReceiver(IOPort container)
+            throws IllegalActionException {
         super(container);
         _boundaryDetector = new BoundaryDetector(this);
         _thisReceiver[0][0] = this;
@@ -118,14 +119,15 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs is to be terminated.
      */
-    public static Token[][] getFromAll(Receiver[][] receivers, RendezvousDirector director)
-            throws TerminateProcessException {
-        if (receivers == null || receivers.length == 0) {
-            throw new InternalErrorException(
-                    "No receivers!");
+    public static Token[][] getFromAll(Receiver[][] receivers,
+            RendezvousDirector director) throws TerminateProcessException {
+        if ((receivers == null) || (receivers.length == 0)) {
+            throw new InternalErrorException("No receivers!");
         }
-        synchronized(director) {
+
+        synchronized (director) {
             Thread thisThread = Thread.currentThread();
+
             // Prior to returning, a previous invocation of this method will
             // have set _putWaiting to null, but the put thread may not have
             // been given a chance to react to this by returning. Thus, we
@@ -140,15 +142,16 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     director.threadUnblocked(thisThread, null);
                 }
             }
-                
+
             for (int i = 0; i < receivers.length; i++) {
                 if (receivers[i] != null) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
-                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
+                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
                             castReceiver._getWaiting = thisThread;
                             castReceiver._getReceivers = receivers;
                             castReceiver._getConditional = false;
+
                             // If there is a put waiting, mark its thread unblocked.
                             // Note that if the put side is conditional,
                             // then this get may not actually unblock it.
@@ -156,12 +159,14 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                             // notified in any case, and it will mark itself
                             // blocked if it is still blocked.
                             if (castReceiver._putWaiting != null) {
-                                director.threadUnblocked(castReceiver._putWaiting, null);
+                                director.threadUnblocked(
+                                        castReceiver._putWaiting, null);
                             }
                         }
                     }
                 }
             }
+
             while (!_areReadyToPut(receivers)) {
                 try {
                     // The following does a notifyAll() on the director.
@@ -171,6 +176,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     director.threadUnblocked(thisThread, null);
                 }
             }
+
             // We are now committed to this get.
             // At this point, _putWaiting is non-null on all receivers.
             // This should mean that _putReceivers is also non-null on all receivers.
@@ -178,29 +184,34 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
             // Setting _putWaiting to null will allow the put thread to return
             // from its corresponding put method.
             Token[][] result = new Token[receivers.length][];
-            
+
             for (int i = 0; i < receivers.length; i++) {
                 if (receivers[i] != null) {
                     result[i] = new Token[receivers[i].length];
+
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
                             // Perform the transfer.
-                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
+                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
                             result[i][j] = castReceiver._token;
+
                             // Indicate to the corresponding put() thread that the put completed.
                             Thread putThread = castReceiver._putWaiting;
                             Receiver[][] putReceivers = castReceiver._putReceivers;
                             castReceiver._putWaiting = null;
                             castReceiver._putReceivers = null;
+
                             // Set a flag indicating that the put thread can now
                             // return but has not yet returned.
                             castReceiver._putInProgress = thisThread;
+
                             // The following does a notify on the director.
                             director.threadUnblocked(putThread, null);
                         }
                     }
                 }
             }
+
             // Wait for the put to complete on all my receivers.
             // The put thread will set _getWaiting to null on each receiver as it completes.
             while (_isGetWaitingOnAny(receivers)) {
@@ -212,7 +223,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     director.threadUnblocked(thisThread, null);
                 }
             }
-            
+
             // Finally, reset the _getInProgress flag.
             // This indicates that this thread has had a chance to react to the
             // null value of _getWaiting that was set by the put thread.
@@ -221,9 +232,11 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                 if (receivers[i] != null) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
-                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
+                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
+
                             // This could unblock the put thread.
-                            director.threadUnblocked(castReceiver._getInProgress, castReceiver);
+                            director.threadUnblocked(
+                                    castReceiver._getInProgress, castReceiver);
                             castReceiver._getInProgress = null;
                         }
                     }
@@ -233,7 +246,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
             return result;
         } // synchronized(director)
     }
-    
+
     /** Get from any receiver in the specified array.
      *  This method does not return until one of the gets is complete.
      *  @param receivers The receivers, which are assumed to
@@ -243,8 +256,8 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs is to be terminated.
      */
-    public static Token getFromAny(Receiver[][] receivers, RendezvousDirector director)
-            throws TerminateProcessException {
+    public static Token getFromAny(Receiver[][] receivers,
+            RendezvousDirector director) throws TerminateProcessException {
         // FIXME: As with putToAny(), this should nondeterministically select
         // a channel, but then perform a multiway rendezvous with each receiver
         // on the channel.  In Ptolemy II, this situation never currently occurs,
@@ -252,12 +265,13 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         // multiple receivers per channel is if the input is in a composite
         // actor and the receivers linked on the inside (obtained through
         // deepGetReceivers()) are used.
-        if (receivers == null || receivers.length == 0) {
-            throw new InternalErrorException(
-                    "No receivers!");
+        if ((receivers == null) || (receivers.length == 0)) {
+            throw new InternalErrorException("No receivers!");
         }
-        synchronized(director) {
+
+        synchronized (director) {
             Thread thisThread = Thread.currentThread();
+
             // Prior to returning, a previous invocation of this method will
             // have set _putWaiting to null, but the put thread may not have
             // been given a chance to react to this by returning. Thus, we
@@ -272,26 +286,30 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     director.threadUnblocked(thisThread, null);
                 }
             }
+
             for (int i = 0; i < receivers.length; i++) {
                 if (receivers[i] != null) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
-                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
+                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
                             castReceiver._getWaiting = thisThread;
                             castReceiver._getReceivers = receivers;
                             castReceiver._getConditional = true;
+
                             // Any receiver that is blocked could get unblocked by this.
                             // NOTE: If the put side is multiway, we could be more
                             // specific here, but there is no harm in marking unblocked.
                             // It will be notified in any case, and will mark itself
                             // blocked again if it is still blocked.
                             if (castReceiver._putWaiting != null) {
-                                director.threadUnblocked(castReceiver._putWaiting, null);
+                                director.threadUnblocked(
+                                        castReceiver._putWaiting, null);
                             }
                         }
                     }
                 }
             }
+
             // Iterate until a receiver is found whose put side is
             // ready to commit.
             while (true) {
@@ -306,6 +324,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                         director.threadUnblocked(thisThread, null);
                     }
                 }
+
                 // At this point, we have a put waiting on at least one
                 // sender.  If this method was called before any put()
                 // was ready, then by the time we get here, some other thread
@@ -313,21 +332,24 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                 // _wins. Iterate through the receivers
                 // until we find one that won the put.
                 AlternateRendezvousReceiver winner = null;
+
                 for (int i = 0; i < receivers.length; i++) {
                     if (receivers[i] != null) {
                         for (int j = 0; j < receivers[i].length; j++) {
                             if (receivers[i][j] != null) {
-                                if(((AlternateRendezvousReceiver)receivers[i][j])._wins) {
-                                    winner = (AlternateRendezvousReceiver)receivers[i][j];
+                                if (((AlternateRendezvousReceiver) receivers[i][j])._wins) {
+                                    winner = (AlternateRendezvousReceiver) receivers[i][j];
                                     break;
                                 }
                             }
                         }
                     }
+
                     if (winner != null) {
                         break;
                     }
                 }
+
                 // If no previously designated winner has been
                 // found, then in a second pass, find
                 // the first one that is ready to complete the rendezvous.
@@ -339,18 +361,20 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                         if (receivers[i] != null) {
                             for (int j = 0; j < receivers[i].length; j++) {
                                 if (receivers[i][j] != null) {
-                                    if (_isReadyToPut((AlternateRendezvousReceiver)receivers[i][j])) {
-                                        winner = (AlternateRendezvousReceiver)receivers[i][j];
+                                    if (_isReadyToPut((AlternateRendezvousReceiver) receivers[i][j])) {
+                                        winner = (AlternateRendezvousReceiver) receivers[i][j];
                                         break;
                                     }
                                 }
                             }
                         }
+
                         if (winner != null) {
                             break;
                         }
                     }
                 }
+
                 // It is possible that we have still not found a
                 // winning put, in which case, we just wait.
                 // But if we have found a winning put, then we are
@@ -359,32 +383,34 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     // The put is ready to complete.
                     // We are now committed.
                     // Complete the rendezvous.
-                    
                     // First, retract the _getWaiting on all receivers
                     // except the one to which we are committing.
                     for (int k = 0; k < receivers.length; k++) {
                         if (receivers[k] != null) {
                             for (int m = 0; m < receivers[k].length; m++) {
                                 if (receivers[k][m] != winner) {
-                                    AlternateRendezvousReceiver otherCastReceiver = (AlternateRendezvousReceiver)receivers[k][m];
+                                    AlternateRendezvousReceiver otherCastReceiver = (AlternateRendezvousReceiver) receivers[k][m];
                                     otherCastReceiver._getWaiting = null;
                                     otherCastReceiver._getReceivers = null;
                                 }
                             }
                         }
                     }
+
                     // Have to read the token before waiting for the put
                     // to complete, or we end up with a race condition
                     // where the token may be overwritten before we get to it.
                     Token result = winner._token;
-                    
+
                     // Indicate to the corresponding put() thread that the put completed.
                     Thread putThread = winner._putWaiting;
                     Receiver[][] putReceivers = winner._putReceivers;
                     winner._putWaiting = null;
                     winner._putReceivers = null;
+
                     // Indicate that a put is in progress.
                     winner._putInProgress = thisThread;
+
                     // The following does a notify on the director.
                     director.threadUnblocked(putThread, null);
 
@@ -396,8 +422,9 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                             waitForChange(director);
                         } finally {
                             director.threadUnblocked(thisThread, null);
-                        }                                
+                        }
                     }
+
                     // Finally, reset the _getInProgress flag.
                     director.threadUnblocked(winner._getInProgress, winner);
                     winner._getInProgress = null;
@@ -405,6 +432,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
 
                     return result;
                 }
+
                 // Wait for a change.
                 try {
                     // The following does a notifyAll() on the director.
@@ -546,6 +574,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         if (isOutsideBoundary() || isInsideBoundary()) {
             return true;
         }
+
         return false;
     }
 
@@ -554,7 +583,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *  @return True if a read is pending on this receiver.
      */
     public boolean isReadBlocked() {
-        synchronized(_getDirector()) {
+        synchronized (_getDirector()) {
             return (_getWaiting != null);
         }
     }
@@ -565,7 +594,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *   receiver.
      */
     public boolean isWriteBlocked() {
-        synchronized(_getDirector()) {
+        synchronized (_getDirector()) {
             return (_putWaiting != null);
         }
     }
@@ -580,7 +609,8 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
      */
-    public void put(Token token) throws IllegalActionException, TerminateProcessException {
+    public void put(Token token) throws IllegalActionException,
+            TerminateProcessException {
         Token[][] tokens = new Token[1][1];
         tokens[0][0] = token;
         putToAll(tokens, _thisReceiver, _getDirector());
@@ -601,19 +631,20 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
      */
-    public void putArrayToAll(
-            Token[] tokens, int numberOfTokens, Receiver[] receivers)
-            throws NoRoomException, IllegalActionException, TerminateProcessException {
+    public void putArrayToAll(Token[] tokens, int numberOfTokens,
+            Receiver[] receivers) throws NoRoomException,
+            IllegalActionException, TerminateProcessException {
         if (numberOfTokens > tokens.length) {
             IOPort container = getContainer();
             throw new IllegalActionException(container,
                     "Not enough tokens supplied.");
         }
+
         for (int i = 0; i < numberOfTokens; i++) {
             putToAll(tokens[i], receivers);
         }
     }
-    
+
     /** Put to all receivers in the specified array.
      *  This method does not return until all the puts are complete.
      *  @param token The token to put.
@@ -625,18 +656,21 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs is to be terminated.
      */
-    public void putToAll(Token token, Receiver[] receivers, RendezvousDirector director)
-            throws IllegalActionException, TerminateProcessException {
-        if (receivers == null || receivers.length == 0) {
+    public void putToAll(Token token, Receiver[] receivers,
+            RendezvousDirector director) throws IllegalActionException,
+            TerminateProcessException {
+        if ((receivers == null) || (receivers.length == 0)) {
             return;
         }
+
         Receiver[][] argument = new Receiver[1][];
         argument[0] = receivers;
+
         Token[][] tokens = new Token[1][1];
         tokens[0][0] = token;
         putToAll(tokens, argument, director);
     }
-    
+
     /** Put to all receivers in the specified array.
      *  This method does not return until all the puts are complete.
      *  The tokens argument can have fewer tokens than receivers argument
@@ -655,14 +689,16 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs is to be terminated.
      */
-    public static void putToAll(Token[][] tokens, Receiver[][] receivers, RendezvousDirector director)
-            throws IllegalActionException, TerminateProcessException {
-        if (receivers == null || receivers.length == 0) {
+    public static void putToAll(Token[][] tokens, Receiver[][] receivers,
+            RendezvousDirector director) throws IllegalActionException,
+            TerminateProcessException {
+        if ((receivers == null) || (receivers.length == 0)) {
             return;
         }
-        synchronized(director) {
+
+        synchronized (director) {
             Thread thisThread = Thread.currentThread();
-            
+
             // Prior to returning, a previous invocation of this method will
             // have set _getWaiting to null, but the get thread may not have
             // been given a chance to react to this by returning. Thus, we
@@ -677,20 +713,26 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     director.threadUnblocked(thisThread, null);
                 }
             }
+
             Token token = null;
+
             for (int i = 0; i < receivers.length; i++) {
                 if (receivers[i] != null) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
-                            if (tokens.length > i && tokens[i] != null && tokens[i].length > j) {
+                            if ((tokens.length > i) && (tokens[i] != null)
+                                    && (tokens[i].length > j)) {
                                 token = tokens[i][j];
                             }
-                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
+
+                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
                             castReceiver._putWaiting = thisThread;
                             castReceiver._putReceivers = receivers;
+
                             // Perform the transfer.
                             IOPort port = castReceiver.getContainer();
                             castReceiver._token = port.convert(token);
+
                             // If there is a get waiting, mark its thread unblocked.
                             // Note that if the get side is conditional,
                             // then this put may not actually unblock it.
@@ -698,12 +740,14 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                             // notified in any case, and it will mark itself
                             // blocked if it is still blocked.
                             if (castReceiver._getWaiting != null) {
-                                director.threadUnblocked(castReceiver._getWaiting, null);
+                                director.threadUnblocked(
+                                        castReceiver._getWaiting, null);
                             }
                         }
                     }
                 }
             }
+
             while (!_areReadyToGet(receivers)) {
                 try {
                     // The following does a notifyAll() on the director.
@@ -713,6 +757,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     director.threadUnblocked(thisThread, null);
                 }
             }
+
             // We are now committed to this put.
             // At this point, _getWaiting is non-null on all receivers.
             // This should mean that _getReceivers is also non-null on all receivers.
@@ -723,21 +768,25 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                 if (receivers[i] != null) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
-                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
+                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
+
                             // Indicate to the corresponding get() thread that the put completed.
                             Thread getThread = castReceiver._getWaiting;
                             Receiver[][] getReceivers = castReceiver._getReceivers;
                             castReceiver._getWaiting = null;
                             castReceiver._getReceivers = null;
+
                             // Set a flag indicating that the get thread can now
                             // return but has not yet returned.
                             castReceiver._getInProgress = thisThread;
+
                             // The following does a notify on the director.
                             director.threadUnblocked(getThread, null);
                         }
                     }
                 }
             }
+
             // Wait for the get to complete on all my receivers.
             // The get thread will set _putWaiting to null on each receiver as it completes.
             while (_isPutWaitingOnAny(receivers)) {
@@ -749,6 +798,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     director.threadUnblocked(thisThread, null);
                 }
             }
+
             // Finally, reset the _putInProgress flag.
             // This indicates that this thread has had a chance to react to the
             // null value of _putWaiting that was set by the get thread.
@@ -757,8 +807,9 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                 if (receivers[i] != null) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
-                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
-                            director.threadUnblocked(castReceiver._putInProgress, castReceiver);
+                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
+                            director.threadUnblocked(
+                                    castReceiver._putInProgress, castReceiver);
                             castReceiver._putInProgress = null;
                         }
                     }
@@ -766,7 +817,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
             }
         } // synchronized(director)
     }
-    
+
     /** Put the specified token to all receivers on ony of the channels
      *  in the specified array.   The first index of the specified array
      *  specifies the channel number.  The second index specifies the
@@ -785,13 +836,14 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs is to be terminated.
      */
-    public static void putToAny(Token token, Receiver[][] receivers, RendezvousDirector director)
-            throws IllegalActionException, TerminateProcessException {
-        if (receivers == null || receivers.length == 0) {
-            throw new InternalErrorException(
-                    "No receivers!");
+    public static void putToAny(Token token, Receiver[][] receivers,
+            RendezvousDirector director) throws IllegalActionException,
+            TerminateProcessException {
+        if ((receivers == null) || (receivers.length == 0)) {
+            throw new InternalErrorException("No receivers!");
         }
-        synchronized(director) {
+
+        synchronized (director) {
             Thread thisThread = Thread.currentThread();
 
             // Prior to returning, a previous invocation of this method will
@@ -808,17 +860,18 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     director.threadUnblocked(thisThread, null);
                 }
             }
+
             // For each channel.
             for (int i = 0; i < receivers.length; i++) {
                 if (receivers[i] != null) {
                     // For each copy within the channel.
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] != null) {
-                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
+                            AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
                             castReceiver._putWaiting = thisThread;
                             castReceiver._putReceivers = receivers;
                             castReceiver._putConditional = true;
-                            
+
                             // Perform the transfer.
                             // Note that this makes the token available to all
                             // receivers, although the one that completes the
@@ -832,12 +885,14 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                             // It will be notified in any case, and will mark itself
                             // blocked again if it is still blocked.
                             if (castReceiver._getWaiting != null) {
-                                director.threadUnblocked(castReceiver._getWaiting, null);
+                                director.threadUnblocked(
+                                        castReceiver._getWaiting, null);
                             }
                         }
                     }
                 }
             }
+
             // Iterate until a receiver is found whose get side is
             // ready to commit.
             while (true) {
@@ -852,6 +907,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                         director.threadUnblocked(thisThread, null);
                     }
                 }
+
                 // At this point, we have a get waiting on all the
                 // receivers at least one channel.
                 // If this method was called before any get()
@@ -862,13 +918,14 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                 // select the channel that that receiver is in.
                 // NOTE: It should be that the _wins flag is set
                 // in all the receivers in the channel.
-                Receiver winners[] = null;
+                Receiver[] winners = null;
                 int winningChannel = 0;
+
                 for (int i = 0; i < receivers.length; i++) {
                     if (receivers[i] != null) {
                         for (int j = 0; j < receivers[i].length; j++) {
                             if (receivers[i][j] != null) {
-                                if(((AlternateRendezvousReceiver)receivers[i][j])._wins) {
+                                if (((AlternateRendezvousReceiver) receivers[i][j])._wins) {
                                     // The winner is the entire channel.
                                     winners = receivers[i];
                                     winningChannel = i;
@@ -877,10 +934,12 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                             }
                         }
                     }
+
                     if (winners != null) {
                         break;
                     }
                 }
+
                 // If no previously designated winning channel has been
                 // found, then in a second pass, find
                 // the first channel that is ready to complete the rendezvous.
@@ -898,6 +957,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                         }
                     }
                 }
+
                 // It is possible that we have still not found a
                 // winning get, in which case, we just wait.
                 // But if we have found a winning get, then we are
@@ -906,34 +966,36 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     // The get is ready to complete.
                     // We are now committed.
                     // Complete the rendezvous.
-
                     // First, retract the _putWaiting on all receivers
                     // except the ones in the channel to which we are committing.
                     for (int k = 0; k < receivers.length; k++) {
-                        if (k != winningChannel && receivers[k] != null) {
+                        if ((k != winningChannel) && (receivers[k] != null)) {
                             for (int m = 0; m < receivers[k].length; m++) {
                                 if (receivers[k][m] != null) {
-                                    AlternateRendezvousReceiver otherCastReceiver = (AlternateRendezvousReceiver)receivers[k][m];
+                                    AlternateRendezvousReceiver otherCastReceiver = (AlternateRendezvousReceiver) receivers[k][m];
                                     otherCastReceiver._putWaiting = null;
                                     otherCastReceiver._putReceivers = null;
                                 }
                             }
                         }
                     }
+
                     // When we get here, all receivers in the winners array
                     // are ready to complete the rendezvous.
                     for (int i = 0; i < winners.length; i++) {
-                        AlternateRendezvousReceiver winner = (AlternateRendezvousReceiver)winners[i];
+                        AlternateRendezvousReceiver winner = (AlternateRendezvousReceiver) winners[i];
                         Thread getThread = winner._getWaiting;
                         Receiver[][] getReceivers = winner._getReceivers;
                         winner._getWaiting = null;
                         winner._getReceivers = null;
+
                         // Indicate that a get is in progress.
                         winner._getInProgress = thisThread;
+
                         // The following does a notify on the director.
                         director.threadUnblocked(getThread, null);
                     }
-                    
+
                     // Wait for the get to complete on the selected receivers.
                     while (_isPutWaitingOnAny(winners)) {
                         try {
@@ -942,17 +1004,20 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                             waitForChange(director);
                         } finally {
                             director.threadUnblocked(thisThread, null);
-                        }                                
+                        }
                     }
+
                     // Finally, reset the _putInProgress flag.
                     for (int i = 0; i < winners.length; i++) {
-                        AlternateRendezvousReceiver winner = (AlternateRendezvousReceiver)winners[i];
+                        AlternateRendezvousReceiver winner = (AlternateRendezvousReceiver) winners[i];
                         director.threadUnblocked(winner._putInProgress, winner);
                         winner._putInProgress = null;
                         winner._wins = false;
                     }
+
                     return;
                 }
+
                 // Wait for a change.
                 try {
                     // The following does a notifyAll() on the director.
@@ -971,17 +1036,20 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      */
     public void requestFinish() {
         Object lock = _getDirector();
-        synchronized(lock) {
+
+        synchronized (lock) {
             // Need to reset the state of the receiver.
             if (_putWaiting != null) {
                 _getDirector().threadUnblocked(_putWaiting, this);
             }
+
             if (_getWaiting != null) {
                 _getDirector().threadUnblocked(_getWaiting, this);
             }
+
             _putWaiting = null;
             _getWaiting = null;
-            
+
             // Wake up any pending threads. EAL 12/04
             lock.notifyAll();
         }
@@ -991,7 +1059,8 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      */
     public void reset() {
         Object lock = _getDirector();
-        synchronized(lock) {
+
+        synchronized (lock) {
             _getWaiting = null;
             _putWaiting = null;
             _boundaryDetector.reset();
@@ -1012,11 +1081,13 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         if (director.isStopRequested() || director._inWrapup) {
             throw new TerminateProcessException("Thread terminated.");
         }
+
         try {
             director.wait();
         } catch (InterruptedException e) {
             throw new TerminateProcessException("Thread interrupted.");
         }
+
         if (director.isStopRequested() || director._inWrapup) {
             throw new TerminateProcessException("Thread terminated.");
         }
@@ -1024,10 +1095,9 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
     // FIXME: Most of these should be private.
     // Prune the ones that are no longer needed.
-    
+
     /** Return true if the specified receivers are all ready to complete
      *  a rendezvous, assuming they are ready to put.  A receiver is ready if
      *  <ul>
@@ -1050,7 +1120,9 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
-                        if (!_checkReadyToGet((AlternateRendezvousReceiver)receivers[i][j], null)) {
+                        if (!_checkReadyToGet(
+                                (AlternateRendezvousReceiver) receivers[i][j],
+                                null)) {
                             // No need to continue. One of the receivers is not ready.
                             return false;
                         }
@@ -1058,16 +1130,18 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                 }
             }
         }
+
         // If we get here, then all receivers were ready. Commit.
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
-                        _commitGet((AlternateRendezvousReceiver)receivers[i][j]);
+                        _commitGet((AlternateRendezvousReceiver) receivers[i][j]);
                     }
                 }
             }
         }
+
         return true;
     }
 
@@ -1091,18 +1165,21 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
     protected static boolean _areReadyToGet(Receiver[] receivers) {
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
-                if (!_checkReadyToGet((AlternateRendezvousReceiver)receivers[i], null)) {
+                if (!_checkReadyToGet(
+                        (AlternateRendezvousReceiver) receivers[i], null)) {
                     // No need to continue. One of the receivers is not ready.
                     return false;
                 }
             }
         }
+
         // If we get here, then all receivers were ready. Commit.
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
-                _commitGet((AlternateRendezvousReceiver)receivers[i]);
+                _commitGet((AlternateRendezvousReceiver) receivers[i]);
             }
         }
+
         return true;
     }
 
@@ -1130,7 +1207,9 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
-                        if (!_checkReadyToPut((AlternateRendezvousReceiver)receivers[i][j], null)) {
+                        if (!_checkReadyToPut(
+                                (AlternateRendezvousReceiver) receivers[i][j],
+                                null)) {
                             // No need to continue. One of the receivers is not ready.
                             return false;
                         }
@@ -1138,16 +1217,18 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                 }
             }
         }
+
         // If we get here, then all receivers were ready. Commit.
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
-                        _commitPut((AlternateRendezvousReceiver)receivers[i][j]);
+                        _commitPut((AlternateRendezvousReceiver) receivers[i][j]);
                     }
                 }
             }
         }
+
         return true;
     }
 
@@ -1161,6 +1242,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
     protected RendezvousDirector _getDirector() {
         try {
             Actor container = (Actor) getContainer().getContainer();
+
             if (isInsideBoundary()) {
                 return (RendezvousDirector) container.getDirector();
             } else {
@@ -1169,12 +1251,13 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
-            throw new TerminateProcessException("AlternateRendezvousReceiver: trying to "
-                    + " rendezvous with a receiver with no "
-                    + "director => terminate.");
+            throw new TerminateProcessException(
+                    "AlternateRendezvousReceiver: trying to "
+                            + " rendezvous with a receiver with no "
+                            + "director => terminate.");
         }
     }
-    
+
     /** Return whether a getFromAny() is pending on this receiver.
      *  @return True if a getFromAny() is pending on this receiver.
      */
@@ -1190,7 +1273,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         // FIXME: Obsolete.
         return (_putWaiting != null) && _putConditional;
     }
-    
+
     /** Return true if a get() is pending on all the specified
      *  receivers. If the argument is null, then this method
      *  returns false.
@@ -1200,21 +1283,24 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *   consider all receivers.
      *  @return True if a get() is pending on the specified receivers.
      */
-    protected static boolean _isGetWaitingOnAll(Receiver[][] receivers, Receiver except) {
+    protected static boolean _isGetWaitingOnAll(Receiver[][] receivers,
+            Receiver except) {
         if (receivers == null) {
             return false;
         }
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != except) {
-                        if (((AlternateRendezvousReceiver)receivers[i][j])._getWaiting == null) {
+                        if (((AlternateRendezvousReceiver) receivers[i][j])._getWaiting == null) {
                             return false;
                         }
                     }
                 }
             }
         }
+
         return true;
     }
 
@@ -1230,20 +1316,22 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         if (receivers == null) {
             return false;
         }
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
-                        if (((AlternateRendezvousReceiver)receivers[i][j])._getInProgress != null) {
+                        if (((AlternateRendezvousReceiver) receivers[i][j])._getInProgress != null) {
                             return true;
                         }
                     }
                 }
             }
         }
+
         return false;
     }
-    
+
     /** Return true if a get() is pending on any of the specified
      *  receivers. If the argument is null, then this method
      *  returns false.
@@ -1256,17 +1344,19 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         if (receivers == null) {
             return false;
         }
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
-                        if (((AlternateRendezvousReceiver)receivers[i][j])._getWaiting != null) {
+                        if (((AlternateRendezvousReceiver) receivers[i][j])._getWaiting != null) {
                             return true;
                         }
                     }
                 }
             }
         }
+
         return false;
     }
 
@@ -1283,26 +1373,31 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         if (receivers == null) {
             return false;
         }
+
         // Channel number is i.
         for (int i = 0; i < receivers.length; i++) {
-            if (receivers[i] != null && receivers[i].length > 0) {
+            if ((receivers[i] != null) && (receivers[i].length > 0)) {
                 boolean result = true;
                 boolean foundOne = false;
+
                 // Copy number is j.
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
                         foundOne = true;
-                        if (((AlternateRendezvousReceiver)receivers[i][j])._getWaiting == null) {
+
+                        if (((AlternateRendezvousReceiver) receivers[i][j])._getWaiting == null) {
                             result = false;
                             break;
                         }
                     }
                 }
+
                 if (foundOne && result) {
                     return result;
                 }
             }
         }
+
         return false;
     }
 
@@ -1327,17 +1422,19 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         if (receivers == null) {
             return false;
         }
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
-                        if (((AlternateRendezvousReceiver)receivers[i][j])._putInProgress != null) {
+                        if (((AlternateRendezvousReceiver) receivers[i][j])._putInProgress != null) {
                             return true;
                         }
                     }
                 }
             }
         }
+
         return false;
     }
 
@@ -1361,17 +1458,19 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         if (receivers == null) {
             return false;
         }
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
-                        if (((AlternateRendezvousReceiver)receivers[i][j])._putWaiting == null) {
+                        if (((AlternateRendezvousReceiver) receivers[i][j])._putWaiting == null) {
                             return false;
                         }
                     }
                 }
             }
         }
+
         return true;
     }
 
@@ -1387,17 +1486,19 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         if (receivers == null) {
             return false;
         }
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
-                        if (((AlternateRendezvousReceiver)receivers[i][j])._putWaiting != null) {
+                        if (((AlternateRendezvousReceiver) receivers[i][j])._putWaiting != null) {
                             return true;
                         }
                     }
                 }
             }
         }
+
         return false;
     }
 
@@ -1413,13 +1514,15 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         if (receivers == null) {
             return false;
         }
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
-                if (((AlternateRendezvousReceiver)receivers[i])._putWaiting != null) {
+                if (((AlternateRendezvousReceiver) receivers[i])._putWaiting != null) {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
@@ -1442,9 +1545,11 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      */
     protected static boolean _isReadyToPut(AlternateRendezvousReceiver receiver) {
         boolean result = _checkReadyToPut(receiver, null);
+
         if (result) {
             _commitPut(receiver);
         }
+
         return result;
     }
 
@@ -1465,21 +1570,27 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *  @return True if the specified receiver is ready to complete
      *   a rendezvous.
      */
-    private static boolean _checkReadyToGet(AlternateRendezvousReceiver receiver, AlternateRendezvousReceiver except) {
+    private static boolean _checkReadyToGet(
+            AlternateRendezvousReceiver receiver,
+            AlternateRendezvousReceiver except) {
         // It is possible that the rendezvous has partly completed,
         // in which case we return true.
-        if (receiver._getInProgress != null || receiver._putInProgress != null) {
+        if ((receiver._getInProgress != null)
+                || (receiver._putInProgress != null)) {
             return true;
         }
+
         // Next check that there is a get waiting. If not, return false.
         if (receiver._getWaiting == null) {
             return false;
         }
+
         // If the get is conditional, then having a get waiting
         // is sufficient, and we don't have to go any further.
         if (receiver._getConditional) {
             return true;
         }
+
         // The get is not conditional. All other get receivers
         // have to be ready. We assume that since recevier is
         // ready to get, that all other get receivers are
@@ -1488,20 +1599,25 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         // Skip the argument receiver when checking
         // (or we'll get an infinite loop).
         Receiver[][] receivers = receiver._getReceivers;
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != receiver && receivers[i][j] != except) {
+                    if ((receivers[i][j] != receiver)
+                            && (receivers[i][j] != except)) {
                         // Check that each receiver is ready to put (we
                         // know it's ready to get because it's in the _getReceivers list).
                         // Specify to skip this receiver, to avoid infinite loop.
-                        if (!_checkReadyToPut((AlternateRendezvousReceiver)receivers[i][j], receiver)) {
+                        if (!_checkReadyToPut(
+                                (AlternateRendezvousReceiver) receivers[i][j],
+                                receiver)) {
                             return false;
                         }
                     }
                 }
             }
         }
+
         // If we haven't returned false by now, then we are ready to commit.
         return true;
     }
@@ -1522,16 +1638,21 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
      *  @return True if the specified receiver is ready to complete
      *   a rendezvous.
      */
-    private static boolean _checkReadyToPut(AlternateRendezvousReceiver receiver, AlternateRendezvousReceiver except) {
+    private static boolean _checkReadyToPut(
+            AlternateRendezvousReceiver receiver,
+            AlternateRendezvousReceiver except) {
         // It is possible that the rendezvous has partly completed,
         // in which case we return true.
-        if (receiver._getInProgress != null || receiver._putInProgress != null) {
+        if ((receiver._getInProgress != null)
+                || (receiver._putInProgress != null)) {
             return true;
         }
+
         // Next check that there is a put waiting. If not, return false.
         if (receiver._putWaiting == null) {
             return false;
         }
+
         Receiver[][] receivers = receiver._putReceivers;
 
         // If the put is conditional, then need to determine whether
@@ -1542,32 +1663,41 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
                     // Regrettably, we first need to determine whether
                     // channel i is the channel containing this receiver.
                     boolean isChannel = false;
+
                     for (int j = 0; j < receivers[i].length; j++) {
                         if (receivers[i][j] == receiver) {
                             isChannel = true;
                             break;
                         }
                     }
+
                     if (isChannel) {
                         // Check that all the receivers in the channel are ready.
                         for (int j = 0; j < receivers[i].length; j++) {
-                            if (receivers[i][j] != receiver && receivers[i][j] != except) {
+                            if ((receivers[i][j] != receiver)
+                                    && (receivers[i][j] != except)) {
                                 // Check that each receiver is ready to get (we know
                                 // it's ready to put because it's in the _putReceivers list).
-                                if (!_checkReadyToGet((AlternateRendezvousReceiver)receivers[i][j], receiver)) {
+                                if (!_checkReadyToGet(
+                                        (AlternateRendezvousReceiver) receivers[i][j],
+                                        receiver)) {
                                     return false;
                                 }
                             }
                         }
+
                         // If we get here, then all the receivers in the channel are ready.
                         return true;
                     }
                 }
             }
+
             // If we get here, then the receiver was not found in its own
             // _putReceivers array, which is an error.
-            throw new InternalErrorException("Receiver not found in its own _putReceivers array!");
+            throw new InternalErrorException(
+                    "Receiver not found in its own _putReceivers array!");
         }
+
         // The put is not conditional. All other put receivers
         // have to be ready. We assume that since recevier is
         // ready to put, that all other put receivers are
@@ -1578,16 +1708,20 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != receiver && receivers[i][j] != except) {
+                    if ((receivers[i][j] != receiver)
+                            && (receivers[i][j] != except)) {
                         // Check that each receiver is ready to get (we know
                         // it's ready to put because it's in the _putReceivers list).
-                        if (!_checkReadyToGet((AlternateRendezvousReceiver)receivers[i][j], receiver)) {
+                        if (!_checkReadyToGet(
+                                (AlternateRendezvousReceiver) receivers[i][j],
+                                receiver)) {
                             return false;
                         }
                     }
                 }
             }
         }
+
         // If we haven't returned false by now, then we are ready to commit.
         return true;
     }
@@ -1604,15 +1738,19 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
             // Nothing to do. This should not happen.
             return;
         }
+
         if (receiver._getConditional) {
             receiver._wins = true;
         }
+
         Receiver[][] receivers = receiver._getReceivers;
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != receiver) {
-                        AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
+                        AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
+
                         // If the get is conditional, then retract get waiting
                         // on all other get receivers.
                         if (receiver._getConditional) {
@@ -1642,24 +1780,30 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
             // Nothing to do. This should not happen.
             return;
         }
+
         if (receiver._putConditional) {
             receiver._wins = true;
         }
+
         Receiver[][] receivers = receiver._putReceivers;
+
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 // Regrettably, we first need to determine whether
                 // channel i is the channel containing this receiver.
                 boolean isChannel = false;
+
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] == receiver) {
                         isChannel = true;
                         break;
                     }
                 }
+
                 for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != receiver) {
-                        AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver)receivers[i][j];
+                        AlternateRendezvousReceiver castReceiver = (AlternateRendezvousReceiver) receivers[i][j];
+
                         // If the get is conditional, then retract get waiting
                         // on all other get receivers not in the same channel.
                         if (receiver._putConditional) {
@@ -1682,16 +1826,16 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The boundary detector. */
     private BoundaryDetector _boundaryDetector;
 
     /** Flag indicating that the _getWaiting thread is a conditional rendezvous. */
     private boolean _getConditional = false;
-    
+
     /** Indicator that a get method can now return but has not yet returned. */
     private Thread _getInProgress = null;
-    
+
     /** The receivers currently being gotten data from. */
     private Receiver[][] _getReceivers = null;
 
@@ -1703,19 +1847,19 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements Pro
 
     /** Indicator that a put method can now return but has not yet returned. */
     private Thread _putInProgress = null;
-    
+
     /** The receivers currently being put data to. */
     private Receiver[][] _putReceivers = null;
 
     /** Indicator that a put() is waiting on this receiver. */
     private Thread _putWaiting = null;
-    
+
     /** Array with just one receiver, this one, for convenience. */
     private Receiver[][] _thisReceiver = new Receiver[1][1];
-    
+
     /** The token being transferred during the rendezvous. */
     private Token _token;
-    
+
     /** Flag indicating that this receiver wins a conditional rendezvous competition. */
     private boolean _wins = false;
 }

@@ -31,11 +31,9 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 
-import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

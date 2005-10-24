@@ -157,14 +157,15 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
      */
     public boolean imageUpdate(Image image, int infoflags, int x, int y,
             int width, int height) {
-
         if ((infoflags & (ImageObserver.ERROR | ImageObserver.ABORT)) != 0) {
             // Create a default error image.
-            URL url = getClass().getResource("/diva/canvas/toolbox/errorImage.gif");
+            URL url = getClass().getResource(
+                    "/diva/canvas/toolbox/errorImage.gif");
             Toolkit tk = Toolkit.getDefaultToolkit();
             _image = tk.getImage(url);
             return true;
         }
+
         if ((infoflags & (ImageObserver.HEIGHT | ImageObserver.WIDTH)) != 0) {
             // NOTE: Incredibly stupidly, when Java calls this method
             // with a new width and height, it hasn't set those fields
@@ -199,7 +200,7 @@ public class ImageFigure extends AbstractFigure implements ImageObserver {
             // Return false, indicating that the image is completely loaded.
             return false;
         }
-        
+
         // In case the width or height is later updated.
         _image.getWidth(this);
         _image.getHeight(this);

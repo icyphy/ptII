@@ -107,7 +107,7 @@ public class FIRSingle {
      *
      */
     public void initialize(float[] taps, int numberOfTaps, float[] data,
-            int interpolation, int decimation, int decimationPhase) {
+        int interpolation, int decimation, int decimationPhase) {
         /* Copy the arguments */
         _taps = taps;
         _numberOfTaps = numberOfTaps;

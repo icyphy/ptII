@@ -40,7 +40,6 @@ import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
@@ -228,15 +227,16 @@ public class Configuration extends CompositeEntity {
                         // diva.graph.AbstractGraphController.rerender()
                         // throws an NullPointerException when starting
                         // vergil.
-                        MessageHandler.error(
-                                "Failed to open "
-                                + ((PtolemyEffigy) effigy).getModel().getFullName(), ex);
+                        MessageHandler.error("Failed to open "
+                                + ((PtolemyEffigy) effigy).getModel()
+                                        .getFullName(), ex);
                     }
+
                     effigy.setContainer(null);
                 } catch (Throwable throwable) {
-                    throw new InternalErrorException(this, throwable,
-                            null);
+                    throw new InternalErrorException(this, throwable, null);
                 }
+
                 // As a last resort, attempt to open source code
                 // associated with the object.
                 if (effigy instanceof PtolemyEffigy) {
@@ -245,6 +245,7 @@ public class Configuration extends CompositeEntity {
                     // Source code is found by name.
                     String filename = StringUtilities
                             .objectToSourceFileName(object);
+
                     try {
                         URL toRead = getClass().getClassLoader().getResource(
                                 filename);

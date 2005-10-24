@@ -65,10 +65,10 @@ public class Ramp extends CCodeGeneratorHelper {
         super.generateFireCode(code);
         code.append(_generateBlockCode("fireBlock"));
     }
-    
+
     /** Generate the initialize code.
      *  @return The initialize code.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -76,27 +76,29 @@ public class Ramp extends CCodeGeneratorHelper {
         code.append(_generateBlockCode("initBlock"));
         return processCode(code.toString());
     }
-    
+
     /** Generate the preinitialize code. Declare the variable state.
      *  @return The preinitialize code.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        
         // FIXME: so far the code only works for primitive types.
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
+
         ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
         Type initType = actor.init.getType();
         Type stepType = actor.step.getType();
         int comparison = TypeLattice.compare(initType, stepType);
-        if (comparison == CPO.HIGHER || comparison == CPO.SAME) {
+
+        if ((comparison == CPO.HIGHER) || (comparison == CPO.SAME)) {
             code.append(initType.toString() + " $actorSymbol(state);\n");
         } else if (comparison == CPO.LOWER) {
-            code.append(stepType.toString() + " $actorSymbol(state);\n");   
+            code.append(stepType.toString() + " $actorSymbol(state);\n");
         } else {
             throw new IllegalActionException(actor, "type incomparable.");
         }
+
         return processCode(code.toString());
     }
 }

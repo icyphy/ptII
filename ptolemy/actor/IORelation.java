@@ -99,7 +99,6 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Green (acataldo)
  */
 public class IORelation extends ComponentRelation {
-
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Add the relation to the directory of the workspace.
      */
@@ -303,6 +302,7 @@ public class IORelation extends ComponentRelation {
         if (_width == 0) {
             return _inferWidth();
         }
+
         return _width;
     }
 
@@ -609,11 +609,13 @@ public class IORelation extends ComponentRelation {
             throw new IllegalActionException(this, relation,
                     "IORelation can only link to an IORelation.");
         }
+
         if (((IORelation) relation)._width != _width) {
             throw new IllegalActionException(this, relation,
                     "Relations have different widths: " + _width + " != "
                             + ((IORelation) relation)._width);
         }
+
         super._checkRelation(relation, symmetric);
     }
 
@@ -742,21 +744,19 @@ public class IORelation extends ComponentRelation {
             _inferredWidth = 1;
 
             Iterator ports = linkedPortList().iterator();
-            
+
             // Note that depending on the order of the ports get iterated,
             // the inferred width may be different if different ports have
             // different widths. This is nondeterministic.
             // However, the model behavior is not affected by this because
             // the relation with the smallest width along a path decides
             // the number of signals that can be passed through.
-            
             while (ports.hasNext()) {
                 IOPort p = (IOPort) ports.next();
 
                 // Infer the width of this port from the linked connections.
                 // Note we assume that this method is only called upon a 
                 // multiport. 
-                
                 // To guarantee this method successfully infer widths, we have
                 // to check and ensure that there is at most one input relation 
                 // or one output relation whose width is not fixed (unknown).
@@ -770,18 +770,18 @@ public class IORelation extends ComponentRelation {
                 // no guarantee of existence of a useful fixed-point whose 
                 // widths are all non-zero. Therefore, we take the conservative
                 // approach.
-                
                 // To infer the unknown width, we resolve the equation where 
                 // the sum of the widths of input relations equals the sum of 
                 // those of output relations.
-                
                 int portInsideWidth = 0;
                 int portOutsideWidth = 0;
                 int difference = 0;
+
                 if (p.isInsideGroupLinked(this)) {
                     // I am linked on the inside...
                     portInsideWidth = p._getInsideWidth(this);
-                    portOutsideWidth = p._getOutsideWidth(null); 
+                    portOutsideWidth = p._getOutsideWidth(null);
+
                     // the same as portOutsideWidth = p.getWidth();
                     difference = portOutsideWidth - portInsideWidth;
                 } else if (p.isLinked(this)) {
@@ -790,9 +790,10 @@ public class IORelation extends ComponentRelation {
                     portOutsideWidth = p._getOutsideWidth(this);
                     difference = portInsideWidth - portOutsideWidth;
                 }
+
                 if (difference > _inferredWidth) {
                     _inferredWidth = difference;
-                } 
+                }
             }
 
             _inferredWidthVersion = version;
@@ -869,16 +870,18 @@ public class IORelation extends ComponentRelation {
              }
              }
              */
-
             _width = width;
 
             // Set the width of all relations in the relation group.
             Iterator relations = relationGroupList().iterator();
+
             while (!_suppressWidthPropagation && relations.hasNext()) {
                 IORelation relation = (IORelation) relations.next();
+
                 if (relation == this) {
                     continue;
                 }
+
                 // If the relation has a width parameter, set that
                 // value. Otherwise, just set its width directly.
                 // Have to disable back propagation.
@@ -925,7 +928,6 @@ public class IORelation extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
     // cached inferred width.
     private transient int _inferredWidth;
 

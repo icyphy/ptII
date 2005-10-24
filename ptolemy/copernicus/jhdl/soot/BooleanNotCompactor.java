@@ -93,7 +93,7 @@ public class BooleanNotCompactor {
         PatchingChain chain = mbody.getUnits();
 
         for (Unit current = (Unit) chain.snapshotIterator().next();
-             current != null;) {
+                    current != null;) {
             Unit u = mergeBooleanAssign(chain, current);
 
             if (u == null) {
@@ -153,7 +153,7 @@ public class BooleanNotCompactor {
         Value trueValue = ((AssignStmt) target).getRightOp();
 
         if (!(falseValue instanceof IntConstant)
-                || !(trueValue instanceof IntConstant)) {
+                    || !(trueValue instanceof IntConstant)) {
             return null;
         }
 
@@ -209,7 +209,7 @@ public class BooleanNotCompactor {
 
     public static void main(String[] args) {
         soot.SootMethod testMethod = ptolemy.copernicus.jhdl.test.Test
-            .getSootMethod(args);
+                    .getSootMethod(args);
 
         soot.Body body = testMethod.retrieveActiveBody();
         soot.toolkits.graph.CompleteUnitGraph unitGraph = new soot.toolkits.graph.CompleteUnitGraph(body);

@@ -1,41 +1,46 @@
 /* WeakHashMap -- a hashtable that keeps only weak references
-   to its keys, allowing the virtual machine to reclaim them
-   Copyright (C) 1999, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
+ to its keys, allowing the virtual machine to reclaim them
+ Copyright (C) 1999, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ 02111-1307 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
+
+import ptolemy.backtrack.Checkpoint;
+import ptolemy.backtrack.Rollbackable;
+import ptolemy.backtrack.util.CheckpointRecord;
+import ptolemy.backtrack.util.FieldRecord;
 
 import java.lang.Object;
 import java.lang.ref.ReferenceQueue;
@@ -43,12 +48,8 @@ import java.lang.ref.WeakReference;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import ptolemy.backtrack.Checkpoint;
-import ptolemy.backtrack.Rollbackable;
-import ptolemy.backtrack.util.CheckpointRecord;
-import ptolemy.backtrack.util.FieldRecord;
 
-/** 
+/**
  * A weak hash map has only weak references to the key. This means that it
  * allows the key to be garbage collected if it is not used otherwise. If
  * this happens, the entry will eventually disappear from the map,
@@ -67,8 +68,8 @@ import ptolemy.backtrack.util.FieldRecord;
  * entry, that was in the set before, suddenly disappears.
  * <p>A weak hash map is not meant for caches; use a normal map, with
  * soft references as values instead, or try {
-@link LinkedHashMap}
-.
+ @link LinkedHashMap}
+ .
  * <p>The weak hash map supports null values and null keys.  The null key
  * is never deleted from the map (except explictly of course). The
  * performance of the methods are similar to that of a hash map.
@@ -86,28 +87,29 @@ import ptolemy.backtrack.util.FieldRecord;
  * @status updated to 1.4
  */
 public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
-
     // WARNING: WeakHashMap is a CORE class in the bootstrap cycle. See the
     // comments in vm/reference/java/lang/Runtime for implications of this fact.
-    /**     
+
+    /**
      * The default capacity for an instance of HashMap.
      * Sun's documentation mildly suggests that this (11) is the correct
      * value.
      */
     private static final int DEFAULT_CAPACITY = 11;
 
-    /**     
+    /**
      * The default load factor of a HashMap.
      */
     private static final float DEFAULT_LOAD_FACTOR = 0.75F;
 
-    /**     
+    /**
      * This is used instead of the key value <i>null</i>.  It is needed
      * to distinguish between an null key and a removed key.
      */
+
     // Package visible for use by nested classes.
     static final Object NULL_KEY = new Object() {
-        /**         
+        /**
          * Sets the hashCode to 0, since that's what null would map to.
          * @return the hash code 0
          */
@@ -115,83 +117,85 @@ public class WeakHashMap extends AbstractMap implements Map, Rollbackable {
             return 0;
         }
 
-        /**         
+        /**
          * Compares this key to the given object. Normally, an object should
          * NEVER compare equal to null, but since we don't publicize NULL_VALUE,
          * it saves bytecode to do so here.
          * @return true iff o is this or null
          */
         public boolean equals(Object o) {
-            return null == o || this == o;
+            return (null == o) || (this == o);
         }
-
     };
 
-    /**     
+    /**
      * The reference queue where our buckets (which are WeakReferences) are
      * registered to.
      */
     private final ReferenceQueue queue;
 
-    /**     
+    /**
      * The number of entries in this hash map.
      */
+
     // Package visible for use by nested classes.
     private int size;
 
-    /**     
+    /**
      * The load factor of this WeakHashMap.  This is the maximum ratio of
      * size versus number of buckets.  If size grows the number of buckets
      * must grow, too.
      */
     private float loadFactor;
 
-    /**     
+    /**
      * The rounded product of the capacity (i.e. number of buckets) and
      * the load factor. When the number of elements exceeds the
      * threshold, the HashMap calls <code>rehash()</code>.
      */
     private int threshold;
 
-    /**     
+    /**
      * The number of structural modifications.  This is used by
      * iterators, to see if they should fail.  This doesn't count
      * the silent key removals, when a weak reference is cleared
      * by the garbage collection.  Instead the iterators must make
      * sure to have strong references to the entries they rely on.
      */
+
     // Package visible for use by nested classes.
     private int modCount;
 
     // This method will get inlined.
     // This is the next entry.
+
     /**         // Entry was cleared, try next.
 
      *     // No more buckets, we are through.
-The entry set returned by <code>entrySet()</code>.
+     The entry set returned by <code>entrySet()</code>.
      */
     private final WeakEntrySet theEntrySet;
 
-    /**     
+    /**
      * The hash buckets.  These are linked lists. Package visible for use in
      * nested classes.
      */
     private WeakBucket[] buckets;
 
-    /**     
+    /**
      * The entry set.  There is only one instance per hashmap, namely
      * theEntrySet.  Note that the entry set may silently shrink, just
      * like the WeakHashMap.
      */
-    private final class WeakEntrySet extends AbstractSet implements Rollbackable {
-
-        /**         
+    private final class WeakEntrySet extends AbstractSet implements
+            Rollbackable {
+        /**
          * Non-private constructor to reduce bytecode emitted.
          */
         WeakEntrySet() {
         }
 
-        /**         
+        /**
          * Returns the size of this set.
          * @return the set size
          */
@@ -199,13 +203,13 @@ The entry set returned by <code>entrySet()</code>.
             return size;
         }
 
-        /**         
+        /**
          * Returns an iterator for all entries.
          * @return an Entry iterator
          */
         public Iterator iterator() {
             return new Iterator() {
-                /**                 
+                /**
                  * The entry that was returned by the last
                  * <code>next()</code> call.  This is also the entry whose
                  * bucket should be removed by the <code>remove</code> call. <br>
@@ -217,7 +221,7 @@ The entry set returned by <code>entrySet()</code>.
                  */
                 private WeakBucket.WeakEntry lastEntry;
 
-                /**                 
+                /**
                  * The entry that will be returned by the next
                  * <code>next()</code> call.  It is <code>null</code> if there
                  * is no further entry. <br>
@@ -227,13 +231,13 @@ The entry set returned by <code>entrySet()</code>.
                  */
                 private WeakBucket.WeakEntry nextEntry = findNext(null);
 
-                /**                 
+                /**
                  * The known number of modification to the list, if it differs
                  * from the real number, we throw an exception.
                  */
                 private int knownMod = modCount;
 
-                /**                 
+                /**
                  * Check the known number of modification to the number of
                  * modifications of the table.  If it differs from the real
                  * number, we throw an exception.
@@ -242,20 +246,24 @@ The entry set returned by <code>entrySet()</code>.
                  */
                 private void checkMod() {
                     cleanQueue();
-                    if (knownMod != modCount)
+
+                    if (knownMod != modCount) {
                         throw new ConcurrentModificationException();
+                    }
                 }
 
-                /**                 
+                /**
                  * Get a strong reference to the next entry after
                  * lastBucket.
                  * @param lastEntry the previous bucket, or null if we should
                  * get the first entry.
                  * @return the next entry.
                  */
-                private WeakBucket.WeakEntry findNext(WeakBucket.WeakEntry lastEntry) {
+                private WeakBucket.WeakEntry findNext(
+                        WeakBucket.WeakEntry lastEntry) {
                     int slot;
                     WeakBucket nextBucket;
+
                     if (lastEntry != null) {
                         nextBucket = lastEntry.getBucket().next;
                         slot = lastEntry.getBucket().slot;
@@ -263,21 +271,29 @@ The entry set returned by <code>entrySet()</code>.
                         nextBucket = buckets[0];
                         slot = 0;
                     }
+
                     while (true) {
                         while (nextBucket != null) {
                             WeakBucket.WeakEntry entry = nextBucket.getEntry();
-                            if (entry != null)
+
+                            if (entry != null) {
                                 return entry;
+                            }
+
                             nextBucket = nextBucket.next;
                         }
+
                         slot++;
-                        if (slot == buckets.length)
+
+                        if (slot == buckets.length) {
                             return null;
+                        }
+
                         nextBucket = buckets[slot];
                     }
                 }
 
-                /**                 
+                /**
                  * Checks if there are more entries.
                  * @return true, iff there are more elements.
                  * @throws ConcurrentModificationException if the hash map was
@@ -288,7 +304,7 @@ The entry set returned by <code>entrySet()</code>.
                     return nextEntry != null;
                 }
 
-                /**                 
+                /**
                  * Returns the next entry.
                  * @return the next entry.
                  * @throws ConcurrentModificationException if the hash map was
@@ -297,14 +313,17 @@ The entry set returned by <code>entrySet()</code>.
                  */
                 public Object next() {
                     checkMod();
-                    if (nextEntry == null)
+
+                    if (nextEntry == null) {
                         throw new NoSuchElementException();
+                    }
+
                     $ASSIGN$lastEntry(nextEntry);
                     $ASSIGN$nextEntry(findNext(lastEntry));
                     return lastEntry;
                 }
 
-                /**                 
+                /**
                  * Removes the last returned entry from this set.  This will
                  * also remove the bucket of the underlying weak hash map.
                  * @throws ConcurrentModificationException if the hash map was
@@ -314,8 +333,11 @@ The entry set returned by <code>entrySet()</code>.
                  */
                 public void remove() {
                     checkMod();
-                    if (lastEntry == null)
+
+                    if (lastEntry == null) {
                         throw new IllegalStateException();
+                    }
+
                     $ASSIGN$SPECIAL$modCount(11, modCount);
                     internalRemove(lastEntry.getBucket());
                     $ASSIGN$lastEntry(null);
@@ -323,7 +345,6 @@ The entry set returned by <code>entrySet()</code>.
                 }
 
                 final class _PROXY_ implements Rollbackable {
-
                     public final void $COMMIT(long timestamp) {
                         $COMMIT_ANONYMOUS(timestamp);
                     }
@@ -340,80 +361,116 @@ The entry set returned by <code>entrySet()</code>.
                         $SET$CHECKPOINT_ANONYMOUS(checkpoint);
                         return this;
                     }
-
                 }
 
-                private final WeakBucket.WeakEntry $ASSIGN$lastEntry(WeakBucket.WeakEntry newValue) {
-                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$lastEntry.add(null, lastEntry, $CHECKPOINT.getTimestamp());
+                private final WeakBucket.WeakEntry $ASSIGN$lastEntry(
+                        WeakBucket.WeakEntry newValue) {
+                    if (($CHECKPOINT != null)
+                            && ($CHECKPOINT.getTimestamp() > 0)) {
+                        $RECORD$lastEntry.add(null, lastEntry, $CHECKPOINT
+                                .getTimestamp());
                     }
-                    if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+                    if ((newValue != null)
+                            && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                         newValue.$SET$CHECKPOINT($CHECKPOINT);
                     }
+
                     return lastEntry = newValue;
                 }
 
-                private final WeakBucket.WeakEntry $ASSIGN$nextEntry(WeakBucket.WeakEntry newValue) {
-                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$nextEntry.add(null, nextEntry, $CHECKPOINT.getTimestamp());
+                private final WeakBucket.WeakEntry $ASSIGN$nextEntry(
+                        WeakBucket.WeakEntry newValue) {
+                    if (($CHECKPOINT != null)
+                            && ($CHECKPOINT.getTimestamp() > 0)) {
+                        $RECORD$nextEntry.add(null, nextEntry, $CHECKPOINT
+                                .getTimestamp());
                     }
-                    if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+                    if ((newValue != null)
+                            && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
                         newValue.$SET$CHECKPOINT($CHECKPOINT);
                     }
+
                     return nextEntry = newValue;
                 }
 
-                private final int $ASSIGN$SPECIAL$knownMod(int operator, long newValue) {
-                    if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-                        $RECORD$knownMod.add(null, knownMod, $CHECKPOINT.getTimestamp());
+                private final int $ASSIGN$SPECIAL$knownMod(int operator,
+                        long newValue) {
+                    if (($CHECKPOINT != null)
+                            && ($CHECKPOINT.getTimestamp() > 0)) {
+                        $RECORD$knownMod.add(null, knownMod, $CHECKPOINT
+                                .getTimestamp());
                     }
+
                     switch (operator) {
-                        case 0:
-                            return knownMod += newValue;
-                        case 1:
-                            return knownMod -= newValue;
-                        case 2:
-                            return knownMod *= newValue;
-                        case 3:
-                            return knownMod /= newValue;
-                        case 4:
-                            return knownMod &= newValue;
-                        case 5:
-                            return knownMod |= newValue;
-                        case 6:
-                            return knownMod ^= newValue;
-                        case 7:
-                            return knownMod %= newValue;
-                        case 8:
-                            return knownMod <<= newValue;
-                        case 9:
-                            return knownMod >>= newValue;
-                        case 10:
-                            return knownMod >>>= newValue;
-                        case 11:
-                            return knownMod++;
-                        case 12:
-                            return knownMod--;
-                        case 13:
-                            return ++knownMod;
-                        case 14:
-                            return --knownMod;
-                        default:
-                            return knownMod;
+                    case 0:
+                        return knownMod += newValue;
+
+                    case 1:
+                        return knownMod -= newValue;
+
+                    case 2:
+                        return knownMod *= newValue;
+
+                    case 3:
+                        return knownMod /= newValue;
+
+                    case 4:
+                        return knownMod &= newValue;
+
+                    case 5:
+                        return knownMod |= newValue;
+
+                    case 6:
+                        return knownMod ^= newValue;
+
+                    case 7:
+                        return knownMod %= newValue;
+
+                    case 8:
+                        return knownMod <<= newValue;
+
+                    case 9:
+                        return knownMod >>= newValue;
+
+                    case 10:
+                        return knownMod >>>= newValue;
+
+                    case 11:
+                        return knownMod++;
+
+                    case 12:
+                        return knownMod--;
+
+                    case 13:
+                        return ++knownMod;
+
+                    case 14:
+                        return --knownMod;
+
+                    default:
+                        return knownMod;
                     }
                 }
 
                 public void $COMMIT_ANONYMOUS(long timestamp) {
-                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                    FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                            .getTopTimestamp());
                     $RECORD$$CHECKPOINT.commit(timestamp);
                 }
 
                 public void $RESTORE_ANONYMOUS(long timestamp, boolean trim) {
-                    lastEntry = (WeakBucket.WeakEntry)$RECORD$lastEntry.restore(lastEntry, timestamp, trim);
-                    nextEntry = (WeakBucket.WeakEntry)$RECORD$nextEntry.restore(nextEntry, timestamp, trim);
-                    knownMod = $RECORD$knownMod.restore(knownMod, timestamp, trim);
+                    lastEntry = (WeakBucket.WeakEntry) $RECORD$lastEntry
+                            .restore(lastEntry, timestamp, trim);
+                    nextEntry = (WeakBucket.WeakEntry) $RECORD$nextEntry
+                            .restore(nextEntry, timestamp, trim);
+                    knownMod = $RECORD$knownMod.restore(knownMod, timestamp,
+                            trim);
+
                     if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, new _PROXY_(), timestamp, trim);
+                        $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                                new _PROXY_(), timestamp, trim);
                         FieldRecord.popState($RECORDS);
                         $RESTORE_ANONYMOUS(timestamp, trim);
                     }
@@ -423,17 +480,22 @@ The entry set returned by <code>entrySet()</code>.
                     return $CHECKPOINT;
                 }
 
-                public final Object $SET$CHECKPOINT_ANONYMOUS(Checkpoint checkpoint) {
+                public final Object $SET$CHECKPOINT_ANONYMOUS(
+                        Checkpoint checkpoint) {
                     if ($CHECKPOINT != checkpoint) {
                         Checkpoint oldCheckpoint = $CHECKPOINT;
+
                         if (checkpoint != null) {
-                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                            $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                    .getTimestamp());
                             FieldRecord.pushState($RECORDS);
                         }
+
                         $CHECKPOINT = checkpoint;
                         oldCheckpoint.setCheckpoint(checkpoint);
                         checkpoint.addObject(new _PROXY_());
                     }
+
                     return this;
                 }
 
@@ -444,20 +506,17 @@ The entry set returned by <code>entrySet()</code>.
                 private FieldRecord $RECORD$knownMod = new FieldRecord(0);
 
                 private FieldRecord[] $RECORDS = new FieldRecord[] {
-                        $RECORD$lastEntry,
-                        $RECORD$nextEntry,
-                        $RECORD$knownMod
-                    };
+                        $RECORD$lastEntry, $RECORD$nextEntry, $RECORD$knownMod };
 
                 {
                     $CHECKPOINT.addObject(new _PROXY_());
                 }
-
             };
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             super.$COMMIT(timestamp);
         }
 
@@ -465,12 +524,10 @@ The entry set returned by <code>entrySet()</code>.
             super.$RESTORE(timestamp, trim);
         }
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] {};
     }
 
-    /**     
+    /**
      * A bucket is a weak reference to the key, that contains a strong
      * reference to the value, a pointer to the next bucket and its slot
      * number. <br>
@@ -480,23 +537,23 @@ The entry set returned by <code>entrySet()</code>.
      * look for this reference in the hashtable, to remove that entry.
      * @author Jochen Hoenicke
      */
-    private static class WeakBucket extends WeakReference implements Rollbackable {
-
+    private static class WeakBucket extends WeakReference implements
+            Rollbackable {
         protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-        /**         
+        /**
          * The value of this entry.  The key is stored in the weak
          * reference that we extend.
          */
         private Object value;
 
-        /**         
+        /**
          * The next bucket describing another entry that uses the same
          * slot.
          */
         private WeakBucket next;
 
-        /**         
+        /**
          * The slot of this entry. This should be
          * <code>Math.abs(key.hashCode() % buckets.length)</code>.
          * But since the key may be silently removed we have to remember
@@ -506,21 +563,20 @@ The entry set returned by <code>entrySet()</code>.
          */
         private int slot;
 
-        /**         
+        /**
          * This class gives the <code>Entry</code> representation of the
          * current bucket.  It also keeps a strong reference to the
          * key; bad things may happen otherwise.
          */
         class WeakEntry implements Map.Entry, Rollbackable {
-
             protected Checkpoint $CHECKPOINT = new Checkpoint(this);
 
-            /**             
+            /**
              * The strong ref to the key.
              */
             private Object key;
 
-            /**             
+            /**
              * Creates a new entry for the key.
              * @param key the key
              */
@@ -528,7 +584,7 @@ The entry set returned by <code>entrySet()</code>.
                 this.$ASSIGN$key(key);
             }
 
-            /**             
+            /**
              * Returns the underlying bucket.
              * @return the owning bucket
              */
@@ -536,15 +592,15 @@ The entry set returned by <code>entrySet()</code>.
                 return WeakBucket.this;
             }
 
-            /**             
+            /**
              * Returns the key.
              * @return the key
              */
             public Object getKey() {
-                return key == NULL_KEY?null:key;
+                return (key == NULL_KEY) ? null : key;
             }
 
-            /**             
+            /**
              * Returns the value.
              * @return the value
              */
@@ -552,7 +608,7 @@ The entry set returned by <code>entrySet()</code>.
                 return value;
             }
 
-            /**             
+            /**
              * This changes the value.  This change takes place in
              * the underlying hash map.
              * @param newVal the new value
@@ -564,7 +620,7 @@ The entry set returned by <code>entrySet()</code>.
                 return oldVal;
             }
 
-            /**             
+            /**
              * The hashCode as specified in the Entry interface.
              * @return the hash code
              */
@@ -572,39 +628,45 @@ The entry set returned by <code>entrySet()</code>.
                 return key.hashCode() ^ WeakHashMap.hashCode(value);
             }
 
-            /**             
+            /**
              * The equals method as specified in the Entry interface.
              * @param o the object to compare to
              * @return true iff o represents the same key/value pair
              */
             public boolean equals(Object o) {
                 if (o instanceof Map.Entry) {
-                    Map.Entry e = (Map.Entry)o;
-                    return key.equals(e.getKey()) && WeakHashMap.equals(value, e.getValue());
+                    Map.Entry e = (Map.Entry) o;
+                    return key.equals(e.getKey())
+                            && WeakHashMap.equals(value, e.getValue());
                 }
+
                 return false;
             }
 
             public String toString() {
-                return key + "="+value;
+                return key + "=" + value;
             }
 
             private final Object $ASSIGN$key(Object newValue) {
-                if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+                if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                     $RECORD$key.add(null, key, $CHECKPOINT.getTimestamp());
                 }
+
                 return key = newValue;
             }
 
             public void $COMMIT(long timestamp) {
-                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+                FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                        .getTopTimestamp());
                 $RECORD$$CHECKPOINT.commit(timestamp);
             }
 
             public void $RESTORE(long timestamp, boolean trim) {
-                key = (Object)$RECORD$key.restore(key, timestamp, trim);
+                key = (Object) $RECORD$key.restore(key, timestamp, trim);
+
                 if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                    $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT,
+                            this, timestamp, trim);
                     FieldRecord.popState($RECORDS);
                     $RESTORE(timestamp, trim);
                 }
@@ -617,14 +679,18 @@ The entry set returned by <code>entrySet()</code>.
             public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
                 if ($CHECKPOINT != checkpoint) {
                     Checkpoint oldCheckpoint = $CHECKPOINT;
+
                     if (checkpoint != null) {
-                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                        $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                                .getTimestamp());
                         FieldRecord.pushState($RECORDS);
                     }
+
                     $CHECKPOINT = checkpoint;
                     oldCheckpoint.setCheckpoint(checkpoint);
                     checkpoint.addObject(this);
                 }
+
                 return this;
             }
 
@@ -632,13 +698,10 @@ The entry set returned by <code>entrySet()</code>.
 
             private FieldRecord $RECORD$key = new FieldRecord(0);
 
-            private FieldRecord[] $RECORDS = new FieldRecord[] {
-                    $RECORD$key
-                };
-
+            private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$key };
         }
 
-        /**         
+        /**
          * Creates a new bucket for the given key/value pair and the specified
          * slot.
          * @param key the key
@@ -647,49 +710,58 @@ The entry set returned by <code>entrySet()</code>.
          * @param slot the slot.  This must match the slot where this bucket
          * will be enqueued.
          */
-        public WeakBucket(Object key, ReferenceQueue queue, Object value, int slot) {
+        public WeakBucket(Object key, ReferenceQueue queue, Object value,
+                int slot) {
             super(key, queue);
             this.$ASSIGN$value(value);
             this.$ASSIGN$slot(slot);
         }
 
-        /**         
+        /**
          * This returns the entry stored in this bucket, or null, if the
          * bucket got cleared in the mean time.
          * @return the Entry for this bucket, if it exists
          */
         WeakEntry getEntry() {
             final Object key = this.get();
-            if (key == null)
+
+            if (key == null) {
                 return null;
+            }
+
             return new WeakEntry(key);
         }
 
         private final Object $ASSIGN$value(Object newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$value.add(null, value, $CHECKPOINT.getTimestamp());
             }
+
             return value = newValue;
         }
 
         private final int $ASSIGN$slot(int newValue) {
-            if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+            if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
                 $RECORD$slot.add(null, slot, $CHECKPOINT.getTimestamp());
             }
+
             return slot = newValue;
         }
 
         public void $COMMIT(long timestamp) {
-            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+            FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                    .getTopTimestamp());
             $RECORD$$CHECKPOINT.commit(timestamp);
         }
 
         public void $RESTORE(long timestamp, boolean trim) {
-            value = (Object)$RECORD$value.restore(value, timestamp, trim);
-            next = (WeakBucket)$RECORD$next.restore(next, timestamp, trim);
+            value = (Object) $RECORD$value.restore(value, timestamp, trim);
+            next = (WeakBucket) $RECORD$next.restore(next, timestamp, trim);
             slot = $RECORD$slot.restore(slot, timestamp, trim);
+
             if (timestamp <= $RECORD$$CHECKPOINT.getTopTimestamp()) {
-                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this, timestamp, trim);
+                $CHECKPOINT = $RECORD$$CHECKPOINT.restore($CHECKPOINT, this,
+                        timestamp, trim);
                 FieldRecord.popState($RECORDS);
                 $RESTORE(timestamp, trim);
             }
@@ -702,14 +774,18 @@ The entry set returned by <code>entrySet()</code>.
         public final Object $SET$CHECKPOINT(Checkpoint checkpoint) {
             if ($CHECKPOINT != checkpoint) {
                 Checkpoint oldCheckpoint = $CHECKPOINT;
+
                 if (checkpoint != null) {
-                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint.getTimestamp());
+                    $RECORD$$CHECKPOINT.add($CHECKPOINT, checkpoint
+                            .getTimestamp());
                     FieldRecord.pushState($RECORDS);
                 }
+
                 $CHECKPOINT = checkpoint;
                 oldCheckpoint.setCheckpoint(checkpoint);
                 checkpoint.addObject(this);
             }
+
             return this;
         }
 
@@ -721,15 +797,11 @@ The entry set returned by <code>entrySet()</code>.
 
         private FieldRecord $RECORD$slot = new FieldRecord(0);
 
-        private FieldRecord[] $RECORDS = new FieldRecord[] {
-                $RECORD$value,
-                $RECORD$next,
-                $RECORD$slot
-            };
-
+        private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$value,
+                $RECORD$next, $RECORD$slot };
     }
 
-    /**     
+    /**
      * Creates a new weak hash map with default load factor and default
      * capacity.
      */
@@ -737,7 +809,7 @@ The entry set returned by <code>entrySet()</code>.
         this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 
-    /**     
+    /**
      * Creates a new weak hash map with default load factor and the given
      * capacity.
      * @param initialCapacity the initial capacity
@@ -747,7 +819,7 @@ The entry set returned by <code>entrySet()</code>.
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
     }
 
-    /**     
+    /**
      * Creates a new weak hash map with the given initial capacity and
      * load factor.
      * @param initialCapacity the initial capacity.
@@ -757,18 +829,22 @@ The entry set returned by <code>entrySet()</code>.
      */
     public WeakHashMap(int initialCapacity, float loadFactor) {
         // Check loadFactor for NaN as well.
-        if (initialCapacity < 0 || !(loadFactor > 0))
+        if ((initialCapacity < 0) || !(loadFactor > 0)) {
             throw new IllegalArgumentException();
-        if (initialCapacity == 0)
+        }
+
+        if (initialCapacity == 0) {
             initialCapacity = 1;
+        }
+
         this.$ASSIGN$loadFactor(loadFactor);
-        $ASSIGN$threshold((int)(initialCapacity * loadFactor));
+        $ASSIGN$threshold((int) (initialCapacity * loadFactor));
         theEntrySet = new WeakEntrySet();
         queue = new ReferenceQueue();
         $ASSIGN$buckets(new WeakBucket[initialCapacity]);
     }
 
-    /**     
+    /**
      * Construct a new WeakHashMap with the same mappings as the given map.
      * The WeakHashMap has a default load factor of 0.75.
      * @param m the map to copy
@@ -780,7 +856,7 @@ The entry set returned by <code>entrySet()</code>.
         putAll(m);
     }
 
-    /**     
+    /**
      * Simply hashes a non-null Object to its array index.
      * @param key the key to hash
      * @return its slot number
@@ -789,7 +865,7 @@ The entry set returned by <code>entrySet()</code>.
         return Math.abs(key.hashCode() % buckets.length);
     }
 
-    /**     
+    /**
      * Cleans the reference queue.  This will poll all references (which
      * are WeakBuckets) from the queue and remove them from this map.
      * This will not change modCount, even if it modifies the map.  The
@@ -797,16 +873,18 @@ The entry set returned by <code>entrySet()</code>.
      * Currently the iterator maintains a strong reference to the key, so
      * that is no problem.
      */
+
     // Package visible for use by nested classes.
     void cleanQueue() {
         Object bucket = queue.poll();
+
         while (bucket != null) {
-            internalRemove((WeakBucket)bucket);
+            internalRemove((WeakBucket) bucket);
             bucket = queue.poll();
         }
     }
 
-    /**     
+    /**
      * Rehashes this hashtable.  This will be called by the
      * <code>add()</code> method if the size grows beyond the threshold.
      * It will grow the bucket size at least by factor two and allocates
@@ -814,17 +892,22 @@ The entry set returned by <code>entrySet()</code>.
      */
     private void rehash() {
         WeakBucket[] oldBuckets = $BACKUP$buckets();
-        int newsize = buckets.length * 2 + 1;
+        int newsize = (buckets.length * 2) + 1;
+
         // XXX should be prime.
-        $ASSIGN$threshold((int)(newsize * loadFactor));
+        $ASSIGN$threshold((int) (newsize * loadFactor));
         $ASSIGN$buckets(new WeakBucket[newsize]);
+
         // Now we have to insert the buckets again.
         for (int i = 0; i < oldBuckets.length; i++) {
             WeakBucket bucket = oldBuckets[i];
             WeakBucket nextBucket;
+
             while (bucket != null) {
                 nextBucket = bucket.next;
+
                 Object key = bucket.get();
+
                 if (key == null) {
                     // This bucket should be removed; it is probably
                     // already on the reference queue.  We don't insert it
@@ -838,39 +921,49 @@ The entry set returned by <code>entrySet()</code>.
                     bucket.next = buckets[slot];
                     $ASSIGN$buckets(slot, bucket);
                 }
+
                 bucket = nextBucket;
             }
         }
     }
 
-    /**     
+    /**
      * Finds the entry corresponding to key.  Since it returns an Entry
      * it will also prevent the key from being removed under us.
      * @param key the key, may be null
      * @return The WeakBucket.WeakEntry or null, if the key wasn't found.
      */
     private WeakBucket.WeakEntry internalGet(Object key) {
-        if (key == null)
+        if (key == null) {
             key = NULL_KEY;
+        }
+
         int slot = hash(key);
         WeakBucket bucket = buckets[slot];
+
         while (bucket != null) {
             WeakBucket.WeakEntry entry = bucket.getEntry();
-            if (entry != null && key.equals(entry.key))
+
+            if ((entry != null) && key.equals(entry.key)) {
                 return entry;
+            }
+
             bucket = bucket.next;
         }
+
         return null;
     }
 
-    /**     
+    /**
      * Adds a new key/value pair to the hash map.
      * @param key the key. This mustn't exists in the map. It may be null.
      * @param value the value.
      */
     private void internalAdd(Object key, Object value) {
-        if (key == null)
+        if (key == null) {
             key = NULL_KEY;
+        }
+
         int slot = hash(key);
         WeakBucket bucket = new WeakBucket(key, queue, value, slot);
         bucket.next = buckets[slot];
@@ -878,7 +971,7 @@ The entry set returned by <code>entrySet()</code>.
         $ASSIGN$SPECIAL$size(11, size);
     }
 
-    /**     
+    /**
      * Removes a bucket from this hash map, if it wasn't removed before
      * (e.g. one time through rehashing and one time through reference queue).
      * Package visible for use in nested classes.
@@ -886,31 +979,39 @@ The entry set returned by <code>entrySet()</code>.
      */
     void internalRemove(WeakBucket bucket) {
         int slot = bucket.slot;
-        if (slot == -1)
+
+        if (slot == -1) {
             // This bucket was already removed.
             return;
-            // Mark the bucket as removed.  This is necessary, since the
-            // bucket may be enqueued later by the garbage collection, and
-            // internalRemove will be called a second time.
+        }
+
+        // Mark the bucket as removed.  This is necessary, since the
+        // bucket may be enqueued later by the garbage collection, and
+        // internalRemove will be called a second time.
         bucket.slot = -1;
-        if (buckets[slot] == bucket)
+
+        if (buckets[slot] == bucket) {
             $ASSIGN$buckets(slot, bucket.next);
-        else {
+        } else {
             WeakBucket prev = buckets[slot];
+
             /* This may throw a NullPointerException.  It shouldn't but if
-         * a race condition occurred (two threads removing the same
-         * bucket at the same time) it may happen.  <br>
-         * But with race condition many much worse things may happen
-         * anyway.
-         */
-            while (prev.next != bucket) 
+             * a race condition occurred (two threads removing the same
+             * bucket at the same time) it may happen.  <br>
+             * But with race condition many much worse things may happen
+             * anyway.
+             */
+            while (prev.next != bucket) {
                 prev = prev.next;
+            }
+
             prev.next = bucket.next;
         }
+
         $ASSIGN$SPECIAL$size(12, size);
     }
 
-    /**     
+    /**
      * Returns the size of this hash map.  Note that the size() may shrink
      * spontaneously, if the some of the keys were only weakly reachable.
      * @return the number of entries in this hash map.
@@ -920,7 +1021,7 @@ The entry set returned by <code>entrySet()</code>.
         return size;
     }
 
-    /**     
+    /**
      * Tells if the map is empty.  Note that the result may change
      * spontanously, if all of the keys were only weakly reachable.
      * @return true, iff the map is empty.
@@ -930,7 +1031,7 @@ The entry set returned by <code>entrySet()</code>.
         return size == 0;
     }
 
-    /**     
+    /**
      * Tells if the map contains the given key.  Note that the result
      * may change spontanously, if the key was only weakly
      * reachable.
@@ -942,7 +1043,7 @@ The entry set returned by <code>entrySet()</code>.
         return internalGet(key) != null;
     }
 
-    /**     
+    /**
      * Gets the value the key is mapped to.
      * @return the value the key was mapped to.  It returns null if
      * the key wasn't in this map, or if the mapped value was
@@ -950,11 +1051,12 @@ The entry set returned by <code>entrySet()</code>.
      */
     public Object get(Object key) {
         cleanQueue();
+
         WeakBucket.WeakEntry entry = internalGet(key);
-        return entry == null?null:entry.getValue();
+        return (entry == null) ? null : entry.getValue();
     }
 
-    /**     
+    /**
      * Adds a new key/value mapping to this map.
      * @param key the key, may be null
      * @param value the value, may be null
@@ -964,17 +1066,24 @@ The entry set returned by <code>entrySet()</code>.
      */
     public Object put(Object key, Object value) {
         cleanQueue();
+
         WeakBucket.WeakEntry entry = internalGet(key);
-        if (entry != null)
+
+        if (entry != null) {
             return entry.setValue(value);
+        }
+
         $ASSIGN$SPECIAL$modCount(11, modCount);
-        if (size >= threshold)
+
+        if (size >= threshold) {
             rehash();
+        }
+
         internalAdd(key, value);
         return null;
     }
 
-    /**     
+    /**
      * Removes the key and the corresponding value from this map.
      * @param key the key. This may be null.
      * @return the value the key was mapped to previously.  It returns
@@ -983,15 +1092,19 @@ The entry set returned by <code>entrySet()</code>.
      */
     public Object remove(Object key) {
         cleanQueue();
+
         WeakBucket.WeakEntry entry = internalGet(key);
-        if (entry == null)
+
+        if (entry == null) {
             return null;
+        }
+
         $ASSIGN$SPECIAL$modCount(11, modCount);
         internalRemove(entry.getBucket());
         return entry.getValue();
     }
 
-    /**     
+    /**
      * Returns a set representation of the entries in this map.  This
      * set will not have strong references to the keys, so they can be
      * silently removed.  The returned set has therefore the same
@@ -1004,14 +1117,14 @@ The entry set returned by <code>entrySet()</code>.
         return theEntrySet;
     }
 
-    /**     
+    /**
      * Clears all entries from this map.
      */
     public void clear() {
         super.clear();
     }
 
-    /**     
+    /**
      * Returns true if the map contains at least one key which points to
      * the specified object as a value.  Note that the result
      * may change spontanously, if its key was only weakly reachable.
@@ -1023,7 +1136,7 @@ The entry set returned by <code>entrySet()</code>.
         return super.containsValue(value);
     }
 
-    /**     
+    /**
      * Returns a set representation of the keys in this map.  This
      * set will not have strong references to the keys, so they can be
      * silently removed.  The returned set has therefore the same
@@ -1036,7 +1149,7 @@ The entry set returned by <code>entrySet()</code>.
         return super.keySet();
     }
 
-    /**     
+    /**
      * Puts all of the mappings from the given map into this one. If the
      * key already exists in this map, its value is replaced.
      * @param m the map to copy in
@@ -1045,7 +1158,7 @@ The entry set returned by <code>entrySet()</code>.
         super.putAll(m);
     }
 
-    /**     
+    /**
      * Returns a collection representation of the values in this map.  This
      * collection will not have strong references to the keys, so mappings
      * can be silently removed.  The returned collection has therefore the same
@@ -1059,115 +1172,152 @@ The entry set returned by <code>entrySet()</code>.
     }
 
     private final int $ASSIGN$SPECIAL$size(int operator, long newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+        if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
             $RECORD$size.add(null, size, $CHECKPOINT.getTimestamp());
         }
+
         switch (operator) {
-            case 0:
-                return size += newValue;
-            case 1:
-                return size -= newValue;
-            case 2:
-                return size *= newValue;
-            case 3:
-                return size /= newValue;
-            case 4:
-                return size &= newValue;
-            case 5:
-                return size |= newValue;
-            case 6:
-                return size ^= newValue;
-            case 7:
-                return size %= newValue;
-            case 8:
-                return size <<= newValue;
-            case 9:
-                return size >>= newValue;
-            case 10:
-                return size >>>= newValue;
-            case 11:
-                return size++;
-            case 12:
-                return size--;
-            case 13:
-                return ++size;
-            case 14:
-                return --size;
-            default:
-                return size;
+        case 0:
+            return size += newValue;
+
+        case 1:
+            return size -= newValue;
+
+        case 2:
+            return size *= newValue;
+
+        case 3:
+            return size /= newValue;
+
+        case 4:
+            return size &= newValue;
+
+        case 5:
+            return size |= newValue;
+
+        case 6:
+            return size ^= newValue;
+
+        case 7:
+            return size %= newValue;
+
+        case 8:
+            return size <<= newValue;
+
+        case 9:
+            return size >>= newValue;
+
+        case 10:
+            return size >>>= newValue;
+
+        case 11:
+            return size++;
+
+        case 12:
+            return size--;
+
+        case 13:
+            return ++size;
+
+        case 14:
+            return --size;
+
+        default:
+            return size;
         }
     }
 
     private final float $ASSIGN$loadFactor(float newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$loadFactor.add(null, loadFactor, $CHECKPOINT.getTimestamp());
+        if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
+            $RECORD$loadFactor
+                    .add(null, loadFactor, $CHECKPOINT.getTimestamp());
         }
+
         return loadFactor = newValue;
     }
 
     private final int $ASSIGN$threshold(int newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+        if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
             $RECORD$threshold.add(null, threshold, $CHECKPOINT.getTimestamp());
         }
+
         return threshold = newValue;
     }
 
     private final int $ASSIGN$SPECIAL$modCount(int operator, long newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+        if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
             $RECORD$modCount.add(null, modCount, $CHECKPOINT.getTimestamp());
         }
+
         switch (operator) {
-            case 0:
-                return modCount += newValue;
-            case 1:
-                return modCount -= newValue;
-            case 2:
-                return modCount *= newValue;
-            case 3:
-                return modCount /= newValue;
-            case 4:
-                return modCount &= newValue;
-            case 5:
-                return modCount |= newValue;
-            case 6:
-                return modCount ^= newValue;
-            case 7:
-                return modCount %= newValue;
-            case 8:
-                return modCount <<= newValue;
-            case 9:
-                return modCount >>= newValue;
-            case 10:
-                return modCount >>>= newValue;
-            case 11:
-                return modCount++;
-            case 12:
-                return modCount--;
-            case 13:
-                return ++modCount;
-            case 14:
-                return --modCount;
-            default:
-                return modCount;
+        case 0:
+            return modCount += newValue;
+
+        case 1:
+            return modCount -= newValue;
+
+        case 2:
+            return modCount *= newValue;
+
+        case 3:
+            return modCount /= newValue;
+
+        case 4:
+            return modCount &= newValue;
+
+        case 5:
+            return modCount |= newValue;
+
+        case 6:
+            return modCount ^= newValue;
+
+        case 7:
+            return modCount %= newValue;
+
+        case 8:
+            return modCount <<= newValue;
+
+        case 9:
+            return modCount >>= newValue;
+
+        case 10:
+            return modCount >>>= newValue;
+
+        case 11:
+            return modCount++;
+
+        case 12:
+            return modCount--;
+
+        case 13:
+            return ++modCount;
+
+        case 14:
+            return --modCount;
+
+        default:
+            return modCount;
         }
     }
 
     private final WeakBucket[] $ASSIGN$buckets(WeakBucket[] newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+        if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
             $RECORD$buckets.add(null, buckets, $CHECKPOINT.getTimestamp());
         }
+
         return buckets = newValue;
     }
 
     private final WeakBucket $ASSIGN$buckets(int index0, WeakBucket newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
-            $RECORD$buckets.add(new int[] {
-                    index0
-                }, buckets[index0], $CHECKPOINT.getTimestamp());
+        if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
+            $RECORD$buckets.add(new int[] { index0 }, buckets[index0],
+                    $CHECKPOINT.getTimestamp());
         }
-        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+        if ((newValue != null) && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
             newValue.$SET$CHECKPOINT($CHECKPOINT);
         }
+
         return buckets[index0] = newValue;
     }
 
@@ -1177,7 +1327,8 @@ The entry set returned by <code>entrySet()</code>.
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
@@ -1188,7 +1339,8 @@ The entry set returned by <code>entrySet()</code>.
         threshold = $RECORD$threshold.restore(threshold, timestamp, trim);
         modCount = $RECORD$modCount.restore(modCount, timestamp, trim);
         $RECORD$theEntrySet.restore(theEntrySet, timestamp, trim);
-        buckets = (WeakBucket[])$RECORD$buckets.restore(buckets, timestamp, trim);
+        buckets = (WeakBucket[]) $RECORD$buckets.restore(buckets, timestamp,
+                trim);
         super.$RESTORE(timestamp, trim);
     }
 
@@ -1206,16 +1358,9 @@ The entry set returned by <code>entrySet()</code>.
 
     private FieldRecord $RECORD$buckets = new FieldRecord(1);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$queue,
-            $RECORD$size,
-            $RECORD$loadFactor,
-            $RECORD$threshold,
-            $RECORD$modCount,
-            $RECORD$theEntrySet,
-            $RECORD$buckets
-        };
-
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$queue,
+            $RECORD$size, $RECORD$loadFactor, $RECORD$threshold,
+            $RECORD$modCount, $RECORD$theEntrySet, $RECORD$buckets };
 }
 
 // class WeakHashMap

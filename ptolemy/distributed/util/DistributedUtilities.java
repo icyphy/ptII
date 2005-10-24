@@ -23,7 +23,6 @@
  ENHANCEMENTS, OR MODIFICATIONS.
 
  */
-
 package ptolemy.distributed.util;
 
 import java.util.LinkedList;
@@ -44,9 +43,7 @@ import ptolemy.distributed.domains.sdf.kernel.DistributedSDFReceiver;
  @Pt.ProposedRating Red (kapokasa)
  @Pt.AcceptedRating Red (cxh)
  */
-
 public class DistributedUtilities {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -56,11 +53,11 @@ public class DistributedUtilities {
      *  @param receiversIntegers A bidimensional array of Integers.
      *  @return LinkedList A list.
      */
-
     public static LinkedList convertIntegersToList(Integer[][] receiversIntegers) {
         // System.out.println("convertIntegersToList: \n" +
         // integersArrayToString(receiversIntegers));
         LinkedList list = new LinkedList();
+
         for (int i = 0; i < receiversIntegers.length; i++) {
             for (int j = 0; j < receiversIntegers[i].length; j++) {
                 if (receiversIntegers[i][j] != null) {
@@ -68,6 +65,7 @@ public class DistributedUtilities {
                 }
             }
         }
+
         return list;
     }
 
@@ -77,11 +75,12 @@ public class DistributedUtilities {
      *  @param receivers A bidimensional array of receivers.
      *  @return Integer[][] A bidimensional array of receivers IDs.
      */
-
     public static Integer[][] convertReceiversToIntegers(Receiver[][] receivers) {
         Integer[][] receiversIntegers = new Integer[receivers.length][];
+
         for (int i = 0; i < receivers.length; i++) {
             receiversIntegers[i] = new Integer[receivers[i].length];
+
             for (int j = 0; j < receivers[i].length; j++) {
                 if (receivers[i][j] != null) {
                     receiversIntegers[i][j] = ((DistributedSDFReceiver) receivers[i][j])
@@ -91,6 +90,7 @@ public class DistributedUtilities {
                 }
             }
         }
+
         return receiversIntegers;
     }
 
@@ -100,18 +100,21 @@ public class DistributedUtilities {
      *  @param array A bidimensional array of Integer.
      *  @return String A string.
      */
-
     public static String integersArrayToString(Integer[][] array) {
         if (array == null) {
             return "null";
         }
+
         String print = "";
+
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                print += array[i][j] + " ";
+                print += (array[i][j] + " ");
             }
+
             print += "\n";
         }
+
         return print;
     }
 
@@ -121,18 +124,21 @@ public class DistributedUtilities {
      *  @param array A bidimensional array of Receiver.
      *  @return String A string.
      */
-
     public static String receiversArrayToString(Receiver[][] array) {
         if (array == null) {
             return "null";
         }
+
         String print = "";
+
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
-                print += ((DistributedSDFReceiver) array[i][j]).getID() + " ";
+                print += (((DistributedSDFReceiver) array[i][j]).getID() + " ");
             }
+
             print += "\n";
         }
+
         return print;
     }
 }

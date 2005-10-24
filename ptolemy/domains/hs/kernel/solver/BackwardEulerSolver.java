@@ -106,7 +106,8 @@ public class BackwardEulerSolver extends FixedStepSolver {
         double tentativeState = integrator.getState();
 
         double f = ((DoubleToken) integrator.input.get(0)).doubleValue();
-        tentativeState += f * (_director.getCurrentStepSize());
+        tentativeState += (f * (_director.getCurrentStepSize()));
+
         if (_getRoundCount() == 0) {
             // Set converged to false such that the integrator will be refired
             // again to check convergence of resolved states.
@@ -114,12 +115,14 @@ public class BackwardEulerSolver extends FixedStepSolver {
         } else {
             // Not the first round, keep iterating until resolved states
             // converge.
-            double error = 
-                Math.abs(tentativeState - integrator.getTentativeState());
+            double error = Math.abs(tentativeState
+                    - integrator.getTentativeState());
+
             if (error > _director.getValueResolution()) {
                 _voteForConverged(false);
             }
         }
+
         integrator.setTentativeState(tentativeState);
         integrator.output.broadcast(new DoubleToken(tentativeState));
     }

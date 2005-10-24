@@ -196,7 +196,7 @@ public class Location extends SingletonAttribute implements Locatable {
 
         return _default;
     }
-    
+
     /** Return a name to present to the user, which
      *  is the same as the name returned by getName().
      *  @return A name to present to the user.

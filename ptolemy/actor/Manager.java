@@ -635,26 +635,31 @@ public class Manager extends NamedObj implements Runnable {
     public void notifyListenersOfThrowable(final Throwable throwable) {
         Thread thread = new Thread("Error reporting thread") {
             public void run() {
-                synchronized(Manager.this) {
+                synchronized (Manager.this) {
                     // We use Throwables instead of Exceptions so that we can catch
                     // Errors like java.lang.UnsatisfiedLink.
-                    String errorMessage = shortDescription(throwable) + " occurred: "
-                    + throwable.getClass() + "(" + throwable.getMessage() + ")";
-                    _debug("-- Manager notifying listeners of exception: " + throwable);
-                    
+                    String errorMessage = shortDescription(throwable)
+                            + " occurred: " + throwable.getClass() + "("
+                            + throwable.getMessage() + ")";
+                    _debug("-- Manager notifying listeners of exception: "
+                            + throwable);
+
                     if (_executionListeners == null) {
                         System.err.println(errorMessage);
                         throwable.printStackTrace();
                     } else {
-                        ListIterator listeners = _executionListeners.listIterator();
-                        
+                        ListIterator listeners = _executionListeners
+                                .listIterator();
+
                         while (listeners.hasNext()) {
-                            WeakReference reference = (WeakReference) listeners.next();
+                            WeakReference reference = (WeakReference) listeners
+                                    .next();
                             ExecutionListener listener = (ExecutionListener) reference
-                            .get();
-                            
+                                    .get();
+
                             if (listener != null) {
-                                listener.executionError(Manager.this, throwable);
+                                listener
+                                        .executionError(Manager.this, throwable);
                             } else {
                                 listeners.remove();
                             }
@@ -663,6 +668,7 @@ public class Manager extends NamedObj implements Runnable {
                 }
             }
         };
+
         thread.start();
     }
 

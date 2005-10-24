@@ -51,8 +51,8 @@ import ptolemy.kernel.util.Workspace;
  later to generate an output. The amount of delay is specified by the
  input value. The value of output is specified by the <i>value</i>
  parameter of this actor. If the input value is 0.0, an output is
- produced in the next firing with a bigger microstep. If the input is 
- less than 0.0, an exception will be thrown. 
+ produced in the next firing with a bigger microstep. If the input is
+ less than 0.0, an exception will be thrown.
 
  <p> This actor is different from the {@link
  ptolemy.domains.de.lib.NonInterruptibleTimer} actor because the

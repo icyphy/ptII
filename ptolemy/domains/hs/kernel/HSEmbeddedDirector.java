@@ -310,12 +310,11 @@ public class HSEmbeddedDirector extends HSMultiSolverDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return the refined step size if the current fire is not accurate.
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        
         // FIXME: this method is called when the _refinedStepWRTOutput() and
         // _refinedStepWRTState() methods are called. If this causes performance
         // problem, try separate this into two methods.
@@ -340,10 +339,9 @@ public class HSEmbeddedDirector extends HSMultiSolverDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** This method performs a continuous phase of execution. At this phase,
      *  a normal ODE solver tries to solve the initial states at a further time
      *  t_1, based on the inputs and final states at t_0, where t_0 < t_1.
@@ -366,13 +364,14 @@ public class HSEmbeddedDirector extends HSMultiSolverDirector implements
         ODESolver solver = getCurrentODESolver();
         solver.fire();
         _produceOutputs();
-//        // propogate resolved states to output actors.
-//        Iterator outputActors = _schedule.get(
-//                CTSchedule.OUTPUT_ACTORS).actorIterator();
-//        while (outputActors.hasNext() && !_stopRequested) {
-//            Actor actor = (Actor) outputActors.next();
-//            actor.fire();
-//        }
+
+        //        // propogate resolved states to output actors.
+        //        Iterator outputActors = _schedule.get(
+        //                CTSchedule.OUTPUT_ACTORS).actorIterator();
+        //        while (outputActors.hasNext() && !_stopRequested) {
+        //            Actor actor = (Actor) outputActors.next();
+        //            actor.fire();
+        //        }
     }
 
     ///////////////////////////////////////////////////////////////////

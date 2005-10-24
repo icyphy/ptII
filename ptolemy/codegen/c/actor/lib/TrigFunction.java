@@ -65,18 +65,16 @@ public class TrigFunction extends CCodeGeneratorHelper {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        
         super.generateFireCode(code);
-        ptolemy.actor.lib.TrigFunction actor =
-            (ptolemy.actor.lib.TrigFunction) getComponent();
+
+        ptolemy.actor.lib.TrigFunction actor = (ptolemy.actor.lib.TrigFunction) getComponent();
 
         String function = actor.function.getExpression();
-        String codeBlockName = (function.equals("sin"))  ? "sinBlock"
-                           : ((function.equals("cos"))  ? "cosBlock"
-                   : ((function.equals("tan"))  ? "tanBlock"
-                   : ((function.equals("asin")) ? "asinBlock"
-                   : ((function.equals("acos")) ? "acosBlock"
-                   : "atanBlock"))));
+        String codeBlockName = (function.equals("sin")) ? "sinBlock"
+                : ((function.equals("cos")) ? "cosBlock" : ((function
+                        .equals("tan")) ? "tanBlock" : ((function
+                        .equals("asin")) ? "asinBlock" : ((function
+                        .equals("acos")) ? "acosBlock" : "atanBlock"))));
 
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock(codeBlockName);

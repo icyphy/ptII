@@ -55,9 +55,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (cxh)
  @see ptolemy.distributed.actor.DistributedReceiver
  */
-
 public class DistributedTypedIORelation extends TypedIORelation {
-
     /** Construct a relation in the default workspace with an empty string
      *  as its name. Add the relation to the directory of the workspace.
      */
@@ -111,6 +109,7 @@ public class DistributedTypedIORelation extends TypedIORelation {
         if (VERBOSE) {
             System.out.println("> DistributedTypedIORelation.deepReceivers()");
         }
+
         return intermediateReceiver;
     }
 
@@ -124,6 +123,7 @@ public class DistributedTypedIORelation extends TypedIORelation {
             System.out.println("> DistributedTypedIORelation."
                     + "setRemoteReceivers()");
         }
+
         ((DistributedReceiver) intermediateReceiver[0][0])
                 .setServicesReceiversListMap(servicesReceiversListMap);
     }

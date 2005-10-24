@@ -120,7 +120,7 @@ public class SuperBlock implements GraphNode {
 
             //By this point there should be only 1 vector of Labels left..
             throw new RuntimeException(
-                    "_labels should contain exactly 1 vector.");
+                "_labels should contain exactly 1 vector.");
         }
 
         Vector labelVector = (Vector) c.toArray()[0];
@@ -144,7 +144,7 @@ public class SuperBlock implements GraphNode {
 
     public Node createDataFlow(DirectedGraph graph, Object value) {
         System.out.println(">>>>>>>>>createDataFlow on " + this + " for "
-                + value);
+            + value);
         System.out.println(">>>>>>>>>>>>> " + value.getClass());
 
         Collection pred = _labels.keySet();
@@ -207,7 +207,7 @@ public class SuperBlock implements GraphNode {
                 //last in the code.  Soot optimizations should keep this from
                 //happening.. but we'll check anyway
                 throw new RuntimeException(
-                        "Can't find the last definition; concurrent definition in two paths?");
+                    "Can't find the last definition; concurrent definition in two paths?");
             }
         }
 
@@ -251,7 +251,7 @@ public class SuperBlock implements GraphNode {
             }
 
             for (Iterator j = _graph.predecessors(currNode).iterator();
-                 j.hasNext();) {
+                        j.hasNext();) {
                 Node predNode = (Node) j.next();
                 System.out.println("  " + predNode);
 
@@ -281,7 +281,7 @@ public class SuperBlock implements GraphNode {
                 }
 
                 System.out.println("going to " + predecessor + " to look for "
-                        + n);
+                    + n);
 
                 Node result = predecessor.createDataFlow(graph, n.getWeight());
 
@@ -330,28 +330,28 @@ public class SuperBlock implements GraphNode {
 
         boolean done = false;
 
-        OUTER:
+OUTER: 
         while (!done) {
             //Iterate over all labels
             //  get all keys in hashMap
             for (Iterator blocks = _labels.keySet().iterator();
-                 blocks.hasNext();) {
+                        blocks.hasNext();) {
                 GraphNode key = (GraphNode) blocks.next();
                 Vector labelVector = (Vector) _labels.get(key);
 
                 // get all Labels in vector associated within given key
                 for (Iterator labels = labelVector.iterator();
-                     labels.hasNext();) {
+                            labels.hasNext();) {
                     Label label = (Label) labels.next();
 
                     //Now we need to iterate over the labels again (compare all labels against each other)
                     for (Iterator blocks2 = _labels.keySet().iterator();
-                         blocks2.hasNext();) {
+                                blocks2.hasNext();) {
                         GraphNode key2 = (GraphNode) blocks2.next();
                         Vector labelVector2 = (Vector) _labels.get(key2);
 
                         for (Iterator labels2 = labelVector2.iterator();
-                             labels2.hasNext();) {
+                                    labels2.hasNext();) {
                             Label label2 = (Label) labels2.next();
 
                             //Do a pairwise comparison
@@ -383,12 +383,13 @@ public class SuperBlock implements GraphNode {
                                 //Add appropriate arcs for new mux
                                 graph.addNodeWeight(mux);
                                 graph.addEdge(first, mux,
-                                        new Boolean(lowest.branch()).toString());
+                                    new Boolean(lowest.branch()).toString());
                                 graph.addEdge(second, mux,
-                                        new Boolean(!lowest.branch()).toString());
+                                    new Boolean(!lowest.branch()).toString());
                                 graph.addEdge(lowest.getSuperBlock(), mux,
-                                        ((IfStmt) lowest.getSuperBlock()._block
-                                                .getTail()).getCondition().toString());
+                                    ((IfStmt) lowest.getSuperBlock()._block
+                                             .getTail()).getCondition()
+                                             .toString());
                                 graph.addEdge(mux, this);
 
                                 //If labelVector is empty, remove its entry from _labels and remove
@@ -399,7 +400,7 @@ public class SuperBlock implements GraphNode {
                                     Node n1 = (Node) graph.node(key);
                                     Node n2 = (Node) graph.node(this);
                                     graph.removeEdge((Edge) graph.neighborEdges(
-                                                             n1, n2).toArray()[0]);
+                                            n1, n2).toArray()[0]);
                                 }
 
                                 //If labelVector2 is empty, remove its entry from _labels and remove
@@ -410,7 +411,7 @@ public class SuperBlock implements GraphNode {
                                     Node n1 = (Node) graph.node(key2);
                                     Node n2 = (Node) graph.node(this);
                                     graph.removeEdge((Edge) graph.neighborEdges(
-                                                             n1, n2).toArray()[0]);
+                                            n1, n2).toArray()[0]);
                                 }
 
                                 continue OUTER; //Avoid a ConcurrentModificationException
@@ -478,8 +479,8 @@ public class SuperBlock implements GraphNode {
             graph.addEdge(first, mux, new Boolean(low1.branch()).toString());
             graph.addEdge(second, mux, new Boolean(!low1.branch()).toString());
             graph.addEdge(low1.getSuperBlock(), mux,
-                    ((IfStmt) low1.getSuperBlock()._block.getTail()).getCondition()
-                    .toString());
+                ((IfStmt) low1.getSuperBlock()._block.getTail()).getCondition()
+                         .toString());
             graph.addEdge(mux, this);
 
             Node n1 = (Node) graph.node(first);

@@ -1296,6 +1296,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         public Iterator inEdges(Object node) {
             Locatable icon = (Locatable) node;
+
             // Go through all the links, creating a list of
             // those we are connected to.
             List stateLinkList = new LinkedList();
@@ -1323,6 +1324,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         public Iterator outEdges(Object node) {
             Locatable icon = (Locatable) node;
+
             // Go through all the links, creating a list of
             // those we are connected to.
             List stateLinkList = new LinkedList();

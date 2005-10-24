@@ -60,7 +60,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  By default, this class is centered, like the superclass.
      */
     private boolean _centered = true;
-    
+
     /** The dash array if setDashArray is called.
      */
     private float[] _dashArray = null;
@@ -72,7 +72,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** The width of the line.
      */
     private float _lineWidth = 1.0f;
-    
+
     /** The shape of this figure.
      */
     private Shape _shape;
@@ -301,7 +301,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      */
     public void setDashArray(float[] dashArray) {
         repaint();
-        
+
         _dashArray = dashArray;
 
         if (_stroke instanceof BasicStroke) {
@@ -332,7 +332,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      */
     public void setLineWidth(float lineWidth) {
         repaint();
-        
+
         _lineWidth = lineWidth;
 
         if (_stroke instanceof BasicStroke) {

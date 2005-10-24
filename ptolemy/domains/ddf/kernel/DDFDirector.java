@@ -80,9 +80,9 @@ import ptolemy.kernel.util.Workspace;
  tokens at input ports. The canonical actors in the DDF domain include
  Select and Switch, which consume or produce tokens on different channels
  based on the token received from the control port. (In practice, use
- DDFSelect and DDFBooleanSelect in the DDF-specific library instead of 
+ DDFSelect and DDFBooleanSelect in the DDF-specific library instead of
  Select and BooleanSelect in the regular FlowControl library; however,
- Switch and BooleanSwitch in the regular FlowControl library can be 
+ Switch and BooleanSwitch in the regular FlowControl library can be
  used in DDF domain.)
  <p>
  The dynamic scheduler implemented in this director fires all enabled
@@ -670,8 +670,8 @@ public class DDFDirector extends Director {
         return defaultSuggestions;
     }
 
-    /** Return true to indicate that a ModalModel under control 
-     *  of this director supports multirate firing. 
+    /** Return true to indicate that a ModalModel under control
+     *  of this director supports multirate firing.
      *  @return True indicating a ModalModel under control of this director
      *  supports multirate firing.
      */
@@ -1145,6 +1145,7 @@ public class DDFDirector extends Director {
                         }
                     }
                 } else { // All the channels in the port have same
+
                     // tokenConsumptionRate.
                     Arrays.fill(rate, ((IntToken) token).intValue());
                 }
@@ -1285,6 +1286,7 @@ public class DDFDirector extends Director {
                         }
                     }
                 } else { // All the channels in the port has same
+
                     // tokenProductionRate.
                     Arrays.fill(rate, ((IntToken) token).intValue());
                 }

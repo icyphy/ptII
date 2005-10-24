@@ -1,32 +1,35 @@
 /* Ptolemy XML configuration parser.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-
+ */
 package ptolemy.backtrack.xmlparser;
+
+import ptolemy.backtrack.util.PathFinder;
+
+import com.microstar.xml.XmlParser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -36,27 +39,23 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.backtrack.util.PathFinder;
-
-import com.microstar.xml.XmlParser;
-
 //////////////////////////////////////////////////////////////////////////
 //// ConfigParser
+
 /**
-   Ptolemy XML configuration parser. This parser builds an XML tree in memory
-   as it parses a configuration. The tree is either a complete representation
-   of the configuration file, or a partial representation that defines only the
-   given Java classes. See {@link ConfigXmlHandler} for more information on the
-   second usage.
+ Ptolemy XML configuration parser. This parser builds an XML tree in memory
+ as it parses a configuration. The tree is either a complete representation
+ of the configuration file, or a partial representation that defines only the
+ given Java classes. See {@link ConfigXmlHandler} for more information on the
+ second usage.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class ConfigParser {
-
     ///////////////////////////////////////////////////////////////////
     ////                        constructors                       ////
 
@@ -68,7 +67,7 @@ public class ConfigParser {
     }
 
     /** Construct a configuration parser with a parent node.
-     * 
+     *
      *  @param xmlTree The parent node of the XML tree.
      */
     public ConfigParser(ConfigXmlTree xmlTree) {
@@ -79,16 +78,16 @@ public class ConfigParser {
     ////                       public methods                      ////
 
     /** Add an excluded file to the XML handler.
-     * 
+     *
      *  @param canonicalPath The canonical path of the file to be excluded.
      *  @see ConfigXmlHandler#addExcludedFile(String)
      */
     public void addExcludedFile(String canonicalPath) {
         _excludedFiles.add(canonicalPath);
     }
-    
+
     /** Add a collection of excluded files to the XML handler.
-     * 
+     *
      *  @param canonicalPaths The collection of canonical paths of the files to
      *   be excluded.
      *  @see ConfigXmlHandler#addExcludedFiles(Collection)
@@ -98,7 +97,7 @@ public class ConfigParser {
     }
 
     /** Add a package prefix to the classes in the XML tree.
-     * 
+     *
      *  @param packagePrefix The package prefix to be added to the head of each
      *   class name.
      *  @param classes The names of affected classes.
@@ -108,7 +107,7 @@ public class ConfigParser {
     }
 
     /** Get the parsed XML tree.
-     * 
+     *
      *  @return The XML tree. It may be <tt>null</tt> if no configuration has
      *   been parsed.
      */
@@ -120,22 +119,19 @@ public class ConfigParser {
      *  the Ptolemy configuration file and extracts the nodes (and their
      *  parents) pertaining to class <tt>ptolemy.actor.lib.Sequence</tt>, and
      *  outputs the result to the standard output.
-     * 
+     *
      *  @param args The command-line arguments (not used).
      *  @exception Exception If error occurs.
      */
-    public static void main(String[] args)
-            throws Exception {
-        String[] classes = new String[]{
-            "ptolemy.actor.lib.Sequence"
-        };
+    public static void main(String[] args) throws Exception {
+        String[] classes = new String[] { "ptolemy.actor.lib.Sequence" };
         Set classSet = new HashSet();
         classSet.addAll(Arrays.asList(classes));
-        
+
         ConfigParser parser = new ConfigParser();
         parser.parseConfigFile(DEFAULT_SYSTEM_ID, classSet);
         parser.addPackagePrefix("ptolemy.backtrack", classSet);
-        
+
         OutputStreamWriter writer = new OutputStreamWriter(System.out);
         XmlOutput.outputXmlTree(parser.getTree(), writer);
         writer.close();
@@ -148,7 +144,7 @@ public class ConfigParser {
      *  <p>
      *  This method is the same as <tt>parseConfigFile(fileName,
      *  includedClasses, true)</tt>.
-     * 
+     *
      *  @param fileName The name of the configuration file.
      *  @param includedClasses The set of names of classes to be included.
      *  @exception Exception If error occurs.
@@ -158,12 +154,12 @@ public class ConfigParser {
             throws Exception {
         parseConfigFile(fileName, includedClasses, true);
     }
-    
+
     /** Parse a configuration file and build the XML tree below the given
      *  parent node (or <tt>null</tt> if not given). Only the nodes
      *  corresponding to the classes in <tt>includedClasses</tt> and their
      *  parent nodes are created. Other nodes in the XML tree are ignored.
-     * 
+     *
      *  @param fileName The name of the configuration file.
      *  @param includedClasses The set of names of classes to be included.
      *  @param backtrackingElement Whether to set the parent node of the
@@ -174,8 +170,8 @@ public class ConfigParser {
             boolean backtrackingElement) throws Exception {
         XmlParser parser = new XmlParser();
         BufferedReader br = new BufferedReader(new FileReader(fileName));
-        ConfigXmlHandler handler =
-            new ConfigXmlHandler(_xmlTree, fileName,includedClasses);
+        ConfigXmlHandler handler = new ConfigXmlHandler(_xmlTree, fileName,
+                includedClasses);
         handler.addExcludedFiles(_excludedFiles);
         parser.setHandler(handler);
         parser.parse(fileName, null, br);
@@ -195,16 +191,15 @@ public class ConfigParser {
      *  usually located at <tt>ptolemy/configs/full/configuration.xml</tt> in
      *  the Ptolemy tree.
      */
-    public static String DEFAULT_SYSTEM_ID =
-        PathFinder.getPtolemyPath() +
-        "ptolemy/configs/full/configuration.xml";
+    public static String DEFAULT_SYSTEM_ID = PathFinder.getPtolemyPath()
+            + "ptolemy/configs/full/configuration.xml";
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
     /** The recursive function to traverse the XML tree and add a package
      *  prefix to each class name found in the given set.
-     *  
+     *
      *  @param tree The XML tree to be traversed.
      *  @param packagePrefix The package prefix to be added.
      *  @param classes The set of names of affected classes.
@@ -212,12 +207,16 @@ public class ConfigParser {
     private void addPackagePrefix(ConfigXmlTree tree, String packagePrefix,
             Set classes) {
         String className = tree.getAttribute("class");
-        if (className != null && classes.contains(className)) {
+
+        if ((className != null) && classes.contains(className)) {
             tree.setAttribute("class", packagePrefix + "." + className);
         }
+
         tree.startTraverseChildren();
-        while (tree.hasMoreChildren())
+
+        while (tree.hasMoreChildren()) {
             addPackagePrefix(tree.nextChild(), packagePrefix, classes);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -226,7 +225,7 @@ public class ConfigParser {
     /** The XML tree.
      */
     private ConfigXmlTree _xmlTree;
-    
+
     /** The set of excluded files.
      */
     private Set _excludedFiles = new HashSet();

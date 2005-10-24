@@ -52,19 +52,19 @@ import java.util.*;
 */
 public class ControlSootDFGBuilder extends SootDFGBuilder {
     public ControlSootDFGBuilder(SootBlockDirectedGraph g)
-            throws SootASTException {
+        throws SootASTException {
         super(g);
     }
 
     public static SootBlockDirectedGraph createGraph(Block block)
-            throws SootASTException {
+        throws SootASTException {
         SootBlockDirectedGraph graph = new SootBlockDirectedGraph(block);
         new ControlSootDFGBuilder(graph);
         return graph;
     }
 
     public Value processConditionExpr(ConditionExpr ce)
-            throws SootASTException {
+        throws SootASTException {
         if (ce instanceof CompoundBooleanExpression) {
             return processCompoundBooleanExpression((CompoundBooleanExpression) ce);
         } else {
@@ -84,17 +84,17 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
     }
 
     public Value processCompoundBooleanExpression(CompoundBooleanExpression ce)
-            throws SootASTException {
+        throws SootASTException {
         Value op1 = ce.getOp1();
         Value op2 = ce.getOp2();
         Value cond1 = processConditionExpr((ConditionExpr) op1);
         Value cond2 = processConditionExpr((ConditionExpr) op2);
         return processCompoundBooleanExpression(ce, (ConditionExpr) cond1,
-                (ConditionExpr) cond2);
+            (ConditionExpr) cond2);
     }
 
     public Value processCompoundBooleanExpression(
-            CompoundBooleanExpression ce, ConditionExpr cond1, ConditionExpr cond2) {
+        CompoundBooleanExpression ce, ConditionExpr cond1, ConditionExpr cond2) {
         return null;
     }
 

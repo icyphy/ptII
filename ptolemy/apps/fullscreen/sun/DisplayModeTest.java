@@ -94,7 +94,7 @@ class DisplayModeModel extends DefaultTableModel {
  * Main frame class
  */
 public class DisplayModeTest extends JFrame implements ActionListener,
-                                                       ListSelectionListener {
+    ListSelectionListener {
     private boolean waiting = false;
     private Object exitLock = new Object();
     private GraphicsDevice device;
@@ -110,17 +110,17 @@ public class DisplayModeTest extends JFrame implements ActionListener,
     public static final int INDEX_BITDEPTH = 2;
     public static final int INDEX_REFRESHRATE = 3;
     public static final int[] COLUMN_WIDTHS = new int[] {
-        100,
-        100,
-        100,
-        100
-    };
+            100,
+            100,
+            100,
+            100
+        };
     public static final String[] COLUMN_NAMES = new String[] {
-        "Width",
-        "Height",
-        "Bit Depth",
-        "Refresh Rate"
-    };
+            "Width",
+            "Height",
+            "Bit Depth",
+            "Refresh Rate"
+        };
 
     public DisplayModeTest(GraphicsDevice device) {
         super(device.getDefaultConfiguration());
@@ -149,7 +149,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
             waiting = false;
         } else {
             if (device.isDisplayChangeSupported()
-                    && !originalDM.equals(device.getDisplayMode())) {
+                        && !originalDM.equals(device.getDisplayMode())) {
                 device.setDisplayMode(originalDM);
             }
         }
@@ -263,9 +263,9 @@ public class DisplayModeTest extends JFrame implements ActionListener,
         }
 
         currentDM.setText(COLUMN_NAMES[INDEX_WIDTH] + ": " + newMode.getWidth()
-                + " " + COLUMN_NAMES[INDEX_HEIGHT] + ": " + newMode.getHeight()
-                + " " + COLUMN_NAMES[INDEX_BITDEPTH] + ": " + bd + " "
-                + COLUMN_NAMES[INDEX_REFRESHRATE] + ": " + rr);
+            + " " + COLUMN_NAMES[INDEX_HEIGHT] + ": " + newMode.getHeight()
+            + " " + COLUMN_NAMES[INDEX_BITDEPTH] + ": " + bd + " "
+            + COLUMN_NAMES[INDEX_REFRESHRATE] + ": " + rr);
     }
 
     public void begin() {
@@ -290,7 +290,7 @@ public class DisplayModeTest extends JFrame implements ActionListener,
 
     public static void main(String[] args) {
         GraphicsEnvironment env = GraphicsEnvironment
-            .getLocalGraphicsEnvironment();
+                    .getLocalGraphicsEnvironment();
         GraphicsDevice[] devices = env.getScreenDevices();
 
         for (int i = 0; i < devices.length; i++) {

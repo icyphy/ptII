@@ -45,7 +45,6 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Red (mankit)
  */
 public class VariableRecursiveLattice extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the VariableRecursiveLattice helper.
      * @param actor The associated actor.
@@ -64,10 +63,9 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void  generateFireCode(StringBuffer code)
-        throws IllegalActionException {
-        ptolemy.domains.sdf.lib.VariableRecursiveLattice actor =
-            (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
+    public void generateFireCode(StringBuffer code)
+            throws IllegalActionException {
+        ptolemy.domains.sdf.lib.VariableRecursiveLattice actor = (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("fireBlock");
 
@@ -83,9 +81,9 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      * @return The processed code string.
      */
-    public String generateInitializeCode()
-        throws IllegalActionException {
+    public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("initBlock");
 
@@ -101,9 +99,9 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String generatePreinitializeCode()
-        throws IllegalActionException {
+    public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
+
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("preinitBlock");
 
@@ -123,8 +121,8 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
-        ptolemy.domains.sdf.lib.VariableRecursiveLattice actor =
-            (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
+
+        ptolemy.domains.sdf.lib.VariableRecursiveLattice actor = (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("wrapupBlock");
 

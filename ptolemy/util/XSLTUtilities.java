@@ -70,7 +70,7 @@ import org.xml.sax.SAXException;
  @author Christopher Hylands, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.1
- @Pt.ProposedRating Green (eal) 
+ @Pt.ProposedRating Green (eal)
  Pending Java 1.5 changes
  @Pt.AcceptedRating Yellow (cxh)
  */

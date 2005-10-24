@@ -126,7 +126,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Green (hyzheng)
  */
 public abstract class HSDirector extends StaticSchedulingDirector implements
-    TimedDirector, CTGeneralDirector {
+        TimedDirector, CTGeneralDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -819,10 +819,9 @@ public abstract class HSDirector extends StaticSchedulingDirector implements
     /** The real starting time in term of system millisecond counts.
      */
     protected long _timeBase;
-    
+
     /** The ODE solver. */
     protected ODESolver _ODESolver = null;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -869,7 +868,6 @@ public abstract class HSDirector extends StaticSchedulingDirector implements
 
     // NOTE: all the following private variables are initialized
     // in the _initializeLocalVariables() method before their usage.
-
     // Simulation step sizes.
     private double _currentStepSize;
 

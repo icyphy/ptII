@@ -64,7 +64,7 @@ import java.util.*;
 */
 public class ModelGraph2Entity {
     public ModelGraph2Entity(PortDirectedGraph graph, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         _graph = graph;
         _nodeEntityMap = new HashMap();
         _nodeRelationMap = new HashMap();
@@ -72,7 +72,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _buildEntity(String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         // 1. Create empty entity
         _entity = new JHDLCompositeActor();
         _entity.setName(name);
@@ -147,14 +147,14 @@ public class ModelGraph2Entity {
     }
 
     protected void _processNode(Node node)
-            throws IllegalActionException, NameDuplicationException,
+        throws IllegalActionException, NameDuplicationException, 
             JHDLUnsupportedException {
         // Process Node
         Object nweight = node.getWeight();
 
         if (DEBUG) {
             System.out.println("Node " + nweight + " ("
-                    + nweight.getClass().getName() + ")");
+                + nweight.getClass().getName() + ")");
         }
 
         if (nweight instanceof Local) {
@@ -175,7 +175,7 @@ public class ModelGraph2Entity {
 
     // No hardware (thus no port linking
     protected void _processLocal(Node node)
-            throws JHDLUnsupportedException, IllegalActionException,
+        throws JHDLUnsupportedException, IllegalActionException, 
             NameDuplicationException {
         // should have one input and one output. Just update the _wireMap
         // TODO: I should use the local to provide some more naming
@@ -197,7 +197,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processConstant(Node node)
-            throws IllegalActionException, NameDuplicationException,
+        throws IllegalActionException, NameDuplicationException, 
             JHDLUnsupportedException {
         Object weight = node.getWeight();
 
@@ -217,7 +217,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processBinopExpr(Node node)
-            throws IllegalActionException, NameDuplicationException,
+        throws IllegalActionException, NameDuplicationException, 
             JHDLUnsupportedException {
         // get two Relations coming into this op
         JHDLIORelation r1 = null;
@@ -289,7 +289,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _processUnopExpr(Node node)
-            throws IllegalActionException, NameDuplicationException,
+        throws IllegalActionException, NameDuplicationException, 
             JHDLUnsupportedException {
         // get nodes coming into this op
         Collection inEdges = _graph.inputEdges(node);
@@ -337,7 +337,7 @@ public class ModelGraph2Entity {
     }
 
     protected void _deleteOutputRelation(Node n)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         JHDLIORelation r = _getOutputRelation(n);
 
         if (r == null) {
@@ -350,14 +350,14 @@ public class ModelGraph2Entity {
 
     // Find Relation associated with Node driving this edge
     protected JHDLIORelation _getOrAddEdgeSourceRelation(Edge e)
-            throws JHDLUnsupportedException {
+        throws JHDLUnsupportedException {
         Node source = e.source();
         return _getOrAddOutputRelation(source);
     }
 
     // Find Relation associated with this Node (i.e. Node drives relation)
     protected JHDLIORelation _getOrAddOutputRelation(Node n)
-            throws JHDLUnsupportedException {
+        throws JHDLUnsupportedException {
         JHDLIORelation cr = _getOutputRelation(n);
 
         if (cr == null) {
@@ -389,13 +389,13 @@ public class ModelGraph2Entity {
     }
 
     protected static void _unsupportedOperation(Object o)
-            throws JHDLUnsupportedException {
+        throws JHDLUnsupportedException {
         throw new JHDLUnsupportedException("Object " + o.getClass().getName()
-                + " not supported");
+            + " not supported");
     }
 
     public static ActorPortDirectedGraph createGraph(AtomicActor entity,
-            Map options) {
+        Map options) {
         return new ActorPortDirectedGraph(entity, options);
     }
 
@@ -418,9 +418,9 @@ public class ModelGraph2Entity {
         ModelGraph2Entity process = null;
         JHDLActorTestbench testbench = null;
         int descriptionLevel = NamedObj.LINKS | NamedObj.FULLNAME
-            |
-            //NamedObj.ATTRIBUTES |
-            NamedObj.CONTENTS | NamedObj.DEEP;
+                    | 
+                    //NamedObj.ATTRIBUTES |
+                    NamedObj.CONTENTS | NamedObj.DEEP;
 
         try {
             process = new ModelGraph2Entity(g, "e0");
@@ -532,7 +532,7 @@ class IntervalParameterPortDirectedGraph extends PortDirectedGraph {
         addEdge(pred, outport);
 
         System.out.println("return op="
-                + ((ReturnStmt) returnNode.getWeight()).getOp());
+            + ((ReturnStmt) returnNode.getWeight()).getOp());
 
         //
         removeUnreachable();

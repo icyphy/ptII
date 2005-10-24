@@ -108,8 +108,7 @@ public class TriggeredSampler extends Transformer implements CTEventGenerator {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TriggeredSampler newObject = (TriggeredSampler) super
-                .clone(workspace);
+        TriggeredSampler newObject = (TriggeredSampler) super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }

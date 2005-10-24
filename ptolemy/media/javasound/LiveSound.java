@@ -1319,7 +1319,6 @@ public class LiveSound {
         }
 
         //int targetBufferLengthInBytes = _transferSize * _frameSizeInBytes;
-
         // Array of audio samples in byte format.
         _captureData = new byte[_transferSize * _frameSizeInBytes];
         _audioInDoubleArray = new double[_channels][_transferSize];

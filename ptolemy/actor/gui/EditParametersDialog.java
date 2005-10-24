@@ -82,7 +82,6 @@ import ptolemy.util.StringUtilities;
  */
 public class EditParametersDialog extends ComponentDialog implements
         ChangeListener {
-    
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -93,7 +92,7 @@ public class EditParametersDialog extends ComponentDialog implements
     public EditParametersDialog(Frame owner, NamedObj target) {
         this(owner, target, "Edit parameters for " + target.getName());
     }
-    
+
     /** Construct a dialog with the specified owner and target.
      *  A "Commit" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
@@ -103,8 +102,7 @@ public class EditParametersDialog extends ComponentDialog implements
      *  @param label The label for the dialog box.
      */
     public EditParametersDialog(Frame owner, NamedObj target, String label) {
-        super(owner, label, new Configurer(
-                target), _moreButtons);
+        super(owner, label, new Configurer(target), _moreButtons);
 
         // Once we get to here, the dialog has already been dismissed.
         _owner = owner;
@@ -168,6 +166,7 @@ public class EditParametersDialog extends ComponentDialog implements
             }
         } else if (buttonPressed().equals("Restore Defaults")) {
             ((Configurer) contents).restoreToDefaults();
+
             // Open a new dialog (a modal dialog).
             new EditParametersDialog(_owner, _target);
         } else if (buttonPressed().equals("Preferences")) {
@@ -181,7 +180,9 @@ public class EditParametersDialog extends ComponentDialog implements
                     // Restore original parameter values.
                     panel.restore();
                 }
+
                 new EditParametersDialog(_owner, _target);
+
                 // NOTE: Instead of te above line, this used
                 // to do the following. This isn't quite right because it violates
                 // the modal dialog premise, since this method will

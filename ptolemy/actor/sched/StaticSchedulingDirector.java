@@ -354,7 +354,7 @@ public class StaticSchedulingDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The scheduler. */
     private Scheduler _scheduler;
 }

@@ -79,7 +79,9 @@ public abstract class AbstractSite implements Site {
      * that method.
      */
     public Point2D getPoint(TransformContext tc) {
-        return getTransformContext().getTransform(tc).transform(getPoint(), null);
+        return getTransformContext().getTransform(tc).transform(getPoint(),
+                null);
+
         // Formerly used deprecated method. EAL 6/12/05
         // return CanvasUtilities.transformInto(getPoint(), getTransformContext(), tc);
     }

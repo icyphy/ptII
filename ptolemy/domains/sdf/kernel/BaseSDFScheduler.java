@@ -225,6 +225,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
         Director director = (Director) getContainer();
         final CompositeActor container = (CompositeActor) director
                 .getContainer();
+
         // FIXME: These buffer sizes should be properties of input ports,
         // not properties of relations.
         ChangeRequest request = new ChangeRequest(this, "Record buffer sizes") {

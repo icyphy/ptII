@@ -94,7 +94,6 @@ import ptolemy.actor.Receiver;
 
  */
 public interface ProcessReceiver extends Receiver {
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

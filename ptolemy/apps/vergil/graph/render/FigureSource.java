@@ -29,20 +29,20 @@ COPYRIGHTENDKEY
 */
 package ptolemy.apps.vergil.graph.render;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.*;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.*;
 import ptolemy.apps.vergil.graph.util.FigureToken;
+import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.*;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
-import diva.util.xml.*;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.PaintedFigure;
 import diva.canvas.toolbox.SVGParser;
 import diva.util.java2d.*;
+import diva.util.xml.*;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -51,12 +51,12 @@ import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// FigureSource
+
 /**
 
 @author Steve Neuendorffer
 */
 public class FigureSource extends Source implements Configurable {
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -66,8 +66,7 @@ public class FigureSource extends Source implements Configurable {
      *   actor with this name.
      */
     public FigureSource(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(FigureToken.TYPE);
@@ -75,7 +74,6 @@ public class FigureSource extends Source implements Configurable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -98,7 +96,7 @@ public class FigureSource extends Source implements Configurable {
      *  @exception Exception If something goes wrong.
      */
     public void configure(URL base, String source, String text)
-            throws Exception {
+        throws Exception {
         _base = base;
         _source = source;
         _text = text;
@@ -107,9 +105,10 @@ public class FigureSource extends Source implements Configurable {
             // FIXME: Do we need a base here?
             // FIXME: ignoring source.
             Reader in = new StringReader(text);
-            XmlDocument document = new XmlDocument((URL)null);
+            XmlDocument document = new XmlDocument((URL) null);
             XmlReader reader = new XmlReader();
             reader.parse(document, in);
+
             XmlElement root = document.getRoot();
             _paintedList = SVGParser.createPaintedList(root);
         } catch (Exception ex) {
@@ -153,7 +152,6 @@ public class FigureSource extends Source implements Configurable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The base specified in the configure() method.
     private URL _base = null;
 

@@ -141,8 +141,8 @@ public class DDEGetNToken extends DDEGet {
                             // System.out.println("#####");
                             _tokens[cnt] = rcvr.get();
 
-                            _afterTimes[cnt] =
-                                timeKeeper.getModelTime().getDoubleValue();
+                            _afterTimes[cnt] = timeKeeper.getModelTime()
+                                    .getDoubleValue();
                             cnt++;
                             j = rcvrs[i].length + 1;
                             finished = true;

@@ -132,9 +132,11 @@ public class ProcessDirector extends Director {
      */
     public synchronized void addThread(Thread thread) {
         _activeThreads.add(thread);
+
         if (_debugging) {
             _debug("Adding a thread: " + thread.getName());
         }
+
         notifyAll();
     }
 
@@ -151,6 +153,7 @@ public class ProcessDirector extends Director {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ProcessDirector newObject = (ProcessDirector) super.clone(workspace);
+
         // Is it really necessary to do this?
         newObject._blockedThreads = new HashSet();
         newObject._pausedThreads = new HashSet();
@@ -173,29 +176,32 @@ public class ProcessDirector extends Director {
 
         // In case we have an enclosing process director,
         // we identify it so that we can notify it when we are blocked.
-        CompositeActor container = (CompositeActor)getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
         Director outsideDirector = container.getExecutiveDirector();
+
         if (!(outsideDirector instanceof ProcessDirector)) {
             outsideDirector = null;
         }
 
         synchronized (this) {
-            while (!_areThreadsDeadlocked()
-                    && !_areAllThreadsStopped() && !_stopRequested) {
+            while (!_areThreadsDeadlocked() && !_areAllThreadsStopped()
+                    && !_stopRequested) {
                 // Added to get thread to stop reliably on pushing stop button.
                 // EAL 8/05
                 if (_stopRequested) {
                     return;
                 }
+
                 if (_debugging) {
                     _debug("Waiting for actors to stop.");
                 }
 
                 try {
                     if (outsideDirector != null) {
-                        ((ProcessDirector)outsideDirector).threadBlocked(
+                        ((ProcessDirector) outsideDirector).threadBlocked(
                                 Thread.currentThread(), null);
                     }
+
                     workspace.wait(this);
                 } catch (InterruptedException e) {
                     // stop all threads
@@ -203,11 +209,12 @@ public class ProcessDirector extends Director {
                     return;
                 } finally {
                     if (outsideDirector != null) {
-                        ((ProcessDirector)outsideDirector).threadUnblocked(
+                        ((ProcessDirector) outsideDirector).threadUnblocked(
                                 Thread.currentThread(), null);
                     }
                 }
             }
+
             if (_debugging) {
                 _debug("Actors have stopped.");
             }
@@ -351,16 +358,20 @@ public class ProcessDirector extends Director {
     public boolean prefire() throws IllegalActionException {
         // Clear the stopFire flag and trigger all of the actor threads.
         _stopFireRequested = false;
+
         synchronized (this) {
             notifyAll();
         }
+
         // Start threads for actors created since the last invocation
         // of this prefire() method.
         Iterator threads = _newActorThreadList.iterator();
+
         while (threads.hasNext()) {
             ProcessThread procThread = (ProcessThread) threads.next();
             procThread.start();
         }
+
         _newActorThreadList.clear();
 
         return true;
@@ -391,10 +402,9 @@ public class ProcessDirector extends Director {
      */
     public synchronized void removeThread(Thread thread) {
         if (_debugging) {
-            _debug("Thread "
-                    + thread.getName()
-                    + " is exiting.");
+            _debug("Thread " + thread.getName() + " is exiting.");
         }
+
         _activeThreads.remove(thread);
         _pausedThreads.remove(thread);
         _blockedThreads.remove(thread);
@@ -424,13 +434,16 @@ public class ProcessDirector extends Director {
         // ConcurrentModificationException.
         LinkedList threadsCopy = new LinkedList(_activeThreads);
         Iterator threads = threadsCopy.iterator();
+
         while (threads.hasNext()) {
             Thread thread = (Thread) threads.next();
+
             if (thread instanceof ProcessThread) {
                 // NOTE: We used to catch and ignore all exceptions
                 // here, but that doesn't look right to me. EAL 8/05.
-                ((ProcessThread)thread).getActor().stop();
+                ((ProcessThread) thread).getActor().stop();
             }
+
             // NOTE: Used to call thread.interrupt() here, with a comment
             // about how it probably wasn't necessary.  But
             // in applets, this gives a security violation.
@@ -438,9 +451,11 @@ public class ProcessDirector extends Director {
             // below to _requestFinishOnReceivers() isn't doing its
             // job.
         }
+
         // Added to get stop button to work consistently the first time.
         // EAL 8/05
         _requestFinishOnReceivers();
+
         // Create a notification thread so that this returns immediately
         // (doesn't have to get a synchronized lock).
         (new NotifyThread(this)).start();
@@ -456,12 +471,16 @@ public class ProcessDirector extends Director {
         if (_debugging) {
             _debug("stopFire() has been called.");
         }
+
         _stopFireRequested = true;
+
         Iterator threads = _activeThreads.iterator();
+
         while (threads.hasNext()) {
             Thread thread = (Thread) threads.next();
+
             if (thread instanceof ProcessThread) {
-                ((ProcessThread)thread).getActor().stopFire();
+                ((ProcessThread) thread).getActor().stopFire();
             }
         }
     }
@@ -483,6 +502,7 @@ public class ProcessDirector extends Director {
         _activeThreads.clear();
 
         Iterator threads = list.iterator();
+
         while (threads.hasNext()) {
             ((Thread) threads.next()).stop();
         }
@@ -497,8 +517,8 @@ public class ProcessDirector extends Director {
      *   or null if it is not a specific receiver.
      *  @see #addThread(Thread)
      */
-    public synchronized void threadBlocked(
-            Thread thread, ProcessReceiver receiver) {
+    public synchronized void threadBlocked(Thread thread,
+            ProcessReceiver receiver) {
         if (_activeThreads.contains(thread)
                 && !_blockedThreads.contains(thread)) {
             _blockedThreads.add(thread);
@@ -516,8 +536,7 @@ public class ProcessDirector extends Director {
      *  @see #addThread(Thread)
      */
     public synchronized void threadHasPaused(Thread thread) {
-        if (_activeThreads.contains(thread)
-                && !_pausedThreads.contains(thread)) {
+        if (_activeThreads.contains(thread) && !_pausedThreads.contains(thread)) {
             _pausedThreads.add(thread);
             _blockedThreads.remove(thread);
             notifyAll();
@@ -545,8 +564,8 @@ public class ProcessDirector extends Director {
      *   or null if it is not a specific receiver.
      *  @see #threadBlocked(Thread, ProcessReceiver)     *
      */
-    public synchronized void threadUnblocked(
-            Thread thread, ProcessReceiver receiver) {
+    public synchronized void threadUnblocked(Thread thread,
+            ProcessReceiver receiver) {
         if (_blockedThreads.remove(thread)) {
             notifyAll();
         }
@@ -589,7 +608,7 @@ public class ProcessDirector extends Director {
             _debug("Called wrapup().");
         }
 
-        CompositeActor container = (CompositeActor)getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
 
         _requestFinishOnReceivers();
 
@@ -624,8 +643,7 @@ public class ProcessDirector extends Director {
      *  @return True if there are no active processes in the container.
      */
     protected synchronized boolean _areAllThreadsStopped() {
-        return (_getActiveThreadsCount()
-                == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
+        return (_getActiveThreadsCount() == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
     }
 
     /** Return true if the count of active processes in the container is 0.
@@ -709,7 +727,7 @@ public class ProcessDirector extends Director {
     /** Call requestFinish() on all receivers.
      */
     private void _requestFinishOnReceivers() {
-        CompositeActor container = (CompositeActor)getContainer();
+        CompositeActor container = (CompositeActor) getContainer();
         Iterator actors = container.deepEntityList().iterator();
         Iterator actorPorts;
         ProcessReceiver nextReceiver;

@@ -184,30 +184,30 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
      *  @exception IllegalActionException If thrown by the ODE solver,
      *       or the prefire() or the fire() methods of an actor.
      */
-//    public void fire() throws IllegalActionException {
-//        if (_isTopLevel()) {
-//            super.fire();
-//            return;
-//        }
-//
-//        _discretePhaseExecution();
-//
-//        // Mark the FINAL states of the current model time for
-//        // possible roll back in the future.
-//        _markStates();
-//
-//        // If the current step size is 0.0, there is no need to perform
-//        // a continuous phase of execution.
-//        if (getIterationEndTime().equals(getIterationBeginTime())) {
-//            return;
-//        }
-//
-//        // Guarantee to stop at the iteration end time.
-//        fireAt((CompositeActor) getContainer(), getIterationEndTime());
-//
-//        _continuousPhaseExecution();
-//    }
 
+    //    public void fire() throws IllegalActionException {
+    //        if (_isTopLevel()) {
+    //            super.fire();
+    //            return;
+    //        }
+    //
+    //        _discretePhaseExecution();
+    //
+    //        // Mark the FINAL states of the current model time for
+    //        // possible roll back in the future.
+    //        _markStates();
+    //
+    //        // If the current step size is 0.0, there is no need to perform
+    //        // a continuous phase of execution.
+    //        if (getIterationEndTime().equals(getIterationBeginTime())) {
+    //            return;
+    //        }
+    //
+    //        // Guarantee to stop at the iteration end time.
+    //        fireAt((CompositeActor) getContainer(), getIterationEndTime());
+    //
+    //        _continuousPhaseExecution();
+    //    }
     /** Initialize the execution. If this director is not at the top level,
      *  ask the executive director to fire the container of this director
      *  at the current model time.
@@ -241,7 +241,7 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
             // Guarantee to stop at the iteration end time.
             fireAt((CompositeActor) getContainer(), getIterationEndTime());
         }
-        
+
         return super.postfire();
     }
 
@@ -341,10 +341,9 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
             // the intermediate steps. The CurrentTime actor reports the model
             // time.
             _setIterationBeginTime(getModelTime());
-            
+
             // FIXME: All the following is to set up a reasonable SUGGESTED
             // step size.
-
             double aheadLength = outsideNextIterationTime
                     .subtract(_outsideTime).getDoubleValue();
 

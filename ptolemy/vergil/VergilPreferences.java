@@ -38,14 +38,13 @@ import ptolemy.vergil.kernel.attributes.TextAttribute;
  * Default preferences definition for Vergil. This is defined as a class rather
  * than in MoML so that the inheritance mechanism prevents exported MoML for
  * every model from duplicating this information.
- * 
+ *
  * @author Edward A. Lee
  * @version $Id$
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */
 public class VergilPreferences extends ScopeExtendingAttribute {
-
     /** Construct an instance of the preferences attribute
      *  @param container The container.
      *  @param name The name.
@@ -57,7 +56,7 @@ public class VergilPreferences extends ScopeExtendingAttribute {
     public VergilPreferences(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Give the default values for all the preferences.
         // Names start with underscores by convention to minimize
         // the probability of conflict with model-specific parameters.
@@ -75,7 +74,8 @@ public class VergilPreferences extends ScopeExtendingAttribute {
         _linkBendRadius.setExpression("20.0");
         _linkBendRadius.setDisplayName("Link bend radius");
 
-        StringParameter _showParameters = new StringParameter(this, "_showParameters");
+        StringParameter _showParameters = new StringParameter(this,
+                "_showParameters");
         _showParameters.addChoice("None");
         _showParameters.addChoice("Overridden parameters only");
         _showParameters.addChoice("All");
@@ -84,22 +84,24 @@ public class VergilPreferences extends ScopeExtendingAttribute {
 
         // The icon.
         EditorIcon _icon = new EditorIcon(this, "_icon");
-        RectangleAttribute rectangle = new RectangleAttribute(_icon, "rectangle");
+        RectangleAttribute rectangle = new RectangleAttribute(_icon,
+                "rectangle");
         rectangle.width.setExpression("120.0");
         rectangle.height.setExpression("20.0");
         rectangle.fillColor.setExpression("{0.2,1.0,1.0,1.0}");
-        Location _location = new Location(rectangle, "_location"); 
+
+        Location _location = new Location(rectangle, "_location");
         _location.setExpression("-5.0, -15.0");
-        
+
         TextAttribute text = new TextAttribute(_icon, "text");
         text.text.setExpression("LocalPreferences");
-        
+
         // Hide the name.
         SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
         _hideName.setToken(BooleanToken.TRUE);
         _hideName.setVisibility(Settable.EXPERT);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -114,18 +116,23 @@ public class VergilPreferences extends ScopeExtendingAttribute {
      *  @return The value of the preference, or null if it is not set.
      */
     public static Token preferenceValue(NamedObj context, String preferenceName) {
-        Variable result = ModelScope.getScopedVariable(null, context, preferenceName);
+        Variable result = ModelScope.getScopedVariable(null, context,
+                preferenceName);
+
         if (result != null) {
             try {
                 return result.getToken();
             } catch (IllegalActionException ex) {
-                System.out.println("Warning: Invalid _relationSize preference: " + ex);
+                System.out
+                        .println("Warning: Invalid _relationSize preference: "
+                                + ex);
             }
         }
+
         // If no scoped variable is found, try for a defined constant.
         return Constants.get(preferenceName);
     }
-    
+
     /** Save the preference values in this instance to the user
      *  preferences file.
      *  @exception IOException If an error occurs writing the file.
@@ -138,7 +145,7 @@ public class VergilPreferences extends ScopeExtendingAttribute {
         exportMoML(writer);
         writer.close();
     }
-    
+
     /** Set the values in this instance of VergilPreferences to be
      *  the default values by creating entries in the Constants class
      *  so that these values are accessible to any expression.
@@ -149,13 +156,14 @@ public class VergilPreferences extends ScopeExtendingAttribute {
         // Make the current global variables conform with any
         // overridden preference values.
         Iterator parameters = attributeList(Variable.class).iterator();
+
         while (parameters.hasNext()) {
-            Variable parameter = (Variable)parameters.next();
+            Variable parameter = (Variable) parameters.next();
             Token token = parameter.getToken();
             Constants.add(parameter.getName(), token);
         }
     }
-    
+
     /** Look for a default preferences object within the
      *  specified configuration, and set it as the default
      *  preferences. Then look for a user preferences file,
@@ -166,42 +174,50 @@ public class VergilPreferences extends ScopeExtendingAttribute {
      */
     public static void setDefaultPreferences(Configuration configuration) {
         VergilPreferences preferences = null;
+
         try {
-            preferences = (VergilPreferences)configuration.getAttribute(
+            preferences = (VergilPreferences) configuration.getAttribute(
                     VergilPreferences.PREFERENCES_WITHIN_CONFIGURATION,
                     VergilPreferences.class);
         } catch (IllegalActionException ex) {
-            System.out.println(
-                    "Warning: Problem with preferences attribute in the configuration: "
-                    + ex.getMessage());
+            System.out
+                    .println("Warning: Problem with preferences attribute in the configuration: "
+                            + ex.getMessage());
+
             // Can't do anything further.
             return;
         }
+
         if (preferences == null) {
             // No preferences found in the configuration at
             // location "actor library.Utilities.LocalPreferences"
             return;
         }
+
         // Now override with the user file, if present.
         String libraryName = null;
+
         try {
             libraryName = StringUtilities.preferencesDirectory()
                     + PREFERENCES_FILE_NAME;
         } catch (Exception ex) {
             System.out.println("Warning: Failed to get the preferences "
-                    + "directory (-sandbox always causes this): " + ex.getMessage());
+                    + "directory (-sandbox always causes this): "
+                    + ex.getMessage());
+
             // Can't do anything further.
             return;
         }
+
         File file = new File(libraryName);
 
         if (file.isFile() && file.canRead()) {
             System.out.println("Opening user preferences "
-                    + PREFERENCES_FILE_NAME
-                    + "...");
+                    + PREFERENCES_FILE_NAME + "...");
 
             // If we have a jar URL, convert spaces to %20
             URL fileURL;
+
             try {
                 fileURL = JNLPUtilities.canonicalizeJarURL(file.toURL());
             } catch (MalformedURLException ex) {
@@ -209,6 +225,7 @@ public class VergilPreferences extends ScopeExtendingAttribute {
                 System.err.println("Malformed preferences URL: " + ex);
                 return;
             }
+
             MoMLParser parser = new MoMLParser(preferences.workspace());
             parser.setContext(preferences.getContainer());
 
@@ -216,29 +233,29 @@ public class VergilPreferences extends ScopeExtendingAttribute {
             // compatibility problems between devel and production
             // versions, we can skip that element.
             MoMLParser.setErrorHandler(new VergilErrorHandler());
+
             try {
                 parser.parse(fileURL, fileURL);
             } catch (Exception ex) {
-                System.out.println("Failed to read user preferences file: " + ex);
+                System.out.println("Failed to read user preferences file: "
+                        + ex);
             }
         }
+
         try {
             preferences.setAsDefault();
         } catch (IllegalActionException ex) {
-            System.out.println(
-                    "Warning: Problem with preferences value: "
+            System.out.println("Warning: Problem with preferences value: "
                     + ex.getMessage());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       public variables                    ////
 
     /** The file name where user-defined preferences are stored. */
-    public static String PREFERENCES_FILE_NAME
-            = "VergilPreferences.xml";
-    
+    public static String PREFERENCES_FILE_NAME = "VergilPreferences.xml";
+
     /** The location with the configuration of the preferences attribute. */
-    public static String PREFERENCES_WITHIN_CONFIGURATION
-            = "actor library.Utilities.LocalPreferences";
+    public static String PREFERENCES_WITHIN_CONFIGURATION = "actor library.Utilities.LocalPreferences";
 }

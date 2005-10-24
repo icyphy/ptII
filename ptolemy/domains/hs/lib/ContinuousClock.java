@@ -200,7 +200,6 @@ public class ContinuousClock extends Clock implements CTEventGenerator {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
 
-
                 if (_offsets[_tentativePhase] >= periodValue) {
                     throw new IllegalActionException(this, "Offset number "
                             + _tentativePhase + " with value "
@@ -228,11 +227,10 @@ public class ContinuousClock extends Clock implements CTEventGenerator {
      *  @exception IllegalActionException If thrown by the super class.
      */
     public boolean hasCurrentEvent() {
-        Time currentPhaseTime = 
-            _tentativeCycleStartTime.add(_offsets[_tentativePhase]);
+        Time currentPhaseTime = _tentativeCycleStartTime
+                .add(_offsets[_tentativePhase]);
         HSDirector director = (HSDirector) getDirector();
-        boolean result = 
-            director.getModelTime().compareTo(currentPhaseTime) == 0;
+        boolean result = director.getModelTime().compareTo(currentPhaseTime) == 0;
         return result;
     }
 
@@ -243,6 +241,7 @@ public class ContinuousClock extends Clock implements CTEventGenerator {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+
         // FIXME: not always the default value. 
         // We should check whether the first offset is 0.0. If so,
         // we use the first value in the output value array.

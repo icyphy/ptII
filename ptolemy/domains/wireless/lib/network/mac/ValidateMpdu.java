@@ -80,8 +80,8 @@ public class ValidateMpdu extends MACActorBase {
 
         // create ports
         fromPHYLayer = new TypedIOPort(this, "fromPHYLayer", true, false);
-        // fromPHYLayer.setTypeEquals(BaseType.GENERAL);
 
+        // fromPHYLayer.setTypeEquals(BaseType.GENERAL);
         toChannelState = new TypedIOPort(this, "toChannelState", false, true);
         toChannelState.setTypeEquals(BaseType.GENERAL);
 
@@ -121,7 +121,6 @@ public class ValidateMpdu extends MACActorBase {
 
             if (kind == RtsTimeout) {
                 // send RtsTimeout message to ChannelState process
-
                 Token[] values = { new IntToken(RtsTimeout) };
                 RecordToken msgout = new RecordToken(RtsTimeoutMsgFields,
                         values);
@@ -154,6 +153,7 @@ public class ValidateMpdu extends MACActorBase {
                 //RecordToken msg = (RecordToken) fromPHYLayer.get(0);
                 UnionToken inputToken = (UnionToken) fromPHYLayer.get(0);
                 RecordToken msg = (RecordToken) inputToken.value();
+
                 switch (((IntToken) msg.get("kind")).intValue()) {
                 case RxEnd:
                     _endRx = currentTime.subtract(_D1 * 1e-6);

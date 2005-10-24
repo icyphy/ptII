@@ -56,9 +56,9 @@ import ptolemy.media.Picture;
  size of the input image changes, then a new Picture object is
  created.  This class will only accept a IntMatrixToken on its
  input, and assumes that the input image contains greyscale pixel
- intensities between 0 and 255 (inclusive).  The token is 
+ intensities between 0 and 255 (inclusive).  The token is
  read in postfire().
- 
+
  <p>Note that this actor really should be replaced by a conversion
  actor that converts IntMatrixTokens to ImageTokens.  However,
  there is no easy way to do that without accessing the graphical
@@ -92,7 +92,7 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
     ////                         private methods                   ////
 
     /** Convert an IntMatrixToken to a Packed RGB Image.
-     *  @param token An IntMatrixToken defining the black and white image. 
+     *  @param token An IntMatrixToken defining the black and white image.
      *  @return A packed RGB array of integers
      */
     private int[] _convertBWImageToPackedRGBImage(IntMatrixToken token) {
@@ -179,6 +179,7 @@ public class ImageDisplay extends ptolemy.actor.lib.image.ImageDisplay {
                 }
 
                 _picture = new Picture(xSize, ySize);
+
                 //_picture.setImage(image);
                 _picture
                         .setImage(_convertBWImageToPackedRGBImage((IntMatrixToken) in));

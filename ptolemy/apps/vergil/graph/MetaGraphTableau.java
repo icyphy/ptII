@@ -24,10 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.apps.vergil.graph;
 
-import diva.graph.*;
 import ptolemy.actor.gui.*;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
@@ -36,12 +34,15 @@ import ptolemy.moml.*;
 import ptolemy.vergil.ptolemy.GraphFrame;
 import ptolemy.vergil.ptolemy.kernel.PtolemyGraphModel;
 
+import diva.graph.*;
+
 import java.awt.Color;
 import java.net.*;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// MetaGraphTableau
+
 /**
 
 @author  Steve Neuendorffer
@@ -51,41 +52,41 @@ import java.net.*;
 
 */
 public class MetaGraphTableau extends Tableau {
-
     /**
      */
     public MetaGraphTableau(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
-    public MetaGraphTableau(PtolemyEffigy container,
-            String name)
-            throws IllegalActionException, NameDuplicationException {
+    public MetaGraphTableau(PtolemyEffigy container, String name)
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        NamedObj model = ((PtolemyEffigy)getContainer()).getModel();
+
+        NamedObj model = ((PtolemyEffigy) getContainer()).getModel();
+
         if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                    "Cannot graphically edit a model that is not a CompositeEntity.");
+                "Cannot graphically edit a model that is not a CompositeEntity.");
         }
     }
 
     public void show() {
         if (getFrame() == null) {
-            CompositeEntity entity = (CompositeEntity)
-                ((PtolemyEffigy)getContainer()).getModel();
+            CompositeEntity entity = (CompositeEntity) ((PtolemyEffigy) getContainer())
+                        .getModel();
 
             MetaGraphFrame frame = new MetaGraphFrame(entity, this);
 
             setFrame(frame);
             frame.setBackground(BACKGROUND_COLOR);
         }
+
         super.show();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // The background color.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
@@ -95,7 +96,6 @@ public class MetaGraphTableau extends Tableau {
     /** A factory that creates graph editing tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
-
         /** Create a factory with the given name and container.
          *  @param container The container.
          *  @param name The name.
@@ -105,7 +105,7 @@ public class MetaGraphTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
             new MetaGraphController(this, "graphController");
         }
@@ -126,15 +126,18 @@ public class MetaGraphTableau extends Tableau {
          */
         public Tableau createTableau(Effigy effigy) throws Exception {
             if (effigy instanceof PtolemyEffigy) {
-                MetaGraphTableau tableau =
-                    (MetaGraphTableau)effigy.getEntity("Meta Tableau");
+                MetaGraphTableau tableau = (MetaGraphTableau) effigy.getEntity(
+                        "Meta Tableau");
+
                 if (tableau == null) {
-                    tableau = new MetaGraphTableau(
-                            (PtolemyEffigy)effigy, "Meta Tableau");
+                    tableau = new MetaGraphTableau((PtolemyEffigy) effigy,
+                            "Meta Tableau");
                 }
-                MetaGraphController controller = (MetaGraphController)
-                    getEntity("graphController");
-                ((MetaGraphController)controller.clone()).setContainer(tableau);
+
+                MetaGraphController controller = (MetaGraphController) getEntity(
+                        "graphController");
+                ((MetaGraphController) controller.clone()).setContainer(tableau);
+
                 // Don't call show() here, it is called for us in
                 // TableauFrame.ViewMenuListener.actionPerformed()
                 return tableau;
@@ -159,20 +162,19 @@ public class MetaGraphTableau extends Tableau {
                                   CompositeEntity metaModel =
                                   (CompositeEntity)parser.parse(url, url);
                 */
-                _controller = (GraphController)
-                    getTableau().getEntity("graphController");
+                _controller = (GraphController) getTableau().getEntity("graphController");
 
-                final PtolemyGraphModel graphModel =
-                    new PtolemyGraphModel(getModel());
+                final PtolemyGraphModel graphModel = new PtolemyGraphModel(getModel());
 
                 GraphPane pane = new GraphPane(_controller, graphModel);
                 return pane;
             } catch (Exception ex) {
                 MessageHandler.error("Could not parse graph type description",
-                        ex);
+                    ex);
                 return null;
             }
         }
+
         private GraphController _controller;
     }
 }

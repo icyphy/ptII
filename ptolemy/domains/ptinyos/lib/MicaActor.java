@@ -51,25 +51,25 @@ import ptolemy.kernel.util.Workspace;
  although we implement them with double tokens.
 
  <p>Port information from tinyos-1.x/tos/platform/pc/sensorboard.h:
-<pre>
-     enum {
-     TOS_ADC_PHOTO_PORT = 1,
-     TOS_ADC_TEMP_PORT = 2,
-     TOS_ADC_MIC_PORT = 3,
-     TOS_ADC_ACCEL_X_PORT = 4,
-     TOS_ADC_ACCEL_Y_PORT = 5,
-     TOS_ADC_MAG_X_PORT = 6,
-     // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
-     TOS_ADC_MAG_Y_PORT = 8,
-     };
-</pre>
+ <pre>
+ enum {
+ TOS_ADC_PHOTO_PORT = 1,
+ TOS_ADC_TEMP_PORT = 2,
+ TOS_ADC_MIC_PORT = 3,
+ TOS_ADC_ACCEL_X_PORT = 4,
+ TOS_ADC_ACCEL_Y_PORT = 5,
+ TOS_ADC_MAG_X_PORT = 6,
+ // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
+ TOS_ADC_MAG_Y_PORT = 8,
+ };
+ </pre>
 
  @author Elaine Cheong
  @version $Id$
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  @since Ptolemy II 5.1
-*/
+ */
 public class MicaActor extends PtinyOSActor {
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.

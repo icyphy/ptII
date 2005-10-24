@@ -215,6 +215,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         if (_displayName != null) {
             return _displayName;
         }
+
         return getName();
     }
 
@@ -252,7 +253,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         }
     }
 
-    /** Set a name to present to the user. 
+    /** Set a name to present to the user.
      *  @param name A name to present to the user.
      *  @see #getDisplayName()
      */

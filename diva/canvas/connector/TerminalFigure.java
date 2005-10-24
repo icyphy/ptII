@@ -63,7 +63,7 @@ public class TerminalFigure extends AbstractFigure implements Terminal {
         _figure = figure;
         _connectSite = connectSite;
     }
-    
+
     /**
      * Create a new TerminalFigure for the given figure. This
      * is intended for use by derived classes that will provide

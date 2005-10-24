@@ -28,25 +28,26 @@
    @ProposedRating Red (cxh)
    @AcceptedRating Red (cxh)
 */
-
 package ptolemy.apps.fullscreen;
 
 import ptolemy.actor.lib.Source;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// GraphicsDevices
+
 /**
    An actor that generates an ArrayToken containing ObjectTokens where
    each ObjectToken is a java.awt.GraphicsDevice that represents a screen
@@ -64,7 +65,7 @@ public class GraphicsDevices extends Source {
      *   actor with this name.
      */
     public GraphicsDevices(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the type of the output port.
@@ -80,24 +81,26 @@ public class GraphicsDevices extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Token array[] = new Token[graphicsDevices.length];
+
+        Token[] array = new Token[graphicsDevices.length];
+
         for (int i = 0; i < graphicsDevices.length; i++) {
             array[i] = new ObjectToken(graphicsDevices[i]);
         }
+
         output.send(0, new ArrayToken(array));
     }
 
     /** Get the graphics devices.
      */
     public void initialize() throws IllegalActionException {
-        GraphicsEnvironment graphicsEnvironment =
-            GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
+                    .getLocalGraphicsEnvironment();
         graphicsDevices = graphicsEnvironment.getScreenDevices();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     // Graphics devices that we can write to.
-    private GraphicsDevice graphicsDevices[];
+    private GraphicsDevice[] graphicsDevices;
 }

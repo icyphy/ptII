@@ -1,32 +1,43 @@
 /* Transform Java source programs to support backtracking.
 
-Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
-
+ */
 package ptolemy.backtrack.ast;
+
+import org.eclipse.jdt.core.dom.CompilationUnit;
+
+import ptolemy.backtrack.ast.transform.AssignmentRule;
+import ptolemy.backtrack.ast.transform.PackageRule;
+import ptolemy.backtrack.ast.transform.TransformRule;
+import ptolemy.backtrack.util.ClassFileLoader;
+import ptolemy.backtrack.util.PathFinder;
+import ptolemy.backtrack.util.SourceOutputStream;
+import ptolemy.backtrack.util.Strings;
+import ptolemy.backtrack.xmlparser.ConfigParser;
+import ptolemy.backtrack.xmlparser.XmlOutput;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,34 +54,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-
-import ptolemy.backtrack.ast.transform.AssignmentRule;
-import ptolemy.backtrack.ast.transform.PackageRule;
-import ptolemy.backtrack.ast.transform.TransformRule;
-import ptolemy.backtrack.util.ClassFileLoader;
-import ptolemy.backtrack.util.PathFinder;
-import ptolemy.backtrack.util.SourceOutputStream;
-import ptolemy.backtrack.util.Strings;
-import ptolemy.backtrack.xmlparser.ConfigParser;
-import ptolemy.backtrack.xmlparser.XmlOutput;
-
 //////////////////////////////////////////////////////////////////////////
 //// Transformer
+
 /**
-   A tool to transform Java source programs to support backtracking. This
-   transformation is done by first analyzing the Java programs, and then
-   refactoring the program based on the information collected in the
-   analysis phase.
+ A tool to transform Java source programs to support backtracking. This
+ transformation is done by first analyzing the Java programs, and then
+ refactoring the program based on the information collected in the
+ analysis phase.
 
-   @author Thomas Feng
-   @version $Id$
-   @since Ptolemy II 5.1
-   @Pt.ProposedRating Red (tfeng)
-   @Pt.AcceptedRating Red (tfeng)
-*/
+ @author Thomas Feng
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (tfeng)
+ @Pt.AcceptedRating Red (tfeng)
+ */
 public class Transformer {
-
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
@@ -85,109 +84,130 @@ public class Transformer {
      *  @exception Exception If any exception occues.
      */
     public static void main(String[] args) throws Exception {
-        if (args.length == 0)
+        if (args.length == 0) {
             _printUsage();
-        else {
+        } else {
             String[] paths = PathFinder.getPtClassPaths();
 
             // Parse command-line options.
             int start = 0;
+
             while (start < args.length) {
                 int newPosition = parseArguments(args, start);
-                if (newPosition != start)
+
+                if (newPosition != start) {
                     start = newPosition;
-                else
+                } else {
                     break;
+                }
             }
 
-            if (_extraClassPaths != null)
+            if (_extraClassPaths != null) {
                 paths = Strings.combineArrays(paths, _extraClassPaths);
+            }
 
             // Set up the list of file names.
             List fileList = new LinkedList();
             Set crossAnalysis = new HashSet();
+
             for (int i = start; i < args.length; i++) {
                 String pathOrFile = args[i];
                 File[] files;
+
                 if (pathOrFile.startsWith("@")) {
                     // A file list.
                     // Each line in the file contains a single file name.
                     String listName = pathOrFile.substring(1);
                     File listFile = new File(listName);
                     File listPath = listFile.getParentFile();
-                    BufferedReader reader =
-                        new BufferedReader(
-                                new InputStreamReader(
-                                        new FileInputStream(listName)));
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(new FileInputStream(listName)));
                     List strings = new LinkedList();
                     String line = reader.readLine();
+
                     while (line != null) {
-                        strings.add(
-                                new File(listPath, line).getCanonicalPath());
+                        strings
+                                .add(new File(listPath, line)
+                                        .getCanonicalPath());
                         line = reader.readLine();
                     }
+
                     files = new File[strings.size()];
+
                     Iterator stringsIter = strings.iterator();
-                    for (int j = 0; stringsIter.hasNext(); j++)
-                        files[j] = new File((String)stringsIter.next());
-                } else
+
+                    for (int j = 0; stringsIter.hasNext(); j++) {
+                        files[j] = new File((String) stringsIter.next());
+                    }
+                } else {
                     files = PathFinder.getJavaFiles(pathOrFile, true);
+                }
 
                 ClassFileLoader loader = new ClassFileLoader(paths);
+
                 for (int j = 0; j < files.length; j++) {
                     String fileName = files[j].getPath();
-                    if (fileName.endsWith(".java"))
+
+                    if (fileName.endsWith(".java")) {
                         fileName = fileName.substring(0, fileName.length() - 5)
-                            + ".class";
-                    else {
-                        System.err.println("Skipping \"" + files[j] + "\". " +
-                                "Cause: Class file not found.");
+                                + ".class";
+                    } else {
+                        System.err.println("Skipping \"" + files[j] + "\". "
+                                + "Cause: Class file not found.");
                         continue;
                     }
 
                     Class c = null;
+
                     try {
                         c = loader.loadClass(new File(fileName));
                     } catch (Exception e) {
-                        System.err.println("Skipping \"" + files[j] + "\". " +
-                                "Cause: " + e.getMessage());
+                        System.err.println("Skipping \"" + files[j] + "\". "
+                                + "Cause: " + e.getMessage());
                         continue;
                     }
+
                     fileList.add(files[j]);
                     crossAnalysis.add(c.getName());
                     _addInnerClasses(crossAnalysis, fileName,
-                            c.getPackage() == null ?
-                            null : c.getPackage().getName());
+                            (c.getPackage() == null) ? null : c.getPackage()
+                                    .getName());
                 }
             }
 
             // Compute the array of cross-analyzed types.
             String[] crossAnalyzedTypes = new String[crossAnalysis.size()];
             Iterator crossAnalysisIter = crossAnalysis.iterator();
-            for (int i = 0; crossAnalysisIter.hasNext(); i++)
-                crossAnalyzedTypes[i] = (String)crossAnalysisIter.next();
 
-            Writer standardWriter =
-                _defaultToStandardOutput ?
-                        new OutputStreamWriter(System.out) :
-                        null;
+            for (int i = 0; crossAnalysisIter.hasNext(); i++) {
+                crossAnalyzedTypes[i] = (String) crossAnalysisIter.next();
+            }
+
+            Writer standardWriter = _defaultToStandardOutput ? new OutputStreamWriter(
+                    System.out)
+                    : null;
 
             // Handle files.
             Iterator filesIter = fileList.iterator();
+
             while (filesIter.hasNext()) {
-                File file = (File)filesIter.next();
+                File file = (File) filesIter.next();
                 String fileName = file.getPath();
                 System.err.println("Transforming \"" + fileName + "\"...");
 
                 transform(file.getPath(), standardWriter, paths,
                         crossAnalyzedTypes);
 
-                if (_defaultToStandardOutput)
+                if (_defaultToStandardOutput) {
                     standardWriter.flush();
+                }
             }
+
             _outputConfig();
-            if (_defaultToStandardOutput)
+
+            if (_defaultToStandardOutput) {
                 standardWriter.close();
+            }
         }
     }
 
@@ -202,27 +222,35 @@ public class Transformer {
      */
     public static int parseArguments(String[] args, int position) {
         String arg = args[position];
+
         if (arg.equals("-classpath") || arg.equals("-cp")) {
             position++;
+
             String classPaths = args[position];
-            _extraClassPaths = Strings.combineArrays(_extraClassPaths,
-                    Strings.decodeFileNames(classPaths));
+            _extraClassPaths = Strings.combineArrays(_extraClassPaths, Strings
+                    .decodeFileNames(classPaths));
             position++;
         } else if (arg.equals("-prefix") || arg.equals("-p")) {
             position++;
             _prefix = args[position];
-            for (int i = 0; i < RULES.length; i++)
+
+            for (int i = 0; i < RULES.length; i++) {
                 if (RULES[i] instanceof PackageRule) {
-                    ((PackageRule)RULES[i]).setPrefix(_prefix);
+                    ((PackageRule) RULES[i]).setPrefix(_prefix);
                     break;
                 }
+            }
+
             position++;
             _defaultToStandardOutput = false;
         } else if (arg.equals("-output") || arg.equals("-o")) {
             position++;
             _rootPath = args[position];
-            if (_rootPath.length() == 0)
+
+            if (_rootPath.length() == 0) {
                 _rootPath = ".";
+            }
+
             position++;
         } else if (arg.equals("-overwrite") || arg.equals("-w")) {
             position++;
@@ -235,6 +263,7 @@ public class Transformer {
             _configName = args[position];
             position++;
         }
+
         return position;
     }
 
@@ -271,8 +300,7 @@ public class Transformer {
      *  @see #transform(String, Writer)
      */
     public static void transform(String fileName, Writer writer,
-            String[] classPaths)
-            throws IOException, ASTMalformedException {
+            String[] classPaths) throws IOException, ASTMalformedException {
         transform(fileName, writer, classPaths, null);
     }
 
@@ -299,7 +327,7 @@ public class Transformer {
             throws IOException, ASTMalformedException {
         transform(fileName, null, writer, classPaths, crossAnalyzedTypes);
     }
-    
+
     /** Transform the AST with given class paths, and output the result to
      *  the writer.
      *  <p>
@@ -326,52 +354,57 @@ public class Transformer {
 
         Transformer transform = new Transformer(fileName, classPaths);
 
-        if (ast == null)
+        if (ast == null) {
             transform._parse();
-        else
+        } else {
             transform._ast = ast;
-        
-        if (crossAnalyzedTypes != null)
+        }
+
+        if (crossAnalyzedTypes != null) {
             transform._visitor.addCrossAnalyzedTypes(crossAnalyzedTypes);
+        }
 
         transform._startTransform();
 
         if (writer == null) {
-            String packageName =
-                transform._ast.getPackage().getName().toString();
+            String packageName = transform._ast.getPackage().getName()
+                    .toString();
             File file = new File(fileName);
             String outputFileName = file.getName();
-            SourceOutputStream outputStream =
-                SourceOutputStream.getStream(_rootPath, packageName,
-                        outputFileName, _overwrite);
+            SourceOutputStream outputStream = SourceOutputStream.getStream(
+                    _rootPath, packageName, outputFileName, _overwrite);
             writer = new OutputStreamWriter(outputStream);
             needClose = true;
         }
 
         transform._outputSource(writer, fileName);
 
-        if (needClose)
+        if (needClose) {
             writer.close();
+        }
 
         // Record the class name.
         if (_configName != null) {
             File file = new File(fileName);
             String simpleName = file.getName();
-            if (simpleName.toUpperCase().endsWith(".JAVA")) {
-                String baseName =
-                    simpleName.substring(0, simpleName.length() - 5);
-                CompilationUnit root =
-                    (CompilationUnit)transform._ast.getRoot();
-                String className;
-                if (root.getPackage() != null)
-                    className =
-                        root.getPackage().getName().toString() + "." +
-                        baseName;
-                else
-                    className = baseName;
 
-                if (_prefix != null && _prefix.length() > 0)
+            if (simpleName.toUpperCase().endsWith(".JAVA")) {
+                String baseName = simpleName.substring(0,
+                        simpleName.length() - 5);
+                CompilationUnit root = (CompilationUnit) transform._ast
+                        .getRoot();
+                String className;
+
+                if (root.getPackage() != null) {
+                    className = root.getPackage().getName().toString() + "."
+                            + baseName;
+                } else {
+                    className = baseName;
+                }
+
+                if ((_prefix != null) && (_prefix.length() > 0)) {
                     className = className.substring(_prefix.length() + 1);
+                }
 
                 _classes.add(className);
             }
@@ -384,9 +417,7 @@ public class Transformer {
     /** The refactoring rules to be sequentially applied to the source code.
      */
     public static TransformRule[] RULES = new TransformRule[] {
-        new AssignmentRule(),
-        new PackageRule()
-    };
+            new AssignmentRule(), new PackageRule() };
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
@@ -397,8 +428,9 @@ public class Transformer {
      *  transformation.
      */
     protected void _afterTraverse() {
-        for (int i = 0; i < RULES.length; i++)
+        for (int i = 0; i < RULES.length; i++) {
             RULES[i].afterTraverse(_visitor, _ast);
+        }
     }
 
     /** Call the <tt>beforeTraverse</tt> of all the refactoring rules. For
@@ -407,28 +439,31 @@ public class Transformer {
      *  traversal.
      */
     protected void _beforeTraverse() {
-        for (int i = 0; i < RULES.length; i++)
+        for (int i = 0; i < RULES.length; i++) {
             RULES[i].beforeTraverse(_visitor, _ast);
+        }
     }
 
     /** Output XML configuration to the pre-defined file (specified with
      *  "-config" argument in {@link #main(String[])}).
-     * 
+     *
      *  @exception Exception If any error occurs.
      */
     protected static void _outputConfig() throws Exception {
         if (_configName != null) {
             // Remove the configuration.
-            SourceOutputStream stream =
-                SourceOutputStream.getStream(_configName, _overwrite);
+            SourceOutputStream stream = SourceOutputStream.getStream(
+                    _configName, _overwrite);
             Set classSet = new HashSet();
             classSet.addAll(_classes);
 
             ConfigParser parser = new ConfigParser();
             parser.addExcludedFile(new File(_configName).getCanonicalPath());
             parser.parseConfigFile(ConfigParser.DEFAULT_SYSTEM_ID, classSet);
-            if (_prefix != null && _prefix.length() > 0)
+
+            if ((_prefix != null) && (_prefix.length() > 0)) {
                 parser.addPackagePrefix(_prefix, classSet);
+            }
 
             OutputStreamWriter writer = new OutputStreamWriter(stream);
             XmlOutput.outputXmlTree(parser.getTree(), writer);
@@ -440,7 +475,7 @@ public class Transformer {
      *
      *  @param writer The writer where the output is written to.
      */
-    protected void _outputSource(Writer writer, String fileName) 
+    protected void _outputSource(Writer writer, String fileName)
             throws IOException {
         FileInputStream stream = new FileInputStream(fileName);
         ASTFormatter formatter = new ASTFormatter(writer, stream);
@@ -456,12 +491,12 @@ public class Transformer {
      *   occurs when reading from the file.
      *  @exception ASTMalformedException If the source is illegal.
      */
-    protected void _parse()
-            throws IOException, ASTMalformedException {
-        if (_fileName != null)
+    protected void _parse() throws IOException, ASTMalformedException {
+        if (_fileName != null) {
             _ast = ASTBuilder.parse(_fileName);
-        else
+        } else {
             _ast = ASTBuilder.parse(_source);
+        }
     }
 
     /** Start the transformation by first parsing the source with
@@ -476,8 +511,7 @@ public class Transformer {
      *  @see #_beforeTraverse()
      *  @see #_parse()
      */
-    protected void _startTransform()
-            throws IOException, ASTMalformedException {
+    protected void _startTransform() throws IOException, ASTMalformedException {
         _beforeTraverse();
         _ast.accept(_visitor);
         _afterTraverse();
@@ -485,23 +519,22 @@ public class Transformer {
 
     ///////////////////////////////////////////////////////////////////
     ////                        nested class                       ////
-
     //////////////////////////////////////////////////////////////////////////
     //// InnerClassFilter
-    /**
-       File name filter for inner classes in the given class. Inner classes
-       are saved in class files with names containing "$".
-    
-       @author Thomas Feng
-       @version $Id$
-       @since Ptolemy II 5.1
-       @Pt.ProposedRating Red (tfeng)
-       @Pt.AcceptedRating Red (tfeng)
-    */
-    private static class InnerClassFilter implements FilenameFilter {
 
+    /**
+     File name filter for inner classes in the given class. Inner classes
+     are saved in class files with names containing "$".
+
+     @author Thomas Feng
+     @version $Id$
+     @since Ptolemy II 5.1
+     @Pt.ProposedRating Red (tfeng)
+     @Pt.AcceptedRating Red (tfeng)
+     */
+    private static class InnerClassFilter implements FilenameFilter {
         /** Construct an inner class filter.
-         * 
+         *
          *  @param className The name of the class whose inner classes (if any)
          *   are looked for.
          */
@@ -510,15 +543,14 @@ public class Transformer {
         }
 
         /** Test whether a file in a directory is accepted.
-         * 
+         *
          *  @param dir The directory where the file is in.
          *  @param name The simple name of the file.
          *  @return <tt>true</tt> if the file is accepted; <tt>false</tt>
          *   otherwise.
          */
         public boolean accept(File dir, String name) {
-            return name.startsWith(_className + "$") &&
-                name.endsWith(".class");
+            return name.startsWith(_className + "$") && name.endsWith(".class");
         }
 
         /** The name of the given class whose inner classes (if any) are looked
@@ -557,7 +589,7 @@ public class Transformer {
     }
 
     /** Add an inner class to the cross-analysis set.
-     * 
+     *
      *  @param crossAnalysis The cross-analysis set.
      *  @param classFileName The file name of the inner class to be added.
      *  @param packageName The name of the package that the inner class is in.
@@ -566,17 +598,24 @@ public class Transformer {
             String classFileName, String packageName) {
         File topFile = new File(classFileName);
         File path = topFile.getParentFile();
-        if (path == null)
+
+        if (path == null) {
             path = new File(".");
-        String className =
-            topFile.getName().substring(0, topFile.getName().length() - 6);
+        }
+
+        String className = topFile.getName().substring(0,
+                topFile.getName().length() - 6);
         File[] files = path.listFiles(new InnerClassFilter(className));
+
         for (int i = 0; i < files.length; i++) {
             File file = files[i];
-            className =
-                file.getName().substring(0, file.getName().length() - 6);
-            if (packageName != null)
+            className = file.getName()
+                    .substring(0, file.getName().length() - 6);
+
+            if (packageName != null) {
                 className = packageName + "." + className;
+            }
+
             crossAnalysis.add(className);
         }
     }
@@ -584,26 +623,23 @@ public class Transformer {
     /** Print the command-line usage of the transformer.
      */
     private static void _printUsage() {
-        System.err.println(
-                "USAGE: java ptolemy.backtrack.ast.Transform");
-        System.err.println(
-                "           " +
-                "[options] " +
-                "[java_files | directories | @file_lists]");
+        System.err.println("USAGE: java ptolemy.backtrack.ast.Transform");
+        System.err.println("           " + "[options] "
+                + "[java_files | directories | @file_lists]");
         System.err.println();
         System.err.println("Options:");
-        System.err.println("          -classpath <paths> " +
-                "add extra class path(s)");
-        System.err.println("          -config <file>     " +
-                "save the configuration in a new file");
-        System.err.println("          -nooverwrite       " +
-                "do not overwrite existing Java files (default)");
-        System.err.println("          -output <root>     " +
-                "root directory of output files");
-        System.err.println("          -overwrite         " +
-                "overwrite existing Java files");
-        System.err.println("          -prefix <name>     " +
-                "prefix to be added to the package names");
+        System.err.println("          -classpath <paths> "
+                + "add extra class path(s)");
+        System.err.println("          -config <file>     "
+                + "save the configuration in a new file");
+        System.err.println("          -nooverwrite       "
+                + "do not overwrite existing Java files (default)");
+        System.err.println("          -output <root>     "
+                + "root directory of output files");
+        System.err.println("          -overwrite         "
+                + "overwrite existing Java files");
+        System.err.println("          -prefix <name>     "
+                + "prefix to be added to the package names");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -625,7 +661,7 @@ public class Transformer {
     /** The visitor used to traverse the AST.
      */
     private TypeAnalyzer _visitor;
-    
+
     private InputStream _docStream;
 
     /** The prefix to be added to the package name of the source.
@@ -651,7 +687,7 @@ public class Transformer {
     /** Extra classpaths to resolve classes.
      */
     private static String[] _extraClassPaths = new String[0];
-    
+
     /** Whether the default output is the standard output. If it is
      *  <tt>true</tt> and no "-prefix" parameter is given, the result of
      *  refactoring is printed to the console; otherwise, files are created

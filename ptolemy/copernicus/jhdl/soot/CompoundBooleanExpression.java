@@ -76,7 +76,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public abstract class CompoundBooleanExpression implements Value, ConditionExpr {
     public abstract CompoundBooleanExpression invert()
-            throws IllegalActionException;
+        throws IllegalActionException;
 
     public abstract Object clone();
 
@@ -105,7 +105,7 @@ public abstract class CompoundBooleanExpression implements Value, ConditionExpr 
      * </ul>
      **/
     public static Value invertValue(Value inValue)
-            throws IllegalActionException {
+        throws IllegalActionException {
         Value newValue = null;
 
         if (inValue instanceof ConditionExpr) {
@@ -128,11 +128,11 @@ public abstract class CompoundBooleanExpression implements Value, ConditionExpr 
                 newValue = ((CompoundBooleanExpression) inValue).invert();
             } else {
                 throw new IllegalActionException("Unknown ConditionExpr "
-                        + inValue.getClass());
+                    + inValue.getClass());
             }
         } else {
             throw new IllegalActionException("Can't Invert "
-                    + inValue.getClass());
+                + inValue.getClass());
         }
 
         return newValue;

@@ -27,7 +27,6 @@
  */
 package ptolemy.copernicus.kernel;
 
-import ptolemy.actor.gui.JNLPUtilities;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,6 +39,7 @@ import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;

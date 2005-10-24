@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib.gui;
 
 import java.util.HashSet;
@@ -38,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.gui.XYPlotter.
- * 
+ *
  * @author Jackie
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -56,7 +55,7 @@ public class XYPlotter extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * The method reads in <code>writeFile</code> from XYPlotter.c 
+     * The method reads in <code>writeFile</code> from XYPlotter.c
      * replaces macros with their values and appends to the given code buffer.
      * @param code the given buffer to append the code to.
      * @exception IllegalActionException If the code stream encounters an
@@ -80,12 +79,13 @@ public class XYPlotter extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("initBlock");
         return processCode(_codeStream.toString());
     }
 
-    /** 
+    /**
      * Generate preinitialize code.
      * This method reads the <code>preinitBlock</code> from XYPlotter.c,
      * replaces macros with their values and returns the processed code string.
@@ -98,7 +98,7 @@ public class XYPlotter extends CCodeGeneratorHelper {
         return _generateBlockCode("preinitBlock");
     }
 
-    /** 
+    /**
      * Generate wrap up code.
      * This method reads the <code>closeFile</code> and <code>graphPlot</code>
      * from XYPlotter.c, replaces macros with their values and appends to the
@@ -110,9 +110,8 @@ public class XYPlotter extends CCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
-        
-        ptolemy.actor.lib.gui.XYPlotter actor = 
-            (ptolemy.actor.lib.gui.XYPlotter) getComponent();
+
+        ptolemy.actor.lib.gui.XYPlotter actor = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
 
         _codeStream.clear();
         _codeStream.appendCodeBlock("closeFile");
@@ -120,11 +119,12 @@ public class XYPlotter extends CCodeGeneratorHelper {
         if (actor.fillOnWrapup.getExpression().equals("true")) {
             _codeStream.appendCodeBlock("graphPlot");
         }
+
         code.append(processCode(_codeStream.toString()));
         return code.toString();
     }
 
-    /** 
+    /**
      * Get the files needed by the code generated for the
      * XYPlotter actor.
      * @return A set of strings that are names of the files

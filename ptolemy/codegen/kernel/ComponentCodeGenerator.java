@@ -61,14 +61,13 @@ public interface ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      *  @return The wrapup code of the containing composite actor.
      */
-    public String generateWrapupCode()
-            throws IllegalActionException;
+    public String generateWrapupCode() throws IllegalActionException;
 
     /** Return the associated component.
      *  @return The component for which this is a helper to generate code.
      */
     public NamedObj getComponent();
-    
+
     /** Set the code generator for the helper class implementing this interface.
      *  @param codeGenerator The code generator to be set.
      */

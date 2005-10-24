@@ -1,32 +1,31 @@
 /*
-@Copyright (c) 2005 The Regents of the University of California.
-All rights reserved.
+ @Copyright (c) 2005 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the
+ above copyright notice and the following two paragraphs appear in all
+ copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
 
-*/
-
+ */
 package ptolemy.domains.ptinyos.util.nc2moml;
 
 import java.io.BufferedReader;
@@ -48,73 +47,73 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 /**
-  Generate a .moml file for each .nc file in the input list.
+ Generate a .moml file for each .nc file in the input list.
 
-  Usage:
-  <pre>
-  java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
-     &lt;<i>xml input prefix</i>&gt; \
-     &lt;<i>xml input suffix</i>&gt; \
-     &lt;<i>nc sub prefix</i>&gt; \
-     &lt;<i>moml output prefix</i>&gt; \
-     <i>long path to file containing list of .nc files using short path</i>
-  </pre>
+ Usage:
+ <pre>
+ java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
+ &lt;<i>xml input prefix</i>&gt; \
+ &lt;<i>xml input suffix</i>&gt; \
+ &lt;<i>nc sub prefix</i>&gt; \
+ &lt;<i>moml output prefix</i>&gt; \
+ <i>long path to file containing list of .nc files using short path</i>
+ </pre>
 
-  Example:
-  <pre>
-java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
-    /home/celaine/ptII/vendors/ptinyos/moml \
-    .ncxml \
-    \'$CLASSPATH\' \
-    /home/celaine/ptII/vendors/ptinyos/moml \
-   /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
-  </pre>
+ Example:
+ <pre>
+ java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
+ /home/celaine/ptII/vendors/ptinyos/moml \
+ .ncxml \
+ \'$CLASSPATH\' \
+ /home/celaine/ptII/vendors/ptinyos/moml \
+ /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
+ </pre>
 
-  .tempfile contains:
-  <pre>
-tos/lib/Counters/Counter.nc
-tos/lib/Counters/IntToLeds.nc
-tos/lib/Counters/IntToLedsM.nc
-tos/lib/Counters/IntToRfm.nc
-tos/lib/Counters/IntToRfmM.nc
-tos/lib/Counters/RfmToInt.nc
-tos/lib/Counters/RfmToIntM.nc
-tos/lib/Counters/SenseToInt.nc
-  </pre>
+ .tempfile contains:
+ <pre>
+ tos/lib/Counters/Counter.nc
+ tos/lib/Counters/IntToLeds.nc
+ tos/lib/Counters/IntToLedsM.nc
+ tos/lib/Counters/IntToRfm.nc
+ tos/lib/Counters/IntToRfmM.nc
+ tos/lib/Counters/RfmToInt.nc
+ tos/lib/Counters/RfmToIntM.nc
+ tos/lib/Counters/SenseToInt.nc
+ </pre>
 
-   Example output for Counter.nc:
-<pre>
-&lt;?xml version="1.0"?&gt;
-&lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+ Example output for Counter.nc:
+ <pre>
+ &lt;?xml version="1.0"?&gt;
+ &lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
 
-&lt;class name="Counter" extends="ptolemy.domains.ptinyos.lib.NCComponent"&gt;
-  &lt;property name="source" value="$CLASSPATH/tos/lib/Counters/Counter.nc" /&gt;
-  &lt;port name="IntOutput" class="ptolemy.actor.IOPort"&gt;
-    &lt;property name="output" /&gt;
-    &lt;property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" /&gt;
-  &lt;/port&gt;
-  &lt;port name="StdControl" class="ptolemy.actor.IOPort"&gt;
-    &lt;property name="input" /&gt;
-    &lt;property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" /&gt;
-  &lt;/port&gt;
-  &lt;port name="Timer" class="ptolemy.actor.IOPort"&gt;
-    &lt;property name="output" /&gt;
-    &lt;property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" /&gt;
-  &lt;/port&gt;
-&lt;/class&gt;
-</pre>
-  Expects &lt;<i>xml input prefix</i>&gt;
-   to contain files with &lt;<i>xml input suffix</i>&gt; containing
-  an xml dump of:
-<pre>
-      interfaces(file(filename.nc))
-</pre>
+ &lt;class name="Counter" extends="ptolemy.domains.ptinyos.lib.NCComponent"&gt;
+ &lt;property name="source" value="$CLASSPATH/tos/lib/Counters/Counter.nc" /&gt;
+ &lt;port name="IntOutput" class="ptolemy.actor.IOPort"&gt;
+ &lt;property name="output" /&gt;
+ &lt;property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" /&gt;
+ &lt;/port&gt;
+ &lt;port name="StdControl" class="ptolemy.actor.IOPort"&gt;
+ &lt;property name="input" /&gt;
+ &lt;property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" /&gt;
+ &lt;/port&gt;
+ &lt;port name="Timer" class="ptolemy.actor.IOPort"&gt;
+ &lt;property name="output" /&gt;
+ &lt;property name="_showName" class="ptolemy.kernel.util.SingletonAttribute" /&gt;
+ &lt;/port&gt;
+ &lt;/class&gt;
+ </pre>
+ Expects &lt;<i>xml input prefix</i>&gt;
+ to contain files with &lt;<i>xml input suffix</i>&gt; containing
+ an xml dump of:
+ <pre>
+ interfaces(file(filename.nc))
+ </pre>
 
-   @author Elaine Cheong
-   @version $Id$
-   @Pt.ProposedRating Red (celaine)
-   @Pt.AcceptedRating Red (celaine)
-*/
+ @author Elaine Cheong
+ @version $Id$
+ @Pt.ProposedRating Red (celaine)
+ @Pt.AcceptedRating Red (celaine)
+ */
 public class NC2MoML {
     /** Generate the .moml file for this nesC component.
      *
@@ -122,13 +121,12 @@ public class NC2MoML {
      *  @param componentName The name of the component (no suffix).
      *  @param outputFile The file to generate.
      */
-    public static void generateComponent(
-            String sourcePath, String componentName, String outputFile) {
+    public static void generateComponent(String sourcePath,
+            String componentName, String outputFile) {
         // Set the name of this class to the name of this nesC component.
         Element root = new Element("class");
         root.setAttribute("name", componentName);
-        root.setAttribute("extends",
-                "ptolemy.domains.ptinyos.lib.NCComponent");
+        root.setAttribute("extends", "ptolemy.domains.ptinyos.lib.NCComponent");
 
         // Set the path to the .nc source file.
         Element source = new Element("property");
@@ -137,18 +135,16 @@ public class NC2MoML {
         root.addContent(source);
 
         // Set the doc type.
-        DocType plot = new DocType("plot",
-                "-//UC Berkeley//DTD MoML 1//EN",
+        DocType plot = new DocType("plot", "-//UC Berkeley//DTD MoML 1//EN",
                 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd");
         Document doc = new Document(root, plot);
-
 
         // Get the list of interfaces for this nesC component.
         ListIterator interfaces = Xnesc.interfaceList.listIterator();
 
         while (interfaces.hasNext()) {
             // Get the next interface for this nesC component.
-            Xinterface intf = (Xinterface)interfaces.next();
+            Xinterface intf = (Xinterface) interfaces.next();
 
             // Set the port name and class.
             Element port = new Element("port");
@@ -185,13 +181,13 @@ public class NC2MoML {
         try {
             // Open the file.
             FileOutputStream out = null;
+
             if (outputFile != null) {
                 out = new FileOutputStream(outputFile);
             }
 
             // Set up the serializer.
-            XMLOutputter serializer =
-                new XMLOutputter(Format.getPrettyFormat());
+            XMLOutputter serializer = new XMLOutputter(Format.getPrettyFormat());
             Format format = serializer.getFormat();
             format.setOmitEncoding(true);
             format.setLineSeparator("\n");
@@ -223,10 +219,8 @@ public class NC2MoML {
         if (args.length < 5) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl "
-                    + "<xml input prefix> "
-                    + "<xml input suffix> "
-                    + "<nc sub prefix> "
-                    + "<moml output prefix> "
+                    + "<xml input prefix> " + "<xml input suffix> "
+                    + "<nc sub prefix> " + "<moml output prefix> "
                     + "[long path to file containing list of .nc files using "
                     + "short path]");
             return;
@@ -251,13 +245,13 @@ public class NC2MoML {
             // Read each line of the file.
             while ((inputFileName = in.readLine()) != null) {
                 // Determine the nesC xml name (with path) of the file.
-                String xmlSuffix =
-                    inputFileName.replaceFirst("\\.nc$", inputSuffix);
+                String xmlSuffix = inputFileName.replaceFirst("\\.nc$",
+                        inputSuffix);
                 String xmlInputFile = inputPrefix + _FILESEPARATOR + xmlSuffix;
 
                 // Determine the substituted path to the .nc file.
-                String pathToNCFile =
-                    subPrefix + _FILESEPARATOR + inputFileName;
+                String pathToNCFile = subPrefix + _FILESEPARATOR
+                        + inputFileName;
 
                 // Determine the component name.
                 String[] subdirs = inputFileName.split(_FILESEPARATOR);
@@ -265,10 +259,10 @@ public class NC2MoML {
                 componentName = componentName.replaceFirst("\\.nc$", "");
 
                 // Determine the .moml name (with path) of the file.
-                String momlSuffix =
-                    inputFileName.replaceFirst("\\.nc$", "\\.moml");
-                String momlOutputFile =
-                    outputPrefix + _FILESEPARATOR + momlSuffix;
+                String momlSuffix = inputFileName.replaceFirst("\\.nc$",
+                        "\\.moml");
+                String momlOutputFile = outputPrefix + _FILESEPARATOR
+                        + momlSuffix;
 
                 try {
                     // Parse the nesC xml file.
@@ -285,23 +279,20 @@ public class NC2MoML {
                                 momlOutputFile);
                     } catch (Exception ex) {
                         System.err.println("Errors while generating \""
-                                + momlOutputFile
-                                + "\" because of exception: "
+                                + momlOutputFile + "\" because of exception: "
                                 + ex);
                     }
                 } catch (SAXException ex) {
                     System.err.println("No xml reader found for \""
                             + xmlInputFile + "\"");
                 } catch (FileNotFoundException ex) {
-                    System.err.println("Could not find file \""
-                            + xmlInputFile + "\"");
+                    System.err.println("Could not find file \"" + xmlInputFile
+                            + "\"");
                 } catch (Exception ex) {
                     System.err.println("Did not complete nc2moml for file: \""
-                            + xmlInputFile
-                            + "\" because of exception: " + ex);
+                            + xmlInputFile + "\" because of exception: " + ex);
                 }
             }
-
         } catch (IOException ex) {
             System.err.println("Could not open file: \"" + inputFiles);
             System.err.println("\" because of exception: " + ex);

@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib;
 
 import java.io.BufferedReader;
@@ -43,7 +42,7 @@ import ptolemy.util.FileUtilities;
 /**
  * Read and process code blocks from the helper .c file. Helper .c files
  * contain c code blocks for the associated java helper actor. A proper
- * code block should have the following grammar: 
+ * code block should have the following grammar:
  * <pre>
  *     _BLOCKSTART CodeBlockName [(Parameter1, Parameter2), ...] _HEADEREND
  *         CodeBlockBody
@@ -76,7 +75,7 @@ import ptolemy.util.FileUtilities;
  * Parameter substitution takes place before macro substitution processed
  * by the codegen kernel. CodeStream do not support method overriding, so
  * each code block name within the same .c helper file have to be unique.
- * 
+ *
  * @author Man-Kit
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -84,7 +83,6 @@ import ptolemy.util.FileUtilities;
  * @Pt.AcceptedRating Yellow (mankit)
  */
 public class CodeStream {
-    
     /**
      * Construct a new code stream associated with the given java actor
      * helper. Each actor should have its own codestream during code
@@ -93,8 +91,8 @@ public class CodeStream {
      */
     public CodeStream(CCodeGeneratorHelper helper) {
         _actorHelper = helper;
-        String classNamePath = helper.getClass().getName()
-                .replace('.', '/');
+
+        String classNamePath = helper.getClass().getName().replace('.', '/');
         _filePath = "$CLASSPATH/" + classNamePath + ".c";
     }
 
@@ -106,8 +104,8 @@ public class CodeStream {
     public CodeStream(String path) {
         _filePath = path;
     }
-    
-    /** 
+
+    /**
      * Append the contents of the given CodeStream to this code stream.
      * @param codeBlock The given code stream.
      */
@@ -115,7 +113,7 @@ public class CodeStream {
         _stream.append(codeBlock.toString());
     }
 
-    /** 
+    /**
      * Append the contents of the given String to this code stream.
      * @param codeBlock The given string.
      */
@@ -123,7 +121,7 @@ public class CodeStream {
         _stream.append(codeBlock);
     }
 
-    /** 
+    /**
      * Append the contents of the given StringBuffer to this code stream.
      * @param codeBlock The given string buffer.
      */
@@ -131,7 +129,7 @@ public class CodeStream {
         _stream.append(codeBlock);
     }
 
-    /** 
+    /**
      * Append the code block specified the given block name. This method
      * invokes appendCodeBlock(String, ArrayList) with no arguments by
      * passing an empty array list of argments.
@@ -140,12 +138,11 @@ public class CodeStream {
      * @exception IllegalActionException If appendCodeBlock(String, ArrayList)
      *  throws the exception.
      */
-    public void appendCodeBlock(String blockName) 
-        throws IllegalActionException {
+    public void appendCodeBlock(String blockName) throws IllegalActionException {
         appendCodeBlock(blockName, new ArrayList());
     }
 
-    /** 
+    /**
      * Append the specific code block with an array of arguments and
      * substitute each argument with the parameters of the code block in
      * the order listed in the given arguments array list.
@@ -164,6 +161,7 @@ public class CodeStream {
         if (_codeBlockTable == null) {
             _constructCodeTable();
         }
+
         StringBuffer codeBlock = (StringBuffer) _codeBlockTable.get(blockName);
 
         if (codeBlock == null) {
@@ -172,45 +170,45 @@ public class CodeStream {
         }
 
         ArrayList parameters = (ArrayList) _parameterTable.get(blockName);
+
         if (parameters == null) {
             if (arguments.size() != 0) {
-            	throw new IllegalActionException(blockName + " in " +
-                    _filePath + "does not take any arguments.");
+                throw new IllegalActionException(blockName + " in " + _filePath
+                        + "does not take any arguments.");
             }
-        }
-        else {
+        } else {
             // Check if there are more parameters than arguments.
-            if (parameters.size() - arguments.size() < 0) {
-                throw new IllegalActionException(blockName + " in " + 
-                    _filePath + " only takes " + parameters.size() + 
-                    " arguments.");
+            if ((parameters.size() - arguments.size()) < 0) {
+                throw new IllegalActionException(blockName + " in " + _filePath
+                        + " only takes " + parameters.size() + " arguments.");
             }
             // Check if there are more arguments than parameters.
-            else if (parameters.size() - arguments.size() > 0) {
-            	for (int i = arguments.size(); i < parameters.size(); i++) {
+            else if ((parameters.size() - arguments.size()) > 0) {
+                for (int i = arguments.size(); i < parameters.size(); i++) {
                     throw new IllegalActionException(blockName + " in "
-                            + _filePath + " expects parameter (" + 
-                            parameters.get(i) + ").");
+                            + _filePath + " expects parameter ("
+                            + parameters.get(i) + ").");
                 }
             }
         }
-        
+
         // substitute for each parameters
         for (int i = 0; i < arguments.size(); i++) {
             String replaceString = arguments.get(i).toString();
             codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
                     parameters.get(i).toString(), replaceString));
         }
+
         _stream.append(codeBlock);
     }
-    
+
     /**
      * Clear the contents of this code stream.
      */
     public void clear() {
-    	_stream = new StringBuffer();
+        _stream = new StringBuffer();
     }
-    
+
     /**
      * Return a StringBuffer that contains all the code block names and
      * bodies from the associated helper .c file.
@@ -228,22 +226,26 @@ public class CodeStream {
                 .hasNext();) {
             String key = (String) keys.next();
             buffer.append(key);
-            ArrayList parameters = (ArrayList)_parameterTable.get(key);
-            if (parameters != null && parameters.size() > 0) {
+
+            ArrayList parameters = (ArrayList) _parameterTable.get(key);
+
+            if ((parameters != null) && (parameters.size() > 0)) {
                 for (int i = 0; i < parameters.size(); i++) {
                     if (i == 0) {
                         buffer.append("(" + parameters.get(i));
-                    }
-                    else {
-                    	buffer.append(", " + parameters.get(i));
+                    } else {
+                        buffer.append(", " + parameters.get(i));
                     }
                 }
+
                 buffer.append(")");
             }
+
             buffer.append(":\n");
             buffer.append((StringBuffer) _codeBlockTable.get(key));
             buffer.append("\n-------------------------------\n\n");
         }
+
         return buffer;
     }
 
@@ -258,11 +260,11 @@ public class CodeStream {
      */
     public static void main(String[] args) throws IOException,
             IllegalActionException {
-        BufferedReader in = 
-            new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("----------Testing-------------------------------");
 
         System.out.print("please input file path: ");
+
         String filePath = in.readLine();
 
         System.out.println("\n----------Result------------------------------");
@@ -303,7 +305,6 @@ public class CodeStream {
      *  helper .c file.
      */
     private void _constructCodeTable() throws IllegalActionException {
-
         _codeBlockTable = new Hashtable();
         _parameterTable = new Hashtable();
 
@@ -317,19 +318,19 @@ public class CodeStream {
 
             // FIXME: is there a better way to read the entire file?
             // create a string of all code in the file
-            for (String line = reader.readLine(); line != null; 
-                line = reader.readLine()) {
+            for (String line = reader.readLine(); line != null; line = reader
+                    .readLine()) {
                 codeInFile.append(line + "\n");
             }
 
             // repeatedly parse the file
             while (_parseCodeBlock(codeInFile) != null) {
                 ;
-            }            
+            }
         } catch (IOException ex) {
             if (reader == null) {
-                throw new IllegalActionException(null, ex, 
-                        "Cannot open file: " + _filePath);
+                throw new IllegalActionException(null, ex, "Cannot open file: "
+                        + _filePath);
             } else {
                 throw new IllegalActionException(null, ex,
                         "Error reading file: " + _filePath);
@@ -337,11 +338,11 @@ public class CodeStream {
         } finally {
             try {
                 if (reader != null) {
-                    reader.close();                
+                    reader.close();
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(null, ex,
-                        "Error closing file: " + _filePath);                
+                        "Error closing file: " + _filePath);
             }
         }
     }
@@ -383,20 +384,18 @@ public class CodeStream {
                     + _filePath);
         }
 
-        StringBuffer body = 
-            new StringBuffer(codeInFile.substring(_parseIndex, endIndex));
+        StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex,
+                endIndex));
 
         // Recursively parsing for nested code blocks
-        for (String subBlockKey = _parseCodeBlock(body); 
-            subBlockKey != null;) {
+        for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
             // FIXME: do we include the nested code block into 
             // the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
             // FIXME: take away the nested code block from
             // the current code block
-
-        	// reset the parse index to parse the body from the beginning
-            _parseIndex = 0;        
+            // reset the parse index to parse the body from the beginning
+            _parseIndex = 0;
             subBlockKey = _parseCodeBlock(body);
         }
 
@@ -404,7 +403,7 @@ public class CodeStream {
         return body;
     }
 
-    /** 
+    /**
      * Parse from the _parseIndex for the next single code block and return
      * the code block name. This method puts the code block body (value)
      * and the code block name (key) into the code block table. It calls
@@ -459,39 +458,44 @@ public class CodeStream {
         _parseIndex += _BLOCKSTART.length();
 
         int endIndex = codeInFile.indexOf(_HEADEREND, _parseIndex);
+
         if (endIndex == -1) {
-            throw new IllegalActionException(
-                    "Missing code block close header" + " in " + _filePath);
+            throw new IllegalActionException("Missing code block close header"
+                    + " in " + _filePath);
         }
 
         int parameterIndex = codeInFile.indexOf("(", _parseIndex);
-        if (parameterIndex != -1 && parameterIndex < endIndex) {
+
+        if ((parameterIndex != -1) && (parameterIndex < endIndex)) {
             name = _checkCodeBlockName(codeInFile.substring(_parseIndex,
                     parameterIndex));
+
             int parameterEndIndex = codeInFile.indexOf(")", _parseIndex);
-            
+
             if (_parameterTable.get(name) == null) {
                 _parameterTable.put(name, new ArrayList());
             }
+
             ArrayList parameterList = (ArrayList) _parameterTable.get(name);
-            
+
             // keep parsing for extra parameters
-            for (int commaIndex = codeInFile.indexOf(",", _parseIndex);
-                commaIndex != -1 && commaIndex < parameterEndIndex; 
-                commaIndex = codeInFile.indexOf(",", commaIndex + 1)) {
-            	
-                String newParameter = 
-                    codeInFile.substring(parameterIndex + 1, commaIndex);
+            for (int commaIndex = codeInFile.indexOf(",", _parseIndex); (commaIndex != -1)
+                    && (commaIndex < parameterEndIndex); commaIndex = codeInFile
+                    .indexOf(",", commaIndex + 1)) {
+                String newParameter = codeInFile.substring(parameterIndex + 1,
+                        commaIndex);
                 parameterList.add(newParameter.trim());
                 parameterIndex = commaIndex;
             }
-            String newParameter = 
-                codeInFile.substring(parameterIndex + 1, parameterEndIndex);
+
+            String newParameter = codeInFile.substring(parameterIndex + 1,
+                    parameterEndIndex);
             parameterList.add(newParameter.trim());
         } else {
-            name = _checkCodeBlockName(
-                    codeInFile.substring(_parseIndex, endIndex));
+            name = _checkCodeBlockName(codeInFile.substring(_parseIndex,
+                    endIndex));
         }
+
         _parseIndex = _HEADEREND.length() + endIndex;
         return name;
     }

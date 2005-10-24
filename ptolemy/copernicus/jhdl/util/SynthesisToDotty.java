@@ -78,7 +78,7 @@ public class SynthesisToDotty extends GraphToDotty {
 
                 if (bigHack == null) {
                     sb.append("\t\"" + name + "\" [label=\""
-                            + b.getBlock().toShortString() + "\"];\r\n");
+                        + b.getBlock().toShortString() + "\"];\r\n");
                 }
             } else {
                 name = "v" + count;
@@ -86,8 +86,8 @@ public class SynthesisToDotty extends GraphToDotty {
 
                 if (source.hasWeight()) {
                     sb.append(" [label=\""
-                            + convertSpecialsToEscapes(source.getWeight().toString())
-                            + "\"]");
+                        + convertSpecialsToEscapes(source.getWeight().toString())
+                        + "\"]");
                 }
 
                 sb.append(";\r\n");
@@ -103,14 +103,14 @@ public class SynthesisToDotty extends GraphToDotty {
             Node source = (Node) nodes.next();
 
             for (Iterator succs = g.outputEdges(source).iterator();
-                 succs.hasNext();) {
+                        succs.hasNext();) {
                 Edge edge = (Edge) succs.next();
                 Node dest = edge.sink();
 
                 boolean sourceIsSB = (source.getWeight() instanceof SuperBlock)
-                    && (blockToVertex.get(source) != null);
+                            && (blockToVertex.get(source) != null);
                 boolean destIsSB = (dest.getWeight() instanceof SuperBlock)
-                    && (blockToVertex.get(dest) != null);
+                            && (blockToVertex.get(dest) != null);
 
                 if (sourceIsSB) {
                     sb.append("\t" + blockToVertex.get(source));
@@ -146,8 +146,8 @@ public class SynthesisToDotty extends GraphToDotty {
                     }
 
                     sb.append(" label=\""
-                            + convertSpecialsToEscapes(edge.getWeight().toString())
-                            + "\"");
+                        + convertSpecialsToEscapes(edge.getWeight().toString())
+                        + "\"");
                 }
 
                 sb.append("];\r\n");
@@ -182,8 +182,8 @@ public class SynthesisToDotty extends GraphToDotty {
 
             if (source.hasWeight()) {
                 sb.append(" [label=\""
-                        + convertSpecialsToEscapes(source.getWeight().toString())
-                        + "\"]");
+                    + convertSpecialsToEscapes(source.getWeight().toString())
+                    + "\"]");
             }
 
             sb.append(";\r\n");
@@ -196,16 +196,16 @@ public class SynthesisToDotty extends GraphToDotty {
             Node source = (Node) nodes.next();
 
             for (Iterator succs = g.outputEdges(source).iterator();
-                 succs.hasNext();) {
+                        succs.hasNext();) {
                 Edge edge = (Edge) succs.next();
                 Node dest = edge.sink();
                 sb.append("\t\t\"" + hm.get(source) + "\" -> \"" + hm.get(dest)
-                        + "\"");
+                    + "\"");
 
                 if (edge.hasWeight()) {
                     sb.append(" [label=\""
-                            + convertSpecialsToEscapes(edge.getWeight().toString())
-                            + "\"]");
+                        + convertSpecialsToEscapes(edge.getWeight().toString())
+                        + "\"]");
                 }
 
                 sb.append(";\r\n");

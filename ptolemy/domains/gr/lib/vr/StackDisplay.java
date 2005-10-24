@@ -28,10 +28,8 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
-import ij.gui.StackWindow;
 
-import java.awt.Color;
-import java.awt.Container;
+import ij.gui.StackWindow;
 
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
@@ -44,12 +42,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.media.Picture;
 
+import java.awt.Color;
+import java.awt.Container;
+
 //////////////////////////////////////////////////////////////////////////
 //// StackDisplay
-
-
 public class StackDisplay extends Sink {
-    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -88,30 +86,27 @@ public class StackDisplay extends Sink {
      *   or if a token is received that contains a null image.
      */
     public void fire() throws IllegalActionException {
-
-       	if (_debugging) {
-       		_debug("StackDisplay actor firing");
-       	}
-
-       	if (input.hasToken(0)) {
-       		ObjectToken objectToken = (ObjectToken) input.get(0);
-          
-       		//ImageToken imageToken;
-       		ImagePlus imagePlus;
-       		imagePlus = (ImagePlus)objectToken.getValue();
-           
-       		//FIXME What type of catch do I need?
-       		/*   try {
-       		 imageToken = (ImageToken) token;
-       		 } catch (ClassCastException ex) {
-       		     throw new IllegalActionException(this, ex,
-                       "Failed to cast " + token.getClass()
-                       + " to an ImageToken.\nToken was: " + token);
-                 }*/
-       		_frame = new StackWindow(imagePlus);        		
-
+        if (_debugging) {
+            _debug("StackDisplay actor firing");
         }
 
+        if (input.hasToken(0)) {
+            ObjectToken objectToken = (ObjectToken) input.get(0);
+
+            //ImageToken imageToken;
+            ImagePlus imagePlus;
+            imagePlus = (ImagePlus) objectToken.getValue();
+
+            //FIXME What type of catch do I need?
+            /*   try {
+             imageToken = (ImageToken) token;
+             } catch (ClassCastException ex) {
+             throw new IllegalActionException(this, ex,
+             "Failed to cast " + token.getClass()
+             + " to an ImageToken.\nToken was: " + token);
+             }*/
+            _frame = new StackWindow(imagePlus);
+        }
     }
 
     /** Initialize this actor.
@@ -123,9 +118,9 @@ public class StackDisplay extends Sink {
         super.initialize();
 
         //_oldxsize = 0;
-//        _oldysize = 0;
-
+        //        _oldysize = 0;
         //FIXME Do I need a container and a frame?
+
         /*   if (_container == null) {
          _container = _frame = new StackWindow(null);
          //_container = _frame.getContentPane();
@@ -137,22 +132,17 @@ public class StackDisplay extends Sink {
          }*/
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** A specification of the size of the pane if it is in its own window. */
     protected SizeAttribute _paneSize;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    
     /** The frame, if one is used. */
     private StackWindow _frame;
 
     private int _index = 0;
-
-
 }

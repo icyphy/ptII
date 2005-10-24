@@ -1,40 +1,44 @@
 /* TreeSet.java -- a class providing a TreeMap-backed SortedSet
-   Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
+ Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ 02111-1307 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 package ptolemy.backtrack.util.java.util;
+
+import ptolemy.backtrack.Rollbackable;
+import ptolemy.backtrack.util.FieldRecord;
+import ptolemy.backtrack.util.java.util.SortedMap;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -42,11 +46,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
-import ptolemy.backtrack.Rollbackable;
-import ptolemy.backtrack.util.FieldRecord;
-import ptolemy.backtrack.util.java.util.SortedMap;
 
-/** 
+/**
  * This class provides a TreeMap-backed implementation of the SortedSet
  * interface. The elements will be sorted according to their <i>natural
  * order</i>, or according to the provided <code>Comparator</code>.<p>
@@ -78,21 +79,22 @@ import ptolemy.backtrack.util.java.util.SortedMap;
  * @since 1.2
  * @status updated to 1.4
  */
-public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serializable, Rollbackable {
-
-    /**     
+public class TreeSet extends AbstractSet implements SortedSet, Cloneable,
+        Serializable, Rollbackable {
+    /**
      * Compatible with JDK 1.2.
      */
     private static final long serialVersionUID = -2479143000061671589L;
 
-    /**     
+    /**
      * The SortedMap which backs this Set.
      */
+
     // Not final because of readObject. This will always be one of TreeMap or
     // TreeMap.SubMap, which both extend AbstractMap.
     private transient SortedMap map;
 
-    /**     
+    /**
      * Construct a new TreeSet whose backing TreeMap using the "natural"
      * ordering of keys. Elements that are not mutually comparable will cause
      * ClassCastExceptions down the road.
@@ -102,7 +104,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         $ASSIGN$map(new TreeMap());
     }
 
-    /**     
+    /**
      * Construct a new TreeSet whose backing TreeMap uses the supplied
      * Comparator. Elements that are not mutually comparable will cause
      * ClassCastExceptions down the road.
@@ -112,7 +114,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         $ASSIGN$map(new TreeMap(comparator));
     }
 
-    /**     
+    /**
      * Construct a new TreeSet whose backing TreeMap uses the "natural"
      * orering of the keys and which contains all of the elements in the
      * supplied Collection. This runs in n*log(n) time.
@@ -128,7 +130,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         addAll(collection);
     }
 
-    /**     
+    /**
      * Construct a new TreeSet, using the same key ordering as the supplied
      * SortedSet and containing all of the elements in the supplied SortedSet.
      * This constructor runs in linear time.
@@ -138,11 +140,12 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
      */
     public TreeSet(SortedSet sortedSet) {
         $ASSIGN$map(new TreeMap(sortedSet.comparator()));
+
         Iterator itr = sortedSet.iterator();
-        ((TreeMap)map).putKeysLinear(itr, sortedSet.size());
+        ((TreeMap) map).putKeysLinear(itr, sortedSet.size());
     }
 
-    /**     
+    /**
      * This private constructor is used to implement the subSet() calls around
      * a backing TreeMap.SubMap.
      * @param backingMap the submap
@@ -151,7 +154,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         $ASSIGN$map(backingMap);
     }
 
-    /**     
+    /**
      * Adds the spplied Object to the Set if it is not already in the Set;
      * returns true if the element is added, false otherwise.
      * @param obj the Object to be added to this Set
@@ -162,7 +165,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return map.put(obj, "") == null;
     }
 
-    /**     
+    /**
      * Adds all of the elements in the supplied Collection to this TreeSet.
      * @param c The collection to add
      * @return true if the Set is altered, false otherwise
@@ -174,35 +177,41 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         boolean result = false;
         int pos = c.size();
         Iterator itr = c.iterator();
-        while (--pos >= 0) 
+
+        while (--pos >= 0) {
             result |= (map.put(itr.next(), "") == null);
+        }
+
         return result;
     }
 
-    /**     
+    /**
      * Removes all elements in this Set.
      */
     public void clear() {
         map.clear();
     }
 
-    /**     
+    /**
      * Returns a shallow copy of this Set. The elements are not cloned.
      * @return the cloned set
      */
     public Object clone() {
         TreeSet copy = null;
+
         try {
-            copy = (TreeSet)super.clone();
+            copy = (TreeSet) super.clone();
+
             // Map may be either TreeMap or TreeMap.SubMap, hence the ugly casts.
-            copy.$ASSIGN$map((SortedMap)((AbstractMap)map).clone());
+            copy.$ASSIGN$map((SortedMap) ((AbstractMap) map).clone());
         } catch (CloneNotSupportedException x) {
             // Impossible result.
         }
+
         return copy;
     }
 
-    /**     
+    /**
      * Returns this Set's comparator.
      * @return the comparator, or null if the set uses natural ordering
      */
@@ -210,7 +219,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return map.comparator();
     }
 
-    /**     
+    /**
      * Returns true if this Set contains the supplied Object, false otherwise.
      * @param obj the Object to check for
      * @return true if it is in the set
@@ -221,7 +230,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return map.containsKey(obj);
     }
 
-    /**     
+    /**
      * Returns the first (by order) element in this Set.
      * @return the first element
      * @throws NoSuchElementException if the set is empty
@@ -230,12 +239,12 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return map.firstKey();
     }
 
-    /**     
+    /**
      * Returns a view of this Set including all elements less than
      * <code>to</code>. The returned set is backed by the original, so changes
      * in one appear in the other. The subset will throw an{
-@link IllegalArgumentException    }
- for any attempt to access or add an
+     @link IllegalArgumentException    }
+     for any attempt to access or add an
      * element beyond the specified cutoff. The returned set does not include
      * the endpoint; if you want inclusion, pass the successor element.
      * @param to the (exclusive) cutoff point
@@ -249,7 +258,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return new TreeSet(map.headMap(to));
     }
 
-    /**     
+    /**
      * Returns true if this Set has size 0, false otherwise.
      * @return true if the set is empty
      */
@@ -257,7 +266,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return map.isEmpty();
     }
 
-    /**     
+    /**
      * Returns in Iterator over the elements in this TreeSet, which traverses
      * in ascending order.
      * @return an iterator
@@ -266,7 +275,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return map.keySet().iterator();
     }
 
-    /**     
+    /**
      * Returns the last (by order) element in this Set.
      * @return the last element
      * @throws NoSuchElementException if the set is empty
@@ -275,7 +284,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return map.lastKey();
     }
 
-    /**     
+    /**
      * If the supplied Object is in this Set, it is removed, and true is
      * returned; otherwise, false is returned.
      * @param obj the Object to remove from this Set
@@ -286,7 +295,7 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return map.remove(obj) != null;
     }
 
-    /**     
+    /**
      * Returns the number of elements in this Set
      * @return the set size
      */
@@ -294,13 +303,13 @@ public class TreeSet extends AbstractSet implements SortedSet, Cloneable, Serial
         return map.size();
     }
 
-    /**     
+    /**
      * Returns a view of this Set including all elements greater or equal to
      * <code>from</code> and less than <code>to</code> (a half-open interval).
      * The returned set is backed by the original, so changes in one appear in
      * the other. The subset will throw an {
-@link IllegalArgumentException    }
-for any attempt to access or add an element beyond the specified cutoffs.
+     @link IllegalArgumentException    }
+     for any attempt to access or add an element beyond the specified cutoffs.
      * The returned set includes the low endpoint but not the high; if you want
      * to reverse this behavior on either end, pass in the successor element.
      * @param from the (inclusive) low cutoff point
@@ -316,12 +325,12 @@ for any attempt to access or add an element beyond the specified cutoffs.
         return new TreeSet(map.subMap(from, to));
     }
 
-    /**     
+    /**
      * Returns a view of this Set including all elements greater or equal to
      * <code>from</code>. The returned set is backed by the original, so
      * changes in one appear in the other. The subset will throw an{
-@link IllegalArgumentException    }
- for any attempt to access or add an
+     @link IllegalArgumentException    }
+     for any attempt to access or add an
      * element beyond the specified cutoff. The returned set includes the
      * endpoint; if you want to exclude it, pass in the successor element.
      * @param from the (inclusive) low cutoff point
@@ -335,24 +344,27 @@ for any attempt to access or add an element beyond the specified cutoffs.
         return new TreeSet(map.tailMap(from));
     }
 
-    /**     
+    /**
      * Serializes this object to the given stream.
      * @param s the stream to write to
      * @throws IOException if the underlying stream fails
      * @serialData the <i>comparator</i> (Object), followed by the set size
      * (int), the the elements in sorted order (Object)
      */
-    private void writeObject(ObjectOutputStream s) throws IOException  {
+    private void writeObject(ObjectOutputStream s) throws IOException {
         s.defaultWriteObject();
+
         Iterator itr = map.keySet().iterator();
         int pos = map.size();
         s.writeObject(map.comparator());
         s.writeInt(pos);
-        while (--pos >= 0) 
+
+        while (--pos >= 0) {
             s.writeObject(itr.next());
+        }
     }
 
-    /**     
+    /**
      * Deserializes this object from the given stream.
      * @param s the stream to read from
      * @throws ClassNotFoundException if the underlying stream fails
@@ -360,39 +372,40 @@ for any attempt to access or add an element beyond the specified cutoffs.
      * @serialData the <i>comparator</i> (Object), followed by the set size
      * (int), the the elements in sorted order (Object)
      */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException  {
+    private void readObject(ObjectInputStream s) throws IOException,
+            ClassNotFoundException {
         s.defaultReadObject();
-        Comparator comparator = (Comparator)s.readObject();
+
+        Comparator comparator = (Comparator) s.readObject();
         int size = s.readInt();
         $ASSIGN$map(new TreeMap(comparator));
-        ((TreeMap)map).putFromObjStream(s, size, false);
+        ((TreeMap) map).putFromObjStream(s, size, false);
     }
 
     private final SortedMap $ASSIGN$map(SortedMap newValue) {
-        if ($CHECKPOINT != null && $CHECKPOINT.getTimestamp() > 0) {
+        if (($CHECKPOINT != null) && ($CHECKPOINT.getTimestamp() > 0)) {
             $RECORD$map.add(null, map, $CHECKPOINT.getTimestamp());
         }
-        if (newValue != null && $CHECKPOINT != newValue.$GET$CHECKPOINT()) {
+
+        if ((newValue != null) && ($CHECKPOINT != newValue.$GET$CHECKPOINT())) {
             newValue.$SET$CHECKPOINT($CHECKPOINT);
         }
+
         return map = newValue;
     }
 
     public void $COMMIT(long timestamp) {
-        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT.getTopTimestamp());
+        FieldRecord.commit($RECORDS, timestamp, $RECORD$$CHECKPOINT
+                .getTopTimestamp());
         super.$COMMIT(timestamp);
     }
 
     public void $RESTORE(long timestamp, boolean trim) {
-        map = (SortedMap)$RECORD$map.restore(map, timestamp, trim);
+        map = (SortedMap) $RECORD$map.restore(map, timestamp, trim);
         super.$RESTORE(timestamp, trim);
     }
 
     private FieldRecord $RECORD$map = new FieldRecord(0);
 
-    private FieldRecord[] $RECORDS = new FieldRecord[] {
-            $RECORD$map
-        };
-
+    private FieldRecord[] $RECORDS = new FieldRecord[] { $RECORD$map };
 }
-

@@ -38,7 +38,6 @@ import java.awt.geom.Rectangle2D;
  * @version $Id$
  */
 public interface PaintedGraphic extends PaintedObject {
-
     // This class was deprecated with "Will be removed in Diva
     // 0.4. Use diva.compat.canvas if needed."
 

@@ -3,7 +3,6 @@ package ptolemy.backtrack.test;
 import ptolemy.backtrack.test.ptolemy.backtrack.test.array1.ArrayTest1;
 
 public class ArrayTest1Main {
-
     /**
      * @param args
      */
@@ -14,5 +13,4 @@ public class ArrayTest1Main {
         test.$GET$CHECKPOINT().rollback(handle, true);
         test.dump();
     }
-
 }

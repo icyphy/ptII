@@ -25,14 +25,12 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
 import ij.ImageStack;
-import ij.process.ColorProcessor;
 
-import java.awt.Image;
+import ij.process.ColorProcessor;
 
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.IntToken;
@@ -44,8 +42,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import java.awt.Image;
+
 //////////////////////////////////////////////////////////////////////////
 ////StackReader
+
 /**
  An actor that reads an array of images.
 
@@ -67,7 +68,6 @@ public class StackToImage extends SDFTransformer {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-
     public StackToImage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -86,12 +86,10 @@ public class StackToImage extends SDFTransformer {
         stackSize = new Parameter(this, "stackSize");
         stackSize.setExpression("50");
         stackSize.setTypeEquals(BaseType.INT);
-
     }
 
     ////////////////////////////////////////////////////////////////////
     ////////               ports and parameters                  ////////
-
     //public FilePortParameter input;
     public Parameter xResolution;
 
@@ -108,17 +106,20 @@ public class StackToImage extends SDFTransformer {
     public void fire() throws IllegalActionException {
         super.fire();
         _index++;
+
         ObjectToken objectToken = (ObjectToken) input.get(0);
         _currentImagePlus = (ImagePlus) objectToken.getValue();
+
         for (int i = 0; i < _stackSize; i++) {
             //_currentImagePlus.setSlice(_index);
             _currentImagePlus.setSlice(i);
+
             //System.out.println("Output Slice " + _index);
             System.out.println("Output Slice " + i);
             _image = _currentImagePlus.getImage();
+
             // _imagePlus = new ImagePlus("Image Stack", _imageStack);
             // System.out.println("stackSize = " + _imageStack.getSize());
-
             output.broadcast(new AWTImageToken(_image));
         }
     }
@@ -128,7 +129,6 @@ public class StackToImage extends SDFTransformer {
         _xResolution = ((IntToken) xResolution.getToken()).intValue();
         _yResolution = ((IntToken) yResolution.getToken()).intValue();
         _stackSize = ((IntToken) stackSize.getToken()).intValue();
-
     }
 
     /*public boolean prefire() throws IllegalActionException {
@@ -151,24 +151,24 @@ public class StackToImage extends SDFTransformer {
      return super.prefire();
 
      }*/
-
     public boolean postfire() throws IllegalActionException {
-        if (!_stopRequested && _index < _stackSize) {
+        if (!_stopRequested && (_index < _stackSize)) {
             if (_debugging) {
                 _debug("Called postfire(), which returns true");
             }
+
             return true;
         } else {
             if (_debugging) {
                 _debug("Called postfire(), which returns false");
             }
+
             return false;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     //Image that is readin
     private ImagePlus _imagePlus;
 

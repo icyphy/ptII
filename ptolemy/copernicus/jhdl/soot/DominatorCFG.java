@@ -110,9 +110,9 @@ public class DominatorCFG extends DirectedAcyclicCFG {
         sb.append("Dominators\n" + _dominators);
         sb.append("Post Dominators\n" + _postDominators);
         sb.append("Immediate Dominators\n"
-                + _dominators.immediateDominatorsString());
+            + _dominators.immediateDominatorsString());
         sb.append("Immediate Post Dominators\n"
-                + _postDominators.immediateDominatorsString());
+            + _postDominators.immediateDominatorsString());
         return sb.toString();
     }
 
@@ -142,9 +142,9 @@ public class DominatorCFG extends DirectedAcyclicCFG {
      * @see DominatorCFG#createDominatorCFG(String[],boolean)
      **/
     public static DominatorCFG createDominatorCFG(String[] args,
-            boolean writeGraphs) {
+        boolean writeGraphs) {
         soot.SootMethod testMethod = ptolemy.copernicus.jhdl.test.Test
-            .getSootMethod(args);
+                    .getSootMethod(args);
         DominatorCFG _cfg = null;
 
         try {

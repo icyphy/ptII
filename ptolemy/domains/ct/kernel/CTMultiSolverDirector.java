@@ -238,7 +238,6 @@ public class CTMultiSolverDirector extends CTDirector {
         // continuous variables. 
         // Discrete events happening at this time should be generated during
         // the initialize method, like de.lib.SingleEvent.
-
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
 
         if (_debugging) {

@@ -40,7 +40,6 @@ public class SiteDecorator implements Site {
     // This class was deprecated with the message
     // "This is complete unneeded. Do not use."  However, it has been
     // deprecated for a long time and still has users, so I'm undeprecating it.
-
     private Site _site;
 
     /** Create a new decorator on the given site.

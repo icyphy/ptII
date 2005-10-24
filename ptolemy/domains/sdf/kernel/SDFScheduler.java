@@ -302,7 +302,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     protected int _computeMaximumFirings(Actor currentActor)
             throws IllegalActionException {
-
         int result = Integer.MAX_VALUE;
 
         // Update the number of tokens waiting on the actor's input ports.
@@ -319,18 +318,22 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
 
             Receiver[][] receivers = inputPort.getReceivers();
+
             for (int channel = 0; channel < receivers.length; channel++) {
                 if (receivers[channel] == null) {
                     continue;
                 }
+
                 for (int copy = 0; copy < receivers[channel].length; copy++) {
                     if (!(receivers[channel][copy] instanceof SDFReceiver)) {
                         // This should only occur if it is null.
                         continue;
                     }
+
                     SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
 
                     int firings = receiver._waitingTokens / tokenRate;
+
                     // Keep track of whether or not this actor can fire again immediately.
                     if (firings < result) {
                         result = firings;
@@ -338,6 +341,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 }
             }
         }
+
         return result;
     }
 
@@ -364,6 +368,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         int count = 0;
 
         Iterator inputPorts = actor.inputPortList().iterator();
+
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
 
@@ -379,35 +384,44 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
             Receiver[][] receivers = inputPort.getReceivers();
             boolean isFulfilled = true;
+
             for (int channel = 0; channel < receivers.length; channel++) {
                 if (receivers[channel] == null) {
                     continue;
                 }
+
                 for (int copy = 0; copy < receivers[channel].length; copy++) {
                     if (!(receivers[channel][copy] instanceof SDFReceiver)) {
                         // This should only occur if it is null.
                         continue;
                     }
+
                     SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
+
                     if (resetCapacity) {
                         receiver.setCapacity(SDFReceiver.INFINITE_CAPACITY);
                     }
+
                     if (receiver._waitingTokens < threshold) {
                         isFulfilled = false;
+
                         if (!resetCapacity) {
                             break;
                         }
                     }
                 }
+
                 if (!isFulfilled) {
                     // No point in continuing.
                     break;
                 }
             }
+
             if (!isFulfilled) {
                 count++;
             }
         }
+
         return count;
     }
 
@@ -573,6 +587,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // yet. (i.e. all their firingsPerIteration are still set to
         // Fraction equal to -1/1)
         LinkedList remainingActors = new LinkedList();
+
         // Initialize remainingActors to contain all the actors we were given.
         remainingActors.addAll(actorList);
 
@@ -742,6 +757,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             _debug("Multiplying firings by vectorizationFactor = "
                     + vectorizationFactor);
         }
+
         Fraction lcmFraction = new Fraction(vectorizationFactor);
 
         for (Iterator actors = entityToFiringsPerIteration.keySet().iterator(); actors
@@ -750,6 +766,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             Fraction repetitions = (Fraction) entityToFiringsPerIteration
                     .get(actor);
             repetitions = repetitions.multiply(lcmFraction);
+
             // FIXME: Doing the conversion to Integer here is bizarre,
             // since they are integers coming in.
             entityToFiringsPerIteration.put(actor, new Integer(repetitions
@@ -763,6 +780,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             Object port = ports.next();
             Fraction rate = (Fraction) externalRates.get(port);
             rate = rate.multiply(lcmFraction);
+
             // FIXME: Doing the conversion to Integer here is bizarre,
             // since they are integers coming in.
             externalRates.put(port, new Integer(rate.getNumerator()));
@@ -771,7 +789,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
     private void _assertDynamicRateVariable(CompositeActor model,
             Variable variable, List rateVariables,
             ConstVariableModelAnalysis analysis) throws IllegalActionException {
@@ -1204,12 +1221,12 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // output ports of the model to zero is not necessary because
             // SDFReceiver.clear() does it.
             // Simulate the creation of initialization tokens (delays).
-
             // Fill readyToScheduleActorList with all the actors that have
             // no unfulfilled input ports, and are thus ready to fire.
             // This includes actors with no input ports and those
             // whose input ports have consumption rates of zero.
             Iterator actors = actorList.iterator();
+
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 int firingsRemaining = ((Integer) firingsRemainingVector
@@ -1234,6 +1251,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
             // Simulate production of initial tokens.
             actors = actorList.iterator();
+
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 Iterator outputPorts = actor.outputPortList().iterator();
@@ -1260,6 +1278,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     .hasNext();) {
                 IOPort port = (IOPort) inputPorts.next();
                 int count = ((Integer) externalRates.get(port)).intValue();
+
                 if (count > 0) {
                     _simulateExternalInputs(port, count, actorList,
                             readyToScheduleActorList);
@@ -1270,12 +1289,15 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             while (readyToScheduleActorList.size() > 0) {
                 if (_debugging && VERBOSE) {
                     _debug("Actors that can be scheduled:");
+
                     for (Iterator readyActors = readyToScheduleActorList
                             .iterator(); readyActors.hasNext();) {
                         Entity readyActor = (Entity) readyActors.next();
                         _debug(readyActor.getFullName());
                     }
+
                     _debug("Actors with firings left:");
+
                     for (Iterator remainingActors = unscheduledActorList
                             .iterator(); remainingActors.hasNext();) {
                         Entity remainingActor = (Entity) remainingActors.next();
@@ -1353,6 +1375,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             + "solution does not agree with "
                             + "scheduling algorithm!");
                 }
+
                 if (firingsRemaining == 0) {
                     // If we've fired this actor all the
                     // times that it should, then
@@ -1465,11 +1488,13 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             if (receivers[channel] == null) {
                 continue;
             }
+
             for (int copy = 0; copy < receivers[channel].length; copy++) {
                 if (!(receivers[channel][copy] instanceof SDFReceiver)) {
                     // This should only occur if it is null.
                     continue;
                 }
+
                 SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
                 IOPort connectedPort = (IOPort) receivers[channel][copy]
                         .getContainer();
@@ -1481,13 +1506,16 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 // Update the buffer size, if necessary.
                 boolean enforce = ((BooleanToken) constrainBufferSizes
                         .getToken()).booleanValue();
+
                 if (enforce) {
                     int capacity = receiver.getCapacity();
-                    if (capacity == SDFReceiver.INFINITE_CAPACITY
-                            || receiver._waitingTokens > capacity) {
+
+                    if ((capacity == SDFReceiver.INFINITE_CAPACITY)
+                            || (receiver._waitingTokens > capacity)) {
                         receiver.setCapacity(count);
                     }
                 }
+
                 // Determine whether the connectedActor can now be scheduled.
                 // Only proceed if the connected actor is something we are
                 // scheduling.  The most notable time when this will not be
@@ -1534,23 +1562,28 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             int tokenRate = DFUtilities.getTokenConsumptionRate(inputPort);
 
             Receiver[][] receivers = inputPort.getReceivers();
+
             for (int channel = 0; channel < receivers.length; channel++) {
                 if (receivers[channel] == null) {
                     continue;
                 }
+
                 for (int copy = 0; copy < receivers[channel].length; copy++) {
                     if (!(receivers[channel][copy] instanceof SDFReceiver)) {
                         // This should only occur if it is null.
                         continue;
                     }
+
                     SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
                     receiver._waitingTokens -= (tokenRate * firingCount);
+
                     if (receiver._waitingTokens < tokenRate) {
                         stillReadyToSchedule = false;
                     }
                 }
             }
         }
+
         return stillReadyToSchedule;
     }
 
@@ -1568,9 +1601,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     private void _simulateTokensCreated(IOPort outputPort, int createdTokens,
             List actorList, LinkedList readyToScheduleActorList)
             throws IllegalActionException {
-
         // FIXME: Why are the actor lists lists rather than sets?
-
         Receiver[][] receivers = outputPort.getRemoteReceivers();
 
         if (_debugging && VERBOSE) {
@@ -1584,25 +1615,31 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             if (receivers[channel] == null) {
                 continue;
             }
+
             for (int copy = 0; copy < receivers[channel].length; copy++) {
                 if (!(receivers[channel][copy] instanceof SDFReceiver)) {
                     // NOTE: This should only occur if it is null.
                     continue;
                 }
+
                 SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
                 IOPort connectedPort = (IOPort) receivers[channel][copy]
                         .getContainer();
                 ComponentEntity connectedActor = (ComponentEntity) connectedPort
                         .getContainer();
+
                 // Increment the number of waiting tokens.
                 receiver._waitingTokens += createdTokens;
+
                 // Update the buffer size, if necessary.
                 boolean enforce = ((BooleanToken) constrainBufferSizes
                         .getToken()).booleanValue();
+
                 if (enforce) {
                     int capacity = receiver.getCapacity();
-                    if (capacity == SDFReceiver.INFINITE_CAPACITY
-                            || receiver._waitingTokens > capacity) {
+
+                    if ((capacity == SDFReceiver.INFINITE_CAPACITY)
+                            || (receiver._waitingTokens > capacity)) {
                         receiver.setCapacity(receiver._waitingTokens);
                     }
                 }

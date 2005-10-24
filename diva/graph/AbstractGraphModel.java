@@ -28,13 +28,9 @@
  */
 package diva.graph;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import javax.swing.SwingUtilities;
 
 import diva.graph.toolbox.GraphEventMulticaster;
-import diva.util.NullIterator;
 
 /**
  * An abstract implementation of the GraphModel interface that provides
@@ -86,7 +82,7 @@ public abstract class AbstractGraphModel implements GraphModel {
             }
         }
     }
-    
+
     /**
      * Remove the given listener from this graph model.
      * The listener will no longer be notified of changes

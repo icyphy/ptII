@@ -65,7 +65,7 @@ public class ActorPortDirectedGraph extends PortDirectedGraph {
         String className = ModelTransformer.getInstanceClassName(entity, options);
         String entityClassName = entity.getClass().getName();
         System.out.println("Creating graph for class " + className
-                + " (entity=" + entityClassName + ")");
+            + " (entity=" + entityClassName + ")");
 
         SootClass entityClass = Scene.v().loadClassAndSupport(className);
         SootMethod method = entityClass.getMethodByName("fire");
@@ -169,7 +169,7 @@ public class ActorPortDirectedGraph extends PortDirectedGraph {
         // this port call (i.e. different control paths). All Nodes
         // associated with the IOPort call are Mapped to the portNodeMap.
         for (Iterator entityNodes = entityGraph.nodes().iterator();
-             entityNodes.hasNext();) {
+                    entityNodes.hasNext();) {
             Node node = (Node) entityNodes.next();
             Object weight = node.getWeight();
 
@@ -211,10 +211,10 @@ public class ActorPortDirectedGraph extends PortDirectedGraph {
                 // is identified as the Node associated with this port
                 // call (i.e. output port)
                 for (Iterator i = entityGraph.predecessors(node).iterator();
-                     i.hasNext();) {
+                            i.hasNext();) {
                     Node n = (Node) i.next();
                     Edge e = (Edge) entityGraph.predecessorEdges(node, n)
-                        .iterator().next();
+                                                       .iterator().next();
 
                     if (e.hasWeight()) {
                         portNode = n;
@@ -258,7 +258,8 @@ public class ActorPortDirectedGraph extends PortDirectedGraph {
                 for (Iterator j = l.iterator(); j.hasNext();) {
                     Node node = (Node) j.next();
                     Node predecessor = (Node) entityGraph.predecessors(node)
-                        .iterator().next();
+                                                                 .iterator()
+                                                                 .next();
                     _deleteLeafBranch(entityGraph, predecessor);
                 }
             } else {
@@ -270,11 +271,11 @@ public class ActorPortDirectedGraph extends PortDirectedGraph {
 
                     // find successors
                     Node successor = (Node) entityGraph.successors(node)
-                        .iterator().next();
+                                                               .iterator().next();
 
                     // remove edge from node to sucessor
                     Edge e = (Edge) entityGraph.successorEdges(node, successor)
-                        .iterator().next();
+                                                       .iterator().next();
                     entityGraph.removeEdge(e);
 
                     // Remove branch
@@ -324,7 +325,7 @@ public class ActorPortDirectedGraph extends PortDirectedGraph {
         }
 
         Node fieldRefNode = (Node) graph.predecessors(predecessor).iterator()
-            .next();
+                                                .next();
 
         return (FieldRef) fieldRefNode.getWeight();
     }

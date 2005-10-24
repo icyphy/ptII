@@ -30,6 +30,7 @@ package ptolemy.domains.hs.kernel;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -108,7 +109,7 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire all continuous actors. Derived classes may advance the model time. 
+    /** Fire all continuous actors. Derived classes may advance the model time.
      *  The amount of time increment depends on the solving algorithms.
      *  @exception IllegalActionException If schedule can not be found or
      *  continuous actors throw it from their fire() methods.
@@ -124,9 +125,11 @@ public abstract class ODESolver extends NamedObj {
 
         while (actors.hasNext()) {
             Actor next = (Actor) actors.next();
+
             if (_debugging) {
                 _debug("  firing..." + ((Nameable) next).getFullName());
             }
+
             next.fire();
         }
     }

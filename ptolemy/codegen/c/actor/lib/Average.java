@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;

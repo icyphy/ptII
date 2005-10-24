@@ -127,10 +127,8 @@ public class HelloWorld {
         topLevelActor.connect(pOutput, input);
 
         // System.out.println("Connections are complete.");
-
         // Uncomment the next line to print out the MoML version of the model.
         // System.out.println(topLevelActor.exportMoML());
-
         System.out.println();
         System.out.println();
         System.out.println();

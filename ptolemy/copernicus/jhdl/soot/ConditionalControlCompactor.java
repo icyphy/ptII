@@ -180,7 +180,7 @@ public class ConditionalControlCompactor {
      *
      **/
     protected static Unit mergeUnit(PatchingChain chain, Unit root)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // 1. Is root an IfStmt?
         if (!(root instanceof IfStmt)) {
             return null;
@@ -218,7 +218,7 @@ public class ConditionalControlCompactor {
         if (rootTarget == successorSuccessor) {
             // Expression = 'rootCondition & successorCondition
             newExpression = new CompoundAndExpression(CompoundBooleanExpression
-                    .invertValue(rootCondition), successorCondition);
+                            .invertValue(rootCondition), successorCondition);
         } else {
             // Expression = rootCondition | successorCondition
             newExpression = new CompoundOrExpression(rootCondition,
@@ -238,7 +238,7 @@ public class ConditionalControlCompactor {
     }
 
     protected static Unit mergeUnit2(PatchingChain chain, Unit root)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // 1. Is root an IfStmt?
         if (!(root instanceof IfStmt)) {
             return null;
@@ -274,7 +274,7 @@ public class ConditionalControlCompactor {
         if (rootTarget == successorSuccessor) {
             // Expression = 'rootCondition & successorCondition
             newExpression = new CompoundAndExpression(CompoundBooleanExpression
-                    .invertValue(rootCondition), successorCondition);
+                            .invertValue(rootCondition), successorCondition);
         } else {
             // Expression = rootCondition | successorCondition
             newExpression = new CompoundOrExpression(rootCondition,
@@ -295,7 +295,7 @@ public class ConditionalControlCompactor {
 
     public static void main(String[] args) {
         soot.SootMethod testMethod = ptolemy.copernicus.jhdl.test.Test
-            .getSootMethod(args);
+                    .getSootMethod(args);
 
         soot.Body body = testMethod.retrieveActiveBody();
         soot.toolkits.graph.CompleteUnitGraph unitGraph = new soot.toolkits.graph.CompleteUnitGraph(body);

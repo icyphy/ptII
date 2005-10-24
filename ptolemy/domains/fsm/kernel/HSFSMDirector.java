@@ -253,7 +253,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                 actor.fire();
             }
 
-            if(!visited) {
+            if (!visited) {
                 _ctrl._readOutputsFromRefinement();
                 _currentState.setVisited(true);
             }

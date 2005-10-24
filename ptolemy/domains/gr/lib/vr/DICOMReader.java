@@ -26,14 +26,10 @@
  COPYRIGHTENDKEY
 
  */
-
 package ptolemy.domains.gr.lib.vr;
 
 import ij.IJ;
 import ij.ImagePlus;
-
-import java.awt.Image;
-import java.net.URL;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -45,8 +41,12 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import java.awt.Image;
+import java.net.URL;
+
 //////////////////////////////////////////////////////////////////////////
 ////DICOMReader
+
 /**
  An actor that reads DICOM files.
 
@@ -68,7 +68,6 @@ public class DICOMReader extends TypedAtomicActor {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-
     public DICOMReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -78,12 +77,10 @@ public class DICOMReader extends TypedAtomicActor {
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         output.setTypeEquals(BaseType.OBJECT);
-
     }
 
     ////////////////////////////////////////////////////////////////////
     ////////               ports and parameters                  ////////
-
     public FilePortParameter fileOrURL;
 
     public TypedIOPort output;
@@ -105,6 +102,7 @@ public class DICOMReader extends TypedAtomicActor {
 
     public boolean prefire() throws IllegalActionException {
         super.prefire();
+
         if (_parameterPort.hasToken(0)) {
             fileOrURL.update();
             _readImage();
@@ -122,7 +120,9 @@ public class DICOMReader extends TypedAtomicActor {
         if (_url == null) {
             throw new IllegalActionException("sourceURL was null");
         }
+
         _fileRoot = _url.getFile();
+
         if (_imagePlus == null) {
             _image = ((ImagePlus) IJ.runPlugIn("ij.plugin.DICOM", _fileRoot))
                     .getImage();
@@ -145,5 +145,4 @@ public class DICOMReader extends TypedAtomicActor {
     private URL _url;
 
     private ParameterPort _parameterPort;
-
 }

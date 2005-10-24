@@ -100,7 +100,7 @@ public class UnitCategory extends Attribute {
     }
 
     /** Set the container and register this object in to the system wide
-     *  unit system by calling 
+     *  unit system by calling
      *  {@link UnitUtilities#registerUnitCategory(String)}.
      *  @param container The container to attach this attribute to.
      *  The type of the container must be an instances of BaseUnit.

@@ -99,7 +99,6 @@ public class IDAttribute extends SingletonAttribute {
         // The current design is also a solution in that the name of this
         // attribute and model must be consistent with the name of the file.
         // boolean isClass = false;
-
         if (container instanceof InstantiableNamedObj) {
             /* isClass = */((InstantiableNamedObj) container)
                     .isClassDefinition();
@@ -184,7 +183,7 @@ public class IDAttribute extends SingletonAttribute {
 
         BoxedValuesIcon icon = new BoxedValuesIcon(this, "_icon");
         icon.setPersistent(false);
-        
+
         // No need to display any parameters when the "_showParameters"
         // preference asks for such display because presumably all the
         // parameters are reflected in the visual display already.

@@ -1,30 +1,30 @@
 /* Receive x10 commands propagating through an x10 network.
 
-Copyright (c) 2003-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Copyright (c) 2003-2005 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
 
-*/
+ */
 package ptolemy.actor.lib.x10;
 
 import java.util.LinkedList;
@@ -41,7 +41,6 @@ import x10.Command;
 import x10.UnitEvent;
 import x10.UnitListener;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// Receiver
 
@@ -57,7 +56,7 @@ import x10.UnitListener;
  @since Ptolemy II 4.0
  @Pt.ProposedRating Green (ptolemy)
  @Pt.AcceptedRating Yellow (ptolemy)
-*/
+ */
 public class Receiver extends X10Interface {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -125,7 +124,7 @@ public class Receiver extends X10Interface {
         }
 
         boolean blockingValue = ((BooleanToken) blocking.getToken())
-            .booleanValue();
+                .booleanValue();
 
         if (blockingValue) {
             if (_debugging) {
@@ -154,7 +153,7 @@ public class Receiver extends X10Interface {
         }
 
         boolean discardOldDataValue = ((BooleanToken) discardOldData.getToken())
-            .booleanValue();
+                .booleanValue();
 
         if (discardOldDataValue) {
             while (_commandQueue.size() > 1) {
@@ -170,8 +169,7 @@ public class Receiver extends X10Interface {
                 _fireAtCurrentTimeCalled = true;
 
                 if (_debugging) {
-                    _debug(
-                            "Calling fireAtCurrentTime() to deal with additional pending commands.");
+                    _debug("Calling fireAtCurrentTime() to deal with additional pending commands.");
                 }
 
                 getDirector().fireAtCurrentTime(this);
@@ -267,8 +265,8 @@ public class Receiver extends X10Interface {
         }
 
         String commandString = "<" + command.getHouseCode()
-            + command.getUnitCode() + "-" + functionString + "-"
-            + command.getLevel() + ">";
+                + command.getUnitCode() + "-" + functionString + "-"
+                + command.getLevel() + ">";
 
         return commandString;
     }

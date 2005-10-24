@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
@@ -41,9 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-
 public class Limiter extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Limiter helper.
      * @param actor the associated actor

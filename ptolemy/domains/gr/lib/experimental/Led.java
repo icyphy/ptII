@@ -65,7 +65,7 @@ public class Led extends Box3D {
      *   actor with this name.
      */
     public Led(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         emissivity = new TypedIOPort(this, "emissivity");
@@ -83,10 +83,10 @@ public class Led extends Box3D {
         super._createAppearance();
         _material = new Material();
         _material.setCapability(Material.ALLOW_COMPONENT_READ
-                | Material.ALLOW_COMPONENT_WRITE);
+                    | Material.ALLOW_COMPONENT_WRITE);
         _appearance = new Appearance();
         _appearance.setCapability(Appearance.ALLOW_MATERIAL_READ
-                | Appearance.ALLOW_MATERIAL_WRITE);
+                    | Appearance.ALLOW_MATERIAL_WRITE);
 
         _material.setDiffuseColor(_color);
 
@@ -131,7 +131,7 @@ public class Led extends Box3D {
         super._createModel();
         System.out.println("create model");
         _containedNode.setCapability(Shape3D.ALLOW_APPEARANCE_READ
-                | Shape3D.ALLOW_APPEARANCE_WRITE);
+                    | Shape3D.ALLOW_APPEARANCE_WRITE);
     }
 
     public boolean prefire() throws IllegalActionException {

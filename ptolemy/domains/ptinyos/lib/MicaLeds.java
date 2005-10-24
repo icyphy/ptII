@@ -80,6 +80,7 @@ public class MicaLeds extends TypedAtomicActor {
         // graphical icon.  Then initialize the LED to the off setting.
         red = new Parameter(this, "red");
         _ledRed = new RectangleAttribute(node_icon, "_ledRed");
+
         Location ledRedLoc = new Location(_ledRed, "_location");
         double[] ledRedLocVal = { -20.0, 0.0 };
         ledRedLoc.setLocation(ledRedLocVal);
@@ -90,6 +91,7 @@ public class MicaLeds extends TypedAtomicActor {
 
         green = new Parameter(this, "green");
         _ledGreen = new RectangleAttribute(node_icon, "_ledGreen");
+
         Location ledGreenLoc = new Location(_ledGreen, "_location");
         double[] ledGreenLocVal = { 0.0, 0.0 };
         ledGreenLoc.setLocation(ledGreenLocVal);
@@ -100,6 +102,7 @@ public class MicaLeds extends TypedAtomicActor {
 
         yellow = new Parameter(this, "yellow");
         _ledYellow = new RectangleAttribute(node_icon, "_ledYellow");
+
         Location ledYellowLoc = new Location(_ledYellow, "_location");
         double[] ledYellowLocVal = { 20.0, 0.0 };
         ledYellowLoc.setLocation(ledYellowLocVal);
@@ -149,7 +152,6 @@ public class MicaLeds extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /** For each LED port, if it is connected and has a token, read
      *  the token.  If the token is true, turn the LED on, otherwise

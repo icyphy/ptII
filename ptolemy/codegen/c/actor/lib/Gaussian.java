@@ -26,7 +26,6 @@
 
 
  */
-
 package ptolemy.codegen.c.actor.lib;
 
 import java.util.HashSet;
@@ -45,7 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.AcceptedRating Yellow (mankit)
  */
 public class Gaussian extends CCodeGeneratorHelper {
-
     /**
      * Constructor method for the Gaussian helper.
      * @param actor the associated actor
@@ -71,7 +69,7 @@ public class Gaussian extends CCodeGeneratorHelper {
 
     /**
      * Generate initialize code.
-     * Parse the seed parameter of the actor. If the seed equals zero, then 
+     * Parse the seed parameter of the actor. If the seed equals zero, then
      * append code that sets the seed variable to the sum of the current time
      * and the actor hashCode (This is what the original ptolemy actor does).
      * Otherwise, read the <code>setSeedBlock</code> from Gaussian.c,
@@ -82,26 +80,28 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        ptolemy.actor.lib.Gaussian actor =
-            (ptolemy.actor.lib.Gaussian) getComponent();
+
+        ptolemy.actor.lib.Gaussian actor = (ptolemy.actor.lib.Gaussian) getComponent();
 
         _codeStream.clear();
 
         long seedValue;
         String seedString = actor.seed.getExpression();
+
         if (Character.isDigit(seedString.charAt(seedString.length() - 1))) {
-        	seedValue = Long.parseLong(seedString);
+            seedValue = Long.parseLong(seedString);
         } else {
-            seedValue = Long.parseLong(seedString.substring(0,
-                        seedString.length() - 1));
+            seedValue = Long.parseLong(seedString.substring(0, seedString
+                    .length() - 1));
         }
-        
+
         if (seedValue == 0) {
             _codeStream.append("$actorSymbol(seed) = time (NULL) + "
                     + actor.hashCode() + ";");
         } else {
             _codeStream.appendCodeBlock("setSeedBlock");
         }
+
         return processCode(_codeStream.toString());
     }
 
@@ -132,6 +132,7 @@ public class Gaussian extends CCodeGeneratorHelper {
         // We don't need to process the code block here because the
         // sharedCode do not contain any macros.
         super.generateSharedCode();
+
         Set codeBlocks = new HashSet();
         codeBlocks.add(_generateBlockCode("sharedBlock", false));
         return codeBlocks;
@@ -146,10 +147,10 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         super.getHeaderFiles();
+
         Set files = new HashSet();
         files.add("<time.h>");
         files.add("<math.h>");
         return files;
     }
 }
-

@@ -53,11 +53,11 @@ import ptolemy.kernel.util.Workspace;
 //// HSFSMDirector
 
 /**
- FIXME: this director is a new design of the HSFSMDirector. It has a lot of 
- duplication. It is still very preliminary. This director will eventually 
+ FIXME: this director is a new design of the HSFSMDirector. It has a lot of
+ duplication. It is still very preliminary. This director will eventually
  replace the HSFSMDirector. When replacing, uncomment the getErrorTolerance()
  method.
- 
+
  An HSFSMDirector governs the execution of the discrete dynamics of a hybrid
  system model.
  <p>
@@ -131,18 +131,18 @@ public class NewHSFSMDirector extends HSFSMDirector {
     }
 
     /** FIXME: ideal design.
-     *  In continuous phase of execution, fire all refinements. The 
-     *  isStateAccurate() and isOutputAccurate() methods are called to 
-     *  ensure the execution stops at the time where an event happens.  
+     *  In continuous phase of execution, fire all refinements. The
+     *  isStateAccurate() and isOutputAccurate() methods are called to
+     *  ensure the execution stops at the time where an event happens.
      *  In discrete phase of execution, execute the enabled transition
      *  and refinements. Note that if both transition and refinements assign
-     *  an output values, the value from the refinement is kept. 
+     *  an output values, the value from the refinement is kept.
      *  NOTE: we don't need refiring. the next time CT director prefires the
-     *  model, the hasCurrentEvent() will be responsible to check whether 
+     *  model, the hasCurrentEvent() will be responsible to check whether
      *  a transition is enabled. The is*Accurate() method will set the local
      *  variable _transitionHasEvent to true if there is an event, just like the
      *  LevelCrossingDetector actor.
-     * 
+     *
      *  Set the values of input variables in the mode controller. Examine
      *  the preemptive outgoing transitions of its current state. Throw an
      *  exception if there is more than one transition enabled. If there
@@ -184,9 +184,9 @@ public class NewHSFSMDirector extends HSFSMDirector {
         // Check enabled transitions at the end of a continuous phase
         // execution where the accuracy of the current step size is checked.
         if (isDiscretePhase()) {
-            Transition transition = _ctrl._chooseTransition(
-                    _currentState.preemptiveTransitionList());
-            
+            Transition transition = _ctrl._chooseTransition(_currentState
+                    .preemptiveTransitionList());
+
             // record the enabled preemptive transition
             // for the postfire() method.
             _enabledTransition = transition;
@@ -202,18 +202,20 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // updating continuous states.
             _mutationEnabled = false;
 
-            if (transition != null) { 
+            if (transition != null) {
                 // When an enabled transition is taken, all changes will be
                 // permanent. So, it is safe to iterate the refinements of 
                 // enabled transitions.
                 // NOTE: The refinements of a transition can not and must not
                 // advance time. However, this requirement is not checked here.
                 Actor[] transitionActors = transition.getRefinement();
+
                 if ((transitionActors != null) && (transitionActors.length > 0)) {
                     for (int i = 0; i < transitionActors.length; ++i) {
                         if (_stopRequested) {
                             break;
                         }
+
                         if (transitionActors[i].prefire()) {
                             transitionActors[i].fire();
                             transitionActors[i].postfire();
@@ -229,15 +231,17 @@ public class NewHSFSMDirector extends HSFSMDirector {
 
         // Fire the refinements of the current state.
         Iterator actors = _enabledRefinements.iterator();
+
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             actor.fire();
+
             if (_debugging && _verbose) {
                 _debug(getName(), " fired refinement", ((NamedObj) actor)
                         .getName());
             }
         }
-        
+
         _ctrl._readOutputsFromRefinement();
 
         //////////////////////////////////////////////////////////////////
@@ -258,7 +262,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // are executed.
             Transition transition = _ctrl._chooseTransition(_currentState
                     .nonpreemptiveTransitionList());
-            
+
             _transitionHasEvent = false;
 
             // record the enabled nonpreemptive transition for
@@ -271,13 +275,15 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // updating continuous states.
             _mutationEnabled = false;
 
-            if (transition != null) { 
+            if (transition != null) {
                 Actor[] transitionActors = transition.getRefinement();
+
                 if ((transitionActors != null) && (transitionActors.length > 0)) {
                     for (int i = 0; i < transitionActors.length; ++i) {
                         if (_stopRequested) {
                             break;
                         }
+
                         if (transitionActors[i].prefire()) {
                             transitionActors[i].fire();
                             transitionActors[i].postfire();
@@ -306,21 +312,21 @@ public class NewHSFSMDirector extends HSFSMDirector {
     }
 
     // Removed due to confilct.
-//    /** Return error tolerance used for detecting enabled transitions.
-//     *  @return The error tolerance used for detecting enabled transitions.
-//     */
-//    public final double getErrorTolerance() {
-//        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
-//
-//        if (executiveDirector != null) {
-//            return executiveDirector.getErrorTolerance();
-//        } else {
-//            // This should never happen because a modal model with
-//            // an HSFSMDirector must be used inside a CT model.
-//            throw new InternalErrorException("A modal model with "
-//                    + "an HSFSMDirector must be used inside a CT model.");
-//        }
-//    }
+    //    /** Return error tolerance used for detecting enabled transitions.
+    //     *  @return The error tolerance used for detecting enabled transitions.
+    //     */
+    //    public final double getErrorTolerance() {
+    //        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
+    //
+    //        if (executiveDirector != null) {
+    //            return executiveDirector.getErrorTolerance();
+    //        } else {
+    //            // This should never happen because a modal model with
+    //            // an HSFSMDirector must be used inside a CT model.
+    //            throw new InternalErrorException("A modal model with "
+    //                    + "an HSFSMDirector must be used inside a CT model.");
+    //        }
+    //    }
 
     /** Return the executive CT director of this director, or null if
      *  this director is at the top level or the executive director is
@@ -411,23 +417,24 @@ public class NewHSFSMDirector extends HSFSMDirector {
     public boolean hasCurrentEvent() {
         // how to report and handle an enabled transition in the discrete
         // phase of execution???
-        
         if (_transitionHasEvent) {
             return true;
         }
-        
+
         // NOTE: We only need to find an event.
         boolean hasCurrentEvent = false;
 
         // check enabled transitions.
         try {
-            List enabledTransitions = _ctrl
-                ._checkTransition(_currentState.preemptiveTransitionList());
+            List enabledTransitions = _ctrl._checkTransition(_currentState
+                    .preemptiveTransitionList());
+
             if (enabledTransitions.size() != 0) {
                 hasCurrentEvent = true;
             } else {
-                enabledTransitions = _ctrl._checkTransition(
-                        _currentState.nonpreemptiveTransitionList());
+                enabledTransitions = _ctrl._checkTransition(_currentState
+                        .nonpreemptiveTransitionList());
+
                 if (enabledTransitions.size() != 0) {
                     hasCurrentEvent = true;
                 }
@@ -435,18 +442,21 @@ public class NewHSFSMDirector extends HSFSMDirector {
         } catch (IllegalActionException e) {
             throw new InternalErrorException(e);
         }
-        
+
         if (hasCurrentEvent) {
             return true;
         }
-        
+
         Iterator actors = _enabledRefinements.iterator();
+
         while (!hasCurrentEvent && actors.hasNext()) {
             Actor actor = (Actor) actors.next();
+
             if (actor instanceof CTCompositeActor) {
                 hasCurrentEvent |= ((CTCompositeActor) actor).hasCurrentEvent();
             }
         }
+
         return hasCurrentEvent;
     }
 
@@ -496,17 +506,17 @@ public class NewHSFSMDirector extends HSFSMDirector {
      *  current step size and there is no enabled transition detected.
      */
     public boolean isOutputAccurate() {
-        
         boolean result = true;
 
         // NOTE: we need to check all possible cases where an event may arise.
-        
         // Iterate all the enabled refinements to see whether they are
         // satisfied with the current step size.
         if (_enabledRefinements != null) {
             Iterator refinements = _enabledRefinements.iterator();
+
             while (refinements.hasNext()) {
                 Actor refinement = (Actor) refinements.next();
+
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = result
                             && ((CTStepSizeControlActor) refinement)
@@ -514,7 +524,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
                 }
             }
         }
-        
+
         // Even if the result is false, this method does not return immediately.
         // Instead, we continue to check whether there is any transition
         // enabled with respect to the current inputs.
@@ -536,13 +546,14 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // FIXME: This design is really cumbersome. Find a new design.
             // Well, if I have extra time after tuning up the performance of
             // CT and DE... (Haiyang Zheng, 1:06am, 10/23/2005)
-            
             // First step:
-            Iterator modalPorts = 
-                ((CompositeActor)getContainer()).inputPortList().iterator();
+            Iterator modalPorts = ((CompositeActor) getContainer())
+                    .inputPortList().iterator();
+
             while (modalPorts.hasNext()) {
-                transferInputs((IOPort)modalPorts.next());
+                transferInputs((IOPort) modalPorts.next());
             }
+
             // Second step:
             _ctrl._readInputs();
 
@@ -552,6 +563,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // Check if there is any preemptive transition enabled.
             List preemptiveEnabledTransitions = _ctrl
                     ._checkTransition(_currentState.preemptiveTransitionList());
+
             if (preemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
                     _debug("Found enabled preemptive transitions.");
@@ -562,6 +574,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
             List nonpreemptiveEnabledTransitions = _ctrl
                     ._checkTransition(_currentState
                             .nonpreemptiveTransitionList());
+
             if (nonpreemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
                     _debug("Found enabled non-preemptive transitions.");
@@ -572,6 +585,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // Check if there is any event detected for preemptive transitions.
             List preemptiveTrWithEvents = _checkEvent(_currentState
                     .preemptiveTransitionList());
+
             if (preemptiveTrWithEvents.size() != 0) {
                 if (_debugging) {
                     _debug("Detected transitions with events.");
@@ -582,6 +596,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // transitions.
             List nonPreemptiveTrWithEvents = _checkEvent(_currentState
                     .nonpreemptiveTransitionList());
+
             if (nonPreemptiveTrWithEvents.size() != 0) {
                 if (_debugging) {
                     _debug("Detected transitions with events.");
@@ -599,18 +614,15 @@ public class NewHSFSMDirector extends HSFSMDirector {
                 _transitionHasEvent = false;
             } else {
                 Transition enabledTransition = null;
+
                 // We check the maximum difference of the relations that change
                 // their status for step size refinement.
                 _distanceToBoundary = Double.MIN_VALUE;
 
-                enabledTransition = _getTransitionWithMaximumDistance(
-                        preemptiveEnabledTransitions);
-                enabledTransition = _getTransitionWithMaximumDistance(
-                        nonpreemptiveEnabledTransitions);
-                enabledTransition = _getTransitionWithMaximumDistance(
-                        preemptiveTrWithEvents);
-                enabledTransition = _getTransitionWithMaximumDistance(
-                        nonPreemptiveTrWithEvents);
+                enabledTransition = _getTransitionWithMaximumDistance(preemptiveEnabledTransitions);
+                enabledTransition = _getTransitionWithMaximumDistance(nonpreemptiveEnabledTransitions);
+                enabledTransition = _getTransitionWithMaximumDistance(preemptiveTrWithEvents);
+                enabledTransition = _getTransitionWithMaximumDistance(nonPreemptiveTrWithEvents);
 
                 if (_debugging && _verbose) {
                     _debug("The guard "
@@ -618,9 +630,9 @@ public class NewHSFSMDirector extends HSFSMDirector {
                             + " has the biggest difference to boundary as "
                             + _distanceToBoundary);
                 }
-                
+
                 _outputAccurate = _distanceToBoundary < getErrorTolerance();
-                
+
                 if (_outputAccurate) {
                     _transitionHasEvent = true;
                 } else {
@@ -630,18 +642,19 @@ public class NewHSFSMDirector extends HSFSMDirector {
                     _transitionHasEvent = false;
                 }
             }
-            
+
             // NOTE: _outputAccurate here is only used for the transitions but
             // not the refinements. This makes the refinedStepSize() method
             // more efficient in that if the _outputAccurate is true, no step
             // size refinement for transitions are necessary.
             return _outputAccurate && result;
-
         } catch (Throwable throwable) {
             // Can not evaluate guard expression, 
-            throw new InternalErrorException(this, throwable, 
-                    "All continuous-time variables must have values from " +
-                    "the beginning of simulation. Set the initial values.");
+            throw new InternalErrorException(
+                    this,
+                    throwable,
+                    "All continuous-time variables must have values from "
+                            + "the beginning of simulation. Set the initial values.");
         }
     }
 
@@ -652,12 +665,15 @@ public class NewHSFSMDirector extends HSFSMDirector {
      */
     public boolean isStateAccurate() {
         boolean result = true;
+
         // NOTE: we have to check all refinements for the similar reason 
         // presented in the isOutputAccurate() method.
         if (_enabledRefinements != null) {
             Iterator refinements = _enabledRefinements.iterator();
+
             while (refinements.hasNext()) {
                 Actor refinement = (Actor) refinements.next();
+
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = result
                             && ((CTStepSizeControlActor) refinement)
@@ -665,6 +681,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
                 }
             }
         }
+
         return result;
     }
 
@@ -692,7 +709,8 @@ public class NewHSFSMDirector extends HSFSMDirector {
         //signal type, we need to derive the actual signal type from the
         //connections between ports.
         receiver.setSignalType(CTReceiver.DISCRETE);
-//        receiver.setSignalType(CTReceiver.CONTINUOUS);
+
+        //        receiver.setSignalType(CTReceiver.CONTINUOUS);
         return receiver;
     }
 
@@ -714,6 +732,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
         boolean postfireReturns = true;
 
         Iterator refinements = _enabledRefinements.iterator();
+
         while (refinements.hasNext()) {
             Actor refinement = (Actor) refinements.next();
             postfireReturns = postfireReturns && refinement.postfire();
@@ -730,12 +749,14 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // information is valid.
             Iterator iterator = _currentState.nonpreemptiveTransitionList()
                     .listIterator();
+
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
                 transition.getRelationList().clearRelationList();
             }
 
             iterator = _currentState.preemptiveTransitionList().listIterator();
+
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
                 transition.getRelationList().clearRelationList();
@@ -750,19 +771,18 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // This is to avoid unnecessary change requests made by
             // the super class FSMDirector.
             _mutationEnabled = true;
-            
+
             // If there is one transition enabled, the HSFSMDirector requests
             // to be fired again at the same time to see whether the next state
             // has some outgoing transition enabled.
             // FIXME: we don't need the following. let the hasCurrentEvent() 
             // method handles transient states.
-
             // If the top level of the model is modal model, the director
             // is null. We do not request to be fired again since no one in
             // the upper level of hierarchy will do that.
             CompositeActor container = (CompositeActor) getContainer();
             Director executiveDirector = container.getExecutiveDirector();
-            
+
             if (getExecutiveCTGeneralDirector() != null) {
                 if (_debugging) {
                     _debug(executiveDirector.getFullName()
@@ -778,37 +798,39 @@ public class NewHSFSMDirector extends HSFSMDirector {
             // execute the commit actions and change the current state
             // to the destination state.
             postfireReturns = postfireReturns && super.postfire();
-            
+
             // Update the states
             _currentState = _ctrl.currentState();
+
             // FIXME: if we remove _enabledRefinemnets, the following is
             // unnecessary.
             Actor[] actors = _currentState.getRefinement();
             _enabledRefinements = new LinkedList();
+
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     _enabledRefinements.add(actors[i]);
                 }
             }
-        
         } else {
             // Commit the current states of the relationlists
             // of all the transitions during these execution phases.
             Iterator iterator = _currentState.nonpreemptiveTransitionList()
                     .listIterator();
+
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
                 transition.getRelationList().commitRelationValues();
             }
 
-            iterator = _currentState.preemptiveTransitionList()
-                    .listIterator();
+            iterator = _currentState.preemptiveTransitionList().listIterator();
+
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
                 transition.getRelationList().commitRelationValues();
             }
         }
-        
+
         return postfireReturns;
     }
 
@@ -851,8 +873,9 @@ public class NewHSFSMDirector extends HSFSMDirector {
         // FIXME: if we remove _enabledRefinemnets, the following is
         // unnecessary.
         Iterator enabledRefinements = _enabledRefinements.iterator();
+
         while (enabledRefinements.hasNext()) {
-            Actor refinement = (Actor)enabledRefinements.next();
+            Actor refinement = (Actor) enabledRefinements.next();
             refinement.prefire();
         }
 
@@ -937,12 +960,12 @@ public class NewHSFSMDirector extends HSFSMDirector {
     // This method detects any events happened during one step size.
     // NOTE: CheckEvent is used for guard expression like a == 1. 
     private List _checkEvent(List transitionList) {
-        
         LinkedList TransitionsWithEvents = new LinkedList();
         Iterator transitionRelations = transitionList.iterator();
 
         while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition) transitionRelations.next();
+
             if (transition.getRelationList().hasEvent()) {
                 TransitionsWithEvents.add(transition);
             }
@@ -958,11 +981,12 @@ public class NewHSFSMDirector extends HSFSMDirector {
     private Transition _getTransitionWithMaximumDistance(List transitionList) {
         Transition enabledTransition = null;
         Iterator iterator = transitionList.iterator();
+
         while (iterator.hasNext()) {
             Transition transition = (Transition) iterator.next();
             RelationList relationList = transition.getRelationList();
-            double distanceToBoundary = 
-                relationList.maximumDifference();
+            double distanceToBoundary = relationList.maximumDifference();
+
             if (distanceToBoundary > _distanceToBoundary) {
                 _distanceToBoundary = distanceToBoundary;
                 _lastDistanceToBoundary = relationList
@@ -970,12 +994,13 @@ public class NewHSFSMDirector extends HSFSMDirector {
                 enabledTransition = transition;
             }
         }
+
         return enabledTransition;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Cached reference to mode controller. */
     private FSMActor _ctrl = null;
 
