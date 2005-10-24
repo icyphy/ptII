@@ -135,6 +135,8 @@ OPTIONAL_FILES = \
 	'RecordType$$FieldType.class' \
 	'TypeLattice$$1.class' \
 	'TypeLattice$$TheTypeLattice.class' \
+	'UnionType$$1.class' \
+	'UnionType$$FieldType.class' \
 	'UnsizedMatrixType$$BooleanMatrixType.class' \
 	'UnsizedMatrixType$$ComplexMatrixType.class' \
 	'UnsizedMatrixType$$DoubleMatrixType.class' \
