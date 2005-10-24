@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 
  <p>Note: the ports are actually of type unsigned short (uint16_t),
  although we implement them with double tokens.
-   
+
  <p>Port information from tinyos-1.x/tos/platform/pc/sensorboard.h:
 <pre>
      enum {
@@ -62,7 +62,7 @@ import ptolemy.kernel.util.Workspace;
      // TOS_ADC_VOLTAGE_PORT = 7,  defined this in hardware.h
      TOS_ADC_MAG_Y_PORT = 8,
      };
-</pre>     
+</pre>
 
  @author Elaine Cheong
  @version $Id$
@@ -117,7 +117,7 @@ public class MicaActor extends PtinyOSActor {
         microphone = new PortParameter(this, "microphone");
         microphone.setExpression("0");
         microphone.setTypeEquals(BaseType.DOUBLE);
-        
+
         // Persistent accelerometer (x-axis) input port.
         accelx = new PortParameter(this, "accelx");
         accelx.setExpression("0");
@@ -163,23 +163,23 @@ public class MicaActor extends PtinyOSActor {
     public PortParameter temperature;
 
     /** Persistent microphone input data.
-     */    
+     */
     public PortParameter microphone;
 
     /** Persistent accelerometer (x-axis) input data.
-     */    
+     */
     public PortParameter accelx;
 
     /** Persistent accelerometer (y-axis) input data.
-     */    
+     */
     public PortParameter accely;
 
     /** Persistent magnetometer (x-axis) input data.
-     */    
+     */
     public PortParameter magx;
 
     /** Persistent magnetometer (y-axis) input data.
-     */    
+     */
     public PortParameter magy;
 
     /** Red LED output port.
@@ -187,7 +187,7 @@ public class MicaActor extends PtinyOSActor {
     public TypedIOPort ledRed;
 
     /** Green LED output port.
-     */    
+     */
     public TypedIOPort ledGreen;
 
     /** Yellow LED output port.

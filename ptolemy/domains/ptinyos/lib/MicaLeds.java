@@ -52,7 +52,7 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
  The actor also has a parameter for each LED, which allows the
  container to use the value.
-    
+
  @author Elaine Cheong
  @version $Id$
  @since Ptolemy II 5.1
@@ -129,7 +129,7 @@ public class MicaLeds extends TypedAtomicActor {
     public TypedIOPort ledGreen;
 
     /** Input port for the yellow LED.  The token type is boolean.
-     */    
+     */
     public TypedIOPort ledYellow;
 
     /** The color of the "red" LED.  The initial value is set to off
@@ -217,7 +217,7 @@ public class MicaLeds extends TypedAtomicActor {
     /** Turn the green LED on by changing the color of the graphical
      *  icon and reflecting the color value in the corresponding
      *  parameter.
-     */    
+     */
     private void _greenOn() throws IllegalActionException {
         _ledGreen.fillColor.setToken("{0.0,1.0,0.0,1.0}");
         green.setToken("{0.0,1.0,0.0,1.0}");
@@ -226,7 +226,7 @@ public class MicaLeds extends TypedAtomicActor {
     /** Turn the green LED off by changing the color of the graphical
      *  icon and reflecting the color value in the corresponding
      *  parameter.
-     */    
+     */
     private void _greenOff() throws IllegalActionException {
         _ledGreen.fillColor.setToken("{0.0,0.5,0.0,1.0}");
         green.setToken("{0.0,0.5,0.0,1.0}");
@@ -235,7 +235,7 @@ public class MicaLeds extends TypedAtomicActor {
     /** Turn the yellow LED on by changing the color of the graphical
      *  icon and reflecting the color value in the corresponding
      *  parameter.
-     */    
+     */
     private void _yellowOn() throws IllegalActionException {
         _ledYellow.fillColor.setToken("{1.0,1.0,0.0,1.0}");
         yellow.setToken("{1.0,1.0,0.0,1.0}");
@@ -244,7 +244,7 @@ public class MicaLeds extends TypedAtomicActor {
     /** Turn the yellow LED off by changing the color of the graphical
      *  icon and reflecting the color value in the corresponding
      *  parameter.
-     */  
+     */
     private void _yellowOff() throws IllegalActionException {
         _ledYellow.fillColor.setToken("{0.5,0.5,0.0,1.0}");
         yellow.setToken("{0.5,0.5,0.0,1.0}");

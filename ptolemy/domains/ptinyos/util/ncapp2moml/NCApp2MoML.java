@@ -70,7 +70,7 @@ import org.xml.sax.SAXException;
       &lt;<i>moml output prefix</i>&gt; \
       <i>long path to file containing list of .nc files using short path</i>
   </pre>
-   
+
   Example:
   <pre>
 java -classpath $PTII ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoML \
@@ -85,7 +85,7 @@ java -classpath $PTII ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoML \
   <pre>
 apps/CntToLeds/CntToLeds.nc
   </pre>
-   
+
   Example output for CntToLeds.nc:
 <pre>
 &lt;?xml version="1.0"?&gt;
@@ -108,22 +108,22 @@ apps/CntToLeds/CntToLeds.nc
   &lt;link port="TimerC.StdControl" relation="relation1" /&gt;
   &lt;link port="IntToLeds.IntOutput" relation="relation3" /&gt;
   &lt;link port="Main.StdControl" relation="relation1" /&gt;
-&lt;/entity&gt;   
+&lt;/entity&gt;
 </pre>
 
   Expects &lt;<i>xml input prefix</i>&gt;
    to contain files with &lt;<i>xml input suffix</i>&gt; containing
   an xml dump with the following parameters:
-<pre>   
+<pre>
       -fnesc-dump=components(wiring, file(filename.nc)
       -fnesc-dump=referenced(interfaces)
 </pre>
-   
+
   Example call to ncc:
 <pre>
       ncc '-fnesc-dump=components(wiring, file(/home/celaine/tinyos/tinyos/tinyos-1.x-scratch/apps/CntToLeds/CntToLeds.nc))' '-fnesc-dump=referenced(interfaces)' -fnesc-dumpfile=/home/celaine/ptII/vendors/moml/apps/CntToLeds/CntToLeds.ncxml /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/apps/CntToLeds/CntToLeds.nc -I/home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tos/lib/Counters/
 </pre>
-   
+
    @author Elaine Cheong
    @version $Id$
    @Pt.ProposedRating Red (celaine)
@@ -131,7 +131,7 @@ apps/CntToLeds/CntToLeds.nc
 */
 public class NCApp2MoML {
     /** Store the container of the interface (a component) and path to source file.
-     * 
+     *
      * @param intf interface of the component to be stored
      */
     void saveInterfaceContainer(Xinterface intf) {
@@ -141,7 +141,7 @@ public class NCApp2MoML {
     }
 
     /** Traverse the configuration wiring graph and set up the component and relation data structures.
-     * 
+     *
      * @throws Exception if link is not to an element of type Xinterface.
      */
     void readLinks() {
@@ -152,7 +152,7 @@ public class NCApp2MoML {
             // Get the next interface for this nesC component.
             Xinterface intf = (Xinterface)interfaces.next();
             saveInterfaceContainer(intf);
-            
+
             WiringNode checkNode = Xwiring.wg.lookup(intf);
 
             if (!intf.provided) {
@@ -177,7 +177,7 @@ public class NCApp2MoML {
             }
         }
     }
-    
+
     /** Generate the .moml file for this nesC application.
      *
      *  @param componentName The name of the component (no suffix).
@@ -202,7 +202,7 @@ public class NCApp2MoML {
 
         // Traverse the configuration graph and set up the data structures.
         readLinks();
-        
+
         // Create xml for each component.
         Enumeration enumeration = _componentTable.elements();
         while (enumeration.hasMoreElements()) {
@@ -231,7 +231,7 @@ public class NCApp2MoML {
             link.setAttribute("relation", entry.getValue().toString());
             root.addContent(link);
         }
-              
+
         // Output the moml code to a file.
         try {
             // Open the file.
@@ -261,15 +261,15 @@ public class NCApp2MoML {
         catch (IOException e) {
             System.err.println(e);
         }
-         
+
     }
 
     /** Read in .nc application xml files, generate .moml files.
      *  @param args A series of command line arguments, see the
      *  class comment for details.
      *  @exception IOException If there is a problem reading or
-     *  writing a file.   
-     */    
+     *  writing a file.
+     */
     public static void main(String[] args) throws IOException {
         // Check to make sure all necessary arguments have been passed
         // to program.
@@ -294,7 +294,7 @@ public class NCApp2MoML {
         String inputfilelist = args[index++].trim();
 
         _ncSourcePrefix = ncSourcePrefix;
-        
+
         try {
             // Open the file containing the list of .nc files.
             BufferedReader in =
@@ -371,30 +371,30 @@ public class NCApp2MoML {
          */
         public String getClassName() {
             // Example: /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tos/system/Main.nc
-            
+
             // Example: tos/system/Main.nc
             String shortPath = _filename.replaceFirst("^" + _ncSourcePrefix, "");
-            
+
             // Example: tos/system/Main.nc
             shortPath = shortPath.replaceFirst("^" + "/", "");
 
             // Example: tos/system/Main
             shortPath = shortPath.replaceFirst(".nc" + "$", "");
-            
+
             // Example: tos.system.Main
             String javaPath = shortPath.replace('/', '.');
-            
+
             return javaPath;
         }
-        
+
         public String getName() {
             return _component.toString();
         }
-        
+
         public String toString() {
             return _filename + ": " + _component;
         }
-        
+
         String _filename;
         Xcomponent _component;
     }
@@ -403,7 +403,7 @@ public class NCApp2MoML {
         private int currentCount() {
             return _relationCounter;
         }
-        
+
         private String getNewRelationName() {
             return "relation" + (++_relationCounter);
         }
@@ -421,17 +421,17 @@ public class NCApp2MoML {
 
         private int _relationCounter = 0;
     }
-        
+
     private static String _ncSourcePrefix;
 
     private _Relations _relations = new _Relations();
 
     // Contains (key, value) pairs of type (Xcomponent, _ComponentFile).
     private Hashtable _componentTable = new Hashtable();
-    
+
     // Contains (key, value) pairs of type (Xinterface, relation).
     private Hashtable _relationTable = new Hashtable();
-    
+
 
     /** File separator to use, currently "/". */
     private static String _FILESEPARATOR = "/";

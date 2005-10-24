@@ -215,7 +215,7 @@ public class PtinyOSDirector extends Director {
 
     /** A callback method (from C code) for the application to enqueue
      *  the next event.
-     *  
+     *
      *  @param newTime The time of the next event, a long long in C.
      *  @exception IllegalActionException If Director.fireAt() throws it.
      */
@@ -371,7 +371,7 @@ public class PtinyOSDirector extends Director {
 
     /** Load TOSSIM library and call main().
      *  @exception IllegalActionException If there is a problem initializing
-     *  the director, such as a problem loading the JNI loader.   
+     *  the director, such as a problem loading the JNI loader.
      */
     public void initialize() throws IllegalActionException {
         if (_debugging) {
@@ -435,7 +435,7 @@ public class PtinyOSDirector extends Director {
                     if (_loader.main(argsToMain) < 0) {
                         throw new InternalErrorException(
                                 "Could not initialize TOSSIM.");
-                    } 
+                    }
                     if (_debugging) {
                         _debug("call to main completed");
                     }
@@ -470,12 +470,12 @@ public class PtinyOSDirector extends Director {
         return true;
     }
 
-    /** Generate nesC code. 
+    /** Generate nesC code.
      *  <p>If this director is the top most PtinyOSDirector, and the
      *  {@link #target} parameter is non-empty then
-     *  a .java file is created.  The .java file implements   
+     *  a .java file is created.  The .java file implements
      *  the {@link ptolemy.domains.ptinyos.kernel.PtinyOSLoader}
-     *  interface and is compiled by this method.  
+     *  interface and is compiled by this method.
      *  @exception IllegalActionException If the container is not
      *  an instance of CompositeActor, the destination directory
      *  does not exist and cannot be created, or the nesC file
@@ -527,7 +527,7 @@ public class PtinyOSDirector extends Director {
 
         // Open file for the generated nesC code.
         File writeFile = new File(directory, filename + ".nc");
-        
+
         if (_confirmOverwrite(writeFile)) {
             // Write the generated code to the file.
             try {
@@ -591,7 +591,7 @@ public class PtinyOSDirector extends Director {
         }
     }
 
-    /** 
+    /**
      *  Send an expression to a port.
      *  <p>The loader class has a method with the same name that calls
      *  this method.  The C code (ptII.c) calls <i>loader</i>.sendToPort in
@@ -732,10 +732,10 @@ public class PtinyOSDirector extends Director {
             // Wait for exit and see if there are any errors.
             // make returns non-zero value if there was an error
             exitValue = proc.waitFor();
-            
+
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Could not compile generated code, \"" 
+                    "Could not compile generated code, \""
                     + commandString + "\" failed.");
         }
         if (exitValue != 0) {
@@ -792,7 +792,7 @@ public class PtinyOSDirector extends Director {
         _CodeString generatedCode = new _CodeString();
 
         String containerName = _sanitizedFullName(model);
-        
+
         generatedCode.addLine("configuration " + containerName + " {");
 
         //if (container != toplevel) {
@@ -847,7 +847,7 @@ public class PtinyOSDirector extends Director {
         text.addLine("    public void wrapup() {");
         text.addLine("        wrapup" + toplevelName + "();");
         text.addLine("    }");
-        
+
         text.addLine("    public void processEvent(long currentTime) {");
         text.addLine("        processEvent" + toplevelName + "(currentTime);");
         text.addLine("    }");
@@ -921,7 +921,7 @@ public class PtinyOSDirector extends Director {
 
     /** Generate makefile.
         // FIXME example
-        
+
 TOSROOT=/home/celaine/tinyos/tinyos/tinyos-1.x-scratch
 TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
 COMPONENT=MicaActor3056
@@ -995,7 +995,7 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
                         "Failed to open file for writing.");
             }
         }
-        
+
         return makefileName;
     }
 
@@ -1267,7 +1267,7 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
 
         return objName;
     }
-    
+
     /** Get the sanitized name with workspace version number appended,
      *  or "Unnamed" if no name.
      */
@@ -1332,7 +1332,7 @@ include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     // Class for creating a StringBuffer that represents generated code.
     private static class _CodeString {
         public _CodeString() {

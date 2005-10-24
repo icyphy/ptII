@@ -43,7 +43,7 @@ import ptolemy.kernel.util.Workspace;
 /**
  * A composite actor for use in the PtinyOS domain.
  *
- * <p>The local director of this actor must be a 
+ * <p>The local director of this actor must be a
  *  {@link ptolemy.domains.ptinyos.kernel.PtinyOSDirector}.
  *
  * @author Elaine Cheong
@@ -104,7 +104,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** An input port of type String. */
     public TypedIOPort packetIn;
 
@@ -119,7 +119,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
      *  be a PtinyOSDirector.
      *  @see ptolemy.domains.ptinyos.kernel.PtinyOSDirector#receivePacket(String)
      *  @exception IllegalActionException If a local director cannot
-     *  be found.   
+     *  be found.
      */
     public void fire() throws IllegalActionException {
         // Grab the packet before it gets thrown away, since it is not
@@ -129,7 +129,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
                 StringToken token = (StringToken) packetIn.get(0);
 
                 // FIXME: test this with a director that
-                // is not a PtinyOSDirector. Throw an IllegalActionException? 
+                // is not a PtinyOSDirector. Throw an IllegalActionException?
                 PtinyOSDirector director = (PtinyOSDirector) getDirector();
 
                 if (director == null) {

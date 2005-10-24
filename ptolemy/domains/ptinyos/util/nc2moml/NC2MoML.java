@@ -59,7 +59,7 @@ import org.xml.sax.SAXException;
      &lt;<i>moml output prefix</i>&gt; \
      <i>long path to file containing list of .nc files using short path</i>
   </pre>
-   
+
   Example:
   <pre>
 java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
@@ -69,7 +69,7 @@ java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
     /home/celaine/ptII/vendors/ptinyos/moml \
    /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
   </pre>
-   
+
   .tempfile contains:
   <pre>
 tos/lib/Counters/Counter.nc
@@ -215,7 +215,7 @@ public class NC2MoML {
      *  @param args A series of command line arguments, see the
      *  class comment for details.
      *  @exception IOException If there is a problem reading or
-     *  writing a file.   
+     *  writing a file.
      */
     public static void main(String[] args) throws IOException {
         // Check to make sure all necessary arguments have been passed
@@ -241,7 +241,7 @@ public class NC2MoML {
         String inputFiles = args[index++].trim();
 
         BufferedReader in = null;
-        
+
         try {
             // Open the file containing the list of .nc files.
             in = new BufferedReader(new FileReader(inputFiles));
@@ -308,7 +308,7 @@ public class NC2MoML {
         } finally {
             if (in != null) {
                 // Close the input file.
-                in.close();            
+                in.close();
             }
         }
     }

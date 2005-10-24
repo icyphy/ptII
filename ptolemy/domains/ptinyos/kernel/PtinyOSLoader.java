@@ -34,7 +34,7 @@ package ptolemy.domains.ptinyos.kernel;
 /**
  Defines the requirements for an object that loads a C based
  TinyOS shared object into a running Java Ptolemy environment.
- 
+
  <p>The {@link ptolemy.domains.ptinyos.kernel.PtinyOSDirector#preinitialize()}
  method creates a .java file that implements this class and then compiles
  the .java file
@@ -106,7 +106,7 @@ public interface PtinyOSLoader {
      *  port is not connected or not found and -1 if the port is
      *  of any type other than Boolean or String.
      *  @exception IllegalActionException If thrown by the director.
-     */ 
+     */
     public int sendToPort(String portName, String expression)
             throws IllegalActionException;
 
