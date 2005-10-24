@@ -28,8 +28,14 @@
 package ptolemy.codegen.kernel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
+import ptolemy.actor.Actor;
 import ptolemy.codegen.c.actor.lib.CodeStream;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -56,8 +62,78 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     public CCodeGeneratorHelper(NamedObj component) {
         super(component);
     }
-
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** 
+     * Generate the fire code. In this base class, do nothing. Subclasses
+     * may extend this method to generate the fire code of the associated
+     * component and append the code to the given string buffer.
+     * @param code The given string buffer.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public void generateFireCode(StringBuffer code)
+            throws IllegalActionException {
+        super.generateFireCode(code);
+    }
+
+    /** 
+     * Generate the initialize code. In this base class, return an empty
+     * string. Subclasses may extend this method to generate the initialize
+     * code of the associated component and append the code to the given
+     * string buffer.
+     * @return The initialize code of the containing composite actor.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
+        return "";
+    }
+    
+    /** 
+     * Generate the preinitialize code. In this base class, return an empty
+     * string. This method generally does not generate any execution code
+     * and returns an empty string. Subclasses may generate code for variable
+     * declaration, defining constants, etc.
+     * @return A string of the preinitialize code for the helper.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
+        return "";
+    }
+
+    /** 
+     * Generate the shared code. This is the FIRST generate method invoked out
+     * of all, so any initializations of variables of this helper should be 
+     * done in this method. In this base class, return an empty set. Subclasses
+     * may generate code for variable declaration, defining constants, etc.
+     * @return An empty set in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+     public Set generateSharedCode() throws IllegalActionException {
+         super.generateSharedCode();
+         
+         _codeStream = new CodeStream(this);
+         return new HashSet();
+     }
+
+     /** 
+      * Generate the wrapup code. This is the LAST generate method invoked out
+      * of all, so any resets of variables of this helper should be done
+      * in this method. In this base class, do nothing. Subclasses may extend
+      * this method to generate the wrapup code of the associated component
+      * and append the code to the given string buffer.
+      * @param code The given string buffer.
+      * @exception IllegalActionException Not thrown in this base class.
+      */
+     public String generateWrapupCode() throws IllegalActionException {
+     	 super.generateWrapupCode();
+         //_codeStream = null;
+         return "";
+     }
+     
+     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Given a block name, generate code for that block.
@@ -118,9 +194,13 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         }
     }
     
+    //protected void 
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
     /**
      * The code stream associated with this helper.
      */
-    protected CodeStream _codeStream = new CodeStream(this);
+    protected CodeStream _codeStream;
 
 }

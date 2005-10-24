@@ -127,9 +127,9 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     *  error in processing the specified code block(s).
     */
    public Set generateSharedCode() throws IllegalActionException {
-        // We don't need to process the code block here because the
-        // sharedCode do not contain any macros.
-       super.generateSharedCode();
+   	   super.generateSharedCode();
+       // We don't need to process the code block here because the
+       // sharedCode do not contain any macros.
        Set codeBlocks = new HashSet();
        codeBlocks.add(_generateBlockCode("sharedBlock", false));
        return codeBlocks;

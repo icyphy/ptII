@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -175,8 +176,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // We separate the generation and the appending into 2 phases.
         // This would be convenience for making addition passes, and
         // for adding additional code into different sections.
-        String includeFiles = generateIncludeFiles();
         String sharedCode = generateSharedCode();
+        String includeFiles = generateIncludeFiles();
         String preinitializeCode = generatePreinitializeCode();
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
@@ -383,26 +384,30 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 types.addAll(set);
             }
         }        
-
-        functions.toString().replaceAll(",", ";\n\t").replace(']', ';').replace('[', '\t');
-
-        CodeStream tmpStream = new CodeStream(
-                "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
-        tmpStream.appendCodeBlock("globalBlock");
-        code.append(tmpStream.toString());   
-
-
         
         Object[] typesArray = types.toArray();
         CodeStream streams[] = new CodeStream[types.size()];
 
         // Generate type map.
+        String typeMembers = new String();
         for (int i = 0; i < types.size(); i++) {            
             // Open the .c file for each type.
             streams[i] = new CodeStream(
             "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i] + ".c");               
             code.append("#define TYPE_" + typesArray[i] + " " + i + "\n");
+
+            // Dynamically generate all the types within the union.
+            typeMembers = "\t\t" + typesArray[i] + "Token " + 
+                                  typesArray[i] + ";\n";
         }
+        
+        ArrayList args = new ArrayList();
+        args.add(typeMembers);
+        CodeStream tmpStream = new CodeStream(
+                "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
+        tmpStream.appendCodeBlock("globalBlock", args);
+        code.append(tmpStream.toString());   
+
         
         Object[] functionsArray = functions.toArray();
 
@@ -412,23 +417,31 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }            
 
         // Generate type and function definitions.
-        for (int i = 0; i < streams.length; i++) {
-
+        for (int i = 0; i < types.size(); i++) {
             // The "declareBlock" contains all necessary declarations for the
             // type; thus, it is always read into the code stream when
             // accessing this particular type.
             streams[i].appendCodeBlock("declareBlock");
-            streams[i].appendCodeBlock("newBlock");
+            streams[i].appendCodeBlock("newBlock");            
+            code.append(streams[i].toString());
+        }
+        
+        for (int i = 0; i < types.size(); i++) {
+            streams[i].clear();
             for (int j = 0; j < functions.size(); j++) {
                 // The code block declaration has to follow this convention:
                 // /*** [function name]Block ***/ 
                 //     .....
                 // /**/
                 try {   
-                    // We have to catch the exception if some code blocks are
-                    // not found.
                     streams[i].appendCodeBlock(functionsArray[j] + "Block");
                 } catch (IllegalActionException ex) {
+                    // We have to catch the exception if some code blocks are
+                    // not found. We have to define the function label in the
+                    // generated code because the function table makes
+                    // reference to this label.
+                    streams[i].append("#define " + typesArray[i] + "_" + 
+                                      functionsArray[j] + " MISSING \n");
                 	// It is ok because this polymorphic function may not be
                     // supported by all types. 
                 }

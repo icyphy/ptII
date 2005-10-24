@@ -51,6 +51,8 @@ import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -126,16 +128,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
    }
 
    /** 
-    * Generate the shared code. In this base class, return an empty
-    * set. This method generally does not generate any execution code
-    * and returns an empty string. Subclasses may generate code for variable
-    * declaration, defining constants, etc.
+    * Generate the shared code. This is the first generate method invoked out
+    * of all, so any initialization of variables of this helper should be done
+    * in this method. In this base class, return an empty set. Subclasses may
+    * generate code for variable declaration, defining constants, etc.
     * @return An empty set in this base class.
     * @exception IllegalActionException Not thrown in this base class.
     */
     public Set generateSharedCode() throws IllegalActionException {
-        Set codeBlocks = new HashSet();
-        return codeBlocks;
+        _infoTable = new Hashtable();
+        return new HashSet();
     }
 
    /** Generate variable declarations for inputs and outputs and parameters.
@@ -146,7 +148,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     */
    public void generateVariableDeclaration(StringBuffer code) 
            throws IllegalActionException {
-     
+    
        //  Generate variable declarations for referenced parameters.    
        if (_referencedParameters != null) {
            Iterator parameters = _referencedParameters.iterator();
@@ -479,7 +481,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
            throw new IllegalActionException(_component,
                    "Reference not found: " + name);
        }
-
+       
        // Get the referenced name.
        String refName = tokenizer.nextToken().trim();
        
@@ -879,7 +881,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
            // No "$" in the string
            return code;
        }
-
+       
        result.append(code.substring(0, currentPos));
 
        while (currentPos < code.length()) {
@@ -1056,6 +1058,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     * The new constructor field key to access the info table. 
     */
    public static final String FIELD_NEW = "new";
+
+   /**
+    * The reference field key to access the info table. 
+    */
+   public static final String FIELD_REF = "ref";
 
    /**
     * The type function field key to access the info table. 
@@ -1424,5 +1431,5 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     * The table about information of the helper's generated code. The
     * kernel can use this table to retrieve information from the helper.  
     */
-   private Hashtable _infoTable = new Hashtable();
+   private Hashtable _infoTable;
 }

@@ -58,6 +58,6 @@ void Display_print(Token* token) {
 
 /*** printToken(<channel>) ***/
     printf("Display: ");
-    Display_print($ref(input)[<channel>].generalPort);            
+    $typeFunc($ref(input)[<channel>].generalPort, print());
     printf("\n");
 /**/

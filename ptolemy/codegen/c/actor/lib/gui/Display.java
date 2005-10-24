@@ -69,6 +69,7 @@ public class Display extends CCodeGeneratorHelper {
      */
     public void  generateFireCode(StringBuffer code)
         throws IllegalActionException {
+        super.generateFireCode(code);
         ptolemy.actor.lib.gui.Display actor =
             (ptolemy.actor.lib.gui.Display) getComponent();
         _codeStream.clear();
@@ -103,9 +104,9 @@ public class Display extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public Set generateSharedCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
+        super.generateSharedCode();
         Set codeBlocks = new HashSet();
-        codeBlocks.add(_generateBlockCode("sharedBlock", false));
+        //codeBlocks.add(_generateBlockCode("sharedBlock", false));
         return codeBlocks;
     }
 
@@ -117,6 +118,7 @@ public class Display extends CCodeGeneratorHelper {
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
+        super.getHeaderFiles();
         Set files = new HashSet();
         files.add("\"stdio.h\"");
         return files;
