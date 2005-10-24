@@ -910,14 +910,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
 
         while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition) transitionRelations.next();
-
-            if (!transition.isEnabled()) {
-                continue;
+            if (transition.isEnabled()) {
+                enabledTransitions.add(transition);
             }
-
-            enabledTransitions.add(transition);
         }
-
         // NOTE: It is the _chooseTransition method that decides which
         // enabled transition is actually taken. This method simply returns
         // all enabled transitions.

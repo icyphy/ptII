@@ -1069,6 +1069,9 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
     /** The list of enabled actors that refines the current state.
      */
+    // FIXME: this will help to improve performance when firing. However,
+    // it is only used in the HSFSMDirector. Modify the fire() method.
+    // Or this may not be necessary.
     protected List _enabledRefinements;
 
     /** cached enabled transition.
