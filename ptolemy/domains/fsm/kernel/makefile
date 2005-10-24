@@ -66,6 +66,7 @@ JSRCS = \
 	HSFSMDirector.java \
 	MultipleEnabledTransitionsException.java \
 	MultirateFSMDirector.java \
+	NewHSFSMDirector.java \
 	NonStrictFSMDirector.java \
 	OutputActionsAttribute.java \
 	ParseTreeEvaluatorForGuardExpression.java \
