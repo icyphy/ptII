@@ -42,8 +42,13 @@ import ptolemy.kernel.util.Workspace;
  firing.
 
  @author Adam Cataldo
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class FireAccumulator extends Transformer {
+    // FIXME: how is this different from AddSubtract?
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
