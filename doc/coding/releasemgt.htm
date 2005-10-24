@@ -147,7 +147,7 @@ cvs update -P -d
 cd $PTII
 ./configure
 # Remove files created by JavaCC 
-cd $PTIIptolemy/data/expr
+cd $PTII/ptolemy/data/expr
 rm `make echo_OPTIONAL_JSRCS`
 cd $PTII/ptolemy/data/unit
 rm `make echo_OPTIONAL_JSRCS`
@@ -156,7 +156,7 @@ rm `make echo_OPTIONAL_JSRCS`
 # Create a file that contains the names of the java files to include
 cd $PTII
 rm -rf vendors apps
-rm -rf ptolemy/domains/ct/demo/corba/util/*.java
+rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
 adm/bin/ptIItxtfiles > /tmp/f
 egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
 </pre>
@@ -198,18 +198,6 @@ checked in to cvs with -kb:
 cat /tmp/f | xargs cvs status >& /tmp/cv.out
 </pre>
 Then search /tmp/cv.out for <code>-kb</code>
-
-
-<li> Run <a href="../../util/testsuite/jindent"><CODE>$PTII/util/testsuite/jindent</CODE></a> on the java files and indent the files to the Ptolemy II
-coding standard.
-<blockquote>
-When you run jindent, watch out for files that have the entire
-class body indented.  If the class comment contains the word
-"extends" or "implements" then emacs sometimes indents the 
-"public class" and the rest of the body.  Search the output
-for "public class" and carefully examine any files where public class
-has leading spaces. 
-</blockquote>
 
 
 <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
