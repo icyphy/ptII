@@ -72,7 +72,7 @@ PTCLASSALLJARS = \
 	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
 	Lorenz/Lorenz.jar \
 	NewtonsCradle/NewtonsCradle.jar \
-	Pendulum3D/Pendulum3D.jar
+	Pendulum3D/Pendulum3D.jar \
 	SampledClocks/SampledClocks.jar \
 	Satellite/Satellite.jar \
 	SigmaDelta/SigmaDelta.jar \
