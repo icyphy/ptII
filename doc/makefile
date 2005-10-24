@@ -210,9 +210,6 @@ DIVAPACKAGES = \
 
 # Experimental packages that are not shipped
 EXPERIMENTALPACKAGES = \
-			ptolemy.domains.ptinyos.kernel \
-			ptolemy.domains.ptinyos.lib \
-			ptolemy.domains.ptinyos.util.nc2moml \
 			ptolemy.domains.rtp.kernel \
 			ptolemy.domains.rtp.lib
 
@@ -273,6 +270,12 @@ THALESPACKAGES = \
 	thales.vergil.navigable
 
 # Packages used by VisualSense
+VIPTOSPACKAGES = \
+			ptolemy.domains.ptinyos.kernel \
+			ptolemy.domains.ptinyos.lib \
+			ptolemy.domains.ptinyos.util.nc2moml \
+
+# Packages used by VisualSense
 VISUALSENSEPACKAGES = \
 			ptolemy.domains.wireless.kernel \
 			ptolemy.domains.wireless.lib
@@ -297,6 +300,7 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			$(PTX10_PACKAGES) \
 			$(SUPERBPACKAGES) \
 			$(THALESPACKAGES) \
+			$(VIPTOSPACKAGES) \
 			$(VISUALSENSEPACKAGES) \
 			jni \
 			ptolemy.plot \
@@ -600,6 +604,29 @@ doccheck/index.html:
 			$(JDOCCHECKFLAGS) \
 			$(JDOCCHECKDOCLET) \
 			-d doc/doccheck $(ALLPACKAGES) )
+
+# Note that we change into the codeDocViptos directory
+
+# so that the jar file is created with a subset of the full set of docs
+# so that we can use this smaller jar file instead of the full codeDoc.jar
+codeDocViptos.jar: codeDocViptos/doc/codeDoc/tree.html
+	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocViptos doc/codeDoc
+
+# We do something crafty here and create a tree of html files
+# that we can substitute in for the usual doc/codeDoc tree in the
+# Viptos webstart
+codeDocViptos/doc/codeDoc/tree.html:
+	if [ ! -d codeDocViptos ]; then mkdir -p codeDocViptos; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocViptos/doc/codeDoc $(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
+	@echo "Removing the asd lines so that they are not displayed by"
+	@echo " view documentation"
+	-chmod a+x removeasd
+	./removeasd codeDocVisualSense
+
+
+
 
 # Note that we change into the codeDocVisualSense directory
 
