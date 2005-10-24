@@ -64,6 +64,7 @@ JSRCS = \
 	TimeGap.java \
 	TimedDelay.java \
 	Timer.java \
+	UnionMerge.java \
 	VariableDelay.java \
 	WaitingTime.java
 
