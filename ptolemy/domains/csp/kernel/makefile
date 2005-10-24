@@ -48,16 +48,14 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	AbstractBranchController.java \
 	ConditionalBranch.java \
-	BranchActor.java \
+	ConditionalBranchActor.java \
 	ConditionalBranchController.java \
 	ConditionalReceive.java \
 	ConditionalSend.java \
 	CSPActor.java \
 	CSPDirector.java \
-	CSPReceiver.java \
-	RendezvousReceiver.java
+	CSPReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)
 

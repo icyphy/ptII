@@ -1,104 +1,107 @@
 /* A controller that manages the conditional branches for performing
- conditional communication in the CSP domain.
+   conditional communication within CSP domain.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1998-2005 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
 
- */
+*/
 package ptolemy.domains.csp.kernel;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.process.NotifyThread;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.Debuggable;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.Nameable;
 
+
+// Java imports
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranchController
 
 /**
- A controller that manages the conditional branches for performing
- conditional communication within CSP (Communication Sequential Processes)
- domain. Any CSP actors (either atomic or composite) that need the
- functionality of conditional communication must contain and instantiate
- an object of this class. In addition, they also needs to implement the
- interface BranchActor.
- <p>
- The conditional branches are supposed to be created within the parent
- actor that contains this controller.
- <p>The chooseBranch() method takes those branches (an array) as an
- argument, and controls which branch is successful. The successful
- branch is the branch that succeeds with its communication. To
- determine which branch is successful, the guards of <I>all</I>
- branches are checked. If the guard for a branch is true then that
- branch is <I>enabled</I>. If no branches are enabled, i.e. if all
- the guards are false, then -1 is returned to indicate this.  If
- exactly one branch is enabled, the corresponding communication is
- carried out and the identification number of the branch is
- returned.  If more than one branch is enabled, a separate thread is
- created and started for each enabled branch. The method then waits
- for one of the branches to succeed, after which it wakes up and
- terminates the remaining branches. When the last conditional branch
- thread has finished, the method returns allowing the parent actor
- thread to continue.
+   A controller that manages the conditional branches for performing
+   conditional communication within CSP (Communication Sequential Processes)
+   domain. Any CSP actors (either atomic or composite) that need the
+   functionality of conditional communication must contain and instantiate
+   an object of this class. In addition, they also needs to implement the
+   interface ConditionalBranchActor.
+   <p>
+   The conditional branches are supposed to be created within the parent
+   actor that contains this controller.
+   <p>The chooseBranch() method takes those branches (an array) as an
+   argument, and controls which branch is successful. The successful
+   branch is the branch that succeeds with its communication. To
+   determine which branch is successful, the guards of <I>all</I>
+   branches are checked. If the guard for a branch is true then that
+   branch is <I>enabled</I>. If no branches are enabled, i.e. if all
+   the guards are false, then -1 is returned to indicate this.  If
+   exactly one branch is enabled, the corresponding communication is
+   carried out and the identification number of the branch is
+   returned.  If more than one branch is enabled, a separate thread is
+   created and started for each enabled branch. The method then waits
+   for one of the branches to succeed, after which it wakes up and
+   terminates the remaining branches. When the last conditional branch
+   thread has finished, the method returns allowing the parent actor
+   thread to continue.
 
- @author Neil Smyth, Bilung Lee, Edward A. Lee
- @version $Id$
- @since Ptolemy II 0.4
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (bilung)
- @see ConditionalBranch
- @see BranchActor
- @see ConditionalReceive
- @see ConditionalSend
- */
-public class ConditionalBranchController extends AbstractBranchController implements Debuggable {
-    
+   <p>
+   @author Neil Smyth, Bilung Lee
+   @version $Id$
+   @since Ptolemy II 0.4
+   @Pt.ProposedRating Red (bilung)
+   @Pt.AcceptedRating Red (bilung)
+   @see ConditionalBranch
+   @see ConditionalBranchActor
+   @see ConditionalReceive
+   @see ConditionalSend
+*/
+public class ConditionalBranchController {
     /** Construct a controller in the specified container, which should
-     *  be an actor.
-     *  @param container The parent actor that contains this object.
-     */
+        be an actor.
+        @param container The parent actor that contains this object.
+    */
     public ConditionalBranchController(Actor container) {
-        super(container);
+        _parentActor = container;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Determine which branch succeeds with a rendezvous. This method is
-     *  central to nondeterministic rendezvous. It is given an array
+     *  central to nondeterministic rendezvous. It is passed in an array
      *  of branches, each element of which represents one of the
      *  conditional rendezvous branches. If the guard for the branch is
-     *  false, then the branch is not enabled.  It returns the ID of
-     *  the successful branch, or -1 if none of the branches is enabled.
+     *  false then the branch is not enabled.  It returns the id of
+     *  the successful branch, or -1 if none of the branches were enabled.
      *  <p>
      *  If exactly one branch is enabled, then the communication is
      *  performed directly and the id of the enabled branch  is returned.
@@ -110,19 +113,11 @@ public class ConditionalBranchController extends AbstractBranchController implem
      *  <p>
      *  @param branches The set of conditional branches involved.
      *  @return The ID of the successful branch, or -1 if none of the
-     *   branches is enabled.
-     *  @exception IllegalActionException If the rendezvous fails
-     *   (e.g. because of incompatible types).
+     *   branches were enabled.
      */
-    public int chooseBranch(ConditionalBranch[] branches) throws IllegalActionException {
+    public int chooseBranch(ConditionalBranch[] branches) {
         try {
-            CSPDirector director = _getDirector();
-            synchronized (director) {
-                if (_debugging) {
-                    _debug("** Choosing branches.");
-                }
-                _branches = branches;
-                
+            synchronized (_internalLock) {
                 // reset the state that controls the conditional branches
                 _resetConditionalState();
 
@@ -135,14 +130,11 @@ public class ConditionalBranchController extends AbstractBranchController implem
                     // If the guard is false, then the branch is not enabled.
                     if (branches[i].getGuard()) {
                         // Create a thread for this enabled branch
-                        Nameable actor = (Nameable) branches[i].getController()
-                                .getParent();
-                        String name = actor.getName() + branches[i].getID();
-                        if (_debugging) {
-                            _debug("** Creating branch: " + name);
-                        }
-                        Thread thread = new Thread((Runnable) branches[i], name);
-                        _threadList.add(0, thread);
+                        Nameable act = (Nameable) branches[i].getController()
+                            .getParent();
+                        String name = act.getName() + branches[i].getID();
+                        Thread t = new Thread((Runnable) branches[i], name);
+                        _threadList.add(0, t);
                         onlyBranch = branches[i];
                     }
                 }
@@ -157,33 +149,18 @@ public class ConditionalBranchController extends AbstractBranchController implem
                 if (threadListSize == 0) {
                     // The guards preceding all the conditional
                     // communications were false, so no branches to create.
-                    if (_debugging) {
-                        _debug("** No branches enabled.");
-                    }
                     return _successfulBranch; // will be -1
                 } else if (threadListSize == 1) {
                     // Only one guard was true, so perform simple rendezvous.
                     if (onlyBranch instanceof ConditionalSend) {
-                        Token token = onlyBranch.getToken();
-                        Receiver[] receivers = onlyBranch.getReceivers();
-                        if (receivers != null && receivers.length >= 1) {
-                            receivers[0].putToAll(token, receivers);
-                        }
-                        int result = onlyBranch.getID();
-                        if (_debugging) {
-                            _debug("** Succeessful branch is the only branch (ConditionalSend): " + result);
-                        }
-                        return result;
+                        Token t = onlyBranch.getToken();
+                        onlyBranch.getReceiver().put(t);
+                        return onlyBranch.getID();
                     } else {
                         // branch is a ConditionalReceive
-                        Receiver[] receivers = onlyBranch.getReceivers();
-                        Token token = receivers[0].get();
-                        onlyBranch._setToken(token);
-                        int result = onlyBranch.getID();
-                        if (_debugging) {
-                            _debug("** Succeessful branch is the only branch (ConditionalReceive): " + result);
-                        }
-                        return result;
+                        Token tmp = onlyBranch.getReceiver().get();
+                        onlyBranch.setToken(tmp);
+                        return onlyBranch.getID();
                     }
                 } else {
                     // Have a proper conditional communication.
@@ -192,121 +169,145 @@ public class ConditionalBranchController extends AbstractBranchController implem
 
                     while (threads.hasNext()) {
                         Thread thread = (Thread) threads.next();
-                        _branchesActive++;
-                        director.addThread(thread);
                         thread.start();
+                        _branchesActive++;
                     }
 
-                    if (_debugging) {
-                        _debug("** Waiting for branch to succeed.");
-                    }
-                    _blockedController = Thread.currentThread();
-                    director.threadBlocked(_blockedController, null);
+                    _branchesStarted = _branchesActive;
+
                     // wait for a branch to succeed
-                    while ((_successfulBranch == -1)
-                            && (_branchesActive > 0)
-                            && !director.isStopRequested()) {
-                        director.wait();
-                    }
-                    // In case the successful branch didn't mark this unblocked...
-                    if (_blockedController != null) {
-                        director.threadUnblocked(_blockedController, null);
-                        _blockedController = null;
-                    }
-                }
-                // NOTE: Below used to be outside the synchronized block. Why?
-                // EAL 8/05
-
-                // If we get to here, we have more than one conditional branch,
-                // at most one of which has succeeded.
-                // Now terminate non-successful branches.
-                for (int i = 0; i < branches.length; i++) {
-                    // If the guard for a branch is false, it means a
-                    // thread was not created for that branch.
-                    if ((i != _successfulBranch) && (branches[i].getGuard())) {
-                        branches[i]._setAlive(false);
-                        if (_debugging) {
-                            _debug("** Killing branch: " + branches[i].getID());
-                        }
-                    }
-                }
-                // Mark each of the threads unblocked, since
-                // they will all terminate when awakened.
-                // This has to be done in this thread, or for
-                // a transitory time, it will appear as if there
-                // were a deadlock.
-                Iterator threads = _threadList.iterator();
-                while (threads.hasNext()) {
-                    Thread thread = (Thread) threads.next();
-                    director.threadUnblocked(thread, null);
-                }
-
-                // Now wake up anyone waiting for something to change.
-                director.notifyAll();
-
-                // When there are no more active branches, branchFailed()
-                // should issue a notifyAll() on the internal lock.
-                if (_debugging) {
-                    _debug("** Waiting for branches to die.");
-                }
-                // Wait for all the threads to exit.
-                Iterator threadsIterator = _threadList.iterator();
-                while (threadsIterator.hasNext()) {
-                    Thread thread = (Thread) threadsIterator.next();
-                    try {
-                        // NOTE: Cannot use Thread.join() here because we
-                        // have to be in a synchronized block to prevent
-                        // a race condition (see below), and if we call
-                        // thread.join(), then we will block while holdingb
-                        // a lock on the director, which will lead to deadlock.
-                        if (_debugging) {
-                            _debug("** Waiting for thread to exit: " + thread.getName());
-                        }
-                        while(director.isThreadActive(thread)) {
-                            director.wait();
-                        }
-                        if (_debugging) {
-                            _debug("** Thread has exited: " + thread.getName());
-                        }
-                    } catch (InterruptedException ex) {
-                        // Ignore and continue to the next thread.
+                    while ((_successfulBranch == -1) && (_branchesActive > 0)) {
+                        _internalLock.wait();
                     }
                 }
             }
-            if (_successfulBranch == -1) {
-                // Conditional construct was ended prematurely
-                throw new TerminateProcessException(((Nameable) getParent())
-                        .getName()
-                        + ": exiting conditional"
-                        + " branching due to TerminateProcessException.");
+
+            // If we get to here, we have more than one conditional branch.
+            LinkedList tmp = new LinkedList();
+
+            // Now terminate non-successful branches
+            for (int i = 0; i < branches.length; i++) {
+                // If the guard for a branch is false, it means a
+                // thread was not created for that branch.
+                if ((i != _successfulBranch) && (branches[i].getGuard())) {
+                    // to terminate a branch, need to set a flag
+                    // on the receiver it is rendezvousing with & wake it up
+                    Receiver receiver = branches[i].getReceiver();
+                    tmp.add(0, receiver);
+                    branches[i].setAlive(false);
+                }
             }
 
-            _threadList = null;
-            
-            // Is it necessary to copy this? Note the finally clause below.
-            int result = _successfulBranch;
-            if (_debugging) {
-                _debug("** Succeessful branch: " + result);
+            // Now wake up all the receivers.
+            (new NotifyThread(tmp)).start();
+
+            // when there are no more active branches, branchFailed()
+            // should issue a notifyAll() on the internal lock.
+            synchronized (_internalLock) {
+                while (_branchesActive != 0) {
+                    _internalLock.wait();
+                }
+
+                // counter indicating # active branches, should be zero
+                if (_branchesActive != 0) {
+                    throw new InvalidStateException(((Nameable) getParent())
+                            .getName()
+                            + ": chooseBranch() is exiting with branches"
+                            + " still active.");
+                }
             }
-            return result;
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(((Nameable) getParent())
-                    .getName()
-                    + ".chooseBranch interrupted.");
-        } finally {
-            _branches = null;
-            _successfulBranch = -1;
+                    .getName() + ".chooseBranch interrupted.");
+        }
+
+        if (_successfulBranch == -1) {
+            // Conditional construct was ended prematurely
+            if (_blocked) {
+                _getDirector()._actorUnBlocked(new CSPReceiver());
+            }
+
+            throw new TerminateProcessException(((Nameable) getParent())
+                    .getName() + ": exiting conditional"
+                    + " branching due to TerminateProcessException.");
+        }
+
+        _threadList = null;
+        return _successfulBranch;
+    }
+
+    /** Return the Actor that creates the branch and owns this
+     *  controller when performing a CIF or CDO.
+     *  @return The CSPActor that created this branch.
+     */
+    public Actor getParent() {
+        return _parentActor;
+    }
+
+    /** Terminate abruptly any threads created by this actor. Note that
+     *  this method does not allow the threads to terminate gracefully.
+     */
+    public void terminate() {
+        synchronized (_internalLock) {
+            // Now stop any threads created by this director.
+            if (_threadList != null) {
+                Iterator threads = _threadList.iterator();
+
+                while (threads.hasNext()) {
+                    Thread next = (Thread) threads.next();
+
+                    if (next.isAlive()) {
+                        next.stop();
+                    }
+                }
+            }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Register the calling branch as failed. This reduces the count
+    /** Called by ConditionalSend and ConditionalReceive to check if
+     *  the calling branch is the first branch to be ready to rendezvous.
+     *  If it is, it sets a private variable to its branch ID so that
+     *  subsequent calls to this method by other branches know that they
+     *  are not first.
+     *  @param branchNumber The ID assigned to the calling branch
+     *   upon creation.
+     *  @return True if the calling branch is the first branch to try
+     *   to rendezvous, otherwise false.
+     */
+    protected boolean _isBranchFirst(int branchNumber) {
+        synchronized (_internalLock) {
+            if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
+                // store branchNumber
+                _branchTrying = branchNumber;
+                return true;
+            }
+
+            return false;
+        }
+    }
+
+    /** Increase the count of branches that are blocked trying to rendezvous.
+     *  If all the enabled branches (for the CIF or CDO currently
+     *  being executed) are blocked, register this actor as being blocked.
+     */
+    protected void _branchBlocked(CSPReceiver receiver) {
+        synchronized (_internalLock) {
+            _branchesBlocked++;
+
+            if (_branchesBlocked == _branchesStarted) {
+                _getDirector()._actorBlocked(receiver);
+                _blocked = true;
+            }
+        }
+    }
+
+    /** Registers the calling branch as failed. It reduces the count
      *  of active branches, and if all the active branches have
-     *  finished, it notifies the internal lock so any threads
-     *  that are blocked on it can continue.
-     *  This is called by a conditional branch just before it dies.
+     *  finished, it wakes notifies chooseBranch() to continue.
+     *  It is called by a conditional branch just before it dies.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
      */
@@ -315,9 +316,68 @@ public class ConditionalBranchController extends AbstractBranchController implem
             // the execution of the model must have finished.
             _successfulBranch = -1;
         }
-        super._branchFailed(branchNumber);
+
+        synchronized (_internalLock) {
+            _branchesActive--;
+
+            if (_branchesActive == 0) {
+                //System.out.println(getName() + ": Last branch finished, " +
+                //      "waking up chooseBranch");
+                _internalLock.notifyAll();
+            }
+        }
     }
-    
+
+    /** Registers the calling branch as the successful branch. It
+     *  reduces the count of active branches, and notifies chooseBranch()
+     *  that a branch has succeeded. The chooseBranch() method then
+     *  proceeds to terminate the remaining branches. It is called by
+     *  the first branch that succeeds with a rendezvous.
+     *  @param branchID The ID assigned to the calling branch upon creation.
+     */
+    protected void _branchSucceeded(int branchID) {
+        synchronized (_internalLock) {
+            if (_branchTrying != branchID) {
+                throw new InvalidStateException(((Nameable) getParent())
+                        .getName()
+                        + ": branchSucceeded called with a branch id not "
+                        + "equal to the id of the branch registered as trying.");
+            }
+
+            _successfulBranch = _branchTrying;
+            _branchesActive--;
+
+            // wakes up chooseBranch() which wakes up parent thread
+            _internalLock.notifyAll();
+        }
+    }
+
+    /** Decrease the count of branches that are read blocked.
+     *  If the actor was previously registered as being blocked,
+     *  register this actor with the director as no longer being
+     *  blocked.
+     */
+    protected void _branchUnblocked(CSPReceiver receiver) {
+        synchronized (_internalLock) {
+            if (_blocked) {
+                if (_branchesBlocked != _branchesStarted) {
+                    throw new InternalErrorException(((Nameable) getParent())
+                            .getName()
+                            + ": blocked when not all enabled branches are "
+                            + "blocked.\nNumber of branches blocked: "
+                            + _branchesBlocked + "\nNumber of branches started: "
+                            + _branchesStarted);
+                }
+
+                // Note: acquiring a second lock, need to be careful.
+                _getDirector()._actorUnBlocked(receiver);
+                _blocked = false;
+            }
+
+            _branchesBlocked--;
+        }
+    }
+
     /** Release the status of the calling branch as the first branch
      *  to be ready to rendezvous. This method is only called when both
      *  sides of a communication at a receiver are conditional. In
@@ -328,104 +388,51 @@ public class ConditionalBranchController extends AbstractBranchController implem
      *  to be released to allow other branches the possibility of succeeding.
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
-    protected void _branchNotReady(int branchNumber) {
-        Object director = _getDirector();
-        synchronized (director) {
+    protected void _releaseFirst(int branchNumber) {
+        synchronized (_internalLock) {
             if (branchNumber == _branchTrying) {
                 _branchTrying = -1;
-                // FIXME: This has the potential of unblocking a blocked
-                // thread, but we will need to mark that thread unblocked
-                // in this thread or we will get a spurious deadlock detection.
-                // How do we do that? How do we tell what thread will
-                // be unblocked?  I guess it is associated with the
-                // _branchTrying ID, but are we sure it will unblock?
-                // Find out whether _isBranchReady() is called only
-                // when the other thread can actually succeed, and
-                // consider using the thread instead of the branch ID.
-                director.notifyAll();
                 return;
             }
         }
+
         throw new InvalidStateException(((Nameable) getParent()).getName()
                 + ": Error: branch releasing first without possessing it! :"
                 + _branchTrying + " & " + branchNumber);
     }
 
-
-    /** Registers the calling branch as the successful branch. It
-     *  reduces the count of active branches, and notifies chooseBranch()
-     *  that a branch has succeeded. The chooseBranch() method then
-     *  proceeds to terminate the remaining branches. It is called by
-     *  the first branch that succeeds with a rendezvous.
-     *  @param branchID The ID assigned to the calling branch upon creation.
-     */
-    protected void _branchSucceeded(int branchID) {
-        CSPDirector director = _getDirector();
-        synchronized (director) {
-            if (_branchTrying != branchID) {
-                throw new InvalidStateException(((Nameable) getParent())
-                        .getName()
-                        + ": branchSucceeded called with a branch id "
-                        + branchID
-                        + ", which is not "
-                        + "equal to the id of the branch registered as trying,"
-                        + _branchTrying);
-            }
-            _successfulBranch = _branchTrying;
-            // Have to mark the controller thread unblocked in this thread
-            // to prevent spurious deadlock detection.
-            if (_blockedController != null) {
-                director.threadUnblocked(_blockedController, null);
-                _blockedController = null;
-            }
-            super._branchSucceeded(branchID);
-        }
-    }
-
-    /** Called by ConditionalSend and ConditionalReceive to check whether
-     *  the calling branch is the first branch to be ready to rendezvous.
-     *  If it is, this method sets a private variable to its branch ID so that
-     *  subsequent calls to this method by other branches know that they
-     *  are not first.
-     *  @param branchNumber The ID assigned to the calling branch
-     *   upon creation.
-     *  @return True if the calling branch is the first branch to try
-     *   to rendezvous, otherwise false.
-     */
-    protected boolean _isBranchReady(int branchNumber) {
-        Object director = _getDirector();
-        synchronized (director) {
-            if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
-                // Nother branch holds the first position, so
-                // give this branch the first position.
-                _branchTrying = branchNumber;
-                director.notifyAll();
-                return true;
-            } else {
-                // If the branch holding the first position is blocked,
-                // then cancel its transaction and give this branch the
-                // first position.
-                // FIXME: Need a reference to the receiver for the branch
-                // in the first position.
-                // FIXME: Worse: The branch in the first position might
-                // have more than one receiver (if the conditional
-                // branch is a conditional send).
-            }
-
-            return false;
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Get the director that controls the execution of its parent actor.
+     */
+    private CSPDirector _getDirector() {
+        try {
+            if (_parentActor instanceof CompositeActor) {
+                return (CSPDirector) _parentActor.getExecutiveDirector();
+            } else {
+                return (CSPDirector) _parentActor.getDirector();
+            }
+        } catch (NullPointerException ex) {
+            // If a thread has a reference to a receiver with no director it
+            // is an error so terminate the process.
+            throw new TerminateProcessException("CSPReceiver: trying to "
+                    + " rendezvous with a receiver with no "
+                    + "director => terminate.");
+        }
+    }
 
     /* Resets the internal state controlling the execution of a conditional
      * branching construct (CIF or CDO). It is only called by chooseBranch()
      * so that it starts with a consistent state each time.
      */
     private void _resetConditionalState() {
-        synchronized (_getDirector()) {
+        synchronized (_internalLock) {
+            _blocked = false;
+            _blockedBranchReceivers.clear();
             _branchesActive = 0;
+            _branchesBlocked = 0;
+            _branchesStarted = 0;
             _branchTrying = -1;
             _successfulBranch = -1;
             _threadList = null;
@@ -434,15 +441,43 @@ public class ConditionalBranchController extends AbstractBranchController implem
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    /** The ID of the branch currently trying to rendezvous. It
-     *  is -1 if no branch is currently trying.
-     */
+    // Flag indicating whether this actor is currently registered
+    // as blocked while in the midst of a CDO or CIF.
+    boolean _blocked = false;
+
+    // A list of receivers associated with blocked branches.
+    private LinkedList _blockedBranchReceivers = new LinkedList();
+
+    // Contains the number of conditional branches that are still
+    // active.
+    private int _branchesActive = 0;
+
+    // Contains the number of conditional branches that are blocked
+    // trying to rendezvous.
+    private int _branchesBlocked = 0;
+
+    // Contains the number of branches that were actually started for
+    // the most recent conditional rendezvous.
+    private int _branchesStarted = 0;
+
+    // Contains the ID of the branch currently trying to rendezvous. It
+    // is -1 if no branch is currently trying.
     private int _branchTrying = -1;
-    
-    /** The ID of the branch that has successfully completed a rendezvous. */
+
+    // This lock is only used internally by the actor. It is used to
+    // avoid having to synchronize on the actor itself. The chooseBranch()
+    // method waits on it so it knows when a branch has succeeded and when
+    // the last branch it created has died.
+    private Object _internalLock = new Object();
+
+    // Point to the actor who owns this controller object.
+    private Actor _parentActor;
+
+    // Contains the ID of the branch that successfully rendezvoused.
     private int _successfulBranch = -1;
-    
-    /** The thread running chooseBranch if it is blocked. */
-    private Thread _blockedController = null;
+
+    // Threads created by this actor to perform a conditional rendezvous.
+    // Need to keep a list of them in case the execution of the model is
+    // terminated abruptly.
+    private LinkedList _threadList = null;
 }

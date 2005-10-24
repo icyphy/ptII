@@ -1,30 +1,30 @@
 /* A CSP model of hardware bus contention.
 
- Copyright (c) 1999-2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1999-2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
- */
+*/
 package ptolemy.domains.csp.demo.BusContention;
 
 import java.awt.BorderLayout;
@@ -69,6 +69,7 @@ import diva.graph.basic.BasicGraphModel;
 import diva.graph.basic.BasicLayoutTarget;
 import diva.graph.layout.LayoutTarget;
 import diva.graph.layout.LevelLayout;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// BusContentionApplet
@@ -127,7 +128,8 @@ public class BusContentionApplet extends PtolemyApplet {
      *   exception to allow derived classes wide lattitude as to which
      *   exception to throw.
      */
-    protected NamedObj _createModel(Workspace workspace) throws Exception {
+    protected NamedObj _createModel(Workspace workspace)
+            throws Exception {
         TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
         _toplevel = toplevel;
         toplevel.setName("BusContention");
@@ -172,7 +174,7 @@ public class BusContentionApplet extends PtolemyApplet {
 
         _divaPanel = new JPanel(new BorderLayout());
         _divaPanel.setBorder(new TitledBorder(new LineBorder(Color.black),
-                "Animation"));
+                                     "Animation"));
         _divaPanel.setBackground(getBackground());
         _divaPanel.setPreferredSize(new Dimension(500, 450));
         _divaPanel.setBackground(getBackground());
@@ -286,15 +288,15 @@ public class BusContentionApplet extends PtolemyApplet {
             final GraphController gc = gp.getGraphController();
             final GraphPane pane = gp;
             SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    // Layout is a bit stupid
-                    LayoutTarget target = new BasicLayoutTarget(gc);
-                    LevelLayout staticLayout = new LevelLayout(target);
-                    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
-                    staticLayout.layout(layoutGraph.getRoot());
-                    pane.repaint();
-                }
-            });
+                    public void run() {
+                        // Layout is a bit stupid
+                        LayoutTarget target = new BasicLayoutTarget(gc);
+                        LevelLayout staticLayout = new LevelLayout(target);
+                        staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+                        staticLayout.layout(layoutGraph.getRoot());
+                        pane.repaint();
+                    }
+                });
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -304,15 +306,10 @@ public class BusContentionApplet extends PtolemyApplet {
     ////                         private variables                 ////
     // The Actors
     Controller _contentionActor;
-
     ContentionAlarm _alarmActor;
-
     Memory _memoryActor;
-
     Processor _processActor1;
-
     Processor _processActor2;
-
     Processor _processActor3;
 
     // The mapping from Ptolemy actors to graph nodes
@@ -385,13 +382,13 @@ public class BusContentionApplet extends PtolemyApplet {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
-            Arrowhead headArrow = new Arrowhead(headSite.getX(), headSite
-                    .getY(), headSite.getNormal());
+            Arrowhead headArrow = new Arrowhead(headSite.getX(),
+                    headSite.getY(), headSite.getNormal());
             c.setHeadEnd(headArrow);
 
             // Create an arrow at the tail
-            Arrowhead tailArrow = new Arrowhead(tailSite.getX(), tailSite
-                    .getY(), tailSite.getNormal());
+            Arrowhead tailArrow = new Arrowhead(tailSite.getX(),
+                    tailSite.getY(), tailSite.getNormal());
             c.setTailEnd(tailArrow);
 
             c.setUserObject(edge);
@@ -436,26 +433,25 @@ public class BusContentionApplet extends PtolemyApplet {
 
             // Get the corresponding graph node and its figure
             Object node = (Object) _nodeMap.get(actor);
-            LabelWrapper wrapper = (LabelWrapper) _graphPane
-                    .getGraphController().getFigure(node);
+            LabelWrapper wrapper = (LabelWrapper) _graphPane.getGraphController()
+                .getFigure(node);
             final BasicFigure figure = (BasicFigure) wrapper.getChild();
 
             // Color the graph
             try {
-                // Used to use invokeAndWait() here, but this leads to deadlock!
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        if (state == ExecEvent.WAITING) {
-                            figure.setFillPaint(Color.yellow);
-                        } else if (state == ExecEvent.ACCESSING) {
-                            figure.setFillPaint(Color.green);
-                        } else if (state == ExecEvent.BLOCKED) {
-                            figure.setFillPaint(Color.red);
-                        } else {
-                            System.err.println("Unknown state: " + state);
+                SwingUtilities.invokeAndWait(new Runnable() {
+                        public void run() {
+                            if (state == ExecEvent.WAITING) {
+                                figure.setFillPaint(Color.yellow);
+                            } else if (state == ExecEvent.ACCESSING) {
+                                figure.setFillPaint(Color.green);
+                            } else if (state == ExecEvent.BLOCKED) {
+                                figure.setFillPaint(Color.red);
+                            } else {
+                                System.err.println("Unknown state: " + state);
+                            }
                         }
-                    }
-                });
+                    });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -485,12 +481,12 @@ public class BusContentionApplet extends PtolemyApplet {
          * Return the rendered visual representation of this node.
          */
         public Figure render(Object n) {
-            ComponentEntity actor = (ComponentEntity) _controller
-                    .getGraphModel().getSemanticObject(n);
+            ComponentEntity actor = (ComponentEntity) _controller.getGraphModel()
+                .getSemanticObject(n);
 
             boolean isEllipse = actor instanceof Controller
-                    || actor instanceof Memory
-                    || actor instanceof ContentionAlarm;
+                || actor instanceof Memory
+                || actor instanceof ContentionAlarm;
 
             BasicFigure f;
 

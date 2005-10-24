@@ -1,57 +1,58 @@
 /* An event that indicates that an actor is in a particular state.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 1997-2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
- */
+*/
 package ptolemy.domains.csp.demo.BusContention;
 
 import ptolemy.kernel.util.DebugEvent;
 import ptolemy.kernel.util.NamedObj;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// ExecEvent
 
 /**
- An event that indicates that an actor is in a particular state.
- The event contains two pieces of information:  the actor that
- generated the event and the (integer) state of the actor when
- the event was generated. A class that listens for ExecEvents
- must implement the ExecEventListener interface.
+   An event that indicates that an actor is in a particular state.
+   The event contains two pieces of information:  the actor that
+   generated the event and the (integer) state of the actor when
+   the event was generated. A class that listens for ExecEvents
+   must implement the ExecEventListener interface.
 
- The interpretation of state is determined by the actors and
- listeners that use the ExecEvent class and ExecEventListener
- interface. The author of code that takes advantage of these
- facilities should write the actors and listeners so that they
- utilize a common meaning for the integer states.
+   The interpretation of state is determined by the actors and
+   listeners that use the ExecEvent class and ExecEventListener
+   interface. The author of code that takes advantage of these
+   facilities should write the actors and listeners so that they
+   utilize a common meaning for the integer states.
 
- @author Mudit Goel, John S. Davis II
- @version $Id$
- @since Ptolemy II 1.0
- @Pt.ProposedRating Red (davisj)
- @Pt.AcceptedRating Red (cxh)
- */
+   @author Mudit Goel, John S. Davis II
+   @version $Id$
+   @since Ptolemy II 1.0
+   @Pt.ProposedRating Red (davisj)
+   @Pt.AcceptedRating Red (cxh)
+*/
 public class ExecEvent implements DebugEvent {
     /** Create an ExecEvent with the specified actor and state.
      *  @param actor The actor that generated the event.
@@ -95,14 +96,11 @@ public class ExecEvent implements DebugEvent {
     }
 
     public static final ExecEventType BLOCKED = new ExecEventType("blocked");
-
     public static final ExecEventType ACCESSING = new ExecEventType("accessing");
-
     public static final ExecEventType WAITING = new ExecEventType("waiting");
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                 /////
     private ExecEventType _state;
-
     private NamedObj _actor;
 }

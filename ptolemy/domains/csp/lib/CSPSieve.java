@@ -1,31 +1,31 @@
 /* Sieve filtering out all multiples of a given number for
- the Sieve of Eratosthenes.
+   the Sieve of Eratosthenes.
 
- Copyright (c) 1997-2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 1997-2005 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
- */
+*/
 package ptolemy.domains.csp.lib;
 
 import ptolemy.actor.TypedCompositeActor;
@@ -37,23 +37,24 @@ import ptolemy.domains.csp.kernel.CSPActor;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 //// CSPSieve
 
 /**
- Used in the Sieve of Eratosthenes demo. This actor represents a
- sieve process which filters out all multiples of a particular number.
- The first time the filter encounters a number it cannot filter it
- creates a new process to filter out all multiples of that number and
- appends it to the string of filters already created. This actor is a good
- illustration of how to perform changes to the topology.
- <p>
- @author Neil Smyth
- @version @$Id$
- @since Ptolemy II 0.2
- @Pt.ProposedRating Red (nsmyth)
- @Pt.AcceptedRating Red (cxh)
- */
+   Used in the Sieve of Eratosthenes demo. This actor represents a
+   sieve process which filters out all multiples of a particular number.
+   The first time the filter encounters a number it cannot filter it
+   creates a new process to filter out all multiples of that number and
+   appends it to the string of filters already created. This actor is a good
+   illustration of how to perform changes to the topology.
+   <p>
+   @author Neil Smyth
+   @version @$Id$
+   @since Ptolemy II 0.2
+   @Pt.ProposedRating Red (nsmyth)
+   @Pt.AcceptedRating Red (cxh)
+*/
 public class CSPSieve extends CSPActor {
     /** Construct a DDESink with the specified container and name.
      *  This method calls the super class constructor and creates
@@ -116,11 +117,11 @@ public class CSPSieve extends CSPActor {
                     // yes - make and queue the topologyChange
 
                     /* JFIXME
-                     TopologyChangeRequest t = _makeChangeRequest(lastSeen);
-                     getDirector().queueTopologyChangeRequest(t);
-                     //System.out.println(getName() +
-                     //     ":Queued TopologyChange");
-                     */
+                       TopologyChangeRequest t = _makeChangeRequest(lastSeen);
+                       getDirector().queueTopologyChangeRequest(t);
+                       //System.out.println(getName() +
+                       //     ":Queued TopologyChange");
+                       */
                     _waitForDeadlock();
 
                     //System.out.println(getName() +": change succeeded?");
@@ -167,10 +168,11 @@ public class CSPSieve extends CSPActor {
      };
      return request;
      }
-     */
+    */
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /** The prime this sieve is filtering out. */
     private int _prime;
 }
