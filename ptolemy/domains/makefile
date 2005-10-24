@@ -118,7 +118,8 @@ OPTIONAL_FILES = \
 	$(EXPERIMENTAL_DOMAINS) \
 	dfm \
 	generic \
-	gr
+	gr \
+	ptinyos
 
 all: jclass
 install: jclass jars
