@@ -132,6 +132,7 @@ JSRCS = \
 	Exec.java \
 	Exit.java \
 	Expression.java \
+	FireAccumulator.java \
 	FileWriter.java \
 	Gaussian.java \
 	GradientAdaptiveLattice.java \
