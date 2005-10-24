@@ -45,7 +45,7 @@ $SRC_DIR = "$ENV{PTII}/ptolemy/domains/ptinyos/util/nc2moml";
 $outputsuffix = ".ncxml";
 $toplevelindexfilename = "_TOSIndex.moml";
 $indexfilename = "_index.moml";
-$tempfilename = ".tempfile";
+$tempfilename = ".nc2moml-tempfile";
 ####################
 
 # Get the command line argument list.
@@ -91,11 +91,10 @@ foreach $mydir (@mydirs) {
       or die "system @args failed: $?";
   }
 
-  # Convert .xml files into .moml files.
+  # Log the .nc filename in short format to the temporary file.
   foreach $file (split /\n/, $files) {
     $ncfilename = $file;
     $ncfilename =~ s/^$inputprefix\///;
-    # Log the filename to the temporary file.
     print TEMPFILE "$ncfilename\n";
   }
 }

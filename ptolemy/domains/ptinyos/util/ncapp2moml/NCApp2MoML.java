@@ -1,5 +1,5 @@
 /*
-@Copyright (c) 1998-2005 The Regents of the University of California.
+@Copyright (c) 2005 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -59,54 +59,71 @@ import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
 
 /**
-  Generate a .moml file for each .nc file in the input list.
+  Generate a .moml file for each .nc application file in the input list.
 
   Usage:
-    NcApp2MoML <.nc source prefix>
-            <xml input prefix> <xml input suffix> <nc sub prefix>
-            <moml output prefix>
-           [long path to file containing list of .nc files using short path]
+  <pre>
+  java -classpath $PTII ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoML \
+      &lt;<i>.nc source prefix</i>&gt; \
+      &lt;<i>xml input prefix</i>&gt; \
+      &lt;<i>xml input suffix</i>&gt; \
+      &lt;<i>moml output prefix</i>&gt; \
+      <i>long path to file containing list of .nc files using short path</i>
+  </pre>
+   
+  Example:
+  <pre>
+java -classpath $PTII ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoML \
+    /home/celaine/ptII/vendors/ptinyos/tinyos-1.x \
+    /home/celaine/ptII/vendors/ptinyos/moml \
+    .ncxml \
+    /home/celaine/ptII/vendors/ptinyos/moml \
+    /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
+  </pre>
 
-  Example: NcApp2MoML /home/celaine/tinyos/tinyos/tinyos-1.x-scratch /home/celaine/ptII/vendors/ptinyos/moml .ncxml \'$CLASSPATH\' /home/celaine/ptII/vendors/ptinyos/moml /home/celaine/ptII/vendors/ptinyos/moml/.harvesttempfile
-
-  =========================================================================
   .tempfile contains:
+  <pre>
 apps/CntToLeds/CntToLeds.nc
-
-  =========================================================================
+  </pre>
+   
   Example output for CntToLeds.nc:
-<?xml version="1.0"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<pre>
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
 
-<entity name="CntToLeds" class="ptolemy.domains.ptinyos.kernel.NCCompositeActor">
-  <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector" />
-  <entity name="Counter" class="tos.lib.Counters.Counter" />
-  <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds" />
-  <entity name="TimerC" class="tos.system.TimerC" />
-  <entity name="Main" class="tos.system.Main" />
-  <relation name="relation1" class="ptolemy.actor.IORelation" />
-  <relation name="relation2" class="ptolemy.actor.IORelation" />
-  <relation name="relation3" class="ptolemy.actor.IORelation" />
-  <link port="Counter.IntOutput" relation="relation3" />
-  <link port="Counter.Timer" relation="relation2" />
-  <link port="IntToLeds.StdControl" relation="relation1" />
-  <link port="TimerC.Timer" relation="relation2" />
-  <link port="Counter.StdControl" relation="relation1" />
-  <link port="TimerC.StdControl" relation="relation1" />
-  <link port="IntToLeds.IntOutput" relation="relation3" />
-  <link port="Main.StdControl" relation="relation1" />
-</entity>   
+&lt;entity name="CntToLeds" class="ptolemy.domains.ptinyos.kernel.NCCompositeActor"&gt;
+  &lt;property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector" /&gt;
+  &lt;entity name="Counter" class="tos.lib.Counters.Counter" /&gt;
+  &lt;entity name="IntToLeds" class="tos.lib.Counters.IntToLeds" /&gt;
+  &lt;entity name="TimerC" class="tos.system.TimerC" /&gt;
+  &lt;entity name="Main" class="tos.system.Main" /&gt;
+  &lt;relation name="relation1" class="ptolemy.actor.IORelation" /&gt;
+  &lt;relation name="relation2" class="ptolemy.actor.IORelation" /&gt;
+  &lt;relation name="relation3" class="ptolemy.actor.IORelation" /&gt;
+  &lt;link port="Counter.IntOutput" relation="relation3" /&gt;
+  &lt;link port="Counter.Timer" relation="relation2" /&gt;
+  &lt;link port="IntToLeds.StdControl" relation="relation1" /&gt;
+  &lt;link port="TimerC.Timer" relation="relation2" /&gt;
+  &lt;link port="Counter.StdControl" relation="relation1" /&gt;
+  &lt;link port="TimerC.StdControl" relation="relation1" /&gt;
+  &lt;link port="IntToLeds.IntOutput" relation="relation3" /&gt;
+  &lt;link port="Main.StdControl" relation="relation1" /&gt;
+&lt;/entity&gt;   
+</pre>
 
-  =========================================================================
-  Expects <xml input prefix> to contain files with <xml input suffix> containing
-  an xml dump of:
+  Expects &lt;<i>xml input prefix</i>&gt;
+   to contain files with &lt;<i>xml input suffix</i>&gt; containing
+  an xml dump with the following parameters:
+<pre>   
       -fnesc-dump=components(wiring, file(filename.nc)
       -fnesc-dump=referenced(interfaces)
-
-  =========================================================================
+</pre>
+   
   Example call to ncc:
+<pre>
       ncc '-fnesc-dump=components(wiring, file(/home/celaine/tinyos/tinyos/tinyos-1.x-scratch/apps/CntToLeds/CntToLeds.nc))' '-fnesc-dump=referenced(interfaces)' -fnesc-dumpfile=/home/celaine/ptII/vendors/moml/apps/CntToLeds/CntToLeds.ncxml /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/apps/CntToLeds/CntToLeds.nc -I/home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tos/lib/Counters/
-
+</pre>
+   
    @author Elaine Cheong
    @version $Id$
    @Pt.ProposedRating Red (celaine)
@@ -163,12 +180,10 @@ public class NCApp2MoML {
     
     /** Generate the .moml file for this nesC application.
      *
-     *  @param sourcePath The path to the component source file (.nc).
      *  @param componentName The name of the component (no suffix).
      *  @param outputFile The file to generate.
      */
-    public void generatePtinyOSModel(
-            String sourcePath, String componentName, String outputFile) {
+    public void generatePtinyOSModel(String componentName, String outputFile) {
         // Set the name of this class to the name of this nesC component.
         Element root = new Element("entity");
         root.setAttribute("name", componentName);
@@ -249,13 +264,22 @@ public class NCApp2MoML {
          
     }
 
+    /** Read in .nc application xml files, generate .moml files.
+     *  @param args A series of command line arguments, see the
+     *  class comment for details.
+     *  @exception IOException If there is a problem reading or
+     *  writing a file.   
+     */    
     public static void main(String[] args) throws IOException {
         // Check to make sure all necessary arguments have been passed
         // to program.
-        if (args.length < 6) {
-            System.err.println("Usage: java NcApp2MoML <.nc source prefix> "
+        if (args.length < 5) {
+            System.err.println("Usage: java -classpath $PTII "
+                    + "ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoMl "
+                    + "<.nc source prefix> "
                     + "<xml input prefix> "
-                    + "<xml input suffix> <nc sub prefix> <moml output prefix> "
+                    + "<xml input suffix> "
+                    + "<moml output prefix> "
                     + "[long path to file containing list of .nc files using "
                     + "short path]");
             return;
@@ -264,13 +288,12 @@ public class NCApp2MoML {
         // Extract arguments into variables.
         int index = 0;
         String ncSourcePrefix = args[index++].trim();
-        _ncSourcePrefix = ncSourcePrefix;
         String inputPrefix = args[index++].trim();
         String inputSuffix = args[index++].trim();
-        _inputSuffix = inputSuffix;
-        String subPrefix = args[index++].trim();
         String outputPrefix = args[index++].trim();
         String inputfilelist = args[index++].trim();
+
+        _ncSourcePrefix = ncSourcePrefix;
         
         try {
             // Open the file containing the list of .nc files.
@@ -285,10 +308,6 @@ public class NCApp2MoML {
                 String xmlSuffix =
                     inputfilename.replaceFirst("\\.nc$", inputSuffix);
                 String xmlInputFile = inputPrefix + _FILESEPARATOR + xmlSuffix;
-
-                // Determine the substituted path to the .nc file.
-                String pathToNCFile =
-                    subPrefix + _FILESEPARATOR + inputfilename;
 
                 // Determine the component name.
                 String[] subdirs = inputfilename.split(_FILESEPARATOR);
@@ -312,7 +331,8 @@ public class NCApp2MoML {
 
                     // Generate the .moml file.
                     try {
-                        new NCApp2MoML().generatePtinyOSModel(pathToNCFile, componentName,
+                        new NCApp2MoML().generatePtinyOSModel(
+                                componentName,
                                 momlOutputFile);
                     } catch (Exception e) {
                         System.err.println("Errors while generating "
@@ -403,7 +423,7 @@ public class NCApp2MoML {
     }
         
     private static String _ncSourcePrefix;
-    private static String _inputSuffix;
+
     private _Relations _relations = new _Relations();
 
     // Contains (key, value) pairs of type (Xcomponent, _ComponentFile).
@@ -413,6 +433,6 @@ public class NCApp2MoML {
     private Hashtable _relationTable = new Hashtable();
     
 
-
+    /** File separator to use, currently "/". */
     private static String _FILESEPARATOR = "/";
 }

@@ -31,17 +31,17 @@
 # Set up the args to convert .nc files to .moml files.
 
 ##### SETTINGS #####
-SRC_DIR=${PTII}/ptolemy/domains/ptinyos/util/nc2moml
-MOML_OUTPUT_DIR=$PTII/vendors/ptinyos/moml
-DIR_LIST="tos/lib tos/system tos/platform tos/sensorboards"
+SRC_DIR=${PTII}/ptolemy/domains/ptinyos/util/ncapp2moml
+MOML_OUTPUT_DIR=$PTII/vendors/ptinyos/momlapp
+DIR_LIST="apps"
 
-# Note: You should set NC2MOML_VERBOSE environment variable to 1 to
+# Note: You should set NCAPP2MOML_VERBOSE environment variable to 1 to
 # turn on verbose output.
-export NC2MOML_VERBOSE=0
+export NCAPP2MOML_VERBOSE=0
 
 # Name of log file.  This is used in the perl scripts that get called
 # from this script.
-export NC2MOML_LOG=nc2moml-log.txt
+export NCAPP2MOML_LOG=ncapp2moml-log.txt
 # ####################
 
 # ${1#-} will not work under Solaris 8
@@ -52,7 +52,7 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
         -h|-help|--help)
 	    shift    
 	    echo "$0: Usage: $0 -v|-h|-d [TinyOS_Directory] . . ."
-	    echo "    Convert the .nc files in 'TinyOS_Directory' to moml."
+	    echo "    Convert the .nc application files in 'TinyOS_Directory' to moml."
 	    echo "    If no directory names are present in the command line,"
 	    echo "    then we process these directories:"
 	    echo "        $DIR_LIST"
@@ -60,7 +60,7 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
 	    echo "        -d  show the execution of this script"
 	    echo "        -h  print this help message"
 	    echo "        -v  verbose output of subscripts"
-	    echo "    Debugging output ends up in $MOML_OUTPUT_DIR/$NC2MOML_LOG"
+	    echo "    Debugging output ends up in $MOML_OUTPUT_DIR/$NCAPP2MOML_LOG"
 	    echo "    This script requires that \$TOSROOT be set to the"
 	    echo "    location of the TinyOS tree,"
 	    echo "    typically \"\$PTII/vendors/ptinyos/tinyos-1.x\"."
@@ -70,7 +70,7 @@ while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
 
         -v|-verbose|--verbose)
             shift
-            NC2MOML_VERBOSE=1
+            NCAPP2MOML_VERBOSE=1
             continue
             ;;
         -d|-debug)
@@ -118,10 +118,10 @@ if [ $status -ne 0 ]; then
     exit 3
 fi
 
-# Clear $NC2MOML_LOG
-rm -f "$MOML_OUTPUT_DIR/$NC2MOML_LOG"
+# Clear $NCAPP2MOML_LOG
+rm -f "$MOML_OUTPUT_DIR/$NCAPP2MOML_LOG"
 
 echo ""
-echo "Running $SRC_DIR/nc2moml-main $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST"
+echo "Running $SRC_DIR/ncapp2moml-main $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST"
 
-$SRC_DIR/nc2moml-main $TOS_INPUT_DIR \\\''\$CLASSPATH'\\\' $MOML_OUTPUT_DIR $DIR_LIST
+$SRC_DIR/ncapp2moml-main $TOS_INPUT_DIR $MOML_OUTPUT_DIR $DIR_LIST

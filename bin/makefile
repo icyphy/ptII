@@ -52,6 +52,7 @@ include $(CONFIG)
 SHELL_FILES = \
 	.momllib-util \
 	.nc2moml-util \
+	.ncapp2moml-util \
 	copernicus \
 	copernicusjhdl \
 	decompile \

@@ -53,18 +53,23 @@ import org.xml.sax.SAXException;
   Usage:
   <pre>
   java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
-     &lt;<i>xml input prefix</i>&gt; &lt;<i>xml input suffix<i>&gt; \
-     &lt;<i>nc sub prefix</i>&gt;
-     &lt;<i>moml output prefix</i>&gt;
+     &lt;<i>xml input prefix</i>&gt; \
+     &lt;<i>xml input suffix</i>&gt; \
+     &lt;<i>nc sub prefix</i>&gt; \
+     &lt;<i>moml output prefix</i>&gt; \
      <i>long path to file containing list of .nc files using short path</i>
-  <pre>
+  </pre>
+   
   Example:
   <pre>
 java -classpath $PTII ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl \
-    /home/celaine/ptII/vendors/ptinyos/moml .ncxml \'$CLASSPATH\' \
+    /home/celaine/ptII/vendors/ptinyos/moml \
+    .ncxml \
+    \'$CLASSPATH\' \
     /home/celaine/ptII/vendors/ptinyos/moml \
    /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
   </pre>
+   
   .tempfile contains:
   <pre>
 tos/lib/Counters/Counter.nc
@@ -201,13 +206,12 @@ public class NC2MoML {
                 // If a file was not specified, write to stdout.
                 serializer.output(doc, System.out);
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.err.println(e);
         }
     }
 
-    /** Read in .nc files, generate .moml files.
+    /** Read in .nc xml files, generate .moml files.
      *  @param args A series of command line arguments, see the
      *  class comment for details.
      *  @exception IOException If there is a problem reading or
@@ -220,7 +224,8 @@ public class NC2MoML {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.domains.ptinyos.util.nc2moml.NC2MoMl "
                     + "<xml input prefix> "
-                    + "<xml input suffix> <nc sub prefix> "
+                    + "<xml input suffix> "
+                    + "<nc sub prefix> "
                     + "<moml output prefix> "
                     + "[long path to file containing list of .nc files using "
                     + "short path]");

@@ -605,7 +605,14 @@ case $commandname in
         ;;
     .nc2moml-util)
         help="Invoke the nc2moml tool to transform .nc components into .moml files."
-        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.Nc2Moml
+        javastartupclass=ptolemy.domains.ptinyos.util.nc2moml.NC2MoML
+        javasourcedir=
+        jarfile="${ALL_JAR}"
+        javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
+        ;;
+    .ncapp2moml-util)
+        help="Invoke the ncapp2moml tool to transform .nc application components into .moml files."
+        javastartupclass=ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoML
         javasourcedir=
         jarfile="${ALL_JAR}"
         javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
