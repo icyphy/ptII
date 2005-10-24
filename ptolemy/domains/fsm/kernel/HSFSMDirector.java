@@ -45,7 +45,6 @@ import ptolemy.domains.ct.kernel.CTGeneralDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
-import ptolemy.domains.ct.kernel.ODESolver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -440,24 +439,6 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
      */
     public double getNextIterationTime() {
         return getModelNextIterationTime().getDoubleValue();
-    }
-
-    /** Return the ODE solver of the executive CT general director
-     *  for normal integration.
-     *  @return The ODE solver of the executive CT general director
-     *  for normal integration.
-     */
-    public ODESolver getNormalODESolver() {
-        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
-
-        if (executiveDirector != null) {
-            return executiveDirector.getNormalODESolver();
-        } else {
-            // This should never happen because a modal model with
-            // an HSFSMDirector must be used inside a CT model.
-            throw new InternalErrorException("A modal model with "
-                    + "an HSFSMDirector must be used inside a CT model.");
-        }
     }
 
     /** Restore the states of all the enabled refinements to the

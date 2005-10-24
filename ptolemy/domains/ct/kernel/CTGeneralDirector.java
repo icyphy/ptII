@@ -84,11 +84,6 @@ public interface CTGeneralDirector {
      */
     public Time getIterationBeginTime();
 
-    /** Return the ODE solver for normal integration.
-     *  @return The ODE solver for normal integration.
-     */
-    public ODESolver getNormalODESolver();
-
     /** Return true if the current phase of execution is a discrete one.
      *  @return true if the current phase of execution is a discrete one.
      */
