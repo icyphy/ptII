@@ -69,9 +69,13 @@ makefiles that contain the string \"COMPONENT=\" to identify .nc application \
 components.  Any errors will be redirected \
 to $outputprefix/$ENV{NCAPP2MOML_LOG}\n");
 
-print("\nYou will see a series of \"+\" and \"-\".  A \"+\" means that the .nc \
-file had no parse errors.  A \"-\" means that the .nc file had parse \
-problems.  Most errors or warnings can be ignored here, since some files \
+print("\nYou will see a series of \"+\" and \"-\" and \"!\" and \"?\".  \
+A \"+\" means that the .nc file had no parse errors.  \
+A \"-\" means that the .nc file had parse problems.  \
+A \"!\" means that this script does not know how to deal with the component name \
+  found in the makefile.\
+A \"?\" means that this script could not find the component name in the makefile. \
+Most errors or warnings can be ignored here, since some files \
 in the TinyOS tree do not compile properly or the correct compiler arguments \
 or include files cannot be found.\n");
 
@@ -93,11 +97,9 @@ foreach $mydir (@mydirs) {
       # Note: we do not handle component strings w/ non-alphanumeric
       # characters.  This means that component strings that contain
       # makefile variables will not work with this script.
-      #$badchars = $component;
-      #$badchars =~ s/\w//g;
-      #if (length($badchars) > 0) {
       if ($component =~ /\W/) {
         system("echo \"Do not know how to deal with component name in $makefile\" >> $outputprefix/$ENV{NCAPP2MOML_LOG} 2>&1");
+        print("!");
       } else {
 
         # Get the path to the makefile, including trailing slash.
@@ -118,6 +120,7 @@ foreach $mydir (@mydirs) {
       }
     } else {
       system("echo \"Could not find the component name in $makefile\" >> $outputprefix/$ENV{NCAPP2MOML_LOG} 2>&1");
+      print("?");
     }
   }
 

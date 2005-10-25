@@ -253,7 +253,7 @@ setenv PTINYOS_MOMLROOT $PTII/vendors/ptinyos/moml
 
       <li> Note: if you <B>change</B> <CODE>TOSROOT</CODE>
 	or <CODE>TOSDIR</CODE>, you must rerun <CODE>configure</CODE>
-<pre>n
+<pre>
 cd $PTII
 ./configure
 </pre>
@@ -384,12 +384,28 @@ make[4]: *** [Serial.o] Error 1
       <CODE>tinyos-1.x/tools/src/uisp/src/Makefile</CODE>
       and remove the <CODE>-Werror</CODE> and rerun make from the top.
 
+      <li> Run the script that will unzip the file that contains
+      additional compiler flags.  It will place "opts" files into
+      various directories in your tinyos-1.x tree.  The script assumes
+      that you have placed your tinyos-1.x tree as indicated in the
+      instructions above.
+        <pre>
+cd $PTII/ptolemy/domains/ptinyos/util
+./unzip-opts.sh
+        </pre>
+
       <li> Run the script to generate the .moml files from the .nc files.
         <pre>
 cd $PTII/ptolemy/domains/ptinyos/util/nc2moml
 ./nc2moml
         </pre>
 	The <CODE>nc2moml</CODE> command will take 10-30 minutes to complete.
+
+        <p> Note: The nc2moml tool requires that you build the tools in <CODE>$PTII/bin</CODE>.  Do the following and rerun the script above if they are missing:
+        <pre>
+cd $PTII/bin
+make
+        </pre>
       <li> See if it worked:
         <ol> 
           <li> You should see some valid MoML code in:
