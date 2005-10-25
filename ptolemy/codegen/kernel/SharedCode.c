@@ -22,6 +22,12 @@ char* itoa (int i) {
     return string;       
 }
 
+char* ltoa (long l) {
+    char* string = (Token*) malloc(sizeof(char) * 22);
+    sprintf((char*) string, "%d", l);
+    return string;       
+}
+
 char* ftoa (double d) {
     char* string = (Token*) malloc(sizeof(char) * 12);
     sprintf((char*) string, "%g", d);

@@ -34,12 +34,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
@@ -50,6 +52,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -359,13 +362,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Determine the total number of referenced types.
         // Determine the total number of referenced polymorphic functions.
         HashSet functions = new HashSet();
-        functions.add("convert");
-        functions.add("print");
-
+        //functions.add("convert");
+        //functions.add("print");
+        
         HashSet types = new HashSet();
 
+        // perform port type conversion
+        _checkPortTypeConversion();
+        
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
+
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
             Set set = (Set) helperObject
@@ -645,6 +652,111 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**
+     * Check for port type conversion between actors and record the conversion
+     * needed in the helper's info table. The helper would knows how to convert
+     * its input ports from the recorded information. If source ports and the
+     * helper's input ports are of different types, then conversion is needed.
+     * (i.e. if a source port is a primitive type and the input port is a 
+     * general type, we need to upgrade the source type to a Token type.) 
+     * @exception Thrown if helper is not found, or the conversion not
+     *  supported.
+     */
+    protected void _checkPortTypeConversion() 
+        throws IllegalActionException {        
+
+        Iterator actors = ((ptolemy.actor.CompositeActor) _getHelper(
+                getContainer()).getComponent()).deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+
+            for (int i = 0; i < actor.inputPortList().size(); i++) {
+            	TypedIOPort inputPort = 
+                    ((TypedIOPort) actor.inputPortList().get(i));
+            	for (int j = 0; j < inputPort.sourcePortList().size(); j++) {
+            		TypedIOPort srcPort = 
+                        ((TypedIOPort) inputPort.sourcePortList().get(j));
+                    
+                    Type srcType = srcPort.getType();
+                    Type targetType = inputPort.getType();
+                    
+                    if (targetType != srcType) {
+                        CodeGeneratorHelper srcHelper = (CodeGeneratorHelper) 
+                        _getHelper(srcPort.getContainer());
+
+                        // Init the port conversion and type fields.
+                        Hashtable refConvertTable = (Hashtable) srcHelper.
+                            getInfo(CodeGeneratorHelper.FIELD_REFCONVERT);
+                        Hashtable refTypeTable = (Hashtable) srcHelper.
+						    getInfo(CodeGeneratorHelper.FIELD_REFDECLARETYPE);
+                        
+                        if (refConvertTable == null) {
+                            refConvertTable = new Hashtable();
+                            refTypeTable = new Hashtable();
+                            srcHelper.getInfoTable().put(CodeGeneratorHelper.
+                                    FIELD_REFCONVERT, refConvertTable);
+                            srcHelper.getInfoTable().put(CodeGeneratorHelper.
+                                    FIELD_REFDECLARETYPE, refTypeTable);
+                        }
+                        
+                        // Record the needed inter-actor type conversions.
+                        String refName = srcPort.getName();
+                        if (targetType == BaseType.GENERAL) {
+                            String type = "";
+                            if (srcType == BaseType.INT) {
+                                type = "Int";
+                            } else if (srcType == BaseType.LONG) {
+                                type = "Long";
+                            } else if (srcType == BaseType.DOUBLE) {
+                                type = "Double";
+                            } else if (srcType == BaseType.BOOLEAN) {
+                                type = "Boolean";
+                            } else {
+                                // This is ok. Since other types should be of
+                                // Token type. Here, we are only concern with
+                                // converting primitive type to Token type.
+                            }
+                            
+                            if (!type.equals("")) {
+                                // Record the referenced type in the infoTable.
+                                HashSet types = (HashSet) srcHelper.getInfoTable().
+                                    get(CodeGeneratorHelper.FIELD_NEW);
+                                if (types == null) {
+                                    types = new HashSet();
+                                    srcHelper.getInfoTable().put(
+                                            CodeGeneratorHelper.FIELD_NEW, types);
+                                }
+                            	types.add(type);      
+                                refConvertTable.put(refName, type + "_new");                 
+                                refTypeTable.put(refName, "Token*");
+                            }
+                        } else if (targetType == BaseType.STRING) {
+                            if (srcType == BaseType.INT) {
+                                refConvertTable.put(refName, "itoa");
+                            } else if (srcType == BaseType.LONG) {
+                                refConvertTable.put(refName, "ltoa");
+                            } else if (srcType == BaseType.DOUBLE) {
+                                refConvertTable.put(refName, "dtoa");            
+                            } else if (srcType == BaseType.BOOLEAN) {
+                                refConvertTable.put(refName, "btoa");                                
+                            } else {
+                                throw new IllegalActionException(
+                                    "Port type conversion not handled -- from "
+                                    + srcType + " to " + targetType + ".\n");                                
+                            }
+                            refTypeTable.put(refName, "char*");
+                        } else {
+                        	throw new IllegalActionException(
+                                "Port type conversion not handled -- from "
+                                + srcType + " to " + targetType + ".\n");
+                        }                        
+                    } 
+                }
+            }
+        }
+    }
+    
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
      *  @return The code generator helper.
