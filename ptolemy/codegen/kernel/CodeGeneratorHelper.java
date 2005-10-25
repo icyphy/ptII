@@ -412,12 +412,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 if (_codeGenerator._modifiedVariables.contains(variable)) {
                     return variable.getFullName().replace('.', '_');
+                } else if (variable.isStringMode()) {
+                	return "\"" + variable.getExpression() + "\"";
                 }
 
                 PtParser parser = new PtParser();
-                ASTPtRootNode parseTree = parser.generateParseTree(variable
-                        .getExpression());
-                ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                ASTPtRootNode parseTree = 
+                    parser.generateParseTree(variable.getExpression());
+                ParseTreeCodeGenerator parseTreeCodeGenerator = 
+                    new ParseTreeCodeGenerator();
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new HelperScope(variable));
                 return processCode(parseTreeCodeGenerator.generateFireCode());
