@@ -31,12 +31,14 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.ExplicitChangeContext;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
@@ -189,6 +191,9 @@ public class Director implements ActorCodeGenerator {
                 code.append(";\n");
             }
         }
+        
+        // The offset of the input port itself is updated by outside director.
+        _updateConnectedPortsOffset(inputPort, code, 1);
     }
 
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
@@ -212,6 +217,10 @@ public class Director implements ActorCodeGenerator {
                 code.append(";\n");
             }
         }
+        
+        // The offset of the ports connected to the output port is 
+        // updated by outside director.
+        _updatePortOffset(outputPort, code, 1);
     }
 
     /** Generate the wrapup code of the director associated with this helper
@@ -308,6 +317,99 @@ public class Director implements ActorCodeGenerator {
      */
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
+    }
+    
+    /** Update the offsets of the buffer associated with the given port.
+     * 
+     *  @param port
+     *  @param code
+     *  @exception IllegalActionException
+     */
+    protected void _updatePortOffset(IOPort port, StringBuffer code, int rate) 
+            throws IllegalActionException {
+     
+        CodeGeneratorHelper helper = 
+                (CodeGeneratorHelper) _getHelper(port.getContainer());
+        
+        int length = 0;
+        if (port.isInput()) {
+            length = port.getWidth();
+        } else {
+            length = port.getWidthInside();
+        }
+     
+        for (int j = 0; j < length; j++) {
+            // Update the offset for each channel.
+            if (helper.getReadOffset(port, j) 
+                    instanceof Integer) {
+                int offset = ((Integer) helper
+                        .getReadOffset(port, j)).intValue();
+                offset = (offset + rate)
+                        % helper.getBufferSize(port, j);
+                helper.setReadOffset(port, j, new Integer(
+                        offset));
+            } else {
+                int modulo = helper.getBufferSize(port, j) - 1;
+                String offsetVariable = 
+                        (String) helper.getReadOffset(port, j);
+                code.append((String) 
+                        offsetVariable + " = (" + offsetVariable 
+                        + " + " + rate 
+                        + ")&" + modulo + ";\n");
+            }
+        }
+    }
+    
+    /** Update the offsets of the buffers associated with the ports connected 
+     *  with the given port in its downstream.
+     * 
+     *  @param port
+     *  @param code
+     *  @throws IllegalActionException
+     */
+    protected void _updateConnectedPortsOffset(IOPort port, 
+            StringBuffer code, int rate) throws IllegalActionException {
+    
+        CodeGeneratorHelper helper = 
+                (CodeGeneratorHelper) _getHelper(port.getContainer());
+        
+        int length = 0;
+        if (port.isInput()) {
+            length = port.getWidthInside();
+        } else {
+            length = port.getWidth();
+        }
+
+        for (int j = 0; j < length; j++) {
+            List sinkChannels = helper.getSinkChannels(port, j);
+
+            for (int k = 0; k < sinkChannels.size(); k++) {
+                Channel channel = (Channel) sinkChannels.get(k);
+                IOPort sinkPort = (IOPort) channel.port;
+                int sinkChannelNumber = channel.channelNumber;
+         
+                Object offsetObject = helper
+                        .getWriteOffset(sinkPort, sinkChannelNumber);
+                if (offsetObject instanceof Integer) {
+                    int offset = ((Integer) offsetObject).intValue();
+                    offset = (offset + rate)
+                            % helper.getBufferSize
+                            (sinkPort, sinkChannelNumber);
+                    helper.setWriteOffset(sinkPort, 
+                            sinkChannelNumber, new Integer(offset));
+                } else {
+                    int modulo = helper.getBufferSize
+                            (sinkPort, sinkChannelNumber) - 1;
+                    String offsetVariable = 
+                            (String) helper.getWriteOffset
+                            (sinkPort, sinkChannelNumber);
+                    code.append((String) 
+                            offsetVariable + " = (" + offsetVariable 
+                            + " + " + rate 
+                            + ")&" + modulo + ";\n");
+                }
+            }
+        }    
     }
 
     ////////////////////////////////////////////////////////////////////

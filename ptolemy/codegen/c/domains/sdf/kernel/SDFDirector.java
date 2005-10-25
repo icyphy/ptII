@@ -27,10 +27,7 @@
  */
 package ptolemy.codegen.c.domains.sdf.kernel;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -42,7 +39,6 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
-import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
@@ -98,28 +94,20 @@ public class SDFDirector extends Director {
             // FIXME: Before looking for a helper class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the helper.
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
             for (int i = 0; i < firing.getIterationCount(); i++) {
-                helperObject.generateFireCode(code);
+                helper.generateFireCode(code);
 
                 // update buffer offset after firing each actor once
-                Set inputPortsSet = new HashSet();
-                inputPortsSet.addAll(actor.inputPortList());
-
-                Iterator inputPorts = inputPortsSet.iterator();
-
+                Iterator inputPorts = actor.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort port = (IOPort) inputPorts.next();
                     int rate = DFUtilities.getRate(port);
                     _updatePortOffset(port, code, rate);
                 }
 
-                Set outputPortsSet = new HashSet();
-                outputPortsSet.addAll(actor.outputPortList());
-
-                Iterator outputPorts = outputPortsSet.iterator();
-
+                Iterator outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort port = (IOPort) outputPorts.next();
                     int rate = DFUtilities.getRate(port);
@@ -411,90 +399,6 @@ public class SDFDirector extends Director {
         }
     }
 
-    /** Update the offsets of the buffer associated with the given port.
-     *
-     *  @param port
-     *  @param code
-     *  @exception IllegalActionException
-     */
-    protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
-            throws IllegalActionException {
-        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
-                .getContainer());
-
-        int length = 0;
-
-        if (port.isInput()) {
-            length = port.getWidth();
-        } else {
-            length = port.getWidthInside();
-        }
-
-        for (int j = 0; j < length; j++) {
-            // Update the offset for each channel.
-            if (helper.getReadOffset(port, j) instanceof Integer) {
-                int offset = ((Integer) helper.getReadOffset(port, j))
-                        .intValue();
-                offset = (offset + rate) % helper.getBufferSize(port, j);
-                helper.setReadOffset(port, j, new Integer(offset));
-            } else {
-                int modulo = helper.getBufferSize(port, j) - 1;
-                String offsetVariable = (String) helper.getReadOffset(port, j);
-                code.append((String) offsetVariable + " = (" + offsetVariable
-                        + " + " + rate + ")&" + modulo + ";\n");
-            }
-        }
-    }
-
-    /** Update the offsets of the buffers associated with the ports connected
-     *  with the given port in its downstream.
-     *
-     *  @param port
-     *  @param code
-     *  @throws IllegalActionException
-     */
-    protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
-            int rate) throws IllegalActionException {
-        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
-                .getContainer());
-
-        int length = 0;
-
-        if (port.isInput()) {
-            length = port.getWidthInside();
-        } else {
-            length = port.getWidth();
-        }
-
-        for (int j = 0; j < length; j++) {
-            List sinkChannels = helper.getSinkChannels(port, j);
-
-            for (int k = 0; k < sinkChannels.size(); k++) {
-                Channel channel = (Channel) sinkChannels.get(k);
-                IOPort sinkPort = (IOPort) channel.port;
-                int sinkChannelNumber = channel.channelNumber;
-
-                Object offsetObject = helper.getWriteOffset(sinkPort,
-                        sinkChannelNumber);
-
-                if (offsetObject instanceof Integer) {
-                    int offset = ((Integer) offsetObject).intValue();
-                    offset = (offset + rate)
-                            % helper.getBufferSize(sinkPort, sinkChannelNumber);
-                    helper.setWriteOffset(sinkPort, sinkChannelNumber,
-                            new Integer(offset));
-                } else {
-                    int modulo = helper.getBufferSize(sinkPort,
-                            sinkChannelNumber) - 1;
-                    String offsetVariable = (String) helper.getWriteOffset(
-                            sinkPort, sinkChannelNumber);
-                    code.append((String) offsetVariable + " = ("
-                            + offsetVariable + " + " + rate + ")&" + modulo
-                            + ";\n");
-                }
-            }
-        }
-    }
 
     //////////////////////////////////////////////////////////////////////////
     ////                          private methods                         ////
