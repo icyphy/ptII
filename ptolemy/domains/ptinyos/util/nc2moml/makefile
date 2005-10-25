@@ -85,7 +85,10 @@ install: jclass
 	./nc2moml
 
 test: jclass
+	@echo "Converting .nc files to .moml files for a simple demo"
 	./nc2moml -v tos/lib/Counters
+	./nc2moml -v tos/system
+	./nc2moml -v tos/sensorboards/micasb
 	"$(PTII)/bin/vergil" -viptos ../../demo/SenseToLedsInWireless/SenseToLedsInWireless.xml 
 
 include $(ROOT)/mk/ptcommon.mk
