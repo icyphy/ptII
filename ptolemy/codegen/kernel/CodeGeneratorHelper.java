@@ -133,7 +133,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public Set generateSharedCode() throws IllegalActionException {
-        _infoTable = new Hashtable();
         return new HashSet();
     }
 
@@ -1156,7 +1155,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         if (namedobj instanceof Parameter) {
             type = ((Parameter) namedobj).getType().toString();
         } else if (namedobj instanceof TypedIOPort) {
-            type = ((TypedIOPort) namedobj).getType().toString();
+               // search from the preprocess info table to see if there is any port
+            // type conversion. If yes, then the type is given in the table.
+            Hashtable declarations = 
+                    (Hashtable) _infoTable.get(FIELD_REFDECLARETYPE);
+            if (declarations != null) {
+                    type = (String) declarations.get(namedobj.getName());
+            }
+            
+            // if no given type declaration, then use the type of the port.
+            if (type.equals("")) {
+                    type = ((TypedIOPort) namedobj).getType().toString();
+            }
         }
 
         boolean isArrayType = false;
@@ -1401,44 +1411,46 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
 
         return result;
-    }
+    }   
+   
+   ///////////////////////////////////////////////////////////////////
+   ////                         protected variables               ////
+   
+   /** A hashmap that keeps track of the bufferSizes of each channel
+    *  of the actor.
+    */
+   protected HashMap _bufferSizes = new HashMap();
+   
+   /** The code generator that contains this helper class.
+    */
+   protected CodeGenerator _codeGenerator;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         potected variables                ////
+   /**
+    * The table about information of the helper's generated code. The
+    * kernel can use this table to retrieve information from the helper.  
+    */
+   protected Hashtable _infoTable = new Hashtable();
 
-    /** The code generator that contains this helper class.
-     */
-    protected CodeGenerator _codeGenerator;
+   /** A hashmap that keeps track of the read offsets of each input channel of
+    *  the actor.
+    */
+   protected HashMap _readOffsets = new HashMap();
+   
+   /** A hashmap that keeps track of the write offsets of each input channel of
+    *  the actor.
+    */
+   protected HashMap _writeOffsets = new HashMap();
 
-    /** A hashmap that keeps track of the bufferSizes of each channel
-     *  of the actor.
-     */
-    protected HashMap _bufferSizes = new HashMap();
 
-    /** A hashmap that keeps track of the read offsets of each input channel of
-     *  the actor.
-     */
-    protected HashMap _readOffsets = new HashMap();
+   ///////////////////////////////////////////////////////////////////
+   ////                         private variables                 ////
 
-    /** A hashmap that keeps track of the write offsets of each input channel of
-     *  the actor.
-     */
-    protected HashMap _writeOffsets = new HashMap();
+   /** The associated component. */
+   private NamedObj _component;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The associated component. */
-    private NamedObj _component;
-
-    /** A hashmap that keeps track of the read offsets of each input channel of
-     *  the actor.
-     */
-    private HashSet _referencedParameters = new HashSet();
-
-    /**
-     * The table about information of the helper's generated code. The
-     * kernel can use this table to retrieve information from the helper.
-     */
-    private Hashtable _infoTable;
+   /** A hashmap that keeps track of the read offsets of each input channel of
+    *  the actor.
+    */
+   private HashSet _referencedParameters = new HashSet();
+   
 }
