@@ -106,7 +106,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new instance of RendezvousReceiver compatible with this director.
+    /** Return a new instance of RendezvousReceiver compatible with
+     *  this director.
      *  @return A new instance of RendezvousReceiver.
      */
     public Receiver newReceiver() {
@@ -142,7 +143,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
         // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
+        defaultSuggestions[1] =
+            "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }
@@ -163,6 +165,15 @@ public class RendezvousDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return true if the count of active threads equals the number
+     *  of stopped (paused) or blocked threads.  Otherwise return false.
+     *  @return True if all threads are stopped or blocked.
+     */
+    protected synchronized boolean _areAllThreadsStopped() {
+        return (_getActiveThreadsCount()
+                == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
+    }
+
     /** Return true if all active threads are blocked.
      *  @return True if all active threads are blocked.
      */
@@ -172,75 +183,6 @@ public class RendezvousDirector extends CompositeProcessDirector {
         } else {
             return false;
         }
-    }
-
-    /** Return true if the count of active threads equals the number
-     *  of stopped (paused) or blocked threads.  Otherwise return false.
-     *  @return True if all threads are stopped or blocked.
-     */
-    protected synchronized boolean _areAllThreadsStopped() {
-        return (_getActiveThreadsCount() == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
-    }
-
-    /** Return a string describing the status of each receiver.
-     *  @return A string describing the status of each receiver.
-     */
-    private String _receiverStatus() {
-        StringBuffer result = new StringBuffer();
-        CompositeActor container = (CompositeActor) getContainer();
-
-        // Start with the input ports of the composite, which
-        // may have forked connections on the inside.
-        Iterator inputPorts = container.inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) (inputPorts.next());
-            result.append("Send inside from " + inputPort.getFullName() + "\n");
-
-            Receiver[][] destinations = inputPort.deepGetReceivers();
-
-            for (int channel = 0; channel < destinations.length; channel++) {
-                if (destinations[channel] != null) {
-                    result.append("   on channel " + channel + ":\n");
-
-                    for (int copy = 0; copy < destinations[channel].length; copy++) {
-                        result.append("-- to "
-                                + _receiverStatus(destinations[channel][copy])
-                                + "\n");
-                    }
-                }
-            }
-        }
-
-        // Next do the output ports of all contained actors.
-        Iterator actors = container.deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            Iterator outputPorts = actor.outputPortList().iterator();
-
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) (outputPorts.next());
-                result.append("Send from " + outputPort.getFullName() + "\n");
-
-                Receiver[][] destinations = outputPort.getRemoteReceivers();
-
-                for (int channel = 0; channel < destinations.length; channel++) {
-                    if (destinations[channel] != null) {
-                        result.append("   on channel " + channel + ":\n");
-
-                        for (int copy = 0; copy < destinations[channel].length; copy++) {
-                            result
-                                    .append("-- to "
-                                            + _receiverStatus(destinations[channel][copy])
-                                            + "\n");
-                        }
-                    }
-                }
-            }
-        }
-
-        return result.toString();
     }
 
     /** Return a string describing the status of the specified receiver.
@@ -289,10 +231,11 @@ public class RendezvousDirector extends CompositeProcessDirector {
             if ((suppress == null)
                     || !(suppress.getToken() instanceof BooleanToken)
                     || !((BooleanToken) suppress.getToken()).booleanValue()) {
-                String message = "Model ended with a deadlock (this may be normal for this model).\n"
-                        + "A parameter with name SuppressDeadlockReporting and value true will suppress this message.\n"
-                        + "Status of receivers:\n" + _receiverStatus();
-                MessageHandler.message(message);
+                MessageHandler.message("Model ended with a deadlock "
+                    + "(this may be normal for this model).\n"
+                    + "A parameter with name SuppressDeadlockReporting and "
+                    + "value true will suppress this message.\n"
+                    + "Status of receivers:\n" + _receiverStatus());
             }
 
             return false;
@@ -310,4 +253,71 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  which it waits for all actors to stop.
      */
     protected boolean _inWrapup = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private method                    ////
+
+    /** Return a string describing the status of each receiver.
+     *  @return A string describing the status of each receiver.
+     */
+    private String _receiverStatus() {
+        StringBuffer result = new StringBuffer();
+        CompositeActor container = (CompositeActor) getContainer();
+
+        // Start with the input ports of the composite, which
+        // may have forked connections on the inside.
+        Iterator inputPorts = container.inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) (inputPorts.next());
+            result.append("Send inside from "
+                    + inputPort.getFullName() + "\n");
+
+            Receiver[][] destinations = inputPort.deepGetReceivers();
+
+            for (int channel = 0; channel < destinations.length; channel++) {
+                if (destinations[channel] != null) {
+                    result.append("   on channel " + channel + ":\n");
+
+                    for (int copy = 0;
+                         copy < destinations[channel].length; copy++) {
+                        result.append("-- to "
+                                + _receiverStatus(destinations[channel][copy])
+                                + "\n");
+                    }
+                }
+            }
+        }
+
+        // Next do the output ports of all contained actors.
+        Iterator actors = container.deepEntityList().iterator();
+
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            Iterator outputPorts = actor.outputPortList().iterator();
+
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort) (outputPorts.next());
+                result.append("Send from " + outputPort.getFullName() + "\n");
+
+                Receiver[][] destinations = outputPort.getRemoteReceivers();
+
+                for (int channel = 0;
+                     channel < destinations.length; channel++) {
+                    if (destinations[channel] != null) {
+                        result.append("   on channel " + channel + ":\n");
+
+                        for (int copy = 0;
+                             copy < destinations[channel].length; copy++) {
+                            result.append("-- to "
+                                    + _receiverStatus(destinations[channel][copy])
+                                    + "\n");
+                        }
+                    }
+                }
+            }
+        }
+
+        return result.toString();
+    }
 }
