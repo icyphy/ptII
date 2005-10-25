@@ -949,6 +949,25 @@ public class FSMDirector extends Director implements ModelErrorHandler,
         }
     }
 
+    /** Return a list of enabled transitions among the given list of
+     *  transitions.
+     *  This method is called by subclasses of FSMDirector in other packages.
+     *  @param transitionList A list of transitions.
+     *  @return A list of enabled transition.
+     *  @exception IllegalActionException If the guard expression of any
+     *  transition can not be evaluated.
+     */
+    protected List _checkTransition(List transitionList)
+            throws IllegalActionException {
+        FSMActor controller = getController();
+
+        if (controller != null) {
+            return controller._checkTransition(transitionList);
+        } else {
+            throw new IllegalActionException(this, "No controller!");
+        }
+    }
+
     /** Return the enabled transition among the given list of transitions.
      *  Throw an exception if there is more than one transition enabled.
      *  This method is called by subclasses of FSMDirector in other packages.
