@@ -262,6 +262,20 @@ public class CTMultiSolverDirector extends CTDirector {
         }
 
         _propagateResolvedStates();
+
+        if (_debugging) {
+            _debug("  ---> " + getName(),
+                    ": iterating event generators (continuous -> discrete)");
+        }
+
+        _iterateEventGenerators(schedule);
+
+        if (_debugging) {
+            _debug("  ---> " + getName(),
+                    ": iterating purely discrete actors (discrete -> discrete)");
+        }
+
+        _iteratePurelyDiscreteActors(schedule);
     }
 
     /** Fire the system for one iteration. One iteration is defined as
@@ -1396,6 +1410,10 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug("Using breakpoint solver: " + solver.getName()
                     + " to propagate states.");
         }
+
+        _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
+        prefireDynamicActors();
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
         // build history information. In particular, the derivative.
         _setExecutionPhase(CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE);
