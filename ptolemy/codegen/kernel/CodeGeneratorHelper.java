@@ -199,8 +199,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
 
-            if ((outputPort.getWidth() == 0)
-                    || (outputPort.getWidthInside() != 0)) {
+            if ((outputPort.getWidth() == 0) || 
+                (outputPort.getWidthInside() != 0)) {
                 // FIXME: What if port is ArrayType.
                 _generateType(outputPort, code);
 
@@ -307,6 +307,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public Object getInfo(String field) {
         return _infoTable.get(field);
+    }
+
+    /**
+     * Get the helper's info table. The kernel should use this method to put
+     * and retrieve information.
+     */
+    public Hashtable getInfoTable() {
+        return _infoTable;
     }
 
     public Set getModifiedVariables() throws IllegalActionException {
@@ -464,6 +472,524 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
     }
 
+
+    public String getReference(String name) throws IllegalActionException {
+        name = processCode(name);
+
+        String dereferenceType = "";
+        Hashtable convertTable = (Hashtable) getInfo(FIELD_REFCONVERT);
+        if (convertTable != null) {
+        	String convertMethod = (String) convertTable.get(name);
+            if (convertMethod != null) {
+                int stringIndex = convertMethod.indexOf("_new");
+                if (stringIndex > -1) {
+                    dereferenceType = "->payload." + 
+                        convertMethod.substring(0, stringIndex);
+                } else {
+                	// FIXME: handle conversion between types.
+                }
+            }
+        }
+        
+        return _getReference(name) + dereferenceType;
+    }
+
+    /** Return a list of channel objects that are the sink input ports given
+     *  a port and channel. Note the returned channels are newly
+     *  created objects and therefore not associated with the helper class.
+     *  @param port The given output port.
+     *  @param channelNumber The given channel number.
+     *  @return The list of channel objects that are the sink channels
+     *   of the given output channel.
+     */
+    public List getSinkChannels(IOPort port, int channelNumber) {
+        List sinkChannels = new LinkedList();
+        Receiver[][] remoteReceivers;
+
+        // due to reason stated in getReference(String), 
+        // we cannot do: if (port.isInput())...
+        if (port.isOutput()) {
+            remoteReceivers = port.getRemoteReceivers();
+        } else {
+            remoteReceivers = port.deepGetReceivers();
+        }
+
+        if (remoteReceivers.length == 0) {
+            // This is an escape method. This class will not call this
+            // method if the output port does not have a remote receiver.
+            return sinkChannels;
+        }
+
+        for (int i = 0; i < remoteReceivers[channelNumber].length; i++) {
+            IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
+            Receiver[][] portReceivers;
+
+            if (sinkPort.isInput()) {
+                portReceivers = sinkPort.getReceivers();
+            } else {
+                portReceivers = sinkPort.getInsideReceivers();
+            }
+
+            for (int j = 0; j < portReceivers.length; j++) {
+                for (int k = 0; k < portReceivers[j].length; k++) {
+                    if (remoteReceivers[channelNumber][i] == portReceivers[j][k]) {
+                        Channel sinkChannel = new Channel(sinkPort, j);
+                        sinkChannels.add(sinkChannel);
+                        break;
+                    }
+                }
+            }
+        }
+
+        return sinkChannels;
+    }
+
+    /** Get the size of a parameter. The size of a parameter
+     *  is the length of its array if the parameter's type is array,
+     *  and 1 otherwise.
+     *  @param name The name of the parameter.
+     *  @return The size of a parameter.
+     *  @exception IllegalActionException If no port or parameter of
+     *   the given name is found.
+     */
+    public int getSize(String name) throws IllegalActionException {
+        int size = 1;
+
+        // Try if the name is a parameter.
+        Attribute attribute = _component.getAttribute(name);
+
+        if (attribute != null) {
+            // FIXME:  Could it be something other than variable?
+            if (attribute instanceof Variable) {
+                Token token = ((Variable) attribute).getToken();
+
+                if (token instanceof ArrayToken) {
+                    return ((ArrayToken) token).length();
+                }
+
+                return 1;
+            }
+        }
+
+        throw new IllegalActionException(_component, "Attribute not found: "
+                + name);
+    }
+
+    /** Return the translated type function invocation string.
+     *  @param functionString The string within the $typeFunc() macro.
+     *  @return The translated type function invocation string.
+     *  @exception IllegalActionException The given function string is
+     *   not well-formed.
+     */
+    public String getTypeFuncInvocation(String functionString)
+            throws IllegalActionException {
+        functionString = processCode(functionString);
+
+        // i.e. "$typeFunc(token, add(arg1, arg2, ...))"
+        // this transforms to ==> 
+        // "functionTable[token->type][FUNC_add] (token, arg1, arg2, ...)"
+        // FIXME: we need to do some more smart parsing to find the following
+        // indexes.
+        int commaIndex = functionString.indexOf(',');
+        int openFuncParenIndex = functionString.indexOf('(', commaIndex);
+        int closeFuncParenIndex = functionString.lastIndexOf(')');
+
+        // Syntax checking.
+        if ((commaIndex == -1) || (openFuncParenIndex == -1)
+                || (closeFuncParenIndex != (functionString.length() - 1))) {
+            throw new IllegalActionException(
+                    "Bad Syntax with the $typeFunc() macro. "
+                            + "[i.e. -- $typeFunc(token.func(arg1, arg2, ...))]");
+        }
+
+        String typedToken = functionString.substring(0, commaIndex).trim();
+        String functionName = functionString.substring(commaIndex + 1,
+                openFuncParenIndex).trim();
+
+        // Record the referenced type function in the infoTable.
+        HashSet functions = (HashSet) _infoTable.get(FIELD_TYPEFUNC);
+
+        if (functions == null) {
+            functions = new HashSet();
+            _infoTable.put(FIELD_TYPEFUNC, functions);
+        }
+
+        functions.add(functionName);
+
+        String argumentList = 
+            functionString.substring(openFuncParenIndex + 1).trim(); 
+        // if it is more than just a closing paren
+        if (argumentList.length() > 1) { 
+            argumentList = ", " + argumentList;
+        }
+        
+        return "functionTable[" + typedToken + "->type][FUNC_" + functionName
+                + "](" + typedToken + argumentList;
+    }
+
+    /** Get the write offset in the buffer of a given channel to which a token
+     *  should be put. The channel is given by its containing port and
+     *  the channel number in that port.
+     *  @param inputPort The given port.
+     *  @param channelNumber The given channel number.
+     *  @return The offset in the buffer of a given channel to which a token
+     *   should be put.
+     */
+    public Object getWriteOffset(IOPort inputPort, int channelNumber)
+            throws IllegalActionException {
+        if (inputPort.getContainer() == _component) {
+            return ((Object[]) _writeOffsets.get(inputPort))[channelNumber];
+        } else {
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
+                    .getContainer());
+            return actorHelper.getWriteOffset(inputPort, channelNumber);
+        }
+    }
+
+    /** Process the specified code, replacing macros with their values.
+     * @param code The code to process.
+     * @return The processed code.
+     * @exception IllegalActionException If illegal macro names are found.
+     */
+    public String processCode(String code) throws IllegalActionException {
+        StringBuffer result = new StringBuffer();
+        int currentPos = code.indexOf("$");
+
+        if (currentPos < 0) {
+            // No "$" in the string
+            return code;
+        }
+
+        result.append(code.substring(0, currentPos));
+
+        while (currentPos < code.length()) {
+            int openParenIndex = code.indexOf("(", currentPos + 1);
+            int closeParenIndex = _findCloseParen(code, openParenIndex);
+
+            if (closeParenIndex < 0) {
+                // No matching close parenthesis is found.
+                result.append(code.substring(currentPos));
+                return result.toString();
+            }
+
+            int nextPos = code.indexOf("$", closeParenIndex + 1);
+
+            if (nextPos < 0) {
+                //currentPos is the last "$"
+                nextPos = code.length();
+            }
+
+            String subcode = code.substring(currentPos, nextPos);
+
+            if ((currentPos > 0) && (code.charAt(currentPos - 1) == '\\')) {
+                // found "\$", do not make replacement.
+                result.append(subcode);
+                currentPos = nextPos;
+                continue;
+            }
+
+            boolean foundIt = false;
+            String macro = code.substring(currentPos + 1, openParenIndex);
+            macro = macro.trim();
+
+            List macroList = Arrays.asList(new String[] { "ref", "val",
+                    "actorSymbol", "actorClass", "new", "typeFunc", "size" });
+
+            if (macroList.contains(macro)) {
+                String name = code.substring(openParenIndex + 1,
+                        closeParenIndex);
+                name = name.trim();
+
+                if (macro.equals("ref")) {
+                    result.append(getReference(name));
+                } else if (macro.equals("val")) {
+                    result.append(getParameterValue(name, _component));
+                } else if (macro.equals("size")) {
+                    result.append(getSize(name));
+                } else if (macro.equals("actorSymbol")) {
+                    result.append(_component.getFullName().replace('.', '_'));
+                    result.append("_" + name);
+                } else if (macro.equals("actorClass")) {
+                    result.append(_component.getContainer().getName());
+                    result.append("_" + name);
+                } else if (macro.equals("new")) {
+                    result.append(getNewInvocation(name));
+                } else if (macro.equals("typeFunc")) {
+                    result.append(getTypeFuncInvocation(name));
+                } else {
+                    // This macro is not handled.
+                    throw new IllegalActionException("Macro is not handled.");
+                }
+
+                foundIt = true;
+                result.append(code.substring(closeParenIndex + 1, nextPos));
+            }
+
+            if (!foundIt) {
+                result.append(subcode);
+            }
+
+            currentPos = nextPos;
+        }
+
+        return result.toString();
+    }
+
+    /** Reset the offsets of all channels of all input ports of the
+     *  associated actor to the default value of 0.
+     */
+    public void resetInputPortsOffset() throws IllegalActionException {
+        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort) inputPorts.next();
+
+            for (int i = 0; i < port.getWidth(); i++) {
+                setReadOffset(port, i, new Integer(0));
+                setWriteOffset(port, i, new Integer(0));
+            }
+        }
+    }
+
+    /** Set the buffer size of a given port.
+     *  @param port The given port.
+     *  @param channelNumber The given channel.
+     *  @param bufferSize The buffer size to be set to that port and channel.
+     */
+    public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
+        int[] bufferSizes = (int[]) _bufferSizes.get(port);
+        bufferSizes[channelNumber] = bufferSize;
+
+        // perhaps this step is redundant?
+        _bufferSizes.put(port, bufferSizes);
+    }
+
+    /** Set the code generator associated with this helper class.
+     *  @param codeGenerator The code generator associated with this
+     *   helper class.
+     */
+    public void setCodeGenerator(CodeGenerator codeGenerator) {
+        _codeGenerator = codeGenerator;
+    }
+
+    /** Set the read offset in a buffer of a given channel from which a token
+     *  should be read.
+     *  @param inputPort The given port.
+     *  @param channelNumber The given channel.
+     *  @param readOffset The offset to be set to the buffer of that channel.
+     */
+    public void setReadOffset(IOPort inputPort, int channelNumber,
+            Object readOffset) throws IllegalActionException {
+        if (inputPort.getContainer() == _component) {
+            Object[] readOffsets = (Object[]) _readOffsets.get(inputPort);
+            readOffsets[channelNumber] = readOffset;
+        } else {
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
+                    .getContainer());
+            actorHelper.setReadOffset(inputPort, channelNumber, readOffset);
+        }
+    }
+
+    /** Set the write offset in the downstream buffers connected to the given channel.
+     *  @param outputPort The given port.
+     *  @param channelNumber The given channel.
+     *  @param writeOffset The offset to be set to the buffer of that channel.
+     */
+    public void setSinkActorsWriteOffset(IOPort outputPort, int channelNumber,
+            Object writeOffset) throws IllegalActionException {
+        List sinkChannels = getSinkChannels(outputPort, channelNumber);
+
+        for (int i = 0; i < sinkChannels.size(); i++) {
+            Channel channel = (Channel) sinkChannels.get(i);
+            IOPort sinkPort = (IOPort) channel.port;
+            int sinkChannelNumber = channel.channelNumber;
+            setWriteOffset(sinkPort, sinkChannelNumber, writeOffset);
+        }
+    }
+
+    /** Set the write offset in a buffer of a given channel to which a token
+     *  should be put.
+     *  @param inputPort The given port.
+     *  @param channelNumber The given channel.
+     *  @param writeOffset The offset to be set to the buffer of that channel.
+     */
+    public void setWriteOffset(IOPort inputPort, int channelNumber,
+            Object writeOffset) throws IllegalActionException {
+        if (inputPort.getContainer() == _component) {
+            Object[] writeOffsets = (Object[]) _writeOffsets.get(inputPort);
+            writeOffsets[channelNumber] = writeOffset;
+        } else {
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
+                    .getContainer());
+            actorHelper.setWriteOffset(inputPort, channelNumber, writeOffset);
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    ////                      public variables                       ////
+
+    /**
+     * The new constructor field key to access the info table.
+     */
+    public static final String FIELD_NEW = "new";
+
+    /**
+     * The reference declare type field key to access the info table.
+     */
+    public static final String FIELD_REFDECLARETYPE = "refDeclareType";
+
+    /**
+     * The reference convert field key to access the info table.
+     */
+    public static final String FIELD_REFCONVERT = "refConvert";
+
+    /**
+     * The type function field key to access the info table.
+     */
+    public static final String FIELD_TYPEFUNC = "typeFunc";
+
+    /////////////////////////////////////////////////////////////////////
+    ////                      public inner classes                   ////
+
+    /** A class that defines a channel object. A channel object is
+     *  specified by its port and its channel index in that port.
+     */
+    public class Channel {
+        /** Construct the channel with the given port and channel number.
+         * @param portObject The given port.
+         * @param channel The channel number of this object in the given port.
+         */
+        public Channel(IOPort portObject, int channel) {
+            port = portObject;
+            channelNumber = channel;
+        }
+
+        /** The port that contains this channel.
+         */
+        public IOPort port;
+
+        /** The channel number of this channel.
+         */
+        public int channelNumber;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods.                    ////
+
+    /** Create the buffer and offset map for each input port, which is
+     *  associated with this helper object. A key of the map is an IOPort
+     *  of the actor. The corresponding value is an array of Channel objects.
+     *  The i-th channel object corresponds to the i-th channel of that IOPort.
+     *  This method is used to maintain a internal HashMap of channels of the
+     *  actor. The channel objects in the map are used to keep track of the
+     *  offsets in their buffer.
+     */
+    protected void _createBufferAndOffsetMap() throws IllegalActionException {
+        //We only care about input ports where data are actually stored
+        //except when an output port is not connected to any input port.
+        //In that case the variable corresponding to the unconnected output
+        //port always has size 1 and the assignment to this variable is 
+        //performed just for the side effect.
+        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort port = (IOPort) inputPorts.next();
+            int length = port.getWidth();
+
+            //if (length == 0) {
+            //    length = 1;
+            //}
+            int[] bufferSizes = new int[length];
+            _bufferSizes.put(port, bufferSizes);
+
+            Director directorHelper = (Director) _getHelper((NamedObj) (((Actor) _component)
+                    .getExecutiveDirector()));
+
+            for (int i = 0; i < port.getWidth(); i++) {
+                int bufferSize = directorHelper.getBufferSize(port, i);
+                setBufferSize(port, i, bufferSize);
+            }
+
+            Object[] readOffsets = new Object[length];
+            _readOffsets.put(port, readOffsets);
+
+            Object[] writeOffsets = new Object[length];
+            _writeOffsets.put(port, writeOffsets);
+        }
+    }
+
+    /** Given a port or parameter, append a string in the form
+     *  "static <i>type</i> <i>objectName</i>" to the given string buffer.
+     *  Return true if the type of the port or parameter is ArrayType. This
+     *  method is only called in the generateVariableDeclarations() method.
+     *  @param namedobj The port or parameter.
+     *  @param code The string buffer that contains the generated code.
+     *  @return True if the type the port or parameter is ArrayType.
+     */
+    protected boolean _generateType(NamedObj namedobj, StringBuffer code) {
+        String type = null;
+
+        if (namedobj instanceof Parameter) {
+            type = ((Parameter) namedobj).getType().toString();
+        } else if (namedobj instanceof TypedIOPort) {
+            // search from the preprocess info table to see if there is any port
+            // type conversion. If yes, then the type is given in the table.
+            Hashtable declarations = 
+                    (Hashtable) _infoTable.get(FIELD_REFDECLARETYPE);
+            if (declarations != null) {
+                type = (String) declarations.get(namedobj.getName());
+            }
+            
+            // if no given type declaration, then use the type of the port.
+            if (type == null) {
+            	type = ((TypedIOPort) namedobj).getType().toString();
+            }
+        }
+
+        boolean isArrayType = false;
+
+        if (type.charAt(0) == '{') {
+            // This is an ArrayType.
+            StringTokenizer tokenizer = new StringTokenizer(type, "{}");
+            type = tokenizer.nextToken();
+            isArrayType = true;
+        }
+
+        if (type.equals("general")) {
+            type = "Token*";
+        } else if (type.equals("string")) {
+            type = "char*";
+        } else if (type.equals("boolean")) {
+            type = "unsigned char";
+        }
+
+        code.append("static ");
+        code.append(type);
+        code.append(" ");
+        code.append(namedobj.getFullName().replace('.', '_'));
+        return isArrayType;
+    }
+
+    /** Get the code generator helper associated with the given component.
+     *  @param component The given component.
+     *  @return The code generator helper.
+     *  @exception IllegalActionException If the helper class cannot be found.
+     */
+    protected ComponentCodeGenerator _getHelper(NamedObj component)
+            throws IllegalActionException {
+        return _codeGenerator._getHelper(component);
+    }
+
+    /** Return a number of spaces that is proportional to the argument.
+     *  If the argument is negative or zero, return an empty string.
+     *  @param level The level of indenting represented by the spaces.
+     *  @return A string with zero or more spaces.
+     */
+    protected static String _getIndentPrefix(int level) {
+        return StringUtilities.getIndentPrefix(level);
+    }
+    
+    
     /** Return the reference to the specified parameter or port of the
      *  associated actor. For a parameter, the returned string is in
      *  the form "fullName_parameterName". For a port, the returned string
@@ -478,9 +1004,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @exception IllegalActionException If the parameter or port does not
      *   exist or does not have a value.
      */
-    public String getReference(String name) throws IllegalActionException {
-        name = processCode(name);
-
+    protected String _getReference(String name) 
+        throws IllegalActionException {
         StringBuffer result = new StringBuffer();
         Actor actor = (Actor) _component;
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
@@ -726,490 +1251,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         throw new IllegalActionException(_component, "Reference not found: "
                 + name);
-    }
 
-    /** Return a list of channel objects that are the sink input ports given
-     *  a port and channel. Note the returned channels are newly
-     *  created objects and therefore not associated with the helper class.
-     *  @param port The given output port.
-     *  @param channelNumber The given channel number.
-     *  @return The list of channel objects that are the sink channels
-     *   of the given output channel.
-     */
-    public List getSinkChannels(IOPort port, int channelNumber) {
-        List sinkChannels = new LinkedList();
-        Receiver[][] remoteReceivers;
-
-        // due to reason stated in getReference(String), 
-        // we cannot do: if (port.isInput())...
-        if (port.isOutput()) {
-            remoteReceivers = port.getRemoteReceivers();
-        } else {
-            remoteReceivers = port.deepGetReceivers();
-        }
-
-        if (remoteReceivers.length == 0) {
-            // This is an escape method. This class will not call this
-            // method if the output port does not have a remote receiver.
-            return sinkChannels;
-        }
-
-        for (int i = 0; i < remoteReceivers[channelNumber].length; i++) {
-            IOPort sinkPort = remoteReceivers[channelNumber][i].getContainer();
-            Receiver[][] portReceivers;
-
-            if (sinkPort.isInput()) {
-                portReceivers = sinkPort.getReceivers();
-            } else {
-                portReceivers = sinkPort.getInsideReceivers();
-            }
-
-            for (int j = 0; j < portReceivers.length; j++) {
-                for (int k = 0; k < portReceivers[j].length; k++) {
-                    if (remoteReceivers[channelNumber][i] == portReceivers[j][k]) {
-                        Channel sinkChannel = new Channel(sinkPort, j);
-                        sinkChannels.add(sinkChannel);
-                        break;
-                    }
-                }
-            }
-        }
-
-        return sinkChannels;
-    }
-
-    /** Get the size of a parameter. The size of a parameter
-     *  is the length of its array if the parameter's type is array,
-     *  and 1 otherwise.
-     *  @param name The name of the parameter.
-     *  @return The size of a parameter.
-     *  @exception IllegalActionException If no port or parameter of
-     *   the given name is found.
-     */
-    public int getSize(String name) throws IllegalActionException {
-        int size = 1;
-
-        // Try if the name is a parameter.
-        Attribute attribute = _component.getAttribute(name);
-
-        if (attribute != null) {
-            // FIXME:  Could it be something other than variable?
-            if (attribute instanceof Variable) {
-                Token token = ((Variable) attribute).getToken();
-
-                if (token instanceof ArrayToken) {
-                    return ((ArrayToken) token).length();
-                }
-
-                return 1;
-            }
-        }
-
-        throw new IllegalActionException(_component, "Attribute not found: "
-                + name);
-    }
-
-    /** Return the translated type function invocation string.
-     *  @param functionString The string within the $typeFunc() macro.
-     *  @return The translated type function invocation string.
-     *  @exception IllegalActionException The given function string is
-     *   not well-formed.
-     */
-    public String getTypeFuncInvocation(String functionString)
-            throws IllegalActionException {
-        functionString = processCode(functionString);
-
-        // i.e. "$typeFunc(token, add(arg1, arg2, ...))"
-        // this transforms to ==> 
-        // "functionTable[token->type][FUNC_add] (token, arg1, arg2, ...)"
-        // FIXME: we need to do some more smart parsing to find the following
-        // indexes.
-        int commaIndex = functionString.indexOf(',');
-        int openFuncParenIndex = functionString.indexOf('(', commaIndex);
-        int closeFuncParenIndex = functionString.lastIndexOf(')');
-
-        // Syntax checking.
-        if ((commaIndex == -1) || (openFuncParenIndex == -1)
-                || (closeFuncParenIndex != (functionString.length() - 1))) {
-            throw new IllegalActionException(
-                    "Bad Syntax with the $typeFunc() macro. "
-                            + "[i.e. -- $typeFunc(token.func(arg1, arg2, ...))]");
-        }
-
-        String typedToken = functionString.substring(0, commaIndex).trim();
-        String functionName = functionString.substring(commaIndex + 1,
-                openFuncParenIndex).trim();
-
-        // Record the referenced type function in the infoTable.
-        HashSet functions = (HashSet) _infoTable.get(FIELD_TYPEFUNC);
-
-        if (functions == null) {
-            functions = new HashSet();
-            _infoTable.put(FIELD_TYPEFUNC, functions);
-        }
-
-        functions.add(functionName);
-
-        return "functionTable[" + typedToken + "->type][FUNC_" + functionName
-                + "](" + typedToken + ", "
-                + functionString.substring(openFuncParenIndex + 1);
-    }
-
-    /** Get the write offset in the buffer of a given channel to which a token
-     *  should be put. The channel is given by its containing port and
-     *  the channel number in that port.
-     *  @param inputPort The given port.
-     *  @param channelNumber The given channel number.
-     *  @return The offset in the buffer of a given channel to which a token
-     *   should be put.
-     */
-    public Object getWriteOffset(IOPort inputPort, int channelNumber)
-            throws IllegalActionException {
-        if (inputPort.getContainer() == _component) {
-            return ((Object[]) _writeOffsets.get(inputPort))[channelNumber];
-        } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
-                    .getContainer());
-            return actorHelper.getWriteOffset(inputPort, channelNumber);
-        }
-    }
-
-    /** Process the specified code, replacing macros with their values.
-     * @param code The code to process.
-     * @return The processed code.
-     * @exception IllegalActionException If illegal macro names are found.
-     */
-    public String processCode(String code) throws IllegalActionException {
-        StringBuffer result = new StringBuffer();
-        int currentPos = code.indexOf("$");
-
-        if (currentPos < 0) {
-            // No "$" in the string
-            return code;
-        }
-
-        result.append(code.substring(0, currentPos));
-
-        while (currentPos < code.length()) {
-            int openParenIndex = code.indexOf("(", currentPos + 1);
-            int closeParenIndex = _findCloseParen(code, openParenIndex);
-
-            if (closeParenIndex < 0) {
-                // No matching close parenthesis is found.
-                result.append(code.substring(currentPos));
-                return result.toString();
-            }
-
-            int nextPos = code.indexOf("$", closeParenIndex + 1);
-
-            if (nextPos < 0) {
-                //currentPos is the last "$"
-                nextPos = code.length();
-            }
-
-            String subcode = code.substring(currentPos, nextPos);
-
-            if ((currentPos > 0) && (code.charAt(currentPos - 1) == '\\')) {
-                // found "\$", do not make replacement.
-                result.append(subcode);
-                currentPos = nextPos;
-                continue;
-            }
-
-            boolean foundIt = false;
-            String macro = code.substring(currentPos + 1, openParenIndex);
-            macro = macro.trim();
-
-            List macroList = Arrays.asList(new String[] { "ref", "val",
-                    "actorSymbol", "actorClass", "new", "typeFunc", "size" });
-
-            if (macroList.contains(macro)) {
-                String name = code.substring(openParenIndex + 1,
-                        closeParenIndex);
-                name = name.trim();
-
-                if (macro.equals("ref")) {
-                    result.append(getReference(name));
-                } else if (macro.equals("val")) {
-                    result.append(getParameterValue(name, _component));
-                } else if (macro.equals("size")) {
-                    result.append(getSize(name));
-                } else if (macro.equals("actorSymbol")) {
-                    result.append(_component.getFullName().replace('.', '_'));
-                    result.append("_" + name);
-                } else if (macro.equals("actorClass")) {
-                    result.append(_component.getContainer().getName());
-                    result.append("_" + name);
-                } else if (macro.equals("new")) {
-                    result.append(getNewInvocation(name));
-                } else if (macro.equals("typeFunc")) {
-                    result.append(getTypeFuncInvocation(name));
-                } else {
-                    // This macro is not handled.
-                    throw new IllegalActionException("Macro is not handled.");
-                }
-
-                foundIt = true;
-                result.append(code.substring(closeParenIndex + 1, nextPos));
-            }
-
-            if (!foundIt) {
-                result.append(subcode);
-            }
-
-            currentPos = nextPos;
-        }
-
-        return result.toString();
-    }
-
-    /** Reset the offsets of all channels of all input ports of the
-     *  associated actor to the default value of 0.
-     */
-    public void resetInputPortsOffset() throws IllegalActionException {
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) inputPorts.next();
-
-            for (int i = 0; i < port.getWidth(); i++) {
-                setReadOffset(port, i, new Integer(0));
-                setWriteOffset(port, i, new Integer(0));
-            }
-        }
-    }
-
-    /** Set the buffer size of a given port.
-     *  @param port The given port.
-     *  @param channelNumber The given channel.
-     *  @param bufferSize The buffer size to be set to that port and channel.
-     */
-    public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
-        int[] bufferSizes = (int[]) _bufferSizes.get(port);
-        bufferSizes[channelNumber] = bufferSize;
-
-        // perhaps this step is redundant?
-        _bufferSizes.put(port, bufferSizes);
-    }
-
-    /** Set the code generator associated with this helper class.
-     *  @param codeGenerator The code generator associated with this
-     *   helper class.
-     */
-    public void setCodeGenerator(CodeGenerator codeGenerator) {
-        _codeGenerator = codeGenerator;
-    }
-
-    /** Set the read offset in a buffer of a given channel from which a token
-     *  should be read.
-     *  @param inputPort The given port.
-     *  @param channelNumber The given channel.
-     *  @param readOffset The offset to be set to the buffer of that channel.
-     */
-    public void setReadOffset(IOPort inputPort, int channelNumber,
-            Object readOffset) throws IllegalActionException {
-        if (inputPort.getContainer() == _component) {
-            Object[] readOffsets = (Object[]) _readOffsets.get(inputPort);
-            readOffsets[channelNumber] = readOffset;
-        } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
-                    .getContainer());
-            actorHelper.setReadOffset(inputPort, channelNumber, readOffset);
-        }
-    }
-
-    /** Set the write offset in the downstream buffers connected to the given channel.
-     *  @param outputPort The given port.
-     *  @param channelNumber The given channel.
-     *  @param writeOffset The offset to be set to the buffer of that channel.
-     */
-    public void setSinkActorsWriteOffset(IOPort outputPort, int channelNumber,
-            Object writeOffset) throws IllegalActionException {
-        List sinkChannels = getSinkChannels(outputPort, channelNumber);
-
-        for (int i = 0; i < sinkChannels.size(); i++) {
-            Channel channel = (Channel) sinkChannels.get(i);
-            IOPort sinkPort = (IOPort) channel.port;
-            int sinkChannelNumber = channel.channelNumber;
-            setWriteOffset(sinkPort, sinkChannelNumber, writeOffset);
-        }
-    }
-
-    /** Set the write offset in a buffer of a given channel to which a token
-     *  should be put.
-     *  @param inputPort The given port.
-     *  @param channelNumber The given channel.
-     *  @param writeOffset The offset to be set to the buffer of that channel.
-     */
-    public void setWriteOffset(IOPort inputPort, int channelNumber,
-            Object writeOffset) throws IllegalActionException {
-        if (inputPort.getContainer() == _component) {
-            Object[] writeOffsets = (Object[]) _writeOffsets.get(inputPort);
-            writeOffsets[channelNumber] = writeOffset;
-        } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
-                    .getContainer());
-            actorHelper.setWriteOffset(inputPort, channelNumber, writeOffset);
-        }
-    }
-
-    /////////////////////////////////////////////////////////////////////
-    ////                      public variables                       ////
-
-    /**
-     * The new constructor field key to access the info table.
-     */
-    public static final String FIELD_NEW = "new";
-
-    /**
-     * The reference field key to access the info table.
-     */
-    public static final String FIELD_REF = "ref";
-
-    /**
-     * The type function field key to access the info table.
-     */
-    public static final String FIELD_TYPEFUNC = "typeFunc";
-
-    /////////////////////////////////////////////////////////////////////
-    ////                      public inner classes                   ////
-
-    /** A class that defines a channel object. A channel object is
-     *  specified by its port and its channel index in that port.
-     */
-    public class Channel {
-        /** Construct the channel with the given port and channel number.
-         * @param portObject The given port.
-         * @param channel The channel number of this object in the given port.
-         */
-        public Channel(IOPort portObject, int channel) {
-            port = portObject;
-            channelNumber = channel;
-        }
-
-        /** The port that contains this channel.
-         */
-        public IOPort port;
-
-        /** The channel number of this channel.
-         */
-        public int channelNumber;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected methods.                    ////
-
-    /** Create the buffer and offset map for each input port, which is
-     *  associated with this helper object. A key of the map is an IOPort
-     *  of the actor. The corresponding value is an array of Channel objects.
-     *  The i-th channel object corresponds to the i-th channel of that IOPort.
-     *  This method is used to maintain a internal HashMap of channels of the
-     *  actor. The channel objects in the map are used to keep track of the
-     *  offsets in their buffer.
-     */
-    protected void _createBufferAndOffsetMap() throws IllegalActionException {
-        //We only care about input ports where data are actually stored
-        //except when an output port is not connected to any input port.
-        //In that case the variable corresponding to the unconnected output
-        //port always has size 1 and the assignment to this variable is 
-        //performed just for the side effect.
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort port = (IOPort) inputPorts.next();
-            int length = port.getWidth();
-
-            //if (length == 0) {
-            //    length = 1;
-            //}
-            int[] bufferSizes = new int[length];
-            _bufferSizes.put(port, bufferSizes);
-
-            Director directorHelper = (Director) _getHelper((NamedObj) (((Actor) _component)
-                    .getExecutiveDirector()));
-
-            for (int i = 0; i < port.getWidth(); i++) {
-                int bufferSize = directorHelper.getBufferSize(port, i);
-                setBufferSize(port, i, bufferSize);
-            }
-
-            Object[] readOffsets = new Object[length];
-            _readOffsets.put(port, readOffsets);
-
-            Object[] writeOffsets = new Object[length];
-            _writeOffsets.put(port, writeOffsets);
-        }
-    }
-
-    /** Given a port or parameter, append a string in the form
-     *  "static <i>type</i> <i>objectName</i>" to the given string buffer.
-     *  Return true if the type of the port or parameter is ArrayType. This
-     *  method is only called in the generateVariableDeclarations() method.
-     *  @param namedobj The port or parameter.
-     *  @param code The string buffer that contains the generated code.
-     *  @return True if the type the port or parameter is ArrayType.
-     */
-    protected static boolean _generateType(NamedObj namedobj, StringBuffer code) {
-        String type = "";
-
-        if (namedobj instanceof Parameter) {
-            type = ((Parameter) namedobj).getType().toString();
-        } else if (namedobj instanceof TypedIOPort) {
-               // search from the preprocess info table to see if there is any port
-            // type conversion. If yes, then the type is given in the table.
-            Hashtable declarations = 
-                    (Hashtable) _infoTable.get(FIELD_REFDECLARETYPE);
-            if (declarations != null) {
-                    type = (String) declarations.get(namedobj.getName());
-            }
-            
-            // if no given type declaration, then use the type of the port.
-            if (type.equals("")) {
-                    type = ((TypedIOPort) namedobj).getType().toString();
-            }
-        }
-
-        boolean isArrayType = false;
-
-        if (type.charAt(0) == '{') {
-            // This is an ArrayType.
-            StringTokenizer tokenizer = new StringTokenizer(type, "{}");
-            type = tokenizer.nextToken();
-            isArrayType = true;
-        }
-
-        if (type.equals("general")) {
-            type = "Token";
-        } else if (type.equals("string")) {
-            type = "char*";
-        } else if (type.equals("boolean")) {
-            type = "unsigned char";
-        }
-
-        code.append("static ");
-        code.append(type);
-        code.append(" ");
-        code.append(namedobj.getFullName().replace('.', '_'));
-        return isArrayType;
-    }
-
-    /** Get the code generator helper associated with the given component.
-     *  @param component The given component.
-     *  @return The code generator helper.
-     *  @exception IllegalActionException If the helper class cannot be found.
-     */
-    protected ComponentCodeGenerator _getHelper(NamedObj component)
-            throws IllegalActionException {
-        return _codeGenerator._getHelper(component);
-    }
-
-    /** Return a number of spaces that is proportional to the argument.
-     *  If the argument is negative or zero, return an empty string.
-     *  @param level The level of indenting represented by the spaces.
-     *  @return A string with zero or more spaces.
-     */
-    protected static String _getIndentPrefix(int level) {
-        return StringUtilities.getIndentPrefix(level);
     }
 
     /** This class implements a scope, which is used to generate the

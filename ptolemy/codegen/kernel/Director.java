@@ -27,7 +27,9 @@
  */
 package ptolemy.codegen.kernel;
 
+import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -110,10 +112,29 @@ public class Director implements ActorCodeGenerator {
         //Iterator actors = actorsList.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            // Initialize code for the actor.
             code.append(helperObject.generateInitializeCode());
-        }
 
+            // Initialize code for inter-actor port type conversion. 
+            Hashtable refTable = (Hashtable) helperObject.
+                getInfo(CodeGeneratorHelper.FIELD_REFCONVERT);
+            if (refTable != null) {
+                Enumeration ports = refTable.keys();  
+                while (ports.hasMoreElements()) {
+                    String portRef = (String) ports.nextElement();
+                    String convertMethod = (String) refTable.get(portRef);
+                    
+                    // Initialize only if it is converting to a Token type.
+                    if (convertMethod.indexOf("new") > -1) {
+                        code.append(helperObject.processCode("\t" +
+                                   helperObject._getReference(portRef) + 
+                                   " = " + convertMethod + "(0);\n"));
+                    }
+                }
+            }
+        }
         return code.toString();
     }
 

@@ -5,8 +5,8 @@ struct array {
     Token **elements;   // array of pointers to the elements. 
 };
 typedef struct array* ArrayToken;
-
 Token* Array_convert(Token* token);
+void Array_print(Token* thisToken);
 /**/
 
 
@@ -16,33 +16,33 @@ Token* Array_convert(Token* token);
 // and they are in the form of (element, element, ...).
 Token* Array_new(int size, ...) {   
     int i;
-    Token* element = (Token*) (&size + 1);
+    Token** element = (Token**) (&size + 1);
     char doConvert = 0; // false
 
-    Token result = (Token*) malloc(sizeof(Token*));
-    result->payload.Array = (ArrayToken*) malloc(sizeof(ArrayToken));
-    result->elements = (Token**) calloc(size, sizeof(Token*));
+    Token* result = (Token*) malloc(sizeof(Token*));
     result->type = TYPE_Array;
-    result->size = size;
-    result->elementsType = element->type;
+    result->payload.Array = (ArrayToken) malloc(sizeof(struct array));
+    result->payload.Array->elements = (Token**) calloc(size, sizeof(Token*));
+    result->payload.Array->size = size;
+    result->payload.Array->elementsType = (*element)->type;
 
-    for (i = 0; i < size; i++, element++;) {
-        if (element->type != result->elementsType) {
+    for (i = 0; i < size; i++, element++) {
+        if ((*element)->type != result->payload.Array->elementsType) {
             doConvert = 1;  // true
 
             // Get the max type.
-            if (element->type > result->elementsType) {
-                result->elementsType = element->type;
+            if ((*element)->type > result->payload.Array->elementsType) {
+                result->payload.Array->elementsType = (*element)->type;
             }
         }
-        result->elements[i] = *element;
+        result->payload.Array->elements[i] = *element;
     }
 
     // If elements are not of the same type, 
     // convert all the elements to the max type.
     if (doConvert) {
         for (i = 0; i < size; i++) {
-            result->elements[i] = (Token*) functionTable[result->elementsType][FUNC_convert](result->elements[i]);
+            result->payload.Array->elements[i] = (Token*) functionTable[result->payload.Array->elementsType][FUNC_convert](result->payload.Array->elements[i]);
         }
     }
     return result;
@@ -101,7 +101,7 @@ void Array_print(Token* thisToken) {
         if (i != 0) {
             printf(", ");
         }
-        functionTable[((Array*) thisToken)->elementsType][FUNC_print](thisToken->payload.Array->elements[i]);
+        functionTable[thisToken->payload.Array->elementsType][FUNC_print](thisToken->payload.Array->elements[i]);
     }
     printf("}");
 }

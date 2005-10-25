@@ -1,6 +1,7 @@
 /***declareBlock***/
 typedef char* StringToken;
 Token* String_convert(Token* token);
+void String_print(Token* thisToken);
 /**/
 
 

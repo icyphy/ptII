@@ -28,7 +28,9 @@
 package ptolemy.codegen.kernel;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Set;
 
 import ptolemy.codegen.c.actor.lib.CodeStream;
@@ -110,8 +112,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public Set generateSharedCode() throws IllegalActionException {
         super.generateSharedCode();
-
-        _codeStream = new CodeStream(this);
         return new HashSet();
     }
 
@@ -126,8 +126,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public String generateWrapupCode() throws IllegalActionException {
         super.generateWrapupCode();
-
-        //_codeStream = null;
         return "";
     }
 
@@ -200,5 +198,5 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /**
      * The code stream associated with this helper.
      */
-    protected CodeStream _codeStream;
+    protected CodeStream _codeStream = new CodeStream(this);
 }

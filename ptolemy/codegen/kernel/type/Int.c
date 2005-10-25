@@ -1,7 +1,7 @@
 /***declareBlock***/
 typedef int IntToken;
-
 Token* Int_convert(Token* token);
+void Int_print(Token* thisToken);
 /**/
 
 
@@ -27,9 +27,9 @@ void Int_delete(Token* token) {
 Token* Int_convert(Token* token) {
     switch (token->type) {
         #ifdef TYPE_Double
-        TYPE_Double:
-            token->payload.Int = floor(token->payload.Double);
-            break;
+            case TYPE_Double:
+                token->payload.Int = floor(token->payload.Double);
+                break;
         #endif
         
         // FIXME: not finished

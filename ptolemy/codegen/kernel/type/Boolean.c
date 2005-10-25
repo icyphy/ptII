@@ -1,7 +1,7 @@
 /***declareBlock***/
 typedef char BooleanToken;
-
 Token* Boolean_convert(Token* token);
+void Boolean_print(Token* thisToken);
 /**/
 
 
