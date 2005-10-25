@@ -86,7 +86,7 @@ install: jclass
 
 test: jclass
 	./nc2moml -v tos/lib/Counters
-	"$(PTII)/bin/vergil" -ptinyos ../../demo/SenseToLedsInWireless/SenseToLedsInWireless.xml 
+	"$(PTII)/bin/vergil" -viptos ../../demo/SenseToLedsInWireless/SenseToLedsInWireless.xml 
 
 include $(ROOT)/mk/ptcommon.mk
 
