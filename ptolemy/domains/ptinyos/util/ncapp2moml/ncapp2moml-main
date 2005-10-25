@@ -70,14 +70,16 @@ components.  Any errors will be redirected \
 to $outputprefix/$ENV{NCAPP2MOML_LOG}\n");
 
 print("\nYou will see a series of \"+\" and \"-\" and \"!\" and \"?\".  \
-A \"+\" means that the .nc file had no parse errors.  \
-A \"-\" means that the .nc file had parse problems.  \
+A \"+\" means that the .nc file had no ncc compiler errors.  \
+A \"-\" means that the .nc file had some ncc compiler errors or warnings.  \
 A \"!\" means that this script does not know how to deal with the component name \
   found in the makefile.\
 A \"?\" means that this script could not find the component name in the makefile. \
 Most errors or warnings can be ignored here, since some files \
-in the TinyOS tree do not compile properly or the correct compiler arguments \
-or include files cannot be found.\n");
+  in the TinyOS tree do not compile properly or the correct compiler arguments \
+  or include files cannot be found.
+Detailed warnings can be viewed in <outputdir>/component.txt if you are running \
+  ncapp2moml with the -v (verbose) option. \n");
 
 foreach $mydir (@mydirs) {
   # Find all makefiles.  Look for "Makefile" or "makefile".
