@@ -75,11 +75,11 @@ import org.xml.sax.SAXException;
  <pre>
  java -classpath $PTII ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoML \
  /home/celaine/ptII/vendors/ptinyos/tinyos-1.x \
- /home/celaine/ptII/vendors/ptinyos/moml \
+ /home/celaine/ptII/vendors/ptinyos/momlapp \
  .ncxml \
  .opts \
- /home/celaine/ptII/vendors/ptinyos/moml \
- /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
+ /home/celaine/ptII/vendors/ptinyos/momlapp \
+ /home/celaine/ptII/vendors/ptinyos/momlapp/.ncapp2moml-tempfile
  </pre>
 
  .tempfile contains:
@@ -185,12 +185,35 @@ public class NCApp2MoML {
         }
     }
 
+    /** Read in the opts file
+     *  @param optsInputFile The file to read.
+     *  @return The opts string, or empty string if there is none.
+     */
+    public static String readOptsFile(String optsInputFile) {
+    	String opts = "";
+        try {
+            BufferedReader in =
+                new BufferedReader(new FileReader(optsInputFile));
+
+            opts = in.readLine();
+        
+            in.close();
+        } catch (Exception e) {
+            // Do nothing.
+        }
+        return opts;
+    }
+
     /** Generate the .moml file for this nesC application.
      *
      *  @param componentName The name of the component (no suffix).
      *  @param outputFile The file to generate.
+     *  @param directorOutputDir The output directory to pass to the PtinyOSDirector.
+     *  @param opts The compiler options (PFLAGS) to pass to the PtinyOSDirector.
      */
-    public void generatePtinyOSModel(String componentName, String outputFile) {
+    public void generatePtinyOSModel(String componentName, String outputFile,
+            String directorOutputDir,
+            String opts) {
         // Set the name of this class to the name of this nesC component.
         Element root = new Element("entity");
         root.setAttribute("name", componentName);
@@ -208,6 +231,51 @@ public class NCApp2MoML {
                 "ptolemy.domains.ptinyos.kernel.PtinyOSDirector");
         root.addContent(director);
 
+        // Set the PFLAGS value of the PtinyOSDirector.
+        //        <property name="pflags" class="ptolemy.data.expr.StringParameter" value="-I%T/../apps/Blink">
+        Element pflags = new Element("property");
+        pflags.setAttribute("name", "pflags");
+        pflags.setAttribute("class", "ptolemy.data.expr.StringParameter");
+        pflags.setAttribute("value", opts.trim());
+        director.addContent(pflags);
+
+        // Set the destination directory parameter of the PtinyOSDirector.
+        // <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/Blink/output">
+        Element destinationDirectory = new Element("property");
+        destinationDirectory.setAttribute("name", "destinationDirectory");
+        destinationDirectory.setAttribute("class", "ptolemy.data.expr.FileParameter");
+        destinationDirectory.setAttribute("value", directorOutputDir);
+        director.addContent(destinationDirectory);
+
+        //-----------------------------------------------------------------
+        // Add a text annotation to tell the user to layout the graph.
+//     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+//        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To automatically rearrange the component layout,&#xA;select Graph | Automatic Layout from the menu, or&#xA;type Ctrl-T." />        
+//        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 345.0]" />
+//    </property>
+        Element annotation = new Element("property");
+        annotation.setAttribute("name", "Annotation");
+        annotation.setAttribute("class",
+                "ptolemy.vergil.kernel.attributes.TextAttribute");
+        root.addContent(annotation);
+
+        Element text = new Element("property");
+        text.setAttribute("name", "text");
+        text.setAttribute("class", "ptolemy.kernel.util.StringAttribute");
+        text.setAttribute("value",
+                "To automatically rearrange the component layout," 
+                + "\nselect Graph | Automatic Layout from the menu,"
+                + "\nor type Ctrl-T.");
+        annotation.addContent(text);
+
+        Element location = new Element("property");
+        location.setAttribute("name", "_location");
+        location.setAttribute("class", "ptolemy.kernel.util.Location");
+        location.setAttribute("value", "[20.0, 345.0]");
+        annotation.addContent(location);
+
+        //-----------------------------------------------------------------
+        
         // Traverse the configuration graph and set up the data structures.
         readLinks();
 
@@ -319,6 +387,11 @@ public class NCApp2MoML {
                         inputSuffixNC);
                 String xmlInputFile = inputPrefix + _FILESEPARATOR + xmlSuffix;
 
+                // Determine the opts file name (with path) of the file.
+                String optsSuffix = inputfilename.replaceFirst("\\.nc$",
+                        inputSuffixOpts);
+                String optsInputFile = inputPrefix + _FILESEPARATOR + optsSuffix;
+                
                 // Determine the component name.
                 String[] subdirs = inputfilename.split(_FILESEPARATOR);
                 String componentName = subdirs[subdirs.length - 1];
@@ -330,6 +403,15 @@ public class NCApp2MoML {
                 String momlOutputFile = outputPrefix + _FILESEPARATOR
                         + momlSuffix;
 
+                // Determine the PtinyOSDirector output directory.
+                String[] directorOutputDirSubDirs = momlOutputFile.split(
+                        _FILESEPARATOR);
+                String directorOutputDir = momlOutputFile.replaceFirst(
+                        directorOutputDirSubDirs[
+                                directorOutputDirSubDirs.length - 1]
+                        + "$", "");
+                directorOutputDir = directorOutputDir + "output";
+                
                 try {
                     // Parse the nesC xml file.
                     if (new NDReader().parse(xmlInputFile)) {
@@ -341,8 +423,9 @@ public class NCApp2MoML {
 
                     // Generate the .moml file.
                     try {
+                        String opts = readOptsFile(optsInputFile);
                         new NCApp2MoML().generatePtinyOSModel(componentName,
-                                momlOutputFile);
+                                momlOutputFile, directorOutputDir, opts);
                     } catch (Exception e) {
                         System.err.println("Errors while generating "
                                 + momlOutputFile + " because of exception: "
