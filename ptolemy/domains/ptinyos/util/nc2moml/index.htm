@@ -92,12 +92,17 @@
               <li> Download WinAVR
    	       <ol> 
                   <li>Go to 
-                    <a href="http://winavr.sourceforge.net/#in_browser" target="_top"><code>http://winavr.sourceforge.net/</code></a>              
-                  <li>Click on "Package"
-                  <li>Download the latest release
-                    <br> The link should be at the top of the page 
-                    and have a name like "WinAVR 20040404"
-                  <li>Install Winavr in any directory 
+                    <a href="http://sourceforge.net/project/showfiles.php?group_id=68108#in_browser" target="_top"><code>http://sourceforge.net/project/showfiles.php?group_id=68108</code></a>              
+                  <li>Download
+<a href="http://prdownloads.sourceforge.net/winavr/WinAVR-20040404-bin-install.exe?download" target="_top"><code>WinAVR-20040404-bin-install.exe</code>
+                  <br><b>Note:</b> Do <b>not</b> install 
+		  <code>WinAVR-20050214-install.exe</code>, as of 10/05,
+		  it will not work.  When converting .nc files to .moml files,
+		  you will see messages about avr-gcc not being able to find
+		  cc1.  Instead, install
+		  <code>WinAVR-20040404-bin-install.exe</code>.
+                  <li>Install Winavr in any directory, <code>C:\WinAVR</code>
+		  is preferred.
                     <i>FIXME: Directories with spaces in the pathname might not work?</i>
                 </ol>
             </ul>
@@ -248,7 +253,7 @@ setenv PTINYOS_MOMLROOT $PTII/vendors/ptinyos/moml
 
       <li> Note: if you <B>change</B> <CODE>TOSROOT</CODE>
 	or <CODE>TOSDIR</CODE>, you must rerun <CODE>configure</CODE>
-<pre>
+<pre>n
 cd $PTII
 ./configure
 </pre>
