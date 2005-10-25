@@ -246,6 +246,16 @@ below are some things to be aware of
   of line characters are Windows end of line characters.
   </menu>
 
+
+<li> Log on to the cvs server and fix the permissions:
+<pre>
+cd /home/cvs/ptII
+chmod -R a+rX .
+find . -name "*.java,v" -exec chmod a-x {}\;
+find . -name "*makefile,v" -exec chmod a-x {}\;
+find . -name "*.tcl,v" -exec chmod a-x {}\;
+</pre>
+
 <li> Tag the tree as the release tree and create a branch
 For more information about CVS, see the
 <a href="http://www.gigascale.org/softdevel/faq/1/" target="_top">Gigascale CVS Pages</a>
