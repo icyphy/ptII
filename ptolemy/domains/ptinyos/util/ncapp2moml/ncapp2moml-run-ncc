@@ -59,7 +59,7 @@ if ( -z "$ENV{NCAPP2MOML_LOG}") {
 }
 ####################
 
-# Create names of output file (complete path).
+# Create output names (complete path).
 $filename = $args[0];
 $output = $filename;
 $output =~ s/^$inputprefix/$outputprefix/;

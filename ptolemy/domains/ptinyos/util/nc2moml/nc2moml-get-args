@@ -32,7 +32,7 @@
 # Modification of the arguments to this script is for development
 # purposes only.
 
-# Usage: nc2moml-get-args <input prefix> <output prefix> <filenames with prefix>
+# Usage: nc2moml-get-args <input prefix> <output prefix> <output suffix> <filenames with prefix>
 
 if ($#ARGV < 1) {
   die "Usage: nc2moml-get-args <input prefix> <output prefix> <output suffix> <filenames with prefix>";

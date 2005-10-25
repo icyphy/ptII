@@ -32,10 +32,10 @@
 # Modification of the arguments to this script is for development
 # purposes only.
 
-# Usage: ncapp2moml-get-args <input prefix> <output prefix> <filenames with prefix>
+# Usage: ncapp2moml-get-args <input prefix> <output prefix> <output suffix> <filenames with prefix>
 
 if ($#ARGV < 1) {
-  die "Usage: ncapp2moml-get-args <input prefix> <output prefix> <output suffix> <filenames with prefix>";
+  die "Usage: ncapp2moml-get-args <input prefix> <output prefix> <.nc xml output suffix> <opts output suffix> <filenames with prefix>";
 }
 
 ##### SETTINGS #####
@@ -46,7 +46,12 @@ $DEFAULT_SENSORBOARD = "micasb";
 @args = @ARGV;
 $inputprefix = shift @args;
 $outputprefix = shift @args;
-$outputsuffix = shift @args;
+$outputsuffix_ncxml = shift @args;
+
+# Suffix for file that contains PFLAGS to pass to PtinyOSDirector.
+# Example: ".opts"
+$outputsuffix_opts = shift @args;
+
 @files = @args;
 
 #$here = $ENV{PWD};
@@ -116,10 +121,11 @@ foreach (@files) {
   }
   $opts = join(' ', @opts);
 
+  # Check to see if the -board= option is already the in opts array.
   my $has_sb = 0;
   foreach $opt (@opts) {
     if ($opt =~ /^-board=/) {
-      # Options list ontains sensorboard.
+      # Options list contains sensorboard.
       $has_sb = 1;
       last;
     }
@@ -129,7 +135,37 @@ foreach (@files) {
     $opts = "$opts -board=$DEFAULT_SENSORBOARD"
   }
 
-  system("$SRC_DIR/ncapp2moml-run-ncc $inputprefix $outputprefix $outputsuffix $mod $opts") == 0
+  # Look for include options in opts array.
+  my @ptinyos_pflags;
+  push @ptinyos_pflags, $pf;
+  foreach $opt (@opts) {
+    if ($opt =~ /^-I/) {
+      # Make sure we don't add the contents of $pf twice.
+      if (!($opt eq $pf)) {
+        push @ptinyos_pflags, $opt;
+      }
+    }
+  }
+  $ptinyos_pflags = join(' ', @ptinyos_pflags);
+
+  # Create output names.
+  $output = $mod;
+  $output =~ s/^$inputprefix/$outputprefix/;
+
+  # Create name of opts output file.
+  $ptinyos_pflags_outputfile = $output;
+  $ptinyos_pflags_outputfile =~ s/\.nc$/$outputsuffix_opts/;
+
+  # Create directory.
+  $outputdir = $output;
+  $outputdir =~ s/\/[\d\w.]+$//;
+  system("mkdir -p $outputdir") == 0
+    or die "call to mkdir failed in @args: $?";
+
+  # Write ptinyos_pflags to output file.
+  system("echo \"$ptinyos_pflags\" > $ptinyos_pflags_outputfile");
+
+  system("$SRC_DIR/ncapp2moml-run-ncc $inputprefix $outputprefix $outputsuffix_ncxml $mod $opts") == 0
     or die "call to $ncapp2moml_run_ncc failed in @args: $?";
 }
 

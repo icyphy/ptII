@@ -64,8 +64,9 @@ import org.xml.sax.SAXException;
  <pre>
  java -classpath $PTII ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoML \
  &lt;<i>.nc source prefix</i>&gt; \
- &lt;<i>xml input prefix</i>&gt; \
- &lt;<i>xml input suffix</i>&gt; \
+ &lt;<i>.nc xml input prefix</i>&gt; \
+ &lt;<i>.nc xml input suffix</i>&gt; \
+ &lt;<i>opts input suffix</i>&gt; \
  &lt;<i>moml output prefix</i>&gt; \
  <i>long path to file containing list of .nc files using short path</i>
  </pre>
@@ -76,6 +77,7 @@ import org.xml.sax.SAXException;
  /home/celaine/ptII/vendors/ptinyos/tinyos-1.x \
  /home/celaine/ptII/vendors/ptinyos/moml \
  .ncxml \
+ .opts \
  /home/celaine/ptII/vendors/ptinyos/moml \
  /home/celaine/ptII/vendors/ptinyos/moml/.tempfile
  </pre>
@@ -280,11 +282,13 @@ public class NCApp2MoML {
     public static void main(String[] args) throws IOException {
         // Check to make sure all necessary arguments have been passed
         // to program.
-        if (args.length < 5) {
+        if (args.length < 6) {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoMl "
-                    + "<.nc source prefix> " + "<xml input prefix> "
-                    + "<xml input suffix> " + "<moml output prefix> "
+                    + "<.nc source prefix> " + "<.nc xml input prefix> "
+                    + "<.nc xml input suffix> "
+                    + "<opts input suffix"
+                    + "<moml output prefix> "
                     + "[long path to file containing list of .nc files using "
                     + "short path]");
             return;
@@ -294,7 +298,8 @@ public class NCApp2MoML {
         int index = 0;
         String ncSourcePrefix = args[index++].trim();
         String inputPrefix = args[index++].trim();
-        String inputSuffix = args[index++].trim();
+        String inputSuffixNC = args[index++].trim();
+        String inputSuffixOpts = args[index++].trim();
         String outputPrefix = args[index++].trim();
         String inputfilelist = args[index++].trim();
 
@@ -311,7 +316,7 @@ public class NCApp2MoML {
             while ((inputfilename = in.readLine()) != null) {
                 // Determine the nesC xml name (with path) of the file.
                 String xmlSuffix = inputfilename.replaceFirst("\\.nc$",
-                        inputSuffix);
+                        inputSuffixNC);
                 String xmlInputFile = inputPrefix + _FILESEPARATOR + xmlSuffix;
 
                 // Determine the component name.
