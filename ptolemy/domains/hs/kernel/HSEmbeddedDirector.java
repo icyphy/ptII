@@ -40,6 +40,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -304,7 +305,6 @@ public class HSEmbeddedDirector extends HSMultiSolverDirector implements
                     + "interface, for example, a continuous "
                     + "time composite actor.");
         }
-
         super.preinitialize();
     }
 
@@ -364,14 +364,26 @@ public class HSEmbeddedDirector extends HSMultiSolverDirector implements
         ODESolver solver = getCurrentODESolver();
         solver.fire();
         _produceOutputs();
+    }
 
-        //        // propogate resolved states to output actors.
-        //        Iterator outputActors = _schedule.get(
-        //                CTSchedule.OUTPUT_ACTORS).actorIterator();
-        //        while (outputActors.hasNext() && !_stopRequested) {
-        //            Actor actor = (Actor) outputActors.next();
-        //            actor.fire();
-        //        }
+    /** This director can only control the maximum step size used for 
+     *  integration. All other parameter values are inherited from the 
+     *  enclosing hybrid system directors.
+     */
+    protected void _initParameters() {
+        super._initParameters();
+        // Only allow maxStepSize parameter visible.
+        // All the other parameters are inherited from the upper leve directors.
+        startTime.setVisibility(Settable.NONE);
+        stopTime.setVisibility(Settable.NONE);
+        initStepSize.setVisibility(Settable.NONE);
+        minStepSize.setVisibility(Settable.NONE);
+        maxIterations.setVisibility(Settable.NONE);
+        errorTolerance.setVisibility(Settable.NONE);
+        valueResolution.setVisibility(Settable.NONE);
+        synchronizeToRealTime.setVisibility(Settable.NONE);
+        timeResolution.setVisibility(Settable.NONE);
+        ODESolver.setVisibility(Settable.NONE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -383,4 +395,5 @@ public class HSEmbeddedDirector extends HSMultiSolverDirector implements
     // Indicates whether actors in the dynamic actor schedule and the
     // state transition schedule are satisfied with the current step size.
     private boolean _stateAcceptable;
+
 }

@@ -84,6 +84,11 @@ public interface CTGeneralDirector {
      */
     public Time getIterationBeginTime();
 
+    /** Return the class name for the ODE solver.
+     *  @return The class name for the ODE solver.
+     */
+    public String getODESolverClassName();
+
     /** Return true if the current phase of execution is a discrete one.
      *  @return true if the current phase of execution is a discrete one.
      */

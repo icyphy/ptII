@@ -401,6 +401,19 @@ public class HSFSMDirector2 extends HSFSMDirector {
         return getModelNextIterationTime().getDoubleValue();
     }
 
+    /** get the ODE solver class name.
+     *  @return The ODE solver class name.
+     */
+    public String getODESolverClassName() {
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
+
+        if (executiveDirector != null) {
+            return executiveDirector.getODESolverClassName();
+        } else {
+            return null;
+        }
+    }
+
     /** Restore the states of all the enabled refinements to the
      *  previously marked states.
      */

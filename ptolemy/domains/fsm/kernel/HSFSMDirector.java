@@ -456,6 +456,17 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
         }
     }
 
+    /** get the ODE solver class name */
+    public String getODESolverClassName() {
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
+
+        if (executiveDirector != null) {
+            return executiveDirector.getODESolverClassName();
+        } else {
+            return null;
+        }
+    }
+
     /** Return true if the enabled refinements may produce events.
      *  @return True if the enabled refinements may produce events.
      */
