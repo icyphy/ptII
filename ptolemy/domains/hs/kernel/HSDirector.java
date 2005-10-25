@@ -668,7 +668,7 @@ public abstract class HSDirector extends StaticSchedulingDirector implements
         // because this method provides complete new information.
         // Default is a HSFSMDirector, while FSMDirector is also in the array.
         String[] defaultSuggestions = new String[2];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.NewHSFSMDirector";
+        defaultSuggestions[0] = "ptolemy.domains.hs.kernel.HSFSMDirector2";
         defaultSuggestions[1] = "ptolemy.domains.fsm.kernel.FSMDirector";
         return defaultSuggestions;
     }

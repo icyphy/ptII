@@ -58,6 +58,7 @@ JSRCS = \
 	HSBaseIntegrator.java \
 	HSDirector.java \
 	HSEmbeddedDirector.java \
+	HSFSMDirector2.java \
 	HSMixedSignalDirector.java \
 	HSMultiSolverDirector.java \
 	HSSchedule.java \

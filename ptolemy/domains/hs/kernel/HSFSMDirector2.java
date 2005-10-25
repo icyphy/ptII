@@ -25,7 +25,7 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-package ptolemy.domains.fsm.kernel;
+package ptolemy.domains.hs.kernel;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -42,6 +42,11 @@ import ptolemy.domains.ct.kernel.CTExecutionPhase;
 import ptolemy.domains.ct.kernel.CTGeneralDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
+import ptolemy.domains.fsm.kernel.FSMActor;
+import ptolemy.domains.fsm.kernel.HSFSMDirector;
+import ptolemy.domains.fsm.kernel.RelationList;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -75,12 +80,12 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (liuxj)
  */
-public class NewHSFSMDirector extends HSFSMDirector {
+public class HSFSMDirector2 extends HSFSMDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
      */
-    public NewHSFSMDirector() {
+    public HSFSMDirector2() {
         super();
     }
 
@@ -96,7 +101,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
      *  @exception NameDuplicationException If the container is not a
      *   CompositeActor and the name collides with an entity in the container.
      */
-    public NewHSFSMDirector(CompositeEntity container, String name)
+    public HSFSMDirector2(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -106,7 +111,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this director.
      */
-    public NewHSFSMDirector(Workspace workspace) {
+    public HSFSMDirector2(Workspace workspace) {
         super(workspace);
     }
 
@@ -168,7 +173,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
             _debug(getName(), " fire.");
         }
 
-        _ctrl._readInputs();
+        _readInputs();
 
         ///////////////////////////////////////////////////////////////////
         // Handle preemptive transitions
@@ -184,7 +189,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
         // Check enabled transitions at the end of a continuous phase
         // execution where the accuracy of the current step size is checked.
         if (isDiscretePhase()) {
-            Transition transition = _ctrl._chooseTransition(_currentState
+            Transition transition = _chooseTransition(_currentState
                     .preemptiveTransitionList());
 
             // record the enabled preemptive transition
@@ -242,7 +247,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
             }
         }
 
-        _ctrl._readOutputsFromRefinement();
+        _readOutputsFromRefinement();
 
         //////////////////////////////////////////////////////////////////
         // Handle nonpreemptive transitions
@@ -260,7 +265,7 @@ public class NewHSFSMDirector extends HSFSMDirector {
         if (isDiscretePhase()) {
             // Note that the output actions associated with the transition
             // are executed.
-            Transition transition = _ctrl._chooseTransition(_currentState
+            Transition transition = _chooseTransition(_currentState
                     .nonpreemptiveTransitionList());
 
             _transitionHasEvent = false;
@@ -426,13 +431,13 @@ public class NewHSFSMDirector extends HSFSMDirector {
 
         // check enabled transitions.
         try {
-            List enabledTransitions = _ctrl._checkTransition(_currentState
+            List enabledTransitions = _checkTransition(_currentState
                     .preemptiveTransitionList());
 
             if (enabledTransitions.size() != 0) {
                 hasCurrentEvent = true;
             } else {
-                enabledTransitions = _ctrl._checkTransition(_currentState
+                enabledTransitions = _checkTransition(_currentState
                         .nonpreemptiveTransitionList());
 
                 if (enabledTransitions.size() != 0) {
@@ -555,14 +560,14 @@ public class NewHSFSMDirector extends HSFSMDirector {
             }
 
             // Second step:
-            _ctrl._readInputs();
+            _readInputs();
 
             // FIXME: make some private methods to do the following repeated 
             // operations.
             // It seems very time consuming, try to optimize it.
             // Check if there is any preemptive transition enabled.
-            List preemptiveEnabledTransitions = _ctrl
-                    ._checkTransition(_currentState.preemptiveTransitionList());
+            List preemptiveEnabledTransitions = 
+                _checkTransition(_currentState.preemptiveTransitionList());
 
             if (preemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
@@ -571,9 +576,8 @@ public class NewHSFSMDirector extends HSFSMDirector {
             }
 
             // Check if there is any non-preemptive transition enabled.
-            List nonpreemptiveEnabledTransitions = _ctrl
-                    ._checkTransition(_currentState
-                            .nonpreemptiveTransitionList());
+            List nonpreemptiveEnabledTransitions = 
+                _checkTransition(_currentState.nonpreemptiveTransitionList());
 
             if (nonpreemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
