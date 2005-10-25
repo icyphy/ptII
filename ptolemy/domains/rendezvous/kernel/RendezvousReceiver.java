@@ -123,7 +123,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
             throw new InternalErrorException("No receivers!");
         }
 
-        boolean needWait = false;
         Hashtable result;
 
         synchronized (director) {
