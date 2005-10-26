@@ -189,7 +189,8 @@ public class DistributedSDFDirector extends SDFDirector {
     public Parameter parallelSchedule;
 
     /** A Parameter representing whether a pipelined parallel execution
-     *  will be performed.
+     *  will be performed. A pipelined execution only makes sense when
+     *  parallel execution is true. 
      *  This parameter must be a boolean.
      *  The default value is false BooleanToken.
      */
@@ -221,13 +222,10 @@ public class DistributedSDFDirector extends SDFDirector {
 
         if (attribute == parallelExecution) {
             invalidateSchedule();
-            System.out.println(parallelExecution.getToken());
 
             if (((BooleanToken) parallelExecution.getToken()) == BooleanToken.FALSE) {
                 System.out.println("equals FALSE");
                 pipelining.setToken(BooleanToken.FALSE);
-
-                //notify();
             }
         }
 
@@ -385,8 +383,13 @@ public class DistributedSDFDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** TODO:
-     * @throws IllegalActionException
+    /** Fills the queues with data tokens so that a fully parallel execution
+     *  can be performed. It performs firings of the different levels of the
+     *  schedule, adding one more level in every round. For example for a 
+     *  parallel schedule consisting of three levels, first if fires the
+     *  actors in level 1, followed by actors in levels 1 and 2. 
+     *
+     *  @throws IllegalActionException If there is no scheduler.
      */
     private void bufferingPhase() throws IllegalActionException {
         System.out.println("Buffering...");
@@ -617,6 +620,7 @@ public class DistributedSDFDirector extends SDFDirector {
 
     /** Create a LinkedList containing all the instances of Actor contained by
      *  the CompositeActor in which this director is embedded.
+     * 
      *  @return A LinkedList containing all the instances of Actor contained by
      *  the CompositeActor in which this director is embedded.
      */
@@ -825,20 +829,16 @@ public class DistributedSDFDirector extends SDFDirector {
         }
     }
 
-    /** TODO: Perform the dispatching of the schedule in parallel to the distributed
-     *  platform.
+    /** Perform the dispatching of the schedule in a pipelined parallel
+     *  manner on to the distributed platform.
      *  For each level of the Schedule, a commandMap is created and issued to
      *  the synchronizer.
-     *  //TODO: This can be made real static, precalculate and issue might
-     *  yield slight better results? Is it worth the effort?
-     * @throws IllegalActionException
-     *
+     * 
+     *  @throws IllegalActionException If there is no scheduler.
      *  @see ptolemy.distributed.client.ThreadSynchronizer
      *  @exception IllegalActionException If port methods throw it.
      */
     private void pipelinedParallelFire() throws IllegalActionException {
-        //        System.out.println("pipelinedParallelFire");
-        //        System.out.println("Iteration Count:" + _iterationCount);
         int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
 
         Scheduler scheduler = getScheduler();
@@ -916,8 +916,11 @@ public class DistributedSDFDirector extends SDFDirector {
      */
     private ThreadSynchronizer synchronizer = new ThreadSynchronizer();
 
-    /** TODO: Performs synchronization of the ClientThreads and used to issue
-     *  commandMaps.
+    /** Map of commands to be executed. This is used by the pipelined parallel
+     *  execution for efficiency. Since new levels are added everytime to the
+     *  commands map, after buffering, a sequence of a fully parallel
+     *  commandsMap is used several times. There is no point in recalculating
+     *  it again and it is reused from the buffering phase.
      */
     HashMap commandsMap = new HashMap();
 }
