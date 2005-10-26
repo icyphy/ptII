@@ -1,6 +1,6 @@
 /* An actor for barrier synchronization.
 
- Copyright (c) 2005 The Regents of the University of California.
+ Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,15 +27,19 @@
  */
 package ptolemy.domains.csp.lib;
 
-import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
-import ptolemy.domains.csp.kernel.CSPDirector;
-import ptolemy.domains.csp.kernel.RendezvousReceiver;
+import ptolemy.domains.csp.kernel.AbstractBranchController;
+import ptolemy.domains.csp.kernel.BranchActor;
+import ptolemy.domains.csp.kernel.ConditionalBranch;
+import ptolemy.domains.csp.kernel.ConditionalReceive;
+import ptolemy.domains.csp.kernel.ConditionalSend;
+import ptolemy.domains.csp.kernel.MultiwayBranchController;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,15 +57,16 @@ import ptolemy.kernel.util.NameDuplicationException;
  then the last input channel provides the token for the
  remaining ones. If there are no input channels,
  then an exception is thrown.
-
+ 
  @author Edward A. Lee
  @version $Id$
-@since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 
  */
-public class Barrier extends TypedAtomicActor {
+public class Barrier extends TypedAtomicActor implements
+        BranchActor {
+    
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -76,6 +81,7 @@ public class Barrier extends TypedAtomicActor {
     public Barrier(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _branchController = new MultiwayBranchController(this);
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
@@ -108,37 +114,127 @@ public class Barrier extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-
+        if (_debugging && _VERBOSE_DEBUGGING) {
+            if (!_listeningToBranchController) {
+                _branchController.addDebugListener(this);
+                _listeningToBranchController = true;
+            }
+        } else {
+            _branchController.removeDebugListener(this);
+            _listeningToBranchController = false;
+        }
         if (input.getWidth() == 0) {
-            throw new IllegalActionException(this,
-                    "Barrier requires at least one input.");
+            throw new IllegalActionException(this, "Barrier requires at least one input.");
         }
-
-        Director director = getDirector();
-
-        if (!(director instanceof CSPDirector)) {
-            throw new IllegalActionException(this,
-                    "Barrier can only be used with CSPDirector.");
+        ConditionalBranch[] branches = new ConditionalBranch[input.getWidth()];
+        for (int i = 0; i < input.getWidth(); i++) {
+            // The branch has channel i and ID i.
+            branches[i] = new ConditionalReceive(input, i, i);
+            if (_debugging && _VERBOSE_DEBUGGING) {
+                branches[i].addDebugListener(this);
+            }
         }
-
         if (_debugging) {
             _debug("Performing multiway rendezvous on the input channels.");
         }
-
-        Token[][] tokens = RendezvousReceiver.getFromAll(input.getReceivers(),
-                (CSPDirector) director);
-
-        if (_debugging) {
-            _debug("Input yielded the tokens: " + tokens);
+        if (!_branchController.executeBranches(branches)) {
+            if (_debugging) {
+                _debug("At least one input rendezvous was terminated.");
+            }
+            _terminate = true;
+            return;
         }
-
+        if (_debugging) {
+            _debug("Input channels completed.");
+            if (_VERBOSE_DEBUGGING) {
+                for (int i = 0; i < branches.length; i++) {
+                    branches[i].removeDebugListener(this);
+                }
+            }
+        }
+        Token[] data = new Token[input.getWidth()];
+        for (int i = 0; i < input.getWidth(); i++) {
+            data[i] = branches[i].getToken();
+            if (_debugging) {
+                _debug("Completed read input from channel " + i + ": " + data[i]);
+            }
+            if (data[i] == null) {
+                throw new InternalErrorException("Input data is null!");
+            }
+        }
+        
         if (output.getWidth() > 0) {
+            branches = new ConditionalBranch[output.getWidth()];
+            Token token = null;
+            for (int i = 0; i < output.getWidth(); i++) {
+                if (i < input.getWidth()) {
+                    token = data[i];
+                }
+                if (_debugging) {
+                    _debug("Sending output to channel " + i + ": " + token);
+                }
+                branches[i] = new ConditionalSend(output, i, i, token);
+                if (_debugging && _VERBOSE_DEBUGGING) {
+                    branches[i].addDebugListener(this);
+                }
+            }
             if (_debugging) {
                 _debug("Performing multiway rendezvous on the output channels.");
             }
-
-            RendezvousReceiver.putToAll(tokens, output.getRemoteReceivers(),
-                    (CSPDirector) director);
+            if (_branchController.executeBranches(branches)) {
+                if (_debugging) {
+                    _debug("Output channels completed.");
+                }
+            } else {
+                if (_debugging) {
+                    _debug("Output channels failed.");
+                }
+            }                
+            if (_debugging && _VERBOSE_DEBUGGING) {
+                for (int i = 0; i < branches.length; i++) {
+                    branches[i].removeDebugListener(this);
+                }
+            }
         }
     }
+   
+    /** Return the conditional branch control of this actor.
+     */
+    public AbstractBranchController getBranchController() {
+        return _branchController;
+    }
+    
+    /** Initialize this actor.
+     *  @exception IllegalActionException If a derived class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _terminate = false;
+    }
+
+    /** Return true unless one of the branches was terminated
+     *  during the execution of the fire() method.
+     *  @return True if another iteration can occur.
+     */
+    public boolean postfire() {
+        if (_debugging) {
+            _debug("Invoking postfire, which returns " + !_terminate);
+        }
+        return !_terminate;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** The controller for multiway branches. */
+    private MultiwayBranchController _branchController;
+    
+    /** Flag indicating whether a branch was terminated during fire(). */
+    private boolean _terminate = false;
+    
+    /** Boolean flag indicating that we are already listening to the branch controller. */
+    private boolean _listeningToBranchController = false;
+    
+    /** Flag to set verbose debugging messages. */
+    private static boolean _VERBOSE_DEBUGGING = true;
 }

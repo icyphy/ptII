@@ -103,12 +103,13 @@ import ptolemy.kernel.util.Workspace;
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (nsmyth)
- @Pt.AcceptedRating Red (cxh)
+ @Pt.AcceptedRating Yellow (liuj)
  @see ConditionalBranch
  @see ConditionalReceive
  @see ConditionalSend
  */
-public class CSPActor extends TypedAtomicActor implements BranchActor {
+public class CSPActor extends TypedAtomicActor implements
+        BranchActor {
     /** Construct a CSPActor in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -160,8 +161,7 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
      *  @exception IllegalActionException If the rendezvous fails
      *   (e.g. because of incompatible types).
      */
-    public int chooseBranch(ConditionalBranch[] branches)
-            throws IllegalActionException {
+    public int chooseBranch(ConditionalBranch[] branches) throws IllegalActionException {
         return _conditionalBranchController.chooseBranch(branches);
     }
 
@@ -200,7 +200,6 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
     public void delay(double delta) throws IllegalActionException {
         try {
             CSPDirector director = (CSPDirector) getDirector();
-
             synchronized (director) {
                 if (delta == 0.0) {
                     return;
@@ -242,7 +241,6 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
         super.initialize();
         _delayed = false;
         _cancelDelay = false;
-
         if (_debugging) {
             _conditionalBranchController.addDebugListener(this);
         }
@@ -256,7 +254,6 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
         if (_debugging) {
             _debug("Invoking postfire.");
         }
-
         return false;
     }
 
@@ -279,7 +276,6 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
      */
     protected void _cancelDelay() {
         Object director = getDirector();
-
         synchronized (director) {
             if (_delayed) {
                 _cancelDelay = true;
@@ -297,9 +293,7 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
             throw new InvalidStateException("CSPActor._continue() "
                     + "called on an actor that was not delayed: " + getName());
         }
-
         Object director = getDirector();
-
         synchronized (director) {
             _delayed = false;
             director.notifyAll();
@@ -313,8 +307,7 @@ public class CSPActor extends TypedAtomicActor implements BranchActor {
      */
     protected void _waitForDeadlock() {
         try {
-            CSPDirector director = (CSPDirector) getDirector();
-
+            CSPDirector director = (CSPDirector)getDirector();
             synchronized (director) {
                 _delayed = true;
                 director._actorDelayed(0.0, this);

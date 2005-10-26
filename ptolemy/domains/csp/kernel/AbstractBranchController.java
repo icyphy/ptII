@@ -1,7 +1,7 @@
 /* A base class for controllers that manages multiway or conditional
  branches within the CSP domain.
 
- Copyright (c) 2005 The Regents of the University of California.
+ Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -51,7 +51,6 @@ import ptolemy.kernel.util.Debuggable;
 
  @author Edward A. Lee
  @version $Id$
-@since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (bilung)
  @see ConditionalBranch
@@ -60,6 +59,7 @@ import ptolemy.kernel.util.Debuggable;
  @see ConditionalSend
  */
 public abstract class AbstractBranchController implements Debuggable {
+    
     /** Construct a controller in the specified container, which should
      *  be an actor that implements BranchActor.
      *  @param container The parent actor that contains this object.
@@ -80,13 +80,11 @@ public abstract class AbstractBranchController implements Debuggable {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
         }
-
         if (_debugListeners.contains(listener)) {
             return;
         } else {
             _debugListeners.add(listener);
         }
-
         _debugging = true;
     }
 
@@ -108,7 +106,6 @@ public abstract class AbstractBranchController implements Debuggable {
         if (_debugListeners == null) {
             return;
         }
-
         _debugListeners.remove(listener);
 
         if (_debugListeners.size() == 0) {
@@ -146,33 +143,23 @@ public abstract class AbstractBranchController implements Debuggable {
     }
 
     /** Register the calling branch as failed. This reduces the count
-     *  of active branches, and waits until the count of active
-     *  branches reaches zero. That is, the calling thread is
-     *  blocked until all the branches either call _branchFailed()
-     *  or _branchSucceeded(). Thus, either this or _branchSucceeded()
-     *  must be called by a conditional branch just before it dies.
+     *  of active branches, and if all the active branches have
+     *  finished, it notifies the internal lock so any threads
+     *  that are blocked on it can continue.
+     *  This is called by a conditional branch just before it dies.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
-     *  @see #_branchSucceeded(int)
      */
     protected void _branchFailed(int branchNumber) {
         if (_debugging) {
             _debug("** Branch failed: " + branchNumber);
         }
-
         Object director = _getDirector();
-
         synchronized (director) {
             _branchesActive--;
-            director.notifyAll();
 
-            while (_branchesActive > 0) {
-                try {
-                    director.wait();
-                } catch (InterruptedException e) {
-                    // Fall out of while loop.
-                    break;
-                }
+            if (_branchesActive == 0) {
+                director.notifyAll();
             }
         }
     }
@@ -183,42 +170,26 @@ public abstract class AbstractBranchController implements Debuggable {
     protected abstract void _branchNotReady(int branchNumber);
 
     /** Register the calling branch as a successful branch. This
-     *  reduces the count of active branches, and waits until the count
-     *  of active branches reaches zero. That is, the calling thread is
-     *  blocked until all the branches either call _branchFailed()
-     *  or _branchSucceeded(). Thus, either this or _branchSucceeded()
-     *  must be called by a conditional branch just before it dies.
-     *  @param branchID The ID assigned to the calling branch
-     *   upon creation.
-     *  @see #_branchFailed(int)
+     *  reduces the count of active branches, and notifies the internal
+     *  lock so that any threads blocked on it can continue.
+     *  @param branchID The ID assigned to the calling branch upon creation.
      */
     protected void _branchSucceeded(int branchID) {
         Object director = _getDirector();
-
         synchronized (director) {
             if (_debugging) {
                 _debug("** Branch succeeded: " + branchID);
             }
-
             _branchesActive--;
-            director.notifyAll();
 
-            while (_branchesActive > 0) {
-                try {
-                    director.wait();
-                } catch (InterruptedException e) {
-                    // Fall out of while loop.
-                    break;
-                }
-            }
+            // wakes up chooseBranch() which wakes up parent thread
+            director.notifyAll();
         }
     }
 
     /** Notify the director that the current thread is unblocked.
      */
     protected void _branchUnblocked(CSPReceiver receiver) {
-        // FIXME: This is never called. Instead, the threads all
-        // remove themselves from the active list.
         _getDirector().threadUnblocked(Thread.currentThread(), receiver);
     }
 
@@ -230,13 +201,12 @@ public abstract class AbstractBranchController implements Debuggable {
     protected final void _debug(String message) {
         if (_debugging) {
             Iterator listeners = _debugListeners.iterator();
-
             while (listeners.hasNext()) {
                 ((DebugListener) listeners.next()).message(message);
             }
         }
     }
-
+    
     /** Get the director that controls the execution of its parent actor.
      *  @return The executive director if the actor is composite, and
      *   otherwise, the director.
@@ -252,7 +222,7 @@ public abstract class AbstractBranchController implements Debuggable {
                     + "director => terminate.");
         }
     }
-
+    
     /** Called by ConditionalSend and ConditionalReceive to check whether
      *  the calling branch is ready to rendezvous.
      *  @param branchNumber The ID assigned to the calling branch
@@ -264,7 +234,7 @@ public abstract class AbstractBranchController implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
+    
     /** The set of branches currently being chosen from in
      *  chooseBranch().
      */
@@ -286,7 +256,7 @@ public abstract class AbstractBranchController implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
     /** The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
 

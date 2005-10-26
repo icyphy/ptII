@@ -110,9 +110,10 @@ import ptolemy.kernel.util.Nameable;
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (nsmyth)
- @Pt.AcceptedRating Red (cxh)
+ @Pt.AcceptedRating Green (kienhuis)
  */
 public abstract class ConditionalBranch implements Debuggable {
+    
     /** Create a guarded communication statement. This class contains
      *  all of the information necessary to carry out a guarded
      *  communication statement, with the exception of the type of
@@ -152,24 +153,22 @@ public abstract class ConditionalBranch implements Debuggable {
      *   the port is not of type CSPActor, or if no controller is
      *   provided, and the actor is not an instance of BranchActor.
      */
-    public ConditionalBranch(boolean guard, IOPort port, int branchID,
-            ConditionalBranchController controller)
+    public ConditionalBranch(
+            boolean guard, IOPort port, int branchID, ConditionalBranchController controller)
             throws IllegalActionException {
         _branchID = branchID;
         _guard = guard;
         _controller = controller;
         _port = port;
-
         if (_controller == null) {
             Nameable portContainer = port.getContainer();
-
             if (!(portContainer instanceof BranchActor)) {
                 throw new IllegalActionException(port,
                         "A conditional branch can only be created"
                                 + "with a port contained by BranchActor.");
             }
-
-            _controller = ((BranchActor) portContainer).getBranchController();
+            _controller = ((BranchActor) portContainer)
+                    .getBranchController();
         }
     }
 
@@ -185,13 +184,11 @@ public abstract class ConditionalBranch implements Debuggable {
         if (_debugListeners == null) {
             _debugListeners = new LinkedList();
         }
-
         if (_debugListeners.contains(listener)) {
             return;
         } else {
             _debugListeners.add(listener);
         }
-
         _debugging = true;
     }
 
@@ -219,7 +216,7 @@ public abstract class ConditionalBranch implements Debuggable {
     public AbstractBranchController getController() {
         return _controller;
     }
-
+    
     /** Return the port associated with this conditional branch.
      *  @return The port specified in the constructor.
      */
@@ -270,7 +267,6 @@ public abstract class ConditionalBranch implements Debuggable {
         if (_debugListeners == null) {
             return;
         }
-
         _debugListeners.remove(listener);
 
         if (_debugListeners.size() == 0) {
@@ -280,7 +276,7 @@ public abstract class ConditionalBranch implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                      package friendly methods             ////
-
+    
     /** Set a flag indicating this branch should fail.
      *  @param value Boolean indicating whether this branch is still alive.
      */
@@ -322,18 +318,17 @@ public abstract class ConditionalBranch implements Debuggable {
     protected final void _debug(String message) {
         if (_debugging) {
             Iterator listeners = _debugListeners.iterator();
-
             while (listeners.hasNext()) {
                 ((DebugListener) listeners.next()).message(message);
             }
         }
     }
-
+    
     /** Return true if this conditional branch is ready to rendezvous.
      *  @return True if the conditional branch is ready to rendezvous.
      */
     protected abstract boolean _isReady();
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -365,7 +360,7 @@ public abstract class ConditionalBranch implements Debuggable {
 
     /** The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
-
+    
     /** The port specified in the constructor. */
     private IOPort _port;
 

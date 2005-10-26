@@ -80,8 +80,8 @@ import ptolemy.kernel.util.Nameable;
  @see ConditionalReceive
  @see ConditionalSend
  */
-public class ConditionalBranchController extends AbstractBranchController
-        implements Debuggable {
+public class ConditionalBranchController extends AbstractBranchController implements Debuggable {
+    
     /** Construct a controller in the specified container, which should
      *  be an actor.
      *  @param container The parent actor that contains this object.
@@ -114,18 +114,15 @@ public class ConditionalBranchController extends AbstractBranchController
      *  @exception IllegalActionException If the rendezvous fails
      *   (e.g. because of incompatible types).
      */
-    public int chooseBranch(ConditionalBranch[] branches)
-            throws IllegalActionException {
+    public int chooseBranch(ConditionalBranch[] branches) throws IllegalActionException {
         try {
             CSPDirector director = _getDirector();
-
             synchronized (director) {
                 if (_debugging) {
                     _debug("** Choosing branches.");
                 }
-
                 _branches = branches;
-
+                
                 // reset the state that controls the conditional branches
                 _resetConditionalState();
 
@@ -141,11 +138,9 @@ public class ConditionalBranchController extends AbstractBranchController
                         Nameable actor = (Nameable) branches[i].getController()
                                 .getParent();
                         String name = actor.getName() + branches[i].getID();
-
                         if (_debugging) {
                             _debug("** Creating branch: " + name);
                         }
-
                         Thread thread = new Thread((Runnable) branches[i], name);
                         _threadList.add(0, thread);
                         onlyBranch = branches[i];
@@ -165,39 +160,29 @@ public class ConditionalBranchController extends AbstractBranchController
                     if (_debugging) {
                         _debug("** No branches enabled.");
                     }
-
                     return _successfulBranch; // will be -1
                 } else if (threadListSize == 1) {
                     // Only one guard was true, so perform simple rendezvous.
                     if (onlyBranch instanceof ConditionalSend) {
                         Token token = onlyBranch.getToken();
                         Receiver[] receivers = onlyBranch.getReceivers();
-
-                        if ((receivers != null) && (receivers.length >= 1)) {
+                        if (receivers != null && receivers.length >= 1) {
                             receivers[0].putToAll(token, receivers);
                         }
-
                         int result = onlyBranch.getID();
-
                         if (_debugging) {
-                            _debug("** Succeessful branch is the only branch (ConditionalSend): "
-                                    + result);
+                            _debug("** Succeessful branch is the only branch (ConditionalSend): " + result);
                         }
-
                         return result;
                     } else {
                         // branch is a ConditionalReceive
                         Receiver[] receivers = onlyBranch.getReceivers();
                         Token token = receivers[0].get();
                         onlyBranch._setToken(token);
-
                         int result = onlyBranch.getID();
-
                         if (_debugging) {
-                            _debug("** Succeessful branch is the only branch (ConditionalReceive): "
-                                    + result);
+                            _debug("** Succeessful branch is the only branch (ConditionalReceive): " + result);
                         }
-
                         return result;
                     }
                 } else {
@@ -215,25 +200,23 @@ public class ConditionalBranchController extends AbstractBranchController
                     if (_debugging) {
                         _debug("** Waiting for branch to succeed.");
                     }
-
                     _blockedController = Thread.currentThread();
                     director.threadBlocked(_blockedController, null);
-
                     // wait for a branch to succeed
-                    while ((_successfulBranch == -1) && (_branchesActive > 0)
+                    while ((_successfulBranch == -1)
+                            && (_branchesActive > 0)
                             && !director.isStopRequested()) {
                         director.wait();
                     }
-
                     // In case the successful branch didn't mark this unblocked...
                     if (_blockedController != null) {
                         director.threadUnblocked(_blockedController, null);
                         _blockedController = null;
                     }
                 }
-
                 // NOTE: Below used to be outside the synchronized block. Why?
                 // EAL 8/05
+
                 // If we get to here, we have more than one conditional branch,
                 // at most one of which has succeeded.
                 // Now terminate non-successful branches.
@@ -242,20 +225,17 @@ public class ConditionalBranchController extends AbstractBranchController
                     // thread was not created for that branch.
                     if ((i != _successfulBranch) && (branches[i].getGuard())) {
                         branches[i]._setAlive(false);
-
                         if (_debugging) {
                             _debug("** Killing branch: " + branches[i].getID());
                         }
                     }
                 }
-
                 // Mark each of the threads unblocked, since
                 // they will all terminate when awakened.
                 // This has to be done in this thread, or for
                 // a transitory time, it will appear as if there
                 // were a deadlock.
                 Iterator threads = _threadList.iterator();
-
                 while (threads.hasNext()) {
                     Thread thread = (Thread) threads.next();
                     director.threadUnblocked(thread, null);
@@ -269,37 +249,10 @@ public class ConditionalBranchController extends AbstractBranchController
                 if (_debugging) {
                     _debug("** Waiting for branches to die.");
                 }
-
-                // Wait for all the threads to exit.
-                Iterator threadsIterator = _threadList.iterator();
-
-                while (threadsIterator.hasNext()) {
-                    Thread thread = (Thread) threadsIterator.next();
-
-                    try {
-                        // NOTE: Cannot use Thread.join() here because we
-                        // have to be in a synchronized block to prevent
-                        // a race condition (see below), and if we call
-                        // thread.join(), then we will block while holdingb
-                        // a lock on the director, which will lead to deadlock.
-                        if (_debugging) {
-                            _debug("** Waiting for thread to exit: "
-                                    + thread.getName());
-                        }
-
-                        while (director.isThreadActive(thread)) {
-                            director.wait();
-                        }
-
-                        if (_debugging) {
-                            _debug("** Thread has exited: " + thread.getName());
-                        }
-                    } catch (InterruptedException ex) {
-                        // Ignore and continue to the next thread.
-                    }
+                while (_branchesActive != 0) {
+                    director.wait();
                 }
             }
-
             if (_successfulBranch == -1) {
                 // Conditional construct was ended prematurely
                 throw new TerminateProcessException(((Nameable) getParent())
@@ -309,14 +262,12 @@ public class ConditionalBranchController extends AbstractBranchController
             }
 
             _threadList = null;
-
+            
             // Is it necessary to copy this? Note the finally clause below.
             int result = _successfulBranch;
-
             if (_debugging) {
                 _debug("** Succeessful branch: " + result);
             }
-
             return result;
         } catch (InterruptedException ex) {
             throw new TerminateProcessException(((Nameable) getParent())
@@ -344,10 +295,9 @@ public class ConditionalBranchController extends AbstractBranchController
             // the execution of the model must have finished.
             _successfulBranch = -1;
         }
-
         super._branchFailed(branchNumber);
     }
-
+    
     /** Release the status of the calling branch as the first branch
      *  to be ready to rendezvous. This method is only called when both
      *  sides of a communication at a receiver are conditional. In
@@ -360,11 +310,9 @@ public class ConditionalBranchController extends AbstractBranchController
      */
     protected void _branchNotReady(int branchNumber) {
         Object director = _getDirector();
-
         synchronized (director) {
             if (branchNumber == _branchTrying) {
                 _branchTrying = -1;
-
                 // FIXME: This has the potential of unblocking a blocked
                 // thread, but we will need to mark that thread unblocked
                 // in this thread or we will get a spurious deadlock detection.
@@ -378,11 +326,11 @@ public class ConditionalBranchController extends AbstractBranchController
                 return;
             }
         }
-
         throw new InvalidStateException(((Nameable) getParent()).getName()
                 + ": Error: branch releasing first without possessing it! :"
                 + _branchTrying + " & " + branchNumber);
     }
+
 
     /** Registers the calling branch as the successful branch. It
      *  reduces the count of active branches, and notifies chooseBranch()
@@ -393,7 +341,6 @@ public class ConditionalBranchController extends AbstractBranchController
      */
     protected void _branchSucceeded(int branchID) {
         CSPDirector director = _getDirector();
-
         synchronized (director) {
             if (_branchTrying != branchID) {
                 throw new InvalidStateException(((Nameable) getParent())
@@ -404,16 +351,13 @@ public class ConditionalBranchController extends AbstractBranchController
                         + "equal to the id of the branch registered as trying,"
                         + _branchTrying);
             }
-
             _successfulBranch = _branchTrying;
-
             // Have to mark the controller thread unblocked in this thread
             // to prevent spurious deadlock detection.
             if (_blockedController != null) {
                 director.threadUnblocked(_blockedController, null);
                 _blockedController = null;
             }
-
             super._branchSucceeded(branchID);
         }
     }
@@ -430,23 +374,12 @@ public class ConditionalBranchController extends AbstractBranchController
      */
     protected boolean _isBranchReady(int branchNumber) {
         Object director = _getDirector();
-
         synchronized (director) {
             if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
-                // Nother branch holds the first position, so
-                // give this branch the first position.
+                // store branchNumber
                 _branchTrying = branchNumber;
                 director.notifyAll();
                 return true;
-            } else {
-                // If the branch holding the first position is blocked,
-                // then cancel its transaction and give this branch the
-                // first position.
-                // FIXME: Need a reference to the receiver for the branch
-                // in the first position.
-                // FIXME: Worse: The branch in the first position might
-                // have more than one receiver (if the conditional
-                // branch is a conditional send).
             }
 
             return false;
@@ -471,15 +404,15 @@ public class ConditionalBranchController extends AbstractBranchController
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
+    
     /** The ID of the branch currently trying to rendezvous. It
      *  is -1 if no branch is currently trying.
      */
     private int _branchTrying = -1;
-
+    
     /** The ID of the branch that has successfully completed a rendezvous. */
     private int _successfulBranch = -1;
-
+    
     /** The thread running chooseBranch if it is blocked. */
     private Thread _blockedController = null;
 }

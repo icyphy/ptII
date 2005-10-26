@@ -31,7 +31,7 @@ package ptolemy.domains.csp.kernel.test;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.Token;
-import ptolemy.domains.csp.kernel.RendezvousReceiver;
+import ptolemy.domains.csp.kernel.CSPReceiver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -62,11 +62,11 @@ public class CSPHasToken extends CSPGet {
      */
     public void fire() throws IllegalActionException {
         Receiver[][] rcvrs = (Receiver[][]) inputPort.getReceivers();
-        RendezvousReceiver rcvr = null;
+        CSPReceiver rcvr = null;
 
         for (int i = 0; i < rcvrs.length; i++) {
             for (int j = 0; j < rcvrs[i].length; j++) {
-                rcvr = (RendezvousReceiver) rcvrs[i][j];
+                rcvr = (CSPReceiver) rcvrs[i][j];
             }
         }
 

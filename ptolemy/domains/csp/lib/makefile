@@ -57,7 +57,6 @@ JSRCS = \
 	CSPSink.java \
 	CSPSource.java \
 	CSPMultiSink.java \
-	Merge.java \
 	ResourcePool.java
 
 

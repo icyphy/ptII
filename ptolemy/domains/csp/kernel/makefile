@@ -57,7 +57,7 @@ JSRCS = \
 	CSPActor.java \
 	CSPDirector.java \
 	CSPReceiver.java \
-	RendezvousReceiver.java
+	MultiwayBranchController.java
 
 EXTRA_SRCS =	$(JSRCS)
 
