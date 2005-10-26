@@ -78,7 +78,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
-# make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar
+# make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar clean all src.jar 
 
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
@@ -272,7 +272,7 @@ $(PTII_SRC): $(PTII_FULL)
 		PTII=`pwd` ./configure; make -k clean; \
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
-		cd ptolemy; find . -name "*.jar" -ls -exec rm {} \; ;\
+		cd ptolemy; find . -name ptinyos -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
@@ -644,6 +644,12 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 		> src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp \
 		src_jar/viptos$(VERSION)/ptolemy/domains/makefile
+	# Fix up configs/visualsense/directors.xml
+	egrep -v "RendezvousDirector" \
+		src_jar/viptos$(VERSION)/ptolemy/configs/visualsense/directors.xml \
+		> src_jar/viptos$(VERSION)/ptolemy/configs/visualsense/directors.tmp
+	mv src_jar/viptos$(VERSION)/ptolemy/configs/visualsense/directors.tmp \
+	   src_jar/viptos$(VERSION)/ptolemy/configs/visualsense/directors.xml
 	# Fix up configs/makefile
 	egrep -v "dsp.jar|full.jar|hyvisual.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
 		src_jar/viptos$(VERSION)/ptolemy/configs/makefile \
