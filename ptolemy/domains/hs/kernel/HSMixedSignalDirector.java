@@ -239,7 +239,7 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
 
         if (!_isTopLevel()) {
             // Guarantee to stop at the iteration end time.
-            fireAt((CompositeActor) getContainer(), getIterationEndTime());
+            fireAt((CompositeActor) getContainer(), getModelTime());
         }
 
         return super.postfire();
@@ -333,55 +333,28 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
                         + "Check whether there are outputs.");
             }
 
-            // set the start time of the current iteration
-            // The begin time of an iteration can be changed only by directors.
-            // On the other hand, the model time may be changed by ODE solvers.
-            // The reason is that when the CurrentTime actor is involved in a
-            // multi-step integration, it needs to report the current time at
-            // the intermediate steps. The CurrentTime actor reports the model
-            // time.
-            _setIterationBeginTime(getModelTime());
-
-            // FIXME: All the following is to set up a reasonable SUGGESTED
-            // step size.
             double aheadLength = outsideNextIterationTime
                     .subtract(_outsideTime).getDoubleValue();
-
-            if (_debugging) {
-                _debug(getName(), " local time = " + localTime,
-                        " Outside Time = " + _outsideTime,
-                        " NextIterationTime = " + outsideNextIterationTime
-                                + " Inferred run length = " + aheadLength);
-            }
-
             double timeResolution = getTimeResolution();
 
             if (aheadLength < timeResolution) {
-                // This is a zero step size iteration.
-                // TESTIT: simultaneous events from the outside model drives
-                // a CT subsystem.
-                _setIterationEndTime(_outsideTime);
-
+                if (aheadLength != 0) {
+                    // For debugging only. This should not happen.
+                    throw new InternalErrorException("The difference " +
+                            "between two time objects cannot be " +
+                            "less than the time resolutions!");
+                }
                 if (_debugging) {
                     _debug("This is an iteration with the step size as 0.");
                 }
-            } else if (aheadLength < _runAheadLength) {
-                _setIterationEndTime(outsideNextIterationTime);
-            } else {
-                // aheadLength > _runAheadLength parameter.
-                _setIterationEndTime(_outsideTime.add(_runAheadLength));
-            }
-
-            // Now it is safe to execute the continuous part.
-            if (_debugging) {
-                _debug(getName(), "Iteration end time = "
-                        + getIterationEndTime(), " <-- end of prefire.");
-            }
-
-            return true;
-        } else {
-            return super.prefire();
+                aheadLength = 0;
+            } else if (aheadLength > _runAheadLength) {
+                aheadLength = _runAheadLength;
+            } 
+            
+            setSuggestedNextStepSize(aheadLength);
         }
+        return super.prefire();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -540,9 +513,6 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Indicate whether there are pending discrete events.
-    private boolean _hasDiscreteEvents;
-
     // Indicate if this is the top level director.
     private boolean _isTop;
 
