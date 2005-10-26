@@ -99,7 +99,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model models a pendulum on a moving cart.&#10;The card moves in x dimension and the pendulum&#10;moves in x-z plane. Double-click the right yellow&#10;block for a graphic explanation. &#10;&#10;Pendulum collides with the surface of the cart&#10;and bounces back with some energy loss, which is&#10;specified by the lambda parameter. There is no &#10;extra force except the gravity force applied on&#10;the pendulum. &#10;&#10;This model is a Zeno model. We use two states for&#10;pre-Zeno and post-Zeno dynamics respectively.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model models a pendulum on a moving cart.&#10;The card moves in x dimension and the pendulum&#10;moves in x-z plane. Double-click the right yellow&#10;block for a graphic explanation. &#10;&#10;Pendulum collides with the surface of the cart&#10;and bounces back with some energy loss, which is&#10;specified by the lambda parameter. Gravity force &#10;is applied on the pendulum. &#10;&#10;This model is a Zeno model. We use two states for&#10;pre-Zeno and post-Zeno dynamics respectively.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 160.0]">
         </property>

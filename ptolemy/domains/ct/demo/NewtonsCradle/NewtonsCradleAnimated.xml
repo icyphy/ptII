@@ -835,7 +835,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 195.5}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-3.4244686567002E-9">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.4318508652971">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -854,7 +854,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 225.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-2.7391269293225E-9">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="5.6909938942828E-9">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -873,7 +873,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.43185085045">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="6.351470249319E-9">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1491,7 +1491,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={608, 28, 408, 434}, maximized=false}">
             </property>

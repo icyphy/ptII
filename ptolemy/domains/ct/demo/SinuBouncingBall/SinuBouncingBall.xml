@@ -61,7 +61,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model models a 3-D ball bouncing on a sinusoidal&#10;surface. Double-click the right yellow block for a &#10;graphic view. &#10;&#10;The ball collides with the surface and bounces with &#10;some energy loss, which is specified by the lambda &#10;parameter. The bouncing direction depends on the &#10;slope of the surface. There is no extra force except &#10;the gravity force applied on the ball. &#10;&#10;This model is a Zeno model. We use two states for&#10;pre-Zeno and post-Zeno dynamics respectively.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model models a 3-D ball bouncing on a sinusoidal&#10;surface. Double-click the right yellow block for a &#10;graphic view. Note that x1, x2, and x3 axises in the &#10;figure correspond to x, y, and z axises in this model.&#10;&#10;The ball collides with the surface and bounces with &#10;some energy loss, which is specified by the lambda &#10;parameter. The bouncing direction depends on the &#10;slope of the surface. Gravity force applies on the ball. &#10;&#10;This model is a Zeno model. We use two states for&#10;pre-Zeno and post-Zeno dynamics respectively.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 190.0]">
         </property>
@@ -123,7 +123,7 @@
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 46, 944, 675}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 187, 944, 675}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[729, 557]">
             </property>
