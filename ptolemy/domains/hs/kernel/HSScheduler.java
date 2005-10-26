@@ -778,8 +778,8 @@ public class HSScheduler extends Scheduler {
                     // Not all event generators are step size control actors, 
                     // such as the CTPeriodicSampler actor.  
                     outputSSCActorSchedule.add(new Firing(actor));
-                    eventGeneratorSchedule.add(new Firing(actor));
                 }
+                eventGeneratorSchedule.add(new Firing(actor));
             }
         }
 
