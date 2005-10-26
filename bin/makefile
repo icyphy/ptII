@@ -81,15 +81,19 @@ SHELL_FILES = \
 # by the makebat script.
 BAT_FILES = $(foreach file, $(SHELL_FILES), $(file).bat)
 
-EXTRA_SRCS = \
+EXTRA_EXECUTABLE_SRCS = \
 	hyvisual \
+	startjini \
+	mkjnlp \
+	viptos
+
+EXTRA_SRCS = \
+	$(EXTRA_EXECUTABLE_SRCS) \
 	policy.all \
 	ptinvoke.in \
 	sandbox.policy \
 	comm.policy.in \
-	startjini \
-	mkjnlp \
-	viptos
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -110,6 +114,7 @@ OPTIONAL_FILES = $(SHELL_FILES) \
 KRUFT = $(SHELL_FILES) $(BAT_FILES)
 
 all: $(SHELL_FILES) $(BAT_FILES)
+	chmod a+x $(EXTRA_EXECUTABLE_SRCS) 
 
 # We use a dependency here so that each time we run make we
 # do not recreate the files unless it is necessary.
