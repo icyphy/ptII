@@ -151,7 +151,4 @@ public class ThalesGraphFrame extends ActorGraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The delay time specified that last time animation was set.
-     */
-    private long _lastDelayTime = 0;
 }
