@@ -273,6 +273,7 @@ $(PTII_SRC): $(PTII_FULL)
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; find . -name ptinyos -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		cd ptolemy/domains/ptinyos; find . -name jdom.jar -prune -o -name nesc-dump.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
