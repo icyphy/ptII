@@ -370,7 +370,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/gr/demo/Demo1 \
 		ptolemy/domains/gr/lib/vr \
 		ptolemy/domains/hs \
-		ptolemy/domains/rendezvous \
 		ptolemy/distributed \
 		ptolemy/hsif \
 		ptolemy/matlab/ptmatlab.exp \
@@ -453,7 +452,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/sr \
 		ptolemy/domains/test \
 		ptolemy/domains/tm \
-		ptolemy/domains/wireless \
 		ptolemy/demo \
 		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
 		ptolemy/plot/build.xml \
@@ -465,6 +463,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
 		ptolemy/configs/ptiny \
 		ptolemy/domains/ptinyos \
+		ptolemy/domains/wireless \
 		ptolemy/configs/visualsense
 
 # Files to be removed from HyVisual source distributions
@@ -668,12 +667,6 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 		> src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp \
 		src_jar/viptos$(VERSION)/ptolemy/domains/makefile
-	# Fix up configs/visualsense/directors.xml
-	egrep -v "RendezvousDirector" \
-		src_jar/viptos$(VERSION)/ptolemy/configs/visualsense/directors.xml \
-		> src_jar/viptos$(VERSION)/ptolemy/configs/visualsense/directors.tmp
-	mv src_jar/viptos$(VERSION)/ptolemy/configs/visualsense/directors.tmp \
-	   src_jar/viptos$(VERSION)/ptolemy/configs/visualsense/directors.xml
 	# Fix up configs/makefile
 	egrep -v "dsp.jar|full.jar|hyvisual.jar|jni.jar|jxta.jar|ptiny.jar|visualsense.jar" \
 		src_jar/viptos$(VERSION)/ptolemy/configs/makefile \
