@@ -5,6 +5,14 @@
 <body>
 <h1>Help for the Viptos 5.1-alpha Sensor Networks Development Platform</h1>
 <p>
-FIXME
+Running a TinyOS model from within Viptos does not work under Windows.
+ <p>The reason is that we use JNI to load the TinyOS code back in
+to the running Ptolemy process.  Unfortunately, the TinyOS code
+uses pthreads, which is incompatible when Windows native threads.
+ <br>We are working on a solution.
+
+ <p>For information about using Viptos, see the 
+<a href="docs.htm">Viptos documentation</a>.
+
 </body>
 </html>
