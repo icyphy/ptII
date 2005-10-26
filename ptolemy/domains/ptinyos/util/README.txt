@@ -62,3 +62,13 @@ In $PTII/vendors/ptinyos
     Right click on nesc project in Navigator pane on left hand side
     Build Project
 6.  Class files should appear in nesc/tools/java/...
+
+---------------------------------------------------------------------------
+To run or debug the java applications found these subdirectories under
+Eclipse, you must setup the following pass the following VM arguments:
+
+  -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl
+
+You may substitute a different parser if desired.  See the SAX2 Driver
+information here: 
+  http://www.saxproject.org/quickstart.html

@@ -1156,7 +1156,7 @@ public class PtinyOSDirector extends Director {
 
             // Rename the actor if it has no name.
             if (actorName.length() == 0) {
-                actorName = "Unnamed";
+                actorName = _unnamed;
             }
 
             String componentName;

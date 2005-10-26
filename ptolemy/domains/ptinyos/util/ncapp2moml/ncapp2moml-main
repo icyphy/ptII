@@ -42,6 +42,8 @@ if ($#ARGV < 1) {
 ##### SETTINGS #####
 $VERBOSE = $ENV{NCAPP2MOML_VERBOSE};
 $SRC_DIR = "$ENV{PTII}/ptolemy/domains/ptinyos/util/ncapp2moml";
+$MICABOARD_FILE = "$ENV{PTII}/ptolemy/domains/ptinyos/lib/MicaBoard.xml";
+
 $outputsuffix_ncxml = ".ncxml";
 $outputsuffix_opts = ".opts";
 $indexfilename = "_TOSIndex.moml";
@@ -149,8 +151,8 @@ $outputprefix/.../*.txt.\n");
 
 # Call utility to convert nesC xml files to .moml files.
 # Append the command and its output to the .txt file.
-system("echo \"$ENV{PTII}/bin/.ncapp2moml-util $inputprefix $outputprefix $outputsuffix_ncxml $outputsuffix_opts $outputprefix $outputprefix/$tempfilename\" >> $outputprefix/$ENV{NCAPP2MOML_LOG} 2>&1");
-$ncapp2momlcmd = "$ENV{PTII}/bin/.ncapp2moml-util $inputprefix $outputprefix $outputsuffix_ncxml $outputsuffix_opts $outputprefix $outputprefix/$tempfilename >> $outputprefix/$ENV{NCAPP2MOML_LOG} 2>&1";
+system("echo \"$ENV{PTII}/bin/.ncapp2moml-util $inputprefix $outputprefix $outputsuffix_ncxml $outputsuffix_opts $outputprefix $outputprefix/$tempfilename $MICABOARD_FILE\" >> $outputprefix/$ENV{NCAPP2MOML_LOG} 2>&1");
+$ncapp2momlcmd = "$ENV{PTII}/bin/.ncapp2moml-util $inputprefix $outputprefix $outputsuffix_ncxml $outputsuffix_opts $outputprefix $outputprefix/$tempfilename $MICABOARD_FILE >> $outputprefix/$ENV{NCAPP2MOML_LOG} 2>&1";
 print("\nConverting nesc xml files to .moml files.  Any errors will be \
 redirected to $outputprefix/$ENV{NCAPP2MOML_LOG}\n");
 system($ncapp2momlcmd) == 0

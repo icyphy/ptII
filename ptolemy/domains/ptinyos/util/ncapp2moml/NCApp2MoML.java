@@ -29,6 +29,7 @@
 package ptolemy.domains.ptinyos.util.ncapp2moml;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -53,6 +54,9 @@ import net.tinyos.nesc.dump.xml.Xwiring;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.filter.ContentFilter;
+import org.jdom.filter.Filter;
+import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
@@ -68,7 +72,8 @@ import org.xml.sax.SAXException;
  &lt;<i>.nc xml input suffix</i>&gt; \
  &lt;<i>opts input suffix</i>&gt; \
  &lt;<i>moml output prefix</i>&gt; \
- <i>long path to file containing list of .nc files using short path</i>
+ &lt;<i>long path to file containing list of .nc files using short path</i>&gt; \
+   <i>path to MicaBoard.xml if you want the generated file to include the Wireless domain wrapper</i>
  </pre>
 
  Example:
@@ -143,9 +148,8 @@ public class NCApp2MoML {
         _componentTable.put(component, componentFile);
     }
 
-    /** Traverse the configuration wiring graph and set up the component and relation data structures.
-     *
-     * @throws Exception if link is not to an element of type Xinterface.
+    /** Traverse the configuration wiring graph and set up the
+     * component and relation data structures.
      */
     void readLinks() {
         // Get the list of interfaces for this nesC component.
@@ -210,27 +214,111 @@ public class NCApp2MoML {
      *  @param outputFile The file to generate.
      *  @param directorOutputDir The output directory to pass to the PtinyOSDirector.
      *  @param opts The compiler options (PFLAGS) to pass to the PtinyOSDirector.
+     *  @param micaboardFile Path to the MoML file that contains the
+     *  Wireless wrapper.  Null if wrapper should not be generated.
      */
     public void generatePtinyOSModel(String componentName, String outputFile,
             String directorOutputDir,
-            String opts) {
-        // Set the name of this class to the name of this nesC component.
-        Element root = new Element("entity");
-        root.setAttribute("name", componentName);
-        root.setAttribute("class",
-                "ptolemy.domains.ptinyos.kernel.NCCompositeActor");
+            String opts,
+            String micaboardFile) {
+
+        //boolean generateWrapper = (micaboardFile != null);
+
+        //Document doc = null;
+        Element root = null;
+        Element director = null;
+        
 
         // Set the doc type.
         DocType plot = new DocType("entity", "-//UC Berkeley//DTD MoML 1//EN",
                 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd");
-        Document doc = new Document(root, plot);
+        Document doc = null;
+        
+        if (micaboardFile != null) {
+            Element micaboard = null;
+            try {
+                SAXBuilder saxbuilder = new SAXBuilder();
+                Document docWireless = saxbuilder.build(new File(micaboardFile));
 
-        Element director = new Element("property");
-        director.setAttribute("name", "PtinyOSDirector");
-        director.setAttribute("class",
-                "ptolemy.domains.ptinyos.kernel.PtinyOSDirector");
-        root.addContent(director);
+                Filter filter = new ContentFilter(ContentFilter.ELEMENT);
+                Iterator iterator = docWireless.getDescendants(filter);
+              
+                while (iterator.hasNext()) {
+                    Element e = (Element)iterator.next();
+                    String classname = e.getAttributeValue("class");
+                    if (classname != null) {
+                        if (classname.equals("ptolemy.domains.wireless.kernel.WirelessComposite")) {
+                            micaboard = (Element)e.clone();
+                            break;
+                        }
+                    }
+                }
+                if (micaboard == null) {
+                    throw new
+                        Exception("Could not find WirelessComposite entry point in: "
+                                + micaboardFile);
+                }
 
+                Iterator iterator2 = micaboard.getDescendants(filter);
+                while (iterator2.hasNext()) {
+                    Element e = (Element)iterator2.next();
+                    String classname = e.getAttributeValue("class");
+                    if (classname != null) {
+                        if (classname.equals("ptolemy.domains.ptinyos.lib.MicaActor")) {
+                            root = e;
+                        } else if (classname.equals("ptolemy.domains.ptinyos.kernel.PtinyOSDirector")) {
+                            director = e;
+                        }
+                    }
+                }
+                if (root == null) {
+                    throw new
+                        Exception("Could not find MicaActor entry point in: "
+                                + micaboardFile);
+                }
+                if  (director == null) {
+                    throw new
+                        Exception("Could not find PtinyOSDirector entry point in: "
+                                + micaboardFile);
+                }
+                         
+            } catch (Exception e) {
+                System.err.println("Error: " + e);
+                e.printStackTrace();
+            }
+
+            // Create the top level entity.
+            Element rootWireless = new Element("entity");
+            rootWireless.setAttribute("name", componentName);
+            rootWireless.setAttribute("class", "ptolemy.actor.TypedCompositeActor");
+
+            // Create and add the Wireless Director.
+            Element wirelessDirector = new Element("property");
+            wirelessDirector.setAttribute("name", "Wireless Director");
+            wirelessDirector.setAttribute("class", "ptolemy.domains.wireless.kernel.WirelessDirector");
+            rootWireless.addContent(wirelessDirector);
+            
+            // Add the micaboard to the top level entity.
+            rootWireless.addContent(micaboard);
+            
+            // Create the document with the top level entity.
+            doc = new Document(rootWireless, plot);
+
+        } else {
+            // Set the name of this class to the name of this nesC component.
+            root = new Element("entity");
+            root.setAttribute("name", componentName);
+            root.setAttribute("class",
+                    "ptolemy.domains.ptinyos.kernel.NCCompositeActor");
+            doc = new Document(root, plot);
+
+            director = new Element("property");
+            director.setAttribute("name", "PtinyOSDirector");
+            director.setAttribute("class",
+                    "ptolemy.domains.ptinyos.kernel.PtinyOSDirector");
+            root.addContent(director);
+        }
+        
         // Set the PFLAGS value of the PtinyOSDirector.
         //        <property name="pflags" class="ptolemy.data.expr.StringParameter" value="-I%T/../apps/Blink">
         Element pflags = new Element("property");
@@ -357,10 +445,14 @@ public class NCApp2MoML {
                     + "<.nc xml input suffix> "
                     + "<opts input suffix"
                     + "<moml output prefix> "
-                    + "[long path to file containing list of .nc files using "
-                    + "short path]");
+                    + "<long path to file containing list of .nc files using "
+                    + "short path>"
+                    + "[path to MicaBoard.xml if you want the generated file to include the Wireless domain wrapper]");
             return;
         }
+
+        // Flag to indicate whether the Wireless wrapper should be generated.
+        boolean generateWrapper = false;
 
         // Extract arguments into variables.
         int index = 0;
@@ -370,6 +462,11 @@ public class NCApp2MoML {
         String inputSuffixOpts = args[index++].trim();
         String outputPrefix = args[index++].trim();
         String inputfilelist = args[index++].trim();
+        String micaboardFile = null;
+        if (args.length >= index + 1) {
+            micaboardFile = args[index++].trim();
+            generateWrapper = true;
+        }
 
         _ncSourcePrefix = ncSourcePrefix;
 
@@ -391,18 +488,27 @@ public class NCApp2MoML {
                 String optsSuffix = inputfilename.replaceFirst("\\.nc$",
                         inputSuffixOpts);
                 String optsInputFile = inputPrefix + _FILESEPARATOR + optsSuffix;
-                
+
                 // Determine the component name.
                 String[] subdirs = inputfilename.split(_FILESEPARATOR);
                 String componentName = subdirs[subdirs.length - 1];
                 componentName = componentName.replaceFirst("\\.nc$", "");
+                if (generateWrapper) {
+                    componentName += _INWIRELESS;
+                }
 
                 // Determine the .moml name (with path) of the file.
-                String momlSuffix = inputfilename.replaceFirst("\\.nc$",
-                        "\\.moml");
+                String momlSuffix;
+                if (!generateWrapper) {
+                    momlSuffix = inputfilename.replaceFirst("\\.nc$",
+                            "\\.moml");
+                } else {
+                    momlSuffix = inputfilename.replaceFirst("\\.nc$",
+                            _INWIRELESS + "\\.moml");
+                }
                 String momlOutputFile = outputPrefix + _FILESEPARATOR
                         + momlSuffix;
-
+                    
                 // Determine the PtinyOSDirector output directory.
                 String[] directorOutputDirSubDirs = momlOutputFile.split(
                         _FILESEPARATOR);
@@ -425,7 +531,8 @@ public class NCApp2MoML {
                     try {
                         String opts = readOptsFile(optsInputFile);
                         new NCApp2MoML().generatePtinyOSModel(componentName,
-                                momlOutputFile, directorOutputDir, opts);
+                                momlOutputFile, directorOutputDir, opts,
+                                micaboardFile);
                     } catch (Exception e) {
                         System.err.println("Errors while generating "
                                 + momlOutputFile + " because of exception: "
@@ -524,4 +631,7 @@ public class NCApp2MoML {
 
     /** File separator to use, currently "/". */
     private static String _FILESEPARATOR = "/";
+
+    /** Name to add to items that use the Wireless wrapper. */
+    private static String _INWIRELESS = "-InWireless";
 }
