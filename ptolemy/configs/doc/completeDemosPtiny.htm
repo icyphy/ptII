@@ -35,6 +35,7 @@ set of demos that highlight the key features of Ptolemy II.
 
 <h1>Ptolemy II Domains</h1>
 <ul>
+<li> <a href="#csp">CSP (Communicating Sequential Processes)</a>
 
 <!--vergilDocs-->
 
@@ -49,26 +50,24 @@ set of demos that highlight the key features of Ptolemy II.
 <!--vergilDocs-->
 
 <li> <a href="#pn">PN (Process Networks)</a>
+<li> <a href="#rendezvous">Rendezvous (Processes with synchronous communication)</a>
 <li> <a href="#sdf">SDF (Synchronous Dataflow)</a>
 
 <!--vergilDocs-->
-
 </ul>
-
-<!--csp -->
-
 <!--vergilDocs-->
-
+<h3><a name="csp">Communicating Sequential Processes</a></h3>
+<ul>
+<li> <a href="../../domains/csp/demo/Barrier/Barrier.xml">Barrier Synchronization</a>
+<li> <a href="../../domains/csp/demo/ResourcePool/ResourcePool.xml">Resource Management</a>
+<li> <a href="../../domains/csp/demo/WriteRegulator/WriteRegulator.xml">Write Regulator</a>
+</ul>
+<!--vergilDocs-->
 <h3><a name="ct">Continuous Time</a></h3>
 
 <ul>
 <!-- Please keep the demos alphabetical -->
 <!-- Agilent -->
-<!--vergilDocs-->
-
-<li> <a href="../../domains/ct/demo/BouncingBall/BouncingBallWithoutGR.xml">Bouncing Ball</a> (Does not require Java 3D)
-<!-- BouncingBall uses GR, and we don't ship GR in ptiny -->
-<li> <a href="../../domains/ct/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a>  (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
 <!--vergilDocs-->
 
 <li> <a href="../../domains/ct/demo/Brownian/Brownian.xml">Brownian</a> 
@@ -104,20 +103,6 @@ Windows only, requires that Matlab be installed locally
 <li> <a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradle.xml">NewtonsCradle</a>
 (New in Ptolemy II 5.0)
 
-<!--/vergilDocs-->
-<!-- These Newton's Cradle demos require GR -->
-<li> <a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a>
-(New in Ptolemy II 5.0, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li> <a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.xml">Newton's Cradle with Complicated Dynamics</a>
-(New in Ptolemy II 5.0, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li> <a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradleNondeterministic.xml">Newton's Cradle with Nondeterministic State Machine</a>
-(New in Ptolemy II 5.0, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li> <a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml">Newton's Cradle with Perfectly Inelastic Collisions</a>
-(New in Ptolemy II 5.1, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li> <a href="../../domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml">Newton's Cradle with Configurable Parameters</a>
-(New in Ptolemy II 5.1, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-<li> <a href="../../domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml">Newton's Cradle with Balls Having Different Masses</a>
-(New in Ptolemy II 5.1, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
 <!--vergilDocs-->
 
 <li> <a href="../../domains/ct/demo/Pendulum3D/Pendulum3D.xml">3D Pendulum</a> 
@@ -193,6 +178,18 @@ FSM MultipleRuns has problems with dangling threads, so we comment it out.
 
 <li><a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">Ordered Merge</a>
 <li> <a href="../../domains/pn/demo/QR/QR.xml">QR</a>
+</ul>
+<!--vergilDocs-->
+<h3><a name="rendezvous">Rendezvous</a></h3>
+
+<ul>
+<!-- Please keep the demos alphabetical -->
+<li> <a href="../../domains/rendezvous/demo/Barrier/Barrier.xml">Barrier Synchronization</a> 
+(New in Ptolemy II 5.1)
+<li> <a href="../../domains/rendezvous/demo/ResourcePool/ResourcePool.xml">Resource Management</a>
+(New in Ptolemy II 5.1)
+<li> <a href="../../domains/rendezvous/demo/WriteRegulator/WriteRegulator.xml">Write Regulator</a>
+(New in Ptolemy II 5.1)
 </ul>
 <!--vergilDocs-->
 <h3><a name="sdf">Synchronous Data Flow</a></h3>
