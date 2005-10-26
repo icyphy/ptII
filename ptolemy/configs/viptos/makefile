@@ -63,6 +63,7 @@ OTHER_FILES_TO_BE_JARED = \
 	docs.htm \
 	help.htm \
 	intro.htm \
+	install.htm \
 	library.xml \
 	makefile \
 	viptos.gif \
