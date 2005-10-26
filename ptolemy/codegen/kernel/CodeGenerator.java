@@ -284,12 +284,13 @@ public class CodeGenerator extends Attribute
             throw new IllegalActionException(this, "The model "
                     + model.getName() + " does not have a director.");
         }
-
+        
         TypedCompositeActor compositeActorHelper = 
             (TypedCompositeActor) _getHelper(getContainer());
-        code.append(compositeActorHelper.generatePreinitializeCode());
-
+        
         _modifiedVariables = compositeActorHelper.getModifiedVariables();
+        
+        code.append(compositeActorHelper.generatePreinitializeCode());
 
         Attribute iterations = director.getAttribute("iterations");
 
