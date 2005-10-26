@@ -33,7 +33,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTWaveformGenerator;
-import ptolemy.domains.hs.kernel.HSDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -113,20 +112,15 @@ public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
      *  @exception IllegalActionException If the token cannot be sent.
      */
     public void fire() throws IllegalActionException {
-        HSDirector director = (HSDirector) getDirector();
-
-        if (director.isDiscretePhase()) {
-            if (input.hasToken(0)) {
-                _lastToken = input.get(0);
-
-                HSDirector dir = (HSDirector) getDirector();
+        if (input.hasToken(0)) {
+            _savedToken = input.get(0);
+            if (_debugging) {
                 _debug(getFullName() + " receives an event at: "
-                        + dir.getModelTime() + " with token "
-                        + _lastToken.toString());
+                        + getDirector().getModelTime() + " with token "
+                        + _savedToken);
             }
         }
-
-        output.send(0, _lastToken);
+        output.send(0, _savedToken);
     }
 
     /** Initialize token. If there is no input, the initial token is
@@ -135,11 +129,11 @@ public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _lastToken = defaultValue.getToken();
+        _savedToken = defaultValue.getToken();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Saved token.
-    private Token _lastToken;
+    private Token _savedToken;
 }

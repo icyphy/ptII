@@ -162,13 +162,7 @@ public class PeriodicSampler extends Transformer implements CTEventGenerator {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-
-        HSDirector dir = (HSDirector) getDirector();
-        _nextSamplingTime = dir.getModelTime();
-
-        if (_debugging) {
-            _debug("Next sampling time is at " + _nextSamplingTime);
-        }
+        _nextSamplingTime = getDirector().getModelTime();
     }
 
     /** Set the next sampling time and return true.
