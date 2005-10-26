@@ -273,8 +273,9 @@ $(PTII_SRC): $(PTII_FULL)
 		touch mk/ptII.mk.in; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
 		cd ptolemy; find . -name ptinyos -prune -o -name "*.jar" -ls -exec rm {} \; ;\
-		cd ptolemy/domains/ptinyos; find . -name jdom.jar -prune -o -name nesc-dump.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
+		cd ptolemy/domains/ptinyos; find . -name jdom.jar -prune -o -name nesc-dump.jar -prune -o -name "*.jar" -ls -exec rm {} \; ;\
+		cd ../../..; \
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
@@ -425,7 +426,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/jni \
 		ptolemy/configs/jxta \
 		ptolemy/configs/SingleWindow \
-		ptolemy/configs/visualsense \
 		ptolemy/configs/copernicus \
 		ptolemy/copernicus \
 		ptolemy/domains/ci \
@@ -464,7 +464,8 @@ BASE_SRC_TO_BE_REMOVED = \
 HYVISUAL_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
 		ptolemy/configs/ptiny \
-		ptolemy/domains/ptinyos
+		ptolemy/domains/ptinyos \
+		ptolemy/configs/visualsense
 
 # Files to be removed from HyVisual source distributions
 VIPTOS_SRC_TO_BE_REMOVED = \
@@ -629,6 +630,28 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	   touch configure; \
 	   chmod a+rx configure util/testsuite/chkextra; \
 	)
+	# README_VIPTOS.txt
+	echo "Viptos is an interface between TinyOS and Ptolemy II" \
+		> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+	echo "To get started, you must have the AVR tools, TinyOS and Nesc installed" \
+		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+	echo "and some environment variables must be set." \
+		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+	echo "For details, see ptolemy/domains/util/nc2moml/index.htm." \
+		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+        echo "The quick installation guide:" \
+		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+        echo "1. Install the AVR tools, TinyOS, Nesc as per ptolemy/domains/util/nc2moml/index.htm." \
+		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+        echo "2. Set $PTII to this directory.  See doc/install.htm for details." \
+		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+        echo "2. Run     ./configure" \
+		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+        echo "2. Run     make fast" \
+		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+        echo "2. Run     bin/viptos" \
+		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+	# Fix up bin/makefile
 	egrep -v "copernicus|decompile|emachine|hyvisual|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/viptos$(VERSION)/bin/makefile \
 		> src_jar/viptos$(VERSION)/bin/makefile.tmp
 	mv src_jar/viptos$(VERSION)/bin/makefile.tmp \
