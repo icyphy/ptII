@@ -96,6 +96,9 @@ foreach $mydir (@mydirs) {
       # Get the component name.
       $component =~ s/^COMPONENT[\s]*[?]?=[\s]*//;
 
+      # Remove trailing whitespace (important on Cygwin because of DOS line endings).
+      $component =~ s/[\s]*$//;
+
       # Note: we do not handle component strings w/ non-alphanumeric
       # characters.  This means that component strings that contain
       # makefile variables will not work with this script.
