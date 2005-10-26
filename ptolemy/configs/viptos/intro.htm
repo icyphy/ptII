@@ -18,7 +18,35 @@ Viptos 5.1-alpha Sensor Networks Development Platform
 <li><a href="authors.htm" target="_blank">Authors</a></li>
 <li><a href="about:copyright" target="_blank">Copyright</a></li>
 </ul>
-Demos:
+    <p><B>Viptos</B> is an interface between TinyOS and Ptolemy II
+    that provides a graphical user interface for TinyOS developers.
+
+<p><a href="http://www.tinyos.net#in_browser" target="_top">TinyOS</a> is an
+event-driven operating system designed for sensor network nodes
+that have very limited resources (e.g., 8K bytes of program
+memory, 512 bytes of RAM).  TinyOS, is used, for example, on the
+Berkeley MICA motes, which are small wireless sensor nodes.  
+<a href="http://nescc.sourceforge.net#in_browser" target="_top">nesC</a> is an
+extension to the C programming language designed to embody the
+structuring concepts and execution model of TinyOS.
+
+
+<p>
+<a href="../../../ptolemy/domains/ptinyos/utils/nc2moml/index.htm"><CODE>$PTII/ptolemy/domains/ptinyos/util/nc2moml/nc2moml</CODE></a>
+is used to convert nesC files (.nc) into 
+<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/moml#in_browser">MoML</a>
+(.moml) files.  This will create the Ptolemy II libraries of
+components that are used to assemble models.  TinyOS provides a
+rich library of nesC components. If you install TinyOS 1.x in
+<code>$PTII/vendors/ptinyos/tinyos-1.x</code> , then the Ptolemy
+II configure script will find it and automatically make the TinyOS
+libraries available.
+
+ <p><a href="../../../ptolemy/domains/ptinyos/utils/nc2moml/index.htm"><CODE>$PTII/ptolemy/domains/ptinyos/util/ncapp2moml/ncapp2moml</CODE></a>
+will convert nesC applications into Ptolemy models.
+
+<h3>Demos</h3>
+
 <ul>
 <li> <a href="../../domains/ptinyos/demo/HelloWorld/HelloWorld.xml">
 Simple "hello world" demo.</a>
