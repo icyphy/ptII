@@ -160,6 +160,8 @@ clean:
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
 	rm -rf $(PTII_SRC_JAR) src_jar
 	rm -rf $(PTIIDIST) src installshield/*
+	rm -rf $(HYVISUAL_SRC_JAR)
+	rm -rf $(VIPTOS_SRC_JAR)
 
 FINDCLEAN = $(GENDIR)/findclean
 
@@ -640,15 +642,15 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
         echo "The quick installation guide:" \
 		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-        echo "1. Install the AVR tools, TinyOS, Nesc as per ptolemy/domains/util/nc2moml/index.htm." \
+	echo "1. Install the AVR tools, TinyOS, Nesc as per ptolemy/domains/util/nc2moml/index.htm." \
 		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-        echo "2. Set $PTII to this directory.  See doc/install.htm for details." \
+	echo "2. Set $PTII to this directory.  See doc/install.htm for details." \
 		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-        echo "2. Run     ./configure" \
+	echo "2. Run     ./configure" \
 		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-        echo "2. Run     make fast" \
+	echo "2. Run     make fast" \
 		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-        echo "2. Run     bin/viptos" \
+	echo "2. Run     bin/viptos" \
 		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
 	# Fix up bin/makefile
 	egrep -v "copernicus|decompile|emachine|hyvisual|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/viptos$(VERSION)/bin/makefile \
