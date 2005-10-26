@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[626, 427]">
     </property>
@@ -13,7 +13,7 @@
         </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.001">
         </property>
@@ -41,12 +41,12 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[523.0, 100.0]">
         </property>
     </property>
     <property name="elasticity" class="ptolemy.data.expr.Parameter" value="0.9">
     </property>
-    <property name="stoppedThreshold" class="ptolemy.data.expr.Parameter" value="0.01">
+    <property name="stoppedThreshold" class="ptolemy.data.expr.Parameter" value="0.05">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -66,10 +66,10 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 841, 545}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 841, 545}, maximized=false}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -88,7 +88,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 375.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -110,7 +110,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 315.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -134,19 +134,19 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 25.0]">
         </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 412, 508, 355}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={516, 409, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 195.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -155,13 +155,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="30.0"/>
-<yRange min="-9.598813568329362E-5" max="10.0"/>
+<xRange min="0.0" max="25.0"/>
+<yRange min="0.0" max="10.0"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Animate Ball" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[870.0, 270.0]">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -364,13 +364,13 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[655.0, 270.0]">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
         <property name="factor" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 270.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -380,7 +380,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
     <entity name="Ball Model" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 205.0]">
         </property>
         <port name="position" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -412,25 +412,25 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 145.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 275.0]">
                 </property>
             </port>
             <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 90.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 220.0]">
                 </property>
             </port>
             <port name="velocity" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 40.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 170.0]">
                 </property>
             </port>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 125.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 50.0]">
                 </property>
             </entity>
             <entity name="free" class="ptolemy.domains.fsm.kernel.State">
@@ -438,19 +438,17 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 175.0">
-                </property>
-            </entity>
-            <entity name="stop" class="ptolemy.domains.fsm.kernel.State">
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 25.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 135.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="abs(position) &lt; stoppedThreshold &amp;&amp; abs(velocity) &lt; stoppedThreshold">
                 </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="free.initialPosition = initialPosition; free.initialVelocity = 0.0">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="2.356194490192345">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="2.4699784522995576">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -486,18 +484,18 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             <link port="init.outgoingPort" relation="relation2"/>
             <link port="free.incomingPort" relation="relation2"/>
             <link port="free.incomingPort" relation="relation3"/>
+            <link port="free.incomingPort" relation="relation"/>
             <link port="free.outgoingPort" relation="relation"/>
             <link port="free.outgoingPort" relation="relation3"/>
-            <link port="stop.incomingPort" relation="relation"/>
         </entity>
         <entity name="free" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-8.5438326004543E-6">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-3.9279136717057E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="2.3584098660947">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="12.7279470584228">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
@@ -664,7 +662,7 @@ falling in a gravitational field.</text></svg></configure>
         <link port="free.velocity" relation="velocityRelation"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[125.0, 190.0]">
+        <vertex name="vertex1" value="[580.0, 195.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
