@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimingParadox" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -63,7 +63,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[127.5, 415.0]">
         </property>
     </property>
     <property name="annotation3" class="ptolemy.kernel.util.Attribute">
@@ -83,7 +83,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 585.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 390.0]">
         </property>
     </property>
     <property name="annotation4" class="ptolemy.kernel.util.Attribute">
@@ -112,7 +112,7 @@ second mode is significantly reduced.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 205.0]">
         </property>
     </property>
     <property name="annotation5" class="ptolemy.kernel.util.Attribute">
@@ -136,7 +136,7 @@ delays.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 505.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 370.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -274,7 +274,7 @@ delays.</text></svg></configure>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
         <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[112.5, 505.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 465.0]">
         </property>
     </entity>
     <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
@@ -299,8 +299,8 @@ delays.</text></svg></configure>
 <title>The Delay Paradox</title>
 <xLabel>Delay Between Sample Produced and Sample Observed</xLabel>
 <yLabel>Number of Occurrences</yLabel>
-<xRange min="0.015" max="1.4"/>
-<yRange min="0.0" max="619.0"/>
+<xRange min="0.015" max="1.38"/>
+<yRange min="0.0" max="629.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.01" offset="0.0050"/>
 </plot>?>
@@ -334,7 +334,7 @@ delays.</text></svg></configure>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value=".1">
         </property>
         <doc>Create an array of rician random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 555.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[192.5, 515.0]">
         </property>
     </entity>
     <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
@@ -354,7 +354,7 @@ delays.</text></svg></configure>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[277.5, 475.0]">
         </property>
     </entity>
     <entity name="InstanceOfSampler" class="Sampler">
@@ -396,7 +396,7 @@ delays.</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[150.0, 505.0]">
+        <vertex name="vertex1" value="[142.5, 465.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

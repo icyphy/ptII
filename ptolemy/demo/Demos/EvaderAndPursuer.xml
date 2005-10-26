@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="EvaderAndPursuer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, -1, 1011, 735}, maximized=false}">
     </property>
@@ -45,16 +45,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 145.0]">
-        </property>
-    </property>
-    <property name="model ID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-        <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Apr 12, 2005 12:01:09 AM">
-        </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="May 12, 2005 8:06:32 AM">
-        </property>
-        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Yang Zhao">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 555.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">

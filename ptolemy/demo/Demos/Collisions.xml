@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Collisions" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -20,33 +20,20 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">In this model, two transmitters broadcast
-signals that may collide with one another.
-The receiver will correctly receive a signal
-if the signal to interference ratio is 3dB
-or better, meaning that the received signal
-has at least twice the power of the
-interfering signal.  When Transmitter1 is
-far away from the receiver, it cannot
-interfere with the transmission of
-Transmitter0.  However, when it gets close,
-it can.
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">In this model, two transmitters broadcast signals that may collide with one another.
+The receiver will correctly receive a signal if the signal to interference ratio is 3dB
+or better, meaning that the received signal has at least twice the power of the
+interfering signal.  When Transmitter1 is far away from the receiver, it cannot
+interfere with the transmission of Transmitter0.  However, when it gets close, it can.
 
-The upper plot shows the received power
-density (in watts per square meter) seen
-by Receiver for both transmitters. It
-also shows the duration of the transmissions.
-If the transmissions overlap, then one of the
-transmissions is surely lost.  The second
-is lost only if its power is not greater
-than twice the power of the interferer.
+The upper plot shows the received power density (in watts per square meter) seen
+by Receiver for both transmitters. It also shows the duration of the transmissions.
+If the transmissions overlap, then one of the transmissions is surely lost.  The second
+is lost only if its power is not greater than twice the power of the interferer.
 
-The lower plot shows which messages were
-received and which were lost.  The messages
-from Transmitter1 will always be lost if
-they collide with messages from Transmitter0.
-However, messages from Transmitter0 can only
-be lost when Transmitter1 is close to the
+The lower plot shows which messages were received and which were lost.  The messages
+from Transmitter1 will always be lost if they collide with messages from Transmitter0.
+However, messages from Transmitter0 can only be lost when Transmitter1 is close to the
 Receiver.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
@@ -60,7 +47,7 @@ Receiver.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 45.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -72,7 +59,7 @@ Receiver.</text></svg></configure>
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 620.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 325.0]">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -92,7 +79,7 @@ Receiver.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 20.0]">
         </property>
     </property>
     <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
@@ -437,7 +424,7 @@ displays.</text></svg></configure>
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter0, Transmitter1">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={546, 527, 477, 241}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={537, 305, 477, 241}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[469, 186]">
             </property>
@@ -487,7 +474,7 @@ displays.</text></svg></configure>
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter0, Transmitter1">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 549, 508, 215}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={509, 549, 508, 215}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 160]">
             </property>

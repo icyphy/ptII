@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SolarSystem" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
     </property>
     <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 85.0]">
@@ -112,9 +112,9 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model of the solar&#10;system takes liberties&#10;with scale to create a&#10;meaningful plot. To get&#10;accurate proportions,&#10;set sunScaleFactor = 1.0&#10;and diameterScaleFactor&#10;to orbitScaleFactor.&#10;Even then, the&#10;minimumDiameter parameter&#10;needs to be reasonably&#10;large or most planets&#10;become invisible.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model of the solar system takes liberties&#10;with scale to create a meaningful plot. To get&#10;accurate proportions, set sunScaleFactor = 1.0&#10;and diameterScaleFactor to orbitScaleFactor.&#10;Even then, the minimumDiameter parameter&#10;needs to be reasonably large or most planets&#10;become invisible.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 45.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -318,17 +318,17 @@
         </property>
     </entity>
     <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
-        <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="1000">
+        <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="500">
         </property>
-        <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="1000">
+        <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="500">
         </property>
         <property name="scalable" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, -6, 1008, 780}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={500, 350, 400, 450}, maximized=false}">
         </property>
-        <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute" value="[1000, 746]">
+        <property name="_viewSize" class="ptolemy.actor.gui.SizeAttribute" value="[400, 450]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 225.0]">
         </property>
