@@ -330,6 +330,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		bin/tinicomm.bat \
 		bin/tiniconverter.bat \
 		bin/vergil.bat \
+		build.xml \
 		config/jarTest.jar \
 		diva/build.xml \
 		diva/canvas/test/alljsimpletests.tcl \
@@ -342,12 +343,20 @@ PTII_SRC_TO_BE_REMOVED = \
 		doc/img/PtolemyIISplash.psd \
 		doc/design/hyvisual.jar \
 		doc/design/visualsense.jar \
+		doc/ptII5.0.releaseVergil.htm \
 		lib/cachedir \
 		lib/ptII.properties \
 		lib/ptvr.jar \
 		lib/saxon8.jar \
 		jni \
 		mk/ptII.mk \
+		mk/codegen.mk \
+		mk/jnlp.mk \
+		mk/kvm.mk \
+		mk/lejos.mk \
+		mk/midp.mk \
+		mk/tini.mk \
+		mk/waba.mk \
 		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
 		ptolemy/actor/gui/test/alljsimpletests.tcl \
 		ptolemy/actor/lib/security/demo/Signature/ptKeystore \
@@ -383,7 +392,13 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/moml/jxta/JXTALibrary.class \
 	        ptolemy/plot/ptplotlocales \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
-		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
+		ptolemy/vergil/toolbox/test/alljsimpletests.tcl \
+		vergil.jnlp.in \
+		vergilDSP.jnlp.in \
+		vergilHyVisual.jnlp.in \
+		vergilPtiny.jnlp.in \
+		vergilPtinySandbox.jnlp.in \
+		vergilVisualSense.jnlp.in
 
 
 BASE_SRC_TO_BE_REMOVED = \
@@ -419,6 +434,7 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/jni \
 		ptolemy/configs/jxta \
 		ptolemy/configs/SingleWindow \
+		ptolemy/configs/ptiny \
 		ptolemy/configs/copernicus \
 		ptolemy/copernicus \
 		ptolemy/domains/ci \
@@ -628,6 +644,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	(cd src_jar/viptos$(VERSION); \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		rm -rf $(VIPTOS_SRC_TO_BE_REMOVED) thales; \
+		rm -rf ptolemy/domains/ptinyos/demo/*/output; \
 	   touch configure; \
 	   chmod a+rx configure util/testsuite/chkextra; \
 	)
@@ -690,7 +707,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VERSION)/doc/img/makefile.tmp \
 		src_jar/viptos$(VERSION)/doc/img/makefile
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|ci/kernel|ci/lib|copernicus|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib||jni |psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|ci/kernel|ci/lib|copernicus|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|jni |psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib" \
 		src_jar/viptos$(VERSION)/doc/makefile \
 		| sed 's/codeDocHyVisual.jar codeDocVisualSense.jar//' \
 		> src_jar/viptos$(VERSION)/doc/makefile.tmp
