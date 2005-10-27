@@ -502,15 +502,9 @@ public class PtinyOSDirector extends Director {
         File directory = destinationDirectory.asFile();
 
         if (!directory.isDirectory()) {
-            if (!MessageHandler.yesNoQuestion("Create directory "
-                    + destinationDirectory.getExpression() + "?")) {
-                throw new IllegalActionException(this, "No directory named: "
-                        + destinationDirectory.getExpression());
-            } else {
-                if (!directory.mkdir()) {
-                    throw new IllegalActionException(this,
-                            "Could not create directory " + directory);
-                }
+            if (!directory.mkdir()) {
+                throw new IllegalActionException(this,
+                        "Could not create directory " + directory);
             }
         }
 
