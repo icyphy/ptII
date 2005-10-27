@@ -28,7 +28,6 @@
 package ptolemy.moml.jxta;
 
 import net.jxta.credential.AuthenticationCredential;
-import net.jxta.credential.Credential;
 
 import net.jxta.discovery.DiscoveryEvent;
 import net.jxta.discovery.DiscoveryListener;
