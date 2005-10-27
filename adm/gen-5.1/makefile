@@ -35,7 +35,7 @@
 MAJOR_VERSION = 	5.1
 MINOR_VERSION =		alpha
 
-VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
+VERSION=	$(MAJOR_VERSION)-$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
 WINDOWS_VERSION =	5_2_alpha
 
