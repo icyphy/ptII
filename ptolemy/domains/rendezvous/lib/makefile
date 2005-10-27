@@ -72,8 +72,7 @@ OPTIONAL_FILES = \
 	'Buffer$$1.class' \
 	'ResourcePool$$1.class'
 
-JCLASS = $$(JSRCS:%.java=%.class' \
-
+JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass $(PTCLASSJAR)
