@@ -55,7 +55,7 @@ test VersionAttribute-1.0 {Constructor} {
     set result2 [$v toString]
     set result3 [$v getExpression]
     list $result1 $result2 $result3
-} {{ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} {ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} 5.1-devel}
+} {{ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} {ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} 5.1-alpha}
 
 
 test VersionAttribute-2.0 {compareTo} {
@@ -89,7 +89,7 @@ test VersionAttribute-2.0 {compareTo} {
 		[$CURRENT_VERSION compareTo $v]]
     }
     list $results
-} {{{1.0 5.1-devel -1 1} {1.0.0 5.1-devel -1 1} {1.0-beta 5.1-devel -1 1} {2.0 5.1-devel -1 1} {2.0-devel 5.1-devel -1 1} {2.0.alpha 5.1-devel -1 1} {2.0_beta 5.1-devel -1 1} {2.0-build003 5.1-devel -1 1} {2.0-release-1 5.1-devel -1 1} {3.0 5.1-devel -1 1} {3.0-devel 5.1-devel -1 1} {3.0-alpha 5.1-devel -1 1} {3.1 5.1-devel -1 1} {4 5.1-devel -1 1} {4.1 5.1-devel -1 1} {5.0 5.1-devel -1 1} {5.1 5.1-devel -1 1} {5.1-alpha 5.1-devel -1 1} {5.1-beta 5.1-devel -1 1} {6.0 5.1-devel 1 -1} {5.1-devel 5.1-devel 0 0}}}
+} {{{1.0 5.1-alpha -1 1} {1.0.0 5.1-alpha -1 1} {1.0-beta 5.1-alpha -1 1} {2.0 5.1-alpha -1 1} {2.0-devel 5.1-alpha -1 1} {2.0.alpha 5.1-alpha -1 1} {2.0_beta 5.1-alpha -1 1} {2.0-build003 5.1-alpha -1 1} {2.0-release-1 5.1-alpha -1 1} {3.0 5.1-alpha -1 1} {3.0-devel 5.1-alpha -1 1} {3.0-alpha 5.1-alpha -1 1} {3.1 5.1-alpha -1 1} {4 5.1-alpha -1 1} {4.1 5.1-alpha -1 1} {5.0 5.1-alpha -1 1} {5.1 5.1-alpha -1 1} {5.1-alpha 5.1-alpha 0 0} {5.1-beta 5.1-alpha 1 -1} {6.0 5.1-alpha 1 -1} {5.1-alpha 5.1-alpha 0 0}}}
 
 
 test VersionAttribute-3.0 {clone: This used to throw an exception because of NamedObj.clone() was not checking for final fields.} {
