@@ -292,12 +292,12 @@ public class Pursuer extends TypedAtomicActor {
         }
     }
 
-    private boolean _inWorkRange(double xLocation, double yLocation)
-            throws IllegalActionException {
-        return ((_workRange[0][0] <= xLocation)
-                && (xLocation <= _workRange[0][1])
-                && (_workRange[1][0] <= yLocation) && (yLocation <= _workRange[1][1]));
-    }
+//    private boolean _inWorkRange(double xLocation, double yLocation)
+//            throws IllegalActionException {
+//        return ((_workRange[0][0] <= xLocation)
+//                && (xLocation <= _workRange[0][1])
+//                && (_workRange[1][0] <= yLocation) && (yLocation <= _workRange[1][1]));
+//    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
