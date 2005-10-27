@@ -56,9 +56,9 @@ public final class CanvasUtilities {
     //// Constants used by transform()
     private final static int m00 = 0;
 
-    private final static int m10 = 1;
+    //private final static int m10 = 1;
 
-    private final static int m01 = 2;
+    //private final static int m01 = 2;
 
     private final static int m11 = 3;
 
