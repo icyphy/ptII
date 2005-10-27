@@ -53,12 +53,15 @@ JSRCS = \
 	MoMLLib.java \
 	NC2MoML.java
 
-OTHER_FILES_TO_BE_JARED = \
-	index.htm \
+OTHER_FILES_TO_BE_MADE_EXECUTABLE = \
 	nc2moml \
 	nc2moml-get-args \
 	nc2moml-main \
 	nc2moml-run-ncc
+
+OTHER_FILES_TO_BE_JARED = \
+	$(OTHER_FILES_TO_BE_MADE_EXECUTABLE) \
+	index.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -77,8 +80,10 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	chmod a+x $(OTHER_FILES_TO_BE_MADE_EXECUTABLE)
 	@echo "Run \"make install\" to convert nc files to moml (take about 20 minutes)"
 	@echo "Run \"make test\" for a quick test"
+
 
 install: jclass
 	@echo "Warning: nc2moml takes about 20 minutes to run" 
