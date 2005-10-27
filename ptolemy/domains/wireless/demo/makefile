@@ -35,6 +35,7 @@ DIRS = \
 	AntennaPattern \
 	CircularRange \
 	Collisions \
+	CooperativeTerminals \
 	EvaderAndPursuer \
 	MatlabWirelessSoundDetection \
 	PowerVariability \
@@ -68,6 +69,7 @@ PTCLASSALLJARS = \
 	AntennaPattern/AntennaPattern.jar \
 	CircularRange/CircularRange.jar \
 	Collisions/Collisions.jar \
+	CooperativeTerminals/CooperativeTerminals.jar \
 	EvaderAndPursuer/EvaderAndPursuer.jar \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
 	PowerVariability/PowerVariability.jar \
