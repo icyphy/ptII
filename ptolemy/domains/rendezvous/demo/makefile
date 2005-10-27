@@ -51,8 +51,6 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		Barrier/Barrier.jar \
-		BusContention/BusContention.jar \
-		DiningPhilosophers/DiningPhilosophers.jar \
 		ResourcePool/ResourcePool.jar \
 		WriteRegulator/WriteRegulator.jar
 
