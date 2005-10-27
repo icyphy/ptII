@@ -46,6 +46,20 @@
     installed.  If you wish to use pre-existing installations, please
     set up the environment variables described in the steps below to
     point to proper directories.
+	<BLOCKQUOTE>
+	If you already have AVR tools, TinyOS and nesC installed, try:
+	<pre>
+cd $PTII
+mkdir -p vendors/ptinyos
+ln -s <I>location_of_your_tiny-1.x tree</I> .
+ln -s <I>location_of_your_nesc tree</I> .
+	</pre>
+	and proceed to 
+	<a href="#environmentVarialbles">Set up the necessary
+    environment variables</a> below.
+
+	</BLOCKQUOTE>
+
 
     <h2><a name="nc2moml_source">How to install nc2moml by
     downloading/building nesC from CVS</a></h2>
@@ -220,7 +234,8 @@ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos co tinyos-1.x
         information, see <a
         href="http://sourceforge.net/cvs/?group_id=28656#in_browser"><code>http://sourceforge.net/cvs/?group_id=28656</code></a>.
 
-      <li> Set up the necessary environment variables.  TOSROOT sets the location of the TinyOS source tree.  TOSDIR sets the subdirectory in the TinyOS source tree.  PTINYOS_MOMLROOT sets the MoML output directory.
+      <li> <a name="environmentVariables">Set up the necessary environment variables.</a>
+  TOSROOT sets the location of the TinyOS source tree.  TOSDIR sets the subdirectory in the TinyOS source tree.  PTINYOS_MOMLROOT sets the MoML output directory.
         <ul>
           <li>Under bash, type: 
             <pre>
