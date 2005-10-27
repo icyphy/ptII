@@ -745,8 +745,6 @@ public class PHY extends NetworkActorBase {
     ////                         private variables                 ////
     private RecordToken _data;
 
-    private ExtendedTimer _chMsg;
-
     private double _txDuration;
 
     private double _receivedPower;

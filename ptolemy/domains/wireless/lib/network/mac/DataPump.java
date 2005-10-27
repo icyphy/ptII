@@ -323,6 +323,4 @@ public class DataPump extends MACActorBase {
     private RecordToken _inputMessage;
 
     private int _messageType;
-
-    private double _currentTime;
 }

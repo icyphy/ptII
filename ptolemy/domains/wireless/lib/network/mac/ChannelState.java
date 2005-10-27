@@ -472,8 +472,6 @@ public class ChannelState extends MACActorBase {
 
     private static final int NavTimeOut = 1;
 
-    private static final int SlotTimeOut = 2;
-
     private RecordToken _inputMessage;
 
     private int _messageType;
