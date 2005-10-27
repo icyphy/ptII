@@ -29,9 +29,7 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
-
 import ij.plugin.Slicer;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
@@ -119,9 +117,9 @@ public class Reslice extends TypedAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
-        _xResolution = ((IntToken) xResolution.getToken()).intValue();
-        _yResolution = ((IntToken) yResolution.getToken()).intValue();
-        _stackSize = ((IntToken) stackSize.getToken()).intValue();
+        /*_xResolution = */((IntToken) xResolution.getToken()).intValue();
+        /*_yResolution = */((IntToken) yResolution.getToken()).intValue();
+        /*_stackSize = */((IntToken) stackSize.getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -129,9 +127,9 @@ public class Reslice extends TypedAtomicActor {
     //Image that is readin
     private ImagePlus _imagePlus;
 
-    private int _stackSize;
+    //private int _stackSize;
 
-    private int _xResolution;
+    //private int _xResolution;
 
-    private int _yResolution;
+    //private int _yResolution;
 }

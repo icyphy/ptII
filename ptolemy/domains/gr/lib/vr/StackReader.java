@@ -29,30 +29,20 @@ package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
 import ij.ImageStack;
-
 import ij.process.ColorProcessor;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.FilePortParameter;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.AWTImageToken;
+import java.awt.Image;
+
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.lib.SDFTransformer;
-import ptolemy.graph.Inequality;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Image;
-import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 ////StackReader
@@ -228,7 +218,7 @@ public class StackReader extends SDFTransformer {
     private Image _image;
 
     /**  The URL of the file. */
-    private URL _url;
+    //private URL _url;
 
     /** Number of images in stack as defined by user */
     private int _stackSize;

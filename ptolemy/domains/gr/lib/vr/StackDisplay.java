@@ -28,11 +28,8 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
-
 import ij.gui.StackWindow;
-
 import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
@@ -40,10 +37,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.media.Picture;
-
-import java.awt.Color;
-import java.awt.Container;
 
 //////////////////////////////////////////////////////////////////////////
 //// StackDisplay
@@ -105,7 +98,7 @@ public class StackDisplay extends Sink {
              "Failed to cast " + token.getClass()
              + " to an ImageToken.\nToken was: " + token);
              }*/
-            _frame = new StackWindow(imagePlus);
+            /*_frame = */ new StackWindow(imagePlus);
         }
     }
 
@@ -142,7 +135,7 @@ public class StackDisplay extends Sink {
     ////                         private variables                 ////
 
     /** The frame, if one is used. */
-    private StackWindow _frame;
+    //private StackWindow _frame;
 
-    private int _index = 0;
+    //private int _index = 0;
 }

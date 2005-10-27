@@ -31,6 +31,9 @@ package ptolemy.domains.gr.lib.vr;
 import ij.IJ;
 import ij.ImagePlus;
 
+import java.awt.Image;
+import java.net.URL;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.FilePortParameter;
@@ -40,9 +43,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Image;
-import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 ////DICOMReader

@@ -28,11 +28,8 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
-
 import ij.plugin.MontageMaker;
-
 import ptolemy.actor.lib.Sink;
-import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -112,19 +109,20 @@ public class Montage extends Sink {
     }
 
     public void initialize() throws IllegalActionException {
-        _xResolution = ((IntToken) xResolution.getToken()).intValue();
-        _yResolution = ((IntToken) yResolution.getToken()).intValue();
-        _stackSize = ((IntToken) stackSize.getToken()).intValue();
+        // FIXME: why read these and discard them?
+        /*_xResolution = ((IntToken) */ xResolution.getToken()/*).intValue()*/;
+        /*_yResolution = ((IntToken) */ yResolution.getToken()/*).intValue()*/;
+        /*_stackSize = ((IntToken) */stackSize.getToken()/*).intValue()*/;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     //Image that is readin
-    private ImagePlus _imagePlus;
+    //private ImagePlus _imagePlus;
 
-    private int _stackSize;
+    //private int _stackSize;
 
-    private int _xResolution;
+    //private int _xResolution;
 
-    private int _yResolution;
+    //private int _yResolution;
 }

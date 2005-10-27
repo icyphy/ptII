@@ -28,9 +28,8 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
-import ij.ImageStack;
 
-import ij.process.ColorProcessor;
+import java.awt.Image;
 
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.IntToken;
@@ -41,8 +40,6 @@ import ptolemy.domains.sdf.lib.SDFTransformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Image;
 
 //////////////////////////////////////////////////////////////////////////
 ////StackReader
@@ -126,8 +123,9 @@ public class StackToImage extends SDFTransformer {
 
     public void initialize() throws IllegalActionException {
         // _parameterPort =  input.getPort();
-        _xResolution = ((IntToken) xResolution.getToken()).intValue();
-        _yResolution = ((IntToken) yResolution.getToken()).intValue();
+        //FIXME: why read these and ignore the values?
+        /*_xResolution =*/ ((IntToken) xResolution.getToken()).intValue();
+        /*_yResolution =*/ ((IntToken) yResolution.getToken()).intValue();
         _stackSize = ((IntToken) stackSize.getToken()).intValue();
     }
 
@@ -170,24 +168,24 @@ public class StackToImage extends SDFTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     //Image that is readin
-    private ImagePlus _imagePlus;
+    //private ImagePlus _imagePlus;
 
     private ImagePlus _currentImagePlus;
 
     //Image that is readin
-    private ColorProcessor _colorProcessor;
+    //private ColorProcessor _colorProcessor;
 
     //Image that is readin
-    private ImageStack _imageStack;
+    //private ImageStack _imageStack;
 
     // Image that is read in.
     private Image _image;
 
     private int _stackSize;
 
-    private int _xResolution;
+    //private int _xResolution;
 
-    private int _yResolution;
+    //private int _yResolution;
 
     private int _index = 0;
 }
