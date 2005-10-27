@@ -27,36 +27,15 @@
  */
 package ptolemy.domains.gr.lib.vr;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.data.AWTImageToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.gr.lib.vr.TextureLoader.MyTextureLoader;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
-import com.sun.j3d.utils.image.TextureLoader;
-
-import java.awt.Component;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferDouble;
-import java.awt.image.DataBufferFloat;
-import java.awt.image.DataBufferInt;
 import java.awt.image.Raster;
 import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
@@ -66,16 +45,22 @@ import java.net.URL;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageInputStream;
 import javax.media.j3d.GeometryArray;
-import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.QuadArray;
-import javax.media.j3d.Shape3D;
-import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
-import javax.media.j3d.Texture2D;
 import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.View;
+
+import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
+import com.sun.j3d.utils.image.TextureLoader;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture2D
@@ -276,7 +261,7 @@ public class GRTexture2D extends GRGeometry {
             _texCoords[6] = 0;
             _texCoords[7] = 1;
         } else if (_axis == 0) {
-            double curX = (_counter * _planeSpacing) - .5;
+            //double curX = (_counter * _planeSpacing) - .5;
 
             //Set coordinates for the plane.  These coordinates assume
             //that the the image's origin is at the lower left and the planes
@@ -447,7 +432,7 @@ public class GRTexture2D extends GRGeometry {
                 componentColorModelwoAlpha, writableRaster, false, hashtable);
 
         //      Get alpha raster and manipulate values
-        double fraction = 1 / 255;
+        //double fraction = 1 / 255;
 
         //float[] pixelArray = new float[arrayLength*4];
         double[] pixelArray = new double[arrayLength * 4];
@@ -629,10 +614,10 @@ public class GRTexture2D extends GRGeometry {
     private URL _url;
 
     /** The NodeComponent defining the texture which must be added to the Appearance */
-    private Texture2D _texture2D;
+    //private Texture2D _texture2D;
 
     /** ImageComponent. */
-    private ImageComponent2D _imageComponent;
+    //private ImageComponent2D _imageComponent;
 
     /** QuadArray. */
     private QuadArray _plane;
@@ -641,52 +626,52 @@ public class GRTexture2D extends GRGeometry {
     private BufferedImage _bufferedImage;
 
     /**Defines how to translate the pixels into color and alpha components.*/
-    private ColorModel _colorModel;
+    //private ColorModel _colorModel;
 
     /** The ColorSpace that defines the color space of the image */
-    private ColorSpace _colorSpace;
+    //private ColorSpace _colorSpace;
 
     //private ImagePlus _imagePlus;
     private String _fileRoot;
 
-    private File _file;
+    //private File _file;
 
-    private FileImageInputStream _fileImageInputStream;
+    //private FileImageInputStream _fileImageInputStream;
 
-    private Texture2D _texture;
+    //private Texture2D _texture;
 
     private Token _token;
 
-    private Token _tokenURL;
+    //private Token _tokenURL;
 
-    private TexCoordGeneration _texCoordGeneration;
+    //private TexCoordGeneration _texCoordGeneration;
 
-    private WritableRaster _alphaRaster;
+    //private WritableRaster _alphaRaster;
 
-    private WritableRaster _dataRaster;
+    //private WritableRaster _dataRaster;
 
-    private int[] _intData;
+    //private int[] _intData;
 
     private double[] _quadCoords;
 
     private float[] _texCoords;
 
     //private TexCoord2f[] _texCoords;
-    private MyTextureLoader _myTextureLoader;
+    //private MyTextureLoader _myTextureLoader;
 
-    private DataBufferInt _dataBufferInt;
+    //private DataBufferInt _dataBufferInt;
 
-    private DataBuffer _dataBuffer;
+    //private DataBuffer _dataBuffer;
 
     private int _sSize;
 
     private int _tSize;
 
-    private ParameterPort _parameterPort;
+    //private ParameterPort _parameterPort;
 
-    private StringToken _stringToken;
+    //private StringToken _stringToken;
 
     private int _counter;
 
-    private String _eof;
+    //private String _eof;
 }
