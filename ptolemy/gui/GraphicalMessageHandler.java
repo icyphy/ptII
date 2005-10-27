@@ -263,7 +263,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                             StringUtilities.ELLIPSIS_LENGTH_LONG);
 
                     // Show the MODAL dialog
-                    int selected = JOptionPane.showOptionDialog(getContext(),
+                    /*int selected =*/ JOptionPane.showOptionDialog(getContext(),
                             message, "Warning", JOptionPane.YES_NO_OPTION,
                             JOptionPane.WARNING_MESSAGE, null, options,
                             options[0]);

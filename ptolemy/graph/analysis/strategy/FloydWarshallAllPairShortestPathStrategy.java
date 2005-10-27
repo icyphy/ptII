@@ -87,7 +87,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
         ArrayList shortestPath = null;
         int startNodeLabel = graph().nodeLabel(startNode);
         int endNodeLabel = graph().nodeLabel(endNode);
-        int n = graph().nodeCount();
+        //int n = graph().nodeCount();
         int[][] nodeLabels = predecessors();
 
         if (nodeLabels[startNodeLabel][endNodeLabel] != -1) {
@@ -117,7 +117,7 @@ public class FloydWarshallAllPairShortestPathStrategy extends
      */
     public double shortestPathLength(Node startNode, Node endNode) {
         double result = 0.0;
-        int n = graph().nodeCount();
+        //int n = graph().nodeCount();
         double[][] shortestPathResults = (double[][]) _result();
         result = shortestPathResults[graph().nodeLabel(startNode)][graph()
                 .nodeLabel(endNode)];
