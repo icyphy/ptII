@@ -68,8 +68,8 @@ MISC_FILES =	$(DIRS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	'NondeterministicMerge$$ChannelActor.class' \
+	'NondeterministicMerge$$MergeDirector.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

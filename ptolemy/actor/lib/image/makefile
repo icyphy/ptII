@@ -75,7 +75,8 @@ OPTIONAL_FILES = \
 	'ImageDisplay$$2.class' \
 	'ImageDisplay$$_PictureFrame.class' \
 	'ImageDisplay$$Factory.class' \
-	'ImageDisplay$$ImageWindow.class'
+	'ImageDisplay$$ImageWindow.class' \
+	'ImageTableau$$Factory.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

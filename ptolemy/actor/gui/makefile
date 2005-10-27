@@ -212,6 +212,14 @@ OPTIONAL_FILES = \
 	'PortConfigurerDialog$$4.class' \
 	'PortConfigurerDialog$$5.class' \
 	'PortConfigurerDialog$$6.class' \
+	'PortConfigurerDialog$$8.class' \
+	'PortConfigurerDialog$$9.class' \
+	'PortConfigurerDialog$$10.class' \
+	'PortConfigurerDialog$$11.class' \
+	'PortConfigurerDialog$$12.class' \
+	'PortConfigurerDialog$$13.class' \
+	'PortConfigurerDialog$$ValidatingComboBoxCellEditor.class' \
+	'PortConfigurerDialog$$ValidatingJTextFieldCellEditor.class' \
 	'PortConfigurerDialog$$CellValidator.class' \
 	'PortConfigurerDialog$$PortBooleanCellRenderer.class' \
 	'PortConfigurerDialog$$PortTableModel.class' \

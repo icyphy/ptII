@@ -70,7 +70,8 @@ MISC_FILES = $(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	'CSPDirector$$1.class' \
-	'CSPDirector$$DelayListLink.class'
+	'CSPDirector$$DelayListLink.class' \
+	'CSPReceiver$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

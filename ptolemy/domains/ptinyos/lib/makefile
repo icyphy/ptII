@@ -53,6 +53,7 @@ JSRCS = \
 	NCComponentBase.java
 
 OTHER_FILES_TO_BE_JARED = \
+	MicaBoard.xml \
 	NCComponent.nc \
 	NCComponent.xml \
 	jdom-copyright.htm \
