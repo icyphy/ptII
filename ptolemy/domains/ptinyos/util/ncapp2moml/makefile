@@ -52,11 +52,15 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	NCApp2MoML.java
 
-OTHER_FILES_TO_BE_JARED = \
+OTHER_FILES_TO_BE_MADE_EXECUTABLE = \
 	ncapp2moml \
 	ncapp2moml-get-args \
 	ncapp2moml-main \
 	ncapp2moml-run-ncc
+
+OTHER_FILES_TO_BE_JARED = \
+	$(OTHER_FILES_TO_BE_MADE_EXECUTABLE) \
+	index.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -75,6 +79,7 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	chmod a+x $(OTHER_FILES_TO_BE_MADE_EXECUTABLE)
 
 include $(ROOT)/mk/ptcommon.mk
 
