@@ -105,13 +105,13 @@ public class MultiportToSinglePort implements MoMLFilter {
                 if ((_portName != null) && _portName.equals(attributeValue)) {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
-                    _foundChange = true;
+                    //_foundChange = true;
                 } else {
                     if (attributeValue.equals("multiport")
                             && (container != null)
                             && container.getName().equals(_portName)) {
                         // What if the multiport is false?
-                        _foundChange = false;
+                        //_foundChange = false;
                         MoMLParser.setModified(true);
                         return null;
                     }
@@ -119,7 +119,7 @@ public class MultiportToSinglePort implements MoMLFilter {
                     // Saw a name that did not match.
                     // However, we might have other names that
                     // did match, so keep looking
-                    _foundChange = false;
+                    //_foundChange = false;
                 }
             }
         }
@@ -158,7 +158,7 @@ public class MultiportToSinglePort implements MoMLFilter {
                             _currentActorFullName)) {
                 // We found another class in a different container
                 // while handling a class with multiport change
-                _foundChange = false;
+                //_foundChange = false;
                 _currentlyProcessingActorWithPropertyClassChanges = false;
             }
         }
@@ -215,7 +215,7 @@ public class MultiportToSinglePort implements MoMLFilter {
     private static String _lastNameSeen;
 
     // Keep track of whether a change was found.
-    private static boolean _foundChange;
+    //private static boolean _foundChange;
 
     // The name of the port we are looking for.
     private static String _portName;
