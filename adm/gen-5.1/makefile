@@ -657,14 +657,8 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 		> src_jar/viptos$(VERSION)/bin/makefile.tmp
 	mv src_jar/viptos$(VERSION)/bin/makefile.tmp \
 		src_jar/viptos$(VERSION)/bin/makefile
-	# Fix up actor/lib/makefile
-	egrep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
-		src_jar/viptos$(VERSION)/ptolemy/actor/lib/makefile \
-		> src_jar/viptos$(VERSION)/ptolemy/actor/lib/makefile.tmp
-	mv src_jar/viptos$(VERSION)/ptolemy/actor/lib/makefile.tmp \
-		src_jar/viptos$(VERSION)/ptolemy/actor/lib/makefile
 	# Fix up domains/makefile
-	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
+	egrep -v "ddf.jar|domains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar"	\
 		src_jar/viptos$(VERSION)/ptolemy/domains/makefile \
 		> src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp \
@@ -688,7 +682,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VERSION)/doc/img/makefile.tmp \
 		src_jar/viptos$(VERSION)/doc/img/makefile
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|ci/kernel|ci/lib|copernicus|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib||jni |psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib" \
 		src_jar/viptos$(VERSION)/doc/makefile \
 		| sed 's/codeDocHyVisual.jar codeDocVisualSense.jar//' \
 		> src_jar/viptos$(VERSION)/doc/makefile.tmp
