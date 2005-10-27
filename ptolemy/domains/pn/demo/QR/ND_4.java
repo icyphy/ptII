@@ -141,7 +141,7 @@ public class ND_4 extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _returnValue = true;
+        //_returnValue = true;
 
         // Get the correct value from the parameters
         N = ((IntToken) parameter_N.getToken()).intValue();
@@ -286,5 +286,5 @@ public class ND_4 extends TypedAtomicActor {
 
     private int w_t_1 = 0;
 
-    private boolean _returnValue = true;
+    //private boolean _returnValue = true;
 }

@@ -111,11 +111,12 @@ public class ND_5 extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _returnValue = true;
+        //_returnValue = true;
 
         // Get the correct value from the parameters
         N = ((IntToken) parameter_N.getToken()).intValue();
-        K = ((IntToken) parameter_K.getToken()).intValue();
+        // FIXME: Why ignore this?
+        /*K = */((IntToken) parameter_K.getToken()).intValue();
     }
 
     /** Fire the actor.
@@ -157,11 +158,11 @@ public class ND_5 extends TypedAtomicActor {
     // -- Get private copies of the parameters
     private int N;
 
-    private int K;
+    //private int K;
 
     private double in_0;
 
-    private double out_0;
+    //private double out_0;
 
     private Vector r_2 = new Vector();
 
@@ -171,5 +172,5 @@ public class ND_5 extends TypedAtomicActor {
 
     private int w_r_3 = 0;
 
-    private boolean _returnValue = true;
+    //private boolean _returnValue = true;
 }

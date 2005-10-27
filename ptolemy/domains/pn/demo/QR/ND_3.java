@@ -125,7 +125,7 @@ public class ND_3 extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _returnValue = true;
+        //_returnValue = true;
 
         // Get the correct value from the parameters
         N = ((IntToken) parameter_N.getToken()).intValue();
@@ -164,7 +164,7 @@ public class ND_3 extends TypedAtomicActor {
 
                 _Vectorize(in_0, in_1);
                 out_0 = _argOut0;
-                out_1 = _argOut1;
+                //out_1 = _argOut1;
                 out_2 = _argOut2;
 
                 if ((K - k - 1) >= 0) {
@@ -195,7 +195,7 @@ public class ND_3 extends TypedAtomicActor {
     private void _Vectorize(double arg0, double arg1) {
         _argOut2 = -1 * Math.atan2(arg1, arg0);
         _argOut0 = (Math.cos(_argOut2) * arg0) - (Math.sin(_argOut2) * arg1);
-        _argOut1 = 0.0;
+        //_argOut1 = 0.0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -211,14 +211,14 @@ public class ND_3 extends TypedAtomicActor {
 
     private double out_0;
 
-    private double out_1;
+    //private double out_1;
 
     private double out_2;
 
     // Needed to communicate results from the function
     private double _argOut0;
 
-    private double _argOut1;
+    //private double _argOut1;
 
     private double _argOut2;
 
@@ -238,5 +238,5 @@ public class ND_3 extends TypedAtomicActor {
 
     private int w_x_1 = 0;
 
-    private boolean _returnValue = true;
+    //private boolean _returnValue = true;
 }
