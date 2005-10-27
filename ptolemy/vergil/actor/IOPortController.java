@@ -207,11 +207,9 @@ public class IOPortController extends AttributeController {
             }
 
             Color fill;
-            float lineWidth = (float) 1.5;
 
             if (port instanceof ParameterPort) {
                 fill = Color.lightGray;
-                lineWidth = (float) 0.0;
             } else if (port instanceof IOPort && ((IOPort) port).isMultiport()) {
                 fill = Color.white;
             } else {

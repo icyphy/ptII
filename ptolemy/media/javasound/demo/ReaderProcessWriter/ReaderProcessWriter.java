@@ -59,9 +59,6 @@ public class ReaderProcessWriter {
         // File name of the output file to create.
         String writeFile = "demoOutput.wav";
 
-        // Internal buffer size for live (real-time) playback.
-        int outBufferSize = 4096;
-
         // Amount of data to read or write from/to the internal buffer
         // at a time. This should be set smaller than the internal buffer
         // size.

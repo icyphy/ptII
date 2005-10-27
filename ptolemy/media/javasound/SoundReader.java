@@ -34,7 +34,6 @@ import java.net.URL;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 /////////////////////////////////////////////////////////////////
@@ -381,8 +380,6 @@ public class SoundReader {
         // Array of audio samples in byte format.
         _data = new byte[_productionRate * _frameSizeInBytes];
 
-        // Initialize the index to the first sample of the sound file.
-        _index = 0;
     }
 
     /* Convert a byte array of audio samples in linear signed pcm big endian
@@ -470,13 +467,8 @@ public class SoundReader {
     // Array of audio samples in double format.
     private double[][] _audioInDoubleArray;
 
-    // Array of audio samples in int format.
-    private int[][] _audioInIntArray;
-
     // Array of audio samples in byte format.
     private byte[] _data;
-
-    private int _index;
 
     private int _frameSizeInBytes;
 
@@ -486,10 +478,6 @@ public class SoundReader {
 
     private int _channels;
 
-    private int _bufferSize;
-
-    private TargetDataLine _targetLine;
-
     private int _bytesPerSample;
 
     private boolean _isAudioCaptureActive;
@@ -497,8 +485,6 @@ public class SoundReader {
     private byte[] _b = new byte[1];
 
     private double[][] _doubleArray = new double[1][1];
-
-    private int[][] _intArray = new int[1][1];
 
     /////////////// For debugging: ///////////////////////////////
     // Set this variable to "true" to enable debugging information.

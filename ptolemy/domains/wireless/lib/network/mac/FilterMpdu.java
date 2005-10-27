@@ -225,7 +225,6 @@ public class FilterMpdu extends MACActorBase {
     }
 
     private boolean _searchTupleCache(RecordToken pdu) {
-        boolean result = false;
         int addr = intFieldValue(pdu, "Addr2");
         int seqNum = intFieldValue(pdu, "SeqNum");
         int fragNum = intFieldValue(pdu, "FragNum");

@@ -551,8 +551,6 @@ public class SoundCapture {
                     + "real-time audio capture: " + ex);
         }
 
-        int targetBufferLengthInBytes = _productionRate * _frameSizeInBytes;
-
         // The following works under Windows Java 1.3.0 RC2 but
         // not under Tritonus under Linux, so comment out.
         //if (!AudioSystem.isLineSupported(sourceInfo)) {
@@ -617,9 +615,6 @@ public class SoundCapture {
         //_properFormatAudioInputStream.reset();
         // Array of audio samples in byte format.
         _data = new byte[_productionRate * _frameSizeInBytes];
-
-        // Initialize the index to the first sample of the sound file.
-        _index = 0;
     }
 
     /* Convert a byte array of audio samples in linear signed pcm big endian
@@ -765,8 +760,6 @@ public class SoundCapture {
 
     // Array of audio samples in byte format.
     private byte[] _data;
-
-    private int _index;
 
     private int _frameSizeInBytes;
 

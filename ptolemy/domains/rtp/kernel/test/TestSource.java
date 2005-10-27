@@ -96,7 +96,6 @@ public class TestSource extends Source {
 
     public void initialize() throws IllegalActionException {
         value = 0.0;
-        count = 0;
         super.initialize();
 
         // Director director = getDirector();
@@ -104,8 +103,6 @@ public class TestSource extends Source {
     }
 
     private double value = 0.0;
-
-    private int count = 0;
 
     private double _period = 1.0;
 }

@@ -221,9 +221,6 @@ public class ButtonTime extends WallClockTime implements Placeable {
     // The frame into which to put the text widget, if any.
     private JFrame _frame;
 
-    // Flag indicating that the place() method has been called at least once.
-    private boolean _placeCalled = false;
-
     private ButtonTime _self;
 
     ///////////////////////////////////////////////////////////////////

@@ -213,9 +213,6 @@ public class EditIconFrame extends BasicGraphFrame {
     ////                         private variables                 ////
     private EditIconGraphController _controller;
 
-    // The delay time specified that last time animation was set.
-    private long _lastDelayTime = 0;
-
     // The default zoom scale.
     private double _ZOOM_SCALE = 4.0;
 }

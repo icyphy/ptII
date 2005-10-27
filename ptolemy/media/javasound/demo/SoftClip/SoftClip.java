@@ -98,8 +98,6 @@ public class SoftClip {
                     + outBufferSize + " samples.");
             LiveSound.setTransferSize(getSamplesSize);
 
-            int putSamplesSize = getSamplesSize;
-
             LiveSound.startCapture(consumer);
 
             LiveSound.startPlayback(producer);

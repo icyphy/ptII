@@ -81,9 +81,6 @@ public class PortConnectSite extends AbstractSite {
         double width = bounds.getWidth();
         double height = bounds.getHeight();
 
-        double pi = Math.PI;
-        double pi2 = Math.PI / 2.0;
-
         double xout;
         double yout;
 

@@ -366,7 +366,4 @@ public class ShapeIcon extends DynamicEditorIcon {
 
     // The shape that is rendered.
     private Shape _shape;
-
-    // The scale percentage.
-    private double _scalePercentage = 100.0;
 }

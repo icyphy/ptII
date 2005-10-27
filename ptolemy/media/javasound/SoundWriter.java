@@ -37,7 +37,6 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.SourceDataLine;
 
 /////////////////////////////////////////////////////////////
 //// SoundWriter
@@ -129,7 +128,6 @@ public class SoundWriter {
         this._bitsPerSample = bitsPerSample;
         this._sampleRate = sampleRate;
         this._channels = channels;
-        this._productionRate = putSamplesArraySize;
         _initializeAudio();
         _isAudioWriterActive = true;
 
@@ -402,21 +400,13 @@ public class SoundWriter {
     // The output file to write to.
     private File outFile;
 
-    private int _productionRate;
-
     private String _fileName;
 
     private int _bitsPerSample;
 
-    private int _putSamplesSize;
-
     private float _sampleRate;
 
     private int _channels;
-
-    private int _bufferSize;
-
-    private SourceDataLine _sourceLine;
 
     // Array of audio samples in byte format.
     private byte[] _data;

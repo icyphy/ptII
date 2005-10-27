@@ -485,7 +485,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         // FIXME: set lineWidth and lineColor.
         _processLocation(attribute, attributes);
 
-        String style = (String) attributes.get("style");
+        //String style = (String) attributes.get("style");
 
         //if (style != null) {
             //StringTokenizer t = new StringTokenizer(style, ";");
