@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -160,7 +161,16 @@ public class SharedParameter extends Parameter {
         while (result.getContainer() != null) {
             result = (NamedObj) result.getContainer();
 
-            if (result instanceof EntityLibrary) {
+            // FIXME: this means that ptolemy.moml depends on
+            // ptolemy.actor.gui.  We could either do instanceof
+            // or else create ptolemy.kernel.ConfigurationBase
+            // and have Configuration extend it.
+            if (result instanceof Configuration) {
+                // If the results is a Configuration, then go no higher.
+                // If we do go higher, then we end up expanding the actor
+                // library tree which take a long time and fails if
+                // not all the actors are present.  For example, not
+                // everyone will have Matlab or quicktime.
                 return null;
             }
         }
