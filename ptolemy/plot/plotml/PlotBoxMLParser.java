@@ -195,7 +195,6 @@ public class PlotBoxMLParser extends HandlerBase {
      */
     public void parse(URL base, Reader reader) throws Exception {
         _parser.setHandler(this);
-        _base = base;
 
         Reader buffered = new BufferedReader(reader);
 
@@ -410,9 +409,7 @@ public class PlotBoxMLParser extends HandlerBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    // The URL w.r.t. which to resolve external references.
-    private URL _base;
-
+   
     // The external entities being parsed.
     private Stack _externalEntities = new Stack();
 

@@ -773,7 +773,6 @@ public class Histogram extends PlotBox {
         _currentdataset = -1;
         _points = new Vector();
         _histogram = new Vector();
-        _filename = null;
         _showing = false;
 
         if (format) {
@@ -866,9 +865,6 @@ public class Histogram extends PlotBox {
 
     /** @serial The offset between bins. */
     private double _binOffset = 0.5;
-
-    /** @serial Last filename seen in command-line arguments. */
-    private String _filename = null;
 
     /** @serial  Set by _drawPlot(), and reset by clear(). */
     private boolean _showing = false;
