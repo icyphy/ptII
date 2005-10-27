@@ -95,7 +95,8 @@ OPTIONAL_FILES = \
 	'JCanvasTest$$1.class' \
 	'JCanvasTest$$2.class' \
 	'JCanvasTest$$CanvasFactory.class' \
-	'JCanvasTest$$FramedCanvas.class'
+	'JCanvasTest$$FramedCanvas.class' \
+	alljsimpletests.tcl
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
