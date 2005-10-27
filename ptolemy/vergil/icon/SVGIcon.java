@@ -32,7 +32,6 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ConfigurableAttribute;
@@ -453,14 +452,14 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         attribute.width.setExpression(width);
         attribute.height.setExpression(height);
 
-        String style = (String) attributes.get("style");
+        //String style = (String) attributes.get("style");
 
-        if (style != null) {
-            StringTokenizer t = new StringTokenizer(style, ";");
+        //if (style != null) {
+            //StringTokenizer t = new StringTokenizer(style, ";");
 
-            while (t.hasMoreTokens()) {
-                String string = t.nextToken().trim();
-                int index = string.indexOf(":");
+            //while (t.hasMoreTokens()) {
+                //String string = t.nextToken().trim();
+                //int index = string.indexOf(":");
 
                 // String name = string.substring(0, index);
                 // String value = string.substring(index + 1);
@@ -474,8 +473,8 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                  ps.setLineWidth(Float.parseFloat(value));
                  }
                  */
-            }
-        }
+            //}
+        //}
     }
 
     /** Set the attributes of a ShapeAttribute from the specified
@@ -488,12 +487,12 @@ public class SVGIcon extends EditorIcon implements ValueListener {
 
         String style = (String) attributes.get("style");
 
-        if (style != null) {
-            StringTokenizer t = new StringTokenizer(style, ";");
+        //if (style != null) {
+            //StringTokenizer t = new StringTokenizer(style, ";");
 
-            while (t.hasMoreTokens()) {
-                String string = t.nextToken().trim();
-                int index = string.indexOf(":");
+            //while (t.hasMoreTokens()) {
+                //String string = t.nextToken().trim();
+                //int index = string.indexOf(":");
 
                 // String name = string.substring(0, index);
                 // String value = string.substring(index + 1);
@@ -507,8 +506,8 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                  ps.setLineWidth(Float.parseFloat(value));
                  }
                  */
-            }
-        }
+            //}
+        //}
     }
 
     /** Set the location of an Attribute from the specified
