@@ -31,7 +31,6 @@ import ptolemy.actor.lib.Transformer;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -139,7 +138,7 @@ public class SDFTestZeroRate1 extends Transformer {
 
         // debug sdf schedules:
         SDFDirector dir = (SDFDirector) getDirector();
-        SDFScheduler scheduler = (SDFScheduler) dir.getScheduler();
+        /*SDFScheduler scheduler = (SDFScheduler)*/ dir.getScheduler();
 
         // For debugging the SDF scheduler...
         //StreamListener sa = new StreamListener();
