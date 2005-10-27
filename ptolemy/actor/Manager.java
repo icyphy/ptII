@@ -1321,12 +1321,6 @@ public class Manager extends NamedObj implements Runnable {
     // An indicator of whether type resolution needs to be done.
     private boolean _typesResolved = false;
 
-    // A flag to indicate whether write access is needed by any of of
-    // of the domains in the model during an iteration.
-    private boolean _writeAccessNeeded = true;
-
-    private long _writeAccessVersion;
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 

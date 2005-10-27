@@ -221,8 +221,6 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * the wrapper has already been selected.
      */
     protected void processLayerEvent(LayerEvent event) {
-        LayerEvent paneEvent = null;
-
         if (!isEnabled()) {
             return;
         }
