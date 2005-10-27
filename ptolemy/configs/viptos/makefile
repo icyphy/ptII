@@ -89,11 +89,11 @@ install: all jars
 	@echo "nothing need be done for make install in this directory"
 
 # Use the Imagemagick "convert" command:
-viptos.gif: PtolemyII256x256.png
-	/bin/convert -gamma 6 -draw 'image Over 100,140 85,85 PtolemyII256x256.png'  -draw 'image Over 100,100 85,19 tinyOS-3a.jpg' -font Helvetica -pointsize 80 -draw "text 10,80 Viptos" ../visualsense/visualsense.gif viptos.gif
-
-PtolemyII256x256.png: ../../../doc/img/PtolemyII256x256.png
-	cp ../../../doc/img/PtolemyII256x256.png .
+#viptos.gif: PtolemyII256x256.png
+#	/bin/convert -gamma 6 -draw 'image Over 100,140 85,85 PtolemyII256x256.png'  -draw 'image Over 100,100 85,19 tinyOS-3a.jpg' -font Helvetica -pointsize 80 -draw "text 10,80 Viptos" ../visualsense/visualsense.gif viptos.gif
+#
+#PtolemyII256x256.png: ../../../doc/img/PtolemyII256x256.png
+#	cp ../../../doc/img/PtolemyII256x256.png .
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
