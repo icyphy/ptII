@@ -57,9 +57,6 @@ public class WatchDog {
             return;
         }
 
-        // Make a record of the time when the WatchDog was set
-        final long startTime = (new Date()).getTime();
-
         TimerTask doTimeToDie = new TimerTask() {
             public void run() {
                 try {

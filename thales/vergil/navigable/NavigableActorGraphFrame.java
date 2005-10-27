@@ -151,9 +151,6 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
     ////                         private variables                 ////
     protected ActorEditorGraphController _controller;
 
-    // The delay time specified that last time animation was set.
-    private long _lastDelayTime = 0;
-
     // The navigation tree.
     private NavigationPTree _tree;
 
