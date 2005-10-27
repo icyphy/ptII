@@ -120,16 +120,16 @@ public class PtinyOSDirector extends Director {
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
 
         // Set path to tos directory.
-        tosroot = new FileParameter(this, "TOSROOT");
-        new Parameter(tosroot, "allowFiles", BooleanToken.FALSE);
-        new Parameter(tosroot, "allowDirectories", BooleanToken.TRUE);
+        tosRoot = new FileParameter(this, "TOSROOT");
+        new Parameter(tosRoot, "allowFiles", BooleanToken.FALSE);
+        new Parameter(tosRoot, "allowDirectories", BooleanToken.TRUE);
 
-        String tosrootProperty = System.getProperty("ptolemy.ptII.tosroot");
+        String tosRootProperty = System.getProperty("ptolemy.ptII.tosroot");
 
-        if (tosrootProperty != null) {
-            tosroot.setExpression(tosrootProperty);
+        if (tosRootProperty != null) {
+            tosRoot.setExpression(tosRootProperty);
         } else {
-            tosroot.setExpression("$PTII/vendors/ptinyos/tinyos-1.x/tos");
+            tosRoot.setExpression("$PTII/vendors/ptinyos/tinyos-1.x");
         }
 
         // Set additional make flags.
@@ -176,7 +176,7 @@ public class PtinyOSDirector extends Director {
 
     /** Path to the TinyOS tree.
      */
-    public FileParameter tosroot;
+    public FileParameter tosRoot;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file
@@ -554,7 +554,13 @@ public class PtinyOSDirector extends Director {
             if (target.stringValue() != "") {
                 _generateLoader();
 
-                String makefileName = _generateMakefile();
+                String makefileName = null;
+                try {
+                    makefileName = _generateMakefile();
+                } catch (CancelException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Makefile generation cancelled by the user.");
+                }
                 _compile(makefileName);
             }
         }
@@ -929,18 +935,39 @@ public class PtinyOSDirector extends Director {
      PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
      include /home/celaine/ptII/mk/ptII.mk
      include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
-
+     * @exception CancelException If the directory named by the
+     * ptolemy.ptii.tosroot property does not exist.
      */
-    private String _generateMakefile() throws IllegalActionException {
+    private String _generateMakefile()
+            throws IllegalActionException, CancelException {
         // Use filename relative to toplevel PtinyOSDirector.
         NamedObj toplevel = _toplevelNC();
         String toplevelName = _sanitizedFullName(toplevel);
 
-        _CodeString text = new _CodeString();
-        String tosrootNoSlashAtEnd = tosroot.stringValue().replaceFirst("/$",
+        String tosRootNoSlashAtEnd = tosRoot.stringValue().replaceFirst("/$",
                 "");
-        text.addLine("TOSROOT=" + tosrootNoSlashAtEnd);
-        text.addLine("TOSDIR=" + tosrootNoSlashAtEnd + "/tos");
+
+        // Check to make sure that tosRoot exists
+        if ( !tosRoot.asFile().isDirectory()) {
+            String tosRootMessage =
+                "The TOSROOT directory \""
+                + tosRoot.asFile() + "\" does not exist?  Compilation "
+                + "is likely to fail.  The TOSROOT environment "
+                + "variable should be set to the location of the "
+                + "TinyOS tree, typically "
+                + "$PTII/vendors/ptinyos/tinyos-1.x. If you change " 
+                + "TOSROOT, rerun $PTII/configure so that "
+                + "$PTII/lib/ptII.properties is updated.";
+            if (!MessageHandler.yesNoQuestion(
+                        tosRootMessage + "\nWould you like to proceed?"
+                        )) {
+                throw new CancelException();
+            }
+        }
+
+        _CodeString text = new _CodeString();
+        text.addLine("TOSROOT=" + tosRootNoSlashAtEnd);
+        text.addLine("TOSDIR=" + tosRootNoSlashAtEnd + "/tos");
 
         // path to contrib
         // FIXME use pathseparator?
@@ -979,7 +1006,7 @@ public class PtinyOSDirector extends Director {
 
         // Handle pathnames with spaces: substitute / for \ and backslash space for space.
         text.addLine("include "
-                + tosroot.stringValue().replace('\\', '/').replaceAll(" ",
+                + tosRoot.stringValue().replace('\\', '/').replaceAll(" ",
                         "\\\\ ") + "/tools/make/Makerules");
 
         // Use .mk so that Emacs will be in the right mode
