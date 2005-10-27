@@ -392,14 +392,7 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/moml/jxta/JXTALibrary.class \
 	        ptolemy/plot/ptplotlocales \
 		ptolemy/util/test/FileUtilities-1.1.tmp \
-		ptolemy/vergil/toolbox/test/alljsimpletests.tcl \
-		vergil.jnlp.in \
-		vergilDSP.jnlp.in \
-		vergilHyVisual.jnlp.in \
-		vergilPtiny.jnlp.in \
-		vergilPtinySandbox.jnlp.in \
-		vergilVisualSense.jnlp.in
-
+		ptolemy/vergil/toolbox/test/alljsimpletests.tcl
 
 BASE_SRC_TO_BE_REMOVED = \
 		doc/usingVergil \
@@ -463,7 +456,13 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
 		ptolemy/plot/build.xml \
 		ptolemy/plot/plotml/build.xml \
-		thales
+		thales \
+		vergil.jnlp.in \
+		vergilDSP.jnlp.in \
+		vergilHyVisual.jnlp.in \
+		vergilPtiny.jnlp.in \
+		vergilPtinySandbox.jnlp.in \
+		vergilVisualSense.jnlp.in
 
 # Files to be removed from HyVisual source distributions
 HYVISUAL_SRC_TO_BE_REMOVED = \
@@ -562,7 +561,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile
 	# Fix up domains/makefile
-	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
+	egrep -v "csp.jar|ddf.jar|hdf.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
 		src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile \
 		> src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/domains/makefile.tmp \
@@ -683,7 +682,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VERSION)/bin/makefile.tmp \
 		src_jar/viptos$(VERSION)/bin/makefile
 	# Fix up domains/makefile
-	egrep -v "ddf.jar|domains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar"	\
+	egrep -v "ddf.jar|domains.xml|ci.jar|dde.jar|dt/dt.jar|hdf/hdf.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar"	\
 		src_jar/viptos$(VERSION)/ptolemy/domains/makefile \
 		> src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/viptos$(VERSION)/ptolemy/domains/makefile.tmp \
@@ -695,13 +694,13 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VERSION)/ptolemy/configs/makefile.tmp \
 		src_jar/viptos$(VERSION)/ptolemy/configs/makefile \
 	# Fix up doc/design/makefile
-	egrep -v "hyvisual.pdf|ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
+	egrep -v "hyvisual.pdf|hyvisual.jar|ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
 		src_jar/viptos$(VERSION)/doc/design/makefile \
 		> src_jar/viptos$(VERSION)/doc/design/makefile.tmp
 	mv src_jar/viptos$(VERSION)/doc/design/makefile.tmp \
 		src_jar/viptos$(VERSION)/doc/design/makefile
 	# Fix up doc/makefile/img
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbaner2.psd"\
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd"\
 		src_jar/viptos$(VERSION)/doc/img/makefile \
 		> src_jar/viptos$(VERSION)/doc/img/makefile.tmp
 	mv src_jar/viptos$(VERSION)/doc/img/makefile.tmp \
@@ -727,7 +726,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VERSION)/ptolemy/makefile.tmp \
 		src_jar/viptos$(VERSION)/ptolemy/makefile
 	# Fix up makefile
-	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
+	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales|jnlp.mk" \
 		src_jar/viptos$(VERSION)/makefile | \
 		sed 's/\$$(PTJNI_DIR)//' \
 		> src_jar/viptos$(VERSION)/makefile.tmp
