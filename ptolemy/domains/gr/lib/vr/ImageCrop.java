@@ -27,28 +27,16 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
-
-import ij.gui.ImageWindow;
 import ij.gui.Roi;
-import ij.gui.StackWindow;
-
 import ij.process.ImageProcessor;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageCrop
@@ -118,8 +106,9 @@ public class ImageCrop extends TypedAtomicActor {
         ObjectToken imageToken = (ObjectToken) imageInput.get(0);
         _imagePlus = (ImagePlus) imageToken.getValue();
 
-        ObjectToken roiToken = (ObjectToken) roi.get(0);
-        Roi roi = (Roi) roiToken.getValue();
+        // FIXME: why read this token and discard it?
+        /*(ObjectToken roiToken = (ObjectToken) */roi.get(0);
+        //Roi roi = (Roi) roiToken.getValue();
 
         //Do cropping
         ImageProcessor imageProcessor = _imagePlus.getProcessor();
