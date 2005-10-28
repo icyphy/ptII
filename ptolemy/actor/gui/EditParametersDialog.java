@@ -381,20 +381,20 @@ public class EditParametersDialog extends ComponentDialog implements
      *  when we are re-opening a dialog to display the result
      *  of an edit change.
      */
-    private void _reOpen() {
-        ChangeRequest reOpen = new ChangeRequest(this,
-                "Re-open configure dialog") {
-            protected void _execute() throws Exception {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        new EditParametersDialog(_owner, _target);
-                    }
-                });
-            }
-        };
-
-        _target.requestChange(reOpen);
-    }
+//    private void _reOpen() {
+//        ChangeRequest reOpen = new ChangeRequest(this,
+//                "Re-open configure dialog") {
+//            protected void _execute() throws Exception {
+//                SwingUtilities.invokeLater(new Runnable() {
+//                    public void run() {
+//                        new EditParametersDialog(_owner, _target);
+//                    }
+//                });
+//            }
+//        };
+//
+//        _target.requestChange(reOpen);
+//    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
