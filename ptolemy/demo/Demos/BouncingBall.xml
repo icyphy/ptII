@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[626, 427]">
     </property>
@@ -46,7 +46,7 @@
     </property>
     <property name="elasticity" class="ptolemy.data.expr.Parameter" value="0.9">
     </property>
-    <property name="stoppedThreshold" class="ptolemy.data.expr.Parameter" value="0.05">
+    <property name="stoppedThreshold" class="ptolemy.data.expr.Parameter" value="0.01">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -385,9 +385,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
         <port name="position" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
         </port>
-        <port name="bump" class="ptolemy.domains.fsm.modal.ModalPort">
-            <property name="output"/>
-        </port>
         <port name="velocity" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
         </port>
@@ -413,12 +410,6 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 <property name="input"/>
                 <property name="output"/>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 275.0]">
-                </property>
-            </port>
-            <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
-                <property name="input"/>
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 220.0]">
                 </property>
             </port>
             <port name="velocity" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -468,7 +459,7 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="bump_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="position &lt;= 0 &amp;&amp; velocity &lt; 0">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="free.initialVelocity = -elasticity * velocity; free.initialPosition = position">
                 </property>
@@ -493,9 +484,9 @@ http://java.sun.com/products/java-media/3D/</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-3.9279136717057E-5">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="-3.7015177649975E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="12.7279470584228">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.4371230670466">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1.0E-10">
@@ -554,37 +545,16 @@ falling in a gravitational field.</text></svg></configure>
             </property>
             <port name="position" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 170.0]">
                 </property>
                 <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
             </port>
-            <port name="bump" class="ptolemy.domains.fsm.modal.RefinementPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 125.0">
-                </property>
-            </port>
             <port name="velocity" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 60.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 115.0]">
                 </property>
             </port>
-            <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
-                <property name="direction" class="ptolemy.data.expr.StringParameter" value="falling">
-                </property>
-                <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
-                </property>
-                <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 125.0">
-                </property>
-            </entity>
             <entity name="Position" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialPosition">
                 </property>
@@ -628,15 +598,10 @@ falling in a gravitational field.</text></svg></configure>
                 <vertex name="vertex1" value="300.0, 170.0">
                 </vertex>
             </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="position" relation="relation3"/>
-            <link port="bump" relation="relation4"/>
             <link port="velocity" relation="relation"/>
-            <link port="ZeroCrossingDetector.output" relation="relation4"/>
-            <link port="ZeroCrossingDetector.trigger" relation="relation3"/>
             <link port="Position.input" relation="relation"/>
             <link port="Position.output" relation="relation3"/>
             <link port="Velocity.input" relation="relation5"/>
@@ -647,18 +612,13 @@ falling in a gravitational field.</text></svg></configure>
         </relation>
         <relation name="positionRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="bumpRelation" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="velocityRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="position" relation="positionRelation"/>
-        <link port="bump" relation="bumpRelation"/>
         <link port="velocity" relation="velocityRelation"/>
         <link port="_Controller.position" relation="positionRelation"/>
-        <link port="_Controller.bump" relation="bumpRelation"/>
         <link port="_Controller.velocity" relation="velocityRelation"/>
         <link port="free.position" relation="positionRelation"/>
-        <link port="free.bump" relation="bumpRelation"/>
         <link port="free.velocity" relation="velocityRelation"/>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
