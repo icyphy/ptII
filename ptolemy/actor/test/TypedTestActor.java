@@ -74,8 +74,9 @@ public class TypedTestActor extends TypedAtomicActor {
     }
 
     /** Record the firing.
+     *  @exception IllegalActionException If the super class throws it.
      */
-    public void fire() {
+    public void fire() throws IllegalActionException {
         super.fire();
         _actions.append(getFullName() + ".fire\n");
     }
