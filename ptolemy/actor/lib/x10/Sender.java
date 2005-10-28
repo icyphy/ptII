@@ -111,6 +111,7 @@ public class Sender extends X10Interface {
 
     /** Return true if any channel on a given port has a true input; return
      *  false otherwise.
+     *  @param port The port.
      *  @return true if any channel on a given port has a true input; return
      *  false otherwise.
      */

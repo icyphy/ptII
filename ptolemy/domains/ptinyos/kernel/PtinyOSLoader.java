@@ -28,6 +28,8 @@
  */
 package ptolemy.domains.ptinyos.kernel;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 //////////////////////////////////////////////////////////////////////////
 //// PtinyOSLoader
 
@@ -45,8 +47,6 @@ package ptolemy.domains.ptinyos.kernel;
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
-import ptolemy.kernel.util.IllegalActionException;
-
 public interface PtinyOSLoader {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

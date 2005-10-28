@@ -226,7 +226,7 @@ public class Receiver extends X10Interface {
         }
     }
 
-    /** Return true if the </i>commandQueue<i> is not empty; return false
+    /** Return true if the <i>commandQueue</i> is not empty; return false
      *  otherwise.
      *  @return True if there is a command in the command queue.
      */
@@ -241,6 +241,7 @@ public class Receiver extends X10Interface {
     }
 
     /** Return a string description of the command.
+     *  @param  The command that is to be described.
      *  @return A string description of the command.
      */
     protected static String _commandToString(Command command) {

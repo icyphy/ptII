@@ -68,7 +68,7 @@ import com.centralnexus.input.JoystickListener;
  cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
  </pre>
  By default, if configure finds <code>joystick.jar</code>, then
- vergil will include <code>joystick.jar<code> in the classpath.
+ vergil will include <code>joystick.jar</code> in the classpath.
 
  @author Christopher Hylands, David Lee, Paul Yang
  @version $Id$
@@ -194,7 +194,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
         y.send(0, new DoubleToken(_joy.getY()));
     }
 
-    /** Get the values of the parameters and initialize the joystick
+    /** Get the values of the parameters and initialize the joystick.
      *
      *  @exception IllegalActionException If the joystick cannot
      *  be initialized or if the parent class throws it.

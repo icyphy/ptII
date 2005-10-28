@@ -166,7 +166,7 @@ public class X10Interface extends TypedAtomicActor {
      *  <ul>
      *  <li> CM11A
      *  <li> CM17A
-     *  <ul>
+     *  </ul>
      */
     public StringParameter x10Interface;
 
