@@ -105,8 +105,9 @@ public class CSPSink extends AtomicActor {
 
     /** Execute this actor by consuming ten tokens through the
      *  input port.
+     *  @exception IllegalActionException If thrown by the superclass.
      */
-    public void fire() {
+    public void fire() throws IllegalActionException {
         super.fire();
         int count = 0;
 
