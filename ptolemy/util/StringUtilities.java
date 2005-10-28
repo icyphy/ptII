@@ -384,10 +384,12 @@ public class StringUtilities {
     /** Merge the properties in lib/ptII.properties with the current
      *  properties.  lib/ptII.properties is searched for in the
      *  classpath.  The value of properties listed in
-     *  lib/ptII.properties overrides properties with the same name
-     *  in the current properties.
+     *  lib/ptII.properties do not override properties with the same
+     *  name in the current properties.
+     *  @exception IOException If thrown while looking for the 
+     *  $CLASSPATH/lib/ptII.properties file.
      */
-    public static void mergePropertiesFile() throws IOException {
+    public static void mergePropertiesFile() /*throws IOException*/ {
         Properties systemProperties = System.getProperties();
         Properties newProperties = new Properties();
         String propertyFileName = "$CLASSPATH/lib/ptII.properties";
@@ -403,8 +405,8 @@ public class StringUtilities {
         newProperties.load(propertyFileURL.openStream());
 
         // systemProperties is a HashSet, so we merge in the new properties.
-        systemProperties.putAll(newProperties);
-        System.setProperties(systemProperties);
+        newProperties.putAll(systemProperties);
+        System.setProperties(newProperties);
         System.out.println("Loaded " + propertyFileURL);
     }
 
