@@ -75,7 +75,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
      Compute the arctan of the input.
      */
     public void fire() throws CorbaIllegalActionException {
-        super.fire();
+        // Don't call super.fire(); here, the parent fire() is abstract.
         if (_input == null) {
             _output = null;
             throw new CorbaIllegalActionException("No input data.");
