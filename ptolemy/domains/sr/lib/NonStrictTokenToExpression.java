@@ -74,7 +74,7 @@ public class NonStrictTokenToExpression extends TokenToExpression {
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+        // Don't call "super.fire();" here, the parent class is an actor.
         if (input.isKnown(0)) {
             if (input.hasToken(0)) {
                 String string = input.get(0).toString();
