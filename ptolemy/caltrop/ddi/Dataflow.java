@@ -143,7 +143,7 @@ public class Dataflow extends AbstractDDI implements DDI {
 
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+        // Don't call super.fire(); here, super.fire() is abstract.;
         // FIXMELATER: state transition and potentially rollback
         try {
             if (_actorInterpreter.currentAction() == null) {
