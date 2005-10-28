@@ -30,6 +30,9 @@ import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.StateReceiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -169,45 +172,19 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
         return true;
     }
 
-    /** Execute the directed model for one iteration.
-     *  <p>
-     *  If this director serves as a top-level director, this method behaves
-     *  just like that is defined in the super class, CTMultiSolverDirector.
-     *  <p>
-     *  Otherwise, this method keeps advancing time and executing the
-     *  model until the iteration time one of the following conditions
-     *  is satisfied. 1) The iteration end time computed in the
-     *  prefire() method is reached. 2) An event is generated.
-     *  It saves the state of the system at the current time of the executive
-     *  director as the "known good" state, and runs ahead of that time.
-     *  The "known good" state is used for roll back.
-     *  @exception IllegalActionException If thrown by the ODE solver,
-     *       or the prefire() or the fire() methods of an actor.
+    /** Return true if there is an internal discrete event happening at the 
+     *  current time, or there is some token in an input port that has a
+     *  discrete semantics. Otherwise, return false.
      */
+    public boolean hasCurrentEvent() {
+        // NOTE: make sure the super.hascurrentEvent() method is called.
+        boolean result = super.hasCurrentEvent() || _receivedDiscreteInput;
+        // reset the _receivedDiscreteInput variable to false to prevent
+        // infinite loop.
+        _receivedDiscreteInput = false;
+        return result;
+    }
 
-    //    public void fire() throws IllegalActionException {
-    //        if (_isTopLevel()) {
-    //            super.fire();
-    //            return;
-    //        }
-    //
-    //        _discretePhaseExecution();
-    //
-    //        // Mark the FINAL states of the current model time for
-    //        // possible roll back in the future.
-    //        _markStates();
-    //
-    //        // If the current step size is 0.0, there is no need to perform
-    //        // a continuous phase of execution.
-    //        if (getIterationEndTime().equals(getIterationBeginTime())) {
-    //            return;
-    //        }
-    //
-    //        // Guarantee to stop at the iteration end time.
-    //        fireAt((CompositeActor) getContainer(), getIterationEndTime());
-    //
-    //        _continuousPhaseExecution();
-    //    }
     /** Initialize the execution. If this director is not at the top level,
      *  ask the executive director to fire the container of this director
      *  at the current model time.
@@ -218,6 +195,7 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _mutationVersion = -1;
+        _receivedDiscreteInput = false;
 
         if (!_isTopLevel()) {
             TypedCompositeActor container = (TypedCompositeActor) getContainer();
@@ -359,6 +337,31 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Besides transferring inputs inside by calling the transferInputs() 
+     *  method defined in the super class, this method also checks whether
+     *  there is an discrete input. If so, an interval flag will be set to true,
+     *  such that a discrete phase of execution will be invoked.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if at least one data token is transferred.
+     */
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
+        Receiver[][] localReceivers = port.getReceivers();
+        Receiver localReceiver = localReceivers[0][0];
+        _receivedDiscreteInput = false;
+        if (!(localReceiver instanceof StateReceiver)) {
+            for (int i=0; i<port.getWidthInside(); i++) {
+                if (port.hasToken(i)) {
+                    _receivedDiscreteInput = true;
+                    break;
+                }
+            }
+        }
+        return super.transferInputs(port);
+    }
 
     /** Catch up the simulation from a known good state to the outside
      *  current time. There should be no breakpoints of any kind
@@ -528,4 +531,8 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
 
     // The local variable of the run ahead length parameter.
     private double _runAheadLength;
+    
+    // The local boolean variable indicating whether there is some discrete 
+    // input
+    private boolean _receivedDiscreteInput;
 }
