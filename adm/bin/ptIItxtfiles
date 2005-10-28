@@ -1,13 +1,12 @@
 #!/bin/sh
-# -[Mon Oct 24 12:42:20 2005 by cxh]-
+# -[Fri Oct 28 12:21:01 2005 by cxh]-
 # Return all the text source files (with exceptions) in the ptII tree
 
 $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.bin' |egrep -v '\.bmp' \
 	| egrep -v '\.class' |egrep -v '\.dat' |egrep -v '\.data' \
 	| egrep -v '\.dll' |egrep -v '\.doc' \
-	| egrep -v '\.fm'  | \
-	| egrep -v '\.ec3' | \
+	| egrep -v '\.fm'  |egrep -v '\.ec3'  \
 	| egrep -v '\.eps' |egrep -v '\.exe' \
         | egrep -v '\.gz'  |egrep -v '\.gif' \
         | egrep -v '\.ico' |egrep -v '\.isj' \
