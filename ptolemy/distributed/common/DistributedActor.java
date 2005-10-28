@@ -60,8 +60,7 @@ public interface DistributedActor {
      *  occur during the execution of a remote method call.
      */
     public void fire() throws java.rmi.RemoteException;
-        super.fire();
-
+     
     /** Return the Internet Address where the distributed actor is executing.
      *
      *  @return InetAdress the Internet Address where the distributed actor is
