@@ -82,8 +82,7 @@ test Director-4.1 {generatePreinitializeCode(StringBuffer)} {
 #####
 test Director-5.1 {generateWrapupCode(StringBuffer)} {
     set results [java::new StringBuffer]
-    $cgDirector generateWrapupCode $results
-    list [$results toString]
+    list [$cgDirector generateWrapupCode]
 } {{/* The wrapup of the director. */
 }}
 
