@@ -91,8 +91,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *   actor with this name.
      */
     public Joystick(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException,
-            IOException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         deadZone = new Parameter(this, "deadZone", new DoubleToken("0.01"));
