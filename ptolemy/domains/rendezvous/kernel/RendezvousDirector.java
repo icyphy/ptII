@@ -1,4 +1,4 @@
-/* A director supports threaded actors with rendezvous communication.
+/* A director that supports threaded actors with rendezvous communication.
 
  Copyright (c) 1997-2005 The Regents of the University of California.
  All rights reserved.
@@ -65,8 +65,8 @@ import ptolemy.util.MessageHandler;
  @author Thomas Feng, Edward A. Lee, Yang Zhao
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (cxh)
+ @Pt.ProposedRating green (acataldo)
+ @Pt.AcceptedRating green (acataldo)
  */
 public class RendezvousDirector extends CompositeProcessDirector {
     /** Construct a director in the default workspace with an empty string
@@ -114,15 +114,11 @@ public class RendezvousDirector extends CompositeProcessDirector {
         return new RendezvousReceiver();
     }
 
-    /** If there are input ports, then return false only if stop
-     *  has been requested; if there are no input ports, then
-     *  return false if deadlock has been detected or stop has been
-     *  requested. In the former case, we assume that inputs may later
-     *  arrive on the input ports. In the latter case, returning false
-     *  causes the model to halt.
+    /** Return false if the model should not continue to execute.
      *  @return False if no more execution is possible, and true otherwise.
      */
     public boolean postfire() {
+        // FIXME: Should this call super.postfire?
         List ports = ((CompositeActor) getContainer()).inputPortList();
 
         if (ports.iterator().hasNext()) {
@@ -142,10 +138,10 @@ public class RendezvousDirector extends CompositeProcessDirector {
         // because this method provides complete new information.
         // Default is a NonStrictFSMDirector, while FSMDirector is also
         // in the array.
-        String[] defaultSuggestions = new String[2];
-        defaultSuggestions[1] =
-            "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.FSMDirector";
+        String[] defaultSuggestions = new String[] {
+                "ptolemy.domains.fsm.kernel.FSMDirector",
+                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector"
+        };
         return defaultSuggestions;
     }
 
@@ -185,38 +181,9 @@ public class RendezvousDirector extends CompositeProcessDirector {
         }
     }
 
-    /** Return a string describing the status of the specified receiver.
-     *  @param receiver The receiver to describe.
-     *  @return A string describing the status of the specified receiver.
-     */
-    protected static String _receiverStatus(Receiver receiver) {
-        StringBuffer result = new StringBuffer();
-        result.append(receiver.getContainer().getFullName());
-
-        if (receiver instanceof RendezvousReceiver) {
-            RendezvousReceiver castReceiver = (RendezvousReceiver) receiver;
-
-            if (castReceiver._isGetWaiting()) {
-                result.append(" get() waiting");
-            }
-
-            if (castReceiver._isPutWaiting()) {
-                result.append(" put() waiting");
-            }
-
-            if (castReceiver._isConditionalReceiveWaiting()) {
-                result.append(" conditional receive waiting");
-            }
-
-            if (castReceiver._isConditionalSendWaiting()) {
-                result.append(" conditional send waiting");
-            }
-        }
-
-        return result.toString();
-    }
-
-    /** If the model is deadlocked, report the deadlock and return false.
+    /** If the model is deadlocked, report the deadlock if parameter
+     *  "SuppressDeadlockReporting" is not set to boolean true, and return
+     *  false.
      *  Otherwise, return true. Deadlock occurs if the number of blocked threads
      *  equals the number of active threads.
      *  @return False if deadlock occurred, true otherwise.
@@ -234,8 +201,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
                 MessageHandler.message("Model ended with a deadlock "
                     + "(this may be normal for this model).\n"
                     + "A parameter with name SuppressDeadlockReporting and "
-                    + "value true will suppress this message.\n"
-                    + "Status of receivers:\n" + _receiverStatus());
+                    + "value true will suppress this message.");
             }
 
             return false;
@@ -253,71 +219,4 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  which it waits for all actors to stop.
      */
     protected boolean _inWrapup = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private method                    ////
-
-    /** Return a string describing the status of each receiver.
-     *  @return A string describing the status of each receiver.
-     */
-    private String _receiverStatus() {
-        StringBuffer result = new StringBuffer();
-        CompositeActor container = (CompositeActor) getContainer();
-
-        // Start with the input ports of the composite, which
-        // may have forked connections on the inside.
-        Iterator inputPorts = container.inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) (inputPorts.next());
-            result.append("Send inside from "
-                    + inputPort.getFullName() + "\n");
-
-            Receiver[][] destinations = inputPort.deepGetReceivers();
-
-            for (int channel = 0; channel < destinations.length; channel++) {
-                if (destinations[channel] != null) {
-                    result.append("   on channel " + channel + ":\n");
-
-                    for (int copy = 0;
-                         copy < destinations[channel].length; copy++) {
-                        result.append("-- to "
-                                + _receiverStatus(destinations[channel][copy])
-                                + "\n");
-                    }
-                }
-            }
-        }
-
-        // Next do the output ports of all contained actors.
-        Iterator actors = container.deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            Iterator outputPorts = actor.outputPortList().iterator();
-
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) (outputPorts.next());
-                result.append("Send from " + outputPort.getFullName() + "\n");
-
-                Receiver[][] destinations = outputPort.getRemoteReceivers();
-
-                for (int channel = 0;
-                     channel < destinations.length; channel++) {
-                    if (destinations[channel] != null) {
-                        result.append("   on channel " + channel + ":\n");
-
-                        for (int copy = 0;
-                             copy < destinations[channel].length; copy++) {
-                            result.append("-- to "
-                                    + _receiverStatus(destinations[channel][copy])
-                                    + "\n");
-                        }
-                    }
-                }
-            }
-        }
-
-        return result.toString();
-    }
 }
