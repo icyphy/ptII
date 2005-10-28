@@ -139,6 +139,7 @@ checked out on a platform that has a different line ending.
  </ol>
 </menu>
 
+</ol>
 
 <h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
 
@@ -191,7 +192,7 @@ below.
 Eclipse will manage your ptII code tree as a <em>project</em> called
 the ptII project.  Assuming Eclipse is running:
 <ol>
-<li> Set up the CVS connection:
+<li> Set up the pserver CVS connection:
 
 <ol>
 <li> Expose the CVS repositories view by selecting
@@ -220,7 +221,7 @@ for details.
 </ol>
 
 <p>
-<li> If you are connecting via a DSL connection, you may
+<li> <a name="CVSDSL">If you are connecting via a DSL connection</a>, you may
 want to use compression to transfer files:
 In Window -&gt; Preferences -&gt; Team -&gt; CVS -&gt; Connection change Compression Level
 to 9. 
@@ -308,7 +309,7 @@ The Ptolemy II welcome window should appear.
  <p>You may now wish to read the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/design/usingVergil/index.htm">Using Vergil</a>
 tutorial.
 
-<h2><a href="#BothEclipseAndShellCVS">Setting up both Eclipse and Shell CVS</a> </h2>
+<h2><a name="BothEclipseAndShellCVS">Setting up both Eclipse and Shell CVS</a> </h2>
 
 The description below is based on information from Kevin Rutland about
 how to set up you tree to use both Eclipse and shell CVS.
@@ -318,26 +319,29 @@ how to set up you tree to use both Eclipse and shell CVS.
  <p>See the Eclipse documentation:
 <a href="http://help.eclipse.org/help31/index.jsp?topic=/org.eclipse.platform.doc.user/tasks/task-team-cmdlineclient.htm">Running the CVS command-line client outside of Eclipse</a>
 <ol>
-<li> In Window-&gt;Preferences-&gt;Team-&gt;CVS-&gt;Ext Connection Method, 
-select the second radio button and set the drop down to 
-<CODE>extssh</CODE>
+<li> Expose the CVS repositories view by selecting
+     Window-&gt;Show View-&gt;Other in the menus.
+     Then select CVS->CVS Repositories.
+<li> In the CVS Repositories Panel, right mouse click
+     and select New-&gt;Repository Location:
 
+ <br>&nbsp;&nbsp;&nbsp;Host: <CODE>source.eecs.berkeley.edu</CODE>
+ <br>&nbsp;&nbsp;&nbsp;Repository path: <CODE>/home/cvs</CODE>
+ <br>&nbsp;&nbsp;&nbsp;The user name is: <i>Your source.eecs account name</i>
+ <br>&nbsp;&nbsp;&nbsp;The password is: <i>Your source.eecs account password</i>
+<li> Select <CODE>ext</CODE>.
 
-<li> Configure the CVS Repository as:  
-<pre>
-:ext:@source.eecs.berkeley.edu:/home/cvs
-</pre>
+<li> Click Finish.
+<li> Follow the <a href="#CVSDSL">DSL and CVS Repository selection instructions above</a>.
+</ol>
 
-<li> Check out ptII
-
-<li> Then on the command line you need to do
+Note that on the command line you need to do
 <pre>
 export CVS_RSH=ssh
 </pre>
 All the 
 Repository entries are set to ":ext:" in the project so all the normal 
 cvs commands (like -n update and diff) work just as expected.
-</ol>
 
 
 <h2><a name="Optional">Optional Extensions</a></h2>
