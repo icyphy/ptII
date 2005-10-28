@@ -155,19 +155,6 @@ public class PtExecuteApplication extends MoMLApplication {
         throw new Exception("No model specified.");
     }
 
-    /** Parse a command-line argument.
-     *  @return True if the argument is understood, false otherwise.
-     *  @exception Exception If something goes wrong.
-     */
-    protected boolean _parseArg(String arg) throws Exception {
-        if (arg.equals("-exit")) {
-            _exit = true;
-            return true;
-        }
-
-        return super._parseArg(arg);
-    }
-
     /** Parse the command-line arguments. This overrides the base class
      *  only to set the usage information.
      *  @exception Exception If an argument is not understood or triggers
@@ -286,9 +273,6 @@ public class PtExecuteApplication extends MoMLApplication {
     // from the command line instead of calling specToURL() again, which
     // might be expensive.
     private URL _configurationURL;
-
-    // If true, then exit when the models complete
-    private static boolean _exit = false;
 
     // Flag indicating that the previous argument was -conf
     private boolean _expectingConfiguration = false;
