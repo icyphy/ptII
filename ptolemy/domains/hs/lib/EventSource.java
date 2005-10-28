@@ -203,7 +203,10 @@ public class EventSource extends TypedAtomicActor implements CTEventGenerator {
      *  @exception IllegalActionException If the event cannot be sent.
      */
     public void fire() throws IllegalActionException {
-        output.send(0, ((ArrayToken) values.getToken()).getElement(_phase));
+        HSDirector director = (HSDirector) getDirector();
+        if ((director.isDiscretePhase()) && hasCurrentEvent()) {
+            output.send(0, ((ArrayToken) values.getToken()).getElement(_phase));
+        }
     }
 
     /** Return true if this actor is scheduled to fire at the current time.
@@ -240,25 +243,27 @@ public class EventSource extends TypedAtomicActor implements CTEventGenerator {
      */
     public boolean postfire() throws IllegalActionException {
         HSDirector director = (HSDirector) getDirector();
-        double periodValue = ((DoubleToken) period.getToken()).doubleValue();
-
-        // Increment to the next phase.
-        _phase++;
-
-        if (_phase >= _offsets.length) {
-            _phase = 0;
-            _cycleStartTime = _cycleStartTime.add(periodValue);
+        if ((director.isDiscretePhase()) && hasCurrentEvent()) {
+            double periodValue = ((DoubleToken) period.getToken()).doubleValue();
+            
+            // Increment to the next phase.
+            _phase++;
+            
+            if (_phase >= _offsets.length) {
+                _phase = 0;
+                _cycleStartTime = _cycleStartTime.add(periodValue);
+            }
+            
+            if (_offsets[_phase] >= periodValue) {
+                throw new IllegalActionException(this, "Offset number " + _phase
+                        + " with value " + _offsets[_phase]
+                        + " must be less than the " + "period, which is "
+                        + periodValue);
+            }
+            
+            _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
+            director.fireAt(this, _nextOutputTime);
         }
-
-        if (_offsets[_phase] >= periodValue) {
-            throw new IllegalActionException(this, "Offset number " + _phase
-                    + " with value " + _offsets[_phase]
-                    + " must be less than the " + "period, which is "
-                    + periodValue);
-        }
-
-        _nextOutputTime = _cycleStartTime.add(_offsets[_phase]);
-        director.fireAt(this, _nextOutputTime);
         return true;
     }
 
