@@ -116,6 +116,7 @@ public class Counter extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _latestCount = _count;
         _consumed = false;
 

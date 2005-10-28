@@ -127,6 +127,7 @@ public class ArrayElement extends Transformer {
      *   (or port value) is out of range.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // NOTE: This has be outside the if because we need to ensure
         // that if an index token is provided that it is consumed even
         // if there is no input token.

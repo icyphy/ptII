@@ -97,6 +97,7 @@ public class RecordAssembler extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Object[] portArray = inputPortList().toArray();
         int size = portArray.length;
 

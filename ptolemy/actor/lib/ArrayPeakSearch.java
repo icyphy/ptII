@@ -239,6 +239,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *   if sorting is not supported for the input array.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         startIndex.update();
         endIndex.update();
 

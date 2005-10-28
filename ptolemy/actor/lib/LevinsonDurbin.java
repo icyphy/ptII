@@ -178,6 +178,7 @@ public class LevinsonDurbin extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ArrayToken autocorrelationValue = (ArrayToken) autocorrelation.get(0);
         int autocorrelationValueLength = autocorrelationValue.length();
 

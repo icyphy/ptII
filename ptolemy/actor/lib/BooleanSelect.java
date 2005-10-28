@@ -142,6 +142,7 @@ public class BooleanSelect extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_control) {
             // Redo this check in case the control has changed since prefire().
             if (trueInput.hasToken(0)) {

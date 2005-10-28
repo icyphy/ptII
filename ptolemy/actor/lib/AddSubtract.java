@@ -141,6 +141,7 @@ public class AddSubtract extends TypedAtomicActor {
      *   available tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Token sum = null;
 
         for (int i = 0; i < plus.getWidth(); i++) {

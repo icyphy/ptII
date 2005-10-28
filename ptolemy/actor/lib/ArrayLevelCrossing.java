@@ -176,6 +176,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         start.update();
 
         if (array.hasToken(0)) {

@@ -126,6 +126,7 @@ public class Minimum extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ScalarToken result = null;
         int channelNum = -1;
 

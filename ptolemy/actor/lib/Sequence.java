@@ -146,6 +146,7 @@ public class Sequence extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if ((enable.getWidth() == 0)
                 || (enable.hasToken(0) && ((BooleanToken) enable.get(0))
                         .booleanValue())) {

@@ -185,6 +185,7 @@ public class Expression extends TypedAtomicActor {
      *   connected input has no tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Iterator inputPorts = inputPortList().iterator();
 
         while (inputPorts.hasNext()) {

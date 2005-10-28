@@ -118,6 +118,7 @@ public class BooleanMultiplexor extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         boolean control = ((BooleanToken) select.get(0)).booleanValue();
         Token trueToken = trueInput.get(0);
         Token falseToken = falseInput.get(0);

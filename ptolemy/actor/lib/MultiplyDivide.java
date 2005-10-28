@@ -140,6 +140,7 @@ public class MultiplyDivide extends TypedAtomicActor {
      *   available tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Token numerator = null;
 
         for (int i = 0; i < multiply.getWidth(); i++) {

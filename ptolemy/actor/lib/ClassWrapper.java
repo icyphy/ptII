@@ -125,6 +125,7 @@ public class ClassWrapper extends TypedAtomicActor {
      *  @exception IllegalActionException If the method invocation fails.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Iterator inPorts = inputPortList().iterator();
 
         while (inPorts.hasNext()) {

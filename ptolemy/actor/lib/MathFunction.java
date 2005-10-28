@@ -215,6 +215,7 @@ public class MathFunction extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (firstOperand.hasToken(0)) {
             double input1 = ((DoubleToken) firstOperand.get(0)).doubleValue();
             double input2 = 1.0;

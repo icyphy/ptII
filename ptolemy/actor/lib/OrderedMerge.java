@@ -150,6 +150,7 @@ public class OrderedMerge extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_nextPort.hasToken(0)) {
             ScalarToken readToken = (ScalarToken) _nextPort.get(0);
 

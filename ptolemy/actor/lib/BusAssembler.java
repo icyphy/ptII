@@ -113,6 +113,7 @@ public class BusAssembler extends TypedAtomicActor {
      *  throws it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Iterator inputPorts = inputPortList().iterator();
         TypedIOPort inputPort = (TypedIOPort) (inputPorts.hasNext() ? inputPorts
                 .next()
