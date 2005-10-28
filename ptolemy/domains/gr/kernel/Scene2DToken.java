@@ -53,6 +53,7 @@ import diva.canvas.Figure;
 public class Scene2DToken extends Token {
     /** Construct a Scene2DToken.
      *  @param Token A token that contains a two-dimensial GR scen.
+     */   
     public Scene2DToken(Figure figure) {
         super();
         _figure = figure;

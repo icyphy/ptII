@@ -407,7 +407,7 @@ public class CSPDirector extends CompositeProcessDirector implements
      *  or getting a parameter throws it.
      */
     protected synchronized boolean _resolveInternalDeadlock()
-            /*throws IllegalActionException*/ {
+            throws IllegalActionException {
         if (_actorsDelayed > 0) {
             // Time deadlock.
             Time nextTime = _getNextTime();
