@@ -275,53 +275,52 @@ public class HSMultiSolverDirector extends HSDirector {
         if (_firstFiring) {
             _preamble();
             _firstFiring = false;
-        } else {
-            // A complete iteration consists is either a discrete phase of 
-            // execution or a continuous phase of execution.
-            // set up the solver and step size used for this iteration. 
-            if (hasCurrentEvent()) {
-                _setDiscretePhase(true);
-
-                // Choose 0 as the step size.
-                setCurrentStepSize(0.0);
-
-                // The discrete phase of execution resolves the final states at the
-                // current time by processing discrete events according to the SR
-                // semantics.
-                _discretePhaseExecution();
-                _setDiscretePhase(false);
-
-                // FIXME: will this be necessary?
-                // It seems unnecessary because the immediately following 
-                // continuous phase of execution will propogate the resolved states.
-                _ODESolver.fire();
-            } else {
-                if (getExecutiveCTGeneralDirector() == null) {
-                    // Choose a suggested step size, which is a guess.
-                    setCurrentStepSize(getSuggestedNextStepSize());
-
-                    // Refine the correct step size for the continuous phase execution
-                    // with respect to the breakpoint table.
-                    setCurrentStepSize(_refinedStepWRTBreakpoints());
-                }
-
-                // If the current time is the stop time, then the fire method
-                // should immediately return. No further execution is necessary.
-                // The final states at the model stop time are resolved before
-                // the model stops.
-                // Also, if there is a stop request, stop the model immediately.
-                if (getModelTime().equals(getModelStopTime()) || _stopRequested) {
-                    return;
-                }
-
-                // The continuous phase execution resolves the initial states
-                // in some future time point through numerical integration.
-                _continuousPhaseExecution();
-            }
-
-            // FIXME: we distinguish embedded and not-embedded directors. In 
-            // particular, an embedded director has no control of the step size. 
         }
+        // A complete iteration consists is either a discrete phase of 
+        // execution or a continuous phase of execution.
+        // set up the solver and step size used for this iteration. 
+        if (hasCurrentEvent()) {
+            _setDiscretePhase(true);
+            
+            // Choose 0 as the step size.
+            setCurrentStepSize(0.0);
+            
+            // The discrete phase of execution resolves the final states at the
+            // current time by processing discrete events according to the SR
+            // semantics.
+            _discretePhaseExecution();
+            _setDiscretePhase(false);
+            
+            // FIXME: will this be necessary?
+            // It seems unnecessary because the immediately following 
+            // continuous phase of execution will propogate the resolved states.
+            _ODESolver.fire();
+        } else {
+            if (getExecutiveCTGeneralDirector() == null) {
+                // Choose a suggested step size, which is a guess.
+                setCurrentStepSize(getSuggestedNextStepSize());
+                
+                // Refine the correct step size for the continuous phase execution
+                // with respect to the breakpoint table.
+                setCurrentStepSize(_refinedStepWRTBreakpoints());
+            }
+            
+            // If the current time is the stop time, then the fire method
+            // should immediately return. No further execution is necessary.
+            // The final states at the model stop time are resolved before
+            // the model stops.
+            // Also, if there is a stop request, stop the model immediately.
+            if (getModelTime().equals(getModelStopTime()) || _stopRequested) {
+                return;
+            }
+            
+            // The continuous phase execution resolves the initial states
+            // in some future time point through numerical integration.
+            _continuousPhaseExecution();
+        }
+        
+        // FIXME: we distinguish embedded and not-embedded directors. In 
+        // particular, an embedded director has no control of the step size. 
 
         if (_debugging && _verbose) {
             _debug(getName(), " end of fire. >>>");
@@ -376,19 +375,14 @@ public class HSMultiSolverDirector extends HSDirector {
             // is made.
             boolean discreteEventExists = _removeCurrentTimeFromBreakpointTable();
 
-            // if a discrete event has been found, return immediately.
-            if (discreteEventExists) {
-                return true;
-            }
-
-            // Otherwise, go through event generators to check events.
-            // Note that we do not have to go over all event generators.
-            // As long as one of them has event, we need a discrete phase of
-            // execution.
+            // We also have to go through event generators to check events.
+            // Because a CTCompositeActor is also an event generator and its
+            // internal breakpointTable also needs to be checked for events
+            // happening at the current time.
             Iterator eventGenerators = _schedule.get(
                     HSSchedule.EVENT_GENERATORS).actorIterator();
 
-            while (!discreteEventExists && eventGenerators.hasNext()) {
+            while (eventGenerators.hasNext()) {
                 CTEventGenerator eventGenerator = (CTEventGenerator) eventGenerators
                         .next();
                 discreteEventExists |= eventGenerator.hasCurrentEvent();
@@ -822,8 +816,19 @@ public class HSMultiSolverDirector extends HSDirector {
                 break;
             }
 
-            // propogate resolved states to output actors.
-            _produceOutputs();
+            // Propogate resolved states by firing all continuous actors with
+            // a step size of 0.0. This is particularly important to propogate
+            // resolved states aross hierarchical boundaries. See the demo, 
+            // HysteresisWithRandomLosses.xml. The dynamic actors 
+            // (CTCompositeActors) are fired in a reverse topological order.
+            // Therefore, the following firing is necessary for the resolved
+            // states from the first CTCompositeActor to be received by the
+            // second actor such that the event detections in both refinements
+            // and FSMActor work.
+            double currentStepSize = getCurrentStepSize();
+            setCurrentStepSize(0.0);
+            _ODESolver.fire();
+            setCurrentStepSize(currentStepSize);
 
             // If event generators are not satisfied with the current step
             // size, refine the step size to a smaller one.
@@ -858,8 +863,8 @@ public class HSMultiSolverDirector extends HSDirector {
         }
     }
 
-    /**
-     * @throws IllegalActionException
+    /** Propogate the resolved states to the outside of this composite actor.
+     *  @throws IllegalActionException If thrown by any actor during firing.
      */
     protected void _produceOutputs() throws IllegalActionException {
         Iterator outputActors = _schedule.get(HSSchedule.OUTPUT_ACTORS)
