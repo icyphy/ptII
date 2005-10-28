@@ -953,10 +953,14 @@ public class PtinyOSDirector extends Director {
                 "");
 
         // Check to make sure that tosRoot exists
-        if ( !tosRoot.asFile().isDirectory()) {
+        if ( tosRoot == null || tosRoot.asFile() == null
+                || !tosRoot.asFile().isDirectory()) {
+            String fileName = 
+                (tosRoot == null? "null" : tosRoot.asFile().toString());
+            fileName = (fileName == null? "null": fileName);
             String tosRootMessage =
                 "The TOSROOT directory \""
-                + tosRoot.asFile() + "\" does not exist?  Compilation "
+                + fileName + "\" does not exist?  Compilation "
                 + "is likely to fail.  The TOSROOT environment "
                 + "variable should be set to the location of the "
                 + "TinyOS tree, typically "
