@@ -45,7 +45,7 @@ public class FIRSingle {
      *  @param output The output array.
      */
     public void fire(float[] input, float[] output) {
-        super.fire();
+        // Don't call "super.fire();" here, the parent class is Object.
         // Pointers into the input and output buffers
         int inputIndex = 0;
         int outputIndex = 0;
