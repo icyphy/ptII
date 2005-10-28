@@ -388,37 +388,29 @@ PTII_SRC_TO_BE_REMOVED = \
 
 BASE_SRC_TO_BE_REMOVED = \
 		doc/usingVergil \
-		doc/design/usingVergil \
 		lib/hsif \
 		lib/jni.jar \
 		lib/chic.jar \
 		lib/colt.jar \
 		lib/jasminclasses.jar \
 		lib/java_cup.jar \
-		lib/jython.jar \
 		lib/mapss.jar \
 		lib/ptCal.jar \
 		lib/saxon.jar \
 		lib/sootclasses.jar \
 		lib/synthesis.jar \
 		ptolemy/actor/gui/python \
-		ptolemy/actor/lib/colt \
-		ptolemy/actor/lib/comm \
 		ptolemy/actor/lib/conversions/test/auto/Round.xml \
 		ptolemy/actor/lib/ecsl \
 		ptolemy/actor/lib/io/comm \
 		ptolemy/actor/lib/jai \
-		ptolemy/actor/lib/javasound \
 		ptolemy/actor/lib/jmf \
 		ptolemy/actor/lib/joystick \
-		ptolemy/actor/lib/python \
-		ptolemy/actor/lib/security \
 		ptolemy/actor/lib/test/OrderedMerge.tcl \
 		ptolemy/actor/lib/test/auto/MathFunction.xml \
 		ptolemy/actor/lib/test/auto/OrderedMerge.xml \
 	        ptolemy/actor/lib/test/auto/Switch.xml \
 		ptolemy/actor/lib/x10 \
-		ptolemy/actor/lib/xslt \
 		ptolemy/build.xml \
 		ptolemy/caltrop \
 		ptolemy/component \
@@ -430,7 +422,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/copernicus \
 		ptolemy/copernicus \
 		ptolemy/domains/ci \
-		ptolemy/domains/csp \
 		ptolemy/domains/ct/lib/IPCInterface.java \
 		ptolemy/domains/ct/lib/IPCInterface.class \
 		ptolemy/domains/dde \
@@ -448,8 +439,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/hdf \
 		ptolemy/domains/petrinet \
 		ptolemy/domains/psdf \
-		ptolemy/domains/pn \
-		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml \
 		ptolemy/domains/sr \
 		ptolemy/domains/test \
@@ -463,7 +452,18 @@ BASE_SRC_TO_BE_REMOVED = \
 # Files to be removed from HyVisual source distributions
 HYVISUAL_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
+		doc/design/usingVergil \
+		lib/jython.jar \
+		ptolemy/actor/lib/colt \
+		ptolemy/actor/lib/comm \
+		ptolemy/actor/lib/javasound \
+		ptolemy/actor/lib/python \
+		ptolemy/actor/lib/security \
+		ptolemy/actor/lib/xslt \
 		ptolemy/configs/ptiny \
+		ptolemy/domains/csp \
+		ptolemy/domains/pn \
+		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/ptinyos \
 		ptolemy/domains/wireless \
 		ptolemy/configs/visualsense
@@ -1048,6 +1048,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ptinyos/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ptinyos/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/kernel \
@@ -1115,6 +1117,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto/cgc \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/wireless \
