@@ -168,7 +168,7 @@ public class ProcessDirector extends Director {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+        // Don't call "Director.super.fire();" here, do the work instead.
         if (_debugging) {
             _debug("Called fire().");
         }
