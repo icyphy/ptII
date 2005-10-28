@@ -389,7 +389,7 @@ public class StringUtilities {
      *  @exception IOException If thrown while looking for the 
      *  $CLASSPATH/lib/ptII.properties file.
      */
-    public static void mergePropertiesFile() /*throws IOException*/ {
+    public static void mergePropertiesFile() throws IOException {
         Properties systemProperties = System.getProperties();
         Properties newProperties = new Properties();
         String propertyFileName = "$CLASSPATH/lib/ptII.properties";
