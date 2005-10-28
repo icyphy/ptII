@@ -740,14 +740,14 @@ public class PtinyOSDirector extends Director {
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Could not compile generated code, \"" + commandString
-                    + "\" failed.\n"
-                    + outputWriter + "\n" + errorWriter);
+                    + "\" failed. "
+                    + "Output:\n" + outputWriter + "Error:\n" + errorWriter);
         }
 
         if (exitValue != 0) {
             throw new IllegalActionException("Running \"" + commandString
                     + "\" returned a nonzero value.\n"
-                    + outputWriter + "\n" + errorWriter);
+                    + "Output:\n" + outputWriter + "Error:\n" + errorWriter);
         }
     }
 
