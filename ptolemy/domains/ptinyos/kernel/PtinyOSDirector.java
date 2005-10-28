@@ -36,6 +36,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Iterator;
@@ -715,17 +716,19 @@ public class PtinyOSDirector extends Director {
 
         int exitValue = 0;
 
+        StringWriter errorWriter = new StringWriter();
+        StringWriter outputWriter = new StringWriter();
         try {
             Runtime rt = Runtime.getRuntime();
             Process proc = rt.exec(command);
 
             // Connect a thread to the error stream of the cmd process.
             _StreamReaderThread errorGobbler = new _StreamReaderThread(proc
-                    .getErrorStream(), "ERROR");
+                    .getErrorStream(), "ERROR", errorWriter);
 
             // Connect a thread to the output stream of the cmd process.
             _StreamReaderThread outputGobbler = new _StreamReaderThread(proc
-                    .getInputStream(), "OUTPUT");
+                    .getInputStream(), "OUTPUT", outputWriter);
 
             // Start the threads.
             errorGobbler.start();
@@ -737,12 +740,14 @@ public class PtinyOSDirector extends Director {
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Could not compile generated code, \"" + commandString
-                            + "\" failed.");
+                    + "\" failed.\n"
+                    + outputWriter + "\n" + errorWriter);
         }
 
         if (exitValue != 0) {
             throw new IllegalActionException("Running \"" + commandString
-                    + "\" returned a nonzero value.");
+                    + "\" returned a nonzero value.\n"
+                    + outputWriter + "\n" + errorWriter);
         }
     }
 
@@ -1388,9 +1393,11 @@ public class PtinyOSDirector extends Director {
         /** Create a _StreamReaderThread.
          *  @param inputStream The stream to read from.
          *  @param name The name of this _StreamReaderThread.
+         *  @param stringWriter The StringWriter that is written.
          */
-        _StreamReaderThread(InputStream inputStream, String name) {
-            this(inputStream, name, null);
+        _StreamReaderThread(InputStream inputStream, String name,
+                StringWriter stringWriter) {
+            this(inputStream, name, null, stringWriter);
         }
 
         /** Create a _StreamReaderThread.
@@ -1398,12 +1405,14 @@ public class PtinyOSDirector extends Director {
          *  @param name The name of this _StreamReaderThread.
          *  @param redirect The name of the output stream to redirect the
          inputStream to.
+         *  @param stringWriter The StringWriter that is written.
          */
         _StreamReaderThread(InputStream inputStream, String name,
-                OutputStream redirect) {
+                OutputStream redirect, StringWriter stringWriter ) {
             _inputStream = inputStream;
             _name = name;
             _outputStream = redirect;
+            _stringWriter = stringWriter;
         }
 
         /** Read lines from the input stream and redirect them to the
@@ -1427,6 +1436,10 @@ public class PtinyOSDirector extends Director {
                         printWriter.println(line);
                     }
 
+                    if (_stringWriter != null) {
+                        _stringWriter.write(line + "/n");
+                    }
+
                     // Create the debug output.
                     if (_debugging) {
                         _debug(_name + ">" + line);
@@ -1443,13 +1456,16 @@ public class PtinyOSDirector extends Director {
             }
         }
 
-        // Stream from which to read.
-        InputStream _inputStream;
+        /** Stream from which to read. */
+        private InputStream _inputStream;
 
-        // Name of the input stream.
-        String _name;
+        /** Name of the input stream. */
+        private String _name;
 
-        // Stream to which to write the redirected input.
-        OutputStream _outputStream;
+        /** Stream to which to write the redirected input. */
+        private OutputStream _outputStream;
+        
+        /** StringWriter that is written to */
+        private StringWriter _stringWriter;
     }
 }
