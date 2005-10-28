@@ -53,6 +53,7 @@ import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStatefulActor;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTWaveformGenerator;
+import ptolemy.domains.ct.kernel.CTReceiver.SignalType;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
@@ -363,6 +364,9 @@ public class HSScheduler extends Scheduler {
                 .getContainer();
         boolean isCTCompositeActor = container instanceof CTCompositeActor;
 
+        // FIXME: before this, perform a topological sort so that the signal
+        // type propogation makes sense and does something.
+        
         // Examine and propagate the signal types of the input ports of 
         // the container.
         Iterator containerInPorts = container.inputPortList().iterator();
@@ -586,17 +590,54 @@ public class HSScheduler extends Scheduler {
                 // FIXME: Should the Sequence actor implement the SequenceActor
                 // interface?
                 if (predecessorList(a).isEmpty()) {
-                    ports = ((Entity) a).portList().iterator();
-
-                    while (ports.hasNext()) {
-                        IOPort port = (IOPort) ports.next();
-
-                        if (_signalTypeMap.getType(port) == UNKNOWN) {
-                            _signalTypeMap.setType(port, CONTINUOUS);
-
-                            if (port.isOutput()) {
-                                _signalTypeMap.propagateType(port);
+                    // This actor is either receiving inputs from the outside
+                    // or producing outputs as a source.
+                    List inputPorts = ((Actor) a).inputPortList();
+                    Iterator inPorts = inputPorts.iterator();
+                    SignalType inputType = CTReceiver.UNKNOWN;
+                    // If there is no input ports, such as a source actor,
+                    // set the input type into the default value, continuous.
+                    if (inputPorts.size() == 0) {
+                        inputType = CTReceiver.CONTINUOUS;
+                    }
+                    while (inPorts.hasNext()) {
+                        IOPort inPort = (IOPort) inPorts.next();
+                        inputType = _signalTypeMap.getType(inPort);
+                        if (inPort.getWidth() == 0) {
+                            // This port is not connected. By default,
+                            // we asusme its signal type to be continuous.
+                            if (inputType == UNKNOWN) {
+                                inputType = CTReceiver.CONTINUOUS;
+                                _signalTypeMap.setType(inPort, inputType);
                             }
+                        } else {
+                            // This port is connected to the outside. The
+                            // signal type must have been resolved already.
+                            if (inputType == UNKNOWN) {
+                                throw new InvalidStateException(inPort,
+                                    " signalType not resolvable.");
+                            }
+                        }
+                    }
+                    //NOTE: We made an assumption that if an actor has multiple
+                    // ports, and the ports have different signal types,
+                    // they must be explicitly declared. An example is the 
+                    // triggeredSampler actor. If not so, all ports will have
+                    // the same signal type.
+                    // NOTE: Two tests are provided. They are 
+                    // CTSubsystemAsDelay_zeroDelay.xml and 
+                    // CTSubsystemAsDelay_nonZeroDelay.xml
+                    List outputPorts = ((Actor) a).outputPortList();
+                    Iterator outPorts = outputPorts.iterator();
+                    while (outPorts.hasNext()) {
+                        IOPort outPort = (IOPort) outPorts.next();
+                        SignalType outputType = _signalTypeMap.getType(outPort);
+                        // If the signal type of the output port is unknown,
+                        // use the signal type of the input port, which is known
+                        // after the last while loop.
+                        if (outputType == UNKNOWN) {
+                            _signalTypeMap.setType(outPort, inputType);
+                            _signalTypeMap.propagateType(outPort);
                         }
                     }
                 }
