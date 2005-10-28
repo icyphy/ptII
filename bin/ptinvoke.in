@@ -911,10 +911,12 @@ and run:
 		    echo ""
 		fi    
             fi
+	    javaflag="\"-Dptolemy.ptII.tosroot=$TOSROOT\" $ALL_JFLAG"
+	else    
+	    javaflag="$ALL_JFLAG"
 	fi	    
 	javasourcedir=ptolemy/vergil
 	jarfile="$ALL_JAR${SINGLE_WINDOW_JARS}"
-	javaflag="$ALL_JFLAG"
 	;;
 esac
 
