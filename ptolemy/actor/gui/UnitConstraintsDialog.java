@@ -301,15 +301,15 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
             if (lsm.isSelectionEmpty()) {
                 _removeButton.setText("Remove");
                 _removeButton.setEnabled(false);
-                _selectedRow = -1;
+                // _selectedRow = -1;
             } else {
-                _selectedRow = lsm.getMinSelectionIndex();
+                // _selectedRow = lsm.getMinSelectionIndex();
                 _removeButton.setEnabled(true);
             }
         }
     };
 
-    private int _selectedRow = -1;
+    // private int _selectedRow = -1;
 
     private JTable _unitsTable;
 

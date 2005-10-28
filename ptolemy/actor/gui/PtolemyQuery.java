@@ -897,8 +897,8 @@ public class PtolemyQuery extends Query implements QueryListener,
     private Map _attributes = new HashMap();
 
     // Background color for string mode edit boxes.
-    private static Color _NOT_OVERRIDDEN_FOREGROUND_COLOR = new Color(200, 10,
-            10, 255);
+    //private static Color _NOT_OVERRIDDEN_FOREGROUND_COLOR = new Color(200, 10,
+    //        10, 255);
 
     // A query box for dealing with an erroneous entry.
     private PtolemyQuery _query = null;

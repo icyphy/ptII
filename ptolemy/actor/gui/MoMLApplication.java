@@ -808,7 +808,7 @@ public class MoMLApplication implements ExecutionListener {
 
                         //long startTime = (new Date()).getTime();
                         // Now defer to the model reader.
-                        Tableau tableau = _configuration.openModel(base, inURL,
+                        /*Tableau tableau = */ _configuration.openModel(base, inURL,
                                 key);
 
                         // FIXME: If the -run option was given, then start a run.
