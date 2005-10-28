@@ -420,6 +420,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
 
     /** Return whether all specified receivers
      *  have either a conditional receive waiting or a get waiting.
+     *  @param receivers The receivers to check.
      *  @return True all specified receivers have either a
      *   conditional receive or a get waiting.
      */

@@ -152,6 +152,7 @@ public class RTPReceiver extends AbstractReceiver implements ProcessReceiver {
     }
 
     /** Throw an exception because hierarchy is not yet supported.
+     *  @param token The token.   
      *  @param controllingBranch The branch.
      */
     public void put(Token token, Branch controllingBranch) {

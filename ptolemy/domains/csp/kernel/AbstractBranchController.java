@@ -137,6 +137,8 @@ public abstract class AbstractBranchController implements Debuggable {
     ////                         protected methods                 ////
 
     /** Notify the director that the current thread is blocked.
+     *  @param receiver The receiver handling the I/O operation,
+     *   or null if it is not a specific receiver.
      */
     protected void _branchBlocked(CSPReceiver receiver) {
         _getDirector().threadBlocked(Thread.currentThread(), receiver);
@@ -188,6 +190,8 @@ public abstract class AbstractBranchController implements Debuggable {
     }
 
     /** Notify the director that the current thread is unblocked.
+     *  @param receiver The receiver handling the I/O operation,
+     *   or null if it is not a specific receiver.
      */
     protected void _branchUnblocked(CSPReceiver receiver) {
         _getDirector().threadUnblocked(Thread.currentThread(), receiver);

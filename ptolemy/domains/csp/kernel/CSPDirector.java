@@ -403,9 +403,11 @@ public class CSPDirector extends CompositeProcessDirector implements
      *  above this one in the hierarchy, then real deadlock marks the
      *  end of executing the model.
      *  @return False if real deadlock occurred, true otherwise.
+     *  @exception IllegalActionException If setting the model time,
+     *  or getting a parameter throws it.
      */
     protected synchronized boolean _resolveInternalDeadlock()
-            throws IllegalActionException {
+            /*throws IllegalActionException*/ {
         if (_actorsDelayed > 0) {
             // Time deadlock.
             Time nextTime = _getNextTime();

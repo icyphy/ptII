@@ -115,6 +115,9 @@ public class JAIEdgeDetection extends Transformer {
      */
     public StringAttribute firstMask;
 
+    /** The mask used for edge detection.
+     *  @see #firstMask
+     */
     public StringAttribute secondMask;
 
     /** The first user specified mask, and its corresponding x and

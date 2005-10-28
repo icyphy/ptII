@@ -115,11 +115,14 @@ public class JAIRotate extends Transformer {
      */
     public Parameter subSampleBits;
 
-    /** The point to rotate around.  The default value of both these
-     *  parameters is the integer value 0.
+    /** The x origin of the point to rotate around.  The default value 
+     *  is the integer value 0.
      */
     public Parameter xOrigin;
 
+    /** The y origin of the point to rotate around.  The default value 
+     *  is the integer value 0.
+     */
     public Parameter yOrigin;
 
     ///////////////////////////////////////////////////////////////////
