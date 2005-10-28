@@ -208,7 +208,7 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
         if (dir.getCurrentStepSize() == 0) {
             // FIXME: more sophisticated computation, like reading a 
             // discrete input, goes here.
-            output.broadcast(new DoubleToken(getState()));
+            output.broadcast(new DoubleToken(getTentativeState()));
         } else {
             ODESolver solver = (ODESolver) dir.getCurrentODESolver();
 
