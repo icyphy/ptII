@@ -114,6 +114,9 @@ public class Sender extends X10Interface {
      *  @param port The port.
      *  @return true if any channel on a given port has a true input; return
      *  false otherwise.
+     *  @exception NoTokenException If there is no token on the port. 
+     *  @exception IllegalActionException If there is a problem getting a 
+     *  token from the port.   
      */
     protected boolean _hasTrueInput(TypedIOPort port) throws NoTokenException,
             IllegalActionException {
