@@ -853,9 +853,10 @@ public class HSScheduler extends Scheduler {
                 for (int fxi = fxSorted.length - 1; fxi >= 0; fxi--) {
                     Actor actor = (Actor) fxSorted[fxi];
 
-                    if (!sortedContinuousActors.contains(actor)) {
-                        sortedContinuousActors.add(0, actor);
+                    if (sortedContinuousActors.contains(actor)) {
+                        sortedContinuousActors.remove(actor);
                     }
+                    sortedContinuousActors.add(0, actor);
                 }
             }
         }
