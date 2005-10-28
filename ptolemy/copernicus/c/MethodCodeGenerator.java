@@ -56,6 +56,12 @@ import soot.jimple.TableSwitchStmt;
  @Pt.AcceptedRating Red (ssb)
  */
 public class MethodCodeGenerator {
+    /**
+     * Construct a MethodCodeGenerator object.
+     *
+     * @param context a Context object
+     * @param requiredTypeMap a HashMap object
+     */
     public MethodCodeGenerator(Context context, HashMap requiredTypeMap) {
         _context = context;
         _requiredTypeMap = requiredTypeMap;
@@ -169,11 +175,12 @@ public class MethodCodeGenerator {
 
     /** Generate the epilogue.
      *  The method below generates epilogue for the code in a method.
-     *  @param tracker
-     *  @param visitor
+     *  @param tracker The ExceptionTracker
+     *  @param visitor The visitor.
      *  @return The code.
      */
-    protected String _generateEpilogue(ExceptionTracker tracker, CSwitch visitor) {
+    protected String _generateEpilogue(ExceptionTracker tracker,
+            CSwitch visitor) {
         StringBuffer code = new StringBuffer();
 
         //Epilogue
@@ -192,8 +199,8 @@ public class MethodCodeGenerator {
 
     /** Generate the exception map.
      *  The method below generates exception map for the code.
-     *  @param tracker
-     *  @param visitor
+     *  @param tracker The ExceptionTracker
+     *  @param visitor The visitor
      *  @return The code.
      */
     protected String _generateExceptionMap(ExceptionTracker tracker,
@@ -355,7 +362,7 @@ public class MethodCodeGenerator {
      *  @param method The method.
      *  @param parameterAndThisLocals The set of parameters and local
      *  variables for this method.
-     *  @param thisLocalName
+     *  @param thisLocalName The local name.
      *  @return The code for the method's declaration(its head).
      */
     protected String _generateMethodDeclaration(SootMethod method,

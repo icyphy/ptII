@@ -387,7 +387,7 @@ public class CIDirector extends Director {
      *  further operations.
      *  <p>
      *  Calls terminate() on all actors contained by the container
-     *  of this director. Set the <i>_stopRequested<i> flag to be true,
+     *  of this director. Set the <i>_stopRequested</i> flag to be true,
      *  and interrupt the actor manager threads.
      */
     public void terminate() {
@@ -511,6 +511,7 @@ public class CIDirector extends Director {
      *  output; sink with pull input; actor with pull input and push
      *  output.
      *  @param actor The actor to be tested whether it is active.
+     *  @return True if the actor is active.
      */
     protected static boolean _isActive(Actor actor) {
         //TODO: check all inputs and outputs have the same setting.
@@ -624,8 +625,11 @@ public class CIDirector extends Director {
     /** Record the given actor as being pulled, and recursively propagate
      *  the pull request to those actors providing data to it.
      *  @param actor The actor being pulled.
+     *  @exception IllegalActionException If calling prefire() on an actor
+     *  in that provides data to the actor being pulled throws it
      */
-    protected void _requestSyncPull(Actor actor) throws IllegalActionException {
+    protected void _requestSyncPull(Actor actor)
+            throws IllegalActionException {
         _pulledActors.add(actor);
 
         if (_isPullThrough(actor)) {

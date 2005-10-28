@@ -49,7 +49,7 @@ import soot.Type;
 
  */
 public abstract class CodeGenerator {
-    /** Construct a new code generator */
+    /** Construct a new code generator. */
     public CodeGenerator() {
         _context = new Context();
     }
@@ -84,7 +84,7 @@ public abstract class CodeGenerator {
         return Utilities.comment(text);
     }
 
-    /** Generate code for typedef declaring array instances
+    /** Generate code for typedef declaring array instances.
      * @return A newline character (\n) separated string of typdefs for
      * the arrays needed.
      */
@@ -265,11 +265,13 @@ public abstract class CodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // Code generation context information.
+
+    /** Code generation context information. */
     protected Context _context;
 
-    // Mapping from classes that the current class depends on to their
-    // include file names.
+    /** Mapping from classes that the current class depends on to their
+     *  include file names.
+     */
     protected HashMap _requiredTypeMap = new HashMap();
 
     ///////////////////////////////////////////////////////////////////

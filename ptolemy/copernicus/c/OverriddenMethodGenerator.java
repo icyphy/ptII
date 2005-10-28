@@ -85,7 +85,7 @@ public class OverriddenMethodGenerator {
         return code.toString();
     }
 
-    /* Returns the location of the directory containing the overridden
+    /** Returns the location of the directory containing the overridden
      * bodies for methods.
      * @return The location.
      */
@@ -405,6 +405,7 @@ public class OverriddenMethodGenerator {
      * file instead of a dummy stub for the method body. A large majority
      * of overridden methods have no problems with dummy stubs.
      *
+     *  @param method The overridden method.
      *  @return The code for the body of the method.
      */
     protected static String _getBodyCode(SootMethod method) {

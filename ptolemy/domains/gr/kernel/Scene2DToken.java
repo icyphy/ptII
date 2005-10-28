@@ -51,6 +51,8 @@ import diva.canvas.Figure;
 
  */
 public class Scene2DToken extends Token {
+    /** Construct a Scene2DToken.
+     *  @param Token A token that contains a two-dimensial GR scen.
     public Scene2DToken(Figure figure) {
         super();
         _figure = figure;
@@ -60,6 +62,7 @@ public class Scene2DToken extends Token {
     ////                         public methods                    ////
 
     /** Return the object contained by this token.
+     *  @return The figure that is represented by a Diva canvas.
      */
     public Figure getFigure() {
         return _figure;
@@ -102,6 +105,8 @@ public class Scene2DToken extends Token {
         return "Scene2DToken(" + _figure + ")";
     }
 
+    /** The two dimensional scene type corresponding with a SceneToken.
+     */
     public static class Scene2DType implements Type, Serializable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -198,6 +203,7 @@ public class Scene2DToken extends Token {
         }
     }
 
+    /** The Scene2DType. */
     public static final Type TYPE = new Scene2DType();
 
     ///////////////////////////////////////////////////////////////////

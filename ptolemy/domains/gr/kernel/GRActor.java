@@ -119,17 +119,23 @@ abstract public class GRActor extends TypedAtomicActor {
     abstract protected void _makeSceneGraphConnection()
             throws IllegalActionException;
 
-    /** Set the view screen that this actor is connected to.
+    /** Set the view screen that the actor is connected to.
+     *  @param actor The actor.
      */
     abstract protected void _setViewScreen(GRActor actor)
             throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // Boolean variable to determine whether the scene graph is initialized
+
+    /** Boolean variable to determine whether the scene graph is
+     * initialized.
+     */
     protected boolean _isSceneGraphInitialized;
 
-    // Boolean variable to determine whether attribute changes are allowed
-    // For speed reasons, attribute changes may be disallowed in some models
+    /** Boolean variable to determine whether attribute changes are
+     * allowed For speed reasons, attribute changes may be disallowed in
+     * some models
+     */
     protected boolean _allowAttributeChanges;
 }

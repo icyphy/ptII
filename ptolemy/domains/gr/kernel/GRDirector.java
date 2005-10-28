@@ -176,6 +176,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  @param actor The actor to be fired.
      *  @param time The next time when the actor should be fired.
+     *  @exception IllegalActionException If setting the model time throws it.
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
         setModelTime(time);

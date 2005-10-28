@@ -86,6 +86,7 @@ abstract public class GRActor2D extends GRActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    // The actor displaying the scene, if there is one
+
+    /** The actor displaying the scene, if there is one. */
     protected ViewScreen2D _viewScreen;
 }

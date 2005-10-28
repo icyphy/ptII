@@ -44,6 +44,12 @@ import ptolemy.data.DoubleMatrixToken;
  @Pt.AcceptedRating yellow (vogel)
  */
 public class GRUtilities2D {
+    /** Given a 1x3 DoubleMatrixToken, return the corresponding
+     *  java.awt.Color object.
+     *  @param colorVector A 1x3 DoubleMatrixToken of where the
+     *  first element is the red value, the second is the green
+     *  value and the third is the blue value.
+     */
     public static Color makeColor(DoubleMatrixToken colorVector) {
         Color color = new Color((float) colorVector.getElementAt(0, 0),
                 (float) colorVector.getElementAt(0, 1), (float) colorVector

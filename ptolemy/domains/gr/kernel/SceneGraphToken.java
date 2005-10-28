@@ -52,6 +52,9 @@ import ptolemy.kernel.util.IllegalActionException;
 
  */
 public class SceneGraphToken extends Token {
+    /** Construct a SceneGraphToken.
+     *  @param node The node.
+     */
     public SceneGraphToken(Node node) {
         super();
         _node = node;
@@ -61,6 +64,7 @@ public class SceneGraphToken extends Token {
     ////                         public methods                    ////
 
     /** Return the object contained by this token.
+     *  @param The scene graph node. 
      */
     public Node getSceneGraphNode() {
         return _node;
@@ -103,6 +107,7 @@ public class SceneGraphToken extends Token {
         return "SceneGraphToken(" + _node + ")";
     }
 
+    /** The SceneGraphToken type. */
     public static class SceneGraphType implements Type, Serializable {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -199,6 +204,7 @@ public class SceneGraphToken extends Token {
         }
     }
 
+    /** The type of a SceneGraphToken. */
     public static final Type TYPE = new SceneGraphType();
 
     ///////////////////////////////////////////////////////////////////
