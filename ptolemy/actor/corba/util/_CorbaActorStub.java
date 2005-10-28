@@ -31,10 +31,10 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      *   method is an illegal action of the actor.
      */
     public void fire()
-        super.fire();
             throws ptolemy.actor.corba.util.CorbaIllegalActionException {
+        // Don't call "super.fire();" here, there is no parent class
+        // that has a fire method.
         org.omg.CORBA.portable.InputStream _in = null;
-
         try {
             org.omg.CORBA.portable.OutputStream _out = _request("fire", true);
             _in = _invoke(_out);
