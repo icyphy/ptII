@@ -955,9 +955,7 @@ public class PtinyOSDirector extends Director {
                 + "is likely to fail.  The TOSROOT environment "
                 + "variable should be set to the location of the "
                 + "TinyOS tree, typically "
-                + "$PTII/vendors/ptinyos/tinyos-1.x. If you change " 
-                + "TOSROOT, rerun $PTII/configure so that "
-                + "$PTII/lib/ptII.properties is updated.";
+                + "$PTII/vendors/ptinyos/tinyos-1.x.";
             if (!MessageHandler.yesNoQuestion(
                         tosRootMessage + "\nWould you like to proceed?"
                         )) {
