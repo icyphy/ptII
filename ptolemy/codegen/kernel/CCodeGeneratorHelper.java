@@ -28,9 +28,7 @@
 package ptolemy.codegen.kernel;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Set;
 
 import ptolemy.codegen.c.actor.lib.CodeStream;
