@@ -143,15 +143,26 @@ checked out on a platform that has a different line ending.
 <h2><a name="SettingUp">Setting up Eclipse to manage your Ptolemy II development environment</a></h2>
 
 Eclipse will manage your ptII code tree as a <em>project</em> called
-the ptII project.  There are two ways to set up the ptII project,
-either aware of the CVS aspects, on unaware of the CVS aspects..
+the ptII project.  There are three ways to set up the ptII project,
+<ol>
+<li> Eclipse is unaware of the CVS aspects of the project.
+(No Eclipse CVS, use shell CVS)
+<li> Eclipse is aware of the CVS aspects of the project, but
+you can't use the shell version of CVS.  (Eclipse only CVS)
+<li> Eclipse is aware of the CVS aspects of the project
+and you can use the shell version of CVS.
+(Use both Eclipse and shell CVS)
+</ol>
+
 Without CVS, you'll need to manage the CVS aspects in the usual way,
 i.e. with CVS commands being submitted to a bash shell.  With CVS,
 Eclipse will do all sorts of things to "help" you. Most of these
-things are good, but there is a learning curve.
+things are good, but there is a learning curve.  Setting
+up for using both Eclipse and the shell CVS commands
+is a little tricky, but worth it.
 
 <p>
-Once the ptII project has been set up there seems to be no way to
+Once the ptII project has been set up there seems to be no easy way to
 switch between using CVS and not using CVS.  I.E., the only way to
 switch is to re-create the ptII project.  (Actually, this isn't too
 hard after you've done it a couple of times :-)).  Therefore, you'll
@@ -170,7 +181,12 @@ Deselect 'Use default' and browse to the PTII directory. Finish.
 </ul>
 </ol>
 
-<h3>Check Out Ptolemy II from the CVS Repository</h3>
+<h3>Check Out Ptolemy II from the CVS Repository using pserver</h3>
+Below we describe how to set up Eclipse so Eclipse
+manages the CVS interaction.  This is
+easier than <a href="#BothEclipseAndShellCVS">setting up both Eclipse and Shell CVS</a> 
+below.
+
 <p>
 Eclipse will manage your ptII code tree as a <em>project</em> called
 the ptII project.  Assuming Eclipse is running:
@@ -291,6 +307,38 @@ You will get many warnings that you can ignore, but hopefully no errors.
 The Ptolemy II welcome window should appear.
  <p>You may now wish to read the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/design/usingVergil/index.htm">Using Vergil</a>
 tutorial.
+
+<h2><a href="#BothEclipseAndShellCVS">Setting up both Eclipse and Shell CVS</a> </h2>
+
+The description below is based on information from Kevin Rutland about
+how to set up you tree to use both Eclipse and shell CVS.
+
+ <p><I>This method expects that you have a ssh account on source.eecs.</I>
+
+ <p>See the Eclipse documentation:
+<a href="http://help.eclipse.org/help31/index.jsp?topic=/org.eclipse.platform.doc.user/tasks/task-team-cmdlineclient.htm">Running the CVS command-line client outside of Eclipse</a>
+<ol>
+<li> In Window-&gt;Preferences-&gt;Team-&gt;CVS-&gt;Ext Connection Method, 
+select the second radio button and set the drop down to 
+<CODE>extssh</CODE>
+
+
+<li> Configure the CVS Repository as:  
+<pre>
+:ext:@source.eecs.berkeley.edu:/home/cvs
+</pre>
+
+<li> Check out ptII
+
+<li> Then on the command line you need to do
+<pre>
+export CVS_RSH=ssh
+</pre>
+All the 
+Repository entries are set to ":ext:" in the project so all the normal 
+cvs commands (like -n update and diff) work just as expected.
+</ol>
+
 
 <h2><a name="Optional">Optional Extensions</a></h2>
 <p>
