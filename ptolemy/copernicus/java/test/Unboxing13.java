@@ -11,7 +11,7 @@ public class Unboxing13 {
     BitwiseOperationToken bitwiseoperationtoken;
 
     public void fire() throws IllegalActionException {
-        super.fire();
+        // Don't call super.fire(); here, the parent is Object.
         IntToken inttoken = new IntToken(1);
         inputToken = inttoken;
         inttoken = inputToken;

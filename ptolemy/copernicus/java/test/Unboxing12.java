@@ -29,7 +29,7 @@ public class Unboxing12 {
     }
 
     public void fire() throws IllegalActionException {
-        super.fire();
+        // Don't call super.fire(); here, the parent is Object.
         BaseType.DoubleType doubletype = BaseType.DOUBLE;
         Token token = doubletype.convert(_stateToken);
         System.out.println("token = " + token.toString());
