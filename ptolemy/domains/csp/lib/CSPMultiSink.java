@@ -98,8 +98,9 @@ public class CSPMultiSink extends CSPActor {
     /** Execute this actor by consuming tokens through the input
      *  port. Use a conditional do (CDO) construct for token
      *  consumption.
+     *  @exception IllegalActionException If thrown by the super class.
      */
-    public void fire() {
+    public void fire() throws IllegalActionException {
         super.fire();
         try {
             int count = 0;
