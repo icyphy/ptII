@@ -28,8 +28,13 @@
  */
 package ptolemy.domains.rendezvous.kernel;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.AbstractReceiver;
@@ -124,7 +129,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
             throw new InternalErrorException("No receivers!");
         }
 
-        Hashtable result;
+        Map result;
 
         synchronized (director) {
             Thread theThread = Thread.currentThread();
@@ -148,15 +153,16 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
             if (transactionReceivers == null) {
                 director.threadBlocked(theThread, null);
-
-                while (!_releasedThreads.containsKey(theThread)) {
+                result = (Map) _getData(theThread);
+                while (result == null) {
                     waitForChange(director);
+                    result = (Map) _getData(theThread);
                 }
+                _setData(theThread, null);
             } else {
                 _commitTransaction(transactionReceivers, director);
+                result = (Map) _setData(theThread, null);
             }
-
-            result = (Hashtable) _releasedThreads.remove(theThread);
         }
 
         Token[][] tokens = new Token[receivers.length][];
@@ -191,7 +197,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
             throw new InternalErrorException("No receivers!");
         }
 
-        Hashtable result;
+        Map result;
 
         synchronized (director) {
             Thread theThread = Thread.currentThread();
@@ -215,15 +221,16 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
             if (transactionReceivers == null) {
                 director.threadBlocked(theThread, null);
-
-                while (!_releasedThreads.containsKey(theThread)) {
+                result = (Map) _getData(theThread);
+                while (result == null) {
                     waitForChange(director);
+                    result = (Map) _getData(theThread);
                 }
+                _setData(theThread, null);
             } else {
                 _commitTransaction(transactionReceivers, director);
+                result = (Map) _setData(theThread, null);
             }
-
-            result = (Hashtable) _releasedThreads.remove(theThread);
         }
 
         Token token = null;
@@ -525,15 +532,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
             if (transactionReceivers == null) {
                 director.threadBlocked(theThread, null);
-
-                while (!_releasedThreads.containsKey(theThread)) {
+                while (_getData(theThread) == null) {
                     waitForChange(director);
                 }
+                _setData(theThread, null);
             } else {
                 _commitTransaction(transactionReceivers, director);
+                _setData(theThread, null);
             }
-
-            _releasedThreads.remove(theThread);
         }
     }
 
@@ -580,15 +586,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
             if (transactionReceivers == null) {
                 director.threadBlocked(theThread, null);
-
-                while (!_releasedThreads.containsKey(theThread)) {
+                while (_getData(theThread) == null) {
                     waitForChange(director);
                 }
+                _setData(theThread, null);
             } else {
                 _commitTransaction(transactionReceivers, director);
+                _setData(theThread, null);
             }
-
-            _releasedThreads.remove(theThread);
         }
     }
 
@@ -695,6 +700,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
     protected boolean _isPutWaiting() {
         return _putWaiting != null;
     }
+    
+    /** Return a string describing the status of the receiver.
+     *  @return A string describing the status of the specified receiver.
+     */
+    protected String _status() {
+        // TODO
+        return null;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
@@ -708,7 +721,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     private static void _commitTransaction(Receiver[] receivers,
             RendezvousDirector director) {
         // The result table for all the receivers.
-        Hashtable result = new Hashtable();
+        Map result = new HashMap();
 
         // Backup result tokens for the receivers, and release the threads
         // blocked at those receivers.
@@ -717,14 +730,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 (RendezvousReceiver) receivers[i];
             result.put(castReceiver, castReceiver._token);
 
-            if (!_releasedThreads.containsKey(castReceiver._getWaiting)) {
+            if (_getData(castReceiver._getWaiting) == null) {
                 director.threadUnblocked(castReceiver._getWaiting, null);
-                _releasedThreads.put(castReceiver._getWaiting, result);
+                _setData(castReceiver._getWaiting, result);
             }
 
-            if (!_releasedThreads.containsKey(castReceiver._putWaiting)) {
+            if (_getData(castReceiver._putWaiting) == null) {
                 director.threadUnblocked(castReceiver._putWaiting, null);
-                _releasedThreads.put(castReceiver._putWaiting, result);
+                _setData(castReceiver._putWaiting, result);
             }
         }
 
@@ -785,6 +798,36 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                 clearGet, clearPut);
                     }
                 }
+            }
+        }
+    }
+    
+    private static Object _getData(Thread thread) {
+        synchronized (thread) {
+            ClassLoader oldLoader = thread.getContextClassLoader();
+            if (oldLoader != null && oldLoader instanceof ClassLoaderWrapper) {
+                return ((ClassLoaderWrapper)oldLoader).getData();
+            } else {
+                return null;
+            }
+        }
+    }
+    
+    private static Object _setData(Thread thread, Object data) {
+        synchronized (thread) {
+            ClassLoader oldLoader = thread.getContextClassLoader();
+            if (oldLoader != null && oldLoader instanceof ClassLoaderWrapper) {
+                ClassLoaderWrapper castOldLoader = (ClassLoaderWrapper)oldLoader;
+                Object oldData = castOldLoader.getData();
+                castOldLoader.setData(data);
+                return oldData;
+            } else {
+                if (data != null) {
+                    ClassLoaderWrapper newLoader = new ClassLoaderWrapper(oldLoader);
+                    newLoader.setData(data);
+                    thread.setContextClassLoader(newLoader);
+                }
+                return null;
             }
         }
     }
@@ -941,11 +984,66 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *  are Hashtables.  Each Hashtable in the values maps receivers
      *  to the tokens that they contain.
      */
-    private static Hashtable _releasedThreads = new Hashtable();
+    //private static Hashtable _releasedThreads = new Hashtable();
 
     /** Array with just one receiver, this one, for convenience. */
     private Receiver[][] _thisReceiver = new Receiver[1][1];
 
     /** The token being transferred during the rendezvous. */
     private Token _token;
+}
+
+class ClassLoaderWrapper extends ClassLoader {
+    
+    ClassLoaderWrapper(ClassLoader classLoader) {
+        _loader = classLoader;
+    }
+
+    public synchronized void clearAssertionStatus() {
+        _loader.clearAssertionStatus();
+    }
+
+    public URL getResource(String name) {
+        return _loader.getResource(name);
+    }
+
+    public InputStream getResourceAsStream(String name) {
+        return _loader.getResourceAsStream(name);
+    }
+
+    public Enumeration getResources(String name) throws IOException {
+        return _loader.getResources(name);
+    }
+
+    public Class loadClass(String name) throws ClassNotFoundException {
+        return _loader.loadClass(name);
+    }
+
+    public synchronized void setClassAssertionStatus(String className, boolean enabled) {
+        _loader.setClassAssertionStatus(className, enabled);
+    }
+
+    public synchronized void setDefaultAssertionStatus(boolean enabled) {
+        _loader.setDefaultAssertionStatus(enabled);
+    }
+
+    public synchronized void setPackageAssertionStatus(String packageName, boolean enabled) {
+        _loader.setPackageAssertionStatus(packageName, enabled);
+    }
+    
+    public Object getData() {
+        return _data;
+    }
+    
+    public ClassLoader getLoader() {
+        return _loader;
+    }
+    
+    public void setData(Object data) {
+        _data = data;
+    }
+    
+    private Object _data;
+    
+    private ClassLoader _loader;
 }
