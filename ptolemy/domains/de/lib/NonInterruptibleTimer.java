@@ -92,7 +92,12 @@ public class NonInterruptibleTimer extends Timer {
      *  tokens from ports.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+        // Don't call "super.fire();" here, the parent class is an actor.
+        if (_debugging) {
+            // We usually do this in the parent class hierarchy, but since
+            // we are not calling super.fire(), we do it here.
+            _debug("NonInterruptibleTimer: Called fire()");
+        }
         _delay = -1.0;
 
         if (input.hasToken(0)) {
