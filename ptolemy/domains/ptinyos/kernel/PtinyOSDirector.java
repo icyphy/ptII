@@ -1437,7 +1437,7 @@ public class PtinyOSDirector extends Director {
                     }
 
                     if (_stringWriter != null) {
-                        _stringWriter.write(line + "/n");
+                        _stringWriter.write(line + "\n");
                     }
 
                     // Create the debug output.
