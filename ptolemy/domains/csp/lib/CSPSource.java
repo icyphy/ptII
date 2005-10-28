@@ -134,8 +134,9 @@ public class CSPSource extends AtomicActor {
      *  If the tokenCount was not set to a nonnegative, integer value,
      *  then produce output tokens indefinitely. Otherwise, produce
      *  N output tokens for N = tokenCount.
+     *  @exception IllegalActionException If thrown by the superclass.
      */
-    public void fire() {
+    public void fire() throws IllegalActionException {
         super.fire();
         try {
             int limit = ((IntToken) tokenLimit.getToken()).intValue();
