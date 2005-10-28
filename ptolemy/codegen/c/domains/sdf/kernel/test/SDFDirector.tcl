@@ -51,20 +51,71 @@ test SDFDirector-1.1 {Call generateCode(StringBuffer)} {
     set results [java::new StringBuffer]
     $codeGenerator generateCode $results
     list [$results toString]
-} {{/* Variable Declarations .top */
-/* Generate shared code for .top */
+} {{/* Generate shared code for .top */
+/* Finished generate shared code for .top */
+/* Generate type resolution code for .top */
+typedef struct token Token;
 
-struct array {
-    void* data;
-    unsigned int length;
+#define MISSING 0
+
+struct token {                  // Base type for tokens.
+    unsigned char type;         // TYPE field has to be the first field.
+    union typeMembers {
+                         // type member declarations [i.e. Type1Token Type1;]
+    } payload;
 };
 
-typedef struct array Array;
-typedef struct array String;
+int atoi (char* s);             // standard c function.
 
-/* Finished generate shared code for .top */
+double atof (char* s);          // standard c function.
+
+long atol (char* s);            // standard c function.
+    
+char* itoa (int i) {
+    char* string = (char*) malloc(sizeof(char) * 12);
+    sprintf((char*) string, "%d", i);
+    return string;       
+}
+
+char* ltoa (long l) {
+    char* string = (char*) malloc(sizeof(char) * 22);
+    sprintf((char*) string, "%d", l);
+    return string;       
+}
+
+char* ftoa (double d) {
+    char* string = (char*) malloc(sizeof(char) * 12);
+    sprintf((char*) string, "%g", d);
+    return string;       
+}
+
+char* btoa (char b) {
+    if (b) {
+        return "true";
+    } else {
+        return "false";
+    }
+}
+
+int ftoi (double d) {
+    return floor(d);
+}
+
+double itof (int i) {
+    return (double) i;
+}
+
+#define NUM_TYPE 0
+#define NUM_FUNC 0
+void* (*functionTable[NUM_TYPE][NUM_FUNC])(Token*)= {
+};
+
+
+/* Variable Declarations .top */
 /* The preinitialization of the director. */
-int iteration = 0;
+static int iteration = 0;
+
+
 main(int argc, char *argv[]) {
 /* Initialize .top */
 /* The initialization of the director. */
