@@ -211,7 +211,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         set.addAll(directorHelper.getModifiedVariables());
         return set;
     }
-
+    
+    /** Return the associated actor's rates for all configurations of this actor. 
+     */
     public int[][] getRates() {
         return _rates;
     }
@@ -233,6 +235,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         }
     }
 
+    /** Set the associated actor's rates for all configurations of this actor. 
+     */
     public void setRates(int[][] rates) {
         _rates = rates;
     }

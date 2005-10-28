@@ -298,6 +298,28 @@ public class Director implements ActorCodeGenerator {
 
     /////////////////////////////////////////////////////////////////////
     ////                   protected methods                         ////
+    
+    /** Return the minimum number of power of two that is greater than or
+     *  equal to the given integer.
+     *  @param value The given integer.
+     *  @return the minimum number of power of two that is greater than or
+     *   equal to the given integer.
+     *  @exception IllegalActionException If the given integer is not positive.
+     */
+    protected int _ceilToPowerOfTwo(int value) throws IllegalActionException {
+        if (value < 1) {
+            throw new IllegalActionException(getComponent(),
+                    "The given integer must be a positive integer.");
+        }
+
+        int powerOfTwo = 1;
+
+        while (value > powerOfTwo) {
+            powerOfTwo <<= 1;
+        }
+
+        return powerOfTwo;
+    }
 
     /** Get the helper class associated with the given component.
      *  @param component The given component.

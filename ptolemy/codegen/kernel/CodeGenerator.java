@@ -69,8 +69,7 @@ import ptolemy.util.MessageHandler;
 
 /** Base class for code generator.
  *
- *  @author Edward A. Lee, Gang Zhou, Ye Zhou,
- *   Contributors: Christopher Brooks
+ *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks
  *  @version $Id$ CodeGenerator.java,v 1.51 2005/07/13 14:07:20 cxh Exp $
  *  @since Ptolemy II 5.1
  *  @Pt.ProposedRating Yellow (eal)
@@ -299,7 +298,7 @@ public class CodeGenerator extends Attribute
                     ((Variable) iterations).getToken()).intValue();
 
             if (iterationCount > 0) {
-                code.append("int iteration = 0;\n");
+                code.append("static int iteration = 0;\n");
             }
         }
 

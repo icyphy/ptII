@@ -32,7 +32,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
@@ -89,24 +92,17 @@ public class FSMActor extends CCodeGeneratorHelper {
      *  @exception IllegalActionException
      */
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
+        StringBuffer codeBuffer = new StringBuffer();
+        codeBuffer.append(super.generateInitializeCode());
 
         ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
         State initialState = fsmActor.getInitialState();
-        Iterator allStates = fsmActor.entityList().iterator();
-        int counter = 0;
-
-        while (allStates.hasNext()) {
-            if (allStates.next() == initialState) {
-                code.append("$actorSymbol(currentState) = " + counter + ";\n");
-                break;
-            }
-
-            counter++;
-        }
-
-        return processCode(code.toString());
+        
+        _updateCurrentState(codeBuffer, initialState, 0);
+        
+        _updateConfigurationNumber(codeBuffer, initialState, 0);
+        
+        return processCode(codeBuffer.toString());
     }
 
     /** Generate the preinitialize code of the associated FSMActor.
@@ -117,8 +113,8 @@ public class FSMActor extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         _scope = new HelperScope();
         code.append(super.generatePreinitializeCode());
-        code.append("int $actorSymbol(currentState);\n");
-        code.append("unsigned char $actorSymbol(transitionFlag);\n");
+        code.append("static int $actorSymbol(currentState);\n");
+        code.append("static unsigned char $actorSymbol(transitionFlag);\n");
         return processCode(code.toString());
     }
 
@@ -325,26 +321,13 @@ public class FSMActor extends CCodeGeneratorHelper {
                     }
                 }
 
-                // generate code for updating new state
+                // generate code for updating current state
                 State destinationState = transition.destinationState();
-                Iterator allStates = fsmActor.entityList().iterator();
-                int counter = 0;
-
-                while (allStates.hasNext()) {
-                    if (allStates.next() == destinationState) {
-                        codeBuffer.append(_getIndentPrefix(depth));
-                        codeBuffer.append("$actorSymbol(currentState) = "
-                                + counter + ";\n");
-                        break;
-                    }
-
-                    counter++;
-                }
+                _updateCurrentState(codeBuffer, destinationState, depth);
 
                 // generate code for reinitialization if reset is true
                 BooleanToken resetToken = (BooleanToken) transition.reset
                         .getToken();
-
                 if (resetToken.booleanValue()) {
                     actors = destinationState.getRefinement();
 
@@ -355,7 +338,12 @@ public class FSMActor extends CCodeGeneratorHelper {
                         }
                     }
                 }
-
+                
+                // generate code to update configuration number of this FSMActor's
+                // container as a function of the destination state and the 
+                // configuration number of the refinement of the destination state.
+                _updateConfigurationNumber(codeBuffer, destinationState, depth);
+                
                 depth--;
                 codeBuffer.append(_getIndentPrefix(depth));
                 codeBuffer.append("} ");
@@ -369,7 +357,16 @@ public class FSMActor extends CCodeGeneratorHelper {
 
             depth++;
             codeBuffer.append(_getIndentPrefix(depth));
+            // indicates no transition is made.
             codeBuffer.append("$actorSymbol(transitionFlag) = 0;\n");
+            
+            // generate code to update configuration number of this FSMActor's
+            // container as a function of the current state and the 
+            // configuration number of the refinement of the current state.
+            // Note we need this because the configuration of the current
+            // refinement may have been changed when the refinement itself
+            // has not been changed.
+            _updateConfigurationNumber(codeBuffer, state, depth);
             depth--;
 
             if (transitionCount > 0) {
@@ -386,6 +383,79 @@ public class FSMActor extends CCodeGeneratorHelper {
         codeBuffer.append(_getIndentPrefix(depth));
         codeBuffer.append("}\n"); //end of switch statement   
         code.append(processCode(codeBuffer.toString()));
+    }
+    
+    /** Generate code to update configuration number of this FSMActor's
+     *  container as a function of the given state and the 
+     *  configuration number of the refinement of the given state.
+     * 
+     *  @param codeBuffer
+     *  @param state
+     *  @param depth
+     *  @exception IllegalActionException
+     */
+    protected void _updateConfigurationNumber(StringBuffer codeBuffer, State state, int depth) 
+            throws IllegalActionException {
+        
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        Director director = ((CompositeActor) fsmActor.getContainer()).getDirector();
+        if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
+            TypedCompositeActor containerHelper = (TypedCompositeActor) 
+                    _getHelper(fsmActor.getContainer());
+            TypedCompositeActor refinementHelper = (TypedCompositeActor) 
+                    _getHelper((NamedObj) state.getRefinement()[0]);
+            Iterator states = fsmActor.entityList().iterator();
+            int tempSum = 0;
+
+            while (states.hasNext()) {
+                State nextState = (State) states.next();
+                Actor[] actors = nextState.getRefinement();
+                if (actors != null) {
+                    TypedCompositeActor helper = (TypedCompositeActor)
+                            _getHelper((NamedObj) actors[0]);
+                    int[][] rates = helper.getRates();
+                    
+                    if (nextState == state) {
+                        codeBuffer.append(_getIndentPrefix(depth));
+                        if (rates == null ) {
+                            codeBuffer.append(containerHelper.processCode
+                                    ("$actorSymbol(currentConfiguration) = ")
+                                    + tempSum + ";\n");
+                        } else {
+                            codeBuffer.append(containerHelper.processCode
+                                    ("$actorSymbol(currentConfiguration) = ")
+                                    + refinementHelper.processCode
+                                    ("$actorSymbol(currentConfiguration)") 
+                                    + " + " + tempSum + ";\n");   
+                        }
+                        break;
+                    } else {
+                        if (rates == null) {
+                            tempSum += 1;       
+                        } else {
+                            tempSum += rates.length;   
+                        }
+                    }    
+                }    
+            }                   
+        }
+                
+    }
+    
+    protected void _updateCurrentState(StringBuffer codeBuffer, State state, int depth) 
+            throws IllegalActionException {
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor 
+                = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        Iterator states = fsmActor.entityList().iterator();
+        int stateCounter = 0;
+
+        while (states.hasNext()) {
+            if (states.next() == state) {   
+                codeBuffer.append("$actorSymbol(currentState) = " + stateCounter + ";\n");
+                break;
+            }
+            stateCounter++;
+        }    
     }
 
     protected static interface TransitionRetriever {

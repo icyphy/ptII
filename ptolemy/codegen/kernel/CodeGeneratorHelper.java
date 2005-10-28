@@ -451,7 +451,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     + " is not a parameter.");
         }
     }
-
+    
+    /** Return the associated actor's rates for all configurations of this actor. 
+     *  In this base class, return null.
+     */
     public int[][] getRates() {
         return null;
     }
