@@ -45,7 +45,6 @@ PTPACKAGE = 	Demos
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	AdaptiveMedian.xml \
 	BouncingBall.xml \
 	Collisions.xml \
 	Controllers.xml \
