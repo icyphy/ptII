@@ -526,54 +526,41 @@ public class HSFSMDirector2 extends HSFSMDirector {
     public boolean isOutputAccurate() {
         boolean result = true;
 
-        // NOTE: we need to check all possible cases where an event may arise.
-        // Iterate all the enabled refinements to see whether they are
-        // satisfied with the current step size.
-        if (_enabledRefinements != null) {
-            Iterator refinements = _enabledRefinements.iterator();
+        try {
+            // NOTE: with the change made to the _continuousPhaseExecution, 
+            // where an _ODEsolver.fire() is performed after the states are
+            // resolved, the following issue is taken care of.
+            // NOTE: We need to read the inputs because FSMActor uses a Map
+            // to find variable values. We need to transport the newest output, 
+            // (in fact, the correct output at the current time), inside the 
+            // FSMActor. This is done in the _readInputs() method.
 
-            while (refinements.hasNext()) {
-                Actor refinement = (Actor) refinements.next();
-
-                if (refinement instanceof CTStepSizeControlActor) {
-                    result = result
-                            && ((CTStepSizeControlActor) refinement)
-                                    .isOutputAccurate();
+            // NOTE: we need to check all possible cases where an event may arise.
+            // Iterate all the enabled refinements to see whether they are
+            // satisfied with the current step size.
+            if (_enabledRefinements != null) {
+                Iterator refinements = _enabledRefinements.iterator();
+                
+                while (refinements.hasNext()) {
+                    Actor refinement = (Actor) refinements.next();
+                    
+                    if (refinement instanceof CTStepSizeControlActor) {
+                        result = result
+                        && ((CTStepSizeControlActor) refinement)
+                        .isOutputAccurate();
+                    }
                 }
             }
-        }
-
-        // Even if the result is false, this method does not return immediately.
-        // Instead, we continue to check whether there is any transition
-        // enabled with respect to the current inputs.
-        // The reason is that when refining step size, we want to find the
-        // largest step size that satisfies all the step size constraints to
-        // reduce the computation cost.
-        // All non-preemptive and preemptive transitions are checked below,
-        // because even if a preemptive transition is enabled, the 
-        // non-preemptive transitions never even get a chance to be evaluated.
-        try {
-            // We need to read the inputs because FSMActor uses shadow
-            // variables... We need to transport the newest output, (in fact,
-            // the correct output at the current time), inside the FSMActor.
-            // Unfortunately, we need to perform two steps to achieve this goal.
-            // The first step is to transport the input from the receivers of
-            // the modal model ports into the local receivers of the refinement
-            // ports of FSMActor and Refinements. The second step is to build
-            // input map for the FSMActor. 
-            // FIXME: This design is really cumbersome. Find a new design.
-            // Well, if I have extra time after tuning up the performance of
-            // CT and DE... (Haiyang Zheng, 1:06am, 10/23/2005)
-            // First step:
-            Iterator modalPorts = ((CompositeActor) getContainer())
-                    .inputPortList().iterator();
-
-            while (modalPorts.hasNext()) {
-                transferInputs((IOPort) modalPorts.next());
-            }
-
-            // Second step:
-            _readInputs();
+            
+            // Even if the result is false, this method does not return immediately.
+            // Instead, we continue to check whether there is any transition
+            // enabled with respect to the current inputs.
+            // The reason is that when refining step size, we want to find the
+            // largest step size that satisfies all the step size constraints to
+            // reduce the computation cost.
+            // All non-preemptive and preemptive transitions are checked below,
+            // because even if a preemptive transition is enabled, the 
+            // non-preemptive transitions never even get a chance to be evaluated.
 
             // FIXME: make some private methods to do the following repeated 
             // operations.
