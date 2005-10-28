@@ -288,6 +288,10 @@ public class SDFDirector extends Director {
 
     /** Check to see if variables are needed to represent read and
      *  write offsets for the given port.
+     *  @param initializeCode  The StringBuffer that is updated with
+     *  initialization code.
+     *  @exception IllegalActionException  If getting the rate or
+     *  reading parameters throws it.   
      */   
     protected void _checkBufferSize(StringBuffer initializeCode)
             throws IllegalActionException {
