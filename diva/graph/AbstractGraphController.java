@@ -35,7 +35,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
 import diva.canvas.interactor.BasicSelectionModel;
 import diva.canvas.interactor.SelectionModel;
 
@@ -473,7 +472,7 @@ public abstract class AbstractGraphController implements GraphController {
         Iterator i;
 
         // FIXME we shouldn't have to cast this.
-        FigureLayer layer = getGraphPane().getForegroundLayer();
+        //FigureLayer layer = getGraphPane().getForegroundLayer();
 
         if (_model != null) {
             // Clear existing figures
@@ -574,13 +573,6 @@ public abstract class AbstractGraphController implements GraphController {
      * at that time.
      */
     protected abstract void initializeInteraction();
-
-    /**
-     * Debugging output.
-     */
-    private void debug(String s) {
-        System.err.println("AbstractGraphController " + s);
-    }
 
     /**
      * This inner class responds to changes in the graph

@@ -405,8 +405,4 @@ public abstract class ColtRandomSource extends Source {
     /** Indicator that a new random number is needed.
      */
     private boolean _needNew = false;
-
-    /** Counter used to assign unique seeds.
-     */
-    private long _seedCount = 0;
 }

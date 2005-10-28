@@ -121,7 +121,4 @@ public class Gaussian extends RandomSource {
 
     /** The random number for the current iteration. */
     private double _current;
-
-    /** Indicator that a new random number is needed. */
-    private boolean _needNew = false;
 }

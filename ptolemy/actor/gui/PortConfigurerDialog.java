@@ -2114,8 +2114,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
     private int _selectedRow = -1;
 
-    private static String _SINGLETON_ATTRIBUTE = "ptolemy.kernel.util.SingletonAttribute";
-
     private static String _SINGLETON_PARAMETER = "ptolemy.data.expr.SingletonParameter";
 
     /** When you click on the "Show Name" column header, toggle this value.

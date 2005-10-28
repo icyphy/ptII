@@ -181,9 +181,4 @@ public class ColtSeedParameter extends SharedParameter {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The container class. */
-    private Class _containerClass;
 }
