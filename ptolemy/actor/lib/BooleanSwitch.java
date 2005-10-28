@@ -122,6 +122,7 @@ public class BooleanSwitch extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (control.hasToken(0)) {
             _control = ((BooleanToken) control.get(0)).booleanValue();
         }

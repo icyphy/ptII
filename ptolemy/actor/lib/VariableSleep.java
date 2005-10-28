@@ -106,6 +106,7 @@ public class VariableSleep extends Transformer {
      *  are lost.
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (!_wasSleepCalledInFireYet) {
             try {
                 if (sleepTime.hasToken(0)) {

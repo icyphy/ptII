@@ -151,6 +151,7 @@ public abstract class AbstractCase extends TypedCompositeActor {
          *   throws it.
          */
         public void fire() throws IllegalActionException {
+        super.fire();
             _currentChoice.fire();
         }
 

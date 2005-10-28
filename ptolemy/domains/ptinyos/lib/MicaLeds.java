@@ -160,6 +160,7 @@ public class MicaLeds extends TypedAtomicActor {
      *  cannot be read.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_debugging) {
             _debug("Called fire()");
         }

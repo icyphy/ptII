@@ -156,6 +156,7 @@ public class Distributor extends Transformer implements SequenceActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _tentativeOutputPosition = _currentOutputPosition;
 
         int width = output.getWidth();

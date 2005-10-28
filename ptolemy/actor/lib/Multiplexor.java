@@ -98,6 +98,7 @@ public class Multiplexor extends Transformer {
      *   the <i>select</i> input is out of range.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (select.hasToken(0)) {
             _channel = ((IntToken) select.get(0)).intValue();
         }

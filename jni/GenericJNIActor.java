@@ -327,6 +327,7 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  @exception IllegalActionException If a exception occured
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         //getting the in/inout parameters
         Iterator ports = this.portList().iterator();
         Vector args = new Vector();

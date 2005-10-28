@@ -36,6 +36,7 @@ public class Unboxing11 {
     public Token[] tokens_6_;
 
     public void fire() throws IllegalActionException {
+        super.fire();
         int i = _numberOfInputs;
         int i_0_;
         tokens = new Token[i];

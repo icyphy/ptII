@@ -204,6 +204,7 @@ public class TaskReceiver extends Source {
      *  or any remote exceptions.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
                 trigger.get(i);

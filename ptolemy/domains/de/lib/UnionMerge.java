@@ -123,6 +123,7 @@ public class UnionMerge extends DEActor {
      *  the input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         boolean discard = ((BooleanToken) discardEvents.getToken())
                 .booleanValue();
         Token firstAvailableToken = null;

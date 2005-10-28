@@ -119,6 +119,7 @@ public class Inhibit extends DETransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // FIXME: non-strict version would be preferred in SR
         if (inhibit.hasToken(0)) {
             // Consume the inhibit token.

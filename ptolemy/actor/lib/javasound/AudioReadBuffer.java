@@ -214,6 +214,7 @@ public class AudioReadBuffer extends Transformer {
      *  specified, only the left channel will be used.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             int in = ((IntToken) input.get(0)).intValue();
 

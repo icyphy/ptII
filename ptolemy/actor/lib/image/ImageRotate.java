@@ -90,6 +90,7 @@ public class ImageRotate extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int width = input.getWidth();
         int rotation = ((IntToken) (rotationInDegrees.getToken())).intValue();
 

@@ -82,6 +82,7 @@ public class GraphicsDevicesToString extends Transformer {
      *
      *  @exception IllegalActionException If there is no director.  */
     public void fire() throws IllegalActionException {
+        super.fire();
         int width = input.getWidth();
         StringBuffer description = new StringBuffer();
 

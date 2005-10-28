@@ -100,6 +100,7 @@ public class CSPSieve extends CSPActor {
      *   executing the process.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Token data;
         boolean isLargestPrime = true;
         int lastSeen = 0;

@@ -124,6 +124,7 @@ public class ContentionAlarm extends CSPActor {
      *  the input or output ports throws an IllegalActionException.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         while (true) {
             // State 1
             _debug(new ExecEvent(this, ExecEvent.WAITING));

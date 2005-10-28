@@ -104,6 +104,7 @@ public class Sequencer extends Transformer implements SequenceActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _sequenceNumberOfInput = ((IntToken) sequenceNumber.get(0)).intValue();
         _nextToken = input.get(0);
 

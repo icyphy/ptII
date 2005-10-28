@@ -114,6 +114,7 @@ public class Select extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // Redo this check in case the control has changed since prefire().
         if (input.hasToken(_control)) {
             output.send(0, input.get(_control));

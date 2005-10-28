@@ -128,6 +128,7 @@ public class FullScreenImageDisplay extends Sink {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int inputWidth = input.getWidth();
         int delay = 1000;
 

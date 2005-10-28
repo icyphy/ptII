@@ -141,6 +141,7 @@ public class ArrayExtract extends Transformer {
      *   is out of range.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         sourcePosition.update();
         extractLength.update();
         destinationPosition.update();

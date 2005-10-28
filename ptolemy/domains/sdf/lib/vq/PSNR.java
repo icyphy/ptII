@@ -97,6 +97,7 @@ public class PSNR extends TypedAtomicActor {
      *  input tokens do not match.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int i;
         int j;
         int signalPower = 0;

@@ -200,6 +200,7 @@ public class ImplicitSurface extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         double x1;
         double x2;
         double x3;

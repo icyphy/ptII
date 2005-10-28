@@ -11,6 +11,7 @@ public class Unboxing13 {
     BitwiseOperationToken bitwiseoperationtoken;
 
     public void fire() throws IllegalActionException {
+        super.fire();
         IntToken inttoken = new IntToken(1);
         inputToken = inttoken;
         inttoken = inputToken;

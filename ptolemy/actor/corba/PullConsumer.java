@@ -186,6 +186,7 @@ public class PullConsumer extends Source {
      *  or any remote exceptions.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         try {
             _requestData = true;
 

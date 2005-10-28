@@ -73,6 +73,7 @@ public class LempelZivCoder extends Transformer {
      *  @exception IllegalActionException if the super class throws it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             boolean inputValue = ((BooleanToken) input.get(0)).booleanValue();
             _current = _current + (inputValue ? "1" : "0");

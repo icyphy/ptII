@@ -93,6 +93,7 @@ public class URLToImage extends Transformer {
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         StringToken urlToken = (StringToken) input.get(0);
 
         try {

@@ -145,6 +145,7 @@ public class QueueControl extends TypedAtomicActor {
      *  corresponding output.
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (q1Length.hasToken(0)) {
             _q1Length = ((IntToken) q1Length.get(0)).intValue();
         }

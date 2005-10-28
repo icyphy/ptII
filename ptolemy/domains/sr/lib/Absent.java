@@ -67,6 +67,7 @@ public class Absent extends Undefined {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         output.sendClear(0);
     }
 

@@ -285,6 +285,7 @@ public class ConvolutionalCoder extends Transformer {
      *  corresponds to the parity computed using the i-th polynomial.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_inputNumberInvalid) {
             if (_inputNumber >= _maskNumber) {
                 throw new IllegalActionException(this,

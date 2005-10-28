@@ -148,6 +148,7 @@ public class TaskReporter extends Sink {
      *  or any remote exceptions.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         for (int i = 0; i < input.getWidth(); i++) {
             try {
                 if (input.hasToken(0)) {

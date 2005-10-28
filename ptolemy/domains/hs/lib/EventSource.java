@@ -203,6 +203,7 @@ public class EventSource extends TypedAtomicActor implements CTEventGenerator {
      *  @exception IllegalActionException If the event cannot be sent.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         HSDirector director = (HSDirector) getDirector();
         if ((director.isDiscretePhase()) && hasCurrentEvent()) {
             output.send(0, ((ArrayToken) values.getToken()).getElement(_phase));

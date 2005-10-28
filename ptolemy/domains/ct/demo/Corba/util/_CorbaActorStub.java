@@ -31,6 +31,7 @@ public class _CorbaActorStub extends org.omg.CORBA.portable.ObjectImpl
      *   method is an illegal action of the actor.
      */
     public void fire()
+        super.fire();
             throws ptolemy.domains.ct.demo.Corba.util.CorbaIllegalActionException {
         org.omg.CORBA.portable.InputStream _in = null;
 

@@ -125,6 +125,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
      *  @exception IllegalActionException something goes wrong.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // deal with timer interupt
         if (_debugging) {
             _debug("Called fire()");

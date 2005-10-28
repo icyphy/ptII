@@ -303,6 +303,7 @@ public class Expression extends TypedAtomicActor {
      *   yields an incompatible type, or if there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Director director = getDirector();
 
         if (director == null) {

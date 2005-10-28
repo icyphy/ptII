@@ -101,6 +101,7 @@ public class NonStrictDelay extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.isKnown(0)) {
             if (input.hasToken(0)) {
                 _currentToken = input.get(0);

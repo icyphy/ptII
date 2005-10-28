@@ -84,6 +84,7 @@ public class StringToUnsignedByteArray extends Converter {
      *  FIXME: Does this method actually check if there is a director?
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         String inputValue = ((StringToken) input.get(0)).stringValue();
 
         byte[] dataBytes = inputValue.getBytes();

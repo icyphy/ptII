@@ -133,6 +133,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
      *  each released.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // Broadcast key presses.
         if (_upKeyPressed) {
             _upKeyPressed = false;

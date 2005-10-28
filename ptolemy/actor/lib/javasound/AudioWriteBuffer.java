@@ -285,6 +285,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  <i>pathName</i> parameter on wrapup.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (address.hasToken(0) && data.hasToken(0)) {
             int addressValue = ((IntToken) address.get(0)).intValue();
 

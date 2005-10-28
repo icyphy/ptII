@@ -111,6 +111,7 @@ public class ArraySort extends Transformer {
      *   if sorting is not supported for the input array.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken) input.get(0);
 

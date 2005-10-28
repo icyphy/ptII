@@ -93,6 +93,7 @@ public class Accum extends TypedAtomicActor {
      *   available tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _state = input.get(0).add(_state);
         output.send(0, _state);
     }

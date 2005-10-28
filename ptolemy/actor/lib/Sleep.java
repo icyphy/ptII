@@ -131,6 +131,7 @@ public class Sleep extends Transformer {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         sleepTime.update();
 
         int inputWidth = input.getWidth();

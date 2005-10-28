@@ -204,6 +204,7 @@ public class HuffmanBasic extends Transformer {
      *  encode the input into booleans and send them to the output port.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ArrayToken alphabetArrayToken = (ArrayToken) alphabet.getToken();
 
         if (_pmf.length != alphabetArrayToken.length()) {

@@ -83,6 +83,7 @@ public class IdentityActor extends AtomicActor {
      *      in the input port.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         try {
             Token in = input.get(0);
             output.broadcast(in);

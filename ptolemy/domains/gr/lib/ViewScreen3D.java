@@ -211,6 +211,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
     /** Fire this actor.*/
     public void fire() throws IllegalActionException {
+        super.fire();
         boolean _hasToken = sceneGraphIn.hasToken(0);
 
         if (_debugging) {

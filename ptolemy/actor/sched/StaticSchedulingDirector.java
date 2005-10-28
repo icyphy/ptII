@@ -143,6 +143,7 @@ public class StaticSchedulingDirector extends Director {
      *  container.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {

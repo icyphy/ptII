@@ -101,6 +101,7 @@ public class CountTrues extends SDFTransformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int count = ((IntToken) blockSize.getToken()).intValue();
         Token[] inputBlock = input.get(0, count);
         int trueCount = 0;

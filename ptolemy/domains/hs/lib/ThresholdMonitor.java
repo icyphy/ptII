@@ -148,6 +148,7 @@ public class ThresholdMonitor extends TypedAtomicActor implements
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _debug("Monitor" + getFullName() + " fired.");
         _thisInput = ((DoubleToken) input.get(0)).doubleValue();
 

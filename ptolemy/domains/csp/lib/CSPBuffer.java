@@ -163,6 +163,7 @@ public class CSPBuffer extends CSPActor {
      *   executing the process.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         try {
             int iDepth = ((IntToken) depth.getToken()).intValue();
             _buffer = new Token[iDepth];

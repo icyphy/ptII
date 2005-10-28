@@ -136,6 +136,7 @@ public class CSPSource extends AtomicActor {
      *  N output tokens for N = tokenCount.
      */
     public void fire() {
+        super.fire();
         try {
             int limit = ((IntToken) tokenLimit.getToken()).intValue();
 

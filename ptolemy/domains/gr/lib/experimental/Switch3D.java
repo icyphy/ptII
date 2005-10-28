@@ -98,6 +98,7 @@ public class Switch3D extends GRTransform {
      *  an input port does not have a token.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (select.getWidth() != 0) {
             if (select.hasToken(0)) {
                 int index = (int) ((DoubleToken) select.get(0)).doubleValue();

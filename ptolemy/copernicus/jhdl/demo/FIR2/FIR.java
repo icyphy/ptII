@@ -243,6 +243,7 @@ public class FIR extends TypedAtomicActor {
 
     // FIXME: State update should occur in postfire.
     //      public void fire() throws IllegalActionException {
+        super.fire();
     //          int a,b,c,d;
     //          a=3;
     //          b=a*4;
@@ -259,6 +260,7 @@ public class FIR extends TypedAtomicActor {
      *   or if there is no director, or if runtime type conflicts occur.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // Phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decimationPhaseValue value.
         //int phase = 1 - 0 - 1;

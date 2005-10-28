@@ -78,6 +78,7 @@ public class Synchronizer extends Transformer {
      *   output channels.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int outWidth = output.getWidth();
         int inWidth = input.getWidth();
 

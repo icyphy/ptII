@@ -67,6 +67,7 @@ public class Exit extends Sink {
      *  @exception IllegalActionException If accessing the input throws it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 input.get(i);

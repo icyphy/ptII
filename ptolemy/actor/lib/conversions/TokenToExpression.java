@@ -75,6 +75,7 @@ public class TokenToExpression extends Converter {
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         String string = input.get(0).toString();
         output.broadcast(new StringToken(string));
     }

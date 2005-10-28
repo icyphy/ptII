@@ -118,6 +118,7 @@ public class ArrayToElements extends Transformer {
      *   type conflict occurs.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken) input.get(0);
             int size = token.length();

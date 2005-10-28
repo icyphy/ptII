@@ -149,6 +149,7 @@ public class HelicopterActor extends TypedAtomicActor {
      *        when needed.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         double Tm = ((DoubleToken) inputTm.get(0)).doubleValue();
         double A = ((DoubleToken) inputA.get(0)).doubleValue();
         double Th = ((DoubleToken) inputTh.get(0)).doubleValue();

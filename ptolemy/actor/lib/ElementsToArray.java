@@ -94,6 +94,7 @@ public class ElementsToArray extends Transformer {
      *   are available.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int size = input.getWidth();
         Token[] valueArray = new Token[size];
 

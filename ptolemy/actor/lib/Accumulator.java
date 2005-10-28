@@ -125,6 +125,7 @@ public class Accumulator extends Transformer {
      *   supported by the supplied tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _latestSum = _sum;
 
         // Check whether to reset.

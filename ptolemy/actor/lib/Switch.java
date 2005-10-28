@@ -105,6 +105,7 @@ public class Switch extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (control.hasToken(0)) {
             _control = ((IntToken) control.get(0)).intValue();
         }

@@ -105,6 +105,7 @@ public class DEMessageSource extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_firstFire) {
             request.broadcast(new Token());
             _firstFire = false;

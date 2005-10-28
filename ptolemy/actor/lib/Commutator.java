@@ -148,6 +148,7 @@ public class Commutator extends Transformer implements SequenceActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _tentativeInputPosition = _currentInputPosition;
 
         int width = input.getWidth();

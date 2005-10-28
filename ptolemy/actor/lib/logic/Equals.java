@@ -90,6 +90,7 @@ public class Equals extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         BooleanToken result = BooleanToken.TRUE;
         Token reference = null;
         boolean foundOne = false;

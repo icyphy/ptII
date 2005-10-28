@@ -119,6 +119,7 @@ public class Server extends VariableDelay {
      *  parameter, read inputs, or send outputs.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // update delay value
         delay.update();
         _delay = ((DoubleToken) delay.getToken()).doubleValue();

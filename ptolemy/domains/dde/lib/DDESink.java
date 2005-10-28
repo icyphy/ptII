@@ -103,6 +103,7 @@ public class DDESink extends TypedAtomicActor {
      *  accessing the receivers of this actor.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int value = ((IntToken) numTokens.getToken()).intValue();
 
         if (value >= 0) {

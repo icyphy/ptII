@@ -170,6 +170,7 @@ public class Philosopher extends CSPActor {
      *   termination.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Token t = new IntToken(0);
         double interval = 0.0;
         double rate = 1;

@@ -136,6 +136,7 @@ public class Round extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         double in = ((DoubleToken) input.get(0)).doubleValue();
         output.send(0, new IntToken(_doFunction(in)));
     }

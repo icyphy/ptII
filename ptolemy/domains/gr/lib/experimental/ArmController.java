@@ -79,6 +79,7 @@ public class ArmController extends TypedAtomicActor {
     private boolean sendsignal = false;
 
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.getWidth() != 0) {
             if (input.hasToken(0)) {
                 int value = ((IntToken) input.get(0)).intValue();

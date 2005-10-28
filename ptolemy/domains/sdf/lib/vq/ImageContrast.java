@@ -88,6 +88,7 @@ public class ImageContrast extends Transformer {
      *  Send the new image out the output port.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int i;
         int j;
         int[][] frame;

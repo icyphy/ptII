@@ -123,6 +123,7 @@ public class FigureSource extends Source implements Configurable {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Figure figure = new PaintedFigure(_paintedList);
         Token token = new FigureToken(figure);
         output.send(0, token);

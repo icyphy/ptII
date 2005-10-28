@@ -79,6 +79,7 @@ public class StackDisplay extends Sink {
      *   or if a token is received that contains a null image.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_debugging) {
             _debug("StackDisplay actor firing");
         }

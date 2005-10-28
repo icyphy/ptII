@@ -84,6 +84,7 @@ public class ExpressionToToken extends Converter {
      *   if the expression read from the input cannot be parsed.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         String string = ((StringToken) input.get(0)).stringValue();
         Token result;
 

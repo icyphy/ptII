@@ -174,6 +174,7 @@ public class AccelerLinearizer extends TypedAtomicActor {
      *        when needed.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         /* double Px = */((DoubleToken) inputPx.get(0)).doubleValue();
 
         double DPx = ((DoubleToken) inputDPx.get(0)).doubleValue();

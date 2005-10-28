@@ -189,6 +189,7 @@ public class ControllerActor extends TypedAtomicActor {
      *        when needed.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         double Tm = ((DoubleToken) inputTm.get(0)).doubleValue();
         double DTm = ((DoubleToken) inputDTm.get(0)).doubleValue();
         double DDTm = ((DoubleToken) inputDDTm.get(0)).doubleValue();

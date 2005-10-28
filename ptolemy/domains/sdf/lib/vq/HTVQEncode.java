@@ -195,6 +195,7 @@ public class HTVQEncode extends Transformer {
      * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int j;
         _blocks = input.get(0, _blockCount);
 

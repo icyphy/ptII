@@ -111,6 +111,7 @@ public class BooleanToAnything extends Converter {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         BooleanToken inputToken = (BooleanToken) input.get(0);
 
         if (inputToken.booleanValue()) {

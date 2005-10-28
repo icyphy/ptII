@@ -335,6 +335,7 @@ public class ViterbiDecoder extends Transformer {
      *  to the observed inputs.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         //boolean trellisMode =
         //    ((BooleanToken)trellisDecoding.getToken()).booleanValue();
         int constellationOrder;

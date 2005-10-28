@@ -108,6 +108,7 @@ public class CartesianToPolar extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         double xValue = ((DoubleToken) (x.get(0))).doubleValue();
         double yValue = ((DoubleToken) (y.get(0))).doubleValue();
 

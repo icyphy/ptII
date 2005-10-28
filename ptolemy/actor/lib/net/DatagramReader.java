@@ -674,6 +674,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  of the output port.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // Consume trigger input(s), otherwise model can hang.
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {

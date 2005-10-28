@@ -93,6 +93,7 @@ public class Pre extends Transformer {
      *  absent.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             if (_currentToken != null) {
                 output.send(0, _currentToken);

@@ -165,6 +165,7 @@ public class LogicFunction extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         BooleanToken value = null;
         BooleanToken in = null;
 

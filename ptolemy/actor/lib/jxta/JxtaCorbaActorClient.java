@@ -319,6 +319,7 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements
      *  failed or if there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Director dir = getDirector();
 
         if (dir == null) {

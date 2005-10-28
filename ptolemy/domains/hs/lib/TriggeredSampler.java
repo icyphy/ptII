@@ -119,6 +119,7 @@ public class TriggeredSampler extends Transformer implements CTEventGenerator {
      *  or tokens cannot be sent from the output.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         HSDirector director = (HSDirector) getDirector();
 
         // FIXME: do we need to constraint that the current execution phase is

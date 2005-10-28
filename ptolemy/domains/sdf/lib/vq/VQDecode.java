@@ -145,6 +145,7 @@ public class VQDecode extends Transformer {
      * not between 0 and 255.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int j;
         int stage = _stages(_blockWidth * _blockHeight);
         _codewords = input.get(0, _blockCount);

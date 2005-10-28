@@ -113,6 +113,7 @@ public class ND_2 extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         for (int k = 1; k <= (1 * K); k += 1) {
             for (int j = 1; j <= (1 * N); j += 1) {
                 out_0 = x_1.retrieve(x_1.atKey(k, j));

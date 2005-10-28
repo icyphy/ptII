@@ -139,6 +139,7 @@ public class PullSupplier extends Sink {
      *  or any remote exceptions.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             _lastReadToken = input.get(0);
 

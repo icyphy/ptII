@@ -80,6 +80,7 @@ public class MaxIndex extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         double maxValue = Double.NEGATIVE_INFINITY;
         int maxIndex = -1;
         boolean foundFirst = false;

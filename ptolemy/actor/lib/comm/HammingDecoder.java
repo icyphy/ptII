@@ -162,6 +162,7 @@ public class HammingDecoder extends Transformer {
      *  one-bit error and send the decoded result to the output.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_parameterInvalid) {
             if (_uncodeSizeValue >= _codeSizeValue) {
                 throw new IllegalActionException(this,

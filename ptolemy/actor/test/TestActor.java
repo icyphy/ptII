@@ -76,6 +76,7 @@ public class TestActor extends AtomicActor {
     /** Record the firing.
      */
     public void fire() {
+        super.fire();
         _actions.append(getFullName() + ".fire\n");
     }
 

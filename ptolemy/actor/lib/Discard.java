@@ -72,6 +72,7 @@ public class Discard extends Sink {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int width = input.getWidth();
 
         for (int i = 0; i < width; i++) {

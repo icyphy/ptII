@@ -97,6 +97,7 @@ public class StreamToMatrix extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int runL = 0;
         double[][] image = new double[_rows][_columns];
 

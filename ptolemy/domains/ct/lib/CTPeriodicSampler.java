@@ -129,6 +129,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
      *  @exception IllegalActionException If the transfer of tokens failed.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         CTDirector director = (CTDirector) getDirector();
 
         if ((director.getExecutionPhase() == CTExecutionPhase.GENERATING_EVENTS_PHASE)

@@ -290,6 +290,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *  change its icon back to white.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             RecordToken in = (RecordToken) input.get(0);
             double data = ((DoubleToken) in.get("data")).doubleValue();

@@ -76,6 +76,7 @@ public class LongToDouble extends Converter {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         LongToken inputToken = (LongToken) input.get(0);
         Long inputValue = new Long(inputToken.longValue());
         DoubleToken result = new DoubleToken(inputValue.doubleValue());

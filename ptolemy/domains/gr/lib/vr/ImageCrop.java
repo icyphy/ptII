@@ -102,6 +102,7 @@ public class ImageCrop extends TypedAtomicActor {
      *   causes the exception to be thrown).
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         //Get input values from respective tokens
         ObjectToken imageToken = (ObjectToken) imageInput.get(0);
         _imagePlus = (ImagePlus) imageToken.getValue();

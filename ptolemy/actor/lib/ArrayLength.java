@@ -75,6 +75,7 @@ public class ArrayLength extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken) input.get(0);
             output.broadcast(new IntToken(token.length()));

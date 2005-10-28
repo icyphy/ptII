@@ -205,6 +205,7 @@ public class Processor extends CSPActor {
      *  during communication through one of the ports.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         while (true) {
             if (performReadNext()) {
                 accessMemory(true);

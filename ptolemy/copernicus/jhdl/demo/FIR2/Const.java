@@ -112,6 +112,7 @@ public class Const extends TypedAtomicActor {
      *   send() method sending out the token.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         output.send(0, value.getToken());
     }
 }

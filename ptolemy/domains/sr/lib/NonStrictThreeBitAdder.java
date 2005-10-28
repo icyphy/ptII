@@ -108,6 +108,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
      *   or if invalid inputs are received.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int numKnown = 0;
         int numOnes = 0;
 

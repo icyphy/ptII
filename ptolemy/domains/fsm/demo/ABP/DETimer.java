@@ -77,6 +77,7 @@ public class DETimer extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         DEDirector dir = (DEDirector) getDirector();
         Time now = dir.getModelTime();
 

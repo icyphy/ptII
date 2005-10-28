@@ -30,6 +30,7 @@ public class Unboxing14 {
     }
 
     public void fire() throws IllegalActionException {
+        super.fire();
         BaseType.DoubleType doubletype = BaseType.DOUBLE;
         Token token = doubletype.convert(_stateToken);
         DoubleToken doubletoken = (DoubleToken) token;

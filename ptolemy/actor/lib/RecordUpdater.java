@@ -128,6 +128,7 @@ public class RecordUpdater extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Director director = getDirector();
 
         if (director == null) {

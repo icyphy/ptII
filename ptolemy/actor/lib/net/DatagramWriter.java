@@ -285,6 +285,7 @@ public class DatagramWriter extends TypedAtomicActor {
      *  become the defaults for next time.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         String address = null;
 
         for (int jj = 0; jj < remoteAddress.getWidth(); jj++) {

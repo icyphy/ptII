@@ -142,6 +142,7 @@ public class TMCompositeFacade extends TypedCompositeActor implements TMActor {
     }
 
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_idle) {
             // Produces the last outputs.
             _transferOutputs();

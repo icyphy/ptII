@@ -88,6 +88,7 @@ public class VectorAssembler extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int size = input.getWidth();
 
         double[][] data = new double[size][1];

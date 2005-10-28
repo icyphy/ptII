@@ -134,6 +134,7 @@ public class Scale extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             Token in = input.get(0);
             Token factorToken = factor.getToken();

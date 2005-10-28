@@ -100,6 +100,7 @@ public class ComplexToCartesian extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Complex complexNumber = ((ComplexToken) (input.get(0))).complexValue();
 
         x.send(0, new DoubleToken(complexNumber.real));

@@ -122,6 +122,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
     }
 
     public void fire() throws IllegalActionException {
+        super.fire();
         output.broadcast(new Token());
     }
 

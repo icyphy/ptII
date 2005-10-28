@@ -125,6 +125,7 @@ public class WaitingTime extends DEActor {
      *  @exception IllegalActionException If get() or send() throws it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Time currentTime = ((DEDirector) getDirector()).getModelTime();
 
         while (waiter.hasToken(0)) {

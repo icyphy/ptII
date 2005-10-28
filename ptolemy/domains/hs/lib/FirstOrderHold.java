@@ -112,6 +112,7 @@ public class FirstOrderHold extends Transformer implements CTWaveformGenerator {
      *  @exception IllegalActionException If the token cannot be sent.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         HSDirector director = (HSDirector) getDirector();
 
         if (director.isDiscretePhase()) {

@@ -119,6 +119,7 @@ public class KeystrokeSensor extends TypedAtomicActor {
     /** Broadcast the keystrokes detected since the last firing.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_copyKeyPressed) {
             _copyKeyPressed = false;
             controlC.broadcast(new Token());

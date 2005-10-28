@@ -158,6 +158,7 @@ public class DoubleToFix extends Converter {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         DoubleToken in = (DoubleToken) input.get(0);
         FixPoint fixValue = new FixPoint(in.doubleValue(), _quantization);
         FixToken result = new FixToken(fixValue);

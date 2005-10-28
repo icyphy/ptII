@@ -96,6 +96,7 @@ public class EventButton extends Source implements Placeable {
     /** Fire the actor.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_buttonPressed) {
             output.broadcast(new Token());
         }

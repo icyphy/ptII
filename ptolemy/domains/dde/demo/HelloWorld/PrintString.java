@@ -76,6 +76,7 @@ public class PrintString extends DDEActor {
      *  in executing getNextToken().
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         StringToken token = null;
         Time time;
 

@@ -81,6 +81,7 @@ public class DistributedActorWrapper implements RemoteDistributedActor {
      *  occur during the execution of a remote method call.
      */
     public void fire() throws java.rmi.RemoteException {
+        super.fire();
         if (VERBOSE) {
             System.out.println(actor.toString() + " fire()");
         }

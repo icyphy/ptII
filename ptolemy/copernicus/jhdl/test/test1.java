@@ -727,6 +727,7 @@ public class test1 extends TypedAtomicActor {
     }
 
     public void fire() throws IllegalActionException {
+        super.fire();
         int a;
         int b;
         int c;

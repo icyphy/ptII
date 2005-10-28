@@ -145,6 +145,7 @@ public class ImagePartition extends Transformer {
      * <i>imageRows</i> by <i>imageColumns</i>.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int i;
         int j;
         int y;

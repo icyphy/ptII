@@ -135,6 +135,7 @@ public class DeScrambler extends Transformer {
      *  to descramble. Compute the parity and send it to the output port.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _latestShiftReg = _shiftReg;
 
         int mask = ((IntToken) polynomial.getToken()).intValue();

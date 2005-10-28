@@ -80,6 +80,7 @@ public class LempelZivDecoder extends Transformer {
      *  Lempel-Ziv code.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Token[] inputToken = (Token[]) input.get(0, 2);
         int oldPhase = ((IntToken) inputToken[0]).intValue();
         int bit = ((IntToken) inputToken[1]).intValue();

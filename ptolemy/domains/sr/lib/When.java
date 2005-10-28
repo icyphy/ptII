@@ -105,6 +105,7 @@ public class When extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (control.hasToken(0)
                 && ((BooleanToken) control.get(0)).booleanValue()
                 && input.hasToken(0)) {

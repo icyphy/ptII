@@ -85,6 +85,7 @@ public class UnsignedByteArrayToString extends Converter {
      *  conversion actor(s) as well.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ArrayToken dataArrayToken = (ArrayToken) input.get(0);
         byte[] dataBytes = new byte[dataArrayToken.length()];
 

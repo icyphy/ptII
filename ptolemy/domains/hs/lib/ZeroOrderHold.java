@@ -112,6 +112,7 @@ public class ZeroOrderHold extends Transformer implements CTWaveformGenerator {
      *  @exception IllegalActionException If the token cannot be sent.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             _savedToken = input.get(0);
             if (_debugging) {

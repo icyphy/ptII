@@ -217,6 +217,7 @@ public class IIR extends Transformer {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             // Save state vector value.
             Token savedState = _stateVector[_currentTap];

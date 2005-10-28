@@ -127,6 +127,7 @@ public class CSPMultiSource extends CSPActor {
      *  N output tokens for N = tokenCount.
      */
     public void fire() {
+        super.fire();
         try {
             int limit = ((IntToken) tokenLimit.getToken()).intValue();
             int count = 0;

@@ -114,6 +114,7 @@ public class ContinuousClock extends Clock implements CTEventGenerator {
      *  @exception IllegalActionException If output can not send value.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
         _updateTentativeValues();

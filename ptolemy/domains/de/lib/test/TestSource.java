@@ -74,6 +74,7 @@ public class TestSource extends TypedAtomicActor {
 
     // NOTE: No clone() method, so don't clone this.
     public void fire() throws IllegalActionException {
+        super.fire();
         double increment = 0.0;
 
         if ((input.getWidth() > 0) && input.hasToken(0)) {

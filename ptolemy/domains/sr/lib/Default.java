@@ -118,6 +118,7 @@ public class Default extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (preferred.isKnown(0)) {
             if (preferred.hasToken(0)) {
                 output.send(0, preferred.get(0));

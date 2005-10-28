@@ -108,6 +108,7 @@ public class Register extends Sampler {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int inputWidth = input.getWidth();
         int outputWidth = output.getWidth();
         int commonWidth = Math.min(inputWidth, outputWidth);

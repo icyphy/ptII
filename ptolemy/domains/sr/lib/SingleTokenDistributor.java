@@ -82,6 +82,7 @@ public class SingleTokenDistributor extends Transformer implements
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             output.send(_currentOutputPosition, input.get(0));
         }

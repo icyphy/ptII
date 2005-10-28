@@ -94,6 +94,7 @@ public class SimpleMult extends TypedAtomicActor {
      *   available tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         //output.send(0,input1.get(0).add(input2.get(0)));
         int i1 = input1.getInt();
         int i2 = input2.getInt();

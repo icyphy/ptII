@@ -220,6 +220,7 @@ public class ComponentActor extends TypedCompositeActor implements Component {
      *   opaque.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_debugging) {
             _debug("Called fire()");
         }

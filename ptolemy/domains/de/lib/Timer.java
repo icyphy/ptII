@@ -118,6 +118,7 @@ public class Timer extends DETransformer {
      *  send or get tokens from ports.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _delay = -1.0;
 
         if (input.hasToken(0)) {

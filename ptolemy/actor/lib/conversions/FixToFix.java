@@ -158,6 +158,7 @@ public class FixToFix extends Converter {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         FixToken in = (FixToken) input.get(0);
         FixPoint fixValue = in.fixValue().quantize(_quantization);
         FixToken result = new FixToken(fixValue);

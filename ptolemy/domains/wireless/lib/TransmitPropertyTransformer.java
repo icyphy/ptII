@@ -188,6 +188,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager implements
      *   the director's action methods throw it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             Token inputValue = input.get(0);
             output.send(0, inputValue);

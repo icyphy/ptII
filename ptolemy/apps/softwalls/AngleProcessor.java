@@ -122,6 +122,7 @@ public class AngleProcessor extends TypedAtomicActor {
      *  greater than the maximum angle.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         double angle;
         double range;
 

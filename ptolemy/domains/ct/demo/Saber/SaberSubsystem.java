@@ -266,6 +266,7 @@ public class SaberSubsystem extends TypedAtomicActor implements IPCInterface,
     /** fire
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _debug(getFullName() + "In fire");
 
         //  ps.println("run transient analysis with input, and init file");

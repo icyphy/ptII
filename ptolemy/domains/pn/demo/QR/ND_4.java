@@ -152,6 +152,7 @@ public class ND_4 extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         for (int k = 1; k <= (1 * K); k += 1) {
             for (int j = 1; j <= ((1 * N) + -1); j += 1) {
                 for (int i = (1 * j) + 1; i <= (1 * N); i += 1) {

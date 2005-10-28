@@ -79,6 +79,7 @@ public class SingleTokenCommutator extends Transformer implements SequenceActor 
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(_currentInputPosition)) {
             output.send(0, input.get(_currentInputPosition));
         }

@@ -233,6 +233,7 @@ public class Scrambler extends Transformer {
      *  The parity is shifted into the delay line for the next iteration.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _latestShiftReg = _shiftReg;
 
         int mask = ((IntToken) polynomial.getToken()).intValue();

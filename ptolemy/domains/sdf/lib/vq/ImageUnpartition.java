@@ -143,6 +143,7 @@ public class ImageUnpartition extends Transformer {
      * @exception IllegalActionException If the ports are not connected.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int i;
         int j;
         int y;

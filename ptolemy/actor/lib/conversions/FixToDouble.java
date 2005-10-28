@@ -77,6 +77,7 @@ public class FixToDouble extends Converter {
      * @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         FixToken in = (FixToken) input.get(0);
         FixPoint value = in.fixValue();
         output.send(0, new DoubleToken(value.doubleValue()));

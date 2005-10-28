@@ -90,6 +90,7 @@ public class FrontDropQueue extends CIActor {
     /**
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
+        super.fire();
         int c = ((IntToken) capacity.getToken()).intValue();
 
         if (input.hasToken(0)) {

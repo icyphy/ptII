@@ -134,6 +134,7 @@ public class BinarySwitch extends TypedAtomicActor {
      *  are lost.
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (q1_len.hasToken(0)) {
             _q1len = ((IntToken) q1_len.get(0)).intValue();
         }

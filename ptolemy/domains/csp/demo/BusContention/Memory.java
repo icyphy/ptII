@@ -104,6 +104,7 @@ public class Memory extends CSPActor {
      *  during communication via the ports.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_numInChannels == -1) {
             _numInChannels = 0;
 

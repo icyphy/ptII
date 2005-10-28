@@ -105,6 +105,7 @@ public class IntArrayToString extends TypedAtomicActor {
      *  conversion actor(s) as well.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ArrayToken dataIntArrayToken = (ArrayToken) input.get(0);
         byte[] dataBytes = new byte[dataIntArrayToken.length()];
 

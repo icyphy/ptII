@@ -151,6 +151,7 @@ public class Quantizer extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             double in = ((DoubleToken) input.get(0)).doubleValue();
             int index = _getQuantizationIndex(in);

@@ -247,6 +247,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
      *   of the ports throw this exception.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             Token u = input.get(0);
             Token y = C.getToken().multiply(_x).add(D.getToken().multiply(u));

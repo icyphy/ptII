@@ -86,6 +86,7 @@ public class IsPresent extends Transformer {
      *  false otherwise.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         int outputWidth = output.getWidth();
 
         for (int i = 0; i < input.getWidth(); i++) {

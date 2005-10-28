@@ -75,6 +75,7 @@ public class TimeGap extends DETransformer {
      *  @exception IllegalActionException If get() or send() throws it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // Consume an input.
         if (input.hasToken(0)) {
             input.get(0);

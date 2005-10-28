@@ -123,6 +123,7 @@ public class XSLTransformer extends Transformer {
      *  @exception IllegalActionException If the parent class throws it
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         javax.xml.transform.Result result = new javax.xml.transform.stream.StreamResult(
                 out);

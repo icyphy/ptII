@@ -142,6 +142,7 @@ public class Controller extends CSPActor {
      *  ports.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_numRequestInChannels == -1) {
             _numRequestInChannels = 0;
 

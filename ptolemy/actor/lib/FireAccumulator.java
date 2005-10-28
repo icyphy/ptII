@@ -103,6 +103,7 @@ public class FireAccumulator extends Transformer {
      *   supported by the supplied tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         while (input.hasToken(0)) {
             Token in = input.get(0);
             _sum = _sum.add(in);

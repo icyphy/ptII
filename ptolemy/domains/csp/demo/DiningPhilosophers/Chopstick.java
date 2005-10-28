@@ -159,6 +159,7 @@ public class Chopstick extends CSPActor {
      *   is requested by the director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         try {
             boolean guard = true;
             boolean continueCDO = true;

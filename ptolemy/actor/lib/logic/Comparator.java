@@ -178,6 +178,7 @@ public class Comparator extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         BooleanToken result = BooleanToken.FALSE;
         double leftIn = ((DoubleToken) (left.get(0))).doubleValue();
         double rightIn = ((DoubleToken) (right.get(0))).doubleValue();

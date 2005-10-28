@@ -97,6 +97,7 @@ public class Wire extends TypedAtomicActor {
      *  the receivers of this actor.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         Token token = null;
         Receiver[][] inputReceivers = input.getReceivers();
 

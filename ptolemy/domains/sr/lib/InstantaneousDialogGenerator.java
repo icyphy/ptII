@@ -98,6 +98,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         indexOutput.send(0, new IntToken(_index));
 
         if (dataInput.isKnown(0)) {

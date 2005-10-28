@@ -132,6 +132,7 @@ public class MobileFunction extends TypedAtomicActor {
      *   opaque.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_debugging) {
             _debug("Invoking fire");
         }

@@ -100,6 +100,7 @@ public class CSPMultiSink extends CSPActor {
      *  consumption.
      */
     public void fire() {
+        super.fire();
         try {
             int count = 0;
             int size = input.getWidth();

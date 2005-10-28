@@ -202,6 +202,7 @@ public class EventSource extends TypedAtomicActor {
      *  @exception IllegalActionException If the event cannot be sent.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         output.send(0, ((ArrayToken) values.getToken()).getElement(_phase));
     }
 

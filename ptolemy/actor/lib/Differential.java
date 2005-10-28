@@ -71,6 +71,7 @@ public class Differential extends Transformer {
      *   supported by the supplied tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
 

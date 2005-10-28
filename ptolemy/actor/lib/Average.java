@@ -105,6 +105,7 @@ public class Average extends Transformer {
      *   integer are not supported by the supplied tokens.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         _latestSum = _sum;
         _latestCount = _count;
 

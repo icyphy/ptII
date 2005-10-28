@@ -115,6 +115,7 @@ public class Datagram extends TypedAtomicActor implements ClipboardOwner {
      *  inputs are present.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (_debugging) {
             _debug("fire has been called");
         }

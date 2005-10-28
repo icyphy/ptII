@@ -79,6 +79,7 @@ public class StringToXML extends Transformer {
      *  @exception IllegalActionException if the superclass throws it..
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         //int k = 0;
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {

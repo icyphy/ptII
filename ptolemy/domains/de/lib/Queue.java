@@ -113,6 +113,7 @@ public class Queue extends DETransformer {
      *  trigger ports or sending token to output throws it.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             _queue.put(input.get(0));
         }

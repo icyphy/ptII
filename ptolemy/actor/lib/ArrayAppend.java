@@ -99,6 +99,7 @@ public class ArrayAppend extends Transformer {
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         // NOTE: This is efficient for 2 or 3 input channels, but for
         // many channels it ends up copying each array twice.
         Token[] array = null;

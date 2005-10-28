@@ -82,6 +82,7 @@ public class SerialWriter extends TypedAtomicActor {
     }
 
     public final void fire() throws IllegalActionException {
+        super.fire();
         if (input.getWidth() != 0) {
             if (input.hasToken(0)) {
                 for (int i = 0; i < 3; i++) {

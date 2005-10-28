@@ -107,6 +107,7 @@ public class CSPSink extends AtomicActor {
      *  input port.
      */
     public void fire() {
+        super.fire();
         int count = 0;
 
         try {

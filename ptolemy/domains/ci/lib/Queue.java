@@ -78,6 +78,7 @@ public class Queue extends CIActor {
     /**
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             _queue.add(input.get(0));
         } else {

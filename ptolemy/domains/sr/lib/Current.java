@@ -71,6 +71,7 @@ public class Current extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
         if (input.hasToken(0)) {
             _lastInput = input.get(0);
         }
