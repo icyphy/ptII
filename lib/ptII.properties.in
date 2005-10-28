@@ -18,7 +18,7 @@
 # http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html
 #
 # This file is read in by VergilApplication.mergePropertiesFile().
-# Properties listed in this file override preexisting properties.
+# Properties listed in this file do not override preexisting properties.
 # To view the properties, start up vergil, do 
 # File -> New -> Graph Editor -> View -> JVM Properties
 
