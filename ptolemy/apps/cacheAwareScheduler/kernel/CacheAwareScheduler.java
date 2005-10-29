@@ -649,7 +649,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                         penalty += 0;
                         tempFreeSpaceInDSPM -= extraSpaceNeeded;
                         tempTokensInsideDSPM = newTokensProduced;
-                        tempTokensOutsideDSPM = 0;
+                        //tempTokensOutsideDSPM = 0;
                     } //   end of if (tempFreeSpaceInDSPM > ..)
                     else {
                         // Some data will be written outside SPM. The
