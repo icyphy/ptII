@@ -28,12 +28,9 @@
  */
 package ptolemy.domains.rendezvous.kernel;
 
-import java.util.Iterator;
 import java.util.List;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.data.BooleanToken;
