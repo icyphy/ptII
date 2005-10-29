@@ -199,8 +199,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         + "channel " + channel + " does not have a receiver "
                         + "of type CSPReceiver.");
             }
-
-            _copyIndex = 0;
             _setReceivers(receivers[channel]);
         } finally {
             port.workspace().doneReading();
@@ -231,7 +229,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             identifier = "ConditionalSend: send() on " + _port.getFullName() + " on channel " + _channel;
             _debug(identifier + ": Trying conditional send.");
         }
-        List threads = null;
         // Note that there are two distinct sources of complexity here.
         // First, this conditional send may have multiple destinations.
         // This means that it will need to perform a multi-way rendezvous
@@ -473,12 +470,6 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
     /** The channel on which we are sending. */
     private int _channel;
     
-    /** The index of the receiver currently being sent to. */
-    private int _copyIndex = 0;
-    
-    /** Exception that might be set in copy of putToAll(). */
-    private IllegalActionException _exception = null;
-
     /** The port from which we are sending. */
     private IOPort _port;
 }

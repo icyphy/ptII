@@ -51,7 +51,6 @@ import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import diva.canvas.AbstractFigure;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
@@ -510,8 +509,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
          * viewscreen.
          */
         public void keyPressed(KeyEvent e) {
-            Figure selectedFigure = getSelectedFigure();
-            Iterator allFigures = _layer.figures();
+//            Figure selectedFigure = getSelectedFigure();
+//            Iterator allFigures = _layer.figures();
 
 //            if (selectedFigure != null) {
 //                ((FigureInteractor) selectedFigure.getInteractor())

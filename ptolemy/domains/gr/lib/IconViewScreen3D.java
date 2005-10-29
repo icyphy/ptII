@@ -95,7 +95,6 @@ public class IconViewScreen3D extends ViewScreen3D {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _frameNumber = 0;
         _frameWidth = ((IntToken) horizontalResolution.getToken()).intValue();
         _frameHeight = ((IntToken) verticalResolution.getToken()).intValue();
     }
@@ -153,8 +152,4 @@ public class IconViewScreen3D extends ViewScreen3D {
     private int _frameWidth = 400;
 
     private int _frameHeight = 400;
-
-    private int _frameNumber;
-
-    private int _frameRateValue;
 }

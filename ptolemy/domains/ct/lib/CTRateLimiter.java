@@ -199,7 +199,5 @@ public class CTRateLimiter extends Transformer {
 
     // New value.
     private Token _newToken;
-
-    // Stored token.
-    private Token _storedToken;
 }
+

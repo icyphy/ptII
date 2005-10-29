@@ -903,9 +903,6 @@ public class Transition extends ComponentRelation {
     // Cached nondeterministic attribute value.
     private boolean _nondeterministic = false;
 
-    // Set to true when the transition is preemptive.
-    private boolean _preemptive = false;
-
     // Cached source state of this transition.
     private State _sourceState = null;
 

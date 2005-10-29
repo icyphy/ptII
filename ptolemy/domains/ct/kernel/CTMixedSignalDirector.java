@@ -549,8 +549,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Indicate whether there are pending discrete events.
-    private boolean _hasDiscreteEvents;
 
     // Indicate if this is the top level director.
     private boolean _isTop;

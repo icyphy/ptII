@@ -2047,9 +2047,6 @@ public class DEDirector extends Director implements TimedDirector {
      */
     private boolean _synchronizeToRealTime;
 
-    // The name of an attribute that marks an actor as nonstrict.
-    private static final String NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";
-
     // The name of an attribute that marks an actor as strict.
     private static final String STRICT_ATTRIBUTE_NAME = "_strictMarker";
 }

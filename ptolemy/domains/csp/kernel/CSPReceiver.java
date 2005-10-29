@@ -856,8 +856,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     private boolean _modelFinished = false;
 
-    private Branch _otherBranch = null;
-
     /** obsolete when implement containment */
     private AbstractBranchController _otherController = null;
 

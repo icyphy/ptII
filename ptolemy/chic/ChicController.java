@@ -81,8 +81,6 @@ public class ChicController extends AttributeController {
     public ChicController(GraphController controller, Access access) {
         super(controller, access);
 
-        _access = access;
-
         // Add commands to invoke Chic
         _menuFactory.addMenuItemFactory(new MenuActionFactory(
                 new AsynchronousIOAction()));
@@ -131,7 +129,6 @@ public class ChicController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private Access _access;
 
     // Error message used when we can't find the inside definition.
     private static String _CANNOT_FIND_MESSAGE = "Cannot find inside definition. "

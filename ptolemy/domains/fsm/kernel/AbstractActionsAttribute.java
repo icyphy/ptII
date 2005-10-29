@@ -501,8 +501,6 @@ public abstract class AbstractActionsAttribute extends Action implements
         ////                       private inner variable          ////
         private String _name;
 
-        private String _description;
-
         private ParseTreeTypeInference _typeInference = new ParseTreeTypeInference();
 
         private ParseTreeFreeVariableCollector _variableCollector = new ParseTreeFreeVariableCollector();

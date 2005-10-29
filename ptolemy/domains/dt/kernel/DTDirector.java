@@ -1154,7 +1154,6 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     private void _reset() {
         _actorTable = new ArrayList();
         _receiverTable = new ArrayList();
-        _outputPortTable = new ArrayList();
         _allActorsTable = new Hashtable();
 
         try {
@@ -1190,9 +1189,6 @@ public class DTDirector extends SDFDirector implements TimedDirector {
 
     // used to keep track of whether firing can be done at current time
     private boolean _isFiringAllowed;
-
-    // ArrayList to keep track of all container output ports
-    private ArrayList _outputPortTable;
 
     // used to determine whether the director should call transferOutputs()
     private boolean _shouldDoInternalTransferOutputs;

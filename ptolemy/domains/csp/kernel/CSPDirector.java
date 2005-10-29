@@ -415,8 +415,6 @@ public class CSPDirector extends CompositeProcessDirector implements
 
             // Now go through list of delayed actors
             // and wake up those at this time
-            // Note that to deal with roundoff errors on doubles,
-            // any times within TOLERANCE are considered the same.
             boolean done = false;
 
             while (!done && (_delayedActorList.size() > 0)) {
@@ -510,8 +508,6 @@ public class CSPDirector extends CompositeProcessDirector implements
     // when an actor is delayed after the director calls super.wrapup() in
     // which it waits for all actors to stop.
     private boolean _inWrapup = false;
-
-    private static double TOLERANCE = Math.pow(10, -10);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
