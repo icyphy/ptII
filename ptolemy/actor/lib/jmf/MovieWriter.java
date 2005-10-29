@@ -275,8 +275,6 @@ public class MovieWriter extends Sink implements ControllerListener,
                 throw new IllegalActionException("Could not add buffer "
                         + "to the array list");
             }
-
-            _dimensionSet = true;
         }
 
         return super.postfire();
@@ -573,8 +571,6 @@ public class MovieWriter extends Sink implements ControllerListener,
     private Iterator _bufferIterator;
 
     private boolean _confirmOverwrite;
-
-    private boolean _dimensionSet;
 
     private boolean _ended = false;
 

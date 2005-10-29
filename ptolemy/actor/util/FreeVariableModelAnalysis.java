@@ -160,6 +160,4 @@ public class FreeVariableModelAnalysis {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private HashMap _entityToFreeVariableNameSet;
-
-    private CompositeActor _model;
 }

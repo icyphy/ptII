@@ -145,7 +145,6 @@ public class AudioWriteBuffer extends TypedAtomicActor {
         attributeChanged(channels);
         bufferLength = new Parameter(this, "bufferLength", new IntToken(8000));
         overwrite = new Parameter(this, "overwrite", new BooleanToken(true));
-        _curElement = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -408,7 +407,6 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 
         _soundWriter = new SoundWriter(pathNameString, sampleRateInt,
                 bitsPerSampleInt, channelsInt, putSamplesSize);
-        _curElement = 0;
 
         int length = ((IntToken) bufferLength.getToken()).intValue();
         _audioBuffer = new double[length];
@@ -423,10 +421,6 @@ public class AudioWriteBuffer extends TypedAtomicActor {
     private int _putSampleSize;
 
     private double[][] _audioPutArray;
-
-    // Pointer to the current sample of the array parameter of
-    // putSamples() method of SoundWriter.
-    private int _curElement;
 
     private Token[][] _inArray;
 

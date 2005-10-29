@@ -207,6 +207,4 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Manager _manager = null;
-
-    private NamedObj _context;
 }

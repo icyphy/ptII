@@ -144,7 +144,6 @@ public class Scheduler extends Attribute {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Scheduler newObject = (Scheduler) super.clone(workspace);
-        newObject._container = null;
         newObject._valid = false;
         newObject._cachedGetSchedule = null;
         return newObject;
@@ -343,8 +342,6 @@ public class Scheduler extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The container
-    private StaticSchedulingDirector _container = null;
 
     // The flag that indicate whether the current schedule is valid.
     private boolean _valid = false;

@@ -196,7 +196,6 @@ public class AudioReadBuffer extends Transformer {
         }
 
         _safeToInitialize = true;
-        _haveASample = false;
     }
 
     /** Read the buffer address from the input port and output
@@ -322,8 +321,6 @@ public class AudioReadBuffer extends Transformer {
     private SoundReader _soundReader;
 
     private int _channels;
-
-    private boolean _haveASample;
 
     private boolean _safeToInitialize = false;
 
