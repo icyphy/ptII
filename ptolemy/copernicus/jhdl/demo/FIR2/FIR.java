@@ -243,7 +243,7 @@ public class FIR extends TypedAtomicActor {
 
     // FIXME: State update should occur in postfire.
     //      public void fire() throws IllegalActionException {
-        super.fire();
+    //          // No need for super.fire(); here.
     //          int a,b,c,d;
     //          a=3;
     //          b=a*4;
