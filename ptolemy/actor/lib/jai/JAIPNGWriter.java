@@ -28,9 +28,6 @@
  */
 package ptolemy.actor.lib.jai;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -252,20 +249,8 @@ public class JAIPNGWriter extends JAIWriter {
     ////                         private variables                 ////
     private int _bitDepth;
 
-    /** The value of the confirmOverwrite parameter. */
-    private boolean _confirmOverwriteValue;
-
-    /** The File to be saved to. */
-    private File _file;
-
-    /** The above file as a String. */
-    private String _fileRoot;
-
     /** The value of the storeTopDown parameter. */
     private boolean _adam7Interlacing;
-
-    /** The FileOutputStream for file writing. */
-    private FileOutputStream _stream;
 
     private boolean _setGamma;
 
