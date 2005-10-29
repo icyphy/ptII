@@ -46,6 +46,7 @@ import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -161,6 +162,19 @@ public class HSMultiSolverDirector extends HSDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Append the specified listener to the current set of debug listeners.
+     *  If an ODE solver has been created, register the listener to that queue.
+     *  @param listener The listener to be added to the list of listeners
+     *  to which debug messages are sent.
+     *  @see #removeDebugListener(DebugListener)
+     */
+    public void addDebugListener(DebugListener listener) {
+        if (_ODESolver != null) {
+            _ODESolver.addDebugListener(listener);
+        }
+        super.addDebugListener(listener);
+    }
+    
     /** React to a change in an attribute. If the changed attribute matches
      *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
@@ -275,50 +289,55 @@ public class HSMultiSolverDirector extends HSDirector {
         if (_firstFiring) {
             _preamble();
             _firstFiring = false;
-        }
-        // A complete iteration consists is either a discrete phase of 
-        // execution or a continuous phase of execution.
-        // set up the solver and step size used for this iteration. 
-        if (hasCurrentEvent()) {
-            _setDiscretePhase(true);
-            
-            // Choose 0 as the step size.
-            setCurrentStepSize(0.0);
-            
-            // The discrete phase of execution resolves the final states at the
-            // current time by processing discrete events according to the SR
-            // semantics.
-            _discretePhaseExecution();
-            _setDiscretePhase(false);
-            
-            // FIXME: will this be necessary?
-            // It seems unnecessary because the immediately following 
-            // continuous phase of execution will propogate the resolved states.
-            _ODESolver.fire();
         } else {
-            if (getExecutiveCTGeneralDirector() == null) {
-                // Choose a suggested step size, which is a guess.
-                setCurrentStepSize(getSuggestedNextStepSize());
+            // A complete iteration consists is either a discrete phase of 
+            // execution or a continuous phase of execution.
+            // set up the solver and step size used for this iteration. 
+            if (hasCurrentEvent()) {
+                _setDiscretePhase(true);
                 
-                // Refine the correct step size for the continuous phase execution
-                // with respect to the breakpoint table.
-                setCurrentStepSize(_refinedStepWRTBreakpoints());
+                // Choose 0 as the step size.
+                setCurrentStepSize(0.0);
+                
+                // The discrete phase of execution resolves the final states at the
+                // current time by processing discrete events according to the SR
+                // semantics.
+                _discretePhaseExecution();
+                _setDiscretePhase(false);
+                
+                // FIXME: will this be necessary?
+                // It seems unnecessary because the immediately following 
+                // continuous phase of execution will propogate the resolved states.
+                // Yes, it is necessary. We need to expose the new resolved states
+                // across hierarchy such that when continuous phase of execution
+                // gets executed, the derivative will be calculated based on the
+                // updated values. Check the HierarchyExecutoin and V2V demos to
+                // to see why.
+                _ODESolver.fire();
+            } else {
+                if (getExecutiveCTGeneralDirector() == null) {
+                    // Choose a suggested step size, which is a guess.
+                    setCurrentStepSize(getSuggestedNextStepSize());
+                    
+                    // Refine the correct step size for the continuous phase execution
+                    // with respect to the breakpoint table.
+                    setCurrentStepSize(_refinedStepWRTBreakpoints());
+                }
+                
+                // If the current time is the stop time, then the fire method
+                // should immediately return. No further execution is necessary.
+                // The final states at the model stop time are resolved before
+                // the model stops.
+                // Also, if there is a stop request, stop the model immediately.
+                if (getModelTime().equals(getModelStopTime()) || _stopRequested) {
+                    return;
+                }
+                
+                // The continuous phase execution resolves the initial states
+                // in some future time point through numerical integration.
+                _continuousPhaseExecution();
             }
-            
-            // If the current time is the stop time, then the fire method
-            // should immediately return. No further execution is necessary.
-            // The final states at the model stop time are resolved before
-            // the model stops.
-            // Also, if there is a stop request, stop the model immediately.
-            if (getModelTime().equals(getModelStopTime()) || _stopRequested) {
-                return;
-            }
-            
-            // The continuous phase execution resolves the initial states
-            // in some future time point through numerical integration.
-            _continuousPhaseExecution();
         }
-        
         // FIXME: we distinguish embedded and not-embedded directors. In 
         // particular, an embedded director has no control of the step size. 
 
@@ -429,6 +448,8 @@ public class HSMultiSolverDirector extends HSDirector {
         // with the model or the CTScheduler.
         // FIXME: leverage the algorithm for the Data Type resolution.
         _schedule = (HSSchedule) getScheduler().getSchedule();
+        
+        _firstFiring = true;
 
         if (_debugging) {
             // Display schedule
@@ -438,9 +459,6 @@ public class HSMultiSolverDirector extends HSDirector {
 
         // Initialize protected variables and the contained actors.
         super.initialize();
-
-        // Dynamic actors emit their states.
-        prefireDynamicActors();
 
         // Set the suggested next step size. The actual step size will be
         // decided from the prefire() method.
@@ -586,6 +604,9 @@ public class HSMultiSolverDirector extends HSDirector {
 
             dynamic.emitCurrentStates();
         }
+        
+        // need to propogate the states across the hierarchy
+        _ODESolver.fire();
 
         return !_stopRequested;
     }
@@ -605,7 +626,19 @@ public class HSMultiSolverDirector extends HSDirector {
             _debug(getFullName(), " Using the ODE solver: "
                     + _ODESolver.getName());
         }
-        _firstFiring = true;
+    }
+
+    /** Unregister a debug listener.  If the specified listener has not
+     *  been previously registered, then do nothing.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which debug messages are sent.
+     *  @see #addDebugListener(DebugListener)
+     */
+    public void removeDebugListener(DebugListener listener) {
+        if (_ODESolver != null) {
+            _ODESolver.removeDebugListener(listener);
+        }
+        super.removeDebugListener(listener);
     }
 
     /** Set a new value to the current time of the model, where the new
@@ -1025,14 +1058,19 @@ public class HSMultiSolverDirector extends HSDirector {
     // The following methods are protected because they are
     // also used by CTEmbeddedDirector.
 
-    /**
-     * @throws IllegalActionException
+    /** Establish the initial states of all continuous variables. 
+     *  Propogate the resolved states across hierarchy. 
+     *  @throws IllegalActionException If any actor throws it during firing.
      */
     protected void _preamble() throws IllegalActionException {
+        // FIXME: due to the reverse order of dynamic actors in the schedule,
+        // there is a problem when propogating resolved states from inside of
+        // of a composite actor to outside. We need a better schedule algorithm.
         setCurrentStepSize(0.0);
+        // We need to prefire dynamic actors so that the auxilary variables
+        // ar created. Dynamic actors emit their states.
+        prefireDynamicActors();
         _ODESolver.fire();
-        _produceOutputs();
-        updateContinuousStates();
     }
 
     /** Predict the next step size. If the current integration step is accurate,
