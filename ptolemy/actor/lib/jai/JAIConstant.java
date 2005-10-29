@@ -207,7 +207,7 @@ public class JAIConstant extends Source {
 
     private IntToken[] _defaultValues = { _zero };
 
-    private Double[] _bandValues;
+    //private Double[] _bandValues;
 
     private int _height;
 

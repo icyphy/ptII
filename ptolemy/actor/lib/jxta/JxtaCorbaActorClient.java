@@ -587,15 +587,13 @@ public class JxtaCorbaActorClient extends TypedAtomicActor implements
 
     private ResolverQueryMsg _actorQueryMessage;
 
-    private ResolverResponseMsg _actorQueryResponse;
-
     private String _configDir;
 
     private static String _CONFIG_DIR = "pae.config.dir";
 
     private String _CONFIG_FILE = "Peer.properties";
 
-    private String _actorListFileName;
+    //private String _actorListFileName;
 
     private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
 
