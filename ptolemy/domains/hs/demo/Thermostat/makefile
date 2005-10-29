@@ -44,8 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	Thermostat
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	Thermostat.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
@@ -71,10 +70,10 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: all
+install: all $(PTCLASSJAR)
 
 demo: demo_applet demo_ptolemy demo_vergil
 demo_applet: $(PTCLASSJAR)
