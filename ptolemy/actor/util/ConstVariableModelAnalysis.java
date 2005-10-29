@@ -467,13 +467,8 @@ public class ConstVariableModelAnalysis {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private static ConstVariableModelAnalysis _previousCache;
-
-    private static Entity _previousCacheToplevel;
 
     private DirectedGraph _dependencyGraph;
 
     private Map _variableToChangeContext;
-
-    private CompositeActor _model;
 }
