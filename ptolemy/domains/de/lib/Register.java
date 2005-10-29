@@ -108,7 +108,7 @@ public class Register extends Sampler {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+        // Don't call "super.fire();", this actor extends another actor.
         int inputWidth = input.getWidth();
         int outputWidth = output.getWidth();
         int commonWidth = Math.min(inputWidth, outputWidth);
