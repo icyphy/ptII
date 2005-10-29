@@ -113,7 +113,7 @@ public class ContinuousClock extends Clock {
      *  @exception IllegalActionException If output can not send value.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
+        // Don't  call "super.fire();" here, this actor extends another actor.
         // Use the strategy pattern here so that derived classes can
         // override how this is done.
         _updateTentativeValues();
