@@ -28,7 +28,6 @@
 package ptolemy.domains.csp.demo.BusContention;
 
 // Ptolemy imports.
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.BooleanToken;
@@ -36,7 +35,6 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.csp.kernel.CSPActor;
-import ptolemy.domains.csp.kernel.CSPDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -215,18 +213,6 @@ public class Processor extends CSPActor {
         }
     }
 
-    /** Call initialize of the corresponding superclass method and
-     *  store a reference to this actor's local director.
-     * @exception IllegalActionException If the superclass method
-     *  throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        TypedCompositeActor ca = (TypedCompositeActor) getContainer();
-        _dir = (CSPDirector) ca.getDirector();
-    }
-
     /** Return true if this actor has randomly determined to attempt
      *  to read data from the shared resource on its next memory
      *  access; otherwise return false.
@@ -256,6 +242,4 @@ public class Processor extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private int _code;
-
-    private CSPDirector _dir;
 }
