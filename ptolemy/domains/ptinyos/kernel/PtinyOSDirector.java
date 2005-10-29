@@ -941,7 +941,7 @@ public class PtinyOSDirector extends Director {
      include /home/celaine/ptII/mk/ptII.mk
      include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
      * @exception CancelException If the directory named by the
-     * ptolemy.ptii.tosroot property does not exist.
+     * ptolemy.ptII.tosroot property does not exist.
      */
     private String _generateMakefile()
             throws IllegalActionException, CancelException {
@@ -1349,13 +1349,6 @@ public class PtinyOSDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         native methods                    ////
-    // Native methods in TOSSIM code.
-    //private native int main(String argsToMain[]);
-    //private native int mainMicaActor(String argsToMain[]);
-    //private native void processEvent();
-    //private native void wrapup();
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Java loader for JNI code.
     private PtinyOSLoader _loader;
@@ -1368,7 +1361,10 @@ public class PtinyOSDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    // Class for creating a StringBuffer that represents generated code.
+    
+    /** Class for creating a StringBuffer that represents generated
+     *  code.
+     */
     private static class _CodeString {
         public _CodeString() {
             text = new StringBuffer();
