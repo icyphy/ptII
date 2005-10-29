@@ -125,9 +125,9 @@ class ClassLoaderWrapper extends ClassLoader {
      *  @exception IOException If getResources(String) of the wrapped class
      *   loader throws an IOException.
      */
-    public Enumeration getResources(String name) throws IOException {
-        return _loader.getResources(name);
-    }
+   // public Enumeration getResources(String name) throws IOException {
+    //    return _loader.getResources(name);
+    //}
 
     /** Call the loadClass(String) method of the wrapped class loader, and
      *  return its result.
