@@ -854,9 +854,13 @@ public class HSScheduler extends Scheduler {
                     Actor actor = (Actor) fxSorted[fxi];
 
                     if (sortedContinuousActors.contains(actor)) {
-                        sortedContinuousActors.remove(actor);
+                        if (!(actor instanceof CTCompositeActor)) {
+                            sortedContinuousActors.remove(actor);
+                            sortedContinuousActors.add(0, actor);
+                        }
+                    } else {
+                        sortedContinuousActors.add(0, actor);
                     }
-                    sortedContinuousActors.add(0, actor);
                 }
             }
         }
