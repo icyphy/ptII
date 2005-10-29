@@ -28,10 +28,8 @@
  */
 package ptolemy.domains.rendezvous.kernel;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassLoaderWrapper
@@ -116,18 +114,6 @@ class ClassLoaderWrapper extends ClassLoader {
     public InputStream getResourceAsStream(String name) {
         return _loader.getResourceAsStream(name);
     }
-
-    /** Call the getResources(String) method of the wrapped class loader, and
-     *  return its result.
-     *  
-     *  @param name The name parameter to getResources(String).
-     *  @return The result of getResources(String).
-     *  @exception IOException If getResources(String) of the wrapped class
-     *   loader throws an IOException.
-     */
-   // public Enumeration getResources(String name) throws IOException {
-    //    return _loader.getResources(name);
-    //}
 
     /** Call the loadClass(String) method of the wrapped class loader, and
      *  return its result.
