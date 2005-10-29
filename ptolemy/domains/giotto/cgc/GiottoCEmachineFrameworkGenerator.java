@@ -46,9 +46,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditorFactory;
-import ptolemy.actor.gui.TableauFrame;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.giotto.kernel.GiottoCodeGenerator;
@@ -976,8 +974,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File directory = dirDialog.getSelectedFile();
 
-                    Configuration configuration = ((TableauFrame) parent)
-                            .getConfiguration();
+                    //Configuration configuration = ((TableauFrame) parent)
+                    //        .getConfiguration();
 
                     // NamedObj container = (NamedObj)object.getContainer();
                     TypedCompositeActor model = (TypedCompositeActor) GiottoCEmachineFrameworkGenerator.this
