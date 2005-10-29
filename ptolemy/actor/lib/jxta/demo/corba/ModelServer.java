@@ -243,7 +243,8 @@ public class ModelServer implements QueryHandler {
      * @see net.jxta.resolver.QueryHandler#processResponse(ResolverResponseMsg)
      */
     public void processResponse(ResolverResponseMsg response) {
-        String rp = response.getResponse();
+        // FIXME: why ignore the value of the response?
+        /*String rp = */response.getResponse();
         System.out.println("get response message.");
     }
 
@@ -259,8 +260,6 @@ public class ModelServer implements QueryHandler {
 
     private Credential _credential;
 
-    private ResolverQueryMsg _actorQueryMessage;
-
     private ResolverResponseMsg _actorQueryResponse;
 
     private String _configDir;
@@ -269,7 +268,7 @@ public class ModelServer implements QueryHandler {
 
     private String _CONFIG_FILE = "Peer.properties";
 
-    private String _actorListFileName;
+    //private String _actorListFileName;
 
     private String _ACTOR_QUERY_HANDLER_NAME = "ActorQueryHandler";
 
@@ -277,5 +276,5 @@ public class ModelServer implements QueryHandler {
 
     private String _ior = null;
 
-    private String _remoteActorName = "Nonlinear";
+    //private String _remoteActorName = "Nonlinear";
 }

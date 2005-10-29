@@ -148,7 +148,7 @@ public class ThreeDFunction implements Serializable {
         double xSpan;
         double ySpan;
         double thetaSpan;
-        double dimension;
+        //double dimension;
 
         BufferedReader reader = null;
 
@@ -187,7 +187,7 @@ public class ThreeDFunction implements Serializable {
         try {
             // Read the dimension of the state space and ignore it,
             // since we know it's value is 3.
-            dimension = _readDouble(reader);
+            /*dimension =*/ _readDouble(reader);
 
             // Read x grid information.
             _xLowerBound = _readDouble(reader);

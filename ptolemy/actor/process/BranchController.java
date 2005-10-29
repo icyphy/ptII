@@ -70,7 +70,7 @@ public class BranchController implements Runnable {
      */
     public BranchController(CompositeActor container) {
         _parentActor = container;
-        _parentName = ((Nameable) container).getName();
+        //_parentName = ((Nameable) container).getName();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -393,5 +393,5 @@ public class BranchController implements Runnable {
 
     private boolean _isActive = false;
 
-    private String _parentName = null;
+    //private String _parentName = null;
 }

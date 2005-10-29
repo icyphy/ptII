@@ -594,10 +594,10 @@ public class CacheAwareScheduler extends SDFScheduler {
         int penalty = 0;
 
         // Temp variable that copies the D-Scratchpad's current used space.
-        int tempUsedSpace = _dataSPM.usedSpace();
+        /*int tempUsedSpace =*/_dataSPM.usedSpace();
 
         // Temp variable to store the D-Scratchpad's total size.
-        int tempDSPMSize = _dataSPM.size();
+        /*int tempDSPMSize =*/ _dataSPM.size();
 
         penalty = (maxFiringsPossible - fired)
                 * _actorsRecord[actorNo].productionRate;
@@ -605,8 +605,8 @@ public class CacheAwareScheduler extends SDFScheduler {
         // Temp variables
         int tempTokensInsideDSPM = fired
                 * _actorsRecord[actorNo].productionRate;
-        int tempTokensOutsideDSPM = (maxFiringsPossible - fired)
-                * _actorsRecord[actorNo].productionRate;
+        //int tempTokensOutsideDSPM = (maxFiringsPossible - fired)
+        //        * _actorsRecord[actorNo].productionRate;
         int tempFreeSpaceInDSPM = 0;
 
         // Check if the immediate successor is fireable.
@@ -657,8 +657,8 @@ public class CacheAwareScheduler extends SDFScheduler {
                         // space will go to zero inside SPM.
                         penalty += (extraSpaceNeeded - tempFreeSpaceInDSPM);
                         tempTokensInsideDSPM += tempFreeSpaceInDSPM;
-                        tempTokensOutsideDSPM = extraSpaceNeeded
-                                - tempFreeSpaceInDSPM;
+                        // tempTokensOutsideDSPM = extraSpaceNeeded
+                        //        - tempFreeSpaceInDSPM;
                         tempFreeSpaceInDSPM = 0;
                     } //    end of else for if (tempFreeSpaceInDSPM > ..)
                 } // end of if (successorFirings*actorsRecord...)
@@ -675,7 +675,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                         penalty += 0;
                         tempFreeSpaceInDSPM -= extraSpaceNeeded;
                         tempTokensInsideDSPM = newTokensProduced;
-                        tempTokensOutsideDSPM = 0;
+                        //tempTokensOutsideDSPM = 0;
                     } // end of if (tempFreeSpaceInDSPM > ..)
                     else {
                         // Some data will be written outside SPM. The
@@ -684,8 +684,8 @@ public class CacheAwareScheduler extends SDFScheduler {
                         penalty += (extraSpaceNeeded - tempFreeSpaceInDSPM);
                         tempTokensInsideDSPM = tempTokensConsumed
                                 + tempFreeSpaceInDSPM;
-                        tempTokensOutsideDSPM = extraSpaceNeeded
-                                - tempFreeSpaceInDSPM;
+                        //tempTokensOutsideDSPM = extraSpaceNeeded
+                        //        - tempFreeSpaceInDSPM;
                         tempFreeSpaceInDSPM = 0;
                     } // end of else for if (tempFreeSpaceInDSPM > ..)
                 } // end of else for if (successorFirings*actorsRecord...)
@@ -707,7 +707,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                             penalty += 0;
                             tempFreeSpaceInDSPM -= extraSpaceNeeded;
                             tempTokensInsideDSPM = newTokensProduced;
-                            tempTokensOutsideDSPM = 0;
+                            //tempTokensOutsideDSPM = 0;
                         } //   end of if (tempFreeSpaceInDSPM > ..)
                         else {
                             // Some data will be written outside SPM. The
@@ -715,8 +715,8 @@ public class CacheAwareScheduler extends SDFScheduler {
                             // space will go to zero inside SPM.
                             penalty += (extraSpaceNeeded - tempFreeSpaceInDSPM);
                             tempTokensInsideDSPM += tempFreeSpaceInDSPM;
-                            tempTokensOutsideDSPM = extraSpaceNeeded
-                                    - tempFreeSpaceInDSPM;
+                            //tempTokensOutsideDSPM = extraSpaceNeeded
+                            //        - tempFreeSpaceInDSPM;
                             tempFreeSpaceInDSPM = 0;
                         } //   end of else for if (tempFreeSpaceInDSPM > ..)
                     } //   end of if (newTokensProduced > ..)
@@ -728,7 +728,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                         penalty += 0;
                         tempFreeSpaceInDSPM += extraSpaceProduced;
                         tempTokensInsideDSPM = newTokensProduced;
-                        tempTokensOutsideDSPM = 0;
+                        //tempTokensOutsideDSPM = 0;
                     } // end of else for if (newTokensProduced > ..)
                 } // end of if (successorFirings*actorsRecord..)
                 else {
@@ -742,7 +742,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                             - newTokensProduced;
                     tempFreeSpaceInDSPM += extraSpaceProduced;
                     tempTokensInsideDSPM = newTokensProduced;
-                    tempTokensOutsideDSPM = 0;
+                    //tempTokensOutsideDSPM = 0;
                 } // end of else for if (successorFirings*actorsRecord..)
             } // end of else for if (_actorsRecord[successorNo]..)
 
