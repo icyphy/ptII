@@ -28,12 +28,9 @@
  */
 package ptolemy.domains.rendezvous.kernel;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,17 +53,19 @@ import ptolemy.kernel.util.InternalErrorException;
  Receiver for rendezvous style communication. In the rendezvous
  domain, all communication is via
  synchronous message passing, so both the the sending and receiving
- process need to rendezvous at the receiver. For rendezvous, the
+ processes need to rendezvous at the receiver. For rendezvous, the
  receiver is the key synchronization point. It is assumed each receiver
  has at most one thread trying to send to it and at most one thread
  trying to receive from it at any one time. The receiver performs the
  synchronization necessary for simple rendezvous (get() and put()
  operations). This receiver is based on the CSPReceiver class by
- John S. Davis II, Thomas Feng, Edward A. Lee, Neil Smyth, and Yang Zhao.
+ John S. Davis II, Thomas Feng, Edward A. Lee, Neil Smyth, and Yang Zhao. 
+ 
  @author Thomas Feng
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
+ @Pt.ProposedRating Green (acataldo)
+ @Pt.AcceptedRating Green (acataldo)
  */
 public class RendezvousReceiver extends AbstractReceiver implements
         ProcessReceiver {
@@ -115,9 +114,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *  @param receivers The receivers, which are assumed to
      *  all be instances of RendezvousReceiver.
      *  @param director The director, on which this method synchronizes.
-     *  @return An array of arrays tokens, where the structure of the
+     *  @return An array of token arrays, where the structure of the
      *  array is the same as the structure of the specified array of
-     *  receivers. Note that if the argument has any null values in
+     *  receivers. Note that if the receivers argument has any null values in
      *  the array of arrays, then so will the returned array or
      *  arrays.
      *  @exception TerminateProcessException If the actor to
@@ -125,44 +124,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     public static Token[][] getFromAll(Receiver[][] receivers,
             RendezvousDirector director) throws TerminateProcessException {
-        if ((receivers == null) || (receivers.length == 0)) {
-            throw new InternalErrorException("No receivers!");
-        }
-
-        Map result;
-
-        synchronized (director) {
-            Thread theThread = Thread.currentThread();
-
-            for (int i = 0; i < receivers.length; i++) {
-                if (receivers[i] != null) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        if (receivers[i][j] != null) {
-                            RendezvousReceiver castReceiver =
-                                (RendezvousReceiver) receivers[i][j];
-                            castReceiver._getWaiting = theThread;
-                            castReceiver._getReceivers = receivers;
-                            castReceiver._getConditional = false;
-                        }
-                    }
-                }
-            }
-
-            Receiver[] transactionReceivers =
-                _testTransaction(receivers, false);
-
-            if (transactionReceivers == null) {
-                director.threadBlocked(theThread, null);
-                result = (Map) _getData(theThread);
-                while (result == null) {
-                    waitForChange(director);
-                    result = (Map) _getData(theThread);
-                }
-                _setData(theThread, null);
-            } else {
-                _commitTransaction(transactionReceivers, director);
-                result = (Map) _setData(theThread, null);
-            }
+        Map result = null;
+        try {
+            result = _getOrPutTokens(receivers, director, null, false);
+        } catch (IllegalActionException iae) {
         }
 
         Token[][] tokens = new Token[receivers.length][];
@@ -193,62 +158,25 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     public static Token getFromAny(Receiver[][] receivers,
             RendezvousDirector director) throws TerminateProcessException {
-        if ((receivers == null) || (receivers.length == 0)) {
-            throw new InternalErrorException("No receivers!");
+        Map result = null;
+        try {
+            result = _getOrPutTokens(receivers, director, null, true);
+        } catch (IllegalActionException iae) {
         }
 
-        Map result;
-
-        synchronized (director) {
-            Thread theThread = Thread.currentThread();
-
-            for (int i = 0; i < receivers.length; i++) {
-                if (receivers[i] != null) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        if (receivers[i][j] != null) {
-                            RendezvousReceiver castReceiver
-                                = (RendezvousReceiver) receivers[i][j];
-                            castReceiver._getWaiting = theThread;
-                            castReceiver._getReceivers = receivers;
-                            castReceiver._getConditional = true;
-                        }
-                    }
-                }
-            }
-
-            Receiver[] transactionReceivers =
-                _testTransaction(receivers, false);
-
-            if (transactionReceivers == null) {
-                director.threadBlocked(theThread, null);
-                result = (Map) _getData(theThread);
-                while (result == null) {
-                    waitForChange(director);
-                    result = (Map) _getData(theThread);
-                }
-                _setData(theThread, null);
-            } else {
-                _commitTransaction(transactionReceivers, director);
-                result = (Map) _setData(theThread, null);
-            }
-        }
-
-        Token token = null;
-
-        for (int i = 0; (i < receivers.length) && (token == null); i++) {
+        for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
-                for (int j = 0;
-                     (j < receivers[i].length) && (token == null); j++) {
+                for (int j = 0; j < receivers[i].length; j++) {
                     if (receivers[i][j] != null) {
                         if (result.containsKey(receivers[i][j])) {
-                            token = (Token) result.get(receivers[i][j]);
+                            return (Token)result.get(receivers[i][j]);
                         }
                     }
                 }
             }
         }
 
-        return token;
+        throw new InternalErrorException("No token is received.");
     }
 
     /** Return true. This method returns true in all cases
@@ -449,6 +377,15 @@ public class RendezvousReceiver extends AbstractReceiver implements
         }
     }
 
+    /** Put to all receivers in the specified array.
+     *  Implementers will assume that all such receivers
+     *  are of the same class.
+     *  @param token The token to put.
+     *  @param receivers The receivers.
+     *  @exception NoRoomException If there is no room for the token.
+     *  @exception IllegalActionException If the token is not acceptable
+     *   to one of the ports (e.g., wrong type).
+     */
     public void putToAll(Token token, Receiver[] receivers)
             throws NoRoomException, IllegalActionException {
         putToAll(token, receivers, _getDirector());
@@ -456,6 +393,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /** Put to all receivers in the specified array.
      *  This method does not return until all the puts are complete.
+     *  This method differs from its counterpart in the superclass in that it
+     *  puts the token to all receivers in an atomic step. The method in the
+     *  superclass puts the token to one receiver in the receiver array at a
+     *  time.
      *  @param token The token to put.
      *  @param receivers The receivers, which are assumed to
      *   all be instances of RendezvousReceiver.
@@ -497,50 +438,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public static void putToAll(Token[][] tokens, Receiver[][] receivers,
             RendezvousDirector director) throws IllegalActionException,
             TerminateProcessException {
-        if ((receivers == null) || (receivers.length == 0)) {
-            return;
-        }
-
-        synchronized (director) {
-            Thread theThread = Thread.currentThread();
-            Token token = null;
-
-            for (int i = 0; i < receivers.length; i++) {
-                if (receivers[i] != null) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        if (receivers[i][j] != null) {
-                            if ((tokens.length > i) && (tokens[i] != null)
-                                    && (tokens[i].length > j)) {
-                                token = tokens[i][j];
-                            }
-
-                            RendezvousReceiver castReceiver =
-                                (RendezvousReceiver) receivers[i][j];
-                            castReceiver._putWaiting = theThread;
-                            castReceiver._putReceivers = receivers;
-                            castReceiver._putConditional = false;
-
-                            IOPort port = castReceiver.getContainer();
-                            castReceiver._token = port.convert(token);
-                        }
-                    }
-                }
-            }
-
-            Receiver[] transactionReceivers =
-                _testTransaction(receivers, true);
-
-            if (transactionReceivers == null) {
-                director.threadBlocked(theThread, null);
-                while (_getData(theThread) == null) {
-                    waitForChange(director);
-                }
-                _setData(theThread, null);
-            } else {
-                _commitTransaction(transactionReceivers, director);
-                _setData(theThread, null);
-            }
-        }
+        _getOrPutTokens(receivers, director, tokens, false);
     }
 
     /** Put the specified token to any receiver in the specified array.
@@ -557,44 +455,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public static void putToAny(Token token, Receiver[][] receivers,
             RendezvousDirector director) throws IllegalActionException,
             TerminateProcessException {
-        if ((receivers == null) || (receivers.length == 0)) {
-            throw new InternalErrorException("No receivers!");
-        }
-
-        synchronized (director) {
-            Thread theThread = Thread.currentThread();
-
-            for (int i = 0; i < receivers.length; i++) {
-                if (receivers[i] != null) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        if (receivers[i][j] != null) {
-                            RendezvousReceiver castReceiver =
-                                (RendezvousReceiver) receivers[i][j];
-                            castReceiver._putWaiting = theThread;
-                            castReceiver._putReceivers = receivers;
-                            castReceiver._putConditional = true;
-
-                            IOPort port = castReceiver.getContainer();
-                            castReceiver._token = port.convert(token);
-                        }
-                    }
-                }
-            }
-
-            Receiver[] transactionReceivers =
-                _testTransaction(receivers, true);
-
-            if (transactionReceivers == null) {
-                director.threadBlocked(theThread, null);
-                while (_getData(theThread) == null) {
-                    waitForChange(director);
-                }
-                _setData(theThread, null);
-            } else {
-                _commitTransaction(transactionReceivers, director);
-                _setData(theThread, null);
-            }
-        }
+        _getOrPutTokens(receivers, director, token, true);
     }
 
     /** The model has finished executing, so set a flag so that the
@@ -705,29 +566,32 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *  @return A string describing the status of the specified receiver.
      */
     protected String _status() {
-        // TODO
+        // TODO: Should be implemented when used.
         return null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
 
-    /** Commit the transaction formed by the set of receivers that agree to
+    /** Commit the rendezvous formed by the set of receivers that agree to
      *  send and receive at the same time.
      *
-     *  @param receivers The receivers that participate in the transaction.
+     *  @param receivers The receivers that participate in the rendezvous.
      *  @param director The director.
+     *  @see #_receiversReadyToCommit(Receiver[][], boolean)
      */
-    private static void _commitTransaction(Receiver[] receivers,
+    private static void _commitRendezvous(Set receivers,
             RendezvousDirector director) {
         // The result table for all the receivers.
         Map result = new HashMap();
+        Iterator receiverIterator;
 
         // Backup result tokens for the receivers, and release the threads
         // blocked at those receivers.
-        for (int i = 0; i < receivers.length; i++) {
+        receiverIterator = receivers.iterator();
+        while (receiverIterator.hasNext()) {
             RendezvousReceiver castReceiver =
-                (RendezvousReceiver) receivers[i];
+                (RendezvousReceiver) receiverIterator.next();
             result.put(castReceiver, castReceiver._token);
 
             if (_getData(castReceiver._getWaiting) == null) {
@@ -742,9 +606,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
         }
 
         // Reset the flags for all the receivers.
-        for (int i = 0; i < receivers.length; i++) {
+        receiverIterator = receivers.iterator();
+        while (receiverIterator.hasNext()) {
             RendezvousReceiver castReceiver =
-                (RendezvousReceiver) receivers[i];
+                (RendezvousReceiver) receiverIterator.next();
 
             // If the receiver does conditional get, clear the get request on
             // all the channels.
@@ -763,6 +628,221 @@ public class RendezvousReceiver extends AbstractReceiver implements
             // Clear the get and put requests on this receiver.
             castReceiver._resetFlags(true, true);
         }
+    }
+    
+    /** Get the data associated with the thread.
+     *  
+     *  @param thread The thread with data associated with it.
+     *  @return The data associated with the thread, or null if no data is
+     *   associated with it.
+     *  @see #_setData(Thread, Object)
+     */
+    private static Object _getData(Thread thread) {
+        synchronized (thread) {
+            ClassLoader oldLoader = thread.getContextClassLoader();
+            if (oldLoader != null && oldLoader instanceof ClassLoaderWrapper) {
+                return ((ClassLoaderWrapper)oldLoader).getData();
+            } else {
+                return null;
+            }
+        }
+    }
+    
+    /** Get or put token(s) to the array of receivers. This method is commonly
+     *  used by {@link #getFromAll(Receiver[][], RendezvousDirector)},
+     *  {@link #getFromAny(Receiver[][], RendezvousDirector)},
+     *  {@link #putToAll(Token[][], Receiver[][], RendezvousDirector)} and
+     *  {@link #putToAny(Token, Receiver[][], RendezvousDirector)}. If the
+     *  tokens parameter is null, it does a get. isCondition indicates whether
+     *  the get is from all or from any. If the tokens parameter is a single
+     *  token (of type {@link Token}), it does put to any with that token. If
+     *  the tokens parameter is a two-dimentional array of tokens, it does put
+     *  to all with those tokens.
+     *  
+     *  This method does not return until the get or put is finished.
+     *  
+     *  @param receivers The receivers to be got from or put to.
+     *  @param director The director.
+     *  @param tokens null if this method is used to get tokens; a token of
+     *         this method is used to put to any of the receivers; or a
+     *         two-dimentional array of tokens if this method is used to put to
+     *         all of the receivers.
+     *  @param isConditional Whether the get or put is conditional.
+     *  @return The map of results on the receivers that participate in the
+     *          rendezvous. Keys of the map are receivers; values of the map
+     *          are the tokens on those receivers.
+     *  @exception IllegalActionException If the token is not acceptable
+     *   to one of the ports (e.g., wrong type). This can happen only if the
+     *   operation is put to all or put to any.
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs is to be terminated.
+     */
+    private static Map _getOrPutTokens(Receiver[][] receivers,
+            RendezvousDirector director, Object tokens, boolean isConditional)
+            throws IllegalActionException, TerminateProcessException {
+        if ((receivers == null) || (receivers.length == 0)) {
+            throw new InternalErrorException("No receivers!");
+        }
+
+        Map result = null;
+        synchronized (director) {
+            Thread theThread = Thread.currentThread();
+            
+            // The token of the put to any operation, or null.
+            Token token =
+                tokens instanceof Token ? (Token)tokens : null;
+            // The token array of the put to all operation, or null.
+            Token[][] tokenArray =
+                tokens instanceof Token[][] ? (Token[][])tokens : null;
+
+            // Mark the receivers as having a get or get waiting.
+            for (int i = 0; i < receivers.length; i++) {
+                if (receivers[i] != null) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        if (receivers[i][j] != null) {
+                            RendezvousReceiver castReceiver =
+                                (RendezvousReceiver) receivers[i][j];
+                            
+                            if (tokens == null) {
+                                castReceiver._getWaiting = theThread;
+                                castReceiver._getReceivers = receivers;
+                                castReceiver._getConditional = isConditional;
+                            } else {
+                                castReceiver._putWaiting = theThread;
+                                castReceiver._putReceivers = receivers;
+                                castReceiver._putConditional = isConditional;
+
+                                IOPort port = castReceiver.getContainer();
+                                if (tokenArray == null) {
+                                    castReceiver._token = port.convert(token);
+                                } else {
+                                    try {
+                                        token = tokenArray[i][j];
+                                    } catch (Throwable e) {
+                                    }
+                                    castReceiver._token = port.convert(token);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Set rendezvousReceivers =
+                _receiversReadyToCommit(receivers, tokens != null);
+            if (rendezvousReceivers == null) {
+                // A rendezvous cannot be formed at this time.
+                // This thread just waits until another thread commits a
+                // rendezvous with the given receivers.
+                director.threadBlocked(theThread, null);
+                while (result == null) {
+                    waitForChange(director);
+                    result = (Map) _getData(theThread);
+                }
+                _setData(theThread, null);
+            } else {
+                // A rendezvous is formed, so commit the rendezvous, and wake
+                // up the other threads in this rendezvous.
+                _commitRendezvous(rendezvousReceivers, director);
+                result = (Map) _setData(theThread, null);
+            }
+        }
+        return result;
+    }
+
+    /** Get the receivers that are ready to form a rendezvous according to the
+     *  rendezvous semantics. If no rendezvous can be formed starting for the
+     *  given array of receivers, null is returned.
+     *
+     *  @param receivers The array of receivers to be put to or get from.
+     *  @param isPut If true, the rendezvous is to put tokens to the
+     *         receivers; if false, the rendezvous is to get tokens from
+     *         the receivers.
+     *  @return A set of receivers that participate in the rendezvous if
+     *         it can be formed, or null if no rendezvous can be formed.
+     *  @see #_commitRendezvous(Set, RendezvousDirector)
+     */
+    private static Set _receiversReadyToCommit(Receiver[][] receivers,
+            boolean isPut) {
+        Set readyReceivers = new HashSet();
+        boolean isConditional = false;
+
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != null) {
+                        RendezvousReceiver castReceiver =
+                            (RendezvousReceiver) receivers[i][j];
+
+                        // Whether the receiver is in a conditional branch.
+                        // isConditional for all the receivers should be the
+                        // same in one invocation of this method.
+                        isConditional = (isPut && castReceiver._putConditional)
+                                || (!isPut && castReceiver._getConditional);
+
+                        if (castReceiver._isVisited) {
+                            // If the receiver is visited in a
+                            // previous traversal step, a loop is
+                            // found. In this case, simply assume that
+                            // it is OK with the rendezvous.
+                            readyReceivers.add(castReceiver);
+                        } else {
+                            // If the receiver is not visited yet,
+                            // first test whether itself is OK with
+                            // the rendezvous. A receiver that agrees
+                            // to take a rendezvous always has 2
+                            // threads waiting on it: one waiting to
+                            // get; the other waiting to put.
+                            if ((castReceiver._putWaiting == null)
+                                    || (castReceiver._getWaiting == null)) {
+                                // This conditional branch does not
+                                // work because at least one receiver
+                                // is not ready.
+                                readyReceivers.clear();
+                                break;
+                            } else {
+                                // Get the far-side receivers of the current
+                                // receiver, and visit them in a depth-first
+                                // manner.
+                                Receiver[][] farSideReceivers =
+                                    isPut ? castReceiver._getReceivers
+                                        : castReceiver._putReceivers;
+                                castReceiver._isVisited = true;
+
+                                Set nestedReadyReceivers =
+                                    _receiversReadyToCommit(
+                                            farSideReceivers, !isPut);
+                                castReceiver._isVisited = false;
+
+                                if (nestedReadyReceivers == null) {
+                                    // If the traversal in this branch fails,
+                                    // it is not ready for a rendezvous.
+                                    readyReceivers.clear();
+                                    break;
+                                } else {
+                                    // Otherwise, add the current receiver and
+                                    // the receivers visited in the sub-tree to
+                                    // the set of ready receivers.
+                                    readyReceivers.add(castReceiver);
+                                    readyReceivers.addAll(nestedReadyReceivers);
+                                } // if (nestedReadyReceivers == null)
+                            } /* if ((castReceiver._putWaiting == null)
+                                         || (castReceiver._getWaiting == null))*/
+                        } // if (castReceiver._isVisited)
+                    } // if (receivers[i][j] != null)
+                } // for (int j = 0; j < receivers[i].length; j++)
+
+                if ((isConditional && (readyReceivers.size() > 0))
+                        || (!isConditional && (readyReceivers.size() == 0))) {
+                    // If either condition is true (the rendezvous has already
+                    // been formed or the rendezvous cannot be formed), just
+                    // return.
+                    break;
+                }
+            }
+        }
+
+        return (readyReceivers.size() > 0) ? readyReceivers : null;
     }
 
     /** Reset the flags of this receiver.
@@ -802,148 +882,32 @@ public class RendezvousReceiver extends AbstractReceiver implements
         }
     }
     
-    private static Object _getData(Thread thread) {
-        synchronized (thread) {
-            ClassLoader oldLoader = thread.getContextClassLoader();
-            if (oldLoader != null && oldLoader instanceof ClassLoaderWrapper) {
-                return ((ClassLoaderWrapper)oldLoader).getData();
-            } else {
-                return null;
-            }
-        }
-    }
-    
+    /** Set the data associated with the thread.
+     *  
+     *  @param thread The thread with which the data will be associated.
+     *  @param data The data to be associated with the thread, or null if no
+     *   data is to be associated with it.
+     *  @see #_getData(Thread)
+     */
     private static Object _setData(Thread thread, Object data) {
         synchronized (thread) {
             ClassLoader oldLoader = thread.getContextClassLoader();
             if (oldLoader != null && oldLoader instanceof ClassLoaderWrapper) {
-                ClassLoaderWrapper castOldLoader = (ClassLoaderWrapper)oldLoader;
+                ClassLoaderWrapper castOldLoader =
+                    (ClassLoaderWrapper)oldLoader;
                 Object oldData = castOldLoader.getData();
                 castOldLoader.setData(data);
                 return oldData;
             } else {
                 if (data != null) {
-                    ClassLoaderWrapper newLoader = new ClassLoaderWrapper(oldLoader);
+                    ClassLoaderWrapper newLoader =
+                        new ClassLoaderWrapper(oldLoader);
                     newLoader.setData(data);
                     thread.setContextClassLoader(newLoader);
                 }
                 return null;
             }
         }
-    }
-
-    /** Test whether a transaction can be formed according to the CSP
-     *  semantics.
-     *
-     *  @param receivers The array of receivers to be put to or get from.
-     *  @param isPut If true, the transaction is to put tokens to the
-     *         receivers; if false, the transaction is to get tokens from
-     *         the receivers.
-     *  @return An array of receivers that participate in the transaction, if
-     *         it can be formed, or null if no transaction can be formed.
-     */
-    private static Receiver[] _testTransaction(Receiver[][] receivers,
-            boolean isPut) {
-        Set result = _testTransactionRecursive(receivers, isPut);
-
-        if (result == null) {
-            return null;
-        } else {
-            // Convert the result into an array.
-            return (Receiver[]) result.toArray(new Receiver[result.size()]);
-        }
-    }
-
-    /** Test whether a transaction can be formed according to the CSP
-     *  semantics.
-     *
-     *  @param receivers The array of receivers to be put to or get from.
-     *  @param isPut If true, the transaction is to put tokens to the
-     *         receivers; if false, the transaction is to get tokens from
-     *         the receivers.
-     *  @return A set of receivers that participate in the transaction, if
-     *         it can be formed, or null if no transaction can be formed.
-     */
-    private static Set _testTransactionRecursive(Receiver[][] receivers,
-            boolean isPut) {
-        Set readyReceivers = new HashSet();
-        boolean isConditional = false;
-
-        for (int i = 0; i < receivers.length; i++) {
-            if (receivers[i] != null) {
-                for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != null) {
-                        RendezvousReceiver castReceiver =
-                            (RendezvousReceiver) receivers[i][j];
-
-                        // Whether the receiver is in a conditional branch.
-                        // isConditional for all the receivers should be the
-                        // same in one invocation of this method.
-                        isConditional = (isPut && castReceiver._putConditional)
-                                || (!isPut && castReceiver._getConditional);
-
-                        if (castReceiver._isVisited) {
-                            // If the receiver is visited in a
-                            // previous traversal step, a loop is
-                            // found. In this case, simply assume that
-                            // it is OK with the transaction.
-                            readyReceivers.add(castReceiver);
-                        } else {
-                            // If the receiver is not visited yet,
-                            // first test whether itself is OK with
-                            // the transaction. A receiver that agrees
-                            // to take a transaction always has 2
-                            // threads waiting on it: one waiting to
-                            // get; the other waiting to put.
-                            if ((castReceiver._putWaiting == null)
-
-                                    || (castReceiver._getWaiting == null)) {
-                                // This conditional branch does not
-                                // work because at least one receiver
-                                // is not ready.
-                                readyReceivers.clear();
-                                break;
-                            } else {
-                                // Get the far-side receivers of the current
-                                // receiver, and visit them in a depth-first
-                                // manner.
-                                Receiver[][] farSideReceivers =
-                                    isPut ? castReceiver._getReceivers
-                                        : castReceiver._putReceivers;
-                                castReceiver._isVisited = true;
-
-                                Set nestedReadyReceivers =
-                                    _testTransactionRecursive(
-                                            farSideReceivers, !isPut);
-                                castReceiver._isVisited = false;
-
-                                if (nestedReadyReceivers == null) {
-                                    // If the traversal in this branch fails,
-                                    // it is not ready for a transaction.
-                                    readyReceivers.clear();
-                                    break;
-                                } else {
-                                    // Otherwise, add the current receiver and
-                                    // the receivers visited in the sub-tree to
-                                    // the set of ready receivers.
-                                    readyReceivers.add(castReceiver);
-                                    readyReceivers.addAll(nestedReadyReceivers);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if ((isConditional && (readyReceivers.size() > 0))
-                        || (!isConditional && (readyReceivers.size() == 0))) {
-                    // If either condition is true, the transaction cannot be
-                    // formed, so just return.
-                    break;
-                }
-            }
-        }
-
-        return (readyReceivers.size() > 0) ? readyReceivers : null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -963,7 +927,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /** Indicator that a get() is waiting on this receiver. */
     private Thread _getWaiting = null;
 
-    /** Whether this receiver has been visited in the _testTransaction
+    /** Whether this receiver has been visited in the __receiversReadyToCommit
      *  method.
      */
     private boolean _isVisited = false;
@@ -979,71 +943,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /** Indicator that a put() is waiting on this receiver. */
     private Thread _putWaiting = null;
 
-    /** The threads to be released from their blocking state, and the
-     *  results associated with them. The keys are threads; the values
-     *  are Hashtables.  Each Hashtable in the values maps receivers
-     *  to the tokens that they contain.
-     */
-    //private static Hashtable _releasedThreads = new Hashtable();
-
     /** Array with just one receiver, this one, for convenience. */
     private Receiver[][] _thisReceiver = new Receiver[1][1];
 
     /** The token being transferred during the rendezvous. */
     private Token _token;
-}
-
-class ClassLoaderWrapper extends ClassLoader {
-    
-    ClassLoaderWrapper(ClassLoader classLoader) {
-        _loader = classLoader;
-    }
-
-    public synchronized void clearAssertionStatus() {
-        _loader.clearAssertionStatus();
-    }
-
-    public URL getResource(String name) {
-        return _loader.getResource(name);
-    }
-
-    public InputStream getResourceAsStream(String name) {
-        return _loader.getResourceAsStream(name);
-    }
-
-    public Enumeration getResources(String name) throws IOException {
-        return _loader.getResources(name);
-    }
-
-    public Class loadClass(String name) throws ClassNotFoundException {
-        return _loader.loadClass(name);
-    }
-
-    public synchronized void setClassAssertionStatus(String className, boolean enabled) {
-        _loader.setClassAssertionStatus(className, enabled);
-    }
-
-    public synchronized void setDefaultAssertionStatus(boolean enabled) {
-        _loader.setDefaultAssertionStatus(enabled);
-    }
-
-    public synchronized void setPackageAssertionStatus(String packageName, boolean enabled) {
-        _loader.setPackageAssertionStatus(packageName, enabled);
-    }
-    
-    public Object getData() {
-        return _data;
-    }
-    
-    public ClassLoader getLoader() {
-        return _loader;
-    }
-    
-    public void setData(Object data) {
-        _data = data;
-    }
-    
-    private Object _data;
-    
-    private ClassLoader _loader;
 }
