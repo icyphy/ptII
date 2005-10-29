@@ -162,6 +162,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
 
         TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
         compositeActorHelper.generateFireCode(code);
+        compositeActorHelper.generateSwitchModeCode(code);
 
         code.append("}\n");
     }

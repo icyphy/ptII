@@ -151,6 +151,13 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
         return sharedCode;
     }
+    
+    public void generateSwitchModeCode(StringBuffer code) 
+            throws IllegalActionException {
+        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+        directorHelper.generateSwitchModeCode(code);       
+    }
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.

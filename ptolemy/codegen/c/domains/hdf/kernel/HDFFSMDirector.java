@@ -27,7 +27,13 @@
  */
 package ptolemy.codegen.c.domains.hdf.kernel;
 
+import java.util.Iterator;
+
+import ptolemy.codegen.c.domains.fsm.kernel.FSMActor;
 import ptolemy.codegen.c.domains.fsm.kernel.MultirateFSMDirector;
+import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFDirector
@@ -51,4 +57,36 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
+    
+    /** Generate the code for the firing of actors.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating fire code for the actor.
+     */
+    public void generateFireCode(StringBuffer code)
+            throws IllegalActionException {       
+        
+        // generate code for refinements
+        _generateRefinementCode(code);
+    }   
+    
+    public void generateSwitchModeCode(StringBuffer code) 
+            throws IllegalActionException {
+
+        super.generateSwitchModeCode(code);
+        
+        ptolemy.domains.fsm.kernel.FSMActor controller = 
+            ((ptolemy.domains.fsm.kernel.FSMDirector)
+            getComponent()).getController();
+    
+        FSMActor controllerHelper = (FSMActor) _getHelper(controller);
+        // generate code for non-preemptive transition
+        code.append("\n/* Nonpreepmtive Transition */\n\n");
+        controllerHelper.generateFireCode(code, new TransitionRetriever() {
+            public Iterator retrieveTransitions(State state) {
+                return state.nonpreemptiveTransitionList().iterator();  
+            }
+        });
+        
+    }
 }

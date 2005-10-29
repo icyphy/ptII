@@ -169,6 +169,19 @@ public class Director implements ActorCodeGenerator {
 
         return code.toString();
     }
+    
+    public void generateSwitchModeCode(StringBuffer code) 
+            throws IllegalActionException {
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = 
+                    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            helperObject.generateSwitchModeCode(code);
+        }      
+    }
+
 
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
@@ -362,22 +375,15 @@ public class Director implements ActorCodeGenerator {
      
         for (int j = 0; j < length; j++) {
             // Update the offset for each channel.
-            if (helper.getReadOffset(port, j) 
-                    instanceof Integer) {
-                int offset = ((Integer) helper
-                        .getReadOffset(port, j)).intValue();
-                offset = (offset + rate)
-                        % helper.getBufferSize(port, j);
-                helper.setReadOffset(port, j, new Integer(
-                        offset));
+            if (helper.getReadOffset(port, j) instanceof Integer) {
+                int offset = ((Integer) helper.getReadOffset(port, j)).intValue();
+                offset = (offset + rate)% helper.getBufferSize(port, j);
+                helper.setReadOffset(port, j, new Integer(offset));
             } else {
                 int modulo = helper.getBufferSize(port, j) - 1;
-                String offsetVariable = 
-                        (String) helper.getReadOffset(port, j);
-                code.append((String) 
-                        offsetVariable + " = (" + offsetVariable 
-                        + " + " + rate 
-                        + ")&" + modulo + ";\n");
+                String offsetVariable = (String) helper.getReadOffset(port, j);
+                code.append((String) offsetVariable + " = (" + offsetVariable 
+                        + " + " + rate + ")&" + modulo + ";\n");
             }
         }
     }
@@ -414,21 +420,17 @@ public class Director implements ActorCodeGenerator {
                         .getWriteOffset(sinkPort, sinkChannelNumber);
                 if (offsetObject instanceof Integer) {
                     int offset = ((Integer) offsetObject).intValue();
-                    offset = (offset + rate)
-                            % helper.getBufferSize
+                    offset = (offset + rate) % helper.getBufferSize
                             (sinkPort, sinkChannelNumber);
                     helper.setWriteOffset(sinkPort, 
                             sinkChannelNumber, new Integer(offset));
                 } else {
                     int modulo = helper.getBufferSize
                             (sinkPort, sinkChannelNumber) - 1;
-                    String offsetVariable = 
-                            (String) helper.getWriteOffset
+                    String offsetVariable = (String) helper.getWriteOffset
                             (sinkPort, sinkChannelNumber);
-                    code.append((String) 
-                            offsetVariable + " = (" + offsetVariable 
-                            + " + " + rate 
-                            + ")&" + modulo + ";\n");
+                    code.append((String) offsetVariable + " = (" + offsetVariable 
+                            + " + " + rate + ")&" + modulo + ";\n");
                 }
             }
         }    

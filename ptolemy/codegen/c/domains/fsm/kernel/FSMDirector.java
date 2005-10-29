@@ -30,10 +30,13 @@ package ptolemy.codegen.c.domains.fsm.kernel;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
-import ptolemy.codegen.kernel.ActorCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -67,14 +70,15 @@ public class FSMDirector extends Director {
      */
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+        ptolemy.domains.fsm.kernel.FSMActor controller = 
+                ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
                 .getController();
 
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         // generate code for preemptive transition
         code.append("\n/* Preepmtive Transition */\n\n");
-        controllerHelper._generateFireCode(code, new TransitionRetriever() {
+        controllerHelper.generateFireCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.preemptiveTransitionList().iterator();
             }
@@ -92,7 +96,7 @@ public class FSMDirector extends Director {
 
         // generate code for non-preemptive transition
         code.append("\n/* Nonpreepmtive Transition */\n\n");
-        controllerHelper._generateFireCode(code, new TransitionRetriever() {
+        controllerHelper.generateFireCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.nonpreemptiveTransitionList().iterator();
             }
@@ -107,7 +111,8 @@ public class FSMDirector extends Director {
      */
     protected void _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+        ptolemy.domains.fsm.kernel.FSMActor controller = 
+                ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
                 .getController();
 
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
@@ -134,8 +139,42 @@ public class FSMDirector extends Director {
 
             if (actors != null) {
                 for (int i = 0; i < actors.length; i++) {
-                    ActorCodeGenerator actorHelper = (ActorCodeGenerator) _getHelper((NamedObj) actors[i]);
+                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
+                            _getHelper((NamedObj) actors[i]);
                     actorHelper.generateFireCode(code);
+                    
+                    // update buffer offset after firing each actor once
+                    int[][] rates = actorHelper.getRates();
+                    Iterator ports = ((Entity) actors[i]).portList().iterator();
+                    int portNumber = 0;
+                    while (ports.hasNext()) {                    
+                        IOPort port = (IOPort) ports.next();
+                        if (rates != null) {
+                            code.append("switch (" + actorHelper.processCode
+                                    ("$actorSymbol(currentConfiguration)")
+                                    + ") {\n");
+                            for (int k = 0; k < rates.length; k++) {
+                               code.append("case " + k + ":\n");
+                               int rate = rates[k][portNumber];
+                               if (port.isInput()) {
+                                   _updatePortOffset(port, code, rate);     
+                               } else {
+                                   _updateConnectedPortsOffset(port, code, rate);   
+                               } 
+                               code.append("break;\n");
+                            }
+                            code.append("}\n");
+                        } else {
+                            int rate = DFUtilities.getRate(port);
+                            if (port.isInput()) {
+                                _updatePortOffset(port, code, rate);     
+                            } else {
+                                _updateConnectedPortsOffset(port, code, rate);   
+                            } 
+                        }
+                        portNumber++;
+                    }
+                    
                 }
             }
 

@@ -86,19 +86,20 @@ public class HDFDirector extends SDFDirector {
                 (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
         
         int numberOfActors = container.deepEntityList().size();
-        int[] ActorConfigurations = new int[numberOfActors];
+        int[] actorConfigurations = new int[numberOfActors];
         
         code.append("switch (" 
                 + containerHelper.processCode("$actorSymbol(currentConfiguration)")
                 + ") {\n");
-        for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
+        for (int configurationNumber = 0; configurationNumber < _schedules.length; 
+                configurationNumber++) {
             
             int remainder = configurationNumber;
             for (int i = 0; i < numberOfActors - 1; i++) {
-                ActorConfigurations[i] = remainder / _divisors[i+1];
+                actorConfigurations[i] = remainder / _divisors[i+1];
                 remainder = remainder % _divisors[i+1]; 
             }    
-            ActorConfigurations[numberOfActors - 1] = remainder;
+            actorConfigurations[numberOfActors - 1] = remainder;
             
             code.append("case " + configurationNumber + ":\n");
 
@@ -131,7 +132,7 @@ public class HDFDirector extends SDFDirector {
                         IOPort port = (IOPort) ports.next();
                         int rate;
                         if (rates != null) {
-                            rate = rates[ActorConfigurations[actorNumber]][j];    
+                            rate = rates[actorConfigurations[actorNumber]][j];    
                         } else {
                             rate = DFUtilities.getRate(port);
                         }
@@ -144,8 +145,6 @@ public class HDFDirector extends SDFDirector {
                     }
                 }
             } 
-            
-            _updateConfigurationNumber(code);
                        
             code.append("break;\n");
         }
@@ -185,7 +184,8 @@ public class HDFDirector extends SDFDirector {
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = 
                 (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
         
-        code.append(containerHelper.processCode("static int $actorSymbol(currentConfiguration);\n"));
+        code.append(containerHelper.
+                processCode("static int $actorSymbol(currentConfiguration);\n"));
         
         List actors = container.deepEntityList();
         
@@ -213,7 +213,9 @@ public class HDFDirector extends SDFDirector {
         _schedules = new Schedule[numberOfConfigurationsOfContainer];  
         int[][] containerRates = new int[numberOfConfigurationsOfContainer][];
         int[] actorConfigurations = new int[numberOfActors];
-        for (int configurationNumber = 0; configurationNumber < numberOfConfigurationsOfContainer; configurationNumber++) {
+        for (int configurationNumber = 0; 
+                configurationNumber < numberOfConfigurationsOfContainer; 
+                configurationNumber++) {
             int remainder = configurationNumber;
             for (int j = 0; j < numberOfActors - 1; j++) {
                 actorConfigurations[j] = remainder / _divisors[j+1];
@@ -272,6 +274,15 @@ public class HDFDirector extends SDFDirector {
         return code.toString();
     }
     
+    public void generateSwitchModeCode(StringBuffer code) 
+            throws IllegalActionException {
+
+        super.generateSwitchModeCode(code);
+
+        _updateConfigurationNumber(code);
+
+    }
+    
 
 	/** Generate code for transferring enough tokens to complete an internal 
      *  iteration.
@@ -302,7 +313,8 @@ public class HDFDirector extends SDFDirector {
         code.append("switch (" 
                 + containerHelper.processCode("$actorSymbol(currentConfiguration)")
                 + ") {\n");
-        for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
+        for (int configurationNumber = 0; configurationNumber < _schedules.length; 
+                configurationNumber++) {
             
             int[][] rates = containerHelper.getRates();
             int rate = rates[configurationNumber][portNumber];
@@ -366,7 +378,8 @@ public class HDFDirector extends SDFDirector {
         code.append("switch (" 
                 + containerHelper.processCode("$actorSymbol(currentConfiguration)")
                 + ") {\n");
-        for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
+        for (int configurationNumber = 0; configurationNumber < _schedules.length; 
+                configurationNumber++) {
             
             int[][] rates = containerHelper.getRates();
             int rate = rates[configurationNumber][portNumber];
@@ -492,30 +505,36 @@ public class HDFDirector extends SDFDirector {
             throws IllegalActionException {
         
         ptolemy.domains.hdf.kernel.HDFDirector director = 
-            (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
-         CompositeActor container = (CompositeActor) director.getContainer();
+                (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
+        CompositeActor container = (CompositeActor) director.getContainer();
         int numberOfActors = container.deepEntityList().size();
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = 
                 (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
         
-        code.append(containerHelper.processCode("$actorSymbol(currentConfiguration) = "));
+        code.append(containerHelper.
+                processCode("$actorSymbol(currentConfiguration) = "));
         Iterator actors = container.deepEntityList().iterator();
         int actorNumber = 0;
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper)
+                    _getHelper((NamedObj) actor);
             int[][] rates = actorHelper.getRates();
-            if (rates != null) {
-                code.append(actorHelper.processCode
-                        ("$actorSymbol(currentConfiguration)") 
-                        + " * " + _divisors[actorNumber]); 
-            } else {
-                code.append("0");   
-            }
             if (actorNumber < numberOfActors - 1) {
-                code.append(" + ");        
+                if (rates != null) {
+                    code.append(actorHelper.processCode
+                            ("$actorSymbol(currentConfiguration)") 
+                            + " * " + _divisors[actorNumber + 1] + " + "); 
+                } else {
+                    code.append("0 + ");   
+                }
             } else {
-                code.append(";\n");    
+                if (rates != null) {
+                    code.append(actorHelper.processCode
+                            ("$actorSymbol(currentConfiguration);\n")); 
+                } else {
+                    code.append("0;\n");   
+                }    
             }
             actorNumber++;
         }    

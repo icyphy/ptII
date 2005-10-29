@@ -80,54 +80,14 @@ public class FSMActor extends CCodeGeneratorHelper {
             throws IllegalActionException {
         super.generateFireCode(code);
 
-        _generateFireCode(code, new TransitionRetriever() {
+        generateFireCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.outgoingPort.linkedRelationList().iterator();
             }
         });
     }
-
-    /** Generate the initialize code of the associated FSMActor.
-     *  @return The processed code string.
-     *  @exception IllegalActionException
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer codeBuffer = new StringBuffer();
-        codeBuffer.append(super.generateInitializeCode());
-
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
-        State initialState = fsmActor.getInitialState();
-        
-        _updateCurrentState(codeBuffer, initialState, 0);
-        
-        _updateConfigurationNumber(codeBuffer, initialState, 0);
-        
-        return processCode(codeBuffer.toString());
-    }
-
-    /** Generate the preinitialize code of the associated FSMActor.
-     *  @return The processed code string.
-     *  @exception IllegalActionException
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        _scope = new HelperScope();
-        code.append(super.generatePreinitializeCode());
-        code.append("static int $actorSymbol(currentState);\n");
-        code.append("static unsigned char $actorSymbol(transitionFlag);\n");
-        return processCode(code.toString());
-    }
-
-    public Set generateSharedCode() throws IllegalActionException {
-        Set set = new HashSet();
-        set.addAll(super.generateSharedCode());
-        set.add("#define true 1\n#define false 0\n");
-        return set;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-    protected void _generateFireCode(StringBuffer code,
+    
+    public void generateFireCode(StringBuffer code,
             TransitionRetriever transitionRetriever)
             throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
@@ -385,6 +345,53 @@ public class FSMActor extends CCodeGeneratorHelper {
         code.append(processCode(codeBuffer.toString()));
     }
     
+
+    /** Generate the initialize code of the associated FSMActor.
+     *  @return The processed code string.
+     *  @exception IllegalActionException
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer codeBuffer = new StringBuffer();
+        codeBuffer.append(super.generateInitializeCode());
+
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        State initialState = fsmActor.getInitialState();
+        
+        _updateCurrentState(codeBuffer, initialState, 0);
+        
+        _updateConfigurationNumber(codeBuffer, initialState, 0);
+        
+        return processCode(codeBuffer.toString());
+    }
+
+    /** Generate the preinitialize code of the associated FSMActor.
+     *  @return The processed code string.
+     *  @exception IllegalActionException
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        _scope = new HelperScope();
+        code.append(super.generatePreinitializeCode());
+        code.append("static int $actorSymbol(currentState);\n");
+        code.append("static unsigned char $actorSymbol(transitionFlag);\n");
+        return processCode(code.toString());
+    }
+
+    public Set generateSharedCode() throws IllegalActionException {
+        Set set = new HashSet();
+        set.addAll(super.generateSharedCode());
+        set.add("#define true 1\n#define false 0\n");
+        return set;
+    }
+
+    public static interface TransitionRetriever {
+        public Iterator retrieveTransitions(State state);
+    }
+
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** Generate code to update configuration number of this FSMActor's
      *  container as a function of the given state and the 
      *  configuration number of the refinement of the given state.
@@ -456,10 +463,6 @@ public class FSMActor extends CCodeGeneratorHelper {
             }
             stateCounter++;
         }    
-    }
-
-    protected static interface TransitionRetriever {
-        public Iterator retrieveTransitions(State state);
     }
 
     ///////////////////////////////////////////////////////////////////

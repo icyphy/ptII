@@ -86,7 +86,7 @@ public class MultirateFSMDirector extends FSMDirector {
         
         // generate code for non-preemptive transition
         code.append("\n/* Nonpreepmtive Transition */\n\n");
-        controllerHelper._generateFireCode(code, new TransitionRetriever() {
+        controllerHelper.generateFireCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.nonpreemptiveTransitionList().iterator();  
             }

@@ -135,6 +135,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public Set generateSharedCode() throws IllegalActionException {
         return new HashSet();
     }
+    
+    public void generateSwitchModeCode(StringBuffer code) 
+            throws IllegalActionException {
+
+    }
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
@@ -1295,16 +1300,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 '.', '_'));
                     } else {
                         return new ObjectToken(inputPort.getFullName().replace(
-                                '.', '_')
-                                + "[0]");
+                                '.', '_') + "[0]");
                     }
                 }
 
                 for (int i = 0; i < inputPort.getWidth(); i++) {
                     if (name.equals(inputPort.getName() + "_" + i)) {
                         return new ObjectToken(inputPort.getFullName().replace(
-                                '.', '_')
-                                + "[" + i + "]");
+                                '.', '_') + "[" + i + "]");
                     }
                 }
             }
@@ -1319,12 +1322,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             if (result != null) {
                 if (_codeGenerator._modifiedVariables.contains(result)) {
-                    return new ObjectToken(result.getFullName().replace('.',
-                            '_'));
+                    return new ObjectToken(result.getFullName().replace('.', '_'));
                 } else {
-                    return new ObjectToken("("
-                            + getParameterValue(name, result.getContainer())
-                            + ")");
+                    return new ObjectToken
+                            ("(" + getParameterValue(name, result.getContainer()) + ")");
                 }
             } else {
                 return null;
