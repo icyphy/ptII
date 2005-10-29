@@ -111,11 +111,11 @@ public class HuffmanCoder extends HuffmanBasic {
         Token inputToken = (Token) input.get(0);
 
         // Find the token in the alphabet;
-        boolean validInput = false;
+        //boolean validInput = false;
 
         for (int i = 0; i < _pmf.length; i++) {
             if (inputToken.equals(alphabetTokens[i])) {
-                validInput = true;
+                //validInput = true;
                 _sendBooleans(_codeBook[i]);
                 break;
             }
