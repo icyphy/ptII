@@ -28,7 +28,6 @@
 package ptolemy.domains.giotto.kernel;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -266,56 +265,6 @@ public class GiottoScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // if they are correct, they should go the ptolemy.math package...
-    private int _gcd(int[] array) {
-        int count = array.length;
-        int HighestNumber = array[0];
-        int HoldX = 1;
-        int X;
-        int i;
-        int c = 1;
-
-        for (i = 1; i < count; ++i) {
-            if (array[i] == array[0]) {
-                ++c;
-            }
-
-            if (array[i] > HighestNumber) {
-                HighestNumber = array[i] / 2;
-            }
-        }
-
-        if (c == count) {
-            return array[0];
-        }
-
-        X = 2;
-        i = 0;
-
-        while (true) {
-            // Check for Remainder
-            if ((array[i] % X) != 0) {
-                X++;
-                i = 0;
-            }
-            // No remainder, passed
-            else {
-                ++i;
-            }
-
-            if (i >= count) {
-                HoldX = X;
-                i = 0;
-                X++;
-            }
-
-            if (X >= (HighestNumber + 1)) {
-                break;
-            }
-        }
-
-        return HoldX;
-    }
 
     private int _lcm(int[] array) {
         int count = array.length;
@@ -359,46 +308,4 @@ public class GiottoScheduler extends Scheduler {
     private int _giottoSchedulerTime = 0;
 
     private int _lcm = 1;
-
-    /* This class implements the Comparator interface for actors
-     based on the <I>frequency</I> parameter of the actors.
-     The frequency of an actor which does not have a <I>frequency</I>
-     parameter is _DEFAULT_GIOTTO_FREQUENCY.
-     Given two actors A1 and A2, compare(A1, A2) is -1 (A1 < A2) if A1's
-     frequency is strictly less than A2's frequency, or compare(A1, A2) is 0
-     (A1 == A2) if A1's frequency is equal to A2's frequency, or
-     compare(A1, A2) is 1 (A1 > A2) if A1's frequency is strictly greater
-     than A2's frequency.
-     */
-    private class GiottoActorComparator implements Comparator {
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                    ////
-
-        /** Compare two actors based on their <I>frequency</I> parameter.
-         *  The frequency of an actor that does not have a <I>frequency</I>
-         *  parameter is _DEFAULT_GIOTTO_FREQUENCY.
-         *
-         *  @param actor1 The first actor to be compared.
-         *  @param actor2 The second actor to be compared.
-         *  @return -1 if the frequency of the first actor is strictly less
-         *   than that of the second actor, 0 if the frequencies are equal,
-         *   1 otherwise.
-         *  @exception ClassCastException If an argument is null or not an
-         *   instance of Actor.
-         */
-        public int compare(Object actor1, Object actor2) {
-            if ((actor1 != null) && actor1 instanceof Actor && (actor2 != null)
-                    && actor2 instanceof Actor) {
-                if (getFrequency((Actor) actor1) < getFrequency((Actor) actor2)) {
-                    return -1;
-                } else if (getFrequency((Actor) actor1) == getFrequency((Actor) actor2)) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            } else {
-                throw new ClassCastException();
-            }
-        }
-    }
 }
