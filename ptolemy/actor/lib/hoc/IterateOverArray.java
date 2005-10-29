@@ -967,7 +967,8 @@ public class IterateOverArray extends TypedCompositeActor implements
          *   actor is not opaque.
          */
         public void fire() throws IllegalActionException {
-        super.fire();
+            // Don't call "super.fire();" here, this actor contains its
+            // own director.
             CompositeActor container = (CompositeActor) getContainer();
             Iterator actors = container.entityList().iterator();
             _postfireReturns = true;
