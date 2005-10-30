@@ -827,60 +827,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     private static Set _receiversReadyToCommit(Receiver[][] receivers,
             boolean isPut) {
-        return _receiversReadyToCommit(receivers, isPut, null);
-    }
-    
-    /** Get the receivers that are ready to form a rendezvous according to the
-     *  rendezvous semantics. If no rendezvous can be formed starting for the
-     *  given array of receivers, null is returned.
-     *
-     *  @param receivers The array of receivers to be put to or get from.
-     *  @param isPut If true, the rendezvous is to put tokens to the
-     *         receivers; if false, the rendezvous is to get tokens from
-     *         the receivers.
-     *  @param readyReceivers The set of receivers that are already ready for a
-     *         rendezvous, or null if no receivers are already ready.
-     *  @return A set of receivers that participate in the rendezvous if
-     *         it can be formed, or null if no rendezvous can be formed.
-     *  @see #_commitRendezvous(Set, RendezvousDirector)
-     */
-    private static Set _receiversReadyToCommit(Receiver[][] receivers,
-            boolean isPut, Set readyReceivers) {
-        if (readyReceivers == null) {
-            readyReceivers = new HashSet();
-        }
-        int oldReadyReceiversSize = readyReceivers.size();
-        Set checkedReceivers =
-            _receiversReadyToCommitRecursive(receivers, isPut, readyReceivers);
-        if (checkedReceivers == null) {
-            return null;
-        }
-        readyReceivers.addAll(checkedReceivers);
-        if (readyReceivers.size() == oldReadyReceiversSize) {
-            return readyReceivers;
-        }
-        Iterator receiverIterator = checkedReceivers.iterator();
-        while (receiverIterator.hasNext()) {
-            RendezvousReceiver receiver =
-                (RendezvousReceiver)receiverIterator.next();
-            Receiver[][][] symmetricReceivers = new Receiver[][][] {
-                    receiver._symmetricGetReceivers,
-                    receiver._symmetricPutReceivers
-            };
-            for (int i = 0; i < 2; i++) {
-                if (symmetricReceivers[i] != null) {
-                    Set newCheckedReceivers =
-                        _receiversReadyToCommit(symmetricReceivers[i],i == 1,
-                                readyReceivers);
-                    if (newCheckedReceivers == null) {
-                        return null;
-                    } else {
-                        readyReceivers.addAll(newCheckedReceivers);
-                    }
-                }
-            }
-        }
-        return readyReceivers;
+        return _receiversReadyToCommitRecursive(receivers, isPut, null);
     }
 
     /** Get the receivers that are ready to form a rendezvous according to the
@@ -960,9 +907,48 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                     // Otherwise, add the current receiver and
                                     // the receivers visited in the sub-tree to
                                     // the set of ready receivers.
-                                    checkedReceivers.add(castReceiver);
+                                    /*checkedReceivers.add(castReceiver);
                                     checkedReceivers.addAll(
-                                            nestedReadyReceivers);
+                                            nestedReadyReceivers);*/
+                                    
+                                    Set newReadyReceivers = new HashSet();
+                                    if (readyReceivers != null) {
+                                        newReadyReceivers.addAll(readyReceivers);
+                                    }
+                                    newReadyReceivers.addAll(checkedReceivers);
+                                    newReadyReceivers.add(castReceiver);
+                                    newReadyReceivers.addAll(nestedReadyReceivers);
+                                    Iterator receiverIterator = nestedReadyReceivers.iterator();
+                                    while (receiverIterator.hasNext()) {
+                                        RendezvousReceiver receiver =
+                                            (RendezvousReceiver)receiverIterator.next();
+                                        Receiver[][][] symmetricReceivers = new Receiver[][][] {
+                                                receiver._symmetricGetReceivers,
+                                                receiver._symmetricPutReceivers
+                                        };
+                                        for (int k = 0; k < 2; k++) {
+                                            if (symmetricReceivers[k] != null) {
+                                                Set newCheckedReceivers =
+                                                    _receiversReadyToCommitRecursive(symmetricReceivers[k],k == 1,
+                                                            newReadyReceivers);
+                                                if (newCheckedReceivers == null) {
+                                                    newReadyReceivers.clear();
+                                                    break;
+                                                } else {
+                                                    newReadyReceivers.addAll(newCheckedReceivers);
+                                                }
+                                            }
+                                        }
+                                        if (newReadyReceivers.isEmpty()) {
+                                            checkedReceivers.clear();
+                                            break;
+                                        } else {
+                                            checkedReceivers.addAll(newReadyReceivers);
+                                        }
+                                    }
+                                    if (checkedReceivers.isEmpty()) {
+                                        break;
+                                    }
                                 } // if (nestedReadyReceivers == null)
                             } /* if ((castReceiver._putWaiting == null)
                                          || (castReceiver._getWaiting == null))*/
@@ -971,7 +957,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 } // for (int j = 0; j < receivers[i].length; j++)
 
                 if ((isConditional && (checkedReceivers.size() > 0))
-                        || (!isConditional && (checkedReceivers.size() == 0))) {
+                        || (!isConditional && (checkedReceivers.isEmpty()))) {
                     // If either condition is true (the rendezvous has already
                     // been formed or the rendezvous cannot be formed), just
                     // return.
