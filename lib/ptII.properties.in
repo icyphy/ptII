@@ -47,3 +47,6 @@ ptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@
 
 # TOSROOT without /cygdrive
 ptolemy.ptII.tosroot=@TOSROOT_NO_CYGDRIVE@
+
+# TOSDIR without /cygdrive
+ptolemy.ptII.tosdir=@TOSDIR_NO_CYGDRIVE@
