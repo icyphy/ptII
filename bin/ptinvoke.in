@@ -883,7 +883,7 @@ and run:
 
 	    if [ -z "TOSDIR" ]; then
 		echo "$0: Warning the TOSDIR environment variable is not set?"
-		echo "\$TOSROOT should be set to the tos/ directory in TinyOS"
+		echo "\$TOSDIR should be set to the tos/ directory in TinyOS"
 		echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
 		echo ""
 	    else 	
@@ -911,7 +911,7 @@ and run:
 		    echo ""
 		fi    
             fi
-	    javaflag="\"-Dptolemy.ptII.tosroot=$TOSROOT\" $ALL_JFLAG"
+	    javaflag="\"-Dptolemy.ptII.tosroot=$TOSROOT\" \"-Dptolemy.ptII.tosdir=$TOSDIR\" $ALL_JFLAG"
 	else    
 	    javaflag="$ALL_JFLAG"
 	fi	    

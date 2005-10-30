@@ -2718,6 +2718,11 @@ changequote([, ])dnl
      For details, see $PTII/ptolemy/domains/ptinyos/README.txt.])
         else 
 	    AC_MSG_RESULT([$TOSDIR])
+        # Use changequote to protect the square brackets in sed
+changequote(<<, >>)dnl
+        TOSDIR_NO_CYGDRIVE=`echo "$TOSDIR" | sed 's@^/cygdrive/\([a-zA-Z]\)/@\1:/@'`
+changequote([, ])dnl
+
         fi
 
         AC_MSG_CHECKING([for PTINYOS_MOMLROOT])
@@ -3435,8 +3440,9 @@ AC_SUBST(TINI_DIR)
 # Location of tools.jar, usually $(PTJAVA_HOME)/../lib/tools.jar
 AC_SUBST(TOOLS_JAR)
 
-# Location of TinyOS, used by nc domain
+# Location of TinyOS, used by ptinyos domain
 AC_SUBST(TOSROOT_NO_CYGDRIVE)
+AC_SUBST(TOSDIR_NO_CYGDRIVE)
 
 # giotto/gdk.jar file used by GiottoSDK
 AC_SUBST(GIOTTO_CLASSES)
