@@ -516,6 +516,8 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/psdf/kernel/*.java \
 			../ptolemy/domains/petrinet/kernel/*.java \
+			../ptolemy/domains/rendezvous/kernel/*.java \
+			../ptolemy/domains/rendezvous/lib/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
