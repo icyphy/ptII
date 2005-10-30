@@ -124,12 +124,14 @@ public class Merge extends TypedAtomicActor {
         if (_debugging) {
             _debug("Ready to rendezvous with an input.");
         }
-        Token received = RendezvousReceiver.getFromAny(
+        /*Token received = RendezvousReceiver.getFromAny(
                 input.getReceivers(), (RendezvousDirector)director);
         if (_debugging) {
             _debug("Received input: " + received);
             _debug("Sending to the output.");
         }
-        output.send(0, received);
+        output.send(0, received);*/
+        RendezvousReceiver.getFromAnyPutToAll(input.getReceivers(),
+                output.getRemoteReceivers(), (RendezvousDirector)director);
     }
 }
