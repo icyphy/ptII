@@ -126,7 +126,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
             RendezvousDirector director) throws TerminateProcessException {
         Map result = null;
         try {
-            result = _getOrPutTokens(receivers, null, director, null, GET_FROM_ALL);
+            result = _getOrPutTokens(receivers, null, director, null,
+                    GET_FROM_ALL);
         } catch (IllegalActionException iae) {
         }
 
@@ -160,7 +161,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
             RendezvousDirector director) throws TerminateProcessException {
         Map result = null;
         try {
-            result = _getOrPutTokens(receivers, null, director, null, GET_FROM_ANY);
+            result = _getOrPutTokens(receivers, null, director, null,
+                    GET_FROM_ANY);
         } catch (IllegalActionException iae) {
         }
 
@@ -191,7 +193,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public static void getFromAnyPutToAll(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director)
             throws IllegalActionException, TerminateProcessException {
-        _getOrPutTokens(getReceivers, putReceivers, director, null, GET_FROM_ANY_PUT_TO_ALL);
+        _getOrPutTokens(getReceivers, putReceivers, director, null,
+                GET_FROM_ANY_PUT_TO_ALL);
     }
 
     /** Return true. This method returns true in all cases
@@ -600,10 +603,16 @@ public class RendezvousReceiver extends AbstractReceiver implements
         // The result table for all the receivers.
         Map result = new HashMap();
         
+        if (receivers.size() == 2) {
+            int x = 0;
+        }
+        
         // Backup result tokens for the receivers, and release the threads
         // blocked at those receivers.
         TopologicalSort sort = new TopologicalSort(receivers);
+        int num = 0;
         while (sort.hasNext()) {
+            num++;
             RendezvousReceiver castReceiver =
                 (RendezvousReceiver) sort.next();
             result.put(castReceiver, castReceiver._token);
@@ -708,6 +717,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
             boolean isGet = (flag & GET) == GET;
             boolean isPut = (flag & PUT) == PUT;
+            boolean isGetConditional =
+                (flag & GET_CONDITIONAL) == GET_CONDITIONAL;
+            boolean isPutConditional =
+                (flag & PUT_CONDITIONAL) == PUT_CONDITIONAL;
             boolean isSymmetric = isPut && isGet;
             
             if (isGet) {
@@ -721,10 +734,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                 castReceiver._getWaiting = theThread;
                                 castReceiver._getReceivers = getReceivers;
                                 castReceiver._getConditional =
-                                    ((flag & GET_CONDITIONAL) == GET_CONDITIONAL);
+                                    isGetConditional;
                                 
                                 if (isSymmetric) {
-                                    castReceiver._symmetricPutReceivers = putReceivers;
+                                    castReceiver._symmetricPutReceivers =
+                                        putReceivers;
                                 }
                             }
                         }
@@ -744,10 +758,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                 castReceiver._putReceivers = putReceivers;
                                 
                                 IOPort port = castReceiver.getContainer();
-                                if ((flag & PUT_CONDITIONAL) == PUT_CONDITIONAL) {
+                                if (isPutConditional) {
                                     castReceiver._putConditional = true;
                                     castReceiver._token =
-                                        token == null ? null : port.convert(token);
+                                        token == null ? null :
+                                            port.convert(token);
                                 } else {
                                     castReceiver._putConditional = false;
                                     try {
@@ -755,11 +770,13 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                     } catch (Throwable e) {
                                     }
                                     castReceiver._token =
-                                        token == null ? null : port.convert(token);
+                                        token == null ? null :
+                                            port.convert(token);
                                 }
                                 
                                 if (isSymmetric) {
-                                    castReceiver._symmetricGetReceivers = getReceivers;
+                                    castReceiver._symmetricGetReceivers =
+                                        getReceivers;
                                 }
                             }
                         }
@@ -769,9 +786,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
             Set rendezvousReceivers;
             if (getReceivers != null) {
-                rendezvousReceivers = _receiversReadyToCommit(getReceivers, false);
+                rendezvousReceivers =
+                    _receiversReadyToCommit(getReceivers, false);
             } else {
-                rendezvousReceivers = _receiversReadyToCommit(putReceivers, true);
+                rendezvousReceivers =
+                    _receiversReadyToCommit(putReceivers, true);
             }
             
             if (rendezvousReceivers == null) {
@@ -831,7 +850,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
             readyReceivers = new HashSet();
         }
         int oldReadyReceiversSize = readyReceivers.size();
-        Set checkedReceivers = _receiversReadyToCommitRecursive(receivers, isPut, readyReceivers);
+        Set checkedReceivers =
+            _receiversReadyToCommitRecursive(receivers, isPut, readyReceivers);
         if (checkedReceivers == null) {
             return null;
         }
@@ -841,7 +861,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
         }
         Iterator receiverIterator = checkedReceivers.iterator();
         while (receiverIterator.hasNext()) {
-            RendezvousReceiver receiver = (RendezvousReceiver)receiverIterator.next();
+            RendezvousReceiver receiver =
+                (RendezvousReceiver)receiverIterator.next();
             Receiver[][][] symmetricReceivers = new Receiver[][][] {
                     receiver._symmetricGetReceivers,
                     receiver._symmetricPutReceivers
@@ -849,12 +870,12 @@ public class RendezvousReceiver extends AbstractReceiver implements
             for (int i = 0; i < 2; i++) {
                 if (symmetricReceivers[i] != null) {
                     Set newCheckedReceivers =
-                        _receiversReadyToCommit(symmetricReceivers[i], i == 1, readyReceivers);
+                        _receiversReadyToCommit(symmetricReceivers[i],i == 1,
+                                readyReceivers);
                     if (newCheckedReceivers == null) {
                         return null;
                     } else {
                         readyReceivers.addAll(newCheckedReceivers);
-                        break;
                     }
                 }
             }
@@ -940,7 +961,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                     // the receivers visited in the sub-tree to
                                     // the set of ready receivers.
                                     checkedReceivers.add(castReceiver);
-                                    checkedReceivers.addAll(nestedReadyReceivers);
+                                    checkedReceivers.addAll(
+                                            nestedReadyReceivers);
                                 } // if (nestedReadyReceivers == null)
                             } /* if ((castReceiver._putWaiting == null)
                                          || (castReceiver._getWaiting == null))*/
@@ -1108,7 +1130,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
                         if (putReceivers[i] != null) {
                             for (int j = 0; j < putReceivers[i].length; j++) {
                                 if (putReceivers[i][j] != null) {
-                                    ((RendezvousReceiver)putReceivers[i][j])._token = token;
+                                    if (!_receivers.contains(putReceivers[i][j])) {
+                                        continue;
+                                    }
+                                    
+                                    RendezvousReceiver castReceiver =
+                                        (RendezvousReceiver)putReceivers[i][j];
+                                    
+                                    castReceiver._token = token;
                                     _zeroInDegree.add(putReceivers[i][j]);
                                 }
                             }
@@ -1116,20 +1145,25 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     }
                 } else {
                     // TODO: put the token to only one channel.
+                    throw new InternalErrorException("Function not " +
+                            "implemented (possibly for Barrier and other " +
+                            "primitive actors).");
                 }
             }
             return next;
         }
         
         protected TopologicalSort(Set receivers) {
-            _initializeZeroInDegree(receivers);
+            _receivers = receivers;
+            _initializeZeroInDegree();
         }
         
-        private void _initializeZeroInDegree(Set receivers) {
+        private void _initializeZeroInDegree() {
             _zeroInDegree = new HashSet();
-            Iterator iterator = receivers.iterator();
+            Iterator iterator = _receivers.iterator();
             while (iterator.hasNext()) {
-                RendezvousReceiver receiver = (RendezvousReceiver)iterator.next();
+                RendezvousReceiver receiver =
+                    (RendezvousReceiver)iterator.next();
                 if (receiver._symmetricGetReceivers == null) {
                     _zeroInDegree.add(receiver);
                 }
@@ -1138,6 +1172,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 throw new InternalErrorException("Cyclic graph.");
             }
         }
+        
+        private Set _receivers;
         
         private Set _zeroInDegree;
     }
