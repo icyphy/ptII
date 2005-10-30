@@ -26,7 +26,7 @@
     </property>
     <entity name="MicaActor" class="ptolemy.domains.ptinyos.lib.MicaActor">
         <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
-            <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/CntToLedsInDE/output">
+            <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/CntToLeds/output">
             </property>
             <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
             </property>

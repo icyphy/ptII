@@ -517,7 +517,8 @@ public class PtinyOSDirector extends Director {
         File directory = destinationDirectory.asFile();
 
         if (!directory.isDirectory()) {
-            if (!directory.mkdir()) {
+            // Create parent directories as needed.
+            if (!directory.mkdirs()) {
                 throw new IllegalActionException(this,
                         "Could not create directory " + directory);
             }

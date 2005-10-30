@@ -26,12 +26,12 @@
     </property>
     <entity name="MicaActor" class="ptolemy.domains.ptinyos.lib.MicaActor">
         <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
-            <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SenseToLedsInDE/output">
+            <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/output">
             </property>
             <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 180.0]">
         </property>
         <port name="packetOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -190,7 +190,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 190.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
