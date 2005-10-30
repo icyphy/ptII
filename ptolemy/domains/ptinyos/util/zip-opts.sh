@@ -59,7 +59,7 @@ echo "/bin/rm -f $OUTPUT_DIR/$OUTPUT_FILENAME.tar.gz"
 find . -name opts -printf "%p "| xargs tar -cvf $OUTPUT_DIR/$OUTPUT_FILENAME.tar
 
 # Add the hacky files that are used to avoid including the current directory.
-find . -name opts-kludge* -printf "%p "| xargs tar -rvf $OUTPUT_DIR/$OUTPUT_FILENAME.tar
+find . -name opts-nolocalincludes -printf "%p "| xargs tar -rvf $OUTPUT_DIR/$OUTPUT_FILENAME.tar
 
 gzip $OUTPUT_DIR/$OUTPUT_FILENAME.tar
 
