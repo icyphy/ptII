@@ -639,12 +639,23 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return The time stamp of the next event in the event queue.
      */
     public Time getModelNextIterationTime() {
+        // Go through hierarchy to find the minimum step.
         Time aFutureTime = Time.POSITIVE_INFINITY;
 
         if (_eventQueue.size() > 0) {
             aFutureTime = _eventQueue.get().timeStamp();
         }
-
+        
+        Director executiveDirector = 
+            ((CompositeActor) getContainer()).getExecutiveDirector();
+        if (executiveDirector != null) {
+            Time aFutureTimeOfUpperLevel = 
+                executiveDirector.getModelNextIterationTime();
+            if (aFutureTime.compareTo(aFutureTimeOfUpperLevel) > 0) {
+                aFutureTime = aFutureTimeOfUpperLevel;
+            }
+        }
+        
         return aFutureTime;
     }
 
