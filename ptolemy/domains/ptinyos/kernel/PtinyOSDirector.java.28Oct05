@@ -116,33 +116,23 @@ public class PtinyOSDirector extends Director {
 
         // Set so that user must confirm each file that will be
         // overwritten.
-        // Note: Default to overwrite w/o asking.
         confirmOverwrite = new Parameter(this, "confirmOverwrite",
-                BooleanToken.FALSE);
+                BooleanToken.TRUE);
         confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
 
-        // Set path to tinyos-1.x directory.
+        // Set path to tos directory.
         tosRoot = new FileParameter(this, "TOSROOT");
         new Parameter(tosRoot, "allowFiles", BooleanToken.FALSE);
         new Parameter(tosRoot, "allowDirectories", BooleanToken.TRUE);
+
         String tosRootProperty = System.getProperty("ptolemy.ptII.tosroot");
+
         if (tosRootProperty != null) {
             tosRoot.setExpression(tosRootProperty);
         } else {
             tosRoot.setExpression("$PTII/vendors/ptinyos/tinyos-1.x");
         }
 
-        // Set path to tinyos-1.x/tos directory.
-        tosDir = new FileParameter(this, "TOSDIR");
-        new Parameter(tosDir, "allowFiles", BooleanToken.FALSE);
-        new Parameter(tosDir, "allowDirectories", BooleanToken.TRUE);
-        String tosDirProperty = System.getProperty("ptolemy.ptII.tosdir");
-        if (tosDirProperty != null) {
-            tosDir.setExpression(tosDirProperty);
-        } else {
-            tosDir.setExpression("$PTII/vendors/ptinyos/tinyos-1.x/tos");
-        }
-        
         // Set additional make flags.
         pflags = new StringParameter(this, "pflags");
         pflags.setExpression("-I%T/lib/Counters");
@@ -185,13 +175,9 @@ public class PtinyOSDirector extends Director {
      */
     public FileParameter destinationDirectory;
 
-    /** Path to the root of the TinyOS tree (.../tinyos-1.x).
+    /** Path to the TinyOS tree.
      */
     public FileParameter tosRoot;
-
-    /** Path to the tos directory of the TinyOS tree (.../tinyos-1.x/tos).
-     */
-    public FileParameter tosDir;
 
     /** If <i>false</i>, then overwrite the specified file if it exists
      *  without asking.  If <i>true</i> (the default), then if the file
@@ -944,23 +930,27 @@ public class PtinyOSDirector extends Director {
 
     /** Generate makefile.
      // FIXME example
-        
-TOSROOT=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x
-TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
-TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
-COMPONENT=_SenseToLedsInWireless_MicaBoard_MicaActor3071
-PFLAGS += -I%T/lib/Counters
-PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
-MY_PTCC_FLAGS += -D_PTII_NODE_NUM=_1SenseToLedsInWireless_1MicaBoard_1MicaActor3071
-PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
-include /home/celaine/ptII/mk/ptII.mk
-include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
+     TOSROOT=/home/celaine/tinyos/tinyos/tinyos-1.x-scratch
+     TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
+     COMPONENT=MicaActor3056
+     PFLAGS += -I%T/lib/Counters
+     PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
+     MY_PTCC_FLAGS += -D_PTII_NODE_NUM=MicaActor3056
+     PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
+     include /home/celaine/ptII/mk/ptII.mk
+     include /home/celaine/tinyos/tinyos/tinyos-1.x-scratch/tools/make/Makerules
      * @exception CancelException If the directory named by the
      * ptolemy.ptII.tosroot property does not exist.
      */
     private String _generateMakefile()
             throws IllegalActionException, CancelException {
+        // Use filename relative to toplevel PtinyOSDirector.
+        NamedObj toplevel = _toplevelNC();
+        String toplevelName = _sanitizedFullName(toplevel);
+
+        String tosRootNoSlashAtEnd = tosRoot.stringValue().replaceFirst("/$",
+                "");
 
         // Check to make sure that tosRoot exists
         if ( tosRoot == null || tosRoot.asFile() == null
@@ -982,39 +972,17 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             }
         }
 
-        // Check to make sure that tosDir exists
-        if ( tosDir == null || tosDir.asFile() == null
-                || !tosDir.asFile().isDirectory()) {
-            String fileName = 
-                (tosDir == null? "null" : tosDir.asFile().toString());
-            fileName = (fileName == null? "null": fileName);
-            String tosDirMessage =
-                "The TOSDIR directory \""
-                + fileName + "\" does not exist?  Compilation "
-                + "is likely to fail.  The TOSDIR environment "
-                + "variable should be set to the location of the "
-                + "TinyOS tree, typically "
-                + "$PTII/vendors/ptinyos/tinyos-1.x/tos.";
-            if (!MessageHandler.yesNoQuestion(
-                        tosDirMessage + "\nWould you like to proceed?"
-                        )) {
-                throw new CancelException();
-            }
-        }        
-
-        // String containing makefile text to generate.
         _CodeString text = new _CodeString();
-        text.addLine("TOSROOT=" + tosRoot.stringValue());
-        text.addLine("TOSDIR=" + tosDir.stringValue());
+        text.addLine("TOSROOT=" + tosRootNoSlashAtEnd);
+        text.addLine("TOSDIR=" + tosRootNoSlashAtEnd + "/tos");
 
-        // Path to ptII make platform.
+        // path to contrib
         // FIXME use pathseparator?
+        // FIXME make sure no trailing / before /../
         // FIXME: this will not work if TOSROOT has spaces in it.
         text
                 .addLine("TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make");
-        // Use full filename.
-        NamedObj toplevel = _toplevelNC();
-        String toplevelName = _sanitizedFullName(toplevel);
+
         text.addLine("COMPONENT=" + toplevelName);
 
         text.addLine("PFLAGS += " + pflags.stringValue());
@@ -1027,30 +995,30 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         text.addLine("MY_PTCC_FLAGS +=" + " -D_PTII_NODE_NUM="
                 + nativeMethodName);
 
-        // Look for ptII in the target list and add necessary PFLAGS.
         String[] targets = target.stringValue().split("\\s");
+
         for (int i = 0; i < targets.length; i++) {
             if (targets[i].equals("ptII") || targets[i].equals("all")) {
-                // Note: we do not conditionally add this in, so
-                // makefile must be regenerated if user wants to use
-                // makefile with non-ptII platform.
+                // Use these lines only if target platform is ptII.
+                text.addLine("ifeq ($(PLATFORM),ptII)");
                 text
                         .addLine("PFLAGS += \"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
+                text.addLine("endif");
+
+                // Expand $PTII, substitute / for \, and backslash space for space.
+                String ptIImk = StringUtilities.getProperty("ptolemy.ptII.dir")
+                        + "/mk/ptII.mk";
+                text.addLine("include " + ptIImk.replaceAll(" ", "\\\\ "));
+
                 break;
             }
         }
-        
-        // Expand $PTII, substitute / for \, and backslash space for space.
-        String ptIImk = StringUtilities.getProperty("ptolemy.ptII.dir")
-            + "/mk/ptII.mk";
-        text.addLine("include " + ptIImk.replaceAll(" ", "\\\\ "));
-        
-        // Handle pathnames with spaces: substitute / for \ and
-        // backslash space for space.
+
+        // Handle pathnames with spaces: substitute / for \ and backslash space for space.
         text.addLine("include "
                 + tosRoot.stringValue().replace('\\', '/').replaceAll(" ",
                         "\\\\ ") + "/tools/make/Makerules");
-        
+
         // Use .mk so that Emacs will be in the right mode
         String makefileName = toplevelName + ".mk";
         File directory = destinationDirectory.asFile();
@@ -1096,7 +1064,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
             List sourcePortList = inPort.sourcePortList();
 
-            // FIXME, generate a notice instead
+            // FIXMe, generate a notice instead
 
             /*
              if (sourcePortList.size() > 1) {
@@ -1331,6 +1299,22 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
      */
     private String _sanitizedFullName(NamedObj obj) {
         String objName = obj.getFullName();
+        objName = StringUtilities.sanitizeName(objName);
+
+        if (objName == "") {
+            objName = _unnamed;
+        }
+
+        objName = objName + _version;
+
+        return objName;
+    }
+
+    /** Get the sanitized name with workspace version number appended,
+     *  or "Unnamed" if no name.
+     */
+    private String _sanitizedName(NamedObj obj) {
+        String objName = obj.getName();
         objName = StringUtilities.sanitizeName(objName);
 
         if (objName == "") {

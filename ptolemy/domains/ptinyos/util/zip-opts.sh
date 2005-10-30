@@ -33,6 +33,7 @@
 # This script will generate opts.tar.gz, assuming the tinyos-1.x src
 # directory contains files named "opts" containing necessary ncc
 # compiler options for the subdirectories where the file is located.
+# WARNING: This deletes/overwrites the existing file.
 
 ###########################################################################
 #   SETTINGS
@@ -51,6 +52,15 @@ OUTPUT_FILENAME=opts
 
 cd $SRC_DIR
 
-find . -name opts -printf "%p "| xargs gtar -czvf $OUTPUT_DIR/$OUTPUT_FILENAME.tar.gz
+# WARNING: This deletes the existing file.
+echo "/bin/rm -f $OUTPUT_DIR/$OUTPUT_FILENAME.tar.gz"
+/bin/rm -f $OUTPUT_DIR/$OUTPUT_FILENAME.tar.gz
+
+find . -name opts -printf "%p "| xargs tar -cvf $OUTPUT_DIR/$OUTPUT_FILENAME.tar
+
+# Add the hacky files that are used to avoid including the current directory.
+find . -name opts-kludge* -printf "%p "| xargs tar -rvf $OUTPUT_DIR/$OUTPUT_FILENAME.tar
+
+gzip $OUTPUT_DIR/$OUTPUT_FILENAME.tar
 
 echo "Created $OUTPUT_DIR/$OUTPUT_FILENAME.tar.gz"

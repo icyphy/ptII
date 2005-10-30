@@ -2,39 +2,33 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SenseToLeds" class="ptolemy.domains.ptinyos.kernel.NCCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
         <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/output">
-            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
         </property>
-        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="TOSDIR" class="ptolemy.data.expr.FileParameter" value="$PTII/vendors/ptinyos/tinyos-1.x/tos">
-            <property name="allowFiles" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="allowDirectories" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
+        <property name="target" class="ptolemy.data.expr.StringParameter" value="pc">
         </property>
-        <property name="numNodes" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="target" class="ptolemy.data.expr.StringParameter" value="ptII">
-        </property>
-        <property name="simulate" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="simulate" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 212, 824, 508}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={94, 492, 822, 509}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When the clock fires, this application reads the light sensor and displays &#10;the higher 3 bits of the ADC readings to LEDs.&#10;&#10;Run the model (Ctrl-R) to generate the nesC code (.nc) and the makefile (.mk)&#10;in the output directory where this model is located&#10;($PTII/ptolemy/domains/ptinyos/demo/SenseToLeds/output).&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 285.0]">
+        </property>
     </property>
     <entity name="Main" class="tos.system.Main">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 235.0]">

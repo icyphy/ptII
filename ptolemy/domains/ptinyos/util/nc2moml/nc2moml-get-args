@@ -82,7 +82,13 @@ foreach (@files) {
     }
   }
   push @opts, "-fnesc-include=AM";
-  push @opts, "-I$dir";
+  if (-f "$odir/opts-kludge-nolocalincludes") {
+    # A hack to not include the local directory.  Mostly for
+    # tinyos-1.x/tos/system, since some of the included files there
+    # don't work.
+  } else {
+    push @opts, "-I$dir";
+  }
   $odir = $dir;
   while ($odir) {
     if (-f "$odir/opts") {
