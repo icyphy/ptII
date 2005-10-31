@@ -241,7 +241,7 @@ public class Receiver extends X10Interface {
     }
 
     /** Return a string description of the command.
-     *  @param  The command that is to be described.
+     *  @param command The command that is to be described.
      *  @return A string description of the command.
      */
     protected static String _commandToString(Command command) {

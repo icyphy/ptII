@@ -64,7 +64,7 @@ public class SceneGraphToken extends Token {
     ////                         public methods                    ////
 
     /** Return the object contained by this token.
-     *  @param The scene graph node. 
+     *  @return The scene graph node. 
      */
     public Node getSceneGraphNode() {
         return _node;

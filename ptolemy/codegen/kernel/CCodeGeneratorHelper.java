@@ -119,7 +119,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * in this method. In this base class, do nothing. Subclasses may extend
      * this method to generate the wrapup code of the associated component
      * and append the code to the given string buffer.
-     * @param code The given string buffer.
+     * @return code The given string buffer.
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupCode() throws IllegalActionException {
