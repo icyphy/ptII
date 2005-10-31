@@ -1,20 +1,20 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="model" class="ptolemy.actor.TypedCompositeActor">
+<entity name="MultipleMerges" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="RendezvousDirector" class="ptolemy.domains.rendezvous.kernel.RendezvousDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={232, 141, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={156, 34, 1049, 800}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[834, 682]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{417.0, 341.0}">
     </property>
     <property name="SuppressDeadlockReporting" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -32,11 +32,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 90.0]">
         </property>
     </property>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
+    <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -45,9 +45,9 @@
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="11">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
@@ -60,13 +60,13 @@
         </property>
     </entity>
     <entity name="Merge2" class="ptolemy.domains.rendezvous.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 270.0]">
         </property>
     </entity>
     <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="21">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="11">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
@@ -75,9 +75,9 @@
         </property>
     </entity>
     <entity name="Ramp4" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="31">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="16">
         </property>
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
@@ -86,7 +86,7 @@
         </property>
     </entity>
     <entity name="Merge3" class="ptolemy.domains.rendezvous.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 210.0]">
         </property>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
@@ -98,11 +98,11 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 350.0]">
         </property>
     </entity>
     <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 350.0]">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -110,14 +110,68 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 350.0]">
+        </property>
+    </entity>
+    <entity name="Ramp5" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="21">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 370.0]">
+        </property>
+    </entity>
+    <entity name="Ramp6" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="26">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 435.0]">
+        </property>
+    </entity>
+    <entity name="Merge4" class="ptolemy.domains.rendezvous.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 405.0]">
+        </property>
+    </entity>
+    <entity name="Merge5" class="ptolemy.domains.rendezvous.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 530.0]">
+        </property>
+    </entity>
+    <entity name="Ramp7" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="31">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 500.0]">
+        </property>
+    </entity>
+    <entity name="Ramp8" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="36">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 565.0]">
+        </property>
+    </entity>
+    <entity name="Merge6" class="ptolemy.domains.rendezvous.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 470.0]">
+        </property>
+    </entity>
+    <entity name="Merge7" class="ptolemy.domains.rendezvous.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 340.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
@@ -129,18 +183,6 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -149,22 +191,86 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
-    <link port="Ramp.output" relation="relation"/>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="Ramp1.output" relation="relation"/>
     <link port="Ramp2.output" relation="relation6"/>
-    <link port="Merge.output" relation="relation4"/>
+    <link port="Merge.output" relation="relation5"/>
     <link port="Merge.input" relation="relation"/>
     <link port="Merge.input" relation="relation6"/>
     <link port="Merge2.output" relation="relation7"/>
-    <link port="Merge2.input" relation="relation4"/>
     <link port="Merge2.input" relation="relation2"/>
+    <link port="Merge2.input" relation="relation4"/>
     <link port="Ramp3.output" relation="relation2"/>
-    <link port="Ramp4.output" relation="relation5"/>
-    <link port="Merge3.output" relation="relation3"/>
-    <link port="Merge3.input" relation="relation7"/>
+    <link port="Ramp4.output" relation="relation4"/>
+    <link port="Merge3.output" relation="relation16"/>
     <link port="Merge3.input" relation="relation5"/>
-    <link port="SequenceToArray.input" relation="relation3"/>
+    <link port="Merge3.input" relation="relation7"/>
+    <link port="SequenceToArray.input" relation="relation17"/>
     <link port="SequenceToArray.output" relation="relation8"/>
     <link port="ArraySort.input" relation="relation8"/>
     <link port="ArraySort.output" relation="relation9"/>
     <link port="NonStrictTest.input" relation="relation9"/>
+    <link port="Ramp5.output" relation="relation10"/>
+    <link port="Ramp6.output" relation="relation11"/>
+    <link port="Merge4.output" relation="relation13"/>
+    <link port="Merge4.input" relation="relation10"/>
+    <link port="Merge4.input" relation="relation11"/>
+    <link port="Merge5.output" relation="relation15"/>
+    <link port="Merge5.input" relation="relation12"/>
+    <link port="Merge5.input" relation="relation14"/>
+    <link port="Ramp7.output" relation="relation12"/>
+    <link port="Ramp8.output" relation="relation14"/>
+    <link port="Merge6.output" relation="relation3"/>
+    <link port="Merge6.input" relation="relation13"/>
+    <link port="Merge6.input" relation="relation15"/>
+    <link port="Merge7.output" relation="relation17"/>
+    <link port="Merge7.input" relation="relation16"/>
+    <link port="Merge7.input" relation="relation3"/>
 </entity>
