@@ -16,18 +16,46 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={167, 30, 822, 509}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={167, 30, 815, 559}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 441]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 220.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run this model (Ctrl-R) to generate code in the output directory&#10;where this model is located&#10;($PTII/ptolemy/domains/ptinyos/demo/HelloWorld).&#10;The generated code will not compile since the code for the included&#10;NCComponent's does not exist, but this will give you an idea of the&#10;capabilities of the PtinyOS code generator.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run this model (Ctrl-R) to generate code in the output directory&#10;where this model is located&#10;($PTII/ptolemy/domains/ptinyos/demo/HelloWorld).&#10;The generated code will not compile since the code for the included&#10;NCComponents does not exist, but this will give you an idea of the&#10;capabilities of the PtinyOS code generator.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 290.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Elaine Cheong</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 410.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command.&#10;To see the make command, select&#10;Debug -&gt; Listen to Director">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 20.0]">
         </property>
     </property>
     <port name="output" class="ptolemy.actor.IOPort">
