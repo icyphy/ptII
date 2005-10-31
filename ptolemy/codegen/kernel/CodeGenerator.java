@@ -290,6 +290,8 @@ public class CodeGenerator extends Attribute
         _modifiedVariables = compositeActorHelper.getModifiedVariables();
         
         code.append(compositeActorHelper.generatePreinitializeCode());
+        
+        code.append(compositeActorHelper.createOffsetVariablesIfNeeded());
 
         Attribute iterations = director.getAttribute("iterations");
 

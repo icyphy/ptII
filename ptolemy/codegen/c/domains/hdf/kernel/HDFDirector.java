@@ -39,6 +39,7 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.domains.sdf.kernel.SDFDirector;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.domains.sdf.kernel.CachedSDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -145,10 +146,12 @@ public class HDFDirector extends SDFDirector {
                     }
                 }
             } 
-                       
             code.append("break;\n");
         }
         code.append("}\n");
+        
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n"));
+        
     }
     
     /** Generate the initialize code for the associated HDF director.
@@ -160,7 +163,7 @@ public class HDFDirector extends SDFDirector {
         initializeCode.append(super.generateInitializeCode());
 
         _updateConfigurationNumber(initializeCode);
-
+        
         return initializeCode.toString();
     }
     
@@ -175,24 +178,18 @@ public class HDFDirector extends SDFDirector {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
         
-        
         ptolemy.domains.hdf.kernel.HDFDirector director = 
                 (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
-        
-        CompositeActor container = (CompositeActor) director.getContainer();
-        
+        CompositeActor container = (CompositeActor) director.getContainer();        
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = 
                 (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-        
-        code.append(containerHelper.
-                processCode("static int $actorSymbol(currentConfiguration);\n"));
-        
+        code.append(containerHelper.processCode
+                ("static int $actorSymbol(currentConfiguration);\n"));
+        code.append(containerHelper.processCode
+                ("static unsigned char $actorSymbol(fired) = 0;\n"));
         List actors = container.deepEntityList();
-        
         int numberOfActors = actors.size();
-        
         _divisors = new int[numberOfActors];
-        
         int numberOfConfigurationsOfContainer = 1;
             
         for (int i = numberOfActors - 1; i >= 0; i--) {
@@ -223,7 +220,7 @@ public class HDFDirector extends SDFDirector {
             }    
             actorConfigurations[numberOfActors - 1] = remainder;
             
-            // update port rates of all actors for current configuration.
+            // set port rates of all actors for current configuration.
             int j = 0;
             Iterator actorsIterator = actors.iterator();
             while (actorsIterator.hasNext()) {
@@ -248,8 +245,12 @@ public class HDFDirector extends SDFDirector {
                 j++;
             }
             
-            //director.invalidateSchedule();
-            _schedules[configurationNumber] = director.getScheduler().getSchedule();
+            director.invalidateSchedule();
+            CachedSDFScheduler scheduler  = (CachedSDFScheduler) director.getScheduler();
+            // Each schedule must be computed from scratch, including updating
+            // receiver capacity for each actor, determining external port capacity.
+            scheduler.clearCaches();
+            _schedules[configurationNumber] = scheduler.getSchedule();
             
             _updatePortBufferSize();
             
@@ -278,9 +279,17 @@ public class HDFDirector extends SDFDirector {
             throws IllegalActionException {
 
         super.generateSwitchModeCode(code);
-
+        
+        ptolemy.domains.hdf.kernel.HDFDirector director = 
+                (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
+        CompositeActor container = (CompositeActor) director.getContainer();        
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = 
+                (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        
+        code.append(containerHelper.processCode("if ($actorSymbol(fired)) {\n"));
         _updateConfigurationNumber(code);
-
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 0;\n"));
+        code.append("}\n");
     }
     
 
@@ -418,16 +427,16 @@ public class HDFDirector extends SDFDirector {
     /** Check to see if variables are needed to represent read and
      *  write offsets.
      */    
-    protected void _checkBufferSize(StringBuffer initializeCode) 
+    protected String _createOffsetVariablesIfNeeded() 
                throws IllegalActionException {
-    
+        StringBuffer code = new StringBuffer();
         CompositeActor container 
 	            = (CompositeActor) getComponent().getContainer();
 
         Iterator outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
-            _checkBufferSize(outputPort, initializeCode);
+            code.append(_createOffsetVariablesIfNeeded(outputPort));
         }
     
         Iterator actors = container.deepEntityList().iterator();
@@ -436,20 +445,21 @@ public class HDFDirector extends SDFDirector {
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
-                _checkBufferSize(inputPort, initializeCode);               
+                code.append(_createOffsetVariablesIfNeeded(inputPort));               
             } 
-        }     
+        } 
+        return code.toString();
     }
     
     /** Check to see if variables are needed to represent read and
      *  write offsets for the given port.
      */      
     // FIXME: we could record total number of tokens transferred in each port 
-    // for each configuration and then check if a variale is needed for each 
-    // offset. For now we always use variables.
-    protected void _checkBufferSize(IOPort port, StringBuffer initializeCode) 
+    // for each schedule and then check if a variale is needed for each offset. 
+    // For now we always use variables.
+    protected String _createOffsetVariablesIfNeeded(IOPort port) 
             throws IllegalActionException {
-     
+        StringBuffer code = new StringBuffer();
         CodeGeneratorHelper actorHelper = 
             (CodeGeneratorHelper) _getHelper(port.getContainer());   
      
@@ -482,18 +492,18 @@ public class HDFDirector extends SDFDirector {
             String channelReadOffsetVariable = channelReadOffset.toString();
             String channelWriteOffsetVariable = channelWriteOffset.toString();
 
-            // At this point, all offsets are 0 or the number of
-            // initial tokens of SampleDelay.
-            initializeCode.append("int " + channelReadOffsetVariable + " = " 
+            // At this point, all offsets are 0.
+            code.append("static int " + channelReadOffsetVariable + " = " 
                     + actorHelper.getReadOffset(port, channel) + ";\n");
-            initializeCode.append("int " + channelWriteOffsetVariable + " = " 
+            code.append("static int " + channelWriteOffsetVariable + " = " 
                     + actorHelper.getWriteOffset(port, channel) + ";\n");
              
             // Now replace these concrete offsets with the variables.
             actorHelper.setReadOffset(port, channel, channelReadOffsetVariable);
             actorHelper.setWriteOffset(port, channel, channelWriteOffsetVariable);
-            }
         }
+        return code.toString();
+    }
 
     /** Generate code to update configuration number of the container as a 
      *  function of the configuration numbers of contained actors.

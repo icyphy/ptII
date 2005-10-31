@@ -67,6 +67,14 @@ public class MultirateFSMDirector extends FSMDirector {
         super(director);
     }
     
+    public String createOffsetVariablesIfNeeded() 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();  
+        code.append(_createOffsetVariablesIfNeeded());
+        code.append(super.createOffsetVariablesIfNeeded());
+        return code.toString();
+    }
+    
     /** Generate the code for the firing of actors.
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If the helper associated with
@@ -75,14 +83,13 @@ public class MultirateFSMDirector extends FSMDirector {
     public void generateFireCode(StringBuffer code)
             throws IllegalActionException {
         
+        // generate code for refinements
+        _generateRefinementCode(code);
+        
         ptolemy.domains.fsm.kernel.FSMActor controller = 
                 ((ptolemy.domains.fsm.kernel.FSMDirector)
                 getComponent()).getController();
-        
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
-        
-        // generate code for refinements
-        _generateRefinementCode(code);
         
         // generate code for non-preemptive transition
         code.append("\n/* Nonpreepmtive Transition */\n\n");
@@ -93,19 +100,6 @@ public class MultirateFSMDirector extends FSMDirector {
         });
         
     }   
-    
-    /** Generate the initialize code for the associated director.
-     *  @return The generated initialize code.
-     *  @exception IllegalActionException If the base class throws it.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer initializeCode = new StringBuffer();
-        initializeCode.append(super.generateInitializeCode());
-
-        _checkBufferSize(initializeCode);
-
-        return initializeCode.toString();
-    }
     
     /** Generate the preinitialize code for this director.
      *  @return The generated preinitialize code.
@@ -120,11 +114,8 @@ public class MultirateFSMDirector extends FSMDirector {
         ptolemy.domains.fsm.kernel.MultirateFSMDirector director = 
                 (ptolemy.domains.fsm.kernel.MultirateFSMDirector)
                 getComponent();
-        
         CompositeActor container = (CompositeActor) director.getContainer();
-        
         ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
-    
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
                 = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
         
@@ -430,16 +421,16 @@ public class MultirateFSMDirector extends FSMDirector {
     /** Check to see if variables are needed to represent read and
      *  write offsets.
      */    
-    protected void _checkBufferSize(StringBuffer initializeCode) 
+    protected String _createOffsetVariablesIfNeeded() 
                throws IllegalActionException {
-    
+        StringBuffer code = new StringBuffer();
         CompositeActor container 
                 = (CompositeActor) getComponent().getContainer();
 
         Iterator outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
-            _checkBufferSize(outputPort, initializeCode);
+            code.append(_createOffsetVariablesIfNeeded(outputPort));
         }
     
         Iterator actors = container.deepEntityList().iterator();
@@ -454,10 +445,11 @@ public class MultirateFSMDirector extends FSMDirector {
                 Iterator inputPorts = actor.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
                     IOPort inputPort = (IOPort) inputPorts.next();
-                    _checkBufferSize(inputPort, initializeCode);               
+                    code.append(_createOffsetVariablesIfNeeded(inputPort));               
                 } 
             }    
-        }     
+        }
+        return code.toString();
     }
     
     /** Check to see if variables are needed to represent read and
@@ -466,9 +458,9 @@ public class MultirateFSMDirector extends FSMDirector {
     // FIXME: we could record total number of tokens transferred in each port 
     // for each configuration and then check if a variale is needed for each 
     // offset. For now we always use variables.
-    protected void _checkBufferSize(IOPort port, StringBuffer initializeCode) 
+    protected String _createOffsetVariablesIfNeeded(IOPort port) 
             throws IllegalActionException {
-     
+        StringBuffer code = new StringBuffer();
         CodeGeneratorHelper actorHelper = 
             (CodeGeneratorHelper) _getHelper(port.getContainer());   
      
@@ -503,17 +495,17 @@ public class MultirateFSMDirector extends FSMDirector {
 
             // At this point, all offsets are 0 or the number of
             // initial tokens of SampleDelay.
-            initializeCode.append("int " + channelReadOffsetVariable + " = " 
+            code.append("static int " + channelReadOffsetVariable + " = " 
                     + actorHelper.getReadOffset(port, channel) + ";\n");
-            initializeCode.append("int " + channelWriteOffsetVariable + " = " 
+            code.append("static int " + channelWriteOffsetVariable + " = " 
                     + actorHelper.getWriteOffset(port, channel) + ";\n");
              
             // Now replace these concrete offsets with the variables.
             actorHelper.setReadOffset(port, channel, channelReadOffsetVariable);
             actorHelper.setWriteOffset(port, channel, channelWriteOffsetVariable);
         }
+        return code.toString();
     }
-
     
     /** Check to see if the buffer size needed in current state  
      *  is smaller than in previous states. If so, set the buffer 

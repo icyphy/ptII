@@ -122,12 +122,7 @@ public class SampleDelay extends CCodeGeneratorHelper {
         // FIXME: Do we need /Should we update the offset of input of
         // the SampleDelay?
         //setOffset(actor.input, 0, new Integer(initialOutputs.length));
-        //This line must happen before next line because next line will
-        //set the new write offset.
-        String processedCode = processCode(code.toString());
-
-        setSinkActorsWriteOffset(actor.output, 0, new Integer(length));
-
-        return processedCode;
+        
+        return processCode(code.toString());
     }
 }

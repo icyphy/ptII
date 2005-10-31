@@ -29,6 +29,7 @@ package ptolemy.codegen.c.domains.hdf.kernel;
 
 import java.util.Iterator;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor;
 import ptolemy.codegen.c.domains.fsm.kernel.MultirateFSMDirector;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
@@ -68,8 +69,39 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         
         // generate code for refinements
         _generateRefinementCode(code);
+        
+        ptolemy.domains.hdf.kernel.HDFFSMDirector director = 
+                (ptolemy.domains.hdf.kernel.HDFFSMDirector) getComponent();
+        CompositeActor container = (CompositeActor) director.getContainer();
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n"));
     }   
     
+    /** Generate the preinitialize code for this director.
+     *  @return The generated preinitialize code.
+     *  @exception IllegalActionException If getting the helper fails,
+     *   or if generating the preinitialize code for a helper fails,
+     *   or if there is a problem getting the buffer size of a port.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        
+        ptolemy.domains.hdf.kernel.HDFFSMDirector director = 
+                (ptolemy.domains.hdf.kernel.HDFFSMDirector)
+                getComponent();
+        CompositeActor container = (CompositeActor) director.getContainer();
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        
+        code.append(containerHelper.processCode
+                ("static unsigned char $actorSymbol(fired) = 0;\n"));
+        
+        return code.toString();
+    }    
+        
     public void generateSwitchModeCode(StringBuffer code) 
             throws IllegalActionException {
 
@@ -78,15 +110,24 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         ptolemy.domains.fsm.kernel.FSMActor controller = 
             ((ptolemy.domains.fsm.kernel.FSMDirector)
             getComponent()).getController();
-    
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
-        // generate code for non-preemptive transition
+        
+        ptolemy.domains.hdf.kernel.HDFFSMDirector director = 
+            (ptolemy.domains.hdf.kernel.HDFFSMDirector) getComponent();
+        CompositeActor container = (CompositeActor) director.getContainer();        
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = 
+            (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+    
+        code.append(containerHelper.processCode("if ($actorSymbol(fired)) {\n"));
+         // generate code for non-preemptive transition
         code.append("\n/* Nonpreepmtive Transition */\n\n");
         controllerHelper.generateFireCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.nonpreemptiveTransitionList().iterator();  
             }
         });
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 0;\n"));
+        code.append("}\n");
         
     }
 }

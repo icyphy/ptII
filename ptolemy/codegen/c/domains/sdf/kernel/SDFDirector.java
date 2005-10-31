@@ -72,6 +72,14 @@ public class SDFDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
+    public String createOffsetVariablesIfNeeded() 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();  
+        code.append(_createOffsetVariablesIfNeeded());
+        code.append(super.createOffsetVariablesIfNeeded());
+        return code.toString();
+    }
+
     /** Generate the code for the firing of actors according to the SDF
      *  schedule.
      *  @param code The string buffer that the generated code is appended to.
@@ -137,34 +145,33 @@ public class SDFDirector extends Director {
             IOPort outputPort = (IOPort) outputPorts.next();
             int rate = DFUtilities.getTokenInitProduction(outputPort);
 
-            for (int i = 0; i < outputPort.getWidthInside(); i++) {
-                if (i < outputPort.getWidth()) {
-                    String name = outputPort.getName();
+            if (rate > 0) {
+                for (int i = 0; i < outputPort.getWidthInside(); i++) {
+                    if (i < outputPort.getWidth()) {
+                        String name = outputPort.getName();
 
-                    if (outputPort.isMultiport()) {
-                        name = name + '#' + i;
-                    }
+                        if (outputPort.isMultiport()) {
+                            name = name + '#' + i;
+                        }
 
-                    for (int k = 0; k < rate; k++) {
-                        initializeCode.append(containerHelper.getReference(name
-                                + "," + k));
-                        initializeCode.append(" = ");
-                        initializeCode.append(containerHelper.getReference("@"
-                                + name + "," + k));
-                        initializeCode.append(";\n");
+                        for (int k = 0; k < rate; k++) {
+                            initializeCode.append(containerHelper.getReference(name
+                                    + "," + k));
+                            initializeCode.append(" = ");
+                            initializeCode.append(containerHelper.getReference("@"
+                                    + name + "," + k));
+                            initializeCode.append(";\n");
+                        }
                     }
                 }
+                _updatePortOffset(outputPort, initializeCode, rate);
+                _updateConnectedPortsOffset(outputPort, initializeCode, rate);
             }
-
-            _updatePortOffset(outputPort, initializeCode, rate);
-            _updateConnectedPortsOffset(outputPort, initializeCode, rate);
         }
-
-        _checkBufferSize(initializeCode);
 
         return initializeCode.toString();
     }
-
+    
     /** Generate code for transferring enough tokens to complete an internal
      *  iteration.
      *  @param inputPort The port to transfer tokens.
@@ -288,13 +295,12 @@ public class SDFDirector extends Director {
 
     /** Check to see if variables are needed to represent read and
      *  write offsets for the given port.
-     *  @param initializeCode  The StringBuffer that is updated with
-     *  initialization code.
      *  @exception IllegalActionException  If getting the rate or
      *  reading parameters throws it.   
      */   
-    protected void _checkBufferSize(StringBuffer initializeCode)
+    protected String _createOffsetVariablesIfNeeded()
             throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
 
@@ -303,7 +309,7 @@ public class SDFDirector extends Director {
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             int totalTokens = DFUtilities.getRate(outputPort);
-            _checkBufferSize(outputPort, initializeCode, totalTokens);
+            code.append(_createOffsetVariablesIfNeeded(outputPort, totalTokens));
         }
 
         Iterator actors = container.deepEntityList().iterator();
@@ -321,9 +327,10 @@ public class SDFDirector extends Director {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 int totalTokens = DFUtilities.getRate(inputPort)
                         * firingsPerIteration;
-                _checkBufferSize(inputPort, initializeCode, totalTokens);
+                code.append(_createOffsetVariablesIfNeeded(inputPort, totalTokens));
             }
         }
+        return code.toString();
     }
 
     /** Check for each channel of the given port to see if variables are needed
@@ -334,14 +341,13 @@ public class SDFDirector extends Director {
      *  these variables are generated.
      *
      *  @param port The port to be checked.
-     *  @param initializeCode The string buffer that the generated code
-     *   is appended to.
      *  @param totalTokens The number of tokens transferred in one firing of
      *   this director.
      *  @exception IllegalActionException
      */
-    protected void _checkBufferSize(IOPort port, StringBuffer initializeCode,
-            int totalTokens) throws IllegalActionException {
+    protected String _createOffsetVariablesIfNeeded(IOPort port, int totalTokens) 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
                 .getContainer());
 
@@ -354,8 +360,7 @@ public class SDFDirector extends Director {
         }
 
         for (int channel = 0; channel < length; channel++) {
-            int portOffset = totalTokens
-                    % actorHelper.getBufferSize(port, channel);
+            int portOffset = totalTokens % actorHelper.getBufferSize(port, channel);
 
             if (portOffset != 0) {
                 // Increase the buffer size of that channel to the
@@ -384,25 +389,20 @@ public class SDFDirector extends Director {
                 channelWriteOffset.append("_writeoffset");
 
                 String channelReadOffsetVariable = channelReadOffset.toString();
-                String channelWriteOffsetVariable = channelWriteOffset
-                        .toString();
+                String channelWriteOffsetVariable = channelWriteOffset.toString();
 
-                // At this point, all offsets are 0 or the number of
-                // initial tokens of SampleDelay.
-                initializeCode.append("int " + channelReadOffsetVariable
-                        + " = " + actorHelper.getReadOffset(port, channel)
-                        + ";\n");
-                initializeCode.append("int " + channelWriteOffsetVariable
-                        + " = " + actorHelper.getWriteOffset(port, channel)
-                        + ";\n");
+                // At this point, all offsets are 0.
+                Object p = actorHelper.getReadOffset(port, channel);
+                code.append("static int " + channelReadOffsetVariable
+                        + " = " + actorHelper.getReadOffset(port, channel) + ";\n");
+                code.append("static int " + channelWriteOffsetVariable
+                        + " = " + actorHelper.getWriteOffset(port, channel) + ";\n");
 
-                // Now replace these concrete offsets 
-                // with the variables.
-                actorHelper.setReadOffset(port, channel,
-                        channelReadOffsetVariable);
-                actorHelper.setWriteOffset(port, channel,
-                        channelWriteOffsetVariable);
+                // Now replace these concrete offsets with the variables.
+                actorHelper.setReadOffset(port, channel, channelReadOffsetVariable);
+                actorHelper.setWriteOffset(port, channel, channelWriteOffsetVariable);
             }
         }
+        return code.toString();
     }
 }

@@ -37,6 +37,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.kernel.util.IllegalActionException;
@@ -72,6 +73,20 @@ public class Director implements ActorCodeGenerator {
 
     /////////////////////////////////////////////////////////////////
     ////                Public Methods                           ////
+    
+    public String createOffsetVariablesIfNeeded() 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();    
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = 
+                    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            code.append(helperObject.createOffsetVariablesIfNeeded());
+        }      
+        return code.toString();
+}
 
     /** Generate the code for the firing of actors.
      *  In this base class, it is attempted to fire all the actors once.
@@ -118,6 +133,12 @@ public class Director implements ActorCodeGenerator {
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             // Initialize code for the actor.
             code.append(helperObject.generateInitializeCode());
+            Iterator outputPorts = actor.outputPortList().iterator();
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort) outputPorts.next();
+                int rate = DFUtilities.getTokenInitProduction(port);
+                _updateConnectedPortsOffset(port, code, rate);
+            }    
 
             // Initialize code for inter-actor port type conversion. 
             Hashtable refTable = (Hashtable) helperObject.
