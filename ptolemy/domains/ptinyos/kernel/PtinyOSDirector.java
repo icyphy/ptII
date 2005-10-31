@@ -61,9 +61,11 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -88,6 +90,25 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (celaine)
  */
 public class PtinyOSDirector extends Director {
+    /** Construct a director in the default workspace with an empty string
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     */
+    public PtinyOSDirector() {
+        super();
+        _initParameters();
+    }
+
+    /** Construct a director in the workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace of this object.
+     */
+    public PtinyOSDirector(Workspace workspace) {
+        super(workspace);
+        _initParameters();
+    }
+
     /** Construct a director with the specified container and name.
      *  @param container The container.
      *  @param name The name of the director.
@@ -99,83 +120,7 @@ public class PtinyOSDirector extends Director {
     public PtinyOSDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
-                + "style=\"fill:blue\"/>" + "<text x=\"-36\" y=\"8\" "
-                + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
-                + "PtinyOS</text></svg>");
-
-        // Set the code generation output directory to the current
-        // working directory.
-        destinationDirectory = new FileParameter(this, "destinationDirectory");
-        new Parameter(destinationDirectory, "allowFiles", BooleanToken.FALSE);
-        new Parameter(destinationDirectory, "allowDirectories",
-                BooleanToken.TRUE);
-        destinationDirectory.setExpression("$CWD");
-
-        // Set so that user must confirm each file that will be
-        // overwritten.
-        // Note: Default to overwrite w/o asking.
-        confirmOverwrite = new Parameter(this, "confirmOverwrite",
-                BooleanToken.FALSE);
-        confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
-
-        // Set path to tinyos-1.x directory.
-        tosRoot = new FileParameter(this, "TOSROOT");
-        new Parameter(tosRoot, "allowFiles", BooleanToken.FALSE);
-        new Parameter(tosRoot, "allowDirectories", BooleanToken.TRUE);
-        String tosRootProperty = System.getProperty("ptolemy.ptII.tosroot");
-        if (tosRootProperty != null) {
-            tosRoot.setExpression(tosRootProperty);
-        } else {
-            tosRoot.setExpression("$PTII/vendors/ptinyos/tinyos-1.x");
-        }
-
-        // Set path to tinyos-1.x/tos directory.
-        tosDir = new FileParameter(this, "TOSDIR");
-        new Parameter(tosDir, "allowFiles", BooleanToken.FALSE);
-        new Parameter(tosDir, "allowDirectories", BooleanToken.TRUE);
-        String tosDirProperty = System.getProperty("ptolemy.ptII.tosdir");
-        if (tosDirProperty != null) {
-            tosDir.setExpression(tosDirProperty);
-        } else {
-            tosDir.setExpression("$PTII/vendors/ptinyos/tinyos-1.x/tos");
-        }
-        
-        // Set additional make flags.
-        pflags = new StringParameter(this, "pflags");
-        pflags.setExpression("-I%T/lib/Counters");
-
-        // Set number of nodes to be simulated to be equal to 1.
-        // NOTE: only the top level value of this parameter matters.
-        numNodes = new Parameter(this, "numNodes", new IntToken(1));
-        numNodes.setTypeEquals(BaseType.INT);
-
-        // Set the boot up time range to the defaul to of 10 sec.
-        // NOTE: only the top level value of this parameter matters.
-        bootTimeRange = new Parameter(this, "bootTimeRange", new IntToken(10));
-        bootTimeRange.setTypeEquals(BaseType.INT);
-
-        // Set compile target platform to ptII.
-        // NOTE: only the top level value of this parameter matters.
-        target = new StringParameter(this, "target");
-        target.setExpression("ptII");
-
-        // Set simulate to true.
-        // NOTE: only the top level value of this parameter matters.
-        simulate = new Parameter(this, "simulate", BooleanToken.TRUE);
-        simulate.setTypeEquals(BaseType.BOOLEAN);
-
-        // Set command and event ports for TOSSIM.
-        commandPort = new Parameter(this, "commandPort", new IntToken(10584));
-        commandPort.setTypeEquals(BaseType.INT);
-        eventPort = new Parameter(this, "eventPort", new IntToken(10585));
-        eventPort.setTypeEquals(BaseType.INT);
-
-        // Make timeResolution SharedParameter (from base class) visible.
-        timeResolution.setVisibility(Settable.FULL);
-        timeResolution.moveToLast();
+        _initParameters();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -399,7 +344,8 @@ public class PtinyOSDirector extends Director {
             String toplevelName = _sanitizedFullName(toplevel);
 
             // Add the destinationDirectory to the classpath.
-            String fileSeparator = System.getProperty("file.separator");
+            String fileSeparator =
+                StringUtilities.getProperty("file.separator");
             String outputDir = destinationDirectory.stringValue()
                     + fileSeparator + "build" + fileSeparator + "ptII";
 
@@ -1241,6 +1187,97 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
         codeString.addLine(";");
         return codeString.toString();
+    }
+
+    /** Initialize parameters. Set all parameters to their default values.
+     */
+    private void _initParameters() {
+        try {
+            _attachText("_iconDescription", "<svg>\n"
+                    + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
+                    + "style=\"fill:blue\"/>" + "<text x=\"-36\" y=\"8\" "
+                    + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
+                    + "PtinyOS</text></svg>");
+
+            // Set the code generation output directory to the current
+            // working directory.
+            destinationDirectory =
+                new FileParameter(this, "destinationDirectory");
+            new Parameter(destinationDirectory, "allowFiles",
+                    BooleanToken.FALSE);
+            new Parameter(destinationDirectory, "allowDirectories",
+                    BooleanToken.TRUE);
+            destinationDirectory.setExpression("$CWD");
+
+            // Set so that user must confirm each file that will be
+            // overwritten.
+            // Note: Default to overwrite w/o asking.
+            confirmOverwrite = new Parameter(this, "confirmOverwrite",
+                    BooleanToken.FALSE);
+            confirmOverwrite.setTypeEquals(BaseType.BOOLEAN);
+
+            // Set path to tinyos-1.x directory.
+            tosRoot = new FileParameter(this, "TOSROOT");
+            new Parameter(tosRoot, "allowFiles", BooleanToken.FALSE);
+            new Parameter(tosRoot, "allowDirectories", BooleanToken.TRUE);
+            String tosRootProperty =
+                StringUtilities.getProperty("ptolemy.ptII.tosroot");
+            if (tosRootProperty != null) {
+                tosRoot.setExpression(tosRootProperty);
+            } else {
+                tosRoot.setExpression("$PTII/vendors/ptinyos/tinyos-1.x");
+            }
+
+            // Set path to tinyos-1.x/tos directory.
+            tosDir = new FileParameter(this, "TOSDIR");
+            new Parameter(tosDir, "allowFiles", BooleanToken.FALSE);
+            new Parameter(tosDir, "allowDirectories", BooleanToken.TRUE);
+            String tosDirProperty =
+                StringUtilities.getProperty("ptolemy.ptII.tosdir");
+            if (tosDirProperty != null) {
+                tosDir.setExpression(tosDirProperty);
+            } else {
+                tosDir.setExpression("$PTII/vendors/ptinyos/tinyos-1.x/tos");
+            }
+        
+            // Set additional make flags.
+            pflags = new StringParameter(this, "pflags");
+            pflags.setExpression("-I%T/lib/Counters");
+            
+            // Set number of nodes to be simulated to be equal to 1.
+            // NOTE: only the top level value of this parameter matters.
+            numNodes = new Parameter(this, "numNodes", new IntToken(1));
+            numNodes.setTypeEquals(BaseType.INT);
+
+            // Set the boot up time range to the defaul to of 10 sec.
+            // NOTE: only the top level value of this parameter matters.
+            bootTimeRange =
+                new Parameter(this, "bootTimeRange", new IntToken(10));
+            bootTimeRange.setTypeEquals(BaseType.INT);
+
+            // Set compile target platform to ptII.
+            // NOTE: only the top level value of this parameter matters.
+            target = new StringParameter(this, "target");
+            target.setExpression("ptII");
+
+            // Set simulate to true.
+            // NOTE: only the top level value of this parameter matters.
+            simulate = new Parameter(this, "simulate", BooleanToken.TRUE);
+            simulate.setTypeEquals(BaseType.BOOLEAN);
+
+            // Set command and event ports for TOSSIM.
+            commandPort =
+                new Parameter(this, "commandPort", new IntToken(10584));
+            commandPort.setTypeEquals(BaseType.INT);
+            eventPort = new Parameter(this, "eventPort", new IntToken(10585));
+            eventPort.setTypeEquals(BaseType.INT);
+
+            // Make timeResolution SharedParameter (from base class) visible.
+            timeResolution.setVisibility(Settable.FULL);
+            timeResolution.moveToLast();
+        } catch (KernelException ex) {
+            throw new InternalErrorException(this, ex, "Cannot set parameter");
+        }
     }
 
     /** Generate NC code describing the input ports.  Input ports are
