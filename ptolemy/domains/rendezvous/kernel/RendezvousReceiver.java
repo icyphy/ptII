@@ -875,36 +875,30 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                 isPut ? castReceiver._getReceivers
                                     : castReceiver._putReceivers;
                             
-                            if (!_checkRendezvous(farSideReceivers, !isPut,
-                                    beingChecked, ready, notReady)) {
-                                branchReady = false;
-                                notReady.add(castReceiver);
-                            } else {
-                                Receiver[][][] symmetricReceivers =
-                                    new Receiver[][][] {
-                                        castReceiver._symmetricGetReceivers,
-                                        castReceiver._symmetricPutReceivers
-                                };
-                                for (int k = 0; k < 2; k++) {
-                                    if (symmetricReceivers[k] != null) {
-                                        if (!_checkRendezvous(
-                                                symmetricReceivers[k], k == 1,
-                                                beingChecked, ready,
-                                                notReady)) {
-                                            branchReady = false;
-                                            break;
-                                        }
+                            Receiver[][][] symmetricReceivers =
+                                new Receiver[][][] {
+                                    farSideReceivers,
+                                    castReceiver._symmetricGetReceivers,
+                                    castReceiver._symmetricPutReceivers
+                            };
+                            for (int k = 0; k < symmetricReceivers.length; k++) {
+                                if (symmetricReceivers[k] != null) {
+                                    if (!_checkRendezvous(
+                                            symmetricReceivers[k],
+                                            (k == 0 && !isPut) || k == 2,
+                                            beingChecked, ready,
+                                            notReady)) {
+                                        branchReady = false;
+                                        break;
                                     }
                                 }
-                                if (branchReady) {
-                                    ready.add(castReceiver);
-                                } else {
-                                    notReady.add(castReceiver);
-                                }
                             }
-                            
+
                             beingChecked.remove(castReceiver);
-                            if (!branchReady) {
+                            if (branchReady) {
+                                ready.add(castReceiver);
+                            } else {
+                                notReady.add(castReceiver);
                                 break;
                             }
                         }
