@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 61, 624, 506}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 61, 893, 543}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[409, 388]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 434]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{204.5, 194.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{335.5, 217.0}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -33,7 +33,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 370.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -41,7 +41,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command.&#10;To see the make command, look inside the &#10;the Composite actors (CntToLedsAndRfm&#10;and RfmToLeds) and then look inside the &#10;inner actors (CntToLedsAndRfm and RfmToLeds)&#10;then select Debug -&gt; Listen to Director">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 75.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains two nodes.  The first node contains an application that blinks the LEDs&#10;as a binary counter and sends a radio packet with the current value of the counter.  The&#10;second node contains an application that will receive the packet and display the counter&#10;value on the LEDs.  Note that we are using a lossless wireless channel.  The sent and received &#10;packet values are displayed in separate Display windows.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 265.0]">
         </property>
     </property>
     <entity name="AtomicWirelessChannel" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
@@ -52,6 +58,8 @@
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
         </property>
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
@@ -296,6 +304,8 @@
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
         </property>
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
+            <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
