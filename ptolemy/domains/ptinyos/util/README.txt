@@ -75,6 +75,7 @@ information here:
 
 -----------------------------------------------------------------------------
 
-The zip-opts.sh and unzip-opts.sh files are necessary compiler options
-that get parsed when nc2moml runs.  These have to be hand-updated to
-reflect needed include file paths.
+The zip-opts.sh and unzip-opts.sh files are scripts to gather/extract
+files from/to your tinyos-1.x tree with the necessary compiler options
+that get parsed when nc2moml runs.  These option files (opts*) have to be
+hand-updated to reflect needed include file paths.
