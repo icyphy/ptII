@@ -50,6 +50,43 @@ OUTPUT_FILENAME=opts
 
 ###########################################################################
 
+# ${1#-} will not work under Solaris 8
+#while [ "${1#-}" != "$1" ]; do
+# jode takes a -d argument, which causes problems unless we use "x..."
+while [ "x$1" != "x" -a  "x`echo $1 | egrep '^-'`" = "x$1" -a $# -gt 0 ]; do
+    case $1 in
+        -h|-help|--help)
+	    shift    
+	    echo "$0: Usage: $0 -zip"
+	    echo "    Zip up the opts and opts-nolocalincludes files from the "
+            echo "    tinyos-1.x directory.  These files contain the necessary"
+            echo "    compiler options for running nc2moml and ncapp2moml."
+	    echo "    Flags:"
+	    echo "        -zip Zip up the files."
+            echo ""
+            echo "    Warning: this will delete and overwrite "
+            echo "    $OUTPUT_DIR/$OUTPUT_FILENAME.tar.gz"
+	    exit 0
+            ;;
+
+        -zip)
+            shift
+            ZIP=1
+            continue
+            ;;
+	*)
+	    echo "$0: Error: Don't understand '$1' argument, run with -h for help"
+	    exit 3
+	    ;;
+    esac
+done
+
+if [ -z $ZIP ]; then
+    echo " Did nothing."
+    echo "   Run this command with the -h flag to see the options."
+    exit 0
+fi
+
 cd $SRC_DIR
 
 # WARNING: This deletes the existing file.
