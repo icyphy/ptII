@@ -271,9 +271,11 @@ THALESPACKAGES = \
 
 # Packages used by VisualSense
 VIPTOSPACKAGES = \
+			ptolemy.domains.ptinyos.gui \
 			ptolemy.domains.ptinyos.kernel \
 			ptolemy.domains.ptinyos.lib \
 			ptolemy.domains.ptinyos.util.nc2moml \
+			ptolemy.domains.ptinyos.util.ncapp2moml \
 
 # Packages used by VisualSense
 VISUALSENSEPACKAGES = \
