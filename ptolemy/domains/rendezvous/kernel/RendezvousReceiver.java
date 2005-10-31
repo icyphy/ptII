@@ -827,8 +827,96 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     private static Set _receiversReadyToCommit(Receiver[][] receivers,
             boolean isPut) {
-        return _receiversReadyToCommitRecursive(receivers, isPut,
-                new HashSet(), new HashSet());
+        Set beingChecked = new HashSet();
+        Set ready = new HashSet();
+        Set notReady = new HashSet();
+        if (_checkRendezvous(receivers, isPut, beingChecked, ready,
+                notReady)) {
+            return ready;
+        } else {
+            return null;
+        }
+    }
+    
+    private static boolean _checkRendezvous(Receiver[][] receivers,
+            boolean isPut, Set beingChecked, Set ready, Set notReady) {
+        boolean isConditional = false;
+        boolean branchReady = false;
+        
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                branchReady = true;
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != null) {
+                        RendezvousReceiver castReceiver =
+                            (RendezvousReceiver) receivers[i][j];
+                        
+                        // Whether the receiver is in a conditional branch.
+                        // isConditional for all the receivers should be the
+                        // same in one invocation of this method.
+                        isConditional = (isPut && castReceiver._putConditional)
+                                || (!isPut && castReceiver._getConditional);
+
+                        if (beingChecked.contains(castReceiver) ||
+                                ready.contains(castReceiver)) {
+                            // Do nothing
+                        } else if (notReady.contains(castReceiver)) {
+                            branchReady = false;
+                            break;
+                        } else if ((castReceiver._putWaiting == null) ||
+                                (castReceiver._getWaiting == null)) {
+                            branchReady = false;
+                            notReady.add(castReceiver);
+                            break;
+                        } else {
+                            beingChecked.add(castReceiver);
+                            
+                            Receiver[][] farSideReceivers =
+                                isPut ? castReceiver._getReceivers
+                                    : castReceiver._putReceivers;
+                            
+                            if (!_checkRendezvous(farSideReceivers, !isPut,
+                                    beingChecked, ready, notReady)) {
+                                branchReady = false;
+                                notReady.add(castReceiver);
+                            } else {
+                                Receiver[][][] symmetricReceivers =
+                                    new Receiver[][][] {
+                                        castReceiver._symmetricGetReceivers,
+                                        castReceiver._symmetricPutReceivers
+                                };
+                                for (int k = 0; k < 2; k++) {
+                                    if (symmetricReceivers[k] != null) {
+                                        if (!_checkRendezvous(
+                                                symmetricReceivers[k], k == 1,
+                                                beingChecked, ready,
+                                                notReady)) {
+                                            branchReady = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (branchReady) {
+                                    ready.add(castReceiver);
+                                } else {
+                                    notReady.add(castReceiver);
+                                }
+                            }
+                            
+                            beingChecked.remove(castReceiver);
+                            if (!branchReady) {
+                                break;
+                            }
+                        }
+                    }
+                }
+                if ((isConditional && branchReady)
+                        || (!isConditional && !branchReady)) {
+                    break;
+                }
+            }
+        }
+        return branchReady;
     }
 
     /** Get the receivers that are ready to form a rendezvous according to the
@@ -844,6 +932,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *  @return A set of receivers that participate in the rendezvous if
      *         it can be formed, or null if no rendezvous can be formed.
      *  @see #_commitRendezvous(Set, RendezvousDirector)
+     *  @deprecated Use {@link #_checkRendezvous(Receiver[][], boolean, Set,
+     *          Set, Set)} instead.
      */
     private static Set _receiversReadyToCommitRecursive(Receiver[][] receivers,
             boolean isPut, Set readyReceivers, Set unreadyReceivers) {
@@ -1123,10 +1213,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     for (int i = 0; i < putReceivers.length; i++) {
                         if (putReceivers[i] != null) {
                             for (int j = 0; j < putReceivers[i].length; j++) {
-                                if (putReceivers[i][j] != null) {
-                                    if (!_receivers.contains(putReceivers[i][j])) {
-                                        continue;
-                                    }
+                                if (putReceivers[i][j] != null &&
+                                        _receivers.contains(putReceivers[i][j])) {
                                     
                                     RendezvousReceiver castReceiver =
                                         (RendezvousReceiver)putReceivers[i][j];
