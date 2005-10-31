@@ -136,12 +136,12 @@ public class MicaLeds extends TypedAtomicActor {
     public TypedIOPort ledYellow;
 
     /** The color of the "red" LED.  The initial value is set to off
-     *  ({0.5,0.0,0.0,1.0}).
+     *  ({0.5, 0.0, 0.0, 1.0}).
      */
     public Parameter red;
 
     /** The color of the "green" LED.  The initial value is set to off
-     *  ({0.0,0.5,0.0,1.0}).
+     *  ({0.0, 0.5, 0.0, 1.0}).
      */
     public Parameter green;
 
@@ -199,22 +199,13 @@ public class MicaLeds extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Turn the red LED on by changing the color of the graphical
+    /** Turn the green LED off by changing the color of the graphical
      *  icon and reflecting the color value in the corresponding
      *  parameter.
      */
-    private void _redOn() throws IllegalActionException {
-        _ledRed.fillColor.setToken("{1.0,0.0,0.0,1.0}");
-        red.setToken("{1.0,0.0,0.0,1.0}");
-    }
-
-    /** Turn the red LED off by changing the color of the graphical
-     *  icon and reflecting the color value in the corresponding
-     *  parameter.
-     */
-    private void _redOff() throws IllegalActionException {
-        _ledRed.fillColor.setToken("{0.5,0.0,0.0,1.0}");
-        red.setToken("{0.5,0.0,0.0,1.0}");
+    private void _greenOff() throws IllegalActionException {
+        _ledGreen.fillColor.setToken("{0.0, 0.5, 0.0, 1.0}");
+        green.setToken("{0.0, 0.5, 0.0, 1.0}");
     }
 
     /** Turn the green LED on by changing the color of the graphical
@@ -222,26 +213,26 @@ public class MicaLeds extends TypedAtomicActor {
      *  parameter.
      */
     private void _greenOn() throws IllegalActionException {
-        _ledGreen.fillColor.setToken("{0.0,1.0,0.0,1.0}");
-        green.setToken("{0.0,1.0,0.0,1.0}");
+        _ledGreen.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
+        green.setToken("{0.0, 1.0, 0.0, 1.0}");
     }
 
-    /** Turn the green LED off by changing the color of the graphical
+    /** Turn the red LED off by changing the color of the graphical
      *  icon and reflecting the color value in the corresponding
      *  parameter.
      */
-    private void _greenOff() throws IllegalActionException {
-        _ledGreen.fillColor.setToken("{0.0,0.5,0.0,1.0}");
-        green.setToken("{0.0,0.5,0.0,1.0}");
+    private void _redOff() throws IllegalActionException {
+        _ledRed.fillColor.setToken("{0.5, 0.0, 0.0, 1.0}");
+        red.setToken("{0.5, 0.0, 0.0, 1.0}");
     }
 
-    /** Turn the yellow LED on by changing the color of the graphical
+    /** Turn the red LED on by changing the color of the graphical
      *  icon and reflecting the color value in the corresponding
      *  parameter.
      */
-    private void _yellowOn() throws IllegalActionException {
-        _ledYellow.fillColor.setToken("{1.0,1.0,0.0,1.0}");
-        yellow.setToken("{1.0,1.0,0.0,1.0}");
+    private void _redOn() throws IllegalActionException {
+        _ledRed.fillColor.setToken("{1.0, 0.0, 0.0, 1.0}");
+        red.setToken("{1.0, 0.0, 0.0, 1.0}");
     }
 
     /** Turn the yellow LED off by changing the color of the graphical
@@ -249,8 +240,17 @@ public class MicaLeds extends TypedAtomicActor {
      *  parameter.
      */
     private void _yellowOff() throws IllegalActionException {
-        _ledYellow.fillColor.setToken("{0.5,0.5,0.0,1.0}");
-        yellow.setToken("{0.5,0.5,0.0,1.0}");
+        _ledYellow.fillColor.setToken("{0.5, 0.5, 0.0, 1.0}");
+        yellow.setToken("{0.5, 0.5, 0.0, 1.0}");
+    }
+
+    /** Turn the yellow LED on by changing the color of the graphical
+     *  icon and reflecting the color value in the corresponding
+     *  parameter.
+     */
+    private void _yellowOn() throws IllegalActionException {
+        _ledYellow.fillColor.setToken("{1.0, 1.0, 0.0, 1.0}");
+        yellow.setToken("{1.0, 1.0, 0.0, 1.0}");
     }
 
     ///////////////////////////////////////////////////////////////////
