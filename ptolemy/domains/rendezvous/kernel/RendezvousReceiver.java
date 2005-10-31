@@ -827,7 +827,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     private static Set _receiversReadyToCommit(Receiver[][] receivers,
             boolean isPut) {
-        return _receiversReadyToCommitRecursive(receivers, isPut, null);
+        return _receiversReadyToCommitRecursive(receivers, isPut,
+                new HashSet(), new HashSet());
     }
 
     /** Get the receivers that are ready to form a rendezvous according to the
@@ -845,7 +846,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *  @see #_commitRendezvous(Set, RendezvousDirector)
      */
     private static Set _receiversReadyToCommitRecursive(Receiver[][] receivers,
-            boolean isPut, Set readyReceivers) {
+            boolean isPut, Set readyReceivers, Set unreadyReceivers) {
         Set checkedReceivers = new HashSet();
         boolean isConditional = false;
 
@@ -862,8 +863,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                         isConditional = (isPut && castReceiver._putConditional)
                                 || (!isPut && castReceiver._getConditional);
 
-                        if (castReceiver._isVisited || (readyReceivers != null
-                                && readyReceivers.contains(castReceiver))) {
+                        if (castReceiver._isVisited ||
+                                readyReceivers.contains(castReceiver)) {
                             // If the receiver is visited in a
                             // previous traversal step, a loop is
                             // found. In this case, simply assume that
@@ -876,11 +877,18 @@ public class RendezvousReceiver extends AbstractReceiver implements
                             // to take a rendezvous always has 2
                             // threads waiting on it: one waiting to
                             // get; the other waiting to put.
-                            if ((castReceiver._putWaiting == null)
-                                    || (castReceiver._getWaiting == null)) {
+                            if (unreadyReceivers.contains(castReceiver)) {
                                 // This conditional branch does not
                                 // work because at least one receiver
                                 // is not ready.
+                                checkedReceivers.clear();
+                                break;
+                            } else if ((castReceiver._putWaiting == null) ||
+                                    (castReceiver._getWaiting == null)) {
+                                // This conditional branch does not
+                                // work because at least one receiver
+                                // is not ready.
+                                unreadyReceivers.add(castReceiver);
                                 checkedReceivers.clear();
                                 break;
                             } else {
@@ -890,12 +898,12 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                 Receiver[][] farSideReceivers =
                                     isPut ? castReceiver._getReceivers
                                         : castReceiver._putReceivers;
+                                
                                 castReceiver._isVisited = true;
-
                                 Set nestedReadyReceivers =
                                     _receiversReadyToCommitRecursive(
                                             farSideReceivers, !isPut,
-                                            readyReceivers);
+                                            readyReceivers, unreadyReceivers);
                                 castReceiver._isVisited = false;
 
                                 if (nestedReadyReceivers == null) {
@@ -912,10 +920,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                             nestedReadyReceivers);*/
                                     
                                     Set newReadyReceivers = new HashSet();
-                                    if (readyReceivers != null) {
-                                        newReadyReceivers.addAll(readyReceivers);
-                                    }
-                                    newReadyReceivers.addAll(checkedReceivers);
+                                    newReadyReceivers.addAll(readyReceivers);
                                     newReadyReceivers.add(castReceiver);
                                     newReadyReceivers.addAll(nestedReadyReceivers);
                                     Iterator receiverIterator = nestedReadyReceivers.iterator();
@@ -929,9 +934,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                         for (int k = 0; k < 2; k++) {
                                             if (symmetricReceivers[k] != null) {
                                                 Set newCheckedReceivers =
-                                                    _receiversReadyToCommitRecursive(symmetricReceivers[k],k == 1,
-                                                            newReadyReceivers);
+                                                    _receiversReadyToCommitRecursive(
+                                                            symmetricReceivers[k],k == 1,
+                                                            newReadyReceivers, unreadyReceivers);
                                                 if (newCheckedReceivers == null) {
+                                                    unreadyReceivers.add(receiver);
                                                     newReadyReceivers.clear();
                                                     break;
                                                 } else {
@@ -948,12 +955,13 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                     }
                                     if (checkedReceivers.isEmpty()) {
                                         break;
+                                    } else {
+                                        readyReceivers.addAll(checkedReceivers);
                                     }
-                                } // if (nestedReadyReceivers == null)
-                            } /* if ((castReceiver._putWaiting == null)
-                                         || (castReceiver._getWaiting == null))*/
-                        } // if (castReceiver._isVisited)
-                    } // if (receivers[i][j] != null)
+                                } // if
+                            } // if
+                        } // if
+                    } // if
                 } // for (int j = 0; j < receivers[i].length; j++)
 
                 if ((isConditional && (checkedReceivers.size() > 0))
