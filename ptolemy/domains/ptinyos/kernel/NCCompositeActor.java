@@ -48,6 +48,23 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (celaine)
  */
 public class NCCompositeActor extends CompositeActor {
+    // FIXME: Compare and contrast with PtinyOSActor
+
+    // FIXME: why does the NCCompositeActor constructor extend CompositeActor?
+    // Shouldn't it extend TypeOpaqueCompositeActor?
+    // The reason is that if I pass the
+    // NCCompositeActor(CompositeActor, String) constructor a
+    // TypedCompositeActor, I get an exception
+    // bash-3.00$ $PTII/bin/ptjacl
+    // %     set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    // java0x1
+    // %     set NCCompositeActor [java::new
+    // ptolemy.domains.ptinyos.kernel.NCCompositeActor $e0 ncCompositeActor]
+    // ptolemy.kernel.util.IllegalActionException: TypedCompositeActor can
+    // only contain entities that implement the TypedActor interface.
+    //   in .<Unnamed Object> and .ncCompositeActor
+
+
     /** Construct a NCCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
