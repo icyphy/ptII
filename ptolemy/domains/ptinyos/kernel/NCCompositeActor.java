@@ -38,9 +38,23 @@ import ptolemy.kernel.util.Workspace;
 //// NCCompositeActor
 
 /**
- A composite actor in the PtinyOS domain.
- This actor is always a opaque composite actor.
+ A composite actor in the PtinyOS domain.  This actor is always a
+ opaque composite actor.
 
+ <p>
+ This actor represents a nesC component with no interfaces and no .nc
+ implementation.
+
+ <p>
+ This class differs from PtinyOSActor
+   {@link ptolemy.domains.ptinyos.kernel.PtinyOSActor}
+ in that NCCompositeActor has no ports (no nesC interfaces).
+ NCCompositeActor is used as a place holder for nesC (.nc) code that the
+ user must write separately in an editor like
+   {@link ptolemy.domains.ptinyos.gui.NCCompositeActorTableauFactory}.
+ The user should add ports in the gui as necessary when adding nesC
+ interfaces to their nesC component.
+   
  @author  Elaine Cheong
  @version $Id$
  @since Ptolemy II 5.1
@@ -48,8 +62,6 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (celaine)
  */
 public class NCCompositeActor extends CompositeActor {
-    // FIXME: Compare and contrast with PtinyOSActor
-
     // FIXME: why does the NCCompositeActor constructor extend CompositeActor?
     // Shouldn't it extend TypeOpaqueCompositeActor?
     // The reason is that if I pass the
