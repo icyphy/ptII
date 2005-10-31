@@ -120,10 +120,22 @@ ln -s <I>location_of_your_nesc_tree</I> .
                   <li>Install Winavr in any directory, <code>C:\WinAVR</code>
 		  is preferred.
                     <i>FIXME: Directories with spaces in the pathname might not work?</i>
+                  <li>Under Windows with WinAVR-20040404, we had to copy 
+		  <code>c:/cygwin/usr/local/lib/ncc/</code> to
+		  <code>c:/usr/local/lib/ncc/</code>:
+		  <pre>
+		  mkdir -p c:/usr/local/lib
+		  cd c:/usr/local/lib
+		  cp -r /usr/local/lib/ncc .
+		  </pre>
+		  The reason is that Cygwin mounts directories under
+		  </code>c:/cygwin</code> and the WinAVR binaries don't
+		  know how to handle that.
                 </ol>
             </ul>
             Or
             <ul>
+
               <li> Download the <a
               href="http://webs.cs.berkeley.edu/tos/dist-1.1.0/tinyos/windows/tinyos-1.1.0-1is.exe">TinyOS
               Installshield Wizard</a>.  Run the wizard, and choose
@@ -153,6 +165,9 @@ ln -s <I>location_of_your_nesc_tree</I> .
 	
              <p><B>Installing the rpms under Cygwin is not recommended</B>,
 		it causes include file problems later.
+	      <li> FIXME the list below is old, we should try:
+	      <a href="http://www.tinyos.net/dist-1.2.0/tools/"><code>http://www.tinyos.net/dist-1.2.0/tools/</code></a>
+
              <ul>
 <li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm</a>
 <li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-binutils-2.13.2.1-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-binutils-2.13.2.1-1w.cygwin.i386.rpm</a>
