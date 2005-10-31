@@ -1,9 +1,10 @@
-# Makefile for Ptolemy II PtinyOS domain
+# Makefile for Ptolemy II PtinyOS RfmToLeds demo
+#
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2004-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,50 +29,56 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/ptinyos/demo
+ME =		ptolemy/domains/ptinyos/demo/RfmToLeds
 
-# Keep these alphabetical please.
-DIRS = 		CntToLeds CntToLedsAndRfm HelloWorld RfmToLeds \
-		SendAndReceiveCnt SenseToLeds
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	RfmToLeds
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	CntToLeds/CntToLeds.jar \
-	CntToLedsAndRfm/CntToLedsAndRfm.jar \
-	HelloWorld/HelloWorld.jar \
-	RfmToLeds/RfmToLeds.jar \
-	SendAndReceiveCnt/SendAndReceiveCnt.jar \
-	SenseToLeds/SenseToLeds.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	RfmToLeds-InDE.xml \
+	RfmToLeds.xml
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS) \
-	index.htm
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES =
 
-all: jclass
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all
 
-demo: subdemo
+# Run the demo in all its different formats
+demo: demo_ptolemy demo_vergil
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" RfmToLeds.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" RfmToLeds.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
