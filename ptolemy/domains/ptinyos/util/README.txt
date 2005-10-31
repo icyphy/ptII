@@ -72,3 +72,9 @@ Eclipse, you must setup the following pass the following VM arguments:
 You may substitute a different parser if desired.  See the SAX2 Driver
 information here: 
   http://www.saxproject.org/quickstart.html
+
+-----------------------------------------------------------------------------
+
+The zip-opts.sh and unzip-opts.sh files are necessary compiler options
+that get parsed when nc2moml runs.  These have to be hand-updated to
+reflect needed include file paths.
