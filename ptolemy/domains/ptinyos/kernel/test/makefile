@@ -46,13 +46,16 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	PtinyOSTestActor.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
-	dummy.tcl
+	NCCompositeActor.tcl \
+	PtinyOSActor.tcl \
+	PtinyOSDirector.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -61,7 +64,7 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
