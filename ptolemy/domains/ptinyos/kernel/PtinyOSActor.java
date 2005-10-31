@@ -53,6 +53,8 @@ import ptolemy.kernel.util.Workspace;
  * @since Ptolemy II 5.1
  */
 public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
+    // FIXME: rename to PtinyOSCompositeActor
+
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
