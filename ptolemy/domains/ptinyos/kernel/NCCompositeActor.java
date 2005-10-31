@@ -63,6 +63,25 @@ public class NCCompositeActor extends CompositeActor {
         setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");
     }
 
+
+    /** Construct a NCCompositeActor in the specified workspace with no
+     *  container
+     *  and an empty string as a name. You can then change the name with
+     *  setName(). If the workspace argument is null, then use the default
+     *  workspace.
+     *  The director should be set before attempting to execute it.
+     *  The container should be set before sending data to it.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public NCCompositeActor(Workspace workspace) {
+        super(workspace);
+
+        // When exporting MoML, set the class name to NCCompositeActor
+        // instead of the default TypedCompositeActor.
+        setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");
+    }
+
     /** Create an NCCompositeActor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -93,23 +112,5 @@ public class NCCompositeActor extends CompositeActor {
         PtinyOSDirector director = new PtinyOSDirector(this, "PtinyOSDirector");
         Location location = new Location(director, "_location");
         location.setExpression("[65.0, 35.0]");
-    }
-
-    /** Construct a NCCompositeActor in the specified workspace with no
-     *  container
-     *  and an empty string as a name. You can then change the name with
-     *  setName(). If the workspace argument is null, then use the default
-     *  workspace.
-     *  The director should be set before attempting to execute it.
-     *  The container should be set before sending data to it.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     */
-    public NCCompositeActor(Workspace workspace) {
-        super(workspace);
-
-        // When exporting MoML, set the class name to NCCompositeActor
-        // instead of the default TypedCompositeActor.
-        setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");
     }
 }
