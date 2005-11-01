@@ -378,6 +378,7 @@ public class Exec extends TypedAtomicActor {
     private void _exec() throws IllegalActionException {
         // FIXME: Exec, KeyStoreActor, JTextAreaExec have duplicate code.
         // This is a private method because fire() was getting too long.
+        File directoryAsFile = null;
         try {
             _stopFireRequested = false;
 
@@ -399,7 +400,10 @@ public class Exec extends TypedAtomicActor {
                     .tokenizeForExec(((StringToken) command.getToken())
                             .stringValue());
 
-            File directoryAsFile = directory.asFile();
+            directoryAsFile = directory.asFile();
+            if (!directoryAsFile.isDirectory()) {
+                throw new IllegalActionException("No such directory: " + directoryAsFile);
+            }
 
             if (_debugging) {
                 _debug("About to exec \""
@@ -468,8 +472,8 @@ public class Exec extends TypedAtomicActor {
             _inputBufferedWriter = new BufferedWriter(inputStreamWriter);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem executing the command '" + command.getExpression()
-                            + "'");
+                    "Problem executing the command '" + command.getExpression() + "'\n"
+                    + "in the directory: " + directoryAsFile);
         }
     }
 
