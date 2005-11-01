@@ -68,6 +68,8 @@ MISC_FILES = $(DIRS)
 OPTIONAL_FILES =
 
 all: jclass
+	chmod a+rx zip-opts.sh
+
 install: jclass jars
 
 # Get the rest of the rules
