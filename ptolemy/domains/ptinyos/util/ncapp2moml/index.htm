@@ -70,13 +70,36 @@ make
           <li> 
             <ol>
               <li>Try running Viptos:
-                <pre>vergil -ptinyos</pre>
+                <pre>$PTII/bin/vergil -viptos</pre>
 
-              <li>Open a demo by going to File | Open File, and opening file $PTII/vendors/ptinyos/momlapp/apps/CntToLeds/CntToLeds.moml
+              <li>Open a demo by going to File -&gt; Open File, and
+              opening file
+              <CODE>$PTII/vendors/ptinyos/momlapp/apps/CntToLeds/CntToLeds.moml</CODE>
+              or
+              <CODE>$PTII/vendors/ptinyos/momlapp/apps/CntToLeds/CntToLeds-InWireless.moml</CODE>
+              (only one of these will have been generated, depending
+              on what options were used in running ncapp2moml).
 
-              <li>You may wish to run the automatic graph layout by selecting Graph | Automatic Layout form the menu, or by typing Ctrl-T.
+              <li>
+                <ul>
+                  <li>If you opened CntToLeds.moml, you may wish to
+                  run the automatic graph layout by selecting Graph -&gt;
+                  Automatic Layout form the menu, or by typing Ctrl-T.
+                  <li>If you opened CntToLeds-InWireless.moml, you
+                  have to first right-click on the MicaBoard and
+                  select Look Inside, then right-click on the
+                  MicaActor and select Look Inside.  Then, you can run
+                  the automatic graph layout by selecting Graph -&gt;
+                  Automatic Layout form the menu, or by typing Ctrl-T.
+                </ul>
 
-              <li>Try to open a demo that uses components original source directory.  Go to File | Open File, and open file $PTII/vendors/ptinyos/momlapp/apps/Blink/Blink.moml
+              <li>Try to open a demo that uses the components original
+              source directory.  Go to File -&gt; Open File, and open file
+              <CODE>$PTII/vendors/ptinyos/momlapp/apps/Blink/Blink.moml</CODE>
+		 or
+              <CODE>$PTII/vendors/ptinyos/momlapp/apps/Blink/Blink-InWireless.moml</CODE>
+              (only one of these will have been generated, depending
+              on what options were used in running ncapp2moml.
             </ol>
         </ol>
     </ol>
