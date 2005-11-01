@@ -28,13 +28,19 @@
 package ptolemy.codegen.c.domains.hdf.kernel;
 
 import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedActor;
+import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor;
 import ptolemy.codegen.c.domains.fsm.kernel.MultirateFSMDirector;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFDirector
@@ -58,6 +64,83 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
+    
+    public String createOffsetVariablesIfNeeded() 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();  
+        
+        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = 
+                (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        CompositeActor container = (CompositeActor) director.getContainer();
+        ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        CodeGeneratorHelper controllerHelper 
+                = (CodeGeneratorHelper) _getHelper(controller);
+        int[] firingsPerGlobalIterationArrayOfContainer = 
+                containerHelper.getFiringsPerGlobalIteration();
+        int[][] containerRates = containerHelper.getRates();
+        
+        Iterator states = controller.entityList().iterator();
+        int configurationNumber = 0;
+        while (states.hasNext()) {
+            State state = (State) states.next();
+            TypedActor[] actors = state.getRefinement();
+            if (actors != null) {
+                CodeGeneratorHelper refinementHelper = 
+                        (CodeGeneratorHelper) _getHelper((NamedObj) actors[0]);
+                int[][] rates = refinementHelper.getRates();
+                int length = 1;
+                if (rates != null) {
+                    length = rates.length;
+                }    
+                for (int i = 0; i < length; i++) {
+                    int firingsPerGlobalIterationOfContainer
+                            = firingsPerGlobalIterationArrayOfContainer
+                            [configurationNumber]; 
+                    List ports = controller.portList();
+                    Iterator portsIterator = ports.iterator();
+                    int portNumber = 0;
+                    while (portsIterator.hasNext()) {
+                        IOPort port = (IOPort) portsIterator.next();
+                        int newSize = firingsPerGlobalIterationOfContainer * 
+                                containerRates[configurationNumber][portNumber];
+                        int oldSize = controllerHelper.getBufferSize(port, 0);
+                        if (oldSize < newSize) {
+                            for (int j = 0; j < port.getWidth(); j++) {
+                                controllerHelper.setBufferSize(port, j, newSize);
+                            }    
+                        }
+                        portNumber++;
+                    }
+                    if (actors[0] instanceof CompositeActor) {
+                        ptolemy.actor.Director localDirector = actors[0].getDirector();
+                        if(localDirector instanceof 
+                                ptolemy.domains.hdf.kernel.HDFDirector ||
+                                localDirector instanceof 
+                                ptolemy.domains.hdf.kernel.HDFFSMDirector) {
+                            TypedCompositeActor actorHelper 
+                                    = (TypedCompositeActor) _getHelper((NamedObj) actors[0]);
+                            int[] firingsPerGlobalIterationArrayOfActor 
+                                    = actorHelper.getFiringsPerGlobalIteration();
+                            if (firingsPerGlobalIterationArrayOfActor == null) {
+                                firingsPerGlobalIterationArrayOfActor  
+                                        = new int[length];
+                                actorHelper.setFiringsPerGlobalIteration
+                                        (firingsPerGlobalIterationArrayOfActor);
+                            }
+                            firingsPerGlobalIterationArrayOfActor[i] 
+                                    = firingsPerGlobalIterationOfContainer;                               
+                        }
+                    }
+                    configurationNumber++;
+                }               
+            }    
+        }
+
+        code.append(super.createOffsetVariablesIfNeeded());
+        return code.toString();
+    }
     
     /** Generate the code for the firing of actors.
      *  @param code The string buffer that the generated code is appended to.

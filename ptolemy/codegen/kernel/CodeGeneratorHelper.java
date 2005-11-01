@@ -1310,33 +1310,83 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
          *  @exception IllegalActionException
          */
         public Token get(String name) throws IllegalActionException {
-            // FIXME: need to consider multiple token consumption
             Iterator inputPorts = ((Actor) _component).inputPortList()
                     .iterator();
 
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
 
+                StringBuffer code = new StringBuffer();
+                boolean found = false;
+                int channelNumber = 0;
                 if (name.equals(inputPort.getName())) {
-                    if (!inputPort.isMultiport()) {
-                        return new ObjectToken(inputPort.getFullName().replace(
-                                '.', '_'));
-                    } else {
-                        return new ObjectToken(inputPort.getFullName().replace(
-                                '.', '_') + "[0]");
+                    found = true;
+                    code.append(inputPort.getFullName().replace('.', '_'));
+                    if (inputPort.isMultiport()) {
+                        code.append("[0]");    
+                    }
+                } else {
+                    for (int i = 0; i < inputPort.getWidth(); i++) {
+                        if (name.equals(inputPort.getName() + "_" + i)) {
+                            found = true;
+                            channelNumber = i;
+                            code.append(inputPort.getFullName().replace('.', '_'));
+                            code.append("[" + i + "]");
+                            break;
+                        }
                     }
                 }
-
-                for (int i = 0; i < inputPort.getWidth(); i++) {
-                    if (name.equals(inputPort.getName() + "_" + i)) {
-                        return new ObjectToken(inputPort.getFullName().replace(
-                                '.', '_') + "[" + i + "]");
+                if (found) {
+                    int bufferSize = getBufferSize(inputPort);
+                    if (bufferSize > 1) {
+                        int bufferSizeOfChannel 
+                                = getBufferSize(inputPort, channelNumber);
+                        String writeOffset 
+                                = (String) getWriteOffset(inputPort, channelNumber);
+                        code.append("[(" + writeOffset + " + " 
+                                + (bufferSizeOfChannel - 1) + ")&" 
+                                + (bufferSizeOfChannel - 1) + "]");
+                    }
+                    return new ObjectToken(code.toString());
+                }
+                
+                // try array
+                found = false;
+                channelNumber = 0;
+                if (name.equals(inputPort.getName() + "Array")) {
+                    found = true;
+                    code.append(inputPort.getFullName().replace('.', '_'));
+                    if (inputPort.isMultiport()) {
+                        code.append("[0]");    
+                    }
+                } else {
+                    for (int i = 0; i < inputPort.getWidth(); i++) {
+                        if (name.equals(inputPort.getName() + "_" + i + "Array")) {
+                            found = true;
+                            channelNumber = i;
+                            code.append(inputPort.getFullName().replace('.', '_'));
+                            code.append("[" + i + "]");
+                            break;
+                        }
                     }
                 }
+                if (found) {
+                    int bufferSize = getBufferSize(inputPort);
+                    if (bufferSize > 1) {
+                        int bufferSizeOfChannel 
+                                = getBufferSize(inputPort, channelNumber);
+                        String writeOffset 
+                                = (String) getWriteOffset(inputPort, channelNumber);
+                        code.append("[(" + writeOffset + " - (@)" + " + " 
+                                + (bufferSizeOfChannel - 1) + ")&" 
+                                + (bufferSizeOfChannel - 1) + "]");
+                    }
+                    return new ObjectToken(code.toString());
+                }
+                                
             }
-
+            
             NamedObj container = _component;
-
             if (_variable != null) {
                 container = _variable.getContainer();
             }

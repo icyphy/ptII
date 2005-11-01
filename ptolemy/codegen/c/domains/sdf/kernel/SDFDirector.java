@@ -93,7 +93,8 @@ public class SDFDirector extends Director {
         Schedule schedule = ((StaticSchedulingDirector) getComponent())
                 .getScheduler().getSchedule();
 
-        Iterator actorsToFire = schedule.iterator();
+        
+        Iterator actorsToFire = schedule.firingIterator();
 
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing) actorsToFire.next();

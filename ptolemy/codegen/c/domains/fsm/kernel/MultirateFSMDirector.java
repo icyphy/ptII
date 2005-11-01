@@ -112,8 +112,7 @@ public class MultirateFSMDirector extends FSMDirector {
         code.append(super.generatePreinitializeCode());
         
         ptolemy.domains.fsm.kernel.MultirateFSMDirector director = 
-                (ptolemy.domains.fsm.kernel.MultirateFSMDirector)
-                getComponent();
+                (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
         ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
@@ -463,6 +462,10 @@ public class MultirateFSMDirector extends FSMDirector {
         StringBuffer code = new StringBuffer();
         CodeGeneratorHelper actorHelper = 
             (CodeGeneratorHelper) _getHelper(port.getContainer());   
+        
+        if (actorHelper.getBufferSize(port) <= 1) {
+            return code.toString();
+        }
      
         int length = 0;
         if (port.isInput()) {

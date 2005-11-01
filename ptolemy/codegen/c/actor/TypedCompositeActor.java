@@ -59,6 +59,16 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public TypedCompositeActor(ptolemy.actor.TypedCompositeActor component) {
         super(component);
     }
+    
+    public String createOffsetVariablesIfNeeded() 
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();    
+        
+        Director directorHelper = (Director) _getHelper((NamedObj) 
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        code.append(directorHelper.createOffsetVariablesIfNeeded()); 
+        return code.toString();
+    }
 
     /** Generate the fire code of the associated composite actor.
      *  @param code
@@ -98,20 +108,23 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  @exception IllegalActionException
      */
     public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer initializeCode = new StringBuffer();
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
 
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj) actors.next();
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(actor);
-            actorHelper.resetInputPortsOffset();
+            initializeCode.append(actorHelper.resetInputPortsOffset());
         }
 
-        resetOutputPortsOffset();
+        initializeCode.append(resetOutputPortsOffset());
 
         Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
-        return directorHelper.generateInitializeCode();
+        
+        initializeCode.append(directorHelper.generateInitializeCode());
+        return initializeCode.toString();
     }
 
     /** Create buffer and offset map. Then get the result of
@@ -154,8 +167,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     
     public void generateSwitchModeCode(StringBuffer code) 
             throws IllegalActionException {
-        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
-                .getDirector());
+        Director directorHelper = (Director) _getHelper((NamedObj) 
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
         directorHelper.generateSwitchModeCode(code);       
     }
 
@@ -208,6 +221,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
         return files;
     }
+    
+    public int[] getFiringsPerGlobalIteration() {
+        return _firingsPerGlobalIteration;    
+    }
 
     public Set getModifiedVariables() throws IllegalActionException {
         Set set = new HashSet();
@@ -228,7 +245,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /** Reset the offsets of all inside channels of all output ports of the
      *  associated actor to the default value of 0.
      */
-    public void resetOutputPortsOffset() throws IllegalActionException {
+    public String resetOutputPortsOffset() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         Iterator outputPorts = ((Actor) getComponent()).outputPortList()
                 .iterator();
 
@@ -236,12 +254,27 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             IOPort port = (IOPort) outputPorts.next();
 
             for (int i = 0; i < port.getWidthInside(); i++) {
-                setReadOffset(port, i, new Integer(0));
-                setWriteOffset(port, i, new Integer(0));
+                Object readOffset = getReadOffset(port, i);
+                if (readOffset instanceof Integer) {
+                    setReadOffset(port, i, new Integer(0));
+                } else {
+                    code.append(((String) readOffset) + " = 0;\n");         
+                }
+                Object writeOffset = getWriteOffset(port, i);
+                if (writeOffset instanceof Integer) {
+                    setWriteOffset(port, i, new Integer(0));
+                } else {
+                    code.append(((String) writeOffset) + " = 0;\n");         
+                }
             }
         }
+        return code.toString();
     }
 
+    public void setFiringsPerGlobalIteration(int[] firingsPerGlobalIteration) {
+        _firingsPerGlobalIteration = firingsPerGlobalIteration;    
+    }
+    
     /** Set the associated actor's rates for all configurations of this actor. 
      */
     public void setRates(int[][] rates) {
@@ -285,8 +318,15 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
             Object[] writeOffsets = new Object[length];
             _writeOffsets.put(port, writeOffsets);
+            
+            for (int i = 0; i < length; i++) {
+                setReadOffset(port, i, new Integer(0));
+                setWriteOffset(port, i, new Integer(0));
+            }
         }
     }
+    
+    private int[] _firingsPerGlobalIteration;
 
     private int[][] _rates;
 }
