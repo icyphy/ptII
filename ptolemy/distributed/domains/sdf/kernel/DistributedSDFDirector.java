@@ -393,7 +393,9 @@ public class DistributedSDFDirector extends SDFDirector {
      */
     private void bufferingPhase() throws IllegalActionException {
         System.out.println("Buffering...");
-
+        
+        int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
+        
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
@@ -405,12 +407,14 @@ public class DistributedSDFDirector extends SDFDirector {
         // does not have a container.
         Schedule schedule = scheduler.getSchedule();
         Iterator levels = schedule.iterator();
+        
+        int levelNumber = 0;
 
         commandsMap = new HashMap();
 
         while (levels.hasNext() && !_stopRequested) {
             Schedule level = (Schedule) levels.next();
-
+            
             Iterator firings = level.firingIterator();
 
             while (firings.hasNext()) {
@@ -422,7 +426,26 @@ public class DistributedSDFDirector extends SDFDirector {
                 commandsMap
                         .put(clientThread, new Integer(ClientThread.ITERATE));
             }
+            
+            int aux = levelNumber - iterationsValue;
 
+            if (aux >= 0) {
+                firings = schedule.get(aux).firingIterator();
+
+                while (firings.hasNext()) {
+                    Firing firing = (Firing) firings.next();
+                    Actor actor = (Actor) firing.getActor();
+
+                    System.out.println("removing: " + actor.getFullName());
+                    ClientThread clientThread = (ClientThread) actorsThreadsMap
+                            .get(actor);
+                    clientThread.setIterationCount(firing.getIterationCount());
+                    commandsMap.remove(clientThread);
+                }
+            }            
+
+            levelNumber = levelNumber + 1;
+            
             if (levels.hasNext()) {
                 synchronizer.setCommands(commandsMap);
 
