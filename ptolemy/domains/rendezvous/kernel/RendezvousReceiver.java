@@ -524,6 +524,62 @@ public class RendezvousReceiver extends AbstractReceiver implements
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Commit the rendezvous formed by the set of receivers that agree to
+     *  send and receive at the same time.
+     *
+     *  @param receivers The receivers that participate in the rendezvous.
+     *  @param director The director.
+     *  @see #_receiversReadyToCommit(Receiver[][], boolean)
+     */
+    protected static void _commitRendezvous(Set receivers,
+            RendezvousDirector director) {
+        // The result table for all the receivers.
+        Map result = new HashMap();
+        
+        // Backup result tokens for the receivers, and release the threads
+        // blocked at those receivers.
+        TopologicalSort sort = new TopologicalSort(receivers);
+        while (sort.hasNext()) {
+            RendezvousReceiver castReceiver =
+                (RendezvousReceiver) sort.next();
+            result.put(castReceiver, castReceiver._token);
+
+            if (_getData(castReceiver._getWaiting) == null) {
+                director.threadUnblocked(castReceiver._getWaiting, null);
+                _setData(castReceiver._getWaiting, result);
+            }
+
+            if (_getData(castReceiver._putWaiting) == null) {
+                director.threadUnblocked(castReceiver._putWaiting, null);
+                _setData(castReceiver._putWaiting, result);
+            }
+        }
+
+        // Reset the flags for all the receivers.
+        Iterator receiverIterator = receivers.iterator();
+        while (receiverIterator.hasNext()) {
+            RendezvousReceiver castReceiver =
+                (RendezvousReceiver) receiverIterator.next();
+
+            // If the receiver does conditional get, clear the get request on
+            // all the channels.
+            if ((castReceiver._getReceivers != null)
+                    && castReceiver._getConditional) {
+                _resetReceiversFlags(castReceiver._getReceivers, true, false);
+            }
+
+            // If the receiver does conditional put, clear the put request on
+            // all the channels.
+            if ((castReceiver._putReceivers != null)
+                    && castReceiver._putConditional) {
+                _resetReceiversFlags(castReceiver._putReceivers, false, true);
+            }
+
+            // Clear the get and put requests on this receiver.
+            castReceiver._resetFlags(true, true);
+        }
+    }
+    
     /** Return the director that is controlling the execution of this model.
      *  If this receiver is an inside receiver, then it is the director
      *  of the container (actor) of the container (port). Otherwise, it
@@ -580,6 +636,29 @@ public class RendezvousReceiver extends AbstractReceiver implements
         return _putWaiting != null;
     }
     
+    /** Get the receivers that are ready to form a rendezvous according to the
+     *  rendezvous semantics. If no rendezvous can be formed starting for the
+     *  given array of receivers, null is returned.
+     *
+     *  @param receivers The array of receivers to be put to or get from.
+     *  @param isPut If true, the rendezvous is to put tokens to the
+     *         receivers; if false, the rendezvous is to get tokens from
+     *         the receivers.
+     *  @return A set of receivers that participate in the rendezvous if
+     *         it can be formed, or null if no rendezvous can be formed.
+     *  @see #_commitRendezvous(Set, RendezvousDirector)
+     */
+    protected static Set _receiversReadyToCommit(Receiver[][] receivers,
+            boolean isPut) {
+        Set ready = new HashSet();
+        if (_checkRendezvous(receivers, isPut, new HashSet(), ready,
+                new HashSet(), false, false)) {
+            return ready;
+        } else {
+            return null;
+        }
+    }
+    
     /** Return a string describing the status of the receiver.
      *  @return A string describing the status of the specified receiver.
      */
@@ -591,68 +670,100 @@ public class RendezvousReceiver extends AbstractReceiver implements
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
 
-    /** Commit the rendezvous formed by the set of receivers that agree to
-     *  send and receive at the same time.
-     *
-     *  @param receivers The receivers that participate in the rendezvous.
-     *  @param director The director.
-     *  @see #_receiversReadyToCommit(Receiver[][], boolean)
-     */
-    private static void _commitRendezvous(Set receivers,
-            RendezvousDirector director) {
-        // The result table for all the receivers.
-        Map result = new HashMap();
+    private static boolean _checkRendezvous(Receiver[][] receivers,
+            boolean isPut, Set beingChecked, Set ready, Set notReady,
+            boolean isSymmetricGet, boolean isSymmetricPut) {
         
-        if (receivers.size() == 2) {
-            int x = 0;
+        boolean isConditional = false;
+        boolean branchReady = false;
+        
+        int selectedBranch = _getSelectedBranch(receivers, beingChecked);
+        if (selectedBranch >= 0 && (isSymmetricGet || isSymmetricPut)) {
+            return false;
         }
         
-        // Backup result tokens for the receivers, and release the threads
-        // blocked at those receivers.
-        TopologicalSort sort = new TopologicalSort(receivers);
-        int num = 0;
-        while (sort.hasNext()) {
-            num++;
-            RendezvousReceiver castReceiver =
-                (RendezvousReceiver) sort.next();
-            result.put(castReceiver, castReceiver._token);
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                boolean hasBackup = false;
+                Thread backupThread = null;
+                branchReady = true;
+                
+                for (int j = 0; j < receivers[i].length; j++) {
+                    if (receivers[i][j] != null) {
+                        RendezvousReceiver receiver =
+                            (RendezvousReceiver)receivers[i][j];
+                        
+                        // Whether the receiver is in a conditional branch.
+                        // isConditional for all the receivers should be the
+                        // same in one invocation of this method.
+                        isConditional = isConditional ||
+                                (isPut && receiver._putConditional) ||
+                                (!isPut && receiver._getConditional);
+                        
+                        if (isConditional && (selectedBranch != -1 &&
+                                selectedBranch != i)) {
+                            branchReady = false;
+                            break;
+                        }
 
-            if (_getData(castReceiver._getWaiting) == null) {
-                director.threadUnblocked(castReceiver._getWaiting, null);
-                _setData(castReceiver._getWaiting, result);
-            }
+                        if (beingChecked.contains(receiver) ||
+                                ready.contains(receiver)) {
+                            // Do nothing
+                        } else if (notReady.contains(receiver)) {
+                            branchReady = false;
+                            break;
+                        } else if ((receiver._putWaiting == null) ||
+                                (receiver._getWaiting == null)) {
+                            branchReady = false;
+                            notReady.add(receiver);
+                            break;
+                        } else {
+                            beingChecked.add(receiver);
+                            
+                            Receiver[][] farSideReceivers =
+                                isPut ? receiver._getReceivers
+                                    : receiver._putReceivers;
+                            
+                            Receiver[][][] dependencies =
+                                new Receiver[][][] {
+                                    farSideReceivers,
+                                    isSymmetricPut ? null :
+                                        receiver._symmetricGetReceivers,
+                                    isSymmetricGet ? null :
+                                        receiver._symmetricPutReceivers
+                            };
+                            for (int k = 0; k < dependencies.length; k++) {
+                                if (dependencies[k] != null) {
+                                    if (!_checkRendezvous(dependencies[k],
+                                            (k == 0 && !isPut) || k == 2,
+                                            beingChecked, ready, notReady,
+                                            k == 1, k == 2)) {
+                                        branchReady = false;
+                                        break;
+                                    }
+                                }
+                            }
 
-            if (_getData(castReceiver._putWaiting) == null) {
-                director.threadUnblocked(castReceiver._putWaiting, null);
-                _setData(castReceiver._putWaiting, result);
+                            beingChecked.remove(receiver);
+                            if (branchReady) {
+                                ready.add(receiver);
+                            } else {
+                                notReady.add(receiver);
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                if ((isConditional && branchReady)
+                        || (!isConditional && !branchReady)) {
+                    break;
+                }
             }
         }
-
-        // Reset the flags for all the receivers.
-        Iterator receiverIterator = receivers.iterator();
-        while (receiverIterator.hasNext()) {
-            RendezvousReceiver castReceiver =
-                (RendezvousReceiver) receiverIterator.next();
-
-            // If the receiver does conditional get, clear the get request on
-            // all the channels.
-            if ((castReceiver._getReceivers != null)
-                    && castReceiver._getConditional) {
-                _resetReceiversFlags(castReceiver._getReceivers, true, false);
-            }
-
-            // If the receiver does conditional put, clear the put request on
-            // all the channels.
-            if ((castReceiver._putReceivers != null)
-                    && castReceiver._putConditional) {
-                _resetReceiversFlags(castReceiver._putReceivers, false, true);
-            }
-
-            // Clear the get and put requests on this receiver.
-            castReceiver._resetFlags(true, true);
-        }
+        return branchReady;
     }
-    
+
     /** Get the data associated with the thread.
      *  
      *  @param thread The thread with data associated with it.
@@ -704,6 +815,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
             Receiver[][] putReceivers, RendezvousDirector director,
             Object tokens, int flag)
             throws IllegalActionException, TerminateProcessException {
+        boolean isGet = (flag & GET) == GET;
+        boolean isPut = (flag & PUT) == PUT;
+        boolean isGetConditional =
+            (flag & GET_CONDITIONAL) == GET_CONDITIONAL;
+        boolean isPutConditional =
+            (flag & PUT_CONDITIONAL) == PUT_CONDITIONAL;
+        boolean isSymmetric = isPut && isGet;
+
         Map result = null;
         synchronized (director) {
             Thread theThread = Thread.currentThread();
@@ -715,29 +834,21 @@ public class RendezvousReceiver extends AbstractReceiver implements
             Token[][] tokenArray =
                 tokens instanceof Token[][] ? (Token[][])tokens : null;
 
-            boolean isGet = (flag & GET) == GET;
-            boolean isPut = (flag & PUT) == PUT;
-            boolean isGetConditional =
-                (flag & GET_CONDITIONAL) == GET_CONDITIONAL;
-            boolean isPutConditional =
-                (flag & PUT_CONDITIONAL) == PUT_CONDITIONAL;
-            boolean isSymmetric = isPut && isGet;
-            
             if (isGet) {
                 for (int i = 0; i < getReceivers.length; i++) {
                     if (getReceivers[i] != null) {
                         for (int j = 0; j < getReceivers[i].length; j++) {
-                            if (getReceivers[i][j] != null) {
-                                RendezvousReceiver castReceiver =
-                                    (RendezvousReceiver) getReceivers[i][j];
+                            RendezvousReceiver receiver =
+                                (RendezvousReceiver) getReceivers[i][j];
                             
-                                castReceiver._getWaiting = theThread;
-                                castReceiver._getReceivers = getReceivers;
-                                castReceiver._getConditional =
+                            if (receiver != null) {
+                                receiver._getWaiting = theThread;
+                                receiver._getReceivers = getReceivers;
+                                receiver._getConditional =
                                     isGetConditional;
                                 
                                 if (isSymmetric) {
-                                    castReceiver._symmetricPutReceivers =
+                                    receiver._symmetricPutReceivers =
                                         putReceivers;
                                 }
                             }
@@ -750,32 +861,32 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 for (int i = 0; i < putReceivers.length; i++) {
                     if (putReceivers[i] != null) {
                         for (int j = 0; j < putReceivers[i].length; j++) {
-                            if (putReceivers[i][j] != null) {
-                                RendezvousReceiver castReceiver =
-                                    (RendezvousReceiver) putReceivers[i][j];
+                            RendezvousReceiver receiver =
+                                (RendezvousReceiver) putReceivers[i][j];
+
+                            if (receiver != null) {
+                                receiver._putWaiting = theThread;
+                                receiver._putReceivers = putReceivers;
                                 
-                                castReceiver._putWaiting = theThread;
-                                castReceiver._putReceivers = putReceivers;
-                                
-                                IOPort port = castReceiver.getContainer();
+                                IOPort port = receiver.getContainer();
                                 if (isPutConditional) {
-                                    castReceiver._putConditional = true;
-                                    castReceiver._token =
+                                    receiver._putConditional = true;
+                                    receiver._token =
                                         token == null ? null :
                                             port.convert(token);
                                 } else {
-                                    castReceiver._putConditional = false;
+                                    receiver._putConditional = false;
                                     try {
                                         token = tokenArray[i][j];
                                     } catch (Throwable e) {
                                     }
-                                    castReceiver._token =
+                                    receiver._token =
                                         token == null ? null :
                                             port.convert(token);
                                 }
                                 
                                 if (isSymmetric) {
-                                    castReceiver._symmetricGetReceivers =
+                                    receiver._symmetricGetReceivers =
                                         getReceivers;
                                 }
                             }
@@ -813,254 +924,20 @@ public class RendezvousReceiver extends AbstractReceiver implements
         return result;
     }
     
-    /** Get the receivers that are ready to form a rendezvous according to the
-     *  rendezvous semantics. If no rendezvous can be formed starting for the
-     *  given array of receivers, null is returned.
-     *
-     *  @param receivers The array of receivers to be put to or get from.
-     *  @param isPut If true, the rendezvous is to put tokens to the
-     *         receivers; if false, the rendezvous is to get tokens from
-     *         the receivers.
-     *  @return A set of receivers that participate in the rendezvous if
-     *         it can be formed, or null if no rendezvous can be formed.
-     *  @see #_commitRendezvous(Set, RendezvousDirector)
-     */
-    private static Set _receiversReadyToCommit(Receiver[][] receivers,
-            boolean isPut) {
-        Set beingChecked = new HashSet();
-        Set ready = new HashSet();
-        Set notReady = new HashSet();
-        if (_checkRendezvous(receivers, isPut, beingChecked, ready,
-                notReady)) {
-            return ready;
-        } else {
-            return null;
-        }
-    }
-    
-    private static boolean _checkRendezvous(Receiver[][] receivers,
-            boolean isPut, Set beingChecked, Set ready, Set notReady) {
-        boolean isConditional = false;
-        boolean branchReady = false;
-        
+    private static int _getSelectedBranch(Receiver[][] receivers, Set beingChecked) {
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
-                branchReady = true;
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != null) {
-                        RendezvousReceiver castReceiver =
-                            (RendezvousReceiver) receivers[i][j];
-                        
-                        // Whether the receiver is in a conditional branch.
-                        // isConditional for all the receivers should be the
-                        // same in one invocation of this method.
-                        isConditional = (isPut && castReceiver._putConditional)
-                                || (!isPut && castReceiver._getConditional);
-
-                        if (beingChecked.contains(castReceiver) ||
-                                ready.contains(castReceiver)) {
-                            // Do nothing
-                        } else if (notReady.contains(castReceiver)) {
-                            branchReady = false;
-                            break;
-                        } else if ((castReceiver._putWaiting == null) ||
-                                (castReceiver._getWaiting == null)) {
-                            branchReady = false;
-                            notReady.add(castReceiver);
-                            break;
-                        } else {
-                            beingChecked.add(castReceiver);
-                            
-                            Receiver[][] farSideReceivers =
-                                isPut ? castReceiver._getReceivers
-                                    : castReceiver._putReceivers;
-                            
-                            Receiver[][][] symmetricReceivers =
-                                new Receiver[][][] {
-                                    farSideReceivers,
-                                    castReceiver._symmetricGetReceivers,
-                                    castReceiver._symmetricPutReceivers
-                            };
-                            for (int k = 0; k < symmetricReceivers.length; k++) {
-                                if (symmetricReceivers[k] != null) {
-                                    if (!_checkRendezvous(
-                                            symmetricReceivers[k],
-                                            (k == 0 && !isPut) || k == 2,
-                                            beingChecked, ready,
-                                            notReady)) {
-                                        branchReady = false;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            beingChecked.remove(castReceiver);
-                            if (branchReady) {
-                                ready.add(castReceiver);
-                            } else {
-                                notReady.add(castReceiver);
-                                break;
-                            }
-                        }
+                    Receiver receiver = (Receiver) receivers[i][j];
+                    if (beingChecked.contains(receiver)) {
+                        return i;
                     }
                 }
-                if ((isConditional && branchReady)
-                        || (!isConditional && !branchReady)) {
-                    break;
-                }
             }
         }
-        return branchReady;
+        return -1;
     }
-
-    /** Get the receivers that are ready to form a rendezvous according to the
-     *  rendezvous semantics. If no rendezvous can be formed starting for the
-     *  given array of receivers, null is returned.
-     *
-     *  @param receivers The array of receivers to be put to or get from.
-     *  @param isPut If true, the rendezvous is to put tokens to the
-     *         receivers; if false, the rendezvous is to get tokens from
-     *         the receivers.
-     *  @param readyReceivers The set of receivers that are already ready for a
-     *         rendezvous, or null if no receivers are already ready.
-     *  @return A set of receivers that participate in the rendezvous if
-     *         it can be formed, or null if no rendezvous can be formed.
-     *  @see #_commitRendezvous(Set, RendezvousDirector)
-     *  @deprecated Use {@link #_checkRendezvous(Receiver[][], boolean, Set,
-     *          Set, Set)} instead.
-     */
-    private static Set _receiversReadyToCommitRecursive(Receiver[][] receivers,
-            boolean isPut, Set readyReceivers, Set unreadyReceivers) {
-        Set checkedReceivers = new HashSet();
-        boolean isConditional = false;
-
-        for (int i = 0; i < receivers.length; i++) {
-            if (receivers[i] != null) {
-                for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != null) {
-                        RendezvousReceiver castReceiver =
-                            (RendezvousReceiver) receivers[i][j];
-
-                        // Whether the receiver is in a conditional branch.
-                        // isConditional for all the receivers should be the
-                        // same in one invocation of this method.
-                        isConditional = (isPut && castReceiver._putConditional)
-                                || (!isPut && castReceiver._getConditional);
-
-                        if (castReceiver._isVisited ||
-                                readyReceivers.contains(castReceiver)) {
-                            // If the receiver is visited in a
-                            // previous traversal step, a loop is
-                            // found. In this case, simply assume that
-                            // it is OK with the rendezvous.
-                            checkedReceivers.add(castReceiver);
-                        } else {
-                            // If the receiver is not visited yet,
-                            // first test whether itself is OK with
-                            // the rendezvous. A receiver that agrees
-                            // to take a rendezvous always has 2
-                            // threads waiting on it: one waiting to
-                            // get; the other waiting to put.
-                            if (unreadyReceivers.contains(castReceiver)) {
-                                // This conditional branch does not
-                                // work because at least one receiver
-                                // is not ready.
-                                checkedReceivers.clear();
-                                break;
-                            } else if ((castReceiver._putWaiting == null) ||
-                                    (castReceiver._getWaiting == null)) {
-                                // This conditional branch does not
-                                // work because at least one receiver
-                                // is not ready.
-                                unreadyReceivers.add(castReceiver);
-                                checkedReceivers.clear();
-                                break;
-                            } else {
-                                // Get the far-side receivers of the current
-                                // receiver, and visit them in a depth-first
-                                // manner.
-                                Receiver[][] farSideReceivers =
-                                    isPut ? castReceiver._getReceivers
-                                        : castReceiver._putReceivers;
-                                
-                                castReceiver._isVisited = true;
-                                Set nestedReadyReceivers =
-                                    _receiversReadyToCommitRecursive(
-                                            farSideReceivers, !isPut,
-                                            readyReceivers, unreadyReceivers);
-                                castReceiver._isVisited = false;
-
-                                if (nestedReadyReceivers == null) {
-                                    // If the traversal in this branch fails,
-                                    // it is not ready for a rendezvous.
-                                    checkedReceivers.clear();
-                                    break;
-                                } else {
-                                    // Otherwise, add the current receiver and
-                                    // the receivers visited in the sub-tree to
-                                    // the set of ready receivers.
-                                    /*checkedReceivers.add(castReceiver);
-                                    checkedReceivers.addAll(
-                                            nestedReadyReceivers);*/
-                                    
-                                    Set newReadyReceivers = new HashSet();
-                                    newReadyReceivers.addAll(readyReceivers);
-                                    newReadyReceivers.add(castReceiver);
-                                    newReadyReceivers.addAll(nestedReadyReceivers);
-                                    Iterator receiverIterator = nestedReadyReceivers.iterator();
-                                    while (receiverIterator.hasNext()) {
-                                        RendezvousReceiver receiver =
-                                            (RendezvousReceiver)receiverIterator.next();
-                                        Receiver[][][] symmetricReceivers = new Receiver[][][] {
-                                                receiver._symmetricGetReceivers,
-                                                receiver._symmetricPutReceivers
-                                        };
-                                        for (int k = 0; k < 2; k++) {
-                                            if (symmetricReceivers[k] != null) {
-                                                Set newCheckedReceivers =
-                                                    _receiversReadyToCommitRecursive(
-                                                            symmetricReceivers[k],k == 1,
-                                                            newReadyReceivers, unreadyReceivers);
-                                                if (newCheckedReceivers == null) {
-                                                    unreadyReceivers.add(receiver);
-                                                    newReadyReceivers.clear();
-                                                    break;
-                                                } else {
-                                                    newReadyReceivers.addAll(newCheckedReceivers);
-                                                }
-                                            }
-                                        }
-                                        if (newReadyReceivers.isEmpty()) {
-                                            checkedReceivers.clear();
-                                            break;
-                                        } else {
-                                            checkedReceivers.addAll(newReadyReceivers);
-                                        }
-                                    }
-                                    if (checkedReceivers.isEmpty()) {
-                                        break;
-                                    } else {
-                                        readyReceivers.addAll(checkedReceivers);
-                                    }
-                                } // if
-                            } // if
-                        } // if
-                    } // if
-                } // for (int j = 0; j < receivers[i].length; j++)
-
-                if ((isConditional && (checkedReceivers.size() > 0))
-                        || (!isConditional && (checkedReceivers.isEmpty()))) {
-                    // If either condition is true (the rendezvous has already
-                    // been formed or the rendezvous cannot be formed), just
-                    // return.
-                    break;
-                }
-            }
-        }
-
-        return (checkedReceivers.size() > 0) ? checkedReceivers : null;
-    }
-
+    
     /** Reset the flags of this receiver.
      *
      *  @param clearGet Whether to reset the flags related to the get methods.
@@ -1184,11 +1061,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
     
     static class TopologicalSort {
         
-        protected boolean hasNext() {
+        public boolean hasNext() {
             return !_zeroInDegree.isEmpty();
         }
         
-        protected Receiver next() {
+        public Receiver next() {
             Iterator zeroInDegreeIterator = _zeroInDegree.iterator();
             if (!zeroInDegreeIterator.hasNext()) {
                 return null;
@@ -1231,10 +1108,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
         
         protected TopologicalSort(Set receivers) {
             _receivers = receivers;
-            _initializeZeroInDegree();
+            _initialize();
         }
         
-        private void _initializeZeroInDegree() {
+        private void _initialize() {
             _zeroInDegree = new HashSet();
             Iterator iterator = _receivers.iterator();
             while (iterator.hasNext()) {
@@ -1245,7 +1122,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 }
             }
             if (_zeroInDegree.isEmpty()) {
-                throw new InternalErrorException("Cyclic graph.");
+                throw new InternalErrorException("No entry point.");
             }
         }
         
