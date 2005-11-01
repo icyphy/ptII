@@ -647,7 +647,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	   touch configure; \
 	   chmod a+rx configure util/testsuite/chkextra; \
 	   (cd ptolemy/domains/ptinyos; \
-		chmod a+rx util/unzip-opts.sh util/nc2moml/nc2moml*;
+		chmod a+rx util/unzip-opts.sh util/nc2moml/nc2moml*; \
 		chmod a+rx util/ncapp2moml/ncapp2moml* util/zip-opts.sh);
 	)
 	# README_VIPTOS.txt
