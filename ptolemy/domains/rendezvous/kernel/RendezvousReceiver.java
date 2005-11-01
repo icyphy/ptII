@@ -69,6 +69,7 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 public class RendezvousReceiver extends AbstractReceiver implements
         ProcessReceiver {
+    
     /** Construct a RendezvousReceiver with no container.
      */
     public RendezvousReceiver() {
@@ -670,29 +671,55 @@ public class RendezvousReceiver extends AbstractReceiver implements
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
 
+    /** Check whether a rendezvous can be formed starting from the given
+     *  two-dimensional array of receivers. If a rendezvous can be formed,
+     *  the ready set contains all the receivers participating in the
+     *  rendezvous after the call, and true is returned; Otherwise, the
+     *  ready set is not meaningful.
+     * 
+     *  @param receivers The initial two-dimensional array of receivers on an
+     *         actor.
+     *  @param isPut Whether the request is put.
+     *  @param beingChecked The set of receivers that are being checked by
+     *         previous recursive calls.
+     *  @param ready The set of receivers that are ready for a rendezvous.
+     *  @param notReady The set of receivers that are not ready for a
+     *         rendezvous.
+     *  @param isSymmetricGet Whether the previous recursive call is from the
+     *         other side (the get side) of a Merge or Barrier.
+     *  @param isSymmetricPut Whether the previous recursive call is from the
+     *         other side (the put side) of a Merge or Barrier.
+     *  @return Whether a rendezvous can be formed.
+     */
     private static boolean _checkRendezvous(Receiver[][] receivers,
             boolean isPut, Set beingChecked, Set ready, Set notReady,
             boolean isSymmetricGet, boolean isSymmetricPut) {
         
+        // Whether the receivers are conditional. To be initialized in the
+        // loops.
         boolean isConditional = false;
+        
+        // Whether the last conditional branch is ready.
         boolean branchReady = false;
         
+        // Test which branch of the given receivers has been chosen previously.
         int selectedBranch = _getSelectedBranch(receivers, beingChecked);
+        // If a loop is found after a symmetric call, return false so that
+        // previous calls will not choose this branch with cycle.
         if (selectedBranch >= 0 && (isSymmetricGet || isSymmetricPut)) {
             return false;
         }
         
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
-                boolean hasBackup = false;
-                Thread backupThread = null;
+                // Assume the branch is ready, to be disproved later.
                 branchReady = true;
                 
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if (receivers[i][j] != null) {
-                        RendezvousReceiver receiver =
-                            (RendezvousReceiver)receivers[i][j];
-                        
+                    RendezvousReceiver receiver =
+                        (RendezvousReceiver)receivers[i][j];
+
+                    if (receiver != null) {
                         // Whether the receiver is in a conditional branch.
                         // isConditional for all the receivers should be the
                         // same in one invocation of this method.
@@ -700,6 +727,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                 (isPut && receiver._putConditional) ||
                                 (!isPut && receiver._getConditional);
                         
+                        // If the put/get is conditional and another branch was
+                        // chosen previously, cancel the current branch.
                         if (isConditional && (selectedBranch != -1 &&
                                 selectedBranch != i)) {
                             branchReady = false;
@@ -708,16 +737,24 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
                         if (beingChecked.contains(receiver) ||
                                 ready.contains(receiver)) {
-                            // Do nothing
+                            // If the receiver has been visited or is ready, do
+                            // nothing.
                         } else if (notReady.contains(receiver)) {
+                            // If the receiver is not ready, cancel the current
+                            // branch.
                             branchReady = false;
                             break;
                         } else if ((receiver._putWaiting == null) ||
                                 (receiver._getWaiting == null)) {
+                            // If not putWaiting and getWaiting at the same
+                            // time, the receiver is not ready, so record this
+                            // and cancel the current branch.
                             branchReady = false;
                             notReady.add(receiver);
                             break;
                         } else {
+                            // Otherwise, assume the receiver is ready, and
+                            // continue to check its dependencies.
                             beingChecked.add(receiver);
                             
                             Receiver[][] farSideReceivers =
@@ -732,6 +769,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                     isSymmetricGet ? null :
                                         receiver._symmetricPutReceivers
                             };
+                            // Check the three dependencies.
                             for (int k = 0; k < dependencies.length; k++) {
                                 if (dependencies[k] != null) {
                                     if (!_checkRendezvous(dependencies[k],
@@ -757,10 +795,13 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 
                 if ((isConditional && branchReady)
                         || (!isConditional && !branchReady)) {
+                    // If either is true, no further test is needed.
                     break;
                 }
             }
         }
+        
+        // Return whether the last branch checked is ready.
         return branchReady;
     }
 
@@ -782,26 +823,35 @@ public class RendezvousReceiver extends AbstractReceiver implements
         }
     }
     
-    /** Get or put token(s) to the array of receivers. This method is commonly
-     *  used by {@link #getFromAll(Receiver[][], RendezvousDirector)},
-     *  {@link #getFromAny(Receiver[][], RendezvousDirector)},
-     *  {@link #putToAll(Token[][], Receiver[][], RendezvousDirector)} and
-     *  {@link #putToAny(Token, Receiver[][], RendezvousDirector)}. If the
-     *  tokens parameter is null, it does a get. isCondition indicates whether
-     *  the get is from all or from any. If the tokens parameter is a single
-     *  token (of type {@link Token}), it does put to any with that token. If
-     *  the tokens parameter is a two-dimentional array of tokens, it does put
-     *  to all with those tokens.
+    /** Get or put token(s) to the array of receivers, or both put and get at
+     *  the same time. This method is commonly used by {@link
+     *  #getFromAll(Receiver[][], RendezvousDirector)}, {@link
+     *  #getFromAny(Receiver[][], RendezvousDirector)}, {@link
+     *  #putToAll(Token[][], Receiver[][], RendezvousDirector)}, {@link
+     *  #putToAny(Token, Receiver[][], RendezvousDirector)}, and {@link
+     *  #getFromAnyPutToAll(Receiver[][], Receiver[][], RendezvousDirector).
      *  
-     *  This method does not return until the get or put is finished.
+     *  The operation that it performs depends on the flag parameter. If a get
+     *  is requested in the flag, getReceivers should contain the receivers to
+     *  receive tokens; otherwise, getReceivers is ignored. If a put is
+     *  requested in the flag, putReceivers should contain the receivers to
+     *  put tokens to. The tokens are stored in the tokens parameter. If the
+     *  put is to any of the receivers, the tokens parameter is the single
+     *  token to put (of type {@link Token}); if the put is to all of the
+     *  receivers, the tokens parameter is a two-dimensional array of tokens
+     *  (of type {@link Token}[][]), one corresponding to a receiver in the
+     *  two-dimensional array putReceivers.
      *  
-     *  @param receivers The receivers to be got from or put to.
+     *  This method does not return until the requested operation is finished.
+     *  
+     *  @param getReceivers The receivers from whith tokens are received.
+     *  @param putReceivers The receivers to which tokens are put to.
      *  @param director The director.
-     *  @param tokens null if this method is used to get tokens; a token of
-     *         this method is used to put to any of the receivers; or a
-     *         two-dimentional array of tokens if this method is used to put to
-     *         all of the receivers.
-     *  @param isConditional Whether the get or put is conditional.
+     *  @param tokens A token if the operation is to put to any of the
+     *         receivers. A two-dimensional array of tokens if the operation is
+     *         to put to all of the receivers. Ignored if the operation is to
+     *         get tokens from the getReceivers only.
+     *  @param flag The flag representing the operation to be performed.
      *  @return The map of results on the receivers that participate in the
      *          rendezvous. Keys of the map are receivers; values of the map
      *          are the tokens on those receivers.
@@ -815,6 +865,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
             Receiver[][] putReceivers, RendezvousDirector director,
             Object tokens, int flag)
             throws IllegalActionException, TerminateProcessException {
+        
+        // Extract information from the flag.
         boolean isGet = (flag & GET) == GET;
         boolean isPut = (flag & PUT) == PUT;
         boolean isGetConditional =
@@ -896,6 +948,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
             }
 
             Set rendezvousReceivers;
+            // Test the rendezvous. If both put and get are to be done at the
+            // same time, it does not matter whether the test starts from the
+            // get receivers or the put receivers.
             if (getReceivers != null) {
                 rendezvousReceivers =
                     _receiversReadyToCommit(getReceivers, false);
@@ -924,12 +979,24 @@ public class RendezvousReceiver extends AbstractReceiver implements
         return result;
     }
     
-    private static int _getSelectedBranch(Receiver[][] receivers, Set beingChecked) {
+    /** Get the branch of the two-dimensional array of receivers that has been
+     *  selected by previous recursive calls of {@link
+     *  #_checkRendezvous(Receiver[][], boolean, Set, Set, Set, boolean,
+     *  boolean)}. 
+     * 
+     *  @param receivers The two-dimensional array of receivers.
+     *  @param beingChecked The set of receivers that are being checked by
+     *         previous recursive calls.
+     *  @return The index of the selected branch, or -1 if no branch has been
+     *         selected yet.
+     */
+    private static int _getSelectedBranch(Receiver[][] receivers,
+            Set beingChecked) {
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
                     Receiver receiver = (Receiver) receivers[i][j];
-                    if (beingChecked.contains(receiver)) {
+                    if (receiver != null && beingChecked.contains(receiver)) {
                         return i;
                     }
                 }
@@ -1008,6 +1075,26 @@ public class RendezvousReceiver extends AbstractReceiver implements
     ///////////////////////////////////////////////////////////////////
     ////                          private fields                   ////
 
+    /** Flag to test whether an operation does a get. */
+    private static final int GET                     =  4; // 0100
+    /** Flag to test whether an operation does a put. */
+    private static final int PUT                     =  8; // 1000
+    /** Flag to test whether an operation does a conditional get. */
+    private static final int GET_CONDITIONAL         =  1; // 0001
+    /** Flag to test whether an operation does a conditional put. */
+    private static final int PUT_CONDITIONAL         =  2; // 0010
+    
+    /** Flag for the "get from all" operation. */
+    private static final int GET_FROM_ALL            =  4; // 0100
+    /** Flag for the "get from any" operation. */
+    private static final int GET_FROM_ANY            =  5; // 0101
+    /** Flag for the "put to all" operation. */
+    private static final int PUT_TO_ALL              =  8; // 1000
+    /** Flag for the "put to any" operation. */
+    private static final int PUT_TO_ANY              = 10; // 1010
+    /** Flag for the "get from any and put to all" operation. */
+    private static final int GET_FROM_ANY_PUT_TO_ALL = 13; // 1101
+
     /** The boundary detector. */
     private BoundaryDetector _boundaryDetector;
 
@@ -1022,11 +1109,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /** Indicator that a get() is waiting on this receiver. */
     private Thread _getWaiting = null;
 
-    /** Whether this receiver has been visited in the __receiversReadyToCommit
-     *  method.
-     */
-    private boolean _isVisited = false;
-
     /** Flag indicating that the _putWaiting thread is a conditional
      * rendezvous.
      */
@@ -1038,8 +1120,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /** Indicator that a put() is waiting on this receiver. */
     private Thread _putWaiting = null;
     
+    /** The receivers for a get operation on the other side, or null. */
     private Receiver[][] _symmetricGetReceivers;
     
+    /** The receivers for a put operation on the other side, or null. */
     private Receiver[][] _symmetricPutReceivers;
 
     /** Array with just one receiver, this one, for convenience. */
@@ -1048,23 +1132,49 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /** The token being transferred during the rendezvous. */
     private Token _token;
     
-    private static final int GET                     =  4; // 0100
-    private static final int PUT                     =  8; // 1000
-    private static final int GET_CONDITIONAL         =  1; // 0001
-    private static final int PUT_CONDITIONAL         =  2; // 0010
+    //////////////////////////////////////////////////////////////////////////
+    //// TopologicalSort
+    /**
+       Topological sort for the set of receivers to be committed. The set of
+       receivers may have dependencies among them, because receivers in the
+       up-stream of a Merge or Barrier must be committed before those in the
+       down-stream.
+       
+       This sort takes a set of receivers, and returns one of them at a time
+       in the topological order. Cycles must not exist in the set of receivers;
+       Otherwise, there will be {@link InternalErrorException} or infinite
+       loop.
     
-    private static final int GET_FROM_ALL            =  4; // 0100
-    private static final int GET_FROM_ANY            =  5; // 0101
-    private static final int PUT_TO_ALL              =  8; // 1000
-    private static final int PUT_TO_ANY              = 10; // 1010
-    private static final int GET_FROM_ANY_PUT_TO_ALL = 13; // 1101
-    
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
     static class TopologicalSort {
         
+        /** Construct a topological sort object with a set of receivers ready
+         *  to commit.
+         *  
+         *  @param receivers The set of receivers.
+         */
+        TopologicalSort(Set receivers) {
+            _receivers = receivers;
+            _initialize();
+        }
+        
+        /** Test whether there are more receiver to be returned.
+         * 
+         *  @return true if there are more receiver; false otherwise.
+         */
         public boolean hasNext() {
             return !_zeroInDegree.isEmpty();
         }
         
+        /** Return the next receiver. There must be some receiver left.
+         * 
+         *  @return The next receiver.
+         */
         public Receiver next() {
             Iterator zeroInDegreeIterator = _zeroInDegree.iterator();
             if (!zeroInDegreeIterator.hasNext()) {
@@ -1084,14 +1194,13 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     for (int i = 0; i < putReceivers.length; i++) {
                         if (putReceivers[i] != null) {
                             for (int j = 0; j < putReceivers[i].length; j++) {
-                                if (putReceivers[i][j] != null &&
-                                        _receivers.contains(putReceivers[i][j])) {
-                                    
-                                    RendezvousReceiver castReceiver =
-                                        (RendezvousReceiver)putReceivers[i][j];
-                                    
-                                    castReceiver._token = token;
-                                    _zeroInDegree.add(putReceivers[i][j]);
+                                RendezvousReceiver receiver =
+                                    (RendezvousReceiver)putReceivers[i][j];
+                                
+                                if (receiver != null &&
+                                        _receivers.contains(receiver)) {
+                                    receiver._token = token;
+                                    _zeroInDegree.add(receiver);
                                 }
                             }
                         }
@@ -1106,11 +1215,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
             return next;
         }
         
-        protected TopologicalSort(Set receivers) {
-            _receivers = receivers;
-            _initialize();
-        }
-        
+        /** Initialize the set of zero in-degree receivers.
+         */
         private void _initialize() {
             _zeroInDegree = new HashSet();
             Iterator iterator = _receivers.iterator();
@@ -1126,8 +1232,12 @@ public class RendezvousReceiver extends AbstractReceiver implements
             }
         }
         
+        /** The set of receivers given to the constructor. */
         private Set _receivers;
         
+        /** The set of receivers with zero in-degree, with can be immediately
+         *  returned by {@link #next()}.
+         */
         private Set _zeroInDegree;
     }
 }
