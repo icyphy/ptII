@@ -365,12 +365,27 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         // First check to see if the name references a valid variable.
         ptolemy.data.Token value = null;
         String functionName = node.getFunctionName();
-        _fireCode.append(functionName + "(");
-
+        
         if ((functionName != null) && (_scope != null)) {
             value = _scope.get(node.getFunctionName());
         }
-
+        
+        // The following block of codes applies when multirate expression is used.
+        int index = functionName.indexOf("Array");
+        if (index > 0) { 
+            String label = value.toString();
+            if (label.startsWith("object(")) {
+                label = label.substring(7, label.length() - 1);
+                int position = label.indexOf("(@)");
+                _fireCode.append(label.substring(0, position + 1));
+                _evaluateChild(node, 1);
+                _fireCode.append(label.substring(position + 2));
+                return;
+            }
+        } 
+        
+        _fireCode.append(functionName + "(");
+        
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
