@@ -54,15 +54,15 @@
 	<pre>
 cd $PTII
 mkdir -p vendors/ptinyos
-ln -s <I>location_of_your_tiny-1.x_tree</I> .
-ln -s <I>location_of_your_nesc_tree</I> .
+cd $PTII/vendors/ptinyos
+ln -s <I>location_of_your_tiny-1.x_tree</I> tinyos-1.x
+ln -s <I>location_of_your_nesc_tree</I> nesc
 	</pre>
-	Be sure to update to the latest nesC cvs version, then
-	 proceed to 
-	<a href="#environmentVariables">Set up the necessary
-    environment variables</a> below.  You may skip installing TinyOS
-	and nesc and proceed to running <CODE>nc2moml</CODE>.
-
+ 	Be sure to update to the latest nesC cvs version, then proceed
+ 	to <a href="#environmentVariables">Set up the necessary
+ 	environment variables</a> below.  You may skip installing
+ 	TinyOS and nesc and <a href="#unzip">proceed</a> to unzipping
+ 	the opts files and running <CODE>nc2moml</CODE>.
 	</BLOCKQUOTE>
 
 
@@ -418,21 +418,35 @@ make[4]: *** [Serial.o] Error 1
       <CODE>tinyos-1.x/tools/src/uisp/src/Makefile</CODE>
       and remove the <CODE>-Werror</CODE> and rerun make from the top.
 
-      <li> Run the script that will unzip the file that contains
-      additional compiler flags.  It will place "opts" files into
-      various directories in your tinyos-1.x tree.  The script assumes
-      that you have placed your tinyos-1.x tree as indicated in the
-      instructions above.
+      <li><a name="unzip"> Run the script that will unzip the file
+      that contains additional compiler flags.  It will place "opts"
+      files into various directories in your tinyos-1.x tree.  The
+      script assumes that you have placed your tinyos-1.x tree as
+      indicated in the instructions above.
         <pre>
 cd $PTII/ptolemy/domains/ptinyos/util
 ./unzip-opts.sh
         </pre>
+
+        <p>
+          If the executable permissions are not set correctly, run:
+        <pre>
+chmod a+x unzip-opts.sh
+        </pre>
+        then try the step above again.
 
       <li> Run the script to generate the .moml files from the .nc files.
         <pre>
 cd $PTII/ptolemy/domains/ptinyos/util/nc2moml
 ./nc2moml
         </pre>
+
+          If the executable permissions are not set correctly, run:
+        <pre>
+chmod a+x nc2moml*
+        </pre>
+        then try the step above again.
+
 	The <CODE>nc2moml</CODE> command will take 10-30 minutes to complete.
 
         <p> Note: The nc2moml tool requires that you build the tools in <CODE>$PTII/bin</CODE>.  Do the following and rerun the script above if they are missing:
@@ -451,7 +465,7 @@ make
           <li> 
             <ol>
               <li>Try running Viptos:
-                <pre>vergil -ptinyos</pre>
+                <pre>$PTII/bin/vergil -viptos</pre>
 
               <li>Create a new PtinyOS Graph Editor from the File |
               New menu.
