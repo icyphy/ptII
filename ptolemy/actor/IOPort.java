@@ -1334,8 +1334,9 @@ public class IOPort extends ComponentPort {
     }
 
     /** If this port is an output, return the remote receivers that can
-     *  receive data from this port through the specified relation.
-     *  The relation should be linked to the port
+     *  receive data from this port through the specified relation or
+     *  any relation in its relation group.
+     *  The relation or one in its relation group should be linked to the port
      *  from the inside, otherwise an exception is thrown. For an output
      *  port, the returned value is an array of arrays of the same form
      *  as that returned by getReceivers() with no arguments.
@@ -1358,7 +1359,7 @@ public class IOPort extends ComponentPort {
         try {
             _workspace.getReadAccess();
 
-            if (!isInsideLinked(relation)) {
+            if (!isInsideGroupLinked(relation)) {
                 throw new IllegalActionException(this, relation,
                         "not linked from the inside.");
             }
@@ -1387,7 +1388,7 @@ public class IOPort extends ComponentPort {
             while (insideRelations.hasNext()) {
                 IORelation insideRelation = (IORelation) insideRelations.next();
 
-                if (insideRelation == relation) {
+                if (insideRelation.relationGroupList().contains(relation)) {
                     int size = java.lang.Math.min(width,
                             outsideReceivers.length - index);
 
