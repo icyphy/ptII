@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={156, 34, 1049, 800}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={261, 10, 940, 696}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[834, 682]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[725, 578]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{417.0, 341.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{362.5, 289.0}">
     </property>
     <property name="SuppressDeadlockReporting" class="ptolemy.data.expr.Parameter" value="true">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -32,7 +32,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 40.0]">
         </property>
     </property>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
@@ -41,7 +41,7 @@
         <property name="init" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 100.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
@@ -52,15 +52,15 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 165.0]">
         </property>
     </entity>
     <entity name="Merge" class="ptolemy.domains.rendezvous.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 135.0]">
         </property>
     </entity>
     <entity name="Merge2" class="ptolemy.domains.rendezvous.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 260.0]">
         </property>
     </entity>
     <entity name="Ramp3" class="ptolemy.actor.lib.Ramp">
@@ -71,7 +71,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 230.0]">
         </property>
     </entity>
     <entity name="Ramp4" class="ptolemy.actor.lib.Ramp">
@@ -82,11 +82,11 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 295.0]">
         </property>
     </entity>
     <entity name="Merge3" class="ptolemy.domains.rendezvous.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 200.0]">
         </property>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
@@ -98,11 +98,11 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 340.0]">
         </property>
     </entity>
     <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 340.0]">
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
@@ -110,7 +110,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 340.0]">
         </property>
     </entity>
     <entity name="Ramp5" class="ptolemy.actor.lib.Ramp">
@@ -119,7 +119,7 @@
         <property name="init" class="ptolemy.data.expr.Parameter" value="21">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 360.0]">
         </property>
     </entity>
     <entity name="Ramp6" class="ptolemy.actor.lib.Ramp">
@@ -130,15 +130,15 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 425.0]">
         </property>
     </entity>
     <entity name="Merge4" class="ptolemy.domains.rendezvous.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 395.0]">
         </property>
     </entity>
     <entity name="Merge5" class="ptolemy.domains.rendezvous.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 530.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 520.0]">
         </property>
     </entity>
     <entity name="Ramp7" class="ptolemy.actor.lib.Ramp">
@@ -149,7 +149,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 500.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 490.0]">
         </property>
     </entity>
     <entity name="Ramp8" class="ptolemy.actor.lib.Ramp">
@@ -160,15 +160,15 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 555.0]">
         </property>
     </entity>
     <entity name="Merge6" class="ptolemy.domains.rendezvous.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 460.0]">
         </property>
     </entity>
     <entity name="Merge7" class="ptolemy.domains.rendezvous.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 330.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
