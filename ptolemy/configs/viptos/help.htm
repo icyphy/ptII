@@ -4,13 +4,57 @@
 </head>
 <body>
 <h1>Help for the Viptos 5.1-alpha Sensor Networks Development Platform</h1>
-<p>
+
+<h2>Running a TinyOS model from within Viptos does not work under Windows</h2>
 Running a TinyOS model from within Viptos does not work under Windows.
  <p>The reason is that we use JNI to load the TinyOS code back in
 to the running Ptolemy process.  Unfortunately, the TinyOS code
 uses pthreads, which is incompatible when Windows native threads.
  <br>We are working on a solution.
 
+<h2>Generating Code for the pc target</h2>
+Despite the bug above, Windows users and other users can
+generate code by changing the PtinyOSDirector target
+from <code>ptII</code> to <code>pc</code> or some other tinyos target like
+<code>mica</code> or <code>mica install</code>.
+Only running a simulation within ptII will bring up the pthreads issue.
+
+<ol>
+<li> Assuming you are looking at a demo model, look inside MicaBoard or
+MicaActor.
+<li>  Double-click on the PtinyOSDirector and change the <i>target</i>
+parameter to <code>pc<code>.
+
+<li>Run the model as usual by hitting Control-R or hitting the green
+run button.
+
+<li>Look in the output directory (you can find out what it was by
+double-clicking on the PtinyOSDirector and examining the
+<i>destinationDirectory</i> parameter.  For demo models, this is usually 
+<code><i>demo directory</i>/output</code>.
+
+<li>To run the generated TOSSIM:
+<pre>
+cd <i>demo directory</i>/output
+./build/pc/main.exe 1
+</pre>
+This will run TOSSIM with 1 node.
+
+<li>To only see selected debug output, you may also set your DBG environment
+variable to the options described when you run:
+<pre>
+./build/pc/main.exe --help
+</pre>
+For example, in tcsh:
+<pre>
+setenv DBG=usr1,am
+</pre>
+or in Cygwin bash under Windows
+<pre>
+export DB=-usr1,am
+</pre>
+</ol>
+<h2>Further information</h2>
  <p>For information about using Viptos, see the 
 <a href="docs.htm">Viptos documentation</a>.
 
