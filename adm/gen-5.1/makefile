@@ -652,7 +652,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 	)
 	# README_VIPTOS.txt
 	cp README_VIPTOS.txt \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
+		src_jar/viptos$(VERSION)/README_VIPTOS.txt
 	# Fix up bin/makefile
 	egrep -v "copernicus|decompile|emachine|hyvisual|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/viptos$(VERSION)/bin/makefile \
 		> src_jar/viptos$(VERSION)/bin/makefile.tmp
