@@ -119,7 +119,7 @@ public class Barrier extends TypedAtomicActor {
         if (_debugging) {
             _debug("Performing multiway rendezvous on the input channels.");
         }
-        Token[][] tokens = RendezvousReceiver.getFromAll(
+        /*Token[][] tokens = RendezvousReceiver.getFromAll(
                 input.getReceivers(), (RendezvousDirector)director);
         if (_debugging) {
             _debug("Input yielded the tokens: " + tokens);
@@ -130,6 +130,8 @@ public class Barrier extends TypedAtomicActor {
             }
             RendezvousReceiver.putToAll(
                     tokens, output.getRemoteReceivers(), (RendezvousDirector)director);
-        }
+        }*/
+        RendezvousReceiver.getFromAllPutToAll(input.getReceivers(),
+                output.getRemoteReceivers(), (RendezvousDirector)director);
     }
 }
