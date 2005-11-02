@@ -182,6 +182,22 @@ public class RendezvousReceiver extends AbstractReceiver implements
         throw new InternalErrorException("No token is received.");
     }
     
+    /** Get from all receivers in the specified array.
+     *  This method does not return until one of the gets is complete.
+     *  @param receivers The receivers, which are assumed to
+     *   all be instances of RendezvousReceiver.
+     *  @param director The director, on which this method synchronizes.
+     *  @return A token from one of the receivers.
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs is to be terminated.
+     */
+    public static void getFromAllPutToAll(Receiver[][] getReceivers,
+            Receiver[][] putReceivers, RendezvousDirector director)
+            throws IllegalActionException, TerminateProcessException {
+        _getOrPutTokens(getReceivers, putReceivers, director, null,
+                    GET_FROM_ALL_PUT_TO_ALL);
+    }
+
     /** Get from any receiver in the specified array.
      *  This method does not return until one of the gets is complete.
      *  @param receivers The receivers, which are assumed to
@@ -695,6 +711,12 @@ public class RendezvousReceiver extends AbstractReceiver implements
             boolean isPut, Set beingChecked, Set ready, Set notReady,
             boolean isSymmetricGet, boolean isSymmetricPut) {
         
+        // Trivially return true if there is no receiver is to be put tokens
+        // to.
+        if (isPut && receivers.length == 0) {
+            return true;
+        }
+        
         // Whether the receivers are conditional. To be initialized in the
         // loops.
         boolean isConditional = false;
@@ -900,6 +922,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                     isGetConditional;
                                 
                                 if (isSymmetric) {
+                                    receiver._channelIndex = i;
                                     receiver._symmetricPutReceivers =
                                         putReceivers;
                                 }
@@ -1012,6 +1035,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     private void _resetFlags(boolean clearGet, boolean clearPut) {
         if (clearGet) {
+            _channelIndex = -1;
             _getReceivers = null;
             _getWaiting = null;
             _symmetricPutReceivers = null;
@@ -1092,11 +1116,16 @@ public class RendezvousReceiver extends AbstractReceiver implements
     private static final int PUT_TO_ALL              =  8; // 1000
     /** Flag for the "put to any" operation. */
     private static final int PUT_TO_ANY              = 10; // 1010
+    /** Flag for the "get from all and put to all" operation. */
+    private static final int GET_FROM_ALL_PUT_TO_ALL = 12; // 1100
     /** Flag for the "get from any and put to all" operation. */
     private static final int GET_FROM_ANY_PUT_TO_ALL = 13; // 1101
 
     /** The boundary detector. */
     private BoundaryDetector _boundaryDetector;
+    
+    /** The index of the channel that this receiver is in. */
+    private int _channelIndex = -1;
 
     /** Flag indicating that the _getWaiting thread is a conditional
      * rendezvous.
@@ -1206,10 +1235,22 @@ public class RendezvousReceiver extends AbstractReceiver implements
                         }
                     }
                 } else {
-                    // TODO: put the token to only one channel.
-                    throw new InternalErrorException("Function not " +
+                    /*throw new InternalErrorException("Function not " +
                             "implemented (possibly for Barrier and other " +
-                            "primitive actors).");
+                            "primitive actors).");*/
+                    int i = next._channelIndex;
+                    if (i < putReceivers.length && putReceivers[i] != null) {
+                        for (int j = 0; j < putReceivers[i].length; j++) {
+                            RendezvousReceiver receiver =
+                                (RendezvousReceiver)putReceivers[i][j];
+                            
+                            if (receiver != null &&
+                                    _receivers.contains(receiver)) {
+                                receiver._token = token;
+                                _zeroInDegree.add(receiver);
+                            }
+                        }
+                    }
                 }
             }
             return next;
