@@ -1146,17 +1146,27 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     if (!channelAndOffset[1].equals("")
                             && (getBufferSize(sinkPort) > 1)) {
                         // Specified offset.
+                        
                         String temp = "";
 
                         Object offsetObject = getWriteOffset(sinkPort,
                                 sinkChannelNumber);
-
+                       
                         if (offsetObject instanceof Integer) {
+                            /*
                             int offset = ((Integer) offsetObject).intValue()
                                     + (new Integer(channelAndOffset[1]))
                                             .intValue();
                             offset %= getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
+                            */
+                            int divisor = getBufferSize(sinkPort,
+                                    sinkChannelNumber);
+                            temp = "("
+                                    + getWriteOffset(sinkPort,
+                                            sinkChannelNumber) + " + "
+                                    + channelAndOffset[1] + ")%" + divisor;
+                            
                         } else {
                             int modulo = getBufferSize(sinkPort,
                                     sinkChannelNumber) - 1;
@@ -1165,8 +1175,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                             sinkChannelNumber) + " + "
                                     + channelAndOffset[1] + ")&" + modulo;
                         }
-
+                                          
                         result.append("[" + temp + "]");
+                        
                     } else if (getBufferSize(sinkPort) > 1) {
                         // Did not specify offset, so the receiver buffer
                         // size is 1. This is multiple firing.
