@@ -41,6 +41,7 @@ DIRS = \
 	PowerVariability \
 	SmallWorld \
 	SmartParking \
+	Submarines \
 	TerrainModel \
 	WirelessSoundDetection
 
@@ -75,6 +76,7 @@ PTCLASSALLJARS = \
 	PowerVariability/PowerVariability.jar \
 	SmallWorld/SmallWorld.jar \
 	SmartParking/SmartParking.jar \
+	Submarines/Submarines.jar \
 	TerrainModel/TerrainModel.jar \
 	WirelessSoundDetection/WirelessSoundDetection.jar
 
