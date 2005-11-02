@@ -651,33 +651,7 @@ src_jar/viptos$(VERSION): $(PTII_SRC_JAR)
 		chmod a+rx util/ncapp2moml/ncapp2moml* util/zip-opts.sh);\
 	)
 	# README_VIPTOS.txt
-	echo "Viptos is an interface between TinyOS and Ptolemy II" \
-		> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "To get started, you must have the AVR tools, TinyOS and Nesc installed" \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "and some environment variables must be set." \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "For details, see ptolemy/domains/util/nc2moml/index.htm." \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "":\
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "The quick installation guide:" \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "1. Install the AVR tools, TinyOS, Nesc" \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "   as per ptolemy/ptinyosdomains/util/nc2moml/index.htm." \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "2. Be sure the following environment variables are set:" \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "   TOSDIR, PTINYOS_MOMLROOT, NC2MOMLLIB_NESC and TOSROOT" \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "3. Set PTII to this directory.  See doc/install.htm for details." \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "4. Run     ./configure" \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "5. Run     make fast" \
-		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
-	echo "6. Run     bin/viptos" \
+	cp README_VIPTOS.txt \
 		>> src_jar/viptos$(VERSION)/README_VIPTOS.txt
 	# Fix up bin/makefile
 	egrep -v "copernicus|decompile|emachine|hyvisual|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/viptos$(VERSION)/bin/makefile \
