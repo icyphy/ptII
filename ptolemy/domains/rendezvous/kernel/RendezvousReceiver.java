@@ -736,6 +736,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
         
         // Test which branch of the given receivers has been chosen previously.
         int selectedBranch = _getSelectedBranch(receivers, beingChecked);
+        // If a loop is found after a symmetric call, return false so that
+        // previous calls will not choose this branch with cycle.
+        if (selectedBranch >= 0 && (isSymmetricGet || isSymmetricPut)) {
+            return false;
+        }
         
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
@@ -756,11 +761,13 @@ public class RendezvousReceiver extends AbstractReceiver implements
                         
                         // If the put/get is conditional and another branch was
                         // chosen previously, cancel the current branch.
-                        if (isConditional && (selectedBranch >= 0 &&
+                        if (isConditional && (selectedBranch != -1 &&
                                 selectedBranch != i)) {
                             branchReady = false;
                             break;
-                        } else if (beingChecked.contains(receiver) ||
+                        }
+
+                        if (beingChecked.contains(receiver) ||
                                 ready.contains(receiver)) {
                             // If the receiver has been visited or is ready, do
                             // nothing.
