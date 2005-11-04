@@ -72,32 +72,108 @@ public class FSMActor extends CCodeGeneratorHelper {
     /////////////////////////////////////////////////////////////////////
     ////                           public methods                    ////
 
-    /** Generate the fire code of the associated FSMActor.
-     *  @param code
-     *  @exception IllegalActionException
+    /** Generate the fire code of the associated FSMActor.  It provies 
+     *  generateTransitionCode(StringBuffer, TransitionRetriever) with an
+     *  anonymous class implementing a method which returns an iterator of
+     *  all outgoing transitions of the current state. 
+     * 
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If thrown while generating firing code.
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public void generateFireCode(StringBuffer code) throws IllegalActionException {
         super.generateFireCode(code);
 
-        generateFireCode(code, new TransitionRetriever() {
+        generateTransitionCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.outgoingPort.linkedRelationList().iterator();
             }
         });
     }
     
-    public void generateFireCode(StringBuffer code,
+    /** Generate the initialize code of the associated FSMActor. It generates
+     *  code for initializing current state with initial state,  and initializing
+     *  current configuration of the container when it applies (i.e., when
+     *  this FSMActor works as a modal controller for a MultirateFSMDirector).  
+     * 
+     *  @return The initialize code of the associated FSMActor.
+     *  @exception IllegalActionException If initial state cannot be found,
+     *   configuraton number cannot be updated or code cannot be processed.
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer codeBuffer = new StringBuffer();
+        codeBuffer.append(super.generateInitializeCode());
+
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor = 
+                (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        State initialState = fsmActor.getInitialState();
+        
+        _updateCurrentState(codeBuffer, initialState, 0);
+        
+        // This generates code only when the FSMActor works as a modal 
+        // controller for an instance of MultirateFSMDirector.
+        _updateConfigurationNumber(codeBuffer, initialState, 0);
+        
+        return processCode(codeBuffer.toString());
+    }
+
+    /** Generate the preinitialize code of the associated FSMActor. It declares
+     *  two variables for this actor: currentState and transitionFlag. 
+     *  currentState is an int representing this actor's current state.
+     *  transitionFlag is an unsigned char to indicate if a preemptive
+     *  transition is taken.
+     * 
+     *  @return The preinitialize code of the associated FSMActor.
+     *  @exception IllegalActionException If thrown when creating buffer 
+     *   size and offset map or processing code.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        code.append("static int $actorSymbol(currentState);\n");
+        code.append("static unsigned char $actorSymbol(transitionFlag);\n");
+        return processCode(code.toString());
+    }
+      
+    /** Generate a set of shared codes of the associated FSMActor.
+     *  It generates code for defining macro true and false.
+     *  
+     *  @return a set of shared codes.
+     *  @exception IllegalActionException Not thrown here.
+     */
+    public Set generateSharedCode() throws IllegalActionException {
+        Set set = new HashSet();
+        set.addAll(super.generateSharedCode());
+        set.add("#define true 1\n#define false 0\n");
+        return set;
+    }
+
+    
+    /** Generate code for making transition. It generates code for both choice 
+     *  action and commit action.
+     * 
+     *  @param code The string buffer that the generated code is appended to.
+     *  @param transitionRetriever An instance of a class implementing a method 
+     *   which returns an iterator of all, preemptive or non-preemptive 
+     *   transitions of the current state. 
+     *  @throws IllegalActionException If thrown while generating transition code.
+     */
+    public void generateTransitionCode(StringBuffer code,
             TransitionRetriever transitionRetriever)
             throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor 
+                = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         int depth = 1;
         codeBuffer.append(_getIndentPrefix(depth));
+        // The default value 1 of transitionFlag means the transition 
+        // will be taken. If no transition is actually taken, it will be
+        // set to value 0.
         codeBuffer.append("$actorSymbol(transitionFlag) = 1;\n");
         codeBuffer.append(_getIndentPrefix(depth));
+        // States are numbered according to the order they are created,
+        // i.e., the same order as in list returned by the method entityList().
         codeBuffer.append("switch ($actorSymbol(currentState)) {\n");
 
         Iterator states = fsmActor.entityList().iterator();
@@ -106,12 +182,15 @@ public class FSMActor extends CCodeGeneratorHelper {
 
         while (states.hasNext()) {
             codeBuffer.append(_getIndentPrefix(depth));
+            // For each state...
             codeBuffer.append("case " + stateCount + ":\n");
             stateCount++;
 
             State state = (State) states.next();
-            Iterator transitions = transitionRetriever
-                    .retrieveTransitions(state);
+            
+            // The transitions (all, preemptive or non-preemptive depending on the 
+            // instance of TransitionRetriever given) that need to be tried.
+            Iterator transitions = transitionRetriever.retrieveTransitions(state);
             int transitionCount = 0;
             depth++;
 
@@ -122,7 +201,6 @@ public class FSMActor extends CCodeGeneratorHelper {
                 } else {
                     codeBuffer.append("else if (");
                 }
-
                 transitionCount++;
 
                 Transition transition = (Transition) transitions.next();
@@ -131,7 +209,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                 String guard = transition.getGuardExpression();
                 PtParser parser = new PtParser();
                 ASTPtRootNode guardParseTree = parser.generateParseTree(guard);
-                ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                ParseTreeCodeGenerator parseTreeCodeGenerator 
+                        = new ParseTreeCodeGenerator();
                 parseTreeCodeGenerator
                         .evaluateParseTree(guardParseTree, _scope);
                 codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
@@ -143,33 +222,35 @@ public class FSMActor extends CCodeGeneratorHelper {
                 Iterator actions = transition.choiceActionList().iterator();
 
                 while (actions.hasNext()) {
-                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                            .next();
+                    AbstractActionsAttribute action 
+                            = (AbstractActionsAttribute) actions.next();
                     Iterator destinationNameList = action
                             .getDestinationNameList().iterator();
 
                     while (destinationNameList.hasNext()) {
-                        String destinationName = (String) destinationNameList
-                                .next();
+                        String destinationName = (String) destinationNameList.next();
                         NamedObj destination = (NamedObj) action
                                 .getDestination(destinationName);
+                        
                         int channel = -1;
-
                         if (action.isChannelSpecified(destinationName)) {
                             channel = action.getChannel(destinationName);
                         }
 
-                        ASTPtRootNode parseTree = action
-                                .getParseTree(destinationName);
+                        ASTPtRootNode parseTree 
+                                = action.getParseTree(destinationName);
 
                         codeBuffer.append(_getIndentPrefix(depth));
 
+                        // Note in choice action only output can be generated
+                        // and no parameter be changed.
                         if (channel >= 0) {
                             codeBuffer.append("$ref(" + destinationName + "#"
                                     + channel + ") = ");
 
-                            // During choice action, an output port receives tokens
-                            // sent by itself if it is also an input port
+                            // During choice action, an output port receives token
+                            // sent by itself when it is also an input port, i.e.,
+                            // when this FSMActor is used as a modal controller.
                             if (((IOPort) destination).isInput()) {
                                 codeBuffer.append(destination.getFullName()
                                         .replace('.', '_'));
@@ -182,17 +263,16 @@ public class FSMActor extends CCodeGeneratorHelper {
                             }
                         } else { // broadcast
 
-                            int width = ((IOPort) action
-                                    .getDestination(destinationName))
-                                    .getWidth();
-                            ;
-
+                            int width = ((IOPort) action.getDestination
+                                    (destinationName)).getWidth();
+                            
                             for (int i = 0; i < width; i++) {
                                 codeBuffer.append("$ref(" + destinationName
                                         + "#" + i + ") = ");
 
-                                // During choice action, an output port receives tokens
-                                // sent by itself if it is also an input port
+                                // During choice action, an output port receives token
+                                // sent by itself when it is also an input port, i.e.,
+                                // when this FSMActor is used as a modal controller.
                                 if (((IOPort) destination).isInput()) {
                                     codeBuffer.append(destination.getFullName()
                                             .replace('.', '_'));
@@ -207,10 +287,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                         }
 
                         parseTreeCodeGenerator = new ParseTreeCodeGenerator();
-                        parseTreeCodeGenerator.evaluateParseTree(parseTree,
-                                _scope);
-                        codeBuffer.append(parseTreeCodeGenerator
-                                .generateFireCode());
+                        parseTreeCodeGenerator.evaluateParseTree(parseTree, _scope);
+                        codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
                         codeBuffer.append(";\n");
                     }
                 }
@@ -219,8 +297,9 @@ public class FSMActor extends CCodeGeneratorHelper {
                 Actor[] actors = transition.getRefinement();
 
                 if (actors != null) {
-                    for (int i = 0; i < actors.length; ++i) {
-                        ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper((NamedObj) actors[i]);
+                    for (int i = 0; i < actors.length; i++) {
+                        ActorCodeGenerator helper = (ActorCodeGenerator) 
+                                _getHelper((NamedObj) actors[i]);
                         helper.generateFireCode(codeBuffer);
                     }
                 }
@@ -229,18 +308,17 @@ public class FSMActor extends CCodeGeneratorHelper {
                 actions = transition.commitActionList().iterator();
 
                 while (actions.hasNext()) {
-                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                            .next();
+                    AbstractActionsAttribute action 
+                            = (AbstractActionsAttribute) actions.next();
                     Iterator destinationNameList = action
                             .getDestinationNameList().iterator();
 
                     while (destinationNameList.hasNext()) {
-                        String destinationName = (String) destinationNameList
-                                .next();
+                        String destinationName = (String) destinationNameList.next();
                         NamedObj destination = (NamedObj) action
                                 .getDestination(destinationName);
+                        
                         int channel = -1;
-
                         if (action.isChannelSpecified(destinationName)) {
                             channel = action.getChannel(destinationName);
                         }
@@ -256,10 +334,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                                         + "#" + channel + ") = ");
                             } else { // broadcast
 
-                                int width = ((IOPort) action
-                                        .getDestination(destinationName))
-                                        .getWidth();
-                                ;
+                                int width = ((IOPort) action.getDestination
+                                        (destinationName)).getWidth();
 
                                 for (int i = 0; i < width; i++) {
                                     codeBuffer.append("$ref(" + destinationName
@@ -268,15 +344,12 @@ public class FSMActor extends CCodeGeneratorHelper {
                             }
                         } else if (destination instanceof Variable) {
                             codeBuffer.append(destination.getFullName()
-                                    .replace('.', '_')
-                                    + " = ");
+                                    .replace('.', '_') + " = ");
                         }
 
                         parseTreeCodeGenerator = new ParseTreeCodeGenerator();
-                        parseTreeCodeGenerator.evaluateParseTree(parseTree,
-                                _scope);
-                        codeBuffer.append(parseTreeCodeGenerator
-                                .generateFireCode());
+                        parseTreeCodeGenerator.evaluateParseTree(parseTree, _scope);
+                        codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
                         codeBuffer.append(";\n");
                     }
                 }
@@ -286,22 +359,25 @@ public class FSMActor extends CCodeGeneratorHelper {
                 _updateCurrentState(codeBuffer, destinationState, depth);
 
                 // generate code for reinitialization if reset is true
-                BooleanToken resetToken = (BooleanToken) transition.reset
-                        .getToken();
+                
+                // we assume the value of reset itself cannot be changed dynamically
+                BooleanToken resetToken = (BooleanToken) transition.reset.getToken();
                 if (resetToken.booleanValue()) {
                     actors = destinationState.getRefinement();
 
                     if (actors != null) {
                         for (int i = 0; i < actors.length; ++i) {
-                            ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper((NamedObj) actors[i]);
+                            ActorCodeGenerator helper = (ActorCodeGenerator) 
+                                    _getHelper((NamedObj) actors[i]);
                             codeBuffer.append(helper.generateInitializeCode());
                         }
                     }
                 }
                 
-                // generate code to update configuration number of this FSMActor's
-                // container as a function of the destination state and the 
-                // configuration number of the refinement of the destination state.
+                // Generate code for updating configuration number of this 
+                // FSMActor's container.
+                // The code is generated only when this FSMActor is used as a modal 
+                // controller for an instance of MultirateFSMDirector.
                 _updateConfigurationNumber(codeBuffer, destinationState, depth);
                 
                 depth--;
@@ -317,74 +393,44 @@ public class FSMActor extends CCodeGeneratorHelper {
 
             depth++;
             codeBuffer.append(_getIndentPrefix(depth));
-            // indicates no transition is made.
+            // indicates no transition is taken.
             codeBuffer.append("$actorSymbol(transitionFlag) = 0;\n");
             
-            // generate code to update configuration number of this FSMActor's
-            // container as a function of the current state and the 
-            // configuration number of the refinement of the current state.
-            // Note we need this because the configuration of the current
-            // refinement may have been changed when the refinement itself
-            // has not been changed.
+            // Generate code for updating configuration number of this FSMActor's
+            // container.
+            // Note we need this because the configuration of the current refinement 
+            // may have been changed even when there is no state transition.
+            // The code is generated only when this FSMActor is used as a modal 
+            // controller for an instance of MultirateFSMDirector.
             _updateConfigurationNumber(codeBuffer, state, depth);
             depth--;
 
             if (transitionCount > 0) {
                 codeBuffer.append(_getIndentPrefix(depth));
-                codeBuffer.append("} \n"); //end of if statement
+                codeBuffer.append("} \n"); // end of if statement
             }
 
             codeBuffer.append(_getIndentPrefix(depth));
-            codeBuffer.append("break;\n"); //end of case statement 
+            codeBuffer.append("break;\n"); // end of case statement 
             depth--;
         }
 
         depth--;
         codeBuffer.append(_getIndentPrefix(depth));
-        codeBuffer.append("}\n"); //end of switch statement   
+        codeBuffer.append("}\n"); // end of switch statement   
         code.append(processCode(codeBuffer.toString()));
     }
     
-
-    /** Generate the initialize code of the associated FSMActor.
-     *  @return The processed code string.
-     *  @exception IllegalActionException
+    /** A class implementing this interface implements a method to retrieve
+     *  transitions of a given state. Depending on implementation, it could 
+     *  return all transitions, only preemptive transtions or only non-preemptive
+     *  transitions.
      */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer codeBuffer = new StringBuffer();
-        codeBuffer.append(super.generateInitializeCode());
-
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
-        State initialState = fsmActor.getInitialState();
-        
-        _updateCurrentState(codeBuffer, initialState, 0);
-        
-        _updateConfigurationNumber(codeBuffer, initialState, 0);
-        
-        return processCode(codeBuffer.toString());
-    }
-
-    /** Generate the preinitialize code of the associated FSMActor.
-     *  @return The processed code string.
-     *  @exception IllegalActionException
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        _scope = new HelperScope();
-        code.append(super.generatePreinitializeCode());
-        code.append("static int $actorSymbol(currentState);\n");
-        code.append("static unsigned char $actorSymbol(transitionFlag);\n");
-        return processCode(code.toString());
-    }
-
-    public Set generateSharedCode() throws IllegalActionException {
-        Set set = new HashSet();
-        set.addAll(super.generateSharedCode());
-        set.add("#define true 1\n#define false 0\n");
-        return set;
-    }
-
     public static interface TransitionRetriever {
+        /** Returns an iterator of (some or all) transitions from the given state.
+         *  @param The given state.
+         *  @return An iterator of (some or all) transitions from the given state. 
+         */
         public Iterator retrieveTransitions(State state);
     }
 
@@ -392,19 +438,29 @@ public class FSMActor extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Generate code to update configuration number of this FSMActor's
-     *  container as a function of the given state and the 
-     *  configuration number of the refinement of the given state.
+    /** Generate code for updating configuration number of this FSMActor's
+     *  container according to the following equation:
+     *  
+     *  container's current configuration number = sum of numbers of configurations
+     *  of refinements corresponding to states before the current state + 
+     *  configuration number of refinement corresponding to the current state
      * 
-     *  @param codeBuffer
-     *  @param state
-     *  @param depth
-     *  @exception IllegalActionException
+     *  The order of states is the same as in the list returned by entityList().
+     * 
+     *  The code is generated only when this FSMActor is used as a modal 
+     *  controller for an instance of MultirateFSMDirector.
+     * 
+     *  @param codeBuffer The string buffer that the generated code is appended to.
+     *  @param state The current state.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IllegalActionException If helper cannot be found, refinement
+     *   cannot be found or code cannot be processed.
      */
-    protected void _updateConfigurationNumber(StringBuffer codeBuffer, State state, int depth) 
-            throws IllegalActionException {
+    protected void _updateConfigurationNumber(StringBuffer codeBuffer, 
+            State state, int depth) throws IllegalActionException {
         
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor 
+                = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
         Director director = ((CompositeActor) fsmActor.getContainer()).getDirector();
         if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
             TypedCompositeActor containerHelper = (TypedCompositeActor) 
@@ -424,7 +480,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     
                     if (nextState == state) {
                         codeBuffer.append(_getIndentPrefix(depth));
-                        if (rates == null ) {
+                        if (rates == null ) { // only one internal configuration
                             codeBuffer.append(containerHelper.processCode
                                     ("$actorSymbol(currentConfiguration) = ")
                                     + tempSum + ";\n");
@@ -437,7 +493,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                         }
                         break;
                     } else {
-                        if (rates == null) {
+                        if (rates == null) { // only one internal configuration
                             tempSum += 1;       
                         } else {
                             tempSum += rates.length;   
@@ -445,12 +501,18 @@ public class FSMActor extends CCodeGeneratorHelper {
                     }    
                 }    
             }                   
-        }
-                
+        }                
     }
     
-    protected void _updateCurrentState(StringBuffer codeBuffer, State state, int depth) 
-            throws IllegalActionException {
+    /** Generate code for updating current state of this FSMActor. The states are
+     *  numbered according to the order in the list returned by entityList().
+     * 
+     *  @param codeBuffer The string buffer that the generated code is appended to.
+     *  @param state The current state.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     */ 
+    protected void _updateCurrentState(StringBuffer codeBuffer, 
+            State state, int depth) {
         ptolemy.domains.fsm.kernel.FSMActor fsmActor 
                 = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
         Iterator states = fsmActor.entityList().iterator();
@@ -458,7 +520,8 @@ public class FSMActor extends CCodeGeneratorHelper {
 
         while (states.hasNext()) {
             if (states.next() == state) {   
-                codeBuffer.append("$actorSymbol(currentState) = " + stateCounter + ";\n");
+                codeBuffer.append("$actorSymbol(currentState) = " 
+                        + stateCounter + ";\n");
                 break;
             }
             stateCounter++;
@@ -467,5 +530,9 @@ public class FSMActor extends CCodeGeneratorHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private HelperScope _scope = null;
+    
+    /** The scope to generate code for guard expression, choice action 
+     *  and commit action.
+     */
+    private HelperScope _scope = new HelperScope();
 }

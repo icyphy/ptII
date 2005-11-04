@@ -60,28 +60,38 @@ import ptolemy.kernel.util.NamedObj;
 
 public class MultirateFSMDirector extends FSMDirector {
 
-    /** Construct the code generator helper associated with the given MultirateFSMDirector.
-     *  @param director The associated ptolemy.domains.fsm.kernel.MultirateFSMDirector
+    /** Construct the code generator helper associated with the 
+     *  given MultirateFSMDirector.
+     *  @param director The associated component.
      */
-    public MultirateFSMDirector(ptolemy.domains.fsm.kernel.MultirateFSMDirector director) {
+    public MultirateFSMDirector(
+            ptolemy.domains.fsm.kernel.MultirateFSMDirector director) {
         super(director);
     }
     
-    public String createOffsetVariablesIfNeeded() 
-            throws IllegalActionException {
+    /** Generate code for declaring read and write offset variables if needed. 
+     *  @return The generated code.
+     *  @exception IllegalActionException If thrown while creating offset variables.
+     */
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();  
         code.append(_createOffsetVariablesIfNeeded());
         code.append(super.createOffsetVariablesIfNeeded());
         return code.toString();
     }
     
-    /** Generate the code for the firing of actors.
+    /** Generate the code for the firing of actors controlled by this director.
+     *  It generates code for firing refinements and making non-preemptive
+     *  transition.
+     * 
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public void generateFireCode(StringBuffer code) throws IllegalActionException {
+        
+        // Note unlike FSMDirector, no preemptive transition is taken
+        // under the control of this director.
         
         // generate code for refinements
         _generateRefinementCode(code);
@@ -93,15 +103,19 @@ public class MultirateFSMDirector extends FSMDirector {
         
         // generate code for non-preemptive transition
         code.append("\n/* Nonpreepmtive Transition */\n\n");
-        controllerHelper.generateFireCode(code, new TransitionRetriever() {
+        controllerHelper.generateTransitionCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.nonpreemptiveTransitionList().iterator();  
             }
         });
-        
     }   
     
-    /** Generate the preinitialize code for this director.
+    /** Generate the preinitialize code for this director. First find out
+     *  the number of configurations of the modal model which is the container 
+     *  of the director. For each configuration, find the port rates of the 
+     *  modal model from the port rates of the corresponding refinement and 
+     *  update the maximum buffer sizes needed for the ports of the refinement.
+     * 
      *  @return The generated preinitialize code.
      *  @exception IllegalActionException If getting the helper fails,
      *   or if generating the preinitialize code for a helper fails,
@@ -115,13 +129,16 @@ public class MultirateFSMDirector extends FSMDirector {
                 (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
         ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
-                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper =
+                (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
         
-        code.append(containerHelper.processCode("static int $actorSymbol(currentConfiguration);\n"));
+        code.append(containerHelper.processCode
+                ("static int $actorSymbol(currentConfiguration);\n"));
         
         int numberOfConfigurationsOfContainer = 0;
         
+        // Find the number of configurations of the container, which is
+        // the sum of numbers of configurations of all the refinements.
         Iterator states = controller.entityList().iterator();
         while (states.hasNext()) {
             State state = (State) states.next();
@@ -131,9 +148,9 @@ public class MultirateFSMDirector extends FSMDirector {
                         (CodeGeneratorHelper) _getHelper((NamedObj) actors[0]);
                 int[][] rates = refinementHelper.getRates();
                 if (rates != null) {
-                    numberOfConfigurationsOfContainer += rates.length;            
+                    numberOfConfigurationsOfContainer += rates.length;   
                 } else {
-                    numberOfConfigurationsOfContainer += 1;    
+                    numberOfConfigurationsOfContainer += 1;
                 }
             }    
         }
@@ -151,17 +168,24 @@ public class MultirateFSMDirector extends FSMDirector {
                 int[][] rates = refinementHelper.getRates();
                 if (rates != null) {
                     for (int i = 0; i < rates.length; i++) {
+                        // Extract the port rates from the current refinement 
+                        // and set the port rates of the modal model containing 
+                        // the refinement.
                         int[] portRates = rates[i];
-                        
-                        _updatePortBufferSize(actors[0], portRates);
-                        
                         containerRates[configurationNumber] = portRates;
                         configurationNumber++;
+                        
+                        // Update buffer sizes of current refinement with
+                        // the extracted port rates.
+                        _updatePortBufferSize(actors[0], portRates);
                     } 
-                } else {                    
+                } else {
                     List ports = ((Entity) actors[0]).portList();
                     int[] portRates = new int[ports.size()];
                     int k = 0;
+                    // Extract the port rates from the current refinement 
+                    // and set the port rates of the modal model containing 
+                    // the refinement.
                     Iterator portsIterator = ports.iterator();
                     while (portsIterator.hasNext()) {
                         IOPort port = (IOPort) portsIterator.next();
@@ -171,18 +195,19 @@ public class MultirateFSMDirector extends FSMDirector {
                         } else {
                             portRates[k] = DFUtilities.getTokenProductionRate(port);
                         }
-                        
                         k++;
                     }
-                    
-                    _updatePortBufferSize(actors[0], portRates);
-                    
                     containerRates[configurationNumber] = portRates;
                     configurationNumber++;
+                    
+                    // Update buffer sizes of current refinement with
+                    // the extracted port rates.
+                    _updatePortBufferSize(actors[0], portRates);  
                 }                
             }
         }
         
+        // Set the port rates of the modal model for all configurations.
         containerHelper.setRates(containerRates);
                 
         return code.toString();
@@ -192,7 +217,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  iteration.
      *  @param inputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code) 
             throws IllegalActionException {
@@ -201,9 +226,8 @@ public class MultirateFSMDirector extends FSMDirector {
     
         CompositeActor container = (CompositeActor) getComponent().getContainer();
         
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper
-                = (ptolemy.codegen.c.actor.TypedCompositeActor)
-                _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper =
+                (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
         
         ptolemy.domains.fsm.kernel.MultirateFSMDirector director = 
                 (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
@@ -211,7 +235,8 @@ public class MultirateFSMDirector extends FSMDirector {
         ptolemy.domains.fsm.kernel.FSMActor controller = 
                 director.getController();
         
-        // find the port number corresponding to the given input port
+        // Find the port number corresponding to the given input port.
+        // Ports are numbered in the order as in the list returned by portList().
         Iterator containerPorts = container.portList().iterator();
         int portNumber = 0;
         while(containerPorts.hasNext()) {
@@ -227,9 +252,10 @@ public class MultirateFSMDirector extends FSMDirector {
                 + containerHelper.processCode("$actorSymbol(currentConfiguration)")
                 + ") {\n");
 
-        for (int configurationNumber = 0; configurationNumber < rates.length; configurationNumber++) {
+        for (int configurationNumber = 0; configurationNumber < rates.length; 
+                configurationNumber++) {
             
-            // find the state corresponding to the given configuration number
+            // Find the state corresponding to the given configuration number.
             Iterator states = controller.entityList().iterator();
             int number = configurationNumber;
             State currentState = null;
@@ -270,8 +296,8 @@ public class MultirateFSMDirector extends FSMDirector {
   
                     for (int k = 0; k < rate; k++) { 
                         
-                        // we should only send data to controller and refinement
-                        // correspnding to current state.
+                        // we should only send data to the controller and the 
+                        // refinement corresponding to current state.
                         for (int m = 0; m < 2; m++) {
                         
                             IOPort sinkPort = sinkPorts[m];
@@ -286,36 +312,31 @@ public class MultirateFSMDirector extends FSMDirector {
                             int sinkPortBufferSize = helper.getBufferSize(sinkPort);
 
                             if (sinkPortBufferSize > 1) {
-
                                 String temp = "";
-
-                                Object offsetObject = helper.getWriteOffset(sinkPort, i);
-
-                                if (offsetObject instanceof Integer) {
-                                
-                                    int offset = ((Integer) offsetObject).intValue() + k;
+                                Object offsetObject = 
+                                        helper.getWriteOffset(sinkPort, i);
+                                if (offsetObject instanceof Integer) {                               
+                                    int offset = 
+                                            ((Integer) offsetObject).intValue() + k;
                                     offset %= helper.getBufferSize(sinkPort, i);
-                                    temp = new Integer(offset).toString();
-                                
+                                    temp = new Integer(offset).toString();                                
                                 } else {
-                                    int modulo = helper.getBufferSize(sinkPort, i) - 1;
-                                    temp = "(" + (String) helper.getWriteOffset(sinkPort, i)
-                                            + " + " + k + ")&" + modulo;
+                                    int modulo = 
+                                            helper.getBufferSize(sinkPort, i) - 1;
+                                    temp = "(" + (String) helper.getWriteOffset
+                                            (sinkPort, i) + " + " + k + ")&" + modulo;
                                 }
-
                                 code.append("[" + temp + "]");
-                            }
-                            
+                            }                            
                             code.append(" = ");
                         }
-
-                        code.append(containerHelper
-                                 .getReference(name + "," + k));
+                        code.append(containerHelper.getReference(name + "," + k));
                         code.append(";\n");
                     }
                     
-                    // Only update the port write offsets of the controller and the current refinement.
-                    // The offset of the input port itself is updated by outside director.
+                    // Only update the port write offsets of the controller and 
+                    // the current refinement. The offset of the input port itself 
+                    // is updated by outside director.
                     for (int m = 0; m < 2; m++) {
                         IOPort sinkPort = sinkPorts[m];
                         CodeGeneratorHelper helper = (CodeGeneratorHelper) 
@@ -323,7 +344,8 @@ public class MultirateFSMDirector extends FSMDirector {
                         Object offsetObject = helper.getWriteOffset(sinkPort, i);
                         if (offsetObject instanceof Integer) {
                             int offset = ((Integer) offsetObject).intValue();
-                            offset = (offset + rate)% helper.getBufferSize(sinkPort, i);
+                            offset = (offset + rate)% 
+                                    helper.getBufferSize(sinkPort, i);
                             helper.setWriteOffset(sinkPort, i, new Integer(offset));
                         } else {
                             int modulo = helper.getBufferSize(sinkPort, i) - 1;
@@ -347,7 +369,7 @@ public class MultirateFSMDirector extends FSMDirector {
      *  production rate.
      *  @param outputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
@@ -357,10 +379,10 @@ public class MultirateFSMDirector extends FSMDirector {
         CompositeActor container = (CompositeActor) getComponent().getContainer();
         
         ptolemy.codegen.c.actor.TypedCompositeActor containerHelper
-                = (ptolemy.codegen.c.actor.TypedCompositeActor)
-                _getHelper(container);
+                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
         
-        // find the port number corresponding to the given output port
+        // Find the port number corresponding to the given output port.
+        // Ports are numbered in the order as in the list returned by portList().
         Iterator containerPorts = container.portList().iterator();
         int portNumber = 0;
         while(containerPorts.hasNext()) {
@@ -375,7 +397,8 @@ public class MultirateFSMDirector extends FSMDirector {
         code.append("switch (" 
                 + containerHelper.processCode("$actorSymbol(currentConfiguration)")
                 + ") {\n");
-        for (int configurationNumber = 0; configurationNumber < rates.length; configurationNumber++) {
+        for (int configurationNumber = 0; configurationNumber < rates.length; 
+                configurationNumber++) {
                        
             int rate = rates[configurationNumber][portNumber];
             
@@ -391,25 +414,23 @@ public class MultirateFSMDirector extends FSMDirector {
                     // FIXME: we can generate for loop in C instead of using for
                     // loop here. Thus we can parametarize the rate and don't need 
                     // switch statement in the generated C code. Thus we can generate 
-                    // more compressed C code. It requires storing the rate of each
+                    // more compressed C code. It requires storing the rates of each
                     // configuration in the generated C code. We will pursue this
                     // approach later.
                     // Note the above approach of using for loop in the generated
                     // C code applies to all directors supporting multi-rate.
-                    for (int k = 0; k < rate; k++) {
-     
-                        code.append(containerHelper
-                                .getReference(name + "," + k));
+                    for (int k = 0; k < rate; k++) {     
+                        code.append(containerHelper.getReference(name + "," + k));
                         code.append(" = ");
-                        code.append(containerHelper
-                                .getReference("@" + name + "," + k));
+                        code.append(containerHelper.getReference
+                                ("@" + name + "," + k));
                         code.append(";\n");
                     }    
                 }
             } 
                     
-            // The offset of the ports connected to the output port is 
-            // updated by outside director.
+            // The offset of the ports connected to the output port in its 
+            // downstream is updated by outside director.
             _updatePortOffset(outputPort, code, rate);
             
             code.append("break;\n");
@@ -417,11 +438,12 @@ public class MultirateFSMDirector extends FSMDirector {
         code.append("}\n");
     }
     
-    /** Check to see if variables are needed to represent read and
-     *  write offsets.
+    /** Create read and write offset variables if needed for any output port
+     *  of the container and any input port of contained actors.
+     *  @return A string containing declared read and write offset variables.
+     *  @exception IllegalActionException If thrown while creating offset variables.
      */    
-    protected String _createOffsetVariablesIfNeeded() 
-               throws IllegalActionException {
+    protected String _createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeActor container 
                 = (CompositeActor) getComponent().getContainer();
@@ -438,8 +460,8 @@ public class MultirateFSMDirector extends FSMDirector {
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
                     _getHelper((NamedObj) actor);
             int[][] rates = actorHelper.getRates();
-            // If a refinement has only one rate, then there is no
-            // need to uses variables.
+            // If a refinement has only one configuration, then there is no
+            // need to use variables.
             if (!(actor instanceof Refinement && rates == null)) {
                 Iterator inputPorts = actor.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
@@ -453,9 +475,12 @@ public class MultirateFSMDirector extends FSMDirector {
     
     /** Check to see if variables are needed to represent read and
      *  write offsets for the given port.
+     *  @param port The given port.
+     *  @return A string containing declared read and write offset variables.
+     *  @exception IllegalActionException If thrown while creating offset variables.
      */      
     // FIXME: we could record total number of tokens transferred in each port 
-    // for each configuration and then check if a variale is needed for each 
+    // for each configuration and then check if a variable is needed for the 
     // offset. For now we always use variables.
     protected String _createOffsetVariablesIfNeeded(IOPort port) 
             throws IllegalActionException {
@@ -463,6 +488,8 @@ public class MultirateFSMDirector extends FSMDirector {
         CodeGeneratorHelper actorHelper = 
             (CodeGeneratorHelper) _getHelper(port.getContainer());   
         
+        // When buffer size is no greater than 1, there is no need for 
+        // offset variable.
         if (actorHelper.getBufferSize(port) <= 1) {
             return code.toString();
         }
@@ -485,7 +512,7 @@ public class MultirateFSMDirector extends FSMDirector {
             channelReadOffset.append(port.getFullName().replace('.', '_'));
             channelWriteOffset.append(port.getFullName().replace('.', '_'));
 
-            if (port.getWidth() > 1) {
+            if (length > 1) {
                 channelReadOffset.append("_" + channel);
                 channelWriteOffset.append("_" + channel);
             }
@@ -496,8 +523,6 @@ public class MultirateFSMDirector extends FSMDirector {
             String channelReadOffsetVariable = channelReadOffset.toString();
             String channelWriteOffsetVariable = channelWriteOffset.toString();
 
-            // At this point, all offsets are 0 or the number of
-            // initial tokens of SampleDelay.
             code.append("static int " + channelReadOffsetVariable + " = " 
                     + actorHelper.getReadOffset(port, channel) + ";\n");
             code.append("static int " + channelWriteOffsetVariable + " = " 
@@ -510,14 +535,14 @@ public class MultirateFSMDirector extends FSMDirector {
         return code.toString();
     }
     
-    /** Check to see if the buffer size needed in current state  
-     *  is smaller than in previous states. If so, set the buffer 
-     *  size to the current buffer size. 
+    /** Check to see if the buffer size needed in current configuration  
+     *  is greater than in previous configurations. If so, set the buffer 
+     *  size to the current buffer size needed. 
+     *  @param refinement The refinement to be checked.
+     *  @param portRates An int array of port rates of the refinement.
+     *  @exception IllegalActionException If thrown while getting helper
+     *   or buffer size.
      */
-    // FIXME: controller needs to get the maximal buffer size in one 
-    // global iteration, which is potentially large. But we can infer
-    // the number of tokens needed in one global iteration from guard
-    // expression and only keep that many spaces.
     protected void _updatePortBufferSize(Actor refinement, int[] portRates) 
             throws IllegalActionException {
         
@@ -548,8 +573,8 @@ public class MultirateFSMDirector extends FSMDirector {
             IOPort controllerPort = (IOPort) controllerPorts.get(i);
             IOPort containerPort = (IOPort) containerPorts.get(i);
             
-            // update the corresponding controller port buffer size.
-            // notice that all channels have same buffer size.
+            // Update the corresponding controller port buffer size.
+            // Notice that all channels have same buffer size.
             int oldSize = controllerHelper.getBufferSize(controllerPort, 0);   
             if (oldSize < portRates[i]) {
                 for (int j = 0; j < controllerPort.getWidth(); j++) {
@@ -557,18 +582,17 @@ public class MultirateFSMDirector extends FSMDirector {
                 }
             }
             
-            if (refinementPort.isInput()) {
-            
-                // update the input port buffer size
+            if (refinementPort.isInput()) {           
+                // Update the input port buffer size of the refinement.
                 oldSize = refinementHelper.getBufferSize(refinementPort, 0);
                 if  (oldSize < portRates[i]) {
                     for (int j = 0; j < refinementPort.getWidth(); j++) {    
-                        refinementHelper.setBufferSize(refinementPort, j, portRates[i]);           
+                        refinementHelper.
+                                setBufferSize(refinementPort, j, portRates[i]);           
                     }
                 }                        
-            } else {
-              
-                // update the corresponding container's output port buffer size
+            } else {              
+                // Update the output port buffer size of the container.
                 oldSize = containerHelper.getBufferSize(containerPort, 0);   
                 if (oldSize < portRates[i]) {
                     for (int j = 0; j < containerPort.getWidthInside(); j++) {
@@ -577,6 +601,5 @@ public class MultirateFSMDirector extends FSMDirector {
                 }
             }
         }                   
-    }
-    
+    }   
 }    

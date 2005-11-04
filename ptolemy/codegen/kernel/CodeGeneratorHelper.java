@@ -117,6 +117,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return "";
     }
 
+    public void generateModeTransitionCode(StringBuffer code) 
+            throws IllegalActionException {
+
+    }
+    
     /**
      * Generate the preinitialize code. In this base class, return an empty
      * string. This method generally does not generate any execution code
@@ -126,7 +131,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        _createBufferAndOffsetMap();
+        _createBufferSizeAndOffsetMap();
         return "";
     }
 
@@ -140,11 +145,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public Set generateSharedCode() throws IllegalActionException {
         return new HashSet();
-    }
-    
-    public void generateSwitchModeCode(StringBuffer code) 
-            throws IllegalActionException {
-
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
@@ -905,7 +905,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods.                    ////
 
-    /** Create the buffer and offset map for each input port, which is
+    /** Create the buffer size and offset map for each input port, which is
      *  associated with this helper object. A key of the map is an IOPort
      *  of the actor. The corresponding value is an array of Channel objects.
      *  The i-th channel object corresponds to the i-th channel of that IOPort.
@@ -913,7 +913,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  actor. The channel objects in the map are used to keep track of the
      *  offsets in their buffer.
      */
-    protected void _createBufferAndOffsetMap() throws IllegalActionException {
+    protected void _createBufferSizeAndOffsetMap() throws IllegalActionException {
         //We only care about input ports where data are actually stored
         //except when an output port is not connected to any input port.
         //In that case the variable corresponding to the unconnected output

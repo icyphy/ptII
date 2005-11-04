@@ -75,8 +75,7 @@ import ptolemy.util.MessageHandler;
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
  */
-public class CodeGenerator extends Attribute 
-    implements ComponentCodeGenerator {
+public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** Create a new instance of the code generator.
      *  @param container The container.
      *  @param name The name of the code generator.
@@ -679,8 +678,7 @@ public class CodeGenerator extends Attribute
      * @exception Thrown if helper is not found, or the conversion not
      *  supported.
      */
-    protected void _checkPortTypeConversion() 
-        throws IllegalActionException {        
+    protected void _checkPortTypeConversion() throws IllegalActionException {        
 
         Iterator actors = ((ptolemy.actor.CompositeActor) _getHelper(
                 getContainer()).getComponent()).deepEntityList().iterator();
@@ -839,11 +837,19 @@ public class CodeGenerator extends Attribute
         return castHelperObject;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+    
+    /** A set that contains all variables in the model whose values can be 
+     *  changed during execution.
+     */
     protected Set _modifiedVariables;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // A hash map that stores the code generator helpers associated
-    // with the actors.
+    
+    /** A hash map that stores the code generator helpers associated
+     *  with the actors.
+     */
     private HashMap _helperStore = new HashMap();
 }

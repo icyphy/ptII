@@ -63,22 +63,24 @@ public class FSMDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Generate the code for the firing of actors.
+    /** Generate the code for the firing of actors controlled by this director.
+     *  It generates code for making preemptive transition, checking if a transition
+     *  is taken, firing refinements and making non-preemptive transition.
+     * 
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public void generateFireCode(StringBuffer code) throws IllegalActionException {
         ptolemy.domains.fsm.kernel.FSMActor controller = 
-                ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
-                .getController();
+                ((ptolemy.domains.fsm.kernel.FSMDirector) 
+                getComponent()).getController();
 
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         // generate code for preemptive transition
         code.append("\n/* Preepmtive Transition */\n\n");
-        controllerHelper.generateFireCode(code, new TransitionRetriever() {
+        controllerHelper.generateTransitionCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.preemptiveTransitionList().iterator();
             }
@@ -96,7 +98,7 @@ public class FSMDirector extends Director {
 
         // generate code for non-preemptive transition
         code.append("\n/* Nonpreepmtive Transition */\n\n");
-        controllerHelper.generateFireCode(code, new TransitionRetriever() {
+        controllerHelper.generateTransitionCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.nonpreemptiveTransitionList().iterator();
             }
@@ -106,8 +108,10 @@ public class FSMDirector extends Director {
     }
 
     /** Generate code for the firing of refinements.
+     * 
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating fire code for the actor.
      */
     protected void _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
@@ -141,6 +145,8 @@ public class FSMDirector extends Director {
                 for (int i = 0; i < actors.length; i++) {
                     CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
                             _getHelper((NamedObj) actors[i]);
+                    
+                    // fire the actor
                     actorHelper.generateFireCode(code);
                     
                     // update buffer offset after firing each actor once

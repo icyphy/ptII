@@ -121,8 +121,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *   missing or the generateFireCode(StringBuffer) method of the
      *   director helper throws the exception.
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public void generateFireCode(StringBuffer code) throws IllegalActionException {
         CompositeEntity model = (CompositeEntity) getContainer();
 
         // NOTE: The cast is safe because setContainer ensures
@@ -160,9 +159,14 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
             }
         }
 
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        TypedCompositeActor compositeActorHelper = 
+                (TypedCompositeActor) _getHelper(getContainer());
+        
         compositeActorHelper.generateFireCode(code);
-        compositeActorHelper.generateSwitchModeCode(code);
+        
+        // The code generated in generateModeTransitionCode() is executed
+        // after one global iteration, e.g., in HDF model.
+        compositeActorHelper.generateModeTransitionCode(code);
 
         code.append("}\n");
     }
@@ -193,7 +197,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
     /** Get the code generator helper associated with the given component.
      *  @param actor The given component actor.
      *  @exception IllegalActionException If the helper of the given actor
-     *  is an instance of ActorCodeGenerator.
+     *  is not an instance of ActorCodeGenerator.
      *  @return The code generator helper.
      */
     protected ComponentCodeGenerator _getHelper(NamedObj actor)

@@ -60,10 +60,8 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector extends Director {
-    /** Construct the code generator helper associated with the given
-     *  SDFDirector.
-     *  @param sdfDirector The associated
-     *  ptolemy.domains.sdf.kernel.SDFDirector
+    /** Construct the code generator helper associated with the given SDFDirector.
+     *  @param sdfDirector The associated ptolemy.domains.sdf.kernel.SDFDirector
      */
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
         super(sdfDirector);
@@ -72,8 +70,12 @@ public class SDFDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    public String createOffsetVariablesIfNeeded() 
-            throws IllegalActionException {
+    /** Generate code for declaring read and write offset variables if needed. 
+     * 
+     *  @return The generated code.
+     *  @exception IllegalActionException If thrown while creating offset variables.
+     */
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();  
         code.append(_createOffsetVariablesIfNeeded());
         code.append(super.createOffsetVariablesIfNeeded());
@@ -103,7 +105,8 @@ public class SDFDirector extends Director {
             // FIXME: Before looking for a helper class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the helper.
-            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helper = 
+                    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
             for (int i = 0; i < firing.getIterationCount(); i++) {
                 helper.generateFireCode(code);
@@ -128,20 +131,20 @@ public class SDFDirector extends Director {
 
     /** Generate the initialize code for the associated SDF director.
      *  @return The generated initialize code.
-     *  @exception IllegalActionException If the base class throws it.
-     * FIXME: should tell exactly why it throws it.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating initialize code for the actor.
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
         initializeCode.append(super.generateInitializeCode());
 
-        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
-                .getContainer();
+        ptolemy.actor.CompositeActor container = 
+                (ptolemy.actor.CompositeActor) getComponent().getContainer();
+        CodeGeneratorHelper containerHelper = (
+                CodeGeneratorHelper) _getHelper(container);
 
-        CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
-
+        // Generate code for creating external initial production.
         Iterator outputPorts = container.outputPortList().iterator();
-
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             int rate = DFUtilities.getTokenInitProduction(outputPort);
@@ -165,8 +168,10 @@ public class SDFDirector extends Director {
                         }
                     }
                 }
+                
+                // The offset of the ports connected to the output port is 
+                // updated by outside director.
                 _updatePortOffset(outputPort, initializeCode, rate);
-                _updateConnectedPortsOffset(outputPort, initializeCode, rate);
             }
         }
 
@@ -177,7 +182,7 @@ public class SDFDirector extends Director {
      *  iteration.
      *  @param inputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
@@ -185,8 +190,9 @@ public class SDFDirector extends Director {
 
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(getComponent()
-                .getContainer());
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = 
+                (ptolemy.codegen.c.actor.TypedCompositeActor) 
+                _getHelper(getComponent().getContainer());
 
         for (int i = 0; i < inputPort.getWidth(); i++) {
             if (i < inputPort.getWidthInside()) {
@@ -215,7 +221,7 @@ public class SDFDirector extends Director {
      *  production rate.
      *  @param outputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If thrown while transferring tokens.
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
@@ -223,8 +229,9 @@ public class SDFDirector extends Director {
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(getComponent()
-                .getContainer());
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = 
+                (ptolemy.codegen.c.actor.TypedCompositeActor) 
+                _getHelper(getComponent().getContainer());
 
         for (int i = 0; i < outputPort.getWidthInside(); i++) {
             if (i < outputPort.getWidth()) {
@@ -296,11 +303,10 @@ public class SDFDirector extends Director {
 
     /** Check to see if variables are needed to represent read and
      *  write offsets for the given port.
-     *  @exception IllegalActionException  If getting the rate or
-     *  reading parameters throws it.   
+     *  @exception IllegalActionException If getting the rate or
+     *   reading parameters throws it.   
      */   
-    protected String _createOffsetVariablesIfNeeded()
-            throws IllegalActionException {
+    protected String _createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
@@ -344,7 +350,8 @@ public class SDFDirector extends Director {
      *  @param port The port to be checked.
      *  @param totalTokens The number of tokens transferred in one firing of
      *   this director.
-     *  @exception IllegalActionException
+     *  @exception IllegalActionException If getting the rate or
+     *   reading parameters throws it.   
      */
     protected String _createOffsetVariablesIfNeeded(IOPort port, int totalTokens) 
             throws IllegalActionException {

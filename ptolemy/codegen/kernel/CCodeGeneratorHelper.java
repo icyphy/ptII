@@ -69,8 +69,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @param code The given string buffer.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public void generateFireCode(StringBuffer code) throws IllegalActionException {
         super.generateFireCode(code);
     }
 
@@ -83,8 +82,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-        return "";
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateInitializeCode());
+        return code.toString();
     }
 
     /**
@@ -96,8 +96,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        return "";
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        return code.toString();
     }
 
     /**
@@ -109,8 +110,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public Set generateSharedCode() throws IllegalActionException {
-        super.generateSharedCode();
-        return new HashSet();
+        Set sharedCode = new HashSet();
+        sharedCode.addAll(super.generateSharedCode());
+        return sharedCode;
     }
 
     /**
@@ -123,8 +125,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupCode() throws IllegalActionException {
-        super.generateWrapupCode();
-        return "";
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateWrapupCode());
+        return code.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -189,7 +192,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         }
     }
 
-    //protected void 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
