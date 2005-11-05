@@ -2716,6 +2716,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                 if (lastPeriod > 0) {
                                     String containerName = relativeName
                                             .substring(0, lastPeriod);
+                                    // FIXME: The following may return null
+                                    // if the propagation hasn't occurred yet.
+                                    // This happens when invoking createHierarchy
+                                    // in classes. Why hasn't propagation of the
+                                    // container happened?
                                     remoteContainer = getContainer()
                                             ._getContainedObject(other,
                                                     containerName);
@@ -2730,13 +2735,29 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                 candidate.setDerivedLevel(depth);
                                 candidate._markContentsDerived(depth);
                             } else {
-                                // No candidate and no error.  In theory, we
-                                // should never reach this line.
+                                // No candidate and no error.
+                                // We can reach this line if this method
+                                // is called during construction of an object
+                                // in a class definition, before propagation has
+                                // occurred. For example, some constructors call
+                                // moveToLast() or moveToFirst() on attributes.
+                                // These methods normally propagate the change
+                                // to instances and derived classes. But if
+                                // those instances and derived classes have not
+                                // yet had the object propagated to them, then
+                                // this will fail.
+                                continue;
+                                /* NOTE: This used to throw the following exception,
+                                 * but this exception was spurious.
+                                 * To test, create a class an an instance, then
+                                 * drop an SDFDirector into the class. This used
+                                 * to result in this exception being thrown.
                                 throw new InternalErrorException("Expected "
                                         + other.getFullName()
                                         + " to contain an object named "
                                         + relativeName + " of type "
                                         + getClass().toString());
+                                        */
                             }
                         }
 
