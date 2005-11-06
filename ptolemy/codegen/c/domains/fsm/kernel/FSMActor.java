@@ -32,10 +32,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
@@ -109,13 +107,9 @@ public class FSMActor extends CCodeGeneratorHelper {
         
         _updateCurrentState(codeBuffer, initialState, 0);
         
-        // This generates code only when the FSMActor works as a modal 
-        // controller for an instance of MultirateFSMDirector.
-        _updateConfigurationNumber(codeBuffer, initialState, 0);
-        
         return processCode(codeBuffer.toString());
     }
-
+    
     /** Generate the preinitialize code of the associated FSMActor. It declares
      *  two variables for this actor: currentState and transitionFlag. 
      *  currentState is an int representing this actor's current state.
@@ -358,8 +352,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                 State destinationState = transition.destinationState();
                 _updateCurrentState(codeBuffer, destinationState, depth);
 
-                // generate code for reinitialization if reset is true
-                
+                // generate code for reinitialization if reset is true.             
                 // we assume the value of reset itself cannot be changed dynamically
                 BooleanToken resetToken = (BooleanToken) transition.reset.getToken();
                 if (resetToken.booleanValue()) {
@@ -378,8 +371,14 @@ public class FSMActor extends CCodeGeneratorHelper {
                 // FSMActor's container.
                 // The code is generated only when this FSMActor is used as a modal 
                 // controller for an instance of MultirateFSMDirector.
-                _updateConfigurationNumber(codeBuffer, destinationState, depth);
-                
+                Director director = fsmActor.getExecutiveDirector();
+                if (director instanceof 
+                        ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
+                    MultirateFSMDirector directorHelper = 
+                            (MultirateFSMDirector) _getHelper((NamedObj) director);
+                    directorHelper._updateConfigurationNumber
+                            (codeBuffer, destinationState);
+                }
                 depth--;
                 codeBuffer.append(_getIndentPrefix(depth));
                 codeBuffer.append("} ");
@@ -402,7 +401,13 @@ public class FSMActor extends CCodeGeneratorHelper {
             // may have been changed even when there is no state transition.
             // The code is generated only when this FSMActor is used as a modal 
             // controller for an instance of MultirateFSMDirector.
-            _updateConfigurationNumber(codeBuffer, state, depth);
+            Director director = fsmActor.getExecutiveDirector();
+            if (director instanceof 
+                    ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
+                MultirateFSMDirector directorHelper = 
+                        (MultirateFSMDirector) _getHelper((NamedObj) director);
+                directorHelper._updateConfigurationNumber(codeBuffer, state);
+            }
             depth--;
 
             if (transitionCount > 0) {
@@ -438,72 +443,6 @@ public class FSMActor extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Generate code for updating configuration number of this FSMActor's
-     *  container according to the following equation:
-     *  
-     *  container's current configuration number = sum of numbers of configurations
-     *  of refinements corresponding to states before the current state + 
-     *  configuration number of refinement corresponding to the current state
-     * 
-     *  The order of states is the same as in the list returned by entityList().
-     * 
-     *  The code is generated only when this FSMActor is used as a modal 
-     *  controller for an instance of MultirateFSMDirector.
-     * 
-     *  @param codeBuffer The string buffer that the generated code is appended to.
-     *  @param state The current state.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IllegalActionException If helper cannot be found, refinement
-     *   cannot be found or code cannot be processed.
-     */
-    protected void _updateConfigurationNumber(StringBuffer codeBuffer, 
-            State state, int depth) throws IllegalActionException {
-        
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor 
-                = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
-        Director director = ((CompositeActor) fsmActor.getContainer()).getDirector();
-        if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
-            TypedCompositeActor containerHelper = (TypedCompositeActor) 
-                    _getHelper(fsmActor.getContainer());
-            TypedCompositeActor refinementHelper = (TypedCompositeActor) 
-                    _getHelper((NamedObj) state.getRefinement()[0]);
-            Iterator states = fsmActor.entityList().iterator();
-            int tempSum = 0;
-
-            while (states.hasNext()) {
-                State nextState = (State) states.next();
-                Actor[] actors = nextState.getRefinement();
-                if (actors != null) {
-                    TypedCompositeActor helper = (TypedCompositeActor)
-                            _getHelper((NamedObj) actors[0]);
-                    int[][] rates = helper.getRates();
-                    
-                    if (nextState == state) {
-                        codeBuffer.append(_getIndentPrefix(depth));
-                        if (rates == null ) { // only one internal configuration
-                            codeBuffer.append(containerHelper.processCode
-                                    ("$actorSymbol(currentConfiguration) = ")
-                                    + tempSum + ";\n");
-                        } else {
-                            codeBuffer.append(containerHelper.processCode
-                                    ("$actorSymbol(currentConfiguration) = ")
-                                    + refinementHelper.processCode
-                                    ("$actorSymbol(currentConfiguration)") 
-                                    + " + " + tempSum + ";\n");   
-                        }
-                        break;
-                    } else {
-                        if (rates == null) { // only one internal configuration
-                            tempSum += 1;       
-                        } else {
-                            tempSum += rates.length;   
-                        }
-                    }    
-                }    
-            }                   
-        }                
-    }
-    
     /** Generate code for updating current state of this FSMActor. The states are
      *  numbered according to the order in the list returned by entityList().
      * 
@@ -529,10 +468,10 @@ public class FSMActor extends CCodeGeneratorHelper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables                 ////
     
     /** The scope to generate code for guard expression, choice action 
      *  and commit action.
      */
-    private HelperScope _scope = new HelperScope();
+    protected HelperScope _scope = new HelperScope();
 }
