@@ -857,6 +857,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 continue;
             }
 
+            // If the call comes from a far side receiver, test whether it is in
+            // this channel.
             if (isConditional && farSideReceiver != null) {
                 boolean found = false;
                 for (int j = 0; j < receivers[i].length; j++) {
@@ -886,6 +888,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     continue;
                 }
 
+                // Loop detection.
                 if (symmetricReceivers.contains(receiver)) {
                     // Zero-delay loop detected.
                     return false;
@@ -919,13 +922,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     beingChecked.add(receiver);
                     symmetricReceivers.add(receiver);
 
-                    // Test the far side receivers.
-                    if (!_checkRendezvous(farSideReceivers, !isPut,
-                            beingChecked, ready, notReady, new HashSet(),
-                            false, false, receiver)) {
-                        branchReady = false;
-                    }
-
                     // Test the symmetric get side receivers, if this
                     // call is not from a symmetric put call. If this
                     // call is from a symmetric put call, there is no
@@ -950,6 +946,13 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                 true, null)) {
                             branchReady = false;
                         }
+                    }
+
+                    // Test the far side receivers.
+                    if (branchReady && !_checkRendezvous(farSideReceivers,
+                            !isPut, beingChecked, ready, notReady,
+                            new HashSet(), false, false, receiver)) {
+                        branchReady = false;
                     }
 
                     beingChecked.remove(receiver);
