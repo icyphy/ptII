@@ -74,7 +74,7 @@ public class HDFDirector extends SDFDirector {
     
     /** Generate code for declaring read and write offset variables if needed.
      *  First relay the information of firings per global iteration of the 
-     *  container to the contained actors if necessary. Then call the same 
+     *  container actor to the contained actors if necessary. Then call the same 
      *  method in its super class to create read and write offset variables 
      *  if needed.
      * 
@@ -100,7 +100,7 @@ public class HDFDirector extends SDFDirector {
                 configurationNumber++) {
             
             // Find the configuration number of each contained actor
-            // given the configuration number of the container.
+            // given the configuration number of the container actor.
             int remainder = configurationNumber;
             for (int j = 0; j < numberOfActors - 1; j++) {
                 actorConfigurations[j] = remainder / _divisors[j+1];
@@ -109,7 +109,7 @@ public class HDFDirector extends SDFDirector {
             actorConfigurations[numberOfActors - 1] = remainder;
             
             // Find the firings per global iteration for the current 
-            // configuration of the container.
+            // configuration of the container actor.
             int[] arrayOfFiringsPerGlobalIterationOfContainer = 
                     containerHelper.getFiringsPerGlobalIteration();
             int firingsPerGlobalIterationOfContainer = 1;
@@ -128,9 +128,9 @@ public class HDFDirector extends SDFDirector {
                     // If the actor's local director is HDFDirector
                     // or HDFFSMDirector, set the firings per global iteration
                     // of the actor to be the product of firings per global
-                    // iteration of the container and firings per local iteration
-                    // of the actor. This way we can relay the information of 
-                    // firings per global iteration to the inside.
+                    // iteration of the container actor and firings per local 
+                    // iteration of the actor. This way we can relay the 
+                    // information of firings per global iteration to the inside.
                     if(localDirector instanceof 
                             ptolemy.domains.hdf.kernel.HDFDirector ||
                             localDirector instanceof 
@@ -207,7 +207,7 @@ public class HDFDirector extends SDFDirector {
                 configurationNumber++) {
             
             // Find the configuration number of each contained actor
-            // given the configuration number of the container.
+            // given the configuration number of the container actor.
             int remainder = configurationNumber;
             for (int i = 0; i < numberOfActors - 1; i++) {
                 actorConfigurations[i] = remainder / _divisors[i+1];
@@ -274,7 +274,7 @@ public class HDFDirector extends SDFDirector {
     }
     
     /** Generate the initialize code for the associated HDF director. Generate
-     *  code for initializing the configuration number of the container.
+     *  code for initializing the configuration number of the container actor.
      * 
      *  @return The generated initialize code.
      *  @exception IllegalActionException If thrown while calling the same
@@ -290,7 +290,7 @@ public class HDFDirector extends SDFDirector {
     }
     
     /** Generate mode transition code. It generates code for updating configuration
-     *  number of the container. The code generated in this method is executed 
+     *  number of the container actor. The code generated in this method is executed 
      *  after each global iteration.
      * 
      *  @param code The string buffer that the generated code is appended to.
@@ -316,8 +316,8 @@ public class HDFDirector extends SDFDirector {
 
     
     /** Generate the preinitialize code for this director. It computes and records
-     *  schedules for all configurations of the container, also records external 
-     *  port rates of the container under all configurations.
+     *  schedules for all configurations of the container actor, also records 
+     *  external port rates of the container actor under all configurations.
      * 
      *  @return The generated preinitialize code.
      *  @exception IllegalActionException If getting the helper fails,
@@ -343,7 +343,7 @@ public class HDFDirector extends SDFDirector {
         int numberOfConfigurationsOfContainer = 1;
         
         // Initialize _divisors for later use and find the total number 
-        // of configurations for the container, which is the product
+        // of configurations for the container actor, which is the product
         // of the numbers of configurations of contained actors.
         for (int i = numberOfActors - 1; i >= 0; i--) {
             Actor actor = (Actor) actors.get(i);
@@ -370,7 +370,7 @@ public class HDFDirector extends SDFDirector {
                 configurationNumber++) {
             
             // Find the configuration number of each contained actor
-            // given the configuration number of the container.
+            // given the configuration number of the container actor.
             int remainder = configurationNumber;
             for (int j = 0; j < numberOfActors - 1; j++) {
                 actorConfigurations[j] = remainder / _divisors[j+1];
@@ -605,7 +605,7 @@ public class HDFDirector extends SDFDirector {
     
     
     /** Create read and write offset variables if needed for any output port
-     *  of the container and any input port of contained actors.
+     *  of the container actor and any input port of contained actors.
      *  @return A string containing declared read and write offset variables.
      *  @exception IllegalActionException If thrown while creating offset variables.
      */    
@@ -696,7 +696,7 @@ public class HDFDirector extends SDFDirector {
     }
 
     
-    /** Generate code for updating configuration number of the container
+    /** Generate code for updating configuration number of the container actor
      *  as a function of the configuration numbers of contained actors.
      *  The total number of configurations of the container is the product
      *  of numbers of configurations of contained actors.
@@ -796,8 +796,8 @@ public class HDFDirector extends SDFDirector {
     ////                         private variables                 ////
     
     /** An array of integers helping to establish the relationship between
-     *  the configuration number of the container and the configuration numbers
-     *  of contained actors.
+     *  the configuration number of the container actor and the configuration
+     *  numbers of contained actors.
      */
     private int[] _divisors;
     

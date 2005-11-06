@@ -455,9 +455,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 PtParser parser = new PtParser();
                 ASTPtRootNode parseTree = 
-                    parser.generateParseTree(variable.getExpression());
+                        parser.generateParseTree(variable.getExpression());
                 ParseTreeCodeGenerator parseTreeCodeGenerator = 
-                    new ParseTreeCodeGenerator();
+                        new ParseTreeCodeGenerator();
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new HelperScope(variable));
                 return processCode(parseTreeCodeGenerator.generateFireCode());
