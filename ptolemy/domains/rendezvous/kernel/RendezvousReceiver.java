@@ -779,7 +779,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
             boolean isPut) {
         Set ready = new HashSet();
         if (_checkRendezvous(receivers, isPut, new HashSet(), ready,
-                new HashSet(), new HashSet(), false, false)) {
+                new HashSet(), new HashSet(), false, false, null)) {
             return ready;
         } else {
             return null;
@@ -826,12 +826,15 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @param isSymmetricPut
      *            Whether the previous recursive call is from the other side
      *            (the put side) of a Merge or Barrier.
+     * @param farSideReceiver
+     *            The receiver that is being checked on the far side, or null if
+     *            this method is not called from the far side.
      * @return Whether a rendezvous can be formed.
      */
     private static boolean _checkRendezvous(Receiver[][] receivers,
             boolean isPut, Set beingChecked, Set ready, Set notReady,
             Set symmetricReceivers, boolean isSymmetricGet,
-            boolean isSymmetricPut) {
+            boolean isSymmetricPut, Receiver farSideReceiver) {
 
         // Trivially return true or false if there is no receiver is to be put
         // tokens to or get tokens from, respectively.
@@ -841,128 +844,130 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
         // Whether the receivers are conditional. To be initialized in the
         // loops.
-        boolean isConditional = false;
+        boolean isConditional = _isConditional(receivers, isPut);
 
         // Whether the last conditional branch is ready.
         boolean branchReady = false;
 
         // Test which branch of the given receivers has been chosen previously.
-        int selectedBranch = _getSelectedBranch(receivers, beingChecked);
+        int selectedBranch = _getSelectedBranch(receivers, beingChecked, ready);
 
         for (int i = 0; i < receivers.length; i++) {
-            if (receivers[i] != null) {
-                // Assume the branch is ready, to be disproved later.
-                branchReady = true;
+            if (receivers[i] == null) {
+                continue;
+            }
 
+            if (isConditional && farSideReceiver != null) {
+                boolean found = false;
                 for (int j = 0; j < receivers[i].length; j++) {
-                    RendezvousReceiver receiver =
-                            (RendezvousReceiver) receivers[i][j];
-
-                    if (receiver != null) {
-                        if (symmetricReceivers.contains(receiver)) {
-                            // Zero-delay loop detected.
-                            return false;
-                        }
-
-                        // Whether the receiver is in a conditional branch.
-                        // isConditional for all the receivers should be the
-                        // same in one invocation of this method.
-                        isConditional =
-                                isConditional
-                                        || (isPut && receiver._putConditional)
-                                        || (!isPut && receiver._getConditional);
-
-                        // If the put/get is conditional and another branch was
-                        // chosen previously, cancel the current branch.
-                        if (isConditional && selectedBranch != -1
-                                && selectedBranch != i) {
-                            branchReady = false;
-                            break;
-                        }
-
-                        if (beingChecked.contains(receiver)
-                                || ready.contains(receiver)) {
-                            // If the receiver has been visited or is ready, do
-                            // nothing.
-                        } else if (notReady.contains(receiver)) {
-                            // If the receiver is not ready, cancel the current
-                            // branch.
-                            branchReady = false;
-                            break;
-                        } else if ((receiver._putWaiting == null)
-                                || (receiver._getWaiting == null)) {
-                            // If not putWaiting and getWaiting at the same
-                            // time, the receiver is not ready, so record this
-                            // and cancel the current branch.
-                            branchReady = false;
-                            notReady.add(receiver);
-                            break;
-                        } else {
-                            // Otherwise, assume the receiver is ready, and
-                            // continue to check its dependencies.
-
-                            Receiver[][] farSideReceivers =
-                                    isPut ? receiver._getReceivers
-                                            : receiver._putReceivers;
-
-                            beingChecked.add(receiver);
-                            symmetricReceivers.add(receiver);
-
-                            // Test the far side receivers.
-                            if (!_checkRendezvous(farSideReceivers, !isPut,
-                                    beingChecked, ready, notReady,
-                                    new HashSet(), false, false)) {
-                                branchReady = false;
-                            }
-
-                            // Test the symmetric get side receivers, if this
-                            // call is not from a symmetric put call. If this
-                            // call is from a symmetric put call, there is no
-                            // need to go backwards.
-                            if (branchReady
-                                    && !isSymmetricPut
-                                    && receiver._symmetricGetReceivers != null
-                                    && !_checkRendezvous(
-                                            receiver._symmetricGetReceivers,
-                                            false, beingChecked, ready,
-                                            notReady, symmetricReceivers, true,
-                                            false)) {
-                                branchReady = false;
-                            }
-
-                            // Test the symmetric put side receivers, if this
-                            // call is not from a symmetric get call. If this
-                            // call is from a symmetric get call, there is no
-                            // need to go backwards.
-                            if (branchReady
-                                    && !isSymmetricGet
-                                    && receiver._symmetricPutReceivers != null
-                                    && !_checkRendezvous(
-                                            receiver._symmetricPutReceivers,
-                                            true, beingChecked, ready,
-                                            notReady, symmetricReceivers,
-                                            false, true)) {
-                                branchReady = false;
-                            }
-
-                            beingChecked.remove(receiver);
-                            symmetricReceivers.remove(receiver);
-
-                            if (branchReady) {
-                                ready.add(receiver);
-                            } else {
-                                notReady.add(receiver);
-                                break;
-                            }
-                        }
+                    if (receivers[i][j] == farSideReceiver) {
+                        found = true;
+                        break;
                     }
                 }
-
-                if ((isConditional && branchReady)
-                        || (!isConditional && !branchReady)) {
-                    // If either is true, no further test is needed.
-                    break;
+                if (!found) {
+                    continue;
                 }
+            }
+
+            // If the put/get is conditional and another branch was
+            // chosen previously, cancel the current branch.
+            if (isConditional && selectedBranch >= 0 && selectedBranch != i) {
+                continue;
+            }
+
+            // Assume the branch is ready, to be disproved later.
+            branchReady = true;
+
+            for (int j = 0; j < receivers[i].length; j++) {
+                RendezvousReceiver receiver =
+                        (RendezvousReceiver) receivers[i][j];
+                if (receiver == null) {
+                    continue;
+                }
+
+                if (symmetricReceivers.contains(receiver)) {
+                    // Zero-delay loop detected.
+                    return false;
+                }
+
+                if (beingChecked.contains(receiver) ||
+                        ready.contains(receiver)) {
+                    // If the receiver has been visited or is ready, do
+                    // nothing.
+                } else if (notReady.contains(receiver)) {
+                    // If the receiver is not ready, cancel the current
+                    // branch.
+                    branchReady = false;
+                    break;
+                } else if ((receiver._putWaiting == null)
+                        || (receiver._getWaiting == null)) {
+                    // If not putWaiting and getWaiting at the same
+                    // time, the receiver is not ready, so record this
+                    // and cancel the current branch.
+                    branchReady = false;
+                    notReady.add(receiver);
+                    break;
+                } else {
+                    // Otherwise, assume the receiver is ready, and
+                    // continue to check its dependencies.
+
+                    Receiver[][] farSideReceivers =
+                            isPut ? receiver._getReceivers
+                                    : receiver._putReceivers;
+
+                    beingChecked.add(receiver);
+                    symmetricReceivers.add(receiver);
+
+                    // Test the far side receivers.
+                    if (!_checkRendezvous(farSideReceivers, !isPut,
+                            beingChecked, ready, notReady, new HashSet(),
+                            false, false, receiver)) {
+                        branchReady = false;
+                    }
+
+                    // Test the symmetric get side receivers, if this
+                    // call is not from a symmetric put call. If this
+                    // call is from a symmetric put call, there is no
+                    // need to go backwards.
+                    Receiver[][] symmetric = receiver._symmetricGetReceivers;
+                    if (branchReady && !isSymmetricPut && symmetric != null) {
+                        if (!_checkRendezvous(symmetric, false, beingChecked,
+                                ready, notReady, symmetricReceivers, true,
+                                false, null)) {
+                            branchReady = false;
+                        }
+                    }
+
+                    // Test the symmetric put side receivers, if this
+                    // call is not from a symmetric get call. If this
+                    // call is from a symmetric get call, there is no
+                    // need to go backwards.
+                    symmetric = receiver._symmetricPutReceivers;
+                    if (branchReady && !isSymmetricGet && symmetric != null) {
+                        if (!_checkRendezvous(symmetric, true, beingChecked,
+                                ready, notReady, symmetricReceivers, false,
+                                true, null)) {
+                            branchReady = false;
+                        }
+                    }
+
+                    beingChecked.remove(receiver);
+                    symmetricReceivers.remove(receiver);
+
+                    if (branchReady) {
+                        ready.add(receiver);
+                    } else {
+                        notReady.add(receiver);
+                        break;
+                    }
+                }
+            }
+
+            if ((isConditional && branchReady)
+                    || (!isConditional && !branchReady)) {
+                // If either is true, no further test is needed.
+                break;
             }
         }
 
@@ -1056,7 +1061,18 @@ public class RendezvousReceiver extends AbstractReceiver implements
             Token[][] tokenArray =
                     tokens instanceof Token[][] ? (Token[][]) tokens : null;
 
-            if (isGet) {
+            // Test whether the cardinality of a "put to all and get from all"
+            // operation is correct. If there are more channels to put to than
+            // the channels to get from, then this function does nothing but
+            // locks the current thread.
+            boolean cardinalityTest = true;
+            if (!isGetConditional && !isPutConditional && getReceivers != null
+                    && putReceivers != null
+                    && getReceivers.length < putReceivers.length) {
+                cardinalityTest = false;
+            }
+
+            if (cardinalityTest && isGet) {
                 for (int i = 0; i < getReceivers.length; i++) {
                     if (getReceivers[i] != null) {
                         for (int j = 0; j < getReceivers[i].length; j++) {
@@ -1079,7 +1095,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 }
             }
 
-            if (isPut) {
+            if (cardinalityTest && isPut) {
                 for (int i = 0; i < putReceivers.length; i++) {
                     if (putReceivers[i] != null) {
                         for (int j = 0; j < putReceivers[i].length; j++) {
@@ -1117,14 +1133,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 }
             }
 
-            Set rendezvousReceivers;
+            Set rendezvousReceivers = null;
             // Test the rendezvous. If both put and get are to be done at the
             // same time, it does not matter whether the test starts from the
             // get receivers or the put receivers.
-            if (getReceivers != null) {
+            if (cardinalityTest && getReceivers != null) {
                 rendezvousReceivers =
                         _receiversReadyToCommit(getReceivers, false);
-            } else {
+            } else if (cardinalityTest) {
                 rendezvousReceivers =
                         _receiversReadyToCommit(putReceivers, true);
             }
@@ -1160,22 +1176,58 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @param beingChecked
      *            The set of receivers that are being checked by previous
      *            recursive calls.
+     * @param ready
+     *            The set of receivers that are ready for a rendezvous.
      * @return The index of the selected branch, or -1 if no branch has been
      *         selected yet.
      */
     private static int _getSelectedBranch(Receiver[][] receivers,
-            Set beingChecked) {
+            Set beingChecked, Set ready) {
         for (int i = 0; i < receivers.length; i++) {
-            if (receivers[i] != null) {
-                for (int j = 0; j < receivers[i].length; j++) {
-                    Receiver receiver = (Receiver) receivers[i][j];
-                    if (receiver != null && beingChecked.contains(receiver)) {
-                        return i;
-                    }
+            if (receivers[i] == null) {
+                continue;
+            }
+            for (int j = 0; j < receivers[i].length; j++) {
+                Receiver receiver = (Receiver) receivers[i][j];
+                if (receiver == null) {
+                    continue;
+                }
+                if (beingChecked.contains(receiver) ||
+                        ready.contains(receiver)) {
+                    return i;
                 }
             }
         }
         return -1;
+    }
+
+    /** Test whether a two-dimensional array of receivers are coonditional.
+     * 
+     *  @param receivers
+     *             The two-dimensional array of receivers.
+     *  @param isPut
+     *             Whether to test put conditional (true) or to test get
+     *             conditional (false).
+     *  @return Whether the receivers are conditional.
+     */
+    private static boolean _isConditional(Receiver[][] receivers,
+            boolean isPut) {
+        for (int i = 0; i < receivers.length; i++) {
+            if (receivers[i] != null) {
+                for (int j = 0; j < receivers[i].length; j++) {
+                    RendezvousReceiver receiver =
+                            (RendezvousReceiver) receivers[i][j];
+                    if (receiver != null) {
+                        if (isPut) {
+                            return receiver._putConditional;
+                        } else {
+                            return receiver._getConditional;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
