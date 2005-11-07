@@ -57,18 +57,14 @@ public class SampleDelay extends CCodeGeneratorHelper {
     ////                     public methods                         ////
 
     /** Generate the fire code of the SampleDelay actor.
-     *  @param stream The string buffer to which the fire code of the
-     *   SampleDelay actor is appended to.
+     *  @return The generated code.
+     *  @exception
      */
-    public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-        super.generateFireCode(stream);
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("codeBlock1");
-        stream.append(processCode(_codeStream.toString()));
-
-        //stream.append(processCode("$ref(output) = $ref(input);\n"));
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+        code.append(_generateBlockCode("codeBlock1"));
+        return code.toString();
     }
 
     /** Generate the initialize code for the SampleDelay actor by

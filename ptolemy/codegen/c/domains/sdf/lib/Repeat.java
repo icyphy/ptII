@@ -58,12 +58,11 @@ public class Repeat extends CCodeGeneratorHelper {
      *  @param stream The string buffer to which the generated fire code of
      *   the Repeat actor is appended to.
      */
-    public void generateFireCode(StringBuffer stream)
-            throws IllegalActionException {
-        super.generateFireCode(stream);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
         ptolemy.domains.sdf.lib.Repeat actor = (ptolemy.domains.sdf.lib.Repeat) getComponent();
-        StringBuffer code = new StringBuffer();
 
         int numberOfTimes = ((IntToken) actor.numberOfTimes.getToken())
                 .intValue();
@@ -77,6 +76,6 @@ public class Repeat extends CCodeGeneratorHelper {
             code.append("$ref(input," + i + ");\n");
         }
 
-        stream.append(processCode(code.toString()));
+        return processCode(code.toString());
     }
 }

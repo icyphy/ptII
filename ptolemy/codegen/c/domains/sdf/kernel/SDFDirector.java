@@ -107,7 +107,7 @@ public class SDFDirector extends Director {
                         actor.getFullName().replace('.' , '_') + "() {\n");
                 CodeGeneratorHelper actorHelper = 
                         (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-                actorHelper.generateFireCode(functionCode);
+                functionCode.append(actorHelper.generateFireCode());
                 functionCode.append("}\n");
             }
             code.insert(0, functionCode);
@@ -134,7 +134,7 @@ public class SDFDirector extends Director {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
 
                     // generate fire code for the actor
-                    helper.generateFireCode(code);
+                    code.append(helper.generateFireCode());
 
                     // update buffer offset after firing each actor once
                     Iterator inputPorts = actor.inputPortList().iterator();

@@ -59,17 +59,15 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      * The method reads in <code>fireBlock</code> from
      * VariableRecursiveLattice.c, replaces macros with their values
      * and appends the processed code block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        ptolemy.domains.sdf.lib.VariableRecursiveLattice actor = (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("fireBlock");
-
-        code.append(processCode(_codeStream.toString()));
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+        code.append(_generateBlockCode("fireBlock"));
+        return code.toString();
     }
 
     /**
@@ -82,12 +80,10 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("initBlock");
-
-        return processCode(_codeStream.toString());
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateInitializeCode());
+        code.append(_generateBlockCode("initBlock"));
+        return code.toString();
     }
 
     /**
