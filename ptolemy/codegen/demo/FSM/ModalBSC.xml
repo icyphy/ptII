@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalBSC" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 90, 706, 581}, maximized=false}">
     </property>
@@ -73,6 +73,8 @@ refinement changing the state change to double (0.5).</text></svg></configure>
         </property>
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 50.0]">
         </property>
     </property>
@@ -120,7 +122,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={139, 20, 828, 530}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 119, 828, 530}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[613, 412]">
             </property>
@@ -310,7 +312,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 205.0">
                 </property>
             </port>
-            <entity name="Pe" class="ptolemy.actor.lib.Bernoulli">
+            <entity name="Pe1" class="ptolemy.actor.lib.Bernoulli">
                 <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="Pe">
@@ -343,7 +345,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 135.0">
                 </property>
             </entity>
-            <entity name="PChange" class="ptolemy.actor.lib.Bernoulli">
+            <entity name="PChange1" class="ptolemy.actor.lib.Bernoulli">
                 <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="PChange">
@@ -393,13 +395,13 @@ refinement changing the state change to double (0.5).</text></svg></configure>
             <link port="input" relation="relation"/>
             <link port="output" relation="relation3"/>
             <link port="stateChange" relation="relation6"/>
-            <link port="Pe.output" relation="relation2"/>
-            <link port="Pe.trigger" relation="relation"/>
+            <link port="Pe1.output" relation="relation2"/>
+            <link port="Pe1.trigger" relation="relation"/>
             <link port="LogicFunction.input" relation="relation2"/>
             <link port="LogicFunction.input" relation="relation7"/>
             <link port="LogicFunction.output" relation="relation5"/>
-            <link port="PChange.output" relation="relation4"/>
-            <link port="PChange.trigger" relation="relation"/>
+            <link port="PChange1.output" relation="relation4"/>
+            <link port="PChange1.trigger" relation="relation"/>
             <link port="BooleanToAnything.input" relation="relation5"/>
             <link port="BooleanToAnything.output" relation="relation3"/>
             <link port="BooleanToAnything2.input" relation="relation4"/>
@@ -412,7 +414,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 40.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 37, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 167, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>

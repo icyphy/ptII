@@ -4,7 +4,7 @@
 <entity name="ModalModelInsideModalModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 81, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 204, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -13,6 +13,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 55.0]">
         </property>
     </property>
@@ -41,7 +43,7 @@
             <property name="output"/>
         </port>
         <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state1">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -92,6 +94,12 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 310.0]">
                 </property>
             </entity>
+            <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 155.0]">
+                </property>
+            </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
@@ -124,10 +132,28 @@ to another. Then delete this annotation.</text>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
             </relation>
+            <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state1.scale=10">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5152121749525295">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.11460514643712352">
+                </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+            </relation>
             <link port="state1.incomingPort" relation="relation2"/>
+            <link port="state1.incomingPort" relation="relation3"/>
             <link port="state1.outgoingPort" relation="relation"/>
             <link port="state2.incomingPort" relation="relation"/>
             <link port="state2.outgoingPort" relation="relation2"/>
+            <link port="state.outgoingPort" relation="relation3"/>
         </entity>
         <entity name="state1" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="scale" class="ptolemy.data.expr.Parameter" value="10">
@@ -175,7 +201,7 @@ to another. Then delete this annotation.</text>
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state1">
+                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
                     </property>
                     <property name="annotation" class="ptolemy.kernel.util.Attribute">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -226,6 +252,12 @@ to another. Then delete this annotation.</text>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 335.0]">
                         </property>
                     </entity>
+                    <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 155.0]">
+                        </property>
+                    </entity>
                     <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                         </property>
@@ -258,10 +290,28 @@ to another. Then delete this annotation.</text>
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
+                    <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                        </property>
+                        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state1.scale=3*scale">
+                        </property>
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.4851709950409041">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.19252409507076937">
+                        </property>
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                    </relation>
                     <link port="state1.incomingPort" relation="relation2"/>
+                    <link port="state1.incomingPort" relation="relation3"/>
                     <link port="state1.outgoingPort" relation="relation"/>
                     <link port="state2.incomingPort" relation="relation"/>
                     <link port="state2.outgoingPort" relation="relation2"/>
+                    <link port="state.outgoingPort" relation="relation3"/>
                 </entity>
                 <entity name="state1" class="ptolemy.domains.fsm.modal.Refinement">
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -483,7 +533,7 @@ to another. Then delete this annotation.</text>
                     <property name="output"/>
                 </port>
                 <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
-                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state1">
+                    <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
                     </property>
                     <property name="annotation" class="ptolemy.kernel.util.Attribute">
                         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -534,6 +584,12 @@ to another. Then delete this annotation.</text>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 350.0}">
                         </property>
                     </entity>
+                    <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+                        <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                        </property>
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 205.0]">
+                        </property>
+                    </entity>
                     <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                         </property>
@@ -566,10 +622,28 @@ to another. Then delete this annotation.</text>
                         <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
                         </property>
                     </relation>
+                    <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
+                        <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
+                        </property>
+                        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state1.scale=7*scale">
+                        </property>
+                        <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="-0.5192240434494123">
+                        </property>
+                        <property name="gamma" class="ptolemy.data.expr.Parameter" value="-0.10559666040786163">
+                        </property>
+                        <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                        <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="false">
+                        </property>
+                    </relation>
                     <link port="state1.incomingPort" relation="relation2"/>
+                    <link port="state1.incomingPort" relation="relation3"/>
                     <link port="state1.outgoingPort" relation="relation"/>
                     <link port="state2.incomingPort" relation="relation"/>
                     <link port="state2.outgoingPort" relation="relation2"/>
+                    <link port="state.outgoingPort" relation="relation3"/>
                 </entity>
                 <entity name="state1" class="ptolemy.domains.fsm.modal.Refinement">
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">

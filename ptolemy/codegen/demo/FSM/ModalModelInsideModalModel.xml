@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 157, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 155, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -19,6 +19,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 55.0]">
         </property>
     </property>
@@ -99,7 +101,7 @@ to another. Then delete this annotation.</text>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state2.scale = -1">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state2.scale = 2">
                 </property>
                 <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="0.6283185307179586">
                 </property>
@@ -456,7 +458,7 @@ to another. Then delete this annotation.</text>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{70, 45}">
                 </property>
             </property>
-            <property name="scale" class="ptolemy.data.expr.Parameter" value="-1">
+            <property name="scale" class="ptolemy.data.expr.Parameter" value="2">
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
@@ -614,7 +616,7 @@ to another. Then delete this annotation.</text>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 75.0}">
                         </property>
                     </property>
-                    <property name="scale" class="ptolemy.data.expr.Parameter" value="-7">
+                    <property name="scale" class="ptolemy.data.expr.Parameter" value="14">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                             </property>
@@ -669,7 +671,7 @@ to another. Then delete this annotation.</text>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 60.0}">
                         </property>
                     </property>
-                    <property name="scale" class="ptolemy.data.expr.Parameter" value="-5">
+                    <property name="scale" class="ptolemy.data.expr.Parameter" value="10">
                         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
                             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                             </property>
@@ -767,7 +769,7 @@ to another. Then delete this annotation.</text>
         <link port="state2.port2" relation="port2Relation"/>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9999, 9999, 9999, 90, -28, 100, -30, 210, -56, 180, -50, 330, -84, 260, -70, 450, -112, 340, -90, 570}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9999, 9999, 9999, 90, 56, 100, 60, 210, 112, 180, 100, 330, 168, 260, 140, 450, 224, 340, 180, 570}">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
         </property>
