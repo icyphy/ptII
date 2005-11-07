@@ -58,25 +58,25 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      * equals to 8, then read the <code>fireBlock_8</code>, else read the
      * <code>fireBlock_16</code> from AudioPlayer.c, replace macros with
      * their values and append to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        super.generateFireCode(code);
-
-        ptolemy.actor.lib.javasound.AudioPlayer actor = (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
         _codeStream.clear();
-
+        ptolemy.actor.lib.javasound.AudioPlayer actor = 
+            (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
         if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
             _codeStream.appendCodeBlock("fireBlock_8");
         } else { // assume bitsPerSample == 16 
             _codeStream.appendCodeBlock("fireBlock_16");
         }
-
         code.append(processCode(_codeStream.toString()));
+        
+        return code.toString();
     }
 
     /**

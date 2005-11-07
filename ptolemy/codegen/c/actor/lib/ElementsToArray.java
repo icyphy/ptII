@@ -57,20 +57,23 @@ public class ElementsToArray extends CCodeGeneratorHelper {
      * The method reads in <code>fireBlock</code> from ElementsToArray.c,
      * replaces macros with their values and appends the processed code
      * block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+
         ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
-        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.clear();
         ArrayList args = new ArrayList();
         args.add(actor.input.getType().toString());
         args.add(Integer.toString(actor.input.getWidth()));
 
         _codeStream.appendCodeBlock("fireBlock", args);
-        code.append(processCode(_codeStream.toString()));
+        code.append(processCode(_codeStream.toString()));        
+        return code.toString();
     }
 
     /**

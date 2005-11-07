@@ -59,23 +59,24 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
      * <code>sqrtBlock</code> from UnaryMathFunction.c depending on the
      * function parameter specified, replaces macros with their values
      * and appends the processed code block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        ptolemy.actor.lib.UnaryMathFunction actor = (ptolemy.actor.lib.UnaryMathFunction) getComponent();
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+        ptolemy.actor.lib.UnaryMathFunction actor = 
+            (ptolemy.actor.lib.UnaryMathFunction) getComponent();
 
         String function = actor.function.getExpression();
         String codeBlockName = (function.equals("exp")) ? "expBlock"
                 : ((function.equals("log")) ? "logBlock" : ((function
                         .equals("sign")) ? "signBlock" : ((function
-                        .equals("square")) ? "squareBlock" : "sqrtBlock")));
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock(codeBlockName);
-        code.append(processCode(_codeStream.toString()));
+                        .equals("square")) ? "squareBlock" : "sqrtBlock")));        
+        code.append(_generateBlockCode(codeBlockName));
+        
+        return code.toString();
     }
 
     /**

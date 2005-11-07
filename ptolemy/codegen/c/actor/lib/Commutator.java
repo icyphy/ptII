@@ -56,19 +56,24 @@ public class Commutator extends CCodeGeneratorHelper {
      * Read the <code>fireBlock</code> from Commutator.c,
      * replace macros with their values and append the processed code
      * block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+
+        int portWidth = 
+            ((ptolemy.actor.lib.Commutator) getComponent()).input.getWidth();
 
         ArrayList args = new ArrayList();
-        args.add(new Integer(
-                ((ptolemy.actor.lib.Commutator) getComponent()).input
-                        .getWidth()));
-        code.append(_generateBlockCode("fireBlock", args));
+        args.add(new Integer(portWidth));
+        
+        for (int i = 0; i < portWidth; i++) {
+            code.append(_generateBlockCode("fireBlock", args));        	
+        }
+        return code.toString();        
     }
 
     /**

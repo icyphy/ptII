@@ -56,13 +56,13 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
      * The method generate code that loops through each
      * INPUT [multi-ports] and combine (multiply or divide) them.
      * The result code is put into the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
         ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
         StringBuffer buffer = new StringBuffer();
@@ -94,5 +94,6 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
 
         buffer.append(";\n");
         code.append(processCode(buffer.toString()));
+        return code.toString();
     }
 }

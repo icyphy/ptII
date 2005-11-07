@@ -57,16 +57,15 @@ public class AudioWriter extends CCodeGeneratorHelper {
      * Generate fire code.
      * The method reads in <code>writeSoundFile</code> from AudioWriter.c
      * and appends to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("writeSoundFile");
-
-        code.append(processCode(_codeStream.toString()));
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+        code.append(_generateBlockCode("writeSoundFile"));
+        return code.toString();
     }
 
     /** Get the files needed by the code generated for the

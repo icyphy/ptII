@@ -62,13 +62,13 @@ public class Test extends CCodeGeneratorHelper {
      * The method reads in <code>fireBlock</code> from Test.c,
      * replaces macros with their values and appends the processed code
      * block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
         // FIXME: handle widths greater than 1.
         if (_testActor.input.getWidth() > 1) {
@@ -81,6 +81,7 @@ public class Test extends CCodeGeneratorHelper {
         CodeStream _codeStream = new CodeStream(this);
         _codeStream.appendCodeBlock("fireBlock");
         code.append(processCode(_codeStream.toString()));
+        return code.toString();
     }
 
     /**

@@ -57,13 +57,13 @@ public class Quantizer extends CCodeGeneratorHelper {
      * Read the <code>fireBlock</code> from Quantizer.c,
      * replace macros with their values and append the processed code
      * block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
         _codeStream.clear();
 
         ptolemy.actor.lib.Quantizer actor = (ptolemy.actor.lib.Quantizer) getComponent();
@@ -75,6 +75,7 @@ public class Quantizer extends CCodeGeneratorHelper {
 
         _codeStream.appendCodeBlock("fireBlock", arguments);
         code.append(processCode(_codeStream.toString()));
+        return code.toString();
     }
 
     /**

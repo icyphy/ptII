@@ -55,14 +55,16 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
     }
 
     /** Generate fire code.
-     *  @param code the given buffer to append the code to.
-     *  @exception IllegalActionException
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
         _generateRandomNumber(code);
+        return code.toString();
     }
 
     /** Generate the code for initializing the random number generator

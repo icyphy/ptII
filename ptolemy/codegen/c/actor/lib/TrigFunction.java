@@ -59,13 +59,13 @@ public class TrigFunction extends CCodeGeneratorHelper {
      * or <code>atanBlock</code> from TrigFunction.c depending on the function
      * parameter specified, replaces macros with their values and appends
      * the processed code block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
         ptolemy.actor.lib.TrigFunction actor = (ptolemy.actor.lib.TrigFunction) getComponent();
 
@@ -75,10 +75,9 @@ public class TrigFunction extends CCodeGeneratorHelper {
                         .equals("tan")) ? "tanBlock" : ((function
                         .equals("asin")) ? "asinBlock" : ((function
                         .equals("acos")) ? "acosBlock" : "atanBlock"))));
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock(codeBlockName);
-        code.append(processCode(_codeStream.toString()));
+        code.append(_generateBlockCode(codeBlockName));
+        
+        return code.toString();
     }
 
     /**

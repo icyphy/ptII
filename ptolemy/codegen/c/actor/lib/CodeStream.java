@@ -174,7 +174,7 @@ public class CodeStream {
         if (parameters == null) {
             if (arguments.size() != 0) {
                 throw new IllegalActionException(blockName + " in " + _filePath
-                        + "does not take any arguments.");
+                        + " does not take any arguments.");
             }
         } else {
             // Check if there are more parameters than arguments.

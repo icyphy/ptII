@@ -58,24 +58,24 @@ public class Round extends CCodeGeneratorHelper {
      * <code>roundBlock</code>, or <code>truncateBlock</code> from Round.c
      * depending on the function parameter specified, and appends to the
      * given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block.
+     *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        ptolemy.actor.lib.conversions.Round actor = (ptolemy.actor.lib.conversions.Round) getComponent();
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
-        _codeStream.clear();
+        ptolemy.actor.lib.conversions.Round actor = 
+            (ptolemy.actor.lib.conversions.Round) getComponent();
 
         String function = actor.function.getExpression();
         String codeBlockName = (function.equals("ceil")) ? "ceilBlock"
                 : ((function.equals("floor")) ? "floorBlock" : ((function
                         .equals("round")) ? "roundBlock" : "truncateBlock"));
 
-        _codeStream.appendCodeBlock(codeBlockName);
-
-        code.append(processCode(_codeStream.toString()));
+        code.append(_generateBlockCode(codeBlockName));
+        return code.toString();
     }
 
     /**

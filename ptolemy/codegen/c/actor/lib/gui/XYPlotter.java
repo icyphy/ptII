@@ -57,16 +57,18 @@ public class XYPlotter extends CCodeGeneratorHelper {
      * Generate fire code.
      * The method reads in <code>writeFile</code> from XYPlotter.c
      * replaces macros with their values and appends to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+
         // FIXME: how do we add legend to the file??
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("writeFile");
-        code.append(processCode(_codeStream.toString()));
+        code.append(_generateBlockCode("writeFile"));
+        
+        return code.toString();
     }
 
     /**

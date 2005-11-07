@@ -56,21 +56,23 @@ public class Maximum extends CCodeGeneratorHelper {
      * The method reads in <code>fireBlock</code> from Maximum.c,
      * replaces macros with their values and appends the processed code
      * block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        ptolemy.actor.lib.Maximum actor = (ptolemy.actor.lib.Maximum) getComponent();
-        CodeStream tmpStream = new CodeStream(this);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
+
+        ptolemy.actor.lib.Maximum actor = 
+            (ptolemy.actor.lib.Maximum) getComponent();
 
         // FIXME: we need to resolve the token type in the future
         ArrayList args = new ArrayList();
         args.add(actor.input.getType().toString());
         args.add(Integer.toString(actor.input.getWidth()));
-        tmpStream.appendCodeBlock("fireBlock", args);
-        code.append(processCode(tmpStream.toString()));
+        code.append(_generateBlockCode("fireBlock", args));
+        return code.toString();
     }
 
     /**

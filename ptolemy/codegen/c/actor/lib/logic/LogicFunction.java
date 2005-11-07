@@ -51,18 +51,18 @@ public class LogicFunction extends CCodeGeneratorHelper {
     }
 
     /** Generate fire code.
-     *  @param code the given buffer to append the code to.
-     *  @exception IllegalActionException
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer codeBuffer = new StringBuffer();
+        codeBuffer.append(super.generateFireCode());
 
         ptolemy.actor.lib.logic.LogicFunction actor = (ptolemy.actor.lib.logic.LogicFunction) getComponent();
 
         String function = actor.function.getExpression();
 
-        StringBuffer codeBuffer = new StringBuffer();
         codeBuffer.append("\n    ");
         codeBuffer.append("$ref(output) = ");
 
@@ -98,6 +98,6 @@ public class LogicFunction extends CCodeGeneratorHelper {
         }
 
         codeBuffer.append(");\n");
-        code.append(processCode(codeBuffer.toString()));
+        return processCode(codeBuffer.toString());
     }
 }

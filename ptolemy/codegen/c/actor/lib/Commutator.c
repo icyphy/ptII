@@ -7,17 +7,14 @@
 /**/
 
 /*** preinitBlock ***/
-    int $actorSymbol(position) = 0;
 /**/
 
 /*** initBlock ***/
 /**/
 
-/*** fireBlock(<portWidth>) ***/
-    $ref(output) = $ref(input)[$actorSymbol(position)++];
-    if (position >= <portWidth>) {
-        position = 0;
-    }
+/*** fireBlock(<port>) ***/
+    // FIXME: How we want to put data into the output buffer?
+    $ref(output, <port>) = $ref(input#<port>);
 /**/
 
 /*** wrapupBlock ***/

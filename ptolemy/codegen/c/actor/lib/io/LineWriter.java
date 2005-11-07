@@ -57,13 +57,15 @@ public class LineWriter extends CCodeGeneratorHelper {
      * Generate fire code.
      * The method reads in <code>writeLine</code> from LineWriter.c,
      * replaces macros with their values and appends to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
         code.append(_generateBlockCode("writeLine"));
+        return code.toString();
     }
 
     /**

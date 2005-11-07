@@ -29,9 +29,7 @@ package ptolemy.codegen.c.actor.lib.gui;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.data.type.BaseType;
@@ -61,57 +59,41 @@ public class Display extends CCodeGeneratorHelper {
      * <code>printString</code>, or <code>printDouble</code> from Display.c,
      * replaces macros with their values and appends the processed code
      * block to the given code buffer.
-     * @param code the given buffer to append the code to.
+     * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
-        ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
+        ptolemy.actor.lib.gui.Display actor = 
+            (ptolemy.actor.lib.gui.Display) getComponent();
         _codeStream.clear();
 
+        String type = "";
+        if (actor.input.getType() == BaseType.INT) {
+            type = "Int";
+        } else if (actor.input.getType() == BaseType.DOUBLE) {
+            type = "Double";
+        } else if (actor.input.getType() == BaseType.STRING) {
+            type = "String";
+        } else {
+            type = "Token";
+        }
+        
         ArrayList args = new ArrayList();
-        List connectedPorts = actor.input.connectedPortList();
-
         args.add(new Integer(0));
-
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            TypedIOPort port = (TypedIOPort) connectedPorts.get(i);
+            TypedIOPort port = 
+                (TypedIOPort) actor.input.sourcePortList().get(i);
 
             args.set(0, Integer.toString(i));
-
-            if (port.getType() == BaseType.INT) {
-                _codeStream.appendCodeBlock("printInt", args);
-            } else if (port.getType() == BaseType.DOUBLE) {
-                _codeStream.appendCodeBlock("printDouble", args);
-            } else if (port.getType() == BaseType.STRING) {
-                _codeStream.appendCodeBlock("printString", args);
-            } else {
-                _codeStream.appendCodeBlock("printToken", args);
-            }
+            _codeStream.appendCodeBlock("print" + type, args);
         }
-
         code.append(processCode(_codeStream.toString()));
-    }
-
-    /**
-     * Generate shared code.
-     * This method reads the <code>sharedBlock</code> from Display.c,
-     * replaces macros with their values and returns the processed code string.
-     * @return A set of strings that are code shared by multiple instances of
-     *  the same actor.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public Set generateSharedCode() throws IllegalActionException {
-        super.generateSharedCode();
-
-        Set codeBlocks = new HashSet();
-
-        //codeBlocks.add(_generateBlockCode("sharedBlock", false));
-        return codeBlocks;
+        
+        return code.toString();
     }
 
     /**
