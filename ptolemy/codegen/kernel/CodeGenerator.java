@@ -256,7 +256,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                      
         code.append("\nvoid " + 
                 model.getFullName().replace('.' , '_') + "() {\n");
-        modelHelper.generateFireCode(code);
+        code.append(modelHelper.generateFireCode());
         code.append("}\n");
         return code.toString();
     }
@@ -409,12 +409,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         Iterator actors = ((ptolemy.actor.CompositeActor) compositeActorHelper
                 .getComponent()).deepEntityList().iterator();
 
+        CodeStream sharedStream = new CodeStream(
+        "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
+        sharedStream.appendCodeBlock("constantsBlock");
+        code.append(sharedStream.toString());
+        
         // Determine the total number of referenced types.
         // Determine the total number of referenced polymorphic functions.
-        HashSet functions = new HashSet();
-        //functions.add("convert");
-        //functions.add("print");
-        
+        HashSet functions = new HashSet();        
         HashSet types = new HashSet();
 
         while (actors.hasNext()) {
@@ -442,14 +444,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
         
         Object[] typesArray = types.toArray();
-        CodeStream[] streams = new CodeStream[types.size()];
+        CodeStream[] typeStreams = new CodeStream[types.size()];
 
         // Generate type map.
         String typeMembers = new String();
-
         for (int i = 0; i < types.size(); i++) {
             // Open the .c file for each type.
-            streams[i] = new CodeStream(
+            typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i]
                             + ".c");
             code.append("#define TYPE_" + typesArray[i] + " " + i + "\n");
@@ -465,48 +466,52 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         for (int i = 0; i < functions.size(); i++) {
             code.append("#define FUNC_" + functionsArray[i] + " " + i + "\n");
         }
-        
-        code.append("typedef struct token Token;\n");
-        
+                
         // Generate type and function definitions.
         for (int i = 0; i < types.size(); i++) {
             // The "declareBlock" contains all necessary declarations for the
             // type; thus, it is always read into the code stream when
             // accessing this particular type.
-            streams[i].appendCodeBlock("declareBlock");
-            code.append(streams[i].toString());
+            typeStreams[i].appendCodeBlock("declareBlock");
+            code.append(typeStreams[i].toString());
         }
 
         // Token declareBlock.
-        ArrayList args = new ArrayList();
-        args.add(typeMembers);
-        CodeStream tmpStream = new CodeStream(
-                "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
-        tmpStream.appendCodeBlock("globalBlock", args);
-        code.append(tmpStream.toString());
-
-        // Generate function table.
-        code.append("#define NUM_TYPE " + types.size() + "\n");
-        code.append("#define NUM_FUNC " + functions.size() + "\n");
-        code.append("void* (*functionTable[NUM_TYPE][NUM_FUNC])(Token*)= {\n");
-        for (int i = 0; i < types.size(); i++) {
-            code.append("\t");
-            for (int j = 0; j < functions.size(); j++) {
-                code.append(typesArray[i] + "_" + functionsArray[j]);
-
-                if ((i != (types.size() - 1)) || 
-                    (j != (functions.size() - 1))) {
-                    code.append(", ");
-                }
-            }
-            code.append("\n");
+        if (!typeMembers.equals("")) {
+            ArrayList args = new ArrayList();
+            args.add(typeMembers);
+            sharedStream.clear();
+            sharedStream.appendCodeBlock("tokenDeclareBlock", args);
         }
-        code.append("};\n");
+        // FIXME: in the future we need to load the convertPrimitivesBlock
+        // dynamically, and maybe break it into multiple blocks to minimize
+        // code size.
+        sharedStream.appendCodeBlock("convertPrimitivesBlock");
+        code.append(sharedStream.toString());
         
+        // Generate function table.
+        if (functions.size() > 0 && types.size() > 0) {
+            code.append("#define NUM_TYPE " + types.size() + "\n");
+            code.append("#define NUM_FUNC " + functions.size() + "\n");
+            code.append("void* (*functionTable" +
+                    "[NUM_TYPE][NUM_FUNC])(Token*)= {\n");
+            for (int i = 0; i < types.size(); i++) {
+                code.append("\t");
+                for (int j = 0; j < functions.size(); j++) {
+                    code.append(typesArray[i] + "_" + functionsArray[j]);
+                    if ((i != (types.size() - 1)) || 
+                        (j != (functions.size() - 1))) {
+                        code.append(", ");
+                    }
+                }
+                code.append("\n");
+            }
+            code.append("};\n");
+        }
         
         for (int i = 0; i < types.size(); i++) {
-            streams[i].clear();
-            streams[i].appendCodeBlock("newBlock");
+            typeStreams[i].clear();
+            typeStreams[i].appendCodeBlock("newBlock");
 
             for (int j = 0; j < functions.size(); j++) {
                 // The code block declaration has to follow this convention:
@@ -514,21 +519,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 //     .....
                 // /**/
                 try {
-                    streams[i].appendCodeBlock(functionsArray[j] + "Block");
+                    typeStreams[i].appendCodeBlock(functionsArray[j] + "Block");
                 } catch (IllegalActionException ex) {
                     // We have to catch the exception if some code blocks are
                     // not found. We have to define the function label in the
                     // generated code because the function table makes
                     // reference to this label.
-                    streams[i].append("#define " + typesArray[i] + "_"
+                    typeStreams[i].append("#define " + typesArray[i] + "_"
                             + functionsArray[j] + " MISSING \n");
 
                     // It is ok because this polymorphic function may not be
                     // supported by all types. 
                 }
             }
-
-            code.append(streams[i].toString());
+            code.append(typeStreams[i].toString());
         }
         return code.toString();
     }
@@ -553,10 +557,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         while (modifiedVariables.hasNext()) {
             Variable variable = (Variable) modifiedVariables.next();
-            boolean isArrayType = compositeActorHelper._generateType(variable,
+            boolean isMultiport = compositeActorHelper._generateType(variable,
                     code);
 
-            if (isArrayType) {
+            if (isMultiport) {
                 code.append("[ ]");
             }
 
@@ -771,7 +775,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                                 // Token type. Here, we are only concern with
                                 // converting primitive type to Token type.
                             }
-                            
                             
                             if (!type.equals("")) {
                                 // Record the referenced type in the infoTable.

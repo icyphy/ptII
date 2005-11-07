@@ -17,7 +17,7 @@ void Array_print(Token* thisToken);
 Token* Array_new(int size, ...) {   
     int i;
     Token** element = (Token**) (&size + 1);
-    char doConvert = 0; // false
+    char doConvert = false;
 
     Token* result = (Token*) malloc(sizeof(Token*));
     result->type = TYPE_Array;
@@ -28,7 +28,7 @@ Token* Array_new(int size, ...) {
 
     for (i = 0; i < size; i++, element++) {
         if ((*element)->type != result->payload.Array->elementsType) {
-            doConvert = 1;  // true
+            doConvert = true;
 
             // Get the max type.
             if ((*element)->type > result->payload.Array->elementsType) {

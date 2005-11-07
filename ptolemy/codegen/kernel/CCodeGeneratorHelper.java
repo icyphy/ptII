@@ -66,11 +66,11 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * Generate the fire code. In this base class, do nothing. Subclasses
      * may extend this method to generate the fire code of the associated
      * component and append the code to the given string buffer.
-     * @param code The given string buffer.
+     * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        return super.generateFireCode();
     }
 
     /**

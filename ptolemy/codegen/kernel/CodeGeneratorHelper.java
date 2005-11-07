@@ -81,6 +81,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public CodeGeneratorHelper(NamedObj component) {
         _component = component;
+        _infoTable.put(FIELD_NEW, new HashSet());
+        _infoTable.put(FIELD_REFCONVERT, new Hashtable());
+        _infoTable.put(FIELD_REFDECLARETYPE, new Hashtable());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,11 +104,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * associated component in the comment. Subclasses may extend this
      * method to generate the fire code of the associated component and
      * append the code to the given string buffer.
-     * @param code The given string buffer.
+     * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {
-        code.append("\n/* fire " + getComponent().getName() + " */\n");
+    public String generateFireCode() throws IllegalActionException {
+        return "\n/* fire " + getComponent().getName() + " */\n";
     }
 
     /**
@@ -173,9 +176,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 // avoid duplicate declaration.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    boolean isArrayType = _generateType(parameter, code);
+                    boolean isMultiport = _generateType(parameter, code);
 
-                    if (isArrayType) {
+                    if (isMultiport) {
                         code.append("[ ]");
                     }
 
@@ -210,6 +213,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
 
             code.append(";\n");
+            _generateTypeConvertVariableDeclaration(inputPort, code);
         }
 
         // Generate variable declarations for output ports.
@@ -234,8 +238,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (bufferSize > 1) {
                     code.append("[" + bufferSize + "]");
                 }
-
                 code.append(";\n");
+                _generateTypeConvertVariableDeclaration(outputPort, code);
             }
         }
     }
@@ -331,6 +335,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /**
+     * Get information from the helper's info table. The kernel should use
+     * this method to retrieve information from the helper.
+     */
+    public Object getInfo(String field, String key) {
+        return ((Hashtable) _infoTable.get(field)).get(key);
+    }
+
+    /**
      * Get the helper's info table. The kernel should use this method to put
      * and retrieve information.
      */
@@ -388,14 +400,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 .trim();
 
         // Record the referenced type function in the infoTable.
-        HashSet types = (HashSet) _infoTable.get(FIELD_NEW);
-
-        if (types == null) {
-            types = new HashSet();
-            _infoTable.put(FIELD_NEW, types);
-        }
-
-        types.add(typeName);
+        ((HashSet) _infoTable.get(FIELD_NEW)).add(typeName);
 
         return typeName + "_new"
                 + constructorString.substring(openFuncParenIndex);
@@ -541,14 +546,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (convertMethod != null) {
                 int stringIndex = convertMethod.indexOf("_new");
                 if (stringIndex > -1) {
-                    dereferenceType = "->payload." + 
-                        convertMethod.substring(0, stringIndex);
+                    String typeName = convertMethod.substring(0, stringIndex);
+                    dereferenceType = "->payload." + typeName;                    
+                    ((HashSet) _infoTable.get(FIELD_NEW)).add(typeName);
                 } else {
                 	// FIXME: handle conversion between types.
                 }
             }
         }
-        
         return _getReference(name) + dereferenceType;
     }
 
@@ -704,6 +709,29 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
     }
 
+    /**
+     * Set information in the helper's info table. The kernel should use
+     * this method to put information into the helper. This method assumes
+     * the given field is a Set object.
+     * @param field The given field.
+     * @param info  The information to put into the given field.
+     */
+    public void putInfo(String field, Object info) {
+        ((Set) _infoTable.get(field)).add(info);
+    }
+    
+    /**
+     * Set information in the helper's info table. The kernel should use
+     * this method to put information into the helper. This method assumes
+     * the given field is a Hashtable object.
+     * @param field The given field.
+     * @param key The key to access the table in the given field.
+     * @param info The information to put into the given field.
+     */
+    public void putInfo(String field, Object key, Object info) {
+        ((Hashtable) _infoTable.get(field)).put(key, info);
+    }
+        
     /** Process the specified code, replacing macros with their values.
      * @param code The code to process.
      * @return The processed code.
@@ -996,18 +1024,20 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
         }
     }
-
+    
     /** Given a port or parameter, append a string in the form
      *  "static <i>type</i> <i>objectName</i>" to the given string buffer.
      *  Return true if the type of the port or parameter is ArrayType. This
      *  method is only called in the generateVariableDeclarations() method.
      *  @param namedobj The port or parameter.
      *  @param code The string buffer that contains the generated code.
-     *  @return True if the type the port or parameter is ArrayType.
+     *  @return True if the type the port or parameter is Token type.
      */
     protected boolean _generateType(NamedObj namedobj, StringBuffer code) {
         String type = null;
-
+        String convert = null;
+        boolean isMultiport = false;
+        
         if (namedobj instanceof Parameter) {
             type = ((Parameter) namedobj).getType().toString();
         } else if (namedobj instanceof TypedIOPort) {
@@ -1015,39 +1045,70 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             // type conversion. If yes, then the type is given in the table.
             Hashtable declarations = 
                     (Hashtable) _infoTable.get(FIELD_REFDECLARETYPE);
-            if (declarations != null) {
-                type = (String) declarations.get(namedobj.getName());
-            }
-            
+            Hashtable conversions = 
+                (Hashtable) _infoTable.get(FIELD_REFCONVERT);
+
+            type = (String) conversions.get(namedobj.getName());
+
+            convert = (String) conversions.get(namedobj.getName());
+
             // if no given type declaration, then use the type of the port.
             if (type == null) {
             	type = ((TypedIOPort) namedobj).getType().toString();
+            } else if (type.equals("string")) {
+                if (convert.indexOf("new") == -1) {
+                    // Upgrading from primitive to Token.
+                }
             }
+            isMultiport = ((TypedIOPort) namedobj).isMultiport();
         }
 
-        boolean isArrayType = false;
-
-        if (type.charAt(0) == '{') {
+        //if (type.charAt(0) == '{') {
             // This is an ArrayType.
-            StringTokenizer tokenizer = new StringTokenizer(type, "{}");
-            type = tokenizer.nextToken();
-            isArrayType = true;
-        }
+            //StringTokenizer tokenizer = new StringTokenizer(type, "{}");
+            //type = tokenizer.nextToken();
+            //isArrayType = true;
+        //}
 
-        if (type.equals("general")) {
-            type = "Token*";
-        } else if (type.equals("string")) {
+        if (type.equals("string")) {
             type = "char*";
         } else if (type.equals("boolean")) {
             type = "unsigned char";
+        } else if (!type.equals("int") && !type.equals("double")){
+            type = "Token*";            
         }
 
         code.append("static ");
         code.append(type);
         code.append(" ");
         code.append(namedobj.getFullName().replace('.', '_'));
-        return isArrayType;
+        return isMultiport;
     }
+
+    protected void _generateTypeConvertVariableDeclaration
+        (NamedObj namedobj, StringBuffer code) {
+        
+        if (namedobj instanceof TypedIOPort) {
+            // search from the preprocess info table to see if there is any port
+            // type conversion. If yes, then the type is given in the table.
+            Hashtable declarations = 
+                    (Hashtable) _infoTable.get(FIELD_REFDECLARETYPE);
+            Hashtable conversions = 
+                (Hashtable) _infoTable.get(FIELD_REFCONVERT);
+    
+            String type = (String) conversions.get(namedobj.getName());
+            String convert = (String) conversions.get(namedobj.getName());
+    
+            // if no given type declaration, then use the type of the port.
+            if (type == null) {
+            } else if (type.equals("string")) {
+                if (convert.indexOf("new") == -1) {
+                    // Upgrading from primitive to Token.
+                }
+            }
+        }                
+    }
+    
 
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
@@ -1255,7 +1316,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                     sinkChannelNumber)
                                     + "&" + modulo;
                         }
-
                         result.append("[" + temp + "]");
                     }
                 }

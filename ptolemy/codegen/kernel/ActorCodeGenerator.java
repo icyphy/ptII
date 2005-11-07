@@ -46,9 +46,8 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
 
     /** Generate into the specified string buffer the code associated
      *  with one firing of the container composite actor.
-     *  @param code The string buffer into which to generate the code.
+     *  @return The generated fire code.
      *  @exception IllegalActionException If something goes wrong.
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException;
+    public String generateFireCode() throws IllegalActionException;
 }

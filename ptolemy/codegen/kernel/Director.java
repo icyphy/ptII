@@ -98,12 +98,12 @@ public class Director implements ActorCodeGenerator {
      *  firings of actors observe the associated schedule. In addition,
      *  some special handling is needed, e.g., the iteration limit in SDF
      *  and time advancement in Giotto.
-     *  @param code The string buffer that the generated code is appended to.
+     *  @return The generated code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer(); 
         code.append("/* The firing of the director. */\n");
 
         Iterator actors = ((CompositeActor) _director.getContainer())
@@ -113,8 +113,9 @@ public class Director implements ActorCodeGenerator {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) 
                     _getHelper((NamedObj) actor);
-            helperObject.generateFireCode(code);
+            code.append(helperObject.generateFireCode());
         }
+        return code.toString();
     }
 
     /** Generate the initialize code for this director.

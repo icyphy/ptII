@@ -125,7 +125,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
         
         if (inline) {
-            generateFireCode(code);  
+            code.append(generateFireCode());  
         } else {
             code.append(model.getFullName().replace('.' , '_') + "();\n");
         }
@@ -168,15 +168,17 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  with the execution of the container composite actor. This method
      *  calls the generateFireCode() method of the code generator helper
      *  associated with the director of the container.
-     *  @param code The code stream into which to generate the code.
+     *  @return The generated code.
      *  @exception IllegalActionException If a static scheduling director is
      *   missing or the generateFireCode(StringBuffer) method of the
      *   director helper throws the exception.
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         CompositeEntity model = (CompositeEntity) getContainer();
         TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
-        modelHelper.generateFireCode(code);  
+        code.append(modelHelper.generateFireCode());  
+        return code.toString();
     }
 
     /** Set the container of this object to be the given container.
