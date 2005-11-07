@@ -30,11 +30,13 @@ package ptolemy.codegen.c.domains.fsm.kernel;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
+import ptolemy.data.BooleanToken;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -115,12 +117,34 @@ public class FSMDirector extends Director {
      */
     protected void _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor controller = 
-                ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
-                .getController();
-
+        
+        ptolemy.domains.fsm.kernel.FSMDirector director = 
+                (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
+        CompositeActor container = (CompositeActor) director.getContainer();
+        ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
-
+ 
+        boolean inline = 
+            ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
+    
+        if (!inline) {
+            StringBuffer functionCode = new StringBuffer();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                if (actor == controller) {
+                     continue;   
+                }
+                functionCode.append("\nvoid " + 
+                        actor.getFullName().replace('.' , '_') + "() {\n");
+                CodeGeneratorHelper actorHelper = 
+                        (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+                actorHelper.generateFireCode(functionCode);
+                functionCode.append("}\n");
+            }
+            code.insert(0, functionCode);
+        }   
+        
         int depth = 1;
         code.append(_getIndentPrefix(depth));
         code.append("switch ("
@@ -147,7 +171,12 @@ public class FSMDirector extends Director {
                             _getHelper((NamedObj) actors[i]);
                     
                     // fire the actor
-                    actorHelper.generateFireCode(code);
+                    if (inline) {
+                        actorHelper.generateFireCode(code);
+                    } else {
+                        code.append(actors[i].getFullName().replace('.' , '_')
+                                + "();\n");   
+                    }
                     
                     // update buffer offset after firing each actor once
                     int[][] rates = actorHelper.getRates();

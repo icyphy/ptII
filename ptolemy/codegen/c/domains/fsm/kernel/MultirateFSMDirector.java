@@ -534,13 +534,13 @@ public class MultirateFSMDirector extends FSMDirector {
             return code.toString();
         }
      
-        int length = 0;
+        int width = 0;
         if (port.isInput()) {
-            length = port.getWidth();
+            width = port.getWidth();
         } else {
-            length = port.getWidthInside();
+            width = port.getWidthInside();
         } 
-        for (int channel = 0; channel < length; channel++) {
+        for (int channel = 0; channel < width; channel++) {
             
             // Increase the buffer size of that channel to the power of two.
             int bufferSize = _ceilToPowerOfTwo(actorHelper
@@ -552,7 +552,7 @@ public class MultirateFSMDirector extends FSMDirector {
             channelReadOffset.append(port.getFullName().replace('.', '_'));
             channelWriteOffset.append(port.getFullName().replace('.', '_'));
 
-            if (length > 1) {
+            if (width > 1) {
                 channelReadOffset.append("_" + channel);
                 channelWriteOffset.append("_" + channel);
             }

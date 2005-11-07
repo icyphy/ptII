@@ -1210,19 +1210,20 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 sinkChannelNumber);
                        
                         if (offsetObject instanceof Integer) {
-                            /*
+                            
                             int offset = ((Integer) offsetObject).intValue()
                                     + (new Integer(channelAndOffset[1]))
                                             .intValue();
                             offset %= getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
-                            */
+                            /*
                             int divisor = getBufferSize(sinkPort,
                                     sinkChannelNumber);
                             temp = "("
                                     + getWriteOffset(sinkPort,
                                             sinkChannelNumber) + " + "
                                     + channelAndOffset[1] + ")%" + divisor;
+                            */
                             
                         } else {
                             int modulo = getBufferSize(sinkPort,

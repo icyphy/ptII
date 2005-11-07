@@ -41,6 +41,7 @@ import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.domains.sdf.kernel.SDFDirector;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.data.BooleanToken;
 import ptolemy.domains.sdf.kernel.CachedSDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.Entity;
@@ -199,6 +200,25 @@ public class HDFDirector extends SDFDirector {
         
         int numberOfActors = container.deepEntityList().size();
         int[] actorConfigurations = new int[numberOfActors];
+        boolean inline = 
+                ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
+        
+        if (!inline) {
+            StringBuffer functionCode = new StringBuffer();
+            Iterator actors = container.deepEntityList().iterator();
+            while (actors.hasNext()) {
+                Actor actor = (Actor) actors.next();
+                functionCode.append("\nvoid " + 
+                        actor.getFullName().replace('.' , '_') + "() {\n");
+                CodeGeneratorHelper actorHelper = 
+                        (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+                actorHelper.generateFireCode(functionCode);
+                functionCode.append("}\n");
+            }
+            code.insert(0, functionCode);
+            
+            code.append("int i;\n");
+        }   
         
         code.append("switch (" 
                 + containerHelper.processCode("$actorSymbol(currentConfiguration)")
@@ -238,11 +258,40 @@ public class HDFDirector extends SDFDirector {
                         (CodeGeneratorHelper) _getHelper((NamedObj) actor);
                 int[][] rates = helper.getRates();
                 
-                for (int i = 0; i < firing.getIterationCount(); i++) {
-            
-                    // generate fire code for the actor
-                    helper.generateFireCode(code);
+                if (inline) {
+                    for (int i = 0; i < firing.getIterationCount(); i++) {
+
+                        // generate fire code for the actor
+                        helper.generateFireCode(code);
+
+                        // update buffer offset after firing each actor once
+                        Iterator ports = ((Entity) actor).portList().iterator();
+                        int j = 0; // j is the port number
+                        while (ports.hasNext()) {
+                            IOPort port = (IOPort) ports.next();
+                            int rate;
+                            if (rates != null) {
+                                rate = rates[actorConfigurations[actorNumber]][j];    
+                            } else {
+                                rate = DFUtilities.getRate(port);
+                            }
+                            if (port.isInput()) {
+                                _updatePortOffset(port, code, rate);
+                            } else {
+                                _updateConnectedPortsOffset(port, code, rate);
+                            } 
+                            j++;
+                        }
+                    }
+                } else {
                     
+                    int count = firing.getIterationCount();
+                    if (count > 1) {
+                        code.append("for (i = 0; i < " + count + " ; i++) {\n");
+                    }   
+                        
+                    code.append(actor.getFullName().replace('.' , '_') + "();\n");
+                        
                     // update buffer offset after firing each actor once
                     Iterator ports = ((Entity) actor).portList().iterator();
                     int j = 0; // j is the port number
@@ -261,6 +310,10 @@ public class HDFDirector extends SDFDirector {
                         } 
                         j++;
                     }
+                        
+                    if (count > 1) {
+                        code.append("}\n");
+                    } 
                 }
             } 
             code.append("break;\n");
@@ -270,7 +323,7 @@ public class HDFDirector extends SDFDirector {
         // A variable is set to record the firing of the director.
         // This variable is used when doing mode transition after
         // one global iteration.
-        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n"));       
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n"));   
     }
     
     /** Generate the initialize code for the associated HDF director. Generate
@@ -654,13 +707,13 @@ public class HDFDirector extends SDFDirector {
              return code.toString();
         }
      
-        int length = 0;
+        int width = 0;
         if (port.isInput()) {
-            length = port.getWidth();
+            width = port.getWidth();
         } else {
-            length = port.getWidthInside();
+            width = port.getWidthInside();
         } 
-        for (int channel = 0; channel < length; channel++) {
+        for (int channel = 0; channel < width; channel++) {
             
             // Increase the buffer size of that channel to the power of two.
             int bufferSize = _ceilToPowerOfTwo(actorHelper
@@ -672,7 +725,7 @@ public class HDFDirector extends SDFDirector {
             channelReadOffset.append(port.getFullName().replace('.', '_'));
             channelWriteOffset.append(port.getFullName().replace('.', '_'));
 
-            if (port.getWidth() > 1) {
+            if (width > 1) {
                 channelReadOffset.append("_" + channel);
                 channelWriteOffset.append("_" + channel);
             }

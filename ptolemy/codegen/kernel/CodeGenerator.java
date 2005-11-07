@@ -95,11 +95,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         generatorPackage = new StringParameter(this, "generatorPackage");
         generatorPackage.setExpression("ptolemy.codegen.c");
+        
+        inline = new Parameter(this, "inline");
+        inline.setTypeEquals(BaseType.BOOLEAN);
+        inline.setExpression("true");
 
         overwriteFiles = new Parameter(this, "overwriteFiles");
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
-        overwriteFiles.setExpression("true");
-
+        overwriteFiles.setExpression("true");       
+        
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
@@ -126,6 +130,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  "ptolemy.codegen.c".
      */
     public StringParameter generatorPackage;
+    
+    /** If true, generate file with no functions.  If false, generate
+     *  file with functions. The default value is a parameter with the 
+     *  value true.
+     */
+    public Parameter inline;
 
     /** If true, overwrite preexisting files.  The default
      *  value is a parameter with the value true.
@@ -173,6 +183,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *   or write-to-file throw any exception.
      */
     public void generateCode(StringBuffer code) throws KernelException {
+        
+        boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
+        
         // We separate the generation and the appending into 2 phases.
         // This would be convenience for making addition passes, and
         // for adding additional code into different sections.
@@ -181,6 +194,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String preinitializeCode = generatePreinitializeCode();
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
+        String fireFunctionCode = null;;
+        if (!inline) {
+            fireFunctionCode = generateFireFunctionCode();         
+        }
         String wrapupCode = generateWrapupCode();
 
         String typeResolutionCode = generateTypeResolutionCode();
@@ -191,6 +208,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(typeResolutionCode);
         generateVariableDeclarations(code);
         code.append(preinitializeCode);
+        if (!inline) {
+            code.append(fireFunctionCode);         
+        }
         code.append("\n\nmain(int argc, char *argv[]) {\n");
         code.append(initializeCode);
         code.append(bodyCode);
@@ -222,6 +242,25 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
+    /** Generate The fire function code. This method is called when the firing
+     *  code of each actor is not inlined. Each actor's firing code is in a 
+     *  function with the same name as that of the actor.
+     * 
+     *  @return The fire function code of the containing composite actor.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateFireFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        CompositeEntity model = (CompositeEntity) getContainer();
+        TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
+                     
+        code.append("\nvoid " + 
+                model.getFullName().replace('.' , '_') + "() {\n");
+        modelHelper.generateFireCode(code);
+        code.append("}\n");
+        return code.toString();
+    }
+    
     /** Generate include files.
      *  @return The include files.
      *  @throws IllegalActionException If the helper class for some actor 

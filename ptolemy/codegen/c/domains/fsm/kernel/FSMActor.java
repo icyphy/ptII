@@ -287,6 +287,9 @@ public class FSMActor extends CCodeGeneratorHelper {
                     }
                 }
 
+                boolean inline = ((BooleanToken) 
+                        _codeGenerator.inline.getToken()).booleanValue();
+            
                 // generate code for transition refinement
                 Actor[] actors = transition.getRefinement();
 
@@ -294,7 +297,13 @@ public class FSMActor extends CCodeGeneratorHelper {
                     for (int i = 0; i < actors.length; i++) {
                         ActorCodeGenerator helper = (ActorCodeGenerator) 
                                 _getHelper((NamedObj) actors[i]);
-                        helper.generateFireCode(codeBuffer);
+                        // fire the actor
+                        if (inline) {
+                            helper.generateFireCode(codeBuffer);
+                        } else {
+                            codeBuffer.append(actors[i].getFullName().replace
+                                    ('.' , '_') + "();\n");   
+                        }
                     }
                 }
 

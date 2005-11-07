@@ -32,6 +32,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
@@ -83,7 +84,58 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
     public String generateBodyCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(comment("Static schedule:"));
-        generateFireCode(code);
+        CompositeEntity model = (CompositeEntity) getContainer();
+        
+        TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
+
+        // NOTE: The cast is safe because setContainer ensures
+        // the container is an Actor.
+        ptolemy.actor.Director director = ((Actor) model).getDirector();
+
+        if (director == null) {
+            throw new IllegalActionException(this, "The model "
+                    + model.getName() + " does not have a director.");
+        }
+
+        if (!(director instanceof StaticSchedulingDirector)) {
+            throw new IllegalActionException(this, "The director of the model "
+                    + model.getName() + " is not a StaticSchedulingDirector.");
+        }
+        Attribute iterations = director.getAttribute("iterations");
+
+        if (iterations == null) {
+            throw new IllegalActionException(director,
+                    "The Director does not have an attribute name: "
+                            + "\"iterations\"");
+        } else {
+            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
+                    .intValue();
+
+            if (iterationCount <= 0) {
+                code.append("while (true) {\n");
+            } else {
+                // Declare iteration outside of the loop to avoid
+                // "error: `for' loop initial declaration used outside C99
+                // mode" with gcc-3.3.3
+                code.append("for (iteration = 0; iteration < " + iterationCount
+                        + "; iteration ++) {\n");
+            }
+        }
+
+        boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
+        
+        if (inline) {
+            generateFireCode(code);  
+        } else {
+            code.append(model.getFullName().replace('.' , '_') + "();\n");
+        }
+        
+        // The code generated in generateModeTransitionCode() is executed
+        // after one global iteration, e.g., in HDF model.
+        modelHelper.generateModeTransitionCode(code);
+        
+        code.append("}\n");
+        
         return code.toString();
     }
 
@@ -123,52 +175,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      */
     public void generateFireCode(StringBuffer code) throws IllegalActionException {
         CompositeEntity model = (CompositeEntity) getContainer();
-
-        // NOTE: The cast is safe because setContainer ensures
-        // the container is an Actor.
-        ptolemy.actor.Director director = ((Actor) model).getDirector();
-
-        if (director == null) {
-            throw new IllegalActionException(this, "The model "
-                    + model.getName() + " does not have a director.");
-        }
-
-        if (!(director instanceof StaticSchedulingDirector)) {
-            throw new IllegalActionException(this, "The director of the model "
-                    + model.getName() + " is not a StaticSchedulingDirector.");
-        }
-
-        Attribute iterations = director.getAttribute("iterations");
-
-        if (iterations == null) {
-            throw new IllegalActionException(director,
-                    "The Director does not have an attribute name: "
-                            + "\"iterations\"");
-        } else {
-            int iterationCount = ((IntToken) ((Variable) iterations).getToken())
-                    .intValue();
-
-            if (iterationCount <= 0) {
-                code.append("while (true) {\n");
-            } else {
-                // Declare iteration outside of the loop to avoid
-                // "error: `for' loop initial declaration used outside C99
-                // mode" with gcc-3.3.3
-                code.append("for (iteration = 0; iteration < " + iterationCount
-                        + "; iteration ++) {\n");
-            }
-        }
-
-        TypedCompositeActor compositeActorHelper = 
-                (TypedCompositeActor) _getHelper(getContainer());
-        
-        compositeActorHelper.generateFireCode(code);
-        
-        // The code generated in generateModeTransitionCode() is executed
-        // after one global iteration, e.g., in HDF model.
-        compositeActorHelper.generateModeTransitionCode(code);
-
-        code.append("}\n");
+        TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
+        modelHelper.generateFireCode(code);  
     }
 
     /** Set the container of this object to be the given container.
