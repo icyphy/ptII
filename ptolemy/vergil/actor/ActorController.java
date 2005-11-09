@@ -41,6 +41,7 @@ import java.util.Vector;
 
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
@@ -346,43 +347,16 @@ public abstract class ActorController extends AttributeController {
 
             while (nodes.hasNext()) {
                 Port port = (Port) nodes.next();
-                StringAttribute cardinal = (StringAttribute) port
-                        .getAttribute("_cardinal");
-
-                if (cardinal == null) {
-                    if (!(port instanceof IOPort)) {
-                        southPorts.add(port);
-                    } else {
-                        IOPort ioport = (IOPort) port;
-
-                        if (ioport.isInput() && ioport.isOutput()) {
-                            southPorts.add(port);
-                        } else if (ioport.isInput()) {
-                            westPorts.add(port);
-                        } else if (ioport.isOutput()) {
-                            eastPorts.add(port);
-                        } else {
-                            southPorts.add(port);
-                        }
-                    }
+                int portRotation = IOPortController._getCardinality(port);
+                int direction = IOPortController._getDirection(portRotation);
+                if (direction == SwingUtilities.WEST) {
+                    westPorts.add(port);
+                } else if (direction == SwingUtilities.NORTH) {
+                    northPorts.add(port);
+                } else if (direction == SwingUtilities.EAST) {
+                    eastPorts.add(port);
                 } else {
-                    if (!(port instanceof IOPort)) {
-                        southPorts.add(port);
-                    } else {
-                        String value = cardinal.getExpression();
-
-                        if (value.equalsIgnoreCase("SOUTH")) {
-                            southPorts.add(port);
-                        } else if (value.equalsIgnoreCase("WEST")) {
-                            westPorts.add(port);
-                        } else if (value.equalsIgnoreCase("EAST")) {
-                            eastPorts.add(port);
-                        } else if (value.equalsIgnoreCase("NORTH")) {
-                            northPorts.add(port);
-                        } else {
-                            southPorts.add(port);
-                        }
-                    }
+                    southPorts.add(port);
                 }
             }
 
@@ -474,7 +448,7 @@ public abstract class ActorController extends AttributeController {
                 }
 
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
-                PortSite site = new PortSite(background, port, number, count);
+                PortSite site = new PortSite(background, port, number, count, direction);
                 number++;
 
                 // NOTE: previous expression for port location was:

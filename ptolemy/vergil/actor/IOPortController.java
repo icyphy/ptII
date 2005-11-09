@@ -42,6 +42,9 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.Typeable;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
@@ -130,6 +133,100 @@ public class IOPortController extends AttributeController {
 
     /** The spacing between individual connections to a multiport. */
     public static double MULTIPORT_CONNECTION_SPACING = 5.0;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
+    /** Return one of {-270, -180, -90, 0, 90, 180, 270} specifying
+     *  the orientation of a port. This depends on whether the port
+     *  is an input, output, or both, whether the port has a parameter
+     *  named "_cardinal" that specifies a cardinality, and whether the
+     *  containing actor has a parameter named "_rotatePorts" that
+     *  specifies a rotation of the ports.
+     *  @param port The port.
+     *  @return One of {-270, -180, -90, 0, 90, 180, 270}.
+     */
+    protected static int _getCardinality(Port port) {
+        // Determine whether the port has an attribute that specifies
+        // which side of the icon it should be on, and whether the
+        // actor has an attribute that rotates the ports. If both
+        // are present, the port attribute takes precedence.
+        
+        boolean isInput = false;
+        boolean isOutput = false;
+        boolean isInputOutput = false;
+
+        // Figure out what type of port we're dealing with.
+        // If ports are not IOPorts, then draw then as ports with
+        // no direction.
+        if (port instanceof IOPort) {
+            isInput = ((IOPort) port).isInput();
+            isOutput = ((IOPort) port).isOutput();
+            isInputOutput = isInput && isOutput;
+        }
+
+        StringAttribute cardinal = null;
+        int portRotation = 0;
+        try {
+            cardinal = (StringAttribute) port.getAttribute("_cardinal", StringAttribute.class);
+            NamedObj container = port.getContainer();
+            if (container != null) {
+                Parameter rotationParameter = (Parameter)
+                        container.getAttribute("_rotatePorts", Parameter.class);
+                if (rotationParameter != null) {
+                    Token rotationValue = rotationParameter.getToken();
+                    if (rotationValue instanceof IntToken) {
+                        portRotation = ((IntToken)rotationValue).intValue();
+                    }
+                }                    
+            }
+        } catch (IllegalActionException ex) {
+            // Ignore and use defaults.
+        }
+        if (cardinal == null) {
+            // Port cardinality is not specified in the port.
+            if (isInputOutput) {
+                portRotation += -90;
+            } else if (isOutput) {
+                portRotation += 180;
+            }
+        } else if (cardinal.getExpression().equalsIgnoreCase("NORTH")) {
+            portRotation = 90;
+        } else if (cardinal.getExpression().equalsIgnoreCase("SOUTH")) {
+            portRotation = -90;
+        } else if (cardinal.getExpression().equalsIgnoreCase("EAST")) {
+            portRotation = 180;
+        } else if (cardinal.getExpression().equalsIgnoreCase("WEST")) {
+            portRotation = 0;
+        } else { // this shouldn't happen either
+            portRotation += -90;
+        }
+
+        // Ensure that the port rotation is one of
+        // {-270, -180, -90, 0, 90, 180, 270}.
+        portRotation = 90 * ((portRotation/90)%4);
+        return portRotation;
+    }
+
+    /** Return the direction associated with the specified angle,
+     *  which is assumed to be one of {-270, -180, -90, 0, 90, 180, 270}.
+     *  @param portRotation The angle
+     *  @return One of SwingUtilities.NORTH, SwingUtilities.EAST,
+     *  SwingUtilities.SOUTH, or SwingUtilities.WEST.
+     */
+    protected static int _getDirection(int portRotation) {
+        int direction;
+        if (portRotation == 90 || portRotation == -270) {
+            direction = SwingUtilities.NORTH;
+        } else if (portRotation == 180 || portRotation == -180) {
+            direction = SwingUtilities.EAST;
+        } else if (portRotation == 270 || portRotation == -90) {
+            direction = SwingUtilities.SOUTH;
+        } else {
+            direction = SwingUtilities.WEST;
+        }
+        return direction;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -227,53 +324,16 @@ public class IOPortController extends AttributeController {
             ActorGraphModel model = (ActorGraphModel) getController()
                     .getGraphModel();
 
-            // Wrap the figure in a TerminalFigure to set the direction that
-            // connectors exit the port. Note that this direction is the
-            // same direction that is used to layout the port in the
-            // Entity Controller.
-            StringAttribute cardinal = (StringAttribute) port
-                    .getAttribute("_cardinal");
-
-            int direction;
-            double rotation;
-
-            if (cardinal == null) {
-                if (isInputOutput) {
-                    direction = SwingUtilities.SOUTH;
-                    rotation = -90;
-                } else if (isInput) {
-                    direction = SwingUtilities.WEST;
-                    rotation = 0;
-                } else if (isOutput) {
-                    direction = SwingUtilities.EAST;
-                    rotation = 180;
-                } else {
-                    // should never happen
-                    direction = SwingUtilities.SOUTH;
-                    rotation = -90;
-                }
-            } else if (cardinal.getExpression().equalsIgnoreCase("NORTH")) {
-                direction = SwingUtilities.NORTH;
-                rotation = 90;
-            } else if (cardinal.getExpression().equalsIgnoreCase("SOUTH")) {
-                direction = SwingUtilities.SOUTH;
-                rotation = -90;
-            } else if (cardinal.getExpression().equalsIgnoreCase("EAST")) {
-                direction = SwingUtilities.EAST;
-                rotation = 180;
-            } else if (cardinal.getExpression().equalsIgnoreCase("WEST")) {
-                direction = SwingUtilities.WEST;
-                rotation = 0;
-            } else { // this shouldn't happen either
-                direction = SwingUtilities.SOUTH;
-                rotation = -90;
-            }
+            int portRotation = _getCardinality(port);
+            int direction = _getDirection(portRotation);
 
             // Transform the port shape so it is facing the right way.
+            double rotation = portRotation;
             AffineTransform transform = AffineTransform.getRotateInstance(Math
                     .toRadians(rotation));
             shape = ShapeUtilities.transformModify(shape, transform);
 
+            // Create a figure with a tooltip.
             Figure figure = new BasicFigure(shape, fill, (float) 1.5) {
                 // Override this because we want to show the type.
                 // It doesn't work to set it once because the type
@@ -298,8 +358,7 @@ public class IOPortController extends AttributeController {
                     return tipText;
                 }
             };
-
-            // Have to do this also, or the awt doesn't display any
+            // Have to do this also, or the AWT doesn't display any
             // tooltip at all.
             figure.setToolTipText(port.getName());
 
@@ -335,7 +394,6 @@ public class IOPortController extends AttributeController {
                                         // System.out.println("Tooltip failed: " + ex);
                                     }
                                 }
-
                                 return tipText;
                             }
                         };
@@ -396,7 +454,10 @@ public class IOPortController extends AttributeController {
                         figure = compositeFigure;
                     }
                 }
-
+                // Wrap the figure in a TerminalFigure to set the direction that
+                // connectors exit the port. Note that this direction is the
+                // same direction that is used to layout the port in the
+                // Entity Controller.
                 figure = new PortTerminal(ioPort, figure, normal, false);
             } else {
                 Site tsite = new PerimeterSite(figure, 0);
