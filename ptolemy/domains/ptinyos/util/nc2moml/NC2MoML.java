@@ -135,6 +135,13 @@ public class NC2MoML {
         source.setAttribute("value", sourcePath);
         root.addContent(source);
 
+        // Set the displayed name.
+        Element name = new Element("property");
+        name.setAttribute("name", "_displayedName");
+        name.setAttribute("class", "ptolemy.kernel.util.StringAttribute");
+        name.setAttribute("value", componentName);
+        root.addContent(name);
+
         // Set the doc type.
         DocType plot = new DocType("plot", "-//UC Berkeley//DTD MoML 1//EN",
                 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd");

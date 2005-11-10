@@ -125,7 +125,7 @@ public class AttributeValueIcon extends XMLIcon {
      *  no longer than <i>displayWidth</i> characters.  If it is truncated,
      *  then the string has a trailing "...".  If the string is empty,
      *  then return a string with one space (diva fails on empty strings).
-     *  @return The string to display, or null if none is found.
+     *  @return The string to display, or a string with one space if none is found.
      */
     protected String _displayString() {
         NamedObj container = (NamedObj) getContainer();

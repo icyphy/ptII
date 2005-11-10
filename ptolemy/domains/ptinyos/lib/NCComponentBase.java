@@ -31,14 +31,18 @@
 package ptolemy.domains.ptinyos.lib;
 
 import ptolemy.actor.AtomicActor;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.icon.ActorNameIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// NCComponentBase
@@ -88,7 +92,12 @@ public class NCComponentBase extends AtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _init();
+        
+        // Set the displayed name.
+        displayedName = new StringAttribute(this, "_displayedName");
+        displayedName.setExpression(name);
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
@@ -96,6 +105,15 @@ public class NCComponentBase extends AtomicActor {
     /** The source code file or URL. */
     public FileParameter source;
 
+    /** Relative orientation of ports on the icon of this actor. */
+    public Parameter rotatePorts;
+    
+    /** Icon for this component. */
+    public ActorNameIcon icon;
+    
+    /** Displayed name on icon. */
+    public StringAttribute displayedName;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -106,10 +124,18 @@ public class NCComponentBase extends AtomicActor {
         source.setExpression(
                         "$PTII/ptolemy/domains/ptinyos/lib/NCComponent.nc");
         source.setVisibility(Settable.EXPERT);
-        _attachText("_iconDescription", "<svg>\n"
+        /*
+          _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n" + "<text x=\"-12\" y=\"5\" "
                 + "style=\"font-size:18\">\n" + "nesC\n" + "</text>\n"
                 + "</svg>\n");
+         */
+        
+        // Set port orientation so that input ports are on top.
+        rotatePorts = new Parameter(this, "_rotatePorts", new IntToken(90));
+        
+        // Create the icon.
+        icon = new ActorNameIcon(this, "_icon");
     }
 }

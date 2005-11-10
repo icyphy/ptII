@@ -101,6 +101,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
 
         packetIn = new TypedIOPort(this, "packetIn", true, false);
         packetOut.setTypeEquals(BaseType.STRING);
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,6 +112,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
 
     /** An output port of type String. */
     public TypedIOPort packetOut;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

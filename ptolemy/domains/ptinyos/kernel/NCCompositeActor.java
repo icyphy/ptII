@@ -28,6 +28,8 @@
 package ptolemy.domains.ptinyos.kernel;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
@@ -87,9 +89,7 @@ public class NCCompositeActor extends CompositeActor {
     public NCCompositeActor() {
         super();
 
-        // When exporting MoML, set the class name to NCCompositeActor
-        // instead of the default TypedCompositeActor.
-        setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");
+        _setClassName();
     }
 
 
@@ -106,9 +106,7 @@ public class NCCompositeActor extends CompositeActor {
     public NCCompositeActor(Workspace workspace) {
         super(workspace);
 
-        // When exporting MoML, set the class name to NCCompositeActor
-        // instead of the default TypedCompositeActor.
-        setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");
+        _setClassName();
     }
 
     /** Create an NCCompositeActor with a name and a container.
@@ -133,13 +131,32 @@ public class NCCompositeActor extends CompositeActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // When exporting MoML, set the class name to NCCompositeActor
-        // instead of the default TypedCompositeActor.
-        setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");
+        _setClassName();
 
         // Create an inside director.
         PtinyOSDirector director = new PtinyOSDirector(this, "PtinyOSDirector");
         Location location = new Location(director, "_location");
         location.setExpression("[65.0, 35.0]");
+
+        // Set port orientation so that input ports are on top.
+        rotatePorts = new Parameter(this, "_rotatePorts", new IntToken(90));
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** Relative orientation of ports on the icon of this actor. */
+    public Parameter rotatePorts;
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Constructor initialization.  When exporting MoML, set the
+     *  class name to NCCompositeActor instead of the default
+     *  TypedCompositeActor.
+     */
+    private void _setClassName() {
+        setClassName("ptolemy.domains.ptinyos.kernel.NCCompositeActor");
     }
 }
