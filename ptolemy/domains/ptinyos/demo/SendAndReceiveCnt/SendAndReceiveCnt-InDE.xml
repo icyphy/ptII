@@ -4,13 +4,13 @@
 <entity name="SendAndReceiveCnt-InDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 394, 924, 558}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 123, 924, 570}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[702, 449]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[702, 461]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{351.0, 224.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{351.0, 230.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
@@ -49,7 +49,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 425.0]">
         </property>
     </property>
     <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds">
@@ -89,6 +89,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 130.0]">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={182, 221, 822, 509}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
         <port name="packetOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
@@ -150,33 +158,43 @@
             </property>
         </port>
         <entity name="Main" class="tos.system.Main">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 50.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="Counter" class="tos.lib.Counters.Counter">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 95.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 165.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 185.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 325.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="IntToRfm" class="tos.lib.Counters.IntToRfm">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 280.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{310.0, 325.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="TimerC" class="tos.system.TimerC">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 45.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 325.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.IORelation">
-            <vertex name="vertex1" value="[155.0, 170.0]">
+            <vertex name="vertex1" value="{430.0, 135.0}">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.IORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.IORelation">
-            <vertex name="vertex1" value="[385.0, 100.0]">
+            <vertex name="vertex1" value="{300.0, 240.0}">
             </vertex>
         </relation>
         <link port="Main.StdControl" relation="relation"/>
@@ -203,6 +221,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 290.0]">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={229, 257, 822, 509}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
         <port name="packetOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
@@ -264,19 +290,25 @@
             </property>
         </port>
         <entity name="Main" class="tos.system.Main">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 125.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 40.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 185.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 320.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="RfmToInt" class="tos.lib.Counters.RfmToInt">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 110.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 175.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.IORelation">
-            <vertex name="vertex1" value="[155.0, 170.0]">
+            <vertex name="vertex1" value="{285.0, 135.0}">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.IORelation">
@@ -288,7 +320,7 @@
         <link port="RfmToInt.StdControl" relation="relation"/>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={413, 410, 453, 201}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={497, 676, 453, 201}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 110.0]">
         </property>

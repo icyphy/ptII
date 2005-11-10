@@ -122,27 +122,37 @@
             </property>
         </port>
         <entity name="Main" class="tos.system.Main">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 245.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 50.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="TimerC" class="tos.system.TimerC">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{520.0, 160.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{255.0, 360.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 235.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 335.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="SenseToInt" class="tos.lib.Counters.SenseToInt">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 120.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 165.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <entity name="DemoSensorC" class="tos.sensorboards.micasb.DemoSensorC">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, 75.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 340.0}">
+            </property>
+            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.IORelation">
-            <vertex name="vertex1" value="[185.0, 235.0]">
+            <vertex name="vertex1" value="{245.0, 140.0}">
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.IORelation">

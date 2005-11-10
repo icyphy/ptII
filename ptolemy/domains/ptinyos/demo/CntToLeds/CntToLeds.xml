@@ -2,6 +2,14 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CntToLeds" class="ptolemy.domains.ptinyos.kernel.NCCompositeActor">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This application has a counter and displays the value in binary on the LEDs.&#10;&#10;Run the model (Ctrl-R) to generate the nesC code (.nc) and the makefile (.mk)&#10;in the output directory where this model is located&#10;($PTII/ptolemy/domains/ptinyos/demo/CntToLeds/output).">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 390.0]">
+        </property>
+        <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+    </property>
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
@@ -16,19 +24,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 89, 815, 558}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={85, 89, 800, 635}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 440]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[578, 526]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9876543209877">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{245.3232323232323, 219.1781881313122}">
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This application has a counter and displays the value in binary on the LEDs.&#10;&#10;Run the model (Ctrl-R) to generate the nesC code (.nc) and the makefile (.mk)&#10;in the output directory where this model is located&#10;($PTII/ptolemy/domains/ptinyos/demo/CntToLeds/output).">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 305.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{234.1857323232328, 262.7156881313103}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -47,7 +49,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 490.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -55,27 +57,35 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command.&#10;To see the make command, select&#10;Debug -&gt; Listen to Director">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 30.0]">
         </property>
     </property>
     <entity name="Main" class="tos.system.Main">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[208.0, 34.25]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <entity name="TimerC" class="tos.system.TimerC">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[8.0, 349.25]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[198.0, 349.25]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <entity name="Counter" class="tos.lib.Counters.Counter">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[143.0, 209.25]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.IORelation">
-        <vertex name="vertex1" value="[135.0, 180.0]">
+        <vertex name="vertex1" value="[208.0, 129.25]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.IORelation">

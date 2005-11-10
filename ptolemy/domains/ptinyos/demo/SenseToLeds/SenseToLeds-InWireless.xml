@@ -320,7 +320,7 @@
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PhotoChannel">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 130.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 120.0]">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
             </property>
