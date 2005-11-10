@@ -65,7 +65,7 @@
 
     <!-- Use a custom graph editor with a PtinyOS director already in it. -->
     <entity name="Mica Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.domains.ptinyos.lib.MicaActor">
+      <entity name="blank" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor">
       </entity>
     </entity>
 

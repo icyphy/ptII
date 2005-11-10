@@ -48,8 +48,8 @@ import ptolemy.kernel.util.Workspace;
  implementation.
 
  <p>
- This class differs from PtinyOSActor
-   {@link ptolemy.domains.ptinyos.kernel.PtinyOSActor}
+ This class differs from PtinyOSCompositeActor
+   {@link ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor}
  in that NCCompositeActor has no ports (no nesC interfaces).
  NCCompositeActor is used as a place holder for nesC (.nc) code that the
  user must write separately in an editor like

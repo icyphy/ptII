@@ -96,7 +96,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 160.0]">
         </property>
     </entity>
-    <entity name="MicaActor" class="ptolemy.domains.ptinyos.lib.MicaActor">
+    <entity name="MicaCompositeActor" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor">
         <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
             <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -119,7 +119,7 @@
     <link port="MicaLeds.ledRed" relation="relation"/>
     <link port="MicaLeds.ledGreen" relation="relation2"/>
     <link port="MicaLeds.ledYellow" relation="relation3"/>
-    <link port="MicaActor.ledRed" relation="relation"/>
-    <link port="MicaActor.ledGreen" relation="relation2"/>
-    <link port="MicaActor.ledYellow" relation="relation3"/>
+    <link port="MicaCompositeActor.ledRed" relation="relation"/>
+    <link port="MicaCompositeActor.ledGreen" relation="relation2"/>
+    <link port="MicaCompositeActor.ledYellow" relation="relation3"/>
 </entity>

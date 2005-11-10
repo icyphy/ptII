@@ -158,7 +158,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 160.0]">
             </property>
         </entity>
-        <entity name="CntToLedsAndRfm" class="ptolemy.domains.ptinyos.lib.MicaActor">
+        <entity name="CntToLedsAndRfm" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor">
             <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
                 <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/output">
                 </property>
@@ -404,7 +404,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 160.0]">
             </property>
         </entity>
-        <entity name="RfmToLeds" class="ptolemy.domains.ptinyos.lib.MicaActor">
+        <entity name="RfmToLeds" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor">
             <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
                 <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/output">
                 </property>

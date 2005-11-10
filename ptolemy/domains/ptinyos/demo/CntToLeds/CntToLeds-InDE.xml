@@ -47,12 +47,12 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command.&#10;To see the make command, look inside the MicaActor &#10;and select Debug -&gt; Listen to Director.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command.&#10;To see the make command, look inside the MicaCompositeActor &#10;and select Debug -&gt; Listen to Director.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 55.0]">
         </property>
     </property>
-    <entity name="MicaActor" class="ptolemy.domains.ptinyos.lib.MicaActor">
+    <entity name="MicaCompositeActor" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor">
         <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
             <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/CntToLeds/output">
             </property>
@@ -176,9 +176,9 @@
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="MicaActor.ledRed" relation="relation"/>
-    <link port="MicaActor.ledGreen" relation="relation2"/>
-    <link port="MicaActor.ledYellow" relation="relation3"/>
+    <link port="MicaCompositeActor.ledRed" relation="relation"/>
+    <link port="MicaCompositeActor.ledGreen" relation="relation2"/>
+    <link port="MicaCompositeActor.ledYellow" relation="relation3"/>
     <link port="MicaLeds2.ledRed" relation="relation"/>
     <link port="MicaLeds2.ledGreen" relation="relation2"/>
     <link port="MicaLeds2.ledYellow" relation="relation3"/>

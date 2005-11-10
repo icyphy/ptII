@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// PtinyOSActor
+//// PtinyOSCompositeActor
 
 /**
  * A composite actor for use in the PtinyOS domain.
@@ -52,14 +52,13 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (celaine)
  * @since Ptolemy II 5.1
  */
-public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
-    // FIXME: rename to PtinyOSCompositeActor
+public abstract class PtinyOSCompositeActor extends TypeOpaqueCompositeActor {
 
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      */
-    public PtinyOSActor() {
+    public PtinyOSCompositeActor() {
         super();
     }
 
@@ -70,7 +69,7 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
-    public PtinyOSActor(Workspace workspace) {
+    public PtinyOSCompositeActor(Workspace workspace) {
         super(workspace);
     }
 
@@ -83,11 +82,11 @@ public abstract class PtinyOSActor extends TypeOpaqueCompositeActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public PtinyOSActor(CompositeEntity container, String name)
+    public PtinyOSCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        setClassName("ptolemy.domains.ptinyos.kernel.PtinyOSActor");
+        setClassName("ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor");
 
         // Create an inside director.
         PtinyOSDirector director = new PtinyOSDirector(this, "PtinyOSDirector");

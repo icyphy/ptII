@@ -31,14 +31,14 @@ package ptolemy.domains.ptinyos.lib;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.ptinyos.kernel.PtinyOSActor;
+import ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// MicaActor
+//// MicaCompositeActor
 
 /**
  This composite actor represents the hardware interface to the Mica
@@ -70,12 +70,12 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (celaine)
  @since Ptolemy II 5.1
  */
-public class MicaActor extends PtinyOSActor {
+public class MicaCompositeActor extends PtinyOSCompositeActor {
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
      */
-    public MicaActor() {
+    public MicaCompositeActor() {
         super();
     }
 
@@ -86,7 +86,7 @@ public class MicaActor extends PtinyOSActor {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
-    public MicaActor(Workspace workspace) {
+    public MicaCompositeActor(Workspace workspace) {
         super(workspace);
     }
 
@@ -99,7 +99,7 @@ public class MicaActor extends PtinyOSActor {
      *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
-    public MicaActor(CompositeEntity container, String name)
+    public MicaCompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 

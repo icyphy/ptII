@@ -763,7 +763,7 @@ public class PtinyOSDirector extends Director {
         generatedCode.addLine("configuration " + containerName + " {");
 
         //if (container != toplevel) {
-        if (!(container instanceof PtinyOSActor)) {
+        if (!(container instanceof PtinyOSCompositeActor)) {
             generatedCode.add(_interfaceProvides(model));
             generatedCode.add(_interfaceUses(model));
         }
@@ -1124,7 +1124,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             //NamedObj toplevel = _toplevelNC();
             //            if (sourcePortList != null && (container != toplevel)) {
             if ((sourcePortList != null)
-                    && !(container instanceof PtinyOSActor)) {
+                    && !(container instanceof PtinyOSCompositeActor)) {
                 // FIXME: test this code
                 for (int i = 0; i < sourcePortList.size(); i++) {
                     IOPort sourcePort = (IOPort) sourcePortList.get(i);

@@ -27,7 +27,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command for each MicaActor.&#10;To see the make command, look inside both CntToLedsAndRfm and RfmToLeds&#10;and in each window, select Debug -&gt; Listen to Director.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command for each MicaCompositeActor.&#10;To see the make command, look inside both CntToLedsAndRfm and RfmToLeds&#10;and in each window, select Debug -&gt; Listen to Director.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 20.0]">
         </property>
@@ -80,7 +80,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 300.0]">
         </property>
     </entity>
-    <entity name="CntToLedsAndRfm" class="ptolemy.domains.ptinyos.lib.MicaActor">
+    <entity name="CntToLedsAndRfm" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor">
         <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
             <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/output">
             </property>
@@ -190,7 +190,7 @@
         <link port="TimerC.StdControl" relation="relation"/>
         <link port="TimerC.Timer" relation="relation2"/>
     </entity>
-    <entity name="RfmToLeds" class="ptolemy.domains.ptinyos.lib.MicaActor">
+    <entity name="RfmToLeds" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor">
         <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
             <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/SendAndReceiveCnt/output">
             </property>
