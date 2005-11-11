@@ -41,10 +41,9 @@ import ptolemy.kernel.util.SingletonAttribute;
 //// VisibleAttribute
 
 /**
- FIXME
- hides the name
- handles send to back _renderFirst
- hide all parameters
+ Base class for attributes that are shown in vergil with their own icons.
+ This base class contains an attribute that results in its name being
+ hidden, and also handles commands to send it to the back or the front.
  <p>
  @author Edward A. Lee
  @version $Id$
