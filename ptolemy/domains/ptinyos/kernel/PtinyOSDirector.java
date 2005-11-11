@@ -1043,16 +1043,10 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
             List sourcePortList = inPort.sourcePortList();
 
-            // FIXME, generate a notice instead
-
-            /*
-             if (sourcePortList.size() > 1) {
-             throw new IllegalActionException(inPort,
-             "Input port (provides) cannot connect to "
-             + "multiple output ports (requires) in NC.");
-             }*/
-
-            //            if (sourcePortList.size()== 1) {
+            // Note: We allow an input port (provides) to connect to
+            // multiple output ports (requires).  The nesC compiler
+            // will generate a warning about uncombined calls in that
+            // case.
             for (int i = 0; i < sourcePortList.size(); i++) {
                 IOPort sourcePort = (IOPort) sourcePortList.get(i);
                 String sanitizedSourcePortName = StringUtilities

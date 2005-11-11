@@ -34,12 +34,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
-import java.util.Set;
 
 import net.tinyos.nesc.dump.NDReader;
 import net.tinyos.nesc.dump.xml.WiringNode;
@@ -60,6 +60,17 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.xml.sax.SAXException;
+
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.StringUtilities;
 
 /**
  Generate a .moml file for each .nc application file in the input list.
@@ -137,32 +148,75 @@ import org.xml.sax.SAXException;
  @Pt.AcceptedRating Red (celaine)
  */
 public class NCApp2MoML {
+    /** Create a Port that represents this interface.
+     *
+     * @param intf interface that represents Port to be created.
+     */
+    void createInterfacePort(Xinterface intf) 
+            throws IllegalActionException, NameDuplicationException {
+        if (!_interfacePortTable.containsKey(intf)) {
+            if (!_componentActorTable.containsKey(intf.container)) {
+                throw new InternalErrorException("Could not find the actor associated with the container of this interface.");
+            }
+            AtomicActor actor = (AtomicActor)_componentActorTable.get(intf.container);
+            IOPort port;// = new IOPort();
+            // Check if this is an input port.
+            if (intf.provided) {
+                //port.setInput(true);
+                port = new IOPort(actor, intf.name, true, false);
+            } else {
+                //port.setOutput(true);
+                // IOPort(ComponentEntity container, String name, boolean isInput, boolean isOutput)
+                port = new IOPort(actor, intf.name, false, true);
+            }
+
+            // Check if this is a multport.
+            if (intf.parameters != null) {
+                port.setMultiport(true);
+            }
+            
+            _interfacePortTable.put(intf, port);
+        }
+    }
+
     /** Store the container of the interface (a component) and path to source file.
      *
      * @param intf interface of the component to be stored
      */
-    void saveInterfaceContainer(Xinterface intf) {
+    void saveInterfaceContainer(Xinterface intf) throws IllegalActionException, NameDuplicationException{
         Xcomponent component = (Xcomponent) intf.container;
-        _ComponentFile componentFile = new _ComponentFile(component,
-                intf.location.filename);
-        _componentTable.put(component, componentFile);
+        if (!_componentFileTable.containsKey(component) && !_componentActorTable.containsKey(component)) {
+            _ComponentFile componentFile = new _ComponentFile(component,
+                    intf.location.filename);
+            _componentFileTable.put(component, componentFile);
+    
+            // Create a fake actor to which to attach this component.
+            AtomicActor actor = new AtomicActor(compositeActor, intf.container.toString());
+            _componentActorTable.put(component, actor);
+        } else if (_componentFileTable.containsKey(component) ^ _componentActorTable.containsKey(component)) {
+            // ^ is XOR.
+            throw new InternalErrorException("The _componentFileTable and _componentActorTable do not match.  They should have dual entries for the component.");
+        }
     }
 
     /** Traverse the configuration wiring graph and set up the
      * component and relation data structures.
      */
-    void readLinks() {
+    void readLinks() throws IllegalActionException, NameDuplicationException {
         // Get the list of interfaces for this nesC component.
         ListIterator interfaces = Xnesc.interfaceList.listIterator();
 
         while (interfaces.hasNext()) {
             // Get the next interface for this nesC component.
-            Xinterface intf = (Xinterface) interfaces.next();
-            saveInterfaceContainer(intf);
+            Xinterface interfaceFrom = (Xinterface) interfaces.next();
+            saveInterfaceContainer(interfaceFrom);
 
-            WiringNode checkNode = Xwiring.wg.lookup(intf);
+            // Create Port for the From interface.
+             createInterfacePort(interfaceFrom);
+ 
+            WiringNode checkNode = Xwiring.wg.lookup(interfaceFrom);
 
-            if (!intf.provided) {
+            if (!interfaceFrom.provided) {
                 WiringScanForwards from = new WiringScanForwards(checkNode);
                 ListIterator out = from.edges();
                 WiringScan temp = null;
@@ -173,13 +227,19 @@ public class NCApp2MoML {
 
                     if (temp.follow(e)) {
                         if (temp.node.ep instanceof Xinterface) {
-                            _relations.addRelation(intf,
-                                    (Xinterface) temp.node.ep);
+                            Xinterface interfaceTo = (Xinterface) temp.node.ep;
+                            saveInterfaceContainer(interfaceTo);
+                            
+                            // Create Port for the To interface.
+                            createInterfacePort(interfaceTo);
+
+                            // Create link.
+                            _relations.createConnection(interfaceFrom, interfaceTo);
                         } else {
                             System.err
                                     .println("Error: expected Xinterface in link "
                                             + "from "
-                                            + intf
+                                            + interfaceFrom
                                             + "to "
                                             + temp.node.ep);
                         }
@@ -220,7 +280,8 @@ public class NCApp2MoML {
     public void generatePtinyOSModel(String componentName, String outputFile,
             String directorOutputDir,
             String opts,
-            String micaboardFile) {
+            String micaboardFile) 
+            throws IllegalActionException, NameDuplicationException {
 
         //boolean generateWrapper = (micaboardFile != null);
 
@@ -241,10 +302,10 @@ public class NCApp2MoML {
                 Document docWireless = saxbuilder.build(new File(micaboardFile));
 
                 Filter filter = new ContentFilter(ContentFilter.ELEMENT);
-                Iterator iterator = docWireless.getDescendants(filter);
+                Iterator iteratorDocWireless = docWireless.getDescendants(filter);
               
-                while (iterator.hasNext()) {
-                    Element e = (Element)iterator.next();
+                while (iteratorDocWireless.hasNext()) {
+                    Element e = (Element)iteratorDocWireless.next();
                     String classname = e.getAttributeValue("class");
                     if (classname != null) {
                         if (classname.equals("ptolemy.domains.wireless.kernel.WirelessComposite")) {
@@ -259,12 +320,12 @@ public class NCApp2MoML {
                                 + micaboardFile);
                 }
 
-                Iterator iterator2 = micaboard.getDescendants(filter);
-                while (iterator2.hasNext()) {
-                    Element e = (Element)iterator2.next();
+                Iterator iteratorMicaBoard = micaboard.getDescendants(filter);
+                while (iteratorMicaBoard.hasNext()) {
+                    Element e = (Element)iteratorMicaBoard.next();
                     String classname = e.getAttributeValue("class");
                     if (classname != null) {
-                        if (classname.equals("ptolemy.domains.ptinyos.lib.MicaActor")) {
+                        if (classname.equals("ptolemy.domains.ptinyos.lib.MicaCompositeActor")) {
                             root = e;
                         } else if (classname.equals("ptolemy.domains.ptinyos.kernel.PtinyOSDirector")) {
                             director = e;
@@ -273,7 +334,7 @@ public class NCApp2MoML {
                 }
                 if (root == null) {
                     throw new
-                        Exception("Could not find MicaActor entry point in: "
+                        Exception("Could not find MicaCompositeActor entry point in: "
                                 + micaboardFile);
                 }
                 if  (director == null) {
@@ -368,7 +429,7 @@ public class NCApp2MoML {
         readLinks();
 
         // Create xml for each component.
-        Enumeration enumeration = _componentTable.elements();
+        Enumeration enumeration = _componentFileTable.elements();
 
         while (enumeration.hasMoreElements()) {
             _ComponentFile componentFile = (_ComponentFile) enumeration
@@ -388,6 +449,53 @@ public class NCApp2MoML {
         }
 
         // Create xml for each link.
+        for (int i = 0; i < _linkList.size(); i++) {
+            Element xmlLink = new Element("link");
+            _Link link = (_Link) _linkList.get(i);
+
+            // Set up From information.
+            String fromType;
+            String fromName;
+            if (link.from instanceof Port) {
+                fromType = "port";
+                Port port = (Port)link.from;
+                fromName = port.getContainer().getName() + "." + port.getName();
+            } else if (link.from instanceof Relation) {
+                fromType = "relation";
+                Relation relation = (Relation)link.from;
+                fromName = relation.getName();
+            } else {
+                throw new IllegalActionException("Expected link.from type to be either Port or Relation.");
+            }
+ 
+            
+            // Set up To information.
+            String toType;
+            String toName;
+            if (link.to instanceof Port) {
+                toType = "port";
+                Port port = (Port)link.to;
+                toName = port.getContainer().getName() + "." + port.getName();
+            } else if (link.to instanceof Relation) {
+                toType = "relation";
+                Relation relation = (Relation)link.to;
+                toName = relation.getName();
+            } else {
+                throw new IllegalActionException("Expected link.to type to be either Port or Relation.");
+            }
+            
+            // If this is a link between relations, adjust the label names.
+            if (fromType.equals("relation") && toType.equals("relation")) {
+                fromType += "1";
+                toType += "2";
+            }
+            
+            xmlLink.setAttribute(fromType, fromName);
+            xmlLink.setAttribute(toType, toName);
+
+            root.addContent(xmlLink);
+        }
+        /*
         Set set = _relationTable.entrySet();
         Iterator iterator = set.iterator();
 
@@ -398,6 +506,7 @@ public class NCApp2MoML {
             link.setAttribute("relation", entry.getValue().toString());
             root.addContent(link);
         }
+         */
 
         // Output the moml code to a file.
         try {
@@ -596,6 +705,19 @@ public class NCApp2MoML {
         Xcomponent _component;
     }
 
+    private class _Link {
+        _Link(Object to, Object from) {
+            this.to = to;
+            this.from = from;
+        }
+
+        // Either a Port or a Relation.
+        public Object to;
+
+        // Either a Port or a Relation.
+        public Object from;
+    }
+
     private class _Relations {
         private int currentCount() {
             return _relationCounter;
@@ -605,15 +727,152 @@ public class NCApp2MoML {
             return "relation" + (++_relationCounter);
         }
 
-        private void addRelation(Xinterface from, Xinterface to) {
-            if (_relationTable.containsKey(from)) {
-                String relationName = (String) _relationTable.get(from);
-                _relationTable.put(to, relationName);
-            } else {
-                String relationName = getNewRelationName();
-                _relationTable.put(from, relationName);
-                _relationTable.put(to, relationName);
+        /** Create all the relations and links needed to form the
+         *  connection between interfaceFrom and interfaceTo.
+         *  @param interfaceFrom The source interface of the connection.
+         *  @param interfaceTo The destination interface of the connection.
+         */
+        private void createConnection(
+                Xinterface interfaceFrom, Xinterface interfaceTo) 
+                throws IllegalActionException, NameDuplicationException {
+            // Find ports connected to interfaces.
+            Port portFrom = (Port) _interfacePortTable.get(interfaceFrom);
+            Port portTo = (Port) _interfacePortTable.get(interfaceTo);
+            if (portFrom == null || portTo == null) {
+                throw new InternalErrorException("Could not find port for From interface: " + interfaceFrom);
             }
+
+            // Determine the From Relation.
+            Relation relationFrom;
+            if (interfaceFrom.parameters == null) {
+                if (_interfaceRelationTable.containsKey(interfaceFrom)) {
+                    // This is a single (non-parameterized) port, and
+                    // the relation already exists, so we reuse it.
+                    Object o = _interfaceRelationTable.get(interfaceFrom);
+                    if (!(o instanceof Relation)) {
+                        throw new InternalErrorException("Single port should only be connected to a Relation.");
+                    }
+                    relationFrom = (Relation) o;
+                } else {
+                    // This is a single (non-parameterized) port, and
+                    // the relation does not already exist, so we
+                    // create a new relation, create a link from the
+                    // port to the new relation, and add the link to
+                    // the list of links.
+                    String relationName = getNewRelationName();
+                    relationFrom = new IORelation(compositeActor, relationName);
+                    _interfaceRelationTable.put(interfaceFrom, relationFrom);
+                    portFrom.link(relationFrom);
+                    _Link link = new _Link(portFrom, relationFrom);
+                    _linkList.add(link);
+                }
+            } else {
+                // This is a multi (parameterized) port, so we create
+                // a new relation, add it to the relation list of the
+                // interface, create a link from the port to the new
+                // relation, and add the link to the list of links.
+                String relationName = getNewRelationName();
+                relationFrom = new IORelation(compositeActor, relationName);
+                if (_interfaceRelationTable.containsKey(interfaceFrom)) {
+                    // If the interface already has a relation list,
+                    // add the new relation to the list.
+                    Object o = _interfaceRelationTable.get(interfaceFrom);
+                    if (!(o instanceof ArrayList)) {
+                        throw new InternalErrorException("Multiport should only be connected to an ArrayList of Relation.");
+                    }
+                    ArrayList arrayList = (ArrayList) o;
+                    arrayList.add(relationFrom);
+                } else {
+                    // If the interface does not already have a
+                    // relation list, create it and add the new
+                    // relation to the list.
+                    ArrayList arrayList = new ArrayList();
+                    arrayList.add(relationFrom);
+                    _interfaceRelationTable.put(interfaceFrom, arrayList);
+                }
+                portFrom.link(relationFrom);
+                _Link link = new _Link(portFrom, relationFrom);
+                _linkList.add(link);
+            }
+
+            // Determine the To Relation.
+            Relation relationTo;
+            if (interfaceTo.parameters == null) {
+                if (_interfaceRelationTable.containsKey(interfaceTo)) {
+                    // This is a single (non-parameterized) port, and
+                    // the relation already exists, so we reuse it.
+                    Object o = _interfaceRelationTable.get(interfaceTo);
+                    if (!(o instanceof Relation)) {
+                        throw new InternalErrorException("Single port should only be connected to a Relation.");
+                    }
+                    relationTo = (Relation) o;
+                } else {
+                    // This is a single (non-parameterized) port, and
+                    // the relation does not already exist, so we
+                    // create a new relation, create a link from the
+                    // new relation to the port, and add the link to
+                    // the list of links.
+                    String relationName = getNewRelationName();
+                    relationTo = new IORelation(compositeActor, relationName);
+                    _interfaceRelationTable.put(interfaceTo, relationTo);
+                    portTo.link(relationTo);
+                    _Link link = new _Link(relationTo, portTo);
+                    _linkList.add(link);
+                }
+            } else {
+                // This is a multi (parameterized) port, so we create
+                // a new relation, add it to the relation list of the
+                // interface, create a link from the new relation to
+                // the port, and add the link to the list of links.
+                String relationName = getNewRelationName();
+                relationTo = new IORelation(compositeActor, relationName);
+                if (_interfaceRelationTable.containsKey(interfaceTo)) {
+                    // If the interface already has a relation list,
+                    // add the new relation to the list.
+                    Object o = _interfaceRelationTable.get(interfaceTo);
+                    if (!(o instanceof ArrayList)) {
+                        throw new InternalErrorException("Multiport should only be connected to an ArrayList of Relation.");
+                    }
+                    ArrayList arrayList = (ArrayList) o;
+                    arrayList.add(relationTo);
+                } else {
+                    // If the interface does not already have a
+                    // relation list, create it and add the new
+                    // relation to the list.
+                    ArrayList arrayList = new ArrayList();
+                    arrayList.add(relationTo);
+                    _interfaceRelationTable.put(interfaceTo, arrayList);
+                }
+                portTo.link(relationTo);
+                _Link link = new _Link(relationTo, portTo);
+                _linkList.add(link);
+            }
+
+            // Check for extra connections that might appear/disappear
+            // when translating from a nesC graph to a Ptolemy graph.
+
+            // If relationTo is connected to an input port to which
+            // relationFrom is not already connected, warn the user
+            // the extra connections will be formed.
+            List portListTo = relationTo.linkedPortList();
+            List portListFrom = relationFrom.linkedPortList();
+
+            for (int i = 0; i < portListTo.size(); i++) {
+                // FIXME
+            }
+            
+
+            // If relationTo is already connected to relationFrom,
+            // warn the user that this second connection will
+            // disappear in the current Ptolemy relation group
+            // implementation.
+
+            // FIXME
+
+            // Create link from relationFrom to relationTo, and add to
+            // the list of links.
+            _Link link = new _Link(relationFrom, relationTo);
+            _linkList.add(link);
         }
 
         private int _relationCounter = 0;
@@ -624,14 +883,36 @@ public class NCApp2MoML {
     private _Relations _relations = new _Relations();
 
     // Contains (key, value) pairs of type (Xcomponent, _ComponentFile).
-    private Hashtable _componentTable = new Hashtable();
+    private Hashtable _componentFileTable = new Hashtable();
 
-    // Contains (key, value) pairs of type (Xinterface, relation).
-    private Hashtable _relationTable = new Hashtable();
+    // Contains (key, value) pairs of type (Xcomponent, AtomicActor).
+    private Hashtable _componentActorTable = new Hashtable();
 
+    // Contains (key, value) pairs of type (Xinterface, List(relation)).
+    // private Hashtable _relationTable = new Hashtable();
+
+    // Contains list of Links (links between ports/relations).
+    private ArrayList _linkList = new ArrayList();
+    
+    // Contains (key, value) pairs of type (Xinterface,
+    // List(Relation)) if single port, or (Xinterface, Relation) if
+    // multi-port.
+    //
+    // FIXME: we can get rid of this and use the Port in
+    // _interfacePortTable and get the linkedRelations().
+    private Hashtable _interfaceRelationTable = new Hashtable();
+
+    // Contains (key, value) pairs of type (Xinterface, Port).
+    private Hashtable _interfacePortTable = new Hashtable();
+
+
+    
     /** File separator to use, currently "/". */
     private static String _FILESEPARATOR = "/";
 
     /** Name to add to items that use the Wireless wrapper. */
     private static String _INWIRELESS = "-InWireless";
+
+    // Fake CompositeActor to hold all of the fake AtomicActors.
+    private CompositeActor compositeActor = new CompositeActor();
 }
