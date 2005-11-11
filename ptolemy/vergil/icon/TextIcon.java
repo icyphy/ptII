@@ -123,7 +123,9 @@ public class TextIcon extends DynamicEditorIcon {
     }
 
     /** Create a new Swing icon.  This returns an icon with the text
-     *  "-A-".
+     *  "-A-", or if it has been called, the text specified by
+     *  setIconText().
+     *  @see #setIconText(String)
      *  @return A new Swing Icon.
      */
     public javax.swing.Icon createIcon() {
@@ -134,7 +136,7 @@ public class TextIcon extends DynamicEditorIcon {
         }
 
         // No cached object, so rerender the icon.
-        LabelFigure figure = new LabelFigure(_ICON_TEXT, _font);
+        LabelFigure figure = new LabelFigure(_iconText, _font);
         figure.setFillPaint(_textColor);
         _iconCache = new FigureIcon(figure, 20, 15);
         return _iconCache;
@@ -192,6 +194,14 @@ public class TextIcon extends DynamicEditorIcon {
 
         SwingUtilities.invokeLater(doSet);
     }
+    
+    /** Specify the text to display in the icon.
+     *  If this is not called, then the text displayed
+     *  is "-A-".
+     */
+    public void setIconText(String text) {
+        _iconText = text;
+    }
 
     /** Specify text to display.  This is deferred and executed
      *  in the Swing thread.
@@ -229,7 +239,7 @@ public class TextIcon extends DynamicEditorIcon {
     private Font _font = new Font("SansSerif", Font.PLAIN, 12);
 
     // Default text.
-    private String _ICON_TEXT = "-A-";
+    private String _iconText = "-A-";
 
     // The specified text color.
     private Color _textColor = Color.blue;
