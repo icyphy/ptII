@@ -79,6 +79,7 @@ public abstract class VisibleAttribute extends Attribute {
         // preference asks for such display because presumably all the
         // parameters are reflected in the visual display already.
         Parameter hideAllParameters = new Parameter(this, "_hideAllParameters");
+        hideAllParameters.setVisibility(Settable.EXPERT);
         hideAllParameters.setExpression("true");
     }
 
