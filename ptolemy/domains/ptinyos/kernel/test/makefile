@@ -54,7 +54,7 @@ JSRCS = \
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
 	NCCompositeActor.tcl \
-	PtinyOSActor.tcl \
+	PtinyOSCompositeActor.tcl \
 	PtinyOSDirector.tcl
 
 # Graphical Java tests that use Tcl.

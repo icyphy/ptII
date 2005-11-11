@@ -49,7 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	NCCompositeActor.java \
-	PtinyOSActor.java \
+	PtinyOSCompositeActor.java \
 	PtinyOSDirector.java \
 	PtinyOSLoader.java
 

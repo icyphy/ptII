@@ -48,7 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	MicaActor.java \
+	MicaCompositeActor.java \
 	MicaLeds.java \
 	NCComponentBase.java
 
