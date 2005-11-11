@@ -79,7 +79,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  and wrapup.
      *  @return The generated body code.
      *  @exception IllegalActionException If the
-     *  {@link #generateFireCode(StringBuffer)} method throws the exceptions.
+     *  {@link #generateFireCode()} method throws the exceptions.
      */
     public String generateBodyCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();

@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.c.domains.sdf.lib;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.data.ArrayToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -58,7 +57,7 @@ public class SampleDelay extends CCodeGeneratorHelper {
 
     /** Generate the fire code of the SampleDelay actor.
      *  @return The generated code.
-     *  @exception
+     *  @exception IllegalActionException
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();

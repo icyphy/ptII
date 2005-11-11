@@ -491,7 +491,8 @@ public class SDFDirector extends Director {
      *  generated.
      *
      *  @param port The port to be checked.
-     *  @param totalTokens The number of tokens transferred.
+     *  @param readTokens The number of tokens read.
+     *  @param writeTokens The number of tokens written.
      *  @exception IllegalActionException If getting the rate or
      *   reading parameters throws it.   
      */

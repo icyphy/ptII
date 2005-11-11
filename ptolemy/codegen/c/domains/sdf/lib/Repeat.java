@@ -55,8 +55,7 @@ public class Repeat extends CCodeGeneratorHelper {
     ////                         public methods                    ////
 
     /** Generate the fire code of the Repeat actor.
-     *  @param stream The string buffer to which the generated fire code of
-     *   the Repeat actor is appended to.
+     *  @return the generated fire code.
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
