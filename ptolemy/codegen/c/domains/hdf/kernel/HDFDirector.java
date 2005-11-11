@@ -186,12 +186,13 @@ public class HDFDirector extends SDFDirector {
     
     /** Generate the code for the firing of actors according to the HDF
      *  schedules.
-     *  @param code The string buffer that the generated code is appended to.
+     *  @return The generated fire code.
      *  @exception IllegalActionException If the actor to be fired cannot 
      *   find its associated helper or fire code generation fails.
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
         
+        StringBuffer code = new StringBuffer();
         ptolemy.domains.hdf.kernel.HDFDirector director = 
             (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
@@ -323,7 +324,9 @@ public class HDFDirector extends SDFDirector {
         // A variable is set to record the firing of the director.
         // This variable is used when doing mode transition after
         // one global iteration.
-        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n"));   
+        code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n")); 
+        
+        return code.toString();
     }
     
     /** Generate the initialize code for the associated HDF director. Generate

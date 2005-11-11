@@ -85,14 +85,15 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  generate code for transferring any output data created by calling the 
      *  local director helper's generateTransferOutputsCode() method.
      * 
-     *  @param code The string buffer that the generated code is appended to. 
+     *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor, or
      *   the director helper throws it while generating code for transferring
      *   data.
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
         Director directorHelper = (Director) _getHelper((NamedObj) 
                 ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
@@ -107,7 +108,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         }
 
         // Generate the fire code by the director helper.
-        directorHelper.generateFireCode(code);
+        code.append(directorHelper.generateFireCode());
  
         // Transfer the data to the outside. 
         Iterator outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
@@ -117,6 +118,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             IOPort outputPort = (IOPort) outputPorts.next();
             directorHelper.generateTransferOutputsCode(outputPort, code);
         }
+        
+        return code.toString();
     }
 
     /** Generate the initialize code of the associated composite actor. It 

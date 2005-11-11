@@ -75,17 +75,20 @@ public class FSMActor extends CCodeGeneratorHelper {
      *  anonymous class implementing a method which returns an iterator of
      *  all outgoing transitions of the current state. 
      * 
-     *  @param code The string buffer that the generated code is appended to.
+     *  @return The generated fire code.
      *  @exception IllegalActionException If thrown while generating firing code.
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {
-        super.generateFireCode(code);
+    public String generateFireCode() throws IllegalActionException {
+        
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
         generateTransitionCode(code, new TransitionRetriever() {
             public Iterator retrieveTransitions(State state) {
                 return state.outgoingPort.linkedRelationList().iterator();
             }
         });
+        return code.toString();
     }
     
     /** Generate the initialize code of the associated FSMActor. It generates
@@ -299,7 +302,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 _getHelper((NamedObj) actors[i]);
                         // fire the actor
                         if (inline) {
-                            helper.generateFireCode(codeBuffer);
+                            codeBuffer.append(helper.generateFireCode());
                         } else {
                             codeBuffer.append(actors[i].getFullName().replace
                                     ('.' , '_') + "();\n");   

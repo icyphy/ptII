@@ -69,16 +69,17 @@ public class FSMDirector extends Director {
      *  It generates code for making preemptive transition, checking if a transition
      *  is taken, firing refinements and making non-preemptive transition.
      * 
-     *  @param code The string buffer that the generated code is appended to.
+     *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
         ptolemy.domains.fsm.kernel.FSMActor controller = 
                 ((ptolemy.domains.fsm.kernel.FSMDirector) 
                 getComponent()).getController();
-
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
+        
+        StringBuffer code = new StringBuffer();
 
         // generate code for preemptive transition
         code.append("\n/* Preepmtive Transition */\n\n");
@@ -107,6 +108,8 @@ public class FSMDirector extends Director {
         });
 
         code.append("}");
+        
+        return code.toString();
     }
 
     /** Generate code for the firing of refinements.
@@ -139,7 +142,7 @@ public class FSMDirector extends Director {
                         actor.getFullName().replace('.' , '_') + "() {\n");
                 CodeGeneratorHelper actorHelper = 
                         (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-                actorHelper.generateFireCode(functionCode);
+                functionCode.append(actorHelper.generateFireCode());
                 functionCode.append("}\n");
             }
             code.insert(0, functionCode);
@@ -172,7 +175,7 @@ public class FSMDirector extends Director {
                     
                     // fire the actor
                     if (inline) {
-                        actorHelper.generateFireCode(code);
+                        code.append(actorHelper.generateFireCode());
                     } else {
                         code.append(actors[i].getFullName().replace('.' , '_')
                                 + "();\n");   

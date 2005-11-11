@@ -557,10 +557,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         while (modifiedVariables.hasNext()) {
             Variable variable = (Variable) modifiedVariables.next();
-            boolean isMultiport = compositeActorHelper._generateType(variable,
+            boolean isArrayType = compositeActorHelper._generateType(variable,
                     code);
 
-            if (isMultiport) {
+            if (isArrayType) {
                 code.append("[ ]");
             }
 

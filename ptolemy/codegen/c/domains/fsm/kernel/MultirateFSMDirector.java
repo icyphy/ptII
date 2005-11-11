@@ -91,12 +91,13 @@ public class MultirateFSMDirector extends FSMDirector {
      *  It generates code for firing refinements and making non-preemptive
      *  transition.
      * 
-     *  @param code The string buffer that the generated code is appended to.
+     *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
         
+        StringBuffer code = new StringBuffer();
         // Note unlike FSMDirector, no preemptive transition is taken
         // under the control of this director.
         
@@ -115,6 +116,7 @@ public class MultirateFSMDirector extends FSMDirector {
                 return state.nonpreemptiveTransitionList().iterator();  
             }
         });
+        return code.toString();
     }   
     
     /** Generate the initialize code for the associated MultirateFSMDirector. 

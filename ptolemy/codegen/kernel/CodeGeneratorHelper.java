@@ -176,9 +176,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 // avoid duplicate declaration.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    boolean isMultiport = _generateType(parameter, code);
+                    boolean isArrayType = _generateType(parameter, code);
 
-                    if (isMultiport) {
+                    if (isArrayType) {
                         code.append("[ ]");
                     }
 
@@ -1036,7 +1036,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     protected boolean _generateType(NamedObj namedobj, StringBuffer code) {
         String type = null;
         String convert = null;
-        boolean isMultiport = false;
+        boolean isArrayType = false;
+        //boolean isMultiport = false;
         
         if (namedobj instanceof Parameter) {
             type = ((Parameter) namedobj).getType().toString();
@@ -1060,15 +1061,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     // Upgrading from primitive to Token.
                 }
             }
-            isMultiport = ((TypedIOPort) namedobj).isMultiport();
+            //isMultiport = ((TypedIOPort) namedobj).isMultiport();
         }
 
-        //if (type.charAt(0) == '{') {
-            // This is an ArrayType.
-            //StringTokenizer tokenizer = new StringTokenizer(type, "{}");
-            //type = tokenizer.nextToken();
-            //isArrayType = true;
-        //}
+        if (type.charAt(0) == '{') {
+            //This is an ArrayType.
+            StringTokenizer tokenizer = new StringTokenizer(type, "{}");
+            type = tokenizer.nextToken();
+            isArrayType = true;
+        }
 
         if (type.equals("string")) {
             type = "char*";
@@ -1082,7 +1083,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         code.append(type);
         code.append(" ");
         code.append(namedobj.getFullName().replace('.', '_'));
-        return isMultiport;
+        return isArrayType;
     }
 
     protected void _generateTypeConvertVariableDeclaration

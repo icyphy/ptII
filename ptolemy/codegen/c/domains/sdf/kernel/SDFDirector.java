@@ -86,14 +86,14 @@ public class SDFDirector extends Director {
 
     /** Generate the code for the firing of actors according to the SDF
      *  schedule.
-     *  @param code The string buffer that the generated code is appended to.
+     *  @return The generated fire code.
      *  @exception IllegalActionException If the SDF director does not have an
      *   attribute called "iterations" or a valid schedule, or the actor to be
      *   fired cannot find its associated helper.
      */
-    public void generateFireCode(StringBuffer code)
-            throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
         
+        StringBuffer code = new StringBuffer();
         boolean inline = 
                 ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
         
@@ -180,6 +180,7 @@ public class SDFDirector extends Director {
                 } 
             }
         }
+        return code.toString();
     }
 
     /** Generate the initialize code for the associated SDF director.

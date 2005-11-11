@@ -172,11 +172,13 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     /** Generate the code for the firing of actors controlled by this director.
      *  It generates code for firing refinements and setting a variable to record it.
      * 
-     *  @param code The string buffer that the generated code is appended to.
+     *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
      */
-    public void generateFireCode(StringBuffer code) throws IllegalActionException {       
+    public String generateFireCode() throws IllegalActionException {       
+        
+        StringBuffer code = new StringBuffer();
         
         // Like MultirateFSMDirector, no preemptive transition is taken under 
         // the control of this director.
@@ -195,6 +197,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         // modal model. This variable is used when doing mode transition after
         // one global iteration.
         code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n"));
+        
+        return code.toString();
     }   
     
     /** Generate mode transition code. The mode transition code generated in this 
