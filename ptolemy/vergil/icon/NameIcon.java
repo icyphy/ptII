@@ -158,6 +158,34 @@ public class NameIcon extends EditorIcon {
         return result;
     }
     
+    /** Override the base class to add or set a _hideName parameter.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an attribute with the name of this attribute.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        NamedObj previousContainer = getContainer();
+        if (previousContainer != container && previousContainer != null) {
+            SingletonParameter hide = (SingletonParameter)previousContainer.getAttribute(
+                    "_hideName", SingletonParameter.class);
+            if (hide != null) {
+                hide.setToken(BooleanToken.FALSE);
+            }
+        }
+        super.setContainer(container);
+        if (previousContainer != container && container != null) {
+            // Hide the name.
+            SingletonParameter hide = new SingletonParameter(container, "_hideName");
+            hide.setToken(BooleanToken.TRUE);
+            hide.setVisibility(Settable.EXPERT);
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
