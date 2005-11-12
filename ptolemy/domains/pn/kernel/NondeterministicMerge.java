@@ -157,8 +157,12 @@ public class NondeterministicMerge extends TypedCompositeActor {
                     // So we need to notify on the director also.
                     Director director = getExecutiveDirector();
 
-                    synchronized (director) {
-                        director.notifyAll();
+                    // If there is no director, then the model cannot be running,
+                    // so there is no need to notify.
+                    if (director != null) {
+                        synchronized (director) {
+                            director.notifyAll();
+                        }
                     }
                 } else {
                     try {
