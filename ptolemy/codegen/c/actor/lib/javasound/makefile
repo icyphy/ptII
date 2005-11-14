@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AudioReader.java \
+	AudioPlayer.java \
 	AudioWriter.java
 
 OTHER_FILES_TO_BE_JARED = \
