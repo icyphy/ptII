@@ -195,8 +195,16 @@ public class CodeStream {
         // substitute for each parameters
         for (int i = 0; i < arguments.size(); i++) {
             String replaceString = arguments.get(i).toString();
-            codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
+            try {
+                codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
                     parameters.get(i).toString(), replaceString));
+            } catch (IllegalArgumentException ex) {
+                throw new IllegalActionException(null, ex,
+                        blockName + " in "
+                        + _filePath + " problems replacing \""
+                        + parameters.get(i).toString() + "\" with \""
+                        + replaceString) + "\"";
+            }
         }
 
         _stream.append(codeBlock);
