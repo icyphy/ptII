@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 155, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={208, 30, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -190,7 +190,7 @@ to another. Then delete this annotation.</text>
             <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
                 <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 190.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 200.0]">
                 </property>
                 <port name="port" class="ptolemy.domains.fsm.modal.ModalPort">
                     <property name="input"/>
@@ -291,7 +291,7 @@ to another. Then delete this annotation.</text>
                     <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                         </property>
-                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="port2 = 9999">
+                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="port2 = 999">
                         </property>
                         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state1.scale = 3*scale">
                         </property>
@@ -342,7 +342,7 @@ to another. Then delete this annotation.</text>
                     </port>
                     <port name="port2" class="ptolemy.domains.fsm.modal.RefinementPort">
                         <property name="output"/>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 200.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 205.0]">
                         </property>
                     </port>
                     <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -352,7 +352,7 @@ to another. Then delete this annotation.</text>
                             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
                             </property>
                         </property>
-                        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 200.0]">
+                        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 205.0]">
                         </property>
                     </entity>
                     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -589,7 +589,7 @@ to another. Then delete this annotation.</text>
                     <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                         </property>
-                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="port2 = 9999">
+                        <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="port2 = 99">
                         </property>
                         <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="state1.scale = 7*scale">
                         </property>
@@ -769,9 +769,9 @@ to another. Then delete this annotation.</text>
         <link port="state2.port2" relation="port2Relation"/>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9999, 9999, 9999, 90, 56, 100, 60, 210, 112, 180, 100, 330, 168, 260, 140, 450, 224, 340, 180, 570}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{9999, 999, 99, 90, 56, 100, 60, 210, 112, 180, 100, 330, 168, 260, 140, 450, 224, 340, 180, 570}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 155.0]">
         </property>
