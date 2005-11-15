@@ -82,7 +82,7 @@
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
 	    <!-- Chic actors are not being shipped in 4.0 -->
             <!-- input source="ptolemy/chic/chic.xml"/ -->
-            <!-- input source="ptolemy/codegen/codegen.xml"/ -->
+            <input source="ptolemy/codegen/codegen.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
             <!-- input source="ptolemy/copernicus/copernicus.xml"/ -->
