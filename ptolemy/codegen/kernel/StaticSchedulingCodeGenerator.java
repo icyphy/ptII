@@ -181,26 +181,6 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         return code.toString();
     }
 
-    /** Set the container of this object to be the given container.
-     *  This method overrides the base class to ensure that that the
-     *  container is an CompositeActor.
-     *  @param container The given container.
-     *  @exception IllegalActionException If the given container
-     *   is not null and not an instance of CompositeActor.
-     *  @exception NameDuplicationException If the super class throws the
-     *   exception.
-     */
-    public void setContainer(NamedObj container) throws IllegalActionException,
-            NameDuplicationException {
-        if ((container != null) && !(container instanceof CompositeActor)) {
-            throw new IllegalActionException(this, container,
-                    "StaticSchedulingCodeGenerator can only be contained "
-                            + " by CompositeActor");
-        }
-
-        super.setContainer(container);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
