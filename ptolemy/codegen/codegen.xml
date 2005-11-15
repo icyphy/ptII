@@ -5,8 +5,7 @@
   <configure>
     <?moml
       <group>
-	    <input source="ptolemy/codegen/lib/index.xml"/>
-	    <input source="ptolemy/codegen/dsp/lib/index.xml"/>
+        <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator"/>
       </group>
     ?>
   </configure>
