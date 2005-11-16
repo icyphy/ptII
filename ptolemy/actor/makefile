@@ -81,6 +81,8 @@ JSRCS = \
 	StreamExecutionListener.java \
 	TimedActor.java \
 	TimedDirector.java \
+	TokenSentEvent.java \
+	TokenSentListener.java \
 	TypeAttribute.java \
 	TypeConflictException.java \
 	TypedActor.java \
