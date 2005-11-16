@@ -195,6 +195,36 @@ public class IOPort extends ComponentPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+    /** Append a listener to the current set of token sent listeners.
+     *  If the listener is already in the set, it will not be added again.
+     *  Note that this method is basically the same as addDebugListener
+     *  in the class NamedObj.
+     *  @param listener The listener to which to send token sent messages.
+     *  @see #removeTokenSentListener(TokenSentListener)
+     */
+    public void addTokenSentListener(TokenSentListener listener) {
+        // NOTE: This method needs to be synchronized to prevent two
+        // threads from each creating a new _debugListeners list.
+        synchronized (this) {
+            if (_tokenSentListeners == null) {
+                _tokenSentListeners = new LinkedList();
+            }
+        }
+
+        // NOTE: This has to be synchronized to prevent
+        // concurrent modification exceptions.
+        synchronized (_tokenSentListeners) {
+            if (_tokenSentListeners.contains(listener)) {
+                return;
+            } else {
+                _tokenSentListeners.add(listener);
+            }
+
+            _notifyingTokensSent = true;
+        }
+    }
+
     /** Send a token to all connected receivers.
      *  Tokens are in general immutable, so each receiver is given a
      *  reference to the same token and no clones are made.
@@ -222,6 +252,9 @@ public class IOPort extends ComponentPort {
 
         if (_debugging) {
             _debug("broadcast " + token);
+        }
+        if (_notifyingTokensSent) {
+            _tokenSent(new TokenSentEvent(this, token));
         }
 
         try {
@@ -284,6 +317,9 @@ public class IOPort extends ComponentPort {
 
         if (_debugging) {
             _debug("broadcast token array of length " + vectorLength);
+        }
+        if (_notifyingTokensSent) {
+            _tokenSent(new TokenSentEvent(this, tokenArray, vectorLength));
         }
 
         try {
@@ -2208,6 +2244,31 @@ public class IOPort extends ComponentPort {
         return _numberOfSources;
     }
 
+    /** Unregister a token sent listener.  If the specified listener has not
+     *  been previously registered, then do nothing.  Note that this method
+     *  is basically the same as removeDebugListener in the class NamedObj.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which token sent messages are sent.
+     *  @see #addTokenSentListener(TokenSentListener)
+     */
+    public void removeTokenSentListener(TokenSentListener listener) {
+        if (_tokenSentListeners == null) {
+            return;
+        }
+
+        // NOTE: This has to be synchronized to prevent
+        // concurrent modification exceptions.
+        synchronized (_tokenSentListeners) {
+            _tokenSentListeners.remove(listener);
+
+            if (_tokenSentListeners.size() == 0) {
+                _notifyingTokensSent = false;
+            }
+
+            return;
+        }
+    }
+
     /** Send the specified token to all receivers connected to the
      *  specified channel.  Tokens are in general immutable, so each receiver
      *  is given a reference to the same token and no clones are made.
@@ -2242,6 +2303,9 @@ public class IOPort extends ComponentPort {
 
         if (_debugging) {
             _debug("send to channel " + channelIndex + ": " + token);
+        }
+        if (_notifyingTokensSent) {
+            _tokenSent(new TokenSentEvent(this, channelIndex, token));
         }
 
         try {
@@ -2303,6 +2367,10 @@ public class IOPort extends ComponentPort {
         if (_debugging) {
             _debug("send to channel " + channelIndex
                     + " token array of length " + vectorLength);
+        }
+        if (_notifyingTokensSent) {
+            _tokenSent(new TokenSentEvent
+                    (this, channelIndex, tokenArray, vectorLength));
         }
 
         try {
@@ -2440,6 +2508,9 @@ public class IOPort extends ComponentPort {
 
         if (_debugging) {
             _debug("send inside to channel " + channelIndex + ": " + token);
+        }
+        if (_notifyingTokensSent) {
+            _tokenSent(new TokenSentEvent(this, channelIndex, token));
         }
 
         try {
@@ -3533,6 +3604,32 @@ public class IOPort extends ComponentPort {
         receiver.setContainer(this);
         return receiver;
     }
+
+    /** Send a token sent event to all token sent listeners that 
+     *  have registered with this IOPort.
+     *  @param event The event.
+     */
+    protected final void _tokenSent(TokenSentEvent event) {
+        if (_notifyingTokensSent) {
+            Iterator listeners = _tokenSentListeners.iterator();
+
+            while (listeners.hasNext()) {
+                ((TokenSentListener) listeners.next()).tokenSentEvent(event);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Flag that is true if there are token sent listeners. */
+    protected boolean _notifyingTokensSent = false;
+
+    /** The list of TokenSentListeners registered with this object.
+     *  NOTE: Because of the way we synchronize on this object, it should
+     *  never be reset to null after the first list is created.
+     */
+    protected LinkedList _tokenSentListeners = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
