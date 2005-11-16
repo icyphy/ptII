@@ -205,7 +205,7 @@ public class IOPort extends ComponentPort {
      */
     public void addTokenSentListener(TokenSentListener listener) {
         // NOTE: This method needs to be synchronized to prevent two
-        // threads from each creating a new _debugListeners list.
+        // threads from each creating a new _tokenSentListeners list.
         synchronized (this) {
             if (_tokenSentListeners == null) {
                 _tokenSentListeners = new LinkedList();
