@@ -213,7 +213,6 @@ OTHER_FILES_TO_BE_JARED = \
 	Sinewave.xml \
 	SwitchIcon.xml \
 	TimedSine.xml \
-	UnaryMathFunctionIcon.xml \
 	UniformIcon.xml \
 	aggregators.xml \
 	array.xml \

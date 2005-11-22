@@ -97,6 +97,11 @@ public class UnaryMathFunction extends Transformer {
         // Ports
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
+        
+        // Create a simple rectangle icon.
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-15\" " + "width=\"60\" height=\"30\" "
+                + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
