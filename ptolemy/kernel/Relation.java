@@ -188,7 +188,7 @@ public class Relation extends NamedObj {
      *  but a relation will appear only once. There is no significance
      *  to multiple links between the same relations.
      *  This method is read-synchronized on the workspace.
-     *  @return A list of Port objects.
+     *  @return A list of Port and Relation objects.
      */
     public List linkedObjectsList() {
         try {
