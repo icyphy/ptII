@@ -542,13 +542,21 @@ public class CTScheduler extends Scheduler {
 
                         // NOTE: The assumption is that all the receivers
                         // belonging to the same IO port have the same
-                        // signal type.
-                        Receiver insideReceiver = insideReceivers[0][0];
-
-                        if (insideReceiver instanceof StateReceiver) {
-                            _signalTypeMap.setType(port, CONTINUOUS);
+                        // signal type, so if there is at least one
+                        // receiver, then use its type. If there are no
+                        // receivers, assume the type is continuous.
+                        if (insideReceivers.length > 0
+                                && insideReceivers[0] != null
+                                && insideReceivers[0].length > 0) {
+                            Receiver insideReceiver = insideReceivers[0][0];
+                            
+                            if (insideReceiver instanceof StateReceiver) {
+                                _signalTypeMap.setType(port, CONTINUOUS);
+                            } else {
+                                _signalTypeMap.setType(port, DISCRETE);
+                            }
                         } else {
-                            _signalTypeMap.setType(port, DISCRETE);
+                            _signalTypeMap.setType(port, CONTINUOUS);
                         }
 
                         _signalTypeMap.propagateType(port);
