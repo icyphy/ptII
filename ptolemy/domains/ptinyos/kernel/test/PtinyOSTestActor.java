@@ -27,12 +27,7 @@
  */
 package ptolemy.domains.ptinyos.kernel.test;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.ptinyos.kernel.PtinyOSActor;
+import ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -47,7 +42,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Red
  * @Pt.AcceptedRating Red
  */
-public class PtinyOSTestActor extends PtinyOSActor {
+public class PtinyOSTestActor extends PtinyOSCompositeActor {
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
      *  Increment the version number of the workspace.
