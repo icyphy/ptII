@@ -1643,10 +1643,17 @@ String tidied, x;
             {
                 x = token.image.toLowerCase();
                 len = x.length();
-                if ( x.endsWith("d") || x.endsWith("f") ) {   
+                if ( x.endsWith("d") || x.endsWith("f")
+                        || x.endsWith("p") ) {   
                     // all floating point numbers are double
                     Double value = new Double(x.substring(0, len-1 ));
-                    jjtn002._ptToken = new DoubleToken(value.doubleValue());
+                    if (x.endsWith("p")) {   
+                        // FIXME, need PetiteToken
+                        //jjtThis._ptToken = new PetiteToken(value.doubleValue()); 
+                        jjtn002._ptToken = new DoubleToken(value.doubleValue()); 
+                    } else {
+                        jjtn002._ptToken = new DoubleToken(value.doubleValue());
+                    }
                 } else {
                     Double value = new Double(x);
                     jjtn002._ptToken = new DoubleToken(value.doubleValue()); 
