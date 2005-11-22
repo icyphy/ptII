@@ -34,7 +34,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * Dummy Test actor that extends PtinyOSActor, which is abstract.
+ * Dummy Test actor that extends PtinyOSCompositeActor, which is abstract.
  *
  * @author Christopher Brooks
  * @version $Id$
