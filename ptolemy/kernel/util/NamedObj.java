@@ -2426,6 +2426,11 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         try {
+            // Look for error condition.
+            if (container == null) {
+                throw new IllegalActionException(this,
+                        "Attempting to propagate into a null container");
+            }
             return (NamedObj) clone(container.workspace());
         } catch (CloneNotSupportedException e) {
             throw new IllegalActionException(this, e,
