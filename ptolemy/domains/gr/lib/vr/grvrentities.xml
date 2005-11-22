@@ -13,6 +13,14 @@
 <entity name="GRTexture2D" class="ptolemy.domains.gr.lib.vr.GRTexture2D">
 </entity>
 
+<entity name="GRTexture2DImage" class="ptolemy.domains.gr.lib.vr.GRTexture2DImage">
+</entity>
+
+<entity name="GRTexture2DImageReslice" class="ptolemy.domains.gr.lib.vr.GRTexture2DImageReslice">
+</entity>
+
+<entity name="GRTexture2DJAIImage" class="ptolemy.domains.gr.lib.vr.GRTexture2DJAIImage">
+</entity>
 
 <entity name="GRQuadArray" class="ptolemy.domains.gr.lib.vr.GRQuadArray">
 </entity>
@@ -21,6 +29,9 @@
 </entity>
 
 <entity name="DICOMReader" class="ptolemy.domains.gr.lib.vr.DICOMReader">
+</entity>
+
+<entity name="MedicalImageReader" class="ptolemy.domains.gr.lib.vr.MedicalImageReader">
 </entity>
 
 <entity name="StackReader" class="ptolemy.domains.gr.lib.vr.StackReader">
@@ -39,6 +50,9 @@
 </entity>
 
 <entity name="ImageCrop" class="ptolemy.domains.gr.lib.vr.ImageCrop">
+</entity>
+
+<entity name="ROISelect" class="ptolemy.domains.gr.lib.vr.ROISelect">
 </entity>
 
 
