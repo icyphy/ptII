@@ -7,7 +7,7 @@
     <?moml
       <group>
 
-    <entity name="MicaActor" class="ptolemy.domains.ptinyos.lib.MicaActor"/>
+    <entity name="MicaCompositeActor" class="ptolemy.domains.ptinyos.lib.MicaCompositeActor"/>
     <entity name="MicaLeds" class="ptolemy.domains.ptinyos.lib.MicaLeds"/>
 
       </group>
