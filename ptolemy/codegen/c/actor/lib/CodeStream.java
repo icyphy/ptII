@@ -203,7 +203,7 @@ public class CodeStream {
                         blockName + " in "
                         + _filePath + " problems replacing \""
                         + parameters.get(i).toString() + "\" with \""
-                        + replaceString) + "\"";
+                        + replaceString + "\"");
             }
         }
 
