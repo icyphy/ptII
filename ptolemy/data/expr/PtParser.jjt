@@ -939,10 +939,20 @@ String tidied, x;
             {
                 x = token.image.toLowerCase();
                 len = x.length();
-                if ( x.endsWith("d") || x.endsWith("f") ) {   
+                if ( x.endsWith("d") || x.endsWith("f")
+                        || x.endsWith("p") ) {   
                     // all floating point numbers are double
                     Double value = new Double(x.substring(0, len-1 ));
-                    jjtThis._ptToken = new DoubleToken(value.doubleValue());
+                    if (x.endsWith("p")) {   
+                        // FIXME, need PetiteToken
+                        //jjtThis._ptToken =
+                        //  new PetiteToken(value.doubleValue()); 
+                        jjtThis._ptToken =
+                            new DoubleToken(value.doubleValue()); 
+                    } else {
+                        jjtThis._ptToken =
+                            new DoubleToken(value.doubleValue());
+                    }
                 } else {
                     Double value = new Double(x);
                     jjtThis._ptToken = new DoubleToken(value.doubleValue()); 
