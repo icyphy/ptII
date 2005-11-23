@@ -65,6 +65,7 @@ JSIMPLE_TESTS = \
 	LongMatrixToken.tcl \
 	LongToken.tcl \
 	ObjectToken.tcl \
+	PetiteToken.tcl \
 	RecordToken.tcl \
 	StringToken.tcl \
 	Token.tcl \
