@@ -129,5 +129,5 @@ public interface Type {
      */
     public static final int HASH_INVALID = Integer.MIN_VALUE;
 
-    public static final int HASH_MAX = 12;
+    public static final int HASH_MAX = 13; 
 }
