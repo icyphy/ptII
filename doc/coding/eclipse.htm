@@ -309,6 +309,23 @@ The Ptolemy II welcome window should appear.
  <p>You may now wish to read the <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/design/usingVergil/index.htm">Using Vergil</a>
 tutorial.
 
+<h2><a name="simpleDebug">Simple Debugging Session</a></h2>
+
+<ol>
+ <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
+double click. Place a breakpoint on the first line of main()
+by using Run- &gt; Add/Remove Breakpoint
+
+ <li> Tell Eclipse which class to run with Run -&gt; Run. On the Main
+tab, select the Ptolemy II package and enter
+ptolemy.vergil.VergilApplication as Main class.
+
+ <li> Press the Run button
+ <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
+of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
+as above. Open the Lorenz CT demo from the Quick Tour and run it.
+ </ol>
+
 <h2><a name="BothEclipseAndShellCVS">Setting up both Eclipse and Shell CVS</a> </h2>
 
 The description below is based on information from Kevin Rutland about
@@ -400,6 +417,7 @@ cause Eclipse to see the new <code>ptII/.classpath</code> and to build
 the project (or you may have to manually rebuild if you turned
 off automatic rebuild).
 </ol>  
+
 
 <h2><a name="UsingCVS">Using CVS</a></h2>
 Resources:
