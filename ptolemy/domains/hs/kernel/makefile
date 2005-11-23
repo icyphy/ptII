@@ -1,10 +1,10 @@
-# Makefile for the Continuous Time domain kernel
+# Makefile for the Hybrid Systems domain kernel
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, makefile only
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/hs/kernel
 
-DIRS = 		util solver test
+DIRS = 		solver test
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -49,8 +49,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		solver/solver.jar \
-		util/util.jar
+		solver/solver.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -75,16 +74,11 @@ MISC_FILES =	$(DIRS) test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'CTBaseIntegrator$$DoubleDouble.class' \
-	'CTBaseIntegrator$$History.class' \
-	'CTReceiver$$1.class' \
-	'CTReceiver$$2.class' \
-	'CTReceiver$$3.class' \
-	'CTReceiver$$SignalType.class' \
-	'CTScheduler$$1.class' \
-	'CTScheduler$$SignalTypes.class' \
-	'CTScheduler$$SignalTypeMap.class'
+	doc
+	'HSBaseIntegrator$$DoubleDouble.class' \
+	'HSBaseIntegrator$$History.class' \
+	'HSScheduler$$1.class' \
+	'HSScheduler$$SignalTypeMap.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
