@@ -1576,11 +1576,11 @@ String tidied, x;
                     // all floating point numbers are double
                     Double value = new Double(x.substring(0, len-1 ));
                     if (x.endsWith("p")) {
-                        // FIXME, need PetiteToken
-                        //jjtThis._ptToken = new PetiteToken(value.doubleValue()); 
-                        jjtn002._ptToken = new DoubleToken(value.doubleValue());
+                        jjtn002._ptToken =
+                          new PetiteToken(value.doubleValue());
                     } else {
-                        jjtn002._ptToken = new DoubleToken(value.doubleValue());
+                        jjtn002._ptToken =
+                            new DoubleToken(value.doubleValue());
                     }
                 } else {
                     Double value = new Double(x);
