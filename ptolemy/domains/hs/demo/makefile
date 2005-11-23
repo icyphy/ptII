@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Continuous Time domain demos
+# Makefile for Ptolemy II Hybrid Systems domain demos
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -34,7 +34,7 @@ ME =		ptolemy/domains/hs/demo
 # PTJSPACES_DIR is set by configure to jspaces if Jini was found
 DIRS = 		BouncingBall Brownian \
 		CarTracking ComparedClocks ContinuousClock \
-		Helicopter HierarchicalExecution Hysteresis \
+		HierarchicalExecution Hysteresis \
 		LevelCrossingDetector \
 		LevelCrossingDetectorDetectsGlitches \
 		Lorenz NewtonsCradle \
@@ -64,7 +64,6 @@ PTCLASSALLJARS = \
 	CarTracking/CarTracking.jar \
 	ComparedClocks/ComparedClocks.jar \
 	ContinuousClock/ContinuousClock.jar \
-	Helicopter/Helicopter.jar \
 	HierarchicalExecution/HierarchicalExecution.jar \
 	Hysteresis/Hysteresis.jar \
 	LevelCrossingDetector/LevelCrossingDetector.jar \
