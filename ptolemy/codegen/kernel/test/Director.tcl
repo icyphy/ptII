@@ -61,9 +61,8 @@ test Director-1.1 {Instantiate a Director, call a few methods} {
 
 #####
 test Director-2.1 {generateFireCode(StringBuffer)} {
-    set results [java::new StringBuffer]
-    $cgDirector generateFireCode $results
-    list [$results toString]
+    set results [$cgDirector generateFireCode]
+    list $results
 } {{/* The firing of the director. */
 }}
 
