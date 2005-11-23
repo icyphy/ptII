@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Continuous Time Actors
+# Makefile for Ptolemy II Hybrid Systems Actors
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -66,9 +66,9 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ContinuousSinewave.xml \
-	ctentities.xml \
 	dynamics.xml \
 	eventgenerators.xml \
+	hsentities.xml \
 	integral.gif \
 	IntegratorIcon.xml \
 	LevelCrossingDetectorIcon.xml \
