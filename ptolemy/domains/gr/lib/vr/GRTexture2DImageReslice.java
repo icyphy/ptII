@@ -389,7 +389,7 @@ public class GRTexture2DImageReslice extends GRGeometry {
 
                   
         //Create BufferedImage from Image
-        _bufferedImage = new BufferedImage(_image.getHeight(_viewScreen.getCanvas()),_image.getWidth(_viewScreen.getCanvas()),
+        _bufferedImage = new BufferedImage(_image.getWidth(_viewScreen.getCanvas()),_image.getHeight(_viewScreen.getCanvas()),
                 BufferedImage.TYPE_3BYTE_BGR);
         System.out.println("_bufferedImage = " + _bufferedImage);
         Graphics2D graphics2D = _bufferedImage.createGraphics();
@@ -411,10 +411,10 @@ public class GRTexture2DImageReslice extends GRGeometry {
         int pixelStride = 3;
         
         //FIXME What is the new scanline stride?
-        int scanlineStride = _tSize*3;
+        int scanlineStride = _sSize*3;
         ComponentSampleModel componentSampleModel = 
             //FIXME Which one is the height?  xRes = _sSize or yRes = _tSize
-            new ComponentSampleModel(0, _tSize, _sSize, pixelStride, scanlineStride, new int[]{0,0,0,0});
+            new ComponentSampleModel(0, _sSize, _tSize, pixelStride, scanlineStride, new int[]{0,0,0,0});
         
         
         
