@@ -559,7 +559,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/vergil/tree/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m $(JDOCBREAKITERATOR)"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m $(JDOCBREAKITERATOR)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
@@ -570,7 +570,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 codeDocPtiny/tree.html:
 	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
 	-(cd ..; CLASSPATH=".$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
@@ -591,7 +591,7 @@ codeDocHyVisual.jar: codeDocHyVisual/doc/codeDoc/tree.html
 codeDocHyVisual/doc/codeDoc/tree.html:
 	if [ ! -d codeDocHyVisual ]; then mkdir -p codeDocHyVisual; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
@@ -627,7 +627,7 @@ codeDocViptos.jar: codeDocViptos/doc/codeDoc/tree.html
 codeDocViptos/doc/codeDoc/tree.html:
 	if [ ! -d codeDocViptos ]; then mkdir -p codeDocViptos; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocViptos/doc/codeDoc $(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
@@ -650,7 +650,7 @@ codeDocVisualSense.jar: codeDocVisualSense/doc/codeDoc/tree.html
 codeDocVisualSense/doc/codeDoc/tree.html:
 	if [ ! -d codeDocVisualSense ]; then mkdir -p codeDocVisualSense; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocVisualSense/doc/codeDoc $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
