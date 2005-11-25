@@ -198,9 +198,8 @@ public class CompositePtolemyModel implements CompositeModel {
 
                 return location;
             } catch (Exception e) {
-                throw new InternalErrorException("Failed to create "
-                        + "location, even though one does not exist:"
-                        + e.getMessage());
+                throw new InternalErrorException(object, e, "Failed to create "
+                        + "location, even though one does not exist.");
             }
         }
     }
