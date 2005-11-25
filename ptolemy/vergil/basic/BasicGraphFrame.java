@@ -509,7 +509,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     public void createHierarchy() {
         GraphController controller = _getGraphController();
         SelectionModel model = controller.getSelectionModel();
-        GraphModel graphModel = controller.getGraphModel();
+        AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel)controller.getGraphModel();
         Object[] selection = model.getSelectionAsArray();
 
         // A set, because some objects may represent the same
@@ -525,7 +525,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         // First get all the nodes.
         try {
-            final NamedObj container = (NamedObj) graphModel.getRoot();
+            NamedObj container = (NamedObj) graphModel.getRoot();
 
             if (!(container instanceof CompositeEntity)) {
                 // This is an internal error because a reasonable GUI should not
@@ -534,9 +534,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         "Cannot create hierarchy if the container is not a CompositeEntity.");
             }
 
-            final String name = container.uniqueName("CompositeActor");
-            final TypedCompositeActor compositeActor = new TypedCompositeActor(
-                    (CompositeEntity) container, name);
+            String compositeActorName = container.uniqueName("CompositeActor");
 
             double[] location = new double[2];
             boolean gotLocation = false;
@@ -583,15 +581,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         while (!(headOK && tailOK) && objects.hasNext()) {
                             Object object = objects.next();
 
-                            if (!headOK
-                                    && GraphUtilities.isContainedNode(head,
-                                            object, graphModel)) {
+                            if (!headOK && GraphUtilities.isContainedNode(
+                                    head, object, graphModel)) {
                                 headOK = true;
                             }
 
-                            if (!tailOK
-                                    && GraphUtilities.isContainedNode(tail,
-                                            object, graphModel)) {
+                            if (!tailOK && GraphUtilities.isContainedNode(
+                                    tail, object, graphModel)) {
                                 tailOK = true;
                             }
                         }
@@ -606,27 +602,22 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                 port = (IOPort) head;
 
                                 if (tail instanceof IOPort) {
-                                    relation = (IORelation) graphModel
-                                            .getSemanticObject(userObject);
+                                    relation = (IORelation) graphModel.getSemanticObject(userObject);
                                     duplicateRelation = true;
                                 } else {
-                                    relation = (IORelation) graphModel
-                                            .getSemanticObject(tail);
+                                    relation = (IORelation) graphModel.getSemanticObject(tail);
                                 }
                             } else if (tail instanceof IOPort) {
                                 port = (IOPort) tail;
-                                relation = (IORelation) graphModel
-                                        .getSemanticObject(head);
+                                relation = (IORelation) graphModel.getSemanticObject(head);
                             }
 
                             if (port != null) {
-                                ComponentEntity entity = (ComponentEntity) ((IOPort) port)
-                                        .getContainer();
+                                ComponentEntity entity = (ComponentEntity) ((IOPort) port).getContainer();
                                 String portName = "port_" + i;
                                 boolean isInput = ((IOPort) port).isInput();
                                 boolean isOutput = ((IOPort) port).isOutput();
-                                newPorts
-                                        .append("<port name=\""
+                                newPorts.append("<port name=\""
                                                 + portName
                                                 + "\" class=\"ptolemy.actor.TypedIOPort"
                                                 + "\">\n");
@@ -636,13 +627,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                     // The relation must be outside.
                                     // Create composite port.
                                     if (isInput) {
-                                        newPorts
-                                                .append("<property name=\"input\"/>");
+                                        newPorts.append("<property name=\"input\"/>");
                                     }
 
                                     if (isOutput) {
-                                        newPorts
-                                                .append("<property name=\"output\"/>");
+                                        newPorts.append("<property name=\"output\"/>");
                                     }
 
                                     newPorts.append("\n</port>\n");
@@ -653,8 +642,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                     // can be two internal relations.
                                     String relationName = relation.getName()
                                             + "_" + i;
-                                    intRelations
-                                            .append("<relation name=\""
+                                    intRelations.append("<relation name=\""
                                                     + relationName
                                                     + "\" class=\""
                                                     + "ptolemy.actor.TypedIORelation\"/>\n");
@@ -668,64 +656,51 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
                                     // Create external links.
                                     if (duplicateRelation) {
-                                        extRelations
-                                                .append("<relation name=\""
+                                        extRelations.append("<relation name=\""
                                                         + relation.getName()
                                                         + "\" class=\""
                                                         + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                         IOPort otherPort = (IOPort) tail;
-                                        ComponentEntity otherEntity = (ComponentEntity) otherPort
-                                                .getContainer();
+                                        ComponentEntity otherEntity = (ComponentEntity) otherPort.getContainer();
 
                                         if (otherEntity == container) {
-                                            // This is a boundy port at a higher level.
-                                            extConnections
-                                                    .append("<link port=\""
-                                                            + otherPort
-                                                                    .getName()
+                                            // This is a boundary port at a higher level.
+                                            extConnections.append("<link port=\""
+                                                            + otherPort.getName()
                                                             + "\" relation=\""
-                                                            + relation
-                                                                    .getName()
+                                                            + relation.getName()
                                                             + "\"/>\n");
                                         } else {
-                                            extConnections
-                                                    .append("<link port=\""
-                                                            + otherEntity
-                                                                    .getName()
+                                            extConnections.append("<link port=\""
+                                                            + otherEntity.getName()
                                                             + "."
-                                                            + otherPort
-                                                                    .getName()
+                                                            + otherPort.getName()
                                                             + "\" relation=\""
-                                                            + relation
-                                                                    .getName()
+                                                            + relation.getName()
                                                             + "\"/>\n");
                                         }
                                     }
 
                                     extConnections.append("<link port=\""
-                                            + compositeActor.getName() + "."
+                                            + compositeActorName + "."
                                             + portName + "\" relation=\""
                                             + relation.getName() + "\"/>\n");
                                 } else {
                                     // The port is outside the hierarchy.
                                     // The relation must be inside.
                                     if (isInput) {
-                                        newPorts
-                                                .append("<property name=\"output\"/>");
+                                        newPorts.append("<property name=\"output\"/>");
                                     }
 
                                     if (isOutput) {
-                                        newPorts
-                                                .append("<property name=\"input\"/>");
+                                        newPorts.append("<property name=\"input\"/>");
                                     }
 
                                     newPorts.append("\n</port>\n");
 
-                                    String relationName = relation.getName()
-                                            + "_" + i;
-                                    extRelations
-                                            .append("<relation name=\""
+                                    String relationName = relation.getName() + "_" + i;
+                                    extRelations.append("<relation name=\""
                                                     + relationName
                                                     + "\" class=\""
                                                     + "ptolemy.actor.TypedIORelation\"/>\n");
@@ -734,29 +709,26 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                                             + port.getName() + "\" relation=\""
                                             + relationName + "\"/>\n");
                                     extConnections.append("<link port=\""
-                                            + compositeActor.getName() + "."
+                                            + compositeActorName + "."
                                             + portName + "\" relation=\""
                                             + relationName + "\"/>\n");
 
                                     // Create external links.
                                     if (duplicateRelation) {
-                                        intRelations
-                                                .append("<relation name=\""
-                                                        + relation.getName()
-                                                        + "\" class=\""
-                                                        + "ptolemy.actor.TypedIORelation\"/>\n");
+                                        intRelations.append("<relation name=\""
+                                                + relation.getName()
+                                                + "\" class=\""
+                                                + "ptolemy.actor.TypedIORelation\"/>\n");
 
                                         IOPort otherPort = (IOPort) tail;
-                                        ComponentEntity otherEntity = (ComponentEntity) otherPort
-                                                .getContainer();
-                                        intConnections
-                                                .append("<link port=\""
-                                                        + otherEntity.getName()
-                                                        + "."
-                                                        + otherPort.getName()
-                                                        + "\" relation=\""
-                                                        + relation.getName()
-                                                        + "\"/>\n");
+                                        ComponentEntity otherEntity = (ComponentEntity) otherPort.getContainer();
+                                        intConnections.append("<link port=\""
+                                                + otherEntity.getName()
+                                                + "."
+                                                + otherPort.getName()
+                                                + "\" relation=\""
+                                                + relation.getName()
+                                                + "\"/>\n");
                                     }
 
                                     intConnections.append("<link port=\""
@@ -773,12 +745,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 }
             }
 
-            //System.out.println(" new port:" + newPorts);
-            //final Point2D point = new Point2D.Double();
-            // Copy the selection.
-            copy();
-            _deleteWithoutUndo();
-
+            // System.out.println(" new ports:" + newPorts);
+            
             // Create the MoML command.
             StringBuffer moml = new StringBuffer();
 
@@ -789,52 +757,51 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // imported by the parent will be imported now by
             // the object into which this is dropped.
             moml.append("<group>\n");
-            moml.append("<entity name=\"" + name + "\" class=\"ptolemy.actor"
-                    + ".TypedCompositeActor\">\n");
+
+            // Copy the selection, then get it from the clipboard
+            // and insert its MoML description in the new composite.
+            // This must be done before the call to _deleteMoML(),
+            // which clears the selection.
+            String selectionMoML;
+            copy();
+            Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
+            Transferable transferable = clipboard.getContents(this);
+            try {
+                selectionMoML = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+            } catch (Exception ex) {
+                throw new InternalErrorException(null, ex, "Getting data from clipboard failed.");
+            }
+
+            // Generate the MoML to carry out the deletion.
+            moml.append(_deleteMoML(graphModel, selection, model));
+
+            moml.append("<entity name=\""
+                    + compositeActorName
+                    + "\" class=\"ptolemy.actor.TypedCompositeActor\">\n");
             moml.append("\t<property name=\"_location\" class=\""
                     + "ptolemy.moml.Location\" value=\"" + location[0] + ", "
                     + location[1] + "\">\n");
             moml.append("\t</property>\n");
             moml.append(newPorts);
 
-            // additional ports.
-            Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-                    .getSystemClipboard();
-            Transferable transferable = clipboard.getContents(this);
+            moml.append(selectionMoML);
 
-            try {
-                moml.append((String) transferable
-                        .getTransferData(DataFlavor.stringFlavor));
-            } catch (Exception ex) {
-                MessageHandler
-                        .error("Paste within Create Hierarchy failed", ex);
-            }
-
-            // internal connections
+            // Internal relations and connections.
             moml.append(intRelations);
             moml.append(intConnections);
             moml.append("</entity>\n");
 
-            // external relations.
+            // External relations and connections.
             moml.append(extRelations);
             moml.append(extConnections);
 
-            // external connections.
             moml.append("</group>\n");
 
-            //System.out.println(moml.toString());
-            ChangeRequest request = null;
-
-            request = new MoMLChangeRequest(this, container, moml.toString()) {
-                protected void _execute() throws Exception {
-                    super._execute();
-
-                    NamedObj newObject = ((CompositeEntity) container)
-                            .getEntity(name);
-
-                    //_setLocation(compositeActor, point);
-                }
-            };
+            // System.out.println(moml.toString());
+            
+            MoMLChangeRequest request = null;
+            request = new MoMLChangeRequest(this, container, moml.toString());
+            request.setUndoable(true);
 
             container.requestChange(request);
         } catch (Throwable throwable) {
@@ -858,88 +825,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         // and handing that MoML to the parser
         GraphController controller = _getGraphController();
         SelectionModel model = controller.getSelectionModel();
-
-        AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controller
-                .getGraphModel();
+        AbstractBasicGraphModel graphModel = (AbstractBasicGraphModel) controller.getGraphModel();
         Object[] selection = model.getSelectionAsArray();
 
-        // First collect selected objects into the userObjects array
-        // and deselect them.
-        Object[] userObjects = new Object[selection.length];
-
-        for (int i = 0; i < selection.length; i++) {
-            userObjects[i] = ((Figure) selection[i]).getUserObject();
-            model.removeSelection(selection[i]);
-        }
-
-        // Create a set to hold those elements whose deletion
-        // does not go through MoML. This is only links that
-        // are not connected to another port or a relation.
-        HashSet edgeSet = new HashSet();
-
         // Generate the MoML to carry out the deletion
-        StringBuffer moml = new StringBuffer("<group>\n");
-
-        // Delete edges then nodes, since deleting relations may
-        // result in deleting links to that relation.
-        for (int i = 0; i < selection.length; i++) {
-            Object userObject = userObjects[i];
-
-            if (graphModel.isEdge(userObject)) {
-                NamedObj actual = (NamedObj) graphModel
-                        .getSemanticObject(userObject);
-
-                // If there is no semantic object, then this edge is
-                // not fully connected, so we can't go through MoML.
-                if (actual == null) {
-                    edgeSet.add(userObject);
-                } else {
-                    moml.append(graphModel.getDeleteEdgeMoML(userObject));
-                }
-            }
-        }
-
-        for (int i = 0; i < selection.length; i++) {
-            Object userObject = userObjects[i];
-
-            if (graphModel.isNode(userObject)) {
-                moml.append(graphModel.getDeleteNodeMoML(userObject));
-            }
-        }
-
-        moml.append("</group>\n");
-
-        // Have both MoML to perform deletion and set of objects whose
-        // deletion does not go through MoML. This set of objects
-        // should be very small and so far consists of only links that are not
-        // connected to a relation
-        try {
-            // First manually delete any objects whose deletion does not go
-            // through MoML and so are not undoable
-            // Note that we turn off event dispatching so that each individual
-            // removal does not trigger graph redrawing.
-            graphModel.setDispatchEnabled(false);
-
-            Iterator edges = edgeSet.iterator();
-
-            while (edges.hasNext()) {
-                Object nextEdge = edges.next();
-
-                if (graphModel.isEdge(nextEdge)) {
-                    graphModel.disconnectEdge(this, nextEdge);
-                }
-            }
-        } finally {
-            graphModel.setDispatchEnabled(true);
-        }
+        StringBuffer moml = _deleteMoML(graphModel, selection, model);
 
         // Next process the deletion MoML. This should be the large majority
         // of most deletions.
         try {
             // Finally create and request the change
             NamedObj container = graphModel.getPtolemyModel();
-            MoMLChangeRequest change = new MoMLChangeRequest(this, container,
-                    moml.toString());
+            MoMLChangeRequest change = new MoMLChangeRequest(this, container, moml.toString());
             change.setUndoable(true);
             container.requestChange(change);
         } catch (Exception ex) {
@@ -1791,53 +1688,88 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Delete the currently selected objects from this document without
-     *  undo
+    /** Return the MoML to delete the specified selection objects.
+     *  This has the side effect of unselecting the objects. It also
+     *  deletes edges that are not fully connected (these deletions
+     *  cannot be done through MoML, and cannot be undone).
+     *  @param graphModel The graph model.
+     *  @param selection The selection.
+     *  @param model The selection model.
+     *  @return The MoML to delete the selected objects.
      */
-    private void _deleteWithoutUndo() {
-        // FIXME: This is the old delete() method, before undo was added.
-        // createHierarch() calls this method.
-        GraphController controller = _getGraphController();
-        AbstractBasicGraphModel graphModel = _getGraphModel();
+    private StringBuffer _deleteMoML(
+            AbstractBasicGraphModel graphModel, 
+            Object[] selection, 
+            SelectionModel model) {
 
-        // Note that we turn off event dispatching so that each individual
-        // removal does not trigger graph redrawing.
-        try {
-            graphModel.setDispatchEnabled(false);
+        // First collect selected objects into the userObjects array
+        // and deselect them.
+        Object[] userObjects = new Object[selection.length];
+        for (int i = 0; i < selection.length; i++) {
+            userObjects[i] = ((Figure) selection[i]).getUserObject();
+            model.removeSelection(selection[i]);
+        }
+        
+        // Create a set to hold those elements whose deletion
+        // does not go through MoML. This is only links that
+        // are not connected to another port or a relation.
+        HashSet edgeSet = new HashSet();
 
-            SelectionModel model = controller.getSelectionModel();
-            Object[] selection = model.getSelectionAsArray();
-            Object[] userObjects = new Object[selection.length];
+        StringBuffer moml = new StringBuffer("<group>\n");
 
-            // First remove the selection.
-            for (int i = 0; i < selection.length; i++) {
-                userObjects[i] = ((Figure) selection[i]).getUserObject();
-                model.removeSelection(selection[i]);
-            }
+        // Delete edges then nodes, since deleting relations may
+        // result in deleting links to that relation.
+        for (int i = 0; i < selection.length; i++) {
+            Object userObject = userObjects[i];
 
-            // Remove all the edges first,
-            // since if we remove the nodes first,
-            // then removing the nodes might remove some of the edges.
-            for (int i = 0; i < userObjects.length; i++) {
-                Object userObject = userObjects[i];
+            if (graphModel.isEdge(userObject)) {
+                NamedObj actual = (NamedObj) graphModel.getSemanticObject(userObject);
 
-                if (graphModel.isEdge(userObject)) {
-                    graphModel.disconnectEdge(this, userObject);
+                // If there is no semantic object, then this edge is
+                // not fully connected, so we can't go through MoML.
+                if (actual == null) {
+                    edgeSet.add(userObject);
+                } else {
+                    moml.append(graphModel.getDeleteEdgeMoML(userObject));
                 }
             }
+        }
 
-            for (int i = 0; i < selection.length; i++) {
-                Object userObject = userObjects[i];
+        for (int i = 0; i < selection.length; i++) {
+            Object userObject = userObjects[i];
 
-                if (graphModel.isNode(userObject)) {
-                    graphModel.removeNode(this, userObject);
+            if (graphModel.isNode(userObject)) {
+                moml.append(graphModel.getDeleteNodeMoML(userObject));
+            }
+        }
+
+        moml.append("</group>\n");
+        
+        // Have both MoML to perform deletion and set of objects whose
+        // deletion does not go through MoML. This set of objects
+        // should be very small and so far consists of only links that are not
+        // connected to a relation
+        try {
+            // First manually delete any objects whose deletion does not go
+            // through MoML and so are not undoable
+            // Note that we turn off event dispatching so that each individual
+            // removal does not trigger graph redrawing.
+            graphModel.setDispatchEnabled(false);
+
+            Iterator edges = edgeSet.iterator();
+
+            while (edges.hasNext()) {
+                Object nextEdge = edges.next();
+
+                if (graphModel.isEdge(nextEdge)) {
+                    graphModel.disconnectEdge(this, nextEdge);
                 }
             }
         } finally {
             graphModel.setDispatchEnabled(true);
-            graphModel.dispatchGraphEvent(new GraphEvent(this,
-                    GraphEvent.STRUCTURE_CHANGED, graphModel.getRoot()));
         }
+
+        return moml;
     }
 
     /** Offset the moml object by xOffset and yOffset.  This makes it
