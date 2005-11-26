@@ -28,6 +28,7 @@
 package ptolemy.vergil.toolbox;
 
 import javax.swing.Action;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import ptolemy.kernel.util.NamedObj;
@@ -37,7 +38,10 @@ import diva.gui.toolbox.JContextMenu;
 //// MenuActionFactory
 
 /**
- A factory that adds a given action a given context menu.
+ A factory that adds a given action or set of actions
+ to a context menu. If an array of actions is given to
+ the constructor, then the actions will be put in a submenu
+ with the specified label.
 
  @author Steve Neuendorffer
  @version $Id$
@@ -53,12 +57,32 @@ public class MenuActionFactory implements MenuItemFactory {
         _action = action;
     }
 
-    /**
-     * Add an item to the given context menu that will configure the
-     * parameters on the given target.
+    /** Construct a factory that adds a given group of actions
+     *  to a given context menu in a submenu with the specified label.
+     *  @param actions The actions to be in the submenu.
+     *  @param label The label for the submenu.
+     */
+    public MenuActionFactory(Action[] actions, String label) {
+        _actions = actions;
+        _label = label;
+    }
+
+    /** Add an item to the given context menu that will configure the
+     *  parameters on the given target.
      */
     public JMenuItem create(JContextMenu menu, NamedObj object) {
-        return menu.add(_action, (String) _action.getValue(Action.NAME));
+        if (_action != null) {
+            // Single action as a simple menu entry.
+            return menu.add(_action, (String) _action.getValue(Action.NAME));
+        } else {
+            // Requested a submenu with a group of actions.
+            final JMenu submenu = new JMenu(_label);
+            menu.add(submenu, _label);
+            for (int i = 0; i < _actions.length; i++) {
+                submenu.add(_actions[i]);
+            }
+            return submenu;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -66,4 +90,10 @@ public class MenuActionFactory implements MenuItemFactory {
 
     /** The action that will be added to the context menu. */
     private Action _action;
+    
+    /** The group of actions that will be added in a submenu. */
+    private Action[] _actions;
+    
+    /** The submenu label, if one was given. */
+    private String _label;
 }

@@ -42,6 +42,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -142,7 +143,10 @@ public class IOPortController extends AttributeController {
      *  is an input, output, or both, whether the port has a parameter
      *  named "_cardinal" that specifies a cardinality, and whether the
      *  containing actor has a parameter named "_rotatePorts" that
-     *  specifies a rotation of the ports.
+     *  specifies a rotation of the ports.  In addition, if the
+     *  containing actor has a parameter named "_flipPortsHorizonal"
+     *  or "_flipPortsVertical" with value true, then any ports that end up on the left
+     *  or right (top or bottom) will be reversed.
      *  @param port The port.
      *  @return One of {-270, -180, -90, 0, 90, 180, 270}.
      */
@@ -205,6 +209,42 @@ public class IOPortController extends AttributeController {
         // Ensure that the port rotation is one of
         // {-270, -180, -90, 0, 90, 180, 270}.
         portRotation = 90 * ((portRotation/90)%4);
+
+        // Finally, check for horizontal or vertical flipping.
+        try {
+            NamedObj container = port.getContainer();
+            if (container != null) {
+                Parameter flipHorizontalParameter = (Parameter)
+                        container.getAttribute("_flipPortsHorizontal", Parameter.class);
+                if (flipHorizontalParameter != null) {
+                    Token rotationValue = flipHorizontalParameter.getToken();
+                    if (rotationValue instanceof BooleanToken
+                            && ((BooleanToken)rotationValue).booleanValue()) {
+                        if (portRotation == 0 || portRotation == -180) {
+                            portRotation += 180;
+                        } else if (portRotation == 180) {
+                            portRotation = 0;
+                        }
+                    }
+                }
+                Parameter flipVerticalParameter = (Parameter)
+                container.getAttribute("_flipPortsVertical", Parameter.class);
+                if (flipVerticalParameter != null) {
+                    Token rotationValue = flipVerticalParameter.getToken();
+                    if (rotationValue instanceof BooleanToken
+                            && ((BooleanToken)rotationValue).booleanValue()) {
+                        if (portRotation == -270 || portRotation == -90) {
+                            portRotation += 180;
+                        } else if (portRotation == 90 || portRotation == 270) {
+                            portRotation -= 180;
+                        }
+                    }
+                }
+            }
+        } catch (IllegalActionException ex) {
+            // Ignore and use defaults.
+        }
+
         return portRotation;
     }
 

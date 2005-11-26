@@ -64,6 +64,7 @@ JSRCS = \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
 	RemoveIconAction.java \
+	RotateOrFlipPorts.java \
 	SnapConstraint.java \
 	TextEditorConfigureFactory.java \
 	TextEditorFactory.java \

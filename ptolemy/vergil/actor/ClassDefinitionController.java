@@ -35,6 +35,7 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.KeyStroke;
 
 import ptolemy.kernel.Entity;
@@ -96,15 +97,13 @@ public class ClassDefinitionController extends ActorController {
         super(controller, access);
 
         if (access == FULL) {
-            // The following do not require a configuration.
+            // Use a submenu.
+            Action[] actions = {
+                    _createInstanceAction, 
+                    _createSubclassAction,
+                    _convertToInstanceAction};
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _createInstanceAction));
-
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _createSubclassAction));
-
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _convertToInstanceAction));
+                    actions, "Class Actions"));
         }
 
         // Set up a listener to lay out the ports when graph changes.

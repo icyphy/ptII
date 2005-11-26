@@ -33,7 +33,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
@@ -119,6 +121,33 @@ public class FigureAction extends AbstractAction {
             CanvasPane canvasPane = layer.getCanvasPane();
             parent = canvasPane.getCanvas();
         } else if (source instanceof JMenuItem) {
+            // Action activated using a context menu or submenu.
+            JMenuItem item = (JMenuItem) source;
+            // Find the original context menu.
+            Component contextMenu = item.getParent();
+            if (!(contextMenu instanceof JContextMenu)) {
+                // Probably a submenu.
+                // FIXME: This only supports one level of submenus.
+                if (contextMenu instanceof JPopupMenu) {
+                    contextMenu = ((JPopupMenu)contextMenu).getInvoker();
+                }
+                if (contextMenu instanceof JMenu) {
+                    contextMenu = contextMenu.getParent();
+                }
+            }
+            if (contextMenu instanceof JContextMenu) {
+                _sourceType = CONTEXTMENU_TYPE;
+                JContextMenu menu = (JContextMenu) contextMenu;
+                parent = menu.getInvoker();
+                _target = (NamedObj) menu.getTarget();
+                _x = item.getX();
+                _y = item.getY();
+            } else {
+                // Not implicit location.. should there be?
+                _sourceType = MENUBAR_TYPE;
+            }
+            /*
+        } else if (source instanceof JMenuItem) {
             // Action activated using a context menu.
             JMenuItem item = (JMenuItem) source;
 
@@ -134,6 +163,7 @@ public class FigureAction extends AbstractAction {
                 // Not implicit location.. should there be?
                 _sourceType = MENUBAR_TYPE;
             }
+            */
         } else if (source instanceof JButton) {
             // presumably we are in a toolbar...
             _sourceType = TOOLBAR_TYPE;

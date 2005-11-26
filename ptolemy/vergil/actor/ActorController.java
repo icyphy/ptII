@@ -39,6 +39,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -72,6 +73,7 @@ import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PortSite;
 import ptolemy.vergil.toolbox.RemoveIconAction;
+import ptolemy.vergil.toolbox.RotateOrFlipPorts;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;
@@ -141,12 +143,8 @@ public abstract class ActorController extends AttributeController {
                     _lookInsideAction));
 
             if (access == FULL) {
-                _editIconAction.setConfiguration(_configuration);
-                _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _editIconAction));
-                _removeIconAction.setConfiguration(_configuration);
-                _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _removeIconAction));
+                // Create an Appearance submenu.
+                _createAppearanceSubmenu();
             }
         }
 
@@ -224,12 +222,8 @@ public abstract class ActorController extends AttributeController {
                     _lookInsideAction));
 
             if (_access == FULL) {
-                _editIconAction.setConfiguration(_configuration);
-                _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _editIconAction));
-                _removeIconAction.setConfiguration(_configuration);
-                _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                        _removeIconAction));
+                // Create an Appearance submenu.
+                _createAppearanceSubmenu();
             }
         }
     }
@@ -243,6 +237,14 @@ public abstract class ActorController extends AttributeController {
     /** The action that handles edit custom icon. */
     protected EditIconAction _editIconAction = new EditIconAction();
 
+    /** An action that handles flipping the ports horizontally. */
+    protected RotateOrFlipPorts _flipPortsHorizonal
+            = new RotateOrFlipPorts(RotateOrFlipPorts.FLIP_HORIZONTAL, "Flip Ports Horizontally");
+
+    /** An action that handles flipping the ports vertically. */
+    protected RotateOrFlipPorts _flipPortsVertical
+            = new RotateOrFlipPorts(RotateOrFlipPorts.FLIP_VERTICAL, "Flip Ports Vertically");
+
     /** The action that handles look inside.  This is accessed by
      *  by ActorViewerController to create a hot key for the editor.
      */
@@ -250,6 +252,14 @@ public abstract class ActorController extends AttributeController {
 
     /** The action that handles removing a custom icon. */
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
+    
+    /** An action that handles rotating the ports by 90 degrees. */
+    protected RotateOrFlipPorts _rotatePortsClockwise
+            = new RotateOrFlipPorts(RotateOrFlipPorts.CLOCKWISE, "Rotate Ports Clockwise");
+
+    /** An action that handles rotating the ports by 90 degrees. */
+    protected RotateOrFlipPorts _rotatePortsCounterclockwise
+            = new RotateOrFlipPorts(RotateOrFlipPorts.COUNTERCLOCKWISE, "Rotate Ports Counterclockwise");
 
     private LabelFigure _createPortLabelFigure(String string, Font font,
             double x, double y, int direction) {
@@ -305,7 +315,27 @@ public abstract class ActorController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Create an Appearance submenu. 
+     */
+    private void _createAppearanceSubmenu() {
+        _editIconAction.setConfiguration(_configuration);
+        _removeIconAction.setConfiguration(_configuration);
+        Action[] actions = {
+                _editIconAction, 
+                _removeIconAction,
+                _flipPortsHorizonal,
+                _flipPortsVertical,
+                _rotatePortsClockwise, 
+                _rotatePortsCounterclockwise};
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                actions, "Appearance"));
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     private BreakpointDialogFactory _breakpointDialogFactory;
 
     private ListenToActorAction _listenToActorAction;
@@ -316,6 +346,7 @@ public abstract class ActorController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
     ///////////////////////////////////////////////////////////////////
     //// EntityLayout
 
