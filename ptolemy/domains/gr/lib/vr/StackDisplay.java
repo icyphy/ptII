@@ -28,19 +28,31 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
+import ij.ImageStack;
 import ij.gui.StackWindow;
+
+import java.awt.Color;
+import java.awt.Container;
+
 import ptolemy.actor.gui.SizeAttribute;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.media.Picture;
 
 //////////////////////////////////////////////////////////////////////////
 //// StackDisplay
+
+
 public class StackDisplay extends Sink {
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -54,7 +66,16 @@ public class StackDisplay extends Sink {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
+        
+        imagesOrStack = new Parameter(this, "imagesOrStack");
+        imagesOrStack.setExpression("true");
+        imagesOrStack.setTypeEquals(BaseType.BOOLEAN);
+        
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+    public Parameter imagesOrStack;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -79,28 +100,35 @@ public class StackDisplay extends Sink {
      *   or if a token is received that contains a null image.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
-        if (_debugging) {
-            _debug("StackDisplay actor firing");
-        }
 
-        if (input.hasToken(0)) {
-            ObjectToken objectToken = (ObjectToken) input.get(0);
+       	if (_debugging) {
+       		_debug("StackDisplay actor firing");
+       	}
 
-            //ImageToken imageToken;
+       	if (input.hasToken(0)) {
+       		ObjectToken objectToken = (ObjectToken) input.get(0);
             ImagePlus imagePlus;
-            imagePlus = (ImagePlus) objectToken.getValue();
+            if(_imagesOrStack){
+            
+            ImageStack imageStack;
+            imageStack = (ImageStack)objectToken.getValue();
+            imagePlus = new ImagePlus("Image Stack", imageStack);
+          }else{
+            
+            imagePlus = (ImagePlus)objectToken.getValue();
+          }
+       		//FIXME What type of catch do I need?
+       		/*   try {
+       		 imageToken = (ImageToken) token;
+       		 } catch (ClassCastException ex) {
+       		     throw new IllegalActionException(this, ex,
+                       "Failed to cast " + token.getClass()
+                       + " to an ImageToken.\nToken was: " + token);
+                 }*/
+       		_frame = new StackWindow(imagePlus);        		
 
-            //FIXME What type of catch do I need?
-            /*   try {
-             imageToken = (ImageToken) token;
-             } catch (ClassCastException ex) {
-             throw new IllegalActionException(this, ex,
-             "Failed to cast " + token.getClass()
-             + " to an ImageToken.\nToken was: " + token);
-             }*/
-            /*_frame = */ new StackWindow(imagePlus);
         }
+
     }
 
     /** Initialize this actor.
@@ -110,11 +138,11 @@ public class StackDisplay extends Sink {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-
+        _imagesOrStack = ((BooleanToken)imagesOrStack.getToken()).booleanValue();
         //_oldxsize = 0;
-        //        _oldysize = 0;
-        //FIXME Do I need a container and a frame?
+//        _oldysize = 0;
 
+        //FIXME Do I need a container and a frame?
         /*   if (_container == null) {
          _container = _frame = new StackWindow(null);
          //_container = _frame.getContentPane();
@@ -126,17 +154,23 @@ public class StackDisplay extends Sink {
          }*/
     }
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** A specification of the size of the pane if it is in its own window. */
     protected SizeAttribute _paneSize;
 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    
     /** The frame, if one is used. */
-    //private StackWindow _frame;
+    private boolean _imagesOrStack;
+    private StackWindow _frame;
 
-    //private int _index = 0;
+    private int _index = 0;
+
+
 }

@@ -25,9 +25,13 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
+
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
+import ij.ImageStack;
+import ij.process.ColorProcessor;
+import ij.process.ImageProcessor;
 
 import java.awt.Image;
 
@@ -43,7 +47,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 ////StackReader
-
 /**
  An actor that reads an array of images.
 
@@ -65,12 +68,15 @@ public class StackToImage extends SDFTransformer {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
+
     public StackToImage(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input_tokenConsumptionRate.setExpression("1");
-        output_tokenProductionRate.setExpression("50");
+        
+        
+        output_tokenProductionRate.setExpression("stackSize");
 
         xResolution = new Parameter(this, "xResolution");
         xResolution.setExpression("256");
@@ -83,10 +89,12 @@ public class StackToImage extends SDFTransformer {
         stackSize = new Parameter(this, "stackSize");
         stackSize.setExpression("50");
         stackSize.setTypeEquals(BaseType.INT);
+
     }
 
     ////////////////////////////////////////////////////////////////////
     ////////               ports and parameters                  ////////
+
     //public FilePortParameter input;
     public Parameter xResolution;
 
@@ -102,31 +110,67 @@ public class StackToImage extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        _index++;
 
         ObjectToken objectToken = (ObjectToken) input.get(0);
-        _currentImagePlus = (ImagePlus) objectToken.getValue();
-
-        for (int i = 0; i < _stackSize; i++) {
-            //_currentImagePlus.setSlice(_index);
-            _currentImagePlus.setSlice(i);
-
-            //System.out.println("Output Slice " + _index);
-            System.out.println("Output Slice " + i);
+        //_currentImagePlus = (ImagePlus) objectToken.getValue();
+        _currentImageStack = (ImageStack) objectToken.getValue();
+        AWTImageToken[] _awtImageToken = new AWTImageToken[_stackSize];
+       // AWTImageToken _awtImageToken = new AWTImageToken;
+        for (int i = 1; i <= _stackSize; i++) {
+            System.out.println("i = " + i);
+            //_currentImagePlus.setSlice(i);
+          //  System.out.println("Output Slice " + _currentImagePlus.getCurrentSlice());
+          ImageProcessor imageProcessor;
+          imageProcessor = _currentImageStack.getProcessor(i);
+          _currentImagePlus = new ImagePlus("Image" + i, imageProcessor);
+         
+            //_currentImagePlus.repaintWindow();
+            _image = null;
             _image = _currentImagePlus.getImage();
+            //_currentImageStack.deleteSlice(i);
+            
+            if(_debugging){
+                _debug("Image = " + _image);   
+               }
+            System.out.println("Image = " + _image);
+            //FIXME Output an array
+            _awtImageToken[i-1] = new AWTImageToken(_image);
+            //_awtImageToken = new AWTImageToken(_image);
+            //output.broadcast(new AWTImageToken(_image));
+            if(_debugging){
+             _debug("Output  = " + _image);   
+            }
+           // _currentImagePlus = null;
+          //  _currentImagePlus = (ImagePlus) objectToken.getValue();
 
-            // _imagePlus = new ImagePlus("Image Stack", _imageStack);
-            // System.out.println("stackSize = " + _imageStack.getSize());
-            output.broadcast(new AWTImageToken(_image));
+           // _currentImagePlus.setSlice(_index);
+            //System.out.println("Output Slice " + _index);
+            //Image[] image = new Image[_stackSize];
+            //image[_index] = _currentImagePlus.getImage();
+           //  _imagePlus = new ImagePlus("Image Stack", _imageStack);
+           //  System.out.println("stackSize = " + _imageStack.getSize());
+              
         }
+        output.send(0, _awtImageToken, _awtImageToken.length);
+            //output.send(0, _awtImageToken);
     }
+    
+  /*  public boolean postfire() throws IllegalActionException{
+    	if(_index < _stackSize){
+    		    return true  ;
+    	}else{
+    		return false;  
+    	}
+    }*/
+    
 
     public void initialize() throws IllegalActionException {
         // _parameterPort =  input.getPort();
-        //FIXME: why read these and ignore the values?
-        /*_xResolution =*/ ((IntToken) xResolution.getToken()).intValue();
-        /*_yResolution =*/ ((IntToken) yResolution.getToken()).intValue();
+        _xResolution = ((IntToken) xResolution.getToken()).intValue();
+        _yResolution = ((IntToken) yResolution.getToken()).intValue();
         _stackSize = ((IntToken) stackSize.getToken()).intValue();
+      //  AWTImageToken[] _awtImageToken = new AWTImageToken[_stackSize];
+        //AWTImageToken[] _awtImageToken = null;
     }
 
     /*public boolean prefire() throws IllegalActionException {
@@ -149,43 +193,49 @@ public class StackToImage extends SDFTransformer {
      return super.prefire();
 
      }*/
+
     public boolean postfire() throws IllegalActionException {
-        if (!_stopRequested && (_index < _stackSize)) {
+        if (!_stopRequested && _index < _stackSize) {
             if (_debugging) {
                 _debug("Called postfire(), which returns true");
             }
-
             return true;
         } else {
             if (_debugging) {
                 _debug("Called postfire(), which returns false");
             }
-
             return false;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    
+    private AWTImageToken[] _awtImageToken;
+    //private AWTImageToken _awtImageToken;
+    
     //Image that is readin
-    //private ImagePlus _imagePlus;
+    private ImagePlus _imagePlus;
+    
 
     private ImagePlus _currentImagePlus;
+    private ImageStack _currentImageStack;
 
     //Image that is readin
-    //private ColorProcessor _colorProcessor;
+    private ColorProcessor _colorProcessor;
 
     //Image that is readin
-    //private ImageStack _imageStack;
+    private ImageStack _imageStack;
 
     // Image that is read in.
     private Image _image;
 
     private int _stackSize;
 
-    //private int _xResolution;
+    private int _xResolution;
 
-    //private int _yResolution;
+    private int _yResolution;
 
     private int _index = 0;
 }
