@@ -222,6 +222,8 @@ public class GRTexture2DImageReslice extends GRGeometry {
         //_quadCoords = new float[12];
         _quadCoords = new double[12];
         _texCoords = new float[8];
+        double ydimpos = .23;
+        double ydimneg = -.4375;      
 
         if (_axis == 1) {
             double curY = _counter * _planeSpacing - .5;
@@ -273,28 +275,32 @@ public class GRTexture2DImageReslice extends GRGeometry {
             
             // lower left
             _quadCoords[0] = -0.5;
-            _quadCoords[1] = -0.1;
+            //_quadCoords[1] = -0.1;
+            _quadCoords[1] = -0.3;
             _quadCoords[2] = curZ;
             _texCoords[0] = 0;
             _texCoords[1] = 0;
 
             // lower right
             _quadCoords[3] = 0.5;
-            _quadCoords[4] = -0.1;
+            //_quadCoords[4] = -0.1;
+            _quadCoords[4] = -0.3;
             _quadCoords[5] = curZ;
             _texCoords[2] = 1;
             _texCoords[3] = 0;
 
             // upper right
             _quadCoords[6] = 0.5;
-            _quadCoords[7] = 0.1;
+            //_quadCoords[7] = 0.1;
+            _quadCoords[7] = -0.1;
             _quadCoords[8] = curZ;
             _texCoords[4] = 1;
             _texCoords[5] = 1;
 
             // upper left
             _quadCoords[9] = -0.5;
-            _quadCoords[10] = 0.1;
+            //_quadCoords[10] = 0.1;
+            _quadCoords[10] = - 0.1;
             _quadCoords[11] = curZ;
 
             _texCoords[6]= 0;

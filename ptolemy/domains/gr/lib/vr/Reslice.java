@@ -29,6 +29,7 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
+import ij.ImageStack;
 import ij.plugin.Slicer;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -110,10 +111,13 @@ public class Reslice extends TypedAtomicActor {
         super.fire();
 
         ObjectToken objectToken = (ObjectToken) input.get(0);
-        ImagePlus imagePlus = (ImagePlus) objectToken.getValue();
+        //ImagePlus imagePlus = (ImagePlus) objectToken.getValue();
+        ImageStack imageStack = (ImageStack) objectToken.getValue();
+        ImagePlus imagePlus = new ImagePlus("Stack", imageStack);
         Slicer slicer = new Slicer();
         _imagePlus = slicer.reslice(imagePlus);
-        output.broadcast(new ObjectToken(_imagePlus));
+        ImageStack newImageStack = _imagePlus.getStack();
+        output.broadcast(new ObjectToken(newImageStack));
     }
 
     public void initialize() throws IllegalActionException {

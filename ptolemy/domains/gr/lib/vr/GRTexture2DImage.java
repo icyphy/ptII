@@ -223,7 +223,8 @@ public class GRTexture2DImage extends GRGeometry {
         _texCoords = new float[8];
 
         if (_axis == 1) {
-            double curY = _counter * _planeSpacing - .5;
+            //FIXME Need to make volume centered around origin
+            double curY = _counter * _planeSpacing;
 
             if (_debugging) {
                 _debug("counter = " + _counter);

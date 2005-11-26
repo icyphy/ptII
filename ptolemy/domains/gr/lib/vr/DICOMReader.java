@@ -44,6 +44,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.ObjectToken;
+import ptolemy.actor.parameters.FilePortParameter;
+import ptolemy.actor.parameters.ParameterPort;
+
 //////////////////////////////////////////////////////////////////////////
 ////DICOMReader
 
@@ -74,16 +81,25 @@ public class DICOMReader extends TypedAtomicActor {
 
         fileOrURL = new FilePortParameter(this, "fileOrURL");
 
-        output = new TypedIOPort(this, "output");
-        output.setOutput(true);
-        output.setTypeEquals(BaseType.OBJECT);
+
+        outputImage = new TypedIOPort(this, "outputImage");
+        outputImage.setOutput(true);
+        outputImage.setTypeEquals(BaseType.OBJECT);
+        
+        outputURL = new TypedIOPort(this, "outputURL");
+        outputURL.setOutput(true);
+        outputURL.setTypeEquals(BaseType.OBJECT);
+
     }
 
     ////////////////////////////////////////////////////////////////////
     ////////               ports and parameters                  ////////
     public FilePortParameter fileOrURL;
 
+    public TypedIOPort outputImage;
+    public TypedIOPort outputURL;
     public TypedIOPort output;
+
 
     ////////////////////////////////////////////////////////////////////
     ////////                public methods                     ////////
@@ -93,7 +109,11 @@ public class DICOMReader extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        output.broadcast(new AWTImageToken(_image));
+        if(_debugging){
+            _debug("Image = " + _image);   
+        }
+        outputImage.broadcast(new AWTImageToken(_image));
+        outputURL.broadcast(new ObjectToken(_url));
     }
 
     public void initialize() throws IllegalActionException {
@@ -103,7 +123,10 @@ public class DICOMReader extends TypedAtomicActor {
     public boolean prefire() throws IllegalActionException {
         super.prefire();
 
+        //FIXME Causes problems when parameter is direclty accessed without port
+
         if (_parameterPort.hasToken(0)) {
+
             fileOrURL.update();
             _readImage();
             return true;
@@ -123,10 +146,21 @@ public class DICOMReader extends TypedAtomicActor {
 
         _fileRoot = _url.getFile();
 
+        //if (_imagePlus == null) {
+            _imagePlus = new ImagePlus(_fileRoot);
+            _image = _imagePlus.getImage();
+            //DICOM _dicom;
+            //_image = ((ImagePlus)IJ.runPlugIn("ij.plugin.DICOM", _fileRoot)).getImage();
+
+        //}
+
+
+
         if (_imagePlus == null) {
             _image = ((ImagePlus) IJ.runPlugIn("ij.plugin.DICOM", _fileRoot))
                     .getImage();
         }
+
     }
 
     ///////////////////////////////////////////////////////////////////
