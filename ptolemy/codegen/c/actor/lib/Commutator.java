@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -64,73 +65,28 @@ public class Commutator extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        int portWidth = 
-            ((ptolemy.actor.lib.Commutator) getComponent()).input.getWidth();
-
-        ArrayList args = new ArrayList();
-        args.add(new Integer(portWidth));
+        ptolemy.actor.lib.Commutator actor = 
+            (ptolemy.actor.lib.Commutator) getComponent();
         
-        for (int i = 0; i < portWidth; i++) {
-            code.append(_generateBlockCode("fireBlock", args));        	
+        ArrayList args = new ArrayList();        
+        args.add("");
+        String type = 
+            _getCodeGenTypeFromPtolemyType(actor.input.getType());            
+        args.add(type);
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            String codeBlock;
+            if (_isPrimitiveType(type)) {
+                if (_isPrimitiveType(actor.output.getType())) {
+                	codeBlock = "primitiveToPrimitiveFireBlock";
+                } else {
+                	codeBlock = "primitiveToTokenFireBlock";
+                }
+            } else {
+                codeBlock = "tokenFireBlock";
+            }
+            code.append(_generateBlockCode(codeBlock, args));                
         }
-        return code.toString();        
-    }
-
-    /**
-     * Generate initialize code.
-     * Read the <code>initBlock</code> from Commutator.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-        return _generateBlockCode("initBlock");
-    }
-
-    /**
-     * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from Commutator.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        return _generateBlockCode("preinitBlock");
-    }
-
-    /**
-     * Generate wrap up code.
-     * Read the <code>wrapupBlock</code> from Commutator.c,
-     * replace macros with their values and append the processed code block
-     * to the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        super.generateWrapupCode();
-        code.append(_generateBlockCode("wrapupBlock"));
-        return code.toString();
-    }
-
-    /**
-     * Get the files needed by the code generated for the
-     * Commutator actor.
-     * @return A set of Strings that are names of the header files
-     *  needed by the code generated for the Commutator actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        super.getHeaderFiles();
-
-        Set files = new HashSet();
-        files.add("<math.h>");
-
-        return files;
+        return processCode(code.toString());
     }
 }

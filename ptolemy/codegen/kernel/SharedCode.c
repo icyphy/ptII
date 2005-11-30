@@ -1,5 +1,6 @@
 /***constantsBlock***/
 #define MISSING 0
+#define boolean unsigned char
 #define false 0
 #define true 1
 /**/
@@ -13,7 +14,6 @@ struct token {                  // Base type for tokens.
 <types>                 
     } payload;
 };
-typedef struct token Token;
 /**/
 
 

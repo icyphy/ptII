@@ -1,13 +1,17 @@
-/*** preinitBlock ***/
-    int $actorSymbol(i);
+/*** initBlock (<size>)***/
+    $token(output) = $new(Array(<size>,0));
 /**/
 
-//<type> in fireBlock is the type of the output array.
-//<size> is the number of input ports.
-/*** fireBlock(<type>, <size>)***/
-    $ref(output) = malloc(size* sizeof(<type>));
 
-    for ($actorSymbol(i) = 0; $actorSymbol(i) < <size>; $actorSymbol(i)++) {
-        $ref(output)[$actorSymbol(i)] = $ref(input, $actorSymbol(i));
-    }
+
+/*** primitiveToPrimitiveFireBlock(<channel>, <type>) ***/
+    $token(output).payload.Array->elements[<channel>] = $ref(input#<channel>);
+/**/
+
+/*** primitiveToTokenFireBlock(<channel>, <type>) ***/
+    $token(output).payload.Array->elements[<channel>] = $new(<type>($ref(input#<channel>)));
+/**/
+
+/*** tokenFireBlock(<channel>, <type>)***/
+    $token(output).payload.Array->elements[<channel>] = $token(input#<channel>);
 /**/

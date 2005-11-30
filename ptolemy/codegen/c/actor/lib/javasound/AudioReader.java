@@ -131,7 +131,7 @@ public class AudioReader extends CCodeGeneratorHelper {
         // We don't need to process the code block here because the
         // sharedCode do not contain any macros.
         Set codeBlocks = new HashSet();
-        codeBlocks.add(_generateBlockCode("sharedBlock", false));
+        codeBlocks.add(_generateBlockCode("sharedBlock"));
         return codeBlocks;
     }
 

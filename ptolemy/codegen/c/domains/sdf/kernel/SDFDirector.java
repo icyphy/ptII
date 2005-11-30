@@ -103,16 +103,17 @@ public class SDFDirector extends Director {
             Iterator actors = container.deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                functionCode.append("\nvoid " + 
+                functionCode.append("\t\nvoid " + 
                         actor.getFullName().replace('.' , '_') + "() {\n");
                 CodeGeneratorHelper actorHelper = 
                         (CodeGeneratorHelper) _getHelper((NamedObj) actor);
                 functionCode.append(actorHelper.generateFireCode());
-                functionCode.append("}\n");
+                functionCode.append(actorHelper.generateTypeConvertFireCode());
+                functionCode.append("}\t\n");
             }
             code.insert(0, functionCode);
             
-            code.append("int i;\n");
+            code.append("\tint i;\n");
         }     
       
         // Generate code for one iteration.
@@ -135,6 +136,7 @@ public class SDFDirector extends Director {
 
                     // generate fire code for the actor
                     code.append(helper.generateFireCode());
+                    code.append(helper.generateTypeConvertFireCode());
 
                     // update buffer offset after firing each actor once
                     Iterator inputPorts = actor.inputPortList().iterator();
@@ -189,8 +191,18 @@ public class SDFDirector extends Director {
      *   an actor throws it while generating initialize code for the actor.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer initializeCode = new StringBuffer();
-        initializeCode.append(super.generateInitializeCode());
+        StringBuffer code = new StringBuffer();
+        Iterator actors = ((CompositeActor) _director.getContainer())
+        .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helper = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            // Initialize code for the actor.
+            code.append(helper.generateTypeConvertInitializeCode());
+        }
+        
+        code.append(super.generateInitializeCode());
 
         ptolemy.actor.CompositeActor container = 
                 (ptolemy.actor.CompositeActor) getComponent().getContainer();
@@ -213,23 +225,22 @@ public class SDFDirector extends Director {
                         }
 
                         for (int k = 0; k < rate; k++) {
-                            initializeCode.append(containerHelper.getReference(name
+                            code.append(containerHelper.getReference(name
                                     + "," + k));
-                            initializeCode.append(" = ");
-                            initializeCode.append(containerHelper.getReference("@"
+                            code.append(" = ");
+                            code.append(containerHelper.getReference("@"
                                     + name + "," + k));
-                            initializeCode.append(";\n");
+                            code.append(";\n");
                         }
                     }
                 }
                 
                 // The offset of the ports connected to the output port is 
                 // updated by outside director.
-                _updatePortOffset(outputPort, initializeCode, rate);
+                _updatePortOffset(outputPort, code, rate);
             }
         }
-
-        return initializeCode.toString();
+        return code.toString();
     }
     
     /** Generate code for transferring enough tokens to complete an internal

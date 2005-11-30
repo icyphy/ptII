@@ -1,10 +1,5 @@
 /***sharedBlock***/
-    // Shared block contains code that is shared by multiple instances
-    // of the helper from the same type, so it should not contain any
-    // $actorSymbol(), $val(), $ref(), or any actor specific marcos.
-    // Any method or type declarations should be prefixed with the actor
-    // type name followed by an underscore (e.g. ActorName_method)./**/
-    struct AudioPlayer_soundBuffer {
+    struct $actorClass(soundBuffer) {
         SDL_AudioSpec spec;
         Uint8   *sound;             /* Pointer to wave data */
         Uint32   soundLength;       /* Length of wave data */
@@ -13,7 +8,7 @@
 /**/
 
 /***preinitBlock***/
-    struct AudioPlayer_soundBuffer $actorSymbol(wave);
+    struct $actorClass(soundBuffer) $actorSymbol(wave);
     unsigned int $actorSymbol(bitsPerSample);     
 /**/
 

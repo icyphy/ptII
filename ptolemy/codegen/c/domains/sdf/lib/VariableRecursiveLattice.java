@@ -30,7 +30,6 @@ package ptolemy.codegen.c.domains.sdf.lib;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -67,7 +66,7 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
         code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
+        return processCode(code.toString());
     }
 
     /**
@@ -83,7 +82,7 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
         code.append(_generateBlockCode("initBlock"));
-        return code.toString();
+        return processCode(code.toString());
     }
 
     /**
@@ -96,12 +95,11 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("preinitBlock");
-
-        return processCode(_codeStream.toString());
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        _codeStream.clear();
+        code.append(_generateBlockCode("preinitBlock"));
+        return processCode(code.toString());
     }
 
     /**
@@ -119,7 +117,7 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
         super.generateWrapupCode();
 
         ptolemy.domains.sdf.lib.VariableRecursiveLattice actor = (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
-        CodeStream _codeStream = new CodeStream(this);
+        _codeStream.clear();
         _codeStream.appendCodeBlock("wrapupBlock");
 
         code.append(processCode(_codeStream.toString()));

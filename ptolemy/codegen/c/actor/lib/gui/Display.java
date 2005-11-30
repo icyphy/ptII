@@ -72,24 +72,17 @@ public class Display extends CCodeGeneratorHelper {
         _codeStream.clear();
 
         String type = "";
-        if (actor.input.getType() == BaseType.INT) {
-            type = "Int";
-        } else if (actor.input.getType() == BaseType.DOUBLE) {
-            type = "Double";
-        } else if (actor.input.getType() == BaseType.STRING) {
-            type = "String";
-        } else {
+        type = _getCodeGenTypeFromPtolemyType(actor.input.getType());
+        if (!_isPrimitiveType(type)) {
             type = "Token";
         }
         
         ArrayList args = new ArrayList();
+        args.add(actor.getName());
         args.add(new Integer(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
-            TypedIOPort port = 
-                (TypedIOPort) actor.input.sourcePortList().get(i);
-
-            args.set(0, Integer.toString(i));
-            _codeStream.appendCodeBlock("print" + type, args);
+            args.set(1, Integer.toString(i));
+            _codeStream.appendCodeBlock(type + "PrintBlock", args);
         }
         code.append(processCode(_codeStream.toString()));
         
@@ -107,7 +100,7 @@ public class Display extends CCodeGeneratorHelper {
         super.getHeaderFiles();
 
         Set files = new HashSet();
-        files.add("\"stdio.h\"");
+        files.add("<stdio.h>");
         return files;
     }
 }

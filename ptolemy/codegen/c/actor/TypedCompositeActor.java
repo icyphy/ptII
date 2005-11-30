@@ -33,9 +33,13 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
+import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -84,7 +88,6 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  After the generateFireCode() method of the director helper returns, 
      *  generate code for transferring any output data created by calling the 
      *  local director helper's generateTransferOutputsCode() method.
-     * 
      *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor, or
@@ -118,7 +121,6 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             IOPort outputPort = (IOPort) outputPorts.next();
             directorHelper.generateTransferOutputsCode(outputPort, code);
         }
-        
         return code.toString();
     }
 
@@ -221,13 +223,33 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     /** Generate variable declarations for input ports, output ports and 
      *  parameters if necessary.
      *  @param code The string buffer that the generated code is appended to.
+     *  @return code The generated code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating variable declarations for 
      *   the actor.
      */
-    public void generateVariableDeclaration(StringBuffer code)
-            throws IllegalActionException {
-        super.generateVariableDeclaration(code);
+    public String generateVariableDeclaration() throws IllegalActionException {
+    	StringBuffer code = new StringBuffer();
+        code.append("\n/* Composite actor's variable declarations. */\n");
+        code.append(super.generateVariableDeclaration());
+        
+        // Generate variable declarations for modified variables.
+        Iterator modifiedVariables = getModifiedVariables().iterator();        
+        while (modifiedVariables.hasNext()) {
+            Variable variable = (Variable) modifiedVariables.next();
+            code.append("\t" + _generateType(variable.getType()));            
+            code.append(" " + variable.getFullName().replace('.', '_'));
+            code.append(" = ");
+            PtParser parser = new PtParser();
+            ASTPtRootNode parseTree = 
+                    parser.generateParseTree(variable.getExpression());
+            ParseTreeCodeGenerator parseTreeCodeGenerator = 
+                    new ParseTreeCodeGenerator();
+            parseTreeCodeGenerator.evaluateParseTree(parseTree,
+                    new HelperScope(variable));
+            code.append(parseTreeCodeGenerator.generateFireCode());
+            code.append(";\n");
+        }
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
@@ -236,8 +258,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) 
                     _getHelper((NamedObj) actor);
-            helperObject.generateVariableDeclaration(code);
+            code.append(helperObject.generateVariableDeclaration());
         }
+        return processCode(code.toString());
     }
 
     /** Generate the wrapup code of the associated composite actor. It returns

@@ -160,7 +160,7 @@ public class LineReader extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        files.add("\"stdio.h\"");
+        files.add("<stdio.h>");
         return files;
     }
 

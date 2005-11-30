@@ -5,24 +5,19 @@
 // while invoking putsample() in the fire code wait the semaphore.
 
 /***sharedBlock ***/
-    // Shared block contains code that is shared by multiple instances
-    // of the helper from the same type, so it should not contain any
-    // $actorSymbol(), $val(), $ref(), or any actor specific marcos.
-    // Any method or type declarations should be prefixed with the actor
-    // type name followed by an underscore (e.g. ActorName_method)./**/
-    struct AudioPlayer_sample {
+    struct $actorClass(sample) {
         Uint8 *data;            /* Pointer to wave data */
         Uint32 dataPosition;    /* Position of the next data to be mixed */
         Uint32 dataLength;      /* Length of wave data */
     };
     
     // FIXME: how should we determine the buffer size??
-    #define AudioPlayer_BUFFER_SIZE 32500   // ~50 KB buffer size
+    #define $actorClass(BUFFER_SIZE) 32500   // ~50 KB buffer size
 
     // FIXME: what should we set the audio buffer size in samples equals to??
-    #define AudioPlayer_SAMPLE_BUFFER_SIZE 16384
+    #define $actorClass(SAMPLE_BUFFER_SIZE) 16384
     
-    double AudioPlayer_clip (double num) {
+    double $actorClass(clip) (double num) {
         return num > 1.0 ? 1.0 : num < -1.0 ? -1.0 : num;
     }
 /**/

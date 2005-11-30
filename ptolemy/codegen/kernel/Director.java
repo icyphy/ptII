@@ -28,6 +28,7 @@
 package ptolemy.codegen.kernel;
 
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -113,7 +114,7 @@ public class Director implements ActorCodeGenerator {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) 
                     _getHelper((NamedObj) actor);
-            code.append(helperObject.generateFireCode());
+            code.append(helperObject.generateFireCode());            
         }
         return code.toString();
     }
@@ -144,24 +145,6 @@ public class Director implements ActorCodeGenerator {
                 int rate = DFUtilities.getTokenInitProduction(port);
                 _updateConnectedPortsOffset(port, code, rate);
             }    
-
-            // Initialize code for inter-actor port type conversion. 
-            Hashtable refTable = (Hashtable) helperObject.
-                getInfo(CodeGeneratorHelper.FIELD_REFCONVERT);
-            if (refTable != null) {
-                Enumeration ports = refTable.keys();  
-                while (ports.hasMoreElements()) {
-                    String portRef = (String) ports.nextElement();
-                    String convertMethod = (String) refTable.get(portRef);
-                    
-                    // Initialize only if it is converting to a Token type.
-                    if (convertMethod.indexOf("new") > -1) {
-                        code.append(helperObject.processCode("\t" +
-                                   helperObject._getReference(portRef) + 
-                                   " = " + convertMethod + "(0);\n"));
-                    }
-                }
-            }
         }
         return code.toString();
     }
@@ -511,10 +494,11 @@ public class Director implements ActorCodeGenerator {
      */
     protected CodeGenerator _codeGenerator;
 
+    /** The associate director.
+     */
+    protected ptolemy.actor.Director _director;
+
     ////////////////////////////////////////////////////////////////////
     ////                     private variables                      ////
 
-    /** The associate director.
-     */
-    private ptolemy.actor.Director _director;
 }

@@ -32,9 +32,9 @@ import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -51,8 +51,8 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -186,12 +186,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
         
+        // perform port type conversion. This has to be before generation
+        // of other codes.
+        _checkPortTypeConversion();        
+
         // We separate the generation and the appending into 2 phases.
         // This would be convenience for making addition passes, and
         // for adding additional code into different sections.
         String sharedCode = generateSharedCode();
         String includeFiles = generateIncludeFiles();
         String preinitializeCode = generatePreinitializeCode();
+        String variableDeclareCode = generateVariableDeclaration(); 
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         String fireFunctionCode = null;;
@@ -199,19 +204,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             fireFunctionCode = generateFireFunctionCode();         
         }
         String wrapupCode = generateWrapupCode();
-
+        
+        // generate type resolution code has to be after 
+        // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeResolutionCode();
 
         // The appending phase.
         code.append(includeFiles);
         code.append(sharedCode);
         code.append(typeResolutionCode);
-        generateVariableDeclarations(code);
-        code.append(preinitializeCode);
         if (!inline) {
             code.append(fireFunctionCode);         
         }
         code.append("\n\nmain(int argc, char *argv[]) {\n");
+        code.append(variableDeclareCode);
+        code.append(preinitializeCode);
         code.append(initializeCode);
         code.append(bodyCode);
         code.append(wrapupCode);
@@ -356,10 +363,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  actor generates the shared code.
      */
     public String generateSharedCode() throws IllegalActionException {
-        // perform port type conversion. This has to be before generation
-        // of other codes.
-        _checkPortTypeConversion();        
-
         StringBuffer code = new StringBuffer();
         code.append(comment("Generate shared code for "
                 + getContainer().getFullName()));
@@ -418,6 +421,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Determine the total number of referenced polymorphic functions.
         HashSet functions = new HashSet();        
         HashSet types = new HashSet();
+        types.addAll(_primitiveTypes);
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -425,18 +429,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             CodeGeneratorHelper helperObject = 
                 (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
-            Set set = (Set) helperObject
-                    .getInfo(CodeGeneratorHelper.FIELD_TYPEFUNC);
-
-            if (set != null) {
-                functions.addAll(set);
-            }
-
-            set = (Set) helperObject.getInfo(CodeGeneratorHelper.FIELD_NEW);
-
-            if (set != null) {
-                types.addAll(set);
-            }
+            functions.addAll(helperObject._typeFuncUsed);
+            types.addAll(helperObject._newTypesUsed);
         }
         // The constructor of Array requires calling the convert function.  
         if (types.contains("Array")) {
@@ -453,6 +447,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i]
                             + ".c");
+            // FIXME: we need to compute the [partial] order of the hierarchy. 
             code.append("#define TYPE_" + typesArray[i] + " " + i + "\n");
 
             // Dynamically generate all the types within the union.
@@ -466,7 +461,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         for (int i = 0; i < functions.size(); i++) {
             code.append("#define FUNC_" + functionsArray[i] + " " + i + "\n");
         }
-                
+        code.append("typedef struct token Token;");
+        
         // Generate type and function definitions.
         for (int i = 0; i < types.size(); i++) {
             // The "declareBlock" contains all necessary declarations for the
@@ -482,10 +478,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             args.add(typeMembers);
             sharedStream.clear();
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
+            code.append(sharedStream.toString());
         }
+
+        for (int i = 0; i < types.size(); i++) {
+            // The "funcDeclareBlock" contains all function declarations for
+            // the type.
+            typeStreams[i].clear();
+            typeStreams[i].appendCodeBlock("funcDeclareBlock");
+            code.append(typeStreams[i].toString());
+        }
+
         // FIXME: in the future we need to load the convertPrimitivesBlock
         // dynamically, and maybe break it into multiple blocks to minimize
         // code size.
+        sharedStream.clear();
         sharedStream.appendCodeBlock("convertPrimitivesBlock");
         code.append(sharedStream.toString());
         
@@ -493,8 +500,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (functions.size() > 0 && types.size() > 0) {
             code.append("#define NUM_TYPE " + types.size() + "\n");
             code.append("#define NUM_FUNC " + functions.size() + "\n");
-            code.append("void* (*functionTable" +
-                    "[NUM_TYPE][NUM_FUNC])(Token*)= {\n");
+            code.append("Token (*functionTable" +
+                    "[NUM_TYPE][NUM_FUNC])(Token)= {\n");
             for (int i = 0; i < types.size(); i++) {
                 code.append("\t");
                 for (int j = 0; j < functions.size(); j++) {
@@ -539,37 +546,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Generate variable declarations for inputs and outputs and parameters.
      *  Append the declarations to the given string buffer.
-     *  @param code The given string buffer.
+     *  @return code The generated code.
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
      */
-    public void generateVariableDeclarations(StringBuffer code)
-            throws IllegalActionException {
+    public String generateVariableDeclaration() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
         code.append("\n\n");
         code.append(comment("Variable Declarations "
                 + getContainer().getFullName()));
 
-        // Generate variable declarations for modified variables.
-        Iterator modifiedVariables = _modifiedVariables.iterator();
-
         TypedCompositeActor compositeActorHelper = 
             (TypedCompositeActor) _getHelper(getContainer());
 
-        while (modifiedVariables.hasNext()) {
-            Variable variable = (Variable) modifiedVariables.next();
-            boolean isArrayType = compositeActorHelper._generateType(variable,
-                    code);
-
-            if (isArrayType) {
-                code.append("[ ]");
-            }
-
-            code.append(" = ");
-            code.append(variable.getToken().toString());
-            code.append(";\n");
-        }
-
-        compositeActorHelper.generateVariableDeclaration(code);
+        code.append(compositeActorHelper.generateVariableDeclaration());
+        return code.toString();
     }
 
     /** Generate into the specified code stream the code associated with
@@ -728,86 +719,73 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-
+            CodeGeneratorHelper helper = 
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            
             for (int i = 0; i < actor.inputPortList().size(); i++) {
             	TypedIOPort inputPort = 
                     ((TypedIOPort) actor.inputPortList().get(i));
-            	for (int j = 0; j < inputPort.sourcePortList().size(); j++) {
-            		TypedIOPort srcPort = 
+
+                // j is the source port channel index in the input port.
+                for (int j = 0; j < inputPort.sourcePortList().size(); j++) {
+            		TypedIOPort sourcePort = 
                         ((TypedIOPort) inputPort.sourcePortList().get(j));
                     
-                    Type srcType = srcPort.getType();
-                    Type targetType = inputPort.getType();
-                    
-                    if (targetType != srcType) {
-                        CodeGeneratorHelper srcHelper = (CodeGeneratorHelper) 
-                        _getHelper(srcPort.getContainer());
+                    if (!inputPort.getType().equals(sourcePort.getType())) {
+                        String sourceType = CodeGeneratorHelper.
+                        _getCodeGenTypeFromPtolemyType(sourcePort.getType());
+                        String targetType = CodeGeneratorHelper.
+                        _getCodeGenTypeFromPtolemyType(inputPort.getType());
 
-                        // Init the port conversion and type fields.
-                        Hashtable refConvertTable = (Hashtable) srcHelper.
-                            getInfo(CodeGeneratorHelper.FIELD_REFCONVERT);
-                        Hashtable refTypeTable = (Hashtable) srcHelper.
-						    getInfo(CodeGeneratorHelper.FIELD_REFDECLARETYPE);
-                        
-                        if (refConvertTable == null) {
-                            refConvertTable = new Hashtable();
-                            refTypeTable = new Hashtable();
-                            srcHelper.getInfoTable().put(CodeGeneratorHelper.
-                                    FIELD_REFCONVERT, refConvertTable);
-                            srcHelper.getInfoTable().put(CodeGeneratorHelper.
-                                    FIELD_REFDECLARETYPE, refTypeTable);
-                        }
+                        CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) 
+                        _getHelper(sourcePort.getContainer());
                         
                         // Record the needed inter-actor type conversions.
-                        String refName = srcPort.getName();
-                        if (targetType == BaseType.GENERAL) {
-                            String type = "";
-                            if (srcType == BaseType.INT) {
-                                type = "Int";
-                            } else if (srcType == BaseType.LONG) {
-                                type = "Long";
-                            } else if (srcType == BaseType.DOUBLE) {
-                                type = "Double";
-                            } else if (srcType == BaseType.BOOLEAN) {
-                                type = "Boolean";
-                            } else {
-                                // This is ok. Since other types should be of
-                                // Token type. Here, we are only concern with
-                                // converting primitive type to Token type.
-                            }
-                            
-                            if (!type.equals("")) {
-                                // Record the referenced type in the infoTable.
-                                Set types = (Set) srcHelper.getInfo(
-                                        CodeGeneratorHelper.FIELD_NEW);
-                                if (types == null) {
-                                    types = new HashSet();
-                                    srcHelper.getInfoTable().put(
-                                            CodeGeneratorHelper.FIELD_NEW, types);
-                                }
-                            	types.add(type);      
-                                refConvertTable.put(refName, type + "_new");                 
-                                refTypeTable.put(refName, "Token*");
-                            }
-                        } else if (targetType == BaseType.STRING) {
-                            if (srcType == BaseType.INT) {
-                                refConvertTable.put(refName, "itoa");
-                            } else if (srcType == BaseType.LONG) {
-                                refConvertTable.put(refName, "ltoa");
-                            } else if (srcType == BaseType.DOUBLE) {
-                                refConvertTable.put(refName, "dtoa");            
-                            } else if (srcType == BaseType.BOOLEAN) {
-                                refConvertTable.put(refName, "btoa");                                
+                        // **Source port reference name is uniquely identified
+                        // by "[NAME]#[INDEX]", its name and its channel#.
+                        String refName = sourcePort.getName();
+                        refName += "#" + sourceHelper._getChannelIndex(
+                                inputPort, j, sourcePort);
+                        
+                        if (targetType.equals("Token")) {
+                            // Record the referenced type in the infoTable.
+                            sourceHelper._newTypesUsed.add(sourceType);
+                            sourceHelper._portConversions.put(refName, sourceType + "_new");
+                            sourceHelper._portDeclareTypes.put(refName, "Token");
+                        } else if (targetType.equals("String")) {
+                            if (sourceType.equals("Int")) {
+                                sourceHelper._portConversions.put(refName, "itoa");
+                            } else if (sourceType.equals("Long")) {
+                                sourceHelper._portConversions.put(refName, "ltoa");
+                            } else if (sourceType.equals("Double")) {
+                                sourceHelper._portConversions.put(refName, "ftoa");            
+                            } else if (sourceType.equals("Boolean")) {
+                                sourceHelper._portConversions.put(refName, "btoa");                                
                             } else {
                                 throw new IllegalActionException(
                                     "Port type conversion not handled -- from "
-                                    + srcType + " to " + targetType + ".\n");                                
+                                    + sourceType + " to " + targetType + ".\n");                                
                             }
-                            refTypeTable.put(refName, "char*");
+                            sourceHelper._portDeclareTypes.put(refName, "char*");
+                        } else if (targetType.equals("Double")) {
+                            if (sourceType.equals("Int")) {
+                                // C would take care of converting
+                                // from int to double.
+                            } else {
+                                throw new IllegalActionException(
+                                    "Port type conversion not handled -- from "
+                                    + sourceType + " to " + targetType + ".\n");                                
+                            }
+                        } else if (targetType.equals("Array")) {
+                        	
                         } else {
-                        	throw new IllegalActionException(
-                                "Port type conversion not handled -- from "
-                                + srcType + " to " + targetType + ".\n");
+                        	// FIXME: we may have to handle other port conversion types.
+                            //throw new IllegalActionException(
+                            //    "Port type conversion not handled -- from "
+                            //    + sourceType + " to " + targetType + ".\n");
+                            throw new IllegalActionException(
+                                    "Port type conversion not handled -- from "
+                                    + sourceType + " to " + targetType + ".\n");                                
                         }                        
                     } 
                 }
@@ -887,6 +865,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected Set _modifiedVariables;
 
+    /** 
+     * A static list of all primitive types supported by the code generator. 
+     */
+    protected static List _primitiveTypes = Arrays.asList(new String[] {
+            "Int", "Double", "String", "Boolean"});
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     

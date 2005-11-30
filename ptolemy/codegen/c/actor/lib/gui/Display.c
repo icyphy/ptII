@@ -1,17 +1,17 @@
-/*** printInt(<channel>) ***/
-    printf("Display: %d\n", $ref(input#<channel>));
+/*** IntPrintBlock(<name>, <channel>) ***/
+    printf("<name>: %d\n", $ref(input#<channel>));
 /**/
 
-/*** printDouble(<channel>) ***/
-    printf("Display: %g\n", $ref(input#<channel>));
+/*** DoublePrintBlock(<name>, <channel>) ***/
+    printf("<name>: %g\n", $ref(input#<channel>));
 /**/
 
-/*** printString(<channel>) ***/
-    printf("Display: %s\n", $ref(input#<channel>));
+/*** StringPrintBlock(<name>, <channel>) ***/
+    printf("<name>: %s\n", $ref(input#<channel>));
 /**/
 
-/*** printToken(<channel>) ***/
-    printf("Display: ");
-    $typeFunc($ref(input)[<channel>], print());
+/*** TokenPrintBlock(<name>, <channel>) ***/
+    printf("<name>: ");
+    $typeFunc($token(input#<channel>), print());
     printf("\n");
 /**/

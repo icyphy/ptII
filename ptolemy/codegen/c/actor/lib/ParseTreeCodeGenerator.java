@@ -202,7 +202,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
 
         //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
-        _fireCode.append("$new(Array(" + numChildren);
+        _fireCode.append("$new(Array(" + numChildren + ", " + numChildren);
 
         // Convert up to LUB. 
         // Assume UNKNOWN is the lower type.
@@ -217,21 +217,17 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
             Type valueType = tokens[i].getType();
 
-            if (valueType.equals(BaseType.INT)) {
+            if (valueType == BaseType.INT) {
                 _fireCode.insert(nextIndex, "$new(Int(");
-                _fireCode.append(")), TYPE_Int");
-            } else if (valueType.equals(BaseType.DOUBLE)) {
+                _fireCode.append("))");
+            } else if (valueType == BaseType.DOUBLE) {
                 _fireCode.insert(nextIndex, "$new(Double(");
-                _fireCode.append(")), TYPE_Double");
-            } else if (valueType.equals(BaseType.STRING)) {
+                _fireCode.append("))");
+            } else if (valueType == BaseType.STRING) {
                 _fireCode.insert(nextIndex, "$new(String(");
-                _fireCode.append(")), TYPE_String");
+                _fireCode.append("))");
             } else if (valueType instanceof ArrayType) {
-                _fireCode.append(", TYPE_Array");
-            } else if (valueType instanceof TopMatrixType
-                    || valueType instanceof SizedMatrixType
-                    || valueType instanceof UnsizedMatrixType) {
-                _fireCode.append(", TYPE_Matrix");
+            } else if (valueType  == BaseType.MATRIX) { 
             }
 
             if (!elementType.equals(valueType)) { // find max type

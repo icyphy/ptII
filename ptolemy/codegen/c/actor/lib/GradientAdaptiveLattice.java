@@ -79,11 +79,10 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
      * @return The processed code string.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        _codeStream.clear();
-        _codeStream.appendCodeBlock("initBlock");
-        return processCode(_codeStream.toString());
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateInitializeCode());
+        code.append(this._generateBlockCode("initBlock"));
+        return processCode(code.toString());
     }
 
     /**

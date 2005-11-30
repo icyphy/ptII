@@ -31,7 +31,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -64,45 +68,48 @@ public class ElementsToArray extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-
-        ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
-        _codeStream.clear();
-        ArrayList args = new ArrayList();
-        args.add(actor.input.getType().toString());
-        args.add(Integer.toString(actor.input.getWidth()));
-
-        _codeStream.appendCodeBlock("fireBlock", args);
-        code.append(processCode(_codeStream.toString()));        
-        return code.toString();
+        ptolemy.actor.lib.ElementsToArray actor = 
+            (ptolemy.actor.lib.ElementsToArray) getComponent();
+        
+        ArrayList args = new ArrayList();        
+        args.add("");
+        String type = 
+            _getCodeGenTypeFromPtolemyType(actor.input.getType());            
+        args.add(type);
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            String codeBlock;
+            if (_isPrimitiveType(type)) {
+                if (_isPrimitiveType(actor.output.getType())) {
+                    codeBlock = "primitiveToPrimitiveFireBlock";
+                } else {
+                    codeBlock = "primitiveToTokenFireBlock";
+                }
+            } else {
+                codeBlock = "tokenFireBlock";
+            }
+            code.append(_generateBlockCode(codeBlock, args));                
+        }
+        return processCode(code.toString());
     }
-
+    
     /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from ElementsToArray.c,
+     * Generate initialize code.
+     * This method reads the <code>initBlock</code> from ElementsToArray.c,
      * replaces macros with their values and returns the processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      * @return The processed code string.
      */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
-        super.generatePreinitializeCode();
+    public String generateInitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        ptolemy.actor.lib.ElementsToArray actor = 
+            (ptolemy.actor.lib.ElementsToArray) getComponent();
 
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("preinitBlock");
-        return processCode(_codeStream.toString());
-    }
-
-    /**
-     * Get the files needed by the code generated for the
-     * ElementsToArray actor.
-     * @return A set of strings that are names of the header files
-     *  needed by the code generated for the ElementsToArray actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
-        files.add("\"stdio.h\"");
-        return files;
+        ArrayList args = new ArrayList();
+        args.add(new Integer(actor.input.getWidth()));
+        code.append(_generateBlockCode("initBlock", args));
+        return processCode(code.toString());
     }
 }

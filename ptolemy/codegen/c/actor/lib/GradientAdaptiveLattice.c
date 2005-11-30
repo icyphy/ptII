@@ -5,12 +5,10 @@
     double $actorSymbol(_backwardCache)[$actorSymbol(_order)+1];
     double $actorSymbol(_forward)[$actorSymbol(_order)+1];
     double $actorSymbol(_forwardCache)[$actorSymbol(_order)+1];
-    double $actorSymbol(_reflectionCoefficients)[] = $val(reflectionCoefficients);
+    Token  $actorSymbol(_reflectionCoefficients) = $val(reflectionCoefficients);
     double $actorSymbol(_estimatedErrorPower)[$actorSymbol(_order)+1];
     double $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(_order)+1];
     double $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(_order)];
-    double $actorSymbol(_outputArray)[$actorSymbol(_order)];
-    double $actorSymbol(outputArray)[$actorSymbol(_order)];
     
     int $actorSymbol(i);
     double $actorSymbol(k);
@@ -25,6 +23,12 @@
 /**/
 
 /*** initBlock ***/
+    $token(adaptedReflectionCoefficients) = $new(Array($actorSymbol(_order), 0));
+    //$token(adaptedReflectionCoefficients).payload.Array->elementsType = TYPE_Double;
+    for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order); $actorSymbol(i)++) {
+        $token(adaptedReflectionCoefficients).payload.Array->elements[$actorSymbol(i)].type = TYPE_Double;
+    }
+    
     for ($actorSymbol(i) = 0; $actorSymbol(i) <= $actorSymbol(_order); $actorSymbol(i)++) {
         $actorSymbol(_forward)[$actorSymbol(i)] = 0;
         $actorSymbol(_backward)[$actorSymbol(i)] = 0;
@@ -48,17 +52,16 @@
     // NOTE: The following code is ported from Ptolemy Classic.
     // Update forward errors.
     for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order); $actorSymbol(i)++) {
-        $actorSymbol(k) = $actorSymbol(_reflectionCoefficients)[$actorSymbol(i)];
+        $actorSymbol(k) = $actorSymbol(_reflectionCoefficients).payload.Array->elements[$actorSymbol(i)].payload.Double;
         $actorSymbol(_forwardCache)[$actorSymbol(i) + 1] = (-$actorSymbol(k) * $actorSymbol(_backwardCache)[$actorSymbol(i)]) + $actorSymbol(_forwardCache)[$actorSymbol(i)];
     }
-
 
     // Backward: Compute the weights for the next round Note:
     // strictly speaking, _backwardCache[_order] is not necessary
     // for computing the output.  It is computed for the use of
     // subclasses which adapt the reflection coefficients.
     for ($actorSymbol(i) = $actorSymbol(_order); $actorSymbol(i) > 0; $actorSymbol(i)--) {
-        $actorSymbol(k) = $actorSymbol(_reflectionCoefficients)[$actorSymbol(i) - 1];
+        $actorSymbol(k) = $actorSymbol(_reflectionCoefficients).payload.Array->elements[$actorSymbol(i) - 1].payload.Double;
         $actorSymbol(_backwardCache)[$actorSymbol(i)] = (-$actorSymbol(k) * $actorSymbol(_forwardCache)[$actorSymbol(i) - 1]) + $actorSymbol(_backwardCache)[$actorSymbol(i) - 1];
 
         $actorSymbol(fe_i) = $actorSymbol(_forwardCache)[$actorSymbol(i)];
@@ -67,7 +70,7 @@
         $actorSymbol(be_ip) = $actorSymbol(_backwardCache)[$actorSymbol(i) - 1];
 
         $actorSymbol(newError) = ($actorSymbol(_estimatedErrorPower)[$actorSymbol(i)] * $actorSymbol(_oneMinusAlpha)) + ($actorSymbol(_alpha) * (($actorSymbol(fe_ip) * $actorSymbol(fe_ip)) + ($actorSymbol(be_ip) * $actorSymbol(be_ip))));
-        $actorSymbol(newCoefficient) = $actorSymbol(_reflectionCoefficients)[$actorSymbol(i) - 1];
+        $actorSymbol(newCoefficient) = $actorSymbol(_reflectionCoefficients).payload.Array->elements[$actorSymbol(i) - 1].payload.Double;
 
         if ($actorSymbol(newError) != 0.0) {
             $actorSymbol(newCoefficient) += (($actorSymbol(_alpha) * (($actorSymbol(fe_i) * $actorSymbol(be_ip)) + ($actorSymbol(be_i) * $actorSymbol(fe_ip)))) / $actorSymbol(newError));
@@ -79,16 +82,10 @@
             }
         }
 
-        $actorSymbol(_outputArray)[$actorSymbol(i) - 1] = $actorSymbol(newCoefficient);
+        $token(adaptedReflectionCoefficients).payload.Array->elements[$actorSymbol(i) - 1].payload.Double = $actorSymbol(newCoefficient);
         $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(i) - 1] = $actorSymbol(newCoefficient);
         $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(i)] = $actorSymbol(newError);
     }
-
-    //arraycopy(_outputArray, 0, outputArray, 0, _order);
-    for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order); $actorSymbol(i)++) {
-        $actorSymbol(outputArray)[$actorSymbol(i)] = $actorSymbol(_outputArray)[$actorSymbol(i)];
-    }
-    $ref(adaptedReflectionCoefficients) = $actorSymbol(outputArray);
 
     $actorSymbol(_backwardCache)[0] = $actorSymbol(_forwardCache)[0]; // _backwardCache[0] = x[n]
 
@@ -105,7 +102,7 @@
         $actorSymbol(_forward)[$actorSymbol(i)] = $actorSymbol(_forwardCache)[$actorSymbol(i)];
     }
     for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order); $actorSymbol(i)++) {
-        $actorSymbol(_reflectionCoefficients)[$actorSymbol(i)] = $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(i)];
+        $actorSymbol(_reflectionCoefficients).payload.Array->elements[$actorSymbol(i)].payload.Double = $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(i)];
     }
 /**/
 
