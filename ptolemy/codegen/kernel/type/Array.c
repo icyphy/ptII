@@ -1,48 +1,58 @@
 /***declareBlock***/
 struct array {
-    char elementsType;  // type of all the elements.
     int size;           // size of the array.
-    Token **elements;   // array of pointers to the elements. 
+    Token* elements;    // array of Token elements.
 };
 typedef struct array* ArrayToken;
-Token* Array_convert(Token* token);
-void Array_print(Token* thisToken);
 /**/
 
+/***funcDeclareBlock***/
+Token Array_convert(Token token);
+Token Array_print(Token thisToken);
+
+Token Array_get(Token token, int i) {   
+    return token.payload.Array->elements[i];
+}
+/**/
 
 /***newBlock***/
 // make a new array from the given values
 // assume that number of the rest of the arguments == length,
 // and they are in the form of (element, element, ...).
-Token* Array_new(int size, ...) {   
+Token Array_new(int size, int given, ...) {   
     int i;
-    Token** element = (Token**) (&size + 1);
-    char doConvert = false;
+    char elementType;
+    Token* element;
+    boolean doConvert = false;
 
-    Token* result = (Token*) malloc(sizeof(Token*));
-    result->type = TYPE_Array;
-    result->payload.Array = (ArrayToken) malloc(sizeof(struct array));
-    result->payload.Array->elements = (Token**) calloc(size, sizeof(Token*));
-    result->payload.Array->size = size;
-    result->payload.Array->elementsType = (*element)->type;
+    Token result;
+    result.type = TYPE_Array;
+    result.payload.Array = (ArrayToken) malloc(sizeof(struct array));
+    result.payload.Array->size = size;
+    if (given > 0) {
+        element = (Token*) (&size + 2);
+        elementType = element->type;
+    }
 
-    for (i = 0; i < size; i++, element++) {
-        if ((*element)->type != result->payload.Array->elementsType) {
+    // Allocate an new array of Tokens.
+    result.payload.Array->elements = (Token*) calloc(size, sizeof(Token));
+    for (i = 0; i < given; i++, element++) {
+        if (element->type != elementType) {
             doConvert = true;
 
             // Get the max type.
-            if ((*element)->type > result->payload.Array->elementsType) {
-                result->payload.Array->elementsType = (*element)->type;
+            if (element->type > elementType) {
+                elementType = element->type;
             }
         }
-        result->payload.Array->elements[i] = *element;
+        result.payload.Array->elements[i] = *element;
     }
-
+    
     // If elements are not of the same type, 
     // convert all the elements to the max type.
     if (doConvert) {
-        for (i = 0; i < size; i++) {
-            result->payload.Array->elements[i] = (Token*) functionTable[result->payload.Array->elementsType][FUNC_convert](result->payload.Array->elements[i]);
+        for (i = 0; i < given; i++) {
+            result.payload.Array->elements[i] = (Token) functionTable[elementType][FUNC_convert](result.payload.Array->elements[i]);
         }
     }
     return result;
@@ -50,37 +60,37 @@ Token* Array_new(int size, ...) {
 /**/
 
 /***deleteBlock***/
-void Array_delete(Token* token) {   
+Token Array_delete(Token token) {   
     // Delete each elements.
-    for (i = 0; i < token->payload.Array->size; i++) {
+    for (i = 0; i < token.payload.Array->size; i++) {
         functionTable[token->elements[i]->type][FUNC_delete](token->elements[i]);
     }
-    free(token->payload.Array);
-    free(token);
+    free(token.payload.Array->elements);
+    free(token.payload.Array);
 }
 /**/
 
 /***convertBlock***/
-Token* Array_convert(Token* token) {
-    Token* oldToken = token;
-    Token* result = token;    // return the old pointer by default.
+Token Array_convert(Token token) {
+    Token oldToken = token;
+    Token result = token;    // return the old pointer by default.
 
-    switch (token->type) {
+    switch (token.type) {
         #ifdef TYPE_Int
             case TYPE_Int:
-                result = Array_new(1, TYPE_Int, token, TYPE_Int);
+                result = Array_new(1, TYPE_Int, token);
                 break;
         #endif
         
         #ifdef TYPE_Double
             case TYPE_Double:
-                result = Array_new(1, TYPE_Double, token, TYPE_Double);
+                result = Array_new(1, TYPE_Double, token);
                 break;
         #endif
         
         #ifdef TYPE_String
             case TYPE_String:
-                result = Array_new(1, TYPE_String, token, TYPE_String);
+                result = Array_new(1, TYPE_String, token);
                 break;
         #endif
         
@@ -94,14 +104,14 @@ Token* Array_convert(Token* token) {
 /**/
 
 /***printBlock***/
-void Array_print(Token* thisToken) {
+Token Array_print(Token thisToken) {
     int i;
     printf("{");
-    for (i = 0; i < thisToken->payload.Array->size; i++) {
+    for (i = 0; i < thisToken.payload.Array->size; i++) {
         if (i != 0) {
             printf(", ");
         }
-        functionTable[thisToken->payload.Array->elementsType][FUNC_print](thisToken->payload.Array->elements[i]);
+        functionTable[thisToken.payload.Array->elements[i].type][FUNC_print](thisToken.payload.Array->elements[i]);
     }
     printf("}");
 }
