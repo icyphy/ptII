@@ -639,13 +639,33 @@ public class DEDirector extends Director implements TimedDirector {
      *  @return The time stamp of the next event in the event queue.
      */
     public Time getModelNextIterationTime() {
-        // Go through hierarchy to find the minimum step.
         Time aFutureTime = Time.POSITIVE_INFINITY;
 
+        // Record the model next iteration time as the tag of the the earliest 
+        // event in the queue.  
         if (_eventQueue.size() > 0) {
             aFutureTime = _eventQueue.get().timeStamp();
         }
+
+        // Iterate the event queue to find the earliest event with a bigger tag
+        // ((either timestamp or microstop). If such an event exists, 
+        // use its time as the model next iteration time. If no such event 
+        // exists, it means that the model next iteration time still needs to
+        // be resolved. In other words, the model next iteration time is 
+        // just the current time.
+        Object[] events = _eventQueue.toArray();
+        for (int i = 0; i < events.length; i++) {
+            DEEvent event = (DEEvent) events[i];
+            Time eventTime = event.timeStamp();
+            int eventMicrostep = event.microstep();
+            if (eventTime.compareTo(getModelTime()) > 0 ||
+                    eventMicrostep > _microstep) {
+                aFutureTime = eventTime;
+                break;
+            }
+        }
         
+        // Go through hierarchy to find the minimum step.
         Director executiveDirector = 
             ((CompositeActor) getContainer()).getExecutiveDirector();
         if (executiveDirector != null) {

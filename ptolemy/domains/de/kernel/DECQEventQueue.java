@@ -171,6 +171,13 @@ public class DECQEventQueue implements DEEventQueue {
         return (DEEvent) _cQueue.take();
     }
 
+    /** Return the events currently in the queue as an array.
+     *  @return The events currently in the queue.
+     */
+    public final Object[] toArray() {
+        return _cQueue.toArray();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private inner class               ////
     // An implementation of the CQComparator interface for use with
