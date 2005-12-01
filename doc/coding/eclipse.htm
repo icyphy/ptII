@@ -208,6 +208,8 @@ the ptII project.  Assuming Eclipse is running:
  <br> Or, if you have an individual read/write
 CVS account on source, you can use your source user name 
 and password. 
+and use
+ <br>&nbsp;&nbsp;&nbsp;Repository path: <CODE>/home/cvs</CODE>
 
 <li> Select <CODE>pserver</CODE>.
  <p><B>Note:</B> Most users will select <CODE>pserver</CODE> because
@@ -223,7 +225,7 @@ for details.
 <p>
 <li> <a name="CVSDSL">If you are connecting via a DSL connection</a>, you may
 want to use compression to transfer files:
-In Window -&gt; Preferences -&gt; Team -&gt; CVS -&gt; Connection change Compression Level
+In Window -&gt; Preferences -&gt; Team -&gt; CVS -&gt; Connection tab, change Compression Level
 to 9. 
 <p>
 <li> In the CVS Repositories View window, click + sign to the left of the repository and then on the + sign to the left of HEAD until you see the <CODE>ptII</CODE> Head.
@@ -265,6 +267,10 @@ You can now browse the source files.
 the file in the ptII home directory called
 <CODE>.classpath.default</CODE> and copy it into a new file called
 <CODE>.classpath</CODE>.
+ <br>Note that you can use the Eclipse Navigator browse to the
+<CODE>.classpath.default</CODE> file, open the file, copy the contents,
+open <CODE>.classpath.in</CODE>, paste the contents and save.
+ <br>Or, you can use Windows Explorer or the shell.
 
 <li> In Eclipse, perform a Refresh on the ptII project
 by Window-&gt;Open Perspective-&gt;Java,
