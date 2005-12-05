@@ -1256,9 +1256,13 @@ public class DEDirector extends Director implements TimedDirector {
     private void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor) getContainer();
         LinkedList actors = (LinkedList) container.deepEntityList();
-        _actorToDepth = new Hashtable(actors.size());
+        int numberOfActors = actors.size();
+        _actorToDepth = new Hashtable(numberOfActors);
 
         Iterator actorsIterator = actors.iterator();
+        
+        // The depth of an actor starts with a negative number.
+        int defaultActorDepth = - numberOfActors;
 
         while (actorsIterator.hasNext()) {
             Actor actor = (Actor) actorsIterator.next();
@@ -1274,6 +1278,7 @@ public class DEDirector extends Director implements TimedDirector {
             // is to reduce unnecessary number of firings. In particular,
             // if an actor receives a trigger event that has the same tag as
             // one of its pure event, one firing is sufficient.
+            
             int depth = -1;
             Iterator inputs = actor.inputPortList().iterator();
 
@@ -1297,7 +1302,15 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             }
 
+            // Note that if an actor has no ports, the defaultActorDepth,
+            // which is a negative number, will be used such that each
+            // actor has a unique depth.
+            if (depth == -1) {
+                depth = defaultActorDepth;
+            }
             _actorToDepth.put(actor, new Integer(depth));
+            // Increment the default depth value for the next actor.
+            defaultActorDepth++;
         }
 
         // If the event queue is not empty, we should update the depths of
