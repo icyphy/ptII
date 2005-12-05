@@ -1159,11 +1159,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /**
-     * Generate code 
-     * @param port
-     * @param channel
-     * @param code
-     * @exception
+     * Generate the type conversion variable declarations for a given port.
+     * These are extra variable declarations that are needed for port type
+     * conversion between actors.
+     * @param port The given port.
+     * @param code The given code buffer to append to.
+     * @exception Thrown if the associated helper is not found, or if the
+     *  source port channel index is not found, or if the buffer size of 
+     *  the given port cannot be determined, or if the given port name
+     *  reference is not found.
      */
     protected void _generateTypeConvertVariableDeclaration (TypedIOPort port, 
             StringBuffer code) throws IllegalActionException {
@@ -1209,6 +1213,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @param sourceIndex The source channel index in the sink port.
      * @param sourcePort The source port.
      * @return The index of the sink port in the source port.
+     * @exception Thrown if the channel index of the source port is not found.
      */
     protected int _getChannelIndex (TypedIOPort sinkPort, 
             int sourceIndex, TypedIOPort sourcePort) 
