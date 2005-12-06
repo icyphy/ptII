@@ -1072,7 +1072,7 @@ if [ "$error" = "none" ]; then
     
     if [ "$makebat" = "1" ]; then   
 	# Pathname to java binary without forward slashes or /cygdrive/c/
-	backslashJava=`echo ${PTJAVA_DIR_CLEAN}/bin/java | sed 's@/@\\\@g'`
+	backslashJava=`echo ${PTJAVA_DIR_CLEAN}/bin/javaw | sed 's@/@\\\@g'`
 
 	makebatstr="\"${backslashJava}\" $jdbflags $javaflag $ptflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
 
