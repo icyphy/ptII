@@ -59,6 +59,7 @@ public class Transform {
         int newWidth = width;
         int newHeight = height;
 
+        
         if ((rotate == 90) || (rotate == 270)) {
             newWidth = height;
             newHeight = width;
@@ -72,11 +73,12 @@ public class Transform {
         AffineTransform rotateAffineTransform = new AffineTransform();
 
         // Convert rotate to radians.
-        rotateAffineTransform.rotate(rotate * (Math.PI / 180.0F), width / 2,
-                height / 2);
+        rotateAffineTransform.rotate(rotate * (Math.PI / 180.0F), width/2, height/2);
 
-        rotateAffineTransform.translate((width / 2) - (height / 2), (width / 2)
-                - (height / 2));
+       if (!((rotate == 180) || (rotate == 360))){
+        	rotateAffineTransform.translate((width / 2) - (height / 2), (width / 2)
+        			- (height / 2));
+        }
 
         // Paint image.
         Graphics2D graphics2d = outputImage.createGraphics();
