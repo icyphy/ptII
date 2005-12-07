@@ -31,7 +31,9 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.actor.Manager;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
@@ -65,14 +67,22 @@ import ptolemy.util.MessageHandler;
  If no configuration is specified on the command line, then
  the MoML file ptolemy/configs/runConfiguration.xml is loaded before
  other command line arguments are processed.
- <p>
 
- If one of the command-line arguments is -exit, then System.exit()
- is called when all the models are finished running.
-
- If there are no command-line arguments at all, then this class
+ <p> If one of the command-line arguments is -exit, then System.exit()
+ is called when all the models are finished running.  System.exit()
+ returns 0 if all the models finished without throwing an exception,
+ otherwise it returns an integer that represents the number of models
+ that threw an exception.  The main() method calls System.exit()
+ as well and returns an integer that represents the number of models
+ that threw an exception.
+ 
+ <p>If there are no command-line arguments at all, then this class
  does nothing.
 
+ <p> This class will bring up the GUI and usually requires access
+to a display. The {@link ptolemy.actor.gui.MoMLSimpleApplication}
+class will run models in a non-graphical context.
+ 
  @author Edward A. Lee, Steve Neuendorffer Christopher Hylands
  @version $Id$
  @since Ptolemy II 1.0
@@ -100,6 +110,38 @@ public class PtExecuteApplication extends MoMLApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**  Display a stack trace because one of the models has an error.
+     *  A dialog box with the stack trace is created, the stack trace
+     *  is printed to stderr and the eventual exiting of the process
+     *  is delayed so the stack trace can be read.
+     *  @param manager The manager calling this method.
+     */
+
+    public synchronized void executionError(Manager manager,
+            Throwable throwable) {
+
+        // If you modify this code, make sure that the following command
+        // prints a meaningful message to stdout:
+        //  $PTII/bin/ptexecute $PTII/ptolemy/domains/sdf/kernel/test/auto/knownFailedTests/tunneling2.xml 
+
+        // One of the models has an error, so we set the return value of
+        // the java process to something other than 1.
+        _exitValue++;
+        MessageHandler.error("Command failed", throwable);
+
+        // Delay exiting for two seconds so the stack trace is visible.
+        // FIXME: this is not the best way to do this.  The user will
+        // not have time to really read the message.  A better design
+        // would be to some how prevent the process from exiting until
+        // after the stack trace dialog is closed.
+        _test = true;
+
+        // Print the stack trace on standard error.
+        System.err.print(KernelException.stackTraceToString(throwable));
+
+        super.executionError(manager, throwable);
+    }
+
     /** Create a new instance of this application, passing it the
      *  command-line arguments.
      *  @param args The command-line arguments.
@@ -109,10 +151,16 @@ public class PtExecuteApplication extends MoMLApplication {
             PtExecuteApplication application = new PtExecuteApplication(args);
             application.runModels();
             application.waitForFinish();
-            System.exit(0);
-        } catch (Exception ex) {
-            MessageHandler.error("Command failed", ex);
-            System.exit(0);
+        } catch (Throwable throwable) {
+            MessageHandler.error("Command failed", throwable);
+            // Be sure to print the stack trace so that 
+            // "$PTII/bin/ptexecute -foo" prints something.
+            System.err.print(KernelException.stackTraceToString(throwable));
+
+            _exitValue++;
+            
+            // Keep the process running so the dialog can be displayed.
+            _test = true;
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -121,9 +169,8 @@ public class PtExecuteApplication extends MoMLApplication {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
-
-            System.exit(0);
         }
+        System.exit(_exitValue);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,7 +185,8 @@ public class PtExecuteApplication extends MoMLApplication {
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
         if (_configurationURL == null) {
-            _configurationURL = specToURL("ptolemy/configs/runConfiguration.xml");
+            _configurationURL =
+                specToURL("ptolemy/configs/runConfiguration.xml");
         }
 
         MoMLParser parser = new MoMLParser();
@@ -274,6 +322,9 @@ public class PtExecuteApplication extends MoMLApplication {
     // might be expensive.
     private URL _configurationURL;
 
+    // Return value of this process.  0 = everything ok, 2 = had an exception.
+    private static int _exitValue = 0;
+    
     // Flag indicating that the previous argument was -conf
     private boolean _expectingConfiguration = false;
 }
