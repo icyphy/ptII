@@ -50,7 +50,6 @@ import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
@@ -130,16 +129,6 @@ import ptolemy.util.StringUtilities;
  No configuration will be created and no models will be opened.
  Derived classes can specify a configuration that opens some
  welcome window, or a blank editor.
-
- <p> The main() method of this class calls System.exit() when all the
- models are finished running.  System.exit() returns 0 if all the
- models finished without throwing an exception, otherwise it returns
- an integer that represents the number of models that threw an
- exception.
-
- <p> This class will bring up the GUI and usually requires access
-to a display. The {@link ptolemy.actor.gui.MoMLSimpleApplication}
-class will run models in a non-graphical context.
 
  @author Edward A. Lee and Steve Neuendorffer, Contributor: Christopher Hylands
  @version $Id$
@@ -270,32 +259,13 @@ public class MoMLApplication implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**  Display a stack trace because one of the models has an error.
-     *  A dialog box with the stack trace is created, the stack trace
-     *  is printed to stderr and the eventual exiting of the process
-     *  is delayed so the stack trace can be read.
+    /** Reduce the count of executing models by one.  If the number of
+     *  executing models drops to zero, then notify threads that might
+     *  be waiting for this event.
      *  @param manager The manager calling this method.
      *  @param throwable The throwable being reported.
      */
     public synchronized void executionError(Manager manager, Throwable throwable) {
-        // If you change this code, make sure these commands print
-        // something meaningful:
-        // $PTII/bin/ptinvoke ptolemy.actor.gui.MoMLApplication -foo
-        // $PTII/bin/ptexecute $PTII/ptolemy/domains/sdf/kernel/test/auto/knownFailedTests/tunneling2.xml 
-
-        _exitValue++;
-        MessageHandler.error("Command failed", throwable);
-
-        // Delay exiting for two seconds so the stack trace is visible.
-        // FIXME: this is not the best way to do this.  The user will
-        // not have time to really read the message.  A better design
-        // would be to some how prevent the process from exiting until
-        // after the stack trace dialog is closed.
-        _test = true;
-
-        // Print the stack trace on standard error.
-        System.err.print(KernelException.stackTraceToString(throwable));
-
         _activeCount--;
 
         if (_activeCount == 0) {
@@ -323,17 +293,9 @@ public class MoMLApplication implements ExecutionListener {
     public static void main(String[] args) {
         try {
             new MoMLApplication(args);
-        } catch (Throwable throwable) {
-            MessageHandler.error("Command failed", throwable);
-            // Be sure to print the stack trace so that 
-            // "$PTII/bin/ptinvoke ptolemy.actor.gui.MoMLApplication -foo"
-            // prints something.
-            System.err.print(KernelException.stackTraceToString(throwable));
-
-            _exitValue++;
-            
-            // Keep the process running so the dialog can be displayed.
-            _test = true;
+        } catch (Exception ex) {
+            MessageHandler.error("Command failed", ex);
+            System.exit(0);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -342,9 +304,9 @@ public class MoMLApplication implements ExecutionListener {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
-        }
-        System.exit(_exitValue);
 
+            System.exit(0);
+        }
     }
 
     /** Do nothing.
@@ -1084,9 +1046,6 @@ public class MoMLApplication implements ExecutionListener {
     /** Indicator that -runThenExit was requested. */
     protected boolean _exit = false;
 
-    // Return value of this process.  0 = everything ok, 2 = had an exception.
-    protected static int _exitValue = 0;
-    
     /** The parser used to construct the configuration. */
     protected MoMLParser _parser;
 
