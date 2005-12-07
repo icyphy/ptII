@@ -48,6 +48,7 @@ import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
@@ -293,9 +294,12 @@ public class MoMLApplication implements ExecutionListener {
     public static void main(String[] args) {
         try {
             new MoMLApplication(args);
-        } catch (Exception ex) {
-            MessageHandler.error("Command failed", ex);
-            System.exit(0);
+        } catch (Throwable throwable) {
+            MessageHandler.error("Command failed", throwable);
+            // Be sure to print the stack trace so that 
+            // "$PTII/bin/moml -foo" prints something.
+            System.err.print(KernelException.stackTraceToString(throwable));
+            System.exit(1);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
