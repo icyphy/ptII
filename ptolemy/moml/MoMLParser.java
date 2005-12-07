@@ -1477,6 +1477,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Reset the MoML parser, forgetting about any previously parsed
      *  models.
+     *  @see #purgeModelRecord(String)
      */
     public void reset() {
         _attributes = new HashMap();
