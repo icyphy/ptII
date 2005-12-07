@@ -36,7 +36,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-# set VERBOSE 1
+set VERBOSE 1
 
 ######################################################################
 ####
@@ -57,11 +57,14 @@ test PtExecuteApplication-1.1 {check result of running the model} {
         set modelc [java::cast ptolemy.actor.CompositeActor $model]
         set rec [java::cast ptolemy.actor.lib.Recorder \
                 [$modelc getEntity "rec"]]
-        lappend result [listToStrings [$rec getHistory 0]]
+	lappend result [listToStrings [$rec getHistory 0]]
+	$modelc setContainer [java::null]
     }
+    java::call ptolemy.moml.MoMLParser purgeModelRecord test.xml
     list $result
 } {{{0 1 2}}}
 
+sleep 2 0
 test PtExecuteApplication-1.2 {check parameter handling} {
     set cmdArgs [java::new {java.lang.String[]} 3 \
             {{-step} {4} {test.xml}}]
@@ -74,14 +77,19 @@ test PtExecuteApplication-1.2 {check parameter handling} {
         set modelc [java::cast ptolemy.actor.CompositeActor $model]
         set rec [java::cast ptolemy.actor.lib.Recorder \
                 [$modelc getEntity "rec"]]
-        lappend result [listToStrings [$rec getHistory 0]]
+	lappend result [listToStrings [$rec getHistory 0]]
+	$modelc setContainer [java::null]
     }
+    java::call ptolemy.moml.MoMLParser purgeModelRecord test.xml
     list $result
 } {{{0 4 8}}}
 
+set parser [java::new ptolemy.moml.MoMLParser]
+$parser reset
+
+sleep 2 0
 test PtExecuteApplication-1.3 {check parameter handling} {
-    set cmdArgs [java::new {java.lang.String[]} 3 \
-            {{-director.iterations} {5} {test.xml}}]
+    set cmdArgs [java::new {java.lang.String[]} 3            {{-director.iterations} {5} {test.xml}}]
     set app [java::new ptolemy.actor.gui.PtExecuteApplication $cmdArgs]
     set models [listToObjects [$app models]]
     set result {}
@@ -91,7 +99,10 @@ test PtExecuteApplication-1.3 {check parameter handling} {
         set modelc [java::cast ptolemy.actor.CompositeActor $model]
         set rec [java::cast ptolemy.actor.lib.Recorder \
                 [$modelc getEntity "rec"]]
-        lappend result [listToStrings [$rec getHistory 0]]
+	lappend result [listToStrings [$rec getHistory 0]]
+	puts [$modelc exportMoML]
+	$modelc setContainer [java::null]
     }
+    java::call ptolemy.moml.MoMLParser purgeModelRecord test.xml
     list $result
 } {{{0 1 2 3 4}}}
