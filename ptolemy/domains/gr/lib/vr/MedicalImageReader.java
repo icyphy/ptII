@@ -150,7 +150,7 @@ import ptolemy.kernel.util.NameDuplicationException;
     ////                         private methods                   ////
     
     /** Read the image from the URL or String provided */
-    private void _readImage() throws IllegalActionException {
+    protected void _readImage() throws IllegalActionException {
         if (_isURL)
         {
         	_url = fileOrURL.asURL();
@@ -164,8 +164,13 @@ import ptolemy.kernel.util.NameDuplicationException;
         }
         
         //if (_imagePlus == null) {
-            _imagePlus = new ImagePlus(_fileRoot);
-            _image = _imagePlus.getImage();
+        if (_imagePlus == null) {
+            _image = ((ImagePlus) IJ.runPlugIn("ij.plugin.DICOM", _fileRoot))
+                    .getImage();
+        }
+
+      /*      _imagePlus = new ImagePlus(_fileRoot);
+            _image = _imagePlus.getImage();*/
             
     }
 

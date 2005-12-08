@@ -363,11 +363,12 @@ public class GRTexture2D extends GRGeometry {
         //FIXME Are the parameters for ComponentSampleModel correct?
         int pixelStride = 3;
         int scanlineStride = _sSize * 3;
-        ComponentSampleModel componentSampleModel = new ComponentSampleModel(0,
+    
+/*        ComponentSampleModel componentSampleModel = new ComponentSampleModel(0,
                 _sSize, _tSize, pixelStride, scanlineStride, new int[] { 0, 0,
-                        0, 0 });
-
-        System.out.println("# dataElements = "
+                        0});*/
+        
+        /*System.out.println("# dataElements = "
                 + componentSampleModel.getNumDataElements());
         System.out.println("# Bands = " + componentSampleModel.getNumBands());
         System.out.println("componentSampleModel width = "
@@ -400,26 +401,36 @@ public class GRTexture2D extends GRGeometry {
         int[] offset1 = ((ComponentSampleModel) componentSampleModel)
                 .getBandOffsets();
         System.out.println("componentSampleModel band offsets = " + offset1[0]
-                + ", " + offset1[1] + ", " + offset1[2] + ", " + offset1[3]);
+                + ", " + offset1[1] + ", " + offset1[2] + ", " + offset1[3]);*/
 
         //Create ColorModel and componentSampleModel
-        ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel(
-                ColorSpace.getInstance(ColorSpace.CS_sRGB), new int[] { 8, 8,
-                        8, 8 }, // bits
+       ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel(
+                ColorSpace.getInstance(ColorSpace.CS_sRGB), 
+                //new int[] { 8, 8, 8,8 }, // bits
                 true, // alpha
                 false, // alpha pre-multiplied
-                Transparency.TRANSLUCENT, DataBuffer.TYPE_BYTE);
+                Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+        
+     /*   ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel(
+                ColorSpace.getInstance(ColorSpace.CS_sRGB), 
+                //new int[] { 8, 8, 8}, // bits
+                false, // alpha
+                false, // alpha pre-multiplied
+                Transparency.OPAQUE, DataBuffer.TYPE_BYTE);*/
         ComponentColorModel componentColorModel = new ComponentColorModel(
                 ColorSpace.getInstance(ColorSpace.CS_sRGB),
                 //new int[] {64,64,64,64} , // bits
                 true, // alpha
-                false, // alpha pre-multiplied
+                true, // alpha pre-multiplied
                 Transparency.TRANSLUCENT,
                 //DataBuffer.TYPE_BYTE 
                 // DataBuffer.TYPE_FLOAT
                 DataBuffer.TYPE_DOUBLE);
 
         //Create Writable Raster
+        ComponentSampleModel componentSampleModel = new ComponentSampleModel(0,
+                _sSize, _tSize, pixelStride, scanlineStride, new int[] { 2, 0,
+                        0, 0 });
         Raster raster = _bufferedImage.getData();
         DataBuffer dataBuffer = raster.getDataBuffer();
         WritableRaster writableRaster = Raster.createWritableRaster(
@@ -430,7 +441,11 @@ public class GRTexture2D extends GRGeometry {
 
         BufferedImage bufferedImagewoAlpha = new BufferedImage(
                 componentColorModelwoAlpha, writableRaster, false, hashtable);
-
+        DataBuffer newDataBuffer =(bufferedImagewoAlpha.getData()).getDataBuffer();
+        System.out.println("NewDataBuffer = " + newDataBuffer );
+        System.out.println("NewDataBufferSize = " + newDataBuffer.getSize());
+        
+        System.out.println("NewDataBufferNumBanks = " + newDataBuffer.getNumBanks());
         //      Get alpha raster and manipulate values
         //double fraction = 1 / 255;
 
@@ -469,7 +484,7 @@ public class GRTexture2D extends GRGeometry {
         //float[] dataArray =  new float[arrayLength*4];
         SampleModel sampleModel = componentColorModel
                 .createCompatibleSampleModel(_sSize, _tSize);
-        System.out.println("# dataElements = "
+      /*  System.out.println("# dataElements = "
                 + sampleModel.getNumDataElements());
         System.out.println("# Bands = " + sampleModel.getNumBands());
         System.out.println("SampleModel width = " + sampleModel.getWidth());
@@ -495,7 +510,7 @@ public class GRTexture2D extends GRGeometry {
 
         int[] offset = ((ComponentSampleModel) sampleModel).getBandOffsets();
         System.out.println("SampleModel band offsets = " + offset[0] + ", "
-                + offset[1] + ", " + offset[2] + ", " + offset[3]);
+                + offset[1] + ", " + offset[2] + ", " + offset[3]);*/
 
         //Create DataBuffer with alpha channel
         DataBufferDouble dataBufferDouble = new DataBufferDouble(pixelArray,
@@ -546,15 +561,19 @@ public class GRTexture2D extends GRGeometry {
 
         //writableRaster.setSamples(0,0,_sSize,_tSize,0, alphaArray);
         //Create bufferedImage and Load
-        _bufferedImage = new BufferedImage(componentColorModel, writableRaster,
-                false, hashtable);
+        //_bufferedImage = new BufferedImage(componentColorModel, writableRaster,
+            //    false, hashtable);
 
         TextureLoader loader = new TextureLoader(bufferedImagewoAlpha,
                 _viewScreen.getCanvas());
-        System.out.println("AlphaRaster = " + _bufferedImage.getAlphaRaster());
+        System.out.println("BufferedImage = " +_bufferedImage);
+        System.out.println("BufferedImage w/o Alpha = " + bufferedImagewoAlpha);
+        //TextureLoader loader = new TextureLoader(_bufferedImage,
+          //      _viewScreen.getCanvas());
+/*        System.out.println("AlphaRaster = " + _bufferedImage.getAlphaRaster());
         System.out.println("Alpha Raster values = "
                 + _bufferedImage.getAlphaRaster().getSample(2, 2, 0));
-        System.out.println("AlphaArray[4] = " + alphaArray[4]);
+        System.out.println("AlphaArray[4] = " + alphaArray[4]);*/
 
         /* Set loaded texture*/
         Texture loadedTexture = loader.getTexture();

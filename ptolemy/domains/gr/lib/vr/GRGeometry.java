@@ -310,8 +310,6 @@ abstract public class GRGeometry extends GRActor3D {
             _transparencyAttributes = new TransparencyAttributes(mode,
                     transparent);
 
-            //_transparencyAttributes = new TransparencyAttributes();
-            //_transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
             _appearance.setTransparencyAttributes(_transparencyAttributes);
         }
 

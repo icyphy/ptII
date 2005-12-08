@@ -71,6 +71,8 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.jai.JAIImageToken;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.AWTImageToken;
+import ptolemy.data.DoubleToken;
+//import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.IntToken;
@@ -226,7 +228,7 @@ public class GRTexture2DImageReslice extends GRGeometry {
         double ydimneg = -.4375;      
 
         if (_axis == 1) {
-            double curY = _counter * _planeSpacing - .5;
+            double curY = _counter * _planeSpacing - .5f;
 
             if (_debugging) {
                 _debug("counter = " + _counter);
@@ -239,31 +241,31 @@ public class GRTexture2DImageReslice extends GRGeometry {
             // it 90 degrees about the x-axis.
             
             // lower left
-            _quadCoords[0] = -0.5;
+            _quadCoords[0] = -0.5f;
             //_quadCoords[0] = 5;
             _quadCoords[1] = curY;
-            _quadCoords[2] = (_tSize/256)-0.5;
+            _quadCoords[2] = (_tSize/256f)-0.5f;
             _texCoords[0] = 0;
             _texCoords[1] = 0;
 
             // lower right
-            _quadCoords[3] = (_sSize/256)-0.5;
+            _quadCoords[3] = (_sSize/256f)-0.5f;
             _quadCoords[4] = curY;
-            _quadCoords[5] = (_tSize/256)-0.5;
+            _quadCoords[5] = (_tSize/256f)-0.5f;
             _texCoords[2] = 1;
             _texCoords[3] = 0;
 
             // upper right
-            _quadCoords[6] = (_sSize/256)-0.5;
+            _quadCoords[6] = (_sSize/256f)-0.5f;
             _quadCoords[7] = curY;
-            _quadCoords[8] = -0.5;
+            _quadCoords[8] = -0.5f;
             _texCoords[4] = 1;
             _texCoords[5] = 1;
 
             // upper left
-            _quadCoords[9] = -0.5;
+            _quadCoords[9] = -0.5f;
             _quadCoords[10] = curY;
-            _quadCoords[11] = -0.5;
+            _quadCoords[11] = -0.5f;
             _texCoords[6] = 0;
             _texCoords[7] = 1;
         } else if (_axis == 2) {
@@ -274,39 +276,39 @@ public class GRTexture2DImageReslice extends GRGeometry {
             //are aligned accordingly
             
             // lower left
-            _quadCoords[0] = -0.5;
+            _quadCoords[0] = -(_sSize/512f);
             //_quadCoords[1] = -0.1;
-            _quadCoords[1] = -0.3;
+            _quadCoords[1] = -(_tSize/512f);
             _quadCoords[2] = curZ;
             _texCoords[0] = 0;
             _texCoords[1] = 0;
 
             // lower right
-            _quadCoords[3] = 0.5;
+            _quadCoords[3] = _sSize/512f;
             //_quadCoords[4] = -0.1;
-            _quadCoords[4] = -0.3;
+            _quadCoords[4] = -(_tSize/512f);
             _quadCoords[5] = curZ;
             _texCoords[2] = 1;
             _texCoords[3] = 0;
 
             // upper right
-            _quadCoords[6] = 0.5;
+            _quadCoords[6] = _sSize/512f;
             //_quadCoords[7] = 0.1;
-            _quadCoords[7] = -0.1;
+            _quadCoords[7] = _tSize/512f;
             _quadCoords[8] = curZ;
             _texCoords[4] = 1;
             _texCoords[5] = 1;
 
             // upper left
-            _quadCoords[9] = -0.5;
+            _quadCoords[9] = -(_sSize/512f);
             //_quadCoords[10] = 0.1;
-            _quadCoords[10] = - 0.1;
+            _quadCoords[10] = _tSize/512f;
             _quadCoords[11] = curZ;
 
             _texCoords[6]= 0;
             _texCoords[7]= 1;
-        }else if (_axis == 0){
-            double curX = _counter * _planeSpacing -.5;
+        }/*else if (_axis == 0){
+            float curX = _counter * _planeSpacing -.5;
             
             //Set coordinates for the plane.  These coordinates assume
             //that the the image's origin is at the lower left and the planes
@@ -315,7 +317,7 @@ public class GRTexture2DImageReslice extends GRGeometry {
 
             _texCoords[6] = 0;
             _texCoords[7] = 1;
-        } else if (_axis == 0) {
+        } */else if (_axis == 0) {
             double curX = _counter * _planeSpacing - .5;
             /** Set coordinates for the plane.  These coordinates assume
              * that the the image's origin is at the lower left and the planes
@@ -324,29 +326,29 @@ public class GRTexture2DImageReslice extends GRGeometry {
 
             // lower left
             _quadCoords[0] = curX;
-            _quadCoords[1] = -0.5;
-            _quadCoords[2] = 0.5;
+            _quadCoords[1] = -0.5f;
+            _quadCoords[2] = 0.5f;
             _texCoords[0] = 0;
             _texCoords[1] = 0;
 
             // lower right
             _quadCoords[3] = curX;
-            _quadCoords[4] = -0.5;
-            _quadCoords[5] = -0.5;
+            _quadCoords[4] = -0.5f;
+            _quadCoords[5] = -0.5f;
             _texCoords[2] = 1;
             _texCoords[3] = 0;
 
             // upper right
             _quadCoords[6] = curX;
-            _quadCoords[7] = 0.5;
-            _quadCoords[8] = -0.5;
+            _quadCoords[7] = 0.5f;
+            _quadCoords[8] = -0.5f;
             _texCoords[4] = 1;
             _texCoords[5] = 1;
 
             // upper left
             _quadCoords[9] = curX;
-            _quadCoords[10] = 0.5;
-            _quadCoords[11] = 0.5;
+            _quadCoords[10] = 0.5f;
+            _quadCoords[11] = 0.5f;
             _texCoords[6] = 0;
             _texCoords[7] = 1;
 

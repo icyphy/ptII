@@ -192,7 +192,7 @@ import ptolemy.kernel.util.NameDuplicationException;
     /** Read images into stack.
      * @exception IllegalActionException If URL is null.
      */
-    private void _readStack() throws IllegalActionException {
+    protected void _readStack() throws IllegalActionException {
         _imageStack = new ImageStack(_xResolution, _yResolution);
         Token[] token = input.get(0, _stackSize);
         

@@ -434,7 +434,7 @@ public class GRTexture2DFloat extends GRGeometry {
                    );
         ComponentColorModel componentColorModel = new ComponentColorModel 
         (ColorSpace.getInstance(ColorSpace.CS_sRGB) ,
-                   //new int[] {64,64,64,64} , // bits
+                   new int[] {32,32,32,32} , // bits
                    true, // alpha
                    false , // alpha pre-multiplied
                    Transparency.TRANSLUCENT ,
@@ -452,7 +452,7 @@ public class GRTexture2DFloat extends GRGeometry {
         Hashtable hashtable = new Hashtable();
         
         
-        BufferedImage bufferedImagewoAlpha = new BufferedImage( componentColorModelwoAlpha,
+        BufferedImage bufferedImagewoAlpha = new BufferedImage( componentColorModel,
                 writableRaster, false, hashtable); 
       
     
@@ -579,17 +579,17 @@ public class GRTexture2DFloat extends GRGeometry {
     /**Read in file. */
     protected void _readImage() throws IllegalActionException {
        
-        /*_token = input.get(0);
+        _token = input.get(0);
         ObjectToken objectToken = (ObjectToken) _token;
         _url = (URL) objectToken.getValue();
-        _fileRoot = _url.getFile();*/
+        _fileRoot = _url.getFile();
         
         /**Use if input is an ImageToken */
-           _token = input.get(0);
+       /*    _token = input.get(0);
             AWTImageToken imageToken = (AWTImageToken) _token;
             _image = imageToken.asAWTImage();
             System.out.println("token = " + _token.getType());
-            System.out.println("token = " + _token.getClass().toString());
+            System.out.println("token = " + _token.getClass().toString());*/
         
         /*
         _url = texture.asURL();
