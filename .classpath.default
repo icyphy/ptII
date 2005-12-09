@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry
-        excluding="**/CVS/|**/codeDoc/|config/|ptolemy/backtrack/test/|ptolemy/copernicus/c/test/|ptolemy/copernicus/c/test/cm/|doc/coding/templates/|doc/doclets/|ptolemy/apps/|ptolemy/domains/ct/demo/Saber/|ptolemy/domains/gr/|ptolemy/domains/gr/lib/experimental/|ptolemy/domains/pdf/|ptolemy/plot/servlet/|vendors/|ptolemy/copernicus/jhdl/|ptolemy/actor/lib/jai/|ptolemy/actor/lib/jmf/|ptolemy/actor/lib/joystick/|ptolemy/actor/lib/colt/|ptolemy/actor/lib/x10/|ptolemy/domains/gr/lib/quicktime/"
+        excluding="**/CVS/|**/codeDoc/|config/|ptolemy/backtrack/|ptolemy/backtrack/ast/|ptolemy/backtrack/test/|ptolemy/backtrack/util/|ptolemy/copernicus/c/test/|ptolemy/copernicus/c/test/cm/|doc/coding/templates/|ptolemy/distributed/|doc/doclets/|ptolemy/apps/|ptolemy/domains/ct/demo/Saber/|ptolemy/domains/gr/|ptolemy/domains/gr/lib/experimental/|ptolemy/domains/pdf/|ptolemy/plot/servlet/|vendors/|ptolemy/copernicus/jhdl/|ptolemy/actor/lib/jai/|ptolemy/actor/lib/jmf/|ptolemy/actor/lib/joystick/|ptolemy/actor/lib/x10/|ptolemy/domains/gr/lib/quicktime/"
         kind="src" path=""/>
     <classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
@@ -19,9 +19,15 @@
     <classpathentry kind="lib" path="vendors/sun/jxta/jxtasecurity.jar"/>
     <classpathentry kind="lib" path="vendors/sun/jxta/log4j.jar"/>
     <classpathentry kind="lib" path="vendors/sun/jxta/jxtaptls.jar"/>
+    <classpathentry kind="lib" path="lib/ptcolt.jar"/>
     <classpathentry kind="lib" path="lib/ptjacl.jar"/>
     <classpathentry kind="lib" path="lib/mapss.jar"/>
     <classpathentry kind="lib" path="lib/sootclasses.jar"/>
     <classpathentry kind="lib" path="lib/jasminclasses.jar"/>
+    <classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
+    <classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-ext.jar"/>
+    <classpathentry kind="lib" path="ptolemy/distributed/jini/jar/sun-util.jar"/>
+    <classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/jdom.jar"/>
+    <classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/nesc-dump.jar"/>
     <classpathentry kind="output" path=""/>
 </classpath>
