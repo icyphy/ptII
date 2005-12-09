@@ -30,35 +30,19 @@ package ptolemy.vergil.icon;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
-import java.io.Reader;
-import java.io.StringReader;
-import java.net.URL;
 
 import javax.swing.SwingConstants;
 
 import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.StringAttribute;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.LabelFigure;
-import diva.canvas.toolbox.PaintedFigure;
-import diva.canvas.toolbox.SVGParser;
-import diva.gui.toolbox.FigureIcon;
-import diva.util.java2d.PaintedList;
-import diva.util.xml.XmlDocument;
-import diva.util.xml.XmlElement;
-import diva.util.xml.XmlReader;
 
 //////////////////////////////////////////////////////////////////////////
 //// NameIcon
