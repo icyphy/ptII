@@ -665,8 +665,9 @@ public abstract class ActorController extends AttributeController {
 
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
+            // Avoid Control_O, which is open file.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_O, Toolkit.getDefaultToolkit()
+                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
         }
 
