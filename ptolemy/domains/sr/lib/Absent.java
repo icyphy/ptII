@@ -35,8 +35,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Absent
 
 /**
- This actor outputs absent values.  That is, it produces no tokens, and it calls
- the sendClear() method of the output port on each firing.
+ This actor outputs absent values.  That is, it produces no tokens,
+ and it calls the sendClear() method of the output port on each
+ firing.
 
  @author Paul Whitaker
  @version $Id$
