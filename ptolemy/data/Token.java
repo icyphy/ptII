@@ -398,6 +398,8 @@ public class Token implements Serializable {
     /** Set the value of this token to null.
      */
     public void setToNull() {
+        // It would be nice if this method was called "null()", but
+        // null is a reserved Java keyword.
         _isNull = true;
     }
 
