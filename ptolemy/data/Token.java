@@ -201,13 +201,25 @@ public class Token implements Serializable {
                 rightArgument));
     }
 
-    /** Return true if the token has been set to null.
-     *  @return True if the token has been set to null by calling
-     *  {@link #setToNull()).
-     *  @see #setToNull()
+    /** Return true if the token is missing.
+     *  Missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token has been marked as missing by calling
+     *  {@link #missing()}.
      */
-    public boolean isNull() {
-        return _isNull;
+    public boolean isMissing() {
+        return _isMissing;
+    }
+
+    /** Indicate that this token is a "missing" token, it contains
+     *  no data.  
+     *  Missing tokens are common in analytical systems like R and SAS
+     *  where they are used to handle sparsely populated data sources.
+     *  In database parlance, missing tokens are sometimes called 
+     *  null tokens.
+     *  @see #isMissing()
+     */
+    public void missing() {
+        _isMissing = true;
     }
 
     /** Return a new token whose value is the value of this token
@@ -395,14 +407,6 @@ public class Token implements Serializable {
         }
     }
 
-    /** Set the value of this token to null.
-     */
-    public void setToNull() {
-        // It would be nice if this method was called "null()", but
-        // null is a reserved Java keyword.
-        _isNull = true;
-    }
-
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.
      *  @param rightArgument The token to subtract from this token.
@@ -465,6 +469,6 @@ public class Token implements Serializable {
     ////                         private variables                 ////
 
 
-    /** Set to true if {@link #isNull()} is called. */
-    private boolean _isNull = false;
+    /** Set to true if {@link #missing()} is called. */
+    private boolean _isMissing = false;
 }
