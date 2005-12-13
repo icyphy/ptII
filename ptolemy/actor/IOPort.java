@@ -33,6 +33,7 @@
  connectionsChanged: no longer validates the attributes of this port.  This is
  now done in Manager.initialize().
  Review sendInside, getInside, getWidthInside, transferInputs/Outputs, etc.
+ Review null token work: get(int, boolean), get(int, int, boolean)
  */
 package ptolemy.actor;
 
@@ -721,6 +722,9 @@ public class IOPort extends ComponentPort {
      *  it is important that the thread does not hold read access on
      *  the workspace when it is blocked. Thus this method releases
      *  read access on the workspace before calling get().
+     *  <p>
+     *  By default, this method drops null tokens, see
+     *  {@link #get(int, boolean) for details.
      *
      *  @param channelIndex The channel index.
      *  @return A token from the specified channel.
@@ -728,9 +732,45 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created, if the port is not an input port, or
      *   if the channel index is out of range.
+     *  @see #get(int, boolean)
      */
     public Token get(int channelIndex) throws NoTokenException,
             IllegalActionException {
+        // Drop null tokens.
+        return get(channelIndex, true);
+    }
+
+    /** Get a token from the specified channel.
+     *  If the channel has a group with more than one receiver (something
+     *  that is possible if this is a transparent port), then this method
+     *  calls get() on all receivers, but returns only the first non-null
+     *  token returned by these calls.
+     *  Normally this method is not used on transparent ports.
+     *  If there is no token to return, then throw an exception.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a get,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling get().
+     *  <p>
+     *  This method is usually called with the <i>dropNullValues</i>
+     *  parameter set to true, which means that null tokens are dropped.
+     *  If an actor can handle null values, then <i>dropNullValues</i>
+     *  is set to false, which indicates the actor knows how to deal with
+     *  null tokens and wants to receive them.
+     *
+     *  @param channelIndex The channel index.
+     *  @param dropNullValues True if null tokens are to be dropped.
+     *  @return A token from the specified channel.
+     *  @exception NoTokenException If there is no token.
+     *  @exception IllegalActionException If there is no director, and hence
+     *   no receivers have been created, if the port is not an input port, or
+     *   if the channel index is out of range.
+     *  @see #get(int, int)
+     */
+    public Token get(int channelIndex, boolean dropNullValues)
+            throws NoTokenException, IllegalActionException {
         Receiver[][] localReceivers;
 
         try {
@@ -800,6 +840,9 @@ public class IOPort extends ComponentPort {
      *  it is important that the thread does not hold read access on
      *  the workspace when it is blocked. Thus this method releases
      *  read access on the workspace before calling get.
+     *  <p>
+     *  By default, this method drops null tokens, see
+     *  {@link #get(int, int, boolean) for details.
      *
      *  @param channelIndex The channel index.
      *  @param vectorLength The number of valid tokens to get in the
@@ -810,8 +853,47 @@ public class IOPort extends ComponentPort {
      *  @exception IllegalActionException If there is no director, and hence
      *   no receivers have been created, if the port is not an input port, or
      *   if the channel index is out of range.
+     *  @see #get(int, int, boolean)
      */
     public Token[] get(int channelIndex, int vectorLength)
+            throws NoTokenException, IllegalActionException {
+        return get(channelIndex, vectorLength, true);
+    }
+
+    /** Get an array of tokens from the specified channel. The
+     *  parameter <i>channelIndex</i> specifies the channel and
+     *  the parameter <i>vectorLength</i> specifies the number of
+     *  valid tokens to get in the returned array. The length of
+     *  the returned array will be equal to <i>vectorLength</i>.
+     *  <p>
+     *  If the channel has a group with more than one receiver (something
+     *  that is possible if this is a transparent port), then this method
+     *  calls get() on all receivers, but returns only the result from
+     *  the first in the group.
+     *  Normally this method is not used on transparent ports.
+     *  If there are not enough tokens to fill the array, then throw
+     *  an exception.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a get,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling get.
+     *
+     *  @param channelIndex The channel index.
+     *  @param vectorLength The number of valid tokens to get in the
+     *   returned array.
+     *  @param dropNullValues True if null tokens are to be dropped.
+     *  @return A token array from the specified channel containing
+     *   <i>vectorLength</i> valid tokens.
+     *  @exception NoTokenException If there is no array of tokens.
+     *  @exception IllegalActionException If there is no director, and hence
+     *   no receivers have been created, if the port is not an input port, or
+     *   if the channel index is out of range.
+     *  @see #get(int, int)
+     */
+    public Token[] get(int channelIndex, int vectorLength,
+            boolean dropNullValues)
             throws NoTokenException, IllegalActionException {
         Receiver[][] localReceivers;
 
