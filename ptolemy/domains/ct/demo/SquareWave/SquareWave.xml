@@ -53,7 +53,7 @@
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows the square-wave response of a continuous-time
 transfer function.  The ContinuousTransferFunction actor
 constructs a composite actor to realize the specified transfer
-function. Try Look Inside after running it.</text></svg></configure>
+function. Try Open Actor after running it.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>

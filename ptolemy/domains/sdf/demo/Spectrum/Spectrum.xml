@@ -15,7 +15,7 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:black">The blocks with red outlines are hierarchical.
-Right click and select "Look Inside".
+Right click and select "Open Actor".
 These generate sinusoids, one for the
 signal and the other for the carrier.</text></svg></configure>
         </property>

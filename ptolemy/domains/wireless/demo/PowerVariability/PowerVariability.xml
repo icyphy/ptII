@@ -82,7 +82,7 @@ transmitter, according to an inverse square law.</text></svg></configure>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:red">Look inside the transmitter or receiver
 to see how it is implemented (right click
-on it and select "Look Inside").</text></svg></configure>
+on it and select "Open Actor").</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>

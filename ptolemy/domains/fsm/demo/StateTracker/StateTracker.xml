@@ -83,7 +83,7 @@ David Hermann, Research in Motion</text></svg></configure>
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The Transitions leading to State C have Refinements, use Look Inside to see them. 
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The Transitions leading to State C have Refinements, use Open Actor to see them. 
 These refinements modify the State Refinement output tokens and then outputs the
 new modified token.
 Transitions out of C perform the same operation as the refinements using an

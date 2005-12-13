@@ -244,7 +244,7 @@ GraphicalLocator)</text></svg></configure>
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses Matlab in a trivial&#10;fashion to show how Matlab can be integrated&#10;into a model.&#10;Right Click on the Triangulator icon and&#10;select &quot;Look Inside&quot; to see the Matlab &#10;Expression actor.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses Matlab in a trivial&#10;fashion to show how Matlab can be integrated&#10;into a model.&#10;Right Click on the Triangulator icon and&#10;select &quot;Open Actor&quot; to see the Matlab &#10;Expression actor.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 15.0]">
         </property>

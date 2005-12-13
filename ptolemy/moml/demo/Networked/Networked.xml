@@ -39,7 +39,7 @@
            <svg>
            <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The models with the red outlines
 are hierarchical.  Right click and
-select "Look Inside" to see their
+select "Open Actor" to see their
 inner definition. The upper one
 is defined remotely.</text>
            </svg>
