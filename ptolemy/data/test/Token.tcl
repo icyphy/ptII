@@ -206,3 +206,13 @@ test Token-4.0 {Test toString} {
     set p [java::new ptolemy.data.Token]
     list [$p toString]
 } {present}
+
+test Token-5.0 {test isNull, setToNull} {
+    set token [java::new ptolemy.data.Token]
+    set result1 [$token isNull]
+    $token setToNull
+    set result2 [$token isNull]
+
+    list $result1 $result2
+} {0 1}
+

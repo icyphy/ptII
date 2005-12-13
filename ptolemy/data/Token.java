@@ -201,6 +201,15 @@ public class Token implements Serializable {
                 rightArgument));
     }
 
+    /** Return true if the token has been set to null.
+     *  @return True if the token has been set to null by calling
+     *  {@link #setToNull()).
+     *  @see #setToNull()
+     */
+    public boolean isNull() {
+        return _isNull;
+    }
+
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.
      *  @param rightArgument The token to divide into this token.
@@ -386,6 +395,12 @@ public class Token implements Serializable {
         }
     }
 
+    /** Set the value of this token to null.
+     */
+    public void setToNull() {
+        _isNull = true;
+    }
+
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.
      *  @param rightArgument The token to subtract from this token.
@@ -443,4 +458,11 @@ public class Token implements Serializable {
     public static Type zeroReturnType(Type type) {
         return type;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+
+    /** Set to true if {@link #isNull()} is called. */
+    private boolean _isNull = false;
 }
