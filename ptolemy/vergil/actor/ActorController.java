@@ -90,7 +90,7 @@ import diva.gui.GUIUtilities;
  This class provides interaction with nodes that represent Ptolemy II
  entities.  It provides a double click binding and context menu
  entry to edit the parameters of the node ("Configure"), a
- command to get documentation, and a command to look inside.
+ command to get documentation, and a command to open an actor.
  It can have one of two access levels, FULL or PARTIAL.
  If the access level is FULL, the the context menu also
  contains a command to rename the node and to configure its ports.
@@ -245,10 +245,12 @@ public abstract class ActorController extends AttributeController {
     protected RotateOrFlipPorts _flipPortsVertical
             = new RotateOrFlipPorts(RotateOrFlipPorts.FLIP_VERTICAL, "Flip Ports Vertically");
 
-    /** The action that handles look inside.  This is accessed by
+    /** The action that handles opening an actor.  This is accessed by
      *  by ActorViewerController to create a hot key for the editor.
+     *  The name "lookInside" is historical and preserved to keep backward
+     *  compatibility with subclasses.
      */
-    protected LookInsideAction _lookInsideAction = new LookInsideAction();
+    protected OpenActorAction _lookInsideAction = new OpenActorAction();
 
     /** The action that handles removing a custom icon. */
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
@@ -655,27 +657,27 @@ public abstract class ActorController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// LookInsideAction
-    // An action to look inside a composite.
-    private class LookInsideAction extends FigureAction {
-        public LookInsideAction() {
-            super("Look Inside");
+    //// OpenActorAction
+    // An action to open a composite.
+    private class OpenActorAction extends FigureAction {
+        public OpenActorAction() {
+            super("Open Actor");
 
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_L, Toolkit.getDefaultToolkit()
+                    KeyEvent.VK_O, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
         }
 
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
-                MessageHandler
-                        .error("Cannot look inside without a configuration.");
+                MessageHandler.error("Cannot open an actor "
+                        + "without a configuration.");
                 return;
             }
 
-            // Determine which entity was selected for the look inside action.
+            // Determine which entity was selected for the open actor action.
             super.actionPerformed(event);
 
             NamedObj object = getTarget();
@@ -688,7 +690,7 @@ public abstract class ActorController extends AttributeController {
             try {
                 _configuration.openModel(object);
             } catch (Exception ex) {
-                MessageHandler.error("Look inside failed.", ex);
+                MessageHandler.error("Open actor failed.", ex);
             }
         }
     }
