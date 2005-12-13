@@ -64,6 +64,8 @@ JSRCS = \
 	ActorInstanceController.java \
 	ActorViewerGraphController.java \
 	ClassDefinitionController.java \
+	DocManager.java \
+	DocViewer.java \
 	ExternalIOPortController.java \
 	IOPortController.java \
 	LinkController.java \
