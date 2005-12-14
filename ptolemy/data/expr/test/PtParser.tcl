@@ -1097,3 +1097,11 @@ test PtParser-19.10 {Test String mode with {}} {
     set lines [split $output "\n"]
     list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
 } {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""} Because: {Encountered "<EOF>" at line 0, column 0.}}
+
+test PtParser-20.0 {Test nil Token} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "nil"]
+    set res1 [ $root1 evaluateParseTree ]
+    set value1 [$res1 toString]
+    list $value1 [$res1 isNil]
+} {nil 1}

@@ -236,6 +236,11 @@ public class Constants {
         _types.put("unsignedByte", new UnsignedByteToken(0));
 
         _table.putAll(_types);
+
+        ptolemy.data.Token nil = new ptolemy.data.Token();
+        nil.nil();
+        _table.put("nil", nil);
+
     }
 
     ///////////////////////////////////////////////////////////////////
