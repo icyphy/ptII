@@ -49,14 +49,14 @@ public class PortSite extends AbstractSite {
     /** Create a new site on the given figure with the given ID
      *  port type, and port number.
      *  @param figure The figure for the entity icon.
-     *  @param port The port.
+     *  @param port The port, which is ignored by this method
      *  @param number The number of the port within its kind, starting with 0.
      *  @param count The number of ports of its kind.
      *  @param direction One of SwingConstants.{WEST, NORTH, EAST, SOUTH}.
      */
     public PortSite(Figure figure, Port port, int number, int count, int direction) {
         _parentFigure = figure;
-        _port = port;
+        // Ignored _port = port;
         _number = number;
         _count = count;
         _direction = direction;
@@ -176,9 +176,6 @@ public class PortSite extends AbstractSite {
 
     /** The parent figure. */
     private Figure _parentFigure;
-
-    /** The port. */
-    private Port _port;
 
     /** The snap resolution.  FIXME: This should not be here. */
     private double _snap = 10.0;
