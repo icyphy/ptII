@@ -1289,6 +1289,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Default background color is a light grey. */
+    public static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+
+
     /** The name of the user library.  The default value is
      *  "UserLibrary".  The value of this variable is what appears
      *  in the Vergil left hand tree menu.
@@ -1650,9 +1654,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /** Default background color is a light grey. */
-    protected static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
     /** The cut action. */
     protected Action _cutAction;
