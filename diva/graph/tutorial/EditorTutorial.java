@@ -116,11 +116,6 @@ public class EditorTutorial {
      */
     public class LayoutWidget extends JPanel {
         /**
-         * The layout target that this layout will be performed on.
-         */
-        private LayoutTarget _layoutTarget;
-
-        /**
          * The graph that will be layed out.
          */
         private Object _graph;
@@ -151,7 +146,7 @@ public class EditorTutorial {
          * is true.  All layouts will be performed on the given layout target.
          */
         public LayoutWidget(LayoutTarget lt, Object graph, boolean useDefaults) {
-            _layoutTarget = lt;
+            // lt is ignored.
             _graph = graph;
             _nameMap = new HashMap();
             _configMap = new HashMap();

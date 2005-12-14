@@ -175,7 +175,6 @@ public class BasicGraphModelTest extends TestSuite {
 
                     //nodes[i] = n;
                     Edge e = g.createEdge(null);
-                    int s = i / 2;
                     g.connectEdge(this, e, first, n);
                 }
 

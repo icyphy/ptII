@@ -825,9 +825,6 @@ public class ModelReference extends TypedAtomicActor implements
     // Flag indicating that the previous execution is in progress.
     private transient boolean _executing = false;
 
-    /** Indicator of what the last call to iterate() returned. */
-    private transient int _lastIterateResult = NOT_READY;
-
     /** Reference to a thread that is lingering. */
     private Thread _lingeringThread = null;
 

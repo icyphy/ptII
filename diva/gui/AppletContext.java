@@ -53,11 +53,6 @@ public class AppletContext extends JApplet implements AppContext {
     private transient Action _exitAction;
 
     /**
-     * The application that owns this frame
-     */
-    private transient Application _application;
-
-    /**
      * The icon that is displayed in internal frames
      */
     private transient Image _iconImage;

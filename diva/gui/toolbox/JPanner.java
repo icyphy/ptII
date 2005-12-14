@@ -245,8 +245,6 @@ public class JPanner extends JPanel {
         }
     }
 
-    private Point _p;
-
     private class PanMouseListener extends MouseAdapter implements
             MouseMotionListener {
         public void mousePressed(MouseEvent evt) {
