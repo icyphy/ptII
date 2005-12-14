@@ -65,6 +65,7 @@ proc removeGraphicalClasses {parser} {
     $filter put "ptolemy.actor.lib.joystick.Joystick" [java::null]
     $filter put "ptolemy.domains.gr.lib.IconViewScreen3D" [java::null]
     #$filter put "ptolemy.domains.tm.kernel.TMDirector" [java::null]
+    $filter put "ptolemy.domains.ptinyos.lib.MicaLeds" [java::null]
     $filter put "ptolemy.domains.sr.lib.NonStrictDisplay" [java::null]
     $filter put "ptolemy.domains.tm.kernel.SchedulePlotter" [java::null]
     $filter put "ptolemy.domains.wireless.lib.TerrainProperty" [java::null]
