@@ -216,11 +216,11 @@ public class StreamExec {
 
                     // Set up a Thread to read in any error messages
                     _StreamReaderThread errorGobbler = new _StreamReaderThread(
-                            _process.getErrorStream(), "ERROR", this);
+                            _process.getErrorStream(),  this);
 
                     // Set up a Thread to read in any output messages
                     _StreamReaderThread outputGobbler = new _StreamReaderThread(
-                            _process.getInputStream(), "OUTPUT", this);
+                            _process.getInputStream(),  this);
 
                     // Start up the Threads
                     errorGobbler.start();
@@ -264,10 +264,8 @@ public class StreamExec {
     // Private class that reads a stream in a thread and updates the
     // JTextArea.
     private class _StreamReaderThread extends Thread {
-        _StreamReaderThread(InputStream inputStream, String streamType,
-                StreamExec streamExec) {
+        _StreamReaderThread(InputStream inputStream, StreamExec streamExec) {
             _inputStream = inputStream;
-            _streamType = streamType;
             _streamExec = streamExec;
         }
 
@@ -291,9 +289,6 @@ public class StreamExec {
 
         // Stream to read from.
         private InputStream _inputStream;
-
-        // Description of the Stream that we print, usually "OUTPUT" or "ERROR"
-        private String _streamType;
 
         private StreamExec _streamExec;
     }

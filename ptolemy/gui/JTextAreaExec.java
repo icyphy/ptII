@@ -311,11 +311,11 @@ public class JTextAreaExec extends JPanel {
 
                     // Set up a Thread to read in any error messages
                     _StreamReaderThread errorGobbler = new _StreamReaderThread(
-                            _process.getErrorStream(), "ERROR", this);
+                            _process.getErrorStream(), this);
 
                     // Set up a Thread to read in any output messages
                     _StreamReaderThread outputGobbler = new _StreamReaderThread(
-                            _process.getInputStream(), "OUTPUT", this);
+                            _process.getInputStream(), this);
 
                     // Start up the Threads
                     errorGobbler.start();
@@ -428,10 +428,8 @@ public class JTextAreaExec extends JPanel {
     // Private class that reads a stream in a thread and updates the
     // JTextArea.
     private class _StreamReaderThread extends Thread {
-        _StreamReaderThread(InputStream inputStream, String streamType,
-                JTextAreaExec jTextAreaExec) {
+        _StreamReaderThread(InputStream inputStream, JTextAreaExec jTextAreaExec) {
             _inputStream = inputStream;
-            _streamType = streamType;
             _jTextAreaExec = jTextAreaExec;
         }
 
@@ -446,8 +444,7 @@ public class JTextAreaExec extends JPanel {
                 String line = null;
 
                 while ((line = bufferedReader.readLine()) != null) {
-                    _jTextAreaExec.appendJTextArea( /*_streamType + ">" +*/
-                    line);
+                    _jTextAreaExec.appendJTextArea(line);
                 }
             } catch (IOException ioe) {
                 _jTextAreaExec.appendJTextArea("IOException: " + ioe);
@@ -458,7 +455,7 @@ public class JTextAreaExec extends JPanel {
         private InputStream _inputStream;
 
         // Description of the Stream that we print, usually "OUTPUT" or "ERROR"
-        private String _streamType;
+        //private String _streamType;
 
         // JTextArea to update
         private JTextAreaExec _jTextAreaExec;
