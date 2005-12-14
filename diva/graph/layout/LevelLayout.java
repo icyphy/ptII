@@ -188,7 +188,7 @@ public class LevelLayout extends AbstractGlobalLayout {
      * user.
      */
     protected void copyLayout(Object origComposite, Object copyComposite) {
-        GraphModel model = getLayoutTarget().getGraphModel();
+        //GraphModel model = getLayoutTarget().getGraphModel();
 
         for (Iterator ns = _local.nodes(copyComposite); ns.hasNext();) {
             Object copyNode = ns.next();
@@ -742,7 +742,7 @@ public class LevelLayout extends AbstractGlobalLayout {
                 continue;
             }
 
-            LevelInfo nlinfo = getLevelInfo(to);
+            //LevelInfo nlinfo = getLevelInfo(to);
 
             for (Iterator in = _local.inEdges(to); in.hasNext();) {
                 Object edge = in.next();
@@ -780,9 +780,9 @@ public class LevelLayout extends AbstractGlobalLayout {
     /**
      * Debugging output to standard err.
      */
-    private void debug(String s) {
-        System.err.println(s);
-    }
+    //private void debug(String s) {
+    //    System.err.println(s);
+    //}
 
     /**
      * Get the level of <i>n</i> in the graph.
@@ -982,7 +982,7 @@ public class LevelLayout extends AbstractGlobalLayout {
                     Object node = ns.next();
 
                     if (!isDummy(node)) {
-                        LevelInfo inf = getLevelInfo(node);
+                        //LevelInfo inf = getLevelInfo(node);
                         placeNode(node, x, y);
                     }
 
@@ -1011,9 +1011,9 @@ public class LevelLayout extends AbstractGlobalLayout {
     //==================================================================
     // UTILITY FUNCTIONS HERE
     //==================================================================
-    private double getX(LevelData levelData, Object node) {
-        return levelData._target.getBounds(node).getX();
-    }
+    //private double getX(LevelData levelData, Object node) {
+    //    return levelData._target.getBounds(node).getX();
+    //}
 
     private LevelInfo getLevelInfo(Object node) {
         return (LevelInfo) _local.getSemanticObject(node);
