@@ -162,7 +162,6 @@ public class SelectionInteractor extends CompositeInteractor {
         }
 
         Figure figure = event.getFigureSource();
-        boolean isSelected = false;
         boolean isChanged = false;
 
         if (_selectionFilter.accept(event)) {
@@ -173,15 +172,12 @@ public class SelectionInteractor extends CompositeInteractor {
                 _selection.addSelection(figure);
                 isChanged = true;
             }
-
-            isSelected = true;
         } else if (_toggleFilter.accept(event)) {
             // Toggle the item
             if (_selection.containsSelection(figure)) {
                 _selection.removeSelection(figure);
             } else {
                 _selection.addSelection(figure);
-                isSelected = true;
             }
 
             isChanged = true;
