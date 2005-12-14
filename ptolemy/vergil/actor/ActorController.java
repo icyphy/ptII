@@ -701,37 +701,37 @@ public abstract class ActorController extends AttributeController {
 
     /** An action to save this actor in a file.
      */
-    private class SaveInFileAction extends FigureAction {
-        /** Create a new action to save a model in a file.
-         */
-        public SaveInFileAction() {
-            super("Save Actor In File");
-            putValue("tooltip", "Save actor in a file");
-        }
-
-        /** Save the target object in a file.
-         *  @param event The action event.
-         */
-        public void actionPerformed(ActionEvent event) {
-            // Find the target.
-            super.actionPerformed(event);
-
-            NamedObj object = getTarget();
-
-            if (object instanceof Entity) {
-                Entity entity = (Entity) object;
-
-                BasicGraphController controller = (BasicGraphController) getController();
-                BasicGraphFrame frame = controller.getFrame();
-
-                try {
-                    frame.saveComponentInFile(entity);
-                } catch (Exception e) {
-                    MessageHandler.error("Save failed.", e);
-                }
-            }
-        }
-    }
+//    private class SaveInFileAction extends FigureAction {
+//        /** Create a new action to save a model in a file.
+//         */
+//        public SaveInFileAction() {
+//            super("Save Actor In File");
+//            putValue("tooltip", "Save actor in a file");
+//        }
+//
+//        /** Save the target object in a file.
+//         *  @param event The action event.
+//         */
+//        public void actionPerformed(ActionEvent event) {
+//            // Find the target.
+//            super.actionPerformed(event);
+//
+//            NamedObj object = getTarget();
+//
+//            if (object instanceof Entity) {
+//                Entity entity = (Entity) object;
+//
+//                BasicGraphController controller = (BasicGraphController) getController();
+//                BasicGraphFrame frame = controller.getFrame();
+//
+//                try {
+//                    frame.saveComponentInFile(entity);
+//                } catch (Exception e) {
+//                    MessageHandler.error("Save failed.", e);
+//                }
+//            }
+//        }
+//    }
 
     ///////////////////////////////////////////////////////////////////
     //// SaveInLibraryAction

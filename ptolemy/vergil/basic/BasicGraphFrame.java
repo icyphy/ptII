@@ -27,76 +27,6 @@
  */
 package ptolemy.vergil.basic;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.IORelation;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.EditParametersDialog;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyFrame;
-import ptolemy.actor.gui.RunTableau;
-import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.ExpertParameter;
-import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.undo.RedoChangeRequest;
-import ptolemy.kernel.undo.UndoChangeRequest;
-import ptolemy.kernel.undo.UndoStackAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeListener;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.MoMLUndoEntry;
-import ptolemy.util.CancelException;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.VergilPreferences;
-import ptolemy.vergil.toolbox.MenuItemFactory;
-import ptolemy.vergil.toolbox.MoveAction;
-import ptolemy.vergil.tree.EntityTreeModel;
-import ptolemy.vergil.tree.PTree;
-import ptolemy.vergil.tree.PTreeMenuCreator;
-import ptolemy.vergil.tree.VisibleTreeModel;
-
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Figure;
-import diva.canvas.JCanvas;
-import diva.canvas.Site;
-import diva.canvas.connector.FixedNormalSite;
-import diva.canvas.connector.Terminal;
-import diva.canvas.event.LayerAdapter;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.interactor.SelectionModel;
-import diva.graph.GraphController;
-import diva.graph.GraphEvent;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
-import diva.graph.JGraph;
-import diva.graph.basic.BasicLayoutTarget;
-import diva.graph.layout.LayoutTarget;
-import diva.graph.layout.LevelLayout;
-import diva.gui.GUIUtilities;
-import diva.gui.toolbox.JCanvasPanner;
-import diva.gui.toolbox.JContextMenu;
-import diva.util.java2d.ShapeUtilities;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -145,6 +75,75 @@ import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+
+import net.sf.saxon.instruct.If;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.EditParametersDialog;
+import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.PtolemyFrame;
+import ptolemy.actor.gui.SizeAttribute;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ExpertParameter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.undo.RedoChangeRequest;
+import ptolemy.kernel.undo.UndoChangeRequest;
+import ptolemy.kernel.undo.UndoStackAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeListener;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.LibraryAttribute;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.MoMLUndoEntry;
+import ptolemy.util.CancelException;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+import ptolemy.vergil.VergilPreferences;
+import ptolemy.vergil.toolbox.MenuItemFactory;
+import ptolemy.vergil.toolbox.MoveAction;
+import ptolemy.vergil.tree.EntityTreeModel;
+import ptolemy.vergil.tree.PTree;
+import ptolemy.vergil.tree.PTreeMenuCreator;
+import ptolemy.vergil.tree.VisibleTreeModel;
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.JCanvas;
+import diva.canvas.Site;
+import diva.canvas.connector.FixedNormalSite;
+import diva.canvas.connector.Terminal;
+import diva.canvas.event.LayerAdapter;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.interactor.SelectionModel;
+import diva.graph.GraphController;
+import diva.graph.GraphEvent;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.GraphUtilities;
+import diva.graph.JGraph;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.graph.layout.LayoutTarget;
+import diva.graph.layout.LevelLayout;
+import diva.gui.GUIUtilities;
+import diva.gui.toolbox.JCanvasPanner;
+import diva.gui.toolbox.JContextMenu;
+import diva.util.java2d.ShapeUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphFrame
@@ -1950,28 +1949,28 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     //// ExecuteSystemAction
 
     /** An action to open a run control window. */
-    private class ExecuteSystemAction extends AbstractAction {
-        /** Construct an action to execute the model. */
-        public ExecuteSystemAction() {
-            super("Go");
-            putValue("tooltip", "Execute The Model");
-            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_G, Toolkit.getDefaultToolkit()
-                            .getMenuShortcutKeyMask()));
-            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_G));
-        }
-
-        /** Open a run control window. */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
-                        .getContainer();
-                new RunTableau(effigy, effigy.uniqueName("tableau"));
-            } catch (Exception ex) {
-                MessageHandler.error("Execution Failed", ex);
-            }
-        }
-    }
+//    private class ExecuteSystemAction extends AbstractAction {
+//        /** Construct an action to execute the model. */
+//        public ExecuteSystemAction() {
+//            super("Go");
+//            putValue("tooltip", "Execute The Model");
+//            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+//                    KeyEvent.VK_G, Toolkit.getDefaultToolkit()
+//                            .getMenuShortcutKeyMask()));
+//            putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_G));
+//        }
+//
+//        /** Open a run control window. */
+//        public void actionPerformed(ActionEvent e) {
+//            try {
+//                PtolemyEffigy effigy = (PtolemyEffigy) getTableau()
+//                        .getContainer();
+//                new RunTableau(effigy, effigy.uniqueName("tableau"));
+//            } catch (Exception ex) {
+//                MessageHandler.error("Execution Failed", ex);
+//            }
+//        }
+//    }
 
     ///////////////////////////////////////////////////////////////////
     //// MoveToBackAction
