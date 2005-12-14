@@ -327,7 +327,4 @@ public class DocManager extends HandlerBase {
    
     // The external entities being parsed.
     private Stack _externalEntities = new Stack();
-
-    // Indicator of whether we are parsing x ticks or y ticks.
-    private boolean _xtick;
 }
