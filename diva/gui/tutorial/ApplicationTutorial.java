@@ -74,12 +74,12 @@ public class ApplicationTutorial extends AbstractApplication {
     /**
      * The text component that will edit our text.
      */
-    private JEditorPane _editorPane;
+    //private JEditorPane _editorPane;
 
     /**
      * The document currently being edited in the editor pane.
      */
-    private TextDocument _displayedDocument;
+    //private TextDocument _displayedDocument;
 
     /**
      * Construct a new instance of the Tutorial, running in a new

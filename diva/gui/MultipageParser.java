@@ -172,8 +172,8 @@ public class MultipageParser extends HandlerBase {
             String label = (String) _currentAttributes.get(PAGE_TITLE_TAG);
 
             //page number is currently ignored.
-            String numstring = (String) _currentAttributes.get(PAGE_NUM_TAG);
-            int num = Integer.valueOf(numstring).intValue();
+            //String numstring = (String) _currentAttributes.get(PAGE_NUM_TAG);
+            //int num = Integer.valueOf(numstring).intValue();
             _currentPage = new BasicPage(_multi, label);
         } else {
             String err = "Error: unknown start element \"" + name + "\"";
