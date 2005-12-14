@@ -29,7 +29,6 @@
  */
 package ptolemy.domains.dde.kernel;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -300,7 +299,6 @@ public class DDEDirector extends CompositeProcessDirector implements
     public void initialize() throws IllegalActionException {
         _completionTime = new Time(this, PrioritizedTimedQueue.ETERNITY);
         _writeBlockedQueues = new HashMap();
-        _pendingMutations = false;
         super.initialize();
     }
 
@@ -527,8 +525,6 @@ public class DDEDirector extends CompositeProcessDirector implements
     // to a time object.
     private Time _completionTime;
 
-    private boolean _pendingMutations = false;
-
     /** The set of receivers blocked on a write to a receiver. */
     protected HashMap _writeBlockedQueues = new HashMap();
 
@@ -536,47 +532,46 @@ public class DDEDirector extends CompositeProcessDirector implements
 
     // /////////////////////////////////////////////////////////////////
     // // inner class ////
-    private class ReceiverCapacityComparator implements Comparator {
-        /**
-         * Compare two objects (specified as arguments) according to their
-         * respective capacities and return 1 if the second object (argument) is
-         * larger than the first object; return 0 if the capacities are equal
-         * and return -1 if the first object's capacity is larger than the
-         * second.
-         *
-         * @param object1
-         *            The first object
-         * @param object2
-         *            The second object
-         * @exception ClassCastException
-         *                If object1 and object2 are not instances of
-         *                DDEReceiver.
-         */
-        public int compare(Object object1, Object object2) {
-            DDEReceiver first = null;
-            DDEReceiver second = null;
-
-            if (object1 instanceof DDEReceiver) {
-                first = (DDEReceiver) object1;
-            } else {
-                throw new ClassCastException("object1 must be an "
-                        + "instance of DDEReceiver");
-            }
-
-            if (object2 instanceof DDEReceiver) {
-                second = (DDEReceiver) object2;
-            } else {
-                throw new ClassCastException("object2 must be an "
-                        + "instance of DDEReceiver");
-            }
-
-            if (first.getCapacity() < second.getCapacity()) {
-                return 1;
-            } else if (first.getCapacity() > second.getCapacity()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-    }
+//        /**
+//         * Compare two objects (specified as arguments) according to their
+//         * respective capacities and return 1 if the second object (argument) is
+//         * larger than the first object; return 0 if the capacities are equal
+//         * and return -1 if the first object's capacity is larger than the
+//         * second.
+//         *
+//         * @param object1
+//         *            The first object
+//         * @param object2
+//         *            The second object
+//         * @exception ClassCastException
+//         *                If object1 and object2 are not instances of
+//         *                DDEReceiver.
+//         */
+//        public int compare(Object object1, Object object2) {
+//            DDEReceiver first = null;
+//            DDEReceiver second = null;
+//
+//            if (object1 instanceof DDEReceiver) {
+//                first = (DDEReceiver) object1;
+//            } else {
+//                throw new ClassCastException("object1 must be an "
+//                        + "instance of DDEReceiver");
+//            }
+//
+//            if (object2 instanceof DDEReceiver) {
+//                second = (DDEReceiver) object2;
+//            } else {
+//                throw new ClassCastException("object2 must be an "
+//                        + "instance of DDEReceiver");
+//            }
+//
+//            if (first.getCapacity() < second.getCapacity()) {
+//                return 1;
+//            } else if (first.getCapacity() > second.getCapacity()) {
+//                return -1;
+//            } else {
+//                return 0;
+//            }
+//        }
+//    }
 }
