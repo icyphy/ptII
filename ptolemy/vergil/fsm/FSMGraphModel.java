@@ -34,7 +34,6 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.ChangeListener;
@@ -282,8 +281,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             // If the head or tail has been removed, then remove this link.
             if (!(headOK && tailOK)) {
-                Object headObj = getSemanticObject(link.getHead());
-                Object tailObj = getSemanticObject(link.getTail());
+                //Object headObj = getSemanticObject(link.getHead());
+                //Object tailObj = getSemanticObject(link.getTail());
                 link.setHead(null);
                 link.setTail(null);
                 link.setRelation(null);
@@ -444,8 +443,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         public String getDeleteEdgeMoML(Object edge) {
             final Arc link = (Arc) edge;
-            NamedObj linkHead = (NamedObj) link.getHead();
-            NamedObj linkTail = (NamedObj) link.getTail();
+            //NamedObj linkHead = (NamedObj) link.getHead();
+            //NamedObj linkTail = (NamedObj) link.getTail();
             Relation linkRelation = (Relation) link.getRelation();
 
             // This moml is parsed to execute the change

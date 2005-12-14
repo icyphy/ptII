@@ -662,7 +662,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         public Iterator inEdges(Object node) {
             Locatable location = (Locatable) node;
-            ComponentPort port = (ComponentPort) location.getContainer();
+            //ComponentPort port = (ComponentPort) location.getContainer();
 
             // make sure that the links to relations that we are connected to
             // are up to date.
