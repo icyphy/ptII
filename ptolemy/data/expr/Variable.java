@@ -1824,16 +1824,6 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
     }
 
-    /** Return true if the argument is legal to be added to the scope
-     *  of this variable. In this base class, this method only checks
-     *  that the argument is in the same workspace as this variable.
-     *  @param var The variable to be checked.
-     *  @return True if the argument is legal.
-     */
-    private boolean _isLegalInScope(Variable var) {
-        return (var.workspace() == this.workspace());
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Used to check for dependency loops among variables.
