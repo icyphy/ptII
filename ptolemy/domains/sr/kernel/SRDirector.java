@@ -240,7 +240,7 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     public void fire() throws IllegalActionException {
         Schedule schedule = _getSchedule();
-        boolean usingRandomizedScheduler = (getScheduler() instanceof SRRandomizedScheduler);
+        //boolean usingRandomizedScheduler = (getScheduler() instanceof SRRandomizedScheduler);
 
         _initFiring();
 

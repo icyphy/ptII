@@ -1599,7 +1599,7 @@ public class Query extends JPanel {
     class QueryColorChooser extends Box implements ActionListener {
         public QueryColorChooser(String name, String defaultColor) {
             super(BoxLayout.X_AXIS);
-            _defaultColor = defaultColor;
+            //_defaultColor = defaultColor;
             _entryBox = new JTextField(defaultColor, _width);
 
             JButton button = new JButton("Choose");
@@ -1718,7 +1718,7 @@ public class Query extends JPanel {
 
         private String _name;
 
-        private String _defaultColor;
+        //private String _defaultColor;
     }
 
     /** Panel containing an entry box and file chooser.
