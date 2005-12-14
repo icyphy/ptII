@@ -165,6 +165,7 @@ JSRCS = \
 	Recorder.java \
 	RecursiveLattice.java \
 	Remainder.java \
+	RemoveNilTokens.java \
 	Rician.java \
 	Scale.java \
 	Select.java \
