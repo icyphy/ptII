@@ -33,7 +33,6 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.process.BoundaryDetector;
-import ptolemy.actor.process.Branch;
 import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
@@ -452,8 +451,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Flag indicating whether finish has been requested. */
     private boolean _terminate = false;
-
-    private Branch _otherBranch = null;
 
     private BoundaryDetector _boundaryDetector;
 }
