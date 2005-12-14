@@ -37,7 +37,6 @@ import ptolemy.actor.Receiver;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// MultiwayBranchController
