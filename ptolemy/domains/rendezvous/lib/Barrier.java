@@ -31,7 +31,6 @@ import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.process.TerminateProcessException;
-import ptolemy.data.Token;
 import ptolemy.domains.rendezvous.kernel.RendezvousDirector;
 import ptolemy.domains.rendezvous.kernel.RendezvousReceiver;
 import ptolemy.kernel.CompositeEntity;
