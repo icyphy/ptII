@@ -474,6 +474,6 @@ public class Token implements Serializable {
     ////                         private variables                 ////
 
 
-    /** Set to true if {@link #missing()} is called. */
+    /** Set to true if {@link #nil()} is called. */
     private boolean _isNil = false;
 }

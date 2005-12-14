@@ -47,8 +47,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p>This actor should not be used in the SDF domain because
  the number of tokens sent to the output depends on the input.
 
- @see ptolemy.data.Token.#isNil()
- @see ptolemy.data.Token.#nil()
+ @see ptolemy.data.Token#isNil()
+ @see ptolemy.data.Token#nil()
 
  @author Christopher Brooks
  @version $Id$

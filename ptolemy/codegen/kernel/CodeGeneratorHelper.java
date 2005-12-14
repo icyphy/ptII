@@ -812,7 +812,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * Parse and type check the given name, and get the reference name,
      * channel index and offset number.
      * @param name The given name string.
-     * @return
+     * @return An array of three Strings, the first is the port name,
+     * the second is the channel and the third is the offset.
      * @throws IllegalActionException Thrown if the name string is not 
      *  in the proper format.
      */
