@@ -207,11 +207,11 @@ test Token-4.0 {Test toString} {
     list [$p toString]
 } {present}
 
-test Token-5.0 {test isMissing, missing} {
+test Token-5.0 {test isNil, nil} {
     set token [java::new ptolemy.data.Token]
-    set result1 [$token isMissing]
-    $token missing
-    set result2 [$token isMissing]
+    set result1 [$token isNil]
+    $token nil
+    set result2 [$token isNil]
 
     list $result1 $result2
 } {0 1}

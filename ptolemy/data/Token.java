@@ -201,25 +201,25 @@ public class Token implements Serializable {
                 rightArgument));
     }
 
-    /** Return true if the token is missing.
-     *  Missing tokens occur when a data source is sparsely populated.
-     *  @return True if the token has been marked as missing by calling
-     *  {@link #missing()}.
+    /** Return true if the token is nil, (aka missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token has been marked as nil by calling
+     *  {@link #nil()}.
      */
-    public boolean isMissing() {
-        return _isMissing;
+    public boolean isNil() {
+        return _isNil;
     }
 
-    /** Indicate that this token is a "missing" token, it contains
+    /** Indicate that this token is a nil or missing token, it contains
      *  no data.  
-     *  Missing tokens are common in analytical systems like R and SAS
+     *  Nil or missing tokens are common in analytical systems like R and SAS
      *  where they are used to handle sparsely populated data sources.
      *  In database parlance, missing tokens are sometimes called 
-     *  null tokens.
-     *  @see #isMissing()
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  @see #isNil()
      */
-    public void missing() {
-        _isMissing = true;
+    public void nil() {
+        _isNil = true;
     }
 
     /** Return a new token whose value is the value of this token
@@ -438,10 +438,15 @@ public class Token implements Serializable {
      *  by the expression language to recover a token with the same value.
      *  This method should be overridden by derived classes.
      *  In this base class, return the String "present" to indicate
-     *  that an event is present.
-     *  @return The String "present".
+     *  that an event is present. If the nil() method has been called,
+     *  then return "nil"
+     *  @return The String "present", unless the nil() method has
+     *  been called.
      */
     public String toString() {
+        if (_isNil) {
+            return "nil";
+        }
         return "present";
     }
 
@@ -470,5 +475,5 @@ public class Token implements Serializable {
 
 
     /** Set to true if {@link #missing()} is called. */
-    private boolean _isMissing = false;
+    private boolean _isNil = false;
 }
