@@ -78,9 +78,9 @@ public class LayerMouseAdapter implements LayerListener, LayerMotionListener {
         }
     }
 
-    private void debug(String s) {
-        System.out.println(s);
-    }
+    //private void debug(String s) {
+    //    System.out.println(s);
+    //}
 
     public void mouseReleased(LayerEvent e) {
         if (_filter.accept(e)) {
