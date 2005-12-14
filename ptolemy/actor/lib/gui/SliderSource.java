@@ -285,6 +285,7 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
 
     /** The value of the slider changed, record the new value. */
     public void stateChanged(ChangeEvent e) {
+        // FIXME: Why is _val never read?
         _val = slider.getValue();
     }
 
