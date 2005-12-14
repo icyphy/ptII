@@ -53,23 +53,13 @@ public class BasicController {
      */
     private SelectionInteractor _selectionInteractor;
 
-    /** The selection renderer.
-     */
-    private SelectionRenderer _selectionRenderer;
-
     /** The selection dragger
      */
     private SelectionDragger _selectionDragger;
 
-    /** The pane that this controller is associated with.
-     */
-    private GraphicsPane _pane;
-
     /** Create a new controller for the given pane
      */
     public BasicController(GraphicsPane pane) {
-        _pane = pane;
-
         // Create the selection interactor
         _selectionInteractor = new SelectionInteractor();
 

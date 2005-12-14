@@ -46,7 +46,6 @@ import diva.canvas.connector.Terminal;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.BasicSelectionRenderer;
 import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionModel;
 
 /**
@@ -58,10 +57,6 @@ import diva.canvas.interactor.SelectionModel;
  * @Pt.AcceptedRating      Red
  */
 public class BasicEdgeController implements EdgeController {
-    /** The selection interactor for drag-selecting nodes
-     */
-    private SelectionDragger _selectionDragger;
-
     /** The connector target
      */
     private ConnectorTarget _connectorTarget;

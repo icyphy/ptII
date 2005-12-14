@@ -44,10 +44,6 @@ public class BoundsSite extends AbstractSite {
      */
     private int _id;
 
-    /** The normal
-     */
-    private double _normal;
-
     /** The side to be located on: NORTH, SOUTH, EAST, WEST
      */
     private int _side;

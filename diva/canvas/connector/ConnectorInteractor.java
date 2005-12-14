@@ -52,12 +52,6 @@ import diva.util.java2d.ShapeUtilities;
  * @author Steve Neuendorffer
  */
 public class ConnectorInteractor extends DragInteractor {
-    /* The most recent coordinates
-     */
-    private double _prevX = 0.0;
-
-    private double _prevY = 0.0;
-
     /** The connector
      */
     private Connector _connector = null;

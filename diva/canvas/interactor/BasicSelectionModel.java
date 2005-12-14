@@ -65,11 +65,6 @@ public class BasicSelectionModel implements SelectionModel {
     private SelectionEvent _selEvent = new SelectionEvent(this);
 
     /**
-     * Empty array, reused for efficiency.
-     */
-    private Object[] _dummy = new Object[0];
-
-    /**
      * Construct an empty selection.
      */
     public BasicSelectionModel() {

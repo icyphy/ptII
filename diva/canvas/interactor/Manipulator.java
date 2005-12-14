@@ -55,10 +55,6 @@ public abstract class Manipulator extends FigureDecorator {
      */
     private ArrayList _grabHandles = new ArrayList();
 
-    /** The mouse filter that accepts hits on grab handles
-     */
-    private MouseFilter _handleFilter = MouseFilter.defaultFilter;
-
     /** The interactor for grab-handles
      */
     private DragInteractor _handleInteractor = new DragInteractor();

@@ -52,10 +52,6 @@ public class DragInteractor extends AbstractInteractor {
      */
     private ArrayList _constraints;
 
-    /** The most recent point produced
-     */
-    private Point2D _previousPoint = null;
-
     /** The target array. This is an array of objects to make it
      * easier to use with SelectionModel.
      */

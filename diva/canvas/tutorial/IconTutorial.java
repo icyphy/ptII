@@ -76,11 +76,6 @@ public class IconTutorial {
     // The default interactor
     Interactor defaultInteractor;
 
-    // The two icons
-    private IconFigure _icon1;
-
-    private IconFigure _icon2;
-
     /** Create a JCanvas and put it into a window
      */
     public IconTutorial() {
