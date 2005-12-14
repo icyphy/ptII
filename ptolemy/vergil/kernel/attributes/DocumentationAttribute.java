@@ -149,7 +149,7 @@ public class DocumentationAttribute extends VisibleAttribute {
                     JFileChooser fileDialog = new JFileChooser();
                     fileDialog.setDialogTitle("Select a documentation file.");
 
-                    File _directory = null;
+                    //File _directory = null;
 
                     String cwd = StringUtilities.getProperty("user.dir");
 
@@ -159,7 +159,7 @@ public class DocumentationAttribute extends VisibleAttribute {
 
                     if (fileDialog.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
                         // FIXME: why is this ignored?
-                        _directory = fileDialog.getCurrentDirectory();
+                        //_directory = fileDialog.getCurrentDirectory();
 
                         String fileName = fileDialog.getSelectedFile()
                                 .getAbsolutePath();

@@ -2229,7 +2229,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
          *  in logical coordinates.
          */
         public Rectangle2D getViewport(Object composite) {
-            GraphModel model = getController().getGraphModel();
+            //GraphModel model = getController().getGraphModel();
 
             if (composite == getRootGraph()) {
                 // Take into account the current zoom and pan.

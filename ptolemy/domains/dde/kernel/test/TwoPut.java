@@ -63,8 +63,6 @@ public class TwoPut extends TypedAtomicActor {
     public TwoPut(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
-        _name = name;
-
         output1 = new TypedIOPort(this, "output1", false, true);
         output1.setMultiport(true);
         output1.setTypeEquals(BaseType.GENERAL);
@@ -110,7 +108,7 @@ public class TwoPut extends TypedAtomicActor {
     /**
      */
     public void setOutChan(int ch) throws IllegalActionException {
-        _outChannel = ch;
+        //_outChannel = ch;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,9 +119,7 @@ public class TwoPut extends TypedAtomicActor {
 
     public TypedIOPort input;
 
-    private int _outChannel = -1;
+    //private int _outChannel = -1;
 
     private boolean _continueIterations = true;
-
-    private String _name;
 }

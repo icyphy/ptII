@@ -571,11 +571,11 @@ public class PxgraphParser {
                     _endian = _LITTLE_ENDIAN;
                     continue;
                 } else if (arg.equals("-db")) {
-                    _debug = 10;
+                    //_debug = 10;
                     continue;
                 } else if (arg.equals("-debug")) {
                     // -debug is not in the original X11 pxgraph.
-                    _debug = (int) Integer.valueOf(args[i++]).intValue();
+                    //_debug = (int) Integer.valueOf(args[i++]).intValue();
                     continue;
                 } else if (arg.equals("-fg")) {
                     _plot.setForeground(PlotBox.getColorByName(args[i++]));
@@ -1128,7 +1128,7 @@ public class PxgraphParser {
     private boolean _connected = true;
 
     // For debugging, call with -db or -debug.
-    private static int _debug = 0;
+    //private static int _debug = 0;
 
     /** @serial Format to read data in. */
     private int _endian = _NATIVE_ENDIAN;

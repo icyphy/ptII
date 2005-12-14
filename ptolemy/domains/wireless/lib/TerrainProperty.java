@@ -273,7 +273,7 @@ public class TerrainProperty extends TypedAtomicActor implements
 
         if (cross) {
             // FIXME: transmitPower is never read?
-            Token transmitPower = properties.get("power");
+            //Token transmitPower = properties.get("power");
 
             // Create a record token with the receive power.
             String[] names = { "power" };

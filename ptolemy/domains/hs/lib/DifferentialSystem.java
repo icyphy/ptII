@@ -219,8 +219,8 @@ public class DifferentialSystem extends TypedCompositeActor {
         int r = outputPortList().size();
 
         // FIXME: Why does this get the token and then do nothing with the value?
-        DoubleMatrixToken initial = (DoubleMatrixToken) initialStates
-                .getToken();
+        //DoubleMatrixToken initial = (DoubleMatrixToken) initialStates
+        //        .getToken();
 
         try {
             _workspace.getWriteAccess();

@@ -60,6 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class FlowThrough extends TypedAtomicActor {
     /**
+     * @param name The name of the actor.
      */
     public FlowThrough(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -71,8 +72,6 @@ public class FlowThrough extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(BaseType.GENERAL);
-
-        _name = name;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -129,7 +128,7 @@ public class FlowThrough extends TypedAtomicActor {
     /**
      */
     public void setOutChan(int ch) throws IllegalActionException {
-        _outChannel = ch;
+        //_outChannel = ch;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,11 +137,9 @@ public class FlowThrough extends TypedAtomicActor {
 
     public TypedIOPort input;
 
-    private int _outChannel = -1;
+    //private int _outChannel = -1;
 
     private boolean _continueIterations = true;
 
     private Receiver[][] _inRcvrs;
-
-    private String _name;
 }

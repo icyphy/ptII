@@ -352,7 +352,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         double[] result = new double[2];
 
         if (targets.hasNext()) {
-            Figure figure = (Figure) targets.next();
+            //Figure figure = (Figure) targets.next();
 
             // The transform context is always (0,0) so no use
             // NOTE: this is a bit of hack, needed to allow the undo of

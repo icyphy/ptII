@@ -72,7 +72,8 @@ public class ShapeIcon extends DynamicEditorIcon {
      *  with the given default shape.
      *  @param container The container.
      *  @param name The name of the attribute.
-     *  @param defaultShape The default shape.
+     *  @param defaultShape The default shape, which is ignored by this
+     *  constructor.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container.
      *  @exception NameDuplicationException If the name coincides with
@@ -81,7 +82,7 @@ public class ShapeIcon extends DynamicEditorIcon {
     public ShapeIcon(NamedObj container, String name, Shape defaultShape)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _defaultShape = defaultShape;
+        //_defaultShape = defaultShape;
         setShape(defaultShape);
     }
 
@@ -353,7 +354,7 @@ public class ShapeIcon extends DynamicEditorIcon {
     private float[] _dashArray;
 
     // Default shape specified in the constructor.
-    private Shape _defaultShape;
+    //private Shape _defaultShape;
 
     // The specified fill color.
     private Color _fillColor = Color.white;

@@ -119,7 +119,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
     protected void initializeInteraction() {
         super.initializeInteraction();
 
-        GraphPane pane = getGraphPane();
+        //GraphPane pane = getGraphPane();
         _menuFactory.addMenuItemFactory(new MenuActionFactory(_editIconAction));
         _menuFactory
                 .addMenuItemFactory(new MenuActionFactory(_removeIconAction));

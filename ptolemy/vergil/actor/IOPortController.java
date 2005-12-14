@@ -361,8 +361,8 @@ public class IOPortController extends AttributeController {
                 fill = SVGUtilities.getColor(_color);
             }
 
-            ActorGraphModel model = (ActorGraphModel) getController()
-                    .getGraphModel();
+            //ActorGraphModel model = (ActorGraphModel) getController()
+            //        .getGraphModel();
 
             int portRotation = _getCardinality(port);
             int direction = _getDirection(portRotation);

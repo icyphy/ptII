@@ -279,8 +279,8 @@ public class KarpCycleMeanStrategy extends CachedStrategy implements
         }
 
         // _dumpVariable(maximumPathLength, directedCyclicGraph);
-        int lambdaCycleMeanLevel = ((Integer) cycleMeanLevel.get(resultNode))
-                .intValue();
+        //int lambdaCycleMeanLevel = ((Integer) cycleMeanLevel.get(resultNode))
+        //        .intValue();
         Node firstNode = resultNode;
         Node secondNode = firstNode;
         int firstNodeLevel = 0;

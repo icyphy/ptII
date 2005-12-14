@@ -4781,7 +4781,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
 
                     Settable settable = (Settable) property;
-                    String previousValue = settable.getExpression();
+                    //String previousValue = settable.getExpression();
 
                     // NOTE: It is not correct to do nothing even
                     // if the value is not changed.  If the value of
@@ -4959,7 +4959,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Create a list to keep track of objects created.
         newParser._topObjectsCreated = new LinkedList();
 
-        NamedObj result = newParser.parse(_base, input);
+        // FIXME: Why do we parse  this and never use the results?
+        /*NamedObj result = */newParser.parse(_base, input);
 
         // Have to mark the contents derived objects, so that
         // the icon is not exported with the MoML export.

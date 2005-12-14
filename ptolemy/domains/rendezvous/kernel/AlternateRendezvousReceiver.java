@@ -197,7 +197,6 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements
 
                             // Indicate to the corresponding put() thread that the put completed.
                             Thread putThread = castReceiver._putWaiting;
-                            Receiver[][] putReceivers = castReceiver._putReceivers;
                             castReceiver._putWaiting = null;
                             castReceiver._putReceivers = null;
 
@@ -404,7 +403,6 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements
 
                     // Indicate to the corresponding put() thread that the put completed.
                     Thread putThread = winner._putWaiting;
-                    Receiver[][] putReceivers = winner._putReceivers;
                     winner._putWaiting = null;
                     winner._putReceivers = null;
 
@@ -772,7 +770,6 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements
 
                             // Indicate to the corresponding get() thread that the put completed.
                             Thread getThread = castReceiver._getWaiting;
-                            Receiver[][] getReceivers = castReceiver._getReceivers;
                             castReceiver._getWaiting = null;
                             castReceiver._getReceivers = null;
 
@@ -985,7 +982,6 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements
                     for (int i = 0; i < winners.length; i++) {
                         AlternateRendezvousReceiver winner = (AlternateRendezvousReceiver) winners[i];
                         Thread getThread = winner._getWaiting;
-                        Receiver[][] getReceivers = winner._getReceivers;
                         winner._getWaiting = null;
                         winner._getReceivers = null;
 
