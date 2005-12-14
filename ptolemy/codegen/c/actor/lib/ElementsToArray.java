@@ -28,14 +28,8 @@
 package ptolemy.codegen.c.actor.lib;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

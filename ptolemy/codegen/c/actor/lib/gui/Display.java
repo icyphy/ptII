@@ -30,9 +30,8 @@ package ptolemy.codegen.c.actor.lib.gui;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import ptolemy.actor.TypedIOPort;
+
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
