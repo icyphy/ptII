@@ -292,9 +292,9 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
     /**
      * Debugging output.
      */
-    private void debug(String s) {
-        System.err.println(s);
-    }
+    //private void debug(String s) {
+    //    System.err.println(s);
+    //}
 
     /**
      * Return the absolute cost of an individual edge.  By default the
@@ -580,7 +580,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
 
                             if ((tailPt[which] == headPt[which])
                                     && (tailPt[which] == inTailPt[which])) {
-                                int other = which + (1 % 2);
+                                //int other = which + (1 % 2);
 
                                 // test to see if the "other" coordinate is
                                 // *between* the two points.
