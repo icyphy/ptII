@@ -81,15 +81,10 @@ public class RemoveIconAction extends FigureAction {
         }
     }
 
-    /** Specify the configuration.  This has to be called with a
-     *  non-null argument for this action to work.
+    /** Specify the configuration. 
+     *  In this action, this method does nothing.
      */
     public void setConfiguration(Configuration configuration) {
-        _configuration = configuration;
+        // Do nothing.
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-    // The configuration.
-    private Configuration _configuration;
 }
