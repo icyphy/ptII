@@ -100,8 +100,7 @@ public abstract class VisibleAttribute extends Attribute {
      */
     public int moveToFirst() throws IllegalActionException {
         try {
-            SingletonAttribute render = new SingletonAttribute(this,
-                    "_renderFirst");
+            new SingletonAttribute(this, "_renderFirst");
             Attribute renderLast = getAttribute("_renderLast");
 
             if (renderLast != null) {
@@ -130,8 +129,7 @@ public abstract class VisibleAttribute extends Attribute {
      */
     public int moveToLast() throws IllegalActionException {
         try {
-            SingletonAttribute render = new SingletonAttribute(this,
-                    "_renderLast");
+            new SingletonAttribute(this, "_renderLast");
             Attribute renderFirst = getAttribute("_renderFirst");
 
             if (renderFirst != null) {
