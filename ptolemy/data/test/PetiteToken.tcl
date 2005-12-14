@@ -1,6 +1,6 @@
 # Tests for the PetiteToken class
 #
-# @Author: Based on DoubleToken.tcl by Neil Smyth
+# @Author: Christopher Brooks, Based on DoubleToken.tcl by Neil Smyth
 #
 # @Version $Id$
 #
@@ -49,23 +49,27 @@ if {[string compare test [info procs test]] == 1} then {
 test PetiteToken-1.0 {Create an empty instance} {
     set p [java::new ptolemy.data.PetiteToken]
     $p toString
-} {0.0}
+} {0.0p}
 
 ######################################################################
 ####
 # 
 test PetiteToken-1.1 {Create a non-empty instance from an double} {
     set p [java::new {ptolemy.data.PetiteToken double} 5.5]
-    $p toString
-} {5.5}
+    set p2 [java::new {ptolemy.data.PetiteToken double} -5.5]
+    set p3 [java::new {ptolemy.data.PetiteToken double} 0.55]
+    list [$p toString] [$p2 toString] [$p3 toString]
+} {1.0p -1.0p 0.55p}
 
 ######################################################################
 ####
 # 
 test PetiteToken-1.2 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.PetiteToken String} "7.77"]
-    $p toString
-} {7.77}
+    set p [java::new {ptolemy.data.PetiteToken double} "7.7"]
+    set p2 [java::new {ptolemy.data.PetiteToken double} "-7.7"]
+    set p3 [java::new {ptolemy.data.PetiteToken double} "0.77"]
+    list [$p toString] [$p2 toString] [$p3 toString]
+} {1.0p -1.0p 0.77p}
 
 ######################################################################
 ####
@@ -73,21 +77,21 @@ test PetiteToken-1.2 {Create a non-empty instance from an String} {
 test PetiteToken-1.3 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.PetiteToken String} "7.56E-10"]
     $p toString
-} {7.56E-10}
+} {0.000000000756p}
 
 ######################################################################
 ####
 # 
 test PetiteToken-1.4 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.PetiteToken String} "7.56E10"]
+    set p [java::new {ptolemy.data.PetiteToken String} "-0.56E0"]
     $p toString
-} {7.56E10}
+} {-0.56p}
 
 ######################################################################
 ####
 # 
 test PetiteToken-2.0 {Create a non-empty instance and query its value as a Complex} {
-    set p [java::new {ptolemy.data.PetiteToken double} 3.3]
+    set p [java::new {ptolemy.data.PetiteToken double} 0.5]
     set res [$p complexValue]
     list [$res toString]
 } {{3.3 + 0.0i}}
@@ -96,7 +100,7 @@ test PetiteToken-2.0 {Create a non-empty instance and query its value as a Compl
 ####
 # 
 test PetiteToken-2.1 {Create a non-empty instance and query its value as a double} {
-    set p [java::new {ptolemy.data.PetiteToken double} 3.3]
+    set p [java::new {ptolemy.data.PetiteToken double} 0.6]
     set res1 [$p doubleValue]
     list $res1
 } {3.3}
@@ -105,21 +109,21 @@ test PetiteToken-2.1 {Create a non-empty instance and query its value as a doubl
 ####
 # 
 test PetiteToken-2.2 {Create a non-empty instance and query its value as an int} {
-    set p [java::new {ptolemy.data.PetiteToken double} 12]
+    set p [java::new {ptolemy.data.PetiteToken double} 0.2]
     catch {$p intValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.PetiteToken '12.0' to the type int.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.PetiteToken '0.2p' to the type int.}}
 
 ######################################################################
 ####
 # 
 test PetiteToken-2.3 {Create a non-empty instance and query its value as a long} {
-    set p [java::new {ptolemy.data.PetiteToken double} 12]
+    set p [java::new {ptolemy.data.PetiteToken double} 0.1]
    catch {$p longValue} errmsg
 
     list $errmsg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.PetiteToken '12.0' to the type long.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.PetiteToken '0.1p' to the type long.}}
 
 ######################################################################
 ####
@@ -133,11 +137,11 @@ test PetiteToken-2.4 {Create a non-empty instance and query its value as a strin
 ####
 # 
 test PetiteToken-2.5 {Test additive identity} {
-    set p [java::new {ptolemy.data.PetiteToken double} 12.2]
+    set p [java::new {ptolemy.data.PetiteToken double} 0.25]
     set token [$p zero]
 
     list [$token toString]
-} {0.0}
+} {0.0p}
 ######################################################################
 ####
 # 
@@ -153,18 +157,18 @@ test PetiteToken-2.6 {Test multiplicative identity} {
 # Test addition of doubles to Token types below it in the lossless 
 # type hierarchy, and with other doubles.
 test PetiteToken-3.0 {Test adding doubles.} {
-    set p [java::new {ptolemy.data.PetiteToken double} 12.2]
+    set p [java::new {ptolemy.data.PetiteToken double} 0.1]
     set res1 [$p add $p]
     set res2 [$p addReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {24.4 24.4}
+} {0.2p 0.2p}
 ######################################################################
 ####
 # 
 test PetiteToken-3.1 {Test adding doubles and ints.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
-    set tok2 [java::new {ptolemy.data.IntToken int} 2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.31]
+    set tok2 [java::new {ptolemy.data.IntToken int} 0]
     set res1 [$tok1 add $tok2]
     set res2 [$tok1 addReverse $tok2]
 
@@ -178,17 +182,17 @@ test PetiteToken-3.1 {Test adding doubles and ints.} {
 # Test division of doubles with Token types below it in the lossless 
 # type hierarchy, and with other doubles.
 test PetiteToken-4.0 {Test dividing doubles.} {
-    set p [java::new {ptolemy.data.PetiteToken double} 12.2]
+    set p [java::new {ptolemy.data.PetiteToken double} 0.4]
     set res1 [$p divide $p]
     set res2 [$p divideReverse $p]
 
     list [$res1 toString] [$res2 toString]
-} {1.0 1.0}
+} {1.0p 1.0p}
 ######################################################################
 ####
 # 
 test PetiteToken-4.1 {Test dividing doubles and ints.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.41]
     set tok2 [java::new {ptolemy.data.IntToken int} 2]
     set res1 [$tok1 divide $tok2]
     set resultToken [java::new {ptolemy.data.PetiteToken double} \
@@ -205,8 +209,8 @@ test PetiteToken-4.1 {Test dividing doubles and ints.} {
 # Test isEqualTo operator applied to other doubles and Tokens types 
 # below it in the lossless type hierarchy.
 test PetiteToken-5.0 {Test equality between doubles.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
-    set tok2 [java::new {ptolemy.data.PetiteToken double} 2.2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.5]
+    set tok2 [java::new {ptolemy.data.PetiteToken double} 0.51]
 
     set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok1]
     set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
@@ -218,18 +222,18 @@ test PetiteToken-5.0 {Test equality between doubles.} {
 ####
 # 
 test PetiteToken-5.1 {Test equality between doubles and ints.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12]
-    set tok2 [java::new {ptolemy.data.IntToken int} 12]
-    set tok3 [java::new {ptolemy.data.PetiteToken double} 2]
-    set tok4 [java::new {ptolemy.data.IntToken int} 2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0]
+    set tok2 [java::new {ptolemy.data.IntToken int} 0]
+    set tok3 [java::new {ptolemy.data.PetiteToken double} -1]
+    set tok4 [java::new {ptolemy.data.IntToken int} -1]
 
     set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
     set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok4]
-
     set res3 [$tok2 {isEqualTo ptolemy.data.Token} $tok1]
+    set res3 [$tok3 {isEqualTo ptolemy.data.Token} $tok4]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString]
-} {true false true}
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+} {true false true true}
 
 ######################################################################
 ####
@@ -239,8 +243,8 @@ test PetiteToken-5.5 {Test closeness between doubles. \
     This test should be the same as the similar PetiteToken-5.0 \
     isEquals test. \
 } {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
-    set tok2 [java::new {ptolemy.data.PetiteToken double} 2.2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.55]
+    set tok2 [java::new {ptolemy.data.PetiteToken double} 0.54]
 
     set res1 [$tok1 {isCloseTo ptolemy.data.Token} $tok1]
     set res2 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]
@@ -320,8 +324,8 @@ test PetiteToken-5.8 {Test closeness between doubles around 0} {
 } {false false true false false true}
 
 test PetiteToken-5.9 {Test closeness between a double and a String} {
-    set doubleToken [java::new {ptolemy.data.PetiteToken double} 12.0]
-    set stringToken [java::new ptolemy.data.StringToken "12.0"]
+    set doubleToken [java::new {ptolemy.data.PetiteToken double} 0.59]
+    set stringToken [java::new ptolemy.data.StringToken "0.59"]
     catch {[$doubleToken {isCloseTo ptolemy.data.Token} $stringToken] toString} errMsg1
     catch {[$stringToken {isCloseTo ptolemy.data.Token} $doubleToken] toString} errMsg2
     list [lrange $errMsg2 0 10] [lrange $errMsg2 0 10]
@@ -333,51 +337,51 @@ test PetiteToken-5.10 {Test closeness between doubles and ints.} {
     java::field ptolemy.math.Complex EPSILON $epsilon
 
     set tok1 [java::new {ptolemy.data.PetiteToken double} \
-	      [expr {12.0 + 0.5 * $epsilon} ]]
-    set tok2 [java::new {ptolemy.data.IntToken int} 12]
+	      [expr {-1.0 + 0.5 * $epsilon} ]]
+    set tok2 [java::new {ptolemy.data.IntToken int} 0]
 
-    set res1 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]
-    set res2 [$tok2 {isCloseTo ptolemy.data.Token} $tok1]
+    catch {set res1 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]} msg
+    #set res2 [$tok2 {isCloseTo ptolemy.data.Token} $tok1]
 
     java::field ptolemy.math.Complex EPSILON $oldEpsilon
 
-    list [$res1 toString] [$res2 toString]
-} {true true}
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: isCloseTo method not supported between ptolemy.data.PetiteToken '-0.9995p' and ptolemy.data.IntToken '0' because the types are incomparable.}}
 
 
 ######################################################################
 ####
 # Test modulo operator between doubles and ints.
 test PetiteToken-6.0 {Test modulo between doubles.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
-    set tok2 [java::new {ptolemy.data.PetiteToken double} 2.2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.2]
+    set tok2 [java::new {ptolemy.data.PetiteToken double} 0.6]
 
     set res1 [$tok1 modulo $tok1]
     set res2 [$tok1 moduloReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {0.0 2.2}
+} {}
+
 ######################################################################
 ####
 # 
 test PetiteToken-6.1 {Test modulo operator between doubles and ints.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.61]
     set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
-    set res1 [$tok1 modulo $tok2]
-    set res2 [$tok1 moduloReverse $tok2]
-
-    set res3 [$tok2 modulo $tok1]
+    catch {set res1 [$tok1 modulo $tok2]} msg
+    #set res2 [$tok1 moduloReverse $tok2]
+    #set res3 [$tok2 modulo $tok1]
    
-    list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {0.2 3.0 3.0}
+    list $msg	
+} {{ptolemy.kernel.util.IllegalActionException: modulo method not supported between ptolemy.data.PetiteToken '0.61p' and ptolemy.data.IntToken '3' because the types are incomparable.}}
 
 ######################################################################
 ####
 # Test multiply operator between doubles and ints.
 test PetiteToken-7.0 {Test multiply operator between doubles.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
-    set tok2 [java::new {ptolemy.data.PetiteToken double} 2.2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.7]
+    set tok2 [java::new {ptolemy.data.PetiteToken double} 0.1]
 
     set res1 [$tok1 multiply $tok1]
     set res2 [$tok1 multiplyReverse $tok2]
@@ -388,52 +392,44 @@ test PetiteToken-7.0 {Test multiply operator between doubles.} {
 ####
 # 
 test PetiteToken-7.1 {Test multiply operator between doubles and ints.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.71]
     set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
-    set res1 [$tok1 multiply $tok2]
-    set res2 [$tok1 multiplyReverse $tok2]
-
-    set res3 [$tok2 multiply $tok1]
-   
-    list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {36.6 36.6 36.6}
+    catch {set res1 [$tok1 multiply $tok2]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported between ptolemy.data.PetiteToken '0.71p' and ptolemy.data.IntToken '3' because the types are incomparable.}}
 
 
 ######################################################################
 ####
 # Test subtract operator between doubles and ints.
 test PetiteToken-8.0 {Test subtract operator between doubles.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
-    set tok2 [java::new {ptolemy.data.PetiteToken double} 2.2]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.8]
+    set tok2 [java::new {ptolemy.data.PetiteToken double} 0.08]
 
     set res1 [$tok1 subtract $tok1]
     set res2 [$tok1 subtractReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
-} {0.0 -10.0}
+} {0.0 -0.72}
 ######################################################################
 ####
 # 
 test PetiteToken-8.1 {Test subtract operator between doubles and ints.} {
-    set tok1 [java::new {ptolemy.data.PetiteToken double} 12.2]
-    set tok2 [java::new {ptolemy.data.IntToken int} 3]
+    set tok1 [java::new {ptolemy.data.PetiteToken double} 0.81]
+    set tok2 [java::new {ptolemy.data.IntToken int} -1]
     
-    set res1 [$tok1 subtract $tok2]
-    set res2 [$tok1 subtractReverse $tok2]
-
-    set res3 [$tok2 subtract $tok1]
-   
-    list [$res1 toString] [$res2 toString] [$res3 toString] 
-} {9.2 -9.2 -9.2}
+    catch { set res1 [$tok1 subtract $tok2]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: subtract method not supported between ptolemy.data.PetiteToken '0.81p' and ptolemy.data.IntToken '-1' because the types are incomparable.}}
 
 ######################################################################
 ####
 # 
 test PetiteToken-9.0 {Test equals} {
-    set t1 [java::new {ptolemy.data.PetiteToken double} 3.5]
-    set t2 [java::new {ptolemy.data.PetiteToken double} 3.5]
-    set t3 [java::new {ptolemy.data.PetiteToken double} -8.0]
+    set t1 [java::new {ptolemy.data.PetiteToken double} 0.9]
+    set t2 [java::new {ptolemy.data.PetiteToken double} 0.9]
+    set t3 [java::new {ptolemy.data.PetiteToken double} 0.8]
     list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
 } {1 1 0}
 
@@ -441,9 +437,9 @@ test PetiteToken-9.0 {Test equals} {
 ####
 # 
 test PetiteToken-10.0 {Test hashCode} {
-    set t1 [java::new {ptolemy.data.PetiteToken double} 3.5]
-    set t2 [java::new {ptolemy.data.PetiteToken double} 3.5]
-    set t3 [java::new {ptolemy.data.PetiteToken double} -8.0]
+    set t1 [java::new {ptolemy.data.PetiteToken double} 0.1]
+    set t2 [java::new {ptolemy.data.PetiteToken double} 0.1]
+    set t3 [java::new {ptolemy.data.PetiteToken double} -0.1]
     list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
 } {3 3 -8}
 
@@ -456,7 +452,7 @@ test PetiteToken-13.0 {Test convert from BooleanToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.PetiteToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.BooleanToken 'false' to the type double because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.BooleanToken 'false' to the type petite.}}
 
 test PetiteToken-13.1 {Test convert from UnsignedByteToken} {
     set t [java::new {ptolemy.data.UnsignedByteToken byte} 1]
@@ -464,7 +460,7 @@ test PetiteToken-13.1 {Test convert from UnsignedByteToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.PetiteToken convert $t] toString]} msg
     list $msg
-} {1.0}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.UnsignedByteToken '1ub' to the type petite.}}
 
 test PetiteToken-13.2 {Test convert from ComplexToken} {
     set o [java::new {ptolemy.math.Complex} 1.0 1.0]
@@ -473,7 +469,7 @@ test PetiteToken-13.2 {Test convert from ComplexToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.PetiteToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '1.0 + 1.0i' to the type double because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '1.0 + 1.0i' to the type petite.}}
 
 test PetiteToken-13.3 {Test convert from PetiteToken} {
     set t [java::new {ptolemy.data.PetiteToken double} 1.0]
@@ -481,7 +477,7 @@ test PetiteToken-13.3 {Test convert from PetiteToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.PetiteToken convert $t] toString]} msg
     list $msg
-} {1.0}
+} {1.0p}
 
 test PetiteToken-13.4 {Test convert from FixToken} {
     set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
@@ -489,15 +485,15 @@ test PetiteToken-13.4 {Test convert from FixToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.PetiteToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(1.0,8,4)' to the type double because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(1.0,8,4)' to the type petite.}}
 
 test PetiteToken-13.5 {Test convert from IntToken} {
-    set t [java::new {ptolemy.data.IntToken int} 1]
+    set t [java::new {ptolemy.data.IntToken int} -1]
     set msg {}
     set result {}
     catch {set result [[java::call ptolemy.data.PetiteToken convert $t] toString]} msg
     list $msg
-} {1.0}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '-1' to the type petite.}}
 
 test PetiteToken-13.6 {Test convert from LongToken} {
     set t [java::new {ptolemy.data.LongToken long} 1]
@@ -505,7 +501,7 @@ test PetiteToken-13.6 {Test convert from LongToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.PetiteToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1L' to the type double because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1L' to the type petite.}}
 
 test PetiteToken-13.7 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
@@ -513,5 +509,5 @@ test PetiteToken-13.7 {Test convert from StringToken} {
     set result {}
     catch {set result [[java::call ptolemy.data.PetiteToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type double because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type petite.}}
     
