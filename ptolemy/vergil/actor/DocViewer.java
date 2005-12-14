@@ -362,7 +362,8 @@ public class DocViewer extends HTMLViewer {
         }
         // Finally, insert all.
         info.append(_HTML_TAIL);
-        setText(info.toString());
+        // FIXME: this line does not compile
+        //setText(info.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
