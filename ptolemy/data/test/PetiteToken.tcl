@@ -129,9 +129,9 @@ test PetiteToken-2.3 {Create a non-empty instance and query its value as a long}
 ####
 # 
 test PetiteToken-2.4 {Create a non-empty instance and query its value as a string} {
-    set p [java::new {ptolemy.data.PetiteToken double} 12.2]
+    set p [java::new {ptolemy.data.PetiteToken double} 0.24]
     $p toString
-} {12.2}
+} {0.24p}
 
 ######################################################################
 ####
@@ -146,17 +146,17 @@ test PetiteToken-2.5 {Test additive identity} {
 ####
 # 
 test PetiteToken-2.6 {Test multiplicative identity} {
-    set p [java::new {ptolemy.data.PetiteToken double} 12.2]
+    set p [java::new {ptolemy.data.PetiteToken double} 0.1]
     set token [$p one]
 
     list [$token toString]
-} {1.0}
+} {1.0p}
 
 ######################################################################
 ####
-# Test addition of doubles to Token types below it in the lossless 
-# type hierarchy, and with other doubles.
-test PetiteToken-3.0 {Test adding doubles.} {
+# Test addition of petites to Token types below it in the lossless 
+# type hierarchy, and with other petites.
+test PetiteToken-3.0 {Test adding petites.} {
     set p [java::new {ptolemy.data.PetiteToken double} 0.1]
     set res1 [$p add $p]
     set res2 [$p addReverse $p]
@@ -166,22 +166,23 @@ test PetiteToken-3.0 {Test adding doubles.} {
 ######################################################################
 ####
 # 
-test PetiteToken-3.1 {Test adding doubles and ints.} {
+test PetiteToken-3.1 {Test adding petites and ints.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.31]
     set tok2 [java::new {ptolemy.data.IntToken int} 0]
-    set res1 [$tok1 add $tok2]
-    set res2 [$tok1 addReverse $tok2]
+    catch {set res1 [$tok1 add $tok2]} msg
+    #set res2 [$tok1 addReverse $tok2]
 
-    set res3 [$tok2 add $tok1]
+    #set res3 [$tok2 add $tok1]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString]
-} {14.2 14.2 14.2}
+    #list [$res1 toString] [$res2 toString] [$res3 toString]
+    list $msg	
+} {{ptolemy.kernel.util.IllegalActionException: add method not supported between ptolemy.data.PetiteToken '0.31p' and ptolemy.data.IntToken '0' because the types are incomparable.}}
 
 ######################################################################
 ####
-# Test division of doubles with Token types below it in the lossless 
-# type hierarchy, and with other doubles.
-test PetiteToken-4.0 {Test dividing doubles.} {
+# Test division of petites with Token types below it in the lossless 
+# type hierarchy, and with other petites.
+test PetiteToken-4.0 {Test dividing petites.} {
     set p [java::new {ptolemy.data.PetiteToken double} 0.4]
     set res1 [$p divide $p]
     set res2 [$p divideReverse $p]
@@ -191,24 +192,25 @@ test PetiteToken-4.0 {Test dividing doubles.} {
 ######################################################################
 ####
 # 
-test PetiteToken-4.1 {Test dividing doubles and ints.} {
+test PetiteToken-4.1 {Test dividing petites and ints.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.41]
     set tok2 [java::new {ptolemy.data.IntToken int} 2]
-    set res1 [$tok1 divide $tok2]
-    set resultToken [java::new {ptolemy.data.PetiteToken double} \
-	    0.1639344262295]
-    set res2 [[$tok1 divideReverse $tok2] isCloseTo $resultToken]
-
-    set res3 [[$tok2 divide $tok1] isCloseTo $resultToken]
- 
-    list [$res1 toString] [$res2 toString] [$res3 toString]
-} {6.1 true true}
+    catch {set res1 [$tok1 divide $tok2]} msg
+    #set resultToken [java::new {ptolemy.data.PetiteToken double} \
+    #	    0.1639344262295]
+    #set res2 [[$tok1 divideReverse $tok2] isCloseTo $resultToken]
+    #
+    #set res3 [[$tok2 divide $tok1] isCloseTo $resultToken]
+    #
+    #list [$res1 toString] [$res2 toString] [$res3 toString]
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: divide method not supported between ptolemy.data.PetiteToken '0.41p' and ptolemy.data.IntToken '2' because the types are incomparable.}}
 
 ######################################################################
 ####
-# Test isEqualTo operator applied to other doubles and Tokens types 
+# Test isEqualTo operator applied to other petites and Tokens types 
 # below it in the lossless type hierarchy.
-test PetiteToken-5.0 {Test equality between doubles.} {
+test PetiteToken-5.0 {Test equality between petites.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.5]
     set tok2 [java::new {ptolemy.data.PetiteToken double} 0.51]
 
@@ -221,25 +223,26 @@ test PetiteToken-5.0 {Test equality between doubles.} {
 ######################################################################
 ####
 # 
-test PetiteToken-5.1 {Test equality between doubles and ints.} {
+test PetiteToken-5.1 {Test equality between petites and ints.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0]
     set tok2 [java::new {ptolemy.data.IntToken int} 0]
     set tok3 [java::new {ptolemy.data.PetiteToken double} -1]
     set tok4 [java::new {ptolemy.data.IntToken int} -1]
 
-    set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]
-    set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok4]
-    set res3 [$tok2 {isEqualTo ptolemy.data.Token} $tok1]
-    set res3 [$tok3 {isEqualTo ptolemy.data.Token} $tok4]
+    catch {set res1 [$tok1 {isEqualTo ptolemy.data.Token} $tok2]} msg
+    #set res2 [$tok1 {isEqualTo ptolemy.data.Token} $tok4]
+    #set res3 [$tok2 {isEqualTo ptolemy.data.Token} $tok1]
+    #set res3 [$tok3 {isEqualTo ptolemy.data.Token} $tok4]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
-} {true false true true}
+    #list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: isEqualTo method not supported between ptolemy.data.PetiteToken '0.0p' and ptolemy.data.IntToken '-1' because the types are incomparable.}}
 
 ######################################################################
 ####
-# Test isCloseTo operator applied to other doubles and Tokens types 
+# Test isCloseTo operator applied to other petites and Tokens types 
 # below it in the lossless type hierarchy.
-test PetiteToken-5.5 {Test closeness between doubles. \
+test PetiteToken-5.5 {Test closeness between petites. \
     This test should be the same as the similar PetiteToken-5.0 \
     isEquals test. \
 } {
@@ -254,7 +257,7 @@ test PetiteToken-5.5 {Test closeness between doubles. \
 ######################################################################
 ####
 # 
-test PetiteToken-5.6 {Test closeness between doubles and ints. \
+test PetiteToken-5.6 {Test closeness between petites and ints. \
     This test should be the same as the similar PetiteToken-5.0 \
     isEquals test. \
 } {
@@ -263,18 +266,19 @@ test PetiteToken-5.6 {Test closeness between doubles and ints. \
     set tok3 [java::new {ptolemy.data.PetiteToken double} 2]
     set tok4 [java::new {ptolemy.data.IntToken int} 2]
 
-    set res1 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]
-    set res2 [$tok1 {isCloseTo ptolemy.data.Token} $tok4]
+    catch {set res1 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]} msg
+    #set res2 [$tok1 {isCloseTo ptolemy.data.Token} $tok4]
 
-    set res3 [$tok2 {isCloseTo ptolemy.data.Token} $tok1]
+    #set res3 [$tok2 {isCloseTo ptolemy.data.Token} $tok1]
 
-    list [$res1 toString] [$res2 toString] [$res3 toString]
-} {true false true}
+    #list [$res1 toString] [$res2 toString] [$res3 toString]
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: isCloseTo method not supported between ptolemy.data.PetiteToken '1.0p' and ptolemy.data.IntToken '12' because the types are incomparable.}}
 
 ######################################################################
 ####
 # 
-test PetiteToken-5.7 {Test closeness between doubles} {
+test PetiteToken-5.7 {Test closeness between petites} {
     set epsilon 0.001
     set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
     java::field ptolemy.math.Complex EPSILON $epsilon
@@ -297,7 +301,7 @@ test PetiteToken-5.7 {Test closeness between doubles} {
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
 } {false true false true}
 
-test PetiteToken-5.8 {Test closeness between doubles around 0} {
+test PetiteToken-5.8 {Test closeness between petites around 0} {
     set epsilon 0.001
     set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
     java::field ptolemy.math.Complex EPSILON $epsilon
@@ -331,7 +335,7 @@ test PetiteToken-5.9 {Test closeness between a double and a String} {
     list [lrange $errMsg2 0 10] [lrange $errMsg2 0 10]
 } {true true}
 
-test PetiteToken-5.10 {Test closeness between doubles and ints.} {
+test PetiteToken-5.10 {Test closeness between petites and ints.} {
     set epsilon 0.001
     set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
     java::field ptolemy.math.Complex EPSILON $epsilon
@@ -351,8 +355,8 @@ test PetiteToken-5.10 {Test closeness between doubles and ints.} {
 
 ######################################################################
 ####
-# Test modulo operator between doubles and ints.
-test PetiteToken-6.0 {Test modulo between doubles.} {
+# Test modulo operator between petites and ints.
+test PetiteToken-6.0 {Test modulo between petites.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.2]
     set tok2 [java::new {ptolemy.data.PetiteToken double} 0.6]
 
@@ -365,7 +369,7 @@ test PetiteToken-6.0 {Test modulo between doubles.} {
 ######################################################################
 ####
 # 
-test PetiteToken-6.1 {Test modulo operator between doubles and ints.} {
+test PetiteToken-6.1 {Test modulo operator between petites and ints.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.61]
     set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
@@ -378,8 +382,8 @@ test PetiteToken-6.1 {Test modulo operator between doubles and ints.} {
 
 ######################################################################
 ####
-# Test multiply operator between doubles and ints.
-test PetiteToken-7.0 {Test multiply operator between doubles.} {
+# Test multiply operator between petites and ints.
+test PetiteToken-7.0 {Test multiply operator between petites.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.7]
     set tok2 [java::new {ptolemy.data.PetiteToken double} 0.1]
 
@@ -391,7 +395,7 @@ test PetiteToken-7.0 {Test multiply operator between doubles.} {
 ######################################################################
 ####
 # 
-test PetiteToken-7.1 {Test multiply operator between doubles and ints.} {
+test PetiteToken-7.1 {Test multiply operator between petites and ints.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.71]
     set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
@@ -402,8 +406,8 @@ test PetiteToken-7.1 {Test multiply operator between doubles and ints.} {
 
 ######################################################################
 ####
-# Test subtract operator between doubles and ints.
-test PetiteToken-8.0 {Test subtract operator between doubles.} {
+# Test subtract operator between petites and ints.
+test PetiteToken-8.0 {Test subtract operator between petites.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.8]
     set tok2 [java::new {ptolemy.data.PetiteToken double} 0.08]
 
@@ -415,7 +419,7 @@ test PetiteToken-8.0 {Test subtract operator between doubles.} {
 ######################################################################
 ####
 # 
-test PetiteToken-8.1 {Test subtract operator between doubles and ints.} {
+test PetiteToken-8.1 {Test subtract operator between petites and ints.} {
     set tok1 [java::new {ptolemy.data.PetiteToken double} 0.81]
     set tok2 [java::new {ptolemy.data.IntToken int} -1]
     
