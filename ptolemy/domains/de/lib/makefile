@@ -66,7 +66,8 @@ JSRCS = \
 	Timer.java \
 	UnionMerge.java \
 	VariableDelay.java \
-	WaitingTime.java
+	WaitingTime.java \
+	Wire.java
 
 OTHER_FILES_TO_BE_JARED = \
 	deentities.xml \
