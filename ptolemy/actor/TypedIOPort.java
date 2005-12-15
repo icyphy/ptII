@@ -725,7 +725,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     }
 
     /** Check that the specified token is compatible with the
-     *  resolved type of this port.     *
+     *  resolved type of this port.
      *  @param token The token to check.
      *  @exception IllegalActionException If the specified token is
      *   either incomparable to the resolved type or higher in the
