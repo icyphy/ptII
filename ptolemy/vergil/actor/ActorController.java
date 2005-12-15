@@ -60,6 +60,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphController;
@@ -556,7 +557,7 @@ public abstract class ActorController extends AttributeController {
                 // attribute is a boolean-valued parameter, then
                 // show the name only if the value is true.
                 Attribute showAttribute = port.getAttribute("_showName");
-
+                String toShow = null;
                 if (showAttribute != null) {
                     boolean show = true;
 
@@ -574,10 +575,37 @@ public abstract class ActorController extends AttributeController {
                     }
 
                     if (show) {
-                        LabelFigure labelFigure = _createPortLabelFigure(port
-                                .getName(), _portLabelFont, x, y, direction);
-                        figure.add(labelFigure);
+                        toShow = port.getName();
                     }
+                }
+                // In addition, if the port contains an attribute
+                // called "_showInfo", then if that attribute is
+                // a variable, then its value is shown. Otherwise,
+                // if it is a Settable, then its expression is shown.
+                Attribute showInfo = port.getAttribute("_showInfo");
+                try {
+                    if (showInfo instanceof Variable && !((Variable)showInfo).isStringMode()) {
+                        String value = ((Variable)showInfo).getToken().toString();
+                        if (toShow != null) {
+                            toShow += " (" + value + ")";
+                        } else {
+                            toShow = value;
+                        }
+                    } else if (showInfo instanceof Settable) {
+                        if (toShow != null) {
+                            toShow += " (" + ((Settable)showInfo).getExpression() + ")";
+                        } else {
+                            toShow = ((Settable)showInfo).getExpression();
+                        }
+                    }
+                } catch (IllegalActionException e) {
+                    toShow += e.getMessage();
+                }
+                
+                if (toShow != null) {
+                    LabelFigure labelFigure = _createPortLabelFigure(
+                            toShow, _portLabelFont, x, y, direction);
+                    figure.add(labelFigure);
                 }
             }
         }
