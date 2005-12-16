@@ -144,6 +144,12 @@ public class HTMLAbout {
                             + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm"));
         }
 
+        if (_configurationExists("ptinyKepler")) {
+            htmlBuffer
+                    .append("<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm")
+                            + _aboutHTML("ptolemy/configs/doc/demosPtinyKepler.htm"));
+        }
         if (_configurationExists("visualsense")) {
             htmlBuffer
                     .append("<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
