@@ -146,7 +146,7 @@ public class HTMLAbout {
 
         if (_configurationExists("ptinyKepler")) {
             htmlBuffer
-                    .append("<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
+                    .append("<tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>\n"
                             + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm")
                             + _aboutHTML("ptolemy/configs/doc/demosPtinyKepler.htm"));
         }
