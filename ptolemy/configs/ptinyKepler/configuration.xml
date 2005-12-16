@@ -8,7 +8,7 @@
   <!-- Specify the about file to open. -->
   <property name="_about"
             class="ptolemy.data.expr.FileParameter"
-            value="$CLASSPATH/ptolemy/configs/ptiny/intro.htm"/>
+            value="$CLASSPATH/ptolemy/configs/ptinyKepler/intro.htm"/>
 
   <!-- Specify the help file to open. -->
   <property name="_help"
