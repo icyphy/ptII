@@ -101,7 +101,7 @@ completeDemosPtiny.htm: completeDemos.htm
 demosPtiny.htm: demos.htm
 	awk -f $(ROOT)/doc/javahtml.awk demos.htm | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 docsPtiny.htm: docs.htm
-	awk -f $(ROOT)/doc/javahtml.awk docs.htm | sed 's/intro.htm/introPtiny.htm/' > $@  
+	awk -f $(ROOT)/doc/javahtml.awk docs.htm | sed 's/intro.htm/introPtiny.htm/' | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 
 update: $(DERIVED_FILES)
 	cvs commit -m "Master files changed" $(DERIVED_FILES)
