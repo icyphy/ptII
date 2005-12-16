@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy runtime configuration documentations
+# Makefile for the version of Ptolemy for use with Kepler 
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2000-2005 The Regents of the University of California.
+# @Copyright (c) 2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/configs/doc
+ME =		ptolemy/configs/ptinyKepler
 
 # There is no demo directory, put demos in the corresponding domain
 # directory so that we can find them if we are looking at domains.
@@ -47,37 +47,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	doc
+PTPACKAGE = 	ptinyKepler
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS =
 
 # HTML Files that are derived from other HTML files.
-DERIVED_FILES = \
-	completeDemosPtiny.htm \
-	completeDemosPtinyKepler.htm \
-	demosPtiny.htm \
-	demosPtinyKepler.htm \
-	docsPtiny.htm \
-	docsPtinyKepler.htm
+DERIVED_FILES =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
-	basicHelp.htm \
-	ClassesIllustrated.png \
-	ClassesIllustrated.xml \
-	completeDemos.htm \
-	copyright.htm \
-	demos.htm \
-	docs.htm \
-	vergilFsmEditorHelp.htm \
-	vergilGraphEditorHelp.htm \
-	whatsNew.htm \
-	whatsNew3.0.2.htm \
-	whatsNew4.0.htm \
-	whatsNew5.0.htm \
-	whatsNew5.1.htm
+	configuration.xml \
+	intro.htm \
+	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -96,36 +79,6 @@ all: jclass $(DERIVED_FILES)
 
 install: all jars
 	@echo "nothing need be done for make install in this directory"
-
-# Generate a file that consists of only the text within
-# <!--vergilDoc--> ... <!--/vergilDoc--> blocks
-completeDemosPtiny.htm: completeDemos.htm
-	awk -f $(ROOT)/doc/javahtml.awk completeDemos.htm | sed 's/demos.htm/demosPtiny.htm/' > $@  
-
-# Generate a file that consists of only the text within
-# <!--ptinyKeplerDocs--> ... <!--/ptinyKeplerDocs--> blocks
-completeDemosPtinyKepler.htm: completeDemosPtiny.htm
-	awk -f $(ROOT)/doc/ptinyKepler.awk completeDemosPtiny.htm | sed 's/demosPtiny.htm/demosPtinyKepler.htm/' > $@  
-
-demosPtiny.htm: demos.htm
-	awk -f $(ROOT)/doc/javahtml.awk demos.htm | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
-
-demosPtinyKepler.htm: demosPtiny.htm
-	awk -f $(ROOT)/doc/ptinyKepler.awk demosPtiny.htm | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
-
-docsPtiny.htm: docs.htm
-	awk -f $(ROOT)/doc/javahtml.awk docs.htm | sed 's/intro.htm/introPtiny.htm/' | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
-
-docsPtinyKepler.htm: docsPtiny.htm
-	awk -f $(ROOT)/doc/ptinyKepler.awk docsPtiny.htm | sed 's/introPtiny.htm/introPtinyKepler.htm/' | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
-
-update: $(DERIVED_FILES)
-	cvs commit -m "Master files changed" $(DERIVED_FILES)
-	rm -f doc.jar
-	$(MAKE) doc.jar
-
-update_clean: 
-	rm -f $(DERIVED_FILES)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
