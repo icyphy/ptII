@@ -251,7 +251,7 @@ public abstract class ActorController extends AttributeController {
      *  The name "lookInside" is historical and preserved to keep backward
      *  compatibility with subclasses.
      */
-    protected OpenActorAction _lookInsideAction = new OpenActorAction();
+    protected LookInsideAction _lookInsideAction = new LookInsideAction();
 
     /** The action that handles removing a custom icon. */
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
@@ -685,10 +685,13 @@ public abstract class ActorController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// OpenActorAction
-    // An action to open a composite.
-    private class OpenActorAction extends FigureAction {
-        public OpenActorAction() {
+    //// LookInsideAction
+    /** An action to open a composite.
+     *  This private class must remain named LookInsideAction
+     *  for backward compatibility. 
+     */
+    private class LookInsideAction extends FigureAction {
+        public LookInsideAction() {
             super("Open Actor");
 
             // For some inexplicable reason, the I key doesn't work here.
