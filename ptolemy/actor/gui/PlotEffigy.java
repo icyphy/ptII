@@ -26,9 +26,12 @@
  */
 package ptolemy.actor.gui;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 
 import ptolemy.kernel.CompositeEntity;
@@ -147,8 +150,13 @@ public class PlotEffigy extends Effigy {
 
         /** Create a new effigy in the given container by reading the
          *  specified URL. If the specified URL is null, or
-         *  if the URL does not end with extension ".plt" or ".plot", then
-         *  return null.  Note that as of this writing, the plotter
+         *  if the URL does not end with extension ".plt", ".plot", or
+         *  ".xml", then return null.  If the extension is ".xml",
+         *  then read the file and return null if it does not contain
+         *  a line that starts with the string
+         *  "<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML"
+         *  within the first five lines.
+         *  Note that as of this writing, the plotter
          *  parses any file you give it without complaint, so we cannot
          *  rely on the plotter to report that this file is not a plot
          *  file.  Thus, we assume that if the extension matches,
@@ -166,6 +174,29 @@ public class PlotEffigy extends Effigy {
                 URL input) throws Exception {
             if (input != null) {
                 String extension = getExtension(input);
+                
+                if (extension.equals("xml")) {
+                    // Check for DTD designation.
+                    String dtd = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML";
+                    InputStream stream = input.openStream();
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(stream));
+                    int lineCount = 0;
+                    while (lineCount < 5) {
+                        String contents = reader.readLine();
+                        lineCount++;
+                        if (contents == null) {
+                            return null;
+                        }
+                        if (contents.startsWith(dtd)) {
+                            // This is a plot file.
+                            PlotEffigy effigy = new PlotEffigy(container, container
+                                    .uniqueName("effigy"));
+                            effigy.uri.setURL(input);
+                            return effigy;
+                        }
+                    }
+                }
 
                 if (extension.equals("plt") || extension.equals("plot")) {
                     PlotEffigy effigy = new PlotEffigy(container, container
