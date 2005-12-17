@@ -42,7 +42,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.vergil.icon.ActorNameIcon;
+import ptolemy.vergil.icon.NameIcon;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// NCComponentBase
@@ -109,7 +110,7 @@ public class NCComponentBase extends AtomicActor {
     public Parameter rotatePorts;
     
     /** Icon for this component. */
-    public ActorNameIcon icon;
+    public NameIcon icon;
     
     /** Displayed name on icon. */
     public StringAttribute displayedName;
@@ -136,6 +137,6 @@ public class NCComponentBase extends AtomicActor {
         rotatePorts = new Parameter(this, "_rotatePorts", new IntToken(90));
         
         // Create the icon.
-        icon = new ActorNameIcon(this, "_icon");
+        icon = new NameIcon(this, "_icon");
     }
 }
