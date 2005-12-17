@@ -186,19 +186,20 @@ public class PlotEffigy extends Effigy {
                         String contents = reader.readLine();
                         lineCount++;
                         if (contents == null) {
+                            reader.close();
                             return null;
                         }
                         if (contents.startsWith(dtd)) {
                             // This is a plot file.
+                            reader.close();
                             PlotEffigy effigy = new PlotEffigy(container, container
                                     .uniqueName("effigy"));
                             effigy.uri.setURL(input);
                             return effigy;
                         }
                     }
-                }
-
-                if (extension.equals("plt") || extension.equals("plot")) {
+                    reader.close();
+               } else if (extension.equals("plt") || extension.equals("plot")) {
                     PlotEffigy effigy = new PlotEffigy(container, container
                             .uniqueName("effigy"));
                     effigy.uri.setURL(input);
