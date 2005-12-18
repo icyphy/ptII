@@ -6,12 +6,14 @@
 		<?moml <group>
 			<entity name="Exec" class="ptolemy.actor.lib.Exec"/>
 
-			<entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge"/>
 			<entity name="CalInterpreter" class="ptolemy.caltrop.actors.CalInterpreter">
     			<property name="_editorFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
       			<property name="attributeName" value="calCode"/>
     			</property>
 			</entity>
+			<entity name="OrderedMerge" class="ptolemy.actor.lib.OrderedMerge"/>
+			<entity name="RemoveNilTokens" class="ptolemy.actor.lib.RemoveNilTokens"/>
+
       </group>
     ?>
 	</configure>
