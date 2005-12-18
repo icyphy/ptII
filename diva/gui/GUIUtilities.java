@@ -30,12 +30,14 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -68,6 +70,21 @@ public class GUIUtilities {
      */
     public static final String LARGE_ICON = "LargeIcon";
 
+    /** This key is used in an action to specify a rollover icon
+     *  used in toolbars.
+     */
+    public static final String ROLLOVER_ICON = "rolloverIcon";
+
+    /** This key is used in an action to specify a rollover selected icon
+     *  used in toolbars.
+     */
+    public static final String ROLLOVER_SELECTED_ICON = "rolloverSelectedIcon";
+
+    /** This key is used in an action to specify a selected icon
+     *  used in toolbars.
+     */
+    public static final String SELECTED_ICON = "selectedIcon";
+
     /** Add a quick keystroke on the given pane for the given action.
      *  The keystroke that is added is given in the ACCELERATOR_KEY
      *  property that has been set in the action.  If the ACCELERATOR_KEY
@@ -95,6 +112,28 @@ public class GUIUtilities {
         if (key != null) {
             pane.registerKeyboardAction(action, name, key,
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
+        }
+    }
+
+    /** Add icons to an action.  This method is used to associate
+     *  icons with the different states: unselected, rollover,
+     *  rollover selected, selected etc.
+     *
+     *  @param action The action to which the icons are added.
+     *  @param iconRoles A matrix of Strings, where each element
+     *  consists of two Strings, the absolute URL of the icon
+     *  and the key that represents the role of the icon.  The keys
+     *  are usually static fields from this class, such as
+     *  {@link #LARGE_ICON}, {@link #ROLLOVER_ICON}, 
+     *  {@link #ROLLOVER_SELECTED_ICON} or {@link #SELECTED_ICON}.
+     */
+    public static void addIcons(Action action, String [][]iconRoles) {
+        for (int i = 0; i < iconRoles.length; i ++) {
+            URL img = action.getClass().getResource(iconRoles[i][0]);
+            if (img != null) {
+                ImageIcon icon = new ImageIcon(img);
+                action.putValue(iconRoles[i][1], icon);
+            }
         }
     }
 
@@ -253,6 +292,20 @@ public class GUIUtilities {
 
         if (lbl != null) {
             button.setText(lbl);
+        }
+
+        Icon rolloverIcon = (Icon) action.getValue(ROLLOVER_ICON);
+        if (rolloverIcon != null) {
+            button.setRolloverIcon(rolloverIcon);
+        }
+        Icon rolloverSelectedIcon =
+            (Icon) action.getValue(ROLLOVER_SELECTED_ICON);
+        if (rolloverSelectedIcon != null) {
+            button.setRolloverSelectedIcon(rolloverSelectedIcon);
+        }
+        Icon selectedIcon = (Icon) action.getValue(SELECTED_ICON);
+        if (selectedIcon != null) {
+            button.setSelectedIcon(selectedIcon);
         }
 
         button.setMargin(new Insets(0, 0, 0, 0));
