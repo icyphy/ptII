@@ -125,6 +125,7 @@ EXTRA_SRCS = \
 VERGIL_DOCS = \
 	mainVergil.htm \
 	mainVergilPtiny.htm \
+	mainVergilPtinyKepler.htm \
 	ptII$(PTVERSION).releaseVergil.htm \
 	troubleshootingVergil.htm
 
@@ -425,6 +426,9 @@ mainVergil.htm: main.htm
 
 mainVergilPtiny.htm: mainVergil.htm
 	awk -f $(ROOT)/doc/javahtml.awk $<  > $@  
+
+mainVergilPtinyKepler.htm: mainVergilPtiny.htm
+	awk -f $(ROOT)/doc/ptinyKepler.awk $<  > $@  
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
