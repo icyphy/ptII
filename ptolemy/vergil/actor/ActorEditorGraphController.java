@@ -73,6 +73,7 @@ import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.JContextMenu;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorEditorGraphController
@@ -273,35 +274,101 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INPUT, "New input port",
-            KeyEvent.VK_I);
+            KeyEvent.VK_I,
+            new String [][] {
+                {"/ptolemy/vergil/actor/img/single_in.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/actor/img/single_in_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/actor/img/single_in_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/actor/img/single_in_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
+
 
     /** Action for creating a new output port. */
     private Action _newOutputPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_OUTPUT, "New output port",
-            KeyEvent.VK_O);
+            KeyEvent.VK_O,
+            new String [][] {
+                {"/ptolemy/vergil/actor/img/single_out.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/actor/img/single_out_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/actor/img/single_out_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/actor/img/single_out_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
     /** Action for creating a new input/output port. */
     private Action _newInoutPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INOUT, "New input/output port",
-            KeyEvent.VK_P);
+            KeyEvent.VK_P,
+            new String [][] {
+                {"/ptolemy/vergil/actor/img/single_inout.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/actor/img/single_inout_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/actor/img/single_inout_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/actor/img/single_inout_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
     /** Action for creating a new input multiport. */
     private Action _newInputMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INPUT_MULTIPORT,
-            "New input multiport", KeyEvent.VK_N);
+            "New input multiport", KeyEvent.VK_N,
+            new String [][] {
+                {"/ptolemy/vergil/actor/img/multi_in.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/actor/img/multi_in_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/actor/img/multi_in_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/actor/img/multi_in_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
+
 
     /** Action for creating a new output multiport. */
     private Action _newOutputMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_OUTPUT_MULTIPORT,
-            "New output multiport", KeyEvent.VK_U);
+            "New output multiport", KeyEvent.VK_U,
+            new String [][] {
+                {"/ptolemy/vergil/actor/img/multi_out.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/actor/img/multi_out_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/actor/img/multi_out_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/actor/img/multi_out_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
     /** Action for creating a new inout multiport. */
     private Action _newInoutMultiportAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INOUT_MULTIPORT,
-            "New input/output multiport", KeyEvent.VK_T);
+            "New input/output multiport", KeyEvent.VK_T,
+            new String [][] {
+                {"/ptolemy/vergil/actor/img/multi_inout.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/actor/img/multi_inout_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/actor/img/multi_inout_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/actor/img/multi_inout_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
     /** Action for creating a new relation. */
-    private Action _newRelationAction = new NewRelationAction();
+    private Action _newRelationAction = new NewRelationAction(
+            new String [][] {
+                {"/ptolemy/vergil/actor/img/relation.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/actor/img/relation_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/actor/img/relation_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/actor/img/relation_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
+
 
     /** The port dialog factory. */
     private PortDialogFactory _portDialogFactory;
@@ -428,22 +495,42 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
     ///////////////////////////////////////////////////////////////////
     //// NewRelationAction
-    // An action to create a new relation.
+    /** An action to create a new relation. */
     public class NewRelationAction extends FigureAction {
+        /** Create an action that creates a new relation.
+         */ 
         public NewRelationAction() {
-            super("New Relation");
-
-            // Standard toolbar icons are 25x25 pixels.
-            NodeRenderer renderer = _relationController.getNodeRenderer();
-            Figure figure = renderer.render(null);
-
-            FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
-            putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
-            putValue("tooltip", "Control-click to create a new relation");
-            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
-                    KeyEvent.VK_R));
+            this(null);
         }
 
+        /** Create an action that creates a new relation.
+         *  @param iconRoles A matrix of Strings, where each element
+         *  consists of two Strings, the absolute URL of the icon
+         *  and the key that represents the role of the icon.  The keys
+         *  are usually static fields from this class, such as
+         *  {@link #LARGE_ICON}, {@link #ROLLOVER_ICON}, 
+         *  {@link #ROLLOVER_SELECTED_ICON} or {@link #SELECTED_ICON}.
+         *  If this parameter is null, then the icon comes from
+         *  the calling getNodeRenderer() on the {@link #_portController}.
+         *  @see diva.gui.GUIUtilities#addIcons(Action, String[][])
+         */ 
+        public NewRelationAction(String[][]iconRoles) {
+            super("New Relation");
+
+            if (iconRoles != null) {
+                GUIUtilities.addIcons(this, iconRoles);
+            } else {
+                // Standard toolbar icons are 25x25 pixels.
+                NodeRenderer renderer = _relationController.getNodeRenderer();
+                Figure figure = renderer.render(null);
+
+                FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
+                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+            }
+            putValue("tooltip", "Control-click to create a new relation");
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY, new Integer(
+                             KeyEvent.VK_R));
+        }
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
 

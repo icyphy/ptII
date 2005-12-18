@@ -199,13 +199,15 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/actor/img/run.gif");
-
-            if (img != null) {
-                ImageIcon icon = new ImageIcon(img);
-                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
-            }
+            GUIUtilities.addIcons(this, new String [][] {
+                {"/ptolemy/vergil/basic/img/run.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/basic/img/run_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/basic/img/run_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/basic/img/run_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
             putValue("tooltip", description + " (Ctrl+R)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -247,13 +249,15 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/actor/img/pause.gif");
-
-            if (img != null) {
-                ImageIcon icon = new ImageIcon(img);
-                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
-            }
+            GUIUtilities.addIcons(this, new String [][] {
+                {"/ptolemy/vergil/basic/img/pause.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/basic/img/pause_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/basic/img/pause_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/basic/img/pause_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
             putValue("tooltip", description + " (Ctrl+U)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -290,13 +294,15 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/actor/img/stop.gif");
-
-            if (img != null) {
-                ImageIcon icon = new ImageIcon(img);
-                putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
-            }
+            GUIUtilities.addIcons(this, new String [][] {
+                {"/ptolemy/vergil/basic/img/stop.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/basic/img/stop_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/basic/img/stop_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/basic/img/stop_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
             putValue("tooltip", description + " (Ctrl+H)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(

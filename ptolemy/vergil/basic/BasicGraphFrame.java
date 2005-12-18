@@ -2381,13 +2381,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/basic/img/zoomin.gif");
+            GUIUtilities.addIcons(this, new String [][] {
+                {"/ptolemy/vergil/basic/img/zoomin.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/basic/img/zoomin_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/basic/img/zoomin_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/basic/img/zoomin_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
-            if (img != null) {
-                ImageIcon icon = new ImageIcon(img);
-                putValue(GUIUtilities.LARGE_ICON, icon);
-            }
 
             putValue("tooltip", description + " (Ctrl+Shift+=)");
 
@@ -2418,13 +2421,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/basic/img/zoomreset.gif");
-
-            if (img != null) {
-                ImageIcon icon = new ImageIcon(img);
-                putValue(GUIUtilities.LARGE_ICON, icon);
-            }
+            GUIUtilities.addIcons(this, new String [][] {
+                {"/ptolemy/vergil/basic/img/zoomreset.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/basic/img/zoomreset_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/basic/img/zoomreset_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/basic/img/zoomreset_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
             putValue("tooltip", description + " (Ctrl+=)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -2450,13 +2455,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/basic/img/zoomfit.gif");
-
-            if (img != null) {
-                ImageIcon icon = new ImageIcon(img);
-                putValue(GUIUtilities.LARGE_ICON, icon);
-            }
+            GUIUtilities.addIcons(this, new String [][] {
+                {"/ptolemy/vergil/basic/img/zoomfit.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/basic/img/zoomfit_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/basic/img/zoomfit_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/basic/img/zoomfit_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
             putValue("tooltip", description + " (Ctrl+Shift+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -2483,13 +2490,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            URL img = getClass().getResource(
-                    "/ptolemy/vergil/basic/img/zoomout.gif");
-
-            if (img != null) {
-                ImageIcon icon = new ImageIcon(img);
-                putValue(GUIUtilities.LARGE_ICON, icon);
-            }
+            GUIUtilities.addIcons(this, new String [][] {
+                {"/ptolemy/vergil/basic/img/zoomout.gif",
+                 GUIUtilities.LARGE_ICON},
+                {"/ptolemy/vergil/basic/img/zoomout_o.gif",
+                 GUIUtilities.ROLLOVER_ICON},
+                {"/ptolemy/vergil/basic/img/zoomout_ov.gif",
+                 GUIUtilities.ROLLOVER_SELECTED_ICON},
+                {"/ptolemy/vergil/basic/img/zoomout_on.gif",
+                 GUIUtilities.SELECTED_ICON}});
 
             putValue("tooltip", description + " (Ctrl+-)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(

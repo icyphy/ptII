@@ -162,23 +162,56 @@ public abstract class WithIconGraphController extends BasicGraphController {
          */
         public NewPortAction(IOPort prototype, String description,
                 int mnemonicKey) {
+            // null as the fourth arg means get the figure from the 
+            // _portController
+            this(prototype, description, mnemonicKey, null);
+        }
+
+        /** Create a new port that has the same input, output, and
+         *  multiport properties as the specified port and has icons
+         *  associated with being unselected, rollover, rollover
+         *  selected, and selected.  If the specified port is null,
+         *  then a new port that is neither an input, an output, nor a
+         *  multiport will be created.
+         *
+         *  @param prototype Prototype port.
+         *  @param description The description used for menu entries and
+         *   tooltips.
+         *  @param mnemonicKey The KeyEvent field for the mnemonic key to
+         *   use in the menu.
+         *  @param iconRoles A matrix of Strings, where each element
+         *  consists of two Strings, the absolute URL of the icon
+         *  and the key that represents the role of the icon.  The keys
+         *  are usually static fields from this class, such as
+         *  {@link #LARGE_ICON}, {@link #ROLLOVER_ICON}, 
+         *  {@link #ROLLOVER_SELECTED_ICON} or {@link #SELECTED_ICON}.
+         *  If this parameter is null, then the icon comes from
+         *  the calling getNodeRenderer() on the {@link #_portController}.
+         *  @see diva.gui.GUIUtilities#addIcons(Action, String[][])
+         */
+        public NewPortAction(IOPort prototype, String description,
+                int mnemonicKey, String [][]iconRoles) {
             super(description);
             _prototype = prototype;
 
-            // Creating the renderers this way is rather nasty..
-            // Standard toolbar icons are 25x25 pixels.
-            NodeRenderer renderer = _portController.getNodeRenderer();
-            Object location = null;
+            if (iconRoles != null) {
+                GUIUtilities.addIcons(this, iconRoles);
+            } else {
+                // Creating the renderers this way is rather nasty..
+                // Standard toolbar icons are 25x25 pixels.
+                NodeRenderer renderer = _portController.getNodeRenderer();
 
-            if (_prototype != null) {
-                location = _prototype.getAttribute("_location");
+                Object location = null;
+
+                if (_prototype != null) {
+                    location = _prototype.getAttribute("_location");
+                }
+
+                Figure figure = renderer.render(location);
+
+                FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
+                putValue(GUIUtilities.LARGE_ICON, icon);
             }
-
-            Figure figure = renderer.render(location);
-
-            FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
-            putValue(GUIUtilities.LARGE_ICON, icon);
-
             putValue("tooltip", description);
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(mnemonicKey));
         }

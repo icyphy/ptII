@@ -48,10 +48,34 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
-	pause.gif \
-	resume.gif \
-	run.gif \
-	stop.gif
+	multi_in.gif \
+	multi_in_o.gif \
+	multi_in_on.gif \
+	multi_in_ov.gif \
+	multi_inout.gif \
+	multi_inout_o.gif \
+	multi_inout_on.gif \
+	multi_inout_ov.gif \
+	multi_out.gif \
+	multi_out_o.gif \
+	multi_out_on.gif \
+	multi_out_ov.gif \
+	relation.gif \
+	relation_o.gif \
+	relation_on.gif \
+	relation_ov.gif \
+	single_in.gif \
+	single_in_o.gif \
+	single_in_on.gif \
+	single_in_ov.gif \
+	single_inout.gif \
+	single_inout_o.gif \
+	single_inout_on.gif \
+	single_inout_ov.gif \
+	single_out.gif \
+	single_out_o.gif \
+	single_out_on.gif \
+	single_out_ov.gif
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

@@ -49,10 +49,37 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	fullscreen.gif \
+	fullscreen_o.gif \
+	fullscreen_on.gif \
+	fullscreen_ov.gif \
+	pause.gif \
+	pause_o.gif \
+	pause_on.gif \
+	pause_ov.gif \
+	run.gif \
+	run_o.gif \
+	run_on.gif \
+	run_ov.gif \
+	stop.gif \
+	stop_o.gif \
+	stop_on.gif \
+	stop_ov.gif \
 	zoomfit.gif \
+	zoomfit_o.gif \
+	zoomfit_on.gif \
+	zoomfit_ov.gif \
 	zoomin.gif \
+	zoomin_o.gif \
+	zoomin_on.gif \
+	zoomin_ov.gif \
 	zoomout.gif \
-	zoomreset.gif	
+	zoomout_o.gif \
+	zoomout_on.gif \
+	zoomout_ov.gif \
+	zoomreset.gif \
+	zoomreset_o.gif \
+	zoomreset_on.gif \
+	zoomreset_ov.gif
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
