@@ -112,6 +112,7 @@ import ptolemy.moml.SharedParameter;
  @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
  @version $Id$
  @since Ptolemy II 0.2
+
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Yellow (neuendor)
  */
@@ -1306,8 +1307,14 @@ public class Director extends Attribute implements Executable {
             // This is the only place to create
             // the timeResolution parameter, no exception should ever
             // be thrown.
+
+            // If we are rethrowing an exception, don't include it in
+            // the message, include it as a parameter to the throw so
+            // making that we don't have lots of duplicate info in
+            // the error message.
+
             throw new InternalErrorException(this, throwable,
-                    "Cannot set parameter:\n" + throwable);
+                    "Cannot set timeResolution parameter");
         }
     }
 
