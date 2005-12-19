@@ -4,7 +4,7 @@
 <entity name="VolumeRenderingDemoOriginalall" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 89, 782, 459}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 89, 782, 468}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[567, 350]">
     </property>
@@ -111,7 +111,7 @@
             </property>
             <property name="wireFrame" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="sSize" class="ptolemy.actor.parameters.IntRangeParameter" value="136">
+            <property name="sSize" class="ptolemy.actor.parameters.IntRangeParameter" value="100">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 130.0}">
             </property>
@@ -156,7 +156,7 @@
         </property>
     </entity>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/gr/demo/datavisualizationdemos/fulldatasetT2.txt">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/gr/demo/datavisualizationdemos/fulldatasetT2.txt">
         </property>
         <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="1">
         </property>

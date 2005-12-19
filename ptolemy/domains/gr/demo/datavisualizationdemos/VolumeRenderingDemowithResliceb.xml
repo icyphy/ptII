@@ -8,7 +8,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 123, 936, 494}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 123, 936, 503}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 385]">
     </property>
@@ -105,7 +105,7 @@
         </property>
     </entity>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/gr/demo/datavisualizationdemos/brainfiles32.txt">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/gr/demo/datavisualizationdemos/brainfiles32.txt">
         </property>
         <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -142,7 +142,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -45.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 191, 721, 459}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 191, 721, 468}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[506, 199]">
         </property>
@@ -219,7 +219,7 @@
         <entity name="GRTexture2DImage" class="ptolemy.domains.gr.lib.vr.GRTexture2DImage">
             <property name="axis" class="ptolemy.data.expr.Parameter" value="1">
             </property>
-            <property name="planeSpacing" class="ptolemy.data.expr.Parameter" value=".02">
+            <property name="planeSpacing" class="ptolemy.data.expr.Parameter" value=".006">
             </property>
             <property name="transparency" class="ptolemy.actor.parameters.DoubleRangeParameter" value="0.78">
             </property>
