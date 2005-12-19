@@ -3986,19 +3986,25 @@ fi;
 	echo "$as_me:$LINENO: result: $CALTROP_DIR" >&5
 echo "${ECHO_T}$CALTROP_DIR" >&6
 	# We found cal
-	echo "$as_me:$LINENO: checking for saxon7.jar (used by caltrop)" >&5
-echo $ECHO_N "checking for saxon7.jar (used by caltrop)... $ECHO_C" >&6
-	if test -f "$CALTROP_DIR/saxon7.jar"; then
-	   echo "$as_me:$LINENO: result: $CALTROP_DIR/saxon7.jar" >&5
-echo "${ECHO_T}$CALTROP_DIR/saxon7.jar" >&6
-	   echo "$as_me:$LINENO: checking for java_cup.jar (used by caltrop)" >&5
+	echo "$as_me:$LINENO: checking for saxon8.jar (used by caltrop)" >&5
+echo $ECHO_N "checking for saxon8.jar (used by caltrop)... $ECHO_C" >&6
+	if test -f "$CALTROP_DIR/saxon8.jar"; then
+	   echo "$as_me:$LINENO: result: $CALTROP_DIR/saxon8.jar" >&5
+echo "${ECHO_T}$CALTROP_DIR/saxon8.jar" >&6
+
+	   echo "$as_me:$LINENO: checking for saxon8-dom.jar (used by caltrop)" >&5
+echo $ECHO_N "checking for saxon8-dom.jar (used by caltrop)... $ECHO_C" >&6
+	   if test -f "$CALTROP_DIR/saxon8-dom.jar"; then
+	       echo "$as_me:$LINENO: result: $CALTROP_DIR/saxon8-dom.jar" >&5
+echo "${ECHO_T}$CALTROP_DIR/saxon8-dom.jar" >&6
+	       echo "$as_me:$LINENO: checking for java_cup.jar (used by caltrop)" >&5
 echo $ECHO_N "checking for java_cup.jar (used by caltrop)... $ECHO_C" >&6
-	   if test -f "$CALTROP_DIR/java_cup.jar"; then
-	       echo "$as_me:$LINENO: result: $CALTROP_DIR/java_cup.jar" >&5
+	       if test -f "$CALTROP_DIR/java_cup.jar"; then
+	           echo "$as_me:$LINENO: result: $CALTROP_DIR/java_cup.jar" >&5
 echo "${ECHO_T}$CALTROP_DIR/java_cup.jar" >&6
-	       PTCALTROP_DIR=caltrop
-	   else
-               { echo "$as_me:$LINENO: WARNING: Failed to find $CALTROP_DIR/java_cup.jar
+	           PTCALTROP_DIR=caltrop
+	       else
+                   { echo "$as_me:$LINENO: WARNING: Failed to find $CALTROP_DIR/java_cup.jar
     which is required by Cal, the actor language.
     You can download java_cup from
     http://www.cs.princeton.edu/~appel/modern/java/CUP/
@@ -4010,16 +4016,30 @@ echo "$as_me: WARNING: Failed to find $CALTROP_DIR/java_cup.jar
     http://www.cs.princeton.edu/~appel/modern/java/CUP/
     If it is not present, you will not be able to use the Cal actor
     or run the demonstrations  in ptolemy/caltrop" >&2;}
-	       # Note that we don't substitute in the ${PTII} here
-	       CALTROP_DIR='${PTII}/lib/'
-	   fi
-	else
-           { echo "$as_me:$LINENO: WARNING: Failed to find $CALTROP_DIR/saxon7.jar
+	           # Note that we don't substitute in the ${PTII} here
+	           CALTROP_DIR='${PTII}/lib/'
+               fi
+           else
+               { echo "$as_me:$LINENO: WARNING: Failed to find $CALTROP_DIR/saxon8-dom.jar
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
     or run the demonstrations  in ptolemy/caltrop" >&5
-echo "$as_me: WARNING: Failed to find $CALTROP_DIR/saxon7.jar
+echo "$as_me: WARNING: Failed to find $CALTROP_DIR/saxon8-dom.jar
+    which is required by Cal, the actor language.
+    You can download saxon from http://saxon.sourceforge.net/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/caltrop" >&2;}
+	       # Note that we don't substitute in the ${PTII} here
+	       CALTROP_DIR='${PTII}/lib/'
+	   fi
+	else
+           { echo "$as_me:$LINENO: WARNING: Failed to find $CALTROP_DIR/saxon8.jar
+    which is required by Cal, the actor language.
+    You can download saxon from http://saxon.sourceforge.net/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/caltrop" >&5
+echo "$as_me: WARNING: Failed to find $CALTROP_DIR/saxon8.jar
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
@@ -4048,7 +4068,8 @@ else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/ptCal.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/java_cup.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon7.jar\"/> "
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8.jar\"/>
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8-dom.jar\"/> "
 fi
 
 #--------------------------------------------------------------------
@@ -8553,9 +8574,10 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Add them.
-  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
+  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
+  #    will be set to the directory where LIBOBJS objects are built.
+  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
