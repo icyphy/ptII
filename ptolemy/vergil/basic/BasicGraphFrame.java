@@ -2431,6 +2431,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 {"/ptolemy/vergil/basic/img/zoomreset_on.gif",
                  GUIUtilities.SELECTED_ICON}});
 
+            // Control-m is usually carriage return.  In this case, we use
+            // it to mean "return the zoom to the original state".
             putValue("tooltip", description + " (Ctrl+M)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
                     KeyEvent.VK_M, Toolkit.getDefaultToolkit()
