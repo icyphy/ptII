@@ -396,7 +396,7 @@ fi
 
 #### Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
 # At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif use Saxon.
-SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
+SAXON_JARS=${CLASSPATHSEPARATOR}${PTII}/lib/saxon8.jar${CLASSPATHSEPARATOR}${PTII}/lib/saxon8-dom.jar
 
 #### TinyOS - Used by the PtinyOS domain
 # FIXME: configure needs to find TinyOS and use a variable like PTTOSROOT
@@ -452,7 +452,7 @@ fi
 # a version of java cup
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
