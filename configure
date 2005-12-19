@@ -4068,7 +4068,7 @@ else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/ptCal.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/java_cup.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8.jar\"/>
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8-dom.jar\"/> "
 fi
 
