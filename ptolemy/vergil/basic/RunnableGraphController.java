@@ -34,6 +34,7 @@ import java.net.URL;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
@@ -86,6 +87,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
         GUIUtilities.addToolBarButton(toolbar, _pauseModelAction);
         GUIUtilities.addHotKey(getFrame().getJGraph(), _stopModelAction);
         GUIUtilities.addToolBarButton(toolbar, _stopModelAction);
+        ((ButtonFigureAction)_stopModelAction).setSelected(true);
     }
 
     /** Report that an execution error has occurred.  This method
@@ -114,6 +116,26 @@ public abstract class RunnableGraphController extends WithIconGraphController
         if (newState != _previousState) {
             getFrame().report(manager.getState().getDescription());
             _previousState = newState;
+       
+            if (newState == Manager.INITIALIZING
+                    || newState == Manager.ITERATING
+                    || newState == Manager.PREINITIALIZING
+                    || newState == Manager.RESOLVING_TYPES
+                    || newState == Manager.WRAPPING_UP
+                    || newState == Manager.EXITING
+                ) {
+                ((ButtonFigureAction)_runModelAction).setSelected(true);
+                ((ButtonFigureAction)_pauseModelAction).setSelected(false);
+                ((ButtonFigureAction)_stopModelAction).setSelected(false);
+            } else if (newState == Manager.PAUSED) {
+                ((ButtonFigureAction)_runModelAction).setSelected(false);
+                ((ButtonFigureAction)_pauseModelAction).setSelected(true);
+                ((ButtonFigureAction)_stopModelAction).setSelected(false);
+            } else {
+                ((ButtonFigureAction)_runModelAction).setSelected(false);
+                ((ButtonFigureAction)_pauseModelAction).setSelected(false);
+                ((ButtonFigureAction)_stopModelAction).setSelected(true);
+            }
         }
     }
 
@@ -180,13 +202,26 @@ public abstract class RunnableGraphController extends WithIconGraphController
     /** Action for stopping the model. */
     private Action _stopModelAction = new StopModelAction("Stop the model");
 
+    /** An action to run the model that includes a button. */
+    private class ButtonFigureAction extends FigureAction {
+        public ButtonFigureAction(String description) {
+            super(description);
+        }
+        
+        public void setSelected(boolean state) {
+            JButton button = (JButton)
+                getValue("toolBarButton");
+            button.setSelected(state);            
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     ///////////////////////////////////////////////////////////////////
     //// RunModelAction
 
     /** An action to run the model. */
-    private class RunModelAction extends FigureAction {
+    private class RunModelAction extends ButtonFigureAction {
         /** Run the model without opening a run-control window.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -236,7 +271,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
     //// PauseModelAction
 
     /** An action to pause the model. */
-    private class PauseModelAction extends FigureAction {
+    private class PauseModelAction extends ButtonFigureAction {
         /** Pause the model if it is running.
          *  @param description The description used for menu entries and
          *   tooltips.
@@ -281,7 +316,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
     //// StopModelAction
 
     /** An action to stop the model. */
-    private class StopModelAction extends FigureAction {
+    private class StopModelAction extends ButtonFigureAction {
         /** Stop the model, if it is running.
          *  @param description The description used for menu entries and
          *   tooltips.
