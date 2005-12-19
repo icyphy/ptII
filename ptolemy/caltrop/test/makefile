@@ -35,7 +35,7 @@ ME =		ptolemy/caltrop/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/ptCal.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/java_cup.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/saxon7.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/ptCal.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/java_cup.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/saxon8.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/saxon8-dom.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
