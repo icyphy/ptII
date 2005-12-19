@@ -249,50 +249,113 @@ public class ExternalIOPortController extends AttributeController {
 
                 Color fill;
 
-                if (port instanceof IOPort) {
-                    IOPort ioport = (IOPort) port;
-                    polygon.moveTo(0, 5);
-                    polygon.lineTo(0, 10);
-
-                    if (ioport.isOutput()) {
-                        polygon.lineTo(6, 5);
-                        polygon.lineTo(14, 5);
-                        polygon.lineTo(14, -5);
-                        polygon.lineTo(6, -5);
-                    } else {
-                        polygon.lineTo(12, 0);
-                    }
-
-                    polygon.lineTo(0, -10);
-
-                    if (ioport.isInput()) {
-                        polygon.lineTo(0, -5);
-                        polygon.lineTo(-6, -5);
-                        polygon.lineTo(-6, 5);
-                    }
-
-                    polygon.closePath();
-
-                    if (ioport instanceof ParameterPort) {
-                        // It would be better to couple these to the
-                        // parameters by position, but this is impossible
-                        // in diva, so we assign a special color.
-                        fill = Color.lightGray;
-                    } else if (ioport.isMultiport()) {
-                        fill = Color.white;
-                    } else {
-                        fill = Color.black;
-                    }
-                } else {
+                if (!(port instanceof IOPort)) {
                     polygon.moveTo(-6, 6);
                     polygon.lineTo(0, 6);
                     polygon.lineTo(8, 0);
                     polygon.lineTo(0, -6);
                     polygon.lineTo(-6, -6);
-                    polygon.closePath();
                     fill = Color.black;
+                } else {
+                    IOPort ioport = (IOPort) port;
+                    polygon.moveTo(-8, 5);
+                    if (ioport.isMultiport()) {
+                        if (ioport instanceof ParameterPort) {
+                            // It would be better to couple these to the
+                            // parameters by position, but this is impossible
+                            // in diva, so we assign a special color.
+                            // FIXME: are Multiport ParameterPorts possible?
+                            // FIXME: Should this be lightGrey?
+                            fill = Color.darkGray;
+                        } else {
+                            fill = Color.white;
+                        }
+                        if (ioport.isOutput() &&  ioport.isInput()) {
+                            polygon.lineTo(-4, 4);
+                            polygon.lineTo(-4, 9);
+                            polygon.lineTo(2, 4);
+                            polygon.lineTo(2, 9);
+                            polygon.lineTo(8, 4);
+                            polygon.lineTo(12, 4);
+                            polygon.lineTo(12, -4);
+                            polygon.lineTo(8, -4);
+                            polygon.lineTo(2, -9);
+                            polygon.lineTo(2, -4);
+                            polygon.lineTo(-4, -9);
+                            polygon.lineTo(-4, -4);
+                            polygon.lineTo(-8, -4);
+                        } else if (ioport.isOutput()) {
+                            polygon.lineTo(-8, 4);
+                            polygon.lineTo(-8, 9);
+                            polygon.lineTo(-2, 4);
+                            polygon.lineTo(-2, 9);
+                            polygon.lineTo(4, 4);
+                            polygon.lineTo(12, 4);
+                            polygon.lineTo(12, -4);
+                            polygon.lineTo(4, -4);
+                            polygon.lineTo(-2, -9);
+                            polygon.lineTo(-2, -4);
+                            polygon.lineTo(-8, -9);
+                        } else if (ioport.isInput()) {
+                            polygon.lineTo(-5, 4);
+                            polygon.lineTo(-5, 9);
+                            polygon.lineTo(1, 4);
+                            polygon.lineTo(1, 9);
+                            polygon.lineTo(7, 4);
+                            polygon.lineTo(12, 0);
+                            polygon.lineTo(7, -4);
+                            polygon.lineTo(1, -9);
+                            polygon.lineTo(1, -4);
+                            polygon.lineTo(-5, -9);
+                            polygon.lineTo(-5, -4);
+                            polygon.lineTo(-8, -4);
+                        } else {
+                            throw new InternalErrorException(port, null,
+                                    "Port is neither input nor output");
+                        }
+                    } else {
+                        if (ioport instanceof ParameterPort) {
+                            // It would be better to couple these to the
+                            // parameters by position, but this is impossible
+                            // in diva, so we assign a special color.
+                            // FIXME: what about multiports para
+                            fill = Color.lightGray;
+                        } else {
+                            fill = Color.black;
+                        }
+                        if (ioport.isOutput() &&  ioport.isInput()) {
+                            polygon.lineTo(0, 4);
+                            polygon.lineTo(0, 9);
+                            polygon.lineTo(6, 4);
+                            polygon.lineTo(12, 4);
+                            polygon.lineTo(12, -4);
+                            polygon.lineTo(6, -4);
+                            polygon.lineTo(0, -9);
+                            polygon.lineTo(0, -4);
+                            polygon.lineTo(-8, -4);
+                        } else if (ioport.isOutput()) {
+                            polygon.lineTo(-8, 9);
+                            polygon.lineTo(-2, 4);
+                            polygon.lineTo(12, 4);
+                            polygon.lineTo(12, -4);
+                            polygon.lineTo(-2, -4);
+                            polygon.lineTo(-8, -9);
+                        } else if (ioport.isInput()) {
+                            polygon.lineTo(0, 4);
+                            polygon.lineTo(0, 9);
+                            polygon.lineTo(6, 4);
+                            polygon.lineTo(12, 0);
+                            polygon.lineTo(6, -4);
+                            polygon.lineTo(0, -9);
+                            polygon.lineTo(0, -4);
+                            polygon.lineTo(-8, -4);
+                        } else {
+                            throw new InternalErrorException(port, null,
+                                    "Port is neither input nor output");
+                        }
+                    }
                 }
-
+                polygon.closePath();
                 figure = new BasicFigure(polygon, fill, (float) 1.5);
 
                 if (!(port instanceof IOPort)) {
