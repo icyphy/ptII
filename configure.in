@@ -692,25 +692,37 @@ else
     if test -f "$CALTROP_DIR/ptCal.jar"; then
 	AC_MSG_RESULT([$CALTROP_DIR])
 	# We found cal
-	AC_MSG_CHECKING([for saxon7.jar (used by caltrop)])
-	if test -f "$CALTROP_DIR/saxon7.jar"; then
-	   AC_MSG_RESULT([$CALTROP_DIR/saxon7.jar])
-	   AC_MSG_CHECKING([for java_cup.jar (used by caltrop)])
-	   if test -f "$CALTROP_DIR/java_cup.jar"; then
-	       AC_MSG_RESULT([$CALTROP_DIR/java_cup.jar])
-	       PTCALTROP_DIR=caltrop
-	   else     
-               AC_MSG_WARN([Failed to find $CALTROP_DIR/java_cup.jar
+	AC_MSG_CHECKING([for saxon8.jar (used by caltrop)])
+	if test -f "$CALTROP_DIR/saxon8.jar"; then
+	   AC_MSG_RESULT([$CALTROP_DIR/saxon8.jar])
+
+	   AC_MSG_CHECKING([for saxon8-dom.jar (used by caltrop)])
+	   if test -f "$CALTROP_DIR/saxon8-dom.jar"; then
+	       AC_MSG_RESULT([$CALTROP_DIR/saxon8-dom.jar])
+	       AC_MSG_CHECKING([for java_cup.jar (used by caltrop)])
+	       if test -f "$CALTROP_DIR/java_cup.jar"; then
+	           AC_MSG_RESULT([$CALTROP_DIR/java_cup.jar])
+	           PTCALTROP_DIR=caltrop
+	       else     
+                   AC_MSG_WARN([Failed to find $CALTROP_DIR/java_cup.jar
     which is required by Cal, the actor language.
     You can download java_cup from 
     http://www.cs.princeton.edu/~appel/modern/java/CUP/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/caltrop])
+	           # Note that we don't substitute in the ${PTII} here
+	           CALTROP_DIR='${PTII}/lib/'
+           else
+               AC_MSG_WARN([Failed to find $CALTROP_DIR/saxon8-dom.jar
+    which is required by Cal, the actor language.
+    You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
     or run the demonstrations  in ptolemy/caltrop])
 	       # Note that we don't substitute in the ${PTII} here
 	       CALTROP_DIR='${PTII}/lib/'
 	   fi    
 	else   
-           AC_MSG_WARN([Failed to find $CALTROP_DIR/saxon7.jar
+           AC_MSG_WARN([Failed to find $CALTROP_DIR/saxon8.jar
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
@@ -735,7 +747,8 @@ else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/ptCal.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/java_cup.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon7.jar\"/> "
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8.jar\"/>
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon8-dom.jar\"/> "
 fi 
 
 #--------------------------------------------------------------------
