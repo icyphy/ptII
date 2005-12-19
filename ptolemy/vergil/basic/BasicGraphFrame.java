@@ -2431,9 +2431,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 {"/ptolemy/vergil/basic/img/zoomreset_on.gif",
                  GUIUtilities.SELECTED_ICON}});
 
-            putValue("tooltip", description + " (Ctrl+=)");
+            putValue("tooltip", description + " (Ctrl+M)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                    KeyEvent.VK_EQUALS, Toolkit.getDefaultToolkit()
+                    KeyEvent.VK_M, Toolkit.getDefaultToolkit()
                             .getMenuShortcutKeyMask()));
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_M));
         }
