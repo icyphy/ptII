@@ -712,6 +712,7 @@ else
     or run the demonstrations  in ptolemy/caltrop])
 	           # Note that we don't substitute in the ${PTII} here
 	           CALTROP_DIR='${PTII}/lib/'
+               fi
            else
                AC_MSG_WARN([Failed to find $CALTROP_DIR/saxon8-dom.jar
     which is required by Cal, the actor language.
