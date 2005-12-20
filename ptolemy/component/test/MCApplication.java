@@ -36,7 +36,6 @@ import java.io.StringWriter;
 import ptolemy.component.data.TupleToken;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
