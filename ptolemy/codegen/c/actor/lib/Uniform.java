@@ -81,7 +81,6 @@ public class Uniform extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.Uniform actor = (ptolemy.actor.lib.Uniform) getComponent();
 
-        long seedValue;
         CodeStream _codeStream = new CodeStream(this);
 
         if (Long.parseLong(actor.seed.getExpression()) == 0) {

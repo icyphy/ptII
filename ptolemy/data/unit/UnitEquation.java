@@ -128,7 +128,6 @@ public class UnitEquation extends UnitConstraint implements UnitPresentation {
      * @return True if this equation is satisfied.
      */
     public boolean isSatisfied() {
-        Boolean retv = null;
         UnitExpr lhsReduced = getLhs().reduce();
         UnitExpr rhsReduced = getRhs().reduce();
         Unit lhsUnit = lhsReduced.getSingleUnit();

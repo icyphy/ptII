@@ -812,7 +812,6 @@ public class Solution {
     }
 
     private Index _findGInRow(int k) {
-        Index retv = null;
         int l = -1;
 
         for (int j = 0; j < _numVariables; j++) {
