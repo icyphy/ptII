@@ -94,10 +94,10 @@ public class BasicGraphModelTest extends TestSuite {
      */
     public void testEmpty() {
         runTestCase(new TestCase("Empty graph") {
-            BasicGraphModel g;
+            //BasicGraphModel g;
 
             public void init() throws Exception {
-                g = factory.createGraph();
+                /*g = */ factory.createGraph();
             }
 
             public void run() throws Exception {
@@ -156,7 +156,7 @@ public class BasicGraphModelTest extends TestSuite {
 
             CompositeNode root;
 
-            Node[] nodes = new Node[65536];
+            //Node[] nodes = new Node[65536];
 
             public void init() throws Exception {
                 startTimer();
