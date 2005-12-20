@@ -113,8 +113,4 @@ public class Counter extends AtomicComponent {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     private int _count = 0;
-
-    private int _latestCount = 0;
-
-    private boolean _consumed;
 }
