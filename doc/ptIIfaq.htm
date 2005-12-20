@@ -54,6 +54,7 @@ This FAQ can be found at:
 	platforms does Ptolemy II run under?</b></a>
 
 	<li> <a href="#ptolemy II installation, what do I need"><b>3.3 What do I need to Install Ptolemy II?</b></a>
+	<li> <a href="#CVS Access"><b>3.4 How do I get CVS access to PtolemyII</b></a>
 	</menu> 
 
 <li> <a href="#ptolemy II faq: using Ptolemy II"><b>4. Using Ptolemy II</b></a>
@@ -302,9 +303,6 @@ Technologies, Inc. (* Smyth is now with Altio).
      second class. For example, they cannot define the model of
      computation at the top level of the hierarchy, and cannot
      contain Simulink models within their own components.
-
-
-<dt> <a name="metropolis"><b>2.3 What is the relationship between Ptolemy and Metropolis?</b></a>
  <dd> 
 
 
@@ -401,6 +399,9 @@ although no director has been developed (to our knowledge) with such a
 broadly applicable mechanism.
 
 
+<dt> <a name="kepler"><b>2.3 What is the relationship between Ptolemy and Metropolis?</b></a>
+ <dd> 
+
 </dl>
 
 
@@ -424,6 +425,10 @@ For details, see the installation pages at
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</code></a>
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><code></code></a>
 
+<dt><a name="CVS Access"><b>3.4 How do I get CVS access to PtolemyII</b></a>
+<dd>CVS access to the Ptolemy II development tree is available.
+Instructions can be found at
+<a href="http://chess.eecs.berkeley.edu/ptexternal" target="_top">http://chess.eecs.berkeley.edu/ptexternal</a>
 </dl>
 
 
@@ -868,8 +873,37 @@ models.  This C code generator is still very experimental.
 Copernicus.  However, the Ptolemy group is developing a 
 Ptolemy Classic style code generator that uses template files
 to build C files.  This code generator is not available in 
-Ptolemy II 5.0.
+Ptolemy II 5.0, but is available via 
+<a href="#CVS Access">CVS</a> and will ship in May, 2006.
 
+    <p>The current template effort synthesizes C code from certain
+    Ptolemy II models (synchronous dataflow and heterochronous dataflow
+    are functional, SR, and DE are being planned). In this
+    technology, we define "helper" classes associated with Ptolemy II
+    actors that define the C code implementation for the actor.
+    The code generator functions (as in Giotto) to coordinate the
+    components.  This effort is focused on efficiency. Our objective
+    is to generate zero-overhead C code. 
+    We have simple demo systems and a limited actor library.
+
+<p> We have an ongoing project to produce NesC/TinyOS code from
+    Ptolemy II models. We have created a tool based on Ptolemy
+    called 
+<a href="http://ptolemy.eecs.berkeley.edu/viptos" target="_top">VIPTOS</a>
+    where designers jointly design code for sensor
+    network "motes" and use the Ptolemy II wireless systems modeling
+    environment (called 
+<a href="http://ptolemy.eecs.berkeley.edu/visualsense" target="_top">VisualSense</a>)
+    to create models of the wireless
+    networking environment for the motes.
+
+<p> Xilinx research labs has an ongoing effort to synthesize FPGA
+    configurations from Ptolemy II models. They use actor libraries
+    defined in
+    <a href="http://embedded.eecs.berkeley.edu/caltrop/" target="_top">Cal</a>,
+    our experimental actor definition language.
+    We do not know what (if any) plans they have for releasing
+    this capability.
 
 <dt> <a name="Contributions"><b>5.9 Does the Ptolemy project take software contributions?</b></a>
 <dd> Yes, the Ptolemy project has a long history of folding in software
