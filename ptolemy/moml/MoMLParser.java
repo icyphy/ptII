@@ -1542,14 +1542,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public ComponentEntity searchForClass(String name, String source)
             throws Exception {
-        // Use a canonical form of the source.
-        URL sourceURL = null;
-
-        if (source != null) {
-            // FIXME: sourceURL is set but never read?
-            sourceURL = fileNameToURL(source, _base);
-        }
-
         if ((_imports != null) && (source != null)) {
             WeakReference reference = (WeakReference) _imports.get(source);
             Object possibleCandidate = null;
