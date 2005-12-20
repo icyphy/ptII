@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.de.lib;
 
-import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
