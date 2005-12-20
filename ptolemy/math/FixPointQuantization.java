@@ -56,16 +56,16 @@ import java.util.StringTokenizer;
  @since Ptolemy II 2.1
  @Pt.ProposedRating Red (Ed.Willink)
  @Pt.AcceptedRating Red
- @see FixPoint
- @see Precision
- @see Overflow
- @see Rounding
+ @see ptolemy.math.FixPoint
+ @see ptolemy.math.Precision
+ @see ptolemy.math.Overflow
+ @see ptolemy.math.Rounding
  */
 public class FixPointQuantization extends Quantization {
     /** Construct a FixPointQuantization object based on the provided
      *  string.  The string may consist of just <i>precision</i> or
-     *  <i>precision,overflow</i> or
-     *  <i>precision,overflow,rounding</i>, and may optionally be
+     *  <i>precision, overflow</i> or
+     *  <i>precision, overflow, rounding</i>, and may optionally be
      *  enclosed in parentheses.
      *
      *  <p> <i>precision</i> must be one of the Precision formats;
@@ -160,6 +160,14 @@ public class FixPointQuantization extends Quantization {
         return _precision;
     }
 
+    /**
+     * Return the precision.
+     * @return Precision object.
+     */
+    public Precision getPrecision() {
+        return _precision;
+    }
+
     /** Return a FixPointQuantization with a changed overflow strategy.
      *  @param overflow The new overflow strategy.
      *  @return A new quantization.
@@ -173,7 +181,8 @@ public class FixPointQuantization extends Quantization {
      *  @return A new quantization.
      */
     public FixPointQuantization setPrecision(Precision precision) {
-        return new FixPointQuantization(precision, getOverflow(), getRounding());
+        return new FixPointQuantization(precision, getOverflow(),
+                getRounding());
     }
 
     /** Return a FixPointQuantization with a changed rounding strategy.
@@ -185,7 +194,7 @@ public class FixPointQuantization extends Quantization {
     }
 
     /** Return a string representing this quantization. The string is
-     *  expressed as "(<i>m.n,o,p</i>)", where <i>m</i>
+     *  expressed as "(<i>m.n, o, p</i>)", where <i>m</i>
      *  indicates the number of integer bits, <i>n</i> represents
      *  the number of fractional bits and <i>o</i> represents
      *  the overflow strategy and <i>r</i> represents
@@ -193,6 +202,8 @@ public class FixPointQuantization extends Quantization {
      *  @return A string representing this quantization.
      */
     public String toString() {
+        // TODO: check for null precision
+        StringBuffer sb = new StringBuffer();
         String x = "(" + _precision.getIntegerBitLength() + "."
                 + _precision.getFractionBitLength() + ","
                 + getOverflow().toString() + "," + getRounding().toString()

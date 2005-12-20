@@ -35,44 +35,36 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- This class defines the precision of a signed or unsigned
- fixed point value.
- The precision of a fixed point value is represented as
+ This class defines the precision of a signed or unsigned fixed point
+ value. The precision of a fixed point value is represented as
  internally as three fields: the number of bits (<i>n</i>), the
  binary exponent (<i>e</i>), and a sign bit (<i>s</i>).
 
  The number of bits (<i>n</i>) defines the dynamic range of
- the format (2^n).
+ the format (2<sup>n</sup>).
 
- The exponent (<i>e</i>) determines the placement of the
- binary point for all values of this format. This binary
- point placement
- is "fixed" and is specified within the precision format
- rather than within individual Fixed point values.
- The mantissa bits of all fixed point values
- using this this precision format are
- multiplied by 2^m. Note that <i>m</i> can take on a positive,
- negative,
- or zero value. This allows the binary point to be placed
- anywhere necessary and even beyond the bounds of the mantissa
- (i.e. to the right of the lsb or to the left of the msb).
+ The exponent (<i>e</i>) determines the placement of the binary point
+ for all values of this format. This binary point placement is "fixed"
+ and is specified within the precision format rather than within individual
+ Fixed point values.  The mantissa bits of all fixed point values
+ using this this precision format are multiplied by 2<sup>m</sup>. Note that
+ <i>m</i> can take on a positive,  negative, or zero value. This allows
+ the binary point to be placed anywhere necessary and even beyond the bounds
+ of the mantissa (i.e. to the right of the lsb or to the left of the msb).
 
- The sign value <i>s</i> is used to indicate whether the
- fixed point precision value is
- treated as signed (s = 1) or unsigned (s = 0). <p>
+ The sign value <i>s</i> is used to indicate whether the fixed point
+ precision value is treated as signed (s = 1) or unsigned (s = 0). <p>
 
  <b>Signed</b> fixed point formats are represented in a 2's complement
  format. As a consequence, a single bit is used to represent the
- sign of the number. The value of a multi-bit signed
- number is: <p>
+ sign of the number. The value of a multi-bit signed number is: <p>
 
  Signed(B)   = 2^m x (- b_{n-1} x 2^{n-1} + \sum_{i=0}^{n-2} b_i x 2^i),
 
  where b_i is the value of bit i of the bit vector. <p>
 
  <b>Unsigned</b> fixed formats are represented as unsigned binary
- values.
- No bits are used to represent the sign and all values are
+ values. No bits are used to represent the sign and all values are
  positive. The actual value of a multi-bit unsigned fixed
  point number is:<p>
 
@@ -80,13 +72,13 @@ import java.util.regex.Pattern;
 
  <p>
  This class supports several different String formats for specifying and
- displaying
- the Precision. These String formats are supported by classes that extend the
- {@link PrecisionFormat} class. Several such classes have been created.
- Any given precision string format can be represented in any of the
- valid precision string formats. The four supported Precision String formats
- are shown in the table below. Each String Representation column of the
- table represent equivalent Precision formats:
+ displaying the Precision. These String formats are supported by several
+ classes that extend the {@link PrecisionFormat} class. Several such classes
+ have been created. Any given precision string format can be represented in
+ any of the valid precision string formats. The four supported Precision
+ String formats are shown in the table below. A static singleton object of
+ each of these formats is provided in this class. Each String Representation
+ column of the  table represent equivalent Precision formats:
 
  <table border = 1>
  <tr><td><b>Format Name</b></td> <td><b>Format Spec</b></td>
@@ -196,7 +188,8 @@ public class Precision implements Cloneable, Serializable {
      *  @param sign The presence of a sign bit (1 = signed, 0 = unsigned).
      *  @param length The total number of bits.
      *  @param exponent The bit location of the exponent.
-     *  @exception IllegalArgumentException Illegal Precision specification.
+     *  @exception IllegalArgumentException If the Precision arguments
+     *  are inconsistent.
      */
     public Precision(int sign, int length, int exponent)
             throws IllegalArgumentException {
@@ -244,37 +237,28 @@ public class Precision implements Cloneable, Serializable {
     }
 
     /** Return the maximum obtainable value in this precision.
-     *
-     *  For signed values, this number is 2^e x (2^(n-1)-1).
-     *  For unsigned values, this number is 2^e x (2^n - 1).
+     *  This value is obtained by multiplying the result of
+     *  {@link #getMaximumUnscaledValue()} by 2<sup>exponent</sup>.
      *
      *  @return The maximum value obtainable for this precision.
      */
     public BigDecimal findMaximum() {
-        BigInteger intValue = BigInteger.ZERO.setBit(_length - _sign);
-        intValue = intValue.subtract(BigInteger.ONE);
-
-        double val = intValue.doubleValue() * Math.pow(2, _exponent);
-        return new BigDecimal(val);
+        BigDecimal bd = new BigDecimal(getMaximumUnscaledValue());
+        return shiftBigDecimal(bd, _exponent);
     }
 
     /** Return the minimum obtainable value for this precision.
+     *  This value is obtained by multiplying the result of
+     *  {@link #getMinimumUnscaledValue()} by 2<sup>exponent</sup>.
      *
-     *  For signed values, this number is -(2^(n-1)) x 2^e
-     *  For unsigned values, this number is 0.
-     *
-     *  @return The minimum value obtainable for the given precision..
+     *  @return The minimum value obtainable for the given precision.
      */
     public BigDecimal findMinimum() {
         if (!isSigned()) {
             return new BigDecimal(0);
         }
-
-        BigInteger intValue = BigInteger.ZERO.setBit(_length - 1);
-        intValue = intValue.negate();
-
-        double val = intValue.doubleValue() * Math.pow(2, _exponent);
-        return new BigDecimal(val);
+        BigDecimal bd = new BigDecimal(getMinimumUnscaledValue());
+        return shiftBigDecimal(bd, _exponent);
     }
 
     /** Return the incremental value between discrete values under
@@ -329,8 +313,11 @@ public class Precision implements Cloneable, Serializable {
      *  @return The maximum inclusive value.
      */
     public BigInteger getMaximumUnscaledValue() {
+        // Create a positive "bit vector" that is the length
+        // of the this precision and has all ones.
         BigInteger val = BigInteger.ZERO.setBit(_length - _sign);
-        return val.subtract(BigInteger.ONE);
+        val = val.subtract(BigInteger.ONE);
+        return val;
     }
 
     /** Return the minimum integer value <i>before</i> scaling so
@@ -362,6 +349,19 @@ public class Precision implements Cloneable, Serializable {
         return (_exponent + _length) - 1;
     }
 
+    /**
+     * Return the bit position of the most significant
+     * data bit of the given fixed point precision. If this
+     * Precision is signed, this will return
+     * getMostSignificantBitPosition - 1. If this Precision
+     * is unsiged, this will return getMostSignificantBitPosition.
+     *
+     * @return Least significant bit position.
+     */
+    public int getMostSignificantDataBitPosition() {
+        return (_exponent + _length) - 1 - _sign;
+    }
+
     /** Return the total number of bits.
      *  @return the total number of bits.
      */
@@ -372,8 +372,10 @@ public class Precision implements Cloneable, Serializable {
     /** Return the total number of discrete values possible.
      *  @return the total number of levels.
      */
-    public double getNumberOfLevels() {
-        return Math.pow(2.0, _length);
+    public BigInteger getNumberOfLevels() {
+        int numBits = getNumberOfBits();
+        return BigInteger.ZERO.setBit(numBits);
+        //return Math.pow(2.0, _length);
     }
 
     /** Return the sign (0 = unsigned, 1 = signed).
@@ -404,18 +406,67 @@ public class Precision implements Cloneable, Serializable {
      */
     public static Precision matchThePoint(Precision precisionA,
             Precision precisionB) {
-        int minExponent = (precisionA._exponent < precisionB._exponent) ? precisionA._exponent
-                : precisionB._exponent;
 
-        int aMax = precisionA.getMostSignificantBitPosition();
-        int bMax = precisionB.getMostSignificantBitPosition();
+        int minExponent = (precisionA._exponent < precisionB._exponent) ?
+                precisionA._exponent : precisionB._exponent;
 
-        int maxMSb = (aMax > bMax) ? aMax : bMax;
-        int newLength = maxMSb - minExponent + 1;
+        int aDataMSB = precisionA.getMostSignificantDataBitPosition();
+        int bDataMSB = precisionB.getMostSignificantDataBitPosition();
+
+        int maxDataMSB = (aDataMSB > bDataMSB) ? aDataMSB : bDataMSB;
+        int newLength = maxDataMSB - minExponent + 1;
 
         int newSign = ((precisionA._sign == 1) || (precisionB._sign == 1)) ? 1
                 : 0;
+        newLength += newSign;
+
         return new Precision(newSign, newLength, minExponent);
+    }
+
+    /** Shift the BigDecimal value either right or left by
+     *  a power of 2 value. This method will perform a
+     *  multiplication by 2^<sup>shiftval</sub> on the BigDecimal
+     *  value when shiftval is positive and will perform a
+     *  divide by 2^<sup>-shiftval</sub> on the BigDecimal value
+     *  when shiftval is negative.
+     *
+     *
+     * @param val BigDecimal value to shift.
+     * @param shiftval Amount of "power of 2" shifting to perform
+     * on the BigDecimal value
+     * @return shifted BigDecimal value.
+     */
+    public static BigDecimal shiftBigDecimal(BigDecimal val, int shiftval) {
+
+        // No shifting takes place. Return the BigDecimal value
+        if (shiftval == 0)
+            return val;
+
+        // Left shifting is going to occur. Multiply value by
+        // 2^shiftval
+        if (shiftval > 0)
+            return val.multiply(_getTwoRaisedTo(shiftval));
+
+        // Right shifting is going to occur. Divide value by
+        // 2^(-shiftval) since shiftval is negative.
+
+        // When dividing BigDecimal values, we need to know the maximum
+        // number of decimal places will be added to the right
+        // as a result of the divide
+        // to preserve the precision of the result. Since we are
+        // dividing by a number of the form, 2^n, the division
+        // is essentially a divide by 2 for n times. Every
+        // divide by two will add at most one new
+        // least significant decimal digit to the right of the decimal
+        // point. To preserve all of the precision of the divide,
+        // set the BigDecimal "scale" to n + val.scale() where
+        // n is the power of 2.
+        int scaleShift = -shiftval + val.scale();
+
+        BigDecimal result = val.divide(_getTwoRaisedTo(-shiftval),
+                scaleShift,
+                BigDecimal.ROUND_HALF_EVEN);
+        return result;
     }
 
     /** Return a string representing this precision. The string is
@@ -447,10 +498,11 @@ public class Precision implements Cloneable, Serializable {
      * the result of the printing method).
      */
     public static abstract class PrecisionFormat {
+
         /**
          * Parse the given String argument using the rules of the specific
          * PrecisionFormat that is defined. This method will return a
-         * valid Precision object from the STring. If the String parsing
+         * valid Precision object from the String. If the String parsing
          * does not produce a valid match, this method will return a null.
          * If the String match is succesful but there is a problem in
          * the interpretation of the match, this method will throw
@@ -459,9 +511,8 @@ public class Precision implements Cloneable, Serializable {
          * @param str String to parse
          * @return A Precision object. Returns a null if the String does
          * not match the particular string format.
-         * @exception IllegalArgumentException Thrown when
-         * a match occurs but there is a problem interrpreting the matching
-         * String.
+         * @exception IllegalArgumentException If there is a problem
+         * parsing the String (i.e. an illegal string).
          */
         public abstract Precision parseString(String str)
                 throws IllegalArgumentException;
@@ -482,8 +533,8 @@ public class Precision implements Cloneable, Serializable {
          *
          * @param str The integer string to parse
          * @return The integer value of the string.
-         * @exception IllegalArgumentException This is thrown when the
-         * parsing of the string fails.
+         * @exception IllegalArgumentException If the parsing of the
+         * Integer value fails (i.e. NumberFormatException).
          */
         public static int parseInteger(String str)
                 throws IllegalArgumentException {
@@ -503,7 +554,7 @@ public class Precision implements Cloneable, Serializable {
          *
          * @param str String to parse for a sign indicator.
          * @return Return a 0 for unsigned and a 1 for signed.
-         * @exception IllegalArgumentException Exception thrown when the
+         * @exception IllegalArgumentException If the
          * string does not match the 'U' or 'S' characters.
          */
         public static int parseSignString(String str)
@@ -579,6 +630,7 @@ public class Precision implements Cloneable, Serializable {
      *
      */
     public static class IntegerFractionPrecisionFormat extends PrecisionFormat {
+
         /** Regular expression for IntegerFractionPrecisionFormat.
          *  Example: (S3.2) */
         protected final static String _regex = WHITE_SPACE
@@ -870,22 +922,44 @@ public class Precision implements Cloneable, Serializable {
     /**
      * static IntegerFractionPrecisionFormat object.
      */
-    public final static PrecisionFormat INTEGER_FRACTION = new IntegerFractionPrecisionFormat();
+    public final static PrecisionFormat INTEGER_FRACTION =
+        new IntegerFractionPrecisionFormat();
 
     /**
      * static LengthExponentPrecisionFormat object.
      */
-    public final static PrecisionFormat LENGTH_EXPONENT = new LengthExponentPrecisionFormat();
+    public final static PrecisionFormat LENGTH_EXPONENT =
+        new LengthExponentPrecisionFormat();
 
     /**
      * static LengthIntegerPrecisionFormat object.
      */
-    public final static PrecisionFormat LENGTH_INTEGER = new LengthIntegerPrecisionFormat();
+    public final static PrecisionFormat LENGTH_INTEGER =
+        new LengthIntegerPrecisionFormat();
 
     /**
      * static VHDLPrecisionFormat object.
      */
     public final static PrecisionFormat VHDL = new VHDLPrecisionFormat();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Get the BigDecimal which is the 2^exponent. If the value is
+     *  already calculated, return this cached value, else calculate
+     *  the value.
+     *
+     *  @param number the exponent.
+     *  @return the BigDecimal representing 2^exponent.
+     */
+    private static BigDecimal _getTwoRaisedTo(int number) {
+        // Since this is a private method we know that number is positive.
+        if (number < _twoRaisedTo.length) {
+            return _twoRaisedTo[number];
+        } else {
+            return new BigDecimal(BigInteger.ZERO.setBit(number));
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -901,4 +975,32 @@ public class Precision implements Cloneable, Serializable {
 
     /** The precision format used for parsing/printing precision information */
     private PrecisionFormat _format = INTEGER_FRACTION;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         static variables                  ////
+
+    /** The size of the pre-computed _twoRaisedTo powers of two array.
+     *   65 entries are used to cache all powers of 2 from 0 to 64.
+     **/
+    private static final int TWORAISEDTOSIZE = 64 + 1;
+
+    /** Calculate the table containing 2^x, with 0 <= x < TWORAISEDTOSIZE.
+     *   Purpose is to speed up calculations involving calculating
+     *   2^x. The table is calculated using BigDecimal, since this
+     *   make the transformation from string of bits to a double
+     *   easier.
+     **/
+    private static BigDecimal[] _twoRaisedTo = new BigDecimal[TWORAISEDTOSIZE];
+
+    ///////////////////////////////////////////////////////////////////
+    ////                      static initializers                  ////
+    static {
+        BigDecimal powerOf2 = BigDecimal.valueOf(1);
+
+        for (int i = 0; i < _twoRaisedTo.length; i++) {
+            _twoRaisedTo[i] = powerOf2;
+            powerOf2 = powerOf2.add(powerOf2);
+        }
+    }
+
 }

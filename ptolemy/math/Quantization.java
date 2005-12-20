@@ -91,11 +91,11 @@ import java.math.BigInteger;
  @since Ptolemy II 2.1
  @Pt.ProposedRating Red (Ed.Willink)
  @Pt.AcceptedRating Red
- @see FixPoint
- @see FixPointQuantization
- @see Precision
- @see Overflow
- @see Rounding
+ @see ptolemy.math.FixPoint
+ @see ptolemy.math.FixPointQuantization
+ @see ptolemy.math.Precision
+ @see ptolemy.math.Overflow
+ @see ptolemy.math.Rounding
  */
 public abstract class Quantization implements Cloneable, Serializable {
     /** Construct a Quantization with the given precision, overflow
@@ -234,6 +234,7 @@ public abstract class Quantization implements Cloneable, Serializable {
      *  This is the same as the number of quantization levels in
      *  the mantissa..
      *  @return The modulo value.
+     *  @deprecated  ?
      */
     public BigInteger getModuloUnscaledValue() {
         int numBits = getNumberOfBits();
@@ -261,6 +262,12 @@ public abstract class Quantization implements Cloneable, Serializable {
         return _overflow;
     }
 
+    /** Return the Precision.
+     *
+     * @return The Precision object.
+     */
+    public abstract Precision getPrecision();
+
     /** Return the rounding strategy.
      *  @return The rounding strategy.
      */
@@ -273,18 +280,6 @@ public abstract class Quantization implements Cloneable, Serializable {
      */
     public double getTinyValue() {
         return getEpsilonValue();
-    }
-
-    /** Return the quantized value of integerPart + fracPart.
-     *  fracPart must be greater than -1.0 and less than +1.0.
-     *  @param integerPart The integer value to be bounded.
-     *  @param fracPart The fractional part to be rounded away.
-     *  @return The bounded and rounded integer value.
-     */
-    public BigInteger quantize(BigInteger integerPart, double fracPart) {
-        BigInteger roundedVal = _rounding.quantize(integerPart, fracPart);
-        BigInteger boundedVal = _overflow.quantize(roundedVal, this);
-        return boundedVal;
     }
 
     /** Return a string representing this quantization.

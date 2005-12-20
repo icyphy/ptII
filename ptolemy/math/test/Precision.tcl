@@ -136,6 +136,7 @@ test Precision-1.0 {constructors-string} {
 (32e0) 32 0 1
 (U8e-7) 8 -7 0 }}
 
+####################################################################
 test Precision-1.1 {constructors-string-bad} {
 
     set ctor_int_int {ptolemy.math.Precision int int int}
@@ -176,6 +177,7 @@ java.lang.IllegalArgumentException: MSb of VHDL format must be greater than LSb:
 java.lang.IllegalArgumentException: MSb of VHDL format must be greater than LSb:0:0
 java.lang.IllegalArgumentException: Precision format must be at least 1 bit:s0e2 }}
 
+####################################################################
 test Precision-1.2 {constructors-int-int-int} {
 
     set ctor_int_int {ptolemy.math.Precision int int int}
@@ -202,6 +204,7 @@ test Precision-1.2 {constructors-int-int-int} {
 (32.0) 32 0 1
 (U1.7) 8 -7 0 }}
 
+####################################################################
 test Precision-1.3 {constructors-int-int} {
 
     set ctor_int_int {ptolemy.math.Precision int int}
@@ -228,34 +231,37 @@ test Precision-1.3 {constructors-int-int} {
 (32.0) 32 0 1
 (1.7) 8 -7 1 }}
 
-
+####################################################################
 test Precision-2.0 {findMaximum-findMinimum} {
 
     list "
-[$p0 toString] [[$p0 findMaximum] toString ] [[$p0 findMinimum] toString]
-[$p6 toString] [[$p6 findMaximum] toString ] [[$p6 findMinimum] toString]
-[$p12 toString] [[$p12 findMaximum] toString ] [[$p12 findMinimum] toString]
-[$p18 toString] [[$p18 findMaximum] toString ] [[$p18 findMinimum] toString] "
+[$p0 toString] [[$p0 findMaximum] toString ] >= x >= [[$p0 findMinimum] toString]
+[$p6 toString] [[$p6 findMaximum] toString ] >= x >= [[$p6 findMinimum] toString]
+[$p12 toString] [[$p12 findMaximum] toString ] >= x >= [[$p12 findMinimum] toString]
+[$p18 toString] [[$p18 findMaximum] toString ] >= x >= [[$p18 findMinimum] toString]
+[$p3 toString] [[$p3 findMaximum] toString ] >= x >= [[$p3 findMinimum] toString] "
 } {{
-(3.2) 3.75 -4
-(5/3) 3.75 -4
-(2:-2) 3.75 -4
-(5e-2) 3.75 -4 }}
+(3.2) 3.75 >= x >= -4.00
+(5/3) 3.75 >= x >= -4.00
+(2:-2) 3.75 >= x >= -4.00
+(5e-2) 3.75 >= x >= -4.00
+(12.-4) 2032 >= x >= -2048 }}
 
+####################################################################
 test Precision-3.0 {getEpsilon-getNumberOfLevels} {
 
     list "
-[$p1 toString] [[$p1 getEpsilon] toString ] [$p1 getNumberOfLevels]
-[$p7 toString] [[$p7 getEpsilon] toString ] [$p7 getNumberOfLevels]
-[$p13 toString] [[$p13 getEpsilon] toString ] [$p13 getNumberOfLevels]
-[$p19 toString] [[$p19 getEpsilon] toString ] [$p19 getNumberOfLevels] "
+[$p1 toString] [[$p1 getEpsilon] toString ] [[$p1 getNumberOfLevels] toString]
+[$p7 toString] [[$p7 getEpsilon] toString ] [[$p7 getNumberOfLevels] toString]
+[$p13 toString] [[$p13 getEpsilon] toString ] [[$p13 getNumberOfLevels] toString]
+[$p19 toString] [[$p19 getEpsilon] toString ] [[$p19 getNumberOfLevels] toString] "
 } {{
-(0.7) 0.0078125 128.0
-(7/0) 0.0078125 128.0
-(-1:-7) 0.0078125 128.0
-(7e-7) 0.0078125 128.0 }}
+(0.7) 0.0078125 128
+(7/0) 0.0078125 128
+(-1:-7) 0.0078125 128
+(7e-7) 0.0078125 128 }}
 
-
+####################################################################
 test Precision-4.0 {getFractionalBitLength-getIntegerBitLength} {
 
     list "
@@ -269,20 +275,44 @@ test Precision-4.0 {getFractionalBitLength-getIntegerBitLength} {
 (-3:-12) -2.12
 (10e-12) -2.12 }}
 
+####################################################################
 test Precision-5.0 {getMSB-getLSB} {
 
     list "
 [$p3 toString] [$p3 getMostSignificantBitPosition]:[$p3 getLeastSignificantBitPosition]
 [$p9 toString] [$p9 getMostSignificantBitPosition]:[$p9 getLeastSignificantBitPosition]
 [$p15 toString] [$p15 getMostSignificantBitPosition]:[$p15 getLeastSignificantBitPosition]
-[$p21 toString] [$p21 getMostSignificantBitPosition]:[$p21 getLeastSignificantBitPosition] "
+[$p21 toString] [$p21 getMostSignificantBitPosition]:[$p21 getLeastSignificantBitPosition]
+[$p5 toString] [$p5 getMostSignificantBitPosition]:[$p5 getLeastSignificantBitPosition]
+"
 } {{
 (12.-4) 11:4
 (8/12) 11:4
 (11:4) 11:4
-(8e4) 11:4 }}
+(8e4) 11:4
+(U1.7) 0:-7
+}}
 
-test Precision-5.0 {getUnscaledValue} {
+####################################################################
+test Precision-5.1 {getDataMSB-getLSB} {
+
+    list "
+[$p3 toString] [$p3 getMostSignificantDataBitPosition]:[$p3 getLeastSignificantBitPosition]
+[$p9 toString] [$p9 getMostSignificantDataBitPosition]:[$p9 getLeastSignificantBitPosition]
+[$p15 toString] [$p15 getMostSignificantDataBitPosition]:[$p15 getLeastSignificantBitPosition]
+[$p21 toString] [$p21 getMostSignificantDataBitPosition]:[$p21 getLeastSignificantBitPosition]
+[$p5 toString] [$p5 getMostSignificantDataBitPosition]:[$p5 getLeastSignificantBitPosition]
+"
+} {{
+(12.-4) 10:4
+(8/12) 10:4
+(11:4) 10:4
+(8e4) 10:4
+(U1.7) 0:-7
+}}
+
+####################################################################
+test Precision-5.2 {getUnscaledValue} {
 
     list "
 [$p4 toString] [[$p4 getMaximumUnscaledValue] toString] >= x >= [[$p4 getMinimumUnscaledValue] toString]
@@ -296,6 +326,7 @@ test Precision-5.0 {getUnscaledValue} {
 (32e0) 2147483647 >= x >= -2147483648 }}
 
 
+####################################################################
 test Precision-6.0 {equals} {
 
     list "
@@ -311,6 +342,7 @@ test Precision-6.0 {equals} {
 (5e-2) equals (3.2) 1
 (5e-2) equals (0.7) 0 }}
 
+####################################################################
 test Precision-7.0 {matchThePoint} {
 
     set matchThePoint {ptolemy.math.Precision matchThePoint}

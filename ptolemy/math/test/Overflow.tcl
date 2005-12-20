@@ -44,53 +44,129 @@ if {[string compare test [info procs test]] == 1} then {
 
 test Overflow-1.0 {names} {
     set overflow_clip [java::call ptolemy.math.Overflow forName "clip"];
-    set overflow_general [java::call ptolemy.math.Overflow forName "general"];
     set overflow_grow [java::call ptolemy.math.Overflow forName "grow"];
     set overflow_modulo [java::call ptolemy.math.Overflow forName "modulo"];
     set overflow_saturate [java::call ptolemy.math.Overflow forName "saturate"];
     set overflow_throw [java::call ptolemy.math.Overflow forName "throw"];
     set overflow_to_zero [java::call ptolemy.math.Overflow getName "to_zero"];
     set overflow_trap [java::call ptolemy.math.Overflow getName "trap"];
-    set overflow_unknown [java::call ptolemy.math.Overflow forName "unknown"];
     set overflow_wrap [java::call ptolemy.math.Overflow getName "wrap"];
+    set overflow_minimize [java::call ptolemy.math.Overflow getName "minimize"];
+    set overflow_shrink [java::call ptolemy.math.Overflow getName "shrink"];
     catch { set overflow_zzz [java::call ptolemy.math.Overflow getName "zzz"]; } msg
-    set big_99 [java::new java.math.BigInteger "99" ]
-    set big_5 [java::new java.math.BigInteger "5" ]
-    set big_4 [java::new java.math.BigInteger "4" ]
-    set big_3 [java::new java.math.BigInteger "3" ]
-    set big_2 [java::new java.math.BigInteger "2" ]
-    set big_1 [java::new java.math.BigInteger "1" ]
-    set big_0 [java::new java.math.BigInteger "0" ]
-    set big__1 [java::new java.math.BigInteger "-1" ]
-    set big__2 [java::new java.math.BigInteger "-2" ]
-    set big__3 [java::new java.math.BigInteger "-3" ]
-    set big__4 [java::new java.math.BigInteger "-4" ]
-    set big__5 [java::new java.math.BigInteger "-5" ]
-    set big__99 [java::new java.math.BigInteger "-99" ]
     list "
 [ $overflow_clip toString ] 
-[ $overflow_general toString ] 
 [ $overflow_grow toString ] 
 [ $overflow_modulo toString ] 
 [ $overflow_saturate toString ] 
 [ $overflow_throw toString ] 
 [ $overflow_to_zero toString ] 
 [ $overflow_trap toString ] 
-[ $overflow_unknown toString ] 
 [ $overflow_wrap toString ] 
+[ $overflow_minimize toString ] 
+[ $overflow_shrink toString ] 
 $msg "
 } {{
 saturate 
-general 
 grow 
 modulo 
 saturate 
 trap 
 to_zero 
 trap 
-unknown 
 modulo 
+minimize 
+minimize 
 java.lang.IllegalArgumentException: Unknown overflow strategy "zzz". }}
+
+
+####################################################################
+test Overflow-1.1 {isOutOfRange} {
+
+    set big_100 [java::new java.math.BigInteger "100" ]
+    set big_99 [java::new java.math.BigInteger "99" ]
+    set big_5 [java::new java.math.BigInteger "5" ]
+    set big_4 [java::new java.math.BigInteger "4" ]
+    set big_3 [java::new java.math.BigInteger "3" ]
+    set big_1 [java::new java.math.BigInteger "1" ]
+    set big_0 [java::new java.math.BigInteger "0" ]
+    set big__1 [java::new java.math.BigInteger "-1" ]
+    set big__3 [java::new java.math.BigInteger "-3" ]
+    set big__4 [java::new java.math.BigInteger "-4" ]
+    set big__5 [java::new java.math.BigInteger "-5" ]
+    set big__99 [java::new java.math.BigInteger "-99" ]
+
+    set p_s3_0 [java::new ptolemy.math.Precision "s3.0" ]
+    set p_u3_0 [java::new ptolemy.math.Precision "u3.0" ]
+
+    list \
+	[$overflow_grow isOutOfRange $big_99 $p_s3_0] \
+	[$overflow_grow isOutOfRange $big_5 $p_s3_0] \
+	[$overflow_grow isOutOfRange $big_4 $p_s3_0] \
+	[$overflow_grow isOutOfRange $big_3 $p_s3_0] \
+	[$overflow_grow isOutOfRange $big_0 $p_s3_0] \
+	[$overflow_grow isOutOfRange $big__3 $p_s3_0] \
+	[$overflow_grow isOutOfRange $big__4 $p_s3_0] \
+	[$overflow_grow isOutOfRange $big__5 $p_s3_0] \
+	[$overflow_grow isOutOfRange $big__99 $p_s3_0] \
+	[$overflow_grow isOutOfRange $big_99 $p_u3_0] \
+	[$overflow_grow isOutOfRange $big_5 $p_u3_0] \
+	[$overflow_grow isOutOfRange $big_4 $p_u3_0] \
+	[$overflow_grow isOutOfRange $big_3 $p_u3_0] \
+	[$overflow_grow isOutOfRange $big_0 $p_u3_0] \
+	[$overflow_grow isOutOfRange $big__3 $p_u3_0] \
+	[$overflow_grow isOutOfRange $big__4 $p_u3_0] \
+	[$overflow_grow isOutOfRange $big__5 $p_u3_0] \
+	[$overflow_grow isOutOfRange $big__99 $p_u3_0]
+} {1 1 1 0 0 0 0 1 1 1 0 0 0 0 1 1 1 1}
+
+####################################################################
+test Overflow-1.1 {isOverflow} {
+
+    list \
+	[$overflow_grow isOverflow $big_99 $p_s3_0] \
+	[$overflow_grow isOverflow $big_5 $p_s3_0] \
+	[$overflow_grow isOverflow $big_4 $p_s3_0] \
+	[$overflow_grow isOverflow $big_3 $p_s3_0] \
+	[$overflow_grow isOverflow $big_0 $p_s3_0] \
+	[$overflow_grow isOverflow $big__3 $p_s3_0] \
+	[$overflow_grow isOverflow $big__4 $p_s3_0] \
+	[$overflow_grow isOverflow $big__5 $p_s3_0] \
+	[$overflow_grow isOverflow $big__99 $p_s3_0] \
+	[$overflow_grow isOverflow $big_99 $p_u3_0] \
+	[$overflow_grow isOverflow $big_5 $p_u3_0] \
+	[$overflow_grow isOverflow $big_4 $p_u3_0] \
+	[$overflow_grow isOverflow $big_3 $p_u3_0] \
+	[$overflow_grow isOverflow $big_0 $p_u3_0] \
+	[$overflow_grow isOverflow $big__3 $p_u3_0] \
+	[$overflow_grow isOverflow $big__4 $p_u3_0] \
+	[$overflow_grow isOverflow $big__5 $p_u3_0] \
+	[$overflow_grow isOverflow $big__99 $p_u3_0]
+} {1 1 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0}
+
+####################################################################
+test Overflow-1.2 {isUnderflow} {
+
+    list \
+	[$overflow_grow isUnderflow $big_99 $p_s3_0] \
+	[$overflow_grow isUnderflow $big_5 $p_s3_0] \
+	[$overflow_grow isUnderflow $big_4 $p_s3_0] \
+	[$overflow_grow isUnderflow $big_3 $p_s3_0] \
+	[$overflow_grow isUnderflow $big_0 $p_s3_0] \
+	[$overflow_grow isUnderflow $big__3 $p_s3_0] \
+	[$overflow_grow isUnderflow $big__4 $p_s3_0] \
+	[$overflow_grow isUnderflow $big__5 $p_s3_0] \
+	[$overflow_grow isUnderflow $big__99 $p_s3_0] \
+	[$overflow_grow isUnderflow $big_99 $p_u3_0] \
+	[$overflow_grow isUnderflow $big_5 $p_u3_0] \
+	[$overflow_grow isUnderflow $big_4 $p_u3_0] \
+	[$overflow_grow isUnderflow $big_3 $p_u3_0] \
+	[$overflow_grow isUnderflow $big_0 $p_u3_0] \
+	[$overflow_grow isUnderflow $big__3 $p_u3_0] \
+	[$overflow_grow isUnderflow $big__4 $p_u3_0] \
+	[$overflow_grow isUnderflow $big__5 $p_u3_0] \
+	[$overflow_grow isUnderflow $big__99 $p_u3_0]
+} {0 0 0 0 0 0 0 1 1 0 0 0 0 0 1 1 1 1}
 
 ####################################################################
 test Overflow-1.5 {clone} {
@@ -103,134 +179,335 @@ test Overflow-1.5 {clone} {
 } {1 1 0 0}
 
 ####################################################################
-test Overflow-2.0 {general} {
-    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,general,unnecessary" ]
+test Overflow-2.0 {quantizeGrow} {
+
+    catch { [$overflow_grow quantizeGrow $big__3 $p_u3_0] toStringPrecision]; } msg1
+    catch { [$overflow_grow quantizeGrow $big__4 $p_u3_0] toStringPrecision]; } msg2
+    catch { [$overflow_grow quantizeGrow $big__5 $p_u3_0] toStringPrecision]; } msg3
+    catch { [$overflow_grow quantizeGrow $big__99 $p_u3_0] toStringPrecision]; } msg4
+
     list "
-[ [ $overflow_general quantize $big_99 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big_5 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big_4 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big_3 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big_2 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big_1 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big_0 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big__1 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big__2 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big__3 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big__4 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big__5 $quant_3_0] toString ] 
-[ [ $overflow_general quantize $big__99 $quant_3_0] toString ] "
+[ [ $overflow_grow quantizeGrow $big_99 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big_5 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big_4 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big_3 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big_0 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big__3 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big__4 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big__5 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big__99 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big_99 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big_5 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big_4 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big_3 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeGrow $big_0 $p_u3_0] toStringPrecision ] 
+$msg1
+$msg2
+$msg3
+$msg4 "
 } {{
-99 
-5 
-4 
-3 
-2 
-1 
-0 
--1 
--2 
--3 
--4 
--5 
--99 }}
+99(8.0) 
+5(4.0) 
+4(4.0) 
+3(3.0) 
+0(3.0) 
+-3(3.0) 
+-4(3.0) 
+-5(4.0) 
+-99(8.0) 
+99(U7.0) 
+5(U3.0) 
+4(U3.0) 
+3(U3.0) 
+0(U3.0) 
+java.lang.ArithmeticException: Precision (U2.0) not sufficient to represent -3
+java.lang.ArithmeticException: Precision (U2.0) not sufficient to represent -4
+java.lang.ArithmeticException: Precision (U3.0) not sufficient to represent -5
+java.lang.ArithmeticException: Precision (U7.0) not sufficient to represent -99 }}
 
 ####################################################################
-test Overflow-2.0 {grow} {
-    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,grow,unnecessary" ]
-    list "
-[ [ $overflow_grow quantize $big_99 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big_5 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big_4 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big_3 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big_2 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big_1 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big_0 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big__1 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big__2 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big__3 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big__4 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big__5 $quant_3_0] toString ] 
-[ [ $overflow_grow quantize $big__99 $quant_3_0] toString ] "
-} {{
-99 
-5 
-4 
-3 
-2 
-1 
-0 
--1 
--2 
--3 
--4 
--5 
--99 }}
+test Overflow-2.1 {quantizeMinimum} {
 
-test Overflow-2.1 {modulo} {
-    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,modulo,unnecessary" ]
+    catch { [$overflow_grow quantizeMinimum $big__3 $p_u3_0] toStringPrecision]; } msg1
+    catch { [$overflow_grow quantizeMinimum $big__4 $p_u3_0] toStringPrecision]; } msg2
+    catch { [$overflow_grow quantizeMinimum $big__5 $p_u3_0] toStringPrecision]; } msg3
+    catch { [$overflow_grow quantizeMinimum $big__99 $p_u3_0] toStringPrecision]; } msg4
+    catch { [$overflow_grow quantizeMinimum $big__1 $p_u3_0] toStringPrecision]; } msg5
+
     list "
-[ [ $overflow_modulo quantize $big_99 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big_5 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big_4 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big_3 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big_2 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big_1 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big_0 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big__1 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big__2 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big__3 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big__4 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big__5 $quant_3_0] toString ] 
-[ [ $overflow_modulo quantize $big__99 $quant_3_0] toString ] "
+[ [ $overflow_grow quantizeMinimum $big_99 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_5 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_4 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_3 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_1 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_0 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big__1 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big__3 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big__4 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big__5 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big__99 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_99 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_5 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_4 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_3 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_1 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeMinimum $big_0 $p_u3_0] toStringPrecision ] 
+$msg1
+$msg2
+$msg3
+$msg4
+$msg5 "
 } {{
-3 
--3 
--4 
-3 
-2 
-1 
-0 
--1 
--2 
--3 
--4 
-3 
--3 }}
+99(8.0) 
+5(4.0) 
+4(4.0) 
+3(3.0) 
+1(2.0) 
+0(2.0) 
+-1(2.0) 
+-3(3.0) 
+-4(3.0) 
+-5(4.0) 
+-99(8.0) 
+99(U7.0) 
+5(U3.0) 
+4(U3.0) 
+3(U2.0) 
+1(U1.0) 
+0(U1.0) 
+java.lang.ArithmeticException: Precision (U2.0) not sufficient to represent -3
+java.lang.ArithmeticException: Precision (U2.0) not sufficient to represent -4
+java.lang.ArithmeticException: Precision (U3.0) not sufficient to represent -5
+java.lang.ArithmeticException: Precision (U7.0) not sufficient to represent -99
+java.lang.ArithmeticException: Precision (U1.0) not sufficient to represent -1 }}
 
 ####################################################################
-test Overflow-2.2 {saturate} {
-    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,saturate,unnecessary" ]
+test Overflow-2.2 {quantizeModulo} {
+
+    catch { [$overflow_grow quantizeModulo $big__3 $p_u3_0] toStringPrecision]; } msg1
+    catch { [$overflow_grow quantizeModulo $big__4 $p_u3_0] toStringPrecision]; } msg2
+    catch { [$overflow_grow quantizeModulo $big__5 $p_u3_0] toStringPrecision]; } msg3
+    catch { [$overflow_grow quantizeModulo $big__99 $p_u3_0] toStringPrecision]; } msg4
+    catch { [$overflow_grow quantizeModulo $big__1 $p_u3_0] toStringPrecision]; } msg5
+
     list "
-[ [ $overflow_saturate quantize $big_99 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big_5 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big_4 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big_3 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big_2 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big_1 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big_0 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big__1 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big__2 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big__3 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big__4 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big__5 $quant_3_0] toString ] 
-[ [ $overflow_saturate quantize $big__99 $quant_3_0] toString ] "
+[$big_100 toString 2] [ [ $overflow_grow quantizeModulo $big_100 $p_s3_0] toStringPrecision ] 
+[$big_99 toString 2] [ [ $overflow_grow quantizeModulo $big_99 $p_s3_0] toStringPrecision ] 
+[$big_5 toString 2] [ [ $overflow_grow quantizeModulo $big_5 $p_s3_0] toStringPrecision ] 
+[$big_4 toString 2] [ [ $overflow_grow quantizeModulo $big_4 $p_s3_0] toStringPrecision ] 
+[$big_3 toString 2] [ [ $overflow_grow quantizeModulo $big_3 $p_s3_0] toStringPrecision ] 
+[$big_1 toString 2] [ [ $overflow_grow quantizeModulo $big_1 $p_s3_0] toStringPrecision ] 
+[$big_0 toString 2] [ [ $overflow_grow quantizeModulo $big_0 $p_s3_0] toStringPrecision ] 
+[$big__1 toString 2] [ [ $overflow_grow quantizeModulo $big__1 $p_s3_0] toStringPrecision ] 
+[$big__3 toString 2] [ [ $overflow_grow quantizeModulo $big__3 $p_s3_0] toStringPrecision ] 
+[$big__4 toString 2] [ [ $overflow_grow quantizeModulo $big__4 $p_s3_0] toStringPrecision ] 
+[$big__5 toString 2] [ [ $overflow_grow quantizeModulo $big__5 $p_s3_0] toStringPrecision ] 
+[$big__99 toString 2] [ [ $overflow_grow quantizeModulo $big__99 $p_s3_0] toStringPrecision ] 
+[$big_100 toString 2] [ [ $overflow_grow quantizeModulo $big_100 $p_u3_0] toStringPrecision ] 
+[$big_99 toString 2] [ [ $overflow_grow quantizeModulo $big_99 $p_u3_0] toStringPrecision ] 
+[$big_5 toString 2] [ [ $overflow_grow quantizeModulo $big_5 $p_u3_0] toStringPrecision ] 
+[$big_4 toString 2] [ [ $overflow_grow quantizeModulo $big_4 $p_u3_0] toStringPrecision ] 
+[$big_3 toString 2] [ [ $overflow_grow quantizeModulo $big_3 $p_u3_0] toStringPrecision ] 
+[$big_1 toString 2] [ [ $overflow_grow quantizeModulo $big_1 $p_u3_0] toStringPrecision ] 
+[$big_0 toString 2] [ [ $overflow_grow quantizeModulo $big_0 $p_u3_0] toStringPrecision ] 
+$msg1
+$msg2
+$msg3
+$msg4
+$msg5 "
 } {{
-3 
-3 
-3 
-3 
-2 
-1 
-0 
--1 
--2 
--3 
--4 
--4 
--4 }}
+1100100 -4(3.0) 
+1100011 3(3.0) 
+101 -3(3.0) 
+100 -4(3.0) 
+11 3(3.0) 
+1 1(3.0) 
+0 0(3.0) 
+-1 -1(3.0) 
+-11 -3(3.0) 
+-100 -4(3.0) 
+-101 3(3.0) 
+-1100011 -3(3.0) 
+1100100 4(U3.0) 
+1100011 3(U3.0) 
+101 5(U3.0) 
+100 4(U3.0) 
+11 3(U3.0) 
+1 1(U3.0) 
+0 0(U3.0) 
+java.lang.ArithmeticException: Precision (U3.0) not sufficient to represent -3
+java.lang.ArithmeticException: Precision (U3.0) not sufficient to represent -4
+java.lang.ArithmeticException: Precision (U3.0) not sufficient to represent -5
+java.lang.ArithmeticException: Precision (U3.0) not sufficient to represent -3
+java.lang.ArithmeticException: Precision (U3.0) not sufficient to represent -1 }}
+
 
 ####################################################################
-test Overflow-2.2.5 {minusInfinity} {
+test Overflow-2.3 {quantizeSaturate} {
+
+    list "
+[ [ $overflow_grow quantizeSaturate $big_100 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_99 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_5 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_4 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_3 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_1 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_0 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__1 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__3 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__4 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__5 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__99 $p_s3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_100 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_99 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_5 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_4 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_3 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_1 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big_0 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__1 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__3 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__4 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__5 $p_u3_0] toStringPrecision ] 
+[ [ $overflow_grow quantizeSaturate $big__99 $p_u3_0] toStringPrecision ] "
+} {{
+3(3.0) 
+3(3.0) 
+3(3.0) 
+3(3.0) 
+3(3.0) 
+1(3.0) 
+0(3.0) 
+-1(3.0) 
+-3(3.0) 
+-4(3.0) 
+-4(3.0) 
+-4(3.0) 
+7(U3.0) 
+7(U3.0) 
+5(U3.0) 
+4(U3.0) 
+3(U3.0) 
+1(U3.0) 
+0(U3.0) 
+0(U3.0) 
+0(U3.0) 
+0(U3.0) 
+0(U3.0) 
+0(U3.0) }}
+
+####################################################################
+test Overflow-2.4 {quantizeToZero} {
+
+    catch { [$overflow_grow quantizeToZero $big_99 $p_u3_0] toStringPrecision]; } msg1
+    catch { [$overflow_grow quantizeToZero $big_5 $p_u3_0] toStringPrecision]; } msg2
+    catch { [$overflow_grow quantizeToZero $big_4 $p_u3_0] toStringPrecision]; } msg3
+    catch { [$overflow_grow quantizeToZero $big__5 $p_u3_0] toStringPrecision]; } msg4
+    catch { [$overflow_grow quantizeToZero $big__99 $p_u3_0] toStringPrecision]; } msg5
+
+    list "
+[ $big_3 toString] [ [ $overflow_grow quantizeToZero $big_3 $p_s3_0] toStringPrecision ] 
+[ $big_1 toString] [ [ $overflow_grow quantizeToZero $big_1 $p_s3_0] toStringPrecision ] 
+[ $big_0 toString] [ [ $overflow_grow quantizeToZero $big_0 $p_s3_0] toStringPrecision ] 
+[ $big__1 toString] [ [ $overflow_grow quantizeToZero $big__1 $p_s3_0] toStringPrecision ] 
+[ $big__3 toString] [ [ $overflow_grow quantizeToZero $big__3 $p_s3_0] toStringPrecision ] 
+[ $big__4 toString] [ [ $overflow_grow quantizeToZero $big__4 $p_s3_0] toStringPrecision ] 
+[ $big_99 toString] [ [ $overflow_grow quantizeToZero $big_99 $p_u3_0] toStringPrecision ] 
+[ $big_5 toString] [ [ $overflow_grow quantizeToZero $big_5 $p_u3_0] toStringPrecision ] 
+[ $big_4 toString] [ [ $overflow_grow quantizeToZero $big_4 $p_u3_0] toStringPrecision ] 
+[ $big_3 toString] [ [ $overflow_grow quantizeToZero $big_3 $p_u3_0] toStringPrecision ] 
+[ $big_1 toString] [ [ $overflow_grow quantizeToZero $big_1 $p_u3_0] toStringPrecision ] 
+[ $big_0 toString] [ [ $overflow_grow quantizeToZero $big_0 $p_u3_0] toStringPrecision ] 
+[ $big__1 toString] [ [ $overflow_grow quantizeToZero $big__1 $p_u3_0] toStringPrecision ] 
+[ $big__3 toString] [ [ $overflow_grow quantizeToZero $big__3 $p_u3_0] toStringPrecision ] 
+[ $big__4 toString] [ [ $overflow_grow quantizeToZero $big__4 $p_u3_0] toStringPrecision ] 
+[ $big__5 toString] [ [ $overflow_grow quantizeToZero $big__5 $p_u3_0] toStringPrecision ] 
+[ $big__99 toString] [ [ $overflow_grow quantizeToZero $big__99 $p_u3_0] toStringPrecision ] "
+} {{
+3 3(3.0) 
+1 1(3.0) 
+0 0(3.0) 
+-1 -1(3.0) 
+-3 -3(3.0) 
+-4 -4(3.0) 
+99 0(U3.0) 
+5 5(U3.0) 
+4 4(U3.0) 
+3 3(U3.0) 
+1 1(U3.0) 
+0 0(U3.0) 
+-1 0(U3.0) 
+-3 0(U3.0) 
+-4 0(U3.0) 
+-5 0(U3.0) 
+-99 0(U3.0) }}
+
+####################################################################
+test Overflow-2.4 {trap} {
+
+    catch { [$overflow_trap quantize $big_99 $p_s3_0] toStringPrecision]; } msg1
+    catch { [$overflow_trap quantize $big_5 $p_s3_0] toStringPrecision]; } msg2
+    catch { [$overflow_trap quantize $big_4 $p_s3_0] toStringPrecision]; } msg3
+    catch { [$overflow_trap quantize $big__4 $p_s3_0] toStringPrecision]; } msg4
+    catch { [$overflow_trap quantize $big__5 $p_s3_0] toStringPrecision]; } msg5
+    catch { [$overflow_trap quantize $big__99 $p_s3_0] toStringPrecision]; } msg6
+    catch { [$overflow_trap quantize $big_99 $p_u3_0] toStringPrecision]; } msg7
+    catch { [$overflow_trap quantize $big__1 $p_u3_0] toStringPrecision]; } msg8
+    catch { [$overflow_trap quantize $big__3 $p_u3_0] toStringPrecision]; } msg9
+    catch { [$overflow_trap quantize $big__4 $p_u3_0] toStringPrecision]; } msg10
+    catch { [$overflow_trap quantize $big__5 $p_u3_0] toStringPrecision]; } msg11
+    catch { [$overflow_trap quantize $big__99 $p_u3_0] toStringPrecision]; } msg12
+
+    list "
+[ $big_3 toString] [ [ $overflow_trap quantize $big_3 $p_s3_0] toStringPrecision ] 
+[ $big_1 toString] [ [ $overflow_trap quantize $big_1 $p_s3_0] toStringPrecision ] 
+[ $big_0 toString] [ [ $overflow_trap quantize $big_0 $p_s3_0] toStringPrecision ] 
+[ $big__1 toString] [ [ $overflow_trap quantize $big__1 $p_s3_0] toStringPrecision ] 
+[ $big__3 toString] [ [ $overflow_trap quantize $big__3 $p_s3_0] toStringPrecision ] 
+[ $big_5 toString] [ [ $overflow_trap quantize $big_5 $p_u3_0] toStringPrecision ] 
+[ $big_4 toString] [ [ $overflow_trap quantize $big_4 $p_u3_0] toStringPrecision ] 
+[ $big_3 toString] [ [ $overflow_trap quantize $big_3 $p_u3_0] toStringPrecision ] 
+[ $big_1 toString] [ [ $overflow_trap quantize $big_1 $p_u3_0] toStringPrecision ] 
+[ $big_0 toString] [ [ $overflow_trap quantize $big_0 $p_u3_0] toStringPrecision ] 
+$msg1
+$msg2
+$msg3
+$msg4
+$msg5
+$msg6
+$msg7
+$msg8
+$msg9
+$msg10
+$msg11
+$msg12 "
+} {{
+3 3(3.0) 
+1 1(3.0) 
+0 0(3.0) 
+-1 -1(3.0) 
+-3 -3(3.0) 
+5 5(U3.0) 
+4 4(U3.0) 
+3 3(U3.0) 
+1 1(U3.0) 
+0 0(U3.0) 
+java.lang.ArithmeticException: Maximum overflow threshold of 3 exceeded with value 99
+java.lang.ArithmeticException: Maximum overflow threshold of 3 exceeded with value 5
+java.lang.ArithmeticException: Maximum overflow threshold of 3 exceeded with value 4
+no such method "toStringPrecision]" in class ptolemy.math.FixPoint
+java.lang.ArithmeticException: Minimum overflow threshold of -4 exceeded with value -5
+java.lang.ArithmeticException: Minimum overflow threshold of -4 exceeded with value -99
+java.lang.ArithmeticException: Maximum overflow threshold of 7 exceeded with value 99
+java.lang.ArithmeticException: Minimum overflow threshold of 0 exceeded with value -1
+java.lang.ArithmeticException: Minimum overflow threshold of 0 exceeded with value -3
+java.lang.ArithmeticException: Minimum overflow threshold of 0 exceeded with value -4
+java.lang.ArithmeticException: Minimum overflow threshold of 0 exceeded with value -5
+java.lang.ArithmeticException: Minimum overflow threshold of 0 exceeded with value -99 }}
+
+
+####################################################################
+test Overflow-2.2.5x {minusInfinity} {
     set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,to_zero,unnecessary" ]
     list "
 [[ $overflow_clip minusInfinity $quant_3_0 ] toString]
@@ -253,40 +530,9 @@ java0x0
 java0x0
 }}
 
-####################################################################
-test Overflow-2.3 {overflow_to_zero} {
-    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,to_zero,unnecessary" ]
-    list "
-[ [ $overflow_to_zero quantize $big_99 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big_5 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big_4 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big_3 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big_2 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big_1 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big_0 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big__1 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big__2 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big__3 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big__4 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big__5 $quant_3_0] toString ] 
-[ [ $overflow_to_zero quantize $big__99 $quant_3_0] toString ] "
-} {{
-0 
-0 
-0 
-3 
-2 
-1 
-0 
--1 
--2 
--3 
--4 
-0 
-0 }}
 
 ####################################################################
-test Overflow-2.2.5 {plusInfinity} {
+test Overflow-2.2.5x {plusInfinity} {
     set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,to_zero,unnecessary" ]
     list "
 [[ $overflow_clip plusInfinity $quant_3_0 ] toString]
@@ -309,71 +555,3 @@ java0x0
 java0x0
 }}
 
-####################################################################
-test Overflow-2.4 {trap} {
-    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,trap,unnecessary" ]
-    catch { [ [ $overflow_trap quantize $big_99 $quant_3_0] toString ] } msg_99
-    catch { [ [ $overflow_trap quantize $big_5 $quant_3_0] toString ] } msg_5
-    catch { [ [ $overflow_trap quantize $big_4 $quant_3_0] toString ] } msg_4
-    catch { [ [ $overflow_trap quantize $big__5 $quant_3_0] toString ] } msg__5
-    catch { [ [ $overflow_trap quantize $big__99 $quant_3_0] toString ] } msg__99
-    list "
-$msg_99 
-$msg_5 
-$msg_4 
-[ [ $overflow_trap quantize $big_3 $quant_3_0] toString ] 
-[ [ $overflow_trap quantize $big_2 $quant_3_0] toString ] 
-[ [ $overflow_trap quantize $big_1 $quant_3_0] toString ] 
-[ [ $overflow_trap quantize $big_0 $quant_3_0] toString ] 
-[ [ $overflow_trap quantize $big__1 $quant_3_0] toString ] 
-[ [ $overflow_trap quantize $big__2 $quant_3_0] toString ] 
-[ [ $overflow_trap quantize $big__3 $quant_3_0] toString ] 
-[ [ $overflow_trap quantize $big__4 $quant_3_0] toString ] 
-$msg__5 
-$msg__99 "
-} {{
-java.lang.ArithmeticException: Maximum overflow threshold exceeded. 
-java.lang.ArithmeticException: Maximum overflow threshold exceeded. 
-java.lang.ArithmeticException: Maximum overflow threshold exceeded. 
-3 
-2 
-1 
-0 
--1 
--2 
--3 
--4 
-java.lang.ArithmeticException: Minimum overflow threshold exceeded. 
-java.lang.ArithmeticException: Minimum overflow threshold exceeded. }}
-
-####################################################################
-test Overflow-5.0 {unknown} {
-    set quant_3_0 [java::new ptolemy.math.FixPointQuantization "3.0,unknown,unnecessary" ]
-    list "
-[ [ $overflow_unknown quantize $big_99 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big_5 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big_4 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big_3 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big_2 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big_1 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big_0 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big__1 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big__2 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big__3 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big__4 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big__5 $quant_3_0] toString ] 
-[ [ $overflow_unknown quantize $big__99 $quant_3_0] toString ] "
-} {{
-99 
-5 
-4 
-3 
-2 
-1 
-0 
--1 
--2 
--3 
--4 
--5 
--99 }}

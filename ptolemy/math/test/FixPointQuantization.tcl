@@ -123,48 +123,6 @@ test FixPointQuantization-2.0 {equals} {
 
 ####################################################################
 
-test FixPointQuantization-3.0 {quantize-saturate} {
-    set q0 [java::new ptolemy.math.FixPointQuantization "2.1,saturate,half_up" ]
-    list "
- 7 0.000 [[$q0 quantize [java::new java.math.BigInteger "7" ] 0.000] toString]
- 3 0.000 [[$q0 quantize [java::new java.math.BigInteger "3" ] 0.000] toString]
- 2 0.500 [[$q0 quantize [java::new java.math.BigInteger "2" ] 0.500] toString]
- 2 0.499 [[$q0 quantize [java::new java.math.BigInteger "2" ] 0.499] toString]
--3 0.999 [[$q0 quantize [java::new java.math.BigInteger "-3" ] 0.999] toString]
--3 0.001 [[$q0 quantize [java::new java.math.BigInteger "-3" ] 0.001] toString]
--4 0.000 [[$q0 quantize [java::new java.math.BigInteger "-4" ] 0.000] toString]
--7 0.000 [[$q0 quantize [java::new java.math.BigInteger "-7" ] 0.000] toString] "
-} {{
- 7 0.000 3
- 3 0.000 3
- 2 0.500 3
- 2 0.499 2
--3 0.999 -2
--3 0.001 -3
--4 0.000 -4
--7 0.000 -4 }}
-
-test FixPointQuantization-3.1 {quantize-modulo} {
-    set q0 [java::new ptolemy.math.FixPointQuantization "2.1,modulo,nearest" ]
-    list "
- 7 0.000 [[$q0 quantize [java::new java.math.BigInteger "7" ] 0.000] toString]
- 4 0.000 [[$q0 quantize [java::new java.math.BigInteger "4" ] 0.000] toString]
- 3 0.499 [[$q0 quantize [java::new java.math.BigInteger "3" ] 0.499] toString]
- 3 0.001 [[$q0 quantize [java::new java.math.BigInteger "3" ] 0.001] toString]
--3 0.500 [[$q0 quantize [java::new java.math.BigInteger "-3" ] 0.500] toString]
--3 0.499 [[$q0 quantize [java::new java.math.BigInteger "-3" ] 0.499] toString]
--4 0.000 [[$q0 quantize [java::new java.math.BigInteger "-4" ] 0.000] toString]
--7 0.000 [[$q0 quantize [java::new java.math.BigInteger "-7" ] 0.000] toString] "
-} {{
- 7 0.000 -1
- 4 0.000 -4
- 3 0.499 3
- 3 0.001 3
--3 0.500 -2
--3 0.499 -3
--4 0.000 -4
--7 0.000 1 }}
-
 test FixPointQuantization-4.1 {getMaximumUnscaledValue} {
 
     # With a fix format of 0 integer and 8 fractional bits, the
