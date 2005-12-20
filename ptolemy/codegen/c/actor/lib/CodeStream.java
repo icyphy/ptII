@@ -87,11 +87,10 @@ public class CodeStream {
      * Construct a new code stream associated with the given java actor
      * helper. Each actor should have its own codestream during code
      * generation.
-     * @param helper The actor helper associated with this code stream.
+     * @param helper The actor helper associated with this code stream,
+     * which is currently ignored.
      */
     public CodeStream(CCodeGeneratorHelper helper) {
-        _actorHelper = helper;
-
         String classNamePath = helper.getClass().getName().replace('.', '/');
         _filePath = "$CLASSPATH/" + classNamePath + ".c";
     }
@@ -526,11 +525,6 @@ public class CodeStream {
      * String pattern which represents the end of a code block header.
      */
     private static String _HEADEREND = "***/";
-
-    /**
-     * The associated actor helper object.
-     */
-    private CCodeGeneratorHelper _actorHelper;
 
     /**
      * The code block table that stores the code block body (StringBuffer)
