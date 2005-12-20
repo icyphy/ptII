@@ -27,9 +27,7 @@
  */
 package ptolemy.component;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
@@ -119,8 +117,8 @@ public class ComponentActor extends TypedCompositeActor implements Component {
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         ComponentActor newObject = (ComponentActor) super.clone(workspace);
-        newObject._inputPortsVersion = -1;
-        newObject._outputPortsVersion = -1;
+        //newObject._inputPortsVersion = -1;
+        //newObject._outputPortsVersion = -1;
         return newObject;
     }
 
@@ -316,14 +314,14 @@ public class ComponentActor extends TypedCompositeActor implements Component {
      */
 
     //FIXME: how should I modify this mehtod.
-    private void _createReceivers() throws IllegalActionException {
-        Iterator ports = portList().iterator();
-
-        while (ports.hasNext()) {
-            IOMethodPort onePort = (IOMethodPort) ports.next();
-            onePort.createReceivers();
-        }
-    }
+//    private void _createReceivers() throws IllegalActionException {
+//        Iterator ports = portList().iterator();
+//
+//        while (ports.hasNext()) {
+//            IOMethodPort onePort = (IOMethodPort) ports.next();
+//            onePort.createReceivers();
+//        }
+//    }
 
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
@@ -333,18 +331,14 @@ public class ComponentActor extends TypedCompositeActor implements Component {
     private boolean _inConnectionsChanged = false;
 
     // Cached lists of input and output ports.
-    private transient long _inputPortsVersion = -1;
+    //private transient long _inputPortsVersion = -1;
 
-    private transient List _cachedInputPorts;
+    //private transient long _outputPortsVersion = -1;
 
-    private transient long _outputPortsVersion = -1;
-
-    private transient List _cachedOutputPorts;
 
     // Cached FunctionDependency object.
     //private FunctionDependencyOfCompositeActor _functionDependency;
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+   
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _addIcon() {
@@ -354,14 +348,6 @@ public class ComponentActor extends TypedCompositeActor implements Component {
                 + "<polygon points=\"-20,-10 20,0 -20,10\" "
                 + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The container. */
-    private CompositeEntity _container;
-
-    private HashMap _methods;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
