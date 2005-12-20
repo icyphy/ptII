@@ -68,7 +68,7 @@ public class LempelZivDecoder extends Transformer {
 
         // Declare port types.
         input.setTypeEquals(BaseType.INT);
-        _inputRate = new Parameter(input, "tokenConsumptionRate", new IntToken(
+        new Parameter(input, "tokenConsumptionRate", new IntToken(
                 2));
         output.setTypeEquals(BaseType.BOOLEAN);
     }
@@ -118,7 +118,4 @@ public class LempelZivDecoder extends Transformer {
     ////                         private variables                 ////
     // The Lempel-Ziv decode book.
     private LinkedList _decodeBook;
-
-    // The consumption rate of the input port.
-    private Parameter _inputRate;
 }

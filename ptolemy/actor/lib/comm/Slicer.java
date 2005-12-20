@@ -77,7 +77,7 @@ public class Slicer extends Transformer {
         super(container, name);
 
         input.setTypeEquals(BaseType.COMPLEX);
-        _inputRate = new Parameter(input, "tokenConsumptionRate", new IntToken(
+        new Parameter(input, "tokenConsumptionRate", new IntToken(
                 1));
         output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
@@ -191,9 +191,6 @@ public class Slicer extends Transformer {
     private int _size;
 
     private Complex[] _table;
-
-    // Consumption rate of the input port.
-    private Parameter _inputRate;
 
     // Production rate of the output port.
     private Parameter _outputRate;
