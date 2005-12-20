@@ -682,7 +682,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         _evaluateChild(node, 0);
 
-        ptolemy.data.Token result = _evaluatedChildToken;
+        //ptolemy.data.Token result = _evaluatedChildToken;
 
         /*
          if (!(result instanceof BooleanToken)) {
@@ -701,7 +701,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         boolean flag = node.isLogicalAnd();
 
         for (int i = 1; i < numChildren; i++) {
-            ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
+            /*ASTPtRootNode child = (ASTPtRootNode)*/node.jjtGetChild(i);
 
             _fireCode.append(flag ? " && " : " || ");
 
@@ -710,7 +710,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             _evaluateChild(node, i);
 
             // Get its value.
-            ptolemy.data.Token nextToken = _evaluatedChildToken;
+            //ptolemy.data.Token nextToken = _evaluatedChildToken;
 
             /*
              if (!(nextToken instanceof BooleanToken)) {
@@ -916,7 +916,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         ptolemy.data.Token result = _evaluateChild(node, 0);
 
         for (int i = 1; i < numChildren; i++) {
-            int times = 1;
+            //int times = 1;
             _fireCode.insert(startIndex, "pow(");
             _fireCode.append(", ");
 
@@ -935,7 +935,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             }
 
             try {
-                times = ((ptolemy.data.ScalarToken) token).intValue();
+                /*times =*/ ((ptolemy.data.ScalarToken) token).intValue();
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException("Exponent must have a valid "
                         + "lossless conversion to integer. Integer or "
@@ -994,7 +994,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             }
 
             //ptolemy.data.Token nextToken = tokens[i];
-            ptolemy.data.Token nextToken = _evaluateChild(node, i);
+            /*ptolemy.data.Token nextToken =*/ _evaluateChild(node, i);
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 //result = result.multiply(nextToken);
