@@ -1150,15 +1150,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         }
     }
 
-    /** Fix the value of a cell. */
-    abstract class CellFixer {
-
-        /** Return a fixed version of the value argument.  If no
-         *  fix is possible, return the value argument.
-         */    
-        public abstract String fixCell(String value); 
-    }
-
     /** Validate a cell. */
     abstract class CellValidator {
         /** Return true if the value is valid.
@@ -1422,16 +1413,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                     }
 
                     if (!valid) {
-                        if (_cellFixer != null) {
-                            String currentValue =
-                                (String) comboBox.getSelectedItem();
-                            String possibleFixedValue =
-                                _cellFixer.fixCell(currentValue);
-                            if (!possibleFixedValue.equals(currentValue)) {
-                                comboBox.setSelectedItem(possibleFixedValue);
-                                return;
-                            }
-                        }
                         userSaysRevert((String) (comboBox.getSelectedItem()));
                     }
                 }
@@ -1460,14 +1441,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             JComboBox comboBox = (JComboBox) getComponent();
             Object o = comboBox.getSelectedItem();
             return o.toString();
-        }
-
-        /** Set the cell fixer class. 
-         *  @param cellFixer The class that will possibly fix the value
-         *  of the cell.
-         */
-        public void setCellFixer(CellFixer cellFixer) {
-            _cellFixer = cellFixer;
         }
 
         /** Set the validator.
@@ -1501,15 +1474,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             }
 
             if (!valid) {
-                if (_cellFixer != null) {
-                    String currentValue = (String) comboBox.getSelectedItem();
-                    String possibleFixedValue =
-                        _cellFixer.fixCell(currentValue);
-                    if (!possibleFixedValue.equals(currentValue)) {
-                        comboBox.setSelectedItem(possibleFixedValue);
-                        return super.stopCellEditing();
-                    }
-                }
                 if (_userWantsToEdit) {
                     // User already selected edit, don't ask twice.
                     _userWantsToEdit = false;
@@ -1563,9 +1527,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
         /** The combo box. */
         private JComboBox _comboBox;
-
-        /** If possible, fix the value of the cell. */
-        private CellFixer _cellFixer;
 
         /** Old value of the combo box. */
         private Object _oldValue;
@@ -2078,25 +2039,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                     _createPortTypeComboBox());
 
             _portTypeColumn.setCellEditor(portTypeEditor);
-            portTypeEditor.setCellFixer(new CellFixer() {
-                    /////////////////////////////////////////
-                    //////////// inner class/////////////////
-                    public String fixCell(String value) {
-                        //Check for a type that differs only in case.
-                        // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=1845
-                        TreeMap typeMap = Constants.types();
-                        Iterator types = typeMap.keySet().iterator();
-                        
-                        while (types.hasNext()) {
-                            String type = (String) (types.next());
-                            if (value.equalsIgnoreCase(type)) {
-                                return type;
-                            }
-                        }
-                        return value;
-                    }
-                } );
-
             portTypeEditor.setValidator(new CellValidator() {
                 /////////////////////////////////////////
                 //////////// inner class/////////////////
