@@ -88,11 +88,8 @@ public class LineWriter extends CCodeGeneratorHelper {
         _codeStream.clear();
 
         if (actor.fileName.getExpression().equals("System.out")) {
-            _fileOpen = false;
             _codeStream.appendCodeBlock("openForStdout");
         } else {
-            _fileOpen = true;
-
             // FIXME: how do we handle relative file path??
             String fileNameString = actor.fileName.getExpression();
             fileNameString = fileNameString.replaceFirst("file:/", "");
@@ -157,11 +154,4 @@ public class LineWriter extends CCodeGeneratorHelper {
         files.add("<stdio.h>");
         return files;
     }
-
-    /**
-     * Indicate whether or not the user requests to open a file
-     * e.g. false - write to standard (console) output
-     *      true - some file name is specified
-     */
-    private boolean _fileOpen = false;
 }

@@ -718,8 +718,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helper = 
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            //CodeGeneratorHelper helper = 
+            //    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             
             for (int i = 0; i < actor.inputPortList().size(); i++) {
             	TypedIOPort inputPort = 

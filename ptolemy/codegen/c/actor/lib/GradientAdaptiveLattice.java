@@ -97,7 +97,7 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 
-        ptolemy.actor.lib.GradientAdaptiveLattice actor = (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
+        //ptolemy.actor.lib.GradientAdaptiveLattice actor = (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
         _codeStream.clear();
         _codeStream.appendCodeBlock("preinitBlock");
         return processCode(_codeStream.toString());

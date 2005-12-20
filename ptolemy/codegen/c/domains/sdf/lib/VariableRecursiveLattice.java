@@ -116,7 +116,7 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
 
-        ptolemy.domains.sdf.lib.VariableRecursiveLattice actor = (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
+        //ptolemy.domains.sdf.lib.VariableRecursiveLattice actor = (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
         _codeStream.clear();
         _codeStream.appendCodeBlock("wrapupBlock");
 

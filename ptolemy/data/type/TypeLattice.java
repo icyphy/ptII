@@ -514,7 +514,7 @@ public class TypeLattice {
             StructuredType unionRep = (new UnionType(labels, types))
                     ._getRepresentative();
 
-            StructuredType functionRep = new ptolemy.data.type.FunctionType(
+            /*StructuredType functionRep = */ new ptolemy.data.type.FunctionType(
                     new ptolemy.data.type.Type[0],
                     ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
 

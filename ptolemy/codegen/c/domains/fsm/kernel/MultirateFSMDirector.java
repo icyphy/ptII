@@ -136,7 +136,7 @@ public class MultirateFSMDirector extends FSMDirector {
         ptolemy.domains.fsm.kernel.MultirateFSMDirector director = 
                 (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
-        FSMActor controllerHelper = (FSMActor) _getHelper(controller);
+        //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
         State initialState = controller.getInitialState();
         Actor[] actors = initialState.getRefinement();
         if (actors == null) { // no refinement for the initial state
