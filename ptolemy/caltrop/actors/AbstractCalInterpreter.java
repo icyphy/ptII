@@ -440,6 +440,4 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     }
 
     private String _lastGeneratedActorName = null;
-
-    private final static String defaultNamePrefix = "CalInterpreter";
 }
