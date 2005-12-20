@@ -259,11 +259,11 @@ public class UnitConstraints implements UnitPresentation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    private void _debug(String msg) {
-        if (_debug) {
-            System.out.println(msg);
-        }
-    }
+    //private void _debug(String msg) {
+    //    if (_debug) {
+    //        System.out.println(msg);
+    //    }
+    //}
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
