@@ -252,7 +252,7 @@ public class IterateOverArray extends TypedCompositeActor implements
         }
 
         // Set a flag indicating the cloning is done.
-        result._cloning = false;
+        //result._cloning = false;
         return result;
     }
 
@@ -604,15 +604,6 @@ public class IterateOverArray extends TypedCompositeActor implements
         return result;
     }
 
-    /** Override the base class to set a flag indicating that
-     *  a clone is in progress. That flag is reset by the clone
-     *  method prior to returning the constructed object.
-     *  @param source The object from which this was cloned.
-     */
-    protected void _clonedFrom(NamedObj source) {
-        _cloning = true;
-    }
-
     /** Override the base class to describe contained entities,
      *  attributes, and ports, but not inside links or relations.
      *  The rest of the contents are generated automatically when a
@@ -814,7 +805,7 @@ public class IterateOverArray extends TypedCompositeActor implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Flag indicating that cloning is in progress.
-    private boolean _cloning = false;
+    //private boolean _cloning = false;
 
     // Flag indicating that we are executing _addPort().
     private boolean _inAddPort = false;
