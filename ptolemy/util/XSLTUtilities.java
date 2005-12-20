@@ -214,6 +214,8 @@ public class XSLTUtilities {
 
         // Set a valid transformer.
         try {
+            // This will print error messages to standard out because
+            // we don't have a ErrorListener registered
             transformer = transformerFactory.newTransformer(new StreamSource(
                     xslFileName));
         } catch (javax.xml.transform.TransformerConfigurationException ex) {
