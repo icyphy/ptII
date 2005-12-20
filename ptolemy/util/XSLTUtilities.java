@@ -143,8 +143,8 @@ public class XSLTUtilities {
     public static Document parse(String filename)
             throws ParserConfigurationException, IOException {
         // FIXME: Throw something other than Exception
-        System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
-                "net.sf.saxon.om.DocumentBuilderFactoryImpl");
+        //        System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
+        //                "net.sf.saxon.om.DocumentBuilderFactoryImpl");
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
