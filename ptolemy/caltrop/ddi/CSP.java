@@ -39,7 +39,6 @@ import java.util.Map;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.caltrop.actors.CalInterpreter;
 import ptolemy.caltrop.ddi.util.DataMapEnvironment;
 import ptolemy.data.Token;
 import ptolemy.domains.csp.kernel.ConditionalBranch;
@@ -701,7 +700,7 @@ class CSPTokenReader {
     }
 
     private void _read() throws IllegalActionException {
-        CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
+        //CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
 
         while (true) {
             ConditionalBranch[] branches = _createBranches();
@@ -724,7 +723,7 @@ class CSPTokenReader {
     }
 
     public DataChannelID getOne() {
-        CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
+        //CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
 
         try {
             if (!_done) {
@@ -756,7 +755,7 @@ class CSPTokenReader {
     private ConditionalReceive[] _createBranches()
             throws IllegalActionException {
         ConditionalReceive[] branches = new ConditionalReceive[_count.length];
-        CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
+        //CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
 
         for (int i = 0; i < _count.length; i++) {
             if (_count[i] > 0) {
@@ -874,7 +873,7 @@ class CSPTokenWriter {
     }
 
     private void _write() throws IllegalActionException {
-        CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
+        //CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
 
         while (true) {
             ConditionalBranch[] branches = _createBranches();
@@ -895,7 +894,7 @@ class CSPTokenWriter {
     private ConditionalSend[] _createBranches() throws IllegalActionException {
         ConditionalSend[] branches = new ConditionalSend[_count.length];
 
-        CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
+        //CalInterpreter ptActor = (CalInterpreter) _cbc.getParent();
 
         //int count = 0;
         //List branchl = new ArrayList();
