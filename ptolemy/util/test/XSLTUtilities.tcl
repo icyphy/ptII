@@ -74,8 +74,8 @@ test XSLTUtilities-1.1 {Call main} {
 <RemoveAllMarkers/>
 <RemoveAllScripts/>
 <Scripts>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+<Script Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000" Type="URL"/>
+<Script Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000" Type="URL"/>
 </Scripts>
 
 <Markers>
@@ -113,8 +113,8 @@ test XSLTUtilities-2.1 {test parse and toString} {
 <RemoveAllMarkers/>
 <RemoveAllScripts/>
 <Scripts>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+<Script Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000" Type="URL"/>
+<Script Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000" Type="URL"/>
 </Scripts>
 
 </WMBasicEdit>}}
@@ -164,8 +164,8 @@ test XSLTUtilities-3.2 {Call transform(Document, List) using local files} {
 <RemoveAllMarkers/>
 <RemoveAllScripts/>
 <Scripts>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+<Script Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000" Type="URL"/>
+<Script Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000" Type="URL"/>
 </Scripts>
 
 <Markers>
@@ -203,8 +203,8 @@ test XSLTUtilities-3.3 {Call transform(Document, List) using files found in the 
 <RemoveAllMarkers/>
 <RemoveAllScripts/>
 <Scripts>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+<Script Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000" Type="URL"/>
+<Script Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000" Type="URL"/>
 </Scripts>
 
 <Markers>
@@ -250,13 +250,17 @@ test XSLTUtilities-3.4 {Call transform(String, String, String)} {
 <RemoveAllMarkers/>
 <RemoveAllScripts/>
 <Scripts>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"
+Time="341830000"/>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"
+Time="816310000"/>
 </Scripts>
 
-
 <Markers>
-<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
-<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"
+Time="341830000"/>
+<Marker Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"
+Time="816310000"/>
 </Markers>
 </WMBasicEdit>}}
+
