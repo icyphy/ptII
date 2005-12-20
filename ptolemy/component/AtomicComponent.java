@@ -180,10 +180,4 @@ public class AtomicComponent extends ComponentEntity implements Component {
                 + "<polygon points=\"-20,-10 20,0 -20,10\" "
                 + "style=\"fill:blue\"/>\n" + "</svg>\n");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The container. */
-    private CompositeEntity _container;
 }
