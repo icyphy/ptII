@@ -402,8 +402,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _copyAction = new CopyAction();
         _pasteAction = new PasteAction();
 
-        _moveToBackAction = new MoveToBackAction();
+        // FIXME: vergil.kernel.AttributeController also defines context
+        // menu choices that do the same thing.
         _moveToFrontAction = new MoveToFrontAction();
+        _moveToBackAction = new MoveToBackAction();
 
         _editPreferencesAction = new EditPreferencesAction();
 
