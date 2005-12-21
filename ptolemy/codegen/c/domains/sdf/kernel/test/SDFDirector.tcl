@@ -56,12 +56,45 @@ test SDFDirector-1.1 {Call generateCode(StringBuffer)} {
 /* Generate type resolution code for .top */
 
 #define MISSING 0
+#define boolean unsigned char
 #define false 0
 #define true 1
+#define TYPE_String 0
+#define TYPE_Double 1
+#define TYPE_Boolean 2
+#define TYPE_Int 3
+typedef struct token Token;
+typedef char* StringToken;
 
-#define MISSING 0
-#define false 0
-#define true 1
+typedef double DoubleToken;
+
+typedef char BooleanToken;
+
+typedef int IntToken;
+
+struct token {                  // Base type for tokens.
+    unsigned char type;         // TYPE field has to be the first field.
+    union typeMembers {
+        // type member declarations [i.e. Type1Token Type1;]
+		StringToken String;
+		DoubleToken Double;
+		BooleanToken Boolean;
+		IntToken Int;
+                 
+    } payload;
+};
+
+Token String_convert(Token token);
+Token String_print(Token thisToken);
+
+Token Double_convert(Token token);
+Token Double_print(Token thisToken);
+
+Token Boolean_convert(Token token);
+Token Boolean_print(Token thisToken);
+
+Token Int_convert(Token token);
+Token Int_print(Token thisToken);
 
 //int atoi (char* s);             // standard c function.
 //double atof (char* s);          // standard c function.
@@ -101,13 +134,51 @@ double itof (int i) {
     return (double) i;
 }
 
+// make a new integer token from the given value.
+Token String_new(char* s) {
+    Token result;
+    result.type = TYPE_String;
+    result.payload.String = s;
+    return result;
+}
 
-/* Variable Declarations .top */
-/* The preinitialization of the director. */
-static int iteration = 0;
+// make a new integer token from the given value.
+Token Double_new(double d) {
+    Token result;
+    result.type = TYPE_Double;
+    result.payload.Double = d;
+    return result;
+}
+
+// make a new integer token from the given value.
+Token Boolean_new(char b) {
+    Token result;
+    result.type = TYPE_Boolean;
+    result.payload.Boolean = b;
+    return result;
+}
+
+// make a new integer token from the given value.
+Token Int_new(int i) {
+    Token result;
+    result.type = TYPE_Int;
+    result.payload.Int = i;
+    return result;
+}
 
 
 main(int argc, char *argv[]) {
+
+
+/* Variable Declarations .top */
+
+/* Composite actor's variable declarations. */
+
+/* top's variable declarations. */
+
+/* preinitialize top */
+/* The preinitialization of the director. */
+static int iteration = 0;
 /* Initialize .top */
 /* The initialization of the director. */
 /* Wrapup .top */
