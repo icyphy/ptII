@@ -27,11 +27,15 @@
  */
 package ptolemy.vergil.toolbox;
 
+import java.awt.Event;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+
+import javax.swing.KeyStroke;
 
 import ptolemy.kernel.undo.UndoAction;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -40,6 +44,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoveAction
@@ -65,6 +71,15 @@ public class MoveAction extends FigureAction {
     public MoveAction(String description, MoveType type) {
         super(description);
         _type = type;
+        // Add key bindings.  
+        // FIXME: these bindings are also set in vergil.basic.BasicGraphFrame.
+        if (_type == TO_FIRST) {
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                             KeyEvent.VK_F, Event.CTRL_MASK));
+        } else if (_type == TO_LAST) {
+            putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
+                             KeyEvent.VK_B, Event.CTRL_MASK));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
