@@ -40,6 +40,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -210,12 +211,29 @@ public class XSLTUtilities {
             throws TransformerException, IOException {
         TransformerFactory transformerFactory = TransformerFactory
                 .newInstance();
+        // Use an ErrorListener so as to avoid error output on stderr
+        // which causes problems with the test harness
+        transformerFactory.setErrorListener(new ErrorListener () {
+                /** Receive notification of a recoverable error. */
+                public void error(TransformerException exception)
+                        throws TransformerException {
+                    throw exception;
+                }
+                /** Receive notification of a non-recoverable error. */
+                public void fatalError(TransformerException exception)
+                        throws TransformerException {
+                    throw exception;
+                }
+                /** Receive notification of a warning. */
+                public void warning(TransformerException exception) {
+                    System.err.println("ptolemy.util.XSLTUtilities.transform()"
+                            + ": Warning: " + exception);
+                }
+            });
         Transformer transformer = null;
 
         // Set a valid transformer.
         try {
-            // This will print error messages to standard out because
-            // we don't have a ErrorListener registered
             transformer = transformerFactory.newTransformer(new StreamSource(
                     xslFileName));
         } catch (javax.xml.transform.TransformerConfigurationException ex) {
