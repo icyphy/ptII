@@ -78,8 +78,14 @@ test PtolemyThread-1.1 {Test the constructor} {
 	lappend results [list $newThreadName]
 
     }
-    list $results [$threadGroup activeCount]
-} {{Thread-xxx Thread-xxx pthread2 pthread4 Thread-xxx pthread6 pthread7} 3}
+
+    # Under Java 1.5, activeCount returns 0 here, yet under 1.4, it
+    # it returned 3.  The Javadoc for activeCount in 1.5 says that
+    # activeCount should only be called for informational purposes.
+
+    #list $results [$threadGroup activeCount]
+    list $results
+} {{Thread-xxx Thread-xxx pthread2 pthread4 Thread-xxx pthread6 pthread7}}
 
 test PtolemyThread-2.1 {Test addDebugListener} {
     set pthread1 [java::new ptolemy.kernel.util.test.TestPtolemyThread]
