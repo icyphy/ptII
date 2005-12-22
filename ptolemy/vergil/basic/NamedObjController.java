@@ -33,6 +33,8 @@ import java.net.URL;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.actor.DocManager;
+import ptolemy.vergil.actor.DocViewer;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.GraphController;
 
@@ -100,31 +102,59 @@ public class NamedObjController extends LocatableNodeController {
             super.actionPerformed(e);
 
             NamedObj target = getTarget();
-            String className = target.getClass().getName();
-            String docName = "doc.codeDoc." + className;
-
-            try {
-                URL toRead = getClass().getClassLoader().getResource(
-                        docName.replace('.', '/') + ".html");
-
-                if (toRead != null) {
-                    if (_configuration != null) {
-                        _configuration.openModel(null, toRead, toRead
-                                .toExternalForm());
-                    } else {
-                        MessageHandler.error("Cannot open documentation for "
-                                + className + " without a configuration.");
+            
+            // If the object contains
+            // an attribute named "_docAttribute" or if there
+            // is a doc file for the object in the standard place,
+            // then use the DocViewer class to display the documentation.
+            // For backward compatibility, if neither of these is found,
+            // then we open the Javadoc file, if it is found.
+            if (target.getAttribute(DocManager.DOC_ATTRIBUTE_NAME) == null) {
+                // No doc attribute. Try for a doc file.
+                try {
+                    String className = target.getClass().getName();
+                    URL toRead = getClass().getClassLoader().getResource(
+                            className.replace('.', '/') + "Doc.xml");
+                    if (toRead == null) {
+                        // No doc file either.
+                        // For backward compatibility, open the
+                        // Javadoc file, as before.
+                        String docName = "doc.codeDoc." + className;
+                        
+                        try {
+                            toRead = getClass().getClassLoader().getResource(
+                                    docName.replace('.', '/') + ".html");
+                            
+                            if (toRead != null) {
+                                if (_configuration != null) {
+                                    _configuration.openModel(null, toRead, toRead
+                                            .toExternalForm());
+                                } else {
+                                    MessageHandler.error("Cannot open documentation for "
+                                            + className + " without a configuration.");
+                                }
+                                return;
+                            } else {
+                                MessageHandler.error("Cannot find documentation for "
+                                        + className + "\nTry Running \"make\" in ptII/doc,"
+                                        + "\nor installing the documentation component.");
+                                return;
+                            }
+                        } catch (Exception ex) {
+                            MessageHandler.error("Cannot find documentation for "
+                                    + className + "\nTry Running \"make\" in ptII/doc."
+                                    + "\nor installing the documentation component.", ex);
+                        }
                     }
-                } else {
-                    MessageHandler.error("Cannot find documentation for "
-                            + className + "\nTry Running \"make\" in ptII/doc,"
-                            + "\nor installing the documentation component.");
+                } catch (Exception ex) {
+                    // Ignore and open using DocViewer.
                 }
-            } catch (Exception ex) {
-                MessageHandler.error("Cannot find documentation for "
-                        + className + "\nTry Running \"make\" in ptII/doc."
-                        + "\nor installing the documentation component.", ex);
             }
+            
+            // FIXME: Need to create a tableau.
+            DocViewer viewer = new DocViewer(target, _configuration);
+            viewer.pack();
+            viewer.show();
         }
     }
 }
