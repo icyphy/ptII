@@ -313,8 +313,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             throws XmlException {
         if (name == null) {
             throw new XmlException("Attribute has no name",
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                    _getColumnNumber());
         }
 
         // If the current namespace is _AUTO_NAMESPACE, then look up the
@@ -392,7 +392,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Filters can filter out graphical classes, or change
         // the names of ports to handle backward compatibility.
         if (_filterList != null) {
-            String currentElement = _parser.getCurrentElement();
+            // FIXME: There is a slight risk of xmlParser being null here.
+            String currentElement = _xmlParser.getCurrentElement();
             Iterator filters = _filterList.iterator();
             String filteredValue = value;
 
@@ -680,8 +681,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             "Internal Error: _configureNesting is "
                                     + _configureNesting
                                     + " which is <0, which indicates a nesting bug",
-                            _currentExternalEntity(), _parser.getLineNumber(),
-                            _parser.getColumnNumber());
+                            _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
                 }
             } else if (elementName.equals("doc")) {
                 // Count doc tags so that they can nest.
@@ -691,8 +692,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     throw new XmlException("Internal Error: _docNesting is "
                             + _docNesting
                             + " which is <0, which indicates a nesting bug",
-                            _currentExternalEntity(), _parser.getLineNumber(),
-                            _parser.getColumnNumber());
+                            _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
                 }
             }
 
@@ -1112,8 +1113,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         if (input == null) {
             throw new XmlException(errorMessage.toString(),
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                    _getColumnNumber());
         }
 
         // If we get here, then result cannot possibly be null.
@@ -1260,14 +1261,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @exception Exception If the parser fails.
      */
     public NamedObj parse(URL base, Reader reader) throws Exception {
-        _parser.setHandler(this);
         _base = base;
 
         Reader buffered = new BufferedReader(reader);
 
         try {
+            // We allocate a new XmlParser each time so as to avoid leaks.
+            _xmlParser = new XmlParser();
+            _xmlParser.setHandler(this);
             if (base == null) {
-                _parser.parse(null, null, buffered);
+                _xmlParser.parse(null, null, buffered);
             } else {
                 // If we have tmp.moml and tmp/tmp2.moml and tmp.moml
                 // contains     <entity name="tmp2" class="tmp.tmp2">
@@ -1283,7 +1286,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 try {
-                    _parser.parse(base.toExternalForm(), null, buffered);
+                    _xmlParser.parse(base.toExternalForm(), null, buffered);
                 } finally {
                     if (xmlFileWasNull) {
                         _xmlFile = null;
@@ -1294,6 +1297,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Parse operation cancelled.
             buffered.close();
             return null;
+        } finally {
+            // Avoid memory leaks
+            _xmlParser = null;
         }
 
         buffered.close();
@@ -2966,16 +2972,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // that it is a user cancellation with the special
                     // string pattern "*** Canceled." in the message.
                     throw new XmlException("*** Canceled.",
-                            _currentExternalEntity(), _parser.getLineNumber(),
-                            _parser.getColumnNumber());
+                            _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
                 }
             }
 
             // No handler.
             throw new XmlException("XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.getTargetException(),
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber(), ex.getTargetException());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber(), ex.getTargetException());
         } catch (Exception ex) {
             exceptionThrown = true;
 
@@ -3006,8 +3012,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // that it is a user cancellation with the special
                     // string pattern "*** Canceled." in the message.
                     throw new XmlException("*** Canceled.",
-                            _currentExternalEntity(), _parser.getLineNumber(),
-                            _parser.getColumnNumber());
+                            _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
                 }
             }
 
@@ -3027,7 +3033,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             } else {
                 throw new XmlException("XML element \"" + elementName
                         + "\" triggers exception.", _currentExternalEntity(),
-                        _parser.getLineNumber(), _parser.getColumnNumber(), ex);
+                        _getLineNumber(), _getColumnNumber(), ex);
             }
         } finally {
             _attributes.clear();
@@ -3220,8 +3226,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // both were.
                     throw new XmlException("Could not find '" + classAsFile
                             + "' or '" + altClassAsFile + "' using base '"
-                            + _base + "': ", _currentExternalEntity(), _parser
-                            .getLineNumber(), _parser.getColumnNumber(), ex2);
+                            + _base + "': ", _currentExternalEntity(), 
+                            _getLineNumber(), _getColumnNumber(), ex2);
                 }
             } else {
                 // No alternative. Rethrow exception.
@@ -3234,8 +3240,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         } else {
             throw new XmlException("File " + classAsFile
                     + " does not define a ComponentEntity.",
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
         }
 
         // Check that the classname matches the name of the
@@ -3246,8 +3252,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 && !className.endsWith("." + referenceName)) {
             throw new XmlException("File " + classAsFile
                     + " does not define a class named " + className,
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
         }
 
         // Load an associated icon, if there is one.
@@ -3261,8 +3267,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private void _checkClass(Object object, Class correctClass, String msg)
             throws XmlException {
         if (!correctClass.isInstance(object)) {
-            throw new XmlException(msg, _currentExternalEntity(), _parser
-                    .getLineNumber(), _parser.getColumnNumber());
+            throw new XmlException(msg, _currentExternalEntity(),
+                    _getLineNumber(), _getColumnNumber());
         }
     }
 
@@ -3270,8 +3276,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private void _checkForNull(Object object, String message)
             throws XmlException {
         if (object == null) {
-            throw new XmlException(message, _currentExternalEntity(), _parser
-                    .getLineNumber(), _parser.getColumnNumber());
+            throw new XmlException(message, _currentExternalEntity(),
+                    _getLineNumber(), _getColumnNumber());
         }
     }
 
@@ -3309,8 +3315,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             throw new XmlException("Cannot create an entity inside "
                     + "of another that is not a CompositeEntity "
                     + "(Container is '" + _current + "').",
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
         }
 
         CompositeEntity container = (CompositeEntity) _current;
@@ -3505,8 +3511,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (!reference.isClassDefinition()) {
                 throw new XmlException("Attempt to extend an entity that "
                         + "is not a class: " + reference.getFullName(),
-                        _currentExternalEntity(), _parser.getLineNumber(),
-                        _parser.getColumnNumber());
+                        _currentExternalEntity(), _getLineNumber(),
+                        _getColumnNumber());
             }
 
             // First check that there will be no name collision
@@ -3666,8 +3672,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         throw new XmlException("Cannot find a suitable constructor ("
                 + arguments.length + " args) (" + argumentBuffer + ") for '"
-                + newClass.getName() + "'", _currentExternalEntity(), _parser
-                .getLineNumber(), _parser.getColumnNumber());
+                + newClass.getName() + "'", _currentExternalEntity(),
+                _getLineNumber(), _getColumnNumber());
     }
 
     /** Delete the entity after verifying that it is contained (deeply)
@@ -3801,8 +3807,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         if (portContainer == null) {
             throw new XmlException("No container for the port: " + portName,
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
         }
 
         // Ensure that derived objects aren't changed.
@@ -4106,6 +4112,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
+    /** Return the column number from the XmlParser.
+     *  @return the column number from the XmlParser.  Return -1 if
+     *  _xmlParser is null.
+     */ 
+    private int _getColumnNumber() {
+        // _parser can be null if a method is called outside of a callback
+        // for XmlParser.  All calls should go through parser(URL, Reader)
+        if (_xmlParser == null) {
+            return -1;
+        }
+        return _xmlParser.getColumnNumber();
+    }
+
     // Construct a string representing the current XML element.
     private String _getCurrentElement(String elementName) {
         StringBuffer result = new StringBuffer();
@@ -4132,6 +4151,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         result.append(">");
         return result.toString();
+    }
+
+    /** Return the line number from the XmlParser.
+     *  @return the line number from the XmlParser.  Return -1 if
+     *  _xmlParser is null.
+     */ 
+    private int _getLineNumber() {
+        // _xmlParser can be null if a method is called outside of a callback
+        // for XmlParser.  All calls should go through parser(URL, Reader)
+        if (_xmlParser == null) {
+            return -1;
+        }
+        return _xmlParser.getLineNumber();
     }
 
     /** Return the port corresponding to the specified port name in the
@@ -4602,13 +4634,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     newClass = Class.forName(className, true, _classLoader);
                 } catch (NoClassDefFoundError ex) {
                     throw new XmlException("Failed to find class '" + className
-                            + "'", _currentExternalEntity(), _parser
-                            .getLineNumber(), _parser.getColumnNumber(), ex);
+                            + "'", _currentExternalEntity(),
+                            _getLineNumber(), _getColumnNumber(), ex);
                 } catch (SecurityException ex) {
                     // An applet might throw this.
                     throw new XmlException("Failed to find class '" + className
-                            + "'", _currentExternalEntity(), _parser
-                            .getLineNumber(), _parser.getColumnNumber(), ex);
+                            + "'", _currentExternalEntity(),
+                            _getLineNumber(), _getColumnNumber(), ex);
                 }
             }
 
@@ -4709,9 +4741,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                             throw new XmlException("Property is not an "
                                     + "instance of Attribute. ",
-                                    _currentExternalEntity(), _parser
-                                            .getLineNumber(), _parser
-                                            .getColumnNumber());
+                                    _currentExternalEntity(),
+                                            _getLineNumber(),
+                                            _getColumnNumber());
                         }
 
                         // Propagate.
@@ -4722,9 +4754,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         if (property == null) {
                             throw new XmlException("Property does not exist: "
                                     + propertyName + "\n",
-                                    _currentExternalEntity(), _parser
-                                            .getLineNumber(), _parser
-                                            .getColumnNumber());
+                                    _currentExternalEntity(),
+                                            _getLineNumber(),
+                                            _getColumnNumber());
                         }
 
                         if (!(property instanceof Settable)) {
@@ -4734,8 +4766,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                             + " (instance of "
                                             + property.getClass().toString()
                                             + ")\n", _currentExternalEntity(),
-                                    _parser.getLineNumber(), _parser
-                                            .getColumnNumber());
+                                    _getLineNumber(),
+                                            _getColumnNumber());
                         }
 
                         Settable settable = (Settable) property;
@@ -4767,9 +4799,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         throw new XmlException("Property is not an "
                                 + "instance of Settable, "
                                 + "so can't set the value.",
-                                _currentExternalEntity(), _parser
-                                        .getLineNumber(), _parser
-                                        .getColumnNumber());
+                                _currentExternalEntity(),
+                                        _getLineNumber(),
+                                        _getColumnNumber());
                     }
 
                     Settable settable = (Settable) property;
@@ -5098,8 +5130,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Check that required arguments are given
         if ((relation1Name == null) || (relation2Name == null)) {
             throw new XmlException("Element link requires two relations.",
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
         }
 
         CompositeEntity context = (CompositeEntity) _current;
@@ -5188,15 +5220,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (countArgs == 0) {
             throw new XmlException("Element link requires at least one of "
                     + "an insertAt, an insertInsideAt, or a relation.",
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
         }
 
         if ((insertAtSpec != null) && (insertInsideAtSpec != null)) {
             throw new XmlException("Element link requires at most one of "
                     + "insertAt and insertInsideAt, not both.",
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
         }
 
         CompositeEntity context = (CompositeEntity) _current;
@@ -5382,9 +5414,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             // that it is a user cancellation with the special
                             // string pattern "*** Canceled." in the message.
                             throw new XmlException("*** Canceled.",
-                                    _currentExternalEntity(), _parser
-                                            .getLineNumber(), _parser
-                                            .getColumnNumber());
+                                    _currentExternalEntity(),
+                                            _getLineNumber(),
+                                            _getColumnNumber());
                         }
                     } else {
                         // No handler.  Throw the original exception.
@@ -5419,9 +5451,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             // that it is a user cancellation with the special
                             // string pattern "*** Canceled." in the message.
                             throw new XmlException("*** Canceled.",
-                                    _currentExternalEntity(), _parser
-                                            .getLineNumber(), _parser
-                                            .getColumnNumber());
+                                    _currentExternalEntity(),
+                                            _getLineNumber(),
+                                            _getColumnNumber());
                         }
                     } else {
                         // No handler.  Throw the original exception.
@@ -5443,8 +5475,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // Check that required arguments are given
         if ((relation1Name == null) || (relation2Name == null)) {
             throw new XmlException("Element unlink requires two relations.",
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
         }
 
         CompositeEntity context = (CompositeEntity) _current;
@@ -5532,8 +5564,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (countArgs != 1) {
             throw new XmlException("Element unlink requires exactly one of "
                     + "an index, an insideIndex, or a relation.",
-                    _currentExternalEntity(), _parser.getLineNumber(), _parser
-                            .getColumnNumber());
+                    _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber());
         }
 
         CompositeEntity context = (CompositeEntity) _current;
@@ -5761,8 +5793,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         if (result == null) {
             throw new XmlException("No such property: " + name + " in "
-                    + currentName, _currentExternalEntity(), _parser
-                    .getLineNumber(), _parser.getColumnNumber());
+                    + currentName, _currentExternalEntity(),
+                    _getLineNumber(), _getColumnNumber());
         }
 
         return result;
@@ -5871,8 +5903,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                      + " in an inappropriate context: "
                      + context.getFullName(),
                      _currentExternalEntity(),
-                     _parser.getLineNumber(),
-                     _parser.getColumnNumber());
+                     _getLineNumber(),
+                     _getColumnNumber());
                      }
                      */
                     return (ComponentEntity) _toplevel;
@@ -5901,8 +5933,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                              + " in an inappropriate context: "
                              + context.getFullName(),
                              _currentExternalEntity(),
-                             _parser.getLineNumber(),
-                             _parser.getColumnNumber());
+                             _getLineNumber(),
+                             _getColumnNumber());
                              }
                              */
                             return result;
@@ -5964,8 +5996,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         if (result == null) {
             throw new XmlException("No such port: " + name + " in "
-                    + topLevelName, _currentExternalEntity(), _parser
-                    .getLineNumber(), _parser.getColumnNumber());
+                    + topLevelName, _currentExternalEntity(),
+                    _getLineNumber(), _getColumnNumber());
         }
 
         return result;
@@ -6006,8 +6038,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         if (result == null) {
             throw new XmlException("No such relation: " + name + " in "
-                    + topLevelName, _currentExternalEntity(), _parser
-                    .getLineNumber(), _parser.getColumnNumber());
+                    + topLevelName, _currentExternalEntity(),
+                    _getLineNumber(), _getColumnNumber());
         }
 
         return result;
@@ -6120,8 +6152,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // A list of settable parameters specified in property tags.
     private List _paramsToParse = new LinkedList();
 
-    // The parser.
-    private XmlParser _parser = new XmlParser();
+    /** The XmlParser. */ 
+    private XmlParser _xmlParser;
 
     // Status of the deferral of the top-level.
     private boolean _previousDeferStatus = false;
