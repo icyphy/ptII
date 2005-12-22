@@ -155,67 +155,6 @@ public abstract class BaseSDFScheduler extends Scheduler {
         analysis.addDependencyDeclaration(declaration);
     }
 
-    /** Find the channel number of the given port that corresponds to the
-     *  given receiver.  If the receiver is not contained within the port,
-     *  throw an InternalErrorException.
-     *  @param port The given port.
-     *  @param receiver The receiver we are looking for.
-     *  @return The channel number if any.
-     *  @exception IllegalActionException If the receiver was not found
-     *  in the port.
-     */
-    protected int _getChannel(IOPort port, Receiver receiver)
-            throws IllegalActionException {
-        // FIXME: Move this functionality to the kernel.
-        int width = port.getWidth();
-        Receiver[][] receivers = port.getReceivers();
-        int channel;
-
-        if (_debugging && VERBOSE) {
-            _debug("-- getting channels on port " + port.getFullName());
-            _debug("port width = " + width);
-            _debug("number of channels = " + receivers.length);
-        }
-
-        for (channel = 0; channel < receivers.length; channel++) {
-            if (_debugging && VERBOSE) {
-                _debug("number of receivers in channel " + channel + " = "
-                        + receivers[channel].length);
-            }
-
-            for (int destinationIndex = 0; destinationIndex < receivers[channel].length; destinationIndex++) {
-                if (receivers[channel][destinationIndex] == receiver) {
-                    if (_debugging && VERBOSE) {
-                        _debug("-- returning channel number:" + channel);
-                    }
-
-                    return channel;
-                }
-            }
-        }
-
-        // Hmm...  didn't find it yet.  Port might be connected on the inside,
-        // so try the inside relations.
-        Receiver[][] insideReceivers = port.getInsideReceivers();
-
-        for (channel = 0; channel < insideReceivers.length; channel++) {
-            if (_debugging && VERBOSE) {
-                _debug("number of inside receivers = "
-                        + receivers[channel].length);
-            }
-
-            for (int destinationIndex = 0; destinationIndex < insideReceivers[channel].length; destinationIndex++) {
-                if (insideReceivers[channel][destinationIndex] == receiver) {
-                    return channel;
-                }
-            }
-        }
-
-        throw new InternalErrorException("Receiver for port "
-                + receiver.getContainer() + " not found in the port "
-                + port.getFullName());
-    }
-
     /** Create and set a parameter in each relation according
      *  to the buffer sizes calculated for this system.
      *  @param minimumBufferSizes A map from relation
