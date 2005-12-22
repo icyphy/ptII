@@ -690,7 +690,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  pipelining parameter and parallelExecution parameter.
      */
     private void init() throws IllegalActionException, NameDuplicationException {
-        DistributedSDFScheduler scheduler = new DistributedSDFScheduler(this,
+        /*DistributedSDFScheduler scheduler = */new DistributedSDFScheduler(this,
                 uniqueName("Scheduler"));
 
         // We create the new parameter here.
