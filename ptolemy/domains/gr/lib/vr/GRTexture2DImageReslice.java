@@ -28,55 +28,36 @@
 package ptolemy.domains.gr.lib.vr;
 
 
-import java.awt.image.ColorModel;
-import java.awt.Point;
-import java.awt.image.ComponentSampleModel;
-import java.awt.image.SampleModel;
-import javax.imageio.ImageIO;
-import java.io.IOException;
-
-import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
+import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferFloat;
-import java.awt.image.DataBufferDouble;
 import java.awt.image.DataBufferInt;
-import java.awt.Transparency;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
-
 import java.net.URL;
+import java.util.Hashtable;
 
 import javax.imageio.stream.FileImageInputStream;
-import javax.imageio.stream.ImageInputStream;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.QuadArray;
-import javax.media.j3d.Shape3D;
 import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
 import javax.media.j3d.Texture2D;
 import javax.media.j3d.TextureAttributes;
-import com.sun.j3d.utils.image.TextureLoader;
 import javax.media.j3d.View;
-import java.util.Hashtable;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.jai.JAIImageToken;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.AWTImageToken;
-import ptolemy.data.DoubleToken;
-//import ptolemy.data.FloatToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.IntToken;
-
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -85,6 +66,8 @@ import ptolemy.domains.gr.lib.vr.TextureLoader.MyTextureLoader;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import com.sun.j3d.utils.image.TextureLoader;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture2DImageReslice

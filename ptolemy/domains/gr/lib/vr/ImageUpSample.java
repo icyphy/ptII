@@ -31,7 +31,6 @@ import java.awt.image.BufferedImage;
 
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.lib.UpSample;

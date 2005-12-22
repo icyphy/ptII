@@ -28,32 +28,25 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
-import ij.gui.ImageCanvas;
 import ij.gui.ImageWindow;
 import ij.gui.Roi;
 import ij.gui.StackWindow;
 import ij.process.ImageProcessor;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.Image;
 import java.net.URL;
-
-import diva.gui.toolbox.FocusMouseListener;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.FilePortParameter;
+import ptolemy.data.AWTImageToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.AWTImageToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;

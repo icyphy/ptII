@@ -39,17 +39,11 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.AWTImageToken;
+import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.data.AWTImageToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.ObjectToken;
-import ptolemy.actor.parameters.FilePortParameter;
-import ptolemy.actor.parameters.ParameterPort;
 
 //////////////////////////////////////////////////////////////////////////
 ////DICOMReader

@@ -28,27 +28,19 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
-import ij.gui.ImageWindow;
 import ij.gui.Roi;
-import ij.gui.StackWindow;
 import ij.process.ImageProcessor;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.Image;
 import java.net.URL;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.AWTImageToken;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;

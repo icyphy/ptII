@@ -31,9 +31,6 @@ package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
 import ij.plugin.Slicer;
-
-import javax.imageio.ImageIO;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;

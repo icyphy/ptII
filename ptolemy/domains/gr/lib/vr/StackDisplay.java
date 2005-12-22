@@ -30,12 +30,7 @@ package ptolemy.domains.gr.lib.vr;
 import ij.ImagePlus;
 import ij.ImageStack;
 import ij.gui.StackWindow;
-
-import java.awt.Color;
-import java.awt.Container;
-
 import ptolemy.actor.gui.SizeAttribute;
-import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -45,7 +40,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.media.Picture;
 
 //////////////////////////////////////////////////////////////////////////
 //// StackDisplay
