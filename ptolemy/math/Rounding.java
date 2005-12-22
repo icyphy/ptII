@@ -207,6 +207,7 @@ public abstract class Rounding implements Cloneable, Serializable {
     /** Return an instance of this class with the specified name,
      *  or null if none exists.
      *
+     *  @param name The name of the Rounding strategy to find.
      *  @return An instance of Rounding.
      *  @exception IllegalArgumentException If the string does not
      *   match one of the known strategies.
@@ -562,7 +563,15 @@ public abstract class Rounding implements Cloneable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////
-    // The constructor is protected to make a type safe enumeration.
+
+    /** Construct a Rounding object with the given String name.
+     *  This name is used for finding a Rounding object at a later
+     *  time (@see #forName(String)). This constructor
+     *  is protected to make a type safe enumeration. 
+     * 
+     * @param name The String name to give this Rounding strategy.
+     * 
+     */
     protected Rounding(String name) {
         _name = name;
         _addRounding(this, name);

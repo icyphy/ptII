@@ -139,6 +139,9 @@ public class FixPointQuantization extends Quantization {
 
     /** Return true if the given object describes the same
      *  mapping to quantized values as this object.
+     *
+     *  @param object The Quantization object to use for equality
+     *  checking.
      *  @return True if the quantizations are equal.
      */
     public boolean equals(Object object) {
@@ -162,6 +165,8 @@ public class FixPointQuantization extends Quantization {
 
     /**
      * Return the precision.
+     * 
+     * @see #setPrecision(Precision)
      * @return Precision object.
      */
     public Precision getPrecision() {
@@ -177,6 +182,8 @@ public class FixPointQuantization extends Quantization {
     }
 
     /** Return a FixPointQuantization with a changed precision.
+     *
+     *  @see #getPrecision()
      *  @param precision The new precision.
      *  @return A new quantization.
      */

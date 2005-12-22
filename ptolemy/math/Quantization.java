@@ -100,6 +100,11 @@ import java.math.BigInteger;
 public abstract class Quantization implements Cloneable, Serializable {
     /** Construct a Quantization with the given precision, overflow
      *  strategy, and rounding strategy.
+     *
+     * @param overflow The Overflow object to use by this Quantization
+     * strategy.
+     * @param rounding The Rounding object to use by this Quantization
+     * strategy.
      */
     public Quantization(Overflow overflow, Rounding rounding) {
         _overflow = overflow;
@@ -118,6 +123,9 @@ public abstract class Quantization implements Cloneable, Serializable {
 
     /** Return true if the indicated object describes the same
      *  mapping to quantized values.
+     *  
+     *  @param object The Quantization object to use for equality
+     *  checking.
      *  @return True if the quantizations are equal.
      */
     public boolean equals(Object object) {
@@ -190,7 +198,8 @@ public abstract class Quantization implements Cloneable, Serializable {
     }
 
     /** Return the precision fore the mantissa of a compliant
-     *  2's complement representation,
+     *  2's complement representation.
+     *  
      *  @return The precision.
      */
     public abstract Precision getMantissaPrecision();

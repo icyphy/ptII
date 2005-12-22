@@ -159,6 +159,8 @@ public abstract class Overflow implements Cloneable, Serializable {
     }
 
     /** Return an instance of this class with the specified name.
+     *  
+     *  @param name The name of the Overflow strategy to find.
      *  @return An instance of Overflow or null.
      */
     public static Overflow forName(String name) {
@@ -167,6 +169,8 @@ public abstract class Overflow implements Cloneable, Serializable {
 
     /** Return an instance of this class with the specified name,
      *  or null if none exists.
+     *  
+     *  @param name The name of the Overflow strategy to find.
      *  @return An instance of Overflow.
      *  @exception IllegalArgumentException If the string does not
      *   match one of the known strategies.
@@ -473,7 +477,7 @@ public abstract class Overflow implements Cloneable, Serializable {
 
     }
 
-    /** The minimize overflow strategy */
+    /** The minimize overflow strategy. */
     public static class Minimize extends Overflow {
         private Minimize() {
             super("minimize");
@@ -486,7 +490,7 @@ public abstract class Overflow implements Cloneable, Serializable {
 
     }
 
-    /** The modulo overflow strategy */
+    /** The modulo overflow strategy. */
     public static class Modulo extends Overflow {
         private Modulo() {
             super("modulo");
@@ -500,7 +504,7 @@ public abstract class Overflow implements Cloneable, Serializable {
     }
 
 
-    /** The saturate overflows strategy */
+    /** The saturate overflows strategy. */
     public static class Saturate extends Overflow {
         private Saturate() {
             super("saturate");
@@ -520,7 +524,7 @@ public abstract class Overflow implements Cloneable, Serializable {
         }
     }
 
-    /** The overflow to zero strategy */
+    /** The overflow to zero strategy. */
     public static class ToZero extends Overflow {
         private ToZero() {
             super("to_zero");
@@ -540,7 +544,7 @@ public abstract class Overflow implements Cloneable, Serializable {
         }
     }
 
-    /** The trap overflows strategy */
+    /** The trap overflows strategy. */
     public static class Trap extends Overflow {
         private Trap() {
             super("trap");
@@ -566,11 +570,20 @@ public abstract class Overflow implements Cloneable, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////
-    // The constructor is protected to make a type safe enumeration.
+
+    /** Construct an Overflow object with the given String name.
+     *  This name is used for finding an Overflow object at a later
+     *  time (@see #forName(String)). This constructor
+     *  is protected to make a type safe enumeration. 
+     * 
+     * @param name The String name to give this Overflow strategy.
+     * 
+     */
     protected Overflow(String name) {
         _name = name;
         _addOverflow(this, name);
     }
+    // The constructor is protected to make a type safe enumeration.
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////
