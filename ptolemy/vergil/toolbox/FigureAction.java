@@ -266,7 +266,7 @@ public class FigureAction extends AbstractAction {
      *  whose icon is the figure on which this action was invoked.
      *  This must be called after actionPerformed(), and is typically called
      *  inside the actionPerformed() method of a subclass.
-     *  @return The frame that triggered this action.
+     *  @return The object on which this action was invoked.
      */
     public NamedObj getTarget() {
         return _target;
