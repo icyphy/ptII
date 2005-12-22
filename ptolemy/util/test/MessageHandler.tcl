@@ -150,7 +150,7 @@ test MessageHandler-7.1 {yesNoQuestion(String), answer is yes} {
 
 ######################################################################
 ####
-test MessageHandler-7.2 {yesNoQuestion(String), answer is yes} {
+test MessageHandler-7.2 {yesNoQuestion(String), answer is no} {
     set stdin [java::field System in]
     # set the byteArray to "no" 
     set byteArray [java::new {byte[]} {2} {110 111}]
@@ -163,3 +163,51 @@ test MessageHandler-7.2 {yesNoQuestion(String), answer is yes} {
     java::call System setIn $stdin
     list $answer $results
 } {0 {Is this other test working? (yes or no) }}
+
+######################################################################
+####
+test MessageHandler-8.1 {yesNoCancelQuestion(String), answer is yes} {
+    set stdin [java::field System in]
+    # set the byteArray to "yes" 
+    set byteArray [java::new {byte[]} {3} {121 101 115}]
+    set stream [java::new java.io.ByteArrayInputStream $byteArray]
+    java::call System setIn $stream
+    jdkCapture {
+ 	set answer [java::call ptolemy.util.MessageHandler \
+ 		yesNoCancelQuestion "Is this test working?"]
+    } results
+    java::call System setIn $stdin
+    list $answer $results
+} {1 {Is this test working? (yes or no or cancel) }}
+
+######################################################################
+####
+test MessageHandler-8.2 {yesNoCancelQuestion(String), answer is no} {
+    set stdin [java::field System in]
+    # set the byteArray to "no" 
+    set byteArray [java::new {byte[]} {2} {110 111}]
+    set stream [java::new java.io.ByteArrayInputStream $byteArray]
+    java::call System setIn $stream
+    jdkCapture {
+ 	set answer [java::call ptolemy.util.MessageHandler \
+ 		yesNoCancelQuestion "Is this test working?"]
+    } results
+    java::call System setIn $stdin
+    list $answer $results
+} {0 {Is this test working? (yes or no or cancel) }}
+
+######################################################################
+####
+test MessageHandler-8.3 {yesNoCancelQuestion(String), answer is cancel} {
+    set stdin [java::field System in]
+    # set the byteArray to "cancel" 
+    set byteArray [java::new {byte[]} {6} {99 97 110 99 101 108}]
+    set stream [java::new java.io.ByteArrayInputStream $byteArray]
+    java::call System setIn $stream
+    jdkCapture {
+ 	catch {[java::call ptolemy.util.MessageHandler \
+ 		yesNoCancelQuestion "Is this test working?"]} answer
+    } results
+    java::call System setIn $stdin
+    list $answer $results
+} {{ptolemy.util.CancelException: Cancelled: Is this test working?} {Is this test working? (yes or no or cancel) }}
