@@ -4,6 +4,11 @@
 <!-- This list contains the additional tableau factories for   -->
 <!-- general tools, such as HTML, text, and plotters.          -->
 <group>
+  <property name="Doc Viewer"
+            class="ptolemy.vergil.actor.DocTableau$Factory">
+    <property name="DocML view"
+              class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+  </property>
   <property name="HTML Viewer"
             class="ptolemy.actor.gui.HTMLViewerTableau$Factory">
     <property name="Source"

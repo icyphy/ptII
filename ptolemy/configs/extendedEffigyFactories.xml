@@ -6,6 +6,7 @@
   <!-- Web Browser should be after HTML Viewer, -->
   <!-- or it will intercept HTML pages. -->
   <entity name="Web Browser" class="ptolemy.actor.gui.BrowserEffigy$Factory"/>
+  <entity name="DocViewer" class="ptolemy.vergil.actor.DocEffigy$Factory"/>
   <entity name="Plotter" class="ptolemy.actor.gui.PlotEffigy$Factory"/>
   <entity name="Token viewer" class="ptolemy.actor.gui.TokenEffigy$Factory"/>
   <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
