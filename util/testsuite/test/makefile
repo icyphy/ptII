@@ -48,6 +48,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	CheckSize.tcl \
 	PrintThreads.tcl \
 	WatchDog.tcl
 
