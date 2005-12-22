@@ -52,6 +52,9 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
@@ -65,23 +68,163 @@ import diva.graph.JGraph;
 //// DocViewer
 
 /**
- FIXME.
+ This class defines a specialized window for displaying Ptolemy II actor
+ documentation. The three versions of the constructor offer mechanisms
+ to display documentation for a particular actor instance or a specified
+ actor class name, or to display a specified documentation file.
+ The documentation file is expected to be an XML file using the
+ DocML schema, as defined in the DocManager class.
 
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.1
+ @see DocManager
  @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (johnr)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class DocViewer extends HTMLViewer {
     
-    /** Construct a documentation viewer.
+    /** Construct a documentation viewer for the specified target.
+     *  @param target The object to get documentation for.
+     *  @param configuration The configuration in charge of this viewer.
      */
-    public DocViewer(final NamedObj target, Configuration configuration) {
+    public DocViewer(NamedObj target, Configuration configuration) {
         super();
+        try {
+            _init(target, configuration, target.getClassName(), null);
+        } catch (ClassNotFoundException e) {
+            // Should not happen.
+            throw new InternalErrorException("Unexpected exception");
+        }
+    }
+
+    /** Construct a documentation viewer for the specified class name.
+     *  @param className The class name to get documentation for.
+     *  @param configuration The configuration in charge of this viewer.
+     *  @throws ClassNotFoundException If the class cannot be found.
+     */
+    public DocViewer(String className, Configuration configuration)
+            throws ClassNotFoundException {
+        super();
+        _init(null, configuration, className, null);
+    }
+
+    /** Construct a documentation viewer for the specified documentation file.
+     *  @param url The URL at which to find the documentation.
+     *  @param configuration The configuration in charge of this viewer.
+     */
+    public DocViewer(URL url, Configuration configuration) {
+        super();
+        try {
+            _init(null, configuration, null, url);
+        } catch (ClassNotFoundException e) {
+            // Should not happen.
+            throw new InternalErrorException("Unexpected exception");
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Get the configuration specified in the constructor.
+     *  @return The configuration controlling this frame, or null
+     *   if there isn't one.
+     */
+    public Configuration getConfiguration() {
+        return _configuration;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+
+    /** Adjust the icon display for the specified target.
+     * @param sample The instance whose icon is displayed.
+     * @param container The container of the sample instance.
+     * @param graphPane The graph pane in which it is displayed.
+     * @param jgraph The jgraph.
+     * @throws IllegalActionException
+     * @throws NameDuplicationException
+     */
+    private void _adjustIconDisplay(
+            final NamedObj sample,
+            final CompositeEntity container,
+            final GraphPane graphPane,
+            final JGraph jgraph)
+            throws IllegalActionException, NameDuplicationException {
+        // Now make appropriate modifications.
+        // First, if the object has ports, add parameters to the ports
+        // to display them.
+        if (sample instanceof Entity) {
+            Iterator ports = ((Entity)sample).portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                SingletonParameter show = new SingletonParameter(port, "_showName");
+                show.setExpression("true");
+            }
+        }
+        // Next, set options to display parameter values.
+        StringParameter show = new StringParameter(container, "_showParameters");
+        show.setExpression("All");
         
+        // Defer this to get it to happen after rendering.
+        Runnable defer = new Runnable() {
+            public void run() {
+                Rectangle2D bounds = graphPane.getForegroundLayer().getLayerBounds();
+                if (!bounds.isEmpty()) {
+                    Dimension size = jgraph.getSize();
+                    Rectangle2D viewSize = new Rectangle2D.Double(
+                            _PADDING, _PADDING,
+                            size.getWidth() - 2 * _PADDING, size.getHeight() - 2 * _PADDING);
+                    AffineTransform newTransform = CanvasUtilities.computeFitTransform(
+                            bounds, viewSize);
+                    JCanvas canvas = graphPane.getCanvas();
+                    canvas.getCanvasPane().setTransform(newTransform);
+                }                        
+            }
+        };
+        SwingUtilities.invokeLater(defer);
+    }
+
+    /** Construct a documentation viewer for the specified target,
+     *  class name, or URL. Normally, one of these three arguments
+     *  will be non-null.
+     *  @param target The object to get documentation for, or null
+     *   to base this on the specified class name.
+     *  @param configuration The configuration in charge of this viewer.
+     *  @param className The class name of the target, or null if a target
+     *   is given.
+     *  @param url The URL from which to read the doc file, or null to
+     *   infer it from the target or className.
+     */
+    private void _init(
+            final NamedObj target,
+            Configuration configuration,
+            String className,
+            URL url)
+            throws ClassNotFoundException {
         _configuration = configuration;
         
+        // Start by creating a doc manager.
+        DocManager manager;
+        if (target != null) {
+            manager = new DocManager(target);
+        } else if (className != null) {
+            manager = new DocManager(Class.forName(className));
+        } else if (url != null) {
+            manager = new DocManager(url);
+        } else {
+            throw new InternalErrorException("Need to specify one of target, className, or url!");
+        }
+        className = manager.getClassName();
+        final String rootName;
+        int lastPeriod = className.lastIndexOf(".");
+        if (lastPeriod >= 0) {
+            rootName = className.substring(lastPeriod + 1);
+        } else {
+            rootName = className;
+        }
+
         // Panel for added sections.
         JPanel topHalf = new JPanel();
         topHalf.setLayout(new BoxLayout(topHalf, BoxLayout.Y_AXIS));
@@ -90,8 +233,8 @@ public class DocViewer extends HTMLViewer {
         // Panel for title.
         JPanel topPanel = new JPanel();
         topHalf.add(topPanel);
+        
         // Create a title area.
-        String className = target.getClassName();
         String title = className;
         int lastDot = className.lastIndexOf(".");
         if (lastDot > 0) {
@@ -130,101 +273,9 @@ public class DocViewer extends HTMLViewer {
         jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
         middlePanel.add(jgraph);
         middlePanel.add(Box.createRigidArea(new Dimension(5,0)));
-        
-        // Create an instance to display.
-        // Note that this will display something that looks just
-        // like the object we are asking about, including any customizations
-        // that are applicable only to this instance.
-        // FIXME: Will this work for a class instance?
-        String moml = target.exportMoML();
-        MoMLChangeRequest request = new MoMLChangeRequest(this, container, moml) {
-            protected void _execute() throws Exception {
-                super._execute();
-                // Now make appropriate modifications.
-                // Unfortunately, this code depends on the type of object
-                // this is.
-                if (target instanceof ComponentEntity) {
-                    Entity sample = container.getEntity(target.getName());
-                    Iterator ports = sample.portList().iterator();
-                    while (ports.hasNext()) {
-                        Port port = (Port)ports.next();
-                        SingletonParameter show = new SingletonParameter(port, "_showName");
-                        show.setExpression("true");
-                    }
-                } else {
-                    // FIXME: Other cases
-                }
-                // Next, set options to display parameter values.
-                StringParameter show = new StringParameter(container, "_showParameters");
-                show.setExpression("All");
-                
-                // Defer this to get it to happen after rendering.
-                Runnable defer = new Runnable() {
-                    public void run() {
-                        Rectangle2D bounds = graphPane.getForegroundLayer().getLayerBounds();
-                        if (!bounds.isEmpty()) {
-                            Dimension size = jgraph.getSize();
-                            Rectangle2D viewSize = new Rectangle2D.Double(
-                                    _PADDING, _PADDING,
-                                    size.getWidth() - 2 * _PADDING, size.getHeight() - 2 * _PADDING);
-                            AffineTransform newTransform = CanvasUtilities.computeFitTransform(
-                                    bounds, viewSize);
-                            JCanvas canvas = graphPane.getCanvas();
-                            canvas.getCanvasPane().setTransform(newTransform);
-                        }                        
-                    }
-                };
-                SwingUtilities.invokeLater(defer);
-            }
-        };
-        container.requestChange(request);
-        
-        // Now generate the body of the documentation.
-        StringBuffer html = new StringBuffer();
-        html.append(_HTML_HEADER);
-        // Start by looking for a doc file.
-        String description = "";
-        URL toRead = getClass().getClassLoader().getResource(
-                className.replace('.', '/') + "Doc.xml");
-        try {
-            if (toRead != null) {
-                DocManager manager = new DocManager(target);
-                manager.parse(null, toRead.openStream());
-                html.append(manager.getDescription());
-            }
-        } catch (Exception ex) {
-            html.append("Error reading URL: "
-                    + toRead.toExternalForm()
-                    + "\n<pre>\n"
-                    + ex
-                    + "\n</pre>\n");
-        }
-        // Next see whether there is Javadoc, and link to it if there is.
-        html.append("\n<p><i>See Also:</i> ");
-        String docName = "doc.codeDoc." + className;
-        try {
-            toRead = getClass().getClassLoader().getResource(
-                    docName.replace('.', '/') + ".html");
-            
-            if (toRead != null) {
-                html.append("<a href=\""
-                    + toRead.toExternalForm()
-                    + "\">Javadoc documentation</a>");
-            } else {
-                // FIXME: Make this a hyperlink to a doc on how
-                // to create the javadocs.
-                html.append("No javadocs found.");
-            }
-        } catch (Exception ex) {
-            html.append("Error opening javadoc file:\n<pre>"
-                    + ex
-                    + "/n</pre>\n");
-        }
-        html.append("</p>");
-        // Finally, create a pane in which to display it.
-        // Create the port and parameter information display.
-        JEditorPane descriptionPane = new JEditorPane();
-        
+
+        // Create a pane in which to display the description.
+        final JEditorPane descriptionPane = new JEditorPane();
         descriptionPane.addHyperlinkListener(this);
         descriptionPane.setContentType("text/html");
         descriptionPane.setEditable(false);
@@ -233,8 +284,49 @@ public class DocViewer extends HTMLViewer {
         scroller.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         middlePanel.add(scroller);
         middlePanel.add(Box.createRigidArea(new Dimension(5,0)));
+
+        // Now generate the body of the documentation.
+        StringBuffer html = new StringBuffer();
+        html.append(_HTML_HEADER);
+        String description = manager.getDescription();
+        html.append(description);
         html.append(_HTML_TAIL);
         descriptionPane.setText(html.toString());
+
+        // Create an instance to display.
+        // Note that this will display something that looks just
+        // like the object we are asking about, including any customizations
+        // that are applicable only to this instance.
+        // FIXME: Will this work for a class instance?
+        // If the target is given, then export MoML from it to use.
+        // Otherwise, use the class name.
+        String moml = null;
+        if (target != null) {
+            moml = target.exportMoML();
+        } else if (!manager.hadException()) {
+            // NOTE: This will not work if a URL was specified and the parse failed.
+            // No target is given. Try to create an instance from the class name.
+            // FIXME: This only works if the class is an entity.
+            moml = "<entity name=\"" + rootName + "\" class=\"" + className + "\"/>";
+        }
+        if (moml != null) {
+            MoMLChangeRequest request = new MoMLChangeRequest(this, container, moml) {
+                protected void _execute() throws Exception {
+                    super._execute();
+                    NamedObj sample = null;
+                    if (target == null) {
+                        // FIXME: This only works if the class is an entity.
+                        sample = container.getEntity(rootName);
+                    } else if (target instanceof ComponentEntity) {
+                        sample = container.getEntity(target.getName());
+                    } else {
+                        // FIXME: Other cases.
+                    }
+                    _adjustIconDisplay(sample, container, graphPane, jgraph);
+                }
+            };
+            container.requestChange(request);
+        }
 
         // Create tables to contain the information about parameters and ports.
         StringBuffer info = new StringBuffer();
@@ -248,20 +340,26 @@ public class DocViewer extends HTMLViewer {
         boolean foundOne = false;
         StringBuffer parameterTable = new StringBuffer();
         parameterTable.append("<table width=\"100%\"  border=\"2\" cellspacing=\"1\" cellpadding=\"1\">\n");
-        Iterator attributes = target.attributeList(Settable.class).iterator();
-        while (attributes.hasNext()) {
-            Settable parameter = (Settable)attributes.next();
-            if (parameter.getVisibility() == Settable.FULL) {
-                parameterTable.append(tr);
-                parameterTable.append(td1);
-                parameterTable.append(parameter.getName());
-                parameterTable.append(tde);
-                parameterTable.append(td2);
-                parameterTable.append("FIXME");
-                parameterTable.append(tde);
-                parameterTable.append(tre);
-                foundOne = true;
+        if (target != null) {
+            Iterator attributes = target.attributeList(Settable.class).iterator();
+            while (attributes.hasNext()) {
+                Settable parameter = (Settable)attributes.next();
+                if (parameter.getVisibility() == Settable.FULL) {
+                    parameterTable.append(tr);
+                    parameterTable.append(td1);
+                    parameterTable.append(parameter.getName());
+                    parameterTable.append(tde);
+                    parameterTable.append(td2);
+                    parameterTable.append("FIXME");
+                    parameterTable.append(tde);
+                    parameterTable.append(tre);
+                    foundOne = true;
+                }
             }
+        } else {
+            // There is no target, so just list all the attributes in the doc file.
+            // FIXME: Should use the sample... So this needs to be done as part of
+            // the change request above!
         }
         parameterTable.append("</table>");
         if (foundOne) {
@@ -285,6 +383,7 @@ public class DocViewer extends HTMLViewer {
             Iterator ports = ((Entity)target).portList().iterator();
             while (ports.hasNext()) {
                 Port port = (Port)ports.next();
+                String doc = manager.getPortDoc(port.getName());
                 if (port instanceof IOPort) {
                     if (((IOPort)port).isInput() && !((IOPort)port).isOutput()) {
                         inputPorts.append(tr);
@@ -292,7 +391,7 @@ public class DocViewer extends HTMLViewer {
                         inputPorts.append(port.getName());
                         inputPorts.append(tde);
                         inputPorts.append(td2);
-                        inputPorts.append("FIXME");
+                        inputPorts.append(doc);
                         inputPorts.append(tde);
                         inputPorts.append(tre);
                         foundInput = true;                                            
@@ -302,7 +401,7 @@ public class DocViewer extends HTMLViewer {
                         outputPorts.append(port.getName());
                         outputPorts.append(tde);
                         outputPorts.append(td2);
-                        outputPorts.append("FIXME");
+                        outputPorts.append(doc);
                         outputPorts.append(tde);
                         outputPorts.append(tre);
                         foundOutput = true;                        
@@ -312,7 +411,7 @@ public class DocViewer extends HTMLViewer {
                         inputOutputPorts.append(port.getName());
                         inputOutputPorts.append(tde);
                         inputOutputPorts.append(td2);
-                        inputOutputPorts.append("FIXME");
+                        inputOutputPorts.append(doc);
                         inputOutputPorts.append(tde);
                         inputOutputPorts.append(tre);
                         foundInputOutput = true;                    
@@ -322,7 +421,7 @@ public class DocViewer extends HTMLViewer {
                         neitherPorts.append(port.getName());
                         neitherPorts.append(tde);
                         neitherPorts.append(td2);
-                        neitherPorts.append("FIXME");
+                        neitherPorts.append(doc);
                         neitherPorts.append(tde);
                         neitherPorts.append(tre);
                         foundNeither = true;                    
@@ -333,7 +432,7 @@ public class DocViewer extends HTMLViewer {
                     neitherPorts.append(port.getName());
                     neitherPorts.append(tde);
                     neitherPorts.append(td2);
-                    neitherPorts.append("FIXME");
+                    neitherPorts.append(doc);
                     neitherPorts.append(tde);
                     neitherPorts.append(tre);
                     foundNeither = true;                    
@@ -359,22 +458,15 @@ public class DocViewer extends HTMLViewer {
                 info.append("<H2>Ports (Neither Input nor Output)</H2>\n");
                 info.append(neitherPorts);
             }
+        } else {
+            // Target is not an instance of entity (may be null), so just
+            // list all the ports in the doc file.
+            // FIXME: Should use the sample... So this needs to be done as part of
+            // the change request above!
         }
         // Finally, insert all.
         info.append(_HTML_TAIL);
-        // FIXME: this line does not compile
-        //setText(info.toString());
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Get the configuration specified in the constructor.
-     *  @return The configuration controlling this frame, or null
-     *   if there isn't one.
-     */
-    public Configuration getConfiguration() {
-        return _configuration;
+        setText(info.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
