@@ -26,8 +26,11 @@
  */
 package ptolemy.actor.gui;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
@@ -47,6 +50,7 @@ import ptolemy.moml.ParserAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.actor.DocEffigy;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyEffigy
@@ -288,7 +292,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  If the URL does not end with extension ".xml" or ".moml"
          *  (case insensitive), then return null.  If the URL points
          *  to an XML file that is not
-         *  a MoML file, then also return null.
+         *  a MoML file, then also return null. A MoML file is required
+         *  to have the MoML DTD designation in the first five lines.
+         *  That is, it must contain a line beginning with the string
+         *  "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML" or
+         *  "<!DOCTYPE class PUBLIC \"-//UC Berkeley//DTD MoML" or
          *  The specified base is used to expand any relative file references
          *  within the URL.
          *  @param container The container for the effigy.
@@ -361,7 +369,31 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                 + "Try running "
                                 + "$PTII/bin/vergil -hyvisual " + input);
                     }
-
+                    return null;
+                }
+                
+                // Check for DTD designation.
+                String dtd1 = "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML";
+                String dtd2 = "<!DOCTYPE class PUBLIC \"-//UC Berkeley//DTD MoML";
+                InputStream stream = input.openStream();
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(stream));
+                int lineCount = 0;
+                boolean foundDTD = false;
+                while (lineCount < 5) {
+                    String contents = reader.readLine();
+                    lineCount++;
+                    if (contents == null) {
+                        break;
+                    }
+                    if (contents.startsWith(dtd1) || contents.startsWith(dtd2)) {
+                        // This is a MoML file.
+                        foundDTD = true;
+                        break;
+                    }
+                }
+                reader.close();
+                if (!foundDTD) {
                     return null;
                 }
 
