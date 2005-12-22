@@ -425,9 +425,9 @@ public class Precision implements Cloneable, Serializable {
 
     /** Shift the BigDecimal value either right or left by
      *  a power of 2 value. This method will perform a
-     *  multiplication by 2^<sup>shiftval</sub> on the BigDecimal
+     *  multiplication by 2^<sup>shiftval</sup> on the BigDecimal
      *  value when shiftval is positive and will perform a
-     *  divide by 2^<sup>-shiftval</sub> on the BigDecimal value
+     *  divide by 2^<sup>-shiftval</sup> on the BigDecimal value
      *  when shiftval is negative.
      *
      *
