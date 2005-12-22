@@ -140,7 +140,7 @@ public class FixPointQuantization extends Quantization {
     /** Return true if the given object describes the same
      *  mapping to quantized values as this object.
      *
-     *  @param object The Quantization object to use for equality
+     *  @param object The FixPointQuantization object to use for equality
      *  checking.
      *  @return True if the quantizations are equal.
      */
