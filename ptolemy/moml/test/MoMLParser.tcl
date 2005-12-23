@@ -3529,3 +3529,23 @@ test MoMLParser-22.3 {Undo delete port.} {
     <link port="InstanceOfSubclassOfRamp.trigger" relation="relation"/>
 </entity>
 }
+
+######################################################################
+####
+#
+set body {
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="a" extends="ptolemy.kernel.CompositeEntity">
+        <entity name="d" class="Not.A.Class">
+        </entity>
+    </class>
+</entity>
+}
+
+set moml "$header $body"
+test MoMLParser-23.1 {ClassNotFound} {
+    $parser reset
+    catch {set toplevel [$parser parse $moml]} msg
+    regsub {in file:[^ ]*} $msg {in file:xxx} msg2
+    list [string range $msg2 0 194]
+} {}
