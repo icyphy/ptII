@@ -1295,14 +1295,43 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
         } catch (CancelException ex) {
             // Parse operation cancelled.
-            buffered.close();
             return null;
+        } catch (Exception ex) {
+            // If you change this code, try running 
+            // ptolemy.moml.test.MoMLParserLeak with the heap profiler
+            // and look for leaks.
+            if (_toplevel != null
+                    && _toplevel instanceof ComponentEntity) {
+                ((ComponentEntity) _toplevel).setContainer(null);
+                
+                // Since the container is probably already null, then
+                // the setContainer(null) call probably did not do anything.
+                // so, we remove the object from the workspace so it
+                // can get gc'd.
+
+                // FIXME: perhaps we should do more of what
+                // ComponentEntity.setContainer() does and remove the ports?
+                try {
+                    _workspace.getWriteAccess();
+                    _workspace.remove(_toplevel);
+                } finally {
+                    _workspace.doneWriting();
+                }
+                _toplevel = null;
+            }
+
+            _paramsToParse.clear(); 
+            reset();
+            if (base != null) {
+                purgeModelRecord(base);
+            }
+            throw ex;
         } finally {
             // Avoid memory leaks
             _xmlParser = null;
+            buffered.close();
         }
 
-        buffered.close();
 
         if (_toplevel == null) {
             // If we try to read a HSIF file but Ptolemy is not properly
@@ -6145,7 +6174,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The stack of maps for name translations.
     private Stack _namespaceTranslations = new Stack();
-
+    
     // The original context set by setContext().
     private NamedObj _originalContext = null;
 
