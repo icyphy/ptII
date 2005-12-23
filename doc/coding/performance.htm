@@ -128,9 +128,49 @@ To see what other <code>-X</code> commands are available, run
 java -X
 </pre> 
 
+<h3>HP's JMeter</h3>
+HP's JMeter is a tool available as a free download after a quick registration
+from
+<a href="http://www.hp.com/products1/unix/java/hpjmeter/">http://www.hp.com/products1/unix/java/hpjmeter/</a>.
+HP's JMeter works with Java 1.2 through 1.5.
+
+<p>To generate the profile, do
+c:/Program\ Files/java/j2sdk1.5.0/bin/java  -Xmx256M "-Dptolemy.ptII.dir=c:/cxh/ptII" -Xrunhprof:heap=all,depth=30 -classpath "c:\cxh\ptII;c:\cxh\ptII\lib\diva.jar" ptolemy.vergil.vergilApplication
+
+
+To run the HP JMeter tool:
+<pre>
+java -Xmx256m -jar $PTII/vendors/hpjmeter/HPjmeter.jar
+</pre>
+Then open up the <code>java.prof.txt</a>
+
+<p>JMeter reported a syntax error, I then had to edit v.hprof.txt and
+move two bogus lines:
+
+<pre>
+ROOT 50000105 (kind=<thread>, id=200000, trace=300000)
+ROOT 50000187 (kind=<thread>, id=200003, trace=300000)
+HEAP DUMP BEGIN (4250 objects, 298272 bytes) Tue Jun 08 11:23:54 2004
+</pre>
+became
+
+<pre>
+HEAP DUMP BEGIN (4250 objects, 298272 bytes) Tue Jun 08 11:23:54 2004
+ROOT 50000105 (kind=<thread>, id=200000, trace=300000)
+ROOT 50000187 (kind=<thread>, id=200003, trace=300000)
+</pre>
 <h3>Heap Analysis Tool</h3>
-Heap Analysis Tool (HAT) is a freely available tool from Sun that
-can process -Xrunhprof data.
+
+Heap Analysis Tool (HAT) is a freely available tool from 
+<a href="https://hat.dev.java.net/">https://hat.dev.java.net/</a>
+that
+can process -Xrunhprof data.  HAT works best with Java 1.2,
+it did not work for me with Java 1.4.2:
+<pre>
+java.io.IOException: Stack trace not found for serial # 0
+	at hat.parser.HprofReader.getStackTraceFromSerial(HprofReader.java:611)
+	at hat.parser.HprofReader.readArray(HprofReader.java:777)
+</pre>
  <p>See the 
 <a href="http://developer.java.sun.com/developer/onlineTraining/Programming/JDCBook/perf3.html">JDC Book that discusses Heap Analysis Tool</a> for
 downloads and further information.
