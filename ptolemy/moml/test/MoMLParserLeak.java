@@ -27,7 +27,7 @@
  */
 package ptolemy.moml.test;
 
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
@@ -48,18 +48,39 @@ java -Xrunhprof:depth=15 -classpath "$PTII;." ptolemy.moml.test.MoMLParserLeak
  @Pt.AcceptedRating Red (cxh)
  */
 public class MoMLParserLeak {
+ 
+    /** Attempt to leak code by parsing MoML that looks for a class
+     *  that does not exist.
+     */
+    public static CompositeEntity leak() throws Exception {
+        //MoMLParser parser = new MoMLParser();
+        CompositeEntity toplevel = (CompositeEntity)
+            parser.parse("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                    + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                    + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n"
+                    + "<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">\n"
+                    + "<entity name=\"myRamp\" class=\"ptolemy.actor.lib.Ramp\"/>\n"
+                    //+ "<entity name=\"notaclass\" class=\"Not.A.Class\"/>\n"
+                    + "</entity>\n");
+        return toplevel;
+    }
+
+    /** Attempt to leak code by parsing MoML that looks for a class
+     *  that does not exist.
+     *  @param args Ignored.
+     *  @exception Exception if there is a problem parsing
+     */ 
     public static void main(String []args) throws Exception {
-        MoMLParser parser = new MoMLParser();
+        parser = new MoMLParser();
         try {
-            NamedObj toplevel = 
-                parser.parse("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                        + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n"
-                        + "<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">\n"
-                        + "<entity name=\"myRamp\" class=\"ptolemy.actor.lib.Ramp\"/>\n"
-                        + "<entity name=\"notaclass\" class=\"Not.A.Class\"/>\n"
-                        + "</entity>\n");
+            CompositeEntity toplevel = leak();
+            toplevel.setContainer(null);
+            // If we don't set parser to null or otherwise force it to
+            // go out of scope, then we leak memory.
+            parser = null;
         } finally {
+            // If we don't gc here, then references to Ramp might exist
+            // if if we _don't_ throw an exception.
             System.gc();
             System.out.println("Sleeping for 2 seconds for any possible gc.");
             try {
@@ -69,4 +90,7 @@ public class MoMLParserLeak {
             
         }
     }
+
+    // Note that the parser is what actually leaks here
+    public static MoMLParser parser;
 }
