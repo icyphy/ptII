@@ -3548,4 +3548,6 @@ test MoMLParser-23.1 {ClassNotFound} {
     catch {set toplevel [$parser parse $moml]} msg
     regsub {in file:[^ ]*} $msg {in file:xxx} msg2
     list [string range $msg2 0 194]
-} {}
+} {{com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:xxx at line 6 and column 35
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Cannot find class: Not.A.Class}}
