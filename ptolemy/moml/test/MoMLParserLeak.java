@@ -60,7 +60,7 @@ public class MoMLParserLeak {
                     + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n"
                     + "<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">\n"
                     + "<entity name=\"myRamp\" class=\"ptolemy.actor.lib.Ramp\"/>\n"
-                    //+ "<entity name=\"notaclass\" class=\"Not.A.Class\"/>\n"
+                    + "<entity name=\"notaclass\" class=\"Not.A.Class\"/>\n"
                     + "</entity>\n");
         return toplevel;
     }
@@ -72,13 +72,17 @@ public class MoMLParserLeak {
      */ 
     public static void main(String []args) throws Exception {
         parser = new MoMLParser();
+        //CompositeEntity toptop = new CompositeEntity();
+        //parser.setContext(toptop);
         try {
             CompositeEntity toplevel = leak();
             toplevel.setContainer(null);
+            toplevel = null;
             // If we don't set parser to null or otherwise force it to
             // go out of scope, then we leak memory.
+            System.out.println("Setting parser to null");
             parser = null;
-        } finally {
+        } catch (Exception ex) {
             // If we don't gc here, then references to Ramp might exist
             // if if we _don't_ throw an exception.
             System.gc();
@@ -87,10 +91,11 @@ public class MoMLParserLeak {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
             }
-            
+            ex.printStackTrace();
+            throw ex;
         }
     }
 
-    // Note that the parser is what actually leaks here
+    // Note that the parser is what actually leaks here.
     public static MoMLParser parser;
 }
