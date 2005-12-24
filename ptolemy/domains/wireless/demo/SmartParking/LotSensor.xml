@@ -2,7 +2,7 @@
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="LotSensor" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         <property name="circle3" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -18,8 +18,6 @@
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -153,7 +151,7 @@ is taken.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={182, 202, 960, 607}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 52, 960, 607}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 489]">
     </property>
@@ -199,6 +197,12 @@ is taken.</text></svg></configure>
         </property>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
+        <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 145.0]">
@@ -225,6 +229,12 @@ is taken.</text></svg></configure>
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 0.0, 1.0}">
+        </property>
+        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 460.0]">
         </property>
@@ -320,6 +330,12 @@ is taken.</text></svg></configure>
         </port>
     </entity>
     <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
+        <property name="BooleanSwitchIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {5, 136, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 230.0]">
@@ -374,6 +390,12 @@ is taken.</text></svg></configure>
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="{lot = lotName, state = 0}">
+        </property>
+        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 285.0]">
         </property>

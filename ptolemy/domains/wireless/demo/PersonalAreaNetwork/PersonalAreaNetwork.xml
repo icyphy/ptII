@@ -28,7 +28,7 @@
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 1018, 762}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[803, 644]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 644]">
     </property>
     <property name="nodeColor" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0, 0.0, 1.0}">
     </property>
@@ -64,7 +64,7 @@ in range it takes 26 seconds for it to process.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 660]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 660]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="circle2" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -307,7 +307,7 @@ in range it takes 26 seconds for it to process.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 660]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 660]">
         </property>
         <property name="range" class="ptolemy.data.expr.Parameter" value="100">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
