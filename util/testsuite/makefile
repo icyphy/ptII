@@ -42,7 +42,6 @@ include $(CONFIG)
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	CheckSize.java \
 	PrintThreads.java \
 	WatchDog.java
 
