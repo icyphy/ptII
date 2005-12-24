@@ -385,7 +385,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  the same number of fraction bits, but any additional fractional
      *  bits in one value must be zero in the other.
      *  
-     *  @param object The FixPoint object to use for equality
+     *  @param arg The FixPoint object to use for equality
      *  checking.
      *  @return True if the FixPoints are equal; false otherwise.
      */
