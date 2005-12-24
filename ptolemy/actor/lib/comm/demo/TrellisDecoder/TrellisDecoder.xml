@@ -16,7 +16,7 @@
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {0, 1, 1032, 658}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 542]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 542]">
     </property>
     <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="{05, 07}">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -162,7 +162,7 @@ error rate are displayed in the icons below.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 271.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400.0, 271.0}">
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 205.0">
