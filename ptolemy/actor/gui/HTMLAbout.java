@@ -310,7 +310,6 @@ public class HTMLAbout {
         while (models.hasNext()) {
             String model = (String) models.next();
             URL modelURL = new URL(demosURL, model);
-            System.out.println("Model: " + modelURL);
 
             Tableau tableau = configuration.openModel(demosURL, modelURL,
                     modelURL.toExternalForm());
