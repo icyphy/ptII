@@ -32,6 +32,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -232,7 +233,17 @@ public class HTMLAbout {
             Configuration configuration) throws Throwable {
         URL newURL = null;
 
-        if (event.getDescription().equals("about:copyright")) {
+        if (event.getDescription().startsWith("about:checkModelSizes")) {
+            // Expand all the local .xml files in the fragment
+            // and check their sizes and locations
+            URI aboutURI = new URI(event.getDescription());
+            URL demosURL = _getDemoURL(aboutURI.getFragment());
+            // Third arg is true so modelList should contain absolute URLs.
+            List modelList = _getURLs(demosURL, ".*.xml$", true);
+            newURL = _temporaryHTMLFile("checkModelSizes", ".htm",
+                    CheckModelSize.checkModelSize(
+                            (String[]) modelList.toArray(new String[0])));
+        } else if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
             // <a href="about:copyright">about:copyright</a>
             // then event.getURL() will return null, so we have
@@ -339,6 +350,9 @@ public class HTMLAbout {
                 + "    <td><a href=\"about:links#"
                 + fileName
                 + "\">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
+                + "    <td><a href=\"about:checkModelSizes#"
+                + fileName
+                + "\">&nbsp;check the sizes/centering of the models&nbsp;</a></td>\n"
                 // RunAllDemos does not work, it runs in the wrong thread?
                 // + "    <td><a href=\"about:runAllDemos#" + fileName
                 // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
@@ -356,11 +370,31 @@ public class HTMLAbout {
         return MoMLApplication.specToURL(demosFileName);
     }
 
-    private static List _getURLs(URL demosURL, String regexp)
+    /** Open up a file, return a list of relative URLs that match a regexp.
+     *  @param demosURL The URL of the file containing URLs.
+     *  @param regexp The regular expression, for example ".*.xml$".
+     *  @return a list of relative URLS
+     */   
+    private static List _getURLs(URL demosURL, String regexp) 
             throws IOException {
+        // Return relative URLS
+        return _getURLs(demosURL, regexp, false);
+    }
+
+    /** Open up a file, return a list of relative or absolute URLs
+     *  that match a regexp.
+     *  @param demosURL The URL of the file containing URLs.
+     *  @param regexp The regular expression, for example ".*.xml$".
+     *  @param absoluteURLs True if we should return absolute URLS.
+     *  @return a list of relative URLS
+     */   
+    private static List _getURLs(URL demosURL, String regexp,
+            boolean absoluteURLs) throws IOException {
         StringBuffer demosBuffer = new StringBuffer();
         BufferedReader in = null;
 
+        String demosURLParent = demosURL.toString().substring(0,
+                demosURL.toString().lastIndexOf("/") + 1);
         try {
             in = new BufferedReader(
                     new InputStreamReader(demosURL.openStream()));
@@ -399,7 +433,18 @@ public class HTMLAbout {
                         && modelLink.matches(regexp)) {
                     // If the link does not start with http://, but ends
                     // with .xml, then we add it to the list
-                    modelList.add(modelLink);
+                    if (absoluteURLs) {
+                        String model = demosURLParent + modelLink;
+                        try {
+                            model = (new URI(demosURLParent + modelLink))
+                                .normalize().getPath();
+                        } catch (URISyntaxException ex) {
+                            // Ignore
+                        }
+                        modelList.add(model);
+                    } else {
+                        modelList.add(modelLink);
+                    }
                 }
             }
 

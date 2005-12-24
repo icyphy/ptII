@@ -72,6 +72,7 @@ JSRCS = \
 	BrowserEffigy.java \
 	BrowserLauncher.java \
 	BrowserTableau.java \
+	CheckModelSize.java \
 	ColorAttribute.java \
 	CompositeActorApplication.java \
 	CompositeActorSimpleApplication.java \

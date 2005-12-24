@@ -58,16 +58,15 @@ JSRCS = \
 # tests that use diva and graphical tests in general should go
 # under JGRAPHICAL tests.
 JSIMPLE_TESTS = \
-	dummy
+	CheckModelSize.tcl
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
 	PtolemyApplication.tcl \
 	MoMLApplication.tcl \
 	PtExecuteApplication.tcl
-# If we add non-graphical tests, add $(JSIMPLE_TESTS) to EXTRA_SRCS
 EXTRA_SRCS =	\
-	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) test.xml
+	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TEST) $(JGRAPHICAL_TESTS) test.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
