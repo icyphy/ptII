@@ -2936,16 +2936,22 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  ports, relations, and entities as well.
      */
     protected class ContainedObjectsIterator implements Iterator {
+        
+        /** Create an interator over all the contained objects. */
+        public ContainedObjectsIterator() {
+            // This iterator gets called quite a bit, so at Kevin Ruland's
+            // suggestion, we move instantiation of the iterator 
+            // into the constructor so that hasNext() and next() don't
+            // have to check if _attributeListIterator is null each time.
+            _attributeListIterator = attributeList().iterator();
+        }
+
         /** Return true if the iteration has more elements.
          *  In this base class, this returns true if there are more
          *  attributes.
          *  @return True if there are more attributes.
          */
         public boolean hasNext() {
-            if (_attributeListIterator == null) {
-                _attributeListIterator = attributeList().iterator();
-            }
-
             return _attributeListIterator.hasNext();
         }
 
@@ -2954,10 +2960,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
          *  @return The next attribute.
          */
         public Object next() {
-            if (_attributeListIterator == null) {
-                _attributeListIterator = attributeList().iterator();
-            }
-
             return _attributeListIterator.next();
         }
 
