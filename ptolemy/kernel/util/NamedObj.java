@@ -2939,6 +2939,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         
         /** Create an interator over all the contained objects. */
         public ContainedObjectsIterator() {
+            super();
             // This iterator gets called quite a bit, so at Kevin Ruland's
             // suggestion, we move instantiation of the iterator 
             // into the constructor so that hasNext() and next() don't
