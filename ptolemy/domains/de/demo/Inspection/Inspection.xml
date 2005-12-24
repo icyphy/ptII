@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Inspection" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="Discrete Event (DE) Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -49,10 +49,6 @@
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 460.0">
         </property>
     </property>
@@ -68,10 +64,6 @@
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 25.0]">
         </property>
@@ -101,10 +93,6 @@ etc.
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 55.0]">
         </property>
     </property>
@@ -132,10 +120,6 @@ average arrival rate of busses is the same.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 20.0">
         </property>
     </property>
@@ -156,16 +140,12 @@ order.</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 50.0">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{401.5, 250.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{400, 250}">
     </property>
     <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.PoissonClock">
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="poissonBusArrivalRate">
@@ -290,10 +270,6 @@ actor, for example, adds strings by appending them.</text></svg></configure>
       </svg>
     </configure>
             </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 45.0">
             </property>
         </property>
@@ -329,12 +305,6 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 339.5">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
             </property>
         </entity>
         <relation name="relation1" class="ptolemy.actor.TypedIORelation">
@@ -380,12 +350,6 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="SingleEventIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={292, 266, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 420.0">
         </property>
     </entity>
@@ -415,10 +379,6 @@ actor, for example, adds strings by appending them.</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-            </property>
-            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 45.0">
             </property>
@@ -455,12 +415,6 @@ actor, for example, adds strings by appending them.</text></svg></configure>
             </property>
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 339.5">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-                </property>
             </property>
         </entity>
         <relation name="relation1" class="ptolemy.actor.TypedIORelation">
