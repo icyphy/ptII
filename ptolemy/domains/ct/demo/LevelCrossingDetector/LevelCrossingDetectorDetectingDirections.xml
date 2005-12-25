@@ -96,7 +96,7 @@ crossing detectors.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.0, 243.9999999999999}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{352.0, 244.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
