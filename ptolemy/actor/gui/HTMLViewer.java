@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
+import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.event.HyperlinkEvent;
@@ -84,15 +85,12 @@ public class HTMLViewer extends TableauFrame implements Printable,
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
-        getContentPane().setLayout(new BorderLayout(0, 0));
+        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         pane.setContentType("text/html");
         pane.setEditable(false);
         pane.addHyperlinkListener(this);
         _scroller = new JScrollPane(pane);
-
-        // Default, which can be overridden by calling setSize().
-        _scroller.setPreferredSize(new Dimension(800, 600));
-        getContentPane().add(_scroller);
+        _addMainPane();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -287,9 +285,7 @@ public class HTMLViewer extends TableauFrame implements Printable,
     public void setSize(final int width, final int height) {
         Runnable doSet = new Runnable() {
             public void run() {
-                // FIXME: As usual with Swing, the following has no effect :-(
-                _scroller.setPreferredSize(new Dimension(width, height));
-                _scroller.setSize(new Dimension(width, height));
+                _setScrollerSize(width, height);
                 HTMLViewer.super.setSize(width, height);
             }
         };
@@ -313,6 +309,23 @@ public class HTMLViewer extends TableauFrame implements Printable,
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Add the main content pane (for HTML).
+     */
+    protected void _addMainPane() {
+        // Default, which can be overridden by calling setSize().
+        _scroller.setPreferredSize(new Dimension(800, 600));
+        getContentPane().add(_scroller);
+    }
+
+    /** Set the scroller size.
+     *  @param width The width.
+     *  @param height The width.
+     */
+    protected void _setScrollerSize(final int width, final int height) {
+        _scroller.setPreferredSize(new Dimension(width, height));
+        _scroller.setSize(new Dimension(width, height));
+    }
+
     /** Write the model to the specified file.  Note that this does not
      *  defer to the effigy.
      *  @param file The file to write to.
@@ -332,7 +345,8 @@ public class HTMLViewer extends TableauFrame implements Printable,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // The scroll pane.
-    private JScrollPane _scroller;
+    ////                       protected variables                 ////
+    
+    /** The main scroll pane. */
+    protected JScrollPane _scroller;
 }

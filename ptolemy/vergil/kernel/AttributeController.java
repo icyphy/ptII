@@ -27,7 +27,11 @@
  */
 package ptolemy.vergil.kernel;
 
+import javax.swing.Action;
+
+import ptolemy.vergil.basic.CustomizeDocumentationAction;
 import ptolemy.vergil.basic.IconController;
+import ptolemy.vergil.basic.RemoveCustomDocumentationAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MoveAction;
 import diva.graph.GraphController;
@@ -70,8 +74,13 @@ public class AttributeController extends IconController {
         if (access == FULL) {
             // Add to the context menu.
             _menuFactory.addMenuItemFactory(new RenameDialogFactory());
+            Action[] actions = {
+                    new GetDocumentationAction(),
+                    new CustomizeDocumentationAction(),
+                    new RemoveCustomDocumentationAction()
+            };
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    new GetDocumentationAction()));
+                    actions, "Documentation"));
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(new MoveAction(
                             "Bring to Front", MoveAction.TO_FIRST)));

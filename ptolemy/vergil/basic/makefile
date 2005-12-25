@@ -58,6 +58,8 @@ JSRCS = \
 	AbstractBasicGraphModel.java \
 	BasicGraphController.java \
 	BasicGraphFrame.java \
+	CustomizeDocumentationAction.java \
+	DocAttribute.java \
 	EditorDropTarget.java \
 	ExtendedGraphFrame.java \
 	IconController.java \
@@ -68,6 +70,7 @@ JSRCS = \
 	NodeControllerFactory.java \
 	ParameterizedNodeController.java \
 	PopupMouseFilter.java \
+	RemoveCustomDocumentationAction.java \
 	RunnableGraphController.java \
 	WithIconGraphController.java
 

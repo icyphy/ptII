@@ -27,7 +27,7 @@
  */
 package ptolemy.vergil.actor;
 
-import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -135,6 +135,22 @@ public class DocViewer extends HTMLViewer {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                       protected methods                   ////
+
+    /** Override the base class to do nothing.
+     *  The main content pane is added after the top content.
+     */
+    protected void _addMainPane() {
+    }
+    
+    /** Override the base class to do nothing.
+     *  @param width The width.
+     *  @param height The width.
+     */
+    protected void _setScrollerSize(final int width, final int height) {
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
 
@@ -225,39 +241,47 @@ public class DocViewer extends HTMLViewer {
             rootName = className;
         }
 
-        // Panel for added sections.
-        JPanel topHalf = new JPanel();
-        topHalf.setLayout(new BoxLayout(topHalf, BoxLayout.Y_AXIS));
-        getContentPane().add(topHalf, BorderLayout.NORTH);
+        // Spacer at the top.
+        Container contentPane = getContentPane();
+        Dimension horizontalSpace = new Dimension(_SPACING, 0);
+        Dimension verticalSpace = new Dimension(0, _SPACING);
+        contentPane.add(Box.createRigidArea(verticalSpace));
         
         // Panel for title.
-        JPanel topPanel = new JPanel();
-        topHalf.add(topPanel);
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
+        contentPane.add(titlePanel);
         
         // Create a title area.
         String title = className;
-        int lastDot = className.lastIndexOf(".");
-        if (lastDot > 0) {
-            title = className.substring(lastDot + 1) 
-                    + "&nbsp; &nbsp; &nbsp; (" + className + ")";
+        if (manager.isInstanceDoc()) {
+            title = target.getName()
+                    + "&nbsp; &nbsp; &nbsp; (Instance of " + className + ")";
+        } else {
+            int lastDot = className.lastIndexOf(".");
+            if (lastDot > 0) {
+                title = className.substring(lastDot + 1) 
+                + "&nbsp; &nbsp; &nbsp; (" + className + ")";
+            }
         }
         JEditorPane titlePane = new JEditorPane();
         titlePane.setContentType("text/html");
         titlePane.setEditable(false);
         titlePane.setText(_HTML_HEADER + "<H2>&nbsp; " + title + "</H2>" + _HTML_TAIL);
-        Dimension titleSize = new Dimension(_DESCRIPTION_WIDTH + _ICON_WINDOW_WIDTH + 5, 40);
-        titlePane.setMinimumSize(titleSize);
+        Dimension titleSize = new Dimension(_DESCRIPTION_WIDTH + _ICON_WINDOW_WIDTH + _SPACING, 40);
         titlePane.setPreferredSize(titleSize);
         titlePane.setSize(titleSize);
         titlePane.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        topPanel.add(titlePane, BorderLayout.NORTH);
+        titlePanel.add(Box.createRigidArea(horizontalSpace));
+        titlePanel.add(titlePane);
+        titlePanel.add(Box.createRigidArea(horizontalSpace));
         
         // Panel for icon and description.
-        JPanel middlePanel = new JPanel();
-        middlePanel.setLayout(new BoxLayout(middlePanel, BoxLayout.X_AXIS));
-        topHalf.add(middlePanel, BorderLayout.CENTER);
-        topHalf.add(Box.createRigidArea(new Dimension(0,5)));
-        middlePanel.add(Box.createRigidArea(new Dimension(5,0)));
+        JPanel descriptionPanel = new JPanel();
+        descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.X_AXIS));
+        contentPane.add(Box.createRigidArea(verticalSpace));
+        contentPane.add(descriptionPanel);
+        descriptionPanel.add(Box.createRigidArea(horizontalSpace));
         // Construct a blank composite entity into which to put
         // an instance of the actor. 
         final CompositeEntity container = new CompositeEntity();
@@ -267,13 +291,14 @@ public class DocViewer extends HTMLViewer {
         final GraphPane graphPane = new GraphPane(controller, graphModel);
         final JGraph jgraph = new JGraph(graphPane);
         jgraph.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        // The icon window is fixed size.
         jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
+        jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
         jgraph.setPreferredSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
         jgraph.setSize(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT);
         jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
-        middlePanel.add(jgraph);
-        middlePanel.add(Box.createRigidArea(new Dimension(5,0)));
-
+        descriptionPanel.add(jgraph);
+        descriptionPanel.add(Box.createRigidArea(horizontalSpace));
         // Create a pane in which to display the description.
         final JEditorPane descriptionPane = new JEditorPane();
         descriptionPane.addHyperlinkListener(this);
@@ -282,9 +307,57 @@ public class DocViewer extends HTMLViewer {
         JScrollPane scroller = new JScrollPane(descriptionPane);
         scroller.setPreferredSize(new Dimension(_DESCRIPTION_WIDTH, _ICON_WINDOW_HEIGHT));
         scroller.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        middlePanel.add(scroller);
-        middlePanel.add(Box.createRigidArea(new Dimension(5,0)));
+        descriptionPanel.add(scroller);
+        descriptionPanel.add(Box.createRigidArea(horizontalSpace));
+        
+        // Add the main content pane now.
+        JPanel middle = new JPanel();
+        middle.setLayout(new BoxLayout(middle, BoxLayout.X_AXIS));
+        contentPane.add(Box.createRigidArea(verticalSpace));
+        contentPane.add(middle);
+        _scroller = new JScrollPane(pane);
+        // Default, which can be overridden by calling setSize().
+        _scroller.setPreferredSize(new Dimension(_MAIN_WINDOW_WIDTH, _MAIN_WINDOW_HEIGHT));
+        _scroller.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        middle.add(Box.createRigidArea(horizontalSpace));
+        middle.add(_scroller);
+        middle.add(Box.createRigidArea(horizontalSpace));
 
+        // Panel for added sections at the bottom.
+        JPanel bottom = new JPanel();
+        bottom.setLayout(new BoxLayout(bottom, BoxLayout.X_AXIS));
+        contentPane.add(Box.createRigidArea(verticalSpace));
+        contentPane.add(bottom);
+        contentPane.add(Box.createRigidArea(verticalSpace));
+        bottom.add(Box.createRigidArea(horizontalSpace));
+        // Pane for author, etc.
+        JEditorPane authorPane = new JEditorPane();
+        authorPane.addHyperlinkListener(this);
+        authorPane.setContentType("text/html");
+        authorPane.setEditable(false);
+        JScrollPane authorScroller = new JScrollPane(authorPane);
+        Dimension authorSize = new Dimension(_AUTHOR_WINDOW_WIDTH, _BOTTOM_HEIGHT);
+        authorScroller.setPreferredSize(authorSize);
+        authorScroller.setSize(authorSize);
+        authorScroller.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        bottom.add(authorScroller);
+        bottom.add(Box.createRigidArea(horizontalSpace));
+        // Pane for "see also" information.
+        JEditorPane seeAlsoPane = new JEditorPane();
+        seeAlsoPane.addHyperlinkListener(this);
+        seeAlsoPane.setContentType("text/html");
+        seeAlsoPane.setEditable(false);
+        JScrollPane seeAlsoScroller = new JScrollPane(seeAlsoPane);
+        Dimension seeAlsoSize = new Dimension(_SEE_ALSO_WIDTH, _BOTTOM_HEIGHT);
+        seeAlsoScroller.setPreferredSize(seeAlsoSize);
+        seeAlsoScroller.setSize(seeAlsoSize);
+        seeAlsoScroller.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        bottom.add(seeAlsoScroller);
+        bottom.add(Box.createRigidArea(horizontalSpace));
+
+        //////////////////////////////////////////////////////
+        // Create the content.
+        
         // Now generate the body of the documentation.
         StringBuffer html = new StringBuffer();
         html.append(_HTML_HEADER);
@@ -329,31 +402,33 @@ public class DocViewer extends HTMLViewer {
         }
 
         // Create tables to contain the information about parameters and ports.
-        StringBuffer info = new StringBuffer();
-        info.append(_HTML_HEADER);
-        String tr = "<tr>\n";
+        String tr = "<tr valign=top>\n";
         String tre = "</tr>\n";
-        String td1 = "<td width=\"20%\">";
-        String td2 = "<td width=\"80%\">";
+        String td = "<td>";
+        String tdColSpan = "<td colspan=2>";
         String tde = "</td>";
+        String tableOpening = "<table cellspacing=2 cellpadding=2>\n";
+        String tableClosing = "</table>";
         // Start with parameters.
         boolean foundOne = false;
-        StringBuffer parameterTable = new StringBuffer();
-        parameterTable.append("<table width=\"100%\"  border=\"2\" cellspacing=\"1\" cellpadding=\"1\">\n");
+        boolean foundParameter = false;
+        StringBuffer table = new StringBuffer();
+        StringBuffer parameters = new StringBuffer();
         if (target != null) {
             Iterator attributes = target.attributeList(Settable.class).iterator();
             while (attributes.hasNext()) {
                 Settable parameter = (Settable)attributes.next();
                 if (parameter.getVisibility() == Settable.FULL) {
-                    parameterTable.append(tr);
-                    parameterTable.append(td1);
-                    parameterTable.append(parameter.getName());
-                    parameterTable.append(tde);
-                    parameterTable.append(td2);
-                    parameterTable.append("FIXME");
-                    parameterTable.append(tde);
-                    parameterTable.append(tre);
+                    parameters.append(tr);
+                    parameters.append(td);
+                    parameters.append("<i>" + parameter.getName() + "</i>");
+                    parameters.append(tde);
+                    parameters.append(td);
+                    parameters.append("FIXME");
+                    parameters.append(tde);
+                    parameters.append(tre);
                     foundOne = true;
+                    foundParameter = true;
                 }
             }
         } else {
@@ -361,10 +436,13 @@ public class DocViewer extends HTMLViewer {
             // FIXME: Should use the sample... So this needs to be done as part of
             // the change request above!
         }
-        parameterTable.append("</table>");
-        if (foundOne) {
-            info.append("<H2>Parameters</H2>\n");
-            info.append(parameterTable);
+        if (foundParameter) {
+            table.append(tr);
+            table.append(tdColSpan);
+            table.append("<h2>Parameters</h2>");
+            table.append(tde);
+            table.append(tre);
+            table.append(parameters);
         }
         // Next do the ports.
         if (target instanceof Entity) {
@@ -376,87 +454,101 @@ public class DocViewer extends HTMLViewer {
             StringBuffer outputPorts = new StringBuffer();
             StringBuffer inputOutputPorts = new StringBuffer();
             StringBuffer neitherPorts = new StringBuffer();
-            inputPorts.append("<table width=\"100%\"  border=\"1\" cellspacing=\"1\" cellpadding=\"1\">\n");
-            outputPorts.append("<table width=\"100%\"  border=\"1\" cellspacing=\"1\" cellpadding=\"1\">\n");
-            inputOutputPorts.append("<table width=\"100%\"  border=\"1\" cellspacing=\"1\" cellpadding=\"1\">\n");
-            neitherPorts.append("<table width=\"100%\"  border=\"1\" cellspacing=\"1\" cellpadding=\"1\">\n");
             Iterator ports = ((Entity)target).portList().iterator();
             while (ports.hasNext()) {
                 Port port = (Port)ports.next();
+                String portName = "<i>" + port.getName() + "</i>";
                 String doc = manager.getPortDoc(port.getName());
                 if (port instanceof IOPort) {
                     if (((IOPort)port).isInput() && !((IOPort)port).isOutput()) {
                         inputPorts.append(tr);
-                        inputPorts.append(td1);
-                        inputPorts.append(port.getName());
+                        inputPorts.append(td);
+                        inputPorts.append(portName);
                         inputPorts.append(tde);
-                        inputPorts.append(td2);
+                        inputPorts.append(td);
                         inputPorts.append(doc);
                         inputPorts.append(tde);
                         inputPorts.append(tre);
-                        foundInput = true;                                            
+                        foundInput = true;
+                        foundOne = true;
                     } else if (((IOPort)port).isOutput() && !((IOPort)port).isInput()) {
                         outputPorts.append(tr);
-                        outputPorts.append(td1);
-                        outputPorts.append(port.getName());
+                        outputPorts.append(td);
+                        outputPorts.append(portName);
                         outputPorts.append(tde);
-                        outputPorts.append(td2);
+                        outputPorts.append(td);
                         outputPorts.append(doc);
                         outputPorts.append(tde);
                         outputPorts.append(tre);
                         foundOutput = true;                        
+                        foundOne = true;
                     } else if (((IOPort)port).isOutput() && ((IOPort)port).isInput()) {
                         inputOutputPorts.append(tr);
-                        inputOutputPorts.append(td1);
-                        inputOutputPorts.append(port.getName());
+                        inputOutputPorts.append(td);
+                        inputOutputPorts.append(portName);
                         inputOutputPorts.append(tde);
-                        inputOutputPorts.append(td2);
+                        inputOutputPorts.append(td);
                         inputOutputPorts.append(doc);
                         inputOutputPorts.append(tde);
                         inputOutputPorts.append(tre);
                         foundInputOutput = true;                    
+                        foundOne = true;
                     } else {
                         neitherPorts.append(tr);
-                        neitherPorts.append(td1);
-                        neitherPorts.append(port.getName());
+                        neitherPorts.append(td);
+                        neitherPorts.append(portName);
                         neitherPorts.append(tde);
-                        neitherPorts.append(td2);
+                        neitherPorts.append(td);
                         neitherPorts.append(doc);
                         neitherPorts.append(tde);
                         neitherPorts.append(tre);
                         foundNeither = true;                    
+                        foundOne = true;
                     }
                 } else {
                     neitherPorts.append(tr);
-                    neitherPorts.append(td1);
-                    neitherPorts.append(port.getName());
+                    neitherPorts.append(td);
+                    neitherPorts.append(portName);
                     neitherPorts.append(tde);
-                    neitherPorts.append(td2);
+                    neitherPorts.append(td);
                     neitherPorts.append(doc);
                     neitherPorts.append(tde);
                     neitherPorts.append(tre);
                     foundNeither = true;                    
+                    foundOne = true;
                 }
             }
-            inputPorts.append("</table>");
-            outputPorts.append("</table>");
-            inputOutputPorts.append("</table>");
-            neitherPorts.append("</table>");
             if (foundInput) {
-                info.append("<H2>Input Ports</H2>\n");
-                info.append(inputPorts);
+                table.append(tr);
+                table.append(tdColSpan);
+                table.append("<h2>Input Ports</h2>");
+                table.append(tde);
+                table.append(tre);
+                table.append(inputPorts);
             }
             if (foundOutput) {
-                info.append("<H2>Output Ports</H2>\n");
-                info.append(outputPorts);
+                table.append(tr);
+                table.append(tdColSpan);
+                table.append("<h2>Output Ports</h2>");
+                table.append(tde);
+                table.append(tre);
+                table.append(outputPorts);
             }
             if (foundInputOutput) {
-                info.append("<H2>Input/Output Ports</H2>\n");
-                info.append(inputOutputPorts);
+                table.append(tr);
+                table.append(tdColSpan);
+                table.append("<h2>Input/Output Ports</h2>");
+                table.append(tde);
+                table.append(tre);
+                table.append(inputOutputPorts);
             }
             if (foundNeither) {
-                info.append("<H2>Ports (Neither Input nor Output)</H2>\n");
-                info.append(neitherPorts);
+                table.append(tr);
+                table.append(tdColSpan);
+                table.append("<h2>Ports (Neither Input nor Output)</h2>");
+                table.append(tde);
+                table.append(tre);
+                table.append(neitherPorts);
             }
         } else {
             // Target is not an instance of entity (may be null), so just
@@ -465,21 +557,93 @@ public class DocViewer extends HTMLViewer {
             // the change request above!
         }
         // Finally, insert all.
+        StringBuffer info = new StringBuffer();
+        info.append(_HTML_HEADER);
+        if (foundOne) {
+            info.append(tableOpening);
+            info.append(table);
+            info.append(tableClosing);
+        } else {
+            info.append("No ports or parameters.");
+        }
         info.append(_HTML_TAIL);
+
         setText(info.toString());
+        
+        // Populate the author window.
+        info = new StringBuffer();
+        info.append(_HTML_HEADER);
+        // Author(s)
+        info.append(tableOpening);
+        info.append(tr);
+        info.append(td);
+        info.append("<i>Authors:</i> ");
+        info.append(tde);
+        info.append(td);
+        info.append(manager.getAuthor());
+        info.append(tde);
+        info.append(tre);
+        // Version
+        String version = manager.getVersion();
+        if (version != null) {
+            info.append(tr);
+            info.append(td);
+            info.append("<i>Version:</i> ");
+            info.append(tde);
+            info.append(td);
+            info.append(version);
+            info.append(tde);
+            info.append(tre);
+        }
+        // Since
+        String since = manager.getSince();
+        if (since != null) {
+            info.append(tr);
+            info.append(td);
+            info.append("<i>Since:</i> ");
+            info.append(tde);
+            info.append(td);
+            info.append(since);
+            info.append(tde);
+            info.append(tre);
+        }
+        // Rating
+        String rating = manager.getAcceptedRating();
+        if (rating != null) {
+            info.append(tr);
+            info.append(td);
+            info.append("<i>Rating:</i> ");
+            info.append(tde);
+            info.append(td);
+            info.append(rating);
+            info.append(tde);
+            info.append(tre);
+        }
+        // End of table
+        info.append(tableClosing);
+        info.append(_HTML_TAIL);
+        authorPane.setText(info.toString());
+
+        // Populate the "See Also" window.
+        seeAlsoPane.setText(_HTML_HEADER + manager.getSeeAlso() + _HTML_TAIL);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
+    /** Author window width. */
+    private static int _AUTHOR_WINDOW_WIDTH = 300;
+
     /** The configuration specified in the constructor. */
     private Configuration _configuration;
     
+    /** Bottom window height. */
+    private static int _BOTTOM_HEIGHT = 150;
+
     /** Width of the description pane. */
-    private static int _DESCRIPTION_WIDTH = 600;
+    private static int _DESCRIPTION_WIDTH = 500;
     
     /** HTML Header information. */
-    // FIXME: Font doesn't affect anything much!!!!
     private static String _HTML_HEADER
             = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
             + "\"http://www.w3.org/TR/html4/loose.dtd\">"
@@ -490,11 +654,10 @@ public class DocViewer extends HTMLViewer {
             + "h1, h2, h3, td, tr, body, p {font-family: Arial, Helvetica, sans-serif;}\n"
             + "-->\n"
             + "</STYLE>"
-            + "</head><body>"
-            + "<font face=\"Arial, Helvetica, sans-serif\">";
+            + "</head><body>";
 
     private static String _HTML_TAIL
-            = "</font></body></html>";
+            = "</body></html>";
 
     /** Icon window width. */
     private static int _ICON_WINDOW_HEIGHT = 200;
@@ -502,6 +665,18 @@ public class DocViewer extends HTMLViewer {
     /** Icon window width. */
     private static int _ICON_WINDOW_WIDTH = 200;
     
+    /** Main window height. */
+    private static int _MAIN_WINDOW_HEIGHT = 300;
+
+    /** Main window width. */
+    private static int _MAIN_WINDOW_WIDTH = 700;
+    
     /** Padding in icon window. */
     private static int _PADDING = 10;
+
+    /** Width of the see also pane. */
+    private static int _SEE_ALSO_WIDTH = 400;
+
+    /** Spacing between subwindows. */
+    private static int _SPACING = 5;
 }

@@ -36,8 +36,9 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Stack;
 
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.basic.DocAttribute;
 
 import com.microstar.xml.HandlerBase;
 import com.microstar.xml.XmlException;
@@ -57,7 +58,6 @@ import com.microstar.xml.XmlParser;
  The documentation is constructed by a multi-tiered method.
  The first level of information is provided by an
  attribute named DOC_ATTRIBUTE_NAME contained by the object.
- FIXME: Implement this!
  The second level of information is provided by an XML file
  in the same package as the class of the associated object.
  The name of the XML file is "xDoc.xml", where x is the name
@@ -88,7 +88,7 @@ import com.microstar.xml.XmlParser;
  
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
@@ -102,8 +102,53 @@ public class DocManager extends HandlerBase {
         _target = target;
         _targetClass = target.getClass();
         _className = _targetClass.getName();
-        Attribute instanceDoc = _target.getAttribute(DOC_ATTRIBUTE_NAME);
-        // FIXME: Try to populate from attribute.
+        _isInstanceDoc = false;
+        try {
+            DocAttribute instanceDoc = (DocAttribute)
+                    _target.getAttribute(DocAttribute.DOC_ATTRIBUTE_NAME, DocAttribute.class);
+            if (instanceDoc != null) {
+                // Populate fields from the attribute.
+                String descriptionValue = instanceDoc.description.stringValue();
+                if (!descriptionValue.trim().equals("")) {
+                    _isInstanceDoc = true;
+                    _description = descriptionValue;
+                }
+                /* No rating fields in instance documentation.
+                String acceptedRatingValue = instanceDoc.acceptedRating.getExpression();
+                if (!acceptedRatingValue.trim().equals("")) {
+                    _isInstanceDoc = true;
+                    _acceptedRating = acceptedRatingValue;
+                }
+                */
+                String authorValue = instanceDoc.author.getExpression();
+                if (!authorValue.trim().equals("")) {
+                    _isInstanceDoc = true;
+                    _author = authorValue;
+                }
+                /* No rating fields in instance documentation.
+                String proposedRatingValue = instanceDoc.proposedRating.getExpression();
+                if (!proposedRatingValue.trim().equals("")) {
+                    _isInstanceDoc = true;
+                    _proposedRating = proposedRatingValue;
+                }
+                */
+                String sinceValue = instanceDoc.since.getExpression();
+                if (!sinceValue.trim().equals("")) {
+                    _isInstanceDoc = true;
+                    _since = sinceValue;
+                }
+                String versionValue = instanceDoc.version.getExpression();
+                if (!versionValue.trim().equals("")) {
+                    _isInstanceDoc = true;
+                    _version = versionValue;
+                }
+            }
+        } catch (IllegalActionException e) {
+            _exception = "Error evaluating "
+                + DocAttribute.DOC_ATTRIBUTE_NAME
+                + " parameter:\n"
+                + e;
+        }
     }
 
     /** Construct a manager to handle documentation for the specified target
@@ -114,6 +159,7 @@ public class DocManager extends HandlerBase {
         super();
         _targetClass = targetClass;
         _className = _targetClass.getName();
+        _isInstanceDoc = false;
     }
     
     /** Construct a manager for documentation at the specified URL.
@@ -121,6 +167,7 @@ public class DocManager extends HandlerBase {
      */
     public DocManager(URL url) {
         super();
+        _isInstanceDoc = false;
         try {
             parse(null, url.openStream());
         } catch (Exception ex) {
@@ -192,14 +239,21 @@ public class DocManager extends HandlerBase {
      *  @param elementName The element type name.
      */
     public void endElement(String elementName) throws Exception {
-        if (elementName.equals("description")) {
-            // Append "see also" information.
-            _currentCharData.append(_getSeeAlso());
+        if (elementName.equals("acceptedRating")) {
+            _acceptedRating = _currentCharData.toString();
+        } else if (elementName.equals("author")) {
+            _author = _currentCharData.toString();
+        } else if (elementName.equals("description")) {
             _description = _currentCharData.toString();
         } else if (elementName.equals("port")) {
             _ports.put(_name, _currentCharData.toString());
+        } else if (elementName.equals("proposedRating")) {
+            _proposedRating = _currentCharData.toString();
+        } else if (elementName.equals("since")) {
+            _since = _currentCharData.toString();
+        } else if (elementName.equals("version")) {
+            _version = _currentCharData.toString();
         }
-        // FIXME: Other tags.
     }
 
     /** Indicate a fatal XML parsing error.
@@ -214,6 +268,35 @@ public class DocManager extends HandlerBase {
     public void error(String message, String systemID, int line, int column)
             throws XmlException {
         throw new XmlException(message, _currentExternalEntity(), line, column);
+    }
+
+    /** Return the acceptedRating field, or null
+     *  if none has been given. Note that unlike some of the other
+     *  fields, this does not delegate to the next tier if no
+     *  since field has been given.
+     *  @return The acceptedRating field.
+     */
+    public String getAcceptedRating() {
+        if (_acceptedRating == null) {
+            _readDocFile();
+        }
+        return _acceptedRating;
+    }
+
+    /** Return the author field, or the string "No author given"
+     *  if none has been given. Note that unlike some of the other
+     *  fields, this does not delegate to the next tier if no
+     *  author has been given.
+     *  @return The author field.
+     */
+    public String getAuthor() {
+        if (_author == null) {
+            _readDocFile();
+            if (_author == null) {
+                return "No author given";
+            }
+        }
+        return _author;
     }
 
     /** Return the class name, or null if none has been given.
@@ -235,10 +318,10 @@ public class DocManager extends HandlerBase {
         } else if (_description == null) {
             _readDocFile();
             if (_description == null) {
+                _createNextTier();
                 if (_nextTier != null) {
                     return _nextTier.getDescription();
                 } else {
-                    // FIXME: create _nextTier and delegate.
                     return "No description";
                 }
             }
@@ -256,14 +339,192 @@ public class DocManager extends HandlerBase {
         _readDocFile();
         String result = (String)_ports.get(name);
         if (result == null) {
+            _createNextTier();
             if (_nextTier != null) {
                 return _nextTier.getPortDoc(name);
             } else {
-                // FIXME: create _nextTier and delegate.
                 return "No port description";
             }
         }
         return result;
+    }
+
+    /** Return the proposedRating field, or null
+     *  if none has been given. Note that unlike some of the other
+     *  fields, this does not delegate to the next tier if no
+     *  since field has been given.
+     *  @return The proposedRating field.
+     */
+    public String getProposedRating() {
+        if (_proposedRating == null) {
+            _readDocFile();
+        }
+        return _proposedRating;
+    }
+
+    /** Return the since field, or null
+     *  if none has been given. Note that unlike some of the other
+     *  fields, this does not delegate to the next tier if no
+     *  since field has been given.
+     *  @return The since field.
+     */
+    public String getSince() {
+        if (_since == null) {
+            _readDocFile();
+        }
+        return _since;
+    }
+
+    /** Return the version field, or null
+     *  if none has been given. Note that unlike some of the other
+     *  fields, this does not delegate to the next tier if no
+     *  version has been given. If the version field is the standard
+     *  CVS version, then return only the version number and date.
+     *  @return The version field.
+     */
+    public String getVersion() {
+        if (_version == null) {
+            _readDocFile();
+        }
+        if (_version != null) {
+            if (_version.startsWith("$Id:")) {
+                // Standard CVS version. Extract the version number and date.
+                int index = _version.indexOf(",v ");
+                if (index > 4) {
+                    String tail = _version.substring(index + 3);
+                    // Find the first space after the start.
+                    index = tail.indexOf(" ");
+                    if (index > 0) {
+                        // Find the second space.
+                        index = tail.indexOf(" ", index + 1);
+                        if (index > 0) {
+                            _version = tail.substring(0, index);
+                        }
+                    }
+                }
+            }
+        }
+        return _version;
+    }
+    
+    /** Return "see also" information. This includes a link
+     *  to the javadoc documentation, the source code, and the
+     *  superclass information.
+     *  @return The "see also" information.
+     */
+    public String getSeeAlso() {
+        StringBuffer result = new StringBuffer();
+        
+        // See whether there is Javadoc, and link to it if there is.
+        result.append("<b>See Also:</b><ul>\n");
+        String className = _targetClass.getName();
+        String docName = "doc.codeDoc." + className;
+        if (_isInstanceDoc) {
+            // Create a link to the class documentation,
+            // if there is some.
+            try {
+                URL toRead = getClass().getClassLoader().getResource(
+                        docName.replace('.', '/') + ".xml");
+                
+                if (toRead != null) {
+                    result.append("<li><a href=\""
+                        + toRead.toExternalForm()
+                        + "\">Class documentation</a></li>");
+                } else {
+                    // Link to the Javadoc instead for the class.
+                    try {
+                        toRead = getClass().getClassLoader().getResource(
+                                docName.replace('.', '/') + ".html");
+                        
+                        if (toRead != null) {
+                            result.append("<li><a href=\""
+                                + toRead.toExternalForm()
+                                + "\">Class documentation</a></li>");
+                        }
+                    } catch (Exception ex) {
+                        result.append("<li>Error opening javadoc file:\n<pre>"
+                                + ex
+                                + "/n</pre></li>\n");
+                    }
+                }
+            } catch (Exception ex) {
+                result.append("<li>Error opening javadoc file:\n<pre>"
+                        + ex
+                        + "/n</pre></li>\n");
+            }
+        } else {
+            try {
+                URL toRead = getClass().getClassLoader().getResource(
+                        docName.replace('.', '/') + ".html");
+                
+                if (toRead != null) {
+                    result.append("<li><a href=\""
+                            + toRead.toExternalForm()
+                            + "\">Javadoc documentation</a></li>");
+                } else {
+                    // FIXME: Make this a hyperlink to a doc on how
+                    // to create the javadocs.
+                    result.append("<li>No javadocs found</li>");
+                }
+            } catch (Exception ex) {
+                result.append("<li>Error opening javadoc file:\n<pre>"
+                        + ex
+                        + "/n</pre></li>\n");
+            }
+            
+            // See whether the base class has a doc file, and if so, link to it.
+            // If not, try to link to the Javadoc for the base class.
+            try {
+                String baseClassName = _targetClass.getSuperclass().getName();
+                docName = "doc.codeDoc." + baseClassName;
+                URL toRead = getClass().getClassLoader().getResource(
+                        docName.replace('.', '/') + ".xml");
+                
+                if (toRead != null) {
+                    result.append("<li><a href=\""
+                            + toRead.toExternalForm()
+                            + "\">Base class (" + baseClassName + ")</a></li>");
+                } else {
+                    // Try the Javadoc.
+                    try {
+                        toRead = getClass().getClassLoader().getResource(
+                                docName.replace('.', '/') + ".html");
+                        
+                        if (toRead != null) {
+                            result.append("<li><a href=\""
+                                    + toRead.toExternalForm()
+                                    + "\">Base class Javadoc (" + baseClassName + ")</a></li>");
+                        }
+                    } catch (Exception ex) {
+                        // Ignore and leave blank.
+                    }
+                }
+            } catch (Exception ex) {
+                result.append("<li>Error opening javadoc file:\n<pre>"
+                        + ex
+                        + "/n</pre></li>\n");
+            }
+            
+            // Link to the source code, if present.
+            try {
+                URL toRead = getClass().getClassLoader().getResource(
+                        className.replace('.', '/') + ".java");
+                
+                if (toRead != null) {
+                    result.append("<li><a href=\""
+                            + toRead.toExternalForm()
+                            + "\">Source code</a></li>");
+                }
+            } catch (Exception ex) {
+                // Do not report anything.
+            }
+        }
+        
+        // FIXME: Need see also fields from the doclet analysis.
+        // FIXME: Include demos? How?
+        
+        result.append("</ul>");
+        return result.toString();
     }
     
     /** Return true if an exception was encountered parsing
@@ -272,6 +533,16 @@ public class DocManager extends HandlerBase {
      */
     public boolean hadException() {
         return _exception != null;
+    }
+    
+    /** Return true if the primary source of documentation is
+     *  the instance. That is, return true if the target has
+     *  an instance of DocAttribute in it, and at least one
+     *  of the fields of the DocAttribute is not empty.
+     *  @return True if this documents an instance (vs. a class).
+     */
+    public boolean isInstanceDoc() {
+        return _isInstanceDoc;
     }
 
     /** Parse the given stream as a DocML file.
@@ -362,7 +633,12 @@ public class DocManager extends HandlerBase {
     public void startElement(String elementName) throws XmlException {
         try {
             // NOTE: The elements are alphabetical below...
-            if (elementName.equals("description")) {
+            if (elementName.equals("acceptedRating")
+                    || elementName.equals("author")
+                    || elementName.equals("description")
+                    || elementName.equals("proposedRating")
+                    || elementName.equals("since")
+                    || elementName.equals("version")) {
                 _currentCharData = new StringBuffer();
             } else if (elementName.equals("doc")) {
                 _className = (String) _attributes.get("class");
@@ -405,9 +681,6 @@ public class DocManager extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
-    /** The attribute name for a doc attribute, if it is present. */
-    public static final String DOC_ATTRIBUTE_NAME = "_docAttribute";
-    
     /** The standard DocML DTD, represented as a string.  This is used
      *  to parse DocML data when a compatible PUBLIC DTD is specified.
      */
@@ -454,54 +727,7 @@ public class DocManager extends HandlerBase {
             _nextTier = new DocManager(superClass);
         }
     }
-    
-    /** Return "see also" information. */
-    private StringBuffer _getSeeAlso() {
-        StringBuffer result = new StringBuffer();
         
-        // See whether there is Javadoc, and link to it if there is.
-        result.append("\n<p><i>See Also:</i> ");
-        String className = _targetClass.getName();
-        String docName = "doc.codeDoc." + className;
-        try {
-            URL toRead = getClass().getClassLoader().getResource(
-                    docName.replace('.', '/') + ".html");
-            
-            if (toRead != null) {
-                result.append("<a href=\""
-                    + toRead.toExternalForm()
-                    + "\">Javadoc documentation</a>");
-            } else {
-                // FIXME: Make this a hyperlink to a doc on how
-                // to create the javadocs.
-                result.append("No javadocs found");
-            }
-        } catch (Exception ex) {
-            result.append("Error opening javadoc file:\n<pre>"
-                    + ex
-                    + "/n</pre>\n");
-        }
-        
-        // See whether the base class has a doc file, and if so, link to it.
-        try {
-            String baseClassName = _targetClass.getSuperclass().getName();
-            URL toRead = getClass().getClassLoader().getResource(
-                    baseClassName.replace('.', '/') + "Doc.xml");
-            
-            if (toRead != null) {
-                result.append(", <a href=\""
-                    + toRead.toExternalForm()
-                    + "\">Base class (" + baseClassName + ")</a>");
-            }
-        } catch (Exception ex) {
-            result.append("Error opening javadoc file:\n<pre>"
-                    + ex
-                    + "/n</pre>\n");
-        }
-        result.append("</p>");
-        return result;
-    }
-    
     /** Return true if the specified class is either equal to
      *  NamedObj or is a subclass of NamedObj.
      */
@@ -524,9 +750,9 @@ public class DocManager extends HandlerBase {
         }
         // FIXME: If file is not found, then instead of an
         // exception, probably want to delegate to the base class.
-        String className = _target.getClassName();
+        String docName = "doc.codeDoc." + _className;
         URL toRead = getClass().getClassLoader().getResource(
-                className.replace('.', '/') + "Doc.xml");
+                docName.replace('.', '/') + ".xml");
         try {
             if (toRead != null) {
                 parse(null, toRead.openStream());
@@ -545,8 +771,14 @@ public class DocManager extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    /** The acceptedRating field. */
+    private String _acceptedRating;
+
     /** Attributes associated with an entity. */
     private HashMap _attributes;
+    
+    /** The author field. */
+    private String _author;
     
     /** The class name. */
     private String _className;
@@ -565,6 +797,9 @@ public class DocManager extends HandlerBase {
     
     /** The external entities being parsed. */
     private Stack _externalEntities = new Stack();
+    
+    /** Indicator that the primary source of documentation is the instance. */
+    private boolean _isInstanceDoc = false;
 
     /** The name associated with the current port, parameter, etc. */
     private String _name;
@@ -578,9 +813,18 @@ public class DocManager extends HandlerBase {
     /** A table of port documents. */
     private HashMap _ports = new HashMap();
 
+    /** The proposedRating field. */
+    private String _proposedRating;
+    
+    /** The since field. */
+    private String _since;
+
     /** The object to be documented. */
     private NamedObj _target;
     
     /** The class of object to be documented. */
     private Class _targetClass;
+    
+    /** The version field. */
+    private String _version;
 }

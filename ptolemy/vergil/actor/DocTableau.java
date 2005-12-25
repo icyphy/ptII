@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author  Edward A. Lee
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  @see Effigy

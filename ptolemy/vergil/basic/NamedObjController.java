@@ -33,7 +33,6 @@ import java.net.URL;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-import ptolemy.vergil.actor.DocManager;
 import ptolemy.vergil.actor.DocViewer;
 import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.GraphController;
@@ -109,12 +108,13 @@ public class NamedObjController extends LocatableNodeController {
             // then use the DocViewer class to display the documentation.
             // For backward compatibility, if neither of these is found,
             // then we open the Javadoc file, if it is found.
-            if (target.getAttribute(DocManager.DOC_ATTRIBUTE_NAME) == null) {
+            if (target != null
+                    && target.getAttribute(DocAttribute.DOC_ATTRIBUTE_NAME) == null) {
                 // No doc attribute. Try for a doc file.
                 try {
                     String className = target.getClass().getName();
                     URL toRead = getClass().getClassLoader().getResource(
-                            className.replace('.', '/') + "Doc.xml");
+                            "doc/codeDoc/" + className.replace('.', '/') + ".xml");
                     if (toRead == null) {
                         // No doc file either.
                         // For backward compatibility, open the
