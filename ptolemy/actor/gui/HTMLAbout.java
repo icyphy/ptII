@@ -118,8 +118,19 @@ public class HTMLAbout {
                 + "<code>about:copyright</code></a> "
                 + " Display information about the copyrights.\n");
 
+        if (_configurationExists("full")) {
+            htmlBuffer.append("<li><a href=\"about:checkCompleteDemos\">"
+                    + "<code>about:checkCompleteDemos</code></a> "
+                    + "Check that each of the demos listed in the individual "
+                    + "files is present in "
+                    + "<code>ptolemy/configs/doc/completeDemos.htm</code>.\n");
+        }
+
+
         htmlBuffer.append("</ul>\n<table>\n");
 
+        _demosURLs = new LinkedList();
+        String demosURL, completeDemosURL;
         if (_configurationExists("full")) {
             htmlBuffer
                     .append("<tr rowspan=4><center><b>Full</b></center></tr>\n"
@@ -133,28 +144,42 @@ public class HTMLAbout {
 
         // Don't include DSP here, it uses the Ptiny demos anyway.
         if (_configurationExists("hyvisual")) {
+            demosURL = "ptolemy/configs/hyvisual/intro.htm";
+            _demosURLs.add(demosURL);
             htmlBuffer
                     .append("<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
+                            + _aboutHTML(demosURL));
+            
         }
 
         if (_configurationExists("ptiny")) {
+            demosURL = "ptolemy/configs/doc/demosPtiny.htm";
+            _demosURLs.add(demosURL);
+            completeDemosURL = "ptolemy/configs/doc/completeDemosPtiny.htm";
+            _demosURLs.add(completeDemosURL);
             htmlBuffer
                     .append("<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
-                            + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm"));
+                            + _aboutHTML(completeDemosURL)
+                            + _aboutHTML(demosURL));
         }
 
         if (_configurationExists("ptinyKepler")) {
+            demosURL = "ptolemy/configs/doc/demosPtinyKepler.htm";
+            _demosURLs.add(demosURL);
+            completeDemosURL =
+                "ptolemy/configs/doc/completeDemosPtinyKepler.htm";
+            _demosURLs.add(completeDemosURL);
             htmlBuffer
                     .append("<tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm")
-                            + _aboutHTML("ptolemy/configs/doc/demosPtinyKepler.htm"));
+                            + _aboutHTML(completeDemosURL)
+                            + _aboutHTML(demosURL));
         }
         if (_configurationExists("visualsense")) {
+            demosURL = "ptolemy/configs/visualsense/intro.htm";
+            _demosURLs.add(demosURL);
             htmlBuffer
                     .append("<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
-                            + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
+                            + _aboutHTML(demosURL));
         }
 
         try {
@@ -173,6 +198,7 @@ public class HTMLAbout {
                     StringToken demoToken = (StringToken) demoTokens
                             .getElement(i);
                     htmlBuffer.append(_aboutHTML(demoToken.stringValue()));
+                    _demosURLs.add(demoToken.stringValue());
                 }
             }
         } catch (Exception ex) {
@@ -180,8 +206,8 @@ public class HTMLAbout {
                     "Bad configuration for " + applicationName);
         }
 
-        htmlBuffer.append("</table>\n");
 
+        htmlBuffer.append("</table>\n");
         htmlBuffer.append("</body>\n</html>\n");
         return htmlBuffer.toString();
     }
@@ -233,7 +259,12 @@ public class HTMLAbout {
             Configuration configuration) throws Throwable {
         URL newURL = null;
 
-        if (event.getDescription().startsWith("about:checkModelSizes")) {
+        if (event.getDescription().startsWith("about:checkCompleteDemos")) {
+            newURL = _temporaryHTMLFile("checkCompleteDemos", ".htm",
+                    _checkCompleteDemos(
+                            "ptolemy/configs/doc/completeDemos.htm", 
+                            _demosURLs));
+        } else if (event.getDescription().startsWith("about:checkModelSizes")) {
             // Expand all the local .xml files in the fragment
             // and check their sizes and locations
             URI aboutURI = new URI(event.getDescription());
@@ -369,6 +400,43 @@ public class HTMLAbout {
         return MoMLApplication.specToURL(demosFileName);
     }
 
+    /** Check that all the demos in otherDemos are in complete Demos
+     *  @param completeDemos A URL pointing to the completeDemos.htm file
+     *  @param otherDemos A list of Strings where each string names a demo.
+     *  @return HTML listing demos in otherDemos that are not in completeDemos.
+     */
+    private static String _checkCompleteDemos(String completeDemos,
+            List otherDemos) 
+            throws IOException {
+        StringBuffer results = new StringBuffer(
+                "<h1>Results of checking for demos not listed in full "
+                + "demos</h1>\n"
+                + "For each of the files below, we list demos that are "
+                + "not included in " + completeDemos + "\n");
+
+        URL demosURL = _getDemoURL(completeDemos);
+        List completeDemosList = _getURLs(demosURL, ".*.xml$", true);
+        Iterator demosFileNames = otherDemos.iterator();
+        while (demosFileNames.hasNext()) {
+            String demosFileName = (String) demosFileNames.next();
+            URL demoURL = _getDemoURL(demosFileName);
+            results.append("<h2><code>" + demoURL + "</code></h2>\n<ul>\n");
+            
+            List demosList = _getURLs(demoURL, ".*.xml$", true);
+            Iterator demos = demosList.iterator();
+            while(demos.hasNext()) {
+                String demo = (String) demos.next();
+                if ( !completeDemosList.contains(demo)) {
+                    results.append(" <li><a href=\"" + demo + "\">"
+                            + demo + "</a>\n");
+                }
+            }
+            results.append("</ul>\n");
+
+        }
+        return results.toString();
+    }
+
     /** Open up a file, return a list of relative URLs that match a regexp.
      *  @param demosURL The URL of the file containing URLs.
      *  @param regexp The regular expression, for example ".*.xml$".
@@ -384,8 +452,8 @@ public class HTMLAbout {
      *  that match a regexp.
      *  @param demosURL The URL of the file containing URLs.
      *  @param regexp The regular expression, for example ".*.xml$".
-     *  @param absoluteURLs True if we should return absolute URLS.
-     *  @return a list of relative URLS
+     *  @param absoluteURLs True if we should return absolute URLs.
+     *  @return a list of Strings naming absolute or relative URLs.
      */   
     private static List _getURLs(URL demosURL, String regexp,
             boolean absoluteURLs) throws IOException {
@@ -503,4 +571,9 @@ public class HTMLAbout {
 
         return temporaryFile.toURL();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private static List _demosURLs;
 }
