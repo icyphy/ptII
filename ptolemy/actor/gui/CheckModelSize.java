@@ -27,6 +27,7 @@
 package ptolemy.actor.gui;
 
 import java.io.File;
+import java.net.URL;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.SizeAttribute;
@@ -79,8 +80,12 @@ public class CheckModelSize {
             parser.addMoMLFilter(new RemoveGraphicalClasses());
 
             try {
-                NamedObj top = parser.parse(null, new File(fileName).toURL());
-
+                NamedObj top = null;
+                try {
+                    top = parser.parse(null, new File(fileName).toURL());
+                } catch (Exception ex) {
+                    top = parser.parse(null, new URL(fileName));
+                }
                 if (top instanceof CompositeActor) {
                     SizeAttribute vergilSize = (SizeAttribute) top
                             .getAttribute("_vergilSize");
