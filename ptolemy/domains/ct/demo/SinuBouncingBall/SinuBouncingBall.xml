@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SinuBouncingBall" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 91, 789, 643}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={141, 87, 763, 443}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[574, 525]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[548, 325]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0707732634338">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.752821977422, 210.3622501019985}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.0, 162.5}">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
@@ -19,13 +19,13 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[121.0, 70.5]">
         </property>
     </property>
     <property name="lambda" class="ptolemy.data.expr.Parameter" value="0.9">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_icon" class="ptolemy.kernel.util.Attribute">
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
         </property>
@@ -36,15 +36,15 @@
       </svg>
     </configure>
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.0, 70.5]">
         </property>
     </property>
     <property name="length" class="ptolemy.data.expr.Parameter" value="2.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        <property name="_icon" class="ptolemy.kernel.util.Attribute">
             <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
             </property>
         </property>
@@ -55,35 +55,21 @@
       </svg>
     </configure>
         </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 0.0]">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model models a 3-D ball bouncing on a sinusoidal&#10;surface. Double-click the right yellow block for a &#10;graphic view. Note that x1, x2, and x3 axises in the &#10;figure correspond to x, y, and z axises in this model.&#10;&#10;The ball collides with the surface and bounces with &#10;some energy loss, which is specified by the lambda &#10;parameter. The bouncing direction depends on the &#10;slope of the surface. Gravity force applies on the ball. &#10;&#10;This model is a Zeno model. We use two states for&#10;pre-Zeno and post-Zeno dynamics respectively.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 190.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Haiyang Zheng, Robert D. Gregg, Aaron D. Ames&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[246.0, 50.5]">
         </property>
     </property>
     <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[441.0, 65.5]">
         </property>
     </property>
     <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="C:\hyzheng\ptII_duplicate\ptolemy\domains\ct\demo\SinuBouncingBall\sinu-ball.pdf">
     </property>
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[71.0, 185.5]">
         </property>
         <port name="x" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -120,7 +106,7 @@
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
-        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
       </configure>
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 187, 944, 675}, maximized=false}">
@@ -130,12 +116,6 @@
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2912437391138">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.7855718238159, 315.5585240038679}">
-            </property>
-            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There are two non-trivial states. The &quot;state&quot; state specifies the dynamics&#10;when the pendulum moves under gravity force while the cart moves. &#10;The &quot;constrained&quot; state specifies the dynamics when the pendulum rests on &#10;the cart and moves along with the cart. The transition from the &quot;state&quot; state&#10;to the &quot;constrained&quot; state is taken when the simulation results are close&#10;to the Zeno behavior.">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 110.0]">
-                </property>
             </property>
             <port name="x" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -174,7 +154,7 @@
                 </property>
             </port>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 330.0]">
                 </property>
@@ -182,7 +162,7 @@
             <entity name="state" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 400.0]">
                 </property>
@@ -190,7 +170,7 @@
             <entity name="constrained" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="constrainedState">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
+                <property name="_controllerFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 275.0]">
                 </property>
@@ -276,7 +256,7 @@
         </entity>
         <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="g" class="ptolemy.data.expr.Parameter" value="9.8">
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -287,7 +267,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 95.0]">
                 </property>
@@ -295,7 +275,7 @@
                 </property>
             </property>
             <property name="x_offset" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -306,7 +286,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 120.0]">
                 </property>
@@ -316,7 +296,7 @@
             <property name="z_offset" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -327,7 +307,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 160.0]">
                 </property>
@@ -345,7 +325,7 @@
                 </property>
             </property>
             <property name="y_offset" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -356,7 +336,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 140.0]">
                 </property>
@@ -366,7 +346,7 @@
             <property name="initialy_dot" class="ptolemy.data.expr.Parameter" value="2.8313206765247">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -377,7 +357,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 85.0]">
                 </property>
@@ -385,7 +365,7 @@
             <property name="initialx_dot" class="ptolemy.data.expr.Parameter" value="0.5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -396,7 +376,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 115.0]">
                 </property>
@@ -404,7 +384,7 @@
             <property name="initialz_dot" class="ptolemy.data.expr.Parameter" value="-1.9719239689167">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -415,7 +395,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 115.0]">
                 </property>
@@ -423,7 +403,7 @@
             <property name="initialy" class="ptolemy.data.expr.Parameter" value="1.0471975511966">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -434,7 +414,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 140.0]">
                 </property>
@@ -442,7 +422,7 @@
             <property name="initialx" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -453,7 +433,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 170.0]">
                 </property>
@@ -461,7 +441,7 @@
             <property name="initialz" class="ptolemy.data.expr.Parameter" value="2.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -472,7 +452,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 170.0]">
                 </property>
@@ -516,23 +496,11 @@
             <entity name="x" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialx">
                 </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 360.0]">
                 </property>
             </entity>
             <entity name="z_dot" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz_dot">
-                </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 250.0]">
                 </property>
@@ -540,35 +508,17 @@
             <entity name="z" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz">
                 </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 250.0]">
                 </property>
             </entity>
             <entity name="z_double_dot" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-g">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 250.0]">
                 </property>
             </entity>
             <entity name="z position" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + z_offset">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 250.0]">
                 </property>
@@ -579,12 +529,6 @@
             <entity name="z position2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + y_offset">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 430.0]">
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
@@ -593,12 +537,6 @@
             </entity>
             <entity name="z position3" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + x_offset">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 360.0]">
                 </property>
@@ -610,23 +548,11 @@
                 <property name="value" class="ptolemy.data.expr.Parameter" value="initialx_dot">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 360.0]">
                 </property>
             </entity>
             <entity name="x2" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy">
-                </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 430.0]">
                 </property>
@@ -635,23 +561,11 @@
                 <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <doc>Create a constant sequence.</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 430.0]">
                 </property>
             </entity>
             <entity name="y_dot" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy_dot">
-                </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 430.0]">
                 </property>
@@ -732,7 +646,7 @@
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{515.9081942336874, 384.8171471927162}">
             </property>
             <property name="g" class="ptolemy.data.expr.Parameter" value="9.8">
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -743,7 +657,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 120.0]">
                 </property>
@@ -751,7 +665,7 @@
                 </property>
             </property>
             <property name="x_offset" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -762,7 +676,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 120.0]">
                 </property>
@@ -772,7 +686,7 @@
             <property name="z_offset" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -783,7 +697,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 170.0]">
                 </property>
@@ -793,7 +707,7 @@
                 </property>
             </property>
             <property name="y_offset" class="ptolemy.data.expr.Parameter" value="0.0">
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -804,7 +718,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 140.0]">
                 </property>
@@ -814,7 +728,7 @@
             <property name="initialy_dot" class="ptolemy.data.expr.Parameter" value="2.8313206765247">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -825,7 +739,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 115.0]">
                 </property>
@@ -833,7 +747,7 @@
             <property name="initialx_dot" class="ptolemy.data.expr.Parameter" value="0.5">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -844,7 +758,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 145.0]">
                 </property>
@@ -852,7 +766,7 @@
             <property name="initialz_dot" class="ptolemy.data.expr.Parameter" value="-1.9998053838625">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -863,7 +777,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 145.0]">
                 </property>
@@ -871,7 +785,7 @@
             <property name="initialy" class="ptolemy.data.expr.Parameter" value="-2.3550678934959">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -882,7 +796,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 170.0]">
                 </property>
@@ -890,7 +804,7 @@
             <property name="initialx" class="ptolemy.data.expr.Parameter" value="5.2453626401722">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -901,7 +815,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 200.0]">
                 </property>
@@ -909,7 +823,7 @@
             <property name="initialz" class="ptolemy.data.expr.Parameter" value="-0.7079029564447">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_icon" class="ptolemy.kernel.util.Attribute">
                     <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
                     </property>
                 </property>
@@ -920,7 +834,7 @@
       </svg>
     </configure>
                 </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 200.0]">
                 </property>
@@ -958,23 +872,11 @@
             <entity name="y_dot" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy_dot">
                 </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 390.0]">
                 </property>
             </entity>
             <entity name="y" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialy">
-                </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 455.0]">
                 </property>
@@ -982,35 +884,17 @@
             <entity name="z_dot" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz_dot">
                 </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 250.0]">
                 </property>
             </entity>
             <entity name="z2" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialz">
                 </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 250.0]">
                 </property>
             </entity>
             <entity name="z position" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + z_offset">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 250.0]">
                 </property>
@@ -1021,12 +905,6 @@
             <entity name="z position2" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + y_offset">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 455.0]">
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
@@ -1036,12 +914,6 @@
             <entity name="z position3" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in + x_offset">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 570.0]">
                 </property>
                 <port name="in" class="ptolemy.actor.TypedIOPort">
@@ -1050,12 +922,6 @@
             </entity>
             <entity name="y_double_dot" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(2*cos(y)*(-g+sin(y)*y_dot^2))/(3+cos(2*y))">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[735.0, 380.0]">
                 </property>
@@ -1073,12 +939,6 @@
             <entity name="z_double_dot" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="-2*(g*cos(y)^2+sin(y)*y_dot^2)/(3+cos(2*y))">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 305.0]">
                 </property>
                 <port name="y" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -1095,12 +955,6 @@
             <entity name="x" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="initialx">
                 </property>
-                <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
-                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-                    </property>
-                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 570.0]">
                 </property>
             </entity>
@@ -1108,12 +962,6 @@
                 <property name="value" class="ptolemy.data.expr.Parameter" value="initialx_dot">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                    </property>
-                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                    </property>
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 570.0]">
                 </property>
             </entity>
@@ -1229,7 +1077,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[425, 272]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[296.0, 120.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1250,7 +1098,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[426, 270]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[321.0, 215.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1271,7 +1119,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[386.0, 165.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1286,27 +1134,27 @@
         </configure>
     </entity>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[190.0, 115.0]">
+        <vertex name="vertex1" value="[226.0, 165.5]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[205.0, 125.0]">
+        <vertex name="vertex1" value="[241.0, 175.5]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[125.0, 105.0]">
+        <vertex name="vertex1" value="[161.0, 155.5]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[155.0, 145.0]">
+        <vertex name="vertex1" value="[191.0, 195.5]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[130.0, 155.0]">
+        <vertex name="vertex1" value="[166.0, 205.5]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[105.0, 165.0]">
+        <vertex name="vertex1" value="[141.0, 215.5]">
         </vertex>
     </relation>
     <link port="ModalModel.x" relation="relation3"/>
