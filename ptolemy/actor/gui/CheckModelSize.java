@@ -71,6 +71,16 @@ public class CheckModelSize {
         StringBuffer results = new StringBuffer();
         for (int i = 0; i < args.length; i++) {
             String fileName = args[i];
+//             if (fileName.endsWith("ENM_11_18_04.xml") 
+//                     || fileName.endsWith("IPCC_Base_Layers.xml")
+//                     || fileName.endsWith("dataFrame_R.xml")
+//                     || fileName.endsWith("eml_Table_as_Record_R.xml")
+//                     || fileName.endsWith("emlToRecord_R.xml")
+//                     || fileName.endsWith("eml-simple-linearRegression-R.xml")
+//                     || fileName.endsWith("eml-pairs-R.xml")) {
+//                 System.out.println("CheckModelSize: skipping " + fileName);
+//                 continue;
+//             }
             StringBuffer analysis = new StringBuffer();
 
             MoMLParser parser = new MoMLParser();
@@ -79,8 +89,13 @@ public class CheckModelSize {
             // Filter out any graphical classes.
             parser.addMoMLFilter(new RemoveGraphicalClasses());
 
+            if (!(fileName.endsWith(".xml") || fileName.endsWith(".moml"))) {
+                continue;
+            }
+
             try {
                 NamedObj top = null;
+                System.out.println("CheckModelSize: " + i + " " + fileName);
                 try {
                     top = parser.parse(null, new File(fileName).toURL());
                 } catch (Exception ex) {
