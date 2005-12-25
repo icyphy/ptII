@@ -408,19 +408,20 @@ public class HTMLAbout {
     private static String _checkCompleteDemos(String completeDemos,
             List otherDemos) 
             throws IOException {
+        URL demosURL = _getDemoURL(completeDemos);
         StringBuffer results = new StringBuffer(
                 "<h1>Results of checking for demos not listed in full "
                 + "demos</h1>\n"
                 + "For each of the files below, we list demos that are "
-                + "not included in " + completeDemos + "\n");
-
-        URL demosURL = _getDemoURL(completeDemos);
+                + "not included in <a href=\"" + demosURL + "\">"
+                + "<code>" + demosURL + "</code></a>\n");
         List completeDemosList = _getURLs(demosURL, ".*.xml$", true);
         Iterator demosFileNames = otherDemos.iterator();
         while (demosFileNames.hasNext()) {
             String demosFileName = (String) demosFileNames.next();
             URL demoURL = _getDemoURL(demosFileName);
-            results.append("<h2><code>" + demoURL + "</code></h2>\n<ul>\n");
+            results.append("<h2><a href=\"" + demoURL + "\"><code>"
+                    + demoURL + "</code></a></h2>\n<ul>\n");
             
             List demosList = _getURLs(demoURL, ".*.xml$", true);
             Iterator demos = demosList.iterator();
