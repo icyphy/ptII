@@ -351,7 +351,7 @@ public class HTMLAbout {
                 + "\">&nbsp;Open the .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
                 + "    <td><a href=\"about:checkModelSizes#"
                 + fileName
-                + "\">&nbsp;check the sizes/centering of the models&nbsp;</a></td>\n"
+                + "\">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>\n"
                 // RunAllDemos does not work, it runs in the wrong thread?
                 // + "    <td><a href=\"about:runAllDemos#" + fileName
                 // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
