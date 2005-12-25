@@ -509,6 +509,14 @@ public class HTMLAbout {
                         } catch (URISyntaxException ex) {
                             // Ignore
                         }
+                        if (model == null) {
+                            // Could be a jar url
+                            model = MoMLApplication.specToURL(modelLink)
+                                .toString();
+                        }
+                        if (model == null) {
+                            model = modelLink;
+                        }
                         modelList.add(model);
                     } else {
                         modelList.add(modelLink);
