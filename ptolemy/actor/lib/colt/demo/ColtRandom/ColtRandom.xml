@@ -2,59 +2,25 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ColtRandom" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 19, 948, 693}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 658]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[733, 575]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.818407960199">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8570896217626">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{428.1398176291795, 346.0000000000001}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{367.6098913043478, 287.5624999999999}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1000">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -20.0]">
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Histograms of Random Numbers&#10;Generated using Colt">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, -45.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Colt is a &quot;Open Source Libraries for High&#10;Performance Scientific and Technical&#10;Computing in Java.&quot; This model demonstrates&#10;a library of actors that generate random&#10;numbers according to various probability&#10;distributions.&#10;&#10;The seeds and class of random number generator&#10;are coordinated among all instances of the&#10;actors in the model. Changing them for one&#10;actor will result in changing them for all&#10;actors so that the values are coherent. To&#10;change the seed or class of random number&#10;generator for all of the actors, right click&#10;on any one actor and modify the seed or&#10;sgeneratorClassParameter.&#10;&#10;For a description of the allowable&#10;generatorClass parameter values, see&#10;the ColtRandomSource documentation.&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, -5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -10.0]">
         </property>
     </property>
     <property name="generatorClass" class="ptolemy.data.expr.Parameter" value="&quot;MersenneTwister (MT19937)&quot;">
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: David Bauer and Kostas Oikonomou from AT&amp;T Research, and Edward A. Lee and Christopher Brooks">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 720.0]">
-        </property>
-    </property>
-    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Test actors verify that exactly the same random numbers are generated&#10;on each run (because the resetOnEachRun parameter of the generators is&#10;set to true). If the numbers differ from the expected on any run, then&#10;the test actors will throw an exception.&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 630.0]">
-        </property>
     </property>
     <entity name="ColtBeta" class="ptolemy.actor.lib.colt.ColtBeta">
         <property name="seed" class="ptolemy.actor.lib.colt.ColtSeedParameter" value="1L">
