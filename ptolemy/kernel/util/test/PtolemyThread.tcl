@@ -90,10 +90,18 @@ test PtolemyThread-1.1 {Test the constructor} {
 test PtolemyThread-2.1 {Test addDebugListener} {
     set pthread1 [java::new ptolemy.kernel.util.test.TestPtolemyThread]
     set listener [java::new ptolemy.kernel.util.RecorderListener]
+
+    # Try removing a listener before it has been added
+    $pthread1 removeDebugListener $listener
+
     $pthread1 addDebugListener $listener
 
     # Try to add it again to increase code coverage
     $pthread1 addDebugListener $listener
+
+    # Add a second listener, increase code coverage
+    set listener2 [java::new ptolemy.kernel.util.RecorderListener]
+    $pthread1 addDebugListener $listener2
 
     set source [java::new ptolemy.kernel.util.NamedObj "event source"]
     set debugEvent [java::new ptolemy.kernel.util.test.TestDebugEvent $source]
@@ -111,6 +119,8 @@ test PtolemyThread-2.2 {Test removeDebugListener} {
     # Try to remove it again to increase code coverage
     $pthread1 removeDebugListener $listener
 
+    $pthread1 removeDebugListener $listener2
+
     set source [java::new ptolemy.kernel.util.NamedObj "event source2"]
     set debugEvent [java::new ptolemy.kernel.util.test.TestDebugEvent $source]
 
@@ -118,6 +128,7 @@ test PtolemyThread-2.2 {Test removeDebugListener} {
     $pthread1 debug $debugEvent 	
     $pthread1 debug "This is a string2"	
 
+    # Output is the same as 1.1 above.
     $listener getMessages
 } {ptolemy.kernel.util.NamedObj {.event source}
 This is a string
