@@ -418,13 +418,17 @@ public class DocViewer extends HTMLViewer {
             Iterator attributes = target.attributeList(Settable.class).iterator();
             while (attributes.hasNext()) {
                 Settable parameter = (Settable)attributes.next();
+                String doc = manager.getPropertyDoc(parameter.getName());
+                if (doc == null) {
+                    doc = "No description.";
+                }
                 if (parameter.getVisibility() == Settable.FULL) {
                     parameters.append(tr);
                     parameters.append(td);
                     parameters.append("<i>" + parameter.getName() + "</i>");
                     parameters.append(tde);
                     parameters.append(td);
-                    parameters.append("FIXME");
+                    parameters.append(doc);
                     parameters.append(tde);
                     parameters.append(tre);
                     foundOne = true;
@@ -459,6 +463,9 @@ public class DocViewer extends HTMLViewer {
                 Port port = (Port)ports.next();
                 String portName = "<i>" + port.getName() + "</i>";
                 String doc = manager.getPortDoc(port.getName());
+                if (doc == null) {
+                    doc = "No port description.";
+                }
                 if (port instanceof IOPort) {
                     if (((IOPort)port).isInput() && !((IOPort)port).isOutput()) {
                         inputPorts.append(tr);

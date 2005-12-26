@@ -88,6 +88,9 @@ public class CustomizeDocumentationAction extends FigureAction {
                 target.requestChange(request);
             } else {
                 DocAttribute attribute = (DocAttribute)docAttributeList.get(0);
+                // In case parameters or ports have been added since the
+                // DocAttribute was constructed, refresh it.
+                attribute.refreshParametersAndPorts();
                 _editDocAttribute(getFrame(), attribute, target);
             }
         }

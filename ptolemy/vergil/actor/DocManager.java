@@ -34,10 +34,14 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Stack;
 
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.basic.DocAttribute;
 
 import com.microstar.xml.HandlerBase;
@@ -141,6 +145,29 @@ public class DocManager extends HandlerBase {
                 if (!versionValue.trim().equals("")) {
                     _isInstanceDoc = true;
                     _version = versionValue;
+                }
+                
+                // Next look for attributes.
+                Iterator attributes = target.attributeList(Settable.class).iterator();
+                while (attributes.hasNext()) {
+                    NamedObj attribute = (NamedObj)attributes.next();
+                    if (((Settable)attribute).getVisibility() != Settable.NONE) {
+                        String attributeDoc = instanceDoc.getParameterDoc(attribute.getName());
+                        if (attributeDoc != null) {
+                            _ports.put(attribute.getName(), attributeDoc);
+                        }
+                    }
+                }
+                // Next look for ports.
+                if (target instanceof Entity) {
+                    Iterator ports = ((Entity)target).portList().iterator();
+                    while (ports.hasNext()) {
+                        Port port = (Port)ports.next();
+                        String portDoc = instanceDoc.getPortDoc(port.getName());
+                        if (portDoc != null) {
+                            _ports.put(port.getName(), portDoc);
+                        }
+                    }
                 }
             }
         } catch (IllegalActionException e) {
@@ -247,6 +274,8 @@ public class DocManager extends HandlerBase {
             _description = _currentCharData.toString();
         } else if (elementName.equals("port")) {
             _ports.put(_name, _currentCharData.toString());
+        } else if (elementName.equals("property")) {
+            _properties.put(_name, _currentCharData.toString());
         } else if (elementName.equals("proposedRating")) {
             _proposedRating = _currentCharData.toString();
         } else if (elementName.equals("since")) {
@@ -339,11 +368,33 @@ public class DocManager extends HandlerBase {
         _readDocFile();
         String result = (String)_ports.get(name);
         if (result == null) {
-            _createNextTier();
-            if (_nextTier != null) {
-                return _nextTier.getPortDoc(name);
-            } else {
-                return "No port description";
+            result = (String)_ports.get(name + " (port)");
+            if (result == null) {
+                _createNextTier();
+                if (_nextTier != null) {
+                    return _nextTier.getPortDoc(name);
+                }
+            }
+        }
+        return result;
+    }
+
+    /** Return the documentation for the specified property
+     *  (parameter or attribute), or null if there is none.
+     *  @param name The name of the property.
+     *  @return The documentation for the specified property, or null
+     *   if there is none.
+     */
+    public String getPropertyDoc(String name) {
+        _readDocFile();
+        String result = (String)_properties.get(name);
+        if (result == null) {
+            result = (String)_properties.get(name + " (parameter)");
+            if (result == null) {
+                _createNextTier();
+                if (_nextTier != null) {
+                    return _nextTier.getPropertyDoc(name);
+                }
             }
         }
         return result;
@@ -655,6 +706,10 @@ public class DocManager extends HandlerBase {
                 _currentCharData = new StringBuffer();
                 _name = (String) _attributes.get("name");
                 _checkForNull(_name, "No name argument for element \"port\"");
+            } else if (elementName.equals("property")) {
+                _currentCharData = new StringBuffer();
+                _name = (String) _attributes.get("name");
+                _checkForNull(_name, "No name argument for element \"property\"");
             }
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
@@ -809,7 +864,10 @@ public class DocManager extends HandlerBase {
 
     /** The parser. */
     private XmlParser _parser = new XmlParser();
-    
+
+    /** A table of property documents. */
+    private HashMap _properties = new HashMap();
+
     /** A table of port documents. */
     private HashMap _ports = new HashMap();
 

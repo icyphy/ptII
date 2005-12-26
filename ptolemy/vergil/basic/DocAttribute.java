@@ -27,12 +27,19 @@
  */
 package ptolemy.vergil.basic;
 
+import java.util.Iterator;
+
 import ptolemy.actor.gui.style.TextStyle;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
@@ -74,6 +81,8 @@ public class DocAttribute extends Attribute {
         author = new StringAttribute(this, "Author");        
         version = new StringAttribute(this, "Version");
         since = new StringAttribute(this, "Since");
+        
+        refreshParametersAndPorts();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,4 +105,74 @@ public class DocAttribute extends Attribute {
 
     /** The attribute name for a doc attribute, if it is present. */
     public static final String DOC_ATTRIBUTE_NAME = "_docAttribute";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Return the documentation for the given parameter, or null if there
+     *  none.
+     *  @param name The name of the parameter.
+     *  @return The documentation for the given parameter, or null if there
+     *   is none.
+     */
+    public String getParameterDoc(String name) {
+        StringParameter parameterAttribute = (StringParameter)getAttribute(name + " (parameter)");
+        if (parameterAttribute != null) {
+            return parameterAttribute.getExpression();
+        }
+        return null;
+    }
+
+
+    /** Return the documentation for the given port, or null if there
+     *  none.
+     *  @param name The name of the port.
+     *  @return The documentation for the given port, or null if there
+     *   is none.
+     */
+    public String getPortDoc(String name) {
+        StringAttribute portAttribute = (StringAttribute)getAttribute(name + " (port)");
+        if (portAttribute != null) {
+            return portAttribute.getExpression();
+        }
+        return null;
+    }
+
+    /** For each parameter and port in the container, create a
+     *  parameter with the same name appended with either " (port)"
+     *  or " (parameter)".  For parameters, only those that are
+     *  settable are shown, and only if the visibility is not "NONE".
+     */
+    public void refreshParametersAndPorts() {
+        NamedObj container = getContainer();
+        Iterator parameters = container.attributeList(Settable.class).iterator();
+        while (parameters.hasNext()) {
+            NamedObj attribute = (NamedObj)parameters.next();
+            if (((Settable)attribute).getVisibility() != Settable.NONE) {
+                String name = attribute.getName() + " (parameter)";
+                if (getAttribute(name) == null) {
+                    try {
+                        new StringParameter(this, name);
+                    } catch (KernelException e) {
+                        throw new InternalErrorException(e);
+                    }
+                }
+            }
+        }
+        
+        if (container instanceof Entity) {
+            Iterator ports = ((Entity)container).portList().iterator();
+            while (ports.hasNext()) {
+                Port port = (Port)ports.next();
+                String name = port.getName() + " (port)";
+                if (getAttribute(name) == null) {
+                    try {
+                        new StringAttribute(this, name);
+                    } catch (KernelException e) {
+                        throw new InternalErrorException(e);
+                    }
+                }
+            }            
+        }
+    }
 }
