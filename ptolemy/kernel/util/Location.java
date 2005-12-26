@@ -117,13 +117,11 @@ public class Location extends SingletonAttribute implements Locatable {
 
         // Copy the location so that the reference in the new object
         // does not refer to the same array.
-        if (_location == null) {
-            newObject._location = null;
-        } else {
-            int length = _location.length;
-            newObject._location = new double[length];
-            System.arraycopy(_location, 0, newObject._location, 0, length);
-        }
+        // _location can never be null because setLocation() will
+        // not handle it.
+        int length = _location.length;
+        newObject._location = new double[length];
+        System.arraycopy(_location, 0, newObject._location, 0, length);
 
         newObject._valueListeners = null;
         return newObject;
