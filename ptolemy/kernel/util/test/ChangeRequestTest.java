@@ -154,11 +154,11 @@ public class ChangeRequestTest implements ChangeListener {
     /** Mutate.
      */
     public void mutate() {
-        if (_changeRequest == null) {
-            _changeRequest = mutateConst2ChangeRequest();
+        if (changeRequest == null) {
+            changeRequest = mutateConst2ChangeRequest();
         }
 
-        _top.requestChange(_changeRequest);
+        _top.requestChange(changeRequest);
     }
 
     public void waitForCompletionTask() {
@@ -168,7 +168,7 @@ public class ChangeRequestTest implements ChangeListener {
                         + " About to wait for completion");
 
                 try {
-                    _changeRequest.waitForCompletion();
+                    changeRequest.waitForCompletion();
                 } catch (Exception ex) {
                     System.out.println(ex);
                 }
@@ -185,7 +185,7 @@ public class ChangeRequestTest implements ChangeListener {
     /** Create a change request that always throws an exception. */
     public ChangeRequest mutateBadChangeRequest() {
         // Create an anonymous inner class
-        _changeRequest = new ChangeRequest(this,
+        changeRequest = new ChangeRequest(this,
                 "Change request that always throws an Exception") {
             protected void _execute() throws Exception {
                 if (1 == 1) {
@@ -193,18 +193,18 @@ public class ChangeRequestTest implements ChangeListener {
                 }
             }
         };
-        return _changeRequest;
+        return changeRequest;
     }
 
     /** Create a change request that sets const to 2.0. */
     public ChangeRequest mutateConst2ChangeRequest() {
         // Create an anonymous inner class
-        _changeRequest = new ChangeRequest(this, "Changing Const to 2.0") {
+        changeRequest = new ChangeRequest(this, "Changing Const to 2.0") {
             protected void _execute() throws Exception {
                 _const.value.setToken(new DoubleToken(2.0));
             }
         };
-        return _changeRequest;
+        return changeRequest;
     }
 
     /** Start a run.
@@ -215,10 +215,13 @@ public class ChangeRequestTest implements ChangeListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // ChangeRequest that modifies the system.
-    public ChangeRequest _changeRequest;
+    ////                         public variables                  ////
 
+    /** ChangeRequest that modifies the system. */
+    public ChangeRequest changeRequest;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private Manager _manager;
 
     private Recorder _rec;
