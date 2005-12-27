@@ -1,6 +1,6 @@
 # Test ChangeRequest
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Christopher Brooks
 #
 # @Version: $Id$
 #
@@ -59,6 +59,30 @@ test ChangeRequest-2.0 {test elaborate run with graph rewiring} {
     enumToTokenValues [$t finish]
 } {2.0 6.0 7.0 8.0 9.0}
 
+test ChangeRequest-2.1 {call execute() twice on a ChangeRequest} {
+    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    set changeRequest [$t mutateConst2ChangeRequest]
+    # Ok to Execute once	
+    $changeRequest execute
+    # Not ok to execute twice
+    catch {$changeRequest execute} msg
+    list $msg
+} {{ptolemy.kernel.util.InternalErrorException: Attempted to execute a change request that had already been executed.}}
+
+test ChangeRequest-2.2 {call execute() twice on a ChangeRequest} {
+    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    set changeRequest [$t mutateBadChangeRequest]
+    # Ok to Execute once	
+    catch {$changeRequest execute} msg1
+    # Not ok to execute twice
+    catch {$changeRequest execute} msg2
+    list $msg1 $msg2
+} {{ptolemy.kernel.util.InternalErrorException: ChangeRequest failed (NOTE: there is no ChangeListener):
+Change request that always throws an Exception
+Because:
+Always Thrown Exception} {ptolemy.kernel.util.InternalErrorException: Attempted to execute a change request that had already been executed.}}
+
+
 test ChangeRequest-3.0 {test DE example with no mutations} {
     set t [java::new ptolemy.kernel.util.test.TestDE]
     $t start
@@ -78,6 +102,8 @@ test ChangeRequest-3.2 {test DE example with inserted actor} {
     $t insertClock
     enumToObjects [$t finish]
 } {0.0 1.0 2.0 2.5 3.0 4.0 4.5 5.0 6.0 6.5 7.0 8.0 8.5 9.0 10.0 10.5}
+
+
 
 
 test ChangeRequest-4.0 {StreamChangeListener} {
@@ -120,6 +146,9 @@ test ChangeRequest-4.0 {StreamChangeListener} {
     $printStream flush
     regsub -all [java::call System getProperty "line.separator"] \
 	        [$stream toString] "\n" output
+
+    $changeRequest removeChangeListener $listener    
+
     list [$changeRequest isErrorReported] $output $stdoutResults
 } {0 {StreamChangeRequest.changeExecuted(): Changing Const to 2.0 succeeded
 } {main  Before call to waitForCompletionTask
@@ -159,6 +188,15 @@ test ChangeRequest-4.1 {StreamChangeListener} {
 } {0 {StreamChangeRequest.changeFailed(): Change request that always throws an Exception failed: java.lang.Exception: Always Thrown Exception
 }}
 
+
+test ChangeRequest-6.1 {getLocality, getSource} {
+    set t [java::new ptolemy.kernel.util.test.ChangeRequestTest]
+    set changeRequest [$t mutateConst2ChangeRequest]
+    set source [java::cast ptolemy.kernel.util.test.ChangeRequestTest \
+	[$changeRequest getSource]]
+    list [java::isnull [$changeRequest getLocality]] [$source equals $t]
+	
+}
 
 test ChangeRequest-6.1 {isErrorReported, setErrorReported} {
     set stream [java::new java.io.ByteArrayOutputStream]
