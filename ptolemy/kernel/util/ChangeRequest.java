@@ -180,25 +180,34 @@ public abstract class ChangeRequest {
             }
         }
 
-        if (needToReport) {
-            if (_exception != null) {
-                // We used to print to stderr, but printing to stderr
-                // is a bug if we have a UI, so we throw an InternalError.
-                // If the _source is a Nameable, we use it in the Exception.
-                Nameable object = null;
+        // If there is no ChangeListener, and the ChangeRequest throws
+        // an exception, make sure we set _pending to false so that we
+        // don't execute the ChangeRequest twice.  This is in
+        // keeping with the policy where we remove ChangeRequests
+        // from the list before we execute them.
 
-                if (_source instanceof Nameable) {
-                    object = (Nameable) _source;
+        try {
+            if (needToReport) {
+                if (_exception != null) {
+                    // We used to print to stderr, but printing to
+                    // stderr is a bug if we have a UI, so we throw an
+                    // InternalError.  If the _source is a Nameable,
+                    // we use it in the Exception.
+                    Nameable object = null;
+
+                    if (_source instanceof Nameable) {
+                        object = (Nameable) _source;
+                    }
+
+                    throw new InternalErrorException(object, _exception,
+                            "ChangeRequest failed (NOTE: there is no "
+                            + "ChangeListener):\n" + _description);
                 }
-
-                throw new InternalErrorException(object, _exception,
-                        "ChangeRequest failed (NOTE: there is no "
-                                + "ChangeListener):\n" + _description);
             }
+        } finally {
+            _pending = false;
+            notifyAll();
         }
-
-        _pending = false;
-        notifyAll();
     }
 
     /** Get the description that was specified in the constructor.
