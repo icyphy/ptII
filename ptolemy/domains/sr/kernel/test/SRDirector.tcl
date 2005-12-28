@@ -40,11 +40,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-if {[string compare sdfModel [info procs testSuggestedModalModelDirectors]] \
-	!= 0} then {
-    source [file join $PTII util testsuite models.tcl]
-} {}
-
 set w [java::new ptolemy.kernel.util.Workspace W]
 set manager [java::new ptolemy.actor.Manager $w M]
 
@@ -85,70 +80,3 @@ test SRDirector-4.1 {Test _makeDirectorOf} {
     $e0 setManager $manager
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
 } {.E0.D3 .D4 {.D2 .E0}}
-
-######################################################################
-####
-#
-test SRDirector-5.1 {Test action methods} {
-    set e2 [java::new ptolemy.actor.TypedCompositeActor]
-    set manager [java::new ptolemy.actor.Manager]
-    $e2 setName top2
-    $e2 setManager $manager
-    set director \
-            [java::new ptolemy.domains.sr.kernel.SRDirector $e2 SRDirector]
-
-    set iterationsParam [getParameter $director iterations]
-    $iterationsParam setToken [java::new ptolemy.data.IntToken 9];
-    
-
-    set r1 [java::new ptolemy.actor.lib.Ramp $e2 Ramp1]
-    set r2 [java::new ptolemy.actor.lib.Ramp $e2 Ramp2]
-
-
-    set firingParam [getParameter $r2 firingCountLimit]
-    $firingParam setToken [java::new ptolemy.data.IntToken 3];
-
-    set stepParam [getParameter $r2 step]
-    $stepParam setToken [java::new ptolemy.data.DoubleToken 4.0];
-
-    set a1 [java::new ptolemy.actor.lib.AddSubtract $e2 AddSubtract1]
-    set r3 [java::new ptolemy.actor.lib.Recorder $e2 Recorder3]
-
-    $e2 connect \
-	    [java::field [java::cast ptolemy.actor.lib.Source $r1] output] \
- 	    [java::field $a1 plus] \
-	    R1
-
-    $e2 connect \
-	    [java::field [java::cast ptolemy.actor.lib.Source $r2] output] \
- 	    [java::field $a1 plus] \
-	    R2
-
-
-    $e2 connect \
- 	    [java::field $a1 output] \
-	    [java::field [java::cast ptolemy.actor.lib.Sink $r3] input] \
-	    R3
-
-    #puts [$e2 exportMoML]
-    #[$e2 getManager] initialize
-    [$e2 getManager] execute
-    #$director iterate 3
-    set r2 [$director getNextIterationTime]
-    $director stop
-    $director wrapup
-    list $r2 [enumToTokenValues [$r3 getRecord 0]] \
-	[$director getNextIterationTime] \
-	[$director getCurrentTime]
-} {0.0 {0.0 5.0 10.0 3.0 4.0 5.0 6.0 7.0 8.0} 0.0 0.0}
-
-
-######################################################################
-####
-#
-test SRDirector-6.1 {Test suggestedModalModelDirectors} {
-    # Uses 5.1 above
-    # testSuggestedModalModelDirectors is defined
-    # in $PTII/util/testsuite/models.tcl
-    testSuggestedModalModelDirectors $director
-} {1}
