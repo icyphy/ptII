@@ -40,13 +40,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-#
-#
-
-######################################################################
-####
-#
-
 ######################################################################
 ####  Test constructors.
 #
