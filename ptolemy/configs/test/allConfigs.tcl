@@ -37,18 +37,33 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-if {[string compare sdfModel [info procs testSuggestedModalModelDirectors]] \
-	!= 0} then {
-    source [file join $PTII util testsuite models.tcl]
-} {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-######################################################################
-####
-#
-
+# Test the suggestedModalModelDirectors() method by constructing each
+# element of the array.
+proc testSuggestedModalModelDirectors {director} {
+    set compositeEntity [java::new ptolemy.kernel.CompositeEntity]
+    set directors [$director suggestedModalModelDirectors]
+    for {set i 0} {$i < [$directors length]} {incr i} {
+	set directorName [$directors -noconvert get $i]
+        set directorClass [java::call Class forName $directorName]
+        set args [java::new {Class[]} {2} \
+	    [list \
+		[java::call Class forName ptolemy.kernel.CompositeEntity] \
+		[java::call Class forName java.lang.String]]]
+	set constructor [$directorClass getConstructor $args]
+	set shortDirectorName [$directorName substring \
+		[expr {[$directorName lastIndexOf "."] + 1}]]
+	set a [list $compositeEntity $shortDirectorName] 
+	set initArgs [java::new {java.lang.Object[]} {2} $a]
+	set instance [$constructor newInstance $initArgs]
+	if {![java::instanceof $instance ptolemy.actor.Director]} {
+	    error "$directorClass is not a Director?"
+	}
+    }
+}
 
 cd ..
 set configs [glob */*configuration*.xml]
