@@ -77,6 +77,20 @@ test ConfigurableAttribute-1.5 {test value, getConfigureText, getConfigureSource
 ######################################################################
 ####
 #
+test ConfigurableAttribute-1.5.2 {test getDefaultExpression, getDisplayName} {
+    # Uses Test 1.1 above 
+    set result1 [$p1 getDefaultExpression] 
+    set result2 [$p1 getDisplayName]
+    $p1 setDisplayName foo
+    set result3 [$p1 getDisplayName]
+    $p1 setDisplayName [java::null]
+    set result4 [$p1 getDisplayName]
+    list $result1 $result2 $result3 $result4
+} {{} P1 foo P1}
+
+######################################################################
+####
+#
 test ConfigurableAttribute-1.6 {test export moml with null text} {
     set n0 [java::new ptolemy.kernel.util.NamedObj]
     $n0 setName N0
@@ -170,3 +184,18 @@ test ConfigurableAttribute-4.3 {getExpression from a real file} {
     $c1 getExpression
 } {Test file for ConfigurableAttribute
 My Test String}
+
+test ConfigurableAttribute-4.4 {setExpression exception} {
+    set n [java::new ptolemy.kernel.util.NamedObj]
+    set c1 [java::new ptolemy.kernel.util.ConfigurableAttribute $n c1]
+    set c2 [java::new ptolemy.kernel.util.test.InvalidStringAttribute $c1 c2]
+    catch {$c1 setExpression foo} msg1
+    set c3 [java::new ptolemy.kernel.util.ConfigurableAttribute $n c3]
+    set c4 [java::new ptolemy.kernel.util.test.InvalidStringAttribute $c3 \
+	KernelRuntimeException]
+    catch {$c3 setExpression foo} msg2
+
+    list $msg1 $msg2
+} {{ptolemy.kernel.util.IllegalActionException: InvalidStringAttributeAlways throws an exception in validate()
+  in .<Unnamed Object>.c1.c2} {ptolemy.kernel.util.InternalErrorException: Unexpected exception: ptolemy.kernel.util.KernelRuntimeException: Name was "KernelRuntimeException", so we throw it
+  in .<Unnamed Object>.c3.KernelRuntimeException}}
