@@ -41,6 +41,11 @@ if {[info procs enumToObjects] == "" } then {
      source enums.tcl
 }
 
+if {[string compare sdfModel [info procs testSuggestedModalModelDirectors]] \
+	!= 0} then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -49,3 +54,14 @@ if {[info procs enumToObjects] == "" } then {
 #
 test CSPDirector-2.1 {} {
 } {}
+
+######################################################################
+####
+#
+test CSPDirector-6.1 {Test suggestedModalModelDirectors} {
+    set top [java::new ptolemy.kernel.CompositeEntity]
+    set director [java::new ptolemy.domains.csp.kernel.CSPDirector $top top]
+    # testSuggestedModalModelDirectors is defined
+    # in $PTII/util/testsuite/models.tcl
+    testSuggestedModalModelDirectors $director
+} {1}
