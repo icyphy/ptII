@@ -84,6 +84,7 @@ test Precision-1.0 {constructors-string} {
     set p22 [java::new ptolemy.math.Precision "32e0"]
     set p23 [java::new ptolemy.math.Precision "U8e-7"]
 
+    set p24 [java::new ptolemy.math.Precision "\[16,2\]"]
 
     list "
 [$p0 toString] [$p0 getNumberOfBits] [$p0 getExponent] [$p0 getSign]
@@ -109,7 +110,9 @@ test Precision-1.0 {constructors-string} {
 [$p20 toString] [$p20 getNumberOfBits] [$p20 getExponent] [$p20 getSign]
 [$p21 toString] [$p21 getNumberOfBits] [$p21 getExponent] [$p21 getSign]
 [$p22 toString] [$p22 getNumberOfBits] [$p22 getExponent] [$p22 getSign]
-[$p23 toString] [$p23 getNumberOfBits] [$p23 getExponent] [$p23 getSign] "
+[$p23 toString] [$p23 getNumberOfBits] [$p23 getExponent] [$p23 getSign]
+[$p24 toString] [$p24 getNumberOfBits] [$p24 getExponent] [$p24 getSign]
+"
 } {{
 (3.2) 5 -2 1
 (0.7) 7 -7 1
@@ -134,7 +137,9 @@ test Precision-1.0 {constructors-string} {
 (10e-12) 10 -12 1
 (8e4) 8 4 1
 (32e0) 32 0 1
-(U8e-7) 8 -7 0 }}
+(U8e-7) 8 -7 0
+(16/2) 16 -14 1
+}}
 
 ####################################################################
 test Precision-1.1 {constructors-string-bad} {
