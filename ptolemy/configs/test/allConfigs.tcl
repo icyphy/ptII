@@ -37,6 +37,11 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[string compare sdfModel [info procs testSuggestedModalModelDirectors]] \
+	!= 0} then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -120,8 +125,9 @@ foreach i $configs {
 	# In general, if we call getName on a public field in an actor,
 	# then the name that is returned should be the same as the name
 	# of the field.
+	puts "-------> Before clone"
 	set cloneConfiguration [java::cast ptolemy.kernel.CompositeEntity [$configuration clone]]
-
+	puts "-------> after clone"
 	set entityList [$configuration allAtomicEntityList]
 	set results {}
 	set logfile [open logfile2-1 "w"]
@@ -345,5 +351,36 @@ foreach i $configs {
 	list $results
     } {{}}
 
+    test "$i-5.1" "Test directors in $i " {
+	set entityList [$configuration allAtomicEntityList]
+	set actorLibrary [java::cast ptolemy.kernel.CompositeEntity \
+		[$configuration getEntity {actor library}]]
+	set directors [java::cast ptolemy.kernel.CompositeEntity \
+		[$actorLibrary getEntity {Directors}]]
+	if [java::isnull $directors] {
+	    puts "Warning: $i has no 'actor library.Directors'? (this is ok for dsp, viptos)"
+        } else {
+            set attributeList [$directors attributeList]
+	    #puts "Testing as many as [$attributeList size] directors in $i"
+	    set results {}
+	    for {set iterator [$attributeList iterator]} \
+	        {[$iterator hasNext] == 1} {} {
+	        set entity [$iterator next]
+
+                # Call all the suggestedModalModelDirectors methods
+		# and instantiate each director that is returned.
+	        if [java::instanceof $entity ptolemy.actor.Director] {
+		    set director [java::cast ptolemy.actor.Director $entity]
+		    #puts "testing director [$director getName]"
+		    set msg {}
+		    catch {testSuggestedModalModelDirectors $director} msg
+		    if {"$msg" != ""} {
+		        lappend results $msg
+		    }
+                }
+            }
+         }
+         list $results
+    } {{}}
 }
 
