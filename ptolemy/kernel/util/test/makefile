@@ -49,6 +49,7 @@ JSRCS = \
 	AccessAction.java \
 	AccessThread.java \
 	ChangeRequestTest.java \
+	InvalidStringAttribute.java \
 	PtestWorkspace.java \
 	StreamValueListener.java \
 	TestDE.java \
