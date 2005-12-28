@@ -99,6 +99,13 @@ test Attribute-3.3 {set an Attribute to its own name} {
     $p1 setName P1
     $p1 getFullName
 } {.N.P1}
+
+test Attribute-3.4 {setName null} {
+    set c [java::new ptolemy.kernel.util.Attribute]
+    $c setName [java::null]
+    $c getFullName	
+} {.}
+
 ######################################################################
 ####
 #
@@ -311,3 +318,19 @@ test Attribute-8.6 {setContainer to an unnamed NamedObj} {
     $d setContainer $c
     $d getFullName
 } {...}
+
+test Attribute-8.7 {setContainer recursively} {
+    set n [java::new ptolemy.kernel.util.NamedObj top]
+    set c [java::new ptolemy.kernel.util.Attribute $n c]
+    set d [java::new ptolemy.kernel.util.Attribute $n d]
+    $c setContainer $d
+    catch {$d setContainer $c} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Attempt to construct recursive containment of attributes
+  in .top.d and .top.d.c}}
+
+test Attribute-10.1 {updateContent} {
+    set c [java::new ptolemy.kernel.util.Attribute]
+    # Attribute.updateContent does nothing.
+    $c updateContent
+} {}
