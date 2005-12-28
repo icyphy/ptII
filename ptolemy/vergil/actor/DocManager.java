@@ -87,8 +87,44 @@ import com.microstar.xml.XmlParser;
  <p>
  At all tiers, the documentation information is given in XML
  with a specified DTD.
- 
- FIXME: Document the XML format.
+ <p>
+ A doc file should be an XML file beginning with
+ <pre>
+&lt;?xml version="1.0" standalone="yes"?&gt;
+&lt;!DOCTYPE doc PUBLIC "-//UC Berkeley//DTD DocML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd"&gt;
+</pre>
+and should then have a top-level element of the form
+<pre>
+&lt;doc name="<i>actorName</i>" class="<i>actorClass</i>"&gt;
+</pre>
+The main description is text included within the description
+element, as in
+<pre>
+&lt;description&gt;
+  <i>description here</i>
+&lt;/description&gt;
+</pre>
+The description can include HTML formatting, although any
+&lt; and &gt; should be escaped and represented as &amp;lt;
+and &amp;gt;.
+<p>
+Additional information can be provided in the author, version,
+since, proposedRating, and acceptedRating elements.
+These are, like the description, simple text that gets rendered
+(and HTML formatted) in the documentation.
+<p>
+Documentation for ports and parameters is given using the
+following forms:
+<pre>
+&lt;port name="<i>portName</i>">
+  <i>documentation</i>
+&lt/port&gt;
+&lt;property name="<i>parameterName</i>">
+  <i>documentation</i>
+&lt/property&gt;
+</pre>
+The use of the "property" keyword matches MoML.
  
  @author Edward A. Lee
  @version $Id$
@@ -153,8 +189,9 @@ public class DocManager extends HandlerBase {
                     NamedObj attribute = (NamedObj)attributes.next();
                     if (((Settable)attribute).getVisibility() != Settable.NONE) {
                         String attributeDoc = instanceDoc.getParameterDoc(attribute.getName());
-                        if (attributeDoc != null) {
-                            _ports.put(attribute.getName(), attributeDoc);
+                        if (attributeDoc != null && !attributeDoc.trim().equals("")) {
+                            _isInstanceDoc = true;
+                            _properties.put(attribute.getName(), attributeDoc);
                         }
                     }
                 }
@@ -164,7 +201,8 @@ public class DocManager extends HandlerBase {
                     while (ports.hasNext()) {
                         Port port = (Port)ports.next();
                         String portDoc = instanceDoc.getPortDoc(port.getName());
-                        if (portDoc != null) {
+                        if (portDoc != null && !portDoc.trim().equals("")) {
+                            _isInstanceDoc = true;
                             _ports.put(port.getName(), portDoc);
                         }
                     }
@@ -358,6 +396,18 @@ public class DocManager extends HandlerBase {
         return _description;
     }
     
+    /** Return next tier, if there is one.
+     *  If this is an instance, then the next tier
+     *  is the documentation for the class. If it is a
+     *  class, then the next tier is the documentation for
+     *  the superclass.
+     *  @return The next tier, or null if there isn't one.
+     */
+    public DocManager getNextTier() {
+        _createNextTier();
+        return _nextTier;
+    }
+    
     /** Return the documentation for the specified port, or null
      *  if there is none.
      *  @param name The name of the port.
@@ -531,6 +581,11 @@ public class DocManager extends HandlerBase {
                 URL toRead = getClass().getClassLoader().getResource(
                         docName.replace('.', '/') + ".xml");
                 
+                // Display only the unqualified class name for compactness.
+                int lastDot = baseClassName.lastIndexOf(".");
+                if (lastDot >= 0) {
+                    baseClassName = baseClassName.substring(lastDot + 1);
+                }
                 if (toRead != null) {
                     result.append("<li><a href=\""
                             + toRead.toExternalForm()
@@ -657,7 +712,7 @@ public class DocManager extends HandlerBase {
     public Object resolveEntity(String publicID, String systemID) {
         if ((publicID != null)
                 && publicID.equals("-//UC Berkeley//DTD DocML 1//EN")) {
-            // This is the generic MoML DTD.
+            // This is the generic DocML DTD.
             return new StringReader(DocML_DTD_1);
         } else {
             return null;
@@ -739,13 +794,12 @@ public class DocManager extends HandlerBase {
     /** The standard DocML DTD, represented as a string.  This is used
      *  to parse DocML data when a compatible PUBLIC DTD is specified.
      */
-    // FIXME:
-    public static String DocML_DTD_1 = "<!ELEMENT doc (barGraph | bin | dataset | default | noColor | noGrid | size | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | yRange | yTicks)*><!ELEMENT barGraph EMPTY><!ATTLIST barGraph width CDATA #IMPLIED offset CDATA #IMPLIED><!ELEMENT bin EMPTY><!ATTLIST bin width CDATA #IMPLIED offset CDATA #IMPLIED><!ELEMENT dataset (m | move | p | point)*><!ATTLIST dataset connected (yes | no) #IMPLIED marks (none | dots | points | various) #IMPLIED name CDATA #IMPLIED stems (yes | no) #IMPLIED><!ELEMENT default EMPTY><!ATTLIST default connected (yes | no) \"yes\" marks (none | dots | points | various) \"none\" stems (yes | no) \"no\"><!ELEMENT noColor EMPTY><!ELEMENT noGrid EMPTY><!ELEMENT reuseDatasets EMPTY><!ELEMENT size EMPTY><!ATTLIST size height CDATA #REQUIRED width CDATA #REQUIRED><!ELEMENT title (#PCDATA)><!ELEMENT wrap EMPTY><!ELEMENT xLabel (#PCDATA)><!ELEMENT xLog EMPTY><!ELEMENT xRange EMPTY><!ATTLIST xRange min CDATA #REQUIRED max CDATA #REQUIRED><!ELEMENT xTicks (tick)+><!ELEMENT yLabel (#PCDATA)><!ELEMENT yLog EMPTY><!ELEMENT yRange EMPTY><!ATTLIST yRange min CDATA #REQUIRED max CDATA #REQUIRED><!ELEMENT yTicks (tick)+><!ELEMENT tick EMPTY><!ATTLIST tick label CDATA #REQUIRED position CDATA #REQUIRED><!ELEMENT m EMPTY><!ATTLIST m x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT move EMPTY><!ATTLIST move x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT p EMPTY><!ATTLIST p x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT point EMPTY><!ATTLIST point x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED>";
+    public static String DocML_DTD_1 = "<!ELEMENT doc (acceptedRating | author | description | port | property | proposedRating | since | version)*><!ATTLIST doc name CDATA #REQUIRED class CDATA #REQUIRED><!ELEMENT acceptedRating (#PCDATA)><!ELEMENT author (#PCDATA)><!ELEMENT description (#PCDATA)><!ELEMENT port (#PCDATA)><!ATTLIST port name CDATA #REQUIRED><!ELEMENT property (#PCDATA)><!ATTLIST property name CDATA #REQUIRED><!ELEMENT proposedRating (#PCDATA)><!ELEMENT since (#PCDATA)><!ELEMENT version (#PCDATA)>";
 
     // NOTE: The master file for the above DTD is at
-    // $PTII/ptolemy/doc/docml/docml.dtd.  If modified, it needs to be also
-    // updated at ptweb/archive/docml.dtd.
-    // FIXME: Update above with the right location.
+    // $PTII/ptolemy/vergil/basic/DocML_1.dtd.  If modified, it needs to be also
+    // updated at http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -777,9 +831,13 @@ public class DocManager extends HandlerBase {
         if (_nextTier != null) {
             return;
         }
-        Class superClass = _targetClass.getSuperclass();
-        if (_isNamedObj(superClass)) {
-            _nextTier = new DocManager(superClass);
+        if (_isInstanceDoc) {
+            _nextTier = new DocManager(_targetClass);
+        } else {
+            Class superClass = _targetClass.getSuperclass();
+            if (_isNamedObj(superClass)) {
+                _nextTier = new DocManager(superClass);
+            }
         }
     }
         
@@ -800,7 +858,7 @@ public class DocManager extends HandlerBase {
     
     /** Read the doc file, if one is found, for the target. */
     private void _readDocFile() {
-        if (_docFileHasBeenRead) {
+        if (_docFileHasBeenRead || _isInstanceDoc) {
             return;
         }
         // FIXME: If file is not found, then instead of an

@@ -29,7 +29,9 @@ package ptolemy.vergil.kernel;
 
 import javax.swing.Action;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.vergil.basic.CustomizeDocumentationAction;
+import ptolemy.vergil.basic.GetDocumentationAction;
 import ptolemy.vergil.basic.IconController;
 import ptolemy.vergil.basic.RemoveCustomDocumentationAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -75,7 +77,7 @@ public class AttributeController extends IconController {
             // Add to the context menu.
             _menuFactory.addMenuItemFactory(new RenameDialogFactory());
             Action[] actions = {
-                    new GetDocumentationAction(),
+                    _getDocumentationAction,
                     new CustomizeDocumentationAction(),
                     new RemoveCustomDocumentationAction()
             };
@@ -103,6 +105,21 @@ public class AttributeController extends IconController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Set the configuration.  This is used in derived classes to
+     *  to open files (such as documentation).  The configuration is
+     *  is important because it keeps track of which files are already
+     *  open and ensures that there is only one editor operating on the
+     *  file at any one time.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
+        _getDocumentationAction.setConfiguration(configuration);
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                     public members                        ////
 
     /** Indicator to give full access to the attribute. */
@@ -110,6 +127,12 @@ public class AttributeController extends IconController {
 
     /** Indicator to give partial access to the attribute. */
     public static final Access PARTIAL = new Access();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private members                       ////
+
+    /** The "get documentation" action. */
+    private GetDocumentationAction _getDocumentationAction = new GetDocumentationAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

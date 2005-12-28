@@ -34,6 +34,7 @@ import java.awt.geom.Line2D;
 import javax.swing.SwingConstants;
 
 import ptolemy.actor.IORelation;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.Relation;
@@ -41,6 +42,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.VergilPreferences;
 import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.basic.GetDocumentationAction;
 import ptolemy.vergil.basic.ParameterizedNodeController;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.canvas.CompositeFigure;
@@ -75,14 +77,34 @@ public class RelationController extends ParameterizedNodeController {
     public RelationController(GraphController controller) {
         super(controller);
         setNodeRenderer(new RelationRenderer());
+        _getDocumentationAction = new GetDocumentationAction();
 
         // Add to the context menu.
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                new GetDocumentationAction()));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Set the configuration.  This is used in derived classes to
+     *  to open files (such as documentation).  The configuration is
+     *  is important because it keeps track of which files are already
+     *  open and ensures that there is only one editor operating on the
+     *  file at any one time.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
+        _getDocumentationAction.setConfiguration(configuration);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                     private members                       ////
+
+    /** The "get documentation" action. */
+    private GetDocumentationAction _getDocumentationAction;
+
+    /** The label font. */
     private static Font _relationLabelFont = new Font("SansSerif", Font.PLAIN,
             10);
 

@@ -50,7 +50,6 @@ import ptolemy.moml.ParserAttribute;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.actor.DocEffigy;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyEffigy

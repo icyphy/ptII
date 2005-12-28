@@ -37,6 +37,7 @@ import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.basic.DocAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// DocTableau
@@ -79,13 +80,26 @@ public class DocTableau extends Tableau {
     public DocTableau(Effigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        try {
-            URL effigyURL = container.uri.getURL();
-            DocViewer frame = new DocViewer(effigyURL, (Configuration)container.toplevel());
+        if (!(container instanceof DocEffigy)) {
+            throw new IllegalActionException(container,
+                    "Needs to be an instance of DocEffigy to contain a DocTableau.");
+        }
+        DocAttribute docAttribute = ((DocEffigy)container).getDocAttribute();
+        if (docAttribute != null) {
+            // Have a doc attribute.
+            DocViewer frame = new DocViewer(docAttribute.getContainer(), (Configuration)container.toplevel());
             setFrame(frame);
             frame.setTableau(this);
-        } catch (MalformedURLException e) {
-            throw new IllegalActionException(this, container, e, "Malformed URL");
+        } else {
+            // No doc attribute. Find the URL of the enclosing effigy.
+            try {
+                URL effigyURL = container.uri.getURL();
+                DocViewer frame = new DocViewer(effigyURL, (Configuration)container.toplevel());
+                setFrame(frame);
+                frame.setTableau(this);
+            } catch (MalformedURLException e) {
+                throw new IllegalActionException(this, container, e, "Malformed URL");
+            }
         }
     }
 

@@ -62,6 +62,7 @@ JSRCS = \
 	DocAttribute.java \
 	EditorDropTarget.java \
 	ExtendedGraphFrame.java \
+	GetDocumentationAction.java \
 	IconController.java \
 	LocatableNodeController.java \
 	LocatableNodeDragInteractor.java \
@@ -74,7 +75,8 @@ JSRCS = \
 	RunnableGraphController.java \
 	WithIconGraphController.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	DocML_1.dtd
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

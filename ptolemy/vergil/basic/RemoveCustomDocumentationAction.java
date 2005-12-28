@@ -58,9 +58,10 @@ public class RemoveCustomDocumentationAction extends FigureAction {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Perform the action by first ensuring that the target has an
-     *  instance of DocAttribute, and then opening an edit parameters
-     *  dialog on that attribute.
+    /** Perform the action by issuing a change request to remove the
+     *  the first (and only?) DocAttribute contained by the target,
+     *  if any.
+     *  @param e The action event.
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);

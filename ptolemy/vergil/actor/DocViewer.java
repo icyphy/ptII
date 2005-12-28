@@ -201,6 +201,167 @@ public class DocViewer extends HTMLViewer {
         };
         SwingUtilities.invokeLater(defer);
     }
+    
+    /** Return a string with parameter table entries.
+     *  @param target The target.
+     *  @param manager The manager.
+     *  @return Parameter table entries, or null if there are no parameters.
+     */
+    private String _getParameterEntries(NamedObj target, DocManager manager) {
+        StringBuffer parameters = new StringBuffer();
+        parameters.append(_tr);
+        parameters.append(_tdColSpan);
+        parameters.append("<h2>Parameters</h2>");
+        parameters.append(_tde);
+        parameters.append(_tre);
+        boolean foundOne = false;
+        Iterator attributes = target.attributeList(Settable.class).iterator();
+        while (attributes.hasNext()) {
+            Settable parameter = (Settable)attributes.next();
+            String doc = manager.getPropertyDoc(parameter.getName());
+            if (doc == null) {
+                doc = "No description.";
+            }
+            if (parameter.getVisibility() == Settable.FULL) {
+                parameters.append(_tr);
+                parameters.append(_td);
+                parameters.append("<i>" + parameter.getName() + "</i>");
+                parameters.append(_tde);
+                parameters.append(_td);
+                parameters.append(doc);
+                parameters.append(_tde);
+                parameters.append(_tre);
+                foundOne = true;
+            }
+        }
+        if (foundOne) {
+            return parameters.toString();
+        } else {
+            return null;
+        }
+    }
+
+    /** Return a string with port table entries.
+     *  @param target The target.
+     *  @param manager The manager.
+     *  @return Port table entries, or null if there are no port.
+     */
+    private String _getPortEntries(NamedObj target, DocManager manager) {
+        StringBuffer result = new StringBuffer();
+        boolean foundOne = false;
+        boolean foundInput = false;
+        boolean foundOutput = false;
+        boolean foundInputOutput = false;
+        boolean foundNeither = false;
+        StringBuffer inputPorts = new StringBuffer();
+        StringBuffer outputPorts = new StringBuffer();
+        StringBuffer inputOutputPorts = new StringBuffer();
+        StringBuffer neitherPorts = new StringBuffer();
+        Iterator ports = ((Entity)target).portList().iterator();
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
+            String portName = "<i>" + port.getName() + "</i>";
+            String doc = manager.getPortDoc(port.getName());
+            if (doc == null) {
+                doc = "No port description.";
+            }
+            if (port instanceof IOPort) {
+                if (((IOPort)port).isInput() && !((IOPort)port).isOutput()) {
+                    inputPorts.append(_tr);
+                    inputPorts.append(_td);
+                    inputPorts.append(portName);
+                    inputPorts.append(_tde);
+                    inputPorts.append(_td);
+                    inputPorts.append(doc);
+                    inputPorts.append(_tde);
+                    inputPorts.append(_tre);
+                    foundInput = true;
+                    foundOne = true;
+                } else if (((IOPort)port).isOutput() && !((IOPort)port).isInput()) {
+                    outputPorts.append(_tr);
+                    outputPorts.append(_td);
+                    outputPorts.append(portName);
+                    outputPorts.append(_tde);
+                    outputPorts.append(_td);
+                    outputPorts.append(doc);
+                    outputPorts.append(_tde);
+                    outputPorts.append(_tre);
+                    foundOutput = true;                        
+                    foundOne = true;
+                } else if (((IOPort)port).isOutput() && ((IOPort)port).isInput()) {
+                    inputOutputPorts.append(_tr);
+                    inputOutputPorts.append(_td);
+                    inputOutputPorts.append(portName);
+                    inputOutputPorts.append(_tde);
+                    inputOutputPorts.append(_td);
+                    inputOutputPorts.append(doc);
+                    inputOutputPorts.append(_tde);
+                    inputOutputPorts.append(_tre);
+                    foundInputOutput = true;                    
+                    foundOne = true;
+                } else {
+                    neitherPorts.append(_tr);
+                    neitherPorts.append(_td);
+                    neitherPorts.append(portName);
+                    neitherPorts.append(_tde);
+                    neitherPorts.append(_td);
+                    neitherPorts.append(doc);
+                    neitherPorts.append(_tde);
+                    neitherPorts.append(_tre);
+                    foundNeither = true;                    
+                    foundOne = true;
+                }
+            } else {
+                neitherPorts.append(_tr);
+                neitherPorts.append(_td);
+                neitherPorts.append(portName);
+                neitherPorts.append(_tde);
+                neitherPorts.append(_td);
+                neitherPorts.append(doc);
+                neitherPorts.append(_tde);
+                neitherPorts.append(_tre);
+                foundNeither = true;                    
+                foundOne = true;
+            }
+        }
+        if (foundInput) {
+            result.append(_tr);
+            result.append(_tdColSpan);
+            result.append("<h2>Input Ports</h2>");
+            result.append(_tde);
+            result.append(_tre);
+            result.append(inputPorts);
+        }
+        if (foundOutput) {
+            result.append(_tr);
+            result.append(_tdColSpan);
+            result.append("<h2>Output Ports</h2>");
+            result.append(_tde);
+            result.append(_tre);
+            result.append(outputPorts);
+        }
+        if (foundInputOutput) {
+            result.append(_tr);
+            result.append(_tdColSpan);
+            result.append("<h2>Input/Output Ports</h2>");
+            result.append(_tde);
+            result.append(_tre);
+            result.append(inputOutputPorts);
+        }
+        if (foundNeither) {
+            result.append(_tr);
+            result.append(_tdColSpan);
+            result.append("<h2>Ports (Neither Input nor Output)</h2>");
+            result.append(_tde);
+            result.append(_tre);
+            result.append(neitherPorts);
+        }
+        if (foundOne) {
+            return result.toString();
+        } else {
+            return null;
+        }
+    }
 
     /** Construct a documentation viewer for the specified target,
      *  class name, or URL. Normally, one of these three arguments
@@ -222,7 +383,7 @@ public class DocViewer extends HTMLViewer {
         _configuration = configuration;
         
         // Start by creating a doc manager.
-        DocManager manager;
+        final DocManager manager;
         if (target != null) {
             manager = new DocManager(target);
         } else if (className != null) {
@@ -239,6 +400,20 @@ public class DocViewer extends HTMLViewer {
             rootName = className.substring(lastPeriod + 1);
         } else {
             rootName = className;
+        }
+        // Need to set the base for relative URL references.
+        // If the url argument is given, then use that.
+        // Otherwise, set it to the directory in which the
+        // Javadoc file is normally be found.
+        if (url != null) {
+            setBase(url);
+        } else {
+            String javaDocDirectory = "doc.codeDoc." + className;
+            int lastDot = javaDocDirectory.lastIndexOf(".");
+            javaDocDirectory = javaDocDirectory.substring(0, lastDot);
+            URL base = getClass().getClassLoader().getResource(
+                    javaDocDirectory.replace('.', '/') + "/");
+            setBase(base);
         }
 
         // Spacer at the top.
@@ -268,6 +443,8 @@ public class DocViewer extends HTMLViewer {
         titlePane.setContentType("text/html");
         titlePane.setEditable(false);
         titlePane.setText(_HTML_HEADER + "<H2>&nbsp; " + title + "</H2>" + _HTML_TAIL);
+        // Set the view to the start of the text.
+        titlePane.getCaret().setDot(0);
         Dimension titleSize = new Dimension(_DESCRIPTION_WIDTH + _ICON_WINDOW_WIDTH + _SPACING, 40);
         titlePane.setPreferredSize(titleSize);
         titlePane.setSize(titleSize);
@@ -365,7 +542,9 @@ public class DocViewer extends HTMLViewer {
         html.append(description);
         html.append(_HTML_TAIL);
         descriptionPane.setText(html.toString());
-
+        // Set the view to the start of the text.
+        descriptionPane.getCaret().setDot(0);
+        
         // Create an instance to display.
         // Note that this will display something that looks just
         // like the object we are asking about, including any customizations
@@ -390,6 +569,7 @@ public class DocViewer extends HTMLViewer {
                     if (target == null) {
                         // FIXME: This only works if the class is an entity.
                         sample = container.getEntity(rootName);
+                        _populatePortsAndParametersTable(sample, manager);
                     } else if (target instanceof ComponentEntity) {
                         sample = container.getEntity(target.getName());
                     } else {
@@ -401,245 +581,121 @@ public class DocViewer extends HTMLViewer {
             container.requestChange(request);
         }
 
+        if (target != null) {
+            _populatePortsAndParametersTable(target, manager);
+        }
+
+        // Populate the author window.
+        StringBuffer info = new StringBuffer();
+        info.append(_HTML_HEADER);
+        // Author(s)
+        info.append(_tableOpening);
+        info.append(_tr);
+        info.append(_td20);
+        info.append("<i>Author:</i> ");
+        info.append(_tde);
+        info.append(_td);
+        info.append(manager.getAuthor());
+        if (manager.isInstanceDoc()) {
+            DocManager nextTier = manager.getNextTier();
+            if (nextTier != null) {
+                info.append(" (<i>Class author:</i> ");
+                info.append(nextTier.getAuthor());
+            }
+        }
+        info.append(_tde);
+        info.append(_tre);
+        // Version
+        String version = manager.getVersion();
+        if (version != null) {
+            info.append(_tr);
+            info.append(_td20);
+            info.append("<i>Version:</i> ");
+            info.append(_tde);
+            info.append(_td);
+            info.append(version);
+            info.append(_tde);
+            info.append(_tre);
+        }
+        // Since
+        String since = manager.getSince();
+        if (since != null) {
+            info.append(_tr);
+            info.append(_td20);
+            info.append("<i>Since:</i> ");
+            info.append(_tde);
+            info.append(_td);
+            info.append(since);
+            info.append(_tde);
+            info.append(_tre);
+        }
+        // Rating
+        String rating = manager.getAcceptedRating();
+        if (rating != null) {
+            info.append(_tr);
+            info.append(_td20);
+            info.append("<i>Rating:</i> ");
+            info.append(_tde);
+            info.append(_td);
+            info.append(rating);
+            info.append(_tde);
+            info.append(_tre);
+        }
+        // End of table
+        info.append(_tableClosing);
+        info.append(_HTML_TAIL);
+        authorPane.setText(info.toString());
+        // Set the view to the start of the text.
+        authorPane.getCaret().setDot(0);
+
+        // Populate the "See Also" window.
+        seeAlsoPane.setText(_HTML_HEADER + manager.getSeeAlso() + _HTML_TAIL);
+        // Set the view to the start of the text.
+        seeAlsoPane.getCaret().setDot(0);
+    }
+
+    /** Populate the window displaying ports and parameters.
+     *  @param target The target object whose ports and parameters will be described.
+     *  @param manager The doc manager.
+     */
+    private void _populatePortsAndParametersTable(NamedObj target, DocManager manager) {
         // Create tables to contain the information about parameters and ports.
-        String tr = "<tr valign=top>\n";
-        String tre = "</tr>\n";
-        String td = "<td>";
-        String tdColSpan = "<td colspan=2>";
-        String tde = "</td>";
-        String tableOpening = "<table cellspacing=2 cellpadding=2>\n";
-        String tableClosing = "</table>";
         // Start with parameters.
         boolean foundOne = false;
-        boolean foundParameter = false;
         StringBuffer table = new StringBuffer();
-        StringBuffer parameters = new StringBuffer();
-        if (target != null) {
-            Iterator attributes = target.attributeList(Settable.class).iterator();
-            while (attributes.hasNext()) {
-                Settable parameter = (Settable)attributes.next();
-                String doc = manager.getPropertyDoc(parameter.getName());
-                if (doc == null) {
-                    doc = "No description.";
-                }
-                if (parameter.getVisibility() == Settable.FULL) {
-                    parameters.append(tr);
-                    parameters.append(td);
-                    parameters.append("<i>" + parameter.getName() + "</i>");
-                    parameters.append(tde);
-                    parameters.append(td);
-                    parameters.append(doc);
-                    parameters.append(tde);
-                    parameters.append(tre);
-                    foundOne = true;
-                    foundParameter = true;
-                }
-            }
-        } else {
-            // There is no target, so just list all the attributes in the doc file.
-            // FIXME: Should use the sample... So this needs to be done as part of
-            // the change request above!
-        }
-        if (foundParameter) {
-            table.append(tr);
-            table.append(tdColSpan);
-            table.append("<h2>Parameters</h2>");
-            table.append(tde);
-            table.append(tre);
-            table.append(parameters);
+        String parameterTableEntries = _getParameterEntries(target, manager);
+        if (parameterTableEntries != null) {
+            foundOne = true;
+            table.append(parameterTableEntries);
         }
         // Next do the ports.
-        if (target instanceof Entity) {
-            boolean foundInput = false;
-            boolean foundOutput = false;
-            boolean foundInputOutput = false;
-            boolean foundNeither = false;
-            StringBuffer inputPorts = new StringBuffer();
-            StringBuffer outputPorts = new StringBuffer();
-            StringBuffer inputOutputPorts = new StringBuffer();
-            StringBuffer neitherPorts = new StringBuffer();
-            Iterator ports = ((Entity)target).portList().iterator();
-            while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                String portName = "<i>" + port.getName() + "</i>";
-                String doc = manager.getPortDoc(port.getName());
-                if (doc == null) {
-                    doc = "No port description.";
-                }
-                if (port instanceof IOPort) {
-                    if (((IOPort)port).isInput() && !((IOPort)port).isOutput()) {
-                        inputPorts.append(tr);
-                        inputPorts.append(td);
-                        inputPorts.append(portName);
-                        inputPorts.append(tde);
-                        inputPorts.append(td);
-                        inputPorts.append(doc);
-                        inputPorts.append(tde);
-                        inputPorts.append(tre);
-                        foundInput = true;
-                        foundOne = true;
-                    } else if (((IOPort)port).isOutput() && !((IOPort)port).isInput()) {
-                        outputPorts.append(tr);
-                        outputPorts.append(td);
-                        outputPorts.append(portName);
-                        outputPorts.append(tde);
-                        outputPorts.append(td);
-                        outputPorts.append(doc);
-                        outputPorts.append(tde);
-                        outputPorts.append(tre);
-                        foundOutput = true;                        
-                        foundOne = true;
-                    } else if (((IOPort)port).isOutput() && ((IOPort)port).isInput()) {
-                        inputOutputPorts.append(tr);
-                        inputOutputPorts.append(td);
-                        inputOutputPorts.append(portName);
-                        inputOutputPorts.append(tde);
-                        inputOutputPorts.append(td);
-                        inputOutputPorts.append(doc);
-                        inputOutputPorts.append(tde);
-                        inputOutputPorts.append(tre);
-                        foundInputOutput = true;                    
-                        foundOne = true;
-                    } else {
-                        neitherPorts.append(tr);
-                        neitherPorts.append(td);
-                        neitherPorts.append(portName);
-                        neitherPorts.append(tde);
-                        neitherPorts.append(td);
-                        neitherPorts.append(doc);
-                        neitherPorts.append(tde);
-                        neitherPorts.append(tre);
-                        foundNeither = true;                    
-                        foundOne = true;
-                    }
-                } else {
-                    neitherPorts.append(tr);
-                    neitherPorts.append(td);
-                    neitherPorts.append(portName);
-                    neitherPorts.append(tde);
-                    neitherPorts.append(td);
-                    neitherPorts.append(doc);
-                    neitherPorts.append(tde);
-                    neitherPorts.append(tre);
-                    foundNeither = true;                    
-                    foundOne = true;
-                }
-            }
-            if (foundInput) {
-                table.append(tr);
-                table.append(tdColSpan);
-                table.append("<h2>Input Ports</h2>");
-                table.append(tde);
-                table.append(tre);
-                table.append(inputPorts);
-            }
-            if (foundOutput) {
-                table.append(tr);
-                table.append(tdColSpan);
-                table.append("<h2>Output Ports</h2>");
-                table.append(tde);
-                table.append(tre);
-                table.append(outputPorts);
-            }
-            if (foundInputOutput) {
-                table.append(tr);
-                table.append(tdColSpan);
-                table.append("<h2>Input/Output Ports</h2>");
-                table.append(tde);
-                table.append(tre);
-                table.append(inputOutputPorts);
-            }
-            if (foundNeither) {
-                table.append(tr);
-                table.append(tdColSpan);
-                table.append("<h2>Ports (Neither Input nor Output)</h2>");
-                table.append(tde);
-                table.append(tre);
-                table.append(neitherPorts);
-            }
-        } else {
-            // Target is not an instance of entity (may be null), so just
-            // list all the ports in the doc file.
-            // FIXME: Should use the sample... So this needs to be done as part of
-            // the change request above!
+        String portTableEntries = _getPortEntries(target, manager);
+        if (portTableEntries != null) {
+            foundOne = true;
+            table.append(portTableEntries);
         }
         // Finally, insert all.
         StringBuffer info = new StringBuffer();
         info.append(_HTML_HEADER);
         if (foundOne) {
-            info.append(tableOpening);
+            info.append(_tableOpening);
             info.append(table);
-            info.append(tableClosing);
+            info.append(_tableClosing);
         } else {
             info.append("No ports or parameters.");
         }
         info.append(_HTML_TAIL);
 
         setText(info.toString());
-        
-        // Populate the author window.
-        info = new StringBuffer();
-        info.append(_HTML_HEADER);
-        // Author(s)
-        info.append(tableOpening);
-        info.append(tr);
-        info.append(td);
-        info.append("<i>Authors:</i> ");
-        info.append(tde);
-        info.append(td);
-        info.append(manager.getAuthor());
-        info.append(tde);
-        info.append(tre);
-        // Version
-        String version = manager.getVersion();
-        if (version != null) {
-            info.append(tr);
-            info.append(td);
-            info.append("<i>Version:</i> ");
-            info.append(tde);
-            info.append(td);
-            info.append(version);
-            info.append(tde);
-            info.append(tre);
-        }
-        // Since
-        String since = manager.getSince();
-        if (since != null) {
-            info.append(tr);
-            info.append(td);
-            info.append("<i>Since:</i> ");
-            info.append(tde);
-            info.append(td);
-            info.append(since);
-            info.append(tde);
-            info.append(tre);
-        }
-        // Rating
-        String rating = manager.getAcceptedRating();
-        if (rating != null) {
-            info.append(tr);
-            info.append(td);
-            info.append("<i>Rating:</i> ");
-            info.append(tde);
-            info.append(td);
-            info.append(rating);
-            info.append(tde);
-            info.append(tre);
-        }
-        // End of table
-        info.append(tableClosing);
-        info.append(_HTML_TAIL);
-        authorPane.setText(info.toString());
-
-        // Populate the "See Also" window.
-        seeAlsoPane.setText(_HTML_HEADER + manager.getSeeAlso() + _HTML_TAIL);
+        // Set the view to the start of the text.
+        pane.getCaret().setDot(0);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     /** Author window width. */
-    private static int _AUTHOR_WINDOW_WIDTH = 300;
+    private static int _AUTHOR_WINDOW_WIDTH = 350;
 
     /** The configuration specified in the constructor. */
     private Configuration _configuration;
@@ -673,7 +729,7 @@ public class DocViewer extends HTMLViewer {
     private static int _ICON_WINDOW_WIDTH = 200;
     
     /** Main window height. */
-    private static int _MAIN_WINDOW_HEIGHT = 300;
+    private static int _MAIN_WINDOW_HEIGHT = 250;
 
     /** Main window width. */
     private static int _MAIN_WINDOW_WIDTH = 700;
@@ -682,8 +738,18 @@ public class DocViewer extends HTMLViewer {
     private static int _PADDING = 10;
 
     /** Width of the see also pane. */
-    private static int _SEE_ALSO_WIDTH = 400;
+    private static int _SEE_ALSO_WIDTH = 350;
 
     /** Spacing between subwindows. */
     private static int _SPACING = 5;
+    
+    private static String _tr = "<tr valign=top>\n";
+    private static String _tre = "</tr>\n";
+    private static String _td = "<td>";
+    private static String _td20 = "<td width=20%>";
+    private static String _tdColSpan = "<td colspan=2>";
+    private static String _tde = "</td>";
+    private static String _tableOpening = "<table cellspacing=2 cellpadding=2>\n";
+    private static String _tableClosing = "</table>";
+
 }

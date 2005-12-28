@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -206,6 +207,8 @@ public abstract class BasicGraphController extends AbstractGraphController
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
 
+        _getDocumentationAction.setConfiguration(configuration);
+
         if ((_configuration != null) && (_menuFactory != null)) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
@@ -213,6 +216,9 @@ public abstract class BasicGraphController extends AbstractGraphController
                     _openBaseClassAction));
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Set the figure associated with the given semantic object, and if
      *  that semantic object is Settable, then set up a value listener
@@ -376,6 +382,14 @@ public abstract class BasicGraphController extends AbstractGraphController
         // it is an interactor.  EAL 2/5/05.
         pane.getBackgroundEventLayer().addInteractor(_menuCreator);
         pane.getBackgroundEventLayer().setConsuming(false);
+        
+        Action[] actions = {
+                _getDocumentationAction,
+                new CustomizeDocumentationAction(),
+                new RemoveCustomDocumentationAction()
+        };
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                actions, "Documentation"));
 
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
@@ -422,6 +436,9 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     // The configuration.
     private Configuration _configuration;
+    
+    // The get documentation action.
+    private GetDocumentationAction _getDocumentationAction = new GetDocumentationAction();
 
     // The graph frame, if there is one.
     private BasicGraphFrame _frame;

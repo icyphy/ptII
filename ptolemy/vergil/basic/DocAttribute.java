@@ -46,7 +46,7 @@ import ptolemy.kernel.util.StringAttribute;
 //// DocAttribute
 
 /**
- FIXME
+ An attribute containing documentation for a Ptolemy II object.
  
  @author Edward A. Lee
  @version $Id$
@@ -141,14 +141,14 @@ public class DocAttribute extends Attribute {
     /** For each parameter and port in the container, create a
      *  parameter with the same name appended with either " (port)"
      *  or " (parameter)".  For parameters, only those that are
-     *  settable are shown, and only if the visibility is not "NONE".
+     *  settable are shown, and only if the visibility is "FULL".
      */
     public void refreshParametersAndPorts() {
         NamedObj container = getContainer();
         Iterator parameters = container.attributeList(Settable.class).iterator();
         while (parameters.hasNext()) {
             NamedObj attribute = (NamedObj)parameters.next();
-            if (((Settable)attribute).getVisibility() != Settable.NONE) {
+            if (((Settable)attribute).getVisibility() == Settable.FULL) {
                 String name = attribute.getName() + " (parameter)";
                 if (getAttribute(name) == null) {
                     try {

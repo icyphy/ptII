@@ -36,7 +36,7 @@ import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.basic.DocAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// DocEffigy
@@ -51,13 +51,6 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Red (neuendor)
  */
 public class DocEffigy extends Effigy {
-    /** Create a new effigy in the specified workspace with an empty string
-     *  for its name.
-     *  @param workspace The workspace for this effigy.
-     */
-    public DocEffigy(Workspace workspace) {
-        super(workspace);
-    }
 
     /** Create a new effigy in the given directory with the given name.
      *  @param container The directory that contains this effigy.
@@ -67,6 +60,31 @@ public class DocEffigy extends Effigy {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Get the DocAttribute represented by this effigy, if any.
+     *  @return The DocAttribute represented by this effigy.
+     *  @see setDocAttribute(DocAttribute)
+     */
+    public DocAttribute getDocAttribute() {
+        return _docAttribute;
+    }
+    
+    /** Set the DocAttribute represented by this effigy, if any.
+     *  @param docAttribute The DocAttribute represented by this effigy.
+     *  @see getDocAttribute()
+     */
+    public void setDocAttribute(DocAttribute docAttribute) {
+        _docAttribute = docAttribute;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** The doc attribute represented by this effigy, if any. */
+    private DocAttribute _docAttribute;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -125,11 +143,6 @@ public class DocEffigy extends Effigy {
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(stream));
                     int lineCount = 0;
-                    // FIXME: Have to extract the class name from the file,
-                    // and provide that in a public method so that DocTableau can
-                    // get it and use to create a DocViewer.
-                    // NO NOT RIGHT... The DocViewer needs to be able to be
-                    // given a URL directly...
                     while (lineCount < 5) {
                         String contents = reader.readLine();
                         lineCount++;

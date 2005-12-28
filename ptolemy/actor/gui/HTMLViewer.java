@@ -37,6 +37,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.BoxLayout;
@@ -158,6 +159,19 @@ public class HTMLViewer extends TableauFrame implements Printable,
                     // Suggested mailto: extension from Paul Lieverse
                     useBrowser |= protocol.equals("mailto");
                 }
+            } else {
+                // The URL is null, for some reason. This could happen,
+                // for example, if the HTML to be displayed is specified
+                // using setText() instead of setPage().  In this case,
+                // if relative URLs are to be supported, it is up to the
+                // using class to call setBase() to specify the relative
+                // URL.
+                try {
+                    newURL = new URL(_base, event.getDescription());
+                } catch (MalformedURLException e) {
+                    report("Link error: " + event.getDescription());
+                    return;
+                }
             }
 
             if (!useBrowser && event instanceof HTMLFrameHyperlinkEvent) {
@@ -265,6 +279,13 @@ public class HTMLViewer extends TableauFrame implements Printable,
         return Printable.PAGE_EXISTS;
     }
 
+    /** Set the base URL for relative accesses.
+     *  @param base The base for relative hyperlink references.
+     */
+    public void setBase(URL base) {
+        _base = base;
+    }
+
     /** Set the page displayed by this viewer to be that given by the
      *  specified URL.
      *  @param page The location of the documentation.
@@ -349,4 +370,10 @@ public class HTMLViewer extends TableauFrame implements Printable,
     
     /** The main scroll pane. */
     protected JScrollPane _scroller;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    /** The base as specified by setBase(). */
+    private URL _base;
 }
