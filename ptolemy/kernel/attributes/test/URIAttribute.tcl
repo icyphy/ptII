@@ -58,7 +58,68 @@ test URIAttribute-1.1 {Call workspace constructor, exportMoML and toString } {
 ######################################################################
 ####
 #
-test URIAttribute-2.1 {setURL with a space in the URL  } {
+test URIAttribute-2.1 {getModelURI} {
+    set n0 [java::new ptolemy.kernel.util.NamedObj "myNamedObj"]
+
+    set u1 [java::new ptolemy.kernel.attributes.URIAttribute $n0 "_uri"]
+    $u1 setURI [java::new java.net.URI "file:/C:/ptuser/foo.xml"]
+    set result1 [java::call ptolemy.kernel.attributes.URIAttribute \
+	getModelURI $n0]
+    list [$result1 toString]
+} {file:/C:/ptuser/foo.xml}
+
+######################################################################
+####
+#
+test URIAttribute-2.2 {getModelURI with bogus _uri attribute} {
+    set n0 [java::new ptolemy.kernel.util.NamedObj "myNamedObj"]
+    # This is an attribute that si not a URIAttribute, but has the name _uri 
+    set bogusURIAttribute [java::new ptolemy.kernel.util.StringAttribute \
+	$n0 "_uri"]
+    set result1 [java::call ptolemy.kernel.attributes.URIAttribute \
+	getModelURI $n0]
+    list [java::isnull $result1]
+} {1}
+
+
+######################################################################
+####
+#
+test URIAttribute-3.1 {setURI with a space in the URL  } {
+    set n0 [java::new ptolemy.kernel.util.NamedObj "myNamedObj"]
+    set u1 [java::new ptolemy.kernel.attributes.URIAttribute $n0 "myURIAttribute"]
+    set output [java::new java.io.StringWriter]
+    $u1 exportMoML $output 1
+
+    $u1 setURI [java::new java.net.URI "file:/C:/ptuser/pt%20II/ptolemy/configs/full/configuration.xml#bar"]
+    set url [$u1 getURI]
+    set output2 [java::new java.io.StringWriter]
+    $u1 exportMoML $output2 1
+    list [$u1 toString] [$output toString] [$url toString] [$output2 toString]
+} {{ptolemy.kernel.attributes.URIAttribute {.myNamedObj.myURIAttribute}} {} file:/C:/ptuser/pt%20II/ptolemy/configs/full/configuration.xml#bar {}}
+
+
+######################################################################
+####
+#
+test URIAttribute-3.2 {setURI with a null} {
+    set n0 [java::new ptolemy.kernel.util.NamedObj "myNamedObj"]
+    set u1 [java::new ptolemy.kernel.attributes.URIAttribute $n0 "myURIAttribute"]
+    set output [java::new java.io.StringWriter]
+    $u1 exportMoML $output 1
+
+    $u1 setURI [java::null]
+    set url [$u1 getURI]
+    set output2 [java::new java.io.StringWriter]
+    $u1 exportMoML $output2 1
+    list [$u1 toString] [$output toString] [java::isnull $url] [$output2 toString]
+} {{ptolemy.kernel.attributes.URIAttribute {.myNamedObj.myURIAttribute}} {} 1 {}}
+
+
+######################################################################
+####
+#
+test URIAttribute-4.1 {setURL with a space in the URL  } {
     set n0 [java::new ptolemy.kernel.util.NamedObj "myNamedObj"]
     set u1 [java::new ptolemy.kernel.attributes.URIAttribute $n0 "myURIAttribute"]
     set output [java::new java.io.StringWriter]
