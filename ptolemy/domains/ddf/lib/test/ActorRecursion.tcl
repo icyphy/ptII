@@ -58,4 +58,44 @@ test ActorRecursion-1.1 {cover _exportMoML} {
     </property>
     <property name="recursionActor" class="ptolemy.data.expr.StringParameter">
     </property>
-</entity>}
+</entity>
+}
+
+test ActorRecursion-1.2 {cover _exportMoML in a model} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser addMoMLFilter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+    set topLevel [java::cast ptolemy.actor.CompositeActor \
+		[$parser {parse java.net.URL java.net.URL} \
+		[java::cast {java.net.URL} [java::null]] \
+		[[java::new java.io.File auto/Eratosthenes.xml] toURL]]]
+    set manager [java::new ptolemy.actor.Manager [$topLevel workspace] "foo"]
+    $topLevel setManager $manager
+    $manager execute	
+
+    set actorRecursion [$topLevel getEntity Prime_Number_Filter.ActorRecursion]
+    $actorRecursion exportMoML 
+} {<entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion">
+    <property name="recursionActor" class="ptolemy.data.expr.StringParameter" value="Prime_Number_Filter">
+    </property>
+    <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 55.0]">
+    </property>
+    <port name="in" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+        </property>
+    </port>
+    <port name="out" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
+        </property>
+        <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+        </property>
+        <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="{1}">
+        </property>
+    </port>
+</entity>
+}
