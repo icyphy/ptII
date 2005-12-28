@@ -78,7 +78,7 @@ import java.util.regex.Pattern;
  any of the valid precision string formats. The four supported Precision
  String formats are shown in the table below. A static singleton object of
  each of these formats is provided in this class. Each String Representation
- column of the  table represent equivalent Precision formats:
+ column of the table represent equivalent Precision formats:
 
  <table border = 1>
  <tr><td><b>Format Name</b></td> <td><b>Format Spec</b></td>
@@ -134,6 +134,7 @@ import java.util.regex.Pattern;
  @see FixPoint
  */
 public class Precision implements Cloneable, Serializable {
+
     /** Construct a Precision object based on the provided string. The
      *  string can describe the precision in any of the
      *  syntaxes explained in the description of this class.
@@ -569,6 +570,31 @@ public class Precision implements Cloneable, Serializable {
                     + str + "'. Expecting 'U' or 'S'");
         }
 
+        /** The following static String objects are used for convenience
+         *  when performing regular expression matches on Precision
+         *  Strings. The following explanation will help explain the
+         *  meaning of some of these cryptic strings:
+         *
+         *  "\\"
+         *    This corresponds to a single "\" in the regular expression
+         *    matcher. A single "\" must be represetned within Java as an
+         *    escape sequence (i.e. "\\"). A single "\" will not compile as
+         *    the \" corresponds to the string """ (i.e. a single quotation
+         *    mark).
+         *
+         *  GROUP
+         *    Any variable with the GROUP in its name corresponds to a
+         *    regular expression with the "capturing group" parenthesis
+         *    around the regular expression. This "capturing" is used
+         *    to obtain the matching string associated with the
+         *    regular expression.
+         *
+         */
+
+        /** Regular expression definition for a comma "," or a
+         *  forward slash "/". */
+        public final static String COMMA_OR_FORWARDSLASH = "[,/]";
+
         /** Regular expression definition for an optional left parenthesis. **/
         public final static String OPTIONAL_L_PARAN = "\\(?";
 
@@ -583,18 +609,21 @@ public class Precision implements Cloneable, Serializable {
          *  or left bracket. **/
         public final static String OPTIONAL_R_PARANBRACKET = "[\\)\\]]?";
 
+        /** Regular expression definition for a Period "." */
+        public final static String PERIOD = "\\.";
+
         /** Regular expression for a grouped signed integer
          * (positive or negative). **/
         public final static String SIGNED_INTEGER_GROUP = "(-?\\d+)";
 
-        /** Regular expression for an optional 'S' or 'U'. **/
-        public final static String US_OPT_GROUP = "([USus])?";
+        /** Regular expression for an optional 'S' or 'U' "group". */
+        public final static String OPTIONAL_U_OR_S_GROUP = "([USus])?";
 
         /** Regular expression for a grouped unsigned integer. **/
         public final static String UNSIGNED_INTEGER_GROUP = "(\\d+)";
 
         /** Regular expression for optional white space. **/
-        public final static String WHITE_SPACE = "\\s*";
+        public final static String OPTIONAL_WHITE_SPACE = "\\s*";
     }
 
     /** Defines a Precision string format using the INTEGER.FRACTION
@@ -633,11 +662,13 @@ public class Precision implements Cloneable, Serializable {
 
         /** Regular expression for IntegerFractionPrecisionFormat.
          *  Example: (S3.2) */
-        protected final static String _regex = WHITE_SPACE
-                + OPTIONAL_L_PARANBRACKET + WHITE_SPACE + US_OPT_GROUP
-                + WHITE_SPACE + SIGNED_INTEGER_GROUP + "\\."
-                + SIGNED_INTEGER_GROUP + WHITE_SPACE + OPTIONAL_R_PARANBRACKET
-                + WHITE_SPACE;
+        protected final static String _regex = OPTIONAL_WHITE_SPACE
+                + OPTIONAL_L_PARANBRACKET + OPTIONAL_WHITE_SPACE
+                + OPTIONAL_U_OR_S_GROUP
+                + OPTIONAL_WHITE_SPACE + SIGNED_INTEGER_GROUP + PERIOD
+                + SIGNED_INTEGER_GROUP + OPTIONAL_WHITE_SPACE
+                + OPTIONAL_R_PARANBRACKET
+                + OPTIONAL_WHITE_SPACE;
 
         public Precision parseString(String str)
                 throws IllegalArgumentException {
@@ -718,11 +749,13 @@ public class Precision implements Cloneable, Serializable {
     public static class LengthIntegerPrecisionFormat extends PrecisionFormat {
         /** Regular expression for IntegerFractionPrecisionFormat.
          *   Example (S3,2) or (S3/2) */
-        protected final static String _regex = WHITE_SPACE
-                + OPTIONAL_L_PARANBRACKET + WHITE_SPACE + US_OPT_GROUP
-                + WHITE_SPACE + UNSIGNED_INTEGER_GROUP + "[,/]"
-                + SIGNED_INTEGER_GROUP + WHITE_SPACE + OPTIONAL_R_PARANBRACKET
-                + WHITE_SPACE;
+        protected final static String _regex = OPTIONAL_WHITE_SPACE
+                + OPTIONAL_L_PARANBRACKET + OPTIONAL_WHITE_SPACE
+                + OPTIONAL_U_OR_S_GROUP
+                + OPTIONAL_WHITE_SPACE + UNSIGNED_INTEGER_GROUP
+                + COMMA_OR_FORWARDSLASH + OPTIONAL_WHITE_SPACE
+                + SIGNED_INTEGER_GROUP + OPTIONAL_WHITE_SPACE
+                + OPTIONAL_R_PARANBRACKET + OPTIONAL_WHITE_SPACE;
 
         public Precision parseString(String str)
                 throws IllegalArgumentException {
@@ -796,10 +829,13 @@ public class Precision implements Cloneable, Serializable {
     public static class LengthExponentPrecisionFormat extends PrecisionFormat {
         /** Regular expression for IntegerFractionPrecisionFormat.
          *   Example (S3e2) */
-        protected final String _regex = WHITE_SPACE + OPTIONAL_L_PARANBRACKET
-                + WHITE_SPACE + US_OPT_GROUP + WHITE_SPACE
+        protected final String _regex = OPTIONAL_WHITE_SPACE
+                + OPTIONAL_L_PARANBRACKET
+                + OPTIONAL_WHITE_SPACE + OPTIONAL_U_OR_S_GROUP
+                + OPTIONAL_WHITE_SPACE
                 + UNSIGNED_INTEGER_GROUP + "e" + SIGNED_INTEGER_GROUP
-                + WHITE_SPACE + OPTIONAL_R_PARANBRACKET + WHITE_SPACE;
+                + OPTIONAL_WHITE_SPACE + OPTIONAL_R_PARANBRACKET
+                + OPTIONAL_WHITE_SPACE;
 
         public Precision parseString(String str)
                 throws IllegalArgumentException {
@@ -872,11 +908,15 @@ public class Precision implements Cloneable, Serializable {
     public static class VHDLPrecisionFormat extends PrecisionFormat {
         /** Regular expression for IntegerFractionPrecisionFormat.
          *   Example ([US]{digit}:{digit}) */
-        protected final String _regex = WHITE_SPACE + OPTIONAL_L_PARAN
-                + WHITE_SPACE + US_OPT_GROUP + WHITE_SPACE
-                + SIGNED_INTEGER_GROUP + WHITE_SPACE + ":" + WHITE_SPACE
-                + SIGNED_INTEGER_GROUP + WHITE_SPACE + OPTIONAL_R_PARAN
-                + WHITE_SPACE;
+        protected final String _regex = OPTIONAL_WHITE_SPACE
+                + OPTIONAL_L_PARAN
+                + OPTIONAL_WHITE_SPACE + OPTIONAL_U_OR_S_GROUP
+                + OPTIONAL_WHITE_SPACE
+                + SIGNED_INTEGER_GROUP + OPTIONAL_WHITE_SPACE + ":"
+                + OPTIONAL_WHITE_SPACE
+                + SIGNED_INTEGER_GROUP + OPTIONAL_WHITE_SPACE
+                + OPTIONAL_R_PARAN
+                + OPTIONAL_WHITE_SPACE;
 
         public Precision parseString(String str) {
             int sign = 1;
