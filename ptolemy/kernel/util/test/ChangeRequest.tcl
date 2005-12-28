@@ -195,8 +195,7 @@ test ChangeRequest-6.1 {getLocality, getSource} {
     set source [java::cast ptolemy.kernel.util.test.ChangeRequestTest \
 	[$changeRequest getSource]]
     list [java::isnull [$changeRequest getLocality]] [$source equals $t]
-	
-}
+} {1 1}
 
 test ChangeRequest-6.1 {isErrorReported, setErrorReported} {
     set stream [java::new java.io.ByteArrayOutputStream]
@@ -224,7 +223,7 @@ test ChangeRequest-7.1 {isPersistent, setPersistent} {
     list $r1 $r2
 } {1 0}
 
-test ChangeRequest-7.1 {setDescription} {
+test ChangeRequest-7.2 {setDescription} {
     set stream [java::new java.io.ByteArrayOutputStream]
     set printStream [java::new \
             {java.io.PrintStream java.io.OutputStream} $stream]
@@ -235,4 +234,4 @@ test ChangeRequest-7.1 {setDescription} {
     set r2 [$changeRequest setDescription "A different description"]
     set r3 [$changeRequest getDescription]
     list $r1 $r2 $r3
-} {{Change request that always throws an Exception} {} {A different description}}
+} {{Changing Const to 2.0} {} {A different description}}
