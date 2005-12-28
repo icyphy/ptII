@@ -181,7 +181,8 @@ public class Attribute extends NamedObj {
      *  of attributes of the container. If this object is already at
      *  the specified position, do  nothing. This method gets write
      *  access on workspace and increments the version.
-     *  @param index The position to move this object to.
+     *  @param index The zero based position to which this object is moved.
+     *  0 means the first position, 1 means the second position.
      *  @return The index of the specified object prior to moving it,
      *   or -1 if it is not moved.
      *  @exception IllegalActionException If this object has
