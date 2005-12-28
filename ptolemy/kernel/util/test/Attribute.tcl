@@ -153,6 +153,109 @@ test Attribute-7.2 {Test cloning of NamedObj with attributes} {
     {ptolemy.kernel.util.Attribute {.N.C}}
 }}}
 
+
+######################################################################
+####
+#
+test Attribute-7.5 {move* methods with no container} {
+    set n [java::new ptolemy.kernel.util.Attribute]
+    catch {$n moveDown} msg1
+    catch {$n moveToFirst} msg2
+    catch {$n moveToIndex} msg3
+    catch {$n moveToLast} msg4
+    catch {$n moveUp} msg5
+    list $msg1 $msg2 $msg3 $msg4 $msg5
+} {{ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>} {can't find method "moveToIndex" with 0 argument(s) for class "ptolemy.kernel.util.Attribute"} {ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>}}
+
+
+test Attribute-7.5.1 {moveDown} {
+    set top [java::new ptolemy.kernel.util.NamedObj]
+    set a1  [java::new ptolemy.kernel.util.Attribute $top a1]
+    set a2  [java::new ptolemy.kernel.util.Attribute $top a2]
+    set a3  [java::new ptolemy.kernel.util.Attribute $top a3]
+    set result1 [listToNames [$top attributeList]]
+    $a1 moveDown
+    set result2 [listToNames [$top attributeList]]
+    $a1 moveDown
+    # Can't go past the bottom
+    $a1 moveDown
+    set result3 [listToNames [$top attributeList]]
+    list $result1 $result2 $result3
+} {{a1 a2 a3} {a2 a1 a3} {a2 a3 a1}}
+
+test Attribute-7.5.2 {moveToFirst} {
+    set top [java::new ptolemy.kernel.util.NamedObj]
+    set a1  [java::new ptolemy.kernel.util.Attribute $top a1]
+    set a2  [java::new ptolemy.kernel.util.Attribute $top a2]
+    set a3  [java::new ptolemy.kernel.util.Attribute $top a3]
+    set result1 [listToNames [$top attributeList]]
+    $a1 moveToFirst
+    set result2 [listToNames [$top attributeList]]
+    $a2 moveToFirst
+    set result3 [listToNames [$top attributeList]]
+    $a3 moveToFirst
+    set result4 [listToNames [$top attributeList]]
+    $a3 moveToFirst
+    set result5 [listToNames [$top attributeList]]	
+    list $result1 $result2 $result3 $result4 $result5
+} {{a1 a2 a3} {a1 a2 a3} {a2 a1 a3} {a3 a2 a1} {a3 a2 a1}}
+
+test Attribute-7.5.3 {moveToIndex} {
+    set top [java::new ptolemy.kernel.util.NamedObj]
+    set a1  [java::new ptolemy.kernel.util.Attribute $top a1]
+    set a2  [java::new ptolemy.kernel.util.Attribute $top a2]
+    set a3  [java::new ptolemy.kernel.util.Attribute $top a3]
+    set result1 [listToNames [$top attributeList]]
+    catch {$a1 moveToIndex -1} msg
+    set result2 $msg
+    $a2 moveToIndex 0
+    set result3 [listToNames [$top attributeList]]
+    $a3 moveToIndex 1
+    set result4 [listToNames [$top attributeList]]
+    $a3 moveToIndex 2
+    set result5 [listToNames [$top attributeList]]	
+    catch {$a3 moveToIndex 3} result6
+    list $result1 $result2 $result3 $result4 $result5 $result6
+} {{a1 a2 a3} {ptolemy.kernel.util.IllegalActionException: Index out of range.
+  in .<Unnamed Object>.a1} {a2 a1 a3} {a2 a3 a1} {a2 a1 a3} {ptolemy.kernel.util.IllegalActionException: Index out of range.
+  in .<Unnamed Object>.a3}}
+
+test Attribute-7.5.4 {moveToLast} {
+    set top [java::new ptolemy.kernel.util.NamedObj]
+    set a1  [java::new ptolemy.kernel.util.Attribute $top a1]
+    set a2  [java::new ptolemy.kernel.util.Attribute $top a2]
+    set a3  [java::new ptolemy.kernel.util.Attribute $top a3]
+    set result1 [listToNames [$top attributeList]]
+    $a1 moveToLast
+    set result2 [listToNames [$top attributeList]]
+    $a2 moveToLast
+    set result3 [listToNames [$top attributeList]]
+    $a3 moveToLast
+    set result4 [listToNames [$top attributeList]]
+    $a3 moveToLast
+    set result5 [listToNames [$top attributeList]]	
+    list $result1 $result2 $result3 $result4 $result5
+} {{a1 a2 a3} {a2 a3 a1} {a3 a1 a2} {a1 a2 a3} {a1 a2 a3}}
+
+test Attribute-7.5.5 {moveUp} {
+    set top [java::new ptolemy.kernel.util.NamedObj]
+    set a1  [java::new ptolemy.kernel.util.Attribute $top a1]
+    set a2  [java::new ptolemy.kernel.util.Attribute $top a2]
+    set a3  [java::new ptolemy.kernel.util.Attribute $top a3]
+    set result1 [listToNames [$top attributeList]]
+    $a3 moveUp
+    set result2 [listToNames [$top attributeList]]
+    $a1 moveUp
+    # Can't go past the top
+    $a1 moveUp
+    set result3 [listToNames [$top attributeList]]
+    list $result1 $result2 $result3
+} {{a1 a2 a3} {a1 a3 a2} {a1 a3 a2}}
+
 ######################################################################
 ####
 #
