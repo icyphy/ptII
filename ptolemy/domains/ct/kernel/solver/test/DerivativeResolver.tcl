@@ -46,6 +46,32 @@ if {[info procs enumToObjects] == "" } then {
 
 ######################################################################
 ####
-# This solver is tested in ct.test
-test DerivativeResolver-2.1 {} {    
-} {}
+test DerivativeResolver-2.1 {Try to add two resolvers to the same workspace} {    
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set resolver [java::new \
+	ptolemy.domains.ct.kernel.solver.DerivativeResolver $w]
+    set resolver2 [java::new \
+	ptolemy.domains.ct.kernel.solver.DerivativeResolver $w]
+    $w description
+} {ptolemy.kernel.util.Workspace {} directory {
+    {ptolemy.domains.ct.kernel.solver.DerivativeResolver {.CT_Derivative_Resolver} attributes {
+    }}
+    {ptolemy.domains.ct.kernel.solver.DerivativeResolver {.CT_Derivative_Resolver} attributes {
+    }}
+}}
+
+test DerivativeResolver-3.1 {integratorIsAccurate} {
+    # Uses 2.1 above
+    $resolver integratorIsAccurate [java::null]
+} {1}
+
+test DerivativeResolver-3.1 {integratorPredictedStepSize} {
+    # Uses 2.1 above
+    set top [java::new ptolemy.actor.CompositeActor]
+    set director [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector $top "myDirector"]
+    $director preinitialize
+    set resolver3 [java::cast \
+	ptolemy.domains.ct.kernel.solver.DerivativeResolver \
+	[$director getBreakpointSolver]]
+    $resolver3 integratorPredictedStepSize [java::null]
+} {0.1}
