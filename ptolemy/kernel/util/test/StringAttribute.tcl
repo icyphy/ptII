@@ -48,20 +48,40 @@ test StringAttribute-1.0 {no arg Constructor} {
     set s1 [java::new ptolemy.kernel.util.StringAttribute]
     set output [java::new java.io.StringWriter]
     $s1 exportMoML $output 1
-    list [$s1 toString] [$output toString]
+    list [$s1 toString] \
+	[$output toString] \
+	[$s1 getDefaultExpression] \
+	[$s1 getDisplayName]
 } {{ptolemy.kernel.util.StringAttribute {.}} {    <property name="" class="ptolemy.kernel.util.StringAttribute">
     </property>
-}}
+} {} {}}
 
-test StringAttribute-1.1 {two arg Constructor} {
+
+test StringAttribute-1.1 {one arg Constructor} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set s1 [java::new ptolemy.kernel.util.StringAttribute $w]
+    set output [java::new java.io.StringWriter]
+    $s1 exportMoML $output 1
+    list [$s1 toString] \
+	[$output toString] \
+	[$s1 getDefaultExpression] \
+	[$s1 getDisplayName]
+} {{ptolemy.kernel.util.StringAttribute {.}} {    <property name="" class="ptolemy.kernel.util.StringAttribute">
+    </property>
+} {} {}}
+
+test StringAttribute-1.2 {two arg Constructor} {
     set n [java::new ptolemy.kernel.util.NamedObj "my NamedObj"]
     set s2 [java::new ptolemy.kernel.util.StringAttribute $n "my StringAttribute"]
     set output [java::new java.io.StringWriter]
     $s2 exportMoML $output 1
-    list [$s2 toString] [$output toString]
+    list [$s2 toString] \
+	[$output toString] \
+	[$s2 getDefaultExpression] \
+	[$s2 getDisplayName]
 } {{ptolemy.kernel.util.StringAttribute {.my NamedObj.my StringAttribute}} {    <property name="my StringAttribute" class="ptolemy.kernel.util.StringAttribute">
     </property>
-}}
+} {} {my StringAttribute}}
 
 
 test StringAttribute-2.1 {addValueListener} {
@@ -94,7 +114,19 @@ test StringAttribute-2.1 {addValueListener} {
 }}
 
 
-test StringAttribute-3.1 {getVisibility, setVisibility} {
+test StringAttribute-3.1 {getDisplayName, setDisplayName} {
+    set s1 [java::new ptolemy.kernel.util.StringAttribute]
+    set result1 [$s1 getDisplayName]
+    $s1 setName "foo"
+    set result2 [$s1 getDisplayName]
+    $s1 setDisplayName "bar"
+    set result3 [$s1 getDisplayName]
+    $s1 setDisplayName [java::null]
+    set result4 [$s1 getDisplayName]
+    list $result1 $result2 $result3 $result4
+} {{} foo bar foo}
+
+test StringAttribute-4.1 {getVisibility, setVisibility} {
     set s1 [java::new ptolemy.kernel.util.StringAttribute]
     set full [java::field ptolemy.kernel.util.Settable FULL]
     set r1 [expr {[$s1 getVisibility] == $full}]
