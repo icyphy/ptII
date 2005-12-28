@@ -65,6 +65,7 @@ JSIMPLE_TESTS = \
 	CTEmbeddedDirector.tcl \
 	CTExecutionPhase.tcl \
 	CTMixedSignalDirector.tcl \
+	CTMultiSolverDirector.tcl \
 	CTReceiver.tcl \
 	CTScheduler.tcl \
 	NumericalNonconvergeException.tcl
