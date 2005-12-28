@@ -37,8 +37,8 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-if {[info procs enumToObjects] == "" } then {
-     source enums.tcl
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
@@ -62,3 +62,85 @@ test UndoStackAttribute-2.1 {call getUndoInfo } {
     # Uses 1.1 above
     [$p getUndoInfo $n] toString
 } {ptolemy.kernel.undo.UndoStackAttribute {.N.P}}
+
+######################################################################
+####
+#
+test UndoStackAttribute-3.1 {Simple undo/redo test with debugging} {
+    set undoAction1 [java::new ptolemy.kernel.undo.test.UndoActionTest \
+	"UndoActionTest1"]
+    set undoAction2 [java::new ptolemy.kernel.undo.test.UndoActionTest \
+	"UndoActionTest2"]
+
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    set stack [java::new ptolemy.kernel.undo.UndoStackAttribute $n \
+	"my UndoStackAttribute"]
+    $stack addDebugListener $listener
+    jdkCapture {
+	$stack push $undoAction1
+	$stack push $undoAction2
+	$stack undo
+	$stack redo
+	$stack undo
+	$stack undo
+    } stdoutResults
+
+    list $stdoutResults [$listener getMessages]
+} {{UndoActionTest.execute(): UndoActionTest2
+UndoActionTest.execute(): UndoActionTest1
+} {=======> Pushing action onto undo stack:
+UndoActionTest-UndoActionTest1
+======= Clearing redo stack.
+
+=======> Pushing action onto undo stack:
+UndoActionTest-UndoActionTest2
+======= Clearing redo stack.
+
+<====== Executing undo action:
+UndoActionTest-UndoActionTest2
+<====== Executing undo action:
+UndoActionTest-UndoActionTest1
+}}
+
+######################################################################
+####
+#
+test UndoStackAttribute-4.1 {mergeTopTwo} {
+    # Uses 3.1 above
+    jdkCapture {
+	$stack push $undoAction1
+	$stack push $undoAction2
+	$stack mergeTopTwo 
+    } stdoutResults
+    list $stdoutResults [$listener getMessages]
+} {{} {=======> Pushing action onto undo stack:
+UndoActionTest-UndoActionTest1
+======= Clearing redo stack.
+
+=======> Pushing action onto undo stack:
+UndoActionTest-UndoActionTest2
+======= Clearing redo stack.
+
+<====== Executing undo action:
+UndoActionTest-UndoActionTest2
+<====== Executing undo action:
+UndoActionTest-UndoActionTest1
+=======> Pushing action onto undo stack:
+UndoActionTest-UndoActionTest1
+======= Clearing redo stack.
+
+=======> Pushing action onto undo stack:
+UndoActionTest-UndoActionTest2
+======= Clearing redo stack.
+
+=======> Merging top two on undo stack:
+Merged action.
+First part:
+UndoActionTest-UndoActionTest2
+
+Second part:
+UndoActionTest-UndoActionTest1
+}}
