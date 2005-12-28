@@ -40,6 +40,10 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+if {[string compare sdfModel [info procs testSuggestedModalModelDirectors]] \
+	!= 0} then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
 
 set w [java::new ptolemy.kernel.util.Workspace W]
 set manager [java::new ptolemy.actor.Manager $w M]
@@ -137,3 +141,14 @@ test SRDirector-5.1 {Test action methods} {
 	[$director getNextIterationTime] \
 	[$director getCurrentTime]
 } {0.0 {0.0 5.0 10.0 3.0 4.0 5.0 6.0 7.0 8.0} 0.0 0.0}
+
+
+######################################################################
+####
+#
+test SRDirector-6.1 {Test suggestedModalModelDirectors} {
+    # Uses 5.1 above
+    # testSuggestedModalModelDirectors is defined
+    # in $PTII/util/testsuite/models.tcl
+    testSuggestedModalModelDirectors $director
+} {1}
