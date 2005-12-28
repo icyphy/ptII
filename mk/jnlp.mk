@@ -629,6 +629,10 @@ jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
 jnlp_sign1: $(SIGNED_DIR)
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
+		if [ ! -f $$x ]; then \
+			echo "Warning: $$x does not exist, skipping."; \
+			continue; \
+		fi; \
 		if [ ! -f $(SIGNED_DIR)/$$x ]; then \
 			echo "#  Copying $$x to $(SIGNED_DIR)/"; \
 			mkdir -p $(SIGNED_DIR)/`dirname $$x`; \
