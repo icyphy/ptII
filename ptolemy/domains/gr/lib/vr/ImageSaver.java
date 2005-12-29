@@ -1,4 +1,4 @@
-/* An actor that reads an array of images. 
+/* An actor that reads an array of images.
 
  @Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -26,14 +26,12 @@
  COPYRIGHTENDKEY
 
  */
-
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
 import ij.plugin.Slicer;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -41,8 +39,10 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 //////////////////////////////////////////////////////////////////////////
 ////ImageSaver
+
 /**
 An actor that reads newly created images and saves them to a file.
 
@@ -64,9 +64,8 @@ public class ImageSaver extends TypedAtomicActor {
      * @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-
     public ImageSaver(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -86,21 +85,15 @@ public class ImageSaver extends TypedAtomicActor {
         stackSize = new Parameter(this, "stackSize");
         stackSize.setExpression("50");
         stackSize.setTypeEquals(BaseType.INT);
-
     }
 
     ////////////////////////////////////////////////////////////////////
     ////////               ports and parameters                  ////////
-
     //public FilePortParameter input;
     public TypedIOPort input;
-
     public TypedIOPort output;
-
     public Parameter xResolution;
-
     public Parameter yResolution;
-
     public Parameter stackSize;
 
     ////////////////////////////////////////////////////////////////////
@@ -111,6 +104,7 @@ public class ImageSaver extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         ObjectToken objectToken = (ObjectToken) input.get(0);
         ImagePlus imagePlus = (ImagePlus) objectToken.getValue();
         Slicer slicer = new Slicer();
@@ -119,22 +113,17 @@ public class ImageSaver extends TypedAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
-
-        _xResolution = ((IntToken) xResolution.getToken()).intValue();
-        _yResolution = ((IntToken) yResolution.getToken()).intValue();
-        _stackSize = ((IntToken) stackSize.getToken()).intValue();
-
+        //_xResolution = ((IntToken) xResolution.getToken()).intValue();
+        //_yResolution = ((IntToken) yResolution.getToken()).intValue();
+        //_stackSize = ((IntToken) stackSize.getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
     //Image that is readin
     private ImagePlus _imagePlus;
 
-    private int _stackSize;
-
-    private int _xResolution;
-
-    private int _yResolution;
+    //private int _stackSize;
+    //private int _xResolution;
+    //private int _yResolution;
 }
