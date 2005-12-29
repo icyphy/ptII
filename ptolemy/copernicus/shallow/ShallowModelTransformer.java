@@ -56,7 +56,6 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
-import soot.Body;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
 import soot.Local;
@@ -350,47 +349,6 @@ public class ShallowModelTransformer extends SceneTransformer implements
         Scene.v().setActiveHierarchy(new Hierarchy());
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    private Local _buildConstantTypeLocal(Body body, ptolemy.data.type.Type type) {
-        Chain units = body.getUnits();
-
-        if (type instanceof ptolemy.data.type.BaseType) {
-            SootClass typeClass = Scene.v().loadClassAndSupport(
-                    "ptolemy.data.type.BaseType");
-            SootMethod typeConstructor = SootUtilities.searchForMethodByName(
-                    typeClass, "forName");
-            Local typeLocal = Jimple.v().newLocal("type_" + type.toString(),
-                    RefType.v(typeClass));
-            body.getLocals().add(typeLocal);
-            units.add(Jimple.v().newAssignStmt(
-                    typeLocal,
-                    Jimple.v().newStaticInvokeExpr(typeConstructor,
-                            StringConstant.v(type.toString()))));
-            return typeLocal;
-        } else if (type instanceof ptolemy.data.type.ArrayType) {
-            // recurse
-            SootClass typeClass = Scene.v().loadClassAndSupport(
-                    "ptolemy.data.type.ArrayType");
-            SootMethod typeConstructor = SootUtilities.searchForMethodByName(
-                    typeClass, "<init>");
-            Local elementTypeLocal = _buildConstantTypeLocal(body,
-                    ((ptolemy.data.type.ArrayType) type).getElementType());
-            Local typeLocal = Jimple.v().newLocal(
-                    "type_arrayOf" + elementTypeLocal.getName(),
-                    RefType.v(typeClass));
-            body.getLocals().add(typeLocal);
-            units.add(Jimple.v().newAssignStmt(typeLocal,
-                    Jimple.v().newNewExpr(RefType.v(typeClass))));
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newSpecialInvokeExpr(typeLocal, typeConstructor,
-                            elementTypeLocal)));
-            return typeLocal;
-        }
-
-        throw new RuntimeException("Unidentified type class = "
-                + type.getClass().getName());
-    }
 
     // Write the given composite.
     private void _composite(JimpleBody body, Local containerLocal,
