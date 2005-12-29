@@ -34,7 +34,6 @@ import java.util.Map;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
