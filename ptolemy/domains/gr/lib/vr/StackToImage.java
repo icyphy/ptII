@@ -165,8 +165,8 @@ public class StackToImage extends SDFTransformer {
 
     public void initialize() throws IllegalActionException {
         // _parameterPort =  input.getPort();
-        _xResolution = ((IntToken) xResolution.getToken()).intValue();
-        _yResolution = ((IntToken) yResolution.getToken()).intValue();
+        //_xResolution = ((IntToken) xResolution.getToken()).intValue();
+        //_yResolution = ((IntToken) yResolution.getToken()).intValue();
         _stackSize = ((IntToken) stackSize.getToken()).intValue();
       //  AWTImageToken[] _awtImageToken = new AWTImageToken[_stackSize];
         //AWTImageToken[] _awtImageToken = null;
@@ -220,9 +220,9 @@ public class StackToImage extends SDFTransformer {
 
     private int _stackSize;
 
-    private int _xResolution;
+    //private int _xResolution;
 
-    private int _yResolution;
+    //private int _yResolution;
 
     private int _index = 0;
 }

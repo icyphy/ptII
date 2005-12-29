@@ -37,7 +37,6 @@ import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferDouble;
 import java.awt.image.Raster;
-import java.awt.image.SampleModel;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
@@ -453,7 +452,6 @@ public class GRTexture2D extends GRGeometry {
         double[] pixelArray = new double[arrayLength * 4];
 
         //double[] alphaArray = new double[arrayLength]; 
-        double[] alphaArray = new double[arrayLength];
 
         //Create alpha array and set as function of pixel values
         System.out.println("pixelArray length = " + pixelArray.length);
@@ -482,7 +480,7 @@ public class GRTexture2D extends GRGeometry {
         }
 
         //float[] dataArray =  new float[arrayLength*4];
-        SampleModel sampleModel = componentColorModel
+        /*SampleModel sampleModel = */componentColorModel
                 .createCompatibleSampleModel(_sSize, _tSize);
       /*  System.out.println("# dataElements = "
                 + sampleModel.getNumDataElements());
