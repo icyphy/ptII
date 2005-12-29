@@ -31,7 +31,6 @@ import ij.ImagePlus;
 import ij.gui.ImageWindow;
 import ij.gui.Roi;
 import ij.gui.StackWindow;
-import ij.process.ImageProcessor;
 
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
@@ -39,7 +38,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.net.URL;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -137,12 +135,8 @@ public class ROISelect extends TypedAtomicActor {
         _roi = null;
         _imagePlus = new ImagePlus();
         _image = null;
-        _tracking = false; // left button down, sense motion 
         _startX = 0;
         _startY = 0;
-        _currentX = 0;
-        _currentY = 0;
-       
     }
     public boolean postfire() throws IllegalActionException {
         super.postfire();
@@ -291,12 +285,8 @@ public class ROISelect extends TypedAtomicActor {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private ImagePlus _croppedImage;
-
     private ImagePlus _imagePlus;
     
-    private ImageProcessor _imageProcessor;
-
     private Roi _roi;
 
     private boolean _stack;
@@ -307,15 +297,8 @@ public class ROISelect extends TypedAtomicActor {
     
     private Image _image;
 
-    private boolean _tracking;
+    private int _startX, _startY, _finalX, _finalY;
 
-    private int _startX, _startY, _finalX, _finalY, _currentX, _currentY;
-
-    private boolean _finish = true;
-    private double[] _roiParameters;
-
-    private String _fileRoot;
-    private URL _imageURL;
     private boolean _paused;
     private int _keyCode;
     private  int _button;
@@ -346,8 +329,6 @@ public class ROISelect extends TypedAtomicActor {
             System.out.println("In EVent thread in MousePressHandler() = " + java.awt.EventQueue.isDispatchThread());
             int button;
             System.out.println("defined button");
-            //double startX, startY;
-            _tracking = true;
             System.out.println("tracking is true");
             button = startRoi.getButton();
             System.out.println("got button");
@@ -374,17 +355,13 @@ public class ROISelect extends TypedAtomicActor {
              synchronized(this){
              //   this.notifyAll();
               System.out.println("In EVent thread in mouseMotionHandler() = " + java.awt.EventQueue.isDispatchThread());
-            int button;
             int x, y;
             //double currentX, currentY, x, y;
 
             _button = drawRoi.getButton();
             x = drawRoi.getX();
             y = drawRoi.getY();
-            if (_tracking) {
-                _currentX = x;
-                _currentY = y;
-            }
+ 
             System.out.println("mouse dragged");
             System.out.println("press currentX= " + x + "   currentY=" + y
                     + "   button=" + _button);
@@ -406,9 +383,7 @@ public class ROISelect extends TypedAtomicActor {
              synchronized(this){
              //   this.notifyAll();
               System.out.println("In EVent thread in mouseReleaseHandler() = " + java.awt.EventQueue.isDispatchThread());
-            int button;
-            //double finalX, finalY;
-            _tracking = false;
+            //double finalX, finalY
             _button = finishRoi.getButton();
             _finalX = finishRoi.getX();
             _finalY = finishRoi.getY();

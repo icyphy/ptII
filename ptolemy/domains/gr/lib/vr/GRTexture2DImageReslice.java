@@ -34,35 +34,24 @@ import java.awt.Point;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.ComponentSampleModel;
 import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
-import java.io.File;
-import java.net.URL;
 import java.util.Hashtable;
 
-import javax.imageio.stream.FileImageInputStream;
 import javax.media.j3d.GeometryArray;
-import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.QuadArray;
-import javax.media.j3d.TexCoordGeneration;
 import javax.media.j3d.Texture;
-import javax.media.j3d.Texture2D;
 import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.View;
 
-import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.gr.lib.vr.TextureLoader.MyTextureLoader;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -207,8 +196,6 @@ public class GRTexture2DImageReslice extends GRGeometry {
         //_quadCoords = new float[12];
         _quadCoords = new double[12];
         _texCoords = new float[8];
-        double ydimpos = .23;
-        double ydimneg = -.4375;      
 
         if (_axis == 1) {
             double curY = _counter * _planeSpacing - .5f;
@@ -371,9 +358,6 @@ public class GRTexture2DImageReslice extends GRGeometry {
      * @throws IllegalActionException
      */
     protected void _loadTexture() throws IllegalActionException {
-         int arrayLength = _sSize*_tSize;
-        
-    	//Debug statement
         if (_debugging) {
             _debug("About to loadTexture");
         }
@@ -505,75 +489,21 @@ public class GRTexture2DImageReslice extends GRGeometry {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The URL that specifies where the file is located. */
-    private URL _url;
-
-    /** The NodeComponent defining the texture which must be added to the Appearance */
-    private Texture2D _texture2D;
-
-    /** ImageComponent. */
-    private ImageComponent2D _imageComponent;
-
     /** QuadArray. */
     private QuadArray _plane;
 
     /** Buffer of image data */
     private BufferedImage _bufferedImage;
 
-    /**Defines how to translate the pixels into color and alpha components.*/
-    private ColorModel _colorModel;
-
-    /** The ColorSpace that defines the color space of the image */
-    private ColorSpace _colorSpace;
-
-
-
-    //private ImagePlus _imagePlus;
-
-    private String _fileRoot;
-
-    private File _file;
-
-    private FileImageInputStream _fileImageInputStream;
-
-    private Texture2D _texture;
-
     private Token _token;
-    
-    private Token _tokenURL;
-
-    private TexCoordGeneration _texCoordGeneration;
-
-    private WritableRaster _alphaRaster;
-
-    private WritableRaster _dataRaster;
-
-    private int[] _intData;
 
     private double[] _quadCoords;
-   // private float[] _quadCoords;
 
     private float[] _texCoords;
-
-    //private TexCoord2f[] _texCoords;
-
-    private MyTextureLoader _myTextureLoader;
-
-    private DataBufferInt _dataBufferInt;
-
-    private DataBuffer _dataBuffer;
 
     private int _sSize;
 
     private int _tSize;
 
-    private ParameterPort _parameterPort;
-
-    private StringToken _stringToken;
-
     private int _counter;
-
-    private String _eof;
-
 }

@@ -119,7 +119,7 @@ public class StackDisplay extends Sink {
                        "Failed to cast " + token.getClass()
                        + " to an ImageToken.\nToken was: " + token);
                  }*/
-       		_frame = new StackWindow(imagePlus);        		
+       		/*_frame = */ new StackWindow(imagePlus);        		
 
         }
 
@@ -162,9 +162,5 @@ public class StackDisplay extends Sink {
     
     /** The frame, if one is used. */
     private boolean _imagesOrStack;
-    private StackWindow _frame;
-
-    private int _index = 0;
-
-
+    //private StackWindow _frame;
 }

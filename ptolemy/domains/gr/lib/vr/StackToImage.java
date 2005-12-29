@@ -30,7 +30,6 @@ package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
 import ij.ImageStack;
-import ij.process.ColorProcessor;
 import ij.process.ImageProcessor;
 
 import java.awt.Image;
@@ -212,21 +211,9 @@ public class StackToImage extends SDFTransformer {
     ////                         private members                   ////
 
     
-    private AWTImageToken[] _awtImageToken;
-    //private AWTImageToken _awtImageToken;
-    
     //Image that is readin
-    private ImagePlus _imagePlus;
-    
-
     private ImagePlus _currentImagePlus;
     private ImageStack _currentImageStack;
-
-    //Image that is readin
-    private ColorProcessor _colorProcessor;
-
-    //Image that is readin
-    private ImageStack _imageStack;
 
     // Image that is read in.
     private Image _image;

@@ -33,7 +33,6 @@ import ij.ImageStack;
 import ij.process.ColorProcessor;
 
 import java.awt.Image;
-import java.net.URL;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -240,11 +239,6 @@ import ptolemy.kernel.util.NameDuplicationException;
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    
-    /** Image that is being read in ImageJ format. */
-    private ImagePlus _imagePlus;
-
-    
     /** ColorProcessor of image being read. */
     private ColorProcessor _colorProcessor;
     
@@ -260,10 +254,6 @@ import ptolemy.kernel.util.NameDuplicationException;
     
     private boolean _isImageInput;
 
-    /**  The URL of the file. */
-    private URL _url;
-    
-    
     /** Number of images in stack as defined by user */
     private int _stackSize;
     
