@@ -130,7 +130,6 @@ public class HTMLAbout {
         htmlBuffer.append("</ul>\n<table>\n");
 
         _demosURLs = new LinkedList();
-        String demosURL, completeDemosURL;
         if (_configurationExists("full")) {
             htmlBuffer
                     .append("<tr rowspan=4><center><b>Full</b></center></tr>\n"
