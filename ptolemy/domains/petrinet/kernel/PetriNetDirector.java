@@ -299,6 +299,7 @@ public class PetriNetDirector extends Director {
             Nameable component = (Nameable) components.next();
 
             if (component instanceof Place) {
+                // Don't do anything for Place
             } else if (component instanceof PetriNetActor) {
                 TypedCompositeActor componentActor = (TypedCompositeActor) component;
                 LinkedList newComponentList = findTransitions(componentActor);
@@ -373,8 +374,7 @@ public class PetriNetDirector extends Director {
                     if (!temporarySourcePortList.contains(weightPort)) {
                         temporarySourcePortList.add(weightPort);
 
-                        Nameable weightPlace = (Nameable) weightPort
-                                .getContainer();
+                        Nameable weightPlace = weightPort.getContainer();
 
                         if (weightPlace instanceof PetriNetActor) {
                             if (weightPort.isOutput()) {
@@ -455,8 +455,7 @@ public class PetriNetDirector extends Director {
                     if (!temporaryDestinationPortList.contains(weightPort)) {
                         temporaryDestinationPortList.add(weightPort);
 
-                        Nameable weightPlace = (Nameable) weightPort
-                                .getContainer();
+                        Nameable weightPlace = weightPort.getContainer();
 
                         if (weightPlace instanceof PetriNetActor) {
                             if (weightPort.isOutput()) {
@@ -467,6 +466,7 @@ public class PetriNetDirector extends Director {
                                         .insideRelationList());
                             }
                         } else if (weightPlace instanceof Place) {
+                            // Don't do anything for Place
                         } else {
                             _debug("something wrong "
                                     + weightPlace.getFullName());
@@ -522,8 +522,7 @@ public class PetriNetDirector extends Director {
                     if (!temporarySourcePortList.contains(weightPort)) {
                         temporarySourcePortList.add(weightPort);
 
-                        Nameable weightPlace = (Nameable) weightPort
-                                .getContainer();
+                        Nameable weightPlace = weightPort.getContainer();
 
                         if (weightPlace instanceof PetriNetActor) {
                             if (weightPort.isOutput()) {
@@ -695,7 +694,7 @@ public class PetriNetDirector extends Director {
                 if (!temporaryDestinationPortList.contains(weightPort)) {
                     temporaryDestinationPortList.add(weightPort);
 
-                    Nameable weightPlace = (Nameable) weightPort.getContainer();
+                    Nameable weightPlace = weightPort.getContainer();
 
                     if (weightPlace instanceof PetriNetActor) {
                         if (weightPort.isOutput()) {
@@ -747,7 +746,7 @@ public class PetriNetDirector extends Director {
                 if (!temporarySourcePortList.contains(weightPort)) {
                     temporarySourcePortList.add(weightPort);
 
-                    Nameable weightPlace = (Nameable) weightPort.getContainer();
+                    Nameable weightPlace = weightPort.getContainer();
 
                     if (weightPlace instanceof PetriNetActor) {
                         if (weightPort.isOutput()) {
@@ -818,21 +817,19 @@ public class PetriNetDirector extends Director {
      */
     private int _getWeightNumber(IORelation weights)
             throws IllegalActionException {
-        Attribute temporaryAttribute = (Attribute) weights
-                .getAttribute("Weight");
+        Attribute temporaryAttribute = weights.getAttribute("Weight");
 
         if (temporaryAttribute == null) {
             return 1;
         } else if (temporaryAttribute instanceof Variable) {
             Variable weightAttribute = (Variable) temporaryAttribute;
-            Token weightToken = (Token) weightAttribute.getToken();
+            Token weightToken = weightAttribute.getToken();
 
             if (weightToken instanceof ScalarToken) {
                 ScalarToken weightScalarToken = (ScalarToken) weightToken;
                 return weightScalarToken.intValue();
-            } else {
-                return 0;
             }
+            return 0;
         } else {
             _debug(" something wrong with the edge");
             return 0;
