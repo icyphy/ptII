@@ -1781,13 +1781,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         _source = source;
     }
 
-    /** Set the verbose flag to true such that more debugging
-     *  information is shown.
-     */
-    public void setVerboseDebugging() {
-        _verbose = true;
-    }
-
     /** Return an ordered list of contained objects filtered by the specified
      *  filter. The attributes are listed first, followed by ports,
      *  classes, entities, and relations, in that order. Within each
