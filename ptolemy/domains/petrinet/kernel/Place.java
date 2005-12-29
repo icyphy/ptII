@@ -94,7 +94,6 @@ public class Place extends Transformer {
 
     /** getMarking() is to get the _currentMarking of the place.
      *  @return the currentMarking of the place.
-     *  @see #setMarking(int)
      */
     public int getMarking() {
         return _currentMarking;
@@ -133,28 +132,12 @@ public class Place extends Transformer {
         _temporaryMarking = _temporaryMarking - i;
     }
 
-    /**  Increase the temporary marking.
-     *   @param i the number to be increased for the TemporaryMarking
-     *   in the place.
-     */
-    public void increaseTemporaryMarking(int i) {
-        _temporaryMarking = _temporaryMarking + i;
-    }
-
     /** Set the _temporaryMarking.
      *  @param i set the TemporaryMarking of the place to i.
      *  @see #getTemporaryMarking()
      */
     public void setTemporaryMarking(int i) {
         _temporaryMarking = i;
-    }
-
-    /** Set the _currentMarking.
-     *  @param i set the marking of the place to i
-     *  @see #getMarking()
-     */
-    public void setMarking(int i) {
-        _currentMarking = i;
     }
 
     /** Set the current marking equal to the initial marking.
