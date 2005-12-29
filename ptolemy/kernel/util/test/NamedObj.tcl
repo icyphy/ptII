@@ -365,7 +365,78 @@ test NamedObj-10.1 {Test getAttribute} {
 ######################################################################
 ####
 #
-test NamedObj-10.2 {Test toplevel} {
+test NamedObj-10.2 {Test isOverridden} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+    set result1 [$a isOverridden]
+    # Should have no derived objects
+    set l [$a propagateValue]
+    set result2 [$a isOverridden]
+    # Resets the overridden field
+    $a setDerivedLevel 0
+    set result3 [$a isOverridden]
+
+    # Try setting propagateValue twice, just to be sure
+    # we stay overridden and the size of _override does not increase.
+    set l [$a propagateValue]
+    set result4 [$a isOverridden]
+    set l [$a propagateValue]
+    set result5 [$a isOverridden]
+    list $result1 [$l size] $result2 $result4 $result5
+} {0 0 1 1 1}
+
+######################################################################
+####
+#
+test NamedObj-10.5.1 {Test setDerivedLevel, suppressing moml} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+
+    # This works because the derivedLevel is higher than the depth
+    set stringWriter [java::new java.io.StringWriter]
+    $a exportMoML $stringWriter 2 foo
+    set result1 [$stringWriter toString]
+    set result2 [$a getDerivedLevel]
+
+    $a setDerivedLevel 1
+
+    # exportMoML returns {}
+    set stringWriter [java::new java.io.StringWriter]
+    $a exportMoML $stringWriter 2 foo
+    set result3 [$stringWriter toString]
+    list $result1 $result2 $result3
+} {{        <entity name="foo" class="ptolemy.kernel.util.NamedObj">
+        </entity>
+} 2147483647 {}}
+
+######################################################################
+####
+#
+test NamedObj-10.5.2 {Test setPersistent, suppressing moml} {
+    set n [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
+
+    # This works because the derivedLevel is higher than the depth
+    set stringWriter [java::new java.io.StringWriter]
+    $a exportMoML $stringWriter 2 foo
+    set result1 [$stringWriter toString]
+    set result2 [$a isPersistent]
+
+    $a setPersistent false
+
+    # exportMoML returns {}
+    set stringWriter [java::new java.io.StringWriter]
+    $a exportMoML $stringWriter 2 foo
+    set result3 [$stringWriter toString]
+    list $result1 $result2 $result3 [$a isPersistent]
+} {{        <entity name="foo" class="ptolemy.kernel.util.NamedObj">
+        </entity>
+} 1 {} 0}
+
+######################################################################
+####
+#
+test NamedObj-10.8 {Test toplevel} {
     set n [java::new ptolemy.kernel.util.Workspace]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
     set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
@@ -600,7 +671,7 @@ test NamedObj-15.1 {Test addChangeListener, removeChangeListener } {
 ######################################################################
 ####
 #
-test Attribute-16.1 {move* methods with no container} {
+test NamedObj-16.1 {move* methods with no container} {
     set n [java::new ptolemy.kernel.util.NamedObj]
     catch {$n moveDown} msg1
     catch {$n moveToFirst} msg2
@@ -614,3 +685,36 @@ test Attribute-16.1 {move* methods with no container} {
   in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
   in .<Unnamed Object>}}
 
+######################################################################
+####
+#
+test NamedObj-17.1 {sortContainedObjects} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set a [java::new ptolemy.kernel.util.NamedObj $w "A"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $a1 "A2"]
+
+    # Empty filter
+    set filter [java::new java.util.LinkedList] 
+    set list [$a sortContainedObjects $filter]
+    set result1 [$list size]
+
+    $filter add $a2
+    set list [$a sortContainedObjects $filter]
+    set result2 [listToNames $list]
+
+    $filter add $a1
+    set list [$a sortContainedObjects $filter]
+    set result3 [listToNames $list]
+
+    # Add an attribute from a different workspace
+    set w2 [java::new ptolemy.kernel.util.Workspace]
+    set b [java::new ptolemy.kernel.util.NamedObj $w2 "B"]
+    set b1 [java::new ptolemy.kernel.util.Attribute $b "B1"]
+
+    $filter add $b1
+    set list [$a sortContainedObjects $filter]
+    set result4 [listToNames $list]
+
+    list $result1 $result2 $result3 $result4
+} {0 {} A1 A1}
