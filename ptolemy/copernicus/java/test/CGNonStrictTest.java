@@ -27,7 +27,11 @@
  */
 package ptolemy.copernicus.java.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ptolemy.actor.lib.Sink;
+import ptolemy.actor.lib.Test;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -39,11 +43,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.moml.SharedParameter;
 import ptolemy.util.StringUtilities;
-
-import java.util.ArrayList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// CGNonStrictTest
