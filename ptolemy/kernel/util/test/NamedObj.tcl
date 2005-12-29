@@ -596,3 +596,21 @@ test NamedObj-15.1 {Test addChangeListener, removeChangeListener } {
 	        [$stream toString] "\n" output
     list $output 
 } {{}}
+
+######################################################################
+####
+#
+test Attribute-16.1 {move* methods with no container} {
+    set n [java::new ptolemy.kernel.util.NamedObj]
+    catch {$n moveDown} msg1
+    catch {$n moveToFirst} msg2
+    catch {$n moveToIndex} msg3
+    catch {$n moveToLast} msg4
+    catch {$n moveUp} msg5
+    list $msg1 $msg2 $msg3 $msg4 $msg5
+} {{ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>} {can't find method "moveToIndex" with 0 argument(s) for class "ptolemy.kernel.util.NamedObj"} {ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>}}
+
