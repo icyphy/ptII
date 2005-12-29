@@ -27,6 +27,16 @@
  */
 package ptolemy.domains.gr.lib.vr;
 
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
+import com.sun.j3d.utils.image.TextureLoader;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -47,35 +57,22 @@ import javax.media.j3d.Texture;
 import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.View;
 
-import ptolemy.data.AWTImageToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
-import com.sun.j3d.utils.image.TextureLoader;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture2DImageReslice
 
-
-/** 
+/**
     An actor that performs volume rendering using 2D textures.
     The <i>xResolution</i> and <i>yResolution</i> parameters are used to specifiy
     the resolution of the image.
     <p>
-    
+
     @author Tiffany Crawford
     @version
     @since
     @Pt.ProposedRating Red
     @Pt.AcceptedRating Red
 */
-
-
 public class GRTexture2DImageReslice extends GRGeometry {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -86,13 +83,11 @@ public class GRTexture2DImageReslice extends GRGeometry {
      *   actor with this name.
      */
     public GRTexture2DImageReslice(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         //voxelFile = new FilePortParameter(this, "voxelFile");
         //voxelFile.setExpression("$CLASSPATH/doc/img/brainMRI.jpg");
-
-
         //FIXME Should this be one parameter, ie. 256x256
         xResolution = new Parameter(this, "xResolution");
         xResolution.setExpression("256");
@@ -101,47 +96,42 @@ public class GRTexture2DImageReslice extends GRGeometry {
         yResolution = new Parameter(this, "yResolution");
         yResolution.setExpression("50");
         yResolution.setTypeEquals(BaseType.INT);
-        
-/*        inputURL = new TypedIOPort(this, "inputURL");
-        inputURL.setInput(true);
-        inputURL.setTypeEquals(BaseType.OBJECT);*/
 
+        /*        inputURL = new TypedIOPort(this, "inputURL");
+                inputURL.setInput(true);
+                inputURL.setTypeEquals(BaseType.OBJECT);*/
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /* Second Input */
-//    public TypedIOPort inputURL;
-    
+
+    //    public TypedIOPort inputURL;
+
     /** x Resolution */
     public Parameter xResolution;
 
     /** y Resolution */
     public Parameter yResolution;
 
-
-    
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Initialize variables to parameter values.
      * @exception IllegalActionException If the current director
      *  is not a GRDirector.
      */
-
     /** The input port that reads a in a URL to the file holding the
      *  volume to be rendered.
      */
-    // public FilePortParameter voxelFile;
 
+    // public FilePortParameter voxelFile;
     public void initialize() throws IllegalActionException {
         super.initialize();
         _sSize = (int) ((IntToken) xResolution.getToken()).intValue();
         _tSize = (int) ((IntToken) yResolution.getToken()).intValue();
         _counter = 0;
-
     }
 
     /** Return false if the scene graph is already initialized.
@@ -149,6 +139,7 @@ public class GRTexture2DImageReslice extends GRGeometry {
      *  @exception IllegalActionException Not thrown in this base class
      * @throws
      */
+
     /*public boolean prefire() throws IllegalActionException {
      if (_debugging) {
      _debug("Called prefire()");
@@ -162,7 +153,6 @@ public class GRTexture2DImageReslice extends GRGeometry {
      /** Set _isSceneGraphInitialized back to false so
      * node can be sent. fire() will set it back to true
      */
-
     /*       _createModel();
      //FIXME: Problem with name of variable, talk to Edward
      _isSceneGraphInitialized = false;
@@ -178,15 +168,15 @@ public class GRTexture2DImageReslice extends GRGeometry {
      }
      } */
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
     /** Create the geometry for the Node that will hold the texture.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
     protected void _createGeometry() throws IllegalActionException {
-        _plane = new QuadArray(4, GeometryArray.COORDINATES
-                | GeometryArray.TEXTURE_COORDINATE_2);
+        _plane = new QuadArray(4,
+                GeometryArray.COORDINATES | GeometryArray.TEXTURE_COORDINATE_2);
 
         if (_debugging) {
             _debug("inside _createGeometry");
@@ -198,35 +188,34 @@ public class GRTexture2DImageReslice extends GRGeometry {
         _texCoords = new float[8];
 
         if (_axis == 1) {
-            double curY = _counter * _planeSpacing - .5f;
+            double curY = (_counter * _planeSpacing) - .5f;
 
             if (_debugging) {
                 _debug("counter = " + _counter);
                 _debug("curY = " + curY);
-
             }
 
             //Set coordinates for the plane.  These coordinates assume
             //that the the image's origin is at the lower left and rotates
             // it 90 degrees about the x-axis.
-            
             // lower left
             _quadCoords[0] = -0.5f;
+
             //_quadCoords[0] = 5;
             _quadCoords[1] = curY;
-            _quadCoords[2] = (_tSize/256f)-0.5f;
+            _quadCoords[2] = (_tSize / 256f) - 0.5f;
             _texCoords[0] = 0;
             _texCoords[1] = 0;
 
             // lower right
-            _quadCoords[3] = (_sSize/256f)-0.5f;
+            _quadCoords[3] = (_sSize / 256f) - 0.5f;
             _quadCoords[4] = curY;
-            _quadCoords[5] = (_tSize/256f)-0.5f;
+            _quadCoords[5] = (_tSize / 256f) - 0.5f;
             _texCoords[2] = 1;
             _texCoords[3] = 0;
 
             // upper right
-            _quadCoords[6] = (_sSize/256f)-0.5f;
+            _quadCoords[6] = (_sSize / 256f) - 0.5f;
             _quadCoords[7] = curY;
             _quadCoords[8] = -0.5f;
             _texCoords[4] = 1;
@@ -239,56 +228,61 @@ public class GRTexture2DImageReslice extends GRGeometry {
             _texCoords[6] = 0;
             _texCoords[7] = 1;
         } else if (_axis == 2) {
+            double curZ = (_counter * _planeSpacing) - .5;
 
-            double curZ = _counter * _planeSpacing - .5;
             //Set coordinates for the plane.  These coordinates assume
             //that the the image's origin is at the lower left and the planes
             //are aligned accordingly
-            
             // lower left
-            _quadCoords[0] = -(_sSize/512f);
+            _quadCoords[0] = -(_sSize / 512f);
+
             //_quadCoords[1] = -0.1;
-            _quadCoords[1] = -(_tSize/512f);
+            _quadCoords[1] = -(_tSize / 512f);
             _quadCoords[2] = curZ;
             _texCoords[0] = 0;
             _texCoords[1] = 0;
 
             // lower right
-            _quadCoords[3] = _sSize/512f;
+            _quadCoords[3] = _sSize / 512f;
+
             //_quadCoords[4] = -0.1;
-            _quadCoords[4] = -(_tSize/512f);
+            _quadCoords[4] = -(_tSize / 512f);
             _quadCoords[5] = curZ;
             _texCoords[2] = 1;
             _texCoords[3] = 0;
 
             // upper right
-            _quadCoords[6] = _sSize/512f;
+            _quadCoords[6] = _sSize / 512f;
+
             //_quadCoords[7] = 0.1;
-            _quadCoords[7] = _tSize/512f;
+            _quadCoords[7] = _tSize / 512f;
             _quadCoords[8] = curZ;
             _texCoords[4] = 1;
             _texCoords[5] = 1;
 
             // upper left
-            _quadCoords[9] = -(_sSize/512f);
-            //_quadCoords[10] = 0.1;
-            _quadCoords[10] = _tSize/512f;
-            _quadCoords[11] = curZ;
+            _quadCoords[9] = -(_sSize / 512f);
 
-            _texCoords[6]= 0;
-            _texCoords[7]= 1;
-        }/*else if (_axis == 0){
-            float curX = _counter * _planeSpacing -.5;
-            
-            //Set coordinates for the plane.  These coordinates assume
-            //that the the image's origin is at the lower left and the planes
-            //are aligned accordingly
-            
+            //_quadCoords[10] = 0.1;
+            _quadCoords[10] = _tSize / 512f;
+            _quadCoords[11] = curZ;
 
             _texCoords[6] = 0;
             _texCoords[7] = 1;
-        } */else if (_axis == 0) {
-            double curX = _counter * _planeSpacing - .5;
+        } /*else if (_axis == 0){
+           float curX = _counter * _planeSpacing -.5;
+
+           //Set coordinates for the plane.  These coordinates assume
+           //that the the image's origin is at the lower left and the planes
+           //are aligned accordingly
+
+
+           _texCoords[6] = 0;
+           _texCoords[7] = 1;
+        } */
+        else if (_axis == 0) {
+            double curX = (_counter * _planeSpacing) - .5;
+
             /** Set coordinates for the plane.  These coordinates assume
              * that the the image's origin is at the lower left and the planes
              * are aligned accordingly
@@ -321,31 +315,28 @@ public class GRTexture2DImageReslice extends GRGeometry {
             _quadCoords[11] = 0.5f;
             _texCoords[6] = 0;
             _texCoords[7] = 1;
-
         } else {
             if (_debugging) {
                 _debug("chose none of them");
-
             }
         }
-        
-        System.out.println("Quad Cooords = "+ _quadCoords[0] + " " + _quadCoords[1] + " " + _quadCoords[2]+ 
-                " " + _quadCoords[3] + " " + _quadCoords[4] + " " + _quadCoords[5] +
-                " " + _quadCoords[6] + " " + _quadCoords[7] + " " + _quadCoords[8] + 
-                " " + _quadCoords[9] + " " + _quadCoords[10] + " " + _quadCoords[11]);
-        System.out.println("50/256 = " + 50/256 + (50/256));
+
+        System.out.println("Quad Cooords = " + _quadCoords[0] + " "
+            + _quadCoords[1] + " " + _quadCoords[2] + " " + _quadCoords[3]
+            + " " + _quadCoords[4] + " " + _quadCoords[5] + " "
+            + _quadCoords[6] + " " + _quadCoords[7] + " " + _quadCoords[8]
+            + " " + _quadCoords[9] + " " + _quadCoords[10] + " "
+            + _quadCoords[11]);
+        System.out.println("50/256 = " + (50 / 256) + (50 / 256));
         _plane.setCoordinates(0, _quadCoords);
         _plane.setTextureCoordinates(0, 0, _texCoords);
         _geometry = _plane;
     }
 
-
-    /**Read and load the image to be texture mapped. 
+    /**Read and load the image to be texture mapped.
      * Set the appearance of this 3D object.
-     *  @exception IllegalActionException 
+     *  @exception IllegalActionException
      */
-
-
     protected void _createModel() throws IllegalActionException {
         _readImage();
         _counter++;
@@ -362,16 +353,17 @@ public class GRTexture2DImageReslice extends GRGeometry {
             _debug("About to loadTexture");
         }
 
-                  
         //Create BufferedImage from Image
-        _bufferedImage = new BufferedImage(_image.getWidth(_viewScreen.getCanvas()),_image.getHeight(_viewScreen.getCanvas()),
+        _bufferedImage = new BufferedImage(_image.getWidth(
+                    _viewScreen.getCanvas()),
+                _image.getHeight(_viewScreen.getCanvas()),
                 BufferedImage.TYPE_3BYTE_BGR);
         System.out.println("_bufferedImage = " + _bufferedImage);
+
         Graphics2D graphics2D = _bufferedImage.createGraphics();
         System.out.println("graphics2D = " + graphics2D);
-        graphics2D.drawImage(_image, 0,0,_viewScreen.getCanvas());
-       
-        
+        graphics2D.drawImage(_image, 0, 0, _viewScreen.getCanvas());
+
         /*try {
            // ImageInputStream imageInputStream = ImageIO.createImageInputStream(_image);
             //System.out.println("imageInputStream = " + imageInputStream);
@@ -380,90 +372,97 @@ public class GRTexture2DImageReslice extends GRGeometry {
             System.err.println(e);
             _bufferedImage = null;
         }*/
-            
+
         //Create WritableRaster
         //FIXME Are the parameters for ComponentSampleModel correct?
         int pixelStride = 3;
-        
+
         //FIXME What is the new scanline stride?
-        int scanlineStride = _sSize*3;
+        int scanlineStride = _sSize * 3;
         ComponentSampleModel componentSampleModel = 
             //FIXME Which one is the height?  xRes = _sSize or yRes = _tSize
-            new ComponentSampleModel(0, _sSize, _tSize, pixelStride, scanlineStride, new int[]{0,0,0,0});
-        
-        
-        
-        int bankIndices1[] = ((ComponentSampleModel) componentSampleModel).getBankIndices();
-        System.out.println("componentSampleModel # bank Indices = " 
-                + bankIndices1[0] + ", " + bankIndices1[1] + ", " + bankIndices1[2]+ ", " + bankIndices1[3]);
-        
-        
-        int offset1[] = ((ComponentSampleModel) componentSampleModel).getBandOffsets();
-        System.out.println("componentSampleModel band offsets = " 
-                + offset1[0] +", " + offset1[1]+ ", " + offset1[2]+", " + offset1[3]);    
+            new ComponentSampleModel(0, _sSize, _tSize, pixelStride,
+                scanlineStride, new int[] {
+                    0,
+                    0,
+                    0,
+                    0
+                });
+
+        int[] bankIndices1 = ((ComponentSampleModel) componentSampleModel)
+                    .getBankIndices();
+        System.out.println("componentSampleModel # bank Indices = "
+            + bankIndices1[0] + ", " + bankIndices1[1] + ", " + bankIndices1[2]
+            + ", " + bankIndices1[3]);
+
+        int[] offset1 = ((ComponentSampleModel) componentSampleModel)
+                    .getBandOffsets();
+        System.out.println("componentSampleModel band offsets = " + offset1[0]
+            + ", " + offset1[1] + ", " + offset1[2] + ", " + offset1[3]);
+
         //Create ColorModel and componentSampleModel
-       ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel 
-        (ColorSpace.getInstance(ColorSpace.CS_sRGB) ,
-                   new int[] {8,8,8,8} , // bits
-                   true, // alpha
-                   false , // alpha pre-multiplied
-                   Transparency.TRANSLUCENT ,
-                   DataBuffer.TYPE_BYTE 
-                   );
-       
+        ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel(ColorSpace
+                        .getInstance(ColorSpace.CS_sRGB),
+                new int[] {
+                    8,
+                    8,
+                    8,
+                    8
+                }, // bits
+                true, // alpha
+                false, // alpha pre-multiplied
+                Transparency.TRANSLUCENT, DataBuffer.TYPE_BYTE);
+
         //Create Writable Raster
         Raster raster = _bufferedImage.getData();
         DataBuffer dataBuffer = raster.getDataBuffer();
-        WritableRaster writableRaster = Raster.createWritableRaster(componentSampleModel, 
-                dataBuffer, new Point()); 
+        WritableRaster writableRaster = Raster.createWritableRaster(componentSampleModel,
+                dataBuffer, new Point());
         System.out.println("DataBufferSize = " + dataBuffer.getSize());
+
         Hashtable hashtable = new Hashtable();
-        
-        
-        BufferedImage bufferedImagewoAlpha = new BufferedImage( componentColorModelwoAlpha,
-                writableRaster, false, hashtable); 
-      
-    
-        TextureLoader loader = new TextureLoader(bufferedImagewoAlpha,_viewScreen.getCanvas());
+
+        BufferedImage bufferedImagewoAlpha = new BufferedImage(componentColorModelwoAlpha,
+                writableRaster, false, hashtable);
+
+        TextureLoader loader = new TextureLoader(bufferedImagewoAlpha,
+                _viewScreen.getCanvas());
+
         //MyTextureLoader loader = new MyTextureLoader(_image,_viewScreen.getCanvas());
-        
+
         /* Set loaded texture*/
         Texture loadedTexture = loader.getTexture();
-        TextureAttributes attributes = null; 
+        TextureAttributes attributes = null;
+
         if (loadedTexture != null) {
             attributes = new TextureAttributes();
             attributes.setTextureMode(TextureAttributes.MODULATE);
             _appearance.setTextureAttributes(attributes);
             _appearance.setTexture(loadedTexture);
         }
-
     }
 
-
-
     /**Read the image file.
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      */
-
     /**Read in file. */
     protected void _readImage() throws IllegalActionException {
-       
         /*_token = input.get(0);
         ObjectToken objectToken = (ObjectToken) _token;
         _url = (URL) objectToken.getValue();
         _fileRoot = _url.getFile();*/
-        
+
         /**Use if input is an ImageToken */
-           _image = null;
-           _token = null;
-           _token = input.get(0);
-           AWTImageToken imageToken = (AWTImageToken) _token;
-           
-            _image = imageToken.asAWTImage();
-            System.out.println("token = " + _token.getType());
-            System.out.println("token = " + _token.getClass().toString());
-     
-        
+        _image = null;
+        _token = null;
+        _token = input.get(0);
+
+        AWTImageToken imageToken = (AWTImageToken) _token;
+
+        _image = imageToken.asAWTImage();
+        System.out.println("token = " + _token.getType());
+        System.out.println("token = " + _token.getClass().toString());
+
         /*
         _url = texture.asURL();
         /**Read in image containing data to be mapped
@@ -474,8 +473,6 @@ public class GRTexture2DImageReslice extends GRGeometry {
         if (_imagePlus == null) {
         _imagePlus = new ImagePlus(_fileRoot);
         } */
-
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -489,21 +486,16 @@ public class GRTexture2DImageReslice extends GRGeometry {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     /** QuadArray. */
     private QuadArray _plane;
 
     /** Buffer of image data */
     private BufferedImage _bufferedImage;
-
     private Token _token;
-
     private double[] _quadCoords;
-
     private float[] _texCoords;
-
     private int _sSize;
-
     private int _tSize;
-
     private int _counter;
 }

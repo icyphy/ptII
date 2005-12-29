@@ -28,7 +28,9 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
+
 import ij.plugin.MontageMaker;
+
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
@@ -36,6 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////Slicer
@@ -62,7 +65,7 @@ public class Montage extends Sink {
      *   actor with this name.
      */
     public Montage(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input.setTypeEquals(BaseType.OBJECT);
@@ -86,9 +89,7 @@ public class Montage extends Sink {
     ////////               ports and parameters                  ////////
     //public FilePortParameter input;
     public Parameter xResolution;
-
     public Parameter yResolution;
-
     public Parameter stackSize;
 
     ////////////////////////////////////////////////////////////////////
@@ -110,19 +111,19 @@ public class Montage extends Sink {
 
     public void initialize() throws IllegalActionException {
         // FIXME: why read these and discard them?
-        /*_xResolution = ((IntToken) */ xResolution.getToken()/*).intValue()*/;
-        /*_yResolution = ((IntToken) */ yResolution.getToken()/*).intValue()*/;
-        /*_stackSize = ((IntToken) */stackSize.getToken()/*).intValue()*/;
+
+        /*_xResolution = ((IntToken) */ xResolution.getToken() /*).intValue()*/;
+
+        /*_yResolution = ((IntToken) */ yResolution.getToken() /*).intValue()*/;
+
+        /*_stackSize = ((IntToken) */ stackSize.getToken() /*).intValue()*/;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
     //Image that is readin
     //private ImagePlus _imagePlus;
-
     //private int _stackSize;
-
     //private int _xResolution;
-
     //private int _yResolution;
 }

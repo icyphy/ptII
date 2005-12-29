@@ -27,6 +27,17 @@
  */
 package ptolemy.domains.gr.lib.vr;
 
+import ptolemy.data.IntToken;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
+import com.sun.j3d.utils.image.TextureLoader;
+
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Transparency;
@@ -50,16 +61,6 @@ import javax.media.j3d.Texture;
 import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.View;
 
-import ptolemy.data.IntToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
-import com.sun.j3d.utils.image.TextureLoader;
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture2D
@@ -86,7 +87,7 @@ public class GRTexture2D extends GRGeometry {
      *   actor with this name.
      */
     public GRTexture2D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         //voxelFile = new FilePortParameter(this, "voxelFile");
@@ -111,6 +112,7 @@ public class GRTexture2D extends GRGeometry {
     /* Second Input */
 
     //    public TypedIOPort inputURL;
+
     /** x Resolution */
     public Parameter xResolution;
 
@@ -172,12 +174,13 @@ public class GRTexture2D extends GRGeometry {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
     /** Create the geometry for the Node that will hold the texture.
      * @exception IllegalActionException
      */
     protected void _createGeometry() throws IllegalActionException {
-        _plane = new QuadArray(4, GeometryArray.COORDINATES
-                | GeometryArray.TEXTURE_COORDINATE_2);
+        _plane = new QuadArray(4,
+                GeometryArray.COORDINATES | GeometryArray.TEXTURE_COORDINATE_2);
 
         if (_debugging) {
             _debug("inside _createGeometry");
@@ -261,7 +264,6 @@ public class GRTexture2D extends GRGeometry {
             _texCoords[7] = 1;
         } else if (_axis == 0) {
             //double curX = (_counter * _planeSpacing) - .5;
-
             //Set coordinates for the plane.  These coordinates assume
             //that the the image's origin is at the lower left and the planes
             //are aligned accordingly
@@ -352,21 +354,20 @@ public class GRTexture2D extends GRGeometry {
 
         System.out.println("AlphaRaster = " + _bufferedImage.getAlphaRaster());
         System.out.println("PixelStride = "
-                + ((ComponentSampleModel) _bufferedImage.getSampleModel())
-                        .getPixelStride());
+            + ((ComponentSampleModel) _bufferedImage.getSampleModel())
+                    .getPixelStride());
         System.out.println("ScanlineStride = "
-                + ((ComponentSampleModel) _bufferedImage.getSampleModel())
-                        .getScanlineStride());
+            + ((ComponentSampleModel) _bufferedImage.getSampleModel())
+                    .getScanlineStride());
 
         //Create WritableRaster
         //FIXME Are the parameters for ComponentSampleModel correct?
         int pixelStride = 3;
         int scanlineStride = _sSize * 3;
-    
-/*        ComponentSampleModel componentSampleModel = new ComponentSampleModel(0,
-                _sSize, _tSize, pixelStride, scanlineStride, new int[] { 0, 0,
-                        0});*/
-        
+
+        /*        ComponentSampleModel componentSampleModel = new ComponentSampleModel(0,
+                        _sSize, _tSize, pixelStride, scanlineStride, new int[] { 0, 0,
+                                0});*/
         /*System.out.println("# dataElements = "
                 + componentSampleModel.getNumDataElements());
         System.out.println("# Bands = " + componentSampleModel.getNumBands());
@@ -403,62 +404,68 @@ public class GRTexture2D extends GRGeometry {
                 + ", " + offset1[1] + ", " + offset1[2] + ", " + offset1[3]);*/
 
         //Create ColorModel and componentSampleModel
-       ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel(
-                ColorSpace.getInstance(ColorSpace.CS_sRGB), 
-                //new int[] { 8, 8, 8,8 }, // bits
-                true, // alpha
+        ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel(ColorSpace
+                        .getInstance(ColorSpace.CS_sRGB), 
+            //new int[] { 8, 8, 8,8 }, // bits
+            true, // alpha
                 false, // alpha pre-multiplied
                 Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
-        
-     /*   ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel(
-                ColorSpace.getInstance(ColorSpace.CS_sRGB), 
-                //new int[] { 8, 8, 8}, // bits
-                false, // alpha
-                false, // alpha pre-multiplied
-                Transparency.OPAQUE, DataBuffer.TYPE_BYTE);*/
-        ComponentColorModel componentColorModel = new ComponentColorModel(
-                ColorSpace.getInstance(ColorSpace.CS_sRGB),
-                //new int[] {64,64,64,64} , // bits
-                true, // alpha
+
+        /*   ComponentColorModel componentColorModelwoAlpha = new ComponentColorModel(
+                   ColorSpace.getInstance(ColorSpace.CS_sRGB),
+                   //new int[] { 8, 8, 8}, // bits
+                   false, // alpha
+                   false, // alpha pre-multiplied
+                   Transparency.OPAQUE, DataBuffer.TYPE_BYTE);*/
+        ComponentColorModel componentColorModel = new ComponentColorModel(ColorSpace
+                        .getInstance(ColorSpace.CS_sRGB), 
+            //new int[] {64,64,64,64} , // bits
+            true, // alpha
                 true, // alpha pre-multiplied
-                Transparency.TRANSLUCENT,
-                //DataBuffer.TYPE_BYTE 
-                // DataBuffer.TYPE_FLOAT
-                DataBuffer.TYPE_DOUBLE);
+                Transparency.TRANSLUCENT, 
+            //DataBuffer.TYPE_BYTE 
+            // DataBuffer.TYPE_FLOAT
+            DataBuffer.TYPE_DOUBLE);
 
         //Create Writable Raster
         ComponentSampleModel componentSampleModel = new ComponentSampleModel(0,
-                _sSize, _tSize, pixelStride, scanlineStride, new int[] { 2, 0,
-                        0, 0 });
+                _sSize, _tSize, pixelStride, scanlineStride,
+                new int[] {
+                    2,
+                    0,
+                    0,
+                    0
+                });
         Raster raster = _bufferedImage.getData();
         DataBuffer dataBuffer = raster.getDataBuffer();
-        WritableRaster writableRaster = Raster.createWritableRaster(
-                componentSampleModel, dataBuffer, new Point());
+        WritableRaster writableRaster = Raster.createWritableRaster(componentSampleModel,
+                dataBuffer, new Point());
         System.out.println("DataBufferSize = " + dataBuffer.getSize());
 
         Hashtable hashtable = new Hashtable();
 
-        BufferedImage bufferedImagewoAlpha = new BufferedImage(
-                componentColorModelwoAlpha, writableRaster, false, hashtable);
-        DataBuffer newDataBuffer =(bufferedImagewoAlpha.getData()).getDataBuffer();
-        System.out.println("NewDataBuffer = " + newDataBuffer );
+        BufferedImage bufferedImagewoAlpha = new BufferedImage(componentColorModelwoAlpha,
+                writableRaster, false, hashtable);
+        DataBuffer newDataBuffer = (bufferedImagewoAlpha.getData())
+                    .getDataBuffer();
+        System.out.println("NewDataBuffer = " + newDataBuffer);
         System.out.println("NewDataBufferSize = " + newDataBuffer.getSize());
-        
-        System.out.println("NewDataBufferNumBanks = " + newDataBuffer.getNumBanks());
+
+        System.out.println("NewDataBufferNumBanks = "
+            + newDataBuffer.getNumBanks());
+
         //      Get alpha raster and manipulate values
         //double fraction = 1 / 255;
-
         //float[] pixelArray = new float[arrayLength*4];
         double[] pixelArray = new double[arrayLength * 4];
 
         //double[] alphaArray = new double[arrayLength]; 
-
         //Create alpha array and set as function of pixel values
         System.out.println("pixelArray length = " + pixelArray.length);
         System.out.println("min, max = " + writableRaster.getMinX() + ", "
-                + writableRaster.getMinY());
-        writableRaster.getPixels(writableRaster.getMinX(), writableRaster
-                .getMinY(), _sSize, _tSize, pixelArray);
+            + writableRaster.getMinY());
+        writableRaster.getPixels(writableRaster.getMinX(),
+            writableRaster.getMinY(), _sSize, _tSize, pixelArray);
         System.out.println("pixelArray length = " + pixelArray.length);
 
         for (int i = 1; i <= arrayLength; i++) {
@@ -480,99 +487,109 @@ public class GRTexture2D extends GRGeometry {
         }
 
         //float[] dataArray =  new float[arrayLength*4];
-        /*SampleModel sampleModel = */componentColorModel
-                .createCompatibleSampleModel(_sSize, _tSize);
-      /*  System.out.println("# dataElements = "
-                + sampleModel.getNumDataElements());
-        System.out.println("# Bands = " + sampleModel.getNumBands());
-        System.out.println("SampleModel width = " + sampleModel.getWidth());
-        System.out.println("SampleModel height = " + sampleModel.getHeight());
-        System.out.println("SampleModel dataType = "
-                + sampleModel.getDataType());
-        System.out.println("SampleModel transferType = "
-                + sampleModel.getTransferType());
-        System.out.println("SampleModel size = " + sampleModel.getSampleSize(0)
-                + sampleModel.getSampleSize(1) + sampleModel.getSampleSize(2)
-                + sampleModel.getSampleSize(3));
-        System.out.println("SampleModel  = " + sampleModel);
-        System.out.println("SampleModel pixelStride = "
-                + ((ComponentSampleModel) sampleModel).getPixelStride());
-        System.out.println("SampleModel scanlineStride = "
-                + ((ComponentSampleModel) sampleModel).getScanlineStride());
+        /*SampleModel sampleModel = */ componentColorModel.createCompatibleSampleModel(_sSize, _tSize);
 
-        int[] bankIndices = ((ComponentSampleModel) sampleModel)
-                .getBankIndices();
-        System.out.println("SampleModel # bank Indices = " + bankIndices[0]
-                + ", " + bankIndices[1] + ", " + bankIndices[2] + ", "
-                + bankIndices[3]);
+        /*  System.out.println("# dataElements = "
+                  + sampleModel.getNumDataElements());
+          System.out.println("# Bands = " + sampleModel.getNumBands());
+          System.out.println("SampleModel width = " + sampleModel.getWidth());
+          System.out.println("SampleModel height = " + sampleModel.getHeight());
+          System.out.println("SampleModel dataType = "
+                  + sampleModel.getDataType());
+          System.out.println("SampleModel transferType = "
+                  + sampleModel.getTransferType());
+          System.out.println("SampleModel size = " + sampleModel.getSampleSize(0)
+                  + sampleModel.getSampleSize(1) + sampleModel.getSampleSize(2)
+                  + sampleModel.getSampleSize(3));
+          System.out.println("SampleModel  = " + sampleModel);
+          System.out.println("SampleModel pixelStride = "
+                  + ((ComponentSampleModel) sampleModel).getPixelStride());
+          System.out.println("SampleModel scanlineStride = "
+                  + ((ComponentSampleModel) sampleModel).getScanlineStride());
 
-        int[] offset = ((ComponentSampleModel) sampleModel).getBandOffsets();
-        System.out.println("SampleModel band offsets = " + offset[0] + ", "
-                + offset[1] + ", " + offset[2] + ", " + offset[3]);*/
+          int[] bankIndices = ((ComponentSampleModel) sampleModel)
+                  .getBankIndices();
+          System.out.println("SampleModel # bank Indices = " + bankIndices[0]
+                  + ", " + bankIndices[1] + ", " + bankIndices[2] + ", "
+                  + bankIndices[3]);
+
+          int[] offset = ((ComponentSampleModel) sampleModel).getBandOffsets();
+          System.out.println("SampleModel band offsets = " + offset[0] + ", "
+                  + offset[1] + ", " + offset[2] + ", " + offset[3]);*/
 
         //Create DataBuffer with alpha channel
         DataBufferDouble dataBufferDouble = new DataBufferDouble(pixelArray,
                 pixelArray.length);
 
         System.out.println("pixel array values = " + pixelArray[20480] + ", "
-                + pixelArray[20481] + ", " + pixelArray[20482] + ", "
-                + pixelArray[20483]);
+            + pixelArray[20481] + ", " + pixelArray[20482] + ", "
+            + pixelArray[20483]);
 
         System.out.println("DataBuffer values = "
-                + dataBufferDouble.getElemDouble(20480) + ", "
-                + dataBufferDouble.getElemDouble(20481) + ", "
-                + dataBufferDouble.getElemDouble(20482) + ", "
-                + dataBufferDouble.getElemDouble(20483));
+            + dataBufferDouble.getElemDouble(20480) + ", "
+            + dataBufferDouble.getElemDouble(20481) + ", "
+            + dataBufferDouble.getElemDouble(20482) + ", "
+            + dataBufferDouble.getElemDouble(20483));
 
         System.out.println("DataBuffer values = "
-                + dataBufferDouble.getElemDouble(30720) + ", "
-                + dataBufferDouble.getElemDouble(30721) + ", "
-                + dataBufferDouble.getElemDouble(30722) + ", "
-                + dataBufferDouble.getElemDouble(30723));
+            + dataBufferDouble.getElemDouble(30720) + ", "
+            + dataBufferDouble.getElemDouble(30721) + ", "
+            + dataBufferDouble.getElemDouble(30722) + ", "
+            + dataBufferDouble.getElemDouble(30723));
 
         System.out.println("DataBuffer values = "
-                + dataBufferDouble.getElemDouble(21504) + ", "
-                + dataBufferDouble.getElemDouble(21505) + ", "
-                + dataBufferDouble.getElemDouble(21506) + ", "
-                + dataBufferDouble.getElemDouble(21507));
+            + dataBufferDouble.getElemDouble(21504) + ", "
+            + dataBufferDouble.getElemDouble(21505) + ", "
+            + dataBufferDouble.getElemDouble(21506) + ", "
+            + dataBufferDouble.getElemDouble(21507));
 
         System.out.println("DataBuffer values = "
-                + dataBufferDouble.getElemDouble(31744) + ", "
-                + dataBufferDouble.getElemDouble(31745) + ", "
-                + dataBufferDouble.getElemDouble(31746) + ", "
-                + dataBufferDouble.getElemDouble(31747));
+            + dataBufferDouble.getElemDouble(31744) + ", "
+            + dataBufferDouble.getElemDouble(31745) + ", "
+            + dataBufferDouble.getElemDouble(31746) + ", "
+            + dataBufferDouble.getElemDouble(31747));
 
         //Create Writable RAaster with new DataBuffer
 
         /*writableRaster = Raster.createWritableRaster(componentSampleModelwAlpha,
          dataBufferDouble, new Point());*/
-        ComponentSampleModel componentSampleModelwAlpha = new ComponentSampleModel(
-                5, _sSize, _tSize, pixelStride + 1, scanlineStride + 256,
-                new int[] { 0, 0, 0, 0 }, new int[] { 0, 1, 2, 3 });
+        ComponentSampleModel componentSampleModelwAlpha = new ComponentSampleModel(5,
+                _sSize, _tSize, pixelStride + 1, scanlineStride + 256,
+                new int[] {
+                    0,
+                    0,
+                    0,
+                    0
+                }, new int[] {
+                    0,
+                    1,
+                    2,
+                    3
+                });
         int[] offset2 = ((ComponentSampleModel) componentSampleModelwAlpha)
-                .getBandOffsets();
+                    .getBandOffsets();
         System.out.println("componentSampleModelwAlpha band offsets = "
-                + offset2[0] + ", " + offset2[1] + ", " + offset2[2] + ", "
-                + offset2[3]);
-        writableRaster = Raster.createWritableRaster(
-                componentSampleModelwAlpha, dataBufferDouble, new Point());
+            + offset2[0] + ", " + offset2[1] + ", " + offset2[2] + ", "
+            + offset2[3]);
+        writableRaster = Raster.createWritableRaster(componentSampleModelwAlpha,
+                dataBufferDouble, new Point());
 
         //writableRaster.setSamples(0,0,_sSize,_tSize,0, alphaArray);
         //Create bufferedImage and Load
         //_bufferedImage = new BufferedImage(componentColorModel, writableRaster,
-            //    false, hashtable);
-
+        //    false, hashtable);
         TextureLoader loader = new TextureLoader(bufferedImagewoAlpha,
                 _viewScreen.getCanvas());
-        System.out.println("BufferedImage = " +_bufferedImage);
+        System.out.println("BufferedImage = " + _bufferedImage);
         System.out.println("BufferedImage w/o Alpha = " + bufferedImagewoAlpha);
-        //TextureLoader loader = new TextureLoader(_bufferedImage,
-          //      _viewScreen.getCanvas());
-/*        System.out.println("AlphaRaster = " + _bufferedImage.getAlphaRaster());
-        System.out.println("Alpha Raster values = "
-                + _bufferedImage.getAlphaRaster().getSample(2, 2, 0));
-        System.out.println("AlphaArray[4] = " + alphaArray[4]);*/
 
+        //TextureLoader loader = new TextureLoader(_bufferedImage,
+        //      _viewScreen.getCanvas());
+
+        /*        System.out.println("AlphaRaster = " + _bufferedImage.getAlphaRaster());
+                System.out.println("Alpha Raster values = "
+                        + _bufferedImage.getAlphaRaster().getSample(2, 2, 0));
+                System.out.println("AlphaArray[4] = " + alphaArray[4]);*/
         /* Set loaded texture*/
         Texture loadedTexture = loader.getTexture();
         TextureAttributes attributes = null;
@@ -631,9 +648,11 @@ public class GRTexture2D extends GRGeometry {
     private URL _url;
 
     /** The NodeComponent defining the texture which must be added to the Appearance */
+
     //private Texture2D _texture2D;
 
     /** ImageComponent. */
+
     //private ImageComponent2D _imageComponent;
 
     /** QuadArray. */
@@ -643,51 +662,37 @@ public class GRTexture2D extends GRGeometry {
     private BufferedImage _bufferedImage;
 
     /**Defines how to translate the pixels into color and alpha components.*/
+
     //private ColorModel _colorModel;
 
     /** The ColorSpace that defines the color space of the image */
-    //private ColorSpace _colorSpace;
 
+    //private ColorSpace _colorSpace;
     //private ImagePlus _imagePlus;
     private String _fileRoot;
 
     //private File _file;
-
     //private FileImageInputStream _fileImageInputStream;
-
     //private Texture2D _texture;
-
     private Token _token;
 
     //private Token _tokenURL;
-
     //private TexCoordGeneration _texCoordGeneration;
-
     //private WritableRaster _alphaRaster;
-
     //private WritableRaster _dataRaster;
-
     //private int[] _intData;
-
     private double[] _quadCoords;
-
     private float[] _texCoords;
 
     //private TexCoord2f[] _texCoords;
     //private MyTextureLoader _myTextureLoader;
-
     //private DataBufferInt _dataBufferInt;
-
     //private DataBuffer _dataBuffer;
-
     private int _sSize;
-
     private int _tSize;
 
     //private ParameterPort _parameterPort;
-
     //private StringToken _stringToken;
-
     private int _counter;
 
     //private String _eof;

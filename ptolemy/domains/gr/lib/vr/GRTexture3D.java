@@ -27,15 +27,11 @@
  */
 package ptolemy.domains.gr.lib.vr;
 
-import javax.media.j3d.Appearance;
-import javax.media.j3d.ColoringAttributes;
-import javax.media.j3d.LineAttributes;
-import javax.media.j3d.Material;
-import javax.media.j3d.Node;
-import javax.media.j3d.PolygonAttributes;
-import javax.media.j3d.TransparencyAttributes;
-import javax.media.j3d.View;
-import javax.vecmath.Color3f;
+import vendors.vr.Axis2DRenderer;
+import vendors.vr.Context;
+import vendors.vr.Texture2DVolume;
+import vendors.vr.VolFile;
+import vendors.vr.Volume;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
@@ -53,11 +49,17 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import vendors.vr.Axis2DRenderer;
-import vendors.vr.Context;
-import vendors.vr.Texture2DVolume;
-import vendors.vr.VolFile;
-import vendors.vr.Volume;
+
+import javax.media.j3d.Appearance;
+import javax.media.j3d.ColoringAttributes;
+import javax.media.j3d.LineAttributes;
+import javax.media.j3d.Material;
+import javax.media.j3d.Node;
+import javax.media.j3d.PolygonAttributes;
+import javax.media.j3d.TransparencyAttributes;
+import javax.media.j3d.View;
+import javax.vecmath.Color3f;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// GRTexture3D
@@ -116,7 +118,7 @@ public class GRTexture3D extends GRActor3D {
      *   actor with this name.
      */
     public GRTexture3D(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         volFile = new FilePortParameter(this, "volFile");
@@ -254,22 +256,20 @@ public class GRTexture3D extends GRActor3D {
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+        throws IllegalActionException {
         // If allowRuntimeChanges is null, then we are in the
         // constructor, and don't need to do any of this.
         if (allowRuntimeChanges != null) {
             if (_changesAllowedNow) {
                 if ((attribute == transparency)
-                        && (_transparencyAttributes != null)) {
+                            && (_transparencyAttributes != null)) {
                     float transparent = (float) ((DoubleToken) transparency
-                            .getToken()).doubleValue();
+                                .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
-                        _transparencyAttributes
-                                .setTransparencyMode(TransparencyAttributes.NICEST);
+                        _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);
                     } else {
-                        _transparencyAttributes
-                                .setTransparencyMode(TransparencyAttributes.NONE);
+                        _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NONE);
                     }
 
                     _transparencyAttributes.setTransparency(transparent);
@@ -277,7 +277,7 @@ public class GRTexture3D extends GRActor3D {
 
                 if ((attribute == flat) && (_coloringAttributes != null)) {
                     boolean flatValue = ((BooleanToken) flat.getToken())
-                            .booleanValue();
+                                .booleanValue();
                     int shadeModel = ColoringAttributes.SHADE_GOURAUD;
 
                     if (flatValue) {
@@ -298,8 +298,8 @@ public class GRTexture3D extends GRActor3D {
                         Color3f color = new Color3f(specularColor.asColor());
                         _material.setSpecularColor(color);
                     } else if (attribute == shininess) {
-                        float shine = (float) ((DoubleToken) shininess
-                                .getToken()).doubleValue();
+                        float shine = (float) ((DoubleToken) shininess.getToken())
+                                    .doubleValue();
                         _material.setShininess(shine);
                     }
                 }
@@ -433,7 +433,7 @@ public class GRTexture3D extends GRActor3D {
         _appearance = new Appearance();
 
         boolean allowChanges = ((BooleanToken) allowRuntimeChanges.getToken())
-                .booleanValue();
+                    .booleanValue();
 
         Color3f color = new Color3f(emissiveColor.asColor());
         _material.setEmissiveColor(color);
@@ -444,8 +444,7 @@ public class GRTexture3D extends GRActor3D {
         color = new Color3f(specularColor.asColor());
         _material.setSpecularColor(color);
 
-        float shine = (float) ((DoubleToken) shininess.getToken())
-                .doubleValue();
+        float shine = (float) ((DoubleToken) shininess.getToken()).doubleValue();
 
         if (shine > 1.0) {
             _material.setShininess(shine);
@@ -455,7 +454,7 @@ public class GRTexture3D extends GRActor3D {
 
         // Deal with transparent attributes.
         float transparent = (float) ((DoubleToken) transparency.getToken())
-                .doubleValue();
+                    .doubleValue();
 
         if ((transparent > 0.0) || allowChanges) {
             int mode = TransparencyAttributes.NICEST;
@@ -502,16 +501,12 @@ public class GRTexture3D extends GRActor3D {
         // If runtime changes are allowed, we need to set the
         // appropriate capabilities.
         if (allowChanges) {
-            _transparencyAttributes
-                    .setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
-            _transparencyAttributes
-                    .setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
+            _transparencyAttributes.setCapability(TransparencyAttributes.ALLOW_VALUE_WRITE);
+            _transparencyAttributes.setCapability(TransparencyAttributes.ALLOW_MODE_WRITE);
             _material.setCapability(Material.ALLOW_COMPONENT_WRITE);
-            _coloringAttributes
-                    .setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
+            _coloringAttributes.setCapability(ColoringAttributes.ALLOW_SHADE_MODEL_WRITE);
             _appearance.setCapability(Appearance.ALLOW_TEXTURE_WRITE);
-            _polygonAttributes
-                    .setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
+            _polygonAttributes.setCapability(PolygonAttributes.ALLOW_MODE_WRITE);
         }
 
         _changesAllowedNow = allowChanges;
@@ -619,20 +614,25 @@ public class GRTexture3D extends GRActor3D {
     ////                         private variables                 ////
 
     /** The URL that specifies where the file is located. */
+
     //private URL _fileURL;
 
     /** The URL that specifies where the file is located. */
+
     //private URL _fileContext;
 
     /** The Image. */
     private Node _containedNode;
 
     /** 3D Texture. */
+
     //private Texture3D _texture;
 
     /** ImageComponent. */
+
     //private ImageComponent3D _imageComponent;
 
     /** QuadArray. */
+
     //private QuadArray _quadArray;
 }

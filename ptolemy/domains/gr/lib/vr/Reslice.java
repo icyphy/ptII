@@ -30,7 +30,9 @@ package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
 import ij.ImageStack;
+
 import ij.plugin.Slicer;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
@@ -40,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////Slicer
@@ -66,7 +69,7 @@ public class Reslice extends TypedAtomicActor {
      *   actor with this name.
      */
     public Reslice(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
@@ -92,13 +95,9 @@ public class Reslice extends TypedAtomicActor {
     ////////               ports and parameters                  ////////
     //public FilePortParameter input;
     public TypedIOPort input;
-
     public TypedIOPort output;
-
     public Parameter xResolution;
-
     public Parameter yResolution;
-
     public Parameter stackSize;
 
     ////////////////////////////////////////////////////////////////////
@@ -111,19 +110,23 @@ public class Reslice extends TypedAtomicActor {
         super.fire();
 
         ObjectToken objectToken = (ObjectToken) input.get(0);
+
         //ImagePlus imagePlus = (ImagePlus) objectToken.getValue();
         ImageStack imageStack = (ImageStack) objectToken.getValue();
         ImagePlus imagePlus = new ImagePlus("Stack", imageStack);
         Slicer slicer = new Slicer();
         _imagePlus = slicer.reslice(imagePlus);
+
         ImageStack newImageStack = _imagePlus.getStack();
         output.broadcast(new ObjectToken(newImageStack));
     }
 
     public void initialize() throws IllegalActionException {
-        /*_xResolution = */((IntToken) xResolution.getToken()).intValue();
-        /*_yResolution = */((IntToken) yResolution.getToken()).intValue();
-        /*_stackSize = */((IntToken) stackSize.getToken()).intValue();
+        /*_xResolution = */ ((IntToken) xResolution.getToken()).intValue();
+
+        /*_yResolution = */ ((IntToken) yResolution.getToken()).intValue();
+
+        /*_stackSize = */ ((IntToken) stackSize.getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -132,8 +135,6 @@ public class Reslice extends TypedAtomicActor {
     private ImagePlus _imagePlus;
 
     //private int _stackSize;
-
     //private int _xResolution;
-
     //private int _yResolution;
 }

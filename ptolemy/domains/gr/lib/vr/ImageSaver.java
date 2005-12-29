@@ -29,7 +29,9 @@
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
+
 import ij.plugin.Slicer;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ObjectToken;

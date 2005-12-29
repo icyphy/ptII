@@ -31,9 +31,6 @@ package ptolemy.domains.gr.lib.vr;
 import ij.IJ;
 import ij.ImagePlus;
 
-import java.awt.Image;
-import java.net.URL;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.FilePortParameter;
@@ -46,6 +43,10 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.awt.Image;
+import java.net.URL;
+
 
 //////////////////////////////////////////////////////////////////////////
 ////DICOMReader
@@ -72,7 +73,7 @@ public class MedicalImageReader extends TypedAtomicActor {
      *   actor with this name.
      */
     public MedicalImageReader(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fileOrURL = new FilePortParameter(this, "fileOrURL");
@@ -80,28 +81,23 @@ public class MedicalImageReader extends TypedAtomicActor {
         isDicom = new Parameter(this, "isDicom");
         isDicom.setExpression("false");
         isDicom.setTypeEquals(BaseType.BOOLEAN);
-        
 
         outputImage = new TypedIOPort(this, "outputImage");
         outputImage.setOutput(true);
         outputImage.setTypeEquals(BaseType.OBJECT);
-        
+
         outputURL = new TypedIOPort(this, "outputURL");
         outputURL.setOutput(true);
         outputURL.setTypeEquals(BaseType.OBJECT);
-
     }
 
     ////////////////////////////////////////////////////////////////////
     ////////               ports and parameters                  ////////
     public FilePortParameter fileOrURL;
-    
     public Parameter isDicom;
-
     public TypedIOPort outputImage;
     public TypedIOPort outputURL;
     public TypedIOPort output;
-
 
     ////////////////////////////////////////////////////////////////////
     ////////                public methods                     ////////
@@ -111,9 +107,11 @@ public class MedicalImageReader extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        if(_debugging){
-            _debug("Image = " + _image);   
+
+        if (_debugging) {
+            _debug("Image = " + _image);
         }
+
         outputImage.broadcast(new AWTImageToken(_image));
         outputURL.broadcast(new ObjectToken(_url));
     }
@@ -127,9 +125,7 @@ public class MedicalImageReader extends TypedAtomicActor {
         super.prefire();
 
         //FIXME Causes problems when parameter is direclty accessed without port
-
         if (_parameterPort.hasToken(0)) {
-
             fileOrURL.update();
             _readImage();
             return true;
@@ -149,15 +145,16 @@ public class MedicalImageReader extends TypedAtomicActor {
 
         _fileRoot = _url.getFile();
 
-      //  if (_imagePlus == null) {
-        	if(_isDicom){
-                  _image = ((ImagePlus) IJ.runPlugIn("ij.plugin.DICOM", _fileRoot))
-                  .getImage();      
-            }else{
-            	_imagePlus = new ImagePlus(_fileRoot);
-            	_image = _imagePlus.getImage();
-            }
-       // }
+        //  if (_imagePlus == null) {
+        if (_isDicom) {
+            _image = ((ImagePlus) IJ.runPlugIn("ij.plugin.DICOM", _fileRoot))
+                        .getImage();
+        } else {
+            _imagePlus = new ImagePlus(_fileRoot);
+            _image = _imagePlus.getImage();
+        }
+
+        // }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -165,7 +162,6 @@ public class MedicalImageReader extends TypedAtomicActor {
 
     /** Image that is read in. */
     private ImagePlus _imagePlus;
-    
     private boolean _isDicom;
 
     //  The URL as a string.
@@ -176,6 +172,5 @@ public class MedicalImageReader extends TypedAtomicActor {
 
     // The URL of the file.
     private URL _url;
-
     private ParameterPort _parameterPort;
 }

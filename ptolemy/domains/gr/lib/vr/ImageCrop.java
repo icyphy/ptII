@@ -24,15 +24,13 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
  */
-
 package ptolemy.domains.gr.lib.vr;
 
 import ij.ImagePlus;
-import ij.gui.Roi;
-import ij.process.ImageProcessor;
 
-import java.awt.Image;
-import java.net.URL;
+import ij.gui.Roi;
+
+import ij.process.ImageProcessor;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
@@ -46,8 +44,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+import java.awt.Image;
+import java.net.URL;
+
+
 //////////////////////////////////////////////////////////////////////////
 //// ImageCrop
+
 /**
  Describe your class here, in complete sentences.
  What does it do?  What is its intended use?
@@ -59,9 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (yourname)
  @Pt.AcceptedRating Red (reviewmoderator)
  */
-
 public class ImageCrop extends TypedAtomicActor {
-
     /** Create an instance with ... (describe the properties of the
      *  instance). Use the imperative case here.
      *  @param parameterName Description of the parameter.
@@ -69,13 +70,12 @@ public class ImageCrop extends TypedAtomicActor {
      *   causes the exception to be thrown).
      */
     public ImageCrop(CompositeEntity container, String name)
-            throws IllegalActionException, NameDuplicationException {
-
+        throws IllegalActionException, NameDuplicationException {
         super(container, name);
         imageInput = new TypedIOPort(this, "imageInput");
         imageInput.setInput(true);
         imageInput.setTypeEquals(BaseType.OBJECT);
-        
+
         initialImage = new FileParameter(this, "initialImage");
         initialImage.setExpression("");
 
@@ -97,13 +97,9 @@ public class ImageCrop extends TypedAtomicActor {
 
     /** Desription of the variable. */
     public TypedIOPort imageInput;
-    
     public FileParameter initialImage;
-
     public TypedIOPort roi;
-
     public TypedIOPort output;
-
     public Parameter stack;
 
     ///////////////////////////////////////////////////////////////////
@@ -118,104 +114,102 @@ public class ImageCrop extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+
         //Get input values from respective tokens
         //Save old ROI to compare in postfire
         _oldRoi = _roi;
-    	_readToken();
-        
+        _readToken();
+
         //Do cropping if no ROI to crop, display entire image
-        if (_roi == null){
-            if(_debugging){
-             _debug("roi = null");   
+        if (_roi == null) {
+            if (_debugging) {
+                _debug("roi = null");
             }
+
             //output.broadcast(new ObjectToken(_imagePlus));
             output.broadcast(new AWTImageToken(_imagePlus.getImage()));
-        }else{
-            if(_debugging){
-             _debug("IP = "+ _imagePlus.getProcessor());
-             _debug("ROI = " + _roi);
+        } else {
+            if (_debugging) {
+                _debug("IP = " + _imagePlus.getProcessor());
+                _debug("ROI = " + _roi);
             }
+
             _imageProcessor = _imagePlus.getProcessor();
             _imageProcessor.setRoi(_roi);
+
             ImageProcessor croppedProcessor = _imageProcessor.crop();
             _croppedImage = new ImagePlus("Cropped Image", croppedProcessor);
             _image = _croppedImage.getImage();
-            
+
             //FIXME What is the best thing to send through port
             //output.broadcast(new ObjectToken(_imagePlus));  
             output.broadcast(new AWTImageToken(_image));
+
             //Save cropped image as image to be cropped in next iteration
-            if(_debugging){
-             _debug("Setting imagePlus to croppedImage");   
+            if (_debugging) {
+                _debug("Setting imagePlus to croppedImage");
             }
+
             _imagePlus = _croppedImage;
         }
-        
-        
     }
-    
+
     public void initialize() throws IllegalActionException {
-          super.initialize();
-         _imageURL =  initialImage.asURL();
-         _fileRoot = _imageURL.getFile();
-         _imagePlus = new ImagePlus(_fileRoot);
-         
+        super.initialize();
+        _imageURL = initialImage.asURL();
+        _fileRoot = _imageURL.getFile();
+        _imagePlus = new ImagePlus(_fileRoot);
     }
-    
+
     //Check for new ROI
     public boolean postfire() throws IllegalActionException {
         //super.postfire();
-        
         if (!(_oldRoi == _roi)) {
-            if(_debugging){
-             _debug("Called postfire(), which returns true");   
+            if (_debugging) {
+                _debug("Called postfire(), which returns true");
             }
+
             return true;
-        }else{
-            if(_debugging){
-                _debug("Called postfire(), which returns false");   
-               }
-            
-            return false;   
+        } else {
+            if (_debugging) {
+                _debug("Called postfire(), which returns false");
+            }
+
+            return false;
         }
     }
 
-	protected void _readToken() throws IllegalActionException{
-	    //_token = imageInput.get(0);
-	    //AWTImageToken imageToken = (AWTImageToken) imageInput.get(0);
-	    //_imagePlus = new ImagePlus("Image to be Cropped", imageToken.getValue());
-	    _token2 = roi.get(0);
-	    ObjectToken roiToken = (ObjectToken) _token2;
-	    _roi = (Roi) roiToken.getValue();   
-	}
-    
+    protected void _readToken() throws IllegalActionException {
+        //_token = imageInput.get(0);
+        //AWTImageToken imageToken = (AWTImageToken) imageInput.get(0);
+        //_imagePlus = new ImagePlus("Image to be Cropped", imageToken.getValue());
+        _token2 = roi.get(0);
+
+        ObjectToken roiToken = (ObjectToken) _token2;
+        _roi = (Roi) roiToken.getValue();
+    }
+
     public boolean prefire() throws IllegalActionException {
-    	//Check for proper inputs and if available return true
+        //Check for proper inputs and if available return true
         super.prefire();
-       /* if (imageInput.hasToken(0) && roi.hasToken(0)) {
-            return true;
-        }else{
-        	return false;   
-        }*/
+
+        /* if (imageInput.hasToken(0) && roi.hasToken(0)) {
+             return true;
+         }else{
+                 return false;
+         }*/
         return true;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private ImagePlus _croppedImage;
-    
     private String _fileRoot;
-
     private ImagePlus _imagePlus;
-    
     private ImageProcessor _imageProcessor;
-    
     private Image _image;
-    
     private URL _imageURL;
-    
     private Roi _oldRoi;
-
     private Roi _roi;
-    
     private Token _token2;
 }

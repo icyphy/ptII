@@ -24,10 +24,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-
 package ptolemy.domains.gr.lib.vr;
-
-import java.awt.image.BufferedImage;
 
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.IntToken;
@@ -38,24 +35,25 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-// Imports go here, in alphabetical order, with no wildcards.
+import java.awt.image.BufferedImage;
 
+
+// Imports go here, in alphabetical order, with no wildcards.
 //////////////////////////////////////////////////////////////////////////
 //// ImageUpSample
+
 /**
    This actor upsamples an image stream by an integer factor by inserting blank images
    with the specified resolution.
-   
+
    @author Tiffany Crawford
    @version $Id$
    @see Reslice
    @since Ptolemy II x.x
    @Pt.ProposedRating Red (tsc)
-   @Pt.AcceptedRating Red 
+   @Pt.AcceptedRating Red
 */
-
-public class ImageUpSample extends UpSample{
-
+public class ImageUpSample extends UpSample {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -65,9 +63,9 @@ public class ImageUpSample extends UpSample{
      *   actor with this name.
      */
     public ImageUpSample(CompositeEntity container, String name)
-    throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         xResolution = new Parameter(this, "xResolution");
         xResolution.setExpression("256");
         xResolution.setTypeEquals(BaseType.INT);
@@ -95,25 +93,23 @@ public class ImageUpSample extends UpSample{
      *  exception).
      *  @exception IllegalActionException If a runtime type conflict occurs.
      */
-    public void fire()throws IllegalActionException {
-        
-         //FIXME Is this casted properly?
-         AWTImageToken token = (AWTImageToken)input.get(0);
-         int factorValue = ((IntToken) factor.getToken()).intValue();
-         int phaseValue = ((IntToken) phase.getToken()).intValue();
-         int xResolutionValue = ((IntToken) xResolution.getToken()).intValue(); 
-         int yResolutionValue = ((IntToken) yResolution.getToken()).intValue();
-         
-         if (phaseValue >= factorValue) {
-            throw new IllegalActionException(this, "Phase is out of range: "
-                    + phaseValue);
+    public void fire() throws IllegalActionException {
+        //FIXME Is this casted properly?
+        AWTImageToken token = (AWTImageToken) input.get(0);
+        int factorValue = ((IntToken) factor.getToken()).intValue();
+        int phaseValue = ((IntToken) phase.getToken()).intValue();
+        int xResolutionValue = ((IntToken) xResolution.getToken()).intValue();
+        int yResolutionValue = ((IntToken) yResolution.getToken()).intValue();
+
+        if (phaseValue >= factorValue) {
+            throw new IllegalActionException(this,
+                "Phase is out of range: " + phaseValue);
         }
 
         AWTImageToken[] result = new AWTImageToken[factorValue];
-        BufferedImage bufferedImage = new BufferedImage(xResolutionValue,yResolutionValue,
-                BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage bufferedImage = new BufferedImage(xResolutionValue,
+                yResolutionValue, BufferedImage.TYPE_3BYTE_BGR);
         AWTImageToken blankImageToken = new AWTImageToken(bufferedImage);
-        
 
         for (int i = 0; i < factorValue; i++) {
             if (i == phaseValue) {
@@ -124,8 +120,5 @@ public class ImageUpSample extends UpSample{
         }
 
         output.send(0, result, factorValue);
-        
     }
-
-
 }
