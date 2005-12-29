@@ -102,7 +102,7 @@ foreach i $configs {
     $inputFileNamesToSkip add "/gr.xml"
     $inputFileNamesToSkip add "/io/comm/comm.xml"
     $inputFileNamesToSkip add "/image.xml"
-    $inputFileNamesToSkip add "/experimentalDirectors.xml"
+    #$inputFileNamesToSkip add "/experimentalDirectors.xml"
     $inputFileNamesToSkip add "/lib/interactive.xml"
     $inputFileNamesToSkip add "/line.xml"
     $inputFileNamesToSkip add "/jai/jai.xml"
@@ -367,7 +367,7 @@ foreach i $configs {
     } {{}}
 
     test "$i-5.1" "Test directors in $i " {
-	set entityList [$configuration allAtomicEntityList]
+	#set entityList [$configuration allAtomicEntityList]
 	set actorLibrary [java::cast ptolemy.kernel.CompositeEntity \
 		[$configuration getEntity {actor library}]]
 	set directors [java::cast ptolemy.kernel.CompositeEntity \
@@ -376,9 +376,18 @@ foreach i $configs {
 	    puts "Warning: $i has no 'actor library.Directors'? (this is ok for dsp, viptos)"
         } else {
             set attributeList [$directors attributeList]
-	    #puts "Testing as many as [$attributeList size] directors in $i"
+	    set allDirectors [java::new java.util.LinkedList $attributeList]
+            set experimentalDirectors \
+		[$directors getEntity ExperimentalDirectors]
+	
+	    if {![java::isnull $experimentalDirectors]} {
+	        set moreDirectors [$experimentalDirectors attributeList]
+                $allDirectors addAll $moreDirectors
+            }
+
+	    #puts "Testing as many as [$allDirectors size] directors in $i"
 	    set results {}
-	    for {set iterator [$attributeList iterator]} \
+	    for {set iterator [$allDirectors iterator]} \
 	        {[$iterator hasNext] == 1} {} {
 	        set entity [$iterator next]
 
