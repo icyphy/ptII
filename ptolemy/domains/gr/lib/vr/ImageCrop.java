@@ -217,14 +217,5 @@ public class ImageCrop extends TypedAtomicActor {
 
     private Roi _roi;
     
-    private Token _token;
-    
     private Token _token2;
-
-
-
-
-
-
-
 }
