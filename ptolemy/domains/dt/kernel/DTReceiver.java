@@ -27,9 +27,6 @@
  */
 package ptolemy.domains.dt.kernel;
 
-import java.util.Iterator;
-import java.util.List;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -45,6 +42,10 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
+
+import java.util.Iterator;
+import java.util.List;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// DTReceiver
@@ -89,7 +90,7 @@ public class DTReceiver extends SDFReceiver {
         _init();
 
         Time localTime = new Time(((Actor) container.getContainer())
-                .getDirector());
+                        .getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -105,7 +106,7 @@ public class DTReceiver extends SDFReceiver {
         _init();
 
         Time localTime = new Time(((Actor) container.getContainer())
-                .getDirector());
+                        .getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -128,54 +129,52 @@ public class DTReceiver extends SDFReceiver {
 
         if (_from == null) {
             throw new InternalErrorException(
-                    "internal DT error: Receiver with null source");
+                "internal DT error: Receiver with null source");
+        }
+
+        Parameter param = (Parameter) _fromPort.getAttribute(
+                "tokenProductionRate");
+
+        if (param == null) {
+            _outrate = 1;
         } else {
-            Parameter param = (Parameter) _fromPort
-                    .getAttribute("tokenProductionRate");
+            _outrate = ((IntToken) param.getToken()).intValue();
+        }
+
+        if ((isCompositeContainer) && (_toPort.isOutput())) {
+            _inRate = 1;
+        } else {
+            param = (Parameter) _toPort.getAttribute("tokenConsumptionRate");
 
             if (param == null) {
-                _outrate = 1;
-            } else {
-                _outrate = ((IntToken) param.getToken()).intValue();
-            }
-
-            if ((isCompositeContainer) && (_toPort.isOutput())) {
                 _inRate = 1;
             } else {
-                param = (Parameter) _toPort
-                        .getAttribute("tokenConsumptionRate");
-
-                if (param == null) {
-                    _inRate = 1;
-                } else {
-                    _inRate = ((IntToken) param.getToken()).intValue();
-                }
+                _inRate = ((IntToken) param.getToken()).intValue();
             }
+        }
 
-            IOPort containerPort = (IOPort) this.getContainer();
-            Actor containerActor = (Actor) _toPort.getContainer();
-            DTDirector localDirector;
+        IOPort containerPort = this.getContainer();
+        Actor containerActor = (Actor) _toPort.getContainer();
+        DTDirector localDirector;
 
-            if ((containerActor instanceof TypedCompositeActor)
+        if ((containerActor instanceof TypedCompositeActor)
                     && (!containerPort.isOutput())) {
-                localDirector = (DTDirector) containerActor
-                        .getExecutiveDirector();
-            } else {
-                localDirector = (DTDirector) containerActor.getDirector();
-            }
+            localDirector = (DTDirector) containerActor.getExecutiveDirector();
+        } else {
+            localDirector = (DTDirector) containerActor.getDirector();
+        }
 
-            // FIXME: check tunneling topology
-            periodValue = localDirector.getPeriod();
+        // FIXME: check tunneling topology
+        periodValue = localDirector.getPeriod();
 
-            if (_toPort.isOutput()) {
-                repeats = localDirector._getRepetitions(_from);
-                _tokenFlowRate = repeats * _outrate;
-                _deltaTime = periodValue / _tokenFlowRate;
-            } else {
-                repeats = localDirector._getRepetitions(_to);
-                _tokenFlowRate = repeats * _inRate;
-                _deltaTime = periodValue / _tokenFlowRate;
-            }
+        if (_toPort.isOutput()) {
+            repeats = localDirector._getRepetitions(_from);
+            _tokenFlowRate = repeats * _outrate;
+            _deltaTime = periodValue / _tokenFlowRate;
+        } else {
+            repeats = localDirector._getRepetitions(_to);
+            _tokenFlowRate = repeats * _inRate;
+            _deltaTime = periodValue / _tokenFlowRate;
         }
     }
 
@@ -201,12 +200,12 @@ public class DTReceiver extends SDFReceiver {
 
         Iterator portListIterator = listOfConnectedPorts.iterator();
 
-        foundReceiver: while (portListIterator.hasNext()) {
+foundReceiver: 
+        while (portListIterator.hasNext()) {
             connectedPort = (IOPort) portListIterator.next();
 
             if (connectedPort.isOutput() == true) {
-                Receiver[][] remoteReceivers = connectedPort
-                        .getRemoteReceivers();
+                Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
 
                 for (int i = 0; i < connectedPort.getWidth(); i++) {
                     for (int j = 0; j < remoteReceivers[i].length; j++) {
@@ -216,7 +215,7 @@ public class DTReceiver extends SDFReceiver {
 
                             if (_fromPort == null) {
                                 throw new InternalErrorException(
-                                        "DT error: Receiver with null source");
+                                    "DT error: Receiver with null source");
                             }
 
                             break foundReceiver;
@@ -230,7 +229,7 @@ public class DTReceiver extends SDFReceiver {
 
                 if (_fromPort == null) {
                     throw new InternalErrorException(
-                            "internal DT error: Receiver with null source");
+                        "internal DT error: Receiver with null source");
                 }
 
                 break foundReceiver;
@@ -243,7 +242,7 @@ public class DTReceiver extends SDFReceiver {
 
         if (_fromPort == null) {
             throw new InternalErrorException(
-                    "internal DT error: Receiver with null source");
+                "internal DT error: Receiver with null source");
         }
     }
 
@@ -256,7 +255,7 @@ public class DTReceiver extends SDFReceiver {
     public Token get() {
         // -get-
         Actor actor = (Actor) super.getContainer().getContainer();
-        Director director = ((Actor) actor).getDirector();
+        Director director = actor.getDirector();
 
         // FIXME: need to consider different cases for
         // TypedCompositeActor ports.
@@ -331,9 +330,9 @@ public class DTReceiver extends SDFReceiver {
     public boolean hasToken() {
         if (overrideHasToken == true) {
             return false;
-        } else {
-            return super.hasToken();
         }
+
+        return super.hasToken();
     }
 
     /** Put a token to the receiver. If the port feeding this
@@ -345,7 +344,7 @@ public class DTReceiver extends SDFReceiver {
     public void put(Token token) {
         if (_fromPort == null) {
             throw new InternalErrorException(
-                    "internal DT error: Receiver with null source");
+                "internal DT error: Receiver with null source");
         }
 
         super.put(token);
