@@ -1745,13 +1745,6 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         }
     }
 
-    /** Set the verbose flag to false such that only normal debugging
-     *  information is exposed.
-     */
-    public void setNormalDebugging() {
-        _verbose = false;
-    }
-
     /** Set the persistence of this object. If the persistence is not
      *  specified with this method, then by default the object will be
      *  persistent unless it is derivable by derivation from a class.
