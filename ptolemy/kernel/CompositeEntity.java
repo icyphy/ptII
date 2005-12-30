@@ -1126,20 +1126,6 @@ public class CompositeEntity extends ComponentEntity {
         return numberOfRelations();
     }
 
-    /** Return the number of contained class definitions.
-     *  This method is read-synchronized on the workspace.
-     *  @return The number of class definitions.
-     *  @see #numberOfEntities()
-     */
-    public int numberOfClassDefinitions() {
-        try {
-            _workspace.getReadAccess();
-            return classDefinitionList().size();
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
     /** Return the number of contained entities, not including
      *  class definitions.
      *  This method is read-synchronized on the workspace.
