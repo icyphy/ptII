@@ -161,22 +161,37 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         return trace;
     }
 
+    /** Generate code that corresponds with the fire() method.
+     *  @return The generated code.
+     */
     public String generateFireCode() {
         return _fireCode.toString();
     }
 
+    /** Generate code that corresponds with the initialize() method.
+     *  @return The generated code.
+     */
     public String generateInitializeCode() {
         return _initializeCode.toString();
     }
 
+    /** Generate code that corresponds with the preinitialize() method.
+     *  @return The generated code.
+     */
     public String generatePreinitializeCode() {
         return _preinitializeCode.toString();
     }
 
+    /** Generate shared code.
+     *  @return The generated code.
+     */
     public String generateSharedCode() {
         return _sharedCode.toString();
     }
 
+    /** Generate code that corresponds with the wrapup() method.
+     *  @return The generated code.
+     */
     public String generateWrapupCode() {
         return _wrapupCode.toString();
     }
@@ -1542,25 +1557,39 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Temporary storage for the result of evaluating a child node.
-    // This is protected so that derived classes can access it.
+
+    /** Temporary storage for the result of evaluating a child node.
+     *  This is protected so that derived classes can access it.
+     */    
     protected ptolemy.data.Token _evaluatedChildToken = null;
 
+    /** The fire() method code. */
     protected StringBuffer _fireCode = new StringBuffer();
 
+    /** The initialize() method code. */
     protected StringBuffer _initializeCode = new StringBuffer();
 
+    /** The preinitialize() method code. */
     protected StringBuffer _preinitializeCode = new StringBuffer();
 
+    /** Shared code code. */
     protected StringBuffer _sharedCode = new StringBuffer();
 
+    /** The wrapup() method code. */
     protected StringBuffer _wrapupCode = new StringBuffer();
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The scope for evaluation. */
     private ParserScope _scope = null;
 
+    /** Used for type checking. */
     private ParseTreeTypeInference _typeInference = null;
 
+    /** Used for debugging. */
     private StringBuffer _trace = null;
 
+    /** The depth, used for debugging and indenting. */
     private int _depth = 0;
 }

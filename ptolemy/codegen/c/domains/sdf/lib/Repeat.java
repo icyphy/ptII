@@ -59,7 +59,7 @@ public class Repeat extends CCodeGeneratorHelper {
      *  @exception IllegalActionException If throw while calling the super
      *  method or while getting a token.
      */
-    public String generateFireCode() {
+    public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
