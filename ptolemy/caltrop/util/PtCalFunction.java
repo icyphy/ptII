@@ -73,7 +73,7 @@ public class PtCalFunction implements ptolemy.data.Function {
     }
 
     /** Return the number of arguments.
-     *  @param The number of arguments.
+     *  @return The number of arguments.
      */
     public int getNumberOfArguments() {
         return _function.arity();

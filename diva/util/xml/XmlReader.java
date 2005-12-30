@@ -128,7 +128,7 @@ public class XmlReader extends LoggableOp {
      * Parse the given document from the given input stream, but
      * using the given URL to resolve external references.
      *
-     * @param XmlDocument The document to be parsed.
+     * @param document The document to be parsed.
      * @param in The input stream.
      * @exception Exception If the parser fails internally. This indicates
      * a severe error, such as an I/O error, not an XML error.
@@ -143,7 +143,7 @@ public class XmlReader extends LoggableOp {
      * Parse the given document from the given reader, but
      * using the given URL to resolve external references.
      *
-     * @param XmlDocument The document to be parsed.
+     * @param document The document to be parsed.
      * @param in The Reader.
      * @exception Exception If the parser fails internally. This indicates
      * a severe error, such as an I/O error, not an XML error.
