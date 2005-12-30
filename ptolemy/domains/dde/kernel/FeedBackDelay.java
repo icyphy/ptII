@@ -126,9 +126,13 @@ public class FeedBackDelay extends DDEActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public  variables                 ////
+    /** The delay for this actor.  The initial default value is a double
+     *  with value 1.0.
+     */
     public Parameter delay;
 
-    public TypedIOPort input = null;
+    /** The input port. */ 
+    public TypedIOPort input;
 
     /** The boolean parameter that indicates whether a delay value
      *  will be added to the time stamp of null tokens that are
@@ -136,7 +140,8 @@ public class FeedBackDelay extends DDEActor {
      */
     public Parameter nullDelay;
 
-    public TypedIOPort output = null;
+    /** The output port. */
+    public TypedIOPort output;
 
     /** The boolean parameter that indicates whether a delay value
      *  will be added to the time stamp of real tokens that are
@@ -149,6 +154,8 @@ public class FeedBackDelay extends DDEActor {
 
     /** Return the delay value of this actor.
      * @return The delay value of this actor.
+     * @exception IllegalActionException If there is a problem reading
+     * the delay token.
      */
     public double getDelay() throws IllegalActionException {
         return ((DoubleToken) delay.getToken()).doubleValue();

@@ -76,12 +76,21 @@ public class BackDropQueue extends CIActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** The output port on which the queue size is broadcast.
+     *  The default type is integer.
+     */
     public TypedIOPort length;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
+    /** The output port on which dropped tokens are broadcast.
+     *  A token is dropped if the queue size is smaller than the capacity.
+     *  The default type is the same as the type of the input port.
+     */
     public TypedIOPort dropped;
 
+    /** The capacity of the queue.  The initial default is an integer
+     *  of value 1.
+     */
     public Parameter capacity;
 
     ///////////////////////////////////////////////////////////////////

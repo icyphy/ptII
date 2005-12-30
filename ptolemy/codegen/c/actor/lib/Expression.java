@@ -198,6 +198,7 @@ public class Expression extends CCodeGeneratorHelper {
         return files;
     }
 
+    /** The parse tree code generator. */
     protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
 
     /**

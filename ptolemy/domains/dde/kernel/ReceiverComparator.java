@@ -58,10 +58,11 @@ import java.util.Comparator;
  @see ptolemy.domains.dde.kernel.DDEThread
  */
 public class ReceiverComparator implements Comparator {
-    /**
+    /** Construct a ReceiverComparator.
+     *  @param timeKeeper  The time keeper that controls the receivers.
      */
-    public ReceiverComparator(TimeKeeper cntlr) {
-        _timeKeeper = cntlr;
+    public ReceiverComparator(TimeKeeper timeKeeper) {
+        _timeKeeper = timeKeeper;
     }
 
     ///////////////////////////////////////////////////////////////////
