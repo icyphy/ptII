@@ -890,8 +890,20 @@ test CompositeEntity-14.1 {Test uniqueName} {
     set r1 [list [$a getFullName] [$a uniqueName _E]]
     java::new ptolemy.kernel.ComponentRelation $a _E
     set r2 [list [$a uniqueName _E] [$a getFullName]]
-    list $r1 $r2
-} {{.A _E} {_E2 .A}}
+    set r3 [list [$a uniqueName [java::null]]]
+    list $r1 $r2 $r3
+} {{.A _E} {_E2 .A} null}
+
+######################################################################
+####
+#
+test CompositeEntity-14.2 {Test uniqueName} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    list [$c uniqueName _Foo2]
+} {_Foo}
 
 ######################################################################
 ####
