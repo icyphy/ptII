@@ -101,7 +101,7 @@ public class XmlReader extends LoggableOp {
      * exceptions, this method will throw an exception so parsing stops
      * immediately.
      *
-     * @param XmlDocument The document to be parsed.
+     * @param document The document to be parsed.
      * @exception Exception If the parser fails internally. This indicates
      * a severe error, such as an I/O error, not an XML error.
      */

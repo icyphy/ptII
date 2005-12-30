@@ -56,7 +56,7 @@ public class All extends TestSuite {
 
     /** Create a default test harness and
      * run all tests on it.
-     * @parm argv The arguments, currently ignored. 
+     * @param argv The arguments, currently ignored. 
      */
     public static void main(String[] argv) {
         new All(new TestHarness()).run();

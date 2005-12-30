@@ -488,7 +488,7 @@ public class SVGParser {
     }
 
     /** Given an XmlElement, create a PaintedList.
-     *  @param XmlElement The XmlElement.
+     *  @param root The XmlElement.
      *  @return The PaintedList.
      */
     public static PaintedList createPaintedList(XmlElement root) {
