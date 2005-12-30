@@ -65,6 +65,22 @@ public class TestNullNamedObj extends NamedObj {
         super(_defaultWorkspace, name);
     }
 
+    /** Get an object with the specified name in the specified container.
+     *  The type of object sought is an instance of the same class as
+     *  this object.  In this base class, return null, as there
+     *  is no containment mechanism. Derived classes should override this
+     *  method to return an object of their same type.
+     *  @param relativeName The name relative to the container.
+     *  @param container The container expected to contain the object.
+     *  @return null.
+     *  @exception IllegalActionException If the object exists
+     *   and has the wrong class. Not thrown in this base class.
+     */
+    public NamedObj getContainedObject(NamedObj container,
+            String relativeName) throws IllegalActionException {
+        return _getContainedObject(container, relativeName);
+    }
+
     /** Get the name. If no name has been given, or null has been given,
      *  then return an empty string, "".
      *  @return The name of the object.
