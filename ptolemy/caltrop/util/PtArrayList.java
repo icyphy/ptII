@@ -38,7 +38,7 @@ import ptolemy.data.ArrayToken;
 //// PtArrayList
 
 /**
- FIXME: What does this class do?
+ A List representation of an ArrayToken.
  @author J&#246;rn W. Janneck
  @version $Id$
  @since Ptolemy II 4.0
@@ -46,7 +46,9 @@ import ptolemy.data.ArrayToken;
  @Pt.AcceptedRating Red (cxh)
  */
 public class PtArrayList extends AbstractList implements List {
-    /** Construct a PtArrayList from an ArrayToken */
+    /** Construct a PtArrayList from an ArrayToken.
+     *  @param arrayToken The arrayToken with which to construct the List.
+     */
     public PtArrayList(ArrayToken arrayToken) {
         _arrayToken = arrayToken;
     }
@@ -62,7 +64,9 @@ public class PtArrayList extends AbstractList implements List {
         return _arrayToken.getElement(index);
     }
 
-    /** Return the size of the array */
+    /** Return the size of the array.
+     *  @return size The length of the ArrayToken.
+     */
     public int size() {
         return _arrayToken.length();
     }

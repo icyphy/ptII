@@ -37,7 +37,7 @@ import caltrop.interpreter.Context;
 //// IntegerList
 
 /**
- FIXME: What does this class do?
+ A sparse list of integers.
  @author J&#246;rn W. Janneck
  @version $Id$
  @since Ptolemy II 4.0
@@ -45,6 +45,12 @@ import caltrop.interpreter.Context;
  @Pt.AcceptedRating Red (cxh)
  */
 public class IntegerList extends AbstractList {
+    /** Construct a list of Integers IntegerList object.
+     *
+     * @param context  a Caltrop interpreter context.
+     * @param a        The lower limit of the range of integers.
+     * @param b        The upper limit ofthe range of integers.
+     */
     public IntegerList(Context context, int a, int b) {
         assert a <= b;
 
@@ -55,6 +61,10 @@ public class IntegerList extends AbstractList {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    /** Return an integer from the Caltrop interpreter context.
+     *  @param n The integer that is added to the a value and returned
+     *  n+a must be less than or equal to b.
+     */
     public Object get(int n) {
         if ((_a + n) > _b) {
             throw new IndexOutOfBoundsException(_a + " + " + n
@@ -64,12 +74,16 @@ public class IntegerList extends AbstractList {
         return _context.createInteger(_a + n);
     }
 
+    /** The size of the list.
+     *  @return The size of the list. (b-a)+1
+     */   
     public int size() {
         return (_b - _a) + 1;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     private Context _context;
 
     private int _a;

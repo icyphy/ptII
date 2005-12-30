@@ -49,6 +49,7 @@ public class GRUtilities2D {
      *  @param colorVector A 1x3 DoubleMatrixToken of where the
      *  first element is the red value, the second is the green
      *  value and the third is the blue value.
+     *  @return The corresponding color.
      */
     public static Color makeColor(DoubleMatrixToken colorVector) {
         Color color = new Color((float) colorVector.getElementAt(0, 0),

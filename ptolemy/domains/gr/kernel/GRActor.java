@@ -121,6 +121,8 @@ abstract public class GRActor extends TypedAtomicActor {
 
     /** Set the view screen that the actor is connected to.
      *  @param actor The actor.
+     *  @exception IllegalActionException Thrown if there is a problem
+     *  setting the view screen.
      */
     abstract protected void _setViewScreen(GRActor actor)
             throws IllegalActionException;
@@ -134,7 +136,7 @@ abstract public class GRActor extends TypedAtomicActor {
     protected boolean _isSceneGraphInitialized;
 
     /** Boolean variable to determine whether attribute changes are
-     * allowed For speed reasons, attribute changes may be disallowed in
+     * allowed. For speed reasons, attribute changes may be disallowed in
      * some models
      */
     protected boolean _allowAttributeChanges;
