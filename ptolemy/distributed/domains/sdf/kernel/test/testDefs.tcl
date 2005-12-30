@@ -1,6 +1,6 @@
-# Makefile for the Ptolemy distributed SDF kernel  classes
+# Load test bed definitions
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Author: Christopher Brooks
 #
 # @Version: $Id$
 #
@@ -28,45 +28,29 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#######################################################################
 
-ME =		ptolemy/distributed/domains/sdf/kernel
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
-DIRS =		test
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
 
-# Root of the Ptolemy II directory
-ROOT =		../../../../..
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
 
-CLASSPATH =	$(ROOT)$(CLASSPATH_SEPARATOR)$(PTDISTRIBUTED_JARS)
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] .. .. .. .. .. ..]
+}
 
-# Used to build jar files
-PTPACKAGE = 	kernel
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-JSRCS = \
-	DistributedSDFDirector.java \
-	DistributedSDFReceiver.java \
-	DistributedSDFScheduler.java
-
-EXTRA_SRCS =	$(JSRCS)
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	$(PTCLASSJAR)
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-all: jclass
-install: jclass jars
-
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}
