@@ -386,7 +386,7 @@ test NamedObj-10.2 {Test isOverridden} {
     set result3 [$a isOverridden]
 
     # Try setting propagateValue twice, just to be sure
-    # we stay overridden and the size of _override does not increase.
+    # we stay overidden and the size of _override does not increase.
     set l [$a propagateValue]
     set result4 [$a isOverridden]
     set l [$a propagateValue]
@@ -698,7 +698,18 @@ test NamedObj-16.1 {move* methods with no container} {
 ######################################################################
 ####
 #
-test NamedObj-17.1 {sortContainedObjects} {
+test NamedObj-17.1 {propagateValue on an InstantiableNamedObj} {
+    set n [java::new ptolemy.kernel.util.test.TestInstantiableNamedObj]
+    set a1 [java::new ptolemy.kernel.util.Attribute $n "A1"]
+    set propagated [$n propagateValue]
+    listToNames $propagated
+} {A1}
+
+
+######################################################################
+####
+#
+test NamedObj-18.1 {sortContainedObjects} {
     set w [java::new ptolemy.kernel.util.Workspace]
     set a [java::new ptolemy.kernel.util.NamedObj $w "A"]
     set a1 [java::new ptolemy.kernel.util.Attribute $a "A1"]
