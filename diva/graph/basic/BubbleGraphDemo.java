@@ -50,11 +50,15 @@ public class BubbleGraphDemo {
     /**
      * Construct a new instance of graph demo, which does the work of
      * setting up the graphs and displaying itself.
+     * @param argv Command line arguments, currently ignored.
      */
     public static void main(String[] argv) {
         new BubbleGraphDemo(new BasicFrame("Bubble Graph Demo"));
     }
 
+    /** Construct a new instance of the graph demo in a particular context.
+     *  @param context The context in which the demo is constructed.
+     */
     public BubbleGraphDemo(AppContext context) {
         JGraph jg = new JGraph(new BubblePane());
         context.getContentPane().add("Center", jg);

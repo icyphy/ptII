@@ -56,15 +56,20 @@ public class BasicGraphDemo {
     /**
      * Construct a new instance of graph demo, which does the work of
      * setting up the graphs and displaying itself.
+     * @param argv Command line arguments, currently ignored.
      */
     public static void main(String[] argv) {
         AppContext context = new BasicFrame("Basic Graph Demo");
         new BasicGraphDemo(context);
     }
 
+    /** Construct a new instance of the graph demo in a particular context.
+     *  @param context The context in which the demo is constructed.
+     */
     public BasicGraphDemo(AppContext context) {
         final BasicGraphModel model = new BasicGraphModel();
-        JGraph jg = new JGraph(new GraphPane(new BasicGraphController(), model));
+        JGraph jg =
+            new JGraph(new GraphPane(new BasicGraphController(), model));
         JGraph jg2 = new JGraph(
                 new GraphPane(new BasicGraphController(), model));
 

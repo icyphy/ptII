@@ -79,7 +79,10 @@ public class SVGParser {
      * Any attributes that are not recognized will be ignored.
      * Legal types and their attributes are:
      *
-     * </ul>
+     * @param type The element type
+     * @param attributes An XML-style attribute string
+     * @param content The content
+     * @return a new painted object.
      */
     public static PaintedObject createPaintedObject(String type,
             String attributes, String content) {
@@ -484,6 +487,10 @@ public class SVGParser {
         }
     }
 
+    /** Given an XmlElement, create a PaintedList.
+     *  @param XmlElement The XmlElement.
+     *  @return The PaintedList.
+     */
     public static PaintedList createPaintedList(XmlElement root) {
         PaintedList list = new PaintedList();
         String name = root.getType();

@@ -194,7 +194,7 @@ import diva.util.java2d.ShapeUtilities;
  * @author John Reekie
  * @version $Id$ */
 public class FigureTutorial {
-    // The file name for the image that is displayed
+    /** The file name for the image that is displayed. */
     public static final String IMAGE_FILE_NAME = "demo.gif";
 
     // The JCanvas
@@ -257,7 +257,8 @@ public class FigureTutorial {
         imgFig.setToolTipText("Image figure");
     }
 
-    /** Main function
+    /** Main function.
+     *  @param argv The arguments, currently ignored.
      */
     public static void main(String[] argv) {
         // Always invoke graphics code in the event thread
@@ -287,6 +288,10 @@ public class FigureTutorial {
          * remember them as a rectangle. In general, we may want
          * several constructors, and methods to set and get fields
          * that will control the visual properties of the figure.
+         * @param x       a double
+         * @param y       a double
+         * @param width   a double
+         * @param height  a double
          */
         public CustomRectangle(double x, double y, double width, double height) {
             _bounds = new Rectangle2D.Double(x, y, width, height);

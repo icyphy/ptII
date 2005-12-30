@@ -41,26 +41,32 @@ import diva.util.jester.TestSuite;
  * @version $Id$
  */
 public class BasicGraphModelTest extends TestSuite {
-    /** The graph factory interface
+    /** The graph factory interface.
      */
     public interface GraphFactory {
+        /** Create a BasicGraphModel.
+         *  @return a BasicGraphModel.   
+         */
         public BasicGraphModel createGraph();
     }
 
-    /** The factory for the BasicGraphModel class
+    /** The factory for the BasicGraphModel class.
      */
     public static class BasicGraphModelFactory implements GraphFactory {
+        /** Create a BasicGraphModel.
+         *  @return a BasicGraphModel.   
+         */
         public BasicGraphModel createGraph() {
             return new BasicGraphModel();
         }
     }
 
     /**
-     * The unit factory
+     * The unit factory.
      */
     private GraphFactory factory;
 
-    /** Constructor
+    /** Constructor.
      */
     public BasicGraphModelTest(TestHarness harness, GraphFactory factory) {
         setTestHarness(harness);
@@ -68,8 +74,8 @@ public class BasicGraphModelTest extends TestSuite {
         this.factory = factory;
     }
 
-    /**
-     * runSuite()
+    /** Run the test.
+     * 
      */
     public void runSuite() {
         testEmpty();
@@ -90,7 +96,7 @@ public class BasicGraphModelTest extends TestSuite {
     ///////////////////////////////////////////////////////////////////
     //// Test methods
 
-    /** Perform tests on an empty graph
+    /** Perform tests on an empty graph.
      */
     public void testEmpty() {
         runTestCase(new TestCase("Empty graph") {
@@ -110,7 +116,7 @@ public class BasicGraphModelTest extends TestSuite {
         });
     }
 
-    /** Test a star-connected graph
+    /** Test a star-connected graph.
      */
     public void testStarConnected() {
         runTestCase(new TestCase("Star-connected from single node") {

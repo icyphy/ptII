@@ -35,14 +35,14 @@ import diva.util.jester.TestSuite;
  * @version $Id$
  */
 public class All extends TestSuite {
-    /** Constructor
+    /** Constructor.
      */
     public All(TestHarness harness) {
         setTestHarness(harness);
     }
 
     /**
-     * runSuite()
+     * Run all the tests.
      */
     public void runSuite() {
         // Test basic graph model graph
@@ -56,9 +56,9 @@ public class All extends TestSuite {
 
     /** Create a default test harness and
      * run all tests on it.
+     * @parm argv The arguments, currently ignored. 
      */
     public static void main(String[] argv) {
-        ;
         new All(new TestHarness()).run();
     }
 }
