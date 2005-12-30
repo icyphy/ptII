@@ -675,13 +675,14 @@ test NamedObj-16.1 {move* methods with no container} {
     set n [java::new ptolemy.kernel.util.NamedObj]
     catch {$n moveDown} msg1
     catch {$n moveToFirst} msg2
-    catch {$n moveToIndex} msg3
+    catch {$n moveToIndex 1} msg3
     catch {$n moveToLast} msg4
     catch {$n moveUp} msg5
     list $msg1 $msg2 $msg3 $msg4 $msg5
 } {{ptolemy.kernel.util.IllegalActionException: Has no container.
   in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
-  in .<Unnamed Object>} {can't find method "moveToIndex" with 0 argument(s) for class "ptolemy.kernel.util.NamedObj"} {ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
+  in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
   in .<Unnamed Object>} {ptolemy.kernel.util.IllegalActionException: Has no container.
   in .<Unnamed Object>}}
 
@@ -718,3 +719,28 @@ test NamedObj-17.1 {sortContainedObjects} {
 
     list $result1 $result2 $result3 $result4
 } {0 {} A1 A1}
+
+######################################################################
+####
+#
+test NamedObj-18.1 {containedObjectsIterator, ContainedObjectsIterator class} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set n [java::new ptolemy.kernel.util.NamedObj $w "N"]
+    set a1 [java::new ptolemy.kernel.util.Attribute $n "A1"]
+    set a2 [java::new ptolemy.kernel.util.Attribute $n "A2"]
+
+    set attributes [$n attributeList]
+    set result1 [listToNames $attributes]
+    set iterator [$n containedObjectsIterator]
+
+    set result2 [$iterator hasNext]
+    $iterator next
+    catch {$iterator remove} msg
+
+    $iterator next
+    set attributes [$n attributeList]
+    set result3 [listToNames $attributes]
+    set result4 [$iterator hasNext]
+
+    list $result1 $result2 $msg $result3 $result4
+} {{A1 A2} 1 {java.lang.UnsupportedOperationException: remove() not supported because attributeList().iterator() returns a NamedList that is unmodifiable} {A1 A2} 0}
