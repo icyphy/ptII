@@ -789,7 +789,7 @@ public class PtolemyPlatform implements Platform {
         return env;
     }
 
-    // The singleton platform.
+    /** The singleton platform. */
     public final static Platform thePlatform = new PtolemyPlatform();
 
     /**
