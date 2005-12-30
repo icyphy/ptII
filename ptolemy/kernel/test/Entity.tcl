@@ -362,10 +362,33 @@ test Entity-10.1 {test getAttribute} {
     $r getFullName
 } {.e.p.a}
 
+
 ######################################################################
 ####
 #
-test Entity-11.1 {uniqueName} {
+test Entity-11.1 {containedObjectsIterator, ContainedObjectsIterator class} {
+    # Uses 10.1 above
+    set p2 [java::new ptolemy.kernel.util.Attribute $e "p2"]
+    set attributes [$e attributeList]
+    set result1 [listToNames $attributes]
+    set iterator [$e containedObjectsIterator]
+
+    set result2 [$iterator hasNext]
+    $iterator next
+    catch {$iterator remove} msg
+
+    $iterator next
+    set attributes [$e attributeList]
+    set result3 [listToNames $attributes]
+    set result4 [$iterator hasNext]
+
+    list $result1 $result2 $msg $result3 $result4
+} {{p p2} 1 {java.lang.UnsupportedOperationException: remove() not supported because attributeList().iterator() returns a NamedList that is unmodifiable} {p p2} 0}
+
+######################################################################
+####
+#
+test Entity-12.1 {uniqueName} {
     set e1 [java::new ptolemy.kernel.Entity]
     set r1 [list [$e1 uniqueName [java::null]] \
 	    [$e1 uniqueName ""] \
