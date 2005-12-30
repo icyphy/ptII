@@ -2950,11 +2950,17 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             return _attributeListIterator.next();
         }
 
-        /** Remove from the underlying collection the last element
-         *  returned by the iterator.
+        /** Throw a UnsupportedOperationException because remove() is not
+         *  supported.  The reason is because this iterator calls
+         *  attributeList().iterator(), which returns a NamedList that
+         *  is unmodifiable.
          */
         public void remove() {
-            _attributeListIterator.remove();
+            // Iterator requires a remove().
+            throw new UnsupportedOperationException("remove() not supported "
+                    + "because attributeList().iterator() returns a NamedList "
+                    + "that is unmodifiable");
+            //_attributeListIterator.remove();
         }
 
         private Iterator _attributeListIterator = null;
