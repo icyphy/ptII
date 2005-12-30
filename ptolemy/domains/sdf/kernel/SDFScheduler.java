@@ -249,6 +249,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @param model The model.
      *  @param rateVariables A list of rate variables.  Each element
      *  is a Variable.
+     *  @exception IllegalActionException If throw while looking for dynamic
+     *  rate parameters. 
      */
     protected void _checkDynamicRateVariables(CompositeActor model,
             List rateVariables) throws IllegalActionException {
@@ -429,6 +431,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  number of firings is stored in the _firingVector map, indexed
      *  by the entity.
      *  @param entity One of the actors we are scheduling.
+     *  @return The number of firings.
      */
     protected int _getFiringCount(Entity entity) {
         return ((Integer) _firingVector.get(entity)).intValue();
@@ -1469,9 +1472,12 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  by their rate.
      *  @param port The external input port.
      *  @param count The number of tokens assumed to be on that port.
+     *  @param actorList The list of actors.
      *  @param readyToScheduleActorList The list of actors that are ready
      *   to be scheduled.  This will be updated if any actors that receive
      *   tokens from outputPort are now ready to fire.
+     *  @exception IllegalActionException If thrown while reading a token,
+     *  setting the capacity of a receiver or counting unfulfilled input.s
      */
     protected void _simulateExternalInputs(IOPort port, int count,
             List actorList, LinkedList readyToScheduleActorList)

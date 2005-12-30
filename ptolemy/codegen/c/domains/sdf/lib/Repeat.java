@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Repeat
 
 /**
- A code generation helper class for ptolemy.domains.sdf.lib.Repeat
+ A code generation helper class for ptolemy.domains.sdf.lib.Repeat.
 
  @author Ye Zhou
  @version $Id$
@@ -56,8 +56,10 @@ public class Repeat extends CCodeGeneratorHelper {
 
     /** Generate the fire code of the Repeat actor.
      *  @return the generated fire code.
+     *  @exception IllegalActionException If throw while calling the super
+     *  method or while getting a token.
      */
-    public String generateFireCode() throws IllegalActionException {
+    public String generateFireCode() {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 

@@ -368,6 +368,7 @@ public class SDFDirector extends Director {
 
     /** Check to see if variables are needed to represent read and
      *  write offsets for the given port.
+     *  @return Code that declares the read and write offset variables.
      *  @exception IllegalActionException If getting the rate or
      *   reading parameters throws it.   
      */   
@@ -494,16 +495,19 @@ public class SDFDirector extends Director {
         return code.toString();
     }
 
-    /** Check for the given channel of the given port to see if variables are 
-     *  needed for recording read offset and write offset. If the buffer size of a
-     *  channel divides the readTokens and writeTokens given in the argument, then 
-     *  there is no need for the variables. Otherwise the integer offsets are 
-     *  replaced with variables and the code to initialize these variables are 
+    /** Check for the given channel of the given port to see if
+     *  variables are needed for recording read offset and write
+     *  offset. If the buffer size of a channel divides the readTokens
+     *  and writeTokens given in the argument, then there is no need
+     *  for the variables. Otherwise the integer offsets are replaced
+     *  with variables and the code to initialize these variables are
      *  generated.
      *
      *  @param port The port to be checked.
+     *  @param channelNumber The channel number.
      *  @param readTokens The number of tokens read.
      *  @param writeTokens The number of tokens written.
+     *  @return Code that declares the read and write offset variables.
      *  @exception IllegalActionException If getting the rate or
      *   reading parameters throws it.   
      */

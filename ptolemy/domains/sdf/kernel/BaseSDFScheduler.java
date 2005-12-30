@@ -124,7 +124,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
      *  @param analysis The ConstVariableModelAnalysis
      *  @param port The port that gets the DependencyDeclaration.
      *  @param name The name of the DependencyDeclaration.
-     *  @param dependents
+     *  @param dependents The dependents.
      *  @exception IllegalActionException If there is a problem setting
      *  the rate dependency on a port
      */

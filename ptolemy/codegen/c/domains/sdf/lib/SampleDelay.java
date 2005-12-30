@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// SampleDelay
 
 /**
- A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay
+ A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay.
 
  @author Ye Zhou
  @version $Id$

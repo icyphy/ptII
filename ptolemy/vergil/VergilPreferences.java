@@ -46,7 +46,7 @@ import ptolemy.vergil.kernel.attributes.TextAttribute;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class VergilPreferences extends ScopeExtendingAttribute {
-    /** Construct an instance of the preferences attribute
+    /** Construct an instance of the preferences attribute.
      *  @param container The container.
      *  @param name The name.
      *  @exception IllegalActionException If the attribute is not of an
@@ -172,6 +172,7 @@ public class VergilPreferences extends ScopeExtendingAttribute {
      *  of that file. This method prints warning messages
      *  on standard out if there are problems with the
      *  preferences.
+     *  @param configuration The specified configuration.
      */
     public static void setDefaultPreferences(Configuration configuration) {
         VergilPreferences preferences = null;

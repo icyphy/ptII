@@ -71,6 +71,7 @@ public final class ArrayFIFOQueue implements Cloneable {
     }
 
     /** Construct an empty queue with no container and the given capacity.
+     *  @param size The size of the queue.
      */
     public ArrayFIFOQueue(int size) {
         _queueArray = new Object[size];
@@ -90,6 +91,7 @@ public final class ArrayFIFOQueue implements Cloneable {
     /** Construct an empty queue with the specified container and the
      *  given size. The container is only used for error reporting.
      *  @param container The container of the queue.
+     *  @param size The size of the queue.
      */
     public ArrayFIFOQueue(Nameable container, int size) {
         this(size);
@@ -224,9 +226,10 @@ public final class ArrayFIFOQueue implements Cloneable {
         return object;
     }
 
-    /** Return the queue capacity
+    /** Return the queue capacity.
      *  This will be INFINITE_CAPACITY if the capacity is infinite.
      *  @return The capacity of the queue.
+     *  @see #setCapacity(int)
      */
     public int getCapacity() {
         return _queueMaxCapacity;
@@ -234,6 +237,7 @@ public final class ArrayFIFOQueue implements Cloneable {
 
     /** Return the container of the queue, or null if there is none.
      *  @return The container of the queue.
+     *  @see #setContainer(Nameable)
      */
     public Nameable getContainer() {
         return _container;
@@ -243,6 +247,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  This will be zero if the history mechanism is disabled and
      *  INFINITE_CAPACITY if the history capacity is infinite.
      *  @return The capacity of the history queue.
+     *  @see #setHistoryCapacity(int)
      */
     public int getHistoryCapacity() {
         return _historyCapacity;
@@ -267,7 +272,7 @@ public final class ArrayFIFOQueue implements Cloneable {
         return _historyList.size();
     }
 
-    /** Return true if the number of objects in the queue is zero
+    /** Return true if the number of objects in the queue is zero.
      *  @return A boolean indicating whether the queue is empty.
      */
     public boolean isEmpty() {
@@ -379,6 +384,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @exception IllegalActionException If the queue contains more
      *   objects than the proposed capacity or the proposed capacity
      *   is illegal.
+     *  @see #getCapacity()
      */
     public void setCapacity(int capacity) throws IllegalActionException {
         if (capacity == INFINITE_CAPACITY) {
@@ -403,6 +409,7 @@ public final class ArrayFIFOQueue implements Cloneable {
     /** Set the container of the queue. The container is only used
      *  for error reporting.
      *  @param container The container of this queue.
+     *  @see #getContainer()
      */
     public void setContainer(Nameable container) {
         _container = container;
@@ -418,6 +425,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @param capacity The desired capacity of the history queue.
      *  @exception IllegalActionException If the desired capacity
      *   is illegal.
+     *  @see #getHistoryCapacity()
      */
     public void setHistoryCapacity(int capacity) throws IllegalActionException {
         if (capacity > 0) {

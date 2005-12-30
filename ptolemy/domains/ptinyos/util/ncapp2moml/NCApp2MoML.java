@@ -157,6 +157,10 @@ public class NCApp2MoML {
      *  PtinyOSDirector.
      *  @param micaboardFile Path to the MoML file that contains the
      *  Wireless wrapper.  Null if wrapper should not be generated.
+     *  @exception IllegalActionException If there is a problem creating 
+     *  an interface IOport or connection.
+     *  @exception NameDuplicationException If there is a problem creating 
+     *  an interface IOport or connection.
      */
     public void generatePtinyOSModel(String componentName, String outputFile,
             String directorOutputDir,
@@ -547,7 +551,7 @@ public class NCApp2MoML {
     }
 
 
-    /** Read in the opts file
+    /** Read in the opts file.
      *  @param optsInputFile The file to read.
      *  @return The opts string, or empty string if there is none.
      */
@@ -764,7 +768,11 @@ public class NCApp2MoML {
 
     /** Create an IOPort that represents this interface.
      *
-     * @param intf interface that represents IOPort to be created.
+     *  @param intf interface that represents IOPort to be created.
+     *  @exception IllegalActionException If there is a problem creating 
+     *  the port.
+     *  @exception NameDuplicationException If there is a problem creating 
+     *  the port.
      */
     protected void createInterfaceIOPort(Xinterface intf) 
             throws IllegalActionException, NameDuplicationException {
@@ -795,9 +803,14 @@ public class NCApp2MoML {
 
     /** Traverse the configuration wiring graph and set up the
      * component and relation data structures.
+     *  @exception IllegalActionException If there is a problem creating 
+     *  an interface IOport or connection.
+     *  @exception NameDuplicationException If there is a problem creating 
+     *  an interface IOport or connection.
      */
     protected void readLinks()
             throws IllegalActionException, NameDuplicationException {
+
         // Get the list of interfaces for this nesC component.
         ListIterator interfaces = Xnesc.interfaceList.listIterator();
     
@@ -851,9 +864,14 @@ public class NCApp2MoML {
      * source file.
      *
      * @param intf interface of the component to be stored
+     *  @exception IllegalActionException If there is a problem creating
+     *  the atomic actor.
+     *  @exception NameDuplicationException If there is a problem creating
+     *  the atomic actor.
      */
-    protected void saveInterfaceContainer(Xinterface intf)
+    protected void saveInterfaceContainer(Xinterface intf) 
             throws IllegalActionException, NameDuplicationException {
+
         Xcomponent component = (Xcomponent) intf.container;
         
         // Make sure the component has not already been stored.
