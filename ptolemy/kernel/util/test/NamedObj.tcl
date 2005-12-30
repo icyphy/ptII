@@ -365,6 +365,15 @@ test NamedObj-10.1 {Test getAttribute} {
 ######################################################################
 ####
 #
+test NamedObj-10.1.5 {Test getContainedObject} {
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set n [java::new ptolemy.kernel.util.test.TestNullNamedObj "N"]
+    java::isnull [$n getContainedObject [java::null] ""]
+} {1}
+
+######################################################################
+####
+#
 test NamedObj-10.2 {Test isOverridden} {
     set n [java::new ptolemy.kernel.util.Workspace]
     set a [java::new ptolemy.kernel.util.NamedObj $n "A"]
@@ -675,7 +684,7 @@ test NamedObj-16.1 {move* methods with no container} {
     set n [java::new ptolemy.kernel.util.NamedObj]
     catch {$n moveDown} msg1
     catch {$n moveToFirst} msg2
-    catch {$n moveToIndex 1} msg3
+    catch {$n moveToIndex 0} msg3
     catch {$n moveToLast} msg4
     catch {$n moveUp} msg5
     list $msg1 $msg2 $msg3 $msg4 $msg5
