@@ -173,6 +173,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     /** Prefire the actor.
      *  @return true If the actor can be fired.
+     *  @param IllegalActionException If thrown by the parent or by the
+     *  prefire() meethod of the domain-dependent interpreter.
      */
     public boolean prefire() throws IllegalActionException {
         super.prefire();
@@ -180,6 +182,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     }
 
     /** Fire the actor.
+     *  @param IllegalActionException If thrown by the parent or by the
+     *  fire() meethod of the domain-dependent interpreter.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -199,8 +203,12 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected members                   ////
-    // Initialize this ptolemy actor using declarations in the given
-    // CAL actor.
+
+    /** Initialize this ptolemy actor using declarations in the given
+     *  CAL actor.
+     *  @param actor The CAL actor to be used
+     *  @exception Exception  If there is a problem initializing the actor.
+     */
     protected void _setupActor(Actor actor) throws Exception {
         assert actor != null;
 
@@ -225,6 +233,9 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
         _attachActorIcon(actor.getName());
     }
 
+    /** Attach the actor icon.
+     *  @param name The name of the actor.
+     */
     protected void _attachActorIcon(String name) {
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"60\" height=\"40\" "
@@ -234,7 +245,12 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
                 + name + "\n" + "</text>\n" + "</svg>\n");
     }
 
-    // Get the Ptolemy type that corresponds to the given type expression.
+    /** Get the Ptolemy type that corresponds to the given type expression.
+     *  @param typeExpr The type expression, one of "UINT8", "UINT9",
+     *  "INT19" or "positive".
+     *  @return the corresponding type, which currently is always 
+     *  ptolemy.data.type.BaseType.int.
+     */
     protected static ptolemy.data.type.Type _getPtolemyType(TypeExpr typeExpr) {
         if (typeExpr == null) {
             return ptolemy.data.type.BaseType.GENERAL;
@@ -252,6 +268,7 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
     // Get the values of Ptolemy actor parameters and plug them into
     // the given environment.
     private void _bindActorParameters(Environment env)

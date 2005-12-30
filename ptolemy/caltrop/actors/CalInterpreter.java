@@ -143,6 +143,6 @@ public class CalInterpreter extends AbstractCalInterpreter {
      */
     public StringAttribute calCode;
 
-    // Default CAL code.
+    /** Default CAL code. */
     protected final static String defaultActorText = "actor CalActor () Input ==> Output : end";
 }
