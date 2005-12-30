@@ -422,19 +422,6 @@ public class EntityLibrary extends CompositeEntity implements Configurable {
         }
     }
 
-    /** Return the number of contained class definitions. This overrides
-     *  the base class to first populate the library, if necessary,
-     *  by calling populate().
-     *  Note that this may result in a runtime exception being thrown
-     *  (if there is an error evaluating the MoML).
-     *  This method is read-synchronized on the workspace.
-     *  @return The number of class definitions.
-     */
-    public int numClassDefinitions() {
-        populate();
-        return super.numberOfClassDefinitions();
-    }
-
     /** Return the number of contained entities. This overrides the base class
      *  to first populate the library, if necessary, by calling populate().
      *  Note that this may result in a runtime exception being thrown
