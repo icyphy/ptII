@@ -69,7 +69,7 @@ public class Complex implements Cloneable, Serializable {
         this.imag = 0.0;
     }
 
-    /** Construct a Complex with a zero imaginary part.\
+    /** Construct a Complex with a zero imaginary part.
      *  @param  real The real part.
      */
     public Complex(double real) {
@@ -493,7 +493,7 @@ public class Complex implements Cloneable, Serializable {
 
     /** Return true if the real and imaginary parts of this complex number
      *  are equal to those of the argument.
-     *
+     *  @param z The argument to which this number is being compared.
      *  @return True if the real and imaginary parts are equal.
      */
     public final boolean equals(Complex z) {
@@ -1049,6 +1049,7 @@ public class Complex implements Cloneable, Serializable {
     /** Return a new complex number formed by subtracting the specified
      *  complex number from this complex number.
      *
+     *  @param w The number that is being subtracted.
      *  @return A new complex number formed by subtracting the specified
      *  complex number from this complex number.
      */
@@ -1126,6 +1127,7 @@ public class Complex implements Cloneable, Serializable {
 
     /** Return a string representation of the given Complex.
      *
+     * @param value The given value.
      * @return A string of the form "<em>x</em> + <em>y</em>i".
      */
     public static String toString(Complex value) {

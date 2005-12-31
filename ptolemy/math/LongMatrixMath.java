@@ -1102,11 +1102,18 @@ public class LongMatrixMath {
         return _rows(matrix);
     }
 
-    /** Return the number of columns of a matrix. */
+    /** Return the number of columns of a matrix.
+     *  @param matrix The matrix.
+     *  @return The number of columns.
+     */
     protected static final int _columns(final long[][] matrix) {
         return matrix[0].length;
     }
 
+    /** Return a string that describes the number of rows and columns.
+     *  @param matrix The matrix that is to be described.
+     *  @return a string describing the dimensions of this matrix.
+     */
     protected static final String _dimensionString(final long[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }

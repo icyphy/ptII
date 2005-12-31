@@ -1135,6 +1135,10 @@ public class FloatMatrixMath {
         return matrix[0].length;
     }
 
+    /** Return a string that describes the number of rows and columns.
+     *  @param matrix The matrix that is to be described.
+     *  @return a string describing the dimensions of this matrix.
+     */
     protected static final String _dimensionString(final float[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
@@ -1233,7 +1237,10 @@ public class FloatMatrixMath {
                 oneOverNormSquaredArray, new Integer(nullity) };
     }
 
-    /** Return the number of rows of a matrix. */
+    /** Return the number of rows of a matrix.
+     *  @param matrix The matrix.
+     *  @return The number of rows.
+     */
     protected static final int _rows(final float[][] matrix) {
         return matrix.length;
     }

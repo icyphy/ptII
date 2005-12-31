@@ -1180,11 +1180,18 @@ public class DoubleMatrixMath {
         return _rows(matrix);
     }
 
-    /** Return the number of columns of a matrix. */
+    /** Return the number of columns of a matrix.
+     *  @param matrix The matrix.
+     *  @return The number of columns.
+     */
     protected static final int _columns(final double[][] matrix) {
         return matrix[0].length;
     }
 
+    /** Return a string that describes the number of rows and columns.
+     *  @param matrix The matrix that is to be described.
+     *  @return a string describing the dimensions of this matrix.
+     */
     protected static final String _dimensionString(final double[][] matrix) {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
@@ -1287,7 +1294,10 @@ public class DoubleMatrixMath {
                 oneOverNormSquaredArray, new Integer(nullity) };
     }
 
-    /** Return the number of rows of a matrix. */
+    /** Return the number of rows of a matrix.
+     *  @param matrix The matrix.
+     *  @return The number of rows.
+     */
     protected static final int _rows(final double[][] matrix) {
         return matrix.length;
     }
