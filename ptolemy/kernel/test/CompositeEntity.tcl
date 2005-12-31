@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs iterToObjects] == "" } then {
+    source [file join $PTII util testsuite enums.tcl]
+}
+
 if {[info procs jdkCapture] == "" } then {
     source [file join $PTII util testsuite jdktools.tcl]
 }
@@ -841,6 +845,75 @@ test CompositeEntity-11.10 {Test numRelations} {
 	    [$e7 numRelations] [$e10 numRelations]
 } {2 3 3 2 2}
 
+
+######################################################################
+####
+# Call containedObjectsIterator recursively
+proc deepContainedObjects {e} {
+    set iterator [$e containedObjectsIterator]
+    set results {}
+    while {[$iterator hasNext] == 1} {
+        set namedObj [java::cast ptolemy.kernel.util.NamedObj \
+		[$iterator -noconvert next]]
+        lappend results [list [$namedObj getFullName] \
+		[deepContainedObjects $namedObj]] "\n"
+    }
+    return $results
+}	
+
+# NOTE:  Uses the setup constructed in 11.1.
+test CompositeEntity-11.11 {containedObjectsIterator, ContainedObjectsIterator class} {
+    deepContainedObjects $e0
+} {{.E0._iconDescription {}} {
+} {.E0.E3 {{.E0.E3._iconDescription {}} {
+} {.E0.E3.P7 {}} {
+} {.E0.E3.E4 {{.E0.E3.E4._iconDescription {}} {
+} {.E0.E3.E4.P0 {}} {
+} {.E0.E3.E4.P4 {}} {
+} {.E0.E3.E4.E1 {{.E0.E3.E4.E1._iconDescription {}} {
+} {.E0.E3.E4.E1.P1 {}} {
+}}} {
+} {.E0.E3.E4.E2 {{.E0.E3.E4.E2._iconDescription {}} {
+} {.E0.E3.E4.E2.P2 {}} {
+} {.E0.E3.E4.E2.P3 {}} {
+}}} {
+} {.E0.E3.E4.R1 {}} {
+} {.E0.E3.E4.R2 {}} {
+} {.E0.E3.E4.R3 {}} {
+}}} {
+} {.E0.E3.E5 {{.E0.E3.E5._iconDescription {}} {
+} {.E0.E3.E5.P5 {}} {
+}}} {
+} {.E0.E3.E6 {{.E0.E3.E6._iconDescription {}} {
+} {.E0.E3.E6.P6 {}} {
+}}} {
+} {.E0.E3.R4 {}} {
+} {.E0.E3.R5 {}} {
+} {.E0.E3.R6 {}} {
+}}} {
+} {.E0.E7 {{.E0.E7._iconDescription {}} {
+} {.E0.E7.P8 {}} {
+} {.E0.E7.P11 {}} {
+} {.E0.E7.E8 {{.E0.E7.E8._iconDescription {}} {
+} {.E0.E7.E8.P9 {}} {
+} {.E0.E7.E8.P10 {}} {
+}}} {
+} {.E0.E7.R8 {}} {
+} {.E0.E7.R9 {}} {
+}}} {
+} {.E0.E10 {{.E0.E10._iconDescription {}} {
+} {.E0.E10.P12 {}} {
+} {.E0.E10.P13 {}} {
+} {.E0.E10.E9 {{.E0.E10.E9._iconDescription {}} {
+} {.E0.E10.E9.P14 {}} {
+}}} {
+} {.E0.E10.R11 {}} {
+} {.E0.E10.R12 {}} {
+}}} {
+} {.E0.R7 {}} {
+} {.E0.R10 {}} {
+}}
+
 ######################################################################
 ####
 # Test connections.
@@ -1210,3 +1283,4 @@ test CompositeEntity-21.5 {test exportLinks with filtering} {
     set filter [java::new java.util.HashSet]
     $e1 exportLinks 0 $filter
 } {}
+
