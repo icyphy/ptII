@@ -218,6 +218,7 @@ public class TMDirector extends Director implements TimedDirector {
     /** Append a listener to the current set of schedule listeners.
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send scheduling messages.
+     *  @see #removeSchedduleListener(ScheduleListener)
      */
     public synchronized void addScheduleListener(ScheduleListener listener) {
         if (_scheduleListeners == null) {
@@ -725,6 +726,7 @@ public class TMDirector extends Director implements TimedDirector {
     /** If the current time is greater than the stop time, or
      *  both interrupt event queue and TM event queue are empty
      *  then return false. Otherwise, return true.
+     *  @exception IllegalActionException Not thrown in this baseclass.
      *  @return Whether the execution should continue.
      */
     public boolean postfire() throws IllegalActionException {
@@ -749,6 +751,7 @@ public class TMDirector extends Director implements TimedDirector {
     /** Remove a schedule listener from this director.  If the listener is
      *  not attached to this director, do nothing.
      *  @param listener The ScheduleListener to be removed.
+     *  @see #addSchedduleListener(ScheduleListener)
      */
     public void removeScheduleListener(ScheduleListener listener) {
         if ((_scheduleListeners != null)
@@ -859,7 +862,7 @@ public class TMDirector extends Director implements TimedDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** @serial The list of schedule listeners registered with this object. */
+    /** The list of schedule listeners registered with this object. */
     protected LinkedList _scheduleListeners = null;
 
     ///////////////////////////////////////////////////////////////////

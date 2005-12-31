@@ -39,21 +39,28 @@ package ptolemy.domains.tm.kernel;
  @Pt.ProposedRating Red (johane)
  @Pt.AcceptedRating Red (johane)
  @see ptolemy.kernel.util.NamedObj
-
  */
 public interface ScheduleListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to the given scheduling event.
+     *  @param actorName The name of the actor involved in the event.
+     *  @param time The time of the event.
+     *  @param scheduleEvent One of {@link #RESET_DISPLAY},
+     *  {@link #TASK_SLEEPING}, {@link #TASK_BLOCKED} or {@link #TASK_RUNNING}.
      */
     public void event(String actorName, double time, int scheduleEvent);
 
+    /** Reset display message. */
     static final int RESET_DISPLAY = -1;
 
+    /** Task sleeping message. */
     static final int TASK_SLEEPING = 1;
 
+    /** Task blocked message. */
     static final int TASK_BLOCKED = 2;
 
+    /** Task running message. */
     static final int TASK_RUNNING = 3;
 }

@@ -109,6 +109,8 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
 
     ///////////////////////////////////////////////////////////////////
     ////        public variables and parameters                    ////
+
+    /** The plotter. */
     public Plot plot;
 
     ///////////////////////////////////////////////////////////////////
@@ -174,6 +176,16 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
     /** Factory that creates the schedule plotter. */
     public class SchedulePlotterEditorFactory extends EditorFactory {
         // This class needs to be public for shallow code generation.
+        /**
+         * Constructs a SchedulePlotter$SchedulePlotterEditorFactory object.
+         *
+         *  @param container The container.
+         *  @param name The name of the factory.
+         *  @exception IllegalActionException If the factory is not of an
+         *   acceptable attribute for the container.
+         *  @exception NameDuplicationException If the name coincides with
+         *   an attribute already in the container.
+         */
         public SchedulePlotterEditorFactory(NamedObj _container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(_container, name);

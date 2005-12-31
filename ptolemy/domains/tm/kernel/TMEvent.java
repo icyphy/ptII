@@ -212,6 +212,7 @@ public class TMEvent implements Comparable {
      *  smaller than the original processing time. The caller
      *  should perform the comparison if that is the desired
      *  behavior.
+     *  @param time The remaining processing time.
      */
     public final void setProcessingTime(double time) {
         _processingTime = time;
