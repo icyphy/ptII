@@ -110,3 +110,11 @@ test TypedAtomicActor-2.2 {Change initial value to double array} {
          [[$recIn getType] toString]
 } {{{double}} {{double}} {{double}}}
 
+######################################################################
+####
+#
+test TypedAtomicActor-3.1 {clone} {
+   set actor2 [java::new ptolemy.actor.TypedAtomicActor $e0 actor2]
+   catch {$actor2 clone} msg
+   list $msg
+} {{java.lang.CloneNotSupportedException: clone() is not supported in actors, call clone(Workspace workspace) instead. Sometimes actors are mistakenly written to have a clone() method instead of a clone(Workspace workspace) method.}}
