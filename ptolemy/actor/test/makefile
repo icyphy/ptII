@@ -47,6 +47,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	IdentityActor.java \
+	TestAbstractReceiver.java \
 	TestActor.java \
         TestGraphReader.java \
 	TestTypeListener.java \
@@ -55,6 +56,7 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	AbstractReceiver.tcl \
 	AtomicActor.tcl \
 	CompositeActor.tcl \
 	Director.tcl \
