@@ -692,6 +692,14 @@ public class Entity extends InstantiableNamedObj {
      */
     protected class ContainedObjectsIterator extends
             NamedObj.ContainedObjectsIterator {
+        /** Create an interator over all the contained objects, which
+         *  for Entities are attributes and then ports.
+         */
+        public ContainedObjectsIterator() {
+            super();
+            _portListIterator = portList().iterator();
+        }
+
         /** Return true if the iteration has more elements.
          *  In this base class, this returns true if there are more
          *  attributes or ports.
@@ -701,11 +709,6 @@ public class Entity extends InstantiableNamedObj {
             if (super.hasNext()) {
                 return true;
             }
-
-            if (_portListIterator == null) {
-                _portListIterator = portList().iterator();
-            }
-
             return _portListIterator.hasNext();
         }
 
@@ -717,28 +720,16 @@ public class Entity extends InstantiableNamedObj {
             if (super.hasNext()) {
                 return super.next();
             }
-
-            if (_portListIterator == null) {
-                _portListIterator = portList().iterator();
-            }
-
-            _lastElementWasMine = true;
             return _portListIterator.next();
         }
 
-        /** Remove from the underlying collection the last element
-         *  returned by the iterator.
+        /** The remove() method is not supported because is is not
+         *  supported in NamedObj.ContainedObjectsIterator.remove().
          */
         public void remove() {
-            if (_lastElementWasMine) {
-                _portListIterator.remove();
-            } else {
-                super.remove();
-            }
+            super.remove();
         }
 
         private Iterator _portListIterator = null;
-
-        private boolean _lastElementWasMine = false;
     }
 }

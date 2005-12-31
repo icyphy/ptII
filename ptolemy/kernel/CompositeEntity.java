@@ -1668,36 +1668,31 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected class ContainedObjectsIterator extends
             Entity.ContainedObjectsIterator {
+        /** Create an interator over all the contained objects, which
+         *  for CompositeEntities are attributes, ports, classes
+         *  entities, and relations.
+         */
+        public ContainedObjectsIterator() {
+            super();
+            _classListIterator = classDefinitionList().iterator();
+            _entityListIterator = entityList().iterator();
+            _relationListIterator = relationList().iterator();
+        }
         /** Return true if the iteration has more elements.
          *  In this class, this returns true if there are more
-         *  attributes, ports, entities, or relations.
+         *  attributes, ports, classes, entities, or relations.
          *  @return True if there are more elements.
          */
         public boolean hasNext() {
             if (super.hasNext()) {
                 return true;
             }
-
-            if (_classListIterator == null) {
-                _classListIterator = classDefinitionList().iterator();
-            }
-
             if (_classListIterator.hasNext()) {
                 return true;
             }
-
-            if (_entityListIterator == null) {
-                _entityListIterator = entityList().iterator();
-            }
-
             if (_entityListIterator.hasNext()) {
                 return true;
             }
-
-            if (_relationListIterator == null) {
-                _relationListIterator = relationList().iterator();
-            }
-
             return _relationListIterator.hasNext();
         }
 
@@ -1710,56 +1705,27 @@ public class CompositeEntity extends ComponentEntity {
                 return super.next();
             }
 
-            if (_classListIterator == null) {
-                _classListIterator = classDefinitionList().iterator();
-            }
-
             if (_classListIterator.hasNext()) {
-                _lastElementWasClass = true;
                 return _classListIterator.next();
             }
 
-            if (_entityListIterator == null) {
-                _entityListIterator = entityList().iterator();
-            }
-
             if (_entityListIterator.hasNext()) {
-                _lastElementWasEntity = true;
                 return _entityListIterator.next();
             }
 
-            if (_relationListIterator == null) {
-                _relationListIterator = relationList().iterator();
-            }
-
-            _lastElementWasRelation = true;
             return _relationListIterator.next();
         }
 
-        /** Remove from the underlying collection the last element
-         *  returned by the iterator.
+        /** The remove() method is not supported because is is not
+         *  supported in NamedObj.ContainedObjectsIterator.remove().
          */
         public void remove() {
-            if (_lastElementWasClass) {
-                _entityListIterator.remove();
-            } else if (_lastElementWasEntity) {
-                _entityListIterator.remove();
-            } else if (_lastElementWasRelation) {
-                _relationListIterator.remove();
-            } else {
                 super.remove();
-            }
         }
 
         private Iterator _classListIterator = null;
 
-        private boolean _lastElementWasClass = false;
-
         private Iterator _entityListIterator = null;
-
-        private boolean _lastElementWasEntity = false;
-
-        private boolean _lastElementWasRelation = false;
 
         private Iterator _relationListIterator = null;
     }
