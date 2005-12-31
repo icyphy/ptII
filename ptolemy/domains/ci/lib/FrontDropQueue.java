@@ -76,12 +76,22 @@ public class FrontDropQueue extends CIActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+    /** An output port that sends the length of queue.  The default type
+     *  is integer.
+     */ 
     public TypedIOPort length;
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** An output port that sends dropped packets.  The default type
+     *  is the same as the type of the input port
+     */
     public TypedIOPort dropped;
 
+    /** The capacity of the queue.  The initial default value is an integer 
+     *  with the value of 1.
+     */
     public Parameter capacity;
 
     ///////////////////////////////////////////////////////////////////

@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// Queue
 
 /**
- an push-pull FIFO queue.
+ A push-pull FIFO queue.
 
  @author Yang Zhao, based on Queue by Jie Liu, Christopher Hylands
  @version $Id$
@@ -70,6 +70,10 @@ public class Queue extends CIActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** An output port that sends the length of queue.  The default type
+     *  is integer.
+     */ 
     public TypedIOPort length;
 
     ///////////////////////////////////////////////////////////////////

@@ -573,6 +573,10 @@ public class NCApp2MoML {
      *  connection between interfaceFrom and interfaceTo.
      *  @param interfaceFrom The source interface of the connection.
      *  @param interfaceTo The destination interface of the connection.
+     *  @exception IllegalActionException  If thrown while creating a relation
+     *  or linking to a port.
+     *  @exception NameDuplicationException If thrown while creating a relation
+     *  or linking to a port.
      */
     protected void createConnection(
             Xinterface interfaceFrom, Xinterface interfaceTo) 

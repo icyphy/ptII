@@ -61,9 +61,11 @@ public class IntegerList extends AbstractList {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** Return an integer from the Caltrop interpreter context.
      *  @param n The integer that is added to the a value and returned
      *  n+a must be less than or equal to b.
+     *  @return the integer at slot a+n.
      */
     public Object get(int n) {
         if ((_a + n) > _b) {
