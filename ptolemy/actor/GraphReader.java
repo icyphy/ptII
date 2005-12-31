@@ -207,14 +207,6 @@ public class GraphReader {
         return;
     }
 
-    /** Set debug mode and let the class display conversion information.
-     * @param debug True will turn on debug mode, false will turn off debug
-     * mode.
-     */
-    protected void _setDebug(boolean debug) {
-        _debug = debug;
-    }
-
     /** Perform post-processing on the entire graph to complete the
      *  conversion. This method should be overridden by derived classes
      *  to implement specialized conversion aspects that operate
