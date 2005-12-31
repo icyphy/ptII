@@ -916,6 +916,15 @@ test CompositeEntity-11.11 {containedObjectsIterator, ContainedObjectsIterator c
 
 ######################################################################
 ####
+# NOTE:  Uses the setup constructed in 11.1.
+test CompositeEntity-11.12 {Test containedObjectsIterator.remove()} {
+    set iterator [$e0 containedObjectsIterator]
+    catch {$iterator remove} msg
+    list $msg
+} {{java.lang.UnsupportedOperationException: remove() not supported because attributeList().iterator() returns a NamedList that is unmodifiable}}
+
+######################################################################
+####
 # Test connections.
 test CompositeEntity-12.1 {Test connect} {
     set e0 [java::new ptolemy.kernel.CompositeEntity]
