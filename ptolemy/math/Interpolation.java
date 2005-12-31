@@ -71,6 +71,7 @@ public class Interpolation {
 
     /** Return the reference indexes.
      *  @return An int array.
+     *  @see #setIndexes(int[])
      */
     public int[] getIndexes() {
         return _indexes;
@@ -78,6 +79,7 @@ public class Interpolation {
 
     /** Return the interpolation order.
      *  @return An int.
+     *  @see #setOrder(int)
      */
     public int getOrder() {
         return _order;
@@ -85,6 +87,7 @@ public class Interpolation {
 
     /** Return the value repetition period.
      *  @return An int.
+     *  @see #setPeriod(int)
      */
     public int getPeriod() {
         return _period;
@@ -92,6 +95,7 @@ public class Interpolation {
 
     /** Return the reference values.
      *  @return An double array.
+     *  #setValues(double[])
      */
     public double[] getValues() {
         return _values;
@@ -257,6 +261,7 @@ public class Interpolation {
      *  @param indexes An int array.
      *  @exception IllegalArgumentException If the argument array is
      *   not increasing and non-negative.
+     *  @see #getIndexes()
      */
     public void setIndexes(int[] indexes) {
         int prev = -1;
@@ -276,6 +281,7 @@ public class Interpolation {
     /** Set the interpolation order.
      *  @param order An int.
      *  @exception IllegalArgumentException If the order is not 0, 1, or 3.
+     *  @see #getOrder()
      */
     public void setOrder(int order) {
         if ((order != 0) && (order != 1) && (order != 3)) {
@@ -289,6 +295,7 @@ public class Interpolation {
     /** Set the value repetition period.
      *  @param period An int.
      *  @exception IllegalArgumentException If the period is negative.
+     *  @see #getPeriod()
      */
     public void setPeriod(int period) {
         if (period < 0) {
@@ -301,6 +308,7 @@ public class Interpolation {
 
     /** Set the reference values.
      *  @param values A double array.
+     *  #getValues()
      */
     public void setValues(double[] values) {
         _values = values;

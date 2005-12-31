@@ -162,8 +162,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return returnValue;
     }
 
-    /** Return the cross-correlation of two arrays at a certain lag value,
-     *  defined by :
+    /** Return the cross-correlation of two arrays at a certain lag value.
+     *  The cross-correlation is defined by :
      *  Rxy[d] = sum of i = 0 to N - 1 of x[i] * y[i + d]
      *  @param x The first array of doubles.
      *  @param y The second array of doubles.
@@ -206,6 +206,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  The entropy is always non-negative.
      *  Throw an IllegalArgumentException if the length of the array is 0,
      *  or a negative probability is encountered.
+     *  @param p The array of probablities.
+     *  @return The entropy of the array of probabilities.
      */
     public static final double entropy(double[] p) {
         int length = _nonZeroLength(p, "DoubleArrayStat.entropy");
@@ -248,6 +250,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the maximum value in the array.
      *  Throw an exception if the length of the array is 0.
+     *  @param array The array of doubles.
+     *  @return The maximum value in the array.
      */
     public static final double max(double[] array) {
         Object[] maxReturn = maxAndIndex(array);
@@ -282,6 +286,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the arithmetic mean of the elements in the array.
      *  If the length of the array is 0, return a NaN.
+     *  @param array The array of doubles.
+     *  @return The mean value in the array.
      */
     public static final double mean(double[] array) {
         _nonZeroLength(array, "DoubleArrayStat.mean");
@@ -290,6 +296,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the minimum value in the array.
      *  Throw an exception if the length of the array is 0.
+     *  @param array The array of doubles.
+     *  @return The minimum value in the array.
      */
     public static final double min(double[] array) {
         Object[] minReturn = minAndIndex(array);
@@ -324,6 +332,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the product of all of the elements in the array.
      *  Return 1.0 if the length of the array is 0.
+     *  @param array The array of doubles.
+     *  @return The product of the elements in the array.
      */
     public static final double productOfElements(double[] array) {
         double product = 1.0;
@@ -338,7 +348,13 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /** Return a new array of Bernoulli random variables with a given
      *  probability of success p. On success, the random variable has
      *  value 1.0; on failure the random variable has value 0.0.
-     *  The number of elements to allocate is given by N.
+     *  @param p The probability, which should be a double between 0.0
+     *  and 1.0.  The probability is compared to the output of
+     *  java.lang.Random.nextDouble().  If the output is less than p, then
+     *  the array element will be 1.0.  If the output is greater than or
+     *  equal to p, then the array element will be 0.0.
+     *  @param N The number of elements to allocate.
+     *  @return The array of Bernoulli random variables.
      */
     public static final double[] randomBernoulli(double p, int N) {
         double[] returnValue = new double[N];
@@ -356,7 +372,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return a new array of exponentially distributed doubles with parameter
      *  lambda. The number of elements to allocate is given by N.
-     *  Note lambda may not be 0!
+     *  @param lambda The lambda, which may not by 0.0.
+     *  @param N The number of elements to allocate.
+     *  @return The array of exponential random variables.
      */
     public static final double[] randomExponential(double lambda, int N) {
         double[] returnValue = new double[N];
@@ -382,6 +400,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  mean and standard deviation. The number of elements to allocate
      *  is given by N.
      *  This algorithm is from [1].
+     *  @param mean The mean of the new array.
+     *  @param standardDeviation The standard deviation of the new array.
+     *  @param N The number of elements to allocate.
+     *  @return The array of random Gaussian variables.
      */
     public static final double[] randomGaussian(double mean,
             double standardDeviation, int N) {
@@ -402,6 +424,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /** Return a new array of Poisson random variables (as doubles) with
      *  a given mean. The number of elements to allocate is given by N.
      *  This algorithm is from [1].
+     *  @param mean The mean of the new array.
+     *  @param N The number of elements to allocate.
+     *  @return The array of random Poisson variables.
      */
     public static final double[] randomPoisson(double mean, int N) {
         double[] returnValue = new double[N];
@@ -497,6 +522,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the standard deviation of the elements in the array.
      *  Simply return standardDeviation(array, false).
+     *  @param array The input array.
+     *  @return The standard deviation.
      */
     public static double standardDeviation(double[] array) {
         return Math.sqrt(variance(array, false));
@@ -527,6 +554,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the sum of all of the elements in the array.
      *  Return 0.0 of the length of the array is 0.
+     *  @param array An array of doubles.
+     *  @return The sum of all of the elements in the array.
      */
     public static final double sumOfElements(double[] array) {
         double sum = 0.0;
@@ -541,6 +570,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /** Return the variance of the elements in the array, assuming
      *  sufficient statistics.
      *  Simply return variance(array, false).
+     *  Throw a runtime exception if the array is of length 0, or if the
+     *  sample variance is taken on an array of length less than 2.
+     *  @param array An array of doubles.
+     *  @return The variance of the elements in the array.
      */
     public static double variance(double[] array) {
         return variance(array, false);
@@ -562,8 +595,11 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  </pre>
      *  <p>
      *
-     *  Throw an exception if the array is of length 0, or if the
+     *  Throw a runtime exception if the array is of length 0, or if the
      *  sample variance is taken on an array of length less than 2.
+     *  @param array An array of doubles.
+     *  @param sample True if the sample standard deviation is desired.
+     *  @return The variance of the elements in the array.
      */
     public static double variance(double[] array, boolean sample) {
         int length = _nonZeroLength(array, "DoubleArrayStat.variance");
