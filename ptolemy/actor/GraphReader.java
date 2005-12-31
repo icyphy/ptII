@@ -230,7 +230,7 @@ public class GraphReader {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // Flag for turning local debugging output on and off.
-    private static boolean _debug = false;
+    private static final boolean _debug = false;
 
     // Map from actors to the generic graph nodes that represent them.
     // Keys are instances of AtomicActor, and values are instances of Node.
