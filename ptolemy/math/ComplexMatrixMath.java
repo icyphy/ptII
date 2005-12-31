@@ -170,12 +170,13 @@ public class ComplexMatrixMath {
      *  elements of the second matrix as the right operands.
      *  (op.operate(matrix1[i][j], matrix2[i][j])).
      *
+     *  @param op A complex binary operation.
      *  @param matrix1 The first matrix of complex numbers.
      *  @param matrix2 The second matrix of complex numbers.
      *  @return A new matrix of complex numbers with each element
      *  equal to (op.operate(matrix1[i][j], matrix2[i][j])).
-     *  @exception IllegalArgumentException If the matrices do not have the same
-     *   dimensions.
+     *  @exception IllegalArgumentException If the matrices do not
+     *  have the same dimensions.
      */
     public static final Complex[][] applyBinaryOperation(
             ComplexBinaryOperation op, final Complex[][] matrix1,
@@ -200,6 +201,7 @@ public class ComplexMatrixMath {
      *  ComplexUnaryOperation to each element in the input matrix
      *  (op.operate(matrix[i][j])).
      *
+     *  @param op A complex unary operation.
      *  @param matrix The matrix of complex numbers.
      *  @return A new matrix of complex numbers with each element
      *  equal to (op.operate(matrix1[i][j])).
@@ -456,6 +458,8 @@ public class ComplexMatrixMath {
      *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
      *
      *  @param matrix A matrix of complex numbers.
+     *  @param maxRow The maximum number of rows.
+     *  @param maxCol The maximum number of columns.
      *  @return A new array of complex numbers filled with
      *  the contents of the matrix.
      */
@@ -492,6 +496,10 @@ public class ComplexMatrixMath {
 
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
+     *  @param dim An integer representing the dimension of the
+     *  identity matrix to be returned.
+     *  @return A new identity matrix of complex numbers with the
+     *  specified dimension.
      */
     public static final Complex[][] identityMatrixComplex(final int dim) {
         return identity(dim);
@@ -994,6 +1002,7 @@ public class ComplexMatrixMath {
     }
 
     /** Return the sum of the elements of a matrix.
+     *  @param matrix The matrix.
      *  @return The sum of the elements of the matrix.
      */
     public static final Complex sum(final Complex[][] matrix) {
@@ -1318,7 +1327,8 @@ public class ComplexMatrixMath {
         return ("[" + _rows(matrix) + " x " + _columns(matrix) + "]");
     }
 
-    /** Given a set of row vectors rowArrays[0] ... rowArrays[n-1], compute:
+    /** Orthogonalize the rows of a matrix.
+     *  Given a set of row vectors rowArrays[0] ... rowArrays[n-1], compute:
      *  <ol>
      *  <li> A new set of row vectors out[0] ... out[n-1] which are the
      *       orthogonalized versions of each input row vector. If a row
@@ -1329,7 +1339,7 @@ public class ComplexMatrixMath {
      *
      *  <li> An n x n matrix containing the dot products of the input
      *       row vectors and the output row vectors,
-     *       dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.  Put
+     *       dotProductMatrix[j][i] = &lt;rowArray[i], outArray[j]&gt;.  Put
      *       the result in returnValue[1].<br>
      *
      *  <li> An array containing 1 / (norm(outArray[i])<sup>2</sup>),

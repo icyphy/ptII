@@ -42,6 +42,9 @@ package ptolemy.math;
 public interface DoubleBinaryOperation {
     /** Operate on the operands, returning a value of the same
      *  type. Note that the operation need not be commutative.
+     *  @param leftOperand The left operand.
+     *  @param rightOperand The right operand.
+     *  @return The results of the operation
      */
     double operate(double leftOperand, double rightOperand);
 }

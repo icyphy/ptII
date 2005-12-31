@@ -40,6 +40,9 @@ package ptolemy.math;
  @Pt.AcceptedRating Red (ctsay)
  */
 public interface LongUnaryOperation {
-    /** Operate on the operand, returning a value of the same type. */
+    /** Operate on the operand, returning a value of the same type.
+     *  @param operand The operand.
+     *  @return The results of the operation.
+     */
     long operate(long operand);
 }
