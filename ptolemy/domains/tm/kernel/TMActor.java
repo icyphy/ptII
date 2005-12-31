@@ -48,7 +48,7 @@ public interface TMActor extends Actor {
      *  is called. The reason for this method is to allow the actor
      *  to determine/estimate its execution time on a per iteration
      *  basis.
-     *  @param The execution time for this iteration.
+     *  @return The execution time for this iteration.
      */
     public double getExecutionTime();
 }

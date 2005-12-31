@@ -1130,7 +1130,6 @@ public class CompositeEntity extends ComponentEntity {
      *  class definitions.
      *  This method is read-synchronized on the workspace.
      *  @return The number of entities.
-     *  @see #numberOfClassDefinitions()
      */
     public int numberOfEntities() {
         try {

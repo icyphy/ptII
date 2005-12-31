@@ -218,7 +218,7 @@ public class TMDirector extends Director implements TimedDirector {
     /** Append a listener to the current set of schedule listeners.
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send scheduling messages.
-     *  @see #removeSchedduleListener(ScheduleListener)
+     *  @see #removeScheduleListener(ScheduleListener)
      */
     public synchronized void addScheduleListener(ScheduleListener listener) {
         if (_scheduleListeners == null) {
@@ -751,7 +751,7 @@ public class TMDirector extends Director implements TimedDirector {
     /** Remove a schedule listener from this director.  If the listener is
      *  not attached to this director, do nothing.
      *  @param listener The ScheduleListener to be removed.
-     *  @see #addSchedduleListener(ScheduleListener)
+     *  @see #addScheduleListener(ScheduleListener)
      */
     public void removeScheduleListener(ScheduleListener listener) {
         if ((_scheduleListeners != null)

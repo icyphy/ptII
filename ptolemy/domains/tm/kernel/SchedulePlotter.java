@@ -186,9 +186,9 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
          *  @exception NameDuplicationException If the name coincides with
          *   an attribute already in the container.
          */
-        public SchedulePlotterEditorFactory(NamedObj _container, String name)
+        public SchedulePlotterEditorFactory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
-            super(_container, name);
+            super(container, name);
         }
 
         /** Create an editor for configuring the specified object with the

@@ -185,7 +185,7 @@ public class TMReceiver extends AbstractReceiver {
 
     /** Return true, indicating that there is always room for any number
      *  of tokens.
-     *  @param int The number of tokens, currently ignored.
+     *  @param tokens The number of tokens, currently ignored.
      *  @return True.
      */
     public final boolean hasRoom(int tokens) {
@@ -202,7 +202,7 @@ public class TMReceiver extends AbstractReceiver {
 
     /** Return true if there are <i>numberOfTokens</i>
      *  tokens available to the get() method.
-     *  @param int The number of tokens, currently ignored.
+     *  @param numberOfTokens The number of tokens, currently ignored.
      *  @return True if there are <i>numberOfTokens</i> tokens available.
      */
     public final boolean hasToken(int numberOfTokens) {
