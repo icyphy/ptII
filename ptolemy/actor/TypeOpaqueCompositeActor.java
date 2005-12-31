@@ -41,24 +41,24 @@ import ptolemy.kernel.util.Workspace;
 //// TypeOpaqueCompositeActor
 
 /**
- * This is a composite actor whose ports have types, but the actors inside are
- * not required to be typed. This actor does not impose any type constraints
- * between its ports, so any output ports of this actor have to have explicitly
- * declared types. There is no mechanism for inferring the types of the output
- * ports. Note that the ports of this actor cannot be linked on the inside to
- * untyped relations, and by default, any relation created on the inside will be
- * untyped.
- * <p>
- * The intended use of this actor is for scenarios where the inside structure is
- * not part of the Ptolemy type system. For example, the inside structure may
- * define a component that will be translated into executable code by a code
- * generator. A subclass of this actor would typically include the code
- * generator an a mechanism for executing the generating code.
+ * A composite actor whose ports have types, but the actors inside are
+ * not required to be typed. This actor does not impose any type
+ * constraints between its ports, so any output ports of this actor
+ * have to have explicitly declared types. There is no mechanism for
+ * inferring the types of the output ports. Note that the ports of
+ * this actor cannot be linked on the inside to untyped relations, and
+ * by default, any relation created on the inside will be untyped.
+ *
+ * <p> The intended use of this actor is for scenarios where the
+ * inside structure is not part of the Ptolemy type system. For
+ * example, the inside structure may define a component that will be
+ * translated into executable code by a code generator. A subclass of
+ * this actor would typically include the code generator an a
+ * mechanism for executing the generating code.
  *
  * @author Elaine Cheong and Edward A. Lee
- * @version $Id: TypeOpaqueCompositeActor.java,v 1.73 2004/04/13 05:12:39 cxh
- @since Ptolemy II 4.1
- *          Exp $
+ * @version $Id$
+ * @since Ptolemy II 4.1
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  * @see ptolemy.actor.TypedCompositeActor
