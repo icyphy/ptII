@@ -142,7 +142,7 @@ proc enumToTokenValues {iter} {
 }
 
 ######################################################################
-#### iterToList
+#### iterToObjects
 # Convert an iteration to a list.  The list contains references
 # to instances of Java Object.
 #
