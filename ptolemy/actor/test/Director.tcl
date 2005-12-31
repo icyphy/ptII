@@ -94,13 +94,19 @@ test Director-5.1 {Test action methods} {
     set a2 [java::new ptolemy.actor.test.TestActor $e0 A2]
     $a1 clear
     set r1 [$d4 getNextIterationTime]
+    # Increase code coverage
+    # getStopTime() calls getModelStopTime()
+    set r2 [$d4 getStopTime]
+    set r3 [$d4 getStartTime]
     $manager initialize
     #$manager iterate
     $d3 iterate 1
+    set r4 [$d4 isStopRequested]
     $d3 stop
+    set r5 [$d4 isStopRequested]
     $manager wrapup
-    list $r1 [$a1 getRecord] [$d4 getNextIterationTime]
-} {0.0 {.E0.A1.initialize
+    list $r1 $r2 $r3 $r4 $r5 [$a1 getRecord] [$d4 getNextIterationTime]
+} {0.0 Infinity 0.0 0 0 {.E0.A1.initialize
 .E0.A2.initialize
 .E0.A1.prefire
 .E0.A1.fire
