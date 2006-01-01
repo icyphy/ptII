@@ -124,8 +124,8 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** Get the time delay for animation.  After highlighting,
      *  derived classes are expected to sleep for the specified amount
      *  of time, in milliseconds.
-     *  @see #setAnimationDelay
      *  @return The animation delay set by setAnimationDelay().
+     *  @see #setAnimationDelay(long)
      */
     public long getAnimationDelay() {
         return _animationDelay;
@@ -134,6 +134,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** Return the configuration that has been specified by setConfiguration(),
      *  or null if none.
      *  @return The configuration.
+     *  @see #setConfiguration(Configuration)
      */
     public Configuration getConfiguration() {
         return _configuration;
@@ -143,6 +144,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  some of the controllers to mark the modified bit of the frame
      *  and to update any dependents.
      *  @return The graph frame, or null if there is none.
+     *  @see #setFrame(BasicGraphFrame)
      */
     public BasicGraphFrame getFrame() {
         return _frame;
@@ -195,6 +197,8 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  of time, in milliseconds.  If this method is not called, or
      *  is called with argument 0, then no delay is introduced.
      *  @param time Time to sleep, in milliseconds.
+     *  @see #getAnimationDelay()
+
      */
     public void setAnimationDelay(long time) {
         _animationDelay = time;
@@ -203,6 +207,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** Set the configuration.  This is used by some of the controllers
      *  when opening files or URLs.
      *  @param configuration The configuration.
+     *  @see #getConfiguration()
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
@@ -241,6 +246,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** Set the graph frame.  This is used by some of the controllers
      *  to mark the modified bit of the frame and to update any dependents.
      *  @param frame The graph frame, or null if there is none.
+     *  @see #getFrame()
      */
     public void setFrame(BasicGraphFrame frame) {
         _frame = frame;
@@ -523,13 +529,18 @@ public abstract class BasicGraphController extends AbstractGraphController
     ///////////////////////////////////////////////////////////////////
     //// UnitSolverDialogAction
 
-    /** An action that will create a UnitSolverDialog
+    /** An action that will create a UnitSolverDialog.
      */
     public class UnitSolverDialogAction extends AbstractAction {
+        /** Construct an action that will create a UnitSolverDialog.
+         */
         public UnitSolverDialogAction() {
             super("UnitConstraints Solver");
         }
 
+        /** Construct a UnitSolverDialog.
+         *  @param e The action event, ignored by this method.
+         */
         public void actionPerformed(ActionEvent e) {
             // Only makes sense if this is an ActorGraphFrame.
             if (_frame instanceof ActorGraphFrame) {

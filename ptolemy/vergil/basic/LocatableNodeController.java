@@ -99,8 +99,11 @@ public class LocatableNodeController extends BasicNodeController {
         return nf;
     }
 
-    /** Return the desired location of this node.  Throw an exception if the
-     *  node does not have a desired location.
+    /** Return the desired location of this node.  Throw a runtime
+     *  exception if the node does not have a desired location.
+     *  @param node The node.
+     *  @return The desired location of the node.
+     *  @see #setLocation(Object, double[])
      */
     public double[] getLocation(Object node) {
         if (hasLocation(node)) {
@@ -114,6 +117,8 @@ public class LocatableNodeController extends BasicNodeController {
     /** Return true if the node is associated with a desired location.
      *  In this base class, return true if the the node's semantic object is
      *  an instance of Locatable.
+     *  @param node The node.
+     *  @return True if the node is associated with a desired location.
      */
     public boolean hasLocation(Object node) {
         if (node instanceof Locatable) {
@@ -159,7 +164,10 @@ public class LocatableNodeController extends BasicNodeController {
 
     /** Set the desired location of this node.  Throw an exception if the
      *  node can not be given a desired location.
+     *  @param node The node
+     *  @param location The location
      *  @exception IllegalActionException Not thrown in this base class.
+     *  @see #getLocation(Object)
      */
     public void setLocation(Object node, double[] location)
             throws IllegalActionException {
@@ -212,6 +220,7 @@ public class LocatableNodeController extends BasicNodeController {
      *  to assign a location and to highlight the node if it is an
      *  inherited object, and hence cannot be deleted.
      *  @param node The node to render.
+     *  @return the newly created figure.
      */
     protected Figure _renderNode(java.lang.Object node) {
         if ((node == null) || _hide(node)) {
@@ -274,6 +283,8 @@ public class LocatableNodeController extends BasicNodeController {
      *  a parameter named "_hide". Derived classes can override this method
      *  to provide more sophisticated methods of choosing which nodes to
      *  display.
+     *  @param node The node
+     *  @return true if the specified node should be hidden.
      */
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {

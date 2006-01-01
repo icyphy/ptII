@@ -210,11 +210,16 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     private JDialog _screen;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private inner classes                 ////
+    ////                     inner classes                         ////
+
     ///////////////////////////////////////////////////////////////////
     //// FullScreenAction
-    // An action to display in full-screen mode.
+    /** An action to display in full-screen mode. */
     public class FullScreenAction extends AbstractAction implements KeyListener {
+        /** Construct a full screen action.
+         *  @description A string that describes the action.  Spaces are
+         *  permitted, each word is usually capitalized.
+         */
         public FullScreenAction(String description) {
             super(description);
 
@@ -238,9 +243,11 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
         }
 
+        /** If we are in full-screen mode, then revert; otherwise, go
+         *  to full-screen mode.
+         *  @param e The action event, ignored by this method.
+         */
         public void actionPerformed(ActionEvent e) {
-            // If we are in full-screen mode, then revert.
-            // Otherwise, go to full-screen mode.
             if (_screen == null) {
                 fullScreen();
             } else {
@@ -248,21 +255,27 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             }
         }
 
-        /** React to a key press by removing full-screen mode. */
+        /** React to a key press by removing full-screen mode.
+         *  @param e The key event, ignored by this method.
+         */
         public void keyPressed(KeyEvent e) {
             if (_screen != null) {
                 cancelFullScreen();
             }
         }
 
-        /** React to a key press by removing full-screen mode. */
+        /** React to a key press by removing full-screen mode.
+         *  @param e The key event, ignored by this method.
+         */
         public void keyReleased(KeyEvent e) {
             if (_screen != null) {
                 cancelFullScreen();
             }
         }
 
-        /** React to a key press by removing full-screen mode. */
+        /** React to a key press by removing full-screen mode.
+         *  @param e The key event, ignored by this method.
+         */
         public void keyTyped(KeyEvent e) {
             if (_screen != null) {
                 cancelFullScreen();

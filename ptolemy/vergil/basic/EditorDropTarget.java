@@ -97,9 +97,10 @@ public class EditorDropTarget extends DropTarget {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the feature is enabled that a
-     *  a drop onto an instance of NamedObj results in that NamedObj
-     *  containing the dropped object. Otherwise, return false.
+    /** Return true if the feature is enabled that a a drop onto an
+     *  instance of NamedObj results in that NamedObj containing the
+     *  dropped object. Otherwise, return false.
+     *  @return True if drop into is enabled.
      */
     public boolean isDropIntoEnabled() {
         return _dropIntoEnabled;

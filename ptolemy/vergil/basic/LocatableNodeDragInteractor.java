@@ -66,6 +66,7 @@ import diva.graph.NodeDragInteractor;
  */
 public class LocatableNodeDragInteractor extends NodeDragInteractor {
     /** Create a new interactor contained within the given controller.
+     *  @param controller The controller. 
      */
     public LocatableNodeDragInteractor(LocatableNodeController controller) {
         super(controller.getController());

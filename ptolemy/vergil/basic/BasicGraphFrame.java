@@ -860,6 +860,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Return the center location of the visible part of the pane.
      *  @return The center of the visible part.
+     *  @see #setCenter(Point2D)
      */
     public Point2D getCenter() {
         Rectangle2D rect = getVisibleCanvasRectangle();
@@ -868,6 +869,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
+     *  @return the JGraph.
      */
     public JGraph getJGraph() {
         return _jgraph;
@@ -1056,7 +1058,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
     }
 
-    /** Redo the last undone change on the model
+    /** Redo the last undone change on the model.
+     *  @see #undo()
      */
     public void redo() {
         GraphModel model = _getGraphModel();
@@ -1073,7 +1076,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Open a file browser and save the given entity in the file specified
      *  by the user.
      *  @param entity The entity to save.
-     *  @exception If something goes wrong.
+     *  @exception Exception If there is a problem saving the component.
      *  @since Ptolemy 4.0
      */
     public void saveComponentInFile(Entity entity) throws Exception {
@@ -1202,6 +1205,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  This will cause the panner to center on the specified location
      *  with the current zoom factor.
      *  @param center The center of the visible part.
+     *  @see #getCenter()
      */
     public void setCenter(Point2D center) {
         Rectangle2D visibleRect = getVisibleCanvasRectangle();
@@ -1214,7 +1218,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _jgraph.getCanvasPane().setTransform(newTransform);
     }
 
-    /** Undo the last undoable change on the model
+    /** Undo the last undoable change on the model.
+     *  @see #redo()
      */
     public void undo() {
         GraphModel model = _getGraphModel();
@@ -2370,8 +2375,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     ///////////////////////////////////////////////////////////////////
     //// ZoomInAction
-    // An action to zoom in.
+    /** An action to zoom in. */
     public class ZoomInAction extends AbstractAction {
+        /** Construct a zoom in action.
+         *  @description A string that describes the action.  Spaces are
+         *  permitted, each word is usually capitalized.
+         */
         public ZoomInAction(String description) {
             super(description);
 
@@ -2403,6 +2412,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_Z));
         }
 
+        /** Zoom in by a factor of 1.25.
+         *  @param e The action event, ignored by this method.
+         */
         public void actionPerformed(ActionEvent e) {
             zoom(1.25);
         }
@@ -2410,8 +2422,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     ///////////////////////////////////////////////////////////////////
     //// ZoomResetAction
-    // An action to reset zoom.
+    /** An action to reset zoom. */
     public class ZoomResetAction extends AbstractAction {
+        /** Construct a zoom reset action.
+         *  @description A string that describes the action.  Spaces are
+         *  permitted, each word is usually capitalized.
+         */
         public ZoomResetAction(String description) {
             super(description);
 
@@ -2439,6 +2455,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_M));
         }
 
+        /** Reset the zoom.
+         *  @param e The action event, ignored by this method.
+         */
         public void actionPerformed(ActionEvent e) {
             zoomReset();
         }
@@ -2446,8 +2465,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     ///////////////////////////////////////////////////////////////////
     //// ZoomFitAction
-    // An action to zoom fit.
+    /** An action to zoom fit.*/
     public class ZoomFitAction extends AbstractAction {
+        /** Construct a zoom fit action.
+         *  @description A string that describes the action.  Spaces are
+         *  permitted, each word is usually capitalized.
+         */
         public ZoomFitAction(String description) {
             super(description);
 
@@ -2474,6 +2497,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_F));
         }
 
+        /** Zoom so that the entire graph is visible.
+         *  @param e The action event, ignored by this method.
+         */
         public void actionPerformed(ActionEvent e) {
             zoomFit();
         }
@@ -2481,8 +2507,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     ///////////////////////////////////////////////////////////////////
     //// ZoomOutAction
-    // An action to zoom out.
+    /** An action to zoom out. */
     public class ZoomOutAction extends AbstractAction {
+        /** Construct a zoom fit action.
+         *  @description A string that describes the action.  Spaces are
+         *  permitted, each word is usually capitalized.
+         */
         public ZoomOutAction(String description) {
             super(description);
 
@@ -2508,6 +2538,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             putValue(GUIUtilities.MNEMONIC_KEY, new Integer(KeyEvent.VK_U));
         }
 
+        /** Zoom out by a factor of 1/1.25.
+         *  @param e The action event, ignored by this method.
+         */
         public void actionPerformed(ActionEvent e) {
             zoom(1.0 / 1.25);
         }
