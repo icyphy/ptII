@@ -35,6 +35,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 
 import ptolemy.kernel.Entity;
@@ -144,9 +145,10 @@ public class DocManager extends HandlerBase {
         _className = _targetClass.getName();
         _isInstanceDoc = false;
         try {
-            DocAttribute instanceDoc = (DocAttribute)
-                    _target.getAttribute(DocAttribute.DOC_ATTRIBUTE_NAME, DocAttribute.class);
-            if (instanceDoc != null) {
+            List docAttributes = _target.attributeList(DocAttribute.class);
+            // Get the last doc attribute.
+            if (docAttributes.size() > 0) {
+                DocAttribute instanceDoc = (DocAttribute)docAttributes.get(docAttributes.size() - 1);
                 // Populate fields from the attribute.
                 String descriptionValue = instanceDoc.description.stringValue();
                 if (!descriptionValue.trim().equals("")) {
@@ -209,9 +211,7 @@ public class DocManager extends HandlerBase {
                 }
             }
         } catch (IllegalActionException e) {
-            _exception = "Error evaluating "
-                + DocAttribute.DOC_ATTRIBUTE_NAME
-                + " parameter:\n"
+            _exception = "Error evaluating DocAttribute parameter:\n"
                 + e;
         }
     }

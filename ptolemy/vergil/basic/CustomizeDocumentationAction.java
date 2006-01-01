@@ -75,13 +75,15 @@ public class CustomizeDocumentationAction extends FigureAction {
             if (docAttributeList.size() == 0) {
                 // Create a doc attribute, then edit its parameters.
                 String moml = "<property name=\""
-                        + DocAttribute.DOC_ATTRIBUTE_NAME
+                        + "DocAttribute"
                         + "\" class=\"ptolemy.vergil.basic.DocAttribute\"/>";
                 MoMLChangeRequest request = new MoMLChangeRequest(this, target, moml) {
                     protected void _execute() throws Exception {
                         super._execute();
-                        DocAttribute attribute = (DocAttribute)
-                                target.getAttribute(DocAttribute.DOC_ATTRIBUTE_NAME);
+                        List docAttributes = target.attributeList(DocAttribute.class);
+                        // There shouldn't be more than one of these, but if there are,
+                        // the new one is the last one.
+                        DocAttribute attribute = (DocAttribute)docAttributes.get(docAttributes.size() - 1);
                         _editDocAttribute(getFrame(), attribute, target);
                     }
                 };

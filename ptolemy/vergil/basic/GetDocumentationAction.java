@@ -29,6 +29,7 @@ package ptolemy.vergil.basic;
 
 import java.awt.event.ActionEvent;
 import java.net.URL;
+import java.util.List;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -85,13 +86,14 @@ public class GetDocumentationAction extends FigureAction {
         }
         
         // If the object contains
-        // an attribute named "_docAttribute" or if there
+        // an attribute named of class DocAttribute or if there
         // is a doc file for the object in the standard place,
         // then use the DocViewer class to display the documentation.
         // For backward compatibility, if neither of these is found,
         // then we open the Javadoc file, if it is found.
-        Attribute docAttribute = target.getAttribute(DocAttribute.DOC_ATTRIBUTE_NAME);
-        if (docAttribute == null) {
+        List docAttributes = target.attributeList(DocAttribute.class);
+        // Get the last doc attribute.
+        if (docAttributes.size() == 0) {
             // No doc attribute. Try for a doc file.
             String className = target.getClass().getName();
             try {
@@ -120,13 +122,7 @@ public class GetDocumentationAction extends FigureAction {
             }
         } else {
             // Have a doc attribute. Use that.
-            if (!(docAttribute instanceof DocAttribute)) {
-                MessageHandler.error(
-                        target.getName()
-                        + " has an attribute named "
-                        + DocAttribute.DOC_ATTRIBUTE_NAME
-                        + " that is not an instance of DocAttribute.");
-            }
+            DocAttribute docAttribute = (DocAttribute)docAttributes.get(docAttributes.size() - 1);
             // Need to create an effigy and tableau.
             Effigy context = Configuration.findEffigy(target);
             if (context == null) {
@@ -148,7 +144,7 @@ public class GetDocumentationAction extends FigureAction {
                         "Found an effigy named DocEffigy that " +
                 "is not an instance of DocEffigy!");
             }
-            ((DocEffigy)effigy).setDocAttribute((DocAttribute)docAttribute);
+            ((DocEffigy)effigy).setDocAttribute(docAttribute);
             ComponentEntity tableau = ((Effigy)effigy).getEntity("DocTableau");
             if (tableau == null) {
                 try {

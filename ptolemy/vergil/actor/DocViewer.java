@@ -221,6 +221,14 @@ public class DocViewer extends HTMLViewer {
             String doc = manager.getPropertyDoc(parameter.getName());
             if (doc == null) {
                 doc = "No description.";
+                // See if the next tier has documentation.
+                DocManager nextTier = manager.getNextTier();
+                if (nextTier != null) {
+                    String nextDoc = nextTier.getPropertyDoc(parameter.getName());
+                    if (nextDoc != null) {
+                        doc = nextDoc;
+                    }
+                }
             }
             if (parameter.getVisibility() == Settable.FULL) {
                 parameters.append(_tr);
@@ -264,6 +272,14 @@ public class DocViewer extends HTMLViewer {
             String doc = manager.getPortDoc(port.getName());
             if (doc == null) {
                 doc = "No port description.";
+                // See if the next tier has documentation.
+                DocManager nextTier = manager.getNextTier();
+                if (nextTier != null) {
+                    String nextDoc = nextTier.getPortDoc(port.getName());
+                    if (nextDoc != null) {
+                        doc = nextDoc;
+                    }
+                }
             }
             if (port instanceof IOPort) {
                 if (((IOPort)port).isInput() && !((IOPort)port).isOutput()) {
@@ -599,8 +615,11 @@ public class DocViewer extends HTMLViewer {
         if (manager.isInstanceDoc()) {
             DocManager nextTier = manager.getNextTier();
             if (nextTier != null) {
-                info.append(" (<i>Class author:</i> ");
-                info.append(nextTier.getAuthor());
+                String nextTierAuthor = nextTier.getAuthor();
+                if (!nextTierAuthor.equals("No author given")) {
+                    info.append(" (<i>Class author:</i> ");
+                    info.append(nextTierAuthor);
+                }
             }
         }
         info.append(_tde);

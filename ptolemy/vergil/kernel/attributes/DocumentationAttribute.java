@@ -77,6 +77,7 @@ import ptolemy.util.StringUtilities;
  The DocumentationAttribute attribute can be found under more Utilities -&gt;
  Decorative -&gt; Documentation.
 
+ @deprecated Use DocAttribute instead.
  @author Rowland R Johnson
  @version $Id$
  @since Ptolemy II 4.0

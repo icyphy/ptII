@@ -30,16 +30,18 @@ package ptolemy.vergil.basic;
 import java.util.Iterator;
 
 import ptolemy.actor.gui.style.TextStyle;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,7 +56,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class DocAttribute extends Attribute {
+public class DocAttribute extends SingletonAttribute {
     
     /** Construct a documentation attribute with the given name contained
      *  by the specified entity. The container argument must not be null, or a
@@ -83,6 +85,18 @@ public class DocAttribute extends Attribute {
         since = new StringAttribute(this, "Since");
         
         refreshParametersAndPorts();
+        
+        // Provide an icon, in case this gets instantiated in Vergil.
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"20\" "
+                + "style=\"fill:yellow\"/>" + "<text x=\"-40\" y=\"-5\" "
+                + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
+                + "Documentation</text></svg>");
+        
+        // Hide the name, if this gets instantiated in Vergil.
+        SingletonParameter hide = new SingletonParameter(this, "_hideName");
+        hide.setToken(BooleanToken.TRUE);
+        hide.setVisibility(Settable.EXPERT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,12 +113,6 @@ public class DocAttribute extends Attribute {
 
     /** The version field. */
     public StringAttribute version;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
-
-    /** The attribute name for a doc attribute, if it is present. */
-    public static final String DOC_ATTRIBUTE_NAME = "_docAttribute";
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
