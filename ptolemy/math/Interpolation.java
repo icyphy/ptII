@@ -95,7 +95,7 @@ public class Interpolation {
 
     /** Return the reference values.
      *  @return An double array.
-     *  #setValues(double[])
+     *  @see #setValues(double[])
      */
     public double[] getValues() {
         return _values;
@@ -308,7 +308,7 @@ public class Interpolation {
 
     /** Set the reference values.
      *  @param values A double array.
-     *  #getValues()
+     *  @see #getValues()
      */
     public void setValues(double[] values) {
         _values = values;

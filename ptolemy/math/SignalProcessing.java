@@ -1708,7 +1708,7 @@ public class SignalProcessing {
      */
     public static class RaisedCosineSampleGenerator implements
             DoubleUnaryOperation {
-        /*  Construct a RaisedCosineSampleGenerator.
+        /** Construct a RaisedCosineSampleGenerator.
          *  @param firstZeroCrossing The time of the first zero crossing,
          *  after time zero. This would be the symbol interval in a
          *  communications application of this pulse.

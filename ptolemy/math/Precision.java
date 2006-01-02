@@ -609,7 +609,7 @@ public class Precision implements Cloneable, Serializable {
          *  or left bracket. **/
         public final static String OPTIONAL_R_PARANBRACKET = "[\\)\\]]?";
 
-        /** Regular expression definition for a Period "." */
+        /** Regular expression definition for a Period ".". */
         public final static String PERIOD = "\\.";
 
         /** Regular expression for a grouped signed integer
@@ -1013,7 +1013,8 @@ public class Precision implements Cloneable, Serializable {
     /** The presence of a sign bit (0 = unsigned, 1 = signed) */
     private int _sign = 0;
 
-    /** The precision format used for parsing/printing precision information */
+    /** The precision format used for parsing/printing precision information.
+     */
     private PrecisionFormat _format = INTEGER_FRACTION;
 
     ///////////////////////////////////////////////////////////////////
