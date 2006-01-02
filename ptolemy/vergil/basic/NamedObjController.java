@@ -27,7 +27,6 @@
  */
 package ptolemy.vergil.basic;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 
 import ptolemy.actor.gui.Configuration;
