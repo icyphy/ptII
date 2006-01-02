@@ -231,6 +231,7 @@ public class ExternalIOPortController extends AttributeController {
          *  then render a port that is neither an input nor an output.
          *  @param n An instance of Locatable or one of the objects
          *   _GENERIC_INPUT, _GENERIC_OUTPUT, or _GENERIC_INOUT.
+         *  @return The figure that is rendered.
          */
         public Figure render(Object n) {
             Polygon2D.Double polygon = new Polygon2D.Double();

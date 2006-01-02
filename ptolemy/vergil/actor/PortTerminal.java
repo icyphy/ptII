@@ -74,6 +74,7 @@ public class PortTerminal extends TerminalFigure {
      *  by the specified connector. That is, return 0 if it is
      *  the first connection, 1 if it is the second, etc.
      *  If the connector is not known, then return -1.
+     *  @param connector The connector.
      *  @return The order index of the connection.
      */
     public int getOrderIndex(LinkManhattanConnector connector) {

@@ -77,6 +77,7 @@ public class ActorInstanceController extends ActorController {
     /** Create an entity controller associated with the specified graph
      *  controller with the specified access.
      *  @param controller The associated graph controller.
+     *  @param access The access.
      */
     public ActorInstanceController(GraphController controller, Access access) {
         super(controller, access);

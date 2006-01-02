@@ -151,7 +151,12 @@ public class LinkController extends BasicEdgeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+    /** A connector target that returns sites on a link. */
     public class LinkTarget extends PerimeterTarget {
+        /** Accept the head of the connector.
+         *  @param c The connector.
+         *  @param f The figure.
+         */
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
 
@@ -165,6 +170,10 @@ public class LinkController extends BasicEdgeController {
             }
         }
 
+        /** Accept the tail of the connector.
+         *  @param c The connector.
+         *  @param f The figure.
+         */
         public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
 
@@ -178,6 +187,11 @@ public class LinkController extends BasicEdgeController {
             }
         }
 
+        /** Get the head site.
+         *  @param f The figure.
+         *  @param x The x location.
+         *  @param y The y location.
+         */
         public Site getHeadSite(Figure f, double x, double y) {
             if (f instanceof Terminal) {
                 Site site = ((Terminal) f).getConnectSite();
@@ -190,11 +204,15 @@ public class LinkController extends BasicEdgeController {
         // Tail sites are the same as head sites.
     }
 
+    /** Render a visual representation of a link. */
     public static class LinkRenderer implements EdgeRenderer {
         /** Render a visual representation of the given edge. If the
          *  StringAttribute _color of the edge is set then use that color to
          *  highlight the node. If the StringAttribute _explanation of the edge
          *  is set then use it to set the tooltip.
+         *  @param edge The edge.
+         *  @param tailSite The tail site.
+         *  @param headSite The head site.
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             Link link = (Link) edge;
@@ -253,6 +271,7 @@ public class LinkController extends BasicEdgeController {
         /**
          * Called when a connector end is dropped--attach or
          * detach the edge as appropriate.
+         * @param evt The connector event.
          */
         public void connectorDropped(ConnectorEvent evt) {
             Connector c = evt.getConnector();

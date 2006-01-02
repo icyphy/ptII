@@ -176,17 +176,18 @@ public class ActorViewerGraphController extends RunnableGraphController {
      *  which in this case is the same link controller returned by
      *  getLinkController().
      *  @param edge The edge object.
+     *  @return the edge controller.
      */
     public EdgeController getEdgeController(Object edge) {
         return _linkController;
     }
 
-    /** Return the value of the entity controller so that callers
-     *  can add context menus by calling
+    /** Return the value of the entity controller.
+     *  Callers may add context menus by calling
      *  <pre>
      *  getEntityController.addMenuItemFactory(new XXXDialogFactory);
      *  </pre>
-     *  @return that ActorController that is used to
+     *  @return the entity controller
      */
     public ActorController getEntityController() {
         // Used by jni.ThalesGraphFrame to add jni.ArgumentDialogFactory
@@ -201,6 +202,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
      *  If the argument is an instance of Port, then return the
      *  local port controller.
      *  @param object A Vertex, Locatable, or Port.
+     *  @return the node controller
      */
     public NodeController getNodeController(Object object) {
         // Defer to the superclass if it can provide a controller.
