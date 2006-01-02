@@ -2378,7 +2378,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** An action to zoom in. */
     public class ZoomInAction extends AbstractAction {
         /** Construct a zoom in action.
-         *  @description A string that describes the action.  Spaces are
+         *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
          */
         public ZoomInAction(String description) {
@@ -2425,7 +2425,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** An action to reset zoom. */
     public class ZoomResetAction extends AbstractAction {
         /** Construct a zoom reset action.
-         *  @description A string that describes the action.  Spaces are
+         *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
          */
         public ZoomResetAction(String description) {
@@ -2468,7 +2468,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** An action to zoom fit.*/
     public class ZoomFitAction extends AbstractAction {
         /** Construct a zoom fit action.
-         *  @description A string that describes the action.  Spaces are
+         *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
          */
         public ZoomFitAction(String description) {
@@ -2510,7 +2510,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** An action to zoom out. */
     public class ZoomOutAction extends AbstractAction {
         /** Construct a zoom fit action.
-         *  @description A string that describes the action.  Spaces are
+         *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
          */
         public ZoomOutAction(String description) {

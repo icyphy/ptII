@@ -217,7 +217,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     /** An action to display in full-screen mode. */
     public class FullScreenAction extends AbstractAction implements KeyListener {
         /** Construct a full screen action.
-         *  @description A string that describes the action.  Spaces are
+         *  @param description A string that describes the action.  Spaces are
          *  permitted, each word is usually capitalized.
          */
         public FullScreenAction(String description) {
