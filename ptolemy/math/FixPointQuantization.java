@@ -210,12 +210,10 @@ public class FixPointQuantization extends Quantization {
      */
     public String toString() {
         // TODO: check for null precision
-        StringBuffer sb = new StringBuffer();
-        String x = "(" + _precision.getIntegerBitLength() + "."
+        return "(" + _precision.getIntegerBitLength() + "."
                 + _precision.getFractionBitLength() + ","
                 + getOverflow().toString() + "," + getRounding().toString()
                 + ")";
-        return x;
     }
 
     ///////////////////////////////////////////////////////////////////
