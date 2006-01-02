@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NamedObj;
  <li> The processing time is obtained from the container or the container's
  container of this receiver, similar to the way obtaining the priority
  value. If none of them has the parameter, then use the default value 0.
- <ul>
+ </ul>
  The event is then queued with the director, so it is not immediately
  available by the get() method. Later, the director may make the
  token available again by calling the _triggerEvent() method.
