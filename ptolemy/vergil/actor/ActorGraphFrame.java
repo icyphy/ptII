@@ -237,17 +237,22 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     /** The graph menu. */
     protected JMenu _graphMenu;
 
-    /** action for creating a level of hierarchy. */
+    /** The action for creating a level of hierarchy. */
     protected Action _createHierarchyAction;
 
+    /** The action for automatically laying out the graph. */
     protected Action _layoutAction;
 
+    /** The action for saving the current model in a library. */
     protected Action _saveInLibraryAction;
 
+    /** The action for importing a library of components. */ 
     protected Action _importLibraryAction;
 
+    /** The action for instantiating an attribute. */
     protected Action _instantiateAttributeAction;
 
+    /** The action for instantiatin an entity. */
     protected Action _instantiateEntityAction;
 
     ///////////////////////////////////////////////////////////////////

@@ -618,11 +618,18 @@ public abstract class ActorController extends AttributeController {
      *  This is static so that other classes can use it.
      */
     public static class ListenToActorAction extends FigureAction {
+        /** Construct an action that listens to actor messages.
+         *  @param controller The corresponding controller.
+         */
         public ListenToActorAction(BasicGraphController controller) {
             super("Listen to Actor");
             _controller = controller;
         }
 
+        /** Construct an action that listens to actor messages.
+         *  @param target The target
+         *  @param controller The corresponding controller.
+         */
         public ListenToActorAction(NamedObj target,
                 BasicGraphController controller) {
             super("Listen to Actor");
@@ -630,6 +637,10 @@ public abstract class ActorController extends AttributeController {
             _controller = controller;
         }
 
+        /** Open a TextEffigy that displays debug messages.
+         *  @param event The action event, used to determine which entity
+         *  was selected for the listen to actor action
+         */
         public void actionPerformed(ActionEvent event) {
             if (_configuration == null) {
                 MessageHandler

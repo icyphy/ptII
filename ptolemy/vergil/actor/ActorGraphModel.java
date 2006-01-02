@@ -120,6 +120,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  event whose source is the given source.
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
+     *  @param edge The edge.
      *  @exception GraphException If the operation fails.
      */
     public void disconnectEdge(Object eventSource, Object edge) {
@@ -148,6 +149,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     /** Return a MoML String that will delete the given edge from the
      *  Ptolemy model.
+     *  @param edge The edge.
      *  @return A valid MoML string.
      */
     public String getDeleteEdgeMoML(Object edge) {
@@ -163,6 +165,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     /** Return a MoML String that will delete the given node from the
      *  Ptolemy model.
+     *  @param node The node.
      *  @return A valid MoML string.
      */
     public String getDeleteNodeMoML(Object node) {
@@ -268,6 +271,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  graph listeners with a NODE_REMOVED event.
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
+     *  @param node The node.
      *  @exception GraphException If the operation fails.
      */
     public void removeNode(Object eventSource, Object node) {
@@ -287,18 +291,30 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     // Big changes needed, however to make this work.
     // The huge inner classes below should be factored out as
     // separate classes.  EAL
+    /** Get the icon model.
+     *  @return The icon model.
+     */
     public IconModel getIconModel() {
         return _iconModel;
     }
 
+    /** Get the port model.
+     *  @return The port model.
+     */
     public PortModel getPortModel() {
         return _portModel;
     }
 
+    /** Get the external port model.
+     *  @return The external port model.
+     */
     public ExternalPortModel getExternalPortModel() {
         return _externalPortModel;
     }
 
+    /** Get the vertex model.
+     *  @return The vertex model.
+     */
     public VertexModel getVertexModel() {
         return _vertexModel;
     }
@@ -607,10 +623,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The set of all links in the model.
+    /** The set of all links in the model. */
     private Set _linkSet;
 
-    // The models of the different types of nodes and edges.
+    /** The models of the different types of nodes and edges. */
     private ExternalPortModel _externalPortModel = new ExternalPortModel();
 
     private IconModel _iconModel = new IconModel();
@@ -631,6 +647,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. The MoML assumes a context that is the container
          *  of the port.
+         *  @param node The node.   
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
@@ -716,7 +733,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             return portLinkList.iterator();
         }
 
-        /** Remove the given edge from the model
+        /** Remove the given edge from the model.
+         *  @param eventSource The source of the event that will be dispatched,
+         *   e.g. the view that made this call.
+         *  @param node The node.
          */
         public void removeNode(final Object eventSource, Object node) {
             Locatable location = (Locatable) node;
@@ -743,6 +763,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. The returned string assumes that the context is
          *  the container of the object with an icon.
+         *  @param node The node.   
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
@@ -833,6 +854,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
         /** Remove the given node from the model.  The node is assumed
          *  to be an icon.
+         *  @param eventSource The source of the event that will be dispatched,
+         *   e.g. the view that made this call.
+         *  @param node The node.
          */
         public void removeNode(final Object eventSource, Object node) {
             NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
@@ -899,6 +923,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
         /** Return a MoML String that will delete the given edge from the
          *  Ptolemy model.
+         *  @param node The node.
          *  @return A valid MoML string.
          */
         public String getDeleteEdgeMoML(Object edge) {
@@ -927,6 +952,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return the head node of the given edge.
          *  @param edge The edge, which is assumed to be a link.
          *  @return The node that is the head of the specified edge.
+         *  @see #setHead(Object, Object)
          */
         public Object getHead(Object edge) {
             return ((Link) edge).getHead();
@@ -935,6 +961,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return the tail node of the specified edge.
          *  @param edge The edge, which is assumed to be a link.
          *  @return The node that is the tail of the specified edge.
+         *  @see #setTail(Object, Object)   
          */
         public Object getTail(Object edge) {
             return ((Link) edge).getTail();
@@ -1115,7 +1142,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  to make this modification.
          *  @param edge The edge, which is assumed to be a link.
          *  @param newLinkHead The new head for the edge, which is assumed to
-         *  be a location representing a port, a port or a vertex.         */
+         *  be a location representing a port, a port or a vertex.
+         *  @see #getHead(Object)
+         */
         public void setHead(final Object edge, final Object newLinkHead) {
             final Link link = (Link) edge;
             final NamedObj linkHead = (NamedObj) link.getHead();
@@ -1216,6 +1245,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param newLinkTail The new tail for the edge, which is
          *  assumed to be a location representing a port, a port or a
          *  vertex.
+         *  @see #getTail(Object)
          */
         public void setTail(final Object edge, final Object newLinkTail) {
             final Link link = (Link) edge;
@@ -1313,6 +1343,12 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  when an edge is moved.  It works the same for heads and tails.
          */
         public class LinkChangeListener implements ChangeListener {
+            /** Construct a link change listener.
+             *  @param link The link.
+             *  @param container The container.
+             *  @param failMoML MoML that cleans up the model if the 
+             *  change request fails.   
+             */
             public LinkChangeListener(Link link, CompositeEntity container,
                     StringBuffer failMoML) {
                 _link = link;
@@ -1320,6 +1356,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 _failMoML = failMoML;
             }
 
+            /** Handled a failed change request.
+             *  @param change  The change request.
+             *  @param exception The exception.
+             */   
             public void changeFailed(ChangeRequest change, Exception exception) {
                 // If we fail here, then we remove the link entirely.
                 _linkSet.remove(_link);
@@ -1338,6 +1378,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 _container.requestChange(changeRequest);
             }
 
+            /** Called after the change has been executed.
+             *  @param change The change request.
+             */ 
             public void changeExecuted(ChangeRequest change) {
                 // modification to the linkset HAS to occur in the swing
                 // thread.
@@ -1479,6 +1522,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  to be a port.
          *  This class queues a new change request with the ptolemy model
          *  to make this modification.
+         *  @param eventSource The source of the event that will be dispatched,
+         *   e.g. the view that made this call.
+         *  @param node The node.
          */
         public void removeNode(final Object eventSource, Object node) {
             ComponentPort port = (ComponentPort) node;
@@ -1592,6 +1638,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  to be a vertex contained by a relation.
          *  This class queues a new change request with the ptolemy model
          *  to make this modification.
+         *  @param eventSource The source of the event that will be dispatched,
+         *   e.g. the view that made this call.
+         *  @param node The node.
          */
         public void removeNode(final Object eventSource, Object node) {
             ComponentRelation relation = (ComponentRelation) ((Vertex) node)
