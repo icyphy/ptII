@@ -49,6 +49,7 @@ PTPACKAGE = 	doclet
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ListClass.java \
 	RatingTaglet.java
 
 EXTRA_SRCS =	$(JSRCS)
