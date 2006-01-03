@@ -619,10 +619,30 @@ doccheck/index.html:
 			-d doc/doccheck $(ALLPACKAGES) )
 
 # ptdoc
-PTDOCDOCLET = -doclet doc.doclets.ListClass
+# A simple doclet that lists classes, used for testing only
+LISTCLASSDOCLET = -doclet doc.doclets.ListClass
+LISTCLASSFLAGS =
+ListClass:
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" \
+			$(LISTCLASSFLAGS) \
+			$(LISTCLASSDOCLET) \
+			$(PTDOCPACKAGES) )
 
-PTDOCPACKAGES = $(ALLPACKAGES)
-# Uncomment this line for testing.
+# A simple doclet that prints methods that have a particular tag
+# Used for testing only
+LISTTAGSDOCLET = -doclet doc.doclets.ListTags
+LISTTAGSFLAGS = -tag deprecated
+ListTags:
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" \
+			$(LISTTAGSFLAGS) \
+			$(LISTTAGSDOCLET) \
+			$(PTDOCPACKAGES) )
+
+
+#PTDOCPACKAGES = $(ALLPACKAGES)
+# Comment out the above line and uncomment this line for testing.
 PTDOCPACKAGES = ptolemy.actor.lib
 
 ptdoc: ptdoc/index.html
@@ -630,6 +650,7 @@ ptdoc/index.html:
 	if [ ! -d ptdoc ]; then mkdir -p ptdoc; fi
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" \
+			$(PTDOCFLAGS) \
 			$(PTDOCDOCLET) \
 			$(PTDOCPACKAGES) )
 
