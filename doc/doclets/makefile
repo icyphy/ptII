@@ -49,8 +49,7 @@ PTPACKAGE = 	doclet
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	ListClass.java \
-	ListTags.java \
+	PtDoclet.java \
 	RatingTaglet.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -70,6 +69,24 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass $(PTCLASSJAR)
+
+#PTDOCPACKAGES = $(ALLPACKAGES)
+# Comment out the above line and uncomment this line for testing.
+PTDOCPACKAGES = ptolemy.actor.lib
+
+# The ptdoc doclet (does not work yet) 
+PTDOCLET = -doclet doc.doclets.PtDoclet
+PTDOCFLAGS = -d doc/doclets/ptdoc
+demo: ptdoc/index.html
+ptdoc/index.html: PtDoclet.class
+	if [ ! -d ptdoc ]; then mkdir -p ptdoc; fi
+	-(cd $(ROOT); CLASSPATH=".$(CLASSPATHSEPARATOR)$(TOOLS_JAR)" \
+		"$(JAVADOC)" \
+			$(PTDOCLET) \
+			$(PTDOCFLAGS) \
+			$(PTDOCPACKAGES) )
+
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
