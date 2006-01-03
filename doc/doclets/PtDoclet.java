@@ -33,6 +33,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import com.sun.javadoc.*;
 
+import ptolemy.util.StringUtilities;
+
 /** Generate PtDoc output.
  *  @author Christopher Brooks, Edward A. Lee
  *  @version $Id$
@@ -69,23 +71,30 @@ public class PtDoclet {
                 shortClassName = 
                     className.substring(className.lastIndexOf(".") + 1);
             }
-            documentation.append("<doc name=\"" + shortClassName + " class=\""
-                    + className + "\"\n"
-                    + "<description>\n"
+            documentation.append("<doc name=\"" + shortClassName
+                    + "\" class=\"" + className + "\">\n"
+                    + "  <description>\n"
                     // FIXME: need to escape commentText
-                    + classes[i].commentText() + "\n"
-                    + "</description>\n");
+                    + StringUtilities.escapeForXML(classes[i].commentText())
+                    + "\n"
+                    + "  </description>\n");
 
             // Handle other class tags
             String [] classTags = {"author", "version", "since", "Pt.ProposedRating", "Pt.AcceptedRating"};
             for (int j = 0; j< classTags.length; j++) {
                 Tag [] tags = classes[i].tags(classTags[j]);
                 if (tags.length > 0) {
-                    documentation.append("<" + classTags[j] + ">" 
-                            + tags[0].text()
+                    documentation.append("  <" + classTags[j] + ">" 
+                            + StringUtilities.escapeForXML(tags[0].text())
                             + "</" + classTags[j] + ">\n");
                 }
             }
+
+            // FIXME: Handle ports
+
+            // FIXME: Handle parameters
+
+            documentation.append("</doc>\n");
             _writeDoc(className, outputDirectory, documentation.toString());
         }
         return true;
@@ -93,7 +102,7 @@ public class PtDoclet {
 
     /** Process the doclet command line arguments and return the value
      *  of the -d parameter, if any.
-     *  @param options The command line options
+     *  @param options The command line options.
      *  @return the value of the -d parameter, if any, otherwise return null.
      */
     private static String _getOutputDirectory(String [][] options) {
@@ -107,17 +116,18 @@ public class PtDoclet {
     }
 
     
-    /** Write the output to a file.
+    /** Write the output to a file.  
      *  @param className The dot separated fully qualified classname,
      *  which is used to specify the directory and filename to which
      *  the documentation is written.
-     *  @param directory The top level directory where the classes are written
+     *  @param directory The top level directory where the classes are written.
+     *  If necessary, the directory is created.
      *  @param documentation The documentation that is written.
      *  @exception IOException If there is a problem writing the documentation.
      */
     private static void _writeDoc(String className, String directory,
             String documentation) throws IOException {
-        String fileBaseName = className.replace('.', '/') + ".xml";
+        String fileBaseName = className.replace('.', File.separatorChar) + ".xml";
         String fileName = null;
         if (directory != null) {
             fileName = directory + File.separator + fileBaseName;
@@ -141,6 +151,6 @@ public class PtDoclet {
     }
 
     /** Header string for XML PtDoc output. */
-    private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n\"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
+    private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
 
 }
