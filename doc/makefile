@@ -645,6 +645,9 @@ ListTags:
 # Comment out the above line and uncomment this line for testing.
 PTDOCPACKAGES = ptolemy.actor.lib
 
+# The ptdoc doclet (does not work yet) 
+PTDOCLET = -doclet doc.doclets.PtDoclet
+PTDOCFLAGS = -d doc/ptdoc
 ptdoc: ptdoc/index.html
 ptdoc/index.html:
 	if [ ! -d ptdoc ]; then mkdir -p ptdoc; fi
