@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ListClass.java \
+	ListTags.java \
 	RatingTaglet.java
 
 EXTRA_SRCS =	$(JSRCS)
