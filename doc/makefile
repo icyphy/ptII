@@ -647,14 +647,14 @@ PTDOCPACKAGES = ptolemy.actor.lib
 
 # The ptdoc doclet (does not work yet) 
 PTDOCLET = -doclet doc.doclets.PtDoclet
-PTDOCFLAGS = -d doc/ptdoc
+#PTDOCFLAGS = -d doc/ptdoc
 ptdoc: ptdoc/index.html
 ptdoc/index.html:
 	if [ ! -d ptdoc ]; then mkdir -p ptdoc; fi
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" \
 			$(PTDOCFLAGS) \
-			$(PTDOCDOCLET) \
+			$(PTDOCLET) \
 			$(PTDOCPACKAGES) )
 
 # Note that we change into the codeDocViptos directory
