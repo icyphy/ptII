@@ -923,7 +923,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
         /** Return a MoML String that will delete the given edge from the
          *  Ptolemy model.
-         *  @param node The node.
+         *  @param edge The edge.
          *  @return A valid MoML string.
          */
         public String getDeleteEdgeMoML(Object edge) {

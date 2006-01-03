@@ -66,7 +66,7 @@ public class DocEffigy extends Effigy {
 
     /** Get the DocAttribute represented by this effigy, if any.
      *  @return The DocAttribute represented by this effigy.
-     *  @see setDocAttribute(DocAttribute)
+     *  @see #setDocAttribute(DocAttribute)
      */
     public DocAttribute getDocAttribute() {
         return _docAttribute;
@@ -74,7 +74,7 @@ public class DocEffigy extends Effigy {
     
     /** Set the DocAttribute represented by this effigy, if any.
      *  @param docAttribute The DocAttribute represented by this effigy.
-     *  @see getDocAttribute()
+     *  @see #getDocAttribute()
      */
     public void setDocAttribute(DocAttribute docAttribute) {
         _docAttribute = docAttribute;
