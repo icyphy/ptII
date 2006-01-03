@@ -80,7 +80,8 @@ public class PtDoclet {
                     + "  </description>\n");
 
             // Handle other class tags
-            String [] classTags = {"author", "version", "since", "Pt.ProposedRating", "Pt.AcceptedRating"};
+            String [] classTags = {"author", "version", "since",
+                                   "Pt.ProposedRating", "Pt.AcceptedRating"};
             for (int j = 0; j< classTags.length; j++) {
                 Tag [] tags = classes[i].tags(classTags[j]);
                 if (tags.length > 0) {
@@ -90,14 +91,59 @@ public class PtDoclet {
                 }
             }
 
-            // FIXME: Handle ports
-
-            // FIXME: Handle parameters
-
+            documentation.append(_generatePortDocumentation(classes[i]));
+            documentation.append(_generateParameterDocumentation(classes[i]));
             documentation.append("</doc>\n");
             _writeDoc(className, outputDirectory, documentation.toString());
         }
         return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Generate documentation for the ports.
+     *  @param classDoc The ClassDoc for the class we are documenting.
+     *  @return The documentation for all ports in the class.
+     */
+    private static String _generatePortDocumentation(ClassDoc classDoc) {
+        StringBuffer portDocumentation = new StringBuffer();
+        FieldDoc[] fields = classDoc.fields();
+        // FIXME: get ports from superclasses?
+        for (int i = 0; i < fields.length; i++) {
+            String type = fields[i].type().toString();
+            // FIXME: use instanceof here?
+            if (type.equals("ptolemy.actor.TypedIOPort")) {
+                portDocumentation.append("    <!--" + type + "-->\n"
+                        + "    <port name=\""
+                        + fields[i].name() + "\">" 
+                        + StringUtilities.escapeForXML(fields[i].commentText())
+                        + "</port>\n");
+            }
+        }
+        return portDocumentation.toString();
+    }
+
+    /** Generate documentation for the parameters.
+     *  @param classDoc The ClassDoc for the class we are documenting.
+     *  @return The documentation for all parameters in the class.
+     */
+    private static String _generateParameterDocumentation(ClassDoc classDoc) {
+        StringBuffer parameterDocumentation = new StringBuffer();
+        FieldDoc[] fields = classDoc.fields();
+        // FIXME: get parameters from superclasses?
+        for (int i = 0; i < fields.length; i++) {
+            String type = fields[i].type().toString();
+            // FIXME: use instanceof here?
+            if (type.equals("ptolemy.data.expr.Parameter")) {
+                parameterDocumentation.append("    <!--" + type + "-->\n"
+                        + "    <parameter name=\""
+                        + fields[i].name() + "\">" 
+                        + StringUtilities.escapeForXML(fields[i].commentText())
+                        + "</parameter>\n");
+            }
+        }
+        return parameterDocumentation.toString();
     }
 
     /** Process the doclet command line arguments and return the value
@@ -114,7 +160,6 @@ public class PtDoclet {
         }
         return null;
     }
-
     
     /** Write the output to a file.  
      *  @param className The dot separated fully qualified classname,
@@ -149,6 +194,9 @@ public class PtDoclet {
             writer.close();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** Header string for XML PtDoc output. */
     private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
