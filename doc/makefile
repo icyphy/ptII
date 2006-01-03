@@ -291,7 +291,8 @@ VISUALSENSEPACKAGES = \
 #			ptolemy.domains.wireless.lib.network \
 #			ptolemy.domains.wireless.lib.network.mac
 
-ALLPACKAGES =		$(COMPACKAGES) \
+# All the Java 1.4 packages
+ALL1_4PACKAGES =	$(COMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
 			$(DIVAPACKAGES) \
 			$(EXPERIMENTALPACKAGES) \
@@ -326,10 +327,6 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.actor.lib.net \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
-			ptolemy.caltrop \
-			ptolemy.caltrop.actors \
-			ptolemy.caltrop.ddi \
-			ptolemy.caltrop.util \
 			ptolemy.codegen.c.actor.lib \
 			ptolemy.codegen.c.actor.lib.conversions \
 			ptolemy.codegen.c.actor.lib.gui \
@@ -379,6 +376,13 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.vergil.toolbox \
 			ptolemy.vergil.tree \
 			util.testsuite
+
+# All the packages
+ALLPACKAGES =		$(ALL1_4PACKAGES) \
+			ptolemy.caltrop \
+			ptolemy.caltrop.actors \
+			ptolemy.caltrop.ddi \
+			ptolemy.caltrop.util
 
 # 'make clean' removes files listed in $(KRUFT)
 KRUFT = \
@@ -618,47 +622,25 @@ doccheck/index.html:
 			$(JDOCCHECKDOCLET) \
 			-d doc/doccheck $(ALLPACKAGES) )
 
-# ptdoc
-# A simple doclet that lists classes, used for testing only
-LISTCLASSDOCLET = -doclet doc.doclets.ListClass
-LISTCLASSFLAGS =
-ListClass:
-	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" \
-			$(LISTCLASSFLAGS) \
-			$(LISTCLASSDOCLET) \
-			$(PTDOCPACKAGES) )
 
-# A simple doclet that prints methods that have a particular tag
-# Used for testing only
-LISTTAGSDOCLET = -doclet doc.doclets.ListTags
-LISTTAGSFLAGS = -tag deprecated
-ListTags:
-	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" \
-			$(LISTTAGSFLAGS) \
-			$(LISTTAGSDOCLET) \
-			$(PTDOCPACKAGES) )
-
-
-#PTDOCPACKAGES = $(ALLPACKAGES)
+# PtDoc, the XML format
+PTDOCPACKAGES = $(ALL1_4PACKAGES)
 # Comment out the above line and uncomment this line for testing.
-PTDOCPACKAGES = ptolemy.actor.lib
+#PTDOCPACKAGES = ptolemy.actor.lib
 
 # The ptdoc doclet (does not work yet) 
 PTDOCLET = -doclet doc.doclets.PtDoclet
-#PTDOCFLAGS = -d doc/ptdoc
+PTDOCFLAGS = -d doc/ptdoc
 ptdoc: ptdoc/index.html
 ptdoc/index.html:
 	if [ ! -d ptdoc ]; then mkdir -p ptdoc; fi
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" \
+		"$(JAVADOC)" -J-Xmx512m \
 			$(PTDOCFLAGS) \
 			$(PTDOCLET) \
 			$(PTDOCPACKAGES) )
 
 # Note that we change into the codeDocViptos directory
-
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
 codeDocViptos.jar: codeDocViptos/doc/codeDoc/tree.html
