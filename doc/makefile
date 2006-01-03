@@ -618,6 +618,21 @@ doccheck/index.html:
 			$(JDOCCHECKDOCLET) \
 			-d doc/doccheck $(ALLPACKAGES) )
 
+# ptdoc
+PTDOCDOCLET = -doclet doc.doclets.ListClass
+
+PTDOCPACKAGES = $(ALLPACKAGES)
+# Uncomment this line for testing.
+PTDOCPACKAGES = ptolemy.actor.lib
+
+ptdoc: ptdoc/index.html
+ptdoc/index.html:
+	if [ ! -d ptdoc ]; then mkdir -p ptdoc; fi
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" \
+			$(PTDOCDOCLET) \
+			$(PTDOCPACKAGES) )
+
 # Note that we change into the codeDocViptos directory
 
 # so that the jar file is created with a subset of the full set of docs
