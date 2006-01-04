@@ -57,13 +57,20 @@ public class PtDoclet {
      *  @param root The root of the java doc tree.
      *  @return True
      *  @exception IOException If there is a problem writing the documentation.
+     *  @exception ClassNotFoundException If there is a problem finding
+     *  the class of one of the fields.
      */
-    public static boolean start(RootDoc root) throws IOException {
+    public static boolean start(RootDoc root)
+            throws IOException, ClassNotFoundException {
         String outputDirectory = _getOutputDirectory(root.options());
+        Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
+        Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
         ClassDoc[] classes = root.classes();
         for (int i = 0; i < classes.length; i++) {
             StringBuffer documentation = new StringBuffer(_header);
             String className = classes[i].toString();
+            // FIXME: we could only print docs for classes that
+            // extend TypedAtomicActor.
             String shortClassName = null;
             if (className.lastIndexOf(".") == -1) {
                 shortClassName = className;
@@ -74,16 +81,16 @@ public class PtDoclet {
             documentation.append("<doc name=\"" + shortClassName
                     + "\" class=\"" + className + "\">\n"
                     + "  <description>\n"
-                    // FIXME: need to escape commentText
                     + StringUtilities.escapeForXML(classes[i].commentText())
                     + "\n"
                     + "  </description>\n");
 
-            // Handle other class tags
+            // Handle other class tags.
             String [] classTags = {"author", "version", "since",
                                    "Pt.ProposedRating", "Pt.AcceptedRating"};
             for (int j = 0; j< classTags.length; j++) {
                 Tag [] tags = classes[i].tags(classTags[j]);
+                // FIXME: This uses just the first tag.
                 if (tags.length > 0) {
                     documentation.append("  <" + classTags[j] + ">" 
                             + StringUtilities.escapeForXML(tags[0].text())
@@ -91,8 +98,11 @@ public class PtDoclet {
                 }
             }
 
-            documentation.append(_generatePortDocumentation(classes[i]));
-            documentation.append(_generateParameterDocumentation(classes[i]));
+            documentation.append(_generateFieldDocumentation(classes[i], 
+                                         typedIOPortClass, "port"));
+
+            documentation.append(_generateFieldDocumentation(classes[i], 
+                                         parameterClass, "parameter"));
             documentation.append("</doc>\n");
             _writeDoc(className, outputDirectory, documentation.toString());
         }
@@ -102,48 +112,48 @@ public class PtDoclet {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Generate documentation for the ports.
+    /** Generate documentation for all fields that are derived
+     *  from a specific base class.
      *  @param classDoc The ClassDoc for the class we are documenting.
-     *  @return The documentation for all ports in the class.
+     *  @param fieldBaseClass The base class for the field we are documenting.
+     *  @param element The XML element that is generated.
+     *  @return The documentation for all fields that are derived from 
+     *  the fieldBaseClass parameter.
+     *  @exception ClassNotFoundException If the class of a field cannot
+     *  be found.
      */
-    private static String _generatePortDocumentation(ClassDoc classDoc) {
-        StringBuffer portDocumentation = new StringBuffer();
+    private static String _generateFieldDocumentation(ClassDoc classDoc,
+            Class fieldBaseClass, String element)
+            throws ClassNotFoundException {
+        StringBuffer documentation = new StringBuffer();
         FieldDoc[] fields = classDoc.fields();
-        // FIXME: get ports from superclasses?
+        // FIXME: get fields from superclasses?
         for (int i = 0; i < fields.length; i++) {
-            String type = fields[i].type().toString();
-            // FIXME: use instanceof here?
-            if (type.equals("ptolemy.actor.TypedIOPort")) {
-                portDocumentation.append("    <!--" + type + "-->\n"
-                        + "    <port name=\""
-                        + fields[i].name() + "\">" 
-                        + StringUtilities.escapeForXML(fields[i].commentText())
-                        + "</port>\n");
-            }
+            String className = fields[i].type().toString();
+            try {
+                Class type = Class.forName(className);
+                if (fieldBaseClass.isAssignableFrom(type)) {
+                    documentation.append(
+                            "    <!--" + className + "-->\n"
+                            + "    <" + element + " name=\""
+                            + fields[i].name() + "\">" 
+                            + StringUtilities.escapeForXML(fields[i].commentText())
+                            + "</" + element + ">\n");
+                }
+             } catch (ClassNotFoundException ex) {
+                     // ignored
+             }
         }
-        return portDocumentation.toString();
-    }
-
-    /** Generate documentation for the parameters.
-     *  @param classDoc The ClassDoc for the class we are documenting.
-     *  @return The documentation for all parameters in the class.
-     */
-    private static String _generateParameterDocumentation(ClassDoc classDoc) {
-        StringBuffer parameterDocumentation = new StringBuffer();
-        FieldDoc[] fields = classDoc.fields();
-        // FIXME: get parameters from superclasses?
-        for (int i = 0; i < fields.length; i++) {
-            String type = fields[i].type().toString();
-            // FIXME: use instanceof here?
-            if (type.equals("ptolemy.data.expr.Parameter")) {
-                parameterDocumentation.append("    <!--" + type + "-->\n"
-                        + "    <parameter name=\""
-                        + fields[i].name() + "\">" 
-                        + StringUtilities.escapeForXML(fields[i].commentText())
-                        + "</parameter>\n");
-            }
+        // Go up the hierarchy
+        ClassDoc superClass = classDoc.superclass(); 
+        if (superClass != null) {
+            System.out.println("Processing " + superClass);
+            // FIXME: we could stop at ptolemy.actor.TypedAtomicActor
+            documentation.append(_generateFieldDocumentation(
+                                        superClass,
+                                        fieldBaseClass, element));
         }
-        return parameterDocumentation.toString();
+        return documentation.toString();
     }
 
     /** Process the doclet command line arguments and return the value
