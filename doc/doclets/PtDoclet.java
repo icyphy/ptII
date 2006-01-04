@@ -54,8 +54,10 @@ public class PtDoclet {
     }
 
     /** Process the java files and generate PtDoc XML.
+     *  Only classes that extend TypedAtomicActor are processed, all
+     *  other classes are ignored.
      *  @param root The root of the java doc tree.
-     *  @return True
+     *  @return Always return true;
      *  @exception IOException If there is a problem writing the documentation.
      *  @exception ClassNotFoundException If there is a problem finding
      *  the class of one of the fields.
@@ -65,12 +67,26 @@ public class PtDoclet {
         String outputDirectory = _getOutputDirectory(root.options());
         Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
         Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
+
         ClassDoc[] classes = root.classes();
         for (int i = 0; i < classes.length; i++) {
-            StringBuffer documentation = new StringBuffer(_header);
             String className = classes[i].toString();
-            // FIXME: we could only print docs for classes that
-            // extend TypedAtomicActor.
+
+            Class theClass = null;
+            try {
+                theClass = Class.forName(className);
+            } catch (Throwable ex) {
+                // Print a message and move on.
+                // FIXME: Use the doclet error handling mechanism
+                System.err.println("Failed to process " + className + "\n"
+                        + ex);
+                continue;
+            }
+            if (!_typedAtomicActorClass.isAssignableFrom(theClass)) {
+                // The class does not extend TypedAtomicActor, so we skip.
+                continue;
+            }
+
             String shortClassName = null;
             if (className.lastIndexOf(".") == -1) {
                 shortClassName = className;
@@ -78,7 +94,9 @@ public class PtDoclet {
                 shortClassName = 
                     className.substring(className.lastIndexOf(".") + 1);
             }
-            documentation.append("<doc name=\"" + shortClassName
+
+            StringBuffer documentation = new StringBuffer(_header
+                    + "<doc name=\"" + shortClassName
                     + "\" class=\"" + className + "\">\n"
                     + "  <description>\n"
                     + StringUtilities.escapeForXML(classes[i].commentText())
@@ -113,7 +131,9 @@ public class PtDoclet {
     ////                         private methods                   ////
 
     /** Generate documentation for all fields that are derived
-     *  from a specific base class.
+     *  from a specific base class.  The class inheritance tree is
+     *  traversed up to and including TypedAtomicActor and then
+     *  the traversal stops.
      *  @param classDoc The ClassDoc for the class we are documenting.
      *  @param fieldBaseClass The base class for the field we are documenting.
      *  @param element The XML element that is generated.
@@ -141,17 +161,21 @@ public class PtDoclet {
                             + "</" + element + ">\n");
                 }
              } catch (ClassNotFoundException ex) {
-                     // ignored
+                 // Ignored, we probably have a primitive type like boolean.
+                 // Java 1.5 Type.isPrimitive() would help here.
              }
         }
         // Go up the hierarchy
-        ClassDoc superClass = classDoc.superclass(); 
-        if (superClass != null) {
-            System.out.println("Processing " + superClass);
-            // FIXME: we could stop at ptolemy.actor.TypedAtomicActor
-            documentation.append(_generateFieldDocumentation(
-                                        superClass,
-                                        fieldBaseClass, element));
+        ClassDoc superClassDoc = classDoc.superclass(); 
+        if (superClassDoc != null) {
+            Class superClass = Class.forName(superClassDoc.toString()); 
+            // Go no higher than TypedAtomicActor
+            if (_typedAtomicActorClass.isAssignableFrom(superClass)) {
+                System.out.println(element + ": Processing " + superClassDoc);
+                documentation.append(_generateFieldDocumentation(
+                                             superClassDoc,
+                                             fieldBaseClass, element));
+            }
         }
         return documentation.toString();
     }
@@ -210,5 +234,16 @@ public class PtDoclet {
 
     /** Header string for XML PtDoc output. */
     private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
+
+    private static Class _typedAtomicActorClass;
+    static {
+        try {
+            _typedAtomicActorClass = Class.forName("ptolemy.actor.TypedAtomicActor");
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+
 
 }
