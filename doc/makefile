@@ -485,7 +485,7 @@ update: $(DERIVED_FILES)
 update_clean: 
 	rm -f $(DERIVED_FILES)
 
-docs: codeDoc/tree.html
+docs: codeDoc/tree.html doc/codeDoc/ptolemy/actor/lib/Ramp.xml	
 javadocs: codeDoc/tree.html
 codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/plot/compat/*.java \
@@ -630,10 +630,10 @@ PTDOCPACKAGES = $(ALL1_4PACKAGES)
 
 # The ptdoc doclet (does not work yet) 
 PTDOCLET = -doclet doc.doclets.PtDoclet
-PTDOCFLAGS = -d doc/ptdoc
-ptdoc: ptdoc/index.html
-ptdoc/index.html:
-	if [ ! -d ptdoc ]; then mkdir -p ptdoc; fi
+# Path relatvie to $PTII
+PTDOCFLAGS = -d doc/codeDoc
+ptdoc: doc/codeDoc/ptolemy/actor/lib/Ramp.xml	
+doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" -J-Xmx512m \
 			$(PTDOCFLAGS) \
