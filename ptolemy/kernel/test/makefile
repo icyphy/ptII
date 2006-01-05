@@ -51,6 +51,7 @@ JSRCS = \
 	PortNameProblem.java \
 	PortHasNoContainer.java \
 	TestComponentPort.java \
+	TestComponentRelation.java \
 	TestCompositeEntity.java \
 	TestSerializable.java
 
