@@ -705,6 +705,30 @@ test NamedObj-17.1 {propagateValue on an InstantiableNamedObj} {
     listToNames $propagated
 } {A1}
 
+######################################################################
+####
+#
+test NamedObj-17.2 {propagateValue on an InstantiableAttribute} {
+    set n [java::new ptolemy.kernel.util.test.TestInstantiableNamedObj]
+    set a1 [java::new ptolemy.kernel.util.test.TestInstantiableAttribute \
+	$n "A1"]
+    set b1 [java::new ptolemy.kernel.util.test.TestInstantiableAttribute \
+	$a1 "B1"]
+    set result0 [$n propagateValue]
+    set result1 [$a1 propagateValue]
+    set result2 [$b1 propagateValue]
+    set result3 [$n propagateExistence]
+    set result4 [$a1 propagateExistence]
+    set result5 [$b1 propagateExistence]
+    list \
+	[listToNames $result0] \
+	[listToNames $result1] \
+	[listToNames $result2] \
+	[listToNames $result3] \
+	[listToNames $result4] \
+	[listToNames $result5]
+} {A1}
+
 
 ######################################################################
 ####
