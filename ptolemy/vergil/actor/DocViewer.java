@@ -217,7 +217,8 @@ public class DocViewer extends HTMLViewer {
         } else if (rating.startsWith("Blue")) {
             color="#0000FF";
         }
-        return "<td bgcolor=\"" + color + "\">" + rating + "</td>";
+        //return "<td bgcolor=\"" + color + "\">" + rating + "</td>";
+        return "<td><font color=\"" + color + "\">" + rating + "</font></td>";
     }
 
     /** Return a string with parameter table entries.
