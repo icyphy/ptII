@@ -296,3 +296,14 @@ test Relation-18.2 {Test multiple paths} {
     list [_testRelationLinkedPorts $r1] [_testRelationLinkedPorts $r2] [_testRelationLinkedPorts $r3] [_testRelationLinkedPorts $r4]
 } {{{P1 P2}} {{P1 P2}} {{P1 P2}} {{P1 P2}}}
 
+test Relation-19.0 {_getContainedObject()} {
+    set top [java::new ptolemy.kernel.CompositeEntity]
+    set r1 [java::new ptolemy.kernel.test.TestComponentRelation $top R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $top R2]
+    set n1 [java::new ptolemy.kernel.util.NamedObj]
+    catch {$r1 testGetContainedObject $n1 ""} result1
+    catch {$r1 testGetContainedObject $top R2} result2
+    set result3 [[$r1 testGetContainedObject $top R1] getFullName]
+    list $result1 $result2 $result3
+} {{ptolemy.kernel.util.InternalErrorException: Expected . to be an instance of ptolemy.kernel.CompositeEntity, but it is ptolemy.kernel.util.NamedObj} {ptolemy.kernel.util.IllegalActionException: Expected ..R2 to be an instance of ptolemy.kernel.test.TestComponentRelation, but it is ptolemy.kernel.ComponentRelation
+  in .<Unnamed Object>.R1} ..R1}
