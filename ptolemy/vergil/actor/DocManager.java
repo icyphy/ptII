@@ -111,7 +111,7 @@ The description can include HTML formatting, although any
 and &amp;gt;.
 <p>
 Additional information can be provided in the author, version,
-since, proposedRating, and acceptedRating elements.
+since, Pt.ProposedRating, and Pt.AcceptedRating elements.
 These are, like the description, simple text that gets rendered
 (and HTML formatted) in the documentation.
 <p>
@@ -159,7 +159,7 @@ public class DocManager extends HandlerBase {
                 String acceptedRatingValue = instanceDoc.acceptedRating.getExpression();
                 if (!acceptedRatingValue.trim().equals("")) {
                     _isInstanceDoc = true;
-                    _acceptedRating = acceptedRatingValue;
+                    _ptAcceptedRating = acceptedRatingValue;
                 }
                 */
                 String authorValue = instanceDoc.author.getExpression();
@@ -171,7 +171,7 @@ public class DocManager extends HandlerBase {
                 String proposedRatingValue = instanceDoc.proposedRating.getExpression();
                 if (!proposedRatingValue.trim().equals("")) {
                     _isInstanceDoc = true;
-                    _proposedRating = proposedRatingValue;
+                    _ptProposedRating = proposedRatingValue;
                 }
                 */
                 String sinceValue = instanceDoc.since.getExpression();
@@ -304,9 +304,7 @@ public class DocManager extends HandlerBase {
      *  @param elementName The element type name.
      */
     public void endElement(String elementName) throws Exception {
-        if (elementName.equals("acceptedRating")) {
-            _acceptedRating = _currentCharData.toString();
-        } else if (elementName.equals("author")) {
+        if (elementName.equals("author")) {
             _author = _currentCharData.toString();
         } else if (elementName.equals("description")) {
             _description = _currentCharData.toString();
@@ -314,8 +312,10 @@ public class DocManager extends HandlerBase {
             _ports.put(_name, _currentCharData.toString());
         } else if (elementName.equals("property")) {
             _properties.put(_name, _currentCharData.toString());
-        } else if (elementName.equals("proposedRating")) {
-            _proposedRating = _currentCharData.toString();
+        } else if (elementName.equals("Pt.AcceptedRating")) {
+            _ptAcceptedRating = _currentCharData.toString();
+        } else if (elementName.equals("Pt.ProposedRating")) {
+            _ptProposedRating = _currentCharData.toString();
         } else if (elementName.equals("since")) {
             _since = _currentCharData.toString();
         } else if (elementName.equals("version")) {
@@ -337,17 +337,17 @@ public class DocManager extends HandlerBase {
         throw new XmlException(message, _currentExternalEntity(), line, column);
     }
 
-    /** Return the acceptedRating field, or null
+    /** Return the Pt.AcceptedRating field, or null
      *  if none has been given. Note that unlike some of the other
      *  fields, this does not delegate to the next tier if no
      *  since field has been given.
-     *  @return The acceptedRating field.
+     *  @return The Pt.AcceptedRating field.
      */
     public String getAcceptedRating() {
-        if (_acceptedRating == null) {
+        if (_ptAcceptedRating == null) {
             _readDocFile();
         }
-        return _acceptedRating;
+        return _ptAcceptedRating;
     }
 
     /** Return the author field, or the string "No author given"
@@ -450,17 +450,17 @@ public class DocManager extends HandlerBase {
         return result;
     }
 
-    /** Return the proposedRating field, or null
+    /** Return the Pt.ProposedRating field, or null
      *  if none has been given. Note that unlike some of the other
      *  fields, this does not delegate to the next tier if no
      *  since field has been given.
-     *  @return The proposedRating field.
+     *  @return The Pt.ProposedRating field.
      */
     public String getProposedRating() {
-        if (_proposedRating == null) {
+        if (_ptProposedRating == null) {
             _readDocFile();
         }
-        return _proposedRating;
+        return _ptProposedRating;
     }
 
     /** Return the since field, or null
@@ -739,10 +739,10 @@ public class DocManager extends HandlerBase {
     public void startElement(String elementName) throws XmlException {
         try {
             // NOTE: The elements are alphabetical below...
-            if (elementName.equals("acceptedRating")
-                    || elementName.equals("author")
+            if (elementName.equals("author")
                     || elementName.equals("description")
-                    || elementName.equals("proposedRating")
+                    || elementName.equals("Pt.AcceptedRating")
+                    || elementName.equals("Pt.ProposedRating")
                     || elementName.equals("since")
                     || elementName.equals("version")) {
                 _currentCharData = new StringBuffer();
@@ -794,7 +794,7 @@ public class DocManager extends HandlerBase {
     /** The standard DocML DTD, represented as a string.  This is used
      *  to parse DocML data when a compatible PUBLIC DTD is specified.
      */
-    public static String DocML_DTD_1 = "<!ELEMENT doc (acceptedRating | author | description | port | property | proposedRating | since | version)*><!ATTLIST doc name CDATA #REQUIRED class CDATA #REQUIRED><!ELEMENT acceptedRating (#PCDATA)><!ELEMENT author (#PCDATA)><!ELEMENT description (#PCDATA)><!ELEMENT port (#PCDATA)><!ATTLIST port name CDATA #REQUIRED><!ELEMENT property (#PCDATA)><!ATTLIST property name CDATA #REQUIRED><!ELEMENT proposedRating (#PCDATA)><!ELEMENT since (#PCDATA)><!ELEMENT version (#PCDATA)>";
+    public static String DocML_DTD_1 = "<!ELEMENT doc (author | description | port | property | Pt.AcceptedRating | Pt.ProposedRating | since | version)*><!ATTLIST doc name CDATA #REQUIRED class CDATA #REQUIRED><!ELEMENT author (#PCDATA)><!ELEMENT description (#PCDATA)><!ELEMENT port (#PCDATA)><!ATTLIST port name CDATA #REQUIRED><!ELEMENT property (#PCDATA)><!ATTLIST property name CDATA #REQUIRED><!ELEMENT Pt.acceptedRating (#PCDATA)><!ELEMENT Pt.proposedRating (#PCDATA)><!ELEMENT since (#PCDATA)><!ELEMENT version (#PCDATA)>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/vergil/basic/DocML_1.dtd.  If modified, it needs to be also
@@ -884,9 +884,6 @@ public class DocManager extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** The acceptedRating field. */
-    private String _acceptedRating;
-
     /** Attributes associated with an entity. */
     private HashMap _attributes;
     
@@ -929,8 +926,11 @@ public class DocManager extends HandlerBase {
     /** A table of port documents. */
     private HashMap _ports = new HashMap();
 
-    /** The proposedRating field. */
-    private String _proposedRating;
+    /** The Pt.AcceptedRating field. */
+    private String _ptAcceptedRating;
+
+    /** The Pt.ProposedRating field. */
+    private String _ptProposedRating;
     
     /** The since field. */
     private String _since;
