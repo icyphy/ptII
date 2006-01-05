@@ -202,6 +202,24 @@ public class DocViewer extends HTMLViewer {
         SwingUtilities.invokeLater(defer);
     }
     
+    /** Return HTML that colorizes the rating text.
+     *  @param rating The rating text, such as "Red (mrptolemy)"
+     *  @return HTML, such as "<td bgcolor="#FF0000">Red (mrptolemy)</td>"
+     */
+    private String _colorizeRating(String rating) {
+        String color="#FFFFFF";
+        if (rating.startsWith("Red")) {
+            color="#FF0000";
+        } else if (rating.startsWith("Yellow")) {
+            color="#FFAA00";
+        } else if (rating.startsWith("Green")) {
+            color="#00FF00";
+        } else if (rating.startsWith("Blue")) {
+            color="#0000FF";
+        }
+        return "<td bgcolor=\"" + color + "\">" + rating + "</td>";
+    }
+
     /** Return a string with parameter table entries.
      *  @param target The target.
      *  @param manager The manager.
@@ -655,9 +673,7 @@ public class DocViewer extends HTMLViewer {
             info.append(_td20);
             info.append("<i>Rating:</i> ");
             info.append(_tde);
-            info.append(_td);
-            info.append(rating);
-            info.append(_tde);
+            info.append(_colorizeRating(rating));
             info.append(_tre);
         }
         // End of table
