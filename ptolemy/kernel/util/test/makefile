@@ -54,6 +54,7 @@ JSRCS = \
 	StreamValueListener.java \
 	TestDE.java \
 	TestDebugEvent.java \
+	TestInstantiableAttribute.java \
 	TestInstantiableNamedObj.java \
 	TestNullNamedObj.java \
 	TestPtolemyThread.java \
