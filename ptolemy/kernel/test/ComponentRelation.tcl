@@ -201,3 +201,33 @@ test ComponentRelation-3.3 {Test for setName back} {
     $b1 setName B1
     $b1 getFullName
 } {.A.B1}
+
+######################################################################
+####
+#
+test ComponentRelation-4.1 {Test for _propagateExistance} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set b [java::new ptolemy.kernel.CompositeEntity]
+    $b setName b
+    set r1 [java::new ptolemy.kernel.test.TestComponentRelation $a r1]
+    set result1 [enumToNames [$a getRelations]]
+    set result2 [enumToNames [$b getRelations]]
+    $r1 testPropagateExistence $b
+    set result3 [enumToNames [$a getRelations]]
+    set result4 [enumToNames [$b getRelations]]
+    list $result1 $result2 $result3 $result4
+} {r1 {} r1 r1}
+
+test ComponentRelation-4.2 {Test for _propagateExistance: name duplication} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set b [java::new ptolemy.kernel.CompositeEntity]
+    $b setName b
+    set r1 [java::new ptolemy.kernel.test.TestComponentRelation $a r1]
+    set r1 [java::new ptolemy.kernel.test.TestComponentRelation $b r1]
+    catch {$r1 testPropagateExistence $b} msg
+    list $msg
+} {{ptolemy.kernel.util.InternalErrorException: Because:
+Attempt to insert object named "r1" into container named ".b", which already contains an object with that name.}}
+
