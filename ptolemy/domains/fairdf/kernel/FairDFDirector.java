@@ -100,7 +100,7 @@ public class FairDFDirector extends Director {
 
         // get my contained actors
         CompositeActor container = (CompositeActor) this.getContainer();
-        List entities = container.entityList();
+        List entities = container.deepEntityList();
         actors = new ArrayList();
 
         for (Iterator i = entities.iterator(); i.hasNext();) {
