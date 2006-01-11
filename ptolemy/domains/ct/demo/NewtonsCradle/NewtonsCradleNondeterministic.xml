@@ -250,7 +250,7 @@ inside the modal model to see more detailed explanation.
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
     </property>
-    <class name="ballClass" extends="ptolemy.actor.TypedCompositeActor">
+    <class name="BallClass" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 420.0]">
         </property>
         <property name="acceleration" class="ptolemy.data.expr.Parameter" value="acceleration">
@@ -1017,7 +1017,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 295.0]">
                 </property>
             </port>
-            <entity name="ball1" class="ballClass">
+            <entity name="ball1" class="BallClass">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 95.0]">
                 </property>
                 <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_1_initial">
@@ -1035,7 +1035,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                     </property>
                 </port>
             </entity>
-            <entity name="ball2" class="ballClass">
+            <entity name="ball2" class="BallClass">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 190.0]">
                 </property>
                 <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_2_initial">
@@ -1055,7 +1055,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                     </property>
                 </port>
             </entity>
-            <entity name="ball3" class="ballClass">
+            <entity name="ball3" class="BallClass">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 285.0]">
                 </property>
                 <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_3_initial">

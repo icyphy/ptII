@@ -371,7 +371,7 @@ depends on the order of the collisions.</text></svg></configure>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
     </property>
-    <class name="ballClass" extends="ptolemy.actor.TypedCompositeActor">
+    <class name="BallClass" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 420.0]">
         </property>
         <property name="acceleration" class="ptolemy.data.expr.Parameter" value="acceleration">
@@ -1127,7 +1127,7 @@ is the following, where v1' and v2' are the velocities after the collision.
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 330.0]">
                 </property>
             </port>
-            <entity name="ball1" class="ballClass">
+            <entity name="ball1" class="BallClass">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 65.0]">
                 </property>
                 <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_1_initial">
@@ -1145,7 +1145,7 @@ is the following, where v1' and v2' are the velocities after the collision.
                     </property>
                 </port>
             </entity>
-            <entity name="ball2" class="ballClass">
+            <entity name="ball2" class="BallClass">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 190.0]">
                 </property>
                 <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_2_initial">
@@ -1165,7 +1165,7 @@ is the following, where v1' and v2' are the velocities after the collision.
                     </property>
                 </port>
             </entity>
-            <entity name="ball3" class="ballClass">
+            <entity name="ball3" class="BallClass">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 320.0]">
                 </property>
                 <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_3_initial">

@@ -217,7 +217,7 @@
 Newton's cradle. The apparatus consists of 3 identical 
 balls suspended by strings. Each ball can swing as a 
 pendulum and its dynamic behavior is modeled in the
-ballClass class definition. The balls are initially
+BallClass class definition. The balls are initially
 placed side by side.
 
 The list of parameters on the left side specify the 
@@ -236,7 +236,7 @@ other initial states are set to 0.0.
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
     </property>
-    <class name="ballClass" extends="ptolemy.actor.TypedCompositeActor">
+    <class name="BallClass" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 330.0]">
         </property>
         <property name="acceleration" class="ptolemy.data.expr.Parameter" value="acceleration">
@@ -936,7 +936,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[560.771484375, 304.6875]">
                 </property>
             </port>
-            <entity name="ball1" class="ballClass">
+            <entity name="ball1" class="BallClass">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 95.0]">
                 </property>
                 <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_1_initial">
@@ -954,7 +954,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                     </property>
                 </port>
             </entity>
-            <entity name="ball2" class="ballClass">
+            <entity name="ball2" class="BallClass">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 190.0]">
                 </property>
                 <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_2_initial">
@@ -974,7 +974,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
                     </property>
                 </port>
             </entity>
-            <entity name="ball3" class="ballClass">
+            <entity name="ball3" class="BallClass">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 285.0]">
                 </property>
                 <property name="initialTheta" class="ptolemy.actor.parameters.PortParameter" value="theta_3_initial">
