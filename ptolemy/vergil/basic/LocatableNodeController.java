@@ -30,6 +30,7 @@ package ptolemy.vergil.basic;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
 
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
@@ -194,11 +195,12 @@ public class LocatableNodeController extends BasicNodeController {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Fourth argument makes this highlight translucent, which enables
-     *  combination with other highlights.
+    /** A fourth argument would this highlight translucent, which would enable
+     *  combination with other highlights. However, this causes printing to
+     *  PDF to rasterize, which significantly degrades the quality of the
+     *  graphic output. Used to have value 200.
      */
-    public static Color CLASS_ELEMENT_HIGHLIGHT_COLOR = new Color(255, 64, 64,
-            200);
+    public static Color CLASS_ELEMENT_HIGHLIGHT_COLOR = new Color(255, 64, 64);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -267,8 +269,15 @@ public class LocatableNodeController extends BasicNodeController {
                 10.0f, /* mitre limit */
                 dash, /* dash  */
                 0.0f); /* dash_phase  */
-                BasicFigure bf = new BasicFigure(cf.getBackgroundFigure()
-                        .getBounds());
+                // Pad the figure so that this highlight composes properly
+                // with other highlights.
+                Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
+                double padding = 3.0;
+                bounds = new Rectangle2D.Double(bounds.getX() - padding,
+                        bounds.getY() - padding,
+                        bounds.getWidth() + padding * 2.0,
+                        bounds.getHeight() + padding * 2.0);
+                BasicFigure bf = new BasicFigure(bounds);
                 bf.setStroke(stroke);
                 bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);
                 cf.add(bf);
