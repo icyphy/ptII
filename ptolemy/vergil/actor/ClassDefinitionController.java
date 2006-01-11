@@ -229,10 +229,11 @@ public class ClassDefinitionController extends ActorController {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Fourth argument makes this highlight translucent, which enables
-     * combination with other highlights.
+    /** A fourth argument would make this highlight translucent, which enables
+     * combination with other highlights. However, this forces printing
+     * to PDF to rasterize the image, which results in far lower quality.
      */
-    private static Color _HIGHLIGHT_COLOR = new Color(0, 0, 255, 64);
+    private static Color _HIGHLIGHT_COLOR = new Color(150, 150, 255);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
