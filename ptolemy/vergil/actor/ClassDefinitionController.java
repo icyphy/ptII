@@ -162,7 +162,13 @@ public class ClassDefinitionController extends ActorController {
                 BasicFigure bf = new BasicFigure(backgroundFigure.getBounds(),
                         4.0f);
                 bf.setStrokePaint(_HIGHLIGHT_COLOR);
-                cf.add(bf);
+                // Put the highlighting in the background,
+                // behind the actor label.
+                int index = cf.getFigureCount();
+                if (index < 0) {
+                    index = 0;
+                }
+                cf.add(index, bf);
             }
 
             return cf;

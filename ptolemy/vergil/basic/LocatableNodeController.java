@@ -200,7 +200,7 @@ public class LocatableNodeController extends BasicNodeController {
      *  PDF to rasterize, which significantly degrades the quality of the
      *  graphic output. Used to have value 200.
      */
-    public static Color CLASS_ELEMENT_HIGHLIGHT_COLOR = new Color(255, 64, 64);
+    public static Color CLASS_ELEMENT_HIGHLIGHT_COLOR = new Color(255, 128, 128);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -266,9 +266,10 @@ public class LocatableNodeController extends BasicNodeController {
                 Stroke stroke = new BasicStroke(2f, /* width */
                 BasicStroke.CAP_SQUARE, /* cap   */
                 BasicStroke.JOIN_MITER, /* join  */
-                10.0f, /* mitre limit */
-                dash, /* dash  */
-                0.0f); /* dash_phase  */
+                10.0f); /* mitre limit */
+                // To get a dashed line, add the following two arguments above:
+                // dash, /* dash  */
+                // 0.0f); /* dash_phase  */
                 // Pad the figure so that this highlight composes properly
                 // with other highlights.
                 Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
@@ -280,7 +281,13 @@ public class LocatableNodeController extends BasicNodeController {
                 BasicFigure bf = new BasicFigure(bounds);
                 bf.setStroke(stroke);
                 bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);
-                cf.add(bf);
+                // Put the highlighting in the background,
+                // behind the actor label.
+                int index = cf.getFigureCount();
+                if (index < 0) {
+                    index = 0;
+                }
+                cf.add(index, bf);
             }
 
             return nf;
