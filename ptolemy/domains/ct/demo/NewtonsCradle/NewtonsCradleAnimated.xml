@@ -377,7 +377,7 @@ ball starts at an angle of PI/8.
             <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This class defines the dynamics of a pendulum. </text></svg></configure>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 370.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 330.0]">
             </property>
             <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
             </property>
@@ -631,7 +631,7 @@ ball starts at an angle of PI/8.
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 20, 920, 686}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 41, 920, 625}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[705, 568]">
             </property>
@@ -645,7 +645,7 @@ ball starts at an angle of PI/8.
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The transition from the init state to the run state initializes the positions and velocities of the
 balls. A transition is taken from the run state back to itself when a collision occurs.  A collision
-occurs when two adjascent balls make contact with velocity greater than zero. The collision is
+occurs when two adjacent balls make contact with velocity greater than zero. The collision is
 perfectly elastic, so since the two balls have the same mass, they simply exchange their velocities.
 
 In this example, the first collision happens when ball 1 reaches its equilibrium point. Although balls
@@ -659,16 +659,6 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-            </property>
-            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-                </property>
-                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
-                </property>
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The event detection mechanism identifies the time of the collision only to within&#10;a finite precision. Small errors in this time result in energy loss, meaning that&#10;not all momemtum is exchanged. If the model is executed for a very long time,&#10;eventually the balls will slow to a stop.">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 385.0]">
                 </property>
             </property>
             <port name="x_1" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -725,7 +715,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 370.0]">
                 </property>
             </port>
-            <entity name="state" class="ptolemy.domains.fsm.kernel.State">
+            <entity name="run" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="state">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
@@ -815,19 +805,19 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="nondeterministic" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
-            <link port="state.incomingPort" relation="relation"/>
-            <link port="state.incomingPort" relation="relation2"/>
-            <link port="state.incomingPort" relation="relation3"/>
-            <link port="state.outgoingPort" relation="relation"/>
-            <link port="state.outgoingPort" relation="relation3"/>
+            <link port="run.incomingPort" relation="relation"/>
+            <link port="run.incomingPort" relation="relation2"/>
+            <link port="run.incomingPort" relation="relation3"/>
+            <link port="run.outgoingPort" relation="relation"/>
+            <link port="run.outgoingPort" relation="relation3"/>
             <link port="init.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 109, 857, 509}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={243, 217, 857, 509}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[642, 391]">
             </property>
@@ -947,6 +937,12 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 170.0]">
+                </property>
+            </property>
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model with three balls, each of which&#10;is an instance of the BallClass class.">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 65.0]">
                 </property>
             </property>
             <port name="x_1" class="ptolemy.domains.fsm.modal.RefinementPort">
