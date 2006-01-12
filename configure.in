@@ -2763,7 +2763,7 @@ changequote([, ])dnl
 
         # Add TOSROOT and jars to the classpath
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-        <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/nesc-dump.jar\"/> \
+        <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/nesc.jar\"/> \
         <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/jdom.jar\"/>"
 #        <classpathentry kind=\"lib\" path=\"$TOSROOT_NO_CYGDRIVE\"/>"
     fi

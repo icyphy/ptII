@@ -7661,7 +7661,7 @@ echo "${ECHO_T}$PTINYOS_MOMLROOT" >&6
 
         # Add TOSROOT and jars to the classpath
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-        <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/nesc-dump.jar\"/> \
+        <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/nesc.jar\"/> \
         <classpathentry kind=\"lib\" path=\"$PTINYOS_DIR/lib/jdom.jar\"/>"
 #        <classpathentry kind=\"lib\" path=\"$TOSROOT_NO_CYGDRIVE\"/>"
     fi
@@ -8574,10 +8574,9 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
-  #    will be set to the directory where LIBOBJS objects are built.
-  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 

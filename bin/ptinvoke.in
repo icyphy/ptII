@@ -423,7 +423,7 @@ if [ ! -z "$PTINYOS_MOMLROOT" ]; then
 fi
 
 #### NC2MOML - Used by the PtinyOS Domain
-NC2MOML_JARS=${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/jdom.jar${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/nesc-dump.jar
+NC2MOML_JARS=${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/jdom.jar${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/nesc.jar
 
 #### PTVR is the Volume Rendering interface
 # http://www.j3d.org/tutorials/quick_fix/volume.html

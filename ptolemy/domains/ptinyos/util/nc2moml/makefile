@@ -38,7 +38,7 @@ ROOT =		../../../../..
 
 PTINYOS_DIR =   $(ROOT)/ptolemy/domains/ptinyos
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/jdom.jar$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/nesc-dump.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/jdom.jar$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/nesc.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

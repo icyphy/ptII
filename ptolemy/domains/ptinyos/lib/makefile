@@ -72,7 +72,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	jdom.jar \
-	nesc-dump.jar \
+	nesc.jar \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
