@@ -825,7 +825,7 @@ transitions occur at the time of the collision.</text></svg></configure>
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 195.5}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.4318508652971">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.4318508415727">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -844,7 +844,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 225.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="5.6909938942828E-9">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="4.6893646451158E-10">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -863,7 +863,7 @@ transitions occur at the time of the collision.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="6.351470249319E-9">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="1.3885838031446E-9">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1475,7 +1475,7 @@ with the angle at which they hang given by inputs.</text></svg></configure>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
             <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
             </property>
-            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="600">
+            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="460">
             </property>
             <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1661,10 +1661,6 @@ with the angle at which they hang given by inputs.</text></svg></configure>
         <link port="InstanceOfBall3.ball" relation="relation9"/>
         <link port="InstanceOfBall3.theta" relation="relation4"/>
     </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 320.0]">
-        </property>
-    </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[460.0, 235.0]">
         </vertex>
@@ -1690,16 +1686,16 @@ with the angle at which they hang given by inputs.</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="ModalModel.x_1" relation="relation7"/>
     <link port="ModalModel.x_2" relation="relation8"/>
@@ -1707,9 +1703,9 @@ with the angle at which they hang given by inputs.</text></svg></configure>
     <link port="ModalModel.theta_2_dot" relation="relation5"/>
     <link port="ModalModel.x_3" relation="relation"/>
     <link port="ModalModel.theta_3_dot" relation="relation2"/>
-    <link port="ModalModel.theta_1" relation="relation10"/>
-    <link port="ModalModel.theta_2" relation="relation11"/>
-    <link port="ModalModel.theta_3" relation="relation12"/>
+    <link port="ModalModel.theta_1" relation="relation4"/>
+    <link port="ModalModel.theta_2" relation="relation6"/>
+    <link port="ModalModel.theta_3" relation="relation9"/>
     <link port="positions.input" relation="relation7"/>
     <link port="positions.input" relation="relation8"/>
     <link port="positions.input" relation="relation"/>
@@ -1719,10 +1715,4 @@ with the angle at which they hang given by inputs.</text></svg></configure>
     <link port="Graphic Animation.theta_1" relation="relation4"/>
     <link port="Graphic Animation.theta2" relation="relation6"/>
     <link port="Graphic Animation.theta3" relation="relation9"/>
-    <link port="PeriodicSampler.input" relation="relation10"/>
-    <link port="PeriodicSampler.input" relation="relation11"/>
-    <link port="PeriodicSampler.input" relation="relation12"/>
-    <link port="PeriodicSampler.output" relation="relation4"/>
-    <link port="PeriodicSampler.output" relation="relation6"/>
-    <link port="PeriodicSampler.output" relation="relation9"/>
 </entity>

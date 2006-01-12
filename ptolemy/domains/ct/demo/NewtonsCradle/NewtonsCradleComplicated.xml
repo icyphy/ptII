@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradleComplicated" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
@@ -111,7 +111,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, -1, 900, 668}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 900, 668}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[685, 550]">
     </property>
@@ -223,30 +223,26 @@
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is a modified version of the Newton's cradle demo to
-show more complicated dynamic behaviors. The key difference 
-between this model and the normal Newton's cradle demo is 
-the initial states of balls. In this demo, both ball #1 
-and ball #2 are moved away from their equilibrium positions 
-but with different initial angles of PI/8 and PI/16.
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is a modified version of the Newton's cradle demo that
+shows a more complicated dynamic behavior. The key change 
+is the initial states of balls. In this demo, both ball #1 and 
+ball #2 are moved away from their equilibrium positions 
+but start at different angles of PI/8 and PI/16.
 
-Because the period of a pendulum depends on not only the 
-geometric sizes but also the initial angle, ball #1 and #2
-reach their equilibrium positions at the different times with 
-different velocities. Therefore, the collisions between ball 
-#1 and #2 and between ball #2 and #3 do not happen at the same 
-time. This indicates that the momentum transfer process takes 
-a non-zero time, which makes the balls' dynamics complicated.
+Because the period of a pendulum depends on not only its 
+sizes but also the initial angle, ball #1 and #2 do not reach 
+their equilibrium positions at the same time. Therefore, 
+the collisions between ball #1 and #2 and between ball #2 
+and #3 do not happen at the exactly same time. This makes 
+the model's dynamics complicated.
 
 In particular, because ball #2 has a smaller initial angle than
-that of ball #1, its period is smaller. Therefore, ball #2 is
-always the one that starts the momentum transfer process. Suppose
-ball #3 is stationary at the beginning of the process, ball #2 
-first exchanges velocities with ball #3, then with ball #1, then
-with ball #3 again. 
-Zoom in the velocities plot to see what actually happens.</text></svg></configure>
+that of ball #1, its period is smaller. Therefore, ball #2 first 
+collides with ball #3, then with ball #1, and then with ball #3 
+again. All these collisions happen at different times. Zoom in 
+the velocities plot for a better understanding of this.</text></svg></configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 10.0]">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
@@ -650,19 +646,6 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.060676264655">
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{292.0051294620835, 90.8979966551953}">
-            </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The momentum transfer process always takes a non-zero time. </text></svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, -50.0}">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
             </property>
             <port name="x_1" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -1203,25 +1186,6 @@ Zoom in the velocities plot to see what actually happens.</text></svg></configur
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
             </property>
         </property>
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows a simple pendulum system to illustrate
-the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 25.0]">
-            </property>
-        </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[694, 482]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 909, 600}, maximized=false}">
@@ -1247,6 +1211,25 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 85.0]">
+            </property>
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This subsystem renders three balls on strings
+with the angle at which they hang given by inputs.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 25.0]">
             </property>
         </property>
         <port name="theta_1" class="ptolemy.actor.TypedIOPort">
@@ -1480,7 +1463,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
             <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
             </property>
-            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="400">
+            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="460">
             </property>
             <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1666,10 +1649,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <link port="InstanceOfBall3.ball" relation="relation9"/>
         <link port="InstanceOfBall3.theta" relation="relation4"/>
     </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 510.0]">
-        </property>
-    </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[505.0, 425.0]">
         </vertex>
@@ -1695,16 +1674,16 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="ModalModel.x_1" relation="relation7"/>
     <link port="ModalModel.x_2" relation="relation8"/>
@@ -1712,9 +1691,9 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
     <link port="ModalModel.theta_2_dot" relation="relation5"/>
     <link port="ModalModel.x_3" relation="relation"/>
     <link port="ModalModel.theta_3_dot" relation="relation2"/>
-    <link port="ModalModel.theta_1" relation="relation10"/>
-    <link port="ModalModel.theta_2" relation="relation11"/>
-    <link port="ModalModel.theta_3" relation="relation12"/>
+    <link port="ModalModel.theta_1" relation="relation4"/>
+    <link port="ModalModel.theta_2" relation="relation6"/>
+    <link port="ModalModel.theta_3" relation="relation9"/>
     <link port="positions.input" relation="relation7"/>
     <link port="positions.input" relation="relation8"/>
     <link port="positions.input" relation="relation"/>
@@ -1724,10 +1703,4 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
     <link port="Graphic Animation.theta_1" relation="relation4"/>
     <link port="Graphic Animation.theta2" relation="relation6"/>
     <link port="Graphic Animation.theta3" relation="relation9"/>
-    <link port="PeriodicSampler.input" relation="relation10"/>
-    <link port="PeriodicSampler.input" relation="relation11"/>
-    <link port="PeriodicSampler.input" relation="relation12"/>
-    <link port="PeriodicSampler.output" relation="relation4"/>
-    <link port="PeriodicSampler.output" relation="relation6"/>
-    <link port="PeriodicSampler.output" relation="relation9"/>
 </entity>

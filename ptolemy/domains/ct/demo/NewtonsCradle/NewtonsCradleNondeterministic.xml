@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradleNondeterministic" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
@@ -858,7 +858,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
             </property>
             <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{321.0, 175.0}">
             </property>
-            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-1.115401640346E-9">
+            <property name="theta_1_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.2980873180266">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -877,7 +877,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 245.0]">
                 </property>
             </property>
-            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="0.1941998529833">
+            <property name="theta_2_dot_initial" class="ptolemy.data.expr.Parameter" value="-0.197119366476">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -896,7 +896,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 270.0]">
                 </property>
             </property>
-            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="0.2961648003553">
+            <property name="theta_3_dot_initial" class="ptolemy.data.expr.Parameter" value="4.8779701440011E-10">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1171,11 +1171,13 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
         <link port="state.theta_3" relation="theta_3Relation"/>
     </entity>
     <entity name="positions" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x_1, x_2, x_3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 444, 483, 296}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, 459, 483, 281}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 241]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 226]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 455.0]">
         </property>
@@ -1187,16 +1189,18 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
 <xLabel>time</xLabel>
 <yLabel>displacements</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-2.1482965981210618" max="6.14756815068771"/>
+<yRange min="-2.1482686435651592" max="6.148396496542092"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="velocities" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="theta_1_dot, theta_2_dot, theta_3_dot">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 444, 533, 297}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={484, 461, 533, 280}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 242]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[525, 225]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 455.0]">
         </property>
@@ -1214,7 +1218,7 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
 <xLabel>time</xLabel>
 <yLabel>velocities</yLabel>
 <xRange min="0.0" max="30.0"/>
-<yRange min="-0.3000000179056793" max="0.30000001978501245"/>
+<yRange min="-0.30000001825526024" max="0.30000002014942173"/>
 </plot>?>
         </configure>
     </entity>
@@ -1231,25 +1235,6 @@ The operational semantics of HyVisual will find the unique behavior.</text></svg
             <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 50.0]">
-            </property>
-        </property>
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows a simple pendulum system to illustrate
-the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 25.0]">
             </property>
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[694, 482]">
@@ -1277,6 +1262,25 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 85.0]">
+            </property>
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This subsystem renders three balls on strings
+with the angle at which they hang given by inputs.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 25.0]">
             </property>
         </property>
         <port name="theta_1" class="ptolemy.actor.TypedIOPort">
@@ -1510,7 +1514,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
             <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
             </property>
-            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="400">
+            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="460">
             </property>
             <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -1522,7 +1526,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0}">
+            <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,1.0,1.0}">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={609, 6, 408, 434}, maximized=false}">
             </property>
@@ -1696,10 +1700,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <link port="InstanceOfBall3.ball" relation="relation9"/>
         <link port="InstanceOfBall3.theta" relation="relation4"/>
     </entity>
-    <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 530.0]">
-        </property>
-    </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[505.0, 445.0]">
         </vertex>
@@ -1725,16 +1725,16 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="ModalModel.x_1" relation="relation7"/>
     <link port="ModalModel.x_2" relation="relation8"/>
@@ -1742,22 +1742,16 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
     <link port="ModalModel.theta_2_dot" relation="relation5"/>
     <link port="ModalModel.x_3" relation="relation"/>
     <link port="ModalModel.theta_3_dot" relation="relation2"/>
-    <link port="ModalModel.theta_1" relation="relation10"/>
-    <link port="ModalModel.theta_2" relation="relation11"/>
-    <link port="ModalModel.theta_3" relation="relation12"/>
+    <link port="ModalModel.theta_1" relation="relation9"/>
+    <link port="ModalModel.theta_2" relation="relation4"/>
+    <link port="ModalModel.theta_3" relation="relation6"/>
     <link port="positions.input" relation="relation7"/>
     <link port="positions.input" relation="relation8"/>
     <link port="positions.input" relation="relation"/>
     <link port="velocities.input" relation="relation3"/>
     <link port="velocities.input" relation="relation5"/>
     <link port="velocities.input" relation="relation2"/>
-    <link port="Graphic Animation.theta_1" relation="relation4"/>
-    <link port="Graphic Animation.theta2" relation="relation6"/>
-    <link port="Graphic Animation.theta3" relation="relation9"/>
-    <link port="PeriodicSampler.input" relation="relation10"/>
-    <link port="PeriodicSampler.input" relation="relation11"/>
-    <link port="PeriodicSampler.input" relation="relation12"/>
-    <link port="PeriodicSampler.output" relation="relation4"/>
-    <link port="PeriodicSampler.output" relation="relation6"/>
-    <link port="PeriodicSampler.output" relation="relation9"/>
+    <link port="Graphic Animation.theta_1" relation="relation9"/>
+    <link port="Graphic Animation.theta2" relation="relation4"/>
+    <link port="Graphic Animation.theta3" relation="relation6"/>
 </entity>

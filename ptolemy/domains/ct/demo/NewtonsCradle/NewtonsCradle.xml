@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewtonsCradle" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
@@ -206,30 +206,26 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Look inside the ModalModel to&#10;see how this is implemented.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 340.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This is a hybrid system modeling an apparatus called 
-Newton's cradle. The apparatus consists of 3 identical 
-balls suspended by strings. Each ball can swing as a 
-pendulum and its dynamic behavior is modeled in the
-BallClass class definition. The balls are initially
-placed side by side.
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This hybrid system models an apparatus called Newton's
+cradle with 3 identical balls suspended by strings.
+Each ball can swing as a pendulum. Its dynamic behavior
+is modeled in the BallClass class definition.
 
-The list of parameters on the left side specify the 
-geometric sizes of the balls and their initial states. 
-The initial states include the initial angle 
-away from the equilibrium position (initialTheta) and
-initial velocity (initialTheta_dot). In this demo the
-initial angle of the first ball is set to PI/8, and the 
-other initial states are set to 0.0.
+The parameters on the left specify the sizes of the balls and
+their initial states. The initial states include the initial
+angle away from the equilibrium position (initialTheta) and
+initial velocity (initialTheta_dot). In this example, the first
+ball starts at an angle of PI/8.
 </text></svg></configure>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 30.0]">
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
@@ -566,7 +562,7 @@ other initial states are set to 0.0.
     <entity name="ModalModel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 310.0]">
         </property>
         <port name="x_1" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="output"/>
@@ -612,42 +608,34 @@ other initial states are set to 0.0.
         <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
       </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 20, 920, 727}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 32, 919, 599}, maximized=false}">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[705, 609]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[704, 481]">
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.060676264655">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.5040373599538, 207.8045440458195}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.0326399914433, 147.4656808764651}">
             </property>
             <property name="annotation" class="ptolemy.kernel.util.Attribute">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">When any two adjacent balls have contact and their relative velocities 
-is bigger than 0.0, there exists a collision. The collision is perfectly elastic. 
-Because the two balls have the same mass, they simply exchange their velocities.
+                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The transition from the init state to the run state initializes the positions and velocities of the
+balls. A transition is taken from the run state back to itself when a collision occurs.  A collision
+occurs when two adjascent balls make contact with velocity greater than zero. The collision is
+perfectly elastic, so since the two balls have the same mass, they simply exchange their velocities.
 
-With the initial settings of states, the first collision happens when ball #1
-reaches its equilibrium point. Although ball #2 and #3 have contact initially, 
-because the collision happens instantaneously, only ball #1 and #2 will be involved 
-in this collision, where they exchange their velocities. After this collision, ball 
-#2 and #3 has a collision and they exchange their velocities. So, there needs a 
-sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg></configure>
+In this example, the first collision happens when ball 1 reaches its equilibrium point. Although balls
+2 and 3 have contact initially, because the collision happens instantaneously, only balls 1 and 2 will
+be involved in the collision, so they exchange their velocities. After this collision, without any time
+elapsing, balls 2 and 3 collide and exchange their velocities. Thus, two simultaneous yet ordered
+transitions occur at the time of the collision.</text></svg></configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, -70.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -70.0]">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-            </property>
-            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-                <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
-                </property>
-                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The event detection mechanism introduces an overlap of two balls to ensure these &#10;balls collide. This overlap causes energy loss, meaning not all potential energy &#10;gets transformed into kinetic energy. This overlap is neglectable with a small &#10;error tolerance (e.g. 1e-8), the corresponding energy loss is also neglectable in&#10;a reasonably long simulation (e.g. 1000 time units).&#10;">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 385.0]">
                 </property>
             </property>
             <port name="x_1" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -1069,7 +1057,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[476, 241]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 315.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -1090,7 +1078,7 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[532, 242]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 305.0}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1111,27 +1099,27 @@ sequence of collisions to pass the momentum of ball #1 to ball #3.</text></svg><
         </configure>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[495.0, 325.0]">
+        <vertex name="vertex1" value="[500.0, 300.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[495.0, 335.0]">
+        <vertex name="vertex1" value="[500.0, 310.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[495.0, 345.0]">
+        <vertex name="vertex1" value="[500.0, 320.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[300.4551239013672, 344.3782043457031]">
+        <vertex name="vertex1" value="{305.0, 320.0}">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[300.4551239013672, 324.3782043457031]">
+        <vertex name="vertex1" value="{305.0, 300.0}">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[300.4551239013672, 334.3782043457031]">
+        <vertex name="vertex1" value="{305.0, 310.0}">
         </vertex>
     </relation>
     <link port="ModalModel.x_1" relation="relation7"/>
