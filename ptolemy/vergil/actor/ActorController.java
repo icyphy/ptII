@@ -345,7 +345,7 @@ public abstract class ActorController extends AttributeController {
 
     private PortDialogFactory _portDialogFactory;
 
-    private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
+    private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 8);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
