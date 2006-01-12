@@ -68,7 +68,7 @@ public class BasicHighlighter extends FigureDecorator {
      */
     public BasicHighlighter() {
         this._paint = Color.yellow;
-        this._halo = 4.0f;
+        this._halo = 6.0f;
     }
 
     /** Create a new highlighter with the given paint and "halo"
