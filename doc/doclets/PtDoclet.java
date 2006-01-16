@@ -36,6 +36,12 @@ import com.sun.javadoc.*;
 import ptolemy.util.StringUtilities;
 
 /** Generate PtDoc output.
+ *  See ptolemy/vergil/basic/DocML_1.dtd for the dtd. 
+ *  <p>If javadoc is called with -d <i>directoryName</i>, then 
+ *  documentation will be generated in <i>directoryName</i>.
+ *  This doclet writes the names of all the classes for which documentation
+ *  was generated in a file called allActors.txt.
+
  *  @author Christopher Brooks, Edward A. Lee
  *  @version $Id$
  *  @since Ptolemy II 5.2  
@@ -53,8 +59,8 @@ public class PtDoclet {
         return 0;
     }
 
-    /** Process the java files and generate PtDoc XML.
-     *  Only classes that extend TypedAtomicActor are processed, all
+    /** Process the java files and generate PtDoc XML.  Only classes
+     *  that extend ptolemy.kernel.util.NamedObj are processed, all
      *  other classes are ignored.
      *  @param root The root of the java doc tree.
      *  @return Always return true;
@@ -65,64 +71,50 @@ public class PtDoclet {
     public static boolean start(RootDoc root)
             throws IOException, ClassNotFoundException {
         String outputDirectory = _getOutputDirectory(root.options());
-        Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
-        Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
+        // We cache the names of all actors for which we generate text.
+        FileWriter allActorsWriter = null;
+        try {
+            allActorsWriter = new FileWriter(
+                    outputDirectory + File.separator + "allActors.txt");
 
-        ClassDoc[] classes = root.classes();
-        for (int i = 0; i < classes.length; i++) {
-            String className = classes[i].toString();
+            Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
+            Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
 
-            Class theClass = null;
-            try {
-                theClass = Class.forName(className);
-            } catch (Throwable ex) {
-                // Print a message and move on.
-                // FIXME: Use the doclet error handling mechanism
-                System.err.println("Failed to process " + className + "\n"
-                        + ex);
-                continue;
-            }
-            if (!_typedAtomicActorClass.isAssignableFrom(theClass)) {
-                // The class does not extend TypedAtomicActor, so we skip.
-                continue;
-            }
+            ClassDoc[] classes = root.classes();
+            for (int i = 0; i < classes.length; i++) {
+                String className = classes[i].toString();
+                //System.out.println(className);
 
-            String shortClassName = null;
-            if (className.lastIndexOf(".") == -1) {
-                shortClassName = className;
-            } else {
-                shortClassName = 
-                    className.substring(className.lastIndexOf(".") + 1);
-            }
-
-            StringBuffer documentation = new StringBuffer(_header
-                    + "<doc name=\"" + shortClassName
-                    + "\" class=\"" + className + "\">\n"
-                    + "  <description>\n"
-                    + StringUtilities.escapeForXML(classes[i].commentText())
-                    + "\n"
-                    + "  </description>\n");
-
-            // Handle other class tags.
-            String [] classTags = {"author", "version", "since",
-                                   "Pt.ProposedRating", "Pt.AcceptedRating"};
-            for (int j = 0; j< classTags.length; j++) {
-                Tag [] tags = classes[i].tags(classTags[j]);
-                // FIXME: This uses just the first tag.
-                if (tags.length > 0) {
-                    documentation.append("  <" + classTags[j] + ">" 
-                            + StringUtilities.escapeForXML(tags[0].text())
-                            + "</" + classTags[j] + ">\n");
+                Class theClass = null;
+                try {
+                    theClass = Class.forName(className);
+                } catch (Throwable ex) {
+                    // Print a message and move on.
+                    // FIXME: Use the doclet error handling mechanism
+                    System.err.println("Failed to process " + className + "\n"
+                            + ex);
+                    continue;
                 }
+                if (!_namedObjClass.isAssignableFrom(theClass)) {
+                    // The class does not extend TypedAtomicActor, so we skip.
+                    continue;
+                }
+
+                StringBuffer documentation =
+                    _generateClassLevelDocumentation(classes[i]);
+                documentation.append(_generateFieldDocumentation(classes[i], 
+                                             typedIOPortClass, "port"));
+                documentation.append(_generateFieldDocumentation(classes[i], 
+                                             parameterClass, "property"));
+                documentation.append("</doc>\n");
+                _writeDoc(className, outputDirectory,
+                        documentation.toString());
+                allActorsWriter.write(className + "\n");
             }
-
-            documentation.append(_generateFieldDocumentation(classes[i], 
-                                         typedIOPortClass, "port"));
-
-            documentation.append(_generateFieldDocumentation(classes[i], 
-                                         parameterClass, "parameter"));
-            documentation.append("</doc>\n");
-            _writeDoc(className, outputDirectory, documentation.toString());
+        } finally {
+            if (allActorsWriter != null) {
+                allActorsWriter.close();
+            }
         }
         return true;
     }
@@ -130,10 +122,49 @@ public class PtDoclet {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Generate documentation for all fields that are derived
-     *  from a specific base class.  The class inheritance tree is
-     *  traversed up to and including TypedAtomicActor and then
-     *  the traversal stops.
+    /** Generate the classLevel documentation for a class
+     *  @param classDoc The class for which we are generating documentation.
+     *  @return The top part of the class documentation.
+     */
+    private static StringBuffer _generateClassLevelDocumentation(
+            ClassDoc classDoc) {
+        // This method is a private method so that the start() method
+        // is easier to read.
+        String className = classDoc.toString();
+        String shortClassName = null;
+        if (className.lastIndexOf(".") == -1) {
+            shortClassName = className;
+        } else {
+            shortClassName = 
+                className.substring(className.lastIndexOf(".") + 1);
+        }
+
+        StringBuffer documentation = new StringBuffer(_header
+                + "<doc name=\"" + shortClassName
+                + "\" class=\"" + className + "\">\n"
+                + "  <description>\n"
+                + StringUtilities.escapeForXML(classDoc.commentText())
+                + "\n"
+                + "  </description>\n");
+
+        // Handle other class tags.
+        String [] classTags = {"author", "version", "since",
+                               "Pt.ProposedRating", "Pt.AcceptedRating"};
+        for (int j = 0; j< classTags.length; j++) {
+            Tag [] tags = classDoc.tags(classTags[j]);
+            // FIXME: This uses just the first tag.
+            if (tags.length > 0) {
+                documentation.append("  <" + classTags[j] + ">" 
+                        + StringUtilities.escapeForXML(tags[0].text())
+                        + "</" + classTags[j] + ">\n");
+            }
+        }
+        return documentation;
+    }
+
+    /** Generate documentation for all fields that are derived from a
+     *  specific base class.  The class inheritance tree is traversed
+     *  up to and including NamedObj and then the traversal stops.
      *  @param classDoc The ClassDoc for the class we are documenting.
      *  @param fieldBaseClass The base class for the field we are documenting.
      *  @param element The XML element that is generated.
@@ -150,6 +181,8 @@ public class PtDoclet {
         // FIXME: get fields from superclasses?
         for (int i = 0; i < fields.length; i++) {
             String className = fields[i].type().toString();
+            //System.out.println(element + ": Processing " + className);
+
             try {
                 Class type = Class.forName(className);
                 if (fieldBaseClass.isAssignableFrom(type)) {
@@ -168,13 +201,19 @@ public class PtDoclet {
         // Go up the hierarchy
         ClassDoc superClassDoc = classDoc.superclass(); 
         if (superClassDoc != null) {
-            Class superClass = Class.forName(superClassDoc.toString()); 
-            // Go no higher than TypedAtomicActor
-            if (_typedAtomicActorClass.isAssignableFrom(superClass)) {
-                System.out.println(element + ": Processing " + superClassDoc);
-                documentation.append(_generateFieldDocumentation(
-                                             superClassDoc,
-                                             fieldBaseClass, element));
+            //System.out.println(element + ": SuperClass " + superClassDoc);
+
+            try {
+                Class superClass = Class.forName(superClassDoc.toString()); 
+                // Go no higher than TypedAtomicActor
+                if (_namedObjClass.isAssignableFrom(superClass)) {
+                    documentation.append(_generateFieldDocumentation(
+                                                 superClassDoc,
+                                                 fieldBaseClass, element));
+                } 
+            } catch (Throwable throwable) {
+                System.err.println("Failed to find superclass "
+                        + superClassDoc + "\n" + throwable);
             }
         }
         return documentation.toString();
@@ -218,7 +257,7 @@ public class PtDoclet {
         if (!directoryFile.exists()) {
             directoryFile.mkdirs();
         }
-        System.out.println("Writing " + documentation.length() + " chars to "
+        System.out.println("Creating "
                 + System.getProperty("user.dir") + File.separator + fileName);
 
         FileWriter writer = new FileWriter(fileName);
@@ -235,10 +274,10 @@ public class PtDoclet {
     /** Header string for XML PtDoc output. */
     private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
 
-    private static Class _typedAtomicActorClass;
+    private static Class _namedObjClass;
     static {
         try {
-            _typedAtomicActorClass = Class.forName("ptolemy.actor.TypedAtomicActor");
+            _namedObjClass = Class.forName("ptolemy.kernel.util.NamedObj");
         } catch (ClassNotFoundException ex) {
             throw new RuntimeException(ex);
         }
