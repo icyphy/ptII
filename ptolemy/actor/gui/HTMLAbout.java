@@ -562,7 +562,9 @@ public class HTMLAbout {
                         try {
                             model = (new URI(demosURLParent + modelLink))
                                 .normalize().getPath().substring(1);
-                        } catch (URISyntaxException ex) {
+                            // Under Windows, convert /C:/foo/bar to C:/foo/bar
+                            model = new File(model).toString().replace('\\', '/');
+                       } catch (URISyntaxException ex) {
                             ex1 = ex;
                         }
                         if (model == null) {
