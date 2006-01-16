@@ -119,6 +119,10 @@ docsPtiny.htm: docs.htm
 docsPtinyKepler.htm: docsPtiny.htm
 	awk -f $(ROOT)/doc/ptinyKepler.awk docsPtiny.htm | sed 's/introPtiny.htm/introPtinyKepler.htm/' | sed 's/completeDemosPtiny.htm/completeDemosPtinyKepler.htm/' > $@  
 
+# models.txt contains a list of model file names
+models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class
+	$(JAVA) -classpath $(PTII) ptolemy.actor.gui.HTMLAbout
+
 update: $(DERIVED_FILES)
 	cvs commit -m "Master files changed" $(DERIVED_FILES)
 	rm -f doc.jar
