@@ -34,9 +34,11 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.event.HyperlinkEvent;
 
@@ -311,6 +313,35 @@ public class HTMLAbout {
         return newURL;
     }
 
+    /** Generate a file that contains urls of models.
+     *  @param args The optional name of the file containing the demos
+     *  followed by the optional name of the output file.  The default
+     *  demo file is ptolemy/configs/doc/demos.htm, the default
+     *  output file is models.txt.
+     *  @exception If there is a problem reading the demo file or writing
+     *  the model file.
+     */
+    public static void main(String [] args) 
+            throws IOException {
+        String demoFileName = "ptolemy/configs/doc/demos.htm";
+        String outputFileName = "models.txt";
+
+        if (args.length > 2) {
+            System.err.println("Usage: [demoFileName [outputFilename]\n"
+                    + "demoFileName defaults to " + demoFileName + "\n"
+                    + "outputFileName defaults to " + outputFileName +
+                    "\n");
+            System.exit(3);
+        }
+        if (args.length >= 1) {
+            demoFileName = args[0];
+        }
+        if (args.length == 2) {
+            outputFileName = args[1];
+        }
+        writeDemoURLs(demoFileName, outputFileName);
+    } 
+
     /** Run all the local .xml files that are linked to from an HTML file.
      *  @param demosFileName The name of the HTML file that contains links
      *  to the .xml files.  If this argument is the empty string, then
@@ -349,6 +380,36 @@ public class HTMLAbout {
         }
 
         return demosURL;
+    }
+
+    /** Write the urls of the demo urls.  The HTML file referred to by
+     * demoURLName is scanned for links to .xml files and for links to
+     * other .htm* files.  The children of demoURLName are scanned, but
+     * not the grandchildren.  This method is used to generate a list of
+     * all demos. 
+     * @param demosFileName The name of the demo file.
+     * @param outputFileName The name of the file that is generated.
+     * @exception IOException If there is a problem reading the demo file
+     * or writing the output file.
+     */
+    public static void writeDemoURLs(String demosFileName,
+            String outputFileName)
+            throws IOException {
+        URL demoURL = MoMLApplication.specToURL(demosFileName);
+        List demosList = _getURLs(demoURL, ".*.xml", true, 2);
+        Set demosSet = new HashSet(demosList);
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(outputFileName);
+            Iterator demos = demosSet.iterator();
+            while ( demos.hasNext()) {
+                fileWriter.write((String)(demos.next() + "\n"));
+            }
+        } finally {
+            if (fileWriter != null) {
+                fileWriter.close();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -500,7 +561,7 @@ public class HTMLAbout {
                         Exception ex1 = null;
                         try {
                             model = (new URI(demosURLParent + modelLink))
-                                .normalize().getPath();
+                                .normalize().getPath().substring(1);
                         } catch (URISyntaxException ex) {
                             ex1 = ex;
                         }
