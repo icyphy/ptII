@@ -629,6 +629,18 @@ public class DocManager extends HandlerBase {
         // FIXME: Need see also fields from the doclet analysis.
         // FIXME: Include demos? How?
         
+        try {
+            URL toRead = getClass().getClassLoader().getResource(
+                    "doc/codeDoc/" + className.replace('.', '/') + "Idx.htm");
+            if (toRead != null) {
+                result.append("<li><a href=\""
+                        + toRead.toExternalForm()
+                        + "\">Demo Usage</a></li>");
+            }
+        } catch (Exception ex) {
+                // Do not report anything.
+            
+        }
         result.append("</ul>");
         return result.toString();
     }
