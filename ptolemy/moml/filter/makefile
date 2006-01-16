@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ActorIndex.java \
 	AddEditorFactory.java \
 	AddIcon.java \
 	BackwardCompatibility.java \
@@ -55,8 +56,9 @@ JSRCS = \
 	GRColorChanges.java \
 	HideAnnotationNames.java \
 	MultiportToSinglePort.java \
+	NamedObjClassesSeen.java \
 	ParameterNameChanges.java \
-    PortClassChanges.java \
+	PortClassChanges.java \
 	PortNameChanges.java \
 	PropertyClassChanges.java \
 	RemoveGraphicalClasses.java \
@@ -83,6 +85,10 @@ all: jclass
 install: all $(PTCLASSJAR)
 
 demo: all
+
+demoActorIndex: allActors.txt models.txt
+	java -classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/diva.jar" \
+		ptolemy.moml.filter.ActorIndex allActors.txt models.txt 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
