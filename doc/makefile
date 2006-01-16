@@ -640,6 +640,9 @@ doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 			$(PTDOCLET) \
 			$(PTDOCPACKAGES) )
 
+indexActors:
+	$(ROOT)/bin/ptinvoke ptolemy.moml.filter.ActorIndex \
+		codeDoc/allActors.txt $(PTII)/ptolemy/configs/doc/models.txt codeDoc
 # Note that we change into the codeDocViptos directory
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
