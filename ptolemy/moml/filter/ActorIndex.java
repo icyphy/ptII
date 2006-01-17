@@ -180,7 +180,7 @@ public class ActorIndex {
     }
 
     /** Generate index documentation.  The three arguments are passed to
-     *  {@link #generateActorIndex(String, String, String).   
+     *  {@link #generateActorIndex(String, String, String)}.   
      *  <pre>
      *  java -classpath "$PTII;$PTII/lib/diva.jar" ptolemy.moml.filter.ActorIndex allActors.txt models.txt doc/codeDoc
      *  </pre>
