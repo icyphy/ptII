@@ -121,4 +121,7 @@ public interface PtinyOSLoader {
     /** Invoke the wrapup() method of the toplevel Director.
      */
     public void wrapup();
+
+    public void startThreads();
+    public int joinThreads();
 }

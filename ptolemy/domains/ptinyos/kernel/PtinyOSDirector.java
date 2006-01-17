@@ -814,6 +814,24 @@ public class PtinyOSDirector extends Director {
         text.addLine("        return main" + toplevelName + "(argsToMain);");
         text.addLine("    }");
 
+        text.addLine("    public void startThreads() {");
+        text.addLine("        this.eventAcceptThread = new EventAcceptThread();");
+        text.addLine("        this.eventAcceptThread.start();");
+        text.addLine("        this.commandReadThread = new CommandReadThread();");
+        text.addLine("        this.commandReadThread.start();");
+        text.addLine("    }");
+
+        text.addLine("    public int joinThreads() {");
+        text.addLine("        try {");
+        text.addLine("            this.commandReadThread.join();");
+        text.addLine("            this.eventAcceptThread.join();");
+        text.addLine("        } catch (Exception e) {");
+        text.addLine("            System.err.println(\"Could not join thread: \" + e);");
+        text.addLine("            return -1;");
+        text.addLine("        }");
+        text.addLine("        return 0;");
+        text.addLine("    }"); 
+
         text.addLine("    public void wrapup() {");
         text.addLine("        wrapup" + toplevelName + "();");
         text.addLine("    }");
@@ -863,11 +881,26 @@ public class PtinyOSDirector extends Director {
 
         text.addLine("    private native int main" + toplevelName
                 + "(String argsToMain[]);");
+        text.addLine("    private native void commandReadThread" + toplevelName + "();");
+        text.addLine("    private native void eventAcceptThread" + toplevelName + "();");
         text.addLine("    private native void wrapup" + toplevelName + "();");
         text.addLine("    private native void processEvent" + toplevelName
                 + "(long currentTime);");
         text.addLine("    private native void receivePacket" + toplevelName
                 + "(long currentTime, String packet);");
+        text.addLine("    private CommandReadThread commandReadThread;");
+        text.addLine("    private EventAcceptThread eventAcceptThread;");
+
+        text.addLine("    class CommandReadThread extends Thread {");
+        text.addLine("         public void run() {");
+        text.addLine("             commandReadThread" + toplevelName + "();");
+        text.addLine("         }");
+        text.addLine("    }");
+        text.addLine("    class EventAcceptThread extends Thread {");
+        text.addLine("         public void run() {");
+        text.addLine("             eventAcceptThread" + toplevelName + "();");
+        text.addLine("         }");
+        text.addLine("    }");
         text.addLine("}");
 
         String loaderFileName = "Loader" + toplevelName + ".java";
