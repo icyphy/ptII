@@ -561,7 +561,7 @@ public class HTMLAbout {
                         Exception ex1 = null;
                         try {
                             model = (new URI(demosURLParent + modelLink))
-                                .normalize().getPath().substring(1);
+                                .normalize().getPath();
                             // Under Windows, convert /C:/foo/bar to C:/foo/bar
                             model = new File(model).toString().replace('\\', '/');
                        } catch (URISyntaxException ex) {
