@@ -94,4 +94,7 @@ public interface ParseTreeVisitor {
 
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException;
+
+    public void visitUnionConstructNode(ASTPtUnionConstructNode node)
+            throws IllegalActionException;
 }

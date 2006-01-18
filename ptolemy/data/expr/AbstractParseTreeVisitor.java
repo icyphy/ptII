@@ -132,6 +132,11 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
         throw _unsupportedVisitException("ASTPtUnaryNode");
     }
 
+    public void visitUnionConstructNode(ASTPtUnionConstructNode node)
+            throws IllegalActionException {
+        throw _unsupportedVisitException("ASTPtUnionConstructNode");
+    }
+
     protected IllegalActionException _unsupportedVisitException(String name) {
         return new IllegalActionException("Nodes of type " + name
                 + " cannot be visited by a " + getClass().getName() + ".");

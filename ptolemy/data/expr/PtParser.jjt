@@ -474,7 +474,9 @@ TOKEN : /* Assignment */
     < COMMA: "," > | 
     < PERIOD: "." > |
     < COLON: ":" > | 
-    < QUESTION: "?" >
+    < QUESTION: "?" > |
+    < OPENUNION: "{|" > | 
+    < CLOSEUNION: "|}" >
 }
 
 TOKEN : /* Relational operators */
@@ -1146,6 +1148,9 @@ String tidied, x;
   |   LOOKAHEAD( <OPENBRACE> <ID> <SETEQUALS> )
       recordConstruct()
   
+  |   LOOKAHEAD(<OPENUNION>)
+      unionConstruct()
+
   |   LOOKAHEAD( <OPENBRACE> )
       arrayConstruct()
 
@@ -1278,6 +1283,16 @@ void recordConstruct() #PtRecordConstructNode :
     <OPENBRACE> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf() 
         (<COMMA> x = <ID> {jjtThis._fieldNames.add(x.image);} <SETEQUALS> funcIf())*
     <CLOSEBRACE>
+}
+
+void unionConstruct() #PtUnionConstructNode :
+{
+  Token x = null;
+}
+{
+    <OPENUNION> x = <ID> {jjtThis._labelNames.add(x.image);} <SETEQUALS> funcIf() 
+        (<COMMA> x = <ID> {jjtThis._labelNames.add(x.image);} <SETEQUALS> funcIf())*
+    <CLOSEUNION>
 }
 
 void arrayConstruct() #PtArrayConstructNode :

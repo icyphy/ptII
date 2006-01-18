@@ -474,7 +474,9 @@ TOKEN : /* Assignment */
     < COMMA: "," > | 
     < PERIOD: "." > |
     < COLON: ":" > | 
-    < QUESTION: "?" >
+    < QUESTION: "?" > |
+    < OPENUNION: "{|" > | 
+    < CLOSEUNION: "|}" >
 }
 
 TOKEN : /* Relational operators */
@@ -1910,6 +1912,9 @@ String tidied, x;
   |   LOOKAHEAD( <OPENBRACE> <ID> <SETEQUALS> )
       recordConstruct()
   
+  |   LOOKAHEAD(<OPENUNION>)
+      unionConstruct()
+
   |   LOOKAHEAD( <OPENBRACE> )
       arrayConstruct()
 
@@ -2175,6 +2180,42 @@ void recordConstruct()                        :
     <OPENBRACE> x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf() 
         (<COMMA> x = <ID> {jjtn000._fieldNames.add(x.image);} <SETEQUALS> funcIf())*
     <CLOSEBRACE>/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
+
+void unionConstruct()                       :
+{/*@bgen(jjtree) PtUnionConstructNode */
+  ASTPtUnionConstructNode jjtn000 = new ASTPtUnionConstructNode(JJTPTUNIONCONSTRUCTNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/
+  Token x = null;
+}
+{/*@bgen(jjtree) PtUnionConstructNode */
+    try {
+/*@egen*/
+    <OPENUNION> x = <ID> {jjtn000._labelNames.add(x.image);} <SETEQUALS> funcIf() 
+        (<COMMA> x = <ID> {jjtn000._labelNames.add(x.image);} <SETEQUALS> funcIf())*
+    <CLOSEUNION>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);

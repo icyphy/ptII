@@ -50,48 +50,50 @@ public interface PtParserConstants {
   int PERIOD = 23;
   int COLON = 24;
   int QUESTION = 25;
-  int GT = 26;
-  int LT = 27;
-  int GTE = 28;
-  int LTE = 29;
-  int NOTEQUALS = 30;
-  int EQUALS = 31;
-  int COND_AND = 32;
-  int COND_OR = 33;
-  int BOOL_NOT = 34;
-  int BITWISE_NOT = 35;
-  int AND = 36;
-  int OR = 37;
-  int XOR = 38;
-  int SHL = 39;
-  int SHR = 40;
-  int LSHR = 41;
-  int INTEGER = 42;
-  int INTEGER_FORMAT_SPEC = 43;
-  int DECIMAL_LITERAL = 44;
-  int HEX_LITERAL = 45;
-  int OCTAL_LITERAL = 46;
-  int EXPONENT = 47;
-  int DOUBLE = 48;
-  int COMPLEX = 49;
-  int BOOLEAN = 50;
-  int FUNCTION = 51;
-  int ID = 52;
-  int LETTER = 53;
-  int STRING = 54;
-  int SETEQUALS = 55;
-  int SEPARATOR = 56;
-  int SMSTRING = 57;
-  int SMDOLLAR = 58;
-  int SMDOLLARBRACE = 59;
-  int SMDOLLARPAREN = 60;
-  int SMID = 61;
-  int SMLETTER = 62;
-  int SMIDBRACE = 63;
-  int SMBRACE = 64;
-  int SMIDPAREN = 65;
-  int SMPAREN = 66;
-  int ERROR = 67;
+  int OPENUNION = 26;
+  int CLOSEUNION = 27;
+  int GT = 28;
+  int LT = 29;
+  int GTE = 30;
+  int LTE = 31;
+  int NOTEQUALS = 32;
+  int EQUALS = 33;
+  int COND_AND = 34;
+  int COND_OR = 35;
+  int BOOL_NOT = 36;
+  int BITWISE_NOT = 37;
+  int AND = 38;
+  int OR = 39;
+  int XOR = 40;
+  int SHL = 41;
+  int SHR = 42;
+  int LSHR = 43;
+  int INTEGER = 44;
+  int INTEGER_FORMAT_SPEC = 45;
+  int DECIMAL_LITERAL = 46;
+  int HEX_LITERAL = 47;
+  int OCTAL_LITERAL = 48;
+  int EXPONENT = 49;
+  int DOUBLE = 50;
+  int COMPLEX = 51;
+  int BOOLEAN = 52;
+  int FUNCTION = 53;
+  int ID = 54;
+  int LETTER = 55;
+  int STRING = 56;
+  int SETEQUALS = 57;
+  int SEPARATOR = 58;
+  int SMSTRING = 59;
+  int SMDOLLAR = 60;
+  int SMDOLLARBRACE = 61;
+  int SMDOLLARPAREN = 62;
+  int SMID = 63;
+  int SMLETTER = 64;
+  int SMIDBRACE = 65;
+  int SMBRACE = 66;
+  int SMIDPAREN = 67;
+  int SMPAREN = 68;
+  int ERROR = 69;
 
   int DEFAULT = 0;
   int SingleLineCommentMode = 1;
@@ -128,6 +130,8 @@ public interface PtParserConstants {
     "\".\"",
     "\":\"",
     "\"?\"",
+    "\"{|\"",
+    "\"|}\"",
     "\">\"",
     "\"<\"",
     "\">=\"",
