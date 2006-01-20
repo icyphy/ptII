@@ -68,8 +68,8 @@ test MoMLParser-1.1 {parse tolerated incorrect MoML} {
 "
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_1]
-    $toplevel getFullName
-} {.top}
+    list [$toplevel getFullName] [[$parser getToplevel] getFullName]
+} {.top .top}
 
 ######################################################################
 ####
