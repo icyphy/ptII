@@ -71,11 +71,13 @@ test MoMLChangeRequest-1.1 {Test adding an entity} {
     }]
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $change
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
+    list [[$change getContext] getFullName] [$toplevel exportMoML]
+} {.top {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    </property>
     <property name="dir" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -83,7 +85,8 @@ test MoMLChangeRequest-1.1 {Test adding an entity} {
     <entity name="const" class="ptolemy.actor.lib.Const">
     </entity>
 </entity>
-}
+}}
+
 
 ######################################################################
 ####
