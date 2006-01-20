@@ -747,9 +747,10 @@ nightly: ptclean ptbuild \
 	glimpse \
 	findchanges \
 	ChangeLog \
-	jnlp \
-	remote4 \
-	remote5
+	jnlp
+
+#	remote4
+#	remote5
 
 #	remote2
 #	remote6
@@ -946,9 +947,10 @@ bldmastrcoverage:
 		remote1distnonjsall \
 		remote1ChangeLog \
 		remote1doccheck \
-		remote1jnlp \
-		remote4 \
-		remote5
+		remote1jnlp
+
+#		remote4
+#		remote5
 
 # Remove the remote dist
 remote1nuke:
