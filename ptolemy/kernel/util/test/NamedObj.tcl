@@ -727,7 +727,7 @@ test NamedObj-17.2 {propagateValue on an InstantiableAttribute} {
 	[listToNames $result3] \
 	[listToNames $result4] \
 	[listToNames $result5]
-} {A1}
+} {{A1 B1} B1 {} {A1 B1} {A1 B1 B1} {B1 B1 B1}}
 
 
 ######################################################################
