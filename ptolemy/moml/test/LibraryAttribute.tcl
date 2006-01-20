@@ -145,3 +145,80 @@ test LibraryAttribute-4.1 {call getLibrary on a LibraryAttribute that does not h
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Expected library to be in an instance of CompositeEntity, but it is: ptolemy.kernel.ComponentEntity
   in .N0._library}}
+
+test LibraryAttribute-5.1 {setLibrary to null} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $libraryMoML]
+    set libraryAttribute [java::cast ptolemy.moml.LibraryAttribute \
+	    [$toplevel getAttribute "_library"]]
+    set r1 [$libraryAttribute exportMoML]
+    set r2 [[$libraryAttribute getLibrary] exportMoML]
+    set r3 [java::isnull [$libraryAttribute getLibrary]]
+    $libraryAttribute setLibrary [java::null]
+    set r4 [java::isnull [$libraryAttribute getLibrary]]
+    set r5 [$libraryAttribute exportMoML]
+    # Even though the library is now null, libraryAttribute has the same MoML
+    list $r3 $r4 [expr {$r1 == $r5}]
+} {0 1 1}
+
+test LibraryAttribute-5.2 {setLibrary} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $libraryMoML]
+    set libraryAttribute [java::cast ptolemy.moml.LibraryAttribute \
+	    [$toplevel getAttribute "_library"]]
+
+    set r1 [[$libraryAttribute getLibrary] exportMoML]
+
+    set workspace [$libraryAttribute workspace]
+    set library [java::new ptolemy.kernel.CompositeEntity $workspace]
+    $library setName myLibrary
+    $libraryAttribute setLibrary $library
+    set r2 [[$libraryAttribute getLibrary] exportMoML]
+    list $r1 $r2
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="state library" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    </property>
+    <property name="myAttribute" class="ptolemy.kernel.util.Attribute">
+    </property>
+    <property name="_libraryMarker" class="ptolemy.kernel.util.SingletonAttribute">
+    </property>
+</entity>
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="myLibrary" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    </property>
+    <property name="_libraryMarker" class="ptolemy.kernel.util.SingletonAttribute">
+    </property>
+</entity>
+}}
+
+test LibraryAttribute-5.3 {setLibrary with a marker _libraryMarker} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $libraryMoML]
+    set libraryAttribute [java::cast ptolemy.moml.LibraryAttribute \
+	    [$toplevel getAttribute "_library"]]
+
+    set r1 [[$libraryAttribute getLibrary] exportMoML]
+
+    set workspace [$libraryAttribute workspace]
+    set library [java::new ptolemy.kernel.CompositeEntity $workspace]
+    $library setName myLibrary2
+    set marker [java::new ptolemy.kernel.util.SingletonAttribute $library _libraryMarker]
+    $libraryAttribute setLibrary $library
+    set r2 [[$libraryAttribute getLibrary] exportMoML]
+    list $r2
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="myLibrary2" class="ptolemy.kernel.CompositeEntity">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    </property>
+    <property name="_libraryMarker" class="ptolemy.kernel.util.SingletonAttribute">
+    </property>
+</entity>
+}}
