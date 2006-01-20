@@ -522,6 +522,75 @@ test MoMLParser-1.10 {test with hierarchy} {
 ######################################################################
 ####
 #
+set moml11_2 {
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="foo" class="ptolemy.actor.TypedCompositeActor">
+   <port name="C" class="ptolemy.actor.TypedIOPort"></port>
+   <relation name="R2" class="ptolemy.actor.TypedIORelation"></relation>
+   <entity name="C1" class="ptolemy.actor.TypedCompositeActor">
+       <port name="A" class="ptolemy.actor.TypedIOPort"></port>
+       <relation name="R1" class="ptolemy.actor.TypedIORelation"></relation>
+       <entity name="C2" class="ptolemy.actor.TypedCompositeActor">
+           <port name="B" class="ptolemy.actor.TypedIOPort"></port>
+       </entity>
+   </entity>
+   <link port="C" relation="C1.R1"/>
+</entity>
+}
+test MoMLParser-1.11.2 {test link errors to cover LinkRequest.toString() } {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
+    $parser setErrorHandler $recorderErrorHandler
+
+    set toplevel [$parser parse $moml11_2]
+    $parser setErrorHandler [java::null]
+    list [string range [$recorderErrorHandler getMessages] 0 166]
+} {{RecorderErrorHandler: Error encountered in:
+link C to C1.R1
+ptolemy.kernel.util.IllegalActionException: Link crosses levels of the hierarchy
+  in .foo.C and .foo.C1.R1}}
+
+
+######################################################################
+####
+#
+set moml11_3 {
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="foo" class="ptolemy.actor.TypedCompositeActor">
+   <port name="C" class="ptolemy.actor.TypedIOPort"></port>
+   <unlink port="C" relation="Foo"/>
+</entity>
+}
+test MoMLParser-1.11.3 {test link errors to cover UnlinkRequest.toString() } {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    set recorderErrorHandler [java::new ptolemy.moml.test.RecorderErrorHandler]
+    $parser setErrorHandler $recorderErrorHandler
+
+    set toplevel [$parser parse $moml11_3]
+    $parser setErrorHandler [java::null]
+    list [string range [$recorderErrorHandler getMessages] 0 124]
+} {{RecorderErrorHandler: Error encountered in:
+unlink C from Foo
+com.microstar.xml.XmlException: No relation named "Foo" in .foo}}
+
+#test MoMLParser-1.11.2 {test topObjectsCreated, clearTopObjectsList} {
+#    $parser reset
+#    set toplevel [$parser parse $moml]
+#    set r1 [$parser topObjectsCreated]
+#    $parser clearTopObjectsList
+#    set r2 [$parser topObjectsCreated]
+#    list [java::isnull $r1] [java::isnull $r2]
+#} {}
+
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="a" extends="ptolemy.kernel.CompositeEntity">
@@ -3551,3 +3620,4 @@ test MoMLParser-23.1 {ClassNotFound} {
 } {{com.microstar.xml.XmlException: XML element "entity" triggers exception. in file:xxx at line 6 and column 35
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: Not.A.Class}}
+
