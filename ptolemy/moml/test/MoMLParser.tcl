@@ -3621,3 +3621,49 @@ test MoMLParser-23.1 {ClassNotFound} {
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Cannot find class: Not.A.Class}}
 
+test MoMLParser-24.1 {purgeModelRecord} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    $parser reset
+    # We parse the same file three times
+
+    # parse it once with data from testdir.moml
+    file delete -force purgeModelRecordTest.moml
+    file copy -force p1.moml purgeModelRecordTest.moml
+
+    set url1 [[java::new java.io.File purgeModelRecordTest.moml] toURL]
+    #$parser purgeModelRecord $url1
+    set toplevel1 [$parser {parse java.net.URL java.net.URL} [java::null] $url1]
+    #set toplevel1 [$parser parseFile purgeModelRecordTest.moml]
+
+    set r1 [$toplevel1 getFullName]
+    # Update the file contents, note that toplevel2 is the same
+    # as toplevel1 
+    file delete -force purgeModelRecordTest.moml
+    file copy -force p2.moml purgeModelRecordTest.moml
+
+    set url2 [[java::new java.io.File purgeModelRecordTest.moml] toURL]
+    set toplevel2 [$parser {parse java.net.URL java.net.URL} [java::null] $url2]
+    #set toplevel2 [$parser parseFile purgeModelRecordTest.moml]
+    set r2 [$toplevel2 getFullName]
+
+    [java::cast ptolemy.kernel.CompositeEntity $toplevel1] setContainer [java::null]
+    [java::cast ptolemy.kernel.CompositeEntity $toplevel2] setContainer [java::null]
+    set toplevel1 [java::null] 
+    set toplevel2 [java::null] 
+    # Need to purge the record to see the change
+
+    set url3 [[java::new java.io.File purgeModelRecordTest.moml] toURL]
+    $parser purgeModelRecord $url3
+
+    set toplevel3 [$parser {parse java.net.URL java.net.URL} [java::null] $url3]
+    set r3 [$toplevel3 getFullName]
+    #[java::cast ptolemy.kernel.CompositeEntity $toplevel3] setContainer [java::null]
+    #set toplevel3 [java::null] 
+
+    #$parser purgeModelRecord $url3
+
+    #set toplevel3 [$parser parseFile purgeModelRecordTest.moml]
+
+    #file delete -force purgeModelRecordTest.moml
+    list $r1 $r2 $r3
+} {.p1 .p1 .p2}
