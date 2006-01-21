@@ -40,6 +40,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -1065,13 +1066,32 @@ public class TableauFrame extends Top {
         public void actionPerformed(ActionEvent e) {
             // Make this the default context for modal messages.
             GraphicalMessageHandler.setContext(TableauFrame.this);
-
             if (_factoryContainer != null) {
                 JMenuItem target = (JMenuItem) e.getSource();
-                String actionCommand = target.getActionCommand();
+                String actionCommand = null;
+                Action action = target.getAction();
+                if (action!=null) {
+
+                    //the following should be OK because
+                    //GUIUtilities.addMenuItem() automatically adds
+                    //each incoming JMenuItems as a property of the
+                    //Action itself - see
+                    //diva.gui.GUIUtilities.addMenuItem(), line 202,
+                    //ans so does kepler/src/exp/ptolemy/vergil/basic/
+                    //BasicGraphFrame.storeSubMenus() line 2519...
+
+                    JMenuItem origMItem  =
+                        (JMenuItem) action.getValue("menuitem");
+                    if (origMItem!=null) {
+                        actionCommand = origMItem.getActionCommand();
+                    } else {
+                        actionCommand = target.getActionCommand();
+                    }
+                } else {
+                    actionCommand = target.getActionCommand();
+                }
                 TableauFactory factory = (TableauFactory) _factoryContainer
                         .getAttribute(actionCommand);
-
                 if (factory != null) {
                     Effigy tableauContainer = (Effigy) _tableau.getContainer();
 
