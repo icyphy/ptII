@@ -40,6 +40,7 @@
   <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
+    <input source="ptolemy/configs/caseTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
     <!-- Add the code generator to the full configuration. -->
     <property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
