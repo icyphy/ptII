@@ -33,6 +33,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -42,23 +43,30 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.HyperlinkEvent;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.HTMLViewer;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphFrame;
+import ptolemy.vergil.basic.DocAttribute;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.JCanvas;
 import diva.graph.GraphPane;
@@ -132,6 +140,33 @@ public class DocViewer extends HTMLViewer {
      */
     public Configuration getConfiguration() {
         return _configuration;
+    }
+    
+    /** Override the base class to react to links of the form
+     *  #parentClass.
+     *  @param event The hyperlink event.
+     */
+    public void hyperlinkUpdate(HyperlinkEvent event) {
+        if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED
+                && event.getDescription().equals("#parentClass")) {
+            // This should only occur if DocManager has already checked that the following will work.
+            // Nonetheless, we look for exceptions and report them.
+            try {
+                NamedObj parent = (NamedObj)((Instantiable)_target).getParent();
+                List docAttributes = parent.attributeList(DocAttribute.class);
+                DocAttribute attribute = (DocAttribute)docAttributes.get(docAttributes.size() - 1);
+                Effigy effigy = getEffigy();
+                DocEffigy newEffigy = new DocEffigy((CompositeEntity)effigy.getContainer(),
+                        effigy.getContainer().uniqueName("parentClass"));
+                newEffigy.setDocAttribute(attribute);
+                DocTableau tableau = new DocTableau(newEffigy, "docTableau");
+                tableau.show();
+            } catch (Exception e) {
+                MessageHandler.error("Error following hyperlink", e);
+            }
+        } else {
+            super.hyperlinkUpdate(event);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -237,6 +272,10 @@ public class DocViewer extends HTMLViewer {
         Iterator attributes = target.attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
             Settable parameter = (Settable)attributes.next();
+            if (parameter instanceof PortParameter) {
+                // Skip this one.
+                continue;
+            }
             String doc = manager.getPropertyDoc(parameter.getName());
             if (doc == null) {
                 doc = "No description.";
@@ -271,9 +310,12 @@ public class DocViewer extends HTMLViewer {
     /** Return a string with port table entries.
      *  @param target The target.
      *  @param manager The manager.
-     *  @return Port table entries, or null if there are no port.
+     *  @return Port table entries, or null if there are no ports.
      */
     private String _getPortEntries(NamedObj target, DocManager manager) {
+        if (!(target instanceof Entity)) {
+            return null;
+        }
         StringBuffer result = new StringBuffer();
         boolean foundOne = false;
         boolean foundInput = false;
@@ -287,6 +329,10 @@ public class DocViewer extends HTMLViewer {
         Iterator ports = ((Entity)target).portList().iterator();
         while (ports.hasNext()) {
             Port port = (Port)ports.next();
+            if (port instanceof ParameterPort) {
+                // Skip this one.
+                continue;
+            }
             String portName = "<i>" + port.getName() + "</i>";
             String doc = manager.getPortDoc(port.getName());
             if (doc == null) {
@@ -398,6 +444,83 @@ public class DocViewer extends HTMLViewer {
         }
     }
 
+    /** Return a string with port-parameter table entries.
+     *  @param target The target.
+     *  @param manager The manager.
+     *  @return Port-parameter table entries, or null if there are no port-parameters.
+     */
+    private String _getPortParameterEntries(NamedObj target, DocManager manager) {
+        StringBuffer parameters = new StringBuffer();
+        parameters.append(_tr);
+        parameters.append(_tdColSpan);
+        parameters.append("<h2>Port-Parameters</h2>");
+        parameters.append(_tde);
+        parameters.append(_tre);
+        boolean foundOne = false;
+        Iterator attributes = target.attributeList(PortParameter.class).iterator();
+        while (attributes.hasNext()) {
+            Settable parameter = (Settable)attributes.next();
+            String doc = manager.getPropertyDoc(parameter.getName());
+            if (doc == null) {
+                doc = "No description.";
+                // See if the next tier has documentation.
+                DocManager nextTier = manager.getNextTier();
+                if (nextTier != null) {
+                    String nextDoc = nextTier.getPropertyDoc(parameter.getName());
+                    if (nextDoc != null) {
+                        doc = nextDoc;
+                    }
+                }
+            }
+            if (parameter.getVisibility() == Settable.FULL) {
+                parameters.append(_tr);
+                parameters.append(_td);
+                parameters.append("<i>" + parameter.getName() + "</i>");
+                parameters.append(_tde);
+                parameters.append(_td);
+                parameters.append(doc);
+                parameters.append(_tde);
+                parameters.append(_tre);
+                foundOne = true;
+            }
+        }
+        if (foundOne) {
+            return parameters.toString();
+        } else {
+            return null;
+        }
+    }
+    
+    /** Append to the specified buffer any locally defined base classes
+     *  that are needed to define the specified target.
+     *  @param target The target whose parent may need to be included.
+     *  @param buffer The buffer to append the definition to.
+     */
+    private void _includeClassDefinitions(NamedObj target, StringBuffer buffer) {
+        if (target instanceof Instantiable) {
+            NamedObj parent = (NamedObj)((Instantiable)target).getParent();
+            if (parent != null && target.toplevel().deepContains(parent)) {
+                // Parent is locally defined. Include its definition.
+                // First recursively take care of the parent.
+                if (parent instanceof Instantiable) {
+                    NamedObj parentsParent = (NamedObj)((Instantiable)parent).getParent();
+                    if (parentsParent != null && parent.toplevel().deepContains(parentsParent)) {
+                        _includeClassDefinitions(parent, buffer);
+                    }
+                }
+                buffer.append(parent.exportMoML());
+                // Add an attribute to hide it.
+                buffer.append("<");
+                buffer.append(parent.getElementName());
+                buffer.append(" name=\"");
+                buffer.append(parent.getName());
+                buffer.append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"true\"/></");
+                buffer.append(parent.getElementName());
+                buffer.append(">");
+            }
+        }
+    }
+
     /** Construct a documentation viewer for the specified target,
      *  class name, or URL. Normally, one of these three arguments
      *  will be non-null.
@@ -416,6 +539,7 @@ public class DocViewer extends HTMLViewer {
             URL url)
             throws ClassNotFoundException {
         _configuration = configuration;
+        _target = target;
         
         // Start by creating a doc manager.
         final DocManager manager;
@@ -464,14 +588,16 @@ public class DocViewer extends HTMLViewer {
         
         // Create a title area.
         String title = className;
-        if (manager.isInstanceDoc()) {
-            title = target.getName()
-                    + "&nbsp; &nbsp; &nbsp; (Instance of " + className + ")";
+        // The instance has its own documentation.
+        if (target instanceof InstantiableNamedObj 
+                && ((InstantiableNamedObj)target).isClassDefinition()) {
+            // FIXME: getFullName() isn't right here.  How to get the full class name?
+            title = target.getName() + "&nbsp; &nbsp; &nbsp; (" + target.getFullName() + ")";
         } else {
-            int lastDot = className.lastIndexOf(".");
-            if (lastDot > 0) {
-                title = className.substring(lastDot + 1) 
-                + "&nbsp; &nbsp; &nbsp; (" + className + ")";
+            if (manager.isInstanceDoc()) {
+                title = target.getName() + "&nbsp; &nbsp; &nbsp; (Instance of " + className + ")";
+            } else {
+                title = rootName + "&nbsp; &nbsp; &nbsp; (" + className + ")";                
             }
         }
         JEditorPane titlePane = new JEditorPane();
@@ -589,28 +715,59 @@ public class DocViewer extends HTMLViewer {
         // Otherwise, use the class name.
         String moml = null;
         if (target != null) {
-            moml = target.exportMoML();
+            StringBuffer buffer = new StringBuffer("<group>");
+            // If the target is an instance of a locally defined class,
+            // then we need to include the class as well.
+            _includeClassDefinitions(target, buffer);
+
+            buffer.append(target.exportMoML());
+            // Have to override the hide attribute in the derived class.
+            buffer.append("<");
+            buffer.append(target.getElementName());
+            buffer.append(" name=\"");
+            buffer.append(target.getName());
+            buffer.append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"false\"/></");
+            buffer.append(target.getElementName());
+            buffer.append(">");
+
+            buffer.append("</group>");
+            moml = buffer.toString();
         } else if (!manager.hadException()) {
             // NOTE: This will not work if a URL was specified and the parse failed.
             // No target is given. Try to create an instance from the class name.
-            // FIXME: This only works if the class is an entity.
-            moml = "<entity name=\"" + rootName + "\" class=\"" + className + "\"/>";
+            // This is a bit tricky, as we have to know what subclass of NamedObj
+            // it is, and whether it has an appropriate constructor.
+            if (manager.isTargetInstantiableAttribute()) {
+                // To make it visible, need to include a location attribute.
+                moml = "<property name=\"" + rootName + "\" class=\"" + className + "\">"
+                        + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{50, 50}\"/>"
+                        + "</property>";
+            } else if (manager.isTargetInstantiableEntity()) {
+                moml = "<entity name=\"" + rootName + "\" class=\"" + className + "\"/>";
+            } else if (manager.isTargetInstantiablePort()) {
+                moml = "<port name=\"" + rootName + "\" class=\"" + className + "\"/>";
+            }
         }
         if (moml != null) {
             MoMLChangeRequest request = new MoMLChangeRequest(this, container, moml) {
                 protected void _execute() throws Exception {
                     super._execute();
                     NamedObj sample = null;
-                    if (target == null) {
-                        // FIXME: This only works if the class is an entity.
-                        sample = container.getEntity(rootName);
-                        _populatePortsAndParametersTable(sample, manager);
-                    } else if (target instanceof ComponentEntity) {
-                        sample = container.getEntity(target.getName());
-                    } else {
-                        // FIXME: Other cases.
+                    String name = rootName;
+                    if (target != null) {
+                        name = target.getName();
                     }
-                    _adjustIconDisplay(sample, container, graphPane, jgraph);
+                    if (manager.isTargetInstantiableAttribute()) {
+                        sample = container.getAttribute(name);
+                    } else if (manager.isTargetInstantiableEntity()) {
+                        sample = container.getEntity(name);
+                    } else if (manager.isTargetInstantiablePort()) {
+                        sample = container.getPort(name);
+                    }
+                    if (sample != null) {
+                        _populatePortsAndParametersTable(sample, manager);
+                        _adjustIconDisplay(sample, container, graphPane, jgraph);
+                    }
                 }
             };
             container.requestChange(request);
@@ -704,6 +861,12 @@ public class DocViewer extends HTMLViewer {
             foundOne = true;
             table.append(parameterTableEntries);
         }
+        // Next do the port-parameters.
+        String portParameterTableEntries = _getPortParameterEntries(target, manager);
+        if (portParameterTableEntries != null) {
+            foundOne = true;
+            table.append(portParameterTableEntries);
+        }
         // Next do the ports.
         String portTableEntries = _getPortEntries(target, manager);
         if (portTableEntries != null) {
@@ -778,6 +941,9 @@ public class DocViewer extends HTMLViewer {
 
     /** Spacing between subwindows. */
     private static int _SPACING = 5;
+    
+    /** The target given in the constructor, if any. */
+    private NamedObj _target;
     
     private static String _tr = "<tr valign=top>\n";
     private static String _tre = "</tr>\n";

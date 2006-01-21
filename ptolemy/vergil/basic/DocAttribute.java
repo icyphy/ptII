@@ -30,6 +30,8 @@ package ptolemy.vergil.basic;
 import java.util.Iterator;
 
 import ptolemy.actor.gui.style.TextStyle;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
@@ -75,14 +77,14 @@ public class DocAttribute extends SingletonAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-        description = new StringParameter(this, "Description");
+        description = new StringParameter(this, "description");
         TextStyle style = new TextStyle(description, "_style");
         style.height.setExpression("10");
         style.width.setExpression("70");
 
-        author = new StringAttribute(this, "Author");        
-        version = new StringAttribute(this, "Version");
-        since = new StringAttribute(this, "Since");
+        author = new StringAttribute(this, "author");        
+        version = new StringAttribute(this, "version");
+        since = new StringAttribute(this, "since");
         
         refreshParametersAndPorts();
         
@@ -128,6 +130,11 @@ public class DocAttribute extends SingletonAttribute {
         if (parameterAttribute != null) {
             return parameterAttribute.getExpression();
         }
+        // Might be a port-parameter.  Try that.
+        parameterAttribute = (StringParameter)getAttribute(name + " (port-parameter)");
+        if (parameterAttribute != null) {
+            return parameterAttribute.getExpression();
+        }
         return null;
     }
 
@@ -157,7 +164,11 @@ public class DocAttribute extends SingletonAttribute {
         while (parameters.hasNext()) {
             NamedObj attribute = (NamedObj)parameters.next();
             if (((Settable)attribute).getVisibility() == Settable.FULL) {
-                String name = attribute.getName() + " (parameter)";
+                String modifier = " (parameter)";
+                if (attribute instanceof PortParameter) {
+                    modifier = " (port-parameter)";
+                }
+                String name = attribute.getName() + modifier;
                 if (getAttribute(name) == null) {
                     try {
                         new StringParameter(this, name);
@@ -172,6 +183,10 @@ public class DocAttribute extends SingletonAttribute {
             Iterator ports = ((Entity)container).portList().iterator();
             while (ports.hasNext()) {
                 Port port = (Port)ports.next();
+                if (port instanceof ParameterPort) {
+                    // Skip this one.
+                    continue;
+                }
                 String name = port.getName() + " (port)";
                 if (getAttribute(name) == null) {
                     try {

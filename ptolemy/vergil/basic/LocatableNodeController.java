@@ -228,6 +228,7 @@ public class LocatableNodeController extends BasicNodeController {
         if ((node == null) || _hide(node)) {
             // Return an empty figure.
             Figure newFigure = new CompositeFigure();
+            newFigure.setVisible(false);
             newFigure.setInteractor(getNodeInteractor());
             newFigure.setUserObject(node);
             getController().setFigure(node, newFigure);

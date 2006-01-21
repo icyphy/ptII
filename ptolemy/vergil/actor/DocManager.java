@@ -38,9 +38,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.vergil.basic.DocAttribute;
@@ -142,7 +145,7 @@ public class DocManager extends HandlerBase {
         super();
         _target = target;
         _targetClass = target.getClass();
-        _className = _targetClass.getName();
+        _className = target.getClassName();
         _isInstanceDoc = false;
         try {
             List docAttributes = _target.attributeList(DocAttribute.class);
@@ -475,6 +478,13 @@ public class DocManager extends HandlerBase {
         }
         return _since;
     }
+    
+    /** Return the class of the target.
+     *  @return The class of the target.
+     */
+    public Class getTargetClass() {
+        return _targetClass;
+    }
 
     /** Return the version field, or null
      *  if none has been given. Note that unlike some of the other
@@ -518,11 +528,27 @@ public class DocManager extends HandlerBase {
         
         // See whether there is Javadoc, and link to it if there is.
         result.append("<b>See Also:</b><ul>\n");
-        String className = _targetClass.getName();
+        
+        // The class name is either the name of the target class
+        // or the class name provided by the target.
+        String className;
+        if (_target == null) {
+            className = _targetClass.getName();
+        } else {
+            className = _target.getClassName();
+        }
         String docName = "doc.codeDoc." + className;
         if (_isInstanceDoc) {
             // Create a link to the class documentation,
-            // if there is some.
+            // if there is some. First not that the superclass
+            // may itself be an instance with instance documentation.
+            // In that case, the hyperlink is special and must be
+            // intercepted by the DocViewer class.
+            if (_target instanceof Instantiable
+                    && ((Instantiable)_target).getParent() != null
+                    && ((NamedObj)((Instantiable)_target).getParent()).attributeList(DocAttribute.class).size() > 0) {
+                result.append("<li><a href=\"#parentClass\">Class documentation</a></li>");
+            }
             try {
                 URL toRead = getClass().getClassLoader().getResource(
                         docName.replace('.', '/') + ".xml");
@@ -661,6 +687,72 @@ public class DocManager extends HandlerBase {
      */
     public boolean isInstanceDoc() {
         return _isInstanceDoc;
+    }
+
+    /** Return true if the target class is a subclass of Attribute
+     *  that has a two-argument constructor compatible where the
+     *  first argument is a CompositeEntity and the second is a
+     *  String. This will return true if the target is itself
+     *  an instance of Attribute or a subclass.
+     *  @return True if the target is an instantiable attribute.
+     */
+    public boolean isTargetInstantiableAttribute() {
+        if (_target != null) {
+            return _target instanceof Attribute;
+        } else {
+            Class targetClass = _targetClass;
+            while (targetClass != null) {
+                if (targetClass.equals(Attribute.class)) {
+                    return _hasMoMLConstructor();
+                }
+                targetClass = targetClass.getSuperclass();
+            }
+            return false;
+        }
+    }
+
+    /** Return true if the target class is a subclass of Entity
+     *  that has a two-argument constructor compatible where the
+     *  first argument is a CompositeEntity and the second is a
+     *  String. This will return true if the target is itself
+     *  an instance of Entity or a subclass.
+     *  @return True if the target is an instantiable entity.
+     */
+    public boolean isTargetInstantiableEntity() {
+        if (_target != null) {
+            return _target instanceof Entity;
+        } else {
+            Class targetClass = _targetClass;
+            while (targetClass != null) {
+                if (targetClass.equals(Entity.class)) {
+                    return _hasMoMLConstructor();
+                }
+                targetClass = targetClass.getSuperclass();
+            }
+            return false;
+        }
+    }
+
+    /** Return true if the target class is a subclass of Port
+     *  that has a two-argument constructor compatible where the
+     *  first argument is a CompositeEntity and the second is a
+     *  String. This will return true if the target is itself
+     *  an instance of Port or a subclass.
+     *  @return True if the target is an instantiable port.
+     */
+    public boolean isTargetInstantiablePort() {
+        if (_target != null) {
+            return _target instanceof Port;
+        } else {
+            Class targetClass = _targetClass;
+            while (targetClass != null) {
+                if (targetClass.equals(Port.class)) {
+                    return _hasMoMLConstructor();
+                }
+                targetClass = targetClass.getSuperclass();
+            }
+            return false;
+        }
     }
 
     /** Parse the given stream as a DocML file.
@@ -852,7 +944,31 @@ public class DocManager extends HandlerBase {
             }
         }
     }
-        
+    
+    /** Return true if the target class has a two argument
+     *  constructor compatible with MoML instantiation.
+     *  @return True if the target class can be instanted
+     *   by MoML in a CompositeEntity.
+     */
+    private boolean _hasMoMLConstructor() {
+        // Check for a suitable constructor.
+        Class[] parameters = {TypedCompositeActor.class, String.class};
+        while (parameters[0] != null) {
+            try {
+                _targetClass.getConstructor(parameters);
+                // If we get here, then there is such a constructor.
+                return true;
+            } catch (Exception e) {
+                // Ignore and try the superclass.
+            }
+            if (parameters[0].equals(NamedObj.class)) {
+                break;
+            }
+            parameters[0] = parameters[0].getSuperclass();
+        }
+        return false;
+    }
+
     /** Return true if the specified class is either equal to
      *  NamedObj or is a subclass of NamedObj.
      */
