@@ -184,6 +184,13 @@ public final class CanvasUtilities {
 
         // Get a copy of the bounds of the first child
         Figure f = (Figure) i.next();
+        // Deal with the possibility that the figure may not be visible.
+        while (!f.isVisible()) {
+            if (!i.hasNext()) {
+                return new Rectangle2D.Double();
+            }
+            f = (Figure) i.next();
+        }
         Rectangle2D b = f.getBounds();
         Rectangle2D bounds = new Rectangle2D.Double(b.getX(), b.getY(), b
                 .getWidth(), b.getHeight());
@@ -191,6 +198,9 @@ public final class CanvasUtilities {
         // Scan the rest of the children and take the union
         while (i.hasNext()) {
             f = (Figure) i.next();
+            if (!f.isVisible()) {
+                continue;
+            }
             Rectangle2D.union(bounds, f.getBounds(), bounds);
         }
 
