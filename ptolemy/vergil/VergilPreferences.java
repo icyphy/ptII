@@ -20,6 +20,7 @@ import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -125,11 +126,48 @@ public class VergilPreferences extends ScopeExtendingAttribute {
                 return result.getToken();
             } catch (IllegalActionException ex) {
                 System.out
-                        .println("Warning: Invalid _relationSize preference: "
+                        .println("Warning: Invalid preference: "
                                 + ex);
             }
         }
 
+        // If no scoped variable is found, try for a defined constant.
+        return Constants.get(preferenceName);
+    }
+    
+    /** Check to see whether a preference of the specified name is
+     *  defined in the container of the specified context, either directly
+     *  or within an instance of VergilPreferences, or
+     *  globally, and if it is, return it's value. Do not look any higher
+     *  in the hierarchy.
+     *  Note that if there is an error in the expression for the preference,
+     *  then this method will return null and report the error to standard out.
+     *  This is done because we assume the error will normally be caught
+     *  before this method is called.
+     *  @param context The context for the preference.
+     *  @param preferenceName The name of the preference.
+     *  @return The value of the preference, or null if it is not set.
+     */
+    public static Token preferenceValueLocal(NamedObj context, String preferenceName) {
+        try {
+            NamedObj container = context.getContainer();
+            if (container != null) {
+                Attribute attribute = container.getAttribute(preferenceName);
+                if (attribute instanceof Variable) {
+                    return ((Variable)attribute).getToken();                    
+                }
+                Iterator preferences = container.attributeList(VergilPreferences.class).iterator();
+                while (preferences.hasNext()) {
+                    VergilPreferences preference = (VergilPreferences)preferences.next();
+                    attribute = preference.getAttribute(preferenceName);
+                    if (attribute instanceof Variable) {
+                        return ((Variable)attribute).getToken();
+                    }
+                }
+            }
+        } catch (IllegalActionException ex) {
+            System.out.println("Warning: Invalid preference: " + ex);
+        }
         // If no scoped variable is found, try for a defined constant.
         return Constants.get(preferenceName);
     }

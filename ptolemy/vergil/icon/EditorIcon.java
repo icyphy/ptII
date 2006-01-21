@@ -325,7 +325,7 @@ public class EditorIcon extends Attribute {
         }
 
         // If specified by a preference, then show parameters.
-        Token show = VergilPreferences.preferenceValue(container,
+        Token show = VergilPreferences.preferenceValueLocal(container,
                 "_showParameters");
 
         if (show instanceof StringToken) {
