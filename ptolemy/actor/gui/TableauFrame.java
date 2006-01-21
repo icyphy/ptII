@@ -40,6 +40,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -1070,7 +1071,7 @@ public class TableauFrame extends Top {
                 JMenuItem target = (JMenuItem) e.getSource();
                 String actionCommand = null;
                 Action action = target.getAction();
-                if (action!=null) {
+                if (action != null) {
 
                     //the following should be OK because
                     //GUIUtilities.addMenuItem() automatically adds
@@ -1080,10 +1081,10 @@ public class TableauFrame extends Top {
                     //ans so does kepler/src/exp/ptolemy/vergil/basic/
                     //BasicGraphFrame.storeSubMenus() line 2519...
 
-                    JMenuItem origMItem  =
-                        (JMenuItem) action.getValue("menuitem");
-                    if (origMItem!=null) {
-                        actionCommand = origMItem.getActionCommand();
+                    JMenuItem originalMenuItem  =
+                        (JMenuItem) action.getValue("menuItem");
+                    if (originalMenuItem!=null) {
+                        actionCommand = originalMenuItem.getActionCommand();
                     } else {
                         actionCommand = target.getActionCommand();
                     }
