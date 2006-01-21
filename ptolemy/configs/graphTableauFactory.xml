@@ -10,7 +10,7 @@
             class="ptolemy.actor.gui.RunTableau$Factory"/>
   <property name="Tree View"
             class="ptolemy.vergil.tree.TreeTableau$Factory"/>
-  <property name="XML view"
+  <property name="XML View"
             class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
   <!-- No code gen in this basic file. -->
   <!--property name="Code Generator"
