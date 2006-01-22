@@ -1,9 +1,10 @@
-# Makefile for PtolemyII Finite State Machine Domain Demos
+# Makefile for FSM Case Controller demo 
+#
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
-# @Author: Xiaojun Liu
 #
-# @Copyright (c) 1998-2005 The Regents of the University of California.
+# @Copyright (c) 2001-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,62 +29,62 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME = 		ptolemy/domains/fsm/demo
+ME =		ptolemy/domains/fsm/demo/Case
 
-DIRS =		ABP Case ChainedTransitions Blending ModalBSC \
-		MultipleRuns StateTracker systemLevelType
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of ptII directory
-ROOT =		../../../..
-
-CLASSPATH =     $(ROOT)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	ABP/ABP.jar \
-	Case/Case.jar \
-	ChainedTransitions/ChainedTransitions.jar \
-	Blending/Blending.jar \
-	ModalBSC/ModalBSC.jar \
-	StateTracker/StateTracker.jar
-
-
-# We are not shipping MultipleRuns because it leaves threads running.
-# MultipleRuns/MultipleRuns.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	Case
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-EXTRA_SRCS =    $(JSRCS) \
-	index.htm
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	Case.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	Case.htm \
+	CaseVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =    $(DIRS)
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars $(PTCLASSALLJAR)
+install: all $(PTCLASSJAR)
 
-demo: subdemo
+demo: demo_ptolemy demo_vergil #demo_applet demo_vergil_applet 
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer Case.htm
+#
+#demo_vergil_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer CaseVergil.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Case.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Case.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
