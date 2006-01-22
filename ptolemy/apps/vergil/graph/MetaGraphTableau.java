@@ -154,7 +154,7 @@ public class MetaGraphTableau extends Tableau {
 
         /** Create a new graph pane.
          */
-        protected GraphPane _createGraphPane() {
+        protected GraphPane _createGraphPane(NamedObj entity) {
             // hack
             try {
                 /*                MoMLParser parser = new MoMLParser();
