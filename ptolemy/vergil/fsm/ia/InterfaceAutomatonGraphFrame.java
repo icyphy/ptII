@@ -29,6 +29,7 @@ package ptolemy.vergil.fsm.ia;
 
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.fsm.FSMGraphFrame;
 import ptolemy.vergil.fsm.FSMGraphModel;
@@ -90,8 +91,11 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
     /** Create a new graph pane. Note that this method is called in
      *  constructor of the base class, so it must be careful to not reference
      *  local variables that may not have yet been created.
+     *  @param entity The object to be displayed in the pane (which must
+     *   be an instance of CompositeEntity).
+     *  @return The pane that is created.
      */
-    protected GraphPane _createGraphPane() {
+    protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new InterfaceAutomatonGraphController(_directory);
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
@@ -99,7 +103,7 @@ public class InterfaceAutomatonGraphFrame extends FSMGraphFrame {
         // NOTE: The cast is safe because the constructor accepts
         // only CompositeEntity.
         final FSMGraphModel graphModel = new FSMGraphModel(
-                (CompositeEntity) getModel());
+                (CompositeEntity) entity);
         return new GraphPane(_controller, graphModel);
     }
 }

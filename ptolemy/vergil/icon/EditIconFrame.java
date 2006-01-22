@@ -36,6 +36,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
@@ -98,7 +99,7 @@ public class EditIconFrame extends BasicGraphFrame {
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
 
-        _dropTarget.setDropIntoEnabled(false);
+        _setDropIntoEnabled(false);
 
         // Override the default help file.
         helpFile = "ptolemy/configs/doc/vergilGraphEditorHelp.htm";
@@ -115,7 +116,7 @@ public class EditIconFrame extends BasicGraphFrame {
      *  a zoom factor and center more appropriate for editing icons.
      */
     public void zoomReset() {
-        JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+        JCanvas canvas = getJGraph().getGraphPane().getCanvas();
         AffineTransform current = canvas.getCanvasPane().getTransformContext()
                 .getTransform();
         current.setToScale(_ZOOM_SCALE, _ZOOM_SCALE);
@@ -184,13 +185,15 @@ public class EditIconFrame extends BasicGraphFrame {
     /** Create a new graph pane. Note that this method is called in
      *  constructor of the base class, so it must be careful to not reference
      *  local variables that may not have yet been created.
+     *  @param entity The object to be displayed in the pane.
+     *  @return The pane that is created.
      */
-    protected GraphPane _createGraphPane() {
+    protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new EditIconGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
 
-        ActorGraphModel graphModel = new ActorGraphModel(getModel());
+        ActorGraphModel graphModel = new ActorGraphModel(entity);
         return new GraphPane(_controller, graphModel);
     }
 
@@ -199,7 +202,7 @@ public class EditIconFrame extends BasicGraphFrame {
     protected void _drawReferenceBox() {
         // The background layer is a FigureLayer, despite the fact that
         // getBackgroundLayer() only returns a CanvasLayer.
-        FigureLayer layer = (FigureLayer) _jgraph.getGraphPane()
+        FigureLayer layer = (FigureLayer) getJGraph().getGraphPane()
                 .getBackgroundLayer();
         layer.setVisible(true);
 

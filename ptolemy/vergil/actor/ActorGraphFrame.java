@@ -143,18 +143,18 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         _graphMenu = new JMenu("Graph");
         _graphMenu.setMnemonic(KeyEvent.VK_G);
         _menubar.add(_graphMenu);
-        GUIUtilities.addHotKey(_jgraph, _layoutAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _layoutAction);
         GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
-        GUIUtilities.addHotKey(_jgraph, _saveInLibraryAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _saveInLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
-        GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _importLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _instantiateAttributeAction);
-        GUIUtilities.addHotKey(_jgraph, _instantiateAttributeAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _instantiateAttributeAction);
         GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
-        GUIUtilities.addHotKey(_jgraph, _instantiateEntityAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _instantiateEntityAction);
         _graphMenu.addSeparator();
-        diva.gui.GUIUtilities.addHotKey(_jgraph, _createHierarchyAction);
+        diva.gui.GUIUtilities.addHotKey(_getRightComponent(), _createHierarchyAction);
         diva.gui.GUIUtilities.addMenuItem(_graphMenu, _createHierarchyAction);
 
         // Add any commands to graph menu and toolbar that the controller
@@ -212,16 +212,17 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     /** Create a new graph pane. Note that this method is called in
      *  constructor of the base class, so it must be careful to not reference
      *  local variables that may not have yet been created.
+     *  @param entity The object to be displayed in the pane.
+     *  @return The pane that is created.
      */
-    protected GraphPane _createGraphPane() {
+    protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new ActorEditorGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
 
         // The cast is safe because the constructor only accepts
         // CompositeEntity.
-        final ActorGraphModel graphModel = new ActorGraphModel(
-                (CompositeEntity) getModel());
+        final ActorGraphModel graphModel = new ActorGraphModel(entity);
         return new GraphPane(_controller, graphModel);
     }
 
@@ -500,7 +501,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
-                GraphController controller = _jgraph.getGraphPane()
+                GraphController controller = getJGraph().getGraphPane()
                         .getGraphController();
                 AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
                         .getGraphModel();
@@ -561,7 +562,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
             if (dialog.buttonPressed().equals("OK")) {
                 // Get the associated Ptolemy model.
-                GraphController controller = _jgraph.getGraphPane()
+                GraphController controller = getJGraph().getGraphPane()
                         .getGraphController();
                 AbstractBasicGraphModel model = (AbstractBasicGraphModel) controller
                         .getGraphModel();
