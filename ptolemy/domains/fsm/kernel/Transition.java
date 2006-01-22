@@ -135,6 +135,10 @@ import ptolemy.kernel.util.Workspace;
  be the only enabled transition at a time. The default value is a boolean
  token with value as false, meaning that if this transition is enabled, it
  must be the only enabled transition.
+ <p>
+ The <i>defaultTransition</i> parameter, if given a value true, specifies
+ that this transition is enabled if and only if no other non-default
+ transition is enabled.
 
  @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
  @version $Id$
@@ -188,6 +192,14 @@ public class Transition extends ComponentRelation {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    /** Indicator that this transition is a default transition. A
+     *  default transition is enabled only if no other non-default
+     *  transition is enabled.  This is a boolean with default value
+     *  false. If the value is true, then the guard expression is
+     *  ignored.
+     */
+    public Parameter defaultTransition = null;
 
     /** Attribute the exit angle of a visual rendition.
      *  This parameter contains a DoubleToken, initially with value PI/5.
@@ -509,6 +521,16 @@ public class Transition extends ComponentRelation {
         return triggerExpression.getExpression();
     }
 
+    /** Return true if this transition is a default transition. Return false
+     *  otherwise.
+     *  @return True if this transition is a default transition.
+     *  @throws IllegalActionException If the defaultTransition parameter
+     *   cannot be evaluated.
+     */
+    public boolean isDefault() throws IllegalActionException {
+        return ((BooleanToken)defaultTransition.getToken()).booleanValue();
+    }
+
     /** Return true if the transition is enabled, that is the guard is true, or
      *  some event has been detected due to crossing some level.
      *  @return True if the transition is enabled and some event is detected.
@@ -783,6 +805,11 @@ public class Transition extends ComponentRelation {
         preemptive.setToken(BooleanToken.FALSE);
         triggerExpression = new StringAttribute(this, "triggerExpression");
         triggerExpression.setVisibility(Settable.NONE);
+
+        // default attributes.
+        defaultTransition = new Parameter(this, "defaultTransition");
+        defaultTransition.setTypeEquals(BaseType.BOOLEAN);
+        defaultTransition.setToken(BooleanToken.FALSE);
 
         // Nondeterministic attributes.
         nondeterministic = new Parameter(this, "nondeterministic");

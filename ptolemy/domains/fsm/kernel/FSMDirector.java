@@ -98,8 +98,8 @@ import ptolemy.kernel.util.Workspace;
  is transferred to both the output ports of the modal model and the input
  ports of the mode controller.
  <p>
- At the end of one firing, the modal model transfer its outputs to outside
- domain. The mode controller does not change state during successive firings
+ At the end of one firing, the modal model transfers its outputs to the outside
+ model. The mode controller does not change state during successive firings
  in one iteration of the top level in order to support upper level domains
  that iterate to a fixed point.
  <p>

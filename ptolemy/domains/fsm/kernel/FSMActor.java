@@ -905,13 +905,15 @@ public class FSMActor extends CompositeEntity implements TypedActor,
     protected List _checkTransition(List transitionList)
             throws IllegalActionException {
         LinkedList enabledTransitions = new LinkedList();
+        LinkedList defaultTransitions = new LinkedList();
 
         Iterator transitionRelations = transitionList.iterator();
 
         while (transitionRelations.hasNext() && !_stopRequested) {
             Transition transition = (Transition) transitionRelations.next();
-
-            if (transition.isEnabled()) {
+            if (transition.isDefault()) {
+                defaultTransitions.add(transition);
+            } else if (transition.isEnabled()) {
                 enabledTransitions.add(transition);
             }
         }
@@ -919,7 +921,11 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         // NOTE: It is the _chooseTransition method that decides which
         // enabled transition is actually taken. This method simply returns
         // all enabled transitions.
-        return enabledTransitions;
+        if (enabledTransitions.size() > 0) {
+            return enabledTransitions;
+        } else {
+            return defaultTransitions;
+        }
     }
 
     /** Return an enabled transition among the given list of transitions.
