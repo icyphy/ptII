@@ -57,6 +57,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	Arc.java \
+	CaseGraphFrame.java \
+	CaseGraphTableau.java \
 	FSMGraphController.java \
 	FSMGraphFrame.java \
 	FSMGraphModel.java \

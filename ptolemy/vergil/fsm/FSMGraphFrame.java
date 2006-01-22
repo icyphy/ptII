@@ -159,8 +159,11 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
     /** Create a new graph pane. Note that this method is called in
      *  constructor of the base class, so it must be careful to not reference
      *  local variables that may not have yet been created.
+     *  @param entity The object to be displayed in the pane (which must be
+     *   an instance of CompositeEntity).
+     *  @return The pane that is created.
      */
-    protected GraphPane _createGraphPane() {
+    protected GraphPane _createGraphPane(NamedObj entity) {
         _controller = new FSMGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
@@ -168,7 +171,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
         // NOTE: The cast is safe because the constructor accepts
         // only CompositeEntity.
         final FSMGraphModel graphModel = new FSMGraphModel(
-                (CompositeEntity) getModel());
+                (CompositeEntity) entity);
         return new GraphPane(_controller, graphModel);
     }
 
