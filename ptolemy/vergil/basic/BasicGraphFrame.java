@@ -194,13 +194,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         entity.addChangeListener(this);
 
         getContentPane().setLayout(new BorderLayout());
-
-        GraphPane pane = _createGraphPane();
-        pane.getForegroundLayer().setPickHalo(2);
-
-        _jgraph = new JGraph(pane);
-
-        _dropTarget = new EditorDropTarget(_jgraph);
+        
+        _rightComponent = _createRightComponent(entity);
 
         ActionListener deletionListener = new ActionListener() {
             /** Delete any nodes or edges from the graph that are
@@ -212,35 +207,21 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             }
         };
 
-        _jgraph.registerKeyboardAction(deletionListener, "Delete", KeyStroke
+        _rightComponent.registerKeyboardAction(deletionListener, "Delete", KeyStroke
                 .getKeyStroke(KeyEvent.VK_DELETE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
-        _jgraph.registerKeyboardAction(deletionListener, "BackSpace", KeyStroke
+        _rightComponent.registerKeyboardAction(deletionListener, "BackSpace", KeyStroke
                 .getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-        _jgraph.setRequestFocusEnabled(true);
-        pane.getForegroundEventLayer().setConsuming(false);
-        pane.getForegroundEventLayer().setEnabled(true);
-        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
-            /** Invoked when the mouse is pressed on a layer
-             * or figure.
-             */
-            public void mousePressed(LayerEvent event) {
-                Component component = event.getComponent();
-
-                if (!component.hasFocus()) {
-                    component.requestFocus();
-                }
-            }
-        });
+        _rightComponent.setRequestFocusEnabled(true);
 
         // We used to do this, but it would result in context menus
         // getting lost on the mac.
         // _jgraph.addMouseListener(new FocusMouseListener());
-        _jgraph.setAlignmentX(1);
-        _jgraph.setAlignmentY(1);
-        _jgraph.setBackground(BACKGROUND_COLOR);
+        _rightComponent.setAlignmentX(1);
+        _rightComponent.setAlignmentY(1);
+        _rightComponent.setBackground(BACKGROUND_COLOR);
 
         try {
             // The SizeAttribute property is used to specify the size
@@ -253,14 +234,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                     "_vergilSize", SizeAttribute.class);
 
             if (size != null) {
-                size.setSize(_jgraph);
+                size.setSize(_rightComponent);
             } else {
                 // Set the default size.
                 // Note that the location is of the frame, while the size
                 // is of the scrollpane.
-                _jgraph.setMinimumSize(new Dimension(200, 200));
-                _jgraph.setPreferredSize(new Dimension(600, 400));
-                _jgraph.setSize(600, 400);
+                _rightComponent.setMinimumSize(new Dimension(200, 200));
+                _rightComponent.setPreferredSize(new Dimension(600, 400));
+                _rightComponent.setSize(600, 400);
             }
 
             // Set the zoom factor.
@@ -294,7 +275,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         }
 
         // Create the panner.
-        _graphPanner = new JCanvasPanner(_jgraph);
+        _graphPanner = new JCanvasPanner(getJGraph());
         _graphPanner.setPreferredSize(new Dimension(200, 150));
         _graphPanner.setMaximumSize(new Dimension(200, 150));
         _graphPanner.setSize(200, 150);
@@ -387,7 +368,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         _splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
         _splitPane.setLeftComponent(_palettePane);
-        _splitPane.setRightComponent(_jgraph);
+        _splitPane.setRightComponent(_rightComponent);
         getContentPane().add(_splitPane, BorderLayout.CENTER);
 
         _toolbar = new JToolBar();
@@ -870,6 +851,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
      *  @return the JGraph.
+     *  @see setJGraph(JGraph)
      */
     public JGraph getJGraph() {
         return _jgraph;
@@ -881,7 +863,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @return The rectangle representing the visible part.
      */
     public Rectangle2D getVisibleCanvasRectangle() {
-        AffineTransform current = _jgraph.getCanvasPane().getTransformContext()
+        AffineTransform current = getJGraph().getCanvasPane().getTransformContext()
                 .getTransform();
         AffineTransform inverse;
 
@@ -902,7 +884,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  size is the size of the canvas component.
      */
     public Rectangle2D getVisibleRectangle() {
-        Dimension size = _jgraph.getSize();
+        Dimension size = getJGraph().getSize();
         return new Rectangle2D.Double(0, 0, size.getWidth(), size.getHeight());
     }
 
@@ -968,7 +950,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         // Perform the layout and repaint
         layout.layout(model.getRoot());
-        _jgraph.repaint();
+        getJGraph().repaint();
         _graphPanner.repaint();
     }
 
@@ -1050,9 +1032,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     public int print(Graphics graphics, PageFormat format, int index)
             throws PrinterException {
-        if (_jgraph != null) {
+        if (getJGraph() != null) {
             Rectangle2D view = getVisibleRectangle();
-            return _jgraph.print(graphics, format, index, view);
+            return getJGraph().print(graphics, format, index, view);
         } else {
             return NO_SUCH_PAGE;
         }
@@ -1209,13 +1191,22 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     public void setCenter(Point2D center) {
         Rectangle2D visibleRect = getVisibleCanvasRectangle();
-        AffineTransform newTransform = _jgraph.getCanvasPane()
+        AffineTransform newTransform = getJGraph().getCanvasPane()
                 .getTransformContext().getTransform();
 
         newTransform.translate(visibleRect.getCenterX() - center.getX(),
                 visibleRect.getCenterY() - center.getY());
 
-        _jgraph.getCanvasPane().setTransform(newTransform);
+        getJGraph().getCanvasPane().setTransform(newTransform);
+    }
+
+    /** Set the JGraph instance that this view uses to represent the
+     *  ptolemy model.
+     *  @param jgraph The JGraph.
+     *  @see getJGraph()
+     */
+    public void setJGraph(JGraph jgraph) {
+        _jgraph = jgraph;
     }
 
     /** Undo the last undoable change on the model.
@@ -1238,7 +1229,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @param factor The magnification factor (relative to 1.0).
      */
     public void zoom(double factor) {
-        JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+        JCanvas canvas = getJGraph().getGraphPane().getCanvas();
         AffineTransform current = canvas.getCanvasPane().getTransformContext()
                 .getTransform();
 
@@ -1258,7 +1249,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Zoom to fit the current figures.
      */
     public void zoomFit() {
-        GraphPane pane = _jgraph.getGraphPane();
+        GraphPane pane = getJGraph().getGraphPane();
         Rectangle2D bounds = pane.getForegroundLayer().getLayerBounds();
 
         if (bounds.isEmpty()) {
@@ -1280,7 +1271,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Set zoom to the nominal.
      */
     public void zoomReset() {
-        JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+        JCanvas canvas = getJGraph().getGraphPane().getCanvas();
         AffineTransform current = canvas.getCanvasPane().getTransformContext()
                 .getTransform();
         current.setToIdentity();
@@ -1316,30 +1307,30 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _menubar.add(_editMenu);
 
         // Add the undo action, followed by a separator then the editing actions
-        diva.gui.GUIUtilities.addHotKey(_jgraph, _undoAction);
+        diva.gui.GUIUtilities.addHotKey(_getRightComponent(), _undoAction);
         diva.gui.GUIUtilities.addMenuItem(_editMenu, _undoAction);
-        diva.gui.GUIUtilities.addHotKey(_jgraph, _redoAction);
+        diva.gui.GUIUtilities.addHotKey(_getRightComponent(), _redoAction);
         diva.gui.GUIUtilities.addMenuItem(_editMenu, _redoAction);
         _editMenu.addSeparator();
-        GUIUtilities.addHotKey(_jgraph, _cutAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _cutAction);
         GUIUtilities.addMenuItem(_editMenu, _cutAction);
-        GUIUtilities.addHotKey(_jgraph, _copyAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _copyAction);
         GUIUtilities.addMenuItem(_editMenu, _copyAction);
-        GUIUtilities.addHotKey(_jgraph, _pasteAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _pasteAction);
         GUIUtilities.addMenuItem(_editMenu, _pasteAction);
 
         _editMenu.addSeparator();
 
-        GUIUtilities.addHotKey(_jgraph, _moveToBackAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _moveToBackAction);
         GUIUtilities.addMenuItem(_editMenu, _moveToBackAction);
-        GUIUtilities.addHotKey(_jgraph, _moveToFrontAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _moveToFrontAction);
         GUIUtilities.addMenuItem(_editMenu, _moveToFrontAction);
 
         _editMenu.addSeparator();
         GUIUtilities.addMenuItem(_editMenu, _editPreferencesAction);
 
         // Hot key for configure (edit parameters).
-        GUIUtilities.addHotKey(_jgraph, BasicGraphController._configureAction);
+        GUIUtilities.addHotKey(_getRightComponent(), BasicGraphController._configureAction);
 
         // May be null if there are not multiple views in the configuration.
         if (_viewMenu == null) {
@@ -1350,13 +1341,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             _viewMenu.addSeparator();
         }
 
-        GUIUtilities.addHotKey(_jgraph, _zoomInAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _zoomInAction);
         GUIUtilities.addMenuItem(_viewMenu, _zoomInAction);
-        GUIUtilities.addHotKey(_jgraph, _zoomResetAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _zoomResetAction);
         GUIUtilities.addMenuItem(_viewMenu, _zoomResetAction);
-        GUIUtilities.addHotKey(_jgraph, _zoomFitAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _zoomFitAction);
         GUIUtilities.addMenuItem(_viewMenu, _zoomFitAction);
-        GUIUtilities.addHotKey(_jgraph, _zoomOutAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _zoomOutAction);
         GUIUtilities.addMenuItem(_viewMenu, _zoomOutAction);
     }
 
@@ -1447,9 +1438,37 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  the pane that is created.  Note that this method is called in
      *  constructor, so derived classes must be careful to not reference
      *  local variables that may not have yet been created.
+     *  @param entity The object to be displayed in the pane.
      *  @return The pane that is created.
      */
-    protected abstract GraphPane _createGraphPane();
+    protected abstract GraphPane _createGraphPane(NamedObj entity);
+
+    /** Create the component that goes to the right of the library.
+     *  @param entity The entity to display in the component.
+     *  @return The component that goes to the right of the library.
+     */
+    protected JComponent _createRightComponent(NamedObj entity) {
+        GraphPane pane = _createGraphPane(entity);
+        pane.getForegroundLayer().setPickHalo(2);
+        pane.getForegroundEventLayer().setConsuming(false);
+        pane.getForegroundEventLayer().setEnabled(true);
+        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
+            /** Invoked when the mouse is pressed on a layer
+             * or figure.
+             */
+            public void mousePressed(LayerEvent event) {
+                Component component = event.getComponent();
+
+                if (!component.hasFocus()) {
+                    component.requestFocus();
+                }
+            }
+        });
+
+        setJGraph(new JGraph(pane));
+        _dropTarget = new EditorDropTarget(_jgraph);
+        return _jgraph;
+    }
 
     /** Get the directory that was last accessed by this window.
      *  @see #_setDirectory
@@ -1467,7 +1486,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      *  @return The graph controller associated with this frame.
      */
     protected GraphController _getGraphController() {
-        GraphPane graphPane = _jgraph.getGraphPane();
+        GraphPane graphPane = getJGraph().getGraphPane();
         return (GraphController) graphPane.getGraphController();
     }
 
@@ -1553,6 +1572,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         return namedObjSet;
     }
+    
+    /** Return the right component on which graph editing occurs.
+     *  @return The JGraph on which graph editing occurs.
+     */
+    protected JComponent _getRightComponent() {
+        return _rightComponent;
+    }
 
     /** Set the directory that was last accessed by this window.
      *  @see #_getDirectory
@@ -1566,6 +1592,13 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _directory = directory;
     }
 
+    /** Enable or disable drop into.
+     *  @param False to disable.
+     */
+    protected void _setDropIntoEnabled(boolean enable) {
+        _dropTarget.setDropIntoEnabled(enable);
+    }
+
     /** Write the model to the specified file.  This overrides the base
      *  class to record the current size and position of the window
      *  in the model.
@@ -1577,7 +1610,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         try {
             // Record the position of the top-level frame, assuming
             // there is one.
-            Component component = _jgraph.getParent();
+            Component component = _getRightComponent().getParent();
             Component parent = component.getParent();
 
             while ((parent != null) && !(parent instanceof Frame)) {
@@ -1609,10 +1642,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 size = new SizeAttribute(getModel(), "_vergilSize");
             }
 
-            size.recordSize(_jgraph);
+            size.recordSize(_getRightComponent());
 
             // Also record zoom and pan state.
-            JCanvas canvas = _jgraph.getGraphPane().getCanvas();
+            JCanvas canvas = getJGraph().getGraphPane().getCanvas();
             AffineTransform current = canvas.getCanvasPane()
                     .getTransformContext().getTransform();
 
@@ -1665,9 +1698,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The copy action. */
     protected Action _copyAction;
 
-    /** The instance of EditorDropTarget associated with this object. */
-    protected EditorDropTarget _dropTarget;
-
     /** The edit menu. */
     protected JMenu _editMenu;
 
@@ -1676,9 +1706,6 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The panner. */
     protected JCanvasPanner _graphPanner;
-
-    /** The instance of JGraph for this editor. */
-    protected JGraph _jgraph;
 
     /** The library display widget. */
     protected JTree _library;
@@ -1803,6 +1830,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The instance of EditorDropTarget associated with the JGraph. */
+    private EditorDropTarget _dropTarget;
+
+    /** The instance of JGraph for this editor. */
+    private JGraph _jgraph;
+
     /** List of references to graph frames that are open. */
     private static LinkedList _openGraphFrames = new LinkedList();
     
@@ -1811,6 +1844,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
+
+    /** The right component for this editor. */
+    private JComponent _rightComponent;
 
     /** Action to undo the last MoML change. */
     private Action _undoAction = new UndoAction();

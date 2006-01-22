@@ -112,15 +112,15 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         _screen = null;
 
         // Put the component back into the original window.
-        _splitPane.setRightComponent(_jgraph);
+        _splitPane.setRightComponent(_getRightComponent());
 
         // Restore association with the graph panner.
-        _graphPanner.setCanvas(_jgraph);
+        _graphPanner.setCanvas(getJGraph());
         pack();
         show();
         GraphicalMessageHandler.setContext(_previousDefaultContext);
         toFront();
-        _jgraph.requestFocus();
+        _getRightComponent().requestFocus();
     }
 
     /** Go to full screen.
@@ -145,7 +145,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         _screen.setSize(width, height);
 
         _screen.setUndecorated(true);
-        _screen.getContentPane().add(_jgraph, BorderLayout.CENTER);
+        _screen.getContentPane().add(getJGraph(), BorderLayout.CENTER);
 
         // NOTE: Have to avoid the following, which forces the
         // dialog to resize the preferred size of _jgraph, which
@@ -165,17 +165,17 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         // Unfortunately, apparently the JDialog does not appear
         // in the Windows task bar.
         _screen.toFront();
-        _jgraph.requestFocus();
+        getJGraph().requestFocus();
 
         _screen.setResizable(false);
 
         // Bind escape key to remove full-screen mode.
-        ActionMap actionMap = _jgraph.getActionMap();
+        ActionMap actionMap = getJGraph().getActionMap();
 
         // Use the action as both a key and the action.
         actionMap.put(_fullScreenAction, _fullScreenAction);
 
-        InputMap inputMap = _jgraph.getInputMap();
+        InputMap inputMap = getJGraph().getInputMap();
         inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), _fullScreenAction);
 
         // Remove association with the graph panner.
@@ -193,7 +193,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         super._addMenus();
 
         _viewMenu.addSeparator();
-        GUIUtilities.addHotKey(_jgraph, _fullScreenAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _fullScreenAction);
         GUIUtilities.addMenuItem(_viewMenu, _fullScreenAction);
     }
 
