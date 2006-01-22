@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- Factory for case editor.  -->
+<property name="caseFactory" class="ptolemy.actor.gui.PtolemyTableauFactory">
+  <!-- These will appear in the View menu of an fsm tableau. -->
+  <property name="Case Editor"
+            class="ptolemy.vergil.fsm.CaseGraphTableau$Factory"/>
+  <property name="Tree View"
+            class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+  <property name="XML view"
+            class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
+</property>

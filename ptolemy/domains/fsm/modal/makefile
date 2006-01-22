@@ -47,6 +47,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
+	Case.java \
 	FunctionDependencyOfModalModel.java \
 	ModalController.java \
 	ModalModel.java \
