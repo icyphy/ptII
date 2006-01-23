@@ -180,10 +180,6 @@
         <property name="PtinyOSDirector" class="ptolemy.domains.ptinyos.kernel.PtinyOSDirector">
             <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/CntToLeds/output">
             </property>
-            <property name="commandPort" class="ptolemy.data.expr.Parameter" value="10586">
-            </property>
-            <property name="eventPort" class="ptolemy.data.expr.Parameter" value="10587">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 260.0]">
         </property>

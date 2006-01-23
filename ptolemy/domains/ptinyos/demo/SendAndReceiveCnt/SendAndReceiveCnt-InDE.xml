@@ -214,10 +214,6 @@
             </property>
             <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="commandPort" class="ptolemy.data.expr.Parameter" value="10586">
-            </property>
-            <property name="eventPort" class="ptolemy.data.expr.Parameter" value="10587">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 290.0]">
         </property>

@@ -47,6 +47,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.colt.ColtSeedParameter;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -1294,10 +1295,13 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
             // Set command and event ports for TOSSIM.
             commandPort =
-                new Parameter(this, "commandPort", new IntToken(10584));
-            commandPort.setTypeEquals(BaseType.INT);
-            eventPort = new Parameter(this, "eventPort", new IntToken(10585));
-            eventPort.setTypeEquals(BaseType.INT);
+                new PtinyOSTOSSIMPort(this, "commandPort");
+            commandPort.setExpression("10584");
+            //commandPort.setTypeEquals(BaseType.INT);
+            eventPort = new Parameter(this, "eventPort");
+            //eventPort.setExpression(String.valueOf(((IntToken)commandPort.getToken()).intValue() + 1));
+            eventPort.setExpression("commandPort + 1");
+            //eventPort.setTypeEquals(BaseType.INT);
 
             // Make timeResolution SharedParameter (from base class) visible.
             timeResolution.setVisibility(Settable.FULL);
