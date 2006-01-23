@@ -84,7 +84,6 @@ public class PtDoclet {
             for (int i = 0; i < classes.length; i++) {
                 String className = classes[i].toString();
                 //System.out.println(className);
-
                 Class theClass = null;
                 try {
                     theClass = Class.forName(className);
@@ -99,6 +98,7 @@ public class PtDoclet {
                     // The class does not extend TypedAtomicActor, so we skip.
                     continue;
                 }
+
 
                 StringBuffer documentation =
                     _generateClassLevelDocumentation(classes[i]);
@@ -142,10 +142,44 @@ public class PtDoclet {
         StringBuffer documentation = new StringBuffer(_header
                 + "<doc name=\"" + shortClassName
                 + "\" class=\"" + className + "\">\n"
-                + "  <description>\n"
-                + StringUtilities.escapeForXML(classDoc.commentText())
-                + "\n"
-                + "  </description>\n");
+                + "  <description>\n");
+
+        // Process the comment as an array of tags.  Doc.commentText()
+        // should do this, but it does not.
+        Tag tag[] = classDoc.inlineTags();
+        for (int i = 0; i < tag.length; i++) {
+            if (tag[i] instanceof SeeTag) {
+                SeeTag seeTag = (SeeTag)tag[i]; 
+                documentation.append("<a href=\"");
+                // The dot separated class or package name, if any.
+                String classOrPackageName = null;
+                if (seeTag.referencedPackage() != null) {
+                    classOrPackageName = 
+                        seeTag.referencedPackage().toString();
+                } 
+                if (seeTag.referencedClass() != null) {
+                    classOrPackageName = 
+                        seeTag.referencedClass().qualifiedName();
+                }
+                if (classOrPackageName != null) {
+                    // Convert the classOrPackageName to a relative URL
+                    String classOrPackageNameParts[] =
+                        classOrPackageName.split("\\.");
+                    String thisClassNameParts[] =
+                        classDoc.qualifiedName().split("\\.");
+                    StringBuffer relativePath = new StringBuffer();
+                }
+                documentation.append(classOrPackageName);
+                if (seeTag.referencedMember() != null) {
+                    documentation.append("#" +
+                            seeTag.referencedMember().name());
+                }
+                documentation.append("\">" + seeTag.label() + "</a>");
+            } else {
+                documentation.append(tag[i].text());
+            }
+        }
+        documentation.append("  </description>\n");
 
         // Handle other class tags.
         String [] classTags = {"author", "version", "since",
