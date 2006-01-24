@@ -1593,7 +1593,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     }
 
     /** Enable or disable drop into.
-     *  @param False to disable.
+     *  @param enable False to disable.
      */
     protected void _setDropIntoEnabled(boolean enable) {
         _dropTarget.setDropIntoEnabled(enable);
