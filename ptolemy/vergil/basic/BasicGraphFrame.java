@@ -851,7 +851,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Return the JGraph instance that this view uses to represent the
      *  ptolemy model.
      *  @return the JGraph.
-     *  @see setJGraph(JGraph)
+     *  @see #setJGraph(JGraph)
      */
     public JGraph getJGraph() {
         return _jgraph;
@@ -1203,7 +1203,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Set the JGraph instance that this view uses to represent the
      *  ptolemy model.
      *  @param jgraph The JGraph.
-     *  @see getJGraph()
+     *  @see #getJGraph()
      */
     public void setJGraph(JGraph jgraph) {
         _jgraph = jgraph;
