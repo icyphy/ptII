@@ -31,6 +31,7 @@ package doc.doclets;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import com.sun.javadoc.*;
 
 import ptolemy.util.StringUtilities;
@@ -70,12 +71,12 @@ public class PtDoclet {
      */
     public static boolean start(RootDoc root)
             throws IOException, ClassNotFoundException {
-        String outputDirectory = _getOutputDirectory(root.options());
+        _outputDirectory = _getOutputDirectory(root.options());
         // We cache the names of all actors for which we generate text.
         FileWriter allActorsWriter = null;
         try {
             allActorsWriter = new FileWriter(
-                    outputDirectory + File.separator + "allActors.txt");
+                    _outputDirectory + File.separator + "allActors.txt");
 
             Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
             Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
@@ -107,8 +108,7 @@ public class PtDoclet {
                 documentation.append(_generateFieldDocumentation(classes[i], 
                                              parameterClass, "property"));
                 documentation.append("</doc>\n");
-                _writeDoc(className, outputDirectory,
-                        documentation.toString());
+                _writeDoc(className, documentation.toString());
                 allActorsWriter.write(className + "\n");
             }
         } finally {
@@ -122,9 +122,62 @@ public class PtDoclet {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    
+    /** Process inlineTags and return text that contains links to the
+     *  javadoc output.
+     *  @param programElementDoc The class for which we are generating
+     *  documentation.
+     */
+    private static String _inlineTagCommentText(ProgramElementDoc
+            programElementDoc) {
+        // Process the comment as an array of tags.  Doc.commentText()
+        // should do this, but it does not.
+        StringBuffer documentation = new StringBuffer();
+        Tag tag[] = programElementDoc.inlineTags();
+        for (int i = 0; i < tag.length; i++) {
+            if (tag[i] instanceof SeeTag) {
+                SeeTag seeTag = (SeeTag)tag[i]; 
+                documentation.append("<a href=\"");
+                // The dot separated class or package name, if any.
+                String classOrPackageName = null;
+                boolean isIncluded = false;
+                if (seeTag.referencedPackage() != null) {
+                    classOrPackageName = 
+                        seeTag.referencedPackage().toString();
+                    isIncluded = seeTag.referencedPackage().isIncluded();
+                } 
+                if (seeTag.referencedClass() != null) {
+                    classOrPackageName = 
+                        seeTag.referencedClass().qualifiedName();
+                    isIncluded = seeTag.referencedClass().isIncluded();
+                }
+                if (classOrPackageName != null) {
+                    // FIXME: If the .xml file does not exist,
+                    // then link to the .htm file
+                    documentation.append(
+                            _relativizePath(_outputDirectory,
+                                    classOrPackageName, programElementDoc,
+                                    isIncluded));
+                }
+                if (seeTag.referencedMember() != null) {
+                    documentation.append("#" +
+                            seeTag.referencedMember().name());
+                }
+                String target = seeTag.label();
+                if (target.length() == 0) {
+                    target = seeTag.referencedClassName() + "#"  
+                        + seeTag.referencedMemberName();
+                }
+                documentation.append("\">" + target + "</a>");
+            } else {
+                documentation.append(tag[i].text());
+            }
+        }
+        return documentation.toString();
+    }
+
     /** Generate the classLevel documentation for a class
      *  @param classDoc The class for which we are generating documentation.
-     *  @return The top part of the class documentation.
      */
     private static StringBuffer _generateClassLevelDocumentation(
             ClassDoc classDoc) {
@@ -142,44 +195,10 @@ public class PtDoclet {
         StringBuffer documentation = new StringBuffer(_header
                 + "<doc name=\"" + shortClassName
                 + "\" class=\"" + className + "\">\n"
-                + "  <description>\n");
-
-        // Process the comment as an array of tags.  Doc.commentText()
-        // should do this, but it does not.
-        Tag tag[] = classDoc.inlineTags();
-        for (int i = 0; i < tag.length; i++) {
-            if (tag[i] instanceof SeeTag) {
-                SeeTag seeTag = (SeeTag)tag[i]; 
-                documentation.append("<a href=\"");
-                // The dot separated class or package name, if any.
-                String classOrPackageName = null;
-                if (seeTag.referencedPackage() != null) {
-                    classOrPackageName = 
-                        seeTag.referencedPackage().toString();
-                } 
-                if (seeTag.referencedClass() != null) {
-                    classOrPackageName = 
-                        seeTag.referencedClass().qualifiedName();
-                }
-                if (classOrPackageName != null) {
-                    // Convert the classOrPackageName to a relative URL
-                    String classOrPackageNameParts[] =
-                        classOrPackageName.split("\\.");
-                    String thisClassNameParts[] =
-                        classDoc.qualifiedName().split("\\.");
-                    StringBuffer relativePath = new StringBuffer();
-                }
-                documentation.append(classOrPackageName);
-                if (seeTag.referencedMember() != null) {
-                    documentation.append("#" +
-                            seeTag.referencedMember().name());
-                }
-                documentation.append("\">" + seeTag.label() + "</a>");
-            } else {
-                documentation.append(tag[i].text());
-            }
-        }
-        documentation.append("  </description>\n");
+                + "  <description>\n"
+                + StringUtilities.escapeForXML(
+                        _inlineTagCommentText(classDoc))
+                + "  </description>\n");
 
         // Handle other class tags.
         String [] classTags = {"author", "version", "since",
@@ -224,7 +243,8 @@ public class PtDoclet {
                             "    <!--" + className + "-->\n"
                             + "    <" + element + " name=\""
                             + fields[i].name() + "\">" 
-                            + StringUtilities.escapeForXML(fields[i].commentText())
+                            + StringUtilities.escapeForXML(
+                                    _inlineTagCommentText(fields[i]))
                             + "</" + element + ">\n");
                 }
              } catch (ClassNotFoundException ex) {
@@ -232,24 +252,25 @@ public class PtDoclet {
                  // Java 1.5 Type.isPrimitive() would help here.
              }
         }
-        // Go up the hierarchy
-        ClassDoc superClassDoc = classDoc.superclass(); 
-        if (superClassDoc != null) {
-            //System.out.println(element + ": SuperClass " + superClassDoc);
 
-            try {
-                Class superClass = Class.forName(superClassDoc.toString()); 
-                // Go no higher than TypedAtomicActor
-                if (_namedObjClass.isAssignableFrom(superClass)) {
-                    documentation.append(_generateFieldDocumentation(
-                                                 superClassDoc,
-                                                 fieldBaseClass, element));
-                } 
-            } catch (Throwable throwable) {
-                System.err.println("Failed to find superclass "
-                        + superClassDoc + "\n" + throwable);
-            }
-        }
+//         // Go up the hierarchy
+//         ClassDoc superClassDoc = classDoc.superclass(); 
+//         if (superClassDoc != null) {
+//             //System.out.println(element + ": SuperClass " + superClassDoc);
+
+//             try {
+//                 Class superClass = Class.forName(superClassDoc.toString()); 
+//                 // Go no higher than TypedAtomicActor
+//                 if (_namedObjClass.isAssignableFrom(superClass)) {
+//                     documentation.append(_generateFieldDocumentation(
+//                                                  superClassDoc,
+//                                                  fieldBaseClass, element));
+//                 } 
+//             } catch (Throwable throwable) {
+//                 System.err.println("Failed to find superclass "
+//                         + superClassDoc + "\n" + throwable);
+//             }
+//         }
         return documentation.toString();
     }
 
@@ -268,21 +289,79 @@ public class PtDoclet {
         return null;
     }
     
+    /** Given two dot separated classpath names, return a relative
+     *  path to the corresponding doc file.
+     *  This method is used to create relative paths
+     *  @param directory The top level directory where the classes are written.
+     *  @param destinationClassName
+     *  @param programElementDoc The documentation for the base class.
+     *  @param isIncluded True if the destination class is included in the
+     *  set of classes we are documenting.  If isIncluded is true,
+     *  we create a link to the .xml file.  If isIncluded is false, we
+     *  create a linke to the javadoc .html file.
+     *  @return a relative path from the base class to the destination class.
+     */
+    private static String _relativizePath(String baseDirectory,
+            String destinationClassName, ProgramElementDoc programElementDoc,
+            boolean isIncluded) {
+        // Use / here because these will be used in URLS
+        //String baseFileName = baseClassName.replace('.', "/");
+        String baseClassName = programElementDoc.qualifiedName();
+        String destinationFileName =
+            destinationClassName.replace('.', '/');
+        if (baseDirectory != null) {
+            // FIXME: will this work if baseDirectory is null?
+            //baseFileName = baseDirectory + "/" + baseFileName;
+            destinationFileName = baseDirectory + "/" + destinationFileName;
+        }
+        //URI baseURI = new File(baseFileName).toURI();
+        URI destinationURI = new File(destinationFileName).toURI();
+        URI baseDirectoryURI = new File(baseDirectory).toURI();
+        URI relativeURI = baseDirectoryURI.relativize(destinationURI);
+
+        // Determine offsite from baseClassName to baseDirectory
+        String baseClassParts[] = baseClassName.split("\\.");
+        StringBuffer relativePath = new StringBuffer();
+
+        int offset = 1;
+        if (programElementDoc instanceof FieldDoc) {
+            // Fields have names like foo.bar.bif, where bif is the method
+            offset = 2;
+        }
+        for (int i = 0; i < baseClassParts.length - offset; i++) {
+            relativePath.append("../");
+        }
+
+        
+        // If the target is not in the list of actors we are creating
+        // documentation for, then link to the .html file that
+        // presumably was generated by javadoc; otherwise, link to the
+        // .xml file
+        String extension = (isIncluded ? ".xml" : ".html");
+
+        System.out.println("PtDoclet: relativize: "
+                + baseDirectory + " " + baseClassName + " "
+                + baseClassParts.length + " " + offset + " "
+                + relativePath + relativeURI.getPath() + extension);
+                
+
+        return relativePath + relativeURI.getPath() + extension;
+    }
+
+
     /** Write the output to a file.  
      *  @param className The dot separated fully qualified classname,
      *  which is used to specify the directory and filename to which
      *  the documentation is written.
-     *  @param directory The top level directory where the classes are written.
-     *  If necessary, the directory is created.
      *  @param documentation The documentation that is written.
      *  @exception IOException If there is a problem writing the documentation.
      */
-    private static void _writeDoc(String className, String directory,
-            String documentation) throws IOException {
+    private static void _writeDoc(String className, String documentation)
+        throws IOException {
         String fileBaseName = className.replace('.', File.separatorChar) + ".xml";
         String fileName = null;
-        if (directory != null) {
-            fileName = directory + File.separator + fileBaseName;
+        if (_outputDirectory != null) {
+            fileName = _outputDirectory + File.separator + fileBaseName;
         } else {
             fileName = fileBaseName;
         }
@@ -305,6 +384,9 @@ public class PtDoclet {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Directory to which the output is to be written. */
+    private static String _outputDirectory;
+
     /** Header string for XML PtDoc output. */
     private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
 
@@ -316,7 +398,4 @@ public class PtDoclet {
             throw new RuntimeException(ex);
         }
     }
-
-
-
 }
