@@ -811,7 +811,7 @@ public class TableauFrame extends Top {
         // Use the strategy pattern here to create the actual
         // dialog so that subclasses can customize this dialog.
         JFileChooser fileDialog = _saveAsFileDialog();
-
+        fileDialog.setFileFilter(new TableauFileFilter());
         if (_initialSaveAsFileName != null) {
             fileDialog.setSelectedFile(new File(fileDialog
                     .getCurrentDirectory(), _initialSaveAsFileName));
@@ -819,9 +819,14 @@ public class TableauFrame extends Top {
 
         // Show the dialog.
         int returnVal = fileDialog.showSaveDialog(this);
-
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
+            FileFilter filter = fileDialog.getFileFilter();
+            if(file.getName().indexOf(".") == -1 && 
+               (filter instanceof TableauFileFilter)) {
+              //if the user has not given the file an extension, add .xml
+              file = new File(file.getAbsolutePath() + ".xml");
+            }
 
             try {
                 if (!_confirmFile(null, file)) {
@@ -1113,5 +1118,20 @@ public class TableauFrame extends Top {
             // properly occur.
             repaint();
         }
+    }
+    
+    class TableauFileFilter extends javax.swing.filechooser.FileFilter {
+      public boolean accept(File f) {
+        if(f.getName().indexOf(".html") != -1 ||
+           f.getName().indexOf(".xml") != -1 ||
+           f.getName().indexOf(".moml") != -1) {
+          return true;
+        }
+        return false;
+      }
+      
+      public String getDescription() {
+        return "XML, MOML and HTML Files";
+      }
     }
 }
