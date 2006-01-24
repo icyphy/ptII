@@ -942,7 +942,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     result.append(_component.getFullName().replace('.', '_'));
                     result.append("_" + name);
                 } else if (macro.equals("actorClass")) {
-                    result.append(_component.getClassName());
+                    result.append(_component.getClassName().replace('.', '_'));
                     result.append("_" + name);
                 } else if (macro.equals("new")) {
                     result.append(getNewInvocation(name));
