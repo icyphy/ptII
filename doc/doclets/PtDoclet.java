@@ -151,9 +151,25 @@ public class PtDoclet {
                         seeTag.referencedClass().qualifiedName();
                     isIncluded = seeTag.referencedClass().isIncluded();
                 }
+
+                // {@link ...} tags usually have a null label.
+                String target = seeTag.label();
+                if (target == null || target.length() == 0) {
+                    target = seeTag.referencedMemberName();
+                    if (target == null || target.length() == 0) {
+                        target = seeTag.referencedClassName();
+                    }
+                }
                 if (classOrPackageName != null) {
-                    // FIXME: If the .xml file does not exist,
-                    // then link to the .htm file
+                    if (target != null && target.indexOf("(") != -1) {
+                        // The target has a paren, so can't be a port or
+                        // parameter, so link to the html instead of the .xml.
+                        
+                        isIncluded = false;
+                    }
+
+                    // If the .xml file is not included in the output,
+                    // then link to the .html file
                     documentation.append(
                             _relativizePath(_outputDirectory,
                                     classOrPackageName, programElementDoc,
@@ -162,11 +178,6 @@ public class PtDoclet {
                 if (seeTag.referencedMember() != null) {
                     documentation.append("#" +
                             seeTag.referencedMember().name());
-                }
-                String target = seeTag.label();
-                if (target.length() == 0) {
-                    target = seeTag.referencedClassName() + "#"  
-                        + seeTag.referencedMemberName();
                 }
                 documentation.append("\">" + target + "</a>");
             } else {
