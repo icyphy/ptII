@@ -35,6 +35,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphTableau;
@@ -102,9 +103,11 @@ public class ThalesGraphFrame extends ActorGraphFrame {
      *  constructor of the base class, so it must be
      *  careful to not reference
      *  local variables that may not have yet been created.
+     *  @param entity The object to be displayed in the pane.
+     *  @return The pane that is created.
      */
-    protected GraphPane _createGraphPane() {
-        GraphPane result = super._createGraphPane();
+    protected GraphPane _createGraphPane(NamedObj entity) {
+        GraphPane result = super._createGraphPane(entity);
 
         // Add the ArgumentDialogFactory to the context menu for actors
         _controller.getEntityController().addMenuItemFactory(
