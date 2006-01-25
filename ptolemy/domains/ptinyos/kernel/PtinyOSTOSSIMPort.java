@@ -1,6 +1,6 @@
 /* A parameter for coordinated TOSSIM port numbering.
 
- Copyright (c) 2003-2005 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,37 +47,35 @@ import ptolemy.moml.SharedParameter;
  connecting to TinyViz and other external tools). Changing the
  expression of any one instance of the parameter will result in all
  instances that are shared being changed. If the value is being set to
- zero, then all other values will be set to zero.  If it is being set
+ -1, then all other values will be set to -1.  If it is being set
  to anything else, then all other values are set to unique numbers
- obtained by adding 2 to the specified value while iterating through
- the shared parameters.
+ obtained by adding a default value of 1 (though this can be specified
+ by the user) to the specified value while iterating through the
+ shared parameters.
    
- <p>
- An instance elsewhere in the model (within the same top level) is shared
- if it has the same type and its container is of the class specified in the
- constructor (or of the container class, if no class is specified
- in the constructor).
- <p>
-   
- One exception is that if this parameter is (deeply) within an
+ <p> An instance elsewhere in the model (within the same top level) is
+ shared if it has the same type and its container is of the class
+ specified in the constructor (or of the container class, if no class
+ is specified in the constructor).
+
+ <p> One exception is that if this parameter is (deeply) within an
  instance of EntityLibrary, then the parameter is not shared.
  Were this not the case, then opening a library containing this
  parameter would force expansion of all the sublibraries of
  EntityLibrary, which would defeat the lazy instantiation
  of EntityLibrary.
- <p>
-   
- This parameter is always of type Int.
+
+ <p> This parameter is always of type Int.
 
  <p> This parameter is based on ColtSeedParameter, except this
- parameter is of type Int instead of Long, and this parameter 
- increments by 2 instead of 1.
+ parameter is of type Int instead of Long, and this parameter
+ increments by 2 instead of 1, and this parameter has a default value
+ of -1 instead of 0.
    
  @see ptolemy.actor.lib.colt.ColtSeedParameter
    
  @author Elaine Cheong
  @version $Id$
- @since Ptolemy II 4.0
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
@@ -96,6 +94,24 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
+    
+    /** Construct a parameter with the given container and name.
+     *  The container class will be used to determine which other
+     *  instances of PtinyOSTOSSIMPort are shared with this one.
+     *  @param container The container.
+     *  @param name The name of the parameter.
+     *  @param incrementValue The value with which to increment
+     *  subsequent parameters.
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
+     */
+    public PtinyOSTOSSIMPort(NamedObj container, String name, int incrementValue)
+            throws IllegalActionException, NameDuplicationException {
+        this(container, name, null);
+        _incrementValue = incrementValue;
+    }
 
     /** Construct a parameter with the given container, name, and
      *  container class. The specified class will be used to determine
@@ -111,10 +127,30 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
     public PtinyOSTOSSIMPort(NamedObj container, String name,
             Class containerClass) throws IllegalActionException,
             NameDuplicationException {
-        super(container, name, containerClass, "0");
+        super(container, name, containerClass, String.valueOf(_defaultValue));
+        setTypeEquals(BaseType.INT);
+    }
+    
+    /** Construct a parameter with the given container, name, and
+     *  container class. The specified class will be used to determine
+     *  which other instances of PtinyOSTOSSIMPort are shared with this one.
+     *  @param container The container.
+     *  @param name The name of the parameter.
+     *  @param containerClass The class used to determine shared instances.
+     *  @param incrementValue The value with which to increment
+     *  subsequent parameters.
+     *  @exception IllegalActionException If the parameter is not of an
+     *   acceptable class for the container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   a parameter already in the container.
+     */
+    public PtinyOSTOSSIMPort(NamedObj container, String name,
+            Class containerClass, int incrementValue) throws IllegalActionException,
+            NameDuplicationException {
+        super(container, name, containerClass, String.valueOf(_defaultValue));
         setTypeEquals(BaseType.INT);
         
-        SharedParameter sp = (SharedParameter) this;
+        _incrementValue = incrementValue;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,13 +175,13 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
         // IllegalActionException.  Too bad...
         try {
             IntToken token = (IntToken) getToken();
-            int value = 0;
+            int value = _defaultValue;
 
             if (token != null) {
                 value = token.intValue();
             }
 
-            if (value == 0) {
+            if (value == _defaultValue) {
                 // Call again without suppression of propagation.
                 super.setExpression(expression);
             } else {
@@ -159,14 +195,14 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
                                 toplevel).iterator();
 
                         while (sharedParameters.hasNext()) {
-                            PtinyOSTOSSIMPort sharedParameter = (PtinyOSTOSSIMPort) sharedParameters
-                                    .next();
+                            PtinyOSTOSSIMPort sharedParameter =
+                                (PtinyOSTOSSIMPort) sharedParameters.next();
 
                             if (sharedParameter != this) {
                                 try {
                                     sharedParameter
                                             .setSuppressingPropagation(true);
-                                    value += 2;
+                                    value += _incrementValue;
 
                                     String newExpression = String.valueOf(value);
 
@@ -179,8 +215,8 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
                                         sharedParameter.setPersistent(false);
                                     }
                                 } finally {
-                                    sharedParameter
-                                            .setSuppressingPropagation(previousSuppress);
+                                    sharedParameter.setSuppressingPropagation(
+                                            previousSuppress);
                                 }
                             }
                         }
@@ -192,4 +228,7 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
             throw new InternalErrorException(ex);
         }
     }
+    
+    private int _incrementValue = 1;
+    private static int _defaultValue = -1;
 }

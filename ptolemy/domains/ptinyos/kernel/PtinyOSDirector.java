@@ -167,11 +167,18 @@ public class PtinyOSDirector extends Director {
 
     /** Port for TOSSIM to accept commands.
      */
-    public Parameter commandPort;
+    public PtinyOSTOSSIMPort commandPort;
 
     /** Port for TOSSIM to publish events.
      */
     public Parameter eventPort;
+
+    /** Node ID number.  This is a substitute for TOS_LOCAL_ADDRESS,
+     *  which in TOSSIM is normally set to the mote array index.  *
+     *  However, we assume only one mote per TOSSIM.  To avoid all *
+     *  motes being set to the same ID, we use this parameter.
+     */
+    public PtinyOSTOSSIMPort nodeID;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -932,7 +939,8 @@ TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
 COMPONENT=_SenseToLedsInWireless_MicaBoard_MicaActor3071
 PFLAGS += -I%T/lib/Counters
 PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
-MY_PTCC_FLAGS += -D_PTII_NODE_NUM=_1SenseToLedsInWireless_1MicaBoard_1MicaActor3071
+PFLAGS += -D_PTII_NODEID=0
+MY_PTCC_FLAGS += -D_PTII_NODE_NAME=_1SenseToLedsInWireless_1MicaBoard_1MicaActor3071
 PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
 include /home/celaine/ptII/mk/ptII.mk
 include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
@@ -1003,9 +1011,11 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         text.addLine("PFLAGS +=" + " -DCOMMAND_PORT=" + commandPort.getToken()
                 + " -DEVENT_PORT=" + eventPort.getToken());
 
+        text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + nodeID.getToken());
+        
         // Turn _ into _1 for JNI compatibility.
         String nativeMethodName = toplevelName.replaceAll("_", "_1");
-        text.addLine("MY_PTCC_FLAGS +=" + " -D_PTII_NODE_NUM="
+        text.addLine("MY_PTCC_FLAGS +=" + " -D_PTII_NODE_NAME="
                 + nativeMethodName);
 
         // Look for ptII in the target list and add necessary PFLAGS.
@@ -1015,8 +1025,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
                 // Note: we do not conditionally add this in, so
                 // makefile must be regenerated if user wants to use
                 // makefile with non-ptII platform.
-                text
-                        .addLine("PFLAGS += \"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
+                text.addLine("PFLAGS += "
+                        + "\"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
                 break;
             }
         }
@@ -1276,6 +1286,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             // NOTE: only the top level value of this parameter matters.
             numNodes = new Parameter(this, "numNodes", new IntToken(1));
             numNodes.setTypeEquals(BaseType.INT);
+            numNodes.setVisibility(Settable.NOT_EDITABLE);
 
             // Set the boot up time range to the defaul to of 10 sec.
             // NOTE: only the top level value of this parameter matters.
@@ -1295,17 +1306,19 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
             // Set command and event ports for TOSSIM.
             commandPort =
-                new PtinyOSTOSSIMPort(this, "commandPort");
+                new PtinyOSTOSSIMPort(this, "commandPort", 2);
             commandPort.setExpression("10584");
-            //commandPort.setTypeEquals(BaseType.INT);
             eventPort = new Parameter(this, "eventPort");
-            //eventPort.setExpression(String.valueOf(((IntToken)commandPort.getToken()).intValue() + 1));
             eventPort.setExpression("commandPort + 1");
-            //eventPort.setTypeEquals(BaseType.INT);
 
             // Make timeResolution SharedParameter (from base class) visible.
             timeResolution.setVisibility(Settable.FULL);
             timeResolution.moveToLast();
+
+            // Set node ID
+            nodeID = new PtinyOSTOSSIMPort(this, "nodeID", 1);
+            nodeID.setExpression("0");
+            
         } catch (KernelException ex) {
             throw new InternalErrorException(this, ex, "Cannot set parameter");
         }
