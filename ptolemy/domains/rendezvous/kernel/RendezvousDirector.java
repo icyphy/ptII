@@ -120,9 +120,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
 
         if (ports.iterator().hasNext()) {
             return !_stopRequested;
-        } else {
-            return _notDone && !_stopRequested;
         }
+        return _notDone && !_stopRequested;
     }
 
     /** Return an array of suggested directors to be used with ModalModel.
@@ -137,8 +136,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
         // in the array.
         String[] defaultSuggestions = new String[] {
                 "ptolemy.domains.fsm.kernel.FSMDirector",
-                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector"
-        };
+                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector" };
         return defaultSuggestions;
     }
 
@@ -163,8 +161,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @return True if all threads are stopped or blocked.
      */
     protected synchronized boolean _areAllThreadsStopped() {
-        return (_getActiveThreadsCount()
-                == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
+        return (_getActiveThreadsCount() == (_getStoppedThreadsCount() + _getBlockedThreadsCount()));
     }
 
     /** Return true if all active threads are blocked.
@@ -173,9 +170,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
     protected synchronized boolean _areThreadsDeadlocked() {
         if (_getActiveThreadsCount() == _getBlockedThreadsCount()) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /** If the model is deadlocked, report the deadlock if parameter
@@ -195,10 +191,11 @@ public class RendezvousDirector extends CompositeProcessDirector {
             if ((suppress == null)
                     || !(suppress.getToken() instanceof BooleanToken)
                     || !((BooleanToken) suppress.getToken()).booleanValue()) {
-                MessageHandler.message("Model ended with a deadlock "
-                    + "(this may be normal for this model).\n"
-                    + "A parameter with name SuppressDeadlockReporting and "
-                    + "value true will suppress this message.");
+                MessageHandler
+                        .message("Model ended with a deadlock "
+                                + "(this may be normal for this model).\n"
+                                + "A parameter with name SuppressDeadlockReporting and "
+                                + "value true will suppress this message.");
             }
 
             return false;

@@ -60,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  */
 public class Barrier extends TypedAtomicActor {
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -108,7 +108,8 @@ public class Barrier extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         if (input.getWidth() == 0) {
-            throw new IllegalActionException(this, "Barrier requires at least one input.");
+            throw new IllegalActionException(this,
+                    "Barrier requires at least one input.");
         }
         Director director = getDirector();
         if (!(director instanceof RendezvousDirector)) {
@@ -119,18 +120,18 @@ public class Barrier extends TypedAtomicActor {
             _debug("Performing multiway rendezvous on the input channels.");
         }
         /*Token[][] tokens = RendezvousReceiver.getFromAll(
-                input.getReceivers(), (RendezvousDirector)director);
-        if (_debugging) {
-            _debug("Input yielded the tokens: " + tokens);
-        }
-        if (output.getWidth() > 0) {
-            if (_debugging) {
-                _debug("Performing multiway rendezvous on the output channels.");
-            }
-            RendezvousReceiver.putToAll(
-                    tokens, output.getRemoteReceivers(), (RendezvousDirector)director);
-        }*/
-        RendezvousReceiver.getFromAllPutToAll(input.getReceivers(),
-                output.getRemoteReceivers(), (RendezvousDirector)director);
+         input.getReceivers(), (RendezvousDirector)director);
+         if (_debugging) {
+         _debug("Input yielded the tokens: " + tokens);
+         }
+         if (output.getWidth() > 0) {
+         if (_debugging) {
+         _debug("Performing multiway rendezvous on the output channels.");
+         }
+         RendezvousReceiver.putToAll(
+         tokens, output.getRemoteReceivers(), (RendezvousDirector)director);
+         }*/
+        RendezvousReceiver.getFromAllPutToAll(input.getReceivers(), output
+                .getRemoteReceivers(), (RendezvousDirector) director);
     }
 }

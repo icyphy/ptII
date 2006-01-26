@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  */
 public class Merge extends TypedAtomicActor {
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -80,12 +80,12 @@ public class Merge extends TypedAtomicActor {
     public Merge(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         output = new TypedIOPort(this, "output", false, true);
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-10,20 10,10 10,-10, -10,-20\" "
                 + "style=\"fill:red\"/>\n" + "</svg>\n");
@@ -101,7 +101,7 @@ public class Merge extends TypedAtomicActor {
     /** The input port. This is a multiport that accepts any type.
      */
     public TypedIOPort input;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -124,13 +124,13 @@ public class Merge extends TypedAtomicActor {
             _debug("Ready to rendezvous with an input.");
         }
         /*Token received = RendezvousReceiver.getFromAny(
-                input.getReceivers(), (RendezvousDirector)director);
-        if (_debugging) {
-            _debug("Received input: " + received);
-            _debug("Sending to the output.");
-        }
-        output.send(0, received);*/
-        RendezvousReceiver.getFromAnyPutToAll(input.getReceivers(),
-                output.getRemoteReceivers(), (RendezvousDirector)director);
+         input.getReceivers(), (RendezvousDirector)director);
+         if (_debugging) {
+         _debug("Received input: " + received);
+         _debug("Sending to the output.");
+         }
+         output.send(0, received);*/
+        RendezvousReceiver.getFromAnyPutToAll(input.getReceivers(), output
+                .getRemoteReceivers(), (RendezvousDirector) director);
     }
 }

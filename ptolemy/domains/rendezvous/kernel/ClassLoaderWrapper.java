@@ -52,11 +52,11 @@ import java.net.URL;
  concrete class of the class loader associated with a thread. For example, the
  following piece of code may lead to an error:
  <pre>
-    myThread.setContextClassLoader(new MyLoader());
-    ... // Do some rendezvous operations
-    if (myThread.getContextClassLoader() instanceof MyLoader) {
-        ....
-    }
+ myThread.setContextClassLoader(new MyLoader());
+ ... // Do some rendezvous operations
+ if (myThread.getContextClassLoader() instanceof MyLoader) {
+ ....
+ }
  </pre>
  This is because the class loader of the thread may be replaced by a
  RendezvousReceiver.
@@ -66,9 +66,9 @@ import java.net.URL;
  @since Ptolemy II 5.1
  @Pt.ProposedRating Red (tfeng)
  @Pt.AcceptedRating Red (tfeng)
-*/
+ */
 class ClassLoaderWrapper extends ClassLoader {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -86,7 +86,7 @@ class ClassLoaderWrapper extends ClassLoader {
     public Object getData() {
         return _data;
     }
-    
+
     /** Get the wrapped class loader.
      * 
      *  @return The wrapped class loader.
@@ -94,7 +94,7 @@ class ClassLoaderWrapper extends ClassLoader {
     public ClassLoader getLoader() {
         return _loader;
     }
-    
+
     /** Call the getResource(String) method of the wrapped class loader, and
      *  return its result.
      *  
@@ -149,7 +149,7 @@ class ClassLoaderWrapper extends ClassLoader {
     public void setData(Object data) {
         _data = data;
     }
-    
+
     /** Call the setDefaultAssertionStatus(boolean) method of the wrapped class
      *  loader.
      *  
@@ -172,7 +172,7 @@ class ClassLoaderWrapper extends ClassLoader {
             boolean enabled) {
         _loader.setPackageAssertionStatus(packageName, enabled);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////
 
@@ -189,7 +189,7 @@ class ClassLoaderWrapper extends ClassLoader {
 
     /** The data object stored in a class loader wrapper. */
     private Object _data;
-    
+
     /** The wrapped class loader. */
     private ClassLoader _loader;
 }

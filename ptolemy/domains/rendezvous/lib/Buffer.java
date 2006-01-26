@@ -74,7 +74,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  */
 public class Buffer extends TypedAtomicActor {
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -89,11 +89,11 @@ public class Buffer extends TypedAtomicActor {
     public Buffer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         capacity = new Parameter(this, "capacity");
         capacity.setTypeEquals(BaseType.INT);
         capacity.setExpression("1");
-        
+
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
     }
@@ -105,7 +105,7 @@ public class Buffer extends TypedAtomicActor {
      *  set this to a negative number.
      */
     public Parameter capacity;
-    
+
     /** The input port.
      */
     public TypedIOPort input;
@@ -130,14 +130,14 @@ public class Buffer extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         super.fire();
         final Thread writeThread = Thread.currentThread();
-        
+
         if (!(getDirector() instanceof RendezvousDirector)) {
             throw new IllegalActionException(this,
-            "Buffer actor can only be used with RendezvousDirector.");
+                    "Buffer actor can only be used with RendezvousDirector.");
         }
-        
-        final RendezvousDirector director = (RendezvousDirector)getDirector();
-        
+
+        final RendezvousDirector director = (RendezvousDirector) getDirector();
+
         _postfireReturns = true;
         if (_readThread == null) {
             _readThread = new Thread(getFullName() + "_readThread") {
@@ -150,19 +150,24 @@ public class Buffer extends TypedAtomicActor {
                         while (!_stopRequested) {
                             // Synchronize on the director since all read/write
                             // operations do.
-                            synchronized(director) {
+                            synchronized (director) {
                                 // If the buffer is full, then wait until it is no
                                 // longer full.
-                                int capacityValue = ((IntToken)capacity.getToken()).intValue();
-                                while (_buffer.size() >= capacityValue && !_stopRequested) {
+                                int capacityValue = ((IntToken) capacity
+                                        .getToken()).intValue();
+                                while (_buffer.size() >= capacityValue
+                                        && !_stopRequested) {
                                     if (_debugging) {
                                         _debug("** Waiting because buffer is full.");
                                     }
                                     try {
-                                        director.threadBlocked(_readThread, null);
-                                        RendezvousReceiver.waitForChange(director);
+                                        director.threadBlocked(_readThread,
+                                                null);
+                                        RendezvousReceiver
+                                                .waitForChange(director);
                                     } finally {
-                                        director.threadUnblocked(_readThread, null);
+                                        director.threadUnblocked(_readThread,
+                                                null);
                                     }
                                 }
                                 if (_stopRequested) {
@@ -174,7 +179,8 @@ public class Buffer extends TypedAtomicActor {
                                 Token token = input.get(0);
                                 _buffer.add(token);
                                 if (_debugging) {
-                                    _debug("** Received input. Buffer contents: " + _buffer);
+                                    _debug("** Received input. Buffer contents: "
+                                            + _buffer);
                                 }
                                 director.threadUnblocked(writeThread, null);
                                 director.notifyAll();
@@ -198,7 +204,7 @@ public class Buffer extends TypedAtomicActor {
         }
         // Synchronize on the director since all read/write
         // operations do.
-        synchronized(director) {
+        synchronized (director) {
             if (_exception != null) {
                 throw _exception;
             }
@@ -224,7 +230,7 @@ public class Buffer extends TypedAtomicActor {
                 }
             }
             // There is a token.
-            Token token = (Token)_buffer.get(0);
+            Token token = (Token) _buffer.get(0);
             if (_debugging) {
                 _debug("Sending token to output: " + token);
             }
@@ -246,15 +252,15 @@ public class Buffer extends TypedAtomicActor {
             if (_debugging) {
                 _debug("Buffer contents: " + _buffer);
             }
-            
-            int capacityValue = ((IntToken)capacity.getToken()).intValue();
+
+            int capacityValue = ((IntToken) capacity.getToken()).intValue();
             if (_buffer.size() == capacityValue - 1 && !_stopRequested) {
                 director.threadUnblocked(_readThread, null);
                 director.notifyAll();
             }
         }
     }
-    
+
     /** Clear the buffer.
      *  @exception IllegalActionException If the base class throws it.
      */
@@ -265,26 +271,26 @@ public class Buffer extends TypedAtomicActor {
         _readThread = null;
         _postfireReturns = true;
     }
-    
+
     /** Return false if it is time to stop the process.
      *  @return False a TerminateProcessException was thrown during I/O.
      */
     public boolean postfire() {
         return _postfireReturns;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The current buffer. */
     private List _buffer = new LinkedList();
-    
+
     /** Exception that might be thrown by the spawned thread. */
     private IllegalActionException _exception;
-    
+
     /** Flag indicating what postfire should return. */
     private boolean _postfireReturns = true;
-    
+
     /** The read thread, if it exists. */
     private Thread _readThread = null;
 }
