@@ -51,6 +51,7 @@ OUTPUT_DIR=$PTII/vendors/ptinyos/tinyos-1.x
 
 ###########################################################################
 
-gtar -C $OUTPUT_DIR -xzvf $SRC_DIR/$SRC_FILENAME
+# Don't use tar -C or tar -z here, don't use gtar 
+(cd $OUTPUT_DIR; cat $SRC_DIR/$SRC_FILENAME | gunzip | tar -xvf -)
 
 echo "Extracted $SRC_DIR/$SRC_FILENAME"
