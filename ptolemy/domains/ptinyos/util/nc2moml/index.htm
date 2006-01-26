@@ -25,35 +25,47 @@
     II configure script will find it and automatically make the TinyOS
     libraries available.
 
-    <h2>Installation instructions</h2>
+    <h2>Installation notes</h2>
 
     These installation instructions assume that you already have
     Ptolemy II installed, and that if you are running on Windows, you
     already have Cygwin installed.  These instructions also assume
-    that you do not already have the nesC compiler nor TinyOS
-    installed.  If you wish to use pre-existing installations, please
+    that you have neither the nesC compiler nor TinyOS installed
+    already.  If you wish to use pre-existing installations, please
     set up the environment variables described in the steps below to
-    point to proper directories.
+    point to the proper directories.
 
-	<BLOCKQUOTE>
-	If you already have TinyOS 1.x and nesC (version 1.2.2 or
-	later) installed, try:
-	<pre>
+    <BLOCKQUOTE>
+
+      <h3>Using preexisting installations of TinyOS 1.x and nesC (v1.2.2 or later)</h3>
+      <ol>
+        <li>If you already have TinyOS 1.x and nesC (version 1.2.2
+          or later, from CVS or a .tar.gz distribution) installed, try:
+
+          <pre>
 cd $PTII
 mkdir -p vendors/ptinyos
 cd $PTII/vendors/ptinyos
-ln -s <I>location_of_your_tiny-1.x_tree</I> tinyos-1.x
+ln -s <I>location_of_your_tinyos-1.x_tree</I> tinyos-1.x
 ln -s <I>location_of_your_nesc_tree</I> nesc
-	</pre>
- 	Be sure to update to the latest nesC cvs version, then proceed
- 	to <a href="#environmentVariables">Set up the necessary
- 	environment variables</a> below.  You may skip installing
- 	TinyOS and nesc and <a href="#unzip">proceed</a> to unzipping
- 	the opts files and running <CODE>nc2moml</CODE>.
-	</BLOCKQUOTE>
+          </pre>
+        </li>
+        
+        <li>Proceed to the step to <a href="#environmentVariables">Set up the
+        necessary environment variables</a> below.
 
+        <li>You may skip the step for configuring and installing the
+        TinyOS nesC tools.
 
-    <h2><a name="nc2moml_source">How to install nc2moml</a></h2>
+        <li>Proceed to the step to <a href="#unzip">Run the script
+        that will unzip the file that contains additional compiler
+        flags</a> and follow the rest of the instuctions to running
+        <CODE>nc2moml</CODE>.
+      </ol>
+
+    </BLOCKQUOTE>
+
+    <h2>How to install nc2moml</h2>
     
     <ol>
       <li>Make a directory into which to store the source code for
@@ -108,7 +120,7 @@ tar xvf nesc-1.2.2.tar
     have gperf on them, at least, so you will likely need to install
     at least that.</p>
 
-    <ul>
+    <ol>
       <li> Get the nesC CVS Tree, see <a
           href="http://sourceforge.net/cvs/?group_id=56288#in_browser" target="_top"><CODE>http://sourceforge.net/cvs/?group_id=56288</CODE></a>
 
@@ -124,10 +136,10 @@ cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/nescc co nesc
 cd $PTII/vendors/ptinyos/nesc
 ./Bootstrap
         </pre>
-    </ul>
+    </ol>
 
 
-    <li> <a name="configurenesC">Run configure for nesc</a>
+    <li><a name="configurenesC">Configure nesc:</a>
       <pre>
 ./configure
       </pre>
@@ -140,7 +152,7 @@ cd $PTII/vendors/ptinyos/nesc
       <code>bin</code> directory to your path.
     </li>
 
-    <li> Install nesc 
+    <li>Install nesc:
       <pre>
 make
 make install
@@ -242,7 +254,7 @@ make install
 
       </li>
 
-      <li><a name="unzip"> Run the script that will unzip the file
+      <li><a name="unzip">Run the script</a> that will unzip the file
       that contains additional compiler flags.  It will place "opts"
       files into various directories in your tinyos-1.x tree.  The
       script assumes that you have placed your tinyos-1.x tree as
