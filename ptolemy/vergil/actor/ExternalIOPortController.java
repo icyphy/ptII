@@ -259,7 +259,7 @@ public class ExternalIOPortController extends AttributeController {
                     fill = Color.black;
                 } else {
                     IOPort ioport = (IOPort) port;
-                    polygon.moveTo(-8, 5);
+                    polygon.moveTo(-8, 4);
                     if (ioport.isMultiport()) {
                         if (ioport instanceof ParameterPort) {
                             // It would be better to couple these to the
