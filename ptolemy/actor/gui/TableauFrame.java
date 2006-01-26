@@ -803,6 +803,19 @@ public class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
+        return _saveAs(null);
+    }
+
+    /** Query the user for a filename, save the model to that file,
+     *  and open a new window to view the model.
+     *  This overrides the base class to update the entry in the
+     *  ModelDirectory and to rename the model to match the file name.
+     *  @param extension If non-null, then the extension that is
+     *  appended to the file name if there is no extension.  
+     *  
+     *  @return True if the save succeeds.
+     */
+    protected boolean _saveAs(String extension) {
         if (_tableau == null) {
             throw new InternalErrorException(
                     "No associated Tableau! Can't save.");
@@ -811,7 +824,6 @@ public class TableauFrame extends Top {
         // Use the strategy pattern here to create the actual
         // dialog so that subclasses can customize this dialog.
         JFileChooser fileDialog = _saveAsFileDialog();
-        fileDialog.setFileFilter(new TableauFileFilter());
         if (_initialSaveAsFileName != null) {
             fileDialog.setSelectedFile(new File(fileDialog
                     .getCurrentDirectory(), _initialSaveAsFileName));
@@ -821,11 +833,10 @@ public class TableauFrame extends Top {
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
-            FileFilter filter = fileDialog.getFileFilter();
-            if(file.getName().indexOf(".") == -1 && 
-               (filter instanceof TableauFileFilter)) {
-              //if the user has not given the file an extension, add .xml
-              file = new File(file.getAbsolutePath() + ".xml");
+            if (extension != null
+                    && file.getName().indexOf(".") == -1) {
+                // if the user has not given the file an extension, add it
+                file = new File(file.getAbsolutePath() + extension);
             }
 
             try {
@@ -1118,20 +1129,5 @@ public class TableauFrame extends Top {
             // properly occur.
             repaint();
         }
-    }
-    
-    class TableauFileFilter extends javax.swing.filechooser.FileFilter {
-      public boolean accept(File f) {
-        if(f.getName().indexOf(".html") != -1 ||
-           f.getName().indexOf(".xml") != -1 ||
-           f.getName().indexOf(".moml") != -1) {
-          return true;
-        }
-        return false;
-      }
-      
-      public String getDescription() {
-        return "XML, MOML and HTML Files";
-      }
     }
 }
