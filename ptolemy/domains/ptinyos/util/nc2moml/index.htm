@@ -39,8 +39,9 @@
 
       <h3>Using preexisting installations of TinyOS 1.x and nesC (v1.2.2 or later)</h3>
       <ol>
-        <li>If you already have TinyOS 1.x and nesC (version 1.2.2
-          or later, from CVS or a .tar.gz distribution) installed, try:
+        <li>If you already have TinyOS 1.x and nesC (version 1.2.2 or
+        later, from CVS or a .tar.gz distribution) and the AVR tools
+        installed, try:
 
           <pre>
 cd $PTII
@@ -68,6 +69,152 @@ ln -s <I>location_of_your_nesc_tree</I> nesc
     <h2>How to install nc2moml</h2>
     
     <ol>
+      <li>You must install the following AVR tools:
+        <ul>
+          <li> avarice
+          <li> avr-binutils
+          <li> avr-gcc
+          <li> avr-insight
+          <li> avr-libc
+        </ul>
+        <p>
+
+          Note: If the files below do not work for you, you can try
+          using the latest files (although these have not been tested
+          with Viptos yet): <a
+          href="http://www.tinyos.net/dist-1.2.0/tools"
+          target="_top"><code>
+          http://www.tinyos.net/dist-1.2.0/tools</code></a>.
+
+
+        <p>
+        Choose and follow the appropriate directions for your operating system:
+        <ul>
+          <li> If you are running Windows XP or Windows 2000, you can either:
+            <ul>
+              <li> Download WinAVR
+   	       <ol> 
+                  <li>Go to 
+                    <a href="http://sourceforge.net/project/showfiles.php?group_id=68108#in_browser" target="_top"><code>http://sourceforge.net/project/showfiles.php?group_id=68108</code></a>              
+                  <li>Download
+<a href="http://prdownloads.sourceforge.net/winavr/WinAVR-20040404-bin-install.exe?download" target="_top"><code>WinAVR-20040404-bin-install.exe</code></a>
+                  <br><b>Note:</b> Do <b>not</b> install 
+		  <code>WinAVR-20050214-install.exe</code>, as of 10/05,
+		  it will not work.  When converting .nc files to .moml files,
+		  you will see messages about avr-gcc not being able to find
+		  cc1.  Instead, install
+		  <code>WinAVR-20040404-bin-install.exe</code>.
+                  <li>Install Winavr in any directory, <code>C:\WinAVR</code>
+		  is preferred.
+                    <i>FIXME: Directories with spaces in the pathname might not work?</i>
+                  <li>Under Windows with WinAVR-20040404, we had to copy 
+		  <code>c:/cygwin/usr/local/lib/ncc/</code> to
+		  <code>c:/usr/local/lib/ncc/</code>:
+		  <pre>
+		  mkdir -p c:/usr/local/lib
+		  cd c:/usr/local/lib
+		  cp -r /usr/local/lib/ncc .
+		  </pre>
+		  The reason is that Cygwin mounts directories under
+		  </code>c:/cygwin</code> and the WinAVR binaries don't
+		  know how to handle that.
+                </ol>
+            </ul>
+            Or
+            <ul>
+
+              <li> Download the <a
+              href="http://webs.cs.berkeley.edu/tos/dist-1.1.0/tinyos/windows/tinyos-1.1.0-1is.exe">TinyOS
+              Installshield Wizard</a>.  Run the wizard, and choose
+              "Custom" install.  Install only the AVR tools.  This
+              will install all of the rpms below for you. <b>Do not
+              choose the "cygwin" install option (it will overwrite
+              and corrupt your current cygwin installation) or the
+              "TinyOS" install option (you will install this later
+              from CVS as a separate step).</b> You may choose to
+              install the other remaining options if you do not
+              already have them installed on your system.  The wizard
+              will install all of the selected rpms for you.  JavaCOMM
+              is not needed if you are not planning on using the
+              TinyOS java tools (these are not needed for Viptos).
+            </ul>
+            Or
+            <ul>
+              <li> <b>If your Cygwin is installed so your 'Default
+              Text File Type' is Unix</b>, download the following rpms
+              to an empty directory:
+
+	      <br><b>Note</b>: If your Cygwin installation has
+	      'Default Text File Type' of Unix instead of DOS, then
+	      you will likely have 
+	      <a href="http://www.gigascale.org/softdevel/faq/23.html#in_browser"
+	      target="_top">Cygwin CR/NL problems</a> with CVS.
+	
+             <p><B>Installing the rpms under Cygwin is not recommended</B>,
+		it causes include file problems later.
+	      <li> FIXME the list below is old, we should try:
+	      <a href="http://www.tinyos.net/dist-1.2.0/tools/"><code>http://www.tinyos.net/dist-1.2.0/tools/</code></a>
+
+             <ul>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avarice-2.0.20030825cvs-1w.cygwin.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-binutils-2.13.2.1-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-binutils-2.13.2.1-1w.cygwin.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-gcc-3.3tinyos-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-gcc-3.3tinyos-1w.cygwin.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-insight-pre6.0cvs.tinyos-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-insight-pre6.0cvs.tinyos-1w.cygwin.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-libc-20030512cvs-1w.cygwin.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/avr-libc-20030512cvs-1w.cygwin.i386.rpm</a>
+                </ul>
+                and install them on the cygwin command line by typing:
+                
+                <pre>rpm --ignoreos -ivh *.rpm</pre> 
+
+                in the directory where you saved the files.
+		
+		 <p>If you get a message about checksum errors, complain
+		to the TinyOS authors and then reinstall Cygwin with 
+		<CODE>Unix</CODE> line endings.
+ <p><I>Note to tinyos developers:  Unix line endings are not the right choice for naive Windows users.  </I>
+
+		 <p>If you get
+		<pre>
+		bash-3.00$ rpm --ignoreos -ivh *.rpm
+		error: Failed dependencies:
+		/bin/sh is needed by make-3.80tinyos-1
+		/bin/sh is needed by mspgcc-win32tinyos-20041204-2
+	        bash-3.00$
+		</pre>
+		Then try 
+		<pre>
+		rpm --ignoreos --nodeps -ivh *.rpm
+		</pre>
+
+</I>
+</BLOCKQUOTE>
+
+
+                <p>
+                  The rpms are also available
+                  <a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/windows/#in_browser" target="_top">here</a>.  
+            </ul>
+
+          <li> If you are running Linux (Redhat 9), download the rpms from
+          <a
+          href="http://webs.cs.berkeley.edu/tos/dist-1.1.0/tools/linux#in_browser" target="_top">here</a>.  More convenient links are included here:
+            <ul>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avarice-2.0.20030825cvs-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avarice-2.0.20030825cvs-1.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-binutils-2.13.2.1-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-binutils-2.13.2.1-1.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-gcc-3.3tinyos-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-gcc-3.3tinyos-1.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-insight-pre6.0cvs.tinyos-1.3.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-insight-pre6.0cvs.tinyos-1.3.i386.rpm</a>
+<li><a href="http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-libc-20030512cvs-1.i386.rpm">http://today.cs.berkeley.edu/tos/dist-1.1.0/tools/linux/avr-libc-20030512cvs-1.i386.rpm</a>
+            </ul>
+            and install them on the cygwin command line with 
+            <pre>rpm -ivh *.rpm</pre> 
+            in the directory where you saved the files.
+        </ul>
+
+        (The directions above were modified from the
+	 <a href="http://webs.cs.berkeley.edu/tos/download.html#in_browser" target="_top">original TinyOS installation directions</a>).
+
+
+
       <li>Make a directory into which to store the source code for
       TinyOS and nesC, for example:
         <pre>
