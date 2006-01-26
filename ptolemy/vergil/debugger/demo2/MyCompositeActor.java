@@ -4,12 +4,12 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
-import ptolemy.actor.lib.*;import ptolemy.actor.util.*;
+import ptolemy.actor.lib.*;
+import ptolemy.actor.util.*;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.plot.*;
 
 import ptolemy.vergil.debugger.*;
-import ptolemy.vergil.debugger.domains.sdf.*;
 
 public class MyCompositeActor extends TypedCompositeActor {
 
