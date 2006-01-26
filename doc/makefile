@@ -348,6 +348,8 @@ ALL1_4PACKAGES =	$(COMPACKAGES) \
 			ptolemy.domains.hdf.kernel \
 			ptolemy.domains.petrinet.kernel \
 			ptolemy.domains.psdf.kernel \
+			ptolemy.domains.rendezvous.kernel \
+			ptolemy.domains.rendezvous.lib \
 			ptolemy.domains.sr.kernel \
 			ptolemy.domains.sr.lib \
 			ptolemy.domains.tm.kernel \
