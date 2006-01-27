@@ -55,6 +55,11 @@ ln -s <I>location_of_your_nesc_tree</I> nesc
         <li>Proceed to the step to <a href="#environmentVariables">Set up the
         necessary environment variables</a> below.
 
+        <li>Proceed to the step to <a
+        href="#reconfigureViptos">Reconfigure Viptos (or Ptolemy II)
+        to recognize the new paths</a>
+
+
         <li>You may skip the step for configuring and installing the
         TinyOS nesC tools.
 
@@ -405,6 +410,12 @@ setenv PTINYOS_MOMLROOT $PTII/vendors/ptinyos/moml
           variables if you still have problems.
 
       </ul>
+
+      <li> <a name"reconfigureViptos">Reconfigure Viptos</a> (or Ptolemy II) to recognize the new paths:
+<pre>
+cd $PTII
+./configure
+</pre>
 
       <li> Configure and install the TinyOS nesC tools
         <pre>
