@@ -1042,6 +1042,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/dde/ptp \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/gr/kernel \
