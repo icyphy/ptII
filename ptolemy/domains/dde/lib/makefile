@@ -53,8 +53,10 @@ JSRCS = \
 	DoubleFork.java \
 	Wire.java
 
+OTHER_FILES_TO_BE_JARED = \
+	ddeentities.xml
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
