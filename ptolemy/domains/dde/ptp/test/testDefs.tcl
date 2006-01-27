@@ -1,7 +1,8 @@
-# Makefile for the Java classes used to implement the Ptolemy DDE domain
+# Load test bed definitions
+#
+# @Author: Christopher Hylands
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
 # @Copyright (c) 1997-2005 The Regents of the University of California.
 # All rights reserved.
@@ -27,45 +28,43 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
+#######################################################################
 
-ME =		ptolemy/domains/dde
+# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
 
-DIRS =		kernel lib ptp demo doc
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
 
-# Used to build jar files
-PTPACKAGE = 	dde
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] .. .. .. .. ..]
+}
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar
+# Load up the test definitions.
+if {[string compare test [info procs test]] != 0} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+if {[string compare iterToTokenValues [info procs iterToTokenValues]] != 0} \
+        then {
+    source [file join $PTII util testsuite enums.tcl]
+} {}
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel lib doc
+if {[string compare sdfModel [info procs sdfModel]] != 0} \
+        then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
 
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
-
-all: jclass
-install: jclass jars
-
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+if {[info procs test_clone] == "" } then { 
+    source [file join $PTII util testsuite testParameters.tcl]
+}

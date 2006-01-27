@@ -1,9 +1,10 @@
-# Makefile for the Java classes used to implement the Ptolemy DDE domain
+# Makefile for Java Ptolemy II IEEE 1588 Precision Time Protocol (PTP) demos
+#
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,45 +28,53 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/dde
+ME =            ptolemy/domains/dde/ptp/demo
 
-DIRS =		kernel lib ptp demo doc
+DIRS =		Xylophone
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	dde
+PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar
+	Xylophone/Xylophone.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel lib doc
+# Keep this list alphabetized.
+JSRCS =
+
+EXTRA_SRCS =	$(JSRCS)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
+JCLASS = $(JSRCS:%.java=%.class)
+
 all: jclass
+	@echo "To run the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

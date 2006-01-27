@@ -1,9 +1,10 @@
-# Makefile for the Java classes used to implement the Ptolemy DDE domain
+# Makefile for Ptolemy II Precision Time Protocol Xylophone demo
+#
+# @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
-# @Copyright (c) 1997-2005 The Regents of the University of California.
+# @Copyright (c) 2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,45 +28,69 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/dde
+ME =            ptolemy/domains/dde/ptp/demo/Xylophone
 
-DIRS =		kernel lib ptp demo doc
+# Root of the Java directory
+ROOT =		../../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	dde
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE = 	Xylophone
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	Xylophone.xml
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel lib doc
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc
 
-all: jclass
-install: jclass jars
+JCLASS = $(JSRCS:%.java=%.class)
 
+# 'make fast' will create $(EXTRA_TARGETS)
+EXTRA_TARGETS =
+
+# Make clean removes $(KRUFT)
+KRUFT =
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
+install: all $(PTCLASSJAR)
+
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer Xylophone.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer XylophoneVergil.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Xylophone.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" Xylophone.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
