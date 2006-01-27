@@ -23,8 +23,8 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
- AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
+ ProposedRating Green (cxh)
+ AcceptedRating Yellow (cxh)
  */
 package ptolemy.actor.lib.x10;
 
