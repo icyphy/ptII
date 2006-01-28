@@ -1,0 +1,9 @@
+# Template makefile from $PTII/ptolemy/codegen/c/makefile.in
+# $Id$
+# The CodeGenerator class subsitutes strings like "@modelName@" with
+# the value of parameters and writes the results in the directory
+# where the source code is created.
+# To compile, run make -f @modelName@.mk
+
+@modelName@: @modelName@.c
+	$(CC) @modelName@.c -o @modelName@
