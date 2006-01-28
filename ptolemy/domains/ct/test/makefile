@@ -88,8 +88,14 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+test_jsimple: $(EXTRA_SRCS) jclass \
+	$(ROOT)/ptolemy/domains/ct/demo/Helicopter/HoverLinearizer.class \
+	$(KERNEL_TESTDEFS) alljtests.tcl test_auto
 	$(JTCLSH) alljtests.tcl
+
+# Build in demo/Helicopter so that auto/HelicopterTest.xml works
+$(ROOT)/ptolemy/domains/ct/demo/Helicopter/HoverLinearizer.class:
+	(cd $(ROOT)/ptolemy/domains/ct/demo/Helicopter; $(MAKE))
 
 
 
