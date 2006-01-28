@@ -1,35 +1,39 @@
 /* Base class for code generators.
 
- Copyright (c) 2005 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+Copyright (c) 2005 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
 
- */
+*/
 package ptolemy.codegen.kernel;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +41,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -45,6 +50,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
+import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
@@ -55,13 +61,16 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerator
@@ -88,7 +97,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         super(container, name);
 
         codeDirectory = new FileParameter(this, "codeDirectory");
-        codeDirectory.setExpression("$HOME/codegen");
+        CompositeEntity model = (CompositeEntity) getContainer();
+        codeDirectory.setExpression("$HOME/codegen/");
+
+        // FIXME: This should not be necessary, but if we don't
+        // do it, then getBaseDirectory() thinks we are in the current dir.
+        codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI()); 
         new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
 
@@ -175,12 +189,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /** Generate code and append it to the given string buffer.
-     *  Write the code to the file specified by the codeDirectory parameter.
-     *  This is the main entry point.
-     *  @param code The given string buffer.
-     *  @exception KernelException If the target file cannot be overwritten
-     *   or write-to-file throw any exception.
-     */
+
+    *  Write the code to the directory specified by the codeDirectory
+    *  parameter.  The file name is a sanitized version of the model
+    *  name with a suffix that is based on last package name of the
+    *  <i>generatorPackage</i> parameter.  Thus if the
+    *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
+    *  model is <code>Foo</code> and the <i>generatorPackage</i>
+    *  is <code>ptolemy.codegen.c</code>, then the file that is
+    *  written will be <code>$HOME/Foo.c</code>
+    *  This method is the main entry point.
+    *  @param code The given string buffer.
+    *  @exception KernelException If the target file cannot be overwritten
+    *   or write-to-file throw any exception.
+    */
     public void generateCode(StringBuffer code) throws KernelException {
         
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
@@ -223,29 +245,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(wrapupCode);
         code.append("}\n");
 
-        // Write the code to the file specified by codeDirectory.
-        try {
-            // Check if needs to overwrite.
-            if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
-                    && codeDirectory.asFile().exists()) {
-                // FIXME: It is totally bogus to ask a yes/no question
-                // like this, since it makes it impossible to call
-                // this method from a script.  If the question is
-                // asked, the build will hang.
-                if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
-                        + " exists. OK to overwrite?")) {
-                    throw new IllegalActionException(this,
-                            "Please select another file name.");
-                }
-            }
-
-            Writer writer = codeDirectory.openForWriting();
-            writer.write(code.toString());
-            codeDirectory.close();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Failed to write \""
-                    + codeDirectory.asFile() + "\"");
-        }
+        _writeCode(code);
+        _writeMakefile();
     }
 
     /** Generate The fire function code. This method is called when the firing
@@ -258,7 +259,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeEntity model = (CompositeEntity) getContainer();
-        TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
+        TypedCompositeActor modelHelper =
+            (TypedCompositeActor) _getHelper(model);
                      
         code.append("\nvoid " + 
                 model.getFullName().replace('.' , '_') + "() {\n");
@@ -319,7 +321,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
-                .getDirector();
+            .getDirector();
 
         CompositeEntity model = (CompositeEntity) getContainer();
 
@@ -364,7 +366,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(comment("Generate shared code for "
-                + getContainer().getFullName()));
+                            + getContainer().getFullName()));
 
         TypedCompositeActor compositeActorHelper = 
             (TypedCompositeActor) _getHelper(getContainer());
@@ -379,7 +381,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
 
         code.append(comment("Finished generate shared code for "
-                + getContainer().getFullName()));
+                            + getContainer().getFullName()));
 
         return code.toString();
     }
@@ -403,7 +405,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateTypeResolutionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(comment("Generate type resolution code for "
-                + getContainer().getFullName()));
+                            + getContainer().getFullName()));
 
         TypedCompositeActor compositeActorHelper = 
             (TypedCompositeActor) _getHelper(getContainer());
@@ -412,7 +414,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 .getComponent()).deepEntityList().iterator();
 
         CodeStream sharedStream = new CodeStream(
-        "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
+                "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
         
@@ -433,7 +435,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
         // The constructor of Array requires calling the convert function.  
         if (types.contains("Array")) {
-        	functions.add("convert");
+            functions.add("convert");
         }
         
         Object[] typesArray = types.toArray();
@@ -445,13 +447,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i]
-                            + ".c");
+                    + ".c");
             // FIXME: we need to compute the [partial] order of the hierarchy. 
             code.append("#define TYPE_" + typesArray[i] + " " + i + "\n");
 
             // Dynamically generate all the types within the union.
             typeMembers += "\t\t" + typesArray[i] + "Token " + typesArray[i]
-                    + ";\n";
+                + ";\n";
         }
 
         Object[] functionsArray = functions.toArray();
@@ -506,7 +508,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 for (int j = 0; j < functions.size(); j++) {
                     code.append(typesArray[i] + "_" + functionsArray[j]);
                     if ((i != (types.size() - 1)) || 
-                        (j != (functions.size() - 1))) {
+                            (j != (functions.size() - 1))) {
                         code.append(", ");
                     }
                 }
@@ -525,7 +527,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 //     .....
                 // /**/
                 try {
-                    typeStreams[i].appendCodeBlock(functionsArray[j] + "Block");
+                    typeStreams[i].appendCodeBlock(functionsArray[j]
+                            + "Block");
                 } catch (IllegalActionException ex) {
                     // We have to catch the exception if some code blocks are
                     // not found. We have to define the function label in the
@@ -553,7 +556,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         StringBuffer code = new StringBuffer();
         code.append("\n\n");
         code.append(comment("Variable Declarations "
-                + getContainer().getFullName()));
+                            + getContainer().getFullName()));
 
         TypedCompositeActor compositeActorHelper = 
             (TypedCompositeActor) _getHelper(getContainer());
@@ -639,7 +642,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                 // Get all instances of this class contained in the model
                 List codeGenerators = toplevel
-                        .attributeList(CodeGenerator.class);
+                    .attributeList(CodeGenerator.class);
 
                 CodeGenerator codeGenerator;
 
@@ -651,7 +654,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     // Get the last CodeGenerator in the list, maybe
                     // it was added last?
                     codeGenerator = (CodeGenerator) codeGenerators
-                            .get(codeGenerators.size() - 1);
+                        .get(codeGenerators.size() - 1);
                 }
 
                 System.out.println("CodeGenerator: " + codeGenerator);
@@ -692,7 +695,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if ((container != null) && !(container instanceof CompositeEntity)) {
             throw new IllegalActionException(this, container,
                     "CodeGenerator can only be contained"
-                            + " by CompositeEntity");
+                    + " by CompositeEntity");
         }
 
         super.setContainer(container);
@@ -714,7 +717,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     protected void _checkPortTypeConversion() throws IllegalActionException {        
 
         Iterator actors = ((ptolemy.actor.CompositeActor) _getHelper(
-                getContainer()).getComponent()).deepEntityList().iterator();
+                                   getContainer()).getComponent()).deepEntityList().iterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -727,17 +730,20 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                 // j is the source port channel index in the input port.
                 for (int j = 0; j < inputPort.sourcePortList().size(); j++) {
-            		TypedIOPort sourcePort = 
+                    TypedIOPort sourcePort = 
                         ((TypedIOPort) inputPort.sourcePortList().get(j));
                     
                     if (!inputPort.getType().equals(sourcePort.getType())) {
                         String sourceType = CodeGeneratorHelper.
-                        _getCodeGenTypeFromPtolemyType(sourcePort.getType());
+                            _getCodeGenTypeFromPtolemyType(sourcePort
+                                    .getType());
                         String targetType = CodeGeneratorHelper.
-                        _getCodeGenTypeFromPtolemyType(inputPort.getType());
+                            _getCodeGenTypeFromPtolemyType(inputPort
+                                    .getType());
 
-                        CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) 
-                        _getHelper(sourcePort.getContainer());
+                        CodeGeneratorHelper sourceHelper =
+                            (CodeGeneratorHelper) 
+                            _getHelper(sourcePort.getContainer());
                         
                         // Record the needed inter-actor type conversions.
                         // **Source port reference name is uniquely identified
@@ -749,36 +755,50 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         if (targetType.equals("Token")) {
                             // Record the referenced type in the infoTable.
                             sourceHelper._newTypesUsed.add(sourceType);
-                            sourceHelper._portConversions.put(refName, sourceType + "_new");
-                            sourceHelper._portDeclareTypes.put(refName, "Token");
+                            sourceHelper._portConversions.put(refName,
+                                    sourceType + "_new");
+                            sourceHelper._portDeclareTypes.put(refName,
+                                    "Token");
                         } else if (targetType.equals("String")) {
                             if (sourceType.equals("Int")) {
-                                sourceHelper._portConversions.put(refName, "itoa");
+                                sourceHelper._portConversions.put(refName,
+                                        "itoa");
                             } else if (sourceType.equals("Long")) {
-                                sourceHelper._portConversions.put(refName, "ltoa");
+                                sourceHelper._portConversions.put(refName,
+                                        "ltoa");
                             } else if (sourceType.equals("Double")) {
-                                sourceHelper._portConversions.put(refName, "ftoa");            
+                                sourceHelper._portConversions.put(refName,
+                                        "ftoa");            
                             } else if (sourceType.equals("Boolean")) {
-                                sourceHelper._portConversions.put(refName, "btoa");                                
+                                sourceHelper._portConversions.put(refName,
+                                        "btoa");
                             } else {
                                 throw new IllegalActionException(
-                                    "Port type conversion not handled -- from "
-                                    + sourceType + " to " + targetType + ".\n");                                
+                                        "Port type conversion not handled "
+                                        + "-- from "
+                                        + sourceType + " to "
+                                        + targetType + ".\n");
                             }
-                            sourceHelper._portDeclareTypes.put(refName, "char*");
+                            sourceHelper._portDeclareTypes.put(refName,
+                                    "char*");
                         } else if (targetType.equals("Double")) {
                             if (sourceType.equals("Int")) {
                                 // C would take care of converting
                                 // from int to double.
                             } else {
                                 throw new IllegalActionException(
-                                    "Port type conversion not handled -- from "
-                                    + sourceType + " to " + targetType + ".\n");                                
+                                        "Port type conversion not handled "
+                                        + "-- from "
+                                        + sourceType + " to "
+                                        + targetType + ".\n");
                             }
                         } else if (targetType.equals("Array")) {
                         	
                         } else {
-                        	// FIXME: we may have to handle other port conversion types.
+
+                            // FIXME: we may have to handle other port
+                            // conversion types.
+
                             //throw new IllegalActionException(
                             //    "Port type conversion not handled -- from "
                             //    + sourceType + " to " + targetType + ".\n");
@@ -821,13 +841,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         Constructor constructor = null;
 
         try {
-            constructor = helperClass.getConstructor(new Class[] { component
-                    .getClass() });
+            constructor = helperClass.getConstructor(
+                    new Class[] { component.getClass() });
         } catch (NoSuchMethodException e) {
             throw new IllegalActionException(this, e,
                     "There is no constructor in " + helperClassName
-                            + " which accepts an instance of "
-                            + componentClassName + " as the argument.");
+                    + " which accepts an instance of "
+                    + componentClassName + " as the argument.");
         }
 
         Object helperObject = null;
@@ -842,8 +862,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (!(helperObject instanceof ComponentCodeGenerator)) {
             throw new IllegalActionException(this,
                     "Cannot generate code for this component: " + component
-                            + ". Its helper class does not"
-                            + " implement componentCodeGenerator.");
+                    + ". Its helper class does not"
+                    + " implement componentCodeGenerator.");
         }
 
         ComponentCodeGenerator castHelperObject = 
@@ -868,8 +888,190 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * A static list of all primitive types supported by the code generator. 
      */
     protected static List _primitiveTypes = Arrays.asList(new String[] {
-            "Int", "Double", "String", "Boolean"});
+        "Int", "Double", "String", "Boolean"});
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Write the code to a directory named by the codeDirectory
+     *  parameter, with a file name that is a sanitized version of the
+     *  model name, and an extension that is the last package of
+     *  the generatorPackage.
+     *  @param code The StringBuffer containing the code.
+     *  @exception IllegalActionException  If there is a problem reading
+     *  a parameter, if there is a problem creating the codeDirectory directory
+     *  or if there is a problem writing the code to a file.
+     */ 
+    private void _writeCode(StringBuffer code) throws IllegalActionException {
+        // This method is private so that the body of the caller shorter.
+        CompositeEntity model = (CompositeEntity) getContainer();
+        String extension = generatorPackage.stringValue()
+            .substring(generatorPackage.stringValue().lastIndexOf("."));
+                
+        String codeFileName = StringUtilities.sanitizeName(model.getName())
+            + extension;
+            
+        System.out.println("Writing " + codeFileName + " in "
+                + codeDirectory.getBaseDirectory());
+
+        // Write the code to a file with the same name as the model into
+        // the directory named by the codeDirectory parameter.
+        try {
+            // Check if needs to overwrite.
+            if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
+                    && codeDirectory.asFile().exists()) {
+                // FIXME: It is totally bogus to ask a yes/no question
+                // like this, since it makes it impossible to call
+                // this method from a script.  If the question is
+                // asked, the build will hang.
+                if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
+                            + " exists. OK to overwrite?")) {
+                    throw new IllegalActionException(this,
+                            "Please select another file name.");
+                }
+            }
+
+            File codeDirectoryFile = codeDirectory.asFile();
+            if (codeDirectoryFile.isFile()) {
+                throw new IOException("Error: "
+                        + codeDirectory.stringValue() + " is a file, "
+                        + "it should be a directory.");
+            }
+            if (!codeDirectoryFile.isDirectory() 
+                    && !codeDirectoryFile.mkdirs()) {
+                throw new IOException("Failed to make the \""
+                        + codeDirectory.stringValue() + "\" directory.");
+            }
+
+            Writer writer = null;
+            try {
+                writer = FileUtilities.openForWriting(codeFileName,
+                        codeDirectory.getBaseDirectory(), false);
+                writer.write(code.toString());
+            } finally {
+                if (writer != null) {
+                    writer.close(); 
+                }
+            }
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "Failed to write \""
+                    + codeFileName + "\" in "
+                    + codeDirectory.getBaseDirectory());
+        }
+    }
+
+    /** Read in a template makefile, substitute variables and write
+     *  the resulting makefile.
+     *
+     *  <p>The makefile template can be found by looking up a resource
+     *  name makefile.in in the package named by the 
+     *  <i>generatorPackage</i> parameter.  Thus, if the 
+     *  <i>generatorPackage</i> has the value "ptolemy.codegen.c",
+     *  then we look for the resouce "ptolemy.codegen.c.makefile.in"
+     *  <p>
+     *  <p>The makefile is written to a directory named by the codeDirectory
+     *  parameter, with a file name that is a sanitized version of the
+     *  model name, and a ".mk" extension.  Thus, for a model named "Foo",
+     *  we might generate a makefile in "$HOME/codegen/Foo.mk".
+
+     *  @exception IllegalActionException  If there is a problem reading
+     *  a parameter, if there is a problem creating the codeDirectory directory
+     *  or if there is a problem writing the code to a file.
+     */ 
+    private void _writeMakefile() throws IllegalActionException {
+
+        // This method is private so that the body of the caller shorter.
+        CompositeEntity model = (CompositeEntity) getContainer();
+                
+        String modelName = StringUtilities.sanitizeName(model.getName());
+
+        // Write the code to a file with the same name as the model into
+        // the directory named by the codeDirectory parameter.
+        //try {
+        // Check if needs to overwrite.
+        if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
+                && codeDirectory.asFile().exists()) {
+            // FIXME: It is totally bogus to ask a yes/no question
+            // like this, since it makes it impossible to call
+            // this method from a script.  If the question is
+            // asked, the build will hang.
+            if (!MessageHandler.yesNoQuestion(codeDirectory.asFile()
+                        + " exists. OK to overwrite?")) {
+                throw new IllegalActionException(this,
+                        "Please select another file name.");
+            }
+        }
+
+        File codeDirectoryFile = codeDirectory.asFile();
+        if (codeDirectoryFile.isFile()) {
+            throw new IllegalActionException(this, "Error: "
+                    + codeDirectory.stringValue() + " is a file, "
+                    + " it should be a directory.");
+        }
+
+        if (!codeDirectoryFile.isDirectory()
+                && !codeDirectoryFile.mkdirs()) {
+            throw new IllegalActionException(this,
+                    "Failed to make the \""
+                    + codeDirectory.stringValue() + "\" directory.");
+        }
+
+        Map substituteMap;
+        try {
+            // Add substitutions for all the parameter.
+            // For example, @generatorPackage@ will be replaced with
+            // the value of the generatorPackage.
+            substituteMap = Copernicus.newMap(this);
+            substituteMap.put("@modelName@", modelName);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(this, ex,
+                    "Problem generating substitution map from "
+                    + modelName);
+        }
+
+        BufferedReader makefileTemplateReader = null;
+
+        String makefileTemplateName = 
+            generatorPackage.stringValue().replace('.', '/') +
+            "/makefile.in";
+            
+        String makefileOutputName = codeDirectory.stringValue()
+            + File.separator
+            + StringUtilities.sanitizeName(model.getName()) + ".mk";
+
+        try {
+            try {
+                makefileTemplateReader =
+                    Copernicus.openAsFileOrURL(makefileTemplateName);
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to open \""
+                        + makefileTemplateName + "\" for reading.");
+            }
+
+            System.out.println("Reading \"" + makefileTemplateName
+                    + "\", writing \"" + makefileOutputName + "\"");
+            Copernicus.substitute(makefileTemplateReader, substituteMap,
+                    makefileOutputName);
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to read \""
+                    + makefileTemplateName + "\" or write \""
+                    + makefileOutputName + "\"");
+        } finally {
+            if (makefileTemplateReader != null) {
+                try {
+                    makefileTemplateReader.close();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to close \"" + makefileTemplateName
+                            + "\"");
+                }
+            }
+        }
+        //}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
