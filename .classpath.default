@@ -29,6 +29,6 @@
     <classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-ext.jar"/>
     <classpathentry kind="lib" path="ptolemy/distributed/jini/jar/sun-util.jar"/>
     <classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/jdom.jar"/>
-    <classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/nesc-dump.jar"/>
+    <classpathentry kind="lib" path="ptolemy/domains/ptinyos/lib/nesc.jar"/>
     <classpathentry kind="output" path=""/>
 </classpath>
