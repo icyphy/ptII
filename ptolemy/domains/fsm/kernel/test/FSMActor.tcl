@@ -273,7 +273,7 @@ test FSMActor-6.1 {test action methods} {
 
 test FSMActor-6.2 {test typeConstraints} {
     listToStrings [$fsm typeConstraintList]
-} {{(ptolemy.domains.fsm.kernel.AbstractActionsAttribute$TypeFunction, int, (p1_0+1)) <= (ptolemy.actor.TypedIOPort {..fsm.p2}, int)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.exitAngle} 0.628318530718, double)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.gamma} 0.0, double)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.reset} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.preemptive} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.defaultTransition} false, boolean)}{(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.nondeterministic} false, boolean)}}
+} {{(ptolemy.domains.fsm.kernel.AbstractActionsAttribute$TypeFunction, int, (p1_0+1)) <= (ptolemy.actor.TypedIOPort {..fsm.p2}, int)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.exitAngle} 0.628318530718, double)} {(TypeConstant, double) <= (ptolemy.data.expr.Parameter {..fsm.t0.gamma} 0.0, double)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.reset} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.preemptive} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.defaultTransition} false, boolean)} {(TypeConstant, boolean) <= (ptolemy.data.expr.Parameter {..fsm.t0.nondeterministic} false, boolean)}}
 
 ######################################################################
 ####
