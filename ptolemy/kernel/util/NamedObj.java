@@ -867,6 +867,27 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
+    /** Get a MoML description of this object without any XML headers.
+     *  This differs significantly from exportMoML() only if this
+     *  object has no container, because if it has a container, then
+     *  it will not export MoML headers anyway.
+     *  @return A MoML description, or the empty string if there is none.
+     *  @see #exportMoML()
+     */
+    public final String exportMoMLPlain() {
+        try {
+            StringWriter buffer = new StringWriter();
+            // Using a depth of 1 suppresses the XML header.
+            // It also, unfortunately, indents the result.
+            // But I guess this is harmless.
+            exportMoML(buffer, 1, getName());
+            return buffer.toString();
+        } catch (IOException ex) {
+            // This should not occur.
+            throw new InternalErrorException(this, ex, null);
+        }
+    }
+
     /** Get the attribute with the given name. The name may be compound,
      *  with fields separated by periods, in which case the attribute
      *  returned is contained by a (deeply) contained attribute.
