@@ -144,7 +144,7 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 460, 1152, 627}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-6, 69, 1036, 629}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[937, 511]">
             </property>
@@ -1481,18 +1481,22 @@ Five controllers are applied sequentially to the modes.</text>
     <entity name="Helicopter Model" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 225.0">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-30, 6, 1224, 830}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-10, -2, 1224, 832}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1009, 714]">
         </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{504.5, 357.0}">
+        </property>
         <port name="inputVx" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="-140.0, 255.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 255.0]">
             </property>
         </port>
         <port name="inputVz" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="-140.0, 300.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 300.0]">
             </property>
         </port>
         <port name="Px" class="ptolemy.actor.TypedIOPort">
@@ -1588,7 +1592,7 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <property name="Mass" class="ptolemy.data.expr.Parameter" value="4.9">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 260.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 260.0]">
             </property>
         </entity>
         <entity name="IntegratorPz" class="ptolemy.domains.ct.lib.Integrator">
@@ -1622,7 +1626,7 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 315.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 315.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1656,27 +1660,6 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
             </port>
-        </entity>
-        <entity name="Pitch Angle" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 426, 508, 293}, maximized=false}">
-            </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
-            </property>
-            <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="564.9251403808594, 445.31005859375">
-            </property>
-            <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Pitch Angle</title>
-<xRange min="0.0" max="70.0"/>
-<yRange min="-0.03116878037816963" max="0.04146994143073169"/>
-</plot>?>
-            </configure>
         </entity>
         <entity name="IntegratorDPx" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1809,7 +1792,7 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 250.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 250.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -1821,6 +1804,10 @@ Five controllers are applied sequentially to the modes.</text>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
             </port>
+        </entity>
+        <entity name="Test Pitch Angle" class="ptolemy.actor.lib.Test">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{530, 495}">
+            </property>
         </entity>
         <relation name="rDTm" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex0" value="465.0, 140.0">
@@ -1841,7 +1828,7 @@ Five controllers are applied sequentially to the modes.</text>
             </vertex>
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="-70.0, 255.0">
+            <vertex name="vertex1" value="[0.0, 255.0]">
             </vertex>
         </relation>
         <relation name="rDDPx" class="ptolemy.actor.TypedIORelation">
@@ -1853,7 +1840,7 @@ Five controllers are applied sequentially to the modes.</text>
             </vertex>
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="-70.0, 300.0">
+            <vertex name="vertex1" value="[5.0, 300.0]">
             </vertex>
         </relation>
         <relation name="rDDPz" class="ptolemy.actor.TypedIORelation">
@@ -1934,7 +1921,6 @@ Five controllers are applied sequentially to the modes.</text>
         <link port="IntegratorA.output" relation="rA"/>
         <link port="IntegratorDPz.input" relation="rDDPz"/>
         <link port="IntegratorDPz.output" relation="relation4"/>
-        <link port="Pitch Angle.input" relation="rTh"/>
         <link port="IntegratorDPx.input" relation="rDDPx"/>
         <link port="IntegratorDPx.output" relation="rDPx"/>
         <link port="IntegratorPx.input" relation="rDPx"/>
@@ -1953,6 +1939,7 @@ Five controllers are applied sequentially to the modes.</text>
         <link port="Helicopter.outputDDTh" relation="relation"/>
         <link port="IntegratorDDTm.input" relation="_R"/>
         <link port="IntegratorDDTm.output" relation="rDDTm"/>
+        <link port="Test Pitch Angle.input" relation="rTh"/>
     </entity>
     <entity name="Test Horizontal Speed" class="ptolemy.actor.lib.Test">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 360.0]">
