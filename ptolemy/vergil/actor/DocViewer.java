@@ -29,6 +29,7 @@ package ptolemy.vergil.actor;
 
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
@@ -57,6 +58,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
@@ -65,11 +67,14 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.DocAttribute;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.JCanvas;
+import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphPane;
+import diva.graph.GraphViewEvent;
 import diva.graph.JGraph;
 
 //////////////////////////////////////////////////////////////////////////
@@ -620,22 +625,38 @@ public class DocViewer extends HTMLViewer {
         contentPane.add(Box.createRigidArea(verticalSpace));
         contentPane.add(descriptionPanel);
         descriptionPanel.add(Box.createRigidArea(horizontalSpace));
-        // Construct a blank composite entity into which to put
-        // an instance of the actor. 
-        final CompositeEntity container = new CompositeEntity();
-        ActorEditorGraphController controller = new ActorEditorGraphController();
+        // Construct a blank composite actor into which to put
+        // an instance of the actor.
+        _iconContainer = new CompositeEntity();
+        final ActorEditorGraphController controller = new ActorEditorGraphController();
         controller.setConfiguration(getConfiguration());
-        ActorGraphModel graphModel = new ActorGraphModel(container);
-        final GraphPane graphPane = new GraphPane(controller, graphModel);
-        final JGraph jgraph = new JGraph(graphPane);
-        jgraph.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        // Create a modified graph model with alternative error reporting.
+        ActorGraphModel graphModel = new ActorGraphModel(_iconContainer) {
+            /** Override the base class to give a useful message.
+             *  @param change The change that has failed.
+             *  @param exception The exception that was thrown.
+             */
+            public void changeFailed(ChangeRequest change, Exception exception) {
+                if (_graphPane == null) {
+                    super.changeFailed(change, exception);
+                    return;
+                }
+                LabelFigure newFigure = new LabelFigure("No icon available", _font);
+                _graphPane.getForegroundLayer().add(newFigure);
+                CanvasUtilities.translateTo(newFigure, 100.0, 100.0);
+                controller.dispatch(new GraphViewEvent(this, GraphViewEvent.NODE_DRAWN, newFigure));
+            }
+        };
+        _graphPane = new GraphPane(controller, graphModel);
+        _jgraph = new JGraph(_graphPane);
+        _jgraph.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         // The icon window is fixed size.
-        jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
-        jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
-        jgraph.setPreferredSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
-        jgraph.setSize(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT);
-        jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
-        descriptionPanel.add(jgraph);
+        _jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
+        _jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
+        _jgraph.setPreferredSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
+        _jgraph.setSize(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT);
+        _jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
+        descriptionPanel.add(_jgraph);
         descriptionPanel.add(Box.createRigidArea(horizontalSpace));
         // Create a pane in which to display the description.
         final JEditorPane descriptionPane = new JEditorPane();
@@ -710,7 +731,6 @@ public class DocViewer extends HTMLViewer {
         // Note that this will display something that looks just
         // like the object we are asking about, including any customizations
         // that are applicable only to this instance.
-        // FIXME: Will this work for a class instance?
         // If the target is given, then export MoML from it to use.
         // Otherwise, use the class name.
         String moml = null;
@@ -720,7 +740,8 @@ public class DocViewer extends HTMLViewer {
             // then we need to include the class as well.
             _includeClassDefinitions(target, buffer);
 
-            buffer.append(target.exportMoML());
+            // Need to use a 
+            buffer.append(target.exportMoMLPlain());
             // Have to override the hide attribute in the derived class.
             buffer.append("<");
             buffer.append(target.getElementName());
@@ -745,11 +766,14 @@ public class DocViewer extends HTMLViewer {
             } else if (manager.isTargetInstantiableEntity()) {
                 moml = "<entity name=\"" + rootName + "\" class=\"" + className + "\"/>";
             } else if (manager.isTargetInstantiablePort()) {
-                moml = "<port name=\"" + rootName + "\" class=\"" + className + "\"/>";
+                // NOTE: The port has to be an input or an output or it can't be rendered.
+                // Since we aren't dealing with a specific instance, we make it an input.
+                moml = "<port name=\"" + rootName + "\" class=\"" + className + "\">" +
+                        "<property name=\"input\"/></port>";
             }
         }
         if (moml != null) {
-            MoMLChangeRequest request = new MoMLChangeRequest(this, container, moml) {
+            MoMLChangeRequest request = new MoMLChangeRequest(this, _iconContainer, moml) {
                 protected void _execute() throws Exception {
                     super._execute();
                     NamedObj sample = null;
@@ -758,19 +782,19 @@ public class DocViewer extends HTMLViewer {
                         name = target.getName();
                     }
                     if (manager.isTargetInstantiableAttribute()) {
-                        sample = container.getAttribute(name);
+                        sample = _iconContainer.getAttribute(name);
                     } else if (manager.isTargetInstantiableEntity()) {
-                        sample = container.getEntity(name);
+                        sample = _iconContainer.getEntity(name);
                     } else if (manager.isTargetInstantiablePort()) {
-                        sample = container.getPort(name);
+                        sample = _iconContainer.getPort(name);
                     }
                     if (sample != null) {
                         _populatePortsAndParametersTable(sample, manager);
-                        _adjustIconDisplay(sample, container, graphPane, jgraph);
+                        _adjustIconDisplay(sample, _iconContainer, _graphPane, _jgraph);
                     }
                 }
             };
-            container.requestChange(request);
+            _iconContainer.requestChange(request);
         }
 
         if (target != null) {
@@ -905,6 +929,12 @@ public class DocViewer extends HTMLViewer {
     /** Width of the description pane. */
     private static int _DESCRIPTION_WIDTH = 500;
     
+    /** The font to use for No icon available message. */
+    private Font _font = new Font("SansSerif", Font.PLAIN, 14);
+    
+    /** The graph pane. */
+    private GraphPane _graphPane;
+    
     /** HTML Header information. */
     private static String _HTML_HEADER
             = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
@@ -921,12 +951,18 @@ public class DocViewer extends HTMLViewer {
     private static String _HTML_TAIL
             = "</body></html>";
 
+    /** The composite entity containing the icon. */
+    private CompositeEntity _iconContainer;
+    
     /** Icon window width. */
     private static int _ICON_WINDOW_HEIGHT = 200;
     
     /** Icon window width. */
     private static int _ICON_WINDOW_WIDTH = 200;
-    
+
+    /** The jgraph. */
+    private JGraph _jgraph;
+
     /** Main window height. */
     private static int _MAIN_WINDOW_HEIGHT = 250;
 

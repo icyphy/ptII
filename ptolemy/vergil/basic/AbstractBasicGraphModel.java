@@ -70,7 +70,7 @@ import java.util.List;
  @Pt.ProposedRating Yellow (neuendor)
  @Pt.AcceptedRating Red (johnr)
  */
-public abstract class AbstractBasicGraphModel extends ModularGraphModel {
+public abstract class AbstractBasicGraphModel extends ModularGraphModel implements ChangeListener {
     /** Create a graph model for the specified Ptolemy II model.
      *  Note that the argument need not be a CompositeEntity, although
      *  if it is not, then it is a rather trivial graph that only has
@@ -80,12 +80,68 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
     public AbstractBasicGraphModel(NamedObj composite) {
         super(composite);
         _composite = composite;
-        _graphChangeListener = new GraphChangeListener();
-        composite.addChangeListener(_graphChangeListener);
+        composite.addChangeListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Notify the listener that a change has been successfully executed.
+     *  If the originator of this change is not this graph model, then
+     *  issue a graph event to indicate that the structure of the graph
+     *  has changed.
+     *  @param change The change that has been executed.
+     */
+    public void changeExecuted(ChangeRequest change) {
+        // Ignore anything that comes from this graph model.
+        // The other methods take care of issuing the graph event in
+        // that case.
+        // NOTE: Unfortunately, when you perform look inside, you
+        // get a new graph model, and that graph model is modified
+        // (for example, by adding icons). This means that the
+        // original graph model will be notified of changes,
+        // rather spuriously.  We tried having this ignore
+        // any change whose source was an instance of GraphModel,
+        // but this breaks MVC. If you have two views open
+        // on the graph, then the second view will not be notified
+        // of changes.
+        // Note that a change listener is registered with the top-level
+        // model, as it probably has to be, since a change to a model
+        // can have repercusions anywhere in the model.
+        if ((change != null) && (change.getSource() == this)) {
+            return;
+        }
+
+        // update the graph model.
+        if (_update()) {
+            // Notify any graph listeners
+            // that the graph might have
+            // completely changed.
+            dispatchGraphEvent(new GraphEvent(this,
+                    GraphEvent.STRUCTURE_CHANGED, getRoot()));
+        }
+    }
+
+    /** Notify the listener that the change has failed with the
+     *  specified exception.
+     *  @param change The change that has failed.
+     *  @param exception The exception that was thrown.
+     */
+    public void changeFailed(ChangeRequest change, Exception exception) {
+        // Report it if it has not been reported.
+        if (change == null) {
+            MessageHandler.error("Change failed", exception);
+        } else if (!change.isErrorReported()) {
+            change.setErrorReported(true);
+            MessageHandler.error("Change failed", exception);
+        }
+
+        // update the graph model.
+        if (_update()) {
+            dispatchGraphEvent(new GraphEvent(this,
+                    GraphEvent.STRUCTURE_CHANGED, getRoot()));
+        }
+    }
 
     /** Disconnect an edge from its two endpoints and notify graph
      *  listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
@@ -264,7 +320,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *  graph model should call this function when the frame is closed.
      */
     public void removeListeners() {
-        _composite.removeChangeListener(_graphChangeListener);
+        _composite.removeChangeListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -325,79 +381,4 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
 
     // The model for composite entities.
     private CompositePtolemyModel _compositeModel = new CompositePtolemyModel();
-
-    // Our change listener on _composite.
-    private GraphChangeListener _graphChangeListener;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** Mutations may happen to the ptolemy model without the knowledge of
-     *  this model.  This change listener listens for those changes,
-     *  and when they occur, issues a GraphEvent so that any views of
-     *  this graph model can update themselves.  Note that although
-     *  the graph model uses mutations to make changes to the ptolemy
-     *  model, those graph events are not handled here. Instead, they
-     *  are handled in the base class since they can be easily
-     *  propagated at a finer level of granularity than is possible here.
-     */
-    public class GraphChangeListener implements ChangeListener {
-        /** Notify the listener that a change has been successfully executed.
-         *  If the originator of this change is not this graph model, then
-         *  issue a graph event to indicate that the structure of the graph
-         *  has changed.
-         *  @param change The change that has been executed.
-         */
-        public void changeExecuted(ChangeRequest change) {
-            // Ignore anything that comes from this graph model.
-            // The other methods take care of issuing the graph event in
-            // that case.
-            // NOTE: Unfortunately, when you perform look inside, you
-            // get a new graph model, and that graph model is modified
-            // (for example, by adding icons). This means that the
-            // original graph model will be notified of changes,
-            // rather spuriously.  We tried having this ignore
-            // any change whose source was an instance of GraphModel,
-            // but this breaks MVC. If you have two views open
-            // on the graph, then the second view will not be notified
-            // of changes.
-            // Note that a change listener is registered with the top-level
-            // model, as it probably has to be, since a change to a model
-            // can have repercusions anywhere in the model.
-            if ((change != null)
-                    && (change.getSource() == AbstractBasicGraphModel.this)) {
-                return;
-            }
-
-            // update the graph model.
-            if (_update()) {
-                // Notify any graph listeners
-                // that the graph might have
-                // completely changed.
-                dispatchGraphEvent(new GraphEvent(AbstractBasicGraphModel.this,
-                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
-            }
-        }
-
-        /** Notify the listener that the change has failed with the
-         *  specified exception.
-         *  @param change The change that has failed.
-         *  @param exception The exception that was thrown.
-         */
-        public void changeFailed(ChangeRequest change, Exception exception) {
-            // Report it if it has not been reported.
-            if (change == null) {
-                MessageHandler.error("Change failed", exception);
-            } else if (!change.isErrorReported()) {
-                change.setErrorReported(true);
-                MessageHandler.error("Change failed", exception);
-            }
-
-            // update the graph model.
-            if (_update()) {
-                dispatchGraphEvent(new GraphEvent(AbstractBasicGraphModel.this,
-                        GraphEvent.STRUCTURE_CHANGED, getRoot()));
-            }
-        }
-    }
 }
