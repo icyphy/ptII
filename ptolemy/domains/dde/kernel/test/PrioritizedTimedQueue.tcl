@@ -110,8 +110,10 @@ test PrioritizedTimedQueue-4.1 {Check hasRoom() for full queue} {
     $tqr setCapacity 2
     $tqr put $t1 $time1
     $tqr put $t2 $time1
-    list [expr { 0 == [$tqr hasRoom] } ]
-} {1}
+    catch {$tqr hasRoom 0} msg
+    list $msg [$tqr hasRoom] [$tqr hasRoom 1]
+} {{java.lang.IllegalArgumentException: hasRoom() requires a positive argument.} 0 0}
+
 
 ######################################################################
 ####
@@ -163,13 +165,12 @@ test PrioritizedTimedQueue-5.1 {Check get(), put(), _rcvrTime and _lastTime} {
 
     $tqr get
 
-    set empty [expr { [$tqr hasToken] == 0 } ]
-
+    catch {$tqr hasToken 0} msg
     set rcvrTime4 [[$tqr getReceiverTime] getDoubleValue]
     set rcvrTime5 [[$tqr getReceiverTime] getDoubleValue]
 
-    list $rcvrTime0 $lastTime0 $rslt0 $rcvrTime1 $lastTime1 $rslt1 $rcvrTime3 $rcvrTime4 $rcvrTime5 $empty
-} {5.0 7.0 1 7.0 15.0 1 15.0 15.0 15.0 1}
+    list $rcvrTime0 $lastTime0 $rslt0 $rcvrTime1 $lastTime1 $rslt1 $rcvrTime3 $rcvrTime4 $rcvrTime5 [$tqr hasToken] [$tqr hasToken 1] $msg
+} {5.0 7.0 1 7.0 15.0 1 15.0 15.0 15.0 0 0 {java.lang.IllegalArgumentException: hasToken() requires a positive argument.}}
 
 ######################################################################
 ####
@@ -190,3 +191,15 @@ test PrioritizedTimedQueue-7.2 {Attempt to put negative time stamps} {
     catch {$tqr put $t1 $time6} msg
     list [string range $msg 0 82]
 } {{java.lang.IllegalArgumentException: actor - Attempt to set current time to the past}}
+
+
+######################################################################
+####
+#
+test PrioritizedTimedQueue-7.3 {Attempt to put with no time} {
+    set tqr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop]
+    set t1 [java::new ptolemy.data.Token]
+
+    catch {$tqr put $t1 } msg
+    list $msg
+} {{ptolemy.actor.NoRoomException: put(Token) is not used in the DDE domain.}}
