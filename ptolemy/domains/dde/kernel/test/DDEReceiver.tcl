@@ -56,7 +56,7 @@ set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 
 # Call the various boundary* methods on the receiver
 proc describeBoundary {receiver} {
-    return "[$receiver isConnectedToBoundary] [$receiver isConnectedToBoundaryInside] [$receiver isConnectedToBoundaryOutside] [$receiver isProducerReceiver] [$receiver isReadBlocked] [$receiver isWriteBlocked] [$receiver hasRoom 1]"
+    return "[$receiver isConnectedToBoundary] [$receiver isConnectedToBoundaryInside] [$receiver isConnectedToBoundaryOutside] [$receiver isProducerReceiver] [$receiver isReadBlocked] [$receiver isWriteBlocked] [$receiver hasRoom 1] [$receiver isConsumerReceiver]"
 
 
 }
@@ -74,7 +74,7 @@ test DDEReceiver-1.1 {Constructors} {
     set r3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioPort 1]
     list [[$r2 getContainer] toString] [describeBoundary $r2] \
 	[[$r3 getContainer] toString] [describeBoundary $r3] \
-} {{ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1} {ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1}}
+} {{ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1 0} {ptolemy.domains.dde.kernel.DDEIOPort {..DDEActor.IOPort1}} {0 0 0 0 0 0 1 0}}
 
 test DDEReceiver-1.2 {Constructors: make sure that the priorities are used} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
