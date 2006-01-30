@@ -215,8 +215,8 @@ public class FeedBackDelay extends DDEActor {
 
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
-                DDEReceiver rcvr = (DDEReceiver) receivers[i][j];
-                rcvr.put(new Token(), new Time(getDirector(),
+                DDEReceiver receiver = (DDEReceiver) receivers[i][j];
+                receiver.put(new Token(), new Time(getDirector(),
                         PrioritizedTimedQueue.IGNORE));
             }
         }
@@ -225,8 +225,8 @@ public class FeedBackDelay extends DDEActor {
 
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
-                DDEReceiver rcvr = (DDEReceiver) receivers[i][j];
-                rcvr._hideNullTokens(false);
+                DDEReceiver receiver = (DDEReceiver) receivers[i][j];
+                receiver._hideNullTokens(false);
             }
         }
     }
@@ -242,8 +242,8 @@ public class FeedBackDelay extends DDEActor {
 
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
-                DDEReceiver rcvr = (DDEReceiver) receivers[i][j];
-                rcvr.put(token, time);
+                DDEReceiver receiver = (DDEReceiver) receivers[i][j];
+                receiver.put(token, time);
             }
         }
     }
