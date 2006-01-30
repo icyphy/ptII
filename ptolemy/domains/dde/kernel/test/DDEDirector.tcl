@@ -70,3 +70,12 @@ test DDEDirector-3.1 {Test clone} {
     enumToFullNames [$w directory]
 } {.Manager}
 
+######################################################################
+####
+#
+test DDEDirector-4.1 {getCurrentTime} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set d5 [java::cast ptolemy.domains.dde.kernel.DDEDirector [$d2 clone $w]]
+    $d5 getCurrentTime
+} {-Infinity}
