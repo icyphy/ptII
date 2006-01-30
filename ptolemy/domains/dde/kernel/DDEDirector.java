@@ -194,8 +194,9 @@ public class DDEDirector extends CompositeProcessDirector implements
      * not an instance of DDEThread, then store the actor and refire time in the
      * initial time table of this director.
      * <P>
-     * NOTE: The current implementation of this method is such that a more
-     * appropriate name might be <I>continueAt()</I> rather than <I>fireAt()</I>.
+     * NOTE: The current implementation of this method is such that a
+     * more appropriate name might be <I>continueAt()</I> rather than
+     * <I>fireAt()</I>.
      *
      * @param actor The actor scheduled to fire.
      * @param time The scheduled time to fire.
@@ -326,8 +327,8 @@ public class DDEDirector extends CompositeProcessDirector implements
      * called, then return false.
      *
      * @return True if execution can continue; false otherwise.
-     * @exception IllegalActionException Not thrown in this base
-     * class. May be thrown in derived classes.
+     * @exception IllegalActionException Not thrown in this base class.
+     * May be thrown in derived classes.
      */
     public boolean postfire() throws IllegalActionException {
         Thread thread = Thread.currentThread();
@@ -400,7 +401,8 @@ public class DDEDirector extends CompositeProcessDirector implements
      * @exception IllegalActionException If there is an error while
      * attempting to set the capacity of a DDE receiver.
      */
-    protected void _incrementLowestCapacityPort() throws IllegalActionException {
+    protected void _incrementLowestCapacityPort()
+            throws IllegalActionException {
         if (_writeBlockedQueues == null) {
             return;
         }
