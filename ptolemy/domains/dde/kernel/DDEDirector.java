@@ -154,16 +154,14 @@ public class DDEDirector extends CompositeProcessDirector implements
      * the name argument is null, then the name is set to the empty string.
      * Increment the version number of the workspace.
      *
-     * @param container
-     *            The container of this director.
-     * @param name
-     *            Name of this director.
-     * @exception IllegalActionException
-     *                If the director is not compatible with the specified
-     *                container. May be thrown in a derived class.
-     * @exception NameDuplicationException
-     *                If the container not a CompositeActor and the name
-     *                collides with an entity in the container.
+     * @param container The container of this director.
+     * @param name Name of this director.
+     * @exception IllegalActionException If the director is not
+     * compatible with the specified container. May be thrown in a
+     * derived class.
+     * @exception NameDuplicationException If the container not a
+     * CompositeActor and the name collides with an entity in the
+     * container.
      */
     public DDEDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -174,8 +172,8 @@ public class DDEDirector extends CompositeProcessDirector implements
         timeResolution.setVisibility(Settable.FULL);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                       public variables                    ////
 
     /**
      * The stopTime parameter specifies the completion time of a model's
@@ -186,34 +184,8 @@ public class DDEDirector extends CompositeProcessDirector implements
      */
     public Parameter stopTime;
 
-    /**
-     * Return the current time of the DDEThread that calls this method on behalf
-     * of an actor. If this method is called by other than a DDEThread, then
-     * return the current time as specified by the superclass of this method.
-     *
-     * @return The current time of the DDEThread that calls this method.
-     */
-    public double getCurrentTime() {
-        return getModelTime().getDoubleValue();
-    }
-
-    /**
-     * Return the current time of the DDEThread that calls this method on behalf
-     * of an actor. If this method is called by other than a DDEThread, then
-     * return the current time as specified by the superclass of this method.
-     *
-     * @return The current time of the DDEThread that calls this method.
-     */
-    public Time getModelTime() {
-        Thread thread = Thread.currentThread();
-
-        if (thread instanceof DDEThread) {
-            TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
-            return timeKeeper.getModelTime();
-        } else {
-            return super.getModelTime();
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
 
     /**
      * Schedule an actor to be fired at the specified time. If the thread that
@@ -225,14 +197,11 @@ public class DDEDirector extends CompositeProcessDirector implements
      * NOTE: The current implementation of this method is such that a more
      * appropriate name might be <I>continueAt()</I> rather than <I>fireAt()</I>.
      *
-     * @param actor
-     *            The actor scheduled to fire.
-     * @param time
-     *            The scheduled time to fire.
-     * @exception IllegalActionException
-     *                If the specified time is in the past or if the thread
-     *                calling this method is a DDEThread but the specified actor
-     *                is not contained by the DDEThread.
+     * @param actor The actor scheduled to fire.
+     * @param time The scheduled time to fire.
+     * @exception IllegalActionException If the specified time is in
+     * the past or if the thread calling this method is a DDEThread
+     * but the specified actor is not contained by the DDEThread.
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
         double ETERNITY = PrioritizedTimedQueue.ETERNITY;
@@ -281,13 +250,41 @@ public class DDEDirector extends CompositeProcessDirector implements
     }
 
     /**
+     * Return the current time of the DDEThread that calls this method on behalf
+     * of an actor. If this method is called by other than a DDEThread, then
+     * return the current time as specified by the superclass of this method.
+     *
+     * @return The current time of the DDEThread that calls this method.
+     */
+    public double getCurrentTime() {
+        return getModelTime().getDoubleValue();
+    }
+
+    /**
+     * Return the current time of the DDEThread that calls this method on behalf
+     * of an actor. If this method is called by other than a DDEThread, then
+     * return the current time as specified by the superclass of this method.
+     *
+     * @return The current time of the DDEThread that calls this method.
+     */
+    public Time getModelTime() {
+        Thread thread = Thread.currentThread();
+
+        if (thread instanceof DDEThread) {
+            TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
+            return timeKeeper.getModelTime();
+        } else {
+            return super.getModelTime();
+        }
+    }
+
+    /**
      * Initialize this director and the actors it contains and set variables to
      * their initial values. Create a DDEThread for each actor that this
      * director controls but do not start the thread.
      *
-     * @exception IllegalActionException
-     *                If there is an error during the creation of the threads or
-     *                initialization of the actors.
+     * @exception IllegalActionException If there is an error during
+     * the creation of the threads or initialization of the actors.
      */
     public void initialize() throws IllegalActionException {
         _completionTime = new Time(this, PrioritizedTimedQueue.ETERNITY);
@@ -329,9 +326,8 @@ public class DDEDirector extends CompositeProcessDirector implements
      * called, then return false.
      *
      * @return True if execution can continue; false otherwise.
-     * @exception IllegalActionException
-     *                Not thrown in this base class. May be thrown in derived
-     *                classes.
+     * @exception IllegalActionException Not thrown in this base
+     * class. May be thrown in derived classes.
      */
     public boolean postfire() throws IllegalActionException {
         Thread thread = Thread.currentThread();
@@ -348,15 +344,12 @@ public class DDEDirector extends CompositeProcessDirector implements
      * Notify the director that the specified thread is blocked on an I/O
      * operation.
      *
-     * @param thread
-     *            The thread.
-     * @param receiver
-     *            The receiver handling the I/O operation, or null if it is not
-     *            a specific receiver.
-     * @param readOrWrite
-     *            Either READ_BLOCKED or WRITE_BLOCKED to indicate whether the
-     *            thread is blocked on read or write.
-     *  @see CompositeProcessDirector#threadBlocked(Thread, ProcessReceiver)
+     * @param thread The thread.
+     * @param receiver The receiver handling the I/O operation, or
+     * null if it is not a specific receiver.
+     * @param readOrWrite Either READ_BLOCKED or WRITE_BLOCKED to
+     * indicate whether the thread is blocked on read or write.
+     * @see CompositeProcessDirector#threadBlocked(Thread, ProcessReceiver)
      */
     public synchronized void threadBlocked(Thread thread,
             ProcessReceiver receiver, boolean readOrWrite) {
@@ -372,15 +365,12 @@ public class DDEDirector extends CompositeProcessDirector implements
      * operation. If the thread has not been registered with threadBlocked(),
      * then this call is ignored.
      *
-     * @param thread
-     *            The thread.
-     * @param receiver
-     *            The receiver handling the I/O operation, or null if it is not
-     *            a specific receiver.
-     * @param readOrWrite
-     *            Either READ_BLOCKED or WRITE_BLOCKED to indicate whether the
-     *            thread is blocked on read or write.
-     *  @see CompositeProcessDirector#threadUnblocked(Thread, ProcessReceiver)
+     * @param thread The thread.
+     * @param receiver The receiver handling the I/O operation, or
+     * null if it is not a specific receiver.
+     * @param readOrWrite Either READ_BLOCKED or WRITE_BLOCKED to
+     * indicate whether the thread is blocked on read or write.
+     * @see CompositeProcessDirector#threadUnblocked(Thread, ProcessReceiver)
      */
     public synchronized void threadUnblocked(Thread thread,
             ProcessReceiver receiver, boolean readOrWrite) {
@@ -404,29 +394,11 @@ public class DDEDirector extends CompositeProcessDirector implements
     ////                    protected methods                      ////
 
     /**
-     * Return a new ProcessThread of a type compatible with this director.
-     *
-     * @param actor
-     *            The actor that the new ProcessThread will control.
-     * @param director
-     *            The director that manages the new ProcessThread.
-     * @return A new DDEThread.
-     * @exception IllegalActionException
-     *                If an error occurs while instantiating the new
-     *                ProcessThread.
-     */
-    protected ProcessThread _newProcessThread(Actor actor,
-            ProcessDirector director) throws IllegalActionException {
-        return new DDEThread(actor, director);
-    }
-
-    /**
      * Increment the port capacity's according to Tom Parks' algorithm. Select
      * the port with the smallest capacity and double the capacity.
      *
-     * @exception IllegalActionException
-     *                If there is an error while attempting to set the capacity
-     *                of a DDE receiver.
+     * @exception IllegalActionException If there is an error while
+     * attempting to set the capacity of a DDE receiver.
      */
     protected void _incrementLowestCapacityPort() throws IllegalActionException {
         if (_writeBlockedQueues == null) {
@@ -476,14 +448,29 @@ public class DDEDirector extends CompositeProcessDirector implements
     }
 
     /**
+     * Return a new ProcessThread of a type compatible with this director.
+     *
+     * @param actor The actor that the new ProcessThread will control.
+     * @param director The director that manages the new
+     * ProcessThread.
+     * @return A new DDEThread.
+     * @exception IllegalActionException If an error occurs while
+     * instantiating the new ProcessThread.
+     */
+    protected ProcessThread _newProcessThread(Actor actor,
+            ProcessDirector director) throws IllegalActionException {
+        return new DDEThread(actor, director);
+    }
+
+    /**
      * Apply an algorithm to resolve an internal deadlock and return
      * true if the algorithm is successful. If the algorithm is
      * unsuccessful then return false. The algorithm applied was
      * created by Thomas Parks for resolving internal deadlocks in
      * which one or more actors are write blocked.
      *
-     * @return True if an internal deadlock has been resolved; otherwise return
-     *         false.
+     * @return True if an internal deadlock has been resolved;
+     * otherwise return false.
      * @exception IllegalActionException If thrown while incrementing the
      * lowest capacity port.
      */
@@ -516,59 +503,16 @@ public class DDEDirector extends CompositeProcessDirector implements
         return _initialTimeTable;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private variables ////
-    // Since the completionTime is a constant, we do not convert it
-    // to a time object.
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
+
+    /** The completion time. Since the completionTime is a constant,
+     *  we do not convert it to a time object.
+     */
     private Time _completionTime;
 
     /** The set of receivers blocked on a write to a receiver. */
-    protected HashMap _writeBlockedQueues = new HashMap();
+    private HashMap _writeBlockedQueues = new HashMap();
 
     private Hashtable _initialTimeTable;
-
-    // /////////////////////////////////////////////////////////////////
-    // // inner class ////
-//        /**
-//         * Compare two objects (specified as arguments) according to their
-//         * respective capacities and return 1 if the second object (argument) is
-//         * larger than the first object; return 0 if the capacities are equal
-//         * and return -1 if the first object's capacity is larger than the
-//         * second.
-//         *
-//         * @param object1
-//         *            The first object
-//         * @param object2
-//         *            The second object
-//         * @exception ClassCastException
-//         *                If object1 and object2 are not instances of
-//         *                DDEReceiver.
-//         */
-//        public int compare(Object object1, Object object2) {
-//            DDEReceiver first = null;
-//            DDEReceiver second = null;
-//
-//            if (object1 instanceof DDEReceiver) {
-//                first = (DDEReceiver) object1;
-//            } else {
-//                throw new ClassCastException("object1 must be an "
-//                        + "instance of DDEReceiver");
-//            }
-//
-//            if (object2 instanceof DDEReceiver) {
-//                second = (DDEReceiver) object2;
-//            } else {
-//                throw new ClassCastException("object2 must be an "
-//                        + "instance of DDEReceiver");
-//            }
-//
-//            if (first.getCapacity() < second.getCapacity()) {
-//                return 1;
-//            } else if (first.getCapacity() > second.getCapacity()) {
-//                return -1;
-//            } else {
-//                return 0;
-//            }
-//        }
-//    }
 }

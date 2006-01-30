@@ -197,7 +197,8 @@ public class TimeKeeper {
             for (int i = 0; i < _receiverList.size(); i++) {
                 receiver = (PrioritizedTimedQueue) _receiverList.get(i);
 
-                if (receiver.getReceiverTime().getDoubleValue() == PrioritizedTimedQueue.IGNORE) {
+                if (receiver.getReceiverTime().getDoubleValue()
+                        == PrioritizedTimedQueue.IGNORE) {
                     receiver.removeIgnoredToken();
                 }
             }
@@ -225,8 +226,9 @@ public class TimeKeeper {
 
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    if (time
-                            .compareTo(((DDEReceiver) receivers[i][j])._lastTime) > 0) {
+                    if (time.compareTo(
+                                ((DDEReceiver) receivers[i][j])._lastTime)
+                            > 0) {
                         ((DDEReceiver) receivers[i][j]).put(new NullToken(),
                                 time);
                     }
@@ -311,7 +313,8 @@ public class TimeKeeper {
      return;
      }
      for ( int i = 0; i < _receiverList.size(); i++ ) {
-     PrioritizedTimedQueue testReceiver = (PrioritizedTimedQueue)_receiverList.get(i);
+     PrioritizedTimedQueue testReceiver =
+        (PrioritizedTimedQueue)_receiverList.get(i);
      double time = testReceiver.getReceiverTime();
      Token token = null;
      if ( testReceiver._queue.size() > 0 ) {

@@ -152,15 +152,6 @@ public class FeedBackDelay extends DDEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the delay value of this actor.
-     * @return The delay value of this actor.
-     * @exception IllegalActionException If there is a problem reading
-     * the delay token.
-     */
-    public double getDelay() throws IllegalActionException {
-        return ((DoubleToken) delay.getToken()).doubleValue();
-    }
-
     /** Consume a single input token and produce an identical output
      *  token. If the input token is a NullToken and the nullDelay
      *  parameter is set to true, then produce an output NullToken to
@@ -199,6 +190,15 @@ public class FeedBackDelay extends DDEActor {
                 }
             }
         }
+    }
+
+    /** Return the delay value of this actor.
+     * @return The delay value of this actor.
+     * @exception IllegalActionException If there is a problem reading
+     * the delay token.
+     */
+    public double getDelay() throws IllegalActionException {
+        return ((DoubleToken) delay.getToken()).doubleValue();
     }
 
     /** Initialize this actor by setting all receivers so that

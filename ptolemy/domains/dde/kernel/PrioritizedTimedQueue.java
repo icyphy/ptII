@@ -274,7 +274,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
      */
-    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens)
+            throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
                     "hasToken() requires a positive argument.");
@@ -369,7 +370,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
      * @exception NoTokenException If the queue is empty.
      */
     public synchronized void removeIgnoredToken() {
-        if (getReceiverTime().getDoubleValue() != PrioritizedTimedQueue.IGNORE) {
+        if (getReceiverTime().getDoubleValue()
+                != PrioritizedTimedQueue.IGNORE) {
             return;
         }
 
@@ -404,7 +406,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         }
 
         // Set the receiver time if value is still IGNORE
-        if (getReceiverTime().getDoubleValue() == PrioritizedTimedQueue.IGNORE) {
+        if (getReceiverTime().getDoubleValue()
+                == PrioritizedTimedQueue.IGNORE) {
             if (thread instanceof DDEThread) {
                 TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
                 _setReceiverTime(timeKeeper.getModelTime());
@@ -497,7 +500,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     void _setCompletionTime(Time time) {
         double timeValue = time.getDoubleValue();
 
-        if ((timeValue < 0.0) && (timeValue != PrioritizedTimedQueue.ETERNITY)) {
+        if ((timeValue < 0.0) && (timeValue
+                    != PrioritizedTimedQueue.ETERNITY)) {
             throw new IllegalArgumentException("Attempt to set "
                     + "completion time to a negative value.");
         }

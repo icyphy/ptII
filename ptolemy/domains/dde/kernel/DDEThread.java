@@ -116,18 +116,20 @@ public class DDEThread extends ProcessThread {
                     for (int j = 0; j < receivers[i].length; j++) {
                         try {
                             if (((DDEReceiver) receivers[i][j])
-                                    .getReceiverTime().getDoubleValue() != endTime) {
+                                    .getReceiverTime().getDoubleValue()
+                                    != endTime) {
                                 try {
                                     ((DDEReceiver) receivers[i][j]).put(null,
                                             new Time(getActor().getDirector(),
                                                     endTime));
-                                } catch (IllegalActionException e) {
-                                    // If the time resolution of the director is invalid,
-                                    // it should have been caught before this.
-                                    throw new InternalErrorException(e);
+                                } catch (IllegalActionException ex) {
+                                    // If the time resolution of the
+                                    // director is invalid, it should
+                                    // have been caught before this.
+                                    throw new InternalErrorException(ex);
                                 }
                             }
-                        } catch (TerminateProcessException e) {
+                        } catch (TerminateProcessException ex) {
                             // Do nothing since we are ending
                         }
                     }

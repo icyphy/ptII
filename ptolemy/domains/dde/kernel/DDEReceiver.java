@@ -316,21 +316,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
         // FIXME This is wrong!
     }
 
-    /** Return true if this receiver is a consumer receiver. A
-     *  receiver is a consumer receiver if it is connected to a
-     *  boundary port.
-     *
-     *  @return True if this is a consumer receiver; return
-     *   false otherwise.
-     */
-    public boolean isConsumerReceiver() {
-        if (isConnectedToBoundary()) {
-            return true;
-        }
-
-        return false;
-    }
-
     /** Return true if this receiver is connected to the inside of a
      *  boundary port. A boundary port is an opaque port that is
      *  contained by a composite actor. If this receiver is connected
@@ -370,15 +355,15 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
         return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
-    /** Return true if this receiver is a producer receiver. A
-     *  receiver is a producer receiver if it is contained on the
-     *  inside or outside of a boundary port.
+    /** Return true if this receiver is a consumer receiver. A
+     *  receiver is a consumer receiver if it is connected to a
+     *  boundary port.
      *
-     *  @return True if this is a producer receiver; return false
-     *   otherwise.
+     *  @return True if this is a consumer receiver; return
+     *   false otherwise.
      */
-    public boolean isProducerReceiver() {
-        if (isOutsideBoundary() || isInsideBoundary()) {
+    public boolean isConsumerReceiver() {
+        if (isConnectedToBoundary()) {
             return true;
         }
 
@@ -409,6 +394,21 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      */
     public boolean isOutsideBoundary() {
         return _boundaryDetector.isOutsideBoundary();
+    }
+
+    /** Return true if this receiver is a producer receiver. A
+     *  receiver is a producer receiver if it is contained on the
+     *  inside or outside of a boundary port.
+     *
+     *  @return True if this is a producer receiver; return false
+     *   otherwise.
+     */
+    public boolean isProducerReceiver() {
+        if (isOutsideBoundary() || isInsideBoundary()) {
+            return true;
+        }
+
+        return false;
     }
 
     /** Return a true or false to indicate whether there is a read block
