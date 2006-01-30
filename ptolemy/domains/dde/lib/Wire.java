@@ -116,7 +116,8 @@ public class Wire extends TypedAtomicActor {
 
                     for (int k = 0; k < outReceivers.length; k++) {
                         for (int l = 0; l < outReceivers[k].length; l++) {
-                            DDEReceiver outReceiver = (DDEReceiver) outReceivers[k][l];
+                            DDEReceiver outReceiver =
+                                (DDEReceiver) outReceivers[k][l];
                             Thread thread = Thread.currentThread();
 
                             if (thread instanceof DDEThread) {
