@@ -131,7 +131,7 @@ public class FeedBackDelay extends DDEActor {
      */
     public Parameter delay;
 
-    /** The input port. */ 
+    /** The input port. */
     public TypedIOPort input;
 
     /** The boolean parameter that indicates whether a delay value
