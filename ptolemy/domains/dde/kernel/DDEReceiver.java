@@ -202,16 +202,18 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
      *  for termination, then throw a TerminateProcessException to
      *  cease execution of the actor that contains this receiver.
      *  @return Return true if the get() method of this receiver will
-     *   return a token without throwing a NoTokenException.
+     *   return a token without throwing a NoTokenException.  Return
+     *   false if the current thread is not a DDEThread.
      */
     public boolean hasToken() {
         Workspace workspace = getContainer().workspace();
         Thread thread = Thread.currentThread();
-        TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
 
         if (!(thread instanceof DDEThread)) {
             return false;
         }
+
+        TimeKeeper timeKeeper = ((DDEThread) thread).getTimeKeeper();
 
         boolean sendNullTokens = false;
 
