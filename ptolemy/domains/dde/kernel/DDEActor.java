@@ -110,8 +110,10 @@ public class DDEActor extends TypedAtomicActor {
      *  highest priority receiver within this set. If this actor
      *  contains no receivers then return null.
      *  <P>
-     *  This method returns all types of tokens including
-     *  NullTokens.
+     *  The primary difference between this method and getNextToken()
+     *  is that this method returns all types of tokens including
+     *  NullTokens while getNextToken only returns real tokens.
+     * 
      * @return The token with the smallest time stamp of all tokens
      *  contained by this actor. If multiple tokens share the smallest
      *  time stamp this token will come from the highest priority
@@ -138,5 +140,27 @@ public class DDEActor extends TypedAtomicActor {
             throw new IllegalActionException(this, "Illegal attempt "
                     + "to execute a DDEActor by a non-DDEThread.");
         }
+    }
+
+    /** Return a non-NullToken from the receiver that has the minimum,
+     *  non-negative receiver time of all receivers contained by this
+     *  actor. If there exists a set of multiple receivers that share
+     *  a common minimum receiver time, then return the token contained
+     *  by the highest priority receiver within this set. If this actor
+     *  contains no receivers then return null. This method may block
+     *  as it calls several blocking methods.
+     * @return Return a non-NullToken that has the minimum, nonnegative
+     *  receiver time of all receivers contained by this actor.
+     */
+    public Token getNextToken() throws IllegalActionException {
+        // FIXME: This method is used by HelloWorld.PrintString()
+        // Is this method necessary
+        Token token = _getNextInput();
+
+        if (token instanceof NullToken) {
+            return getNextToken();
+        }
+
+        return token;
     }
 }
