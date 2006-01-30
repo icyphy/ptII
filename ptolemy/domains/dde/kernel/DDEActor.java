@@ -99,39 +99,6 @@ public class DDEActor extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return the last port through which a token was consumed by
-     *  this actor. If no tokens have ever been consumed through any
-     *  ports of this actor, then return null.
-     * @return TypedIOPort The last port through which a token was
-     *  consumed by this actor.
-     */
-    public TypedIOPort getLastPort() {
-        return _lastPort;
-    }
-
-    /** Return a non-NullToken from the receiver that has the minimum,
-     *  non-negative receiver time of all receivers contained by this
-     *  actor. If there exists a set of multiple receivers that share
-     *  a common minimum receiver time, then return the token contained
-     *  by the highest priority receiver within this set. If this actor
-     *  contains no receivers then return null. This method may block
-     *  as it calls several blocking methods.
-     * @return Return a non-NullToken that has the minimum, nonnegative
-     *  receiver time of all receivers contained by this actor.
-     */
-    public Token getNextToken() throws IllegalActionException {
-        Token token = _getNextInput();
-
-        if (token instanceof NullToken) {
-            return getNextToken();
-        }
-
-        return token;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods                   ////
 
     /** Return a token from the receiver that has the minimum
@@ -164,7 +131,6 @@ public class DDEActor extends TypedAtomicActor {
                     .getFirstReceiver();
 
             if (lowestReceiver.hasToken()) {
-                _lastPort = (TypedIOPort) lowestReceiver.getContainer();
                 return lowestReceiver.get();
             } else {
                 return _getNextInput();
@@ -174,8 +140,4 @@ public class DDEActor extends TypedAtomicActor {
                     + "to execute a DDEActor by a non-DDEThread.");
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private TypedIOPort _lastPort = null;
 }
