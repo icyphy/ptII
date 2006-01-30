@@ -317,16 +317,16 @@ public class TimeKeeper {
      if ( testReceiver._queue.size() > 0 ) {
      token = ((PrioritizedTimedQueue.Event)testReceiver._queue.get(0)).getToken();
      }
-     String msg = "\t"+name+"'s Receiver "+i+
+     String message = "\t"+name+"'s Receiver "+i+
      " has a time of " +time+" and ";
      if ( token instanceof NullToken ) {
-     msg += "contains a NullToken";
+     message += "contains a NullToken";
      } else if ( token != null ) {
-     msg += "contains a RealToken";
+     message += "contains a RealToken";
      } else {
-     msg += "contains no token";
+     message += "contains no token";
      }
-     System.out.println(msg);
+     System.out.println(message);
      }
      System.out.println("###End of printReceiverList()\n");
      }
