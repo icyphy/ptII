@@ -558,19 +558,8 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
             _timeStamp = time;
         }
 
-        // Construct an Event with a token, a time stamp and a
-        // destination receiver.
-        public Event(Token token, Time time, Receiver receiver) {
-            this(token, time);
-            _receiver = receiver;
-        }
-
         ///////////////////////////////////////////////////////////
         ////                     public inner methods          ////
-        // Return the destination receiver of this event.
-        public Receiver getReceiver() {
-            return _receiver;
-        }
 
         // Return the time stamp of this event.
         public Time getTime() {
@@ -587,7 +576,5 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
         Time _timeStamp;
 
         Token _token = null;
-
-        Receiver _receiver = null;
     }
 }
