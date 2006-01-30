@@ -277,17 +277,6 @@ public class DDEDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Return false indicating that none of the actors governed by this director
-     * have a mutation. Note that the DDE domain is not equipped to properly
-     * handle mutations.
-     *
-     * @return False.
-     */
-    public boolean hasMutation() {
-        return false;
-    }
-
-    /**
      * Initialize this director and the actors it contains and set variables to
      * their initial values. Create a DDEThread for each actor that this
      * director controls but do not start the thread.
@@ -398,8 +387,8 @@ public class DDEDirector extends CompositeProcessDirector implements
         super.threadUnblocked(thread, receiver);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                     public variables                      ////
 
     /** Indicator that a thread is read blocked. */
     public static boolean READ_BLOCKED = true;
@@ -407,8 +396,8 @@ public class DDEDirector extends CompositeProcessDirector implements
     /** Indicator that a thread is write blocked. */
     public static boolean WRITE_BLOCKED = false;
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                    protected methods                      ////
 
     /**
      * Return a new ProcessThread of a type compatible with this director.
@@ -503,8 +492,8 @@ public class DDEDirector extends CompositeProcessDirector implements
         return super._resolveInternalDeadlock();
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // package friendly methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                     package friendly methods              ////
 
     /**
      * Return the initial time table of this director.
