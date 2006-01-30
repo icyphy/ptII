@@ -139,6 +139,13 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clear this receiver of any contained tokens.
+     */
+    public void clear() {
+        // FIXME
+        //queue.clear();
+    }
+
     /** Get a token from the mailbox receiver.
      *  @return The token contained by this receiver.
      *  @exception NoTokenException If there is no token.
@@ -431,13 +438,6 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
         synchronized (_director) {
             return _writePending != null;
         }
-    }
-
-    /** Clear this receiver of any contained tokens.
-     */
-    public void clear() {
-        // FIXME
-        //queue.clear();
     }
 
     /** Do a blocking write on the queue. Set the time stamp to be

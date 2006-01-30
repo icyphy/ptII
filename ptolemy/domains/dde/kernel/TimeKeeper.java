@@ -318,7 +318,8 @@ public class TimeKeeper {
      double time = testReceiver.getReceiverTime();
      Token token = null;
      if ( testReceiver._queue.size() > 0 ) {
-     token = ((PrioritizedTimedQueue.Event)testReceiver._queue.get(0)).getToken();
+     token =
+        ((PrioritizedTimedQueue.Event)testReceiver._queue.get(0)).getToken();
      }
      String message = "\t"+name+"'s Receiver "+i+
      " has a time of " +time+" and ";
