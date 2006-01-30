@@ -110,9 +110,8 @@ public class DDEActor extends TypedAtomicActor {
      *  highest priority receiver within this set. If this actor
      *  contains no receivers then return null.
      *  <P>
-     *  The primary difference between this method and getNextToken()
-     *  is that this method returns all types of tokens including
-     *  NullTokens while getNextToken only returns real tokens.
+     *  This method returns all types of tokens including
+     *  NullTokens.
      * @return The token with the smallest time stamp of all tokens
      *  contained by this actor. If multiple tokens share the smallest
      *  time stamp this token will come from the highest priority
