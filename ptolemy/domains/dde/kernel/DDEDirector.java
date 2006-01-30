@@ -116,6 +116,8 @@ public class DDEDirector extends CompositeProcessDirector implements
      * Construct a DDEDirector in the default workspace with an empty string as
      * its name. The director is added to the list of objects in the workspace.
      * Increment the version number of the workspace.
+     * @exception NameDuplicationException If thrown while adding a 
+     * stopTime parameter. 
      */
     public DDEDirector() throws IllegalActionException,
             NameDuplicationException {
@@ -127,12 +129,14 @@ public class DDEDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Construct a director in the workspace with an empty string as a name. The
-     * director is added to the list of objects in the workspace. Increment the
-     * version number of the workspace.
-     *
-     * @param workspace
-     *            The workspace of this object.
+     * Construct a director in the workspace with an empty string as a
+     * name. The director is added to the list of objects in the
+     * workspace. Increment the version number of the workspace.
+     * @param workspace The workspace of this object.
+     * @exception IllegalActionException If the director is not
+     * compatible with the specified container.
+     * @exception NameDuplicationException If thrown while adding a 
+     * stopTime parameter. 
      */
     public DDEDirector(Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
@@ -406,6 +410,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      *            The actor that the new ProcessThread will control.
      * @param director
      *            The director that manages the new ProcessThread.
+     * @return A new DDEThread.
      * @exception IllegalActionException
      *                If an error occurs while instantiating the new
      *                ProcessThread.
@@ -471,13 +476,16 @@ public class DDEDirector extends CompositeProcessDirector implements
     }
 
     /**
-     * Apply an algorithm to resolve an internal deadlock and return true if the
-     * algorithm is successful. If the algorithm is unsuccessful then return
-     * false. The algorithm applied was created by Thomas Parks for resolving
-     * internal deadlocks in which one or more actors are write blocked.
+     * Apply an algorithm to resolve an internal deadlock and return
+     * true if the algorithm is successful. If the algorithm is
+     * unsuccessful then return false. The algorithm applied was
+     * created by Thomas Parks for resolving internal deadlocks in
+     * which one or more actors are write blocked.
      *
      * @return True if an internal deadlock has been resolved; otherwise return
      *         false.
+     * @exception IllegalActionException If thrown while incrementing the
+     * lowest capacity port.
      */
     protected synchronized boolean _resolveInternalDeadlock()
             throws IllegalActionException {

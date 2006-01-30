@@ -68,6 +68,8 @@ public class DDEThread extends ProcessThread {
      *  active actors in the director.
      * @param actor The DDEActor that will be executed.
      * @param director The director of this actor.
+     * @exception IllegalActionException If thrown while create a new
+     * TimeKeeper.
      */
     public DDEThread(Actor actor, ProcessDirector director)
             throws IllegalActionException {

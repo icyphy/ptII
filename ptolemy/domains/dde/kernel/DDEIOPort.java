@@ -217,6 +217,7 @@ public class DDEIOPort extends TypedIOPort {
 
     /** Constrain DDEIOPorts to only be contained by non-atomic
      *  entities.
+     * @param container The container in which to put this DDEIOPort.
      * @exception IllegalActionException If the container argument
      *  is not atomic.
      * @exception NameDuplicationException If the name of this

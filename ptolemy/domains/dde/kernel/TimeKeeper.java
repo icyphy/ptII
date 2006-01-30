@@ -117,6 +117,7 @@ public class TimeKeeper {
      *  @return The current time of this TimeKeeper.
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelTime()}
+     *  @see #setCurrentTime(Time)
      */
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
@@ -242,6 +243,8 @@ public class TimeKeeper {
      * @param time The new value for current time.
      * @exception IllegalArgumentException If there is an attempt to
      *  decrease the value of current time to a nonnegative number.
+     * @see #getCurrentTime()
+     * @see #getModelTime()
      */
     public synchronized void setCurrentTime(Time time) {
         if ((time.compareTo(_currentTime) < 0)

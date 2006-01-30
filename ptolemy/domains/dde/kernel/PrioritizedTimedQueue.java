@@ -208,6 +208,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
     /** Get the queue capacity of this receiver.
      * @return The capacity of this receiver's queue.
+     * @see #setCapacity(int) 
      */
     public int getCapacity() {
         return _queue.getCapacity();
@@ -234,8 +235,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
     /** Return true if the number of tokens stored in the queue is
      *  less than the capacity of the queue. Return false otherwise.
-     * @return True if the queue is not full; return
-     *  false otherwise.
+     * @return True if the queue is not full; return false otherwise.
      */
     public boolean hasRoom() {
         return !_queue.isFull();
@@ -244,6 +244,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     /** Return true if the queue capacity minus the queue size is
      *  greater than the argument.
      *  @param numberOfTokens The number of tokens to put into the queue.
+     *  @return True if the queue is not full; return false otherwise.
      *  @exception IllegalArgumentException If the argument is not positive.
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
@@ -431,6 +432,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
     /** Set the queue capacity of this receiver.
      * @param capacity The capacity of this receiver's queue.
      * @exception IllegalActionException If the superclass throws it.
+     * @see #getCapacity()
      */
     public void setCapacity(int capacity) throws IllegalActionException {
         _queue.setCapacity(capacity);
