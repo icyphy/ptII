@@ -76,7 +76,7 @@ import ptolemy.util.StringUtilities;
 //// CodeGenerator
 
 /** Base class for code generator.
- *
+ *  
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks
  *  @version $Id$ CodeGenerator.java,v 1.51 2005/07/13 14:07:20 cxh Exp $
  *  @since Ptolemy II 5.1
@@ -97,7 +97,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         super(container, name);
 
         codeDirectory = new FileParameter(this, "codeDirectory");
-        CompositeEntity model = (CompositeEntity) getContainer();
+
         codeDirectory.setExpression("$HOME/codegen/");
 
         // FIXME: This should not be necessary, but if we don't
@@ -105,6 +105,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI()); 
         new Parameter(codeDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(codeDirectory, "allowDirectories", BooleanToken.TRUE);
+
+        compile = new Parameter(this, "compile");
+        compile.setTypeEquals(BaseType.BOOLEAN);
+        compile.setExpression("true");       
 
         generatorPackage = new StringParameter(this, "generatorPackage");
         generatorPackage.setExpression("ptolemy.codegen.c");
@@ -117,11 +121,18 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         overwriteFiles.setTypeEquals(BaseType.BOOLEAN);
         overwriteFiles.setExpression("true");       
         
+        run = new Parameter(this, "run");
+        run.setTypeEquals(BaseType.BOOLEAN);
+        run.setExpression("true");       
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"40\" "
                 + "style=\"fill:blue\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:white\">"
                 + "Double click to\ngenerate code.</text></svg>");
+
+        _model = (CompositeEntity) getContainer();
+        _sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
         // FIXME: We may not want this GUI dependency here...
         // This attribute could be put in the MoML in the library instead
@@ -137,6 +148,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  The default is $HOME/codegen.
      */
     public FileParameter codeDirectory;
+
+    /** If true, then compile the generated code. The default   
+     *  value is a parameter with the value true.
+     */
+    public Parameter compile;
 
     /** The name of the package in which to look for helper class
      *  code generators. This is a string that defaults to
@@ -154,6 +170,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  value is a parameter with the value true.
      */
     public Parameter overwriteFiles;
+
+    /** If true, then run the generated code. The default   
+     *  value is a parameter with the value true.
+     */
+    public Parameter run;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -247,6 +268,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         _writeCode(code);
         _writeMakefile();
+        _executeCommand(compile, "compile", 
+                    "make -f " + _sanitizedModelName + ".mk");
+        
+        _executeCommand(run, "run", 
+                    "./" + _sanitizedModelName);
     }
 
     /** Generate The fire function code. This method is called when the firing
@@ -258,12 +284,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        CompositeEntity model = (CompositeEntity) getContainer();
         TypedCompositeActor modelHelper =
-            (TypedCompositeActor) _getHelper(model);
+            (TypedCompositeActor) _getHelper(_model);
                      
+        // FIXME: use _sanitizedModelName here, which is more likely to be properly
+        // sanitized
         code.append("\nvoid " + 
-                model.getFullName().replace('.' , '_') + "() {\n");
+                _model.getFullName().replace('.' , '_') + "() {\n");
         code.append(modelHelper.generateFireCode());
         code.append("}\n");
         return code.toString();
@@ -323,11 +350,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         ptolemy.actor.Director director = ((CompositeActor) getContainer())
             .getDirector();
 
-        CompositeEntity model = (CompositeEntity) getContainer();
-
         if (director == null) {
             throw new IllegalActionException(this, "The model "
-                    + model.getName() + " does not have a director.");
+                    + _model.getName() + " does not have a director.");
         }
         
         TypedCompositeActor compositeActorHelper = 
@@ -893,6 +918,38 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Execute a command in the <i>codeDirectory</i> directory.
+     *  @param ifTrueThenRun A parameter of type BooleanToken.
+     *  If this parameter evaluates to true, then run the command.
+     *  @param oneWordDescription  The description of the command,
+     *  such as "compile" or "run", which is used in error messages.
+     *  @param command The command to run.
+     */
+    private void _executeCommand(Parameter ifTrueThenRun,
+            String oneWordDescription,
+            String command) throws IllegalActionException{
+        if (!((BooleanToken) ifTrueThenRun.getToken()).booleanValue()) {
+            return;
+        }
+        int exitValue;
+        try {
+            // FIXME: need to put this output in to the UI, if any. 
+            exitValue = Copernicus.executeCommand(command,
+                    codeDirectory.asFile());
+        } catch (Exception ex) {
+            throw new IllegalActionException("Problem executing the " 
+                    + oneWordDescription + " command. "
+                    + " Command was:\n"
+                    + command);
+        }
+        if (exitValue != 0) {
+            throw new IllegalActionException("Problem executing the " 
+                    + oneWordDescription + " command. "
+                    + "Return value was: " + exitValue + ". Command was:\n"
+                    + command);
+        }
+    }
+
     /** Write the code to a directory named by the codeDirectory
      *  parameter, with a file name that is a sanitized version of the
      *  model name, and an extension that is the last package of
@@ -904,11 +961,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */ 
     private void _writeCode(StringBuffer code) throws IllegalActionException {
         // This method is private so that the body of the caller shorter.
-        CompositeEntity model = (CompositeEntity) getContainer();
         String extension = generatorPackage.stringValue()
             .substring(generatorPackage.stringValue().lastIndexOf("."));
                 
-        String codeFileName = StringUtilities.sanitizeName(model.getName())
+        String codeFileName = StringUtilities.sanitizeName(_model.getName())
             + extension;
             
         System.out.println("Writing " + codeFileName + " in "
@@ -980,10 +1036,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */ 
     private void _writeMakefile() throws IllegalActionException {
 
-        // This method is private so that the body of the caller shorter.
-        CompositeEntity model = (CompositeEntity) getContainer();
-                
-        String modelName = StringUtilities.sanitizeName(model.getName());
 
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
@@ -1022,11 +1074,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // For example, @generatorPackage@ will be replaced with
             // the value of the generatorPackage.
             substituteMap = Copernicus.newMap(this);
-            substituteMap.put("@modelName@", modelName);
+            substituteMap.put("@modelName@", _sanitizedModelName);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,
                     "Problem generating substitution map from "
-                    + modelName);
+                    + _model);
         }
 
         BufferedReader makefileTemplateReader = null;
@@ -1037,7 +1089,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             
         String makefileOutputName = codeDirectory.stringValue()
             + File.separator
-            + StringUtilities.sanitizeName(model.getName()) + ".mk";
+            + _sanitizedModelName + ".mk";
 
         try {
             try {
@@ -1079,4 +1131,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  with the actors.
      */
     private HashMap _helperStore = new HashMap();
+
+    /** The model we for which we are generating code. */
+    CompositeEntity _model;
+                
+    /** The sanitized model name. */
+    String _sanitizedModelName;
+
 }
