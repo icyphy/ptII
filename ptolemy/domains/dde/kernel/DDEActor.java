@@ -151,6 +151,8 @@ public class DDEActor extends TypedAtomicActor {
      *  as it calls several blocking methods.
      * @return Return a non-NullToken that has the minimum, nonnegative
      *  receiver time of all receivers contained by this actor.
+     * @exception IllegalActionException If there is a problem getting
+     * the next input.
      */
     public Token getNextToken() throws IllegalActionException {
         // FIXME: This method is used by HelloWorld.PrintString()

@@ -116,6 +116,8 @@ public class DDEDirector extends CompositeProcessDirector implements
      * Construct a DDEDirector in the default workspace with an empty string as
      * its name. The director is added to the list of objects in the workspace.
      * Increment the version number of the workspace.
+     * @exception IllegalActionException If the director is not
+     * compatible with the specified container.
      * @exception NameDuplicationException If thrown while adding a
      * stopTime parameter.
      */
