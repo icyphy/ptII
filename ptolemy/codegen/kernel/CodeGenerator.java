@@ -704,7 +704,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** This method is used to set the code generator for a helper class.
      *  Since this is not a helper class for a component, this method does
      *  nothing.
-     *  @param codeGenerator
+     *  @param codeGenerator The given code generator. 
      */
     public void setCodeGenerator(CodeGenerator codeGenerator) {
     }
@@ -747,7 +747,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * helper's input ports are of different types, then conversion is needed.
      * (i.e. if a source port is a primitive type and the input port is a 
      * general type, we need to upgrade the source type to a Token type.) 
-     * @exception Thrown if helper is not found, or the conversion not
+     * @exception IllegalActionException Thrown if helper is not found, or the conversion not
      *  supported.
      */
     protected void _checkPortTypeConversion() throws IllegalActionException {        
