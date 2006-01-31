@@ -269,6 +269,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(wrapupCode);
         code.append("}\n");
 
+        if (_executeCommands == null) {
+            _executeCommands = new StreamExec();
+        }
+
         _writeCode(code);
         _writeMakefile();
         _executeCommands();
@@ -681,8 +685,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         .get(codeGenerators.size() - 1);
                 }
 
-                System.out.println("CodeGenerator: " + codeGenerator);
-
                 try {
                     codeGenerator.generateCode();
                 } catch (KernelException ex) {
@@ -942,9 +944,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (commands.size() == 0) {
             return;
         }
-        if (_executeCommands == null) {
-            _executeCommands = new StreamExec();
-        }
+
         _executeCommands.setCommands(commands);
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
         
@@ -973,18 +973,36 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */ 
     private void _writeCode(StringBuffer code) throws IllegalActionException {
         // This method is private so that the body of the caller shorter.
+
         String extension = generatorPackage.stringValue()
             .substring(generatorPackage.stringValue().lastIndexOf("."));
                 
-        String codeFileName = StringUtilities.sanitizeName(_model.getName())
-            + extension;
+        String codeFileName = _sanitizedModelName + extension;
             
-        System.out.println("Writing " + codeFileName + " in "
-                + codeDirectory.getBaseDirectory());
-
         // Write the code to a file with the same name as the model into
         // the directory named by the codeDirectory parameter.
         try {
+            File codeDirectoryFile = codeDirectory.asFile();
+            if (codeDirectoryFile.isFile()) {
+                throw new IOException("Error: "
+                        + codeDirectory.stringValue() + " is a file, "
+                        + "it should be a directory.");
+            }
+            if (!codeDirectoryFile.isDirectory() 
+                    && !codeDirectoryFile.mkdirs()) {
+                throw new IOException("Failed to make the \""
+                        + codeDirectory.stringValue() + "\" directory.");
+            }
+
+            // FIXME: Note that we need to make the directory before calling
+            // getBaseDirectory()
+            codeDirectory.setBaseDirectory(codeDirectory.asFile().toURI()); 
+
+            _executeCommands.stdout("Writing " + codeFileName + " in "
+                + codeDirectory.getBaseDirectory());
+
+
+
             // Check if needs to overwrite.
             if (!((BooleanToken) overwriteFiles.getToken()).booleanValue()
                     && codeDirectory.asFile().exists()) {
@@ -997,18 +1015,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                 }
-            }
-
-            File codeDirectoryFile = codeDirectory.asFile();
-            if (codeDirectoryFile.isFile()) {
-                throw new IOException("Error: "
-                        + codeDirectory.stringValue() + " is a file, "
-                        + "it should be a directory.");
-            }
-            if (!codeDirectoryFile.isDirectory() 
-                    && !codeDirectoryFile.mkdirs()) {
-                throw new IOException("Failed to make the \""
-                        + codeDirectory.stringValue() + "\" directory.");
             }
 
             Writer writer = null;
@@ -1099,8 +1105,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             generatorPackage.stringValue().replace('.', '/') +
             "/makefile.in";
             
+        // If necessary, add a trailing / after codeDirectory.
         String makefileOutputName = codeDirectory.stringValue()
-            + File.separator
+            + ((!codeDirectory.stringValue().endsWith("/") 
+                       && !codeDirectory.stringValue().endsWith("\\")) ?
+                    "/" : "")
             + _sanitizedModelName + ".mk";
 
         try {
@@ -1113,7 +1122,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         + makefileTemplateName + "\" for reading.");
             }
 
-            System.out.println("Reading \"" + makefileTemplateName
+            _executeCommands.stdout("Reading \"" + makefileTemplateName
                     + "\", writing \"" + makefileOutputName + "\"");
             Copernicus.substitute(makefileTemplateReader, substituteMap,
                     makefileOutputName);
