@@ -174,14 +174,16 @@ public class RendezvousDirector extends CompositeProcessDirector {
         return false;
     }
 
+
     /** If the model is deadlocked, report the deadlock if parameter
-     *  "SuppressDeadlockReporting" is not set to boolean true, and return
-     *  false.
-     *  Otherwise, return true. Deadlock occurs if the number of blocked threads
-     *  equals the number of active threads.
+     *  "SuppressDeadlockReporting" is not set to boolean true, and
+     *  return false.  Otherwise, return true. Deadlock occurs if the
+     *  number of blocked threads equals the number of active threads.
      *  @return False if deadlock occurred, true otherwise.
+     *  @exception IllegalActionException If thrown while getting
+     *  the "SuppressDeadlockReporting" token.
      */
-    protected synchronized boolean _resolveInternalDeadlock()
+    protected synchronized boolean _resolveInternalDeadlock() 
             throws IllegalActionException {
         if (_getBlockedThreadsCount() == _getActiveThreadsCount()) {
             // Report deadlock.
