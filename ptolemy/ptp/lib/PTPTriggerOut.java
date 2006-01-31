@@ -26,7 +26,7 @@ and generates a signal on the TriggerOut port of a PTP P100 box.
  COPYRIGHTENDKEY
 
  */
-package ptolemy.ptp.ptp;
+package ptolemy.ptp.lib;
 
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
