@@ -399,6 +399,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  This base class returns an empty set.
      *  @return A set of strings that are header files needed by the code
      *  generated from this helper class.
+     *  @exception IllegalActionException Not Thrown in this base class.
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
@@ -584,14 +585,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param channelNumber The given channel number.
      *  @return The offset in the buffer of a given channel from which a token
      *   should be read.
+     *  @exception IllegalActionException Thrown if the helper class cannot
+     *   be found.
      */
     public Object getReadOffset(IOPort inputPort, int channelNumber)
             throws IllegalActionException {
         if (inputPort.getContainer() == _component) {
             return ((Object[]) _readOffsets.get(inputPort))[channelNumber];
         } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
-                    .getContainer());
+            CodeGeneratorHelper actorHelper = 
+                (CodeGeneratorHelper) _getHelper(inputPort.getContainer());
             return actorHelper.getReadOffset(inputPort, channelNumber);
         }
     }
@@ -796,14 +799,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param channelNumber The given channel number.
      *  @return The offset in the buffer of a given channel to which a token
      *   should be put.
+     *  @exception IllegalActionException Thrown if the helper class cannot
+     *   be found.
      */
     public Object getWriteOffset(IOPort inputPort, int channelNumber)
             throws IllegalActionException {
         if (inputPort.getContainer() == _component) {
             return ((Object[]) _writeOffsets.get(inputPort))[channelNumber];
         } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
-                    .getContainer());
+            CodeGeneratorHelper actorHelper = 
+                (CodeGeneratorHelper) _getHelper(inputPort.getContainer());
             return actorHelper.getWriteOffset(inputPort, channelNumber);
         }
     }
@@ -1025,6 +1030,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param inputPort The given port.
      *  @param channelNumber The given channel.
      *  @param readOffset The offset to be set to the buffer of that channel.
+     *  @exception IllegalActionException Thrown if the helper class cannot
+     *   be found.
      */
     public void setReadOffset(IOPort inputPort, int channelNumber,
             Object readOffset) throws IllegalActionException {
@@ -1032,8 +1039,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             Object[] readOffsets = (Object[]) _readOffsets.get(inputPort);
             readOffsets[channelNumber] = readOffset;
         } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(inputPort
-                    .getContainer());
+            CodeGeneratorHelper actorHelper = 
+                (CodeGeneratorHelper) _getHelper(inputPort.getContainer());
             actorHelper.setReadOffset(inputPort, channelNumber, readOffset);
         }
     }
@@ -1042,6 +1049,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param outputPort The given port.
      *  @param channelNumber The given channel.
      *  @param writeOffset The offset to be set to the buffer of that channel.
+     *  @exception IllegalActionException If 
+     *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
      */
     public void setSinkActorsWriteOffset(IOPort outputPort, int channelNumber,
             Object writeOffset) throws IllegalActionException {
@@ -1060,6 +1069,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param inputPort The given port.
      *  @param channelNumber The given channel.
      *  @param writeOffset The offset to be set to the buffer of that channel.
+     *  @exception IllegalActionException If 
+     *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
      */
     public void setWriteOffset(IOPort inputPort, int channelNumber,
             Object writeOffset) throws IllegalActionException {
@@ -1108,8 +1119,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  This method is used to maintain a internal HashMap of channels of the
      *  actor. The channel objects in the map are used to keep track of the
      *  buffer sizes or offsets in their buffer.
+     *  @exception IllegalActionException If the director helper or executive
+     *   director is not found, or if 
+     *   {@link #setReadOffset(IOPort, int, Object)} method throws it, or if
+     *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
+     *  
      */
-    protected void _createBufferSizeAndOffsetMap() throws IllegalActionException {
+    protected void _createBufferSizeAndOffsetMap() 
+        throws IllegalActionException {
         //We only care about input ports where data are actually stored
         //except when an output port is not connected to any input port.
         //In that case the variable corresponding to the unconnected output
@@ -1165,7 +1182,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * conversion between actors.
      * @param port The given port.
      * @param code The given code buffer to append to.
-     * @exception Thrown if the associated helper is not found, or if the
+     * @exception IllegalActionException Thrown if the associated helper is not found, or if the
      *  source port channel index is not found, or if the buffer size of 
      *  the given port cannot be determined, or if the given port name
      *  reference is not found.
@@ -1214,11 +1231,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @param sourceIndex The source channel index in the sink port.
      * @param sourcePort The source port.
      * @return The index of the sink port in the source port.
-     * @exception Thrown if the channel index of the source port is not found.
+     * @exception IllegalActionException Thrown if the channel index
+     *  of the source port is not found.
      */
-    protected int _getChannelIndex (TypedIOPort sinkPort, 
-            int sourceIndex, TypedIOPort sourcePort) 
-        throws IllegalActionException {
+    protected int _getChannelIndex (TypedIOPort sinkPort, int sourceIndex,
+            TypedIOPort sourcePort) throws IllegalActionException {
         
         // Get receiver from the sink port.
         Receiver receiver = sinkPort.getReceivers()[sourceIndex][0];
@@ -1551,6 +1568,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * type. 
      * @param ptType The given Ptolemy type.
      * @return The code generation type.
+     * @exception IllegalActionException Thrown if the given ptolemy cannot
+     *  be resolved.
      */
     protected static String _getCodeGenTypeFromPtolemyType (Type ptType) 
         throws IllegalActionException {
@@ -1589,7 +1608,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * Determine if the given type is primitive.
      * @param ptType The given ptolemy type.
      * @return true if the given type is primitive, otherwise false.
-     * @exception Thrown if there is no corresponding codegen type.
+     * @exception IllegalActionException Thrown if there is no
+     *  corresponding codegen type.
      */
     protected static boolean _isPrimitiveType(Type ptType) 
             throws IllegalActionException {
@@ -1598,7 +1618,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /**
-     * Determine if the given type is primitive
+     * Determine if the given type is primitive.
      * @param cgType The given codegen type.
      * @return true if the given type is primitive, otherwise false.
      */
@@ -1632,6 +1652,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         /** Look up and return the macro or expression in the target language
          *  corresponding to the specified name in the scope.
+         *  @param name The given name string.
          *  @return The macro or expression with the specified name in the scope.
          *  @exception IllegalActionException If thrown while getting buffer 
          *   sizes or creating ObjectToken.
@@ -1908,12 +1929,31 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     */
    protected CodeGenerator _codeGenerator;
 
-   /**
-    * 
+   /** A HashSet that contains all codegen types referenced in the model.
+    * When the codegen kernel processes a $new() macro, it would add the
+    * codegen type to this set. Codegen types are supported by the code
+    * generator package. (e.g. Int, Double, Array, and etc.)
     */
-   protected HashSet _newTypesUsed = new HashSet();   
+   protected HashSet _newTypesUsed = new HashSet();
+   
+   /** A HashSet that contains all type functions referenced in the model.
+    *  When the codegen kernel processes a $typeFunc() macro, it would add
+    *  the type function to this set. 
+    */
    protected HashSet _typeFuncUsed = new HashSet();   
+   
+   /** A HashMap that contains mapping for ports and their conversion method.
+    *  Ports that does not need to be converted do NOT have record in this
+    *  map. The codegen kernel record this mapping during the first pass over
+    *  the model. This map is used later in the code generation phase.
+    */
    protected HashMap _portConversions = new HashMap();
+   
+   /** A HashMap that contains mapping between ports and their corresponding
+    *  c declaration types. The codegen kernel record this mapping during the
+    *  first pass over the model. This map is used later in the code
+    *  generation phase.
+    */
    protected HashMap _portDeclareTypes = new HashMap();
    
    /** A hashmap that keeps track of the read offsets of each input channel of
