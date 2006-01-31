@@ -12,8 +12,10 @@ STRIP          = $(CROSS_COMPILE)strip
 CPP            = $(CC) -E
 
 
-fpgaLoad: fpgaLoad.cpp
-        $(C++) -o $(@) $<
+all: fpgaLoad timeTrigger
 
-timeTrigger: timeTrigger.cpp
-        $(C++) -o $(@) $<
+fpgaLoad: fpgaLoad.cpp
+	$(C++) -o $(@) $<
+
+timeTrigger: TimeTrigger.cpp
+	$(C++) -o $(@) $<

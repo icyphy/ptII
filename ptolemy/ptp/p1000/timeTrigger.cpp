@@ -41,8 +41,7 @@ void decodeHwNsec(
     if (hwTime)
         {
 
-            *nsec = (unsigned int) ( (hwTime->hwNsec & 0x7fffffff) * hwToNsec); //1.0737
-            41824);
+            *nsec = (unsigned int) ( (hwTime->hwNsec & 0x7fffffff) * hwToNsec); //1.073741824);
     *secs = hwTime->secs;
     if ( hwTime->hwNsec & 0x80000000)
         {
@@ -101,9 +100,8 @@ if (argc != 2)
  rtn = ioctl(fd,  FPGA_IOC_CLEAR_TIMESTAMP, &fpgaClearTimestamp);
  if (rtn)
      {
-         fprintf(stderr, "ioctl to clear timestamp log failed: %d, %d\n", rtn, errno)
-
-             perror("error from ioctl");
+         fprintf(stderr, "ioctl to clear timestamp log failed: %d, %d\n", rtn, errno);
+         perror("error from ioctl");
          exit(1);
      }
 
@@ -112,8 +110,7 @@ if (argc != 2)
  nsecs = 0;
  FPGA_SET_TIMETRIGGER fpgaSetTimetrigger;
 
- fpgaSetTimetrigger.num = 0;   // Only single timetrigger supported, numbered '
-'
+ fpgaSetTimetrigger.num = 0;   // Only single timetrigger supported, numbered '0'
  fpgaSetTimetrigger.force = 0; // Don't force
     encodeHwNsec( &fpgaSetTimetrigger.timeVal, secs, nsecs);
 
