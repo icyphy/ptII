@@ -432,10 +432,10 @@ mainVergil.htm: main.htm
 		main.htm > $@
 
 mainVergilPtiny.htm: mainVergil.htm
-	awk -f $(ROOT)/doc/javahtml.awk $<  > $@  
+	awk -f $(ROOT)/doc/javahtml.awk mainVergil.htm  > $@  
 
 mainVergilPtinyKepler.htm: mainVergilPtiny.htm
-	awk -f $(ROOT)/doc/ptinyKepler.awk $<  > $@  
+	awk -f $(ROOT)/doc/ptinyKepler.awk mainVergilPtiny.htm  > $@  
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
