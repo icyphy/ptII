@@ -73,12 +73,17 @@ public class MoveAction extends FigureAction {
         _type = type;
         // Add key bindings.  
         // FIXME: these bindings are also set in vergil.basic.BasicGraphFrame.
+
+        // Front and back are a little confusing here.  TO_FIRST means
+        // that the element is first in the moml file, which means it is 
+        // drawn first and then obscured.
+
         if (_type == TO_FIRST) {
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                             KeyEvent.VK_F, Event.CTRL_MASK));
+                             KeyEvent.VK_B, Event.CTRL_MASK));
         } else if (_type == TO_LAST) {
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                             KeyEvent.VK_B, Event.CTRL_MASK));
+                             KeyEvent.VK_F, Event.CTRL_MASK));
         }
     }
 
