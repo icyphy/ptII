@@ -52,6 +52,7 @@ JSRCS = \
 	CancelException.java \
 	CloseListener.java \
 	ComponentDialog.java \
+	ExecuteCommands.java \
 	GraphicalMessageHandler.java \
 	JTextAreaExec.java \
 	MessageHandler.java \
@@ -60,7 +61,6 @@ JSRCS = \
 	ShellInterpreter.java \
 	ShellTextArea.java \
 	StatusBar.java \
-	StreamExec.java \
 	SwingWorker.java \
 	Top.java
 

@@ -53,10 +53,11 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import ptolemy.util.ExecuteCommands;
 import ptolemy.util.StringUtilities;
 
 /** Execute commands in a subprocess and display them in a JTextArea.
-
+ For a non-graphical versino, see {@link ptolemy.util.StreamExec}.
  <p>Loosely based on Example1.java from
  http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
  <p>See also
@@ -70,7 +71,7 @@ import ptolemy.util.StringUtilities;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class JTextAreaExec extends JPanel {
+public class JTextAreaExec extends JPanel implements ExecuteCommands {
     /** Create the JTextArea, progress bar, status text field and
      *  optionally Start, Cancel and Clear buttons.
      *
@@ -165,6 +166,15 @@ public class JTextAreaExec extends JPanel {
         _updateProgressBar(0);
     }
 
+    /** Return the value of the Process.  Typically the return value
+     *  of this method is used to have the caller wait for the process
+     *  to exit.
+     *  @return The value of the process.
+     */
+    public Process getProcess() {
+        return _process;
+    }
+
     /** Return the Start button.
      *  This method is used to get the Start button so we can
      *  set the focus to it.
@@ -225,6 +235,23 @@ public class JTextAreaExec extends JPanel {
     public void start() {
         _startButton.doClick();
     }
+
+    /** Append the text message to stderr.
+     *  The output automatically gets a trailing newline appended.
+     *  @param text The text to append to stdandard error.
+     */
+    public void stderr(final String text) {
+        appendJTextArea(text);
+    }
+
+    /** Append the text message to the output. 
+     *  The output automatically gets a trailing newline appended.
+     *  @param text The text to append to standard out.
+     */
+    public void stdout(final String text) {
+        appendJTextArea(text);
+    }
+
 
     /** Update the status area with the text message.
      *  @param text The text with which the status area is updated.
