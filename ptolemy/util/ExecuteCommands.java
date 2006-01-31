@@ -46,7 +46,6 @@ import ptolemy.util.StringUtilities;
  and
  http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html
 
- @see JTextAreaExec
  @see StreamExec
 
  @author Christopher Brooks
@@ -95,18 +94,16 @@ public interface ExecuteCommands {
     public void start();
 
 
-    /** Append the text message to stderr.  A derived class could
-     *  append to a StringBuffer.  @link{JTextAreaExec} appends to a
-     *  JTextArea. The output automatically gets a trailing newline
-     *  appended.
+    /** Append the text message to stderr.  Classes that implement
+     *  this method could append to a StringBuffer or JTextArea.
+     *  The output automatically gets a trailing newline  appended.
      *  @param text The text to append to stdandard error.
      */
     public void stderr(final String text);
 
-    /** Append the text message to the output.  A derived class could
-     *  append to a StringBuffer.  @link{JTextAreaExec} appends to a
-     *  JTextArea.
-     *  The output automatically gets a trailing newline appended.
+    /** Append the text message to stderr.  Classes that implement
+     *  this method could append to a StringBuffer or JTextArea.
+     *  The output automatically gets a trailing newline  appended.
      *  @param text The text to append to standard out.
      */
     public void stdout(final String text);
