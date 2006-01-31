@@ -17,5 +17,5 @@ all: fpgaLoad timeTrigger
 fpgaLoad: fpgaLoad.cpp
 	$(C++) -o $(@) $<
 
-timeTrigger: TimeTrigger.cpp
+timeTrigger: timeTrigger.cpp
 	$(C++) -o $(@) $<

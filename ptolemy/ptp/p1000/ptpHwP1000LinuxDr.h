@@ -49,12 +49,23 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef INCLUDE_PTPHWP1000LINUXDR
 #define INCLUDE_PTPHWP1000LINUXDR
-//#include <linux/ioctl.h>
-//#include <linux/types.h>
+#ifdef linux
+#include <linux/ioctl.h>
+#include <linux/types.h>
+#endif
 
+#ifdef sun
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/ioccom.h>
+#endif
+
+#ifdef __CYGWIN32__
+#include <sys/ioctl.h>
+#include <sys/types.h>
+// Get _IOW
+#include <asm/socket.h> 
+#endif
 
 #define FPGA_IOC_MAGIC  'f'
 // ----------------------------------------------------------------
