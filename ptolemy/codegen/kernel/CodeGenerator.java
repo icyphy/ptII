@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -68,8 +69,10 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -268,11 +271,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         _writeCode(code);
         _writeMakefile();
-        _executeCommand(compile, "compile", 
-                    "make -f " + _sanitizedModelName + ".mk");
-        
-        _executeCommand(run, "run", 
-                    "./" + _sanitizedModelName);
+        _executeCommands();
     }
 
     /** Generate The fire function code. This method is called when the firing
@@ -700,12 +699,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         }
     }
 
-    /** Th method is used to set the code generator for a helper class.
+    /** This method is used to set the code generator for a helper class.
      *  Since this is not a helper class for a component, this method does
      *  nothing.
      *  @param codeGenerator
      */
     public void setCodeGenerator(CodeGenerator codeGenerator) {
+    }
+
+    /** Set the command executor, which can be either non-graphical
+     *  or graphical.  The initial default is non-graphical, which
+     *  means that stderr and stdout from subcommands is written
+     *  to the console.
+     *  @param executeCommands The subprocess command executor.
+     */
+    public void setExecuteCommands(ExecuteCommands executeCommands) {
+        _executeCommands = executeCommands;
     }
 
     /** Set the container of this object to be the given container.
@@ -918,35 +927,38 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Execute a command in the <i>codeDirectory</i> directory.
-     *  @param ifTrueThenRun A parameter of type BooleanToken.
-     *  If this parameter evaluates to true, then run the command.
-     *  @param oneWordDescription  The description of the command,
-     *  such as "compile" or "run", which is used in error messages.
-     *  @param command The command to run.
+    /** Execute the compile and run commands in the
+     *  <i>codeDirectory</i> directory.
      */
-    private void _executeCommand(Parameter ifTrueThenRun,
-            String oneWordDescription,
-            String command) throws IllegalActionException{
-        if (!((BooleanToken) ifTrueThenRun.getToken()).booleanValue()) {
+    private void _executeCommands() throws IllegalActionException{
+
+        List commands = new LinkedList();
+        if (((BooleanToken) compile.getToken()).booleanValue()) {
+            commands.add("make -f " + _sanitizedModelName + ".mk");
+        }
+        if (((BooleanToken) compile.getToken()).booleanValue()) {
+            commands.add("./" + _sanitizedModelName);
+        }
+        if (commands.size() == 0) {
             return;
         }
-        int exitValue;
+        if (_executeCommands == null) {
+            _executeCommands = new StreamExec();
+        }
+        _executeCommands.setCommands(commands);
+        _executeCommands.setWorkingDirectory(codeDirectory.asFile());
+        
         try {
             // FIXME: need to put this output in to the UI, if any. 
-            exitValue = Copernicus.executeCommand(command,
-                    codeDirectory.asFile());
+            _executeCommands.start();
         } catch (Exception ex) {
-            throw new IllegalActionException("Problem executing the " 
-                    + oneWordDescription + " command. "
-                    + " Command was:\n"
-                    + command);
-        }
-        if (exitValue != 0) {
-            throw new IllegalActionException("Problem executing the " 
-                    + oneWordDescription + " command. "
-                    + "Return value was: " + exitValue + ". Command was:\n"
-                    + command);
+            StringBuffer errorMessage = new StringBuffer();
+            Iterator allCommands = commands.iterator();
+            while (allCommands.hasNext()) {
+                errorMessage.append((String)allCommands.next() + "\n");
+            }
+            throw new IllegalActionException("Problem executing the "
+                    + "commands:\n" + errorMessage);
         }
     }
 
@@ -1132,6 +1144,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     private HashMap _helperStore = new HashMap();
 
+    private ExecuteCommands _executeCommands;
+    
     /** The model we for which we are generating code. */
     CompositeEntity _model;
                 
