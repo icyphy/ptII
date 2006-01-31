@@ -40,7 +40,7 @@ DIRS = 		BouncingBall Brownian \
 		Lorenz NewtonsCradle \
 		SampledClocks Satellite SigmaDelta Spontaneous \
 		SquareWave StickyMasses Switch \
-		Transmission Thermostat V2V Corba #$(PTJSPACES_DIR)
+		Transmission Thermostat V2V #$(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -57,7 +57,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-# We don't include Corba/Corba.jar because we don't ship Corba.
 PTCLASSALLJARS = \
 	BouncingBall/BouncingBall.jar \
 	Brownian/Brownian.jar \
