@@ -83,18 +83,23 @@ public class AttributeController extends IconController {
             };
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
                     actions, "Documentation"));
+            // Note that we 
+            // Note that we also have "Send to Back" in
+            // vergil/basic/BasicGraphFrame.java
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(new MoveAction(
-                            "Bring to Front", MoveAction.TO_FIRST)));
+                            "Send to Back", MoveAction.TO_FIRST)));
 
             /* The following doesn't work, and seems confusing anyway.
              _menuFactory.addMenuItemFactory(
              new MenuActionFactory(
              new MoveAction("Move towards first", MoveAction.UP)));
              */
+            // Note that we also have "Bring to Front" in
+            // vergil/basic/BasicGraphFrame.java
             _menuFactory
                     .addMenuItemFactory(new MenuActionFactory(new MoveAction(
-                            "Send to Back", MoveAction.TO_LAST)));
+                            "Bring to Front", MoveAction.TO_LAST)));
 
             /* The following doesn't work, and seems confusing anyway.
              _menuFactory.addMenuItemFactory(
