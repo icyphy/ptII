@@ -2020,7 +2020,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     private class MoveToBackAction extends AbstractAction {
         public MoveToBackAction() {
-            // Note that we also have "Send to  Back" in
+            // Note that we also have "Send to Back" in
             // vergil/kernel/AttributeController.java
             super("Send to Back");
             putValue("tooltip", "Send to back of like objects");
