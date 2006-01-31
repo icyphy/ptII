@@ -5,5 +5,9 @@
 # where the source code is created.
 # To compile, run make -f @modelName@.mk
 
+# Get configuration info so that we can find the C compiler
+CONFIG =	$(PTII)/mk/ptII.mk
+include $(CONFIG)
+
 @modelName@: @modelName@.c
-	$(CC) @modelName@.c -o @modelName@
+	$(PTCC) @modelName@.c -o @modelName@
