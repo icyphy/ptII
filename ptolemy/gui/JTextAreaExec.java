@@ -33,6 +33,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -175,6 +176,13 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         return _process;
     }
 
+    /** Return the return code of the last Runtime.exec() method.
+     *  @return the return code of the last Runtime.exec() method.
+     */
+    public int getProcessReturnCode() {
+        return _processReturnCode;
+    }
+
     /** Return the Start button.
      *  This method is used to get the Start button so we can
      *  set the focus to it.
@@ -229,6 +237,15 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     public void setCommands(List commands) {
         _commands = commands;
         _enableStartButton();
+    }
+
+    /** Set the working directory of the subprocess.
+     *  @param workingDirectory The working directory of the
+     *  subprocess.  If this argument is null, then the subprocess is
+     *  exectued in the working directory of the current process.
+     */
+    public void setWorkingDirectory(File workingDirectory) {
+        _workingDirectory = workingDirectory;
     }
 
     /** Start running the commands. */
@@ -334,7 +351,9 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     _statusBar
                             .setText("Executing: " + statusCommand.toString());
 
-                    _process = runtime.exec(commandTokens);
+                    // 2nd arg is null, meaning no environment changes.
+                    _process = runtime.exec(commandTokens, null,
+                            _workingDirectory);
 
                     // Set up a Thread to read in any error messages
                     _StreamReaderThread errorGobbler = new _StreamReaderThread(
@@ -349,13 +368,13 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     outputGobbler.start();
 
                     try {
-                        int processReturnCode = _process.waitFor();
+                        _processReturnCode = _process.waitFor();
 
                         synchronized (this) {
                             _process = null;
                         }
 
-                        if (processReturnCode != 0) {
+                        if (_processReturnCode != 0) {
                             break;
                         }
                     } catch (InterruptedException interrupted) {
@@ -490,34 +509,46 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The Cancel Button.
+
+    /** The Cancel Button. */
     private JButton _cancelButton;
 
-    // The Clear Button.
+    /** The Clear Button. */
     private JButton _clearButton;
 
-    // The list of command to be executed.  Each entry in the list is
-    // a String.  It might be better to have each element of the list
-    // be an String [] so that the shell can interpret each word in
-    // the command.
+    /** The list of command to be executed.  Each entry in the list is
+     * a String.  It might be better to have each element of the list
+     * be an String [] so that the shell can interpret each word in
+     * the command.
+     */
     private List _commands = null;
 
-    // JTextArea to write the command and the output of the command.
+    /** JTextArea to write the command and the output of the command. */
     private JTextArea _jTextArea;
 
-    // The Process that we are running.
+    /** The Process that we are running. */
     private Process _process;
 
-    // Progress bar where the length of the bar is the total number
-    // of commands being run.
+    /** The return code of the last Runtime.exec() command. */
+    private int _processReturnCode;
+
+    /** Progress bar where the length of the bar is the total number
+     * of commands being run.
+     */
     private JProgressBar _progressBar;
 
-    // Label at the bottom that provides feedback as to what is happening.
+    /** Label at the bottom that provides feedback as to what is happening. */
     private JLabel _statusBar;
 
-    // The Start Button.
+    /** The Start Button. */
     private JButton _startButton;
 
-    // SwingWorker that actually does the work.
+    /** SwingWorker that actually does the work. */
     private SwingWorker _worker;
+
+    /** The working directory of the subprocess.  If null, then 
+     *  the subprocess is executed in the working directory of the current
+     *  process.
+     */
+    private File _workingDirectory;
 }

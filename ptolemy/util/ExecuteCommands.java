@@ -27,6 +27,7 @@
 package ptolemy.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -73,11 +74,22 @@ public interface ExecuteCommands {
      */
     public Process getProcess();
 
+    /** Return the return code of the last Runtime.exec() method.
+     *  @return the return code of the last Runtime.exec() method.
+     */
+    public int getProcessReturnCode();
+
     /** Set the list of commands.
      *  @param commands A list of Strings, where each element is a command.
      */
     public void setCommands(List commands);
 
+    /** Set the working directory of the subprocess.
+     *  @param workingDirectory The working directory of the
+     *  subprocess.  If this argument is null, then the subprocess is
+     *  exectued in the working directory of the current process.
+     */
+    public void setWorkingDirectory(File workingDirectory);
 
     /** Start running the commands. */
     public void start();

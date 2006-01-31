@@ -27,6 +27,7 @@
 package ptolemy.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -85,6 +86,13 @@ public class StreamExec implements ExecuteCommands {
         return _process;
     }
 
+    /** Return the return code of the last Runtime.exec() method.
+     *  @return the return code of the last Runtime.exec() method.
+     */
+    public int getProcessReturnCode() {
+        return _processReturnCode;
+    }
+
     /** Main method used for testing.
      *  To run a simple test, use:
      *  <pre>
@@ -110,6 +118,15 @@ public class StreamExec implements ExecuteCommands {
      */
     public void setCommands(List commands) {
         _commands = commands;
+    }
+
+    /** Set the working directory of the subprocess.
+     *  @param workingDirectory The working directory of the
+     *  subprocess.  If this argument is null, then the subprocess is
+     *  exectued in the working directory of the current process.
+     */
+    public void setWorkingDirectory(File workingDirectory) {
+        _workingDirectory = workingDirectory;
     }
 
     /** Start running the commands. */
@@ -160,8 +177,10 @@ public class StreamExec implements ExecuteCommands {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    // Execute the commands in the list.  Update the output with
-    // the command being run and the output.
+
+    /** Execute the commands in the list.  Update the output with
+     * the command being run and the output.
+     */
     private String _executeCommands() {
         try {
             Runtime runtime = Runtime.getRuntime();
@@ -213,7 +232,9 @@ public class StreamExec implements ExecuteCommands {
 
                     updateStatusBar("Executing: " + statusCommand.toString());
 
-                    _process = runtime.exec(commandTokens);
+                    // 2nd arg is null, meaning no environment changes.
+                    _process = runtime.exec(commandTokens, null,
+                            _workingDirectory);
 
                     // Set up a Thread to read in any error messages
                     _StreamReaderThread errorGobbler = new _StreamReaderThread(
@@ -228,13 +249,13 @@ public class StreamExec implements ExecuteCommands {
                     outputGobbler.start();
 
                     try {
-                        int processReturnCode = _process.waitFor();
+                        _processReturnCode = _process.waitFor();
 
                         synchronized (this) {
                             _process = null;
                         }
 
-                        if (processReturnCode != 0) {
+                        if (_processReturnCode != 0) {
                             break;
                         }
                     } catch (InterruptedException interrupted) {
@@ -296,15 +317,23 @@ public class StreamExec implements ExecuteCommands {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The list of command to be executed.  Each entry in the list is
-    // a String.  It might be better to have each element of the list
-    // be an String [] so that the shell can interpret each word in
-    // the command.
-    private List _commands = null;
 
-    // The Process that we are running.
+    /** The list of command to be executed.  Each entry in the list is
+     *  a String.  It might be better to have each element of the list
+     *  be an String [] so that the shell can interpret each word in
+     *  the command.
+     */
+    private List _commands;
+
+    /** The Process that we are running. */
     private Process _process;
 
-    // SwingWorker that actually does the work.
-    //private SwingWorker _worker;
+    /** The return code of the last Runtime.exec() command. */
+    private int _processReturnCode;
+
+    /** The working directory of the subprocess.  If null, then 
+     *  the subprocess is executed in the working directory of the current
+     *  process.
+     */
+    private File _workingDirectory;
 }
