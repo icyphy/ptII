@@ -587,6 +587,10 @@ all.itcl: makefile
 test_auto:
 	$(JTCLSH) $(ROOT)/util/testsuite/auto.tcl
 
+# Run codegen on all the xml files in the auto subdirectory.
+test_codegen:
+	$(JTCLSH) $(ROOT)/util/testsuite/CGC.tcl
+
 # Generate html files from itcl files, requires itclsh and tycho
 # We use a GNU make extension here
 HTMLS=$(filter %.html,  $(EXTRA_SRCS))
