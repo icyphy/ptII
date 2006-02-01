@@ -93,8 +93,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
         _thisReceiver[0][0] = this;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // public methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Reset local flags.
@@ -182,6 +182,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @exception TerminateProcessException
      *                If the actor to which this receiver belongs is to be
      *                terminated.
+     * @deprecated No longer needed by the Barrier.
      */
     public static void getFromAllPutToAll(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director)
@@ -636,8 +637,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
         }
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /**
      * Commit the rendezvous formed by the set of receivers that agree to send
@@ -661,14 +662,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
             RendezvousReceiver castReceiver = (RendezvousReceiver) sort.next();
             result.put(castReceiver, castReceiver._token);
 
-            if (_getData(castReceiver._getWaiting) == null) {
+            if (director.getThreadData(castReceiver._getWaiting) == null) {
                 director.threadUnblocked(castReceiver._getWaiting, null);
-                _setData(castReceiver._getWaiting, result);
+                director.setThreadData(castReceiver._getWaiting, result);
             }
 
-            if (_getData(castReceiver._putWaiting) == null) {
+            if (director.getThreadData(castReceiver._putWaiting) == null) {
                 director.threadUnblocked(castReceiver._putWaiting, null);
-                _setData(castReceiver._putWaiting, result);
+                director.setThreadData(castReceiver._putWaiting, result);
             }
         }
 
@@ -796,8 +797,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
         return null;
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // private methods ////
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
 
     /**
      * Check whether a rendezvous can be formed starting from the given
@@ -979,26 +980,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Get the data associated with the thread.
-     * 
-     * @param thread
-     *            The thread with data associated with it.
-     * @return The data associated with the thread, or null if no data is
-     *         associated with it.
-     * @see #_setData(Thread, Object)
-     */
-    private static Object _getData(Thread thread) {
-        synchronized (thread) {
-            ClassLoader oldLoader = thread.getContextClassLoader();
-            if (oldLoader != null && oldLoader instanceof ClassLoaderWrapper) {
-                return ((ClassLoaderWrapper) oldLoader).getData();
-            } else {
-                return null;
-            }
-        }
-    }
-
-    /**
      * Get or put token(s) to the array of receivers, or both put and get at the
      * same time. This method is commonly used by {@link
      * #getFromAll(Receiver[][], RendezvousDirector)}, {@link
@@ -1155,14 +1136,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 director.threadBlocked(theThread, null);
                 while (result == null) {
                     waitForChange(director);
-                    result = (Map) _getData(theThread);
+                    result = (Map) director.getThreadData(theThread);
                 }
-                _setData(theThread, null);
+                director.setThreadData(theThread, null);
             } else {
                 // A rendezvous is formed, so commit the rendezvous, and wake
                 // up the other threads in this rendezvous.
                 _commitRendezvous(rendezvousReceivers, director);
-                result = (Map) _setData(theThread, null);
+                result = (Map) director.setThreadData(theThread, null);
             }
         }
         return result;
@@ -1280,39 +1261,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
         }
     }
 
-    /**
-     * Set the data associated with the thread.
-     * 
-     * @param thread
-     *            The thread with which the data will be associated.
-     * @param data
-     *            The data to be associated with the thread, or null if no data
-     *            is to be associated with it.
-     * @see #_getData(Thread)
-     */
-    private static Object _setData(Thread thread, Object data) {
-        synchronized (thread) {
-            ClassLoader oldLoader = thread.getContextClassLoader();
-            if (oldLoader != null && oldLoader instanceof ClassLoaderWrapper) {
-                ClassLoaderWrapper castOldLoader =
-                        (ClassLoaderWrapper) oldLoader;
-                Object oldData = castOldLoader.getData();
-                castOldLoader.setData(data);
-                return oldData;
-            } else {
-                if (data != null) {
-                    ClassLoaderWrapper newLoader =
-                            new ClassLoaderWrapper(oldLoader);
-                    newLoader.setData(data);
-                    thread.setContextClassLoader(newLoader);
-                }
-                return null;
-            }
-        }
-    }
-
-    // /////////////////////////////////////////////////////////////////
-    // // private fields ////
+    ///////////////////////////////////////////////////////////////////
+    ////                          private variables                ////
 
     /** Flag to test whether an operation does a get. */
     private static final int GET = 4; // 0100
@@ -1384,8 +1334,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /** The token being transferred during the rendezvous. */
     private Token _token;
 
-    // ////////////////////////////////////////////////////////////////////////
-    // // TopologicalSort
+    ///////////////////////////////////////////////////////////////////
+    ////                           private classes                 ////
     /**
      * Topological sort for the set of receivers to be committed. The set of
      * receivers may have dependencies among them, because receivers in the
@@ -1402,7 +1352,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @Pt.ProposedRating Red (tfeng)
      * @Pt.AcceptedRating Red (tfeng)
      */
-    static class TopologicalSort {
+    private static class TopologicalSort {
 
         /**
          * Construct a topological sort object with a set of receivers ready to
@@ -1461,11 +1411,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
                         }
                     }
                 } else {
-                    /*
-                     * throw new InternalErrorException("Function not " +
-                     * "implemented (possibly for Barrier and other " +
-                     * "primitive actors).");
-                     */
+                    // Kept for the old implementation of Barrier, which sends
+                    // outputs. Should not be reached in the current
+                    // implementation.
                     int i = next._channelIndex;
                     if (i < putReceivers.length && putReceivers[i] != null) {
                         for (int j = 0; j < putReceivers[i].length; j++) {

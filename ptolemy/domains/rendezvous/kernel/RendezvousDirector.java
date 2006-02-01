@@ -28,6 +28,7 @@
  */
 package ptolemy.domains.rendezvous.kernel;
 
+import java.util.HashMap;
 import java.util.List;
 
 import ptolemy.actor.CompositeActor;
@@ -102,6 +103,16 @@ public class RendezvousDirector extends CompositeProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Return the data associated to the thread.
+     * 
+     *  @param thread The thread.
+     *  @return The data associated with the thread, or null.
+     *  @see #setThreadData(Thread, Object)
+     */
+    public Object getThreadData(Thread thread) {
+        return _threadData.get(thread);
+    }
 
     /** Return a new instance of RendezvousReceiver compatible with
      *  this director.
@@ -122,6 +133,19 @@ public class RendezvousDirector extends CompositeProcessDirector {
             return !_stopRequested;
         }
         return _notDone && !_stopRequested;
+    }
+    
+    /** Set the data associated with the thread.
+     * 
+     *  @param thread The thread.
+     *  @param data The data.
+     *  @return The data previously associated with the thread, or null.
+     *  @see #getThreadData(Thread)
+     */
+    public Object setThreadData(Thread thread, Object data) {
+        Object oldData = _threadData.get(thread);
+        _threadData.put(thread, data);
+        return oldData;
     }
 
     /** Return an array of suggested directors to be used with ModalModel.
@@ -215,4 +239,12 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  which it waits for all actors to stop.
      */
     protected boolean _inWrapup = false;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                          private variables                ////
+    
+    /** The map that records the data associated to the threads, which
+     *  are used by the actors in this model.
+     */
+    private HashMap _threadData = new HashMap();
 }

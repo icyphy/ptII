@@ -78,9 +78,6 @@ public class Barrier extends TypedAtomicActor {
 
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-
-        output = new TypedIOPort(this, "output", false, true);
-        output.setMultiport(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,11 +86,6 @@ public class Barrier extends TypedAtomicActor {
     /** The input port, which is a multiport that can accept any data type.
      */
     public TypedIOPort input;
-
-    /** The output port, which is a multiport whose type is at least that
-     *  of the input port.
-     */
-    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -119,6 +111,7 @@ public class Barrier extends TypedAtomicActor {
         if (_debugging) {
             _debug("Performing multiway rendezvous on the input channels.");
         }
+        // Reads and writes are done atomically.
         /*Token[][] tokens = RendezvousReceiver.getFromAll(
          input.getReceivers(), (RendezvousDirector)director);
          if (_debugging) {
@@ -131,7 +124,7 @@ public class Barrier extends TypedAtomicActor {
          RendezvousReceiver.putToAll(
          tokens, output.getRemoteReceivers(), (RendezvousDirector)director);
          }*/
-        RendezvousReceiver.getFromAllPutToAll(input.getReceivers(), output
-                .getRemoteReceivers(), (RendezvousDirector) director);
+        RendezvousReceiver.getFromAll(input.getReceivers(),
+                (RendezvousDirector) director);
     }
 }
