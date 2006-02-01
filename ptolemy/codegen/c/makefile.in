@@ -9,5 +9,6 @@
 CONFIG =	$(PTII)/mk/ptII.mk
 include $(CONFIG)
 
+# We need -lm so we can get floor() for ftoi() 
 @modelName@: @modelName@.c
-	$(PTCC) @modelName@.c -o @modelName@
+	$(PTCC) @modelName@.c -o @modelName@ -lm
