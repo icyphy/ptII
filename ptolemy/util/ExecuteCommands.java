@@ -66,14 +66,6 @@ public interface ExecuteCommands {
     public void clear();
 
 
-    /** Return the value of the Process.  Typically the return value
-     *  of this method is used to have the caller wait for the process
-     *  to exit.
-     *  @return The value of the process.
-     *  @deprecated Don't access the Process directly.
-     */
-    public Process getProcess();
-
     /** Return the return code of the last subprocess that was executed.
      *  @return the return code of the last subprocess that was executed.
      */
