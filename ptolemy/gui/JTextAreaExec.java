@@ -167,15 +167,6 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         _updateProgressBar(0);
     }
 
-    /** Return the value of the Process.  Typically the return value
-     *  of this method is used to have the caller wait for the process
-     *  to exit.
-     *  @return The value of the process.
-     */
-    public Process getProcess() {
-        return _process;
-    }
-
     /** Return the return code of the last subprocess that was executed.
      *  @return the return code of the last subprocess that was executed.
      */
