@@ -50,9 +50,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	FSMActor.java \
-	FSMDirector.java \
-	MultirateFSMDirector.java
+	HDFDirector.java \
+	HDFFSMDirector.java
 
 OTHER_FILES_TO_BE_JARED =
 
