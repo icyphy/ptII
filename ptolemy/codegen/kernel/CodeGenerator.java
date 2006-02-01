@@ -278,6 +278,91 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         _executeCommands();
     }
 
+    /** Generate code for a model.
+     *  @param args An array of Strings, each element names a MoML file
+     *  containing a model.
+     *  @return The return value of the last subprocess that was run
+     *  to compile or run the model.  Return -1 if called  with no arguments.
+     *  Return -2 if no CodeGenerator was created.
+     *  @exception Exception If any error occurs.
+     */
+    public static int generateCode(String[] args) throws Exception {
+        if (args.length == 0) {
+            System.err.println("Usage: java -classpath $PTII "
+                    + "ptolemy.codegen.kernel.CodeGenerator model.xml "
+                    + "[model.xml . . .]\n"
+                    + "  The arguments name MoML files containing models");
+            return -1; 
+        }
+
+        CodeGenerator codeGenerator = null;
+
+        // See MoMLSimpleApplication for similar code
+        MoMLParser parser = new MoMLParser();
+        parser.setMoMLFilters(BackwardCompatibility.allFilters());
+        parser.addMoMLFilter(new RemoveGraphicalClasses());
+
+        for (int i = 0; i < args.length; i++) {
+            // Note: the code below uses explicit try catch blocks
+            // so we can provide very clear error messages about what
+            // failed to the end user.  The alternative is to wrap the
+            // entire body in one try/catch block and say
+            // "Code generation failed for foo", which is not clear.
+            URL modelURL;
+
+            try {
+                modelURL = new File(args[i]).toURL();
+            } catch (Exception ex) {
+                throw new Exception("Could not open \"" + args[i] + "\"", ex);
+            }
+
+            CompositeActor toplevel = null;
+
+            try {
+                try {
+                    toplevel = (CompositeActor) parser.parse(null, modelURL);
+                } catch (Exception ex) {
+                    throw new Exception("Failed to parse \"" + args[i] + "\"",
+                            ex);
+                }
+
+                // Get all instances of this class contained in the model
+                List codeGenerators = toplevel
+                    .attributeList(CodeGenerator.class);
+
+                if (codeGenerators.size() == 0) {
+                    // Add a codeGenerator
+                    codeGenerator = new CodeGenerator(toplevel,
+                            "CodeGenerator_AutoAdded");
+                } else {
+                    // Get the last CodeGenerator in the list, maybe
+                    // it was added last?
+                    codeGenerator = (CodeGenerator) codeGenerators
+                        .get(codeGenerators.size() - 1);
+                }
+
+                try {
+                    codeGenerator.generateCode();
+                } catch (KernelException ex) {
+                    throw new Exception("Failed to generate code for \""
+                            + args[i] + "\"", ex);
+                }
+            } finally {
+                // Destroy the top level so that we avoid
+                // problems with running the model after generating code
+                if (toplevel != null) {
+                    toplevel.setContainer(null);
+                }
+            }
+        }
+        if (codeGenerator != null) {
+            return codeGenerator.getExecuteCommands()
+                .getLastSubprocessReturnCode();
+        }
+        return -2;
+    }
+
+
     /** Generate The fire function code. This method is called when the firing
      *  code of each actor is not inlined. Each actor's firing code is in a 
      *  function with the same name as that of the actor.
@@ -618,6 +703,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return getContainer();
     }
 
+    /** Get the command executor, which can be either non-graphical
+     *  or graphical.  The initial default is non-graphical, which
+     *  means that stderr and stdout from subcommands is written
+     *  to the console.
+     *  @return executeCommands The subprocess command executor.
+     *  @see #setExecuteCommand(ExecuteCommands)
+     */
+    public ExecuteCommands getExecuteCommands() {
+        return _executeCommands;
+    }
+
     /** Generate code for a model.
      *  <p>For example:
      *  <pre>
@@ -632,73 +728,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @exception Exception If any error occurs.
      */
     public static void main(String[] args) throws Exception {
-        if (args.length == 0) {
-            System.err.println("Usage: java -classpath $PTII "
-                    + "ptolemy.codegen.kernel.CodeGenerator model.xml "
-                    + "[model.xml . . .]\n"
-                    + "  The arguments name MoML files containing models");
-        }
-
-        // See MoMLSimpleApplication for similar code
-        MoMLParser parser = new MoMLParser();
-        parser.setMoMLFilters(BackwardCompatibility.allFilters());
-        parser.addMoMLFilter(new RemoveGraphicalClasses());
-
-        for (int i = 0; i < args.length; i++) {
-            // Note: the code below uses explicit try catch blocks
-            // so we can provide very clear error messages about what
-            // failed to the end user.  The alternative is to wrap the
-            // entire body in one try/catch block and say
-            // "Code generation failed for foo", which is not clear.
-            URL modelURL;
-
-            try {
-                modelURL = new File(args[i]).toURL();
-            } catch (Exception ex) {
-                throw new Exception("Could not open \"" + args[i] + "\"", ex);
-            }
-
-            CompositeActor toplevel = null;
-
-            try {
-                try {
-                    toplevel = (CompositeActor) parser.parse(null, modelURL);
-                } catch (Exception ex) {
-                    throw new Exception("Failed to parse \"" + args[i] + "\"",
-                            ex);
-                }
-
-                // Get all instances of this class contained in the model
-                List codeGenerators = toplevel
-                    .attributeList(CodeGenerator.class);
-
-                CodeGenerator codeGenerator;
-
-                if (codeGenerators.size() == 0) {
-                    // Add a codeGenerator
-                    codeGenerator = new CodeGenerator(toplevel,
-                            "CodeGenerator_AutoAdded");
-                } else {
-                    // Get the last CodeGenerator in the list, maybe
-                    // it was added last?
-                    codeGenerator = (CodeGenerator) codeGenerators
-                        .get(codeGenerators.size() - 1);
-                }
-
-                try {
-                    codeGenerator.generateCode();
-                } catch (KernelException ex) {
-                    throw new Exception("Failed to generate code for \""
-                            + args[i] + "\"", ex);
-                }
-            } finally {
-                // Destroy the top level so that we avoid
-                // problems with running the model after generating code
-                if (toplevel != null) {
-                    toplevel.setContainer(null);
-                }
-            }
-        }
+        generateCode(args);
     }
 
     /** This method is used to set the code generator for a helper class.
@@ -714,6 +744,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  means that stderr and stdout from subcommands is written
      *  to the console.
      *  @param executeCommands The subprocess command executor.
+     *  @see #getExecuteCommands()
      */
     public void setExecuteCommands(ExecuteCommands executeCommands) {
         _executeCommands = executeCommands;
@@ -939,7 +970,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             commands.add("make -f " + _sanitizedModelName + ".mk");
         }
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            commands.add("./" + _sanitizedModelName);
+            commands.add(
+                    codeDirectory.stringValue()
+                    + ((!codeDirectory.stringValue().endsWith("/") 
+                               && !codeDirectory.stringValue()
+                               .endsWith("\\"))
+                            ? "/" : "")
+                    + _sanitizedModelName);
         }
         if (commands.size() == 0) {
             return;
