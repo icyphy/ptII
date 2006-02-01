@@ -51,9 +51,12 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Repeat.java \
-	SampleDelay.java
+	SampleDelay.java \
+	VariableRecursiveLattice.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	SampleDelay.c \
+	VariableRecursiveLattice.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
