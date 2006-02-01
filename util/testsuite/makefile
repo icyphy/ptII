@@ -46,6 +46,7 @@ JSRCS = \
 	WatchDog.java
 
 TCL_SRCS = \
+	CGC.tcl \
 	auto.tcl \
 	codegen.tcl \
 	description.tcl \
