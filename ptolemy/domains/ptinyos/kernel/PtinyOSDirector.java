@@ -165,20 +165,27 @@ public class PtinyOSDirector extends Director {
      */
     public Parameter simulate;
 
+    /** If <i>true</i>, then _PTII_NODEID in the makefile is set to 0,
+     *  which makes this a base station.  A non-zero value of the
+     *  nodeID parameter will be ignored.  If <i>false</i> (the
+     *  default), do nothing.
+     */
+    public Parameter isBaseStation;
+    
     /** Port for TOSSIM to accept commands.
      */
-    public PtinyOSTOSSIMPort commandPort;
+    public PtinyOSIntegerParameter commandPort;
 
     /** Port for TOSSIM to publish events.
      */
     public Parameter eventPort;
 
     /** Node ID number.  This is a substitute for TOS_LOCAL_ADDRESS,
-     *  which in TOSSIM is normally set to the mote array index.  *
-     *  However, we assume only one mote per TOSSIM.  To avoid all *
+     *  which in TOSSIM is normally set to the mote array index.
+     *  However, we assume only one mote per TOSSIM.  To avoid all
      *  motes being set to the same ID, we use this parameter.
      */
-    public PtinyOSTOSSIMPort nodeID;
+    public PtinyOSIntegerParameter nodeID;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -401,7 +408,8 @@ public class PtinyOSDirector extends Director {
 
                     if (_debugging) {
                         _debug("Done with load(), about to call main("
-                                + argsToMain[0] + " " + argsToMain[1]);
+                                + argsToMain[0] + ", " + argsToMain[1]
+                                + ")");
                     }
 
                     if (_loader.main(argsToMain) < 0) {
@@ -999,8 +1007,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         // Path to ptII make platform.
         // FIXME use pathseparator?
         // FIXME: this will not work if TOSROOT has spaces in it.
-        text
-                .addLine("TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make");
+        text.addLine("TOSMAKE_PATH += "
+                + "$(TOSROOT)/contrib/ptII/ptinyos/tools/make");
         // Use full filename.
         NamedObj toplevel = _toplevelNC();
         String toplevelName = _sanitizedFullName(toplevel);
@@ -1011,7 +1019,12 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         text.addLine("PFLAGS +=" + " -DCOMMAND_PORT=" + commandPort.getToken()
                 + " -DEVENT_PORT=" + eventPort.getToken());
 
-        text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + nodeID.getToken());
+        boolean isBaseStationValue = ((BooleanToken) isBaseStation.getToken()).booleanValue();
+        if (isBaseStationValue == true) {
+            text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + "0");
+        } else {
+            text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + nodeID.getToken());
+        }
         
         // Turn _ into _1 for JNI compatibility.
         String nativeMethodName = toplevelName.replaceAll("_", "_1");
@@ -1304,9 +1317,14 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             simulate = new Parameter(this, "simulate", BooleanToken.TRUE);
             simulate.setTypeEquals(BaseType.BOOLEAN);
 
+            // Set so that this is not a base station.
+            isBaseStation = new Parameter(this, "isBaseStation",
+                    BooleanToken.FALSE);
+            isBaseStation.setTypeEquals(BaseType.BOOLEAN);
+            
             // Set command and event ports for TOSSIM.
             commandPort =
-                new PtinyOSTOSSIMPort(this, "commandPort", 2);
+                new PtinyOSIntegerParameter(this, "commandPort", 2);
             commandPort.setExpression("10584");
             eventPort = new Parameter(this, "eventPort");
             eventPort.setExpression("commandPort + 1");
@@ -1315,9 +1333,11 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             timeResolution.setVisibility(Settable.FULL);
             timeResolution.moveToLast();
 
-            // Set node ID
-            nodeID = new PtinyOSTOSSIMPort(this, "nodeID", 1);
-            nodeID.setExpression("0");
+            // Set node ID to a starting value of 1.
+            // PtinyOSIntegerParameter will autoincrement this value
+            // depending on how many other nodes are in the model.
+            nodeID = new PtinyOSIntegerParameter(this, "nodeID", 1);
+            nodeID.setExpression("1");
             
         } catch (KernelException ex) {
             throw new InternalErrorException(this, ex, "Cannot set parameter");

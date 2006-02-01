@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.SharedParameter;
 
 //////////////////////////////////////////////////////////////////////////
-//// PtinyOSTOSSIMPort
+//// PtinyOSIntegerParameter
 
 /**
  This parameter is shared throughout a model for coordinated
@@ -47,12 +47,15 @@ import ptolemy.moml.SharedParameter;
  connecting to TinyViz and other external tools). Changing the
  expression of any one instance of the parameter will result in all
  instances that are shared being changed. If the value is being set to
- -1, then all other values will be set to -1.  If it is being set
- to anything else, then all other values are set to unique numbers
- obtained by adding a default value of 1 (though this can be specified
- by the user) to the specified value while iterating through the
- shared parameters.
-   
+ -1, then all other values will be set to -1.  If the value is being
+ set to 0, then all other values are set to unique numbers by
+ incrementing by a value specified by the user (default value of
+ 1). If it is being set to anything else, then all other values are
+ set to unique numbers obtained by adding the previously described
+ increment value to the specified value while iterating through the
+ shared parameters.  If the current value is 0, the value is
+ unchanged.
+ 
  <p> An instance elsewhere in the model (within the same top level) is
  shared if it has the same type and its container is of the class
  specified in the constructor (or of the container class, if no class
@@ -67,22 +70,18 @@ import ptolemy.moml.SharedParameter;
 
  <p> This parameter is always of type Int.
 
- <p> This parameter is based on ColtSeedParameter, except this
- parameter is of type Int instead of Long, and this parameter
- increments by 2 instead of 1, and this parameter has a default value
- of -1 instead of 0.
-   
+ <p> This parameter is based on ColtSeedParameter.
  @see ptolemy.actor.lib.colt.ColtSeedParameter
-   
+ 
  @author Elaine Cheong
  @version $Id$
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */
-public class PtinyOSTOSSIMPort extends SharedParameter {
+public class PtinyOSIntegerParameter extends SharedParameter {
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
-     *  instances of PtinyOSTOSSIMPort are shared with this one.
+     *  instances of PtinyOSIntegerParameter are shared with this one.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @exception IllegalActionException If the parameter is not of an
@@ -90,14 +89,14 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtinyOSTOSSIMPort(NamedObj container, String name)
+    public PtinyOSIntegerParameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
     }
-    
+
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
-     *  instances of PtinyOSTOSSIMPort are shared with this one.
+     *  instances of PtinyOSIntegerParameter are shared with this one.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @param incrementValue The value with which to increment
@@ -107,7 +106,7 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtinyOSTOSSIMPort(NamedObj container, String name, int incrementValue)
+    public PtinyOSIntegerParameter(NamedObj container, String name, int incrementValue)
             throws IllegalActionException, NameDuplicationException {
         this(container, name, null);
         _incrementValue = incrementValue;
@@ -115,7 +114,7 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
 
     /** Construct a parameter with the given container, name, and
      *  container class. The specified class will be used to determine
-     *  which other instances of PtinyOSTOSSIMPort are shared with this one.
+     *  which other instances of PtinyOSIntegerParameter are shared with this one.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @param containerClass The class used to determine shared instances.
@@ -124,16 +123,16 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtinyOSTOSSIMPort(NamedObj container, String name,
+    public PtinyOSIntegerParameter(NamedObj container, String name,
             Class containerClass) throws IllegalActionException,
             NameDuplicationException {
         super(container, name, containerClass, String.valueOf(_defaultValue));
         setTypeEquals(BaseType.INT);
     }
-    
+
     /** Construct a parameter with the given container, name, and
      *  container class. The specified class will be used to determine
-     *  which other instances of PtinyOSTOSSIMPort are shared with this one.
+     *  which other instances of PtinyOSIntegerParameter are shared with this one.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @param containerClass The class used to determine shared instances.
@@ -144,19 +143,19 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtinyOSTOSSIMPort(NamedObj container, String name,
-            Class containerClass, int incrementValue) throws IllegalActionException,
-            NameDuplicationException {
+    public PtinyOSIntegerParameter(NamedObj container, String name,
+            Class containerClass, int incrementValue)
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, containerClass, String.valueOf(_defaultValue));
         setTypeEquals(BaseType.INT);
-        
+
         _incrementValue = incrementValue;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-     /** Override the base class to also set the expression of shared
+
+    /** Override the base class to also set the expression of shared
      *  parameters.
      */
     public void setExpression(String expression) {
@@ -180,7 +179,7 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
             if (token != null) {
                 value = token.intValue();
             }
-
+            
             if (value == _defaultValue) {
                 // Call again without suppression of propagation.
                 super.setExpression(expression);
@@ -195,24 +194,31 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
                                 toplevel).iterator();
 
                         while (sharedParameters.hasNext()) {
-                            PtinyOSTOSSIMPort sharedParameter =
-                                (PtinyOSTOSSIMPort) sharedParameters.next();
+                            PtinyOSIntegerParameter sharedParameter =
+                                (PtinyOSIntegerParameter) sharedParameters.next();
 
                             if (sharedParameter != this) {
                                 try {
-                                    sharedParameter
-                                            .setSuppressingPropagation(true);
-                                    value += _incrementValue;
-
-                                    String newExpression = String.valueOf(value);
-
-                                    if (!sharedParameter.getExpression()
-                                            .equals(newExpression)) {
-                                        sharedParameter
-                                                .setExpression(newExpression);
-
-                                        // Make sure the new value is not persistent.
-                                        sharedParameter.setPersistent(false);
+                                    sharedParameter.setSuppressingPropagation(true);
+                                    if (((IntToken)sharedParameter.getToken())
+                                            .intValue() != 0) {
+                                        // Only auto increment value
+                                        // if the current value is not
+                                        // 0.
+                                        value += _incrementValue;
+    
+                                        String newExpression = String
+                                                .valueOf(value);
+    
+                                        if (!sharedParameter.getExpression()
+                                                .equals(newExpression)) {
+                                            sharedParameter
+                                                    .setExpression(newExpression);
+    
+                                            // Make sure the new value
+                                            // is not persistent.
+                                            sharedParameter.setPersistent(false);
+                                        }
                                     }
                                 } finally {
                                     sharedParameter.setSuppressingPropagation(
@@ -228,7 +234,12 @@ public class PtinyOSTOSSIMPort extends SharedParameter {
             throw new InternalErrorException(ex);
         }
     }
-    
+
+    /** Value by which to increment other occurrences of this parameter.
+     */
     private int _incrementValue = 1;
+
+    /** Default value of this parameter.
+     */
     private static int _defaultValue = -1;
 }
