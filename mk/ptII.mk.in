@@ -473,6 +473,9 @@ PTJNI_SHAREDLIBRARY_PREFIX =	@PTJNI_SHAREDLIBRARY_PREFIX@
 # JNI shared library suffix, under Windows this would be dll.
 PTJNI_SHAREDLIBRARY_SUFFIX =	@PTJNI_SHAREDLIBRARY_SUFFIX@
 
+# JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
+PTJNI_LIBRARIES = @PTJNI_LIBRARIES@
+
 # Set to joystick if Joystick.jar was found.
 PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
 

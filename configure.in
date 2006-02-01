@@ -2104,6 +2104,16 @@ else
 	*) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
     esac
     AC_MSG_RESULT(['$PTJNI_SHAREDLIBRARY_SUFFIX'])
+
+    AC_MSG_CHECKING([for JNI libraries needed to link JNI])
+    case "`uname -s`" in
+        CYGWIN_ME-*) PTJNI_LIBRARIES=-lcygwin;;
+	CYGWIN_NT-*) PTJNI_LIBRARIES=-lcygwin;;
+	CYGWIN_98-*) PTJNI_LIBRARIES=-lcygwin;;
+	*) PTJNI_LIBRARIES=;;
+    esac
+    AC_MSG_RESULT(['$PTJNI_LIBRARIES'])
+
 fi
 
 #--------------------------------------------------------------------
@@ -3337,6 +3347,9 @@ AC_SUBST(PTJNI_SHAREDLIBRARY_PREFIX)
 
 # JNI shared library suffix, under Windows this would be dll.
 AC_SUBST(PTJNI_SHAREDLIBRARY_SUFFIX)
+
+# JNI libraries needed to link, such as -lcygwin (Used by Viptos) 
+AC_SUBST(PTJNI_LIBRARIES)
 
 # Set to joystick if Joystick.jar was found
 AC_SUBST(PTJOYSTICK_DIR)
