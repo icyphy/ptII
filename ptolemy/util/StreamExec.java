@@ -86,11 +86,11 @@ public class StreamExec implements ExecuteCommands {
         return _process;
     }
 
-    /** Return the return code of the last Runtime.exec() method.
-     *  @return the return code of the last Runtime.exec() method.
+    /** Return the return code of the last subprocess that was executed.
+     *  @return the return code of the last subprocess that was executed.
      */
-    public int getProcessReturnCode() {
-        return _processReturnCode;
+    public int getLastSubprocessReturnCode() {
+        return _subprocessReturnCode;
     }
 
     /** Main method used for testing.
@@ -249,13 +249,13 @@ public class StreamExec implements ExecuteCommands {
                     outputGobbler.start();
 
                     try {
-                        _processReturnCode = _process.waitFor();
+                        _subprocessReturnCode = _process.waitFor();
 
                         synchronized (this) {
                             _process = null;
                         }
 
-                        if (_processReturnCode != 0) {
+                        if (_subprocessReturnCode != 0) {
                             break;
                         }
                     } catch (InterruptedException interrupted) {
@@ -329,7 +329,7 @@ public class StreamExec implements ExecuteCommands {
     private Process _process;
 
     /** The return code of the last Runtime.exec() command. */
-    private int _processReturnCode;
+    private int _subprocessReturnCode;
 
     /** The working directory of the subprocess.  If null, then 
      *  the subprocess is executed in the working directory of the current

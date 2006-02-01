@@ -70,13 +70,14 @@ public interface ExecuteCommands {
      *  of this method is used to have the caller wait for the process
      *  to exit.
      *  @return The value of the process.
+     *  @deprecated Don't access the Process directly.
      */
     public Process getProcess();
 
-    /** Return the return code of the last Runtime.exec() method.
-     *  @return the return code of the last Runtime.exec() method.
+    /** Return the return code of the last subprocess that was executed.
+     *  @return the return code of the last subprocess that was executed.
      */
-    public int getProcessReturnCode();
+    public int getLastSubprocessReturnCode();
 
     /** Set the list of commands.
      *  @param commands A list of Strings, where each element is a command.

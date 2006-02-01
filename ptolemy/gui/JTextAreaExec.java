@@ -176,11 +176,11 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         return _process;
     }
 
-    /** Return the return code of the last Runtime.exec() method.
-     *  @return the return code of the last Runtime.exec() method.
+    /** Return the return code of the last subprocess that was executed.
+     *  @return the return code of the last subprocess that was executed.
      */
-    public int getProcessReturnCode() {
-        return _processReturnCode;
+    public int getLastSubprocessReturnCode() {
+        return _subprocessReturnCode;
     }
 
     /** Return the Start button.
@@ -368,13 +368,13 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     outputGobbler.start();
 
                     try {
-                        _processReturnCode = _process.waitFor();
+                        _subprocessReturnCode = _process.waitFor();
 
                         synchronized (this) {
                             _process = null;
                         }
 
-                        if (_processReturnCode != 0) {
+                        if (_subprocessReturnCode != 0) {
                             break;
                         }
                     } catch (InterruptedException interrupted) {
@@ -530,7 +530,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
     private Process _process;
 
     /** The return code of the last Runtime.exec() command. */
-    private int _processReturnCode;
+    private int _subprocessReturnCode;
 
     /** Progress bar where the length of the bar is the total number
      * of commands being run.
