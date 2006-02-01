@@ -60,3 +60,5 @@ foreach file [glob auto/*.xml] {
     } {{}}
 }
 
+# Print out stats
+doneTests
