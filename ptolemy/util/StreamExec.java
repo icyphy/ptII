@@ -40,6 +40,21 @@ import ptolemy.util.StringUtilities;
 /** Execute commands in a subprocess.  This class does not use swing,
  for a graphical interface, see {@link ptolemy.gui.JTextAreaExec}.
 
+ <p>Sample usage:
+ <pre> 
+        List execCommands = new LinkedList();
+        execCommands.add("date");
+        execCommands.add("sleep 3");
+        execCommands.add("date");
+        execCommands.add("notACommand");
+
+        final StreamExec exec = new StreamExec();
+        exec.setCommands(execCommands);
+
+        exec.start();
+  </pre>
+
+
  <p>Loosely based on Example1.java from
  http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
  <p>See also
@@ -68,7 +83,9 @@ public class StreamExec implements ExecuteCommands {
     /** Cancel any running commands. */
     public void cancel() {
         //_worker.interrupt();
-        _process.destroy();
+        if (_process != null) {
+            _process.destroy();
+        }
     }
 
     /** Clear the text area, status bar and progress bar. */
@@ -77,40 +94,11 @@ public class StreamExec implements ExecuteCommands {
         _updateProgressBar(0);
     }
 
-    /** Return the value of the Process.  Typically the return value
-     *  of this method is used to have the caller wait for the process
-     *  to exit.
-     *  @return The value of the process.
-     */
-    public Process getProcess() {
-        return _process;
-    }
-
     /** Return the return code of the last subprocess that was executed.
      *  @return the return code of the last subprocess that was executed.
      */
     public int getLastSubprocessReturnCode() {
         return _subprocessReturnCode;
-    }
-
-    /** Main method used for testing.
-     *  To run a simple test, use:
-     *  <pre>
-     *        java -classpath $PTII ptolemy.gui.StreamExec
-     *  </pre>
-     *  @param args Currently ignored.
-     */
-    public static void main(String[] args) {
-        List execCommands = new LinkedList();
-        execCommands.add("date");
-        execCommands.add("sleep 5");
-        execCommands.add("date");
-        execCommands.add("javac");
-
-        final StreamExec exec = new StreamExec();
-        exec.setCommands(execCommands);
-
-        exec.start();
     }
 
     /** Set the list of commands.
@@ -208,8 +196,13 @@ public class StreamExec implements ExecuteCommands {
                     final String[] commandTokens = StringUtilities
                             .tokenizeForExec((String) commands.next());
 
-                    stdout("In \"" + _workingDirectory
-                            + "\", about to execute:\n");
+                    if (_workingDirectory != null) {
+                        stdout("In \"" + _workingDirectory
+                                + "\", about to execute:\n");
+                    } else {
+                        stdout("About to execute:\n");
+                    }
+
 
                     StringBuffer statusCommand = new StringBuffer();
 
