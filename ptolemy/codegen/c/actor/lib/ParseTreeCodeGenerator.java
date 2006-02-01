@@ -100,7 +100,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Evaluate the parse tree with the specified root node.
      *  @param node The root of the parse tree.
      *  @return The result of evaluation.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
             throws IllegalActionException {
@@ -199,7 +199,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Construct an ArrayToken that contains the tokens from the
      *  children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
@@ -264,7 +264,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Evaluate a bitwise operator on the children of the specified
      *  node, where the particular operator is property of the node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
@@ -366,7 +366,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  {@link ptolemy.data.expr.MatlabUtilities#evaluate(String, Set, ParserScope)}
      *  .
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
@@ -528,7 +528,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  and the expression.  The expression is not evaluated. The resulting
      *  token in the node is an instance of FunctionToken.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
@@ -557,7 +557,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  evaluate either the second or the third child. The result of
      *  that evaluation becomes the result of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
@@ -628,7 +628,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  identifier, its value is obtained from the scope or from the list
      *  of registered constants.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -675,7 +675,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Evaluate a logical AND or OR on the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
@@ -755,7 +755,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Construct a matrix containing the children nodes.
      *  The specified node ends up with a MatrixToken value.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
@@ -859,7 +859,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  rest of the children are arguments. This also handles indexing into
      *  a record, which looks the same.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
@@ -904,7 +904,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Evaluate the power operator on the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
@@ -973,7 +973,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Multiply the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
@@ -1033,7 +1033,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Construct a record by assigning the fields values given by
      *  the children nodes.
      *  @param node The record constructor node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
@@ -1134,7 +1134,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Apply a shift operator to the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
@@ -1211,7 +1211,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Apply a sum operator to the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
@@ -1264,6 +1264,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Apply a unary operator to the single child of the specified node.
      *  @param node The specified node.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
@@ -1343,7 +1344,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  visiting each one of them; this will cause their token
      *  value to be determined.
      *  @param node The node whose children are evaluated.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @return The array of resulting tokens.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     protected ptolemy.data.Token[] _evaluateAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
@@ -1364,7 +1366,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *   be an ArrayToken.
      *  @param index The index, which must be an integer token.
      *  @return The element of the given token at the given index.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     protected ptolemy.data.Token _evaluateArrayIndex(ASTPtRootNode node,
             ptolemy.data.Token value, ptolemy.data.Token index)
@@ -1392,7 +1394,10 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Evaluate the child with the given index of the given node.
      *  This is usually called while visiting the given node.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @param node The given node.
+     *  @param i The given index.
+     *  @return The resulting token.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     protected ptolemy.data.Token _evaluateChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
@@ -1410,7 +1415,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  @param rowIndex The row index, which must be an integer token.
      *  @param columnIndex The column index, which must be an integer token.
      *  @return The element of the given token at the given index.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     protected ptolemy.data.Token _evaluateMatrixIndex(ASTPtRootNode node,
             ptolemy.data.Token value, ptolemy.data.Token rowIndex,
@@ -1448,7 +1453,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Evaluate the given parse tree in the scope given to the
      *  constructor of this class.
      *  @param node The root of the parse tree to evaluate.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @return The resulting token.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     protected ptolemy.data.Token _evaluateParseTree(ASTPtRootNode node)
             throws IllegalActionException {
@@ -1462,7 +1468,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  @param functionName The function name.
      *  @param argTypes An array of argument types.
      *  @param argValues An array of argument values.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @return the resulting token.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     protected ptolemy.data.Token _functionCall(String functionName,
             Type[] argTypes, Object[] argValues) throws IllegalActionException {
@@ -1488,7 +1495,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
      *  @param methodName The method name.
      *  @param argTypes An array of argument types.
      *  @param argValues An array of argument values.
-     *  @exception IllegalActionException If an evaluation error occurs.
+     *  @return the resulting token.
+     *  @exception IllegalActionException If an parse error occurs.
      */
     protected ptolemy.data.Token _methodCall(String methodName,
             Type[] argTypes, Object[] argValues) throws IllegalActionException {
@@ -1511,6 +1519,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
+     *  @param string The given message.
      */
     protected void _trace(String string) {
         if (_trace != null) {
@@ -1526,6 +1535,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Add a record to the current trace corresponding to the start
      *  of the evaluation of the given node.  If the trace is null, then
      *  do nothing.
+     *  @param node The given node.
      */
     protected void _traceEnter(ASTPtRootNode node) {
         if (_trace != null) {
@@ -1541,6 +1551,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Add a record to the current trace corresponding to the completion
      *  of the evaluation of the given node.  If the trace is null, then
      *  do nothing.
+     *  @param node The given node.
      */
     protected void _traceLeave(ASTPtRootNode node) {
         if (_trace != null) {
