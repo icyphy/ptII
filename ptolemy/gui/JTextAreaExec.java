@@ -326,7 +326,8 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
                     final String[] commandTokens = StringUtilities
                             .tokenizeForExec((String) commands.next());
 
-                    appendJTextArea("About to execute:\n");
+                    stdout("In \"" + _workingDirectory
+                            + "\", about to execute:\n");
 
                     StringBuffer statusCommand = new StringBuffer();
 

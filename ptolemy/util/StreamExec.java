@@ -208,7 +208,8 @@ public class StreamExec implements ExecuteCommands {
                     final String[] commandTokens = StringUtilities
                             .tokenizeForExec((String) commands.next());
 
-                    stdout("About to execute:\n");
+                    stdout("In \"" + _workingDirectory
+                            + "\", about to execute:\n");
 
                     StringBuffer statusCommand = new StringBuffer();
 
