@@ -50,7 +50,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
-
+import ptolemy.util.StringUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// HTMLAbout
 
@@ -384,9 +384,10 @@ public class HTMLAbout {
 
     /** Write the urls of the demo urls.  The HTML file referred to by
      * demoURLName is scanned for links to .xml files and for links to
-     * other .htm* files.  The children of demoURLName are scanned, but
-     * not the grandchildren.  This method is used to generate a list of
-     * all demos. 
+     * other .htm* files.  The children of demoURLName are scanned,
+     * but not the grandchildren.  The names of the demos will have
+     * $PTII/ prepended. This method is used to generate a list of all
+     * demos in ptolemy/configs/doc/models.txt.
      * @param demosFileName The name of the demo file.
      * @param outputFileName The name of the file that is generated.
      * @exception IOException If there is a problem reading the demo file
@@ -395,6 +396,22 @@ public class HTMLAbout {
     public static void writeDemoURLs(String demosFileName,
             String outputFileName)
             throws IOException {
+        // Get PTII as C:/cxh/ptII
+        String ptII = null;
+        try {
+            ptII = new URI(
+                    StringUtilities.getProperty("ptolemy.ptII.dirAsURL"))
+                .normalize().getPath();
+            // Under Windows, convert /C:/foo/bar to C:/foo/bar
+            ptII = new File(ptII).getCanonicalPath().replace('\\', '/');
+        } catch (URISyntaxException ex) {
+            throw new InternalErrorException(null, ex,
+                    "Failed to process PTII " + ptII);
+        }
+        if (ptII.length() == 0) {
+            throw new InternalErrorException("Failed to process "
+                    + "ptolemy.ptII.dirAsURL property, ptII = null?");
+        }
         URL demoURL = MoMLApplication.specToURL(demosFileName);
         List demosList = _getURLs(demoURL, ".*.xml", true, 2);
         Set demosSet = new HashSet(demosList);
@@ -403,7 +420,10 @@ public class HTMLAbout {
             fileWriter = new FileWriter(outputFileName);
             Iterator demos = demosSet.iterator();
             while ( demos.hasNext()) {
-                fileWriter.write((String)(demos.next() + "\n"));
+                String demo = (String)(demos.next()); 
+                fileWriter.write(
+                        StringUtilities.substitute(demo, ptII, "$PTII")
+                        + "\n");
             }
         } finally {
             if (fileWriter != null) {
