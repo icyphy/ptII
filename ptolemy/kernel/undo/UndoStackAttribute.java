@@ -112,7 +112,7 @@ public class UndoStackAttribute extends SingletonAttribute {
             NamedObj container = object;
 
             while (container != null) {
-                List attrList = object.attributeList(UndoStackAttribute.class);
+                List attrList = container.attributeList(UndoStackAttribute.class);
 
                 if (attrList.size() > 0) {
                     return (UndoStackAttribute) attrList.get(0);
