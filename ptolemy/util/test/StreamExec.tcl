@@ -94,14 +94,28 @@ test StreamExec-2.3 {execute a command that does not exist, get stderr} {
 	    $streamExec start
         } stderr
     } stdout
+    set result1 \
+	{IOException: java.io.IOException: NotACommand: not found
+}
+    set result2 \
+	{IOException: java.io.IOException: CreateProcess: NotACommand error=2
+}
+    set retval 0
+    if {"$stderr" == "$result1" || "$stderr" == "$result2"} {
+	set retval 1
+    } else {
+	puts "Did not match any of the known good results:\n----"
+	puts $stderr
+	puts "----"
+    }
+
     # FIXME: should the return code be non-zero?
-    list $stdout $stderr [$streamExec getLastSubprocessReturnCode]
+    list $stdout $retval [$streamExec getLastSubprocessReturnCode]
 } {{About to execute:
 
         NotACommand
 All Done
-} {IOException: java.io.IOException: NotACommand: not found
-} 0}
+} 1 0}
 
 ######################################################################
 ####
@@ -226,7 +240,6 @@ test StreamExec-2.4 {Run commands in another thread and call cancel} {
 
         echo
         AtTop
-
 }
 
     set result1 \
