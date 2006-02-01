@@ -46,7 +46,8 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	InnerClassTest.java
+	InnerClassTest.java \
+	ThreadStreamExec.java
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -56,6 +57,7 @@ JSIMPLE_TESTS = \
 	ClassUtilities.tcl \
 	FileUtilities.tcl \
 	MessageHandler.tcl \
+	StreamExec.tcl \
 	StringUtilities.tcl \
 	XSLTUtilities.tcl
 
