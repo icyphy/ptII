@@ -51,9 +51,10 @@ foreach file [glob auto/*.xml] {
 	set args [java::new {String[]} 1 \
 			  [list $file]]
 
-	java::call ptolemy.codegen.kernel.CodeGenerator main $args
-        list {}
-    } {{}}
+	set returnValue [java::call ptolemy.codegen.kernel.CodeGenerator \
+		generateCode $args]
+	list $returnValue
+    } {0}
     test "Auto-rerun CGC" "Automatic test rerun in file $file" {
 	$application rerun
 	list {}
