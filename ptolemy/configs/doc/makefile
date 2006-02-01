@@ -60,7 +60,8 @@ DERIVED_FILES = \
 	demosPtiny.htm \
 	demosPtinyKepler.htm \
 	docsPtiny.htm \
-	docsPtinyKepler.htm
+	docsPtinyKepler.htm \
+	models.txt
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
@@ -122,7 +123,7 @@ docsPtinyKepler.htm: docsPtiny.htm
 
 # models.txt contains a list of model file names
 models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class
-	$(JAVA) -classpath $(PTII) ptolemy.actor.gui.HTMLAbout
+	$(ROOT)/bin/ptinvoke ptolemy.actor.gui.HTMLAbout 
 
 update: $(DERIVED_FILES)
 	cvs commit -m "Master files changed" $(DERIVED_FILES)
