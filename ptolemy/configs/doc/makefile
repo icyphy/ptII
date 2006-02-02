@@ -124,8 +124,8 @@ docsPtinyKepler.htm: docsPtiny.htm
 # models.txt contains a list of model file names
 # Use AUXCLASSPATH so that we work under codecoverage with JavaScope
 models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class
-	$(JAVA) -classpath $(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH) \
-	        "-Dptolemy.ptII.dir=$(PTII)" \
+	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
+		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
 		ptolemy.actor.gui.HTMLAbout 
 
 update: $(DERIVED_FILES)
