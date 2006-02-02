@@ -708,7 +708,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  means that stderr and stdout from subcommands is written
      *  to the console.
      *  @return executeCommands The subprocess command executor.
-     *  @see #setExecuteCommand(ExecuteCommands)
+     *  @see #setExecuteCommands(ExecuteCommands)
      */
     public ExecuteCommands getExecuteCommands() {
         return _executeCommands;
