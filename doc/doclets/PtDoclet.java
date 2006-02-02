@@ -109,8 +109,8 @@ public class PtDoclet {
                             // FIXME: Use the doclet error handling mechanism
                             System.err.println("Failed to process "
                                     + className + ", tried "
-                                    + innerClassName + "\n" 
-                                    + ex2);
+                                    + innerClassName);
+                            ex2.printStackTrace();
                             continue;
                         }
                         
@@ -118,8 +118,8 @@ public class PtDoclet {
                         // Print a message and move on.
                         // FIXME: Use the doclet error handling mechanism
                         System.err.println("Failed to process " +
-                                className + "\n"
-                                + ex);
+                                className);
+                        ex.printStackTrace();
                         continue;
                     }
                 }
