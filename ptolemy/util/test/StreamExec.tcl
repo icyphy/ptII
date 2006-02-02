@@ -235,14 +235,17 @@ test StreamExec-2.4 {Run commands in another thread and call cancel} {
     $streamExec cancel
 
     # Check against multiple possible matches
-    set result0 \
+    set result0 {
+
+}
+    set result1 \
 {About to execute:
 
         echo
         AtTop
 }
 
-    set result1 \
+    set result2 \
 {About to execute:
 
         echo
@@ -253,7 +256,7 @@ About to execute:
         10
 AtTop
 }
-    set result2 \
+    set result3 \
 {About to execute:
 
         echo
@@ -264,7 +267,7 @@ About to execute:
         10
 }
     set retval 0
-    if {"$stdout" == "$result0" || "$stdout" == "$result1" || "$stdout" == "$result2"} {
+    if {"$stdout" == "$result0" || "$stdout" == "$result1" || "$stdout" == "$result2" || "$stdout" == "$result3"} {
 	set retval 1
     } else {
 	puts "Did not match any of the known good results:\n----"
