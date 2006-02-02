@@ -8,7 +8,6 @@
         <doc>Distributed Discrete Event Domain</doc>
         <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector"/>
         <input source="ptolemy/domains/dde/lib/ddeentities.xml"/>
-        <input source="ptolemy/domains/dde/ptp/ptp.xml"/>
       </group>
     ?>
   </configure>
