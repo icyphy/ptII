@@ -662,6 +662,8 @@ public class DocManager extends HandlerBase {
                 result.append("<li><a href=\""
                         + toRead.toExternalForm()
                         + "\">Demo Usage</a></li>");
+            } else {
+                    result.append("<li>Not used in any demos</li>");
             }
         } catch (Exception ex) {
                 // Do not report anything.
