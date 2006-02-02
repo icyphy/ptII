@@ -329,6 +329,17 @@ make install
       The reason is that Cygwin mounts directories under
       </code>c:/cygwin</code> and the WinAVR binaries don't know how
       to handle that.
+
+      <p>Under Windows with WinAVR-20040404, we also had to modify <code>c:/usr/local/lib/ncc/nesc_nx.h</code> so that 
+<pre>
+#include &lt;inttypes.h&gt;
+</pre>
+is changed to 
+<pre>
+#include &lt;sys/types.h&gt;
+</pre>
+Otherwise, when we try to compile nesC applications, the compiler
+complains that it cannot find the file.
     </li>
 
     <li> We have put into the TinyOS makefiles a rule that you can run
