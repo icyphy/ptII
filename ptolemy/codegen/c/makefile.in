@@ -5,10 +5,6 @@
 # where the source code is created.
 # To compile, run make -f @modelName@.mk
 
-# Get configuration info so that we can find the C compiler
-CONFIG =	"$(PTII)/mk/ptII.mk"
-include $(CONFIG)
-
 # We need -lm so we can get floor() for ftoi() 
 @modelName@: @modelName@.c
-	$(PTCC) @modelName@.c -o @modelName@ -lm
+	gcc @modelName@.c -o @modelName@ -lm
