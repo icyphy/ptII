@@ -35,18 +35,6 @@
 	tool.</B>
     </BLOCKQUOTE>
 
-    <p><BLOCKQUOTE>
-	<B>Note: As of 10/05, Windows users will not be able
-       to run TinyOS models inside Ptolemy.</B>
-	The reason is that reloading the TinyOS shared objects
-	into the running Ptolemy interface fails because the
-	TinyOS shared objects use pthreads and under Windows, Java
-	is using Windows native threads.  We are working on a
-	solution.  In the interim, Windows users can convert 
-	.nc files to .moml files and create models, but running
-	the model fails.
-    </BLOCKQUOTE>
-
     <ol>
       <li> Run the script to generate the .moml files from the .nc files.
         <pre>

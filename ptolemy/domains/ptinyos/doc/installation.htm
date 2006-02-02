@@ -16,10 +16,10 @@
     domain) installed.
 
     <p>If you are running on Windows, you must have Cygwin installed
-    with gcc 3.2.  gcc 3.3 and 3.4 on Cygwin produce .dll's that are
-    incompatible with JNI as used in the current version of Ptolemy II
-    and Viptos.  We highly recommend that you use the version of
-    cygwinDevel available <a
+    with gcc 3.2.  Note that gcc 3.3 and 3.4 on Cygwin produce .dll's
+    that are incompatible with JNI as used in the current version of
+    Ptolemy II and Viptos.  We highly recommend that you use the
+    version of cygwinDevel available <a
     href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/cygwin.htm"
     target="_top">here</a>.
 
@@ -52,15 +52,6 @@ ln -s <I>location_of_your_nesc_tree</I> nesc
         <li>Proceed to the step to <a
             href="#reconfigureViptos">Reconfigure Viptos (or Ptolemy II) to
             recognize the new paths</a>
-          
-          
-        <li>You may skip the step for configuring and installing the
-          TinyOS nesC tools.
-          
-        <li>Proceed to the step to <a href="#unzip">Run the script that
-            will unzip the file that contains additional compiler flags</a>
-          and follow the rest of the instructions to running
-          <CODE>nc2moml</CODE>.
       </ol>
     </BLOCKQUOTE>
 
@@ -406,7 +397,7 @@ setenv PTINYOS_MOMLROOT $PTII/vendors/ptinyos/moml
       </ul>
     </li>
 
-    <li> <a name"reconfigureViptos">Reconfigure Viptos</a> (or Ptolemy II) to recognize the new paths:
+    <li> <a name="reconfigureViptos">Reconfigure Viptos</a> (or Ptolemy II) to recognize the new paths:
         <pre>
 cd $PTII
 ./configure
@@ -478,17 +469,18 @@ rpm -force --ignoreos --nodeps -ivh *.rpm
 
     </li>
 
-    <li> See if you have TinyOS and nesC installed correctly:
+    <li> See if you have installed TinyOS and nesC correctly:
       <pre>
 cd $TOSROOT/apps/Blink
 make pc
 ./build/pc/main.exe 1
       </pre>
-
-The Blink application should succesfully compile.  When running the
-executable, you should see TOSSIM output.  See
-$TOSROOT/doc/tutorial/lesson5.html for more information.
-
+      
+      The Blink application should succesfully compile.  When running the
+      executable, you should see TOSSIM output.  See
+      $TOSROOT/doc/tutorial/lesson5.html for more information.
+    </li>
+  </ol>
 
 </body>
 </html>
