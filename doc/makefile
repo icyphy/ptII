@@ -344,7 +344,6 @@ ALL1_4PACKAGES =	$(COMPACKAGES) \
 			ptolemy.domains.ci.lib \
 			ptolemy.domains.dde.kernel \
 			ptolemy.domains.dde.lib \
-			ptolemy.domains.dde.ptp \
 			ptolemy.domains.ddf.kernel \
 			ptolemy.domains.ddf.lib \
 			ptolemy.domains.dt.kernel \
@@ -369,6 +368,7 @@ ALL1_4PACKAGES =	$(COMPACKAGES) \
 			ptolemy.media \
 			ptolemy.moml \
 			ptolemy.moml.filter \
+			ptolemy.ptp.lib \
 			ptolemy.vergil \
 			ptolemy.vergil.actor \
 			ptolemy.vergil.actor.lib \
@@ -528,7 +528,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/ct/lib/*.java \
 			../ptolemy/domains/dde/kernel/*.java \
 			../ptolemy/domains/dde/lib/*.java \
-			../ptolemy/domains/dde/ptp/*.java \
 			../ptolemy/domains/ddf/kernel/*.java \
 			../ptolemy/domains/ddf/lib/*.java \
 			../ptolemy/domains/de/kernel/*.java \
