@@ -581,21 +581,12 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m $(JDOCBREAKITERATOR)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
-	@echo "Removing the asd lines so that they are not displayed by"
-	@echo " view documentation"
-	-chmod a+x removeasd
-	./removeasd codeDoc
-
 
 codeDocPtiny/tree.html:
 	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
 	-(cd ..; CLASSPATH=".$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
-	@echo "Removing the asd lines so that they are not displayed by"
-	@echo " view documentation"
-	-chmod a+x removeasd
-	./removeasd codeDocPtiny
 
 
 # Note that we change into the codeDocHyVisual directory
@@ -613,10 +604,6 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
-	@echo "Removing the asd lines so that they are not displayed by"
-	@echo " view documentation"
-	-chmod a+x removeasd
-	./removeasd codeDocHyVisual
 
 # Doccheck is a doclet that checks for bugs
 # Location of the doccheck jar file, available from
@@ -673,10 +660,6 @@ codeDocViptos/doc/codeDoc/tree.html:
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocViptos/doc/codeDoc $(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
-	@echo "Removing the asd lines so that they are not displayed by"
-	@echo " view documentation"
-	-chmod a+x removeasd
-	./removeasd codeDocVisualSense
 
 
 
@@ -696,11 +679,6 @@ codeDocVisualSense/doc/codeDoc/tree.html:
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx512m"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocVisualSense/doc/codeDoc $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
-	@echo "Removing the asd lines so that they are not displayed by"
-	@echo " view documentation"
-	-chmod a+x removeasd
-	./removeasd codeDocVisualSense
-
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
