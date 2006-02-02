@@ -194,7 +194,7 @@ public class DataUtilities {
                 _body.getLocals().add(tokenLocal);
 
                 _units.insertBefore(Jimple.v().newAssignStmt(tokenLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, portField)),
+                        Jimple.v().newInstanceFieldRef(thisLocal, portField.makeRef())),
                         _insertPoint);
                 _units
                         .insertBefore(
@@ -251,7 +251,7 @@ public class DataUtilities {
                     _units.insertBefore(Jimple.v().newAssignStmt(
                             containerLocal2,
                             Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                    PtolemyUtilities.getContainerMethod)),
+                                    PtolemyUtilities.getContainerMethod.makeRef())),
                             _insertPoint);
                     container = (NamedObj) container.getContainer();
                     containerLocal = containerLocal2;
@@ -260,7 +260,7 @@ public class DataUtilities {
                 _units.insertBefore(Jimple.v().newAssignStmt(
                         attributeLocal,
                         Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                PtolemyUtilities.getAttributeMethod,
+                                PtolemyUtilities.getAttributeMethod.makeRef(),
                                 StringConstant.v(deepName))), _insertPoint);
                 _units.insertBefore(Jimple.v().newAssignStmt(
                         attributeLocal,
@@ -270,7 +270,7 @@ public class DataUtilities {
                 _units.insertBefore(Jimple.v().newAssignStmt(
                         tokenLocal,
                         Jimple.v().newVirtualInvokeExpr(attributeLocal,
-                                PtolemyUtilities.variableGetTokenMethod)),
+                                PtolemyUtilities.variableGetTokenMethod.makeRef())),
                         _insertPoint);
 
                 return tokenLocal;

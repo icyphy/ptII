@@ -263,7 +263,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements
                 System.out.println(unit.getClass().toString());
                 System.out.println(box.getClass().toString());
                 box.setValue(Jimple.v().newInstanceFieldRef(local,
-                        attributeField));
+                                attributeField.makeRef()));
             } else {
                 throw new RuntimeException(
                         "Failed to find field for attribute "

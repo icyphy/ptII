@@ -26,7 +26,7 @@
  */
 package ptolemy.copernicus.kernel;
 
-import java.io.File;
+import java.io.*;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -36,6 +36,7 @@ import soot.Printer;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
+import soot.util.JasminOutputStream;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClassWriter
@@ -114,7 +115,7 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
             SootClass theClass = (SootClass) classes.next();
 
             try {
-                Printer.v().write(theClass, outDir);
+                _write(theClass, outDir);
             } catch (Exception ex) {
                 // If we get an IOException, we might not have any idea
                 // of which directory was problematic
@@ -123,5 +124,46 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
                         ex);
             }
         }
+    }
+
+    private void _write(SootClass cl, String outputDir) {
+        String outputDirWithSep = "";
+
+        if (!outputDir.equals("")) {
+            outputDirWithSep = 
+                outputDir + System.getProperty("file.separator");
+        }
+
+        try {
+            File tempFile =
+                new File(outputDirWithSep + 
+                        cl.getName().replace('.', System.getProperty("file.separator").toCharArray()[0]) + ".class");
+            
+            _create(tempFile.getAbsoluteFile());
+
+            OutputStream streamOut = new JasminOutputStream(
+                    new FileOutputStream(tempFile));
+
+            PrintWriter writerOut =
+                new PrintWriter(new OutputStreamWriter(streamOut));
+
+            if (cl.containsBafBody())
+                new soot.baf.JasminClass(cl).print(writerOut);
+            else
+                new soot.jimple.JasminClass(cl).print(writerOut);
+
+            writerOut.flush();
+            streamOut.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(
+                "Could not produce new classfile! (" + e + ")");
+        }
+    }
+
+    private void _create(File file) throws IOException {
+        file.getParentFile().mkdirs();
+        file.createNewFile();
     }
 }

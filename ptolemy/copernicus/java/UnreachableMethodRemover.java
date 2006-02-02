@@ -33,6 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import soot.FastHierarchy;
+import soot.Hierarchy;
+import soot.EntryPoints;
 import soot.HasPhaseOptions;
 import soot.PhaseOptions;
 import soot.Scene;
@@ -40,8 +43,9 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.jimple.toolkits.callgraph.CallGraph;
-import soot.jimple.toolkits.callgraph.EntryPoints;
+import soot.jimple.toolkits.callgraph.CallGraphBuilder;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
+import soot.jimple.toolkits.pointer.DumbPointerAnalysis;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnreachableMethodRemover
@@ -84,7 +88,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements
     }
 
     public String getDefaultOptions() {
-        return "";
+        return "debug";
     }
 
     public String getDeclaredOptions() {
@@ -130,18 +134,30 @@ public class UnreachableMethodRemover extends SceneTransformer implements
             }
         }
 
-        //  System.out.println("forcedMethods = " + forcedReachableMethodSet);
+        System.out.println("forcedMethods = " + forcedReachableMethodSet);
+
+        // Loop over all the classes...
+        for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
+                .hasNext();) {
+            SootClass theClass = (SootClass) i.next();
+            Scene.v().loadClassAndSupport(theClass.getName());
+        }
+
+        System.out.println("done loading classes!");
+
         // Construct the graph of methods that are directly reachable
         // from any method.
         // Construct the graph of all method invocations, so we know what
         // method contains each invocation and what method(s) can be
         // targeted by that invocation.
-        Scene.v().releaseCallGraph();
-
+        CallGraphBuilder cg = new CallGraphBuilder( DumbPointerAnalysis.v(), true );
+        cg.build();
         CallGraph callGraph = Scene.v().getCallGraph();
         ReachableMethods reachables = new ReachableMethods(callGraph,
                 forcedReachableMethodSet);
         reachables.update();
+
+        Scene.v().setCallGraph(callGraph);
 
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
@@ -164,6 +180,10 @@ public class UnreachableMethodRemover extends SceneTransformer implements
                 }
             }
         }
+
+        // Reset the hierarchy, since we've changed superclasses and such.
+        Scene.v().setActiveHierarchy(new Hierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
     }
 
     private void _addMethodsFrom(Set forcedReachableMethodSet,

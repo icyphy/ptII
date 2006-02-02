@@ -57,6 +57,7 @@ import soot.jimple.BinopExpr;
 import soot.jimple.BreakpointStmt;
 import soot.jimple.CastExpr;
 import soot.jimple.CaughtExceptionRef;
+import soot.jimple.ClassConstant;
 import soot.jimple.CmpExpr;
 import soot.jimple.CmpgExpr;
 import soot.jimple.CmplExpr;
@@ -278,6 +279,13 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      */
     public void caseCaughtExceptionRef(CaughtExceptionRef v) {
         _push("exception_id");
+    }
+
+    /* Generate the code for a class constant
+     * @param v The constant
+     */
+    public void caseClassConstant(ClassConstant v) {
+        defaultCase(v);
     }
 
     /** Generate code for a Compare expression.

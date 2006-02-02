@@ -44,7 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	kernel
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-DIRS = fragment
+DIRS =
 
 # Keep this list alphabetized.
 JSRCS = \

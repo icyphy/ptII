@@ -145,7 +145,7 @@ public class HSPortInliner implements PortInliner {
                 // assign the value.
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(
-                                Jimple.v().newStaticFieldRef(arrayField),
+                                Jimple.v().newStaticFieldRef(arrayField.makeRef()),
                                 expr.getArg(0)), stmt);
             }
         }
@@ -176,7 +176,7 @@ public class HSPortInliner implements PortInliner {
         // assign the value.
         body.getUnits().insertBefore(
                 Jimple.v().newAssignStmt(returnLocal,
-                        Jimple.v().newStaticFieldRef(field)), stmt);
+                        Jimple.v().newStaticFieldRef(field.makeRef())), stmt);
 
         // We may be calling get without setting the return value
         // to anything.
@@ -210,7 +210,7 @@ public class HSPortInliner implements PortInliner {
         // assign the value.
         body.getUnits().insertBefore(
                 Jimple.v().newAssignStmt(returnLocal,
-                        Jimple.v().newStaticFieldRef(field)), stmt);
+                        Jimple.v().newStaticFieldRef(field.makeRef())), stmt);
 
         // We may be calling get without setting the return value
         // to anything.
@@ -238,7 +238,7 @@ public class HSPortInliner implements PortInliner {
 
         // assign the value.
         body.getUnits().insertBefore(
-                Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(field),
+                Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(field.makeRef()),
                         expr.getArg(1)), stmt);
         body.getUnits().remove(stmt);
     }
@@ -261,7 +261,7 @@ public class HSPortInliner implements PortInliner {
 
         // assign the value.
         body.getUnits().insertBefore(
-                Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(field),
+                Jimple.v().newAssignStmt(Jimple.v().newStaticFieldRef(field.makeRef()),
                         expr.getArg(1)), stmt);
         body.getUnits().remove(stmt);
     }
@@ -324,7 +324,7 @@ public class HSPortInliner implements PortInliner {
 
                     // Note: reverse order!
                     clinitUnits.addFirst(Jimple.v().newAssignStmt(
-                            Jimple.v().newStaticFieldRef(field),
+                                                 Jimple.v().newStaticFieldRef(field.makeRef()),
                             NullConstant.v()));
                 }
             }
@@ -346,7 +346,7 @@ public class HSPortInliner implements PortInliner {
                     tokenLocal,
                     Jimple.v()
                             .newInterfaceInvokeExpr(typeLocal,
-                                    PtolemyUtilities.typeConvertMethod,
+                                    PtolemyUtilities.typeConvertMethod.makeRef(),
                                     inputTokenLocal)));
 
             list.add(Jimple.v().newAssignStmt(

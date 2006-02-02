@@ -129,7 +129,7 @@ public class DependedClasses {
                 .hasNext();) {
             SootMethod method = (SootMethod) methods.next();
 
-            //   System.out.println("processing method = " + method);
+            System.out.println("processing method = " + method);
             // Grab the classes of all arguments.
             for (Iterator types = method.getParameterTypes().iterator(); types
                     .hasNext();) {
@@ -154,6 +154,7 @@ public class DependedClasses {
             }
 
             JimpleBody body = (JimpleBody) method.retrieveActiveBody();
+            Scene.v().releaseActiveHierarchy();
 
             // Grab the types of all traps.
             for (Iterator it = body.getTraps().iterator(); it.hasNext();) {

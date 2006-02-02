@@ -396,8 +396,8 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                                 .getDeclaringClass())
                                 && newClass.declaresFieldByName(r.getField()
                                         .getName())) {
-                            r.setField(newClass.getFieldByName(r.getField()
-                                    .getName()));
+                            r.setFieldRef(newClass.getFieldByName(r.getField()
+                                            .getName()).makeRef());
 
                             //   System.out.println("fieldRef = " +
                             //              box.getValue());
@@ -492,7 +492,7 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                                 SootMethod replacementMethod = newClass
                                         .getMethod(r.getMethod()
                                                 .getSubSignature());
-                                r.setMethod(replacementMethod);
+                                r.setMethodRef(replacementMethod.makeRef());
                             }
 
                             //                         } else if (r.getMethod().getDeclaringClass().getName().

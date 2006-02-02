@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import soot.Body;
+import soot.EntryPoints;
 import soot.Hierarchy;
 import soot.RefType;
 import soot.Scene;
@@ -50,7 +51,6 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.StaticInvokeExpr;
 import soot.jimple.toolkits.callgraph.CallGraph;
-import soot.jimple.toolkits.callgraph.EntryPoints;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.jimple.toolkits.callgraph.Sources;
 import soot.util.queue.ChunkedQueue;
@@ -72,11 +72,9 @@ public class SideEffectAnalysis {
 
         Iterator methods = _unprocessedMethods.reader();
 
-        Scene.v().releaseCallGraph();
-
         CallGraph callGraph = Scene.v().getCallGraph();
-        _reachables = new ReachableMethods(callGraph, EntryPoints.v()
-                .application());
+        _reachables = new ReachableMethods(callGraph, 
+                EntryPoints.v().application());
         _reachables.update();
 
         // Process all the reachableMethods.
@@ -241,6 +239,7 @@ public class SideEffectAnalysis {
 
         // A method has side effects if it sets the values of any fields.
         Body body = method.retrieveActiveBody();
+        Scene.v().releaseActiveHierarchy();
 
         for (Iterator units = body.getUnits().iterator(); units.hasNext();) {
             Unit unit = (Unit) units.next();
@@ -283,8 +282,6 @@ public class SideEffectAnalysis {
             // are any invocations of
             // methods that are not in the invoke graph.  Conservatively
             // assume that they have side effects.
-            Hierarchy hierarchy = Scene.v().getActiveHierarchy();
-
             for (Iterator boxes = unit.getUseBoxes().iterator(); boxes
                     .hasNext();) {
                 ValueBox box = (ValueBox) boxes.next();
@@ -293,9 +290,14 @@ public class SideEffectAnalysis {
                 if (expr instanceof InvokeExpr) {
                     SootMethod invokedMethod = ((InvokeExpr) expr).getMethod();
 
+                    // It appears that soot does not automatically
+                    // release the hierarchy.
+                    Hierarchy hierarchy = Scene.v().getActiveHierarchy();
+
                     if (expr instanceof SpecialInvokeExpr) {
                         SootMethod target = hierarchy.resolveSpecialDispatch(
                                 (SpecialInvokeExpr) expr, invokedMethod);
+                        Scene.v().releaseActiveHierarchy();
                         _mergeFlow(out, target);
                     } else if (expr instanceof InstanceInvokeExpr) {
                         Type baseType = ((InstanceInvokeExpr) expr).getBase()
@@ -310,7 +312,7 @@ public class SideEffectAnalysis {
                         List list = hierarchy.resolveAbstractDispatch(
                                 ((RefType) baseType).getSootClass(),
                                 invokedMethod);
-
+                        Scene.v().releaseActiveHierarchy();
                         for (Iterator targets = list.iterator(); targets
                                 .hasNext();) {
                             SootMethod target = (SootMethod) targets.next();

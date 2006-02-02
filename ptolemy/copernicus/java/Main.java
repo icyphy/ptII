@@ -129,7 +129,7 @@ public class Main extends KernelMain {
         // to getPort with references to those fields.
         addTransform(pack, "wjtp.ffpt", FieldsForPortsTransformer.v(toplevel),
                 "targetPackage:" + _targetPackage);
-
+          
         addTransform(pack, "wjtp.ls2",
                 new TransformerAdapter(LocalSplitter.v()));
         addTransform(pack, "wjtp.lns", new TransformerAdapter(
@@ -147,13 +147,13 @@ public class Main extends KernelMain {
                 CastAndInstanceofEliminator.v()));
 
         addStandardOptimizations(pack, 4);
-
+  
         addTransform(pack, "wjtp.rcp", ReplaceComplexParameters.v(toplevel),
                 "targetPackage:" + _targetPackage);
-
+    
         addTransform(pack, "wjtp.cs", ConstructorSpecializer.v(toplevel),
                 "targetPackage:" + _targetPackage);
-
+        
         // Infer the types of locals again, since replacing attributes
         // depends on the types of fields
         addTransform(pack, "wjtp.ta12",
@@ -204,7 +204,8 @@ public class Main extends KernelMain {
 
         addTransform(pack, "wjtp.cp1", new TransformerAdapter(CopyPropagator
                 .v()));
-
+        addStandardOptimizations(pack, 5);
+          
         if (_snapshots) {
             addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple2");
@@ -267,6 +268,7 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.cie3", new TransformerAdapter(
                 CastAndInstanceofEliminator.v()));
 
+        addTransform(pack, "wjtp.ta7", new TransformerAdapter(TypeAssigner.v()));
         addStandardOptimizations(pack, 6);
 
         // Remove Unreachable methods.  This happens BEFORE
@@ -275,7 +277,7 @@ public class Main extends KernelMain {
         // lazy and instead of trying to pick one, lets use the only
         // one that is reachable.
         addTransform(pack, "wjtp.umr1", UnreachableMethodRemover.v());
-
+        
         // Remove references to named objects.
         addTransform(pack, "wjtp.ee1", ExceptionEliminator.v(toplevel));
         addTransform(pack, "wjtp.ls6",
@@ -284,7 +286,7 @@ public class Main extends KernelMain {
                 CastAndInstanceofEliminator.v()));
         addTransform(pack, "wjtp.ta6", new TransformerAdapter(TypeAssigner.v()));
         addTransform(pack, "wjtp.ib4", InvocationBinder.v());
-
+        
         addTransform(pack, "wjtp.noe", NamedObjEliminator.v(toplevel));
 
         addTransform(pack, "wjtp.umr2", UnreachableMethodRemover.v());
@@ -315,7 +317,7 @@ public class Main extends KernelMain {
             addTransform(pack, "wjtp.lur4", LibraryUsageReporter.v(),
                     "outFile:" + _outputDirectory + "/jimple4/jarClassList.txt");
         }
-
+        
         if (_unboxing) {
             addTransform(pack, "wjtp.ttn", TokenToNativeTransformer.v(toplevel));
 
@@ -428,8 +430,10 @@ public class Main extends KernelMain {
         _generatorAttributeFileName = attribute
                 .getParameter("generatorAttributeFileName");
 
-        //String sootArgs = attribute.getParameter("sootArgs");
-        return new String[1];
+        //  String sootArgs = attribute.getParameter("sootArgs");
+        String sootArgs[] = new String[1];
+        sootArgs[0] = "-debug-resolver";
+        return sootArgs;
     }
 
     private static boolean _snapshots = false;

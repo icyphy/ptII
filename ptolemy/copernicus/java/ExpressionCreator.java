@@ -179,11 +179,11 @@ public class ExpressionCreator implements AtomicActorCreator {
                             .add(Jimple.v().newAssignStmt(
                                     portLocal,
                                     Jimple.v().newInstanceFieldRef(thisLocal,
-                                            portField)));
+                                            portField.makeRef())));
                     units.add(Jimple.v().newAssignStmt(
                             hasTokenLocal,
                             Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.hasTokenMethod,
+                                    PtolemyUtilities.hasTokenMethod.makeRef(),
                                     IntConstant.v(0))));
 
                     Stmt target = Jimple.v().newNopStmt();
@@ -193,14 +193,14 @@ public class ExpressionCreator implements AtomicActorCreator {
                     units.add(Jimple.v().newAssignStmt(
                             tokenLocal,
                             Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.getMethod,
+                                    PtolemyUtilities.getMethod.makeRef(),
                                     IntConstant.v(0))));
 
                     SootField tokenField = entityInstanceClass
                             .getFieldByName(name + "Token");
                     units.add(Jimple.v().newAssignStmt(
                             Jimple.v().newInstanceFieldRef(thisLocal,
-                                    tokenField), tokenLocal));
+                                    tokenField.makeRef()), tokenLocal));
                     units.add(target);
                 }
             }
@@ -222,10 +222,10 @@ public class ExpressionCreator implements AtomicActorCreator {
             SootField portField = entityInstanceClass.getFieldByName(name);
 
             units.add(Jimple.v().newAssignStmt(portLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal, portField)));
+                    Jimple.v().newInstanceFieldRef(thisLocal, portField.makeRef())));
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newVirtualInvokeExpr(portLocal,
-                            PtolemyUtilities.sendMethod, IntConstant.v(0),
+                            PtolemyUtilities.sendMethod.makeRef(), IntConstant.v(0),
                             local)));
 
             // return void

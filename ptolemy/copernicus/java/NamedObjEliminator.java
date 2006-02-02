@@ -272,7 +272,7 @@ public class NamedObjEliminator extends SceneTransformer implements
                                                                             .v()
                                                                             .newSpecialInvokeExpr(
                                                                                     local,
-                                                                                    initMethod,
+                                                                                    initMethod.makeRef(),
                                                                                     StringConstant
                                                                                             .v(uriString))),
                                                     unit);
@@ -311,15 +311,15 @@ public class NamedObjEliminator extends SceneTransformer implements
                             PtolemyUtilities.compositeActorClass)
                     || SootUtilities.derivesFrom(theClass,
                             PtolemyUtilities.attributeClass)) {
-                //    System.out.println("changing superclass for " + theClass);
+                System.out.println("changing superclass for " + theClass);
                 theClass.setSuperclass(PtolemyUtilities.objectClass);
 
-                // Fix the constructor for the actor to take just a container argument, if it
-                // was a 2 arg constructor, or no arguments otherwise.
-                // FIXME: Here we assume that there is just one
-                // constructor.. This will throw an exception if there
-                // is more than one, in which case we need to improve
-                // this code.
+                // Fix the constructor for the actor to take just a
+                // container argument, if it was a 2 arg constructor,
+                // or no arguments otherwise.  FIXME: Here we assume
+                // that there is just one constructor.. This will
+                // throw an exception if there is more than one, in
+                // which case we need to improve this code.
                 SootMethod method = null;
 
                 try {
@@ -352,7 +352,7 @@ public class NamedObjEliminator extends SceneTransformer implements
                 theClass.removeMethod(method);
                 theClass.addMethod(method);
 
-                // System.out.println("method = " + method);
+                System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
                 for (Iterator units = body.getUnits().snapshotIterator(); units
@@ -368,14 +368,14 @@ public class NamedObjEliminator extends SceneTransformer implements
                             SpecialInvokeExpr expr = (SpecialInvokeExpr) value;
 
                             if (expr.getBase().equals(body.getThisLocal())
-                                    && expr.getMethod().getName().equals(
+                                    && expr.getMethodRef().name().equals(
                                             "<init>")) {
                                 //             System.out.println("replacing constructor = "
                                 //       + unit + " in method " + method);
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
                                         (Local) expr.getBase(),
-                                        PtolemyUtilities.objectConstructor,
+                                        PtolemyUtilities.objectConstructor.makeRef(),
                                         Collections.EMPTY_LIST));
                             }
                         }
@@ -450,15 +450,15 @@ public class NamedObjEliminator extends SceneTransformer implements
                             // If we're constructing one of our actor classes,
                             // then switch to the modified constructor.
                             SpecialInvokeExpr expr = (SpecialInvokeExpr) value;
-                            SootClass declaringClass = expr.getMethod()
-                                    .getDeclaringClass();
+                            SootClass declaringClass = expr.getMethodRef()
+                                    .declaringClass();
 
-                            if (expr.getMethod().getName().equals("<init>")
+                            if (expr.getMethodRef().name().equals("<init>")
                                     && modifiedConstructorClassList
                                             .contains(declaringClass)) {
-                                // System.out.println(
-                                //                                         "replacing constructor invocation = "
-                                //                                         + unit + " in method " + method);
+                                System.out.println(
+                                        "replacing constructor invocation = "
+                                        + unit + " in method " + method);
                                 SootMethod newConstructor = declaringClass
                                         .getMethodByName("<init>");
 
@@ -469,13 +469,13 @@ public class NamedObjEliminator extends SceneTransformer implements
                                     box.setValue(Jimple.v()
                                             .newSpecialInvokeExpr(
                                                     (Local) expr.getBase(),
-                                                    newConstructor, args));
+                                                    newConstructor.makeRef(), args));
                                 } else {
                                     // Replace with zero arg constructor.
                                     box.setValue(Jimple.v()
                                             .newSpecialInvokeExpr(
                                                     (Local) expr.getBase(),
-                                                    newConstructor,
+                                                    newConstructor.makeRef(),
                                                     Collections.EMPTY_LIST));
                                 }
                             }
@@ -500,7 +500,20 @@ public class NamedObjEliminator extends SceneTransformer implements
                 // Infer types.
                 LocalSplitter.v().transform(body, "nee.ls");
                 TypeAssigner.v().transform(body, "nee.ta");
+            }
+        }
 
+        for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
+                .hasNext();) {
+            SootClass theClass = (SootClass) i.next();
+
+            // Loop through all the methods in the class.
+            for (Iterator methods = theClass.getMethods().iterator(); methods
+                    .hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
+
+                // System.out.println("method = " + method);
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
                 for (Iterator units = body.getUnits().snapshotIterator(); units
                         .hasNext();) {
                     Stmt unit = (Stmt) units.next();
@@ -515,7 +528,7 @@ public class NamedObjEliminator extends SceneTransformer implements
                         Type type = value.getType();
 
                         if (_isRemovableType(type)) {
-                            //             System.out.println("Unit with removable type " + type + ": " + unit);
+                            System.out.println("Unit with removable type " + type + ": " + unit);
                             body.getUnits().remove(unit);
                             break;
                         }

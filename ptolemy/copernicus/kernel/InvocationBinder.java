@@ -77,8 +77,7 @@ public class InvocationBinder extends SceneTransformer {
         String modifierOptions = "unsafe";
         HashMap instanceToStaticMap = new HashMap();
 
-        Scene.v().releaseCallGraph();
-
+        Scene.v().setCallGraph( new CallGraph() );
         CallGraph cg = Scene.v().getCallGraph();
 
         Iterator classesIt = Scene.v().getApplicationClasses().iterator();
@@ -161,7 +160,7 @@ public class InvocationBinder extends SceneTransformer {
                     ValueBox box = s.getInvokeExprBox();
                     box.setValue(Jimple.v().newVirtualInvokeExpr(
                             (Local) ((InstanceInvokeExpr) ie).getBase(),
-                            target, ie.getArgs()));
+                            target.makeRef(), ie.getArgs()));
                 }
             }
         }

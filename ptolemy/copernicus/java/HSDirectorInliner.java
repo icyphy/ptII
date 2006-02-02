@@ -125,11 +125,11 @@ public class HSDirectorInliner implements DirectorInliner {
 
                 // Get the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                preinitializeMethod)), insertPoint);
+                                preinitializeMethod.makeRef())), insertPoint);
             }
 
             //           units.add(Jimple.v().newReturnVoidStmt());
@@ -161,11 +161,11 @@ public class HSDirectorInliner implements DirectorInliner {
 
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                                Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                initializeMethod)), insertPoint);
+                                initializeMethod.makeRef())), insertPoint);
             }
 
             //           units.add(Jimple.v().newReturnVoidStmt());
@@ -198,12 +198,12 @@ public class HSDirectorInliner implements DirectorInliner {
                     .searchForMethodByName(theClass, "prefire");
 
             units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                            Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
                     insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(
                     prefireReturnsLocal,
                     Jimple.v().newVirtualInvokeExpr(actorLocal,
-                            actorPrefireMethod)), insertPoint);
+                            actorPrefireMethod.makeRef())), insertPoint);
 
             units.insertBefore(Jimple.v().newReturnStmt(prefireReturnsLocal),
                     insertPoint);
@@ -248,7 +248,7 @@ public class HSDirectorInliner implements DirectorInliner {
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
                 units.insertBefore(Jimple.v().newAssignStmt(tempPortLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
                         insertPoint);
                 units.insertBefore(Jimple.v().newAssignStmt(
                         portLocal,
@@ -268,13 +268,13 @@ public class HSDirectorInliner implements DirectorInliner {
                     bodyList.add(Jimple.v().newAssignStmt(
                             tokenLocal,
                             Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.getMethod,
+                                    PtolemyUtilities.getMethod.makeRef(),
                                     IntConstant.v(i))));
 
                     // Write
                     bodyList.add(Jimple.v().newInvokeStmt(
                             Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.sendInsideMethod,
+                                    PtolemyUtilities.sendInsideMethod.makeRef(),
                                     IntConstant.v(i), tokenLocal)));
 
                     // Increment the index.
@@ -307,11 +307,11 @@ public class HSDirectorInliner implements DirectorInliner {
                         .searchForMethodByName(theClass, "fire");
 
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                actorFireMethod)), insertPoint);
+                                actorFireMethod.makeRef())), insertPoint);
             }
 
             // Transfer outputs from output ports
@@ -333,7 +333,7 @@ public class HSDirectorInliner implements DirectorInliner {
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
                 units.insertBefore(Jimple.v().newAssignStmt(tempPortLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
                         insertPoint);
                 units.insertBefore(Jimple.v().newAssignStmt(
                         portLocal,
@@ -353,13 +353,13 @@ public class HSDirectorInliner implements DirectorInliner {
                     bodyList.add(Jimple.v().newAssignStmt(
                             tokenLocal,
                             Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.getInsideMethod,
+                                    PtolemyUtilities.getInsideMethod.makeRef(),
                                     IntConstant.v(i))));
 
                     // Write
                     bodyList.add(Jimple.v().newInvokeStmt(
                             Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.sendMethod,
+                                    PtolemyUtilities.sendMethod.makeRef(),
                                     IntConstant.v(i), tokenLocal)));
 
                     // Increment the index.
@@ -411,12 +411,12 @@ public class HSDirectorInliner implements DirectorInliner {
                     .searchForMethodByName(theClass, "postfire");
 
             units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                    Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
                     insertPoint);
             units.insertBefore(Jimple.v().newAssignStmt(
                     postfireReturnsLocal,
                     Jimple.v().newVirtualInvokeExpr(actorLocal,
-                            actorPostfireMethod)), insertPoint);
+                            actorPostfireMethod.makeRef())), insertPoint);
 
             units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
                     insertPoint);
@@ -451,11 +451,11 @@ public class HSDirectorInliner implements DirectorInliner {
 
                 // Set the field.
                 units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, field)),
+                        Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
                         insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
-                                wrapupMethod)), insertPoint);
+                                wrapupMethod.makeRef())), insertPoint);
             }
 
             //           units.insertBefore(Jimple.v().newReturnVoidStmt(),

@@ -181,7 +181,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
                         Jimple.v().newAssignStmt(
                                 newLocal,
                                 Jimple.v().newInstanceFieldRef(
-                                        entityContainerLocal, field)), unit);
+                                        entityContainerLocal, field.makeRef())), unit);
                 return newLocal;
             } else {
                 // Otherwise, the source class must be something up
@@ -197,7 +197,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
                 body.getLocals().add(containerLocal);
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(containerLocal,
-                                Jimple.v().newInstanceFieldRef(local, field)),
+                                Jimple.v().newInstanceFieldRef(local, field.makeRef())),
                         unit);
                 return getLocalReferenceForEntity(entity, containerClass,
                         containerLocal, body, unit, options); // FIXME!
@@ -223,7 +223,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
                             Jimple.v().newAssignStmt(
                                     containerLocal,
                                     Jimple.v()
-                                            .newInstanceFieldRef(local, field)),
+                                            .newInstanceFieldRef(local, field.makeRef())),
                             unit);
 
             //   Local containerLocal = Jimple.v().newLocal("container",
@@ -322,7 +322,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
                                         Jimple.v().newAssignStmt(
                                                 Jimple.v().newInstanceFieldRef(
                                                         body.getThisLocal(),
-                                                        field),
+                                                        field.makeRef()),
                                                 body.getParameterLocal(0)),
                                         insertPoint);
                     } else {
@@ -332,7 +332,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
                         body.getUnits().insertBefore(
                                 Jimple.v().newAssignStmt(
                                         Jimple.v().newInstanceFieldRef(
-                                                body.getThisLocal(), field),
+                                                body.getThisLocal(), field.makeRef()),
                                         NullConstant.v()), insertPoint);
                     }
                 }
@@ -450,7 +450,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
             return Jimple.v().newInstanceFieldRef(
                     baseLocal,
                     theClass.getFieldByName(ModelTransformer
-                            .getContainerFieldName()));
+                            .getContainerFieldName()).makeRef());
         } else {
             DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
             FieldRef ref = (FieldRef) stmt.getRightOp();

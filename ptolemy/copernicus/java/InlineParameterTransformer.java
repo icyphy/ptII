@@ -481,7 +481,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                 // Create a new two-argument constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
                                         (Local) r.getBase(),
-                                        constructorWithoutToken, r.getArg(0),
+                                        constructorWithoutToken.makeRef(), r.getArg(0),
                                         r.getArg(1)));
 
                                 // Call setToken with the actual value of the parameter
@@ -514,7 +514,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                                                         .newVirtualInvokeExpr(
                                                                                 (Local) r
                                                                                         .getBase(),
-                                                                                PtolemyUtilities.variableSetTokenMethod,
+                                                                                PtolemyUtilities.variableSetTokenMethod.makeRef(),
                                                                                 tokenLocal)),
                                                 stmt);
                                 doneSomething = true;
@@ -542,7 +542,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                             .setValue(Jimple.v()
                                                     .newInstanceFieldRef(
                                                             containerLocal,
-                                                            tokenField));
+                                                            tokenField.makeRef()));
                                 }
 
                                 doneSomething = true;
@@ -587,7 +587,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                                                         .v()
                                                                         .newInterfaceInvokeExpr(
                                                                                 typeLocal,
-                                                                                PtolemyUtilities.typeConvertMethod,
+                                                                                PtolemyUtilities.typeConvertMethod.makeRef(),
                                                                                 r
                                                                                         .getArg(0))),
                                                 stmt);
@@ -610,7 +610,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                                                         .v()
                                                                         .newInstanceFieldRef(
                                                                                 containerLocal,
-                                                                                tokenField),
+                                                                                tokenField.makeRef()),
                                                                 tokenLocal),
                                                 stmt);
 
@@ -654,10 +654,10 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                                 tokenLocal,
                                                 Jimple.v().newInstanceFieldRef(
                                                         containerLocal,
-                                                        tokenField)), stmt);
+                                                        tokenField.makeRef())), stmt);
                                 box.setValue(Jimple.v().newVirtualInvokeExpr(
                                         tokenLocal,
-                                        PtolemyUtilities.toStringMethod));
+                                        PtolemyUtilities.toStringMethod.makeRef()));
                                 doneSomething = true;
 
                                 // FIXME null result => ""
@@ -721,7 +721,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                                                         .v()
                                                                         .newInstanceFieldRef(
                                                                                 containerLocal,
-                                                                                tokenField),
+                                                                                tokenField.makeRef()),
                                                                 tokenLocal));
                                 doneSomething = true;
                             } else if (r.getMethod().getName().equals("update")) {
@@ -807,8 +807,8 @@ public class InlineParameterTransformer extends SceneTransformer implements
 
                                 box.setValue(Jimple.v().newInstanceFieldRef(
                                         containerLocal,
-                                        (SootField) attributeToValueFieldMap
-                                                .get(attribute)));
+                                        ((SootField) attributeToValueFieldMap
+                                                .get(attribute)).makeRef()));
                                 doneSomething = true;
                             } else if (r.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.setExpressionMethod
@@ -837,8 +837,8 @@ public class InlineParameterTransformer extends SceneTransformer implements
                                                                         .v()
                                                                         .newInstanceFieldRef(
                                                                                 containerLocal,
-                                                                                (SootField) attributeToValueFieldMap
-                                                                                        .get(attribute)),
+                                                                                ((SootField) attributeToValueFieldMap
+                                                                                .get(attribute)).makeRef()),
                                                                 r.getArg(0)));
                                 doneSomething = true;
                             } else if (r.getMethod().getName().equals(

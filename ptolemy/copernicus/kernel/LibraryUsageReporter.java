@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import soot.EntryPoints;
 import soot.HasPhaseOptions;
 import soot.Hierarchy;
 import soot.PhaseOptions;
@@ -50,11 +51,12 @@ import soot.ValueBox;
 import soot.jimple.CastExpr;
 import soot.jimple.InstanceOfExpr;
 import soot.jimple.toolkits.callgraph.CallGraph;
+import soot.jimple.toolkits.callgraph.CallGraphBuilder;
 import soot.jimple.toolkits.callgraph.Edge;
 import soot.jimple.toolkits.callgraph.EdgePredicate;
-import soot.jimple.toolkits.callgraph.EntryPoints;
 import soot.jimple.toolkits.callgraph.Filter;
 import soot.jimple.toolkits.callgraph.ReachableMethods;
+import soot.jimple.toolkits.pointer.DumbPointerAnalysis;
 
 //////////////////////////////////////////////////////////////////////////
 //// LibraryUsageReporter
@@ -101,6 +103,8 @@ public class LibraryUsageReporter extends SceneTransformer implements
                 + phaseName + ", " + options + ")");
         Scene.v().releaseCallGraph();
 
+        CallGraphBuilder cg = new CallGraphBuilder( DumbPointerAnalysis.v(), true );
+        cg.build();
         CallGraph callGraph = Scene.v().getCallGraph();
         ReachableMethods reachableMethods = new ReachableMethods(callGraph,
                 EntryPoints.v().application());

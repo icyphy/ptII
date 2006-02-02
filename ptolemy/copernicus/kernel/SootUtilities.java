@@ -59,7 +59,9 @@ import soot.Scene;
 import soot.ShortType;
 import soot.SootClass;
 import soot.SootField;
+import soot.SootFieldRef;
 import soot.SootMethod;
+import soot.SootMethodRef;
 import soot.Type;
 import soot.Unit;
 import soot.Value;
@@ -274,7 +276,7 @@ public class SootUtilities {
             units.insertBefore(Jimple.v().newAssignStmt(local, newValue),
                     insertPoint);
 
-            FieldRef fieldRef = Jimple.v().newStaticFieldRef(theField);
+            FieldRef fieldRef = Jimple.v().newStaticFieldRef(theField.makeRef());
             units.insertBefore(Jimple.v().newAssignStmt(fieldRef, local),
                     insertPoint);
         } else {
@@ -297,7 +299,7 @@ public class SootUtilities {
                         insertPoint);
 
                 FieldRef fieldRef = Jimple.v().newInstanceFieldRef(
-                        body.getThisLocal(), theField);
+                        body.getThisLocal(), theField.makeRef());
                 units.insertBefore(Jimple.v().newAssignStmt(fieldRef, local),
                         insertPoint);
             }
@@ -400,14 +402,14 @@ public class SootUtilities {
      */
     public static void changeTypesInMethods(SootClass theClass,
             SootClass oldClass, SootClass newClass) {
-        //  System.out.println("fixing references on " + theClass);
-        //  System.out.println("replacing " + oldClass + " with " + newClass);
+        // System.out.println("fixing references on " + theClass);
+        // System.out.println("replacing " + oldClass + " with " + newClass);
         ArrayList methodList = new ArrayList(theClass.getMethods());
 
         for (Iterator methods = methodList.iterator(); methods.hasNext();) {
             SootMethod newMethod = (SootMethod) methods.next();
 
-            //   System.out.println("newMethod = " + newMethod.getSignature());
+            // System.out.println("newMethod = " + newMethod.getSignature());
             Type returnType = newMethod.getReturnType();
 
             if (returnType instanceof RefType
@@ -455,6 +457,7 @@ public class SootUtilities {
             while (j.hasNext()) {
                 Unit unit = (Unit) j.next();
                 Iterator boxes = unit.getUseAndDefBoxes().iterator();
+                // System.out.println("unit = " + unit);
 
                 while (boxes.hasNext()) {
                     ValueBox box = (ValueBox) boxes.next();
@@ -463,21 +466,46 @@ public class SootUtilities {
                     if (value instanceof FieldRef) {
                         // Fix references to fields
                         FieldRef r = (FieldRef) value;
+                        SootFieldRef fieldRef = r.getFieldRef();
+                        if(fieldRef.type() instanceof RefType) {
+                            RefType fieldType = (RefType)fieldRef.type();
+                            SootClass fieldClass = fieldType.getSootClass();
+                            if(fieldClass == oldClass) {
+                                r.setFieldRef(
+                                        Scene.v().makeFieldRef(
+                                                fieldRef.declaringClass(),
+                                                fieldRef.name(),
+                                                RefType.v(newClass),
+                                                fieldRef.isStatic()));
+                            }
+                            fieldRef = r.getFieldRef();
+                        }
 
-                        if (r.getField().getDeclaringClass() == oldClass) {
-                            r.setField(newClass.getFieldByName(r.getField()
-                                    .getName()));
-
-                            //   System.out.println("fieldRef = " +
-                            //              box.getValue());
-                        } else if (r.getField().getDeclaringClass().getName()
+                        if(fieldRef.declaringClass() == oldClass) {
+                            // We might also have a reference to a field
+                            // which is not actually declared in the
+                            // oldclass, in which case, we just fix up
+                            // the ref to point to the new super class
+                            r.setFieldRef(Scene.v().makeFieldRef(
+                                                  newClass,
+                                                  fieldRef.name(),
+                                                  fieldRef.type(),
+                                                  fieldRef.isStatic()));
+                        } else if (fieldRef.declaringClass().getName()
                                 .startsWith(oldClass.getName())) {
                             SootClass changeClass = _getInnerClassCopy(
                                     oldClass, r.getField().getDeclaringClass(),
                                     newClass);
-                            r.setField(changeClass.getFieldByName(r.getField()
-                                    .getName()));
-                        }
+                            r.setFieldRef(changeClass.getFieldByName(r.getField()
+                                            .getName()).makeRef());
+                        } else if (r.getField().getDeclaringClass() == oldClass) {
+                            r.setFieldRef(
+                                    newClass.getFieldByName(
+                                            r.getField().getName()).makeRef());
+
+                            //   System.out.println("fieldRef = " +
+                            //              box.getValue());
+                        }                   
                     } else if (value instanceof CastExpr) {
                         // Fix casts
                         CastExpr r = (CastExpr) value;
@@ -490,7 +518,7 @@ public class SootUtilities {
                             if (refClass == oldClass) {
                                 r.setCastType(RefType.v(newClass));
 
-                                //    System.out.println("newValue = " +
+                                // System.out.println("newValue = " +
                                 //        box.getValue());
                             } else if (refClass.getName().startsWith(
                                     oldClass.getName())) {
@@ -522,17 +550,20 @@ public class SootUtilities {
                     } else if (value instanceof InvokeExpr) {
                         // Fix up the method invokes.
                         InvokeExpr r = (InvokeExpr) value;
-
+                        
+                        // System.out.println("oldDeclarer = " + r.getMethod().getDeclaringClass());
                         if (r.getMethod().getDeclaringClass() == oldClass) {
-                            r.setMethod(newClass.getMethod(r.getMethod()
-                                    .getSubSignature()));
+                            r.setMethodRef(newClass.getMethod(r.getMethod()
+                                            .getSubSignature()).makeRef());
+                            // System.out.println("newValue = " +
+                            // box.getValue());
                         } else if (r.getMethod().getDeclaringClass().getName()
                                 .startsWith(oldClass.getName())) {
                             SootClass changeClass = _getInnerClassCopy(
                                     oldClass,
                                     r.getMethod().getDeclaringClass(), newClass);
-                            r.setMethod(changeClass.getMethod(r.getMethod()
-                                    .getSubSignature()));
+                            r.setMethodRef(changeClass.getMethod(r.getMethod()
+                                            .getSubSignature()).makeRef());
                         }
                     } else if (value instanceof NewExpr) {
                         // Fix up the object creations.
@@ -556,8 +587,6 @@ public class SootUtilities {
                     //   System.out.println("class = " +
                     //            value.getClass().getName());
                 }
-
-                //   System.out.println("unit = " + unit);
             }
         }
     }
@@ -677,7 +706,7 @@ public class SootUtilities {
 
         // Set the field.
         units.insertAfter(Jimple.v().newAssignStmt(
-                Jimple.v().newInstanceFieldRef(thisLocal, field), castLocal),
+                                  Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef()), castLocal),
                 insertPoint);
         return field;
     }
@@ -752,7 +781,7 @@ public class SootUtilities {
                         Jimple.v().newNewExpr(exceptionType)), unit);
         body.getUnits().insertBefore(
                 Jimple.v().newInvokeStmt(
-                        Jimple.v().newSpecialInvokeExpr(local, initMethod,
+                        Jimple.v().newSpecialInvokeExpr(local, initMethod.makeRef(),
                                 StringConstant.v(string))), unit);
         return local;
     }
@@ -829,7 +858,7 @@ public class SootUtilities {
         InvokeExpr constructorExpr = (InvokeExpr) constructorStmt
                 .getInvokeExpr();
         Stmt insertStmt = Jimple.v().newInvokeStmt(
-                Jimple.v().newStaticInvokeExpr(staticConstructorMethod,
+                Jimple.v().newStaticInvokeExpr(staticConstructorMethod.makeRef(),
                         constructorExpr.getArgs()));
         clinitUnits.insertBefore(insertStmt, insertPoint);
 
@@ -888,7 +917,8 @@ public class SootUtilities {
                     if (local == thisLocal) {
                         System.out.println("fixing invoke = " + expr);
                         box.setValue(Jimple.v().newStaticInvokeExpr(
-                                expr.getMethod(), expr.getArgs()));
+                                             expr.getMethod().makeRef(),
+                                             expr.getArgs()));
                     }
                 } else if (box.getValue() instanceof InstanceFieldRef) {
                     InstanceFieldRef expr = (InstanceFieldRef) box.getValue();
@@ -897,7 +927,7 @@ public class SootUtilities {
                     if (local == thisLocal) {
                         System.out.println("fixing field = " + expr);
                         box.setValue(Jimple.v().newStaticFieldRef(
-                                expr.getField()));
+                                             expr.getField().makeRef()));
                     }
                 }
             }
@@ -1091,13 +1121,13 @@ public class SootUtilities {
                 InvokeExpr invokeExpr;
 
                 if (newMethod.isStatic()) {
-                    invokeExpr = Jimple.v().newStaticInvokeExpr(oldMethod,
+                    invokeExpr = Jimple.v().newStaticInvokeExpr(oldMethod.makeRef(),
                             parameterList);
                 } else {
                     Local thisLocal = newBody.getThisLocal();
                     parameterList.remove(thisLocal);
                     invokeExpr = Jimple.v().newVirtualInvokeExpr(thisLocal,
-                            oldMethod, parameterList);
+                            oldMethod.makeRef(), parameterList);
                 }
 
                 invokeStmt = Jimple.v().newInvokeStmt(invokeExpr);
@@ -1114,13 +1144,13 @@ public class SootUtilities {
                 newBody.getLocals().add(returnValueLocal);
 
                 if (newMethod.isStatic()) {
-                    invokeExpr = Jimple.v().newStaticInvokeExpr(oldMethod,
+                    invokeExpr = Jimple.v().newStaticInvokeExpr(oldMethod.makeRef(),
                             parameterList);
                 } else {
                     Local thisLocal = newBody.getThisLocal();
                     parameterList.remove(thisLocal);
                     invokeExpr = Jimple.v().newVirtualInvokeExpr(thisLocal,
-                            oldMethod, parameterList);
+                            oldMethod.makeRef(), parameterList);
                 }
 
                 invokeStmt = Jimple.v().newAssignStmt(returnValueLocal,
@@ -1148,9 +1178,34 @@ public class SootUtilities {
 
             while (j.hasNext()) {
                 Stmt stmt = (Stmt) j.next();
+                Iterator boxes = stmt.getUseAndDefBoxes().iterator();
 
+                while (boxes.hasNext()) {
+                    ValueBox box = (ValueBox) boxes.next();
+                    Value value = box.getValue();
+
+                    if (value instanceof FieldRef) {
+                        // Fix references to fields
+                        FieldRef r = (FieldRef) value;
+                        SootFieldRef fieldRef = r.getFieldRef();
+
+                        if(r.getField().getDeclaringClass() != superClass &&
+                                fieldRef.declaringClass() == superClass) {
+                            // We might also have a reference to a method
+                            // which is not actually declared in the
+                            // superclass, in which case, we just fix up
+                            // the ref to point to the new super class
+                            r.setFieldRef(Scene.v().makeFieldRef(
+                                                        superClass.getSuperclass(),
+                                                        fieldRef.name(),
+                                                        fieldRef.type(),
+                                                        fieldRef.isStatic()));
+                        }
+                    }
+                }
                 if (stmt.containsInvokeExpr()) {
                     InvokeExpr invoke = (InvokeExpr) stmt.getInvokeExpr();
+                    SootMethodRef invokeMethodRef = invoke.getMethodRef();
                     SootMethod invokeMethod = invoke.getMethod();
 
                     if (invokeMethod.getDeclaringClass() == superClass) {
@@ -1210,6 +1265,17 @@ public class SootUtilities {
                         }
 
                         SiteInliner.inlineSite(invokeMethod, stmt, newMethod);
+                    } else if(invokeMethodRef.declaringClass() == superClass) {
+                        // We might also have a reference to a method
+                        // which is not actually declared in the
+                        // superclass, in which case, we just fix up
+                        // the ref to point to the new super class
+                        invoke.setMethodRef(Scene.v().makeMethodRef(
+                                               superClass.getSuperclass(),
+                                               invokeMethodRef.name(),
+                                               invokeMethodRef.parameterTypes(),
+                                               invokeMethodRef.returnType(),
+                                               invokeMethodRef.isStatic()));
                     }
                 }
             }
@@ -1547,7 +1613,7 @@ public class SootUtilities {
                     if (expr.getField() == field) {
                         System.out.println("fixing field = " + expr);
                         box.setValue(Jimple.v().newStaticFieldRef(
-                                expr.getField()));
+                                             expr.getField().makeRef()));
                     }
                 }
             }
@@ -1855,7 +1921,7 @@ public class SootUtilities {
                                 if (r.getMethod() == iteratorNextMethod) {
                                     box.setValue(Jimple.v()
                                             .newInstanceFieldRef(thisLocal,
-                                                    insertField));
+                                                    insertField.makeRef()));
                                 }
                             }
                         }
