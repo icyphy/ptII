@@ -41,7 +41,7 @@ import ptolemy.util.StringUtilities;
  *  <p>If javadoc is called with -d <i>directoryName</i>, then 
  *  documentation will be generated in <i>directoryName</i>.
  *  This doclet writes the names of all the classes for which documentation
- *  was generated in a file called allActors.txt.
+ *  was generated in a file called allNamedObjs.txt
 
  *  @author Christopher Brooks, Edward A. Lee
  *  @version $Id$
@@ -73,10 +73,17 @@ public class PtDoclet {
             throws IOException, ClassNotFoundException {
         _outputDirectory = _getOutputDirectory(root.options());
         // We cache the names of all actors for which we generate text.
-        FileWriter allActorsWriter = null;
+        FileWriter allNamedObjsWriter = null;
         try {
-            allActorsWriter = new FileWriter(
-                    _outputDirectory + File.separator + "allActors.txt");
+            File outputDirectoryFile = new File(_outputDirectory);
+            if (!outputDirectoryFile.isDirectory()) {
+                if (!outputDirectoryFile.mkdirs()) {
+                    throw new IOException("Failed to create \""
+                            + _outputDirectory + "\"");
+                }
+            }
+            allNamedObjsWriter = new FileWriter(
+                    _outputDirectory + File.separator + "allNamedObjs.txt");
 
             Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
             Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
@@ -89,11 +96,32 @@ public class PtDoclet {
                 try {
                     theClass = Class.forName(className);
                 } catch (Throwable ex) {
-                    // Print a message and move on.
-                    // FIXME: Use the doclet error handling mechanism
-                    System.err.println("Failed to process " + className + "\n"
-                            + ex);
-                    continue;
+                    // Might be an inner class.
+                    // Change the last . to a $ and try again
+                    int lastDotIndex = className.lastIndexOf(".");
+                    if (lastDotIndex != -1) {
+                        String innerClassName = 
+                            className.substring(0, lastDotIndex) + "$"
+                            + className.substring(lastDotIndex + 1);
+                        try {
+                            theClass = Class.forName(innerClassName);
+                        } catch (Throwable ex2) {
+                            // FIXME: Use the doclet error handling mechanism
+                            System.err.println("Failed to process "
+                                    + className + ", tried "
+                                    + innerClassName + "\n" 
+                                    + ex2);
+                            continue;
+                        }
+                        
+                    } else {
+                        // Print a message and move on.
+                        // FIXME: Use the doclet error handling mechanism
+                        System.err.println("Failed to process " +
+                                className + "\n"
+                                + ex);
+                        continue;
+                    }
                 }
                 if (!_namedObjClass.isAssignableFrom(theClass)) {
                     // The class does not extend TypedAtomicActor, so we skip.
@@ -109,11 +137,11 @@ public class PtDoclet {
                                              parameterClass, "property"));
                 documentation.append("</doc>\n");
                 _writeDoc(className, documentation.toString());
-                allActorsWriter.write(className + "\n");
+                allNamedObjsWriter.write(className + "\n");
             }
         } finally {
-            if (allActorsWriter != null) {
-                allActorsWriter.close();
+            if (allNamedObjsWriter != null) {
+                allNamedObjsWriter.close();
             }
         }
         return true;
