@@ -638,17 +638,20 @@ PTDOCPACKAGES = $(ALL1_4PACKAGES)
 PTDOCLET = -doclet doc.doclets.PtDoclet
 # Path relatvie to $PTII
 PTDOCFLAGS = -d doc/codeDoc
-ptdoc: doc/codeDoc/ptolemy/actor/lib/Ramp.xml	
-doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
+ptdoc: codeDoc/ptolemy/actor/lib/Ramp.xml	
+codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" -J-Xmx512m \
 			$(PTDOCFLAGS) \
 			$(PTDOCLET) \
 			$(PTDOCPACKAGES) )
 
-indexActors:
+indexActors: codeDoc/allNamedObjs.txt
 	$(ROOT)/bin/ptinvoke ptolemy.moml.filter.ActorIndex \
-		codeDoc/allActors.txt $(PTII)/ptolemy/configs/doc/models.txt codeDoc
+		codeDoc/allNamedObjs.txt $(PTII)/ptolemy/configs/doc/models.txt codeDoc
+
+codeDoc/allNamedObjs.txt: codeDoc/ptolemy/actor/lib/Ramp.xml
+
 # Note that we change into the codeDocViptos directory
 # so that the jar file is created with a subset of the full set of docs
 # so that we can use this smaller jar file instead of the full codeDoc.jar
