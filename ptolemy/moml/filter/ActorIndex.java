@@ -33,6 +33,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,9 +44,11 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,9 +111,11 @@ public class ActorIndex {
             while ( (modelName = modelReader.readLine()) != null ) {
                 // Reset the list of classes seen, read the model
                 // The filter updates the classesToBeIndexed hashMap
-                System.out.println("Parsing: " + modelName);
                 namedObjClassesSeen.reset(modelName);
-                URL modelURL = new File(modelName).toURL();
+                //URL modelURL = new File(modelName).toURL();
+                URL modelURL = FileUtilities.nameToURL(modelName, null, null);
+                System.out.println("Parsing: " + modelURL);
+
                 try {
                     parser.parse(null, modelURL); 
                 } catch (Exception ex) {
@@ -153,20 +159,60 @@ public class ActorIndex {
 
                 writer.write("<html>\n<head>\n<title>Index for "
                         + actorClassName + "</title>\n</head>\n<body>\n"
-                        + "<h2>" + actorClassName + "</h2>\n<ul>\n");
-            
+                        + "<h2>" + actorClassName + "</h2>\n"
+                        + "Below are demonstration models that use " 
+                        + actorClassName + "\n<ul>\n");
+
+                // Determine the relative path to $PTII from this
+                // file.  We need this so that we can link to the models.
+                String canonicalOutputFileName =
+                    new File(outputFileName).getCanonicalPath()
+                    .replace('\\', '/');
+
+                // Get PTII as C:/cxh/ptII
+                String ptII = null;
+                try {
+                    ptII = new URI(
+                            StringUtilities.getProperty("ptolemy.ptII.dirAsURL"))
+                        .normalize().getPath();
+                    // Under Windows, convert /C:/foo/bar to C:/foo/bar
+                    ptII = new File(ptII).getCanonicalPath().replace('\\', '/');
+                } catch (URISyntaxException ex) {
+                    throw new InternalErrorException(null, ex,
+                            "Failed to process PTII " + ptII);
+                }
+                if (ptII.length() == 0) {
+                    throw new InternalErrorException("Failed to process "
+                            + "ptolemy.ptII.dirAsURL property, ptII = null?");
+                }
+
+                String relativePath = "";
+                if (canonicalOutputFileName.startsWith(ptII)) { 
+                    // If the canonical output file name starts with ptII
+                    // we then generate a relative path
+                    String relativeOutputFileName =
+                        StringUtilities.substitute(canonicalOutputFileName,
+                                ptII, "");
+                    StringBuffer relativePathBuffer = new StringBuffer();
+                    int index = 0;
+                    while ( relativeOutputFileName.indexOf('/', index) != -1) {
+                        index = relativeOutputFileName.indexOf('/', index) + 1;
+                        relativePathBuffer.append("../");
+                    }
+                    relativePath = relativePathBuffer.toString();
+                    // Strip off the last ../
+                    relativePath = relativePath.substring(0,
+                            relativePath.length() - 3);
+                }
+
                 Iterator models = ((Set) entry.getValue()).iterator();
-                // Get the ptII directory so the path can be relative.
-                String ptII = StringUtilities.getProperty(
-                        "ptolemy.ptII.dirAsURL");
-                // Strip the leading /
-                ptII = new URL(ptII).getPath().substring(1);
                 while (models.hasNext()) {
                     String model = (String) models.next();
-                    if (model.startsWith(ptII)) {
-                        model = model.substring(ptII.length());
+                    if (model.startsWith("$CLASSPATH")) {
+                        model = model.substring(11);
                     }
-                    writer.write("<li><a href=\"" + model + "\">" + model
+                    writer.write("<li><a href=\"" + relativePath + model
+                            + "\">" + model
                         + "</a>\n");
                 }
                 writer.write("</ul>\n</body>\n</html>\n");
