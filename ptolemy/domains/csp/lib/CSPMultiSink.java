@@ -121,7 +121,8 @@ public class CSPMultiSink extends CSPActor {
                 ConditionalBranch[] branches = new ConditionalBranch[size];
 
                 for (i = 0; i < size; i++) {
-                    branches[i] = new ConditionalReceive(guards[i], input, i, i);
+                    branches[i] =
+                        new ConditionalReceive(guards[i], input, i, i);
                 }
 
                 int successfulBranch = chooseBranch(branches);
@@ -181,6 +182,7 @@ public class CSPMultiSink extends CSPActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // Array storing the number of times each branch rendezvoused.
+
+    /** Array storing the number of times each branch rendezvoused. */
     private int[] _branchCount;
 }
