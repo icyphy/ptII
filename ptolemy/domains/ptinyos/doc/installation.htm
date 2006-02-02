@@ -1,49 +1,41 @@
 <!-- $Id$ -->
 <html>
-  <head>
-    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-    <link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
-    <title>nc2moml</title>
-  </head>
-  <body>
-    <h1>nc2moml</h1> 
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II</title>
+<link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Ptolemy II PtinyOS Domain Installation Notes</h1> 
 
-    <p> <a href="http://www.tinyos.net#in_browser" target="_top">TinyOS</a> is an
-    event-driven operating system designed for sensor network nodes
-    that have very limited resources (e.g., 8K bytes of program
-    memory, 512 bytes of RAM).  TinyOS, is used, for example, on the
-    Berkeley MICA motes, which are small wireless sensor nodes.  <a
-    href="httP://nescc.sourceforge.net#in_browser" target="_top">nesC</a> is an
-    extension to the C programming language designed to embody the
-    structuring concepts and execution model of TinyOS.
+    Below are instructions for installing the tools necessary for
+    running the Viptos demos.
 
-    <p>nc2moml is used to convert nesC files (.nc) into <a
-    href="http://ptolemy.eecs.berkeley.edu/publications/papers/00/moml#in_browser"
-    target="_top">MoML</a> (.moml) files.  This will create the Viptos
-    (Ptolemy II) libraries of components that are used to assemble
-    models.  TinyOS provides a rich library of nesC components. If you
-    install TinyOS 1.x in
-    <code>$PTII/vendors/ptinyos/tinyos-1.x</code> , then the Viptos
-    (Ptolemy II) configure script will find it and automatically make
-    the TinyOS libraries available.
+    <p> These installation instructions assume that you already have
+    Viptos (or a release of Ptolemy II that includes the PtinyOS
+    domain) installed.
 
-    <h2>Installation notes</h2>
+    <p>If you are running on Windows, you must have Cygwin installed
+    with gcc 3.2.  gcc 3.3 and 3.4 on Cygwin produce .dll's that are
+    incompatible with JNI as used in the current version of Ptolemy II
+    and Viptos.  We highly recommend that you use the version of
+    cygwinDevel available <a
+    href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/cygwin.htm"
+    target="_top">here</a>.
 
-    These installation instructions assume that you already have
-    Viptos installed, and that if you are running on Windows, you
-    already have Cygwin installed.  These instructions also assume
-    that you have neither the nesC compiler nor TinyOS installed
-    already.  If you wish to use pre-existing installations, please
+    <p>We assume that you have neither the nesC compiler nor TinyOS
+    installed.  If you wish to use pre-existing installations, please
     set up the environment variables described in the steps below to
     point to the proper directories.
+
 
     <BLOCKQUOTE>
 
       <h3>Using preexisting installations of TinyOS 1.x and nesC (v1.2.2 or later)</h3>
       <ol>
         <li>If you already have TinyOS 1.x and nesC (version 1.2.2 or
-        later, from CVS or a .tar.gz distribution) and the AVR tools
-        and make (version 3.80 or later) installed, try:
+          later, from CVS or a .tar.gz distribution) and the AVR tools and
+          make (version 3.80 or later) installed, try:
 
           <pre>
 cd $PTII
@@ -54,27 +46,26 @@ ln -s <I>location_of_your_nesc_tree</I> nesc
           </pre>
         </li>
         
-        <li>Proceed to the step to <a href="#environmentVariables">Set up the
-        necessary environment variables</a> below.
-
+        <li>Proceed to the step to <a href="#environmentVariables">Set
+            up the necessary environment variables</a> below.
+          
         <li>Proceed to the step to <a
-        href="#reconfigureViptos">Reconfigure Viptos (or Ptolemy II)
-        to recognize the new paths</a>
-
-
+            href="#reconfigureViptos">Reconfigure Viptos (or Ptolemy II) to
+            recognize the new paths</a>
+          
+          
         <li>You may skip the step for configuring and installing the
-        TinyOS nesC tools.
-
-        <li>Proceed to the step to <a href="#unzip">Run the script
-        that will unzip the file that contains additional compiler
-        flags</a> and follow the rest of the instructions to running
-        <CODE>nc2moml</CODE>.
+          TinyOS nesC tools.
+          
+        <li>Proceed to the step to <a href="#unzip">Run the script that
+            will unzip the file that contains additional compiler flags</a>
+          and follow the rest of the instructions to running
+          <CODE>nc2moml</CODE>.
       </ol>
-
     </BLOCKQUOTE>
 
-    <h2>How to install nc2moml</h2>
-    
+    <h2>Installation instructions</h2>
+
     <ol>
       <li>You must install the following AVR tools:
         <ul>
@@ -240,11 +231,14 @@ rpm -ivh make-3.80tinyos-1.i386.rpm
         </ul>
         
       <li>Make a directory into which to store the source code for
-      TinyOS and nesC, for example:
+      TinyOS and nesC:
         <pre>
     mkdir -p $PTII/vendors/ptinyos
         </pre>
-	Note that <CODE>$PTII</CODE> should not have spaces in it.
+
+        The rest of these instructions assume the above path.
+
+	<p>Note that the value of <CODE>$PTII</CODE> should not have spaces in it.
         
       <li> You can either get nesC <a href="#nesCfromtargz">from the .tar.gz distribution (v1.2.2 or later)</a> or <a href="#nesCfromCVS">from CVS</a>.
 
@@ -309,7 +303,7 @@ cd $PTII/vendors/ptinyos/nesc
         </pre>
     </ol>
 
-
+    
     <li><a name="configurenesC">Configure nesc:</a>
       <pre>
 ./configure
@@ -344,13 +338,6 @@ make install
       The reason is that Cygwin mounts directories under
       </code>c:/cygwin</code> and the WinAVR binaries don't know how
       to handle that.
-      
-    <li>If you have mote hardware, you can also install the
-    appropriate cross compiler tools (AVR for mica), though this step
-    is not necessary if you are only planning on running in
-    simulation: <a href="http://www.tinyos.net/dist-1.2.0/tools#in_browser"
-    target="_top"><code>
-    http://www.tinyos.net/dist-1.2.0/tools</code></a>.
     </li>
 
     <li> We have put into the TinyOS makefiles a rule that you can run
@@ -408,18 +395,18 @@ setenv PTINYOS_MOMLROOT $PTII/vendors/ptinyos/moml
             <br>
             Set <code>PTINYOS_MOMLROOT</code> to <code>%PTII%/vendors/ptinyos/moml</code>
 
-          <p> FIXME: Necessary? If you are using Cygwin, and configure
-          has trouble finding <code>TOSROOT</code> or
-          <code>TOSDIR</code>, try expanding your <code>$PTII</code>
-          environment variable to <code>/cygdrive/c/ptII</code> or
-          something similar.  Also try expanding the
-          <code>TOSROOT</code> and <code>TOSDIR</code> environment
-          variables if you still have problems.
+          <p> Note: If you are using Cygwin, and configure has trouble
+          finding <code>TOSROOT</code> or <code>TOSDIR</code>, try
+          expanding your <code>$PTII</code> environment variable to
+          <code>/cygdrive/c/ptII</code> or something similar.  Also
+          try expanding the <code>TOSROOT</code> and
+          <code>TOSDIR</code> environment variables if you still have
+          problems.
 
       </ul>
-      </li>
+    </li>
 
-      <li> <a name"reconfigureViptos">Reconfigure Viptos</a> (or Ptolemy II) to recognize the new paths:
+    <li> <a name"reconfigureViptos">Reconfigure Viptos</a> (or Ptolemy II) to recognize the new paths:
         <pre>
 cd $PTII
 ./configure
@@ -489,68 +476,18 @@ cd <I>Location of avr rpms</I>
 rpm -force --ignoreos --nodeps -ivh *.rpm
 </pre>
 
-      </li>
+    </li>
 
-      <li><a name="unzip">Run the script</a> that will unzip the file
-      that contains additional compiler flags.  It will place "opts"
-      files into various directories in your tinyos-1.x tree.  The
-      script assumes that you have placed your tinyos-1.x tree as
-      indicated in the instructions above.
-        <pre>
-cd $PTII/ptolemy/domains/ptinyos/util
-./unzip-opts.sh
-        </pre>
+    <li> See if you have TinyOS and nesC installed correctly:
+      <pre>
+cd $TOSROOT/apps/Blink
+make pc
+./build/pc/main.exe 1
+      </pre>
 
-        <p>
-          If the executable permissions are not set correctly, run:
-        <pre>
-chmod a+x unzip-opts.sh
-        </pre>
-        then try the step above again.
-      </li>
-      
-      <li> Run the script to generate the .moml files from the .nc files.
-        <pre>
-cd $PTII/ptolemy/domains/ptinyos/util/nc2moml
-./nc2moml
-        </pre>
-
-          If the executable permissions are not set correctly, run:
-        <pre>
-chmod a+x nc2moml*
-        </pre>
-        then try the step above again.
-
-	The <CODE>nc2moml</CODE> command will take 10-30 minutes to complete.
-
-        <p> Note: The nc2moml tool requires that you build the tools in <CODE>$PTII/bin</CODE>.  Do the following and rerun the script above if they are missing:
-        <pre>
-cd $PTII/bin
-make
-        </pre>
-      </li>
-
-      <li> See if it worked:
-        <ol> 
-          <li> You should see some valid MoML code in:
-            <pre>$PTII/vendors/ptinyos/moml</pre>
-            <br>
-            The directory structure should reflect that of the TinyOS
-            directory structure.
-
-          <li> 
-            <ol>
-              <li>Try running Viptos:
-                <pre>$PTII/bin/vergil -viptos</pre>
-
-              <li>Create a new PtinyOS Graph Editor from the File |
-              New menu.
-
-              <li>Click in the left hand pane under Actors to see the
-              newly generated directory structure.
-            </ol>
-        </ol>
-    </ol>
+The Blink application should succesfully compile.  When running the
+executable, you should see TOSSIM output.  See
+$TOSROOT/doc/tutorial/lesson5.html for more information.
 
 
 </body>
