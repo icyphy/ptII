@@ -6,7 +6,7 @@
 # To compile, run make -f @modelName@.mk
 
 # Get configuration info so that we can find the C compiler
-CONFIG =	$(PTII)/mk/ptII.mk
+CONFIG =	"$(PTII)/mk/ptII.mk"
 include $(CONFIG)
 
 # We need -lm so we can get floor() for ftoi() 
