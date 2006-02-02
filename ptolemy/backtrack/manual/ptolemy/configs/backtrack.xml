@@ -18,6 +18,7 @@
             </group>
           </entity>
         </group>
+		<entity name="Backtrack" class="ptolemy.backtrack.manual.ptolemy.actor.lib.Backtrack"/>
       </entity>
     </group>
   </entity>
