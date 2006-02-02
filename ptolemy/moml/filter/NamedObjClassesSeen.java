@@ -91,8 +91,6 @@ public class NamedObjClassesSeen implements MoMLFilter {
                 Set models = null;
                 if ((models = (Set)_classesToBeIndexed.get(attributeValue)) 
                         != null) {
-                System.out.println("NamedObjClassesSeen2: " + attributeValue);
-
                     Class theClass = null;
                     try {
                         theClass = Class.forName(attributeValue);
@@ -104,7 +102,24 @@ public class NamedObjClassesSeen implements MoMLFilter {
                     }
                     if (theClass != null
                             && _namedObjClass.isAssignableFrom(theClass)) {
-                        models.add(_modelPath);
+                        if (container != null
+                                && container.getFullName().indexOf(".", 1)
+                                != -1) {
+                            // If the container is not a top level, then
+                            // link to the inner part
+                            String compositePath = _modelPath + "#" +
+                                    container.getFullName().substring(
+                                            container.getFullName()
+                                            .indexOf(".", 1) + 1);
+//                             System.out.println("NamedObjClasssesSeen: "
+//                                 + compositePath + " " + container
+//                                     + " " + element
+//                                     + " " + attributeName
+//                                     + " " + attributeValue);
+                             models.add(compositePath);
+                        } else {
+                            models.add(_modelPath);
+                        }
                     }
                 }
             }
@@ -159,12 +174,6 @@ public class NamedObjClassesSeen implements MoMLFilter {
      *  path that refres to the model.
      */
     private HashMap _classesToBeIndexed;
-
-    /** Set of classes seen the far that extend NamedOb.  Each element
-     *  is a String that is a dot separated fully qualified class
-     *  name.
-     */ 
-    //    private Set _namedObjClassesSeen;
 
     /** The relative path to the model we are parsing.
      */
