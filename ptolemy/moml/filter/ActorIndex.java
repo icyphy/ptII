@@ -100,11 +100,16 @@ public class ActorIndex {
                 classesToBeIndexed.put(className, new HashSet());
             }
 
-            // Read modelsFileName and 
+            // Read modelsFileName and parse each model, looking
+            // for classes in which we are interested.
             modelReader = new BufferedReader(
                     new FileReader(modelsFileName));
             String modelName;
             MoMLParser parser = new MoMLParser();
+
+            // Add a MoML filter that updates the values of classesToBeIndexed
+            // with models that contain classes named by the key of
+            // classesToBeIndexed
             NamedObjClassesSeen namedObjClassesSeen
                 = new NamedObjClassesSeen(classesToBeIndexed);
             parser.addMoMLFilter(namedObjClassesSeen);
@@ -149,6 +154,12 @@ public class ActorIndex {
         while (classes.hasNext()) {
             Map.Entry entry = (Map.Entry) classes.next();
             String actorClassName = (String)entry.getKey();
+            if (((Set)entry.getValue()).size() == 0) {
+                // Skip classes that are not used in a demo
+                // ptolemy.vergil.actor.DocManager checks to see if 
+                // the Idx.htm file exists before creating a link to it.
+                continue;
+            }
             BufferedWriter writer = null;
             try {
                 String outputFileName = outputDirectory + File.separator
@@ -205,6 +216,7 @@ public class ActorIndex {
                             relativePath.length() - 3);
                 }
 
+                // Loop through all the models that use this actor
                 Iterator models = ((Set) entry.getValue()).iterator();
                 while (models.hasNext()) {
                     String model = (String) models.next();
