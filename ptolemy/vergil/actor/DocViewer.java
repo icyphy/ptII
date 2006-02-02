@@ -251,7 +251,7 @@ public class DocViewer extends HTMLViewer {
         if (rating.startsWith("Red")) {
             color="#FF0000";
         } else if (rating.startsWith("Yellow")) {
-            color="#FFAA00";
+            color="#AAAA00";
         } else if (rating.startsWith("Green")) {
             color="#00FF00";
         } else if (rating.startsWith("Blue")) {
