@@ -55,7 +55,7 @@ import ptolemy.util.StringUtilities;
 //// ActorIndex
 
 /** Generate actor/demo index files.
-    For each actor that is listed in a file, generate a html file that contains
+    For each actor that is listed in a file, generate a html file that
     lists the models in which the actor appears.
     
     
