@@ -492,7 +492,7 @@ update_clean:
 	rm -f $(DERIVED_FILES)
 
 # Run javadoc, the doclet and create the Actor/Demo index 
-docs: codeDoc/tree.html codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/Ramp.xml	
+docs: codeDoc/tree.html codeDoc/ptolemy/actor/lib/Ramp.xml codeDoc/ptolemy/actor/lib/RampIdx.xml	
 javadocs: codeDoc/tree.html
 codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/plot/compat/*.java \
@@ -647,8 +647,8 @@ codeDoc/ptolemy/actor/lib/Ramp.xml:
 			$(PTDOCLET) \
 			$(PTDOCPACKAGES) )
 
-indexActors: codeDoc/ptolemy/actor/lib/Ramp.xml
-codeDoc/ptolemy/actor/lib/Ramp.xml: codeDoc/allNamedObjs.txt
+indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
+codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
 	$(ROOT)/bin/ptinvoke ptolemy.moml.filter.ActorIndex \
 		codeDoc/allNamedObjs.txt $(PTII)/ptolemy/configs/doc/models.txt codeDoc
 
