@@ -386,7 +386,7 @@ public class HTMLAbout {
      * demoURLName is scanned for links to .xml files and for links to
      * other .htm* files.  The children of demoURLName are scanned,
      * but not the grandchildren.  The names of the demos will have
-     * $PTII/ prepended. This method is used to generate a list of all
+     * $CLASSPATH/ prepended. This method is used to generate a list of all
      * demos in ptolemy/configs/doc/models.txt.
      * @param demosFileName The name of the demo file.
      * @param outputFileName The name of the file that is generated.
@@ -421,8 +421,11 @@ public class HTMLAbout {
             Iterator demos = demosSet.iterator();
             while ( demos.hasNext()) {
                 String demo = (String)(demos.next()); 
+                // Look for the value of $PTII and substitute in $CLASSPATH
+                // so that we can use FileUtilities.nameToURL() from within
+                // ptolemy.moml.filter.ActorIndex
                 fileWriter.write(
-                        StringUtilities.substitute(demo, ptII, "$PTII")
+                        StringUtilities.substitute(demo, ptII, "$CLASSPATH")
                         + "\n");
             }
         } finally {
