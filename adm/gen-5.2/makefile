@@ -1110,10 +1110,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm/modal \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/giotto/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/conversions \
@@ -1121,6 +1117,10 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/logic \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm/modal \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/giotto/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/csp \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf \
