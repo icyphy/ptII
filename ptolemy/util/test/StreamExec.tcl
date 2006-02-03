@@ -157,7 +157,8 @@ test StreamExec-2.4 {Run the same commands twice} {
         } stderr
     } stdout
     set retval 0
-    if {$stdout == {About to execute:
+
+    set result1 {About to execute:
 
         echo
         foo bar
@@ -177,34 +178,39 @@ About to execute:
         sleep
         1
 All Done
-}} {
-	set retval 1
-} else if {$stdout == {About to execute:
-
-        echo
-        foo bar
-About to execute:
-
-        sleep
-        1
-foo bar
-All Done
-About to execute:
-
-        echo
-        foo bar
-foo bar
-About to execute:
-
-        sleep
-        1
-All Done
-}} {
-	retval = 1
 }
-	if {$retval != 1} {
-	    puts "Did not match:\n$stdout"
-	}
+
+    set result2 {About to execute:
+
+        echo
+        foo bar
+About to execute:
+
+        sleep
+        1
+foo bar
+All Done
+About to execute:
+
+        echo
+        foo bar
+foo bar
+About to execute:
+
+        sleep
+        1
+All Done
+}
+
+    if {"$stdout" == "$result1" || "$stdout" == "$result2"} {
+	set retval 1
+    } else {
+	puts "Did not match any of the known good results:\n----"
+	puts $stdout
+	puts "----"
+    }
+
+
     list $retval $stderr [$streamExec getLastSubprocessReturnCode]
 } {1 {} 0}
 
@@ -213,7 +219,7 @@ All Done
 ######################################################################
 ####
 #
-test StreamExec-2.4 {Run commands in another thread and call cancel} {
+test StreamExec-2.5 {Run commands in another thread and call cancel} {
     set commands [java::new java.util.LinkedList]
     $commands add "echo AtTop"
     $commands add "sleep 10"
@@ -221,7 +227,7 @@ test StreamExec-2.4 {Run commands in another thread and call cancel} {
     $commands add "echo After10"
 
     set threadStreamExec [java::new ptolemy.util.test.ThreadStreamExec \
-	ThreadStreamExec-2.4 $commands]
+	ThreadStreamExec-2.5 $commands]
 
     set streamExec [java::field $threadStreamExec streamExec]
 
