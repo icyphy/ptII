@@ -19,4 +19,4 @@ all:
 	gcc -shared $(PTJNI_SHAREDLIBRARY_LDFLAG)  test_jni.o -fno-exceptions \
 		-o ${PTJNI_SHAREDLIBRARY_PREFIX}test.${PTJNI_SHAREDLIBRARY_SUFFIX} \
 		-lpthread -lc 
-	LD_LIBRARY_PATH=`pwd` PATH=".:${PATH}" java -classpath . Main
+	LD_LIBRARY_PATH=`pwd` PATH=".:${PATH}" java -classpath ${PTII} ptolemy.apps.jni.pthreads.Main
