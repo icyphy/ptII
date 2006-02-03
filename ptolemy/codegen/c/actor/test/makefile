@@ -83,8 +83,17 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
+# If necessary, build the actors and domains
+RAMP_CLASS = $(ROOT)/ptolemy/codegen/c/actor/lib/Ramp.class
+
+$(RAMP_CLASS): 
+	if [ ! -f $(RAMP_CLASS) ]; then \
+	    echo "Building codegen/c classes so tests work"; \
+	    cd $(ROOT)/ptolemy/codegen/c; $(MAKE) fast; \
+        fi
+
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl #test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) $(RAMP_CLASS) alljtests.tcl #test_auto
 	$(JTCLSH) alljtests.tcl
 
 # 'make clean' removes $(KRUFT)
