@@ -56,10 +56,11 @@ OTHER_FILES_TO_BE_JARED = \
 	MicaBoard.xml \
 	NCComponent.nc \
 	NCComponent.xml \
+	README-MicaBoard.xml.txt \
 	jdom-copyright.htm \
 	lib-composite.xml \
 	lib-simple.xml \
-	nesc-dump-copyright.htm \
+	nesc-copyright.htm \
 	ptinyos-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
