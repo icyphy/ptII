@@ -187,7 +187,6 @@ public class FileUtilities {
                         " "));
             }
         }
-
         return file;
     }
 
@@ -378,7 +377,21 @@ public class FileUtilities {
             }
 
             // As a last resort, try an absolute URL.
-            return new URL(name);
+
+            URL url = new URL(name);
+
+            // If we call new URL("http", null, /foo);
+            // then we get "http:/foo", which should be "http://foo"
+            // This change suggested by Dan Higgins and Kevin Kruland
+            // See kepler/src/util/URLToLocalFile.java
+            try {
+                String fixedURLAsString = 
+                        url.toString().replaceFirst("(https?:)//?", "$1//" );
+                    url = new URL( fixedURLAsString );
+                } catch( Exception e ) {
+                    // Ignore
+                }
+            return url;
         }
     }
 
