@@ -66,6 +66,50 @@ test UndoStackAttribute-2.1 {call getUndoInfo } {
 ######################################################################
 ####
 #
+test UndoStackAttribute-2.2 {call getUndoInfo on a object with depth > 2} {
+    # Edward wrote:
+    # I've just checked in a bug fix to UndoStackAttribute that
+    # strangely, meant it couldn't have worked with hierarchies
+    # deeper than 2.  I'm amazed this hasn't been noticed...
+    # The bug was introduced 9/21/04, I think during some code
+    # cleanup to make the code compatible with JDK 1.5 (?)...
+
+    set topLevel [java::new ptolemy.kernel.CompositeEntity]
+    $topLevel setName topLevel
+    set level2 [java::new ptolemy.kernel.CompositeEntity $topLevel level2]
+    set level3 [java::new ptolemy.kernel.CompositeEntity $level2 level3]
+    set level4 [java::new ptolemy.kernel.CompositeEntity $level3 level4]
+    set level5 [java::new ptolemy.kernel.CompositeEntity $level4 level5]
+
+    set topUndo [java::new ptolemy.kernel.undo.UndoStackAttribute \
+	$topLevel topUndo]
+    set undo2 [java::new ptolemy.kernel.undo.UndoStackAttribute \
+	$level2 undo2]
+    set undo3 [java::new ptolemy.kernel.undo.UndoStackAttribute \
+	$level3 undo3]
+    # No undo4 or 5, we want to go up the hierarchy
+
+    set r1 [java::call ptolemy.kernel.undo.UndoStackAttribute \
+	getUndoInfo $topLevel]
+    set r2 [java::call ptolemy.kernel.undo.UndoStackAttribute \
+	getUndoInfo $level2]
+    set r3 [java::call ptolemy.kernel.undo.UndoStackAttribute \
+	getUndoInfo $level3]
+
+    # These two should go up and return the undo3.  They used
+    # to return .toplevel._undoInfo	  
+    set r4 [java::call ptolemy.kernel.undo.UndoStackAttribute \
+	getUndoInfo $level4]
+    set r5 [java::call ptolemy.kernel.undo.UndoStackAttribute \
+	getUndoInfo $level5]
+
+    list [$r1 getFullName] [$r2 getFullName] [$r3 getFullName] \
+	[$r4 getFullName] [$r5 getFullName]
+} {.topLevel.topUndo .topLevel.level2.undo2 .topLevel.level2.level3.undo3 .topLevel.level2.level3.undo3 .topLevel.level2.level3.undo3}
+
+######################################################################
+####
+#
 test UndoStackAttribute-3.1 {Simple undo/redo test with debugging} {
     set undoAction1 [java::new ptolemy.kernel.undo.test.UndoActionTest \
 	"UndoActionTest1"]
