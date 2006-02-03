@@ -52,7 +52,6 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	create-nescdumpjar.sh \
 	unzip-opts.sh \
 	zip-opts.sh
 
