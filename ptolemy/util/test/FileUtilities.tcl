@@ -239,3 +239,12 @@ test FileUtilities-8.7 {nameToURL try to read a local stream} {
     list [expr {[$inputStream available] > 0}]
 } {1}
 
+######################################################################
+####
+#
+test FileUtilities-8.7 {nameToURL: with http:/www} {
+    set url [java::new java.net.URL http [java::null] /www]
+    set file1 [java::call ptolemy.util.FileUtilities nameToURL \
+	[$url toString] [java::null] [java::null]]
+    list [$file1 toString]
+} {http://www}
