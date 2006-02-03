@@ -414,7 +414,7 @@ public class Main extends KernelMain {
         attribute.setParameter("run", "false");
 
         //String sootArgs = attribute.getParameter("sootArgs");
-        return new String[1];
+        return new String[0];
     }
 
     private static boolean _snapshots = false;
