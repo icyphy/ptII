@@ -929,6 +929,7 @@ remote1local: $(PTII_FULL) $(GENLOGDIR)
 
 
 # caltrop requires -source 1.4
+# Move remote1doc to after rebuild so that the Actor Index tool is built.
 bldmastrcoverage:
 	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
 		PTII=/home/bldmastr/ptII \
@@ -940,12 +941,12 @@ bldmastrcoverage:
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
 		remote1distclean \
 		remote1configure \
-		remote1doc \
 		remote1distjsall \
 		remote1distjsrestore \
 		remote1build \
 		remote1distnonjsall \
 		remote1ChangeLog \
+		remote1doc \
 		remote1doccheck \
 		remote1jnlp
 
