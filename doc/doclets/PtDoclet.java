@@ -289,6 +289,10 @@ public class PtDoclet {
              } catch (ClassNotFoundException ex) {
                  // Ignored, we probably have a primitive type like boolean.
                  // Java 1.5 Type.isPrimitive() would help here.
+             } catch (Throwable throwable) {
+                 // Ignore, probably a loader error for Java3D
+                 System.out.println("Failed to finde class " + className);
+                 throwable.printStackTrace();
              }
         }
 
