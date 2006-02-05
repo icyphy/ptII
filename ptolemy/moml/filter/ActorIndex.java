@@ -107,6 +107,9 @@ public class ActorIndex {
             String modelName;
             MoMLParser parser = new MoMLParser();
 
+            // Handle backward compatibility issues
+            parser.setMoMLFilters(BackwardCompatibility.allFilters());
+
             // Add a MoML filter that updates the values of classesToBeIndexed
             // with models that contain classes named by the key of
             // classesToBeIndexed
