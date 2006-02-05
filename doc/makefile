@@ -45,7 +45,7 @@ include $(CONFIG)
 # Note that CALTROP_JARS should be before SOOT_JARS because
 # CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
-CALTROP_JARS = $(CLASSPATHSEPARATOR)$(CALTROP_DIR)/ptCal.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/saxon7.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/java_cup.jar
+CALTROP_JARS = $(CLASSPATHSEPARATOR)$(CALTROP_DIR)/ptCal.jar$(CLASSPATHSEPARATOR)$(SAXON_JAR)$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/java_cup.jar
 
 # Classpath for the PtinyOS utilities
 PTINYOS_DIR =   $(PTII)/ptolemy/domains/ptinyos
@@ -641,8 +641,10 @@ codeDoc/ptolemy/actor/lib/Ramp.xml:
 
 indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
 codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
-	$(ROOT)/bin/ptinvoke ptolemy.moml.filter.ActorIndex \
-		codeDoc/allNamedObjs.txt $(PTII)/ptolemy/configs/doc/models.txt codeDoc
+	$(JAVA) -classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		ptolemy.moml.filter.ActorIndex \
+		codeDoc/allNamedObjs.txt \
+		$(PTII)/ptolemy/configs/doc/models.txt codeDoc
 
 codeDoc/allNamedObjs.txt: codeDoc/ptolemy/actor/lib/Ramp.xml
 
