@@ -832,8 +832,7 @@ public class TableauFrame extends Top {
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
-            if (extension != null
-                    && file.getName().indexOf(".") == -1) {
+            if (extension != null && file.getName().indexOf(".") == -1) {
                 // if the user has not given the file an extension, add it
                 file = new File(file.getAbsolutePath() + extension);
             }
@@ -1096,9 +1095,9 @@ public class TableauFrame extends Top {
                     //ans so does kepler/src/exp/ptolemy/vergil/basic/
                     //BasicGraphFrame.storeSubMenus() line 2519...
 
-                    JMenuItem originalMenuItem  =
-                        (JMenuItem) action.getValue("menuItem");
-                    if (originalMenuItem!=null) {
+                    JMenuItem originalMenuItem = (JMenuItem) action
+                            .getValue("menuItem");
+                    if (originalMenuItem != null) {
                         actionCommand = originalMenuItem.getActionCommand();
                     } else {
                         actionCommand = target.getActionCommand();

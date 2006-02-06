@@ -239,12 +239,12 @@ public abstract class ActorController extends AttributeController {
     protected EditIconAction _editIconAction = new EditIconAction();
 
     /** An action that handles flipping the ports horizontally. */
-    protected RotateOrFlipPorts _flipPortsHorizonal
-            = new RotateOrFlipPorts(RotateOrFlipPorts.FLIP_HORIZONTAL, "Flip Ports Horizontally");
+    protected RotateOrFlipPorts _flipPortsHorizonal = new RotateOrFlipPorts(
+            RotateOrFlipPorts.FLIP_HORIZONTAL, "Flip Ports Horizontally");
 
     /** An action that handles flipping the ports vertically. */
-    protected RotateOrFlipPorts _flipPortsVertical
-            = new RotateOrFlipPorts(RotateOrFlipPorts.FLIP_VERTICAL, "Flip Ports Vertically");
+    protected RotateOrFlipPorts _flipPortsVertical = new RotateOrFlipPorts(
+            RotateOrFlipPorts.FLIP_VERTICAL, "Flip Ports Vertically");
 
     /** The action that handles opening an actor.  This is accessed by
      *  by ActorViewerController to create a hot key for the editor.
@@ -255,14 +255,14 @@ public abstract class ActorController extends AttributeController {
 
     /** The action that handles removing a custom icon. */
     protected RemoveIconAction _removeIconAction = new RemoveIconAction();
-    
-    /** An action that handles rotating the ports by 90 degrees. */
-    protected RotateOrFlipPorts _rotatePortsClockwise
-            = new RotateOrFlipPorts(RotateOrFlipPorts.CLOCKWISE, "Rotate Ports Clockwise");
 
     /** An action that handles rotating the ports by 90 degrees. */
-    protected RotateOrFlipPorts _rotatePortsCounterclockwise
-            = new RotateOrFlipPorts(RotateOrFlipPorts.COUNTERCLOCKWISE, "Rotate Ports Counterclockwise");
+    protected RotateOrFlipPorts _rotatePortsClockwise = new RotateOrFlipPorts(
+            RotateOrFlipPorts.CLOCKWISE, "Rotate Ports Clockwise");
+
+    /** An action that handles rotating the ports by 90 degrees. */
+    protected RotateOrFlipPorts _rotatePortsCounterclockwise = new RotateOrFlipPorts(
+            RotateOrFlipPorts.COUNTERCLOCKWISE, "Rotate Ports Counterclockwise");
 
     private LabelFigure _createPortLabelFigure(String string, Font font,
             double x, double y, int direction) {
@@ -325,15 +325,11 @@ public abstract class ActorController extends AttributeController {
     private void _createAppearanceSubmenu() {
         _editIconAction.setConfiguration(_configuration);
         _removeIconAction.setConfiguration(_configuration);
-        Action[] actions = {
-                _editIconAction, 
-                _removeIconAction,
-                _flipPortsHorizonal,
-                _flipPortsVertical,
-                _rotatePortsClockwise, 
-                _rotatePortsCounterclockwise};
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                actions, "Appearance"));
+        Action[] actions = { _editIconAction, _removeIconAction,
+                _flipPortsHorizonal, _flipPortsVertical, _rotatePortsClockwise,
+                _rotatePortsCounterclockwise };
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
+                "Appearance"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -482,7 +478,8 @@ public abstract class ActorController extends AttributeController {
                 }
 
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
-                PortSite site = new PortSite(background, port, number, count, direction);
+                PortSite site = new PortSite(background, port, number, count,
+                        direction);
                 number++;
 
                 // NOTE: previous expression for port location was:
@@ -584,8 +581,10 @@ public abstract class ActorController extends AttributeController {
                 // if it is a Settable, then its expression is shown.
                 Attribute showInfo = port.getAttribute("_showInfo");
                 try {
-                    if (showInfo instanceof Variable && !((Variable)showInfo).isStringMode()) {
-                        String value = ((Variable)showInfo).getToken().toString();
+                    if (showInfo instanceof Variable
+                            && !((Variable) showInfo).isStringMode()) {
+                        String value = ((Variable) showInfo).getToken()
+                                .toString();
                         if (toShow != null) {
                             toShow += " (" + value + ")";
                         } else {
@@ -593,18 +592,20 @@ public abstract class ActorController extends AttributeController {
                         }
                     } else if (showInfo instanceof Settable) {
                         if (toShow != null) {
-                            toShow += " (" + ((Settable)showInfo).getExpression() + ")";
+                            toShow += " ("
+                                    + ((Settable) showInfo).getExpression()
+                                    + ")";
                         } else {
-                            toShow = ((Settable)showInfo).getExpression();
+                            toShow = ((Settable) showInfo).getExpression();
                         }
                     }
                 } catch (IllegalActionException e) {
                     toShow += e.getMessage();
                 }
-                
+
                 if (toShow != null) {
-                    LabelFigure labelFigure = _createPortLabelFigure(
-                            toShow, _portLabelFont, x, y, direction);
+                    LabelFigure labelFigure = _createPortLabelFigure(toShow,
+                            _portLabelFont, x, y, direction);
                     figure.add(labelFigure);
                 }
             }
@@ -743,41 +744,39 @@ public abstract class ActorController extends AttributeController {
 
     /** An action to save this actor in a file.
      */
-//    private class SaveInFileAction extends FigureAction {
-//        /** Create a new action to save a model in a file.
-//         */
-//        public SaveInFileAction() {
-//            super("Save Actor In File");
-//            putValue("tooltip", "Save actor in a file");
-//        }
-//
-//        /** Save the target object in a file.
-//         *  @param event The action event.
-//         */
-//        public void actionPerformed(ActionEvent event) {
-//            // Find the target.
-//            super.actionPerformed(event);
-//
-//            NamedObj object = getTarget();
-//
-//            if (object instanceof Entity) {
-//                Entity entity = (Entity) object;
-//
-//                BasicGraphController controller = (BasicGraphController) getController();
-//                BasicGraphFrame frame = controller.getFrame();
-//
-//                try {
-//                    frame.saveComponentInFile(entity);
-//                } catch (Exception e) {
-//                    MessageHandler.error("Save failed.", e);
-//                }
-//            }
-//        }
-//    }
-
+    //    private class SaveInFileAction extends FigureAction {
+    //        /** Create a new action to save a model in a file.
+    //         */
+    //        public SaveInFileAction() {
+    //            super("Save Actor In File");
+    //            putValue("tooltip", "Save actor in a file");
+    //        }
+    //
+    //        /** Save the target object in a file.
+    //         *  @param event The action event.
+    //         */
+    //        public void actionPerformed(ActionEvent event) {
+    //            // Find the target.
+    //            super.actionPerformed(event);
+    //
+    //            NamedObj object = getTarget();
+    //
+    //            if (object instanceof Entity) {
+    //                Entity entity = (Entity) object;
+    //
+    //                BasicGraphController controller = (BasicGraphController) getController();
+    //                BasicGraphFrame frame = controller.getFrame();
+    //
+    //                try {
+    //                    frame.saveComponentInFile(entity);
+    //                } catch (Exception e) {
+    //                    MessageHandler.error("Save failed.", e);
+    //                }
+    //            }
+    //        }
+    //    }
     ///////////////////////////////////////////////////////////////////
     //// SaveInLibraryAction
-
     /** An action to save this actor in the library.
      */
     private class SaveInLibraryAction extends FigureAction {

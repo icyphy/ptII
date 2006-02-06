@@ -49,7 +49,7 @@ import ptolemy.vergil.icon.XMLIcon;
  @Pt.AcceptedRating Red (johnr)
  */
 public class EditIconAction extends FigureAction {
-    
+
     /** Create an action to edit an icon. */
     public EditIconAction() {
         super("Edit Custom Icon");

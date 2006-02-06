@@ -51,7 +51,7 @@ import ptolemy.moml.MoMLChangeRequest;
  @Pt.AcceptedRating Red (johnr)
  */
 public class RotateOrFlipPorts extends FigureAction {
-    
+
     /** Create an action to rotate the ports.
      *  @param direction One of CLOCKWISE, COUNTERCLOCKWISE, FLIP_HORIZONTAL, or FLIP_VERTICAL.
      *  @param label The label to put in the menu.
@@ -63,18 +63,18 @@ public class RotateOrFlipPorts extends FigureAction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** Indicator to rotate clockwise. */
     public static final int CLOCKWISE = 0;
-    
+
     /** Indicator to rotate counterclockwise. */
     public static final int COUNTERCLOCKWISE = 1;
-    
+
     /** Indicator to flip ports horizonally. */
     public static final int FLIP_HORIZONTAL = 2;
 
     /** Indicator to flip ports vertically. */
-    public static final int FLIP_VERTICAL= 3;
+    public static final int FLIP_VERTICAL = 3;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -87,65 +87,63 @@ public class RotateOrFlipPorts extends FigureAction {
         super.actionPerformed(event);
 
         final NamedObj object = getTarget();
-        
+
         String moml = "";
         if (_direction == CLOCKWISE || _direction == COUNTERCLOCKWISE) {
             int rotation = 90;
             switch (_direction) {
-            case COUNTERCLOCKWISE: 
+            case COUNTERCLOCKWISE:
                 rotation = -90;
             }
             // First determine whether the ports are already rotated.
             try {
                 Attribute attribute = object.getAttribute("_rotatePorts");
                 if (attribute instanceof Parameter) {
-                    Token token = ((Parameter)attribute).getToken();
+                    Token token = ((Parameter) attribute).getToken();
                     if (token instanceof IntToken) {
-                        rotation += ((IntToken)token).intValue();
+                        rotation += ((IntToken) token).intValue();
                     }
                 }
             } catch (IllegalActionException e) {
                 // Ignore and assume there is no prior rotation.
             }
             moml = "<property name=\"_rotatePorts\" class=\"ptolemy.data.expr.Parameter\" value=\""
-                + rotation
-                + "\"/>";
+                    + rotation + "\"/>";
         } else if (_direction == FLIP_VERTICAL) {
             // First determine whether the ports are already flipped.
             boolean flipOn = true;
             try {
                 Attribute attribute = object.getAttribute("_flipPortsVertical");
                 if (attribute instanceof Parameter) {
-                    Token token = ((Parameter)attribute).getToken();
+                    Token token = ((Parameter) attribute).getToken();
                     if (token instanceof BooleanToken) {
-                        flipOn = !((BooleanToken)token).booleanValue();
+                        flipOn = !((BooleanToken) token).booleanValue();
                     }
                 }
             } catch (IllegalActionException e) {
                 // Ignore and assume there is no prior flip.
             }
             moml = "<property name=\"_flipPortsVertical\" class=\"ptolemy.data.expr.Parameter\" value=\""
-                + flipOn
-                + "\"/>";            
+                    + flipOn + "\"/>";
         } else if (_direction == FLIP_HORIZONTAL) {
             // First determine whether the ports are already flipped.
             boolean flipOn = true;
             try {
-                Attribute attribute = object.getAttribute("_flipPortsHorizontal");
+                Attribute attribute = object
+                        .getAttribute("_flipPortsHorizontal");
                 if (attribute instanceof Parameter) {
-                    Token token = ((Parameter)attribute).getToken();
+                    Token token = ((Parameter) attribute).getToken();
                     if (token instanceof BooleanToken) {
-                        flipOn = !((BooleanToken)token).booleanValue();
+                        flipOn = !((BooleanToken) token).booleanValue();
                     }
                 }
             } catch (IllegalActionException e) {
                 // Ignore and assume there is no prior flip.
             }
             moml = "<property name=\"_flipPortsHorizontal\" class=\"ptolemy.data.expr.Parameter\" value=\""
-                + flipOn
-                + "\"/>";            
+                    + flipOn + "\"/>";
         }
-        
+
         MoMLChangeRequest request = new MoMLChangeRequest(this, object, moml);
         request.setUndoable(true);
         object.requestChange(request);
@@ -153,7 +151,7 @@ public class RotateOrFlipPorts extends FigureAction {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     /** The direction requested in the constructor. */
     private int _direction;
 }

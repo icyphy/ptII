@@ -80,9 +80,10 @@ public class RelationController extends ParameterizedNodeController {
         _getDocumentationAction = new GetDocumentationAction();
 
         // Add to the context menu.
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                _getDocumentationAction));
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

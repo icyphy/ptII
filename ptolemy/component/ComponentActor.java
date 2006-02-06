@@ -314,15 +314,14 @@ public class ComponentActor extends TypedCompositeActor implements Component {
      */
 
     //FIXME: how should I modify this mehtod.
-//    private void _createReceivers() throws IllegalActionException {
-//        Iterator ports = portList().iterator();
-//
-//        while (ports.hasNext()) {
-//            IOMethodPort onePort = (IOMethodPort) ports.next();
-//            onePort.createReceivers();
-//        }
-//    }
-
+    //    private void _createReceivers() throws IllegalActionException {
+    //        Iterator ports = portList().iterator();
+    //
+    //        while (ports.hasNext()) {
+    //            IOMethodPort onePort = (IOMethodPort) ports.next();
+    //            onePort.createReceivers();
+    //        }
+    //    }
     protected void _addRelation(ComponentRelation relation)
             throws IllegalActionException, NameDuplicationException {
     }
@@ -335,10 +334,9 @@ public class ComponentActor extends TypedCompositeActor implements Component {
 
     //private transient long _outputPortsVersion = -1;
 
-
     // Cached FunctionDependency object.
     //private FunctionDependencyOfCompositeActor _functionDependency;
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _addIcon() {

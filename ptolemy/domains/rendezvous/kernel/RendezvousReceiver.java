@@ -139,9 +139,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
             RendezvousDirector director) throws TerminateProcessException {
         Map result = null;
         try {
-            result =
-                    _getOrPutTokens(receivers, null, director, null,
-                            GET_FROM_ALL);
+            result = _getOrPutTokens(receivers, null, director, null,
+                    GET_FROM_ALL);
         } catch (IllegalActionException iae) {
         }
 
@@ -209,9 +208,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
             RendezvousDirector director) throws TerminateProcessException {
         Map result = null;
         try {
-            result =
-                    _getOrPutTokens(receivers, null, director, null,
-                            GET_FROM_ANY);
+            result = _getOrPutTokens(receivers, null, director, null,
+                    GET_FROM_ANY);
         } catch (IllegalActionException iae) {
         }
 
@@ -676,8 +674,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
         // Reset the flags for all the receivers.
         Iterator receiverIterator = receivers.iterator();
         while (receiverIterator.hasNext()) {
-            RendezvousReceiver castReceiver =
-                    (RendezvousReceiver) receiverIterator.next();
+            RendezvousReceiver castReceiver = (RendezvousReceiver) receiverIterator
+                    .next();
 
             // If the receiver does conditional get, clear the get request on
             // all the channels.
@@ -883,8 +881,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
             branchReady = true;
 
             for (int j = 0; j < receivers[i].length; j++) {
-                RendezvousReceiver receiver =
-                        (RendezvousReceiver) receivers[i][j];
+                RendezvousReceiver receiver = (RendezvousReceiver) receivers[i][j];
                 if (receiver == null) {
                     continue;
                 }
@@ -895,8 +892,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     return false;
                 }
 
-                if (beingChecked.contains(receiver) ||
-                        ready.contains(receiver)) {
+                if (beingChecked.contains(receiver) || ready.contains(receiver)) {
                     // If the receiver has been visited or is ready, do
                     // nothing.
                 } else if (notReady.contains(receiver)) {
@@ -916,9 +912,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     // Otherwise, assume the receiver is ready, and
                     // continue to check its dependencies.
 
-                    Receiver[][] farSideReceivers =
-                            isPut ? receiver._getReceivers
-                                    : receiver._putReceivers;
+                    Receiver[][] farSideReceivers = isPut ? receiver._getReceivers
+                            : receiver._putReceivers;
 
                     beingChecked.add(receiver);
                     symmetricReceivers.add(receiver);
@@ -950,9 +945,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     }
 
                     // Test the far side receivers.
-                    if (branchReady && !_checkRendezvous(farSideReceivers,
-                            !isPut, beingChecked, ready, notReady,
-                            new HashSet(), false, false, receiver)) {
+                    if (branchReady
+                            && !_checkRendezvous(farSideReceivers, !isPut,
+                                    beingChecked, ready, notReady,
+                                    new HashSet(), false, false, receiver)) {
                         branchReady = false;
                     }
 
@@ -1042,8 +1038,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
             // The token of the put to any operation, or null.
             Token token = tokens instanceof Token ? (Token) tokens : null;
             // The token array of the put to all operation, or null.
-            Token[][] tokenArray =
-                    tokens instanceof Token[][] ? (Token[][]) tokens : null;
+            Token[][] tokenArray = tokens instanceof Token[][] ? (Token[][]) tokens
+                    : null;
 
             // Test whether the cardinality of a "put to all and get from all"
             // operation is correct. If there are more channels to put to than
@@ -1060,8 +1056,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 for (int i = 0; i < getReceivers.length; i++) {
                     if (getReceivers[i] != null) {
                         for (int j = 0; j < getReceivers[i].length; j++) {
-                            RendezvousReceiver receiver =
-                                    (RendezvousReceiver) getReceivers[i][j];
+                            RendezvousReceiver receiver = (RendezvousReceiver) getReceivers[i][j];
 
                             if (receiver != null) {
                                 receiver._getWaiting = theThread;
@@ -1070,8 +1065,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
                                 if (isSymmetric) {
                                     receiver._channelIndex = i;
-                                    receiver._symmetricPutReceivers =
-                                            putReceivers;
+                                    receiver._symmetricPutReceivers = putReceivers;
                                 }
                             }
                         }
@@ -1083,8 +1077,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 for (int i = 0; i < putReceivers.length; i++) {
                     if (putReceivers[i] != null) {
                         for (int j = 0; j < putReceivers[i].length; j++) {
-                            RendezvousReceiver receiver =
-                                    (RendezvousReceiver) putReceivers[i][j];
+                            RendezvousReceiver receiver = (RendezvousReceiver) putReceivers[i][j];
 
                             if (receiver != null) {
                                 receiver._putWaiting = theThread;
@@ -1093,23 +1086,20 @@ public class RendezvousReceiver extends AbstractReceiver implements
                                 IOPort port = receiver.getContainer();
                                 if (isPutConditional) {
                                     receiver._putConditional = true;
-                                    receiver._token =
-                                            token == null ? null : port
-                                                    .convert(token);
+                                    receiver._token = token == null ? null
+                                            : port.convert(token);
                                 } else {
                                     receiver._putConditional = false;
                                     try {
                                         token = tokenArray[i][j];
                                     } catch (Throwable e) {
                                     }
-                                    receiver._token =
-                                            token == null ? null : port
-                                                    .convert(token);
+                                    receiver._token = token == null ? null
+                                            : port.convert(token);
                                 }
 
                                 if (isSymmetric) {
-                                    receiver._symmetricGetReceivers =
-                                            getReceivers;
+                                    receiver._symmetricGetReceivers = getReceivers;
                                 }
                             }
                         }
@@ -1122,11 +1112,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
             // same time, it does not matter whether the test starts from the
             // get receivers or the put receivers.
             if (cardinalityTest && getReceivers != null) {
-                rendezvousReceivers =
-                        _receiversReadyToCommit(getReceivers, false);
+                rendezvousReceivers = _receiversReadyToCommit(getReceivers,
+                        false);
             } else if (cardinalityTest) {
-                rendezvousReceivers =
-                        _receiversReadyToCommit(putReceivers, true);
+                rendezvousReceivers = _receiversReadyToCommit(putReceivers,
+                        true);
             }
 
             if (rendezvousReceivers == null) {
@@ -1176,8 +1166,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 if (receiver == null) {
                     continue;
                 }
-                if (beingChecked.contains(receiver) ||
-                        ready.contains(receiver)) {
+                if (beingChecked.contains(receiver) || ready.contains(receiver)) {
                     return i;
                 }
             }
@@ -1194,13 +1183,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *             conditional (false).
      *  @return Whether the receivers are conditional.
      */
-    private static boolean _isConditional(Receiver[][] receivers,
-            boolean isPut) {
+    private static boolean _isConditional(Receiver[][] receivers, boolean isPut) {
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
-                    RendezvousReceiver receiver =
-                            (RendezvousReceiver) receivers[i][j];
+                    RendezvousReceiver receiver = (RendezvousReceiver) receivers[i][j];
                     if (receiver != null) {
                         if (isPut) {
                             return receiver._putConditional;
@@ -1386,8 +1373,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 return null;
             }
 
-            RendezvousReceiver next =
-                    (RendezvousReceiver) zeroInDegreeIterator.next();
+            RendezvousReceiver next = (RendezvousReceiver) zeroInDegreeIterator
+                    .next();
             zeroInDegreeIterator.remove();
 
             if (next._symmetricPutReceivers != null) {
@@ -1399,8 +1386,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     for (int i = 0; i < putReceivers.length; i++) {
                         if (putReceivers[i] != null) {
                             for (int j = 0; j < putReceivers[i].length; j++) {
-                                RendezvousReceiver receiver =
-                                        (RendezvousReceiver) putReceivers[i][j];
+                                RendezvousReceiver receiver = (RendezvousReceiver) putReceivers[i][j];
 
                                 if (receiver != null
                                         && _receivers.contains(receiver)) {
@@ -1417,8 +1403,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                     int i = next._channelIndex;
                     if (i < putReceivers.length && putReceivers[i] != null) {
                         for (int j = 0; j < putReceivers[i].length; j++) {
-                            RendezvousReceiver receiver =
-                                    (RendezvousReceiver) putReceivers[i][j];
+                            RendezvousReceiver receiver = (RendezvousReceiver) putReceivers[i][j];
 
                             if (receiver != null
                                     && _receivers.contains(receiver)) {
@@ -1439,8 +1424,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
             _zeroInDegree = new HashSet();
             Iterator iterator = _receivers.iterator();
             while (iterator.hasNext()) {
-                RendezvousReceiver receiver =
-                        (RendezvousReceiver) iterator.next();
+                RendezvousReceiver receiver = (RendezvousReceiver) iterator
+                        .next();
                 if (receiver._symmetricGetReceivers == null) {
                     _zeroInDegree.add(receiver);
                 }

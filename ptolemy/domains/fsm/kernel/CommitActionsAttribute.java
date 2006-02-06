@@ -161,7 +161,7 @@ public class CommitActionsAttribute extends AbstractActionsAttribute implements
                 Integer channel = (Integer) channels.next();
                 ASTPtRootNode parseTree = (ASTPtRootNode) parseTrees.next();
                 Token token;
-                                
+
                 // In MultirateFSMDirector, the initial transition from 
                 // the initial state is taken during preinitialize() if 
                 // the initial state does not have a refinement, therefore

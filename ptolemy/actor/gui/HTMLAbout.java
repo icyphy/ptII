@@ -51,6 +51,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
+
 //////////////////////////////////////////////////////////////////////////
 //// HTMLAbout
 
@@ -128,7 +129,6 @@ public class HTMLAbout {
                     + "<code>ptolemy/configs/doc/completeDemos.htm</code>.\n");
         }
 
-
         htmlBuffer.append("</ul>\n<table>\n");
 
         _demosURLs = new LinkedList();
@@ -193,7 +193,6 @@ public class HTMLAbout {
                     "Bad configuration for " + applicationName);
         }
 
-
         htmlBuffer.append("</table>\n");
         htmlBuffer.append("</body>\n</html>\n");
         return htmlBuffer.toString();
@@ -247,21 +246,21 @@ public class HTMLAbout {
         URL newURL = null;
 
         if (event.getDescription().startsWith("about:checkCompleteDemos")) {
-            newURL = _temporaryHTMLFile("checkCompleteDemos", ".htm",
+            newURL = _temporaryHTMLFile(
+                    "checkCompleteDemos",
+                    ".htm",
                     _checkCompleteDemos(
-                            "ptolemy/configs/doc/completeDemos.htm", 
-                            _demosURLs));
+                            "ptolemy/configs/doc/completeDemos.htm", _demosURLs));
         } else if (event.getDescription().startsWith("about:checkModelSizes")) {
             // Expand all the local .xml files in the fragment
             // and check their sizes and locations
             URI aboutURI = new URI(event.getDescription());
             URL demosURL = _getDemoURL(aboutURI.getFragment());
             // Third arg is true so modelList should contain absolute URLs.
-            List modelList = _getURLs(demosURL, ".*(.htm|.html|.xml)",
-                    true, 2);
+            List modelList = _getURLs(demosURL, ".*(.htm|.html|.xml)", true, 2);
             newURL = _temporaryHTMLFile("checkModelSizes", ".htm",
-                    CheckModelSize.checkModelSize(
-                            (String[]) modelList.toArray(new String[0])));
+                    CheckModelSize.checkModelSize((String[]) modelList
+                            .toArray(new String[0])));
         } else if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
             // <a href="about:copyright">about:copyright</a>
@@ -321,16 +320,14 @@ public class HTMLAbout {
      *  @exception If there is a problem reading the demo file or writing
      *  the model file.
      */
-    public static void main(String [] args) 
-            throws IOException {
+    public static void main(String[] args) throws IOException {
         String demoFileName = "ptolemy/configs/doc/demos.htm";
         String outputFileName = "models.txt";
 
         if (args.length > 2) {
             System.err.println("Usage: [demoFileName [outputFilename]\n"
                     + "demoFileName defaults to " + demoFileName + "\n"
-                    + "outputFileName defaults to " + outputFileName +
-                    "\n");
+                    + "outputFileName defaults to " + outputFileName + "\n");
             System.exit(3);
         }
         if (args.length >= 1) {
@@ -340,7 +337,7 @@ public class HTMLAbout {
             outputFileName = args[1];
         }
         writeDemoURLs(demoFileName, outputFileName);
-    } 
+    }
 
     /** Run all the local .xml files that are linked to from an HTML file.
      *  @param demosFileName The name of the HTML file that contains links
@@ -393,15 +390,13 @@ public class HTMLAbout {
      * @exception IOException If there is a problem reading the demo file
      * or writing the output file.
      */
-    public static void writeDemoURLs(String demosFileName,
-            String outputFileName)
+    public static void writeDemoURLs(String demosFileName, String outputFileName)
             throws IOException {
         // Get PTII as C:/cxh/ptII
         String ptII = null;
         try {
-            ptII = new URI(
-                    StringUtilities.getProperty("ptolemy.ptII.dirAsURL"))
-                .normalize().getPath();
+            ptII = new URI(StringUtilities.getProperty("ptolemy.ptII.dirAsURL"))
+                    .normalize().getPath();
             // Under Windows, convert /C:/foo/bar to C:/foo/bar
             ptII = new File(ptII).getCanonicalPath().replace('\\', '/');
         } catch (URISyntaxException ex) {
@@ -419,13 +414,13 @@ public class HTMLAbout {
         try {
             fileWriter = new FileWriter(outputFileName);
             Iterator demos = demosSet.iterator();
-            while ( demos.hasNext()) {
-                String demo = (String)(demos.next()); 
+            while (demos.hasNext()) {
+                String demo = (String) (demos.next());
                 // Look for the value of $PTII and substitute in $CLASSPATH
                 // so that we can use FileUtilities.nameToURL() from within
                 // ptolemy.moml.filter.ActorIndex
-                fileWriter.write(
-                        StringUtilities.substitute(demo, ptII, "$CLASSPATH")
+                fileWriter.write(StringUtilities.substitute(demo, ptII,
+                        "$CLASSPATH")
                         + "\n");
             }
         } finally {
@@ -477,30 +472,29 @@ public class HTMLAbout {
      *  @return HTML listing demos in otherDemos that are not in completeDemos.
      */
     private static String _checkCompleteDemos(String completeDemos,
-            List otherDemos) 
-            throws IOException {
+            List otherDemos) throws IOException {
         URL demosURL = _getDemoURL(completeDemos);
         StringBuffer results = new StringBuffer(
                 "<h1>Results of checking for demos not listed in full "
-                + "demos</h1>\n"
-                + "For each of the files below, we list demos that are "
-                + "not included in <a href=\"" + demosURL + "\">"
-                + "<code>" + demosURL + "</code></a>\n");
+                        + "demos</h1>\n"
+                        + "For each of the files below, we list demos that are "
+                        + "not included in <a href=\"" + demosURL + "\">"
+                        + "<code>" + demosURL + "</code></a>\n");
         List completeDemosList = _getURLs(demosURL, ".*.xml$", true, 1);
         Iterator demosFileNames = otherDemos.iterator();
         while (demosFileNames.hasNext()) {
             String demosFileName = (String) demosFileNames.next();
             URL demoURL = _getDemoURL(demosFileName);
-            results.append("<h2><a href=\"" + demoURL + "\"><code>"
-                    + demoURL + "</code></a></h2>\n<ul>\n");
-            
+            results.append("<h2><a href=\"" + demoURL + "\"><code>" + demoURL
+                    + "</code></a></h2>\n<ul>\n");
+
             List demosList = _getURLs(demoURL, ".*.xml$", true, 0);
             Iterator demos = demosList.iterator();
-            while(demos.hasNext()) {
+            while (demos.hasNext()) {
                 String demo = (String) demos.next();
-                if ( !completeDemosList.contains(demo)) {
-                    results.append(" <li><a href=\"" + demo + "\">"
-                            + demo + "</a>\n");
+                if (!completeDemosList.contains(demo)) {
+                    results.append(" <li><a href=\"" + demo + "\">" + demo
+                            + "</a>\n");
                 }
             }
             results.append("</ul>\n");
@@ -513,8 +507,8 @@ public class HTMLAbout {
      *  @param demosURL The URL of the file containing URLs.
      *  @param regexp The regular expression, for example ".*.xml$".
      *  @return a list of relative URLS
-     */   
-    private static List _getURLs(URL demosURL, String regexp) 
+     */
+    private static List _getURLs(URL demosURL, String regexp)
             throws IOException {
         // Return relative URLS
         return _getURLs(demosURL, regexp, false, 0);
@@ -529,7 +523,7 @@ public class HTMLAbout {
      *  Recursing only makes sense if the regexp argument includes .htm* files:
      *  ".*(.htm|.html|.xml)"
      *  @return a list of Strings naming absolute or relative URLs.
-     */   
+     */
     private static List _getURLs(URL demosURL, String regexp,
             boolean absoluteURLs, int depth) throws IOException {
         StringBuffer demosBuffer = new StringBuffer();
@@ -546,8 +540,8 @@ public class HTMLAbout {
                 demosBuffer.append(inputLine);
             }
         } catch (Exception ex) {
-            System.out.println("HTMLAbout: failed to open " + demosURL
-                    + "\n" + ex);
+            System.out.println("HTMLAbout: failed to open " + demosURL + "\n"
+                    + ex);
             return new LinkedList();
         } finally {
             if (in != null) {
@@ -584,36 +578,36 @@ public class HTMLAbout {
                         Exception ex1 = null;
                         try {
                             model = (new URI(demosURLParent + modelLink))
-                                .normalize().getPath();
+                                    .normalize().getPath();
                             // Under Windows, convert /C:/foo/bar to C:/foo/bar
-                            model = new File(model).toString().replace('\\', '/');
-                       } catch (URISyntaxException ex) {
+                            model = new File(model).toString().replace('\\',
+                                    '/');
+                        } catch (URISyntaxException ex) {
                             ex1 = ex;
                         }
                         if (model == null) {
                             try {
                                 // Could be a jar url
                                 model = MoMLApplication.specToURL(modelLink)
-                                    .toString();
+                                        .toString();
                             } catch (Exception ex) {
                                 if (modelLink.startsWith("/")) {
                                     modelLink = modelLink.substring(1);
                                     try {
-                                        model = MoMLApplication.specToURL(modelLink)
-                                            .toString();
+                                        model = MoMLApplication.specToURL(
+                                                modelLink).toString();
                                     } catch (Exception ex2) {
                                     }
                                 } else {
-                                    String absoluteModelLink =
-                                        demosURLParent + modelLink;
+                                    String absoluteModelLink = demosURLParent
+                                            + modelLink;
                                     try {
                                         model = MoMLApplication.specToURL(
                                                 absoluteModelLink).toString();
                                     } catch (Exception ex3) {
                                         System.out.println("Failed to look up "
-                                                + demosURLParent
-                                                + modelLink + " and "
-                                                + modelLink + " and "
+                                                + demosURLParent + modelLink
+                                                + " and " + modelLink + " and "
                                                 + absoluteModelLink + "\n"
                                                 + ex1 + "\n" + ex3);
                                     }
@@ -628,16 +622,15 @@ public class HTMLAbout {
                             modelURL = new URL(model);
                         } else {
                             if (model.startsWith("file:/")) {
-                                model = model.substring(
-                                        (new String("file:/")).length());
-                            } 
+                                model = model.substring((new String("file:/"))
+                                        .length());
+                            }
                             modelURL = new File(model).toURL();
                         }
                         modelList.add(model);
-                        if (depth > 0  && model.matches(".*(.htm|.html)")) {
-                            modelList.addAll(
-                                    _getURLs(modelURL,
-                                            regexp, absoluteURLs, depth - 1));
+                        if (depth > 0 && model.matches(".*(.htm|.html)")) {
+                            modelList.addAll(_getURLs(modelURL, regexp,
+                                    absoluteURLs, depth - 1));
                         }
                     }
                 }

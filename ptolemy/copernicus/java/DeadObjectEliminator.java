@@ -93,7 +93,8 @@ public class DeadObjectEliminator extends BodyTransformer {
                 .getSubclassesOfIncluding(PtolemyUtilities.matrixTypeClass));
         set.addAll(hierarchy
                 .getSubclassesOfIncluding(PtolemyUtilities.attributeClass));
-        set.addAll(hierarchy.getSubclassesOfIncluding(PtolemyUtilities.ptParserClass));
+        set.addAll(hierarchy
+                .getSubclassesOfIncluding(PtolemyUtilities.ptParserClass));
 
         _removeDeadObjectCreation(body, set);
     }

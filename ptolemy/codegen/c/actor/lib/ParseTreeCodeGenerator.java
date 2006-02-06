@@ -239,7 +239,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 _fireCode.insert(nextIndex, "$new(String(");
                 _fireCode.append("))");
             } else if (valueType instanceof ArrayType) {
-            } else if (valueType  == BaseType.MATRIX) { 
+            } else if (valueType == BaseType.MATRIX) {
             }
 
             if (!elementType.equals(valueType)) { // find max type
@@ -373,14 +373,14 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         // First check to see if the name references a valid variable.
         ptolemy.data.Token value = null;
         String functionName = node.getFunctionName();
-        
+
         if ((functionName != null) && (_scope != null)) {
             value = _scope.get(node.getFunctionName());
         }
-        
+
         // The following block of codes applies when multirate expression is used.
         int index = functionName.indexOf("Array");
-        if (index > 0) { 
+        if (index > 0) {
             String label = value.toString();
             if (label.startsWith("object(")) {
                 label = label.substring(7, label.length() - 1);
@@ -390,10 +390,10 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 _fireCode.append(label.substring(position + 2));
                 return;
             }
-        } 
-        
+        }
+
         _fireCode.append(functionName + "(");
-        
+
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
@@ -950,7 +950,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             }
 
             try {
-                /*times =*/ ((ptolemy.data.ScalarToken) token).intValue();
+                /*times =*/((ptolemy.data.ScalarToken) token).intValue();
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException("Exponent must have a valid "
                         + "lossless conversion to integer. Integer or "
@@ -1009,7 +1009,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             }
 
             //ptolemy.data.Token nextToken = tokens[i];
-            /*ptolemy.data.Token nextToken =*/ _evaluateChild(node, i);
+            /*ptolemy.data.Token nextToken =*/_evaluateChild(node, i);
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
                 //result = result.multiply(nextToken);
@@ -1571,7 +1571,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     /** Temporary storage for the result of evaluating a child node.
      *  This is protected so that derived classes can access it.
-     */    
+     */
     protected ptolemy.data.Token _evaluatedChildToken = null;
 
     /** The fire() method code. */

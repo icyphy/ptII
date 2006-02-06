@@ -73,8 +73,8 @@ public class SideEffectAnalysis {
         Iterator methods = _unprocessedMethods.reader();
 
         CallGraph callGraph = Scene.v().getCallGraph();
-        _reachables = new ReachableMethods(callGraph, 
-                EntryPoints.v().application());
+        _reachables = new ReachableMethods(callGraph, EntryPoints.v()
+                .application());
         _reachables.update();
 
         // Process all the reachableMethods.

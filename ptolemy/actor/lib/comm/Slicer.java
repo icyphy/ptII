@@ -77,8 +77,7 @@ public class Slicer extends Transformer {
         super(container, name);
 
         input.setTypeEquals(BaseType.COMPLEX);
-        new Parameter(input, "tokenConsumptionRate", new IntToken(
-                1));
+        new Parameter(input, "tokenConsumptionRate", new IntToken(1));
         output.setTypeEquals(BaseType.BOOLEAN);
         _outputRate = new Parameter(output, "tokenProductionRate",
                 new IntToken(1));

@@ -82,7 +82,7 @@ public class Case extends ModalModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** The input port-parameter on which the control token is provided.
      *  This can have any type, and is initialized with a default value
      *  of true.
@@ -91,7 +91,7 @@ public class Case extends ModalModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Override the base class to ensure that the _default member
      *  points to the default refinement.
      *  @return A new Case.
@@ -99,11 +99,11 @@ public class Case extends ModalModel {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Case newObject = (Case)super.clone();
-        newObject._default = (Refinement)newObject.getEntity("default");
+        Case newObject = (Case) super.clone();
+        newObject._default = (Refinement) newObject.getEntity("default");
         return newObject;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -125,8 +125,10 @@ public class Case extends ModalModel {
             // Need to ensure that these relations are deleted when a
             // refinement is deleted.
             if (_controller.getRelation(controlValue) == null) {
-                Transition transition = (Transition)_controller.newRelation(controlValue);
-                transition.guardExpression.setExpression("control == " + controlValue);
+                Transition transition = (Transition) _controller
+                        .newRelation(controlValue);
+                transition.guardExpression.setExpression("control == "
+                        + controlValue);
                 transition.refinementName.setExpression(controlValue);
                 transition.preemptive.setToken(BooleanToken.TRUE);
                 if (controlValue.equals("default")) {
@@ -147,16 +149,16 @@ public class Case extends ModalModel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The one and only state. */
     protected State _state;
-    
+
     /** The default refinement. */
     protected Refinement _default;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Initialize the model with a single state.
      */
     private void _init() throws IllegalActionException,
@@ -168,10 +170,10 @@ public class Case extends ModalModel {
         // _controller.addDebugListener(this);
         // Make the controller transient (it is reconstructed
         // at construction time).
-        
+
         // Hide the directorClass parameter.
         directorClass.setVisibility(Settable.EXPERT);
-        
+
         // Create the control port.
         control = new PortParameter(this, "control");
         // FIXME: This is awkward... If I provide some
@@ -181,10 +183,9 @@ public class Case extends ModalModel {
         control.setExpression("true");
         ParameterPort port = control.getPort();
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal = new StringAttribute(port,
-                "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
         controlCardinal.setExpression("SOUTH");
-        
+
         // Create the default refinement.
         // NOTE: We do not use a TransitionRefinement because we don't
         // want the sibling input ports that come with output ports.

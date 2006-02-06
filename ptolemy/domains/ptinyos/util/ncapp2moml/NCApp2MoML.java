@@ -83,7 +83,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  &lt;<i>opts input suffix</i>&gt; \
  &lt;<i>moml output prefix</i>&gt; \
  &lt;<i>long path to file containing list of .nc files using short path</i>&gt; \
-   <i>path to MicaBoard.xml if you want the generated file to include the Wireless domain wrapper</i>
+ <i>path to MicaBoard.xml if you want the generated file to include the Wireless domain wrapper</i>
  </pre>
 
  Example:
@@ -163,90 +163,93 @@ public class NCApp2MoML {
      *  an interface IOport or connection.
      */
     public void generatePtinyOSModel(String componentName, String outputFile,
-            String directorOutputDir,
-            String opts,
-            String micaboardFile) 
+            String directorOutputDir, String opts, String micaboardFile)
             throws IllegalActionException, NameDuplicationException {
         Element root = null;
         Element director = null;
-    
+
         // Set the doc type.
         DocType plot = new DocType("entity", "-//UC Berkeley//DTD MoML 1//EN",
                 "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd");
         Document doc = null;
-            
+
         if (micaboardFile != null) {
             Element micaboard = null;
             try {
                 SAXBuilder saxbuilder = new SAXBuilder();
-                Document docWireless = saxbuilder.build(new File(micaboardFile));
-    
+                Document docWireless = saxbuilder
+                        .build(new File(micaboardFile));
+
                 Filter filter = new ContentFilter(ContentFilter.ELEMENT);
-                Iterator iteratorDocWireless = docWireless.getDescendants(filter);
-                  
+                Iterator iteratorDocWireless = docWireless
+                        .getDescendants(filter);
+
                 while (iteratorDocWireless.hasNext()) {
-                    Element e = (Element)iteratorDocWireless.next();
+                    Element e = (Element) iteratorDocWireless.next();
                     String classname = e.getAttributeValue("class");
                     if (classname != null) {
-                        if (classname.equals("ptolemy.domains.wireless.kernel.WirelessComposite")) {
-                            micaboard = (Element)e.clone();
+                        if (classname
+                                .equals("ptolemy.domains.wireless.kernel.WirelessComposite")) {
+                            micaboard = (Element) e.clone();
                             break;
                         }
                     }
                 }
                 if (micaboard == null) {
-                    throw new
-                        Exception("Could not find WirelessComposite entry point in: "
-                                + micaboardFile);
+                    throw new Exception(
+                            "Could not find WirelessComposite entry point in: "
+                                    + micaboardFile);
                 }
-    
+
                 Iterator iteratorMicaBoard = micaboard.getDescendants(filter);
                 while (iteratorMicaBoard.hasNext()) {
-                    Element e = (Element)iteratorMicaBoard.next();
+                    Element e = (Element) iteratorMicaBoard.next();
                     String classname = e.getAttributeValue("class");
                     if (classname != null) {
-                        if (classname.equals("ptolemy.domains.ptinyos.lib.MicaCompositeActor")) {
+                        if (classname
+                                .equals("ptolemy.domains.ptinyos.lib.MicaCompositeActor")) {
                             root = e;
-                        } else if (classname.equals("ptolemy.domains.ptinyos.kernel.PtinyOSDirector")) {
+                        } else if (classname
+                                .equals("ptolemy.domains.ptinyos.kernel.PtinyOSDirector")) {
                             director = e;
                         }
                     }
                 }
                 if (root == null) {
-                    throw new
-                        Exception("Could not find MicaCompositeActor entry point in: "
-                                + micaboardFile);
+                    throw new Exception(
+                            "Could not find MicaCompositeActor entry point in: "
+                                    + micaboardFile);
                 }
-                if  (director == null) {
-                    throw new
-                        Exception("Could not find PtinyOSDirector entry point in: "
-                                + micaboardFile);
+                if (director == null) {
+                    throw new Exception(
+                            "Could not find PtinyOSDirector entry point in: "
+                                    + micaboardFile);
                 }
-                             
+
             } catch (Exception e) {
                 System.err.println("Error: " + e);
                 e.printStackTrace();
             }
-    
+
             // Create the top level entity.
             Element rootWireless = new Element("entity");
             rootWireless.setAttribute("name", componentName);
             rootWireless.setAttribute("class",
                     "ptolemy.actor.TypedCompositeActor");
-    
+
             // Create and add the Wireless Director.
             Element wirelessDirector = new Element("property");
             wirelessDirector.setAttribute("name", "Wireless Director");
             wirelessDirector.setAttribute("class",
                     "ptolemy.domains.wireless.kernel.WirelessDirector");
             rootWireless.addContent(wirelessDirector);
-                
+
             // Add the micaboard to the top level entity.
             rootWireless.addContent(micaboard);
-                
+
             // Create the document with the top level entity.
             doc = new Document(rootWireless, plot);
-    
+
         } else {
             // Set the name of this class to the name of this nesC component.
             root = new Element("entity");
@@ -254,14 +257,14 @@ public class NCApp2MoML {
             root.setAttribute("class",
                     "ptolemy.domains.ptinyos.kernel.NCCompositeActor");
             doc = new Document(root, plot);
-    
+
             director = new Element("property");
             director.setAttribute("name", "PtinyOSDirector");
             director.setAttribute("class",
                     "ptolemy.domains.ptinyos.kernel.PtinyOSDirector");
             root.addContent(director);
         }
-            
+
         // Set the PFLAGS value of the PtinyOSDirector.
         //        <property name="pflags" class="ptolemy.data.expr.StringParameter" value="-I%T/../apps/Blink">
         Element pflags = new Element("property");
@@ -269,7 +272,7 @@ public class NCApp2MoML {
         pflags.setAttribute("class", "ptolemy.data.expr.StringParameter");
         pflags.setAttribute("value", opts.trim());
         director.addContent(pflags);
-    
+
         // Set the destination directory parameter of the PtinyOSDirector.
         // <property name="destinationDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ptinyos/demo/Blink/output">
         Element destinationDirectory = new Element("property");
@@ -278,7 +281,7 @@ public class NCApp2MoML {
                 "ptolemy.data.expr.FileParameter");
         destinationDirectory.setAttribute("value", directorOutputDir);
         director.addContent(destinationDirectory);
-    
+
         //-----------------------------------------------------------------
         // Add a text annotation to tell the user to layout the graph.
         //     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -290,39 +293,39 @@ public class NCApp2MoML {
         annotation.setAttribute("class",
                 "ptolemy.vergil.kernel.attributes.TextAttribute");
         root.addContent(annotation);
-    
+
         Element text = new Element("property");
         text.setAttribute("name", "text");
         text.setAttribute("class", "ptolemy.kernel.util.StringAttribute");
         text.setAttribute("value",
-                "To automatically rearrange the component layout," 
-                + "\nselect Graph | Automatic Layout from the menu,"
-                + "\nor type Ctrl-T.");
+                "To automatically rearrange the component layout,"
+                        + "\nselect Graph | Automatic Layout from the menu,"
+                        + "\nor type Ctrl-T.");
         annotation.addContent(text);
-    
+
         Element location = new Element("property");
         location.setAttribute("name", "_location");
         location.setAttribute("class", "ptolemy.kernel.util.Location");
         location.setAttribute("value", "[20.0, 345.0]");
         annotation.addContent(location);
-    
+
         //-----------------------------------------------------------------
-            
+
         // Traverse the configuration graph and set up the data structures.
         readLinks();
-    
+
         // Create xml for each component.
         Enumeration enumeration = _componentFileTable.elements();
-    
+
         while (enumeration.hasMoreElements()) {
             _ComponentFile componentFile = (_ComponentFile) enumeration
-                .nextElement();
+                    .nextElement();
             Element entity = new Element("entity");
             entity.setAttribute("name", componentFile.getName());
             entity.setAttribute("class", componentFile.getClassName());
             root.addContent(entity);
         }
-    
+
         // Create xml for each relation.
         for (int i = 1; i <= _relations.currentCount(); i++) {
             Element relation = new Element("relation");
@@ -330,80 +333,74 @@ public class NCApp2MoML {
             relation.setAttribute("class", "ptolemy.actor.IORelation");
             root.addContent(relation);
         }
-    
+
         // Create xml for each link.
         for (int i = 0; i < _linkList.size(); i++) {
             Element xmlLink = new Element("link");
             _Link link = (_Link) _linkList.get(i);
-    
+
             // Set up From information.
             String fromType;
             String fromName;
             if (link.from instanceof Port) {
                 fromType = "port";
-                Port port = (Port)link.from;
-                fromName = port.getContainer().getName()
-                    + "."
-                    + port.getName();
+                Port port = (Port) link.from;
+                fromName = port.getContainer().getName() + "." + port.getName();
             } else if (link.from instanceof Relation) {
                 fromType = "relation";
-                Relation relation = (Relation)link.from;
+                Relation relation = (Relation) link.from;
                 fromName = relation.getName();
             } else {
                 throw new InternalErrorException(
                         "Expected link.from type to be either "
-                        + "Port or Relation.");
+                                + "Port or Relation.");
             }
-    
-                
+
             // Set up To information.
             String toType;
             String toName;
             if (link.to instanceof Port) {
                 toType = "port";
-                Port port = (Port)link.to;
-                toName = port.getContainer().getName()
-                    + "."
-                    + port.getName();
+                Port port = (Port) link.to;
+                toName = port.getContainer().getName() + "." + port.getName();
             } else if (link.to instanceof Relation) {
                 toType = "relation";
-                Relation relation = (Relation)link.to;
+                Relation relation = (Relation) link.to;
                 toName = relation.getName();
             } else {
                 throw new InternalErrorException(
                         "Expected link.to type to be either "
-                        + "Port or Relation.");
+                                + "Port or Relation.");
             }
-                
+
             // If this is a link between relations, adjust the label names.
             if (fromType.equals("relation") && toType.equals("relation")) {
                 fromType += "1";
                 toType += "2";
             }
-                
+
             xmlLink.setAttribute(fromType, fromName);
             xmlLink.setAttribute(toType, toName);
-    
+
             root.addContent(xmlLink);
         }
-    
+
         // Output the moml code to a file.
         try {
             // Open the file.
             FileOutputStream out = null;
-    
+
             if (outputFile != null) {
                 out = new FileOutputStream(outputFile);
             }
-    
+
             // Set up the serializer.
-            XMLOutputter serializer =
-                new XMLOutputter(Format.getPrettyFormat());
+            XMLOutputter serializer = new XMLOutputter(Format.getPrettyFormat());
             Format format = serializer.getFormat();
             format.setOmitEncoding(true);
             format.setLineSeparator("\n");
             serializer.setFormat(format);
-    
+
             // Write, flush, and close the file.
             if (out != null) {
                 serializer.output(doc, out);
@@ -418,7 +415,6 @@ public class NCApp2MoML {
         }
     }
 
-
     /** Read in .nc application xml files, generate .moml files.
      *  @param args A series of command line arguments, see the
      *  class comment for details.
@@ -432,8 +428,7 @@ public class NCApp2MoML {
             System.err.println("Usage: java -classpath $PTII "
                     + "ptolemy.domains.ptinyos.util.ncapp2moml.NCApp2MoMl "
                     + "<.nc source prefix> " + "<.nc xml input prefix> "
-                    + "<.nc xml input suffix> "
-                    + "<opts input suffix"
+                    + "<.nc xml input suffix> " + "<opts input suffix"
                     + "<moml output prefix> "
                     + "<long path to file containing list of .nc files using "
                     + "short path>"
@@ -441,10 +436,10 @@ public class NCApp2MoML {
                     + "to include the Wireless domain wrapper]");
             return;
         }
-    
+
         // Flag to indicate whether the Wireless wrapper should be generated.
         boolean generateWrapper = false;
-    
+
         // Extract arguments into variables.
         int index = 0;
         String ncSourcePrefix = args[index++].trim();
@@ -458,30 +453,29 @@ public class NCApp2MoML {
             micaboardFile = args[index++].trim();
             generateWrapper = true;
         }
-    
+
         _ncSourcePrefix = ncSourcePrefix;
-    
+
         try {
             // Open the file containing the list of .nc files.
             BufferedReader in = new BufferedReader(
                     new FileReader(inputfilelist));
-    
+
             String inputfilename;
-    
+
             // Read each line of the file.
             while ((inputfilename = in.readLine()) != null) {
                 // Determine the nesC xml name (with path) of the file.
                 String xmlSuffix = inputfilename.replaceFirst("\\.nc$",
                         inputSuffixNC);
-                String xmlInputFile =
-                    inputPrefix + _FILESEPARATOR + xmlSuffix;
-    
+                String xmlInputFile = inputPrefix + _FILESEPARATOR + xmlSuffix;
+
                 // Determine the opts file name (with path) of the file.
                 String optsSuffix = inputfilename.replaceFirst("\\.nc$",
                         inputSuffixOpts);
-                String optsInputFile =
-                    inputPrefix + _FILESEPARATOR + optsSuffix;
-    
+                String optsInputFile = inputPrefix + _FILESEPARATOR
+                        + optsSuffix;
+
                 // Determine the component name.
                 String[] subdirs = inputfilename.split(_FILESEPARATOR);
                 String componentName = subdirs[subdirs.length - 1];
@@ -489,28 +483,28 @@ public class NCApp2MoML {
                 if (generateWrapper) {
                     componentName += _INWIRELESS;
                 }
-    
+
                 // Determine the .moml name (with path) of the file.
                 String momlSuffix;
                 if (!generateWrapper) {
-                    momlSuffix = inputfilename.replaceFirst("\\.nc$",
-                            "\\.moml");
+                    momlSuffix = inputfilename
+                            .replaceFirst("\\.nc$", "\\.moml");
                 } else {
                     momlSuffix = inputfilename.replaceFirst("\\.nc$",
                             _INWIRELESS + "\\.moml");
                 }
                 String momlOutputFile = outputPrefix + _FILESEPARATOR
                         + momlSuffix;
-                    
+
                 // Determine the PtinyOSDirector output directory.
-                String[] directorOutputDirSubDirs = momlOutputFile.split(
-                        _FILESEPARATOR);
-                String directorOutputDir = momlOutputFile.replaceFirst(
-                        directorOutputDirSubDirs[
-                                directorOutputDirSubDirs.length - 1]
-                        + "$", "");
+                String[] directorOutputDirSubDirs = momlOutputFile
+                        .split(_FILESEPARATOR);
+                String directorOutputDir = momlOutputFile
+                        .replaceFirst(
+                                directorOutputDirSubDirs[directorOutputDirSubDirs.length - 1]
+                                        + "$", "");
                 directorOutputDir = directorOutputDir + "output";
-                
+
                 try {
                     // Parse the nesC xml file.
                     if (new NDReader().parse(xmlInputFile)) {
@@ -519,7 +513,7 @@ public class NCApp2MoML {
                         System.err.println("parse exceptions occurred: "
                                 + xmlInputFile);
                     }
-    
+
                     // Generate the .moml file.
                     try {
                         String opts = readOptsFile(optsInputFile);
@@ -541,7 +535,7 @@ public class NCApp2MoML {
                             + xmlInputFile + " because of exception: " + e);
                 }
             }
-    
+
             // Close the input file.
             in.close();
         } catch (IOException e) {
@@ -550,16 +544,15 @@ public class NCApp2MoML {
         }
     }
 
-
     /** Read in the opts file.
      *  @param optsInputFile The file to read.
      *  @return The opts string, or empty string if there is none.
      */
     public static String readOptsFile(String optsInputFile) {
-    	String opts = "";
+        String opts = "";
         try {
-            BufferedReader in =
-                new BufferedReader(new FileReader(optsInputFile));
+            BufferedReader in = new BufferedReader(
+                    new FileReader(optsInputFile));
             opts = in.readLine();
             in.close();
         } catch (Exception e) {
@@ -567,7 +560,6 @@ public class NCApp2MoML {
         }
         return opts;
     }
-
 
     /** Create all the relations and links needed to form the
      *  connection between interfaceFrom and interfaceTo.
@@ -578,18 +570,17 @@ public class NCApp2MoML {
      *  @exception NameDuplicationException If thrown while creating a relation
      *  or linking to a port.
      */
-    protected void createConnection(
-            Xinterface interfaceFrom, Xinterface interfaceTo) 
-            throws IllegalActionException, NameDuplicationException {
+    protected void createConnection(Xinterface interfaceFrom,
+            Xinterface interfaceTo) throws IllegalActionException,
+            NameDuplicationException {
         // Find ports connected to interfaces.
         Port portFrom = (Port) _interfaceIOPortTable.get(interfaceFrom);
         Port portTo = (Port) _interfaceIOPortTable.get(interfaceTo);
         if (portFrom == null || portTo == null) {
             throw new InternalErrorException(
-                    "Could not find port for From interface: "
-                    + interfaceFrom);
+                    "Could not find port for From interface: " + interfaceFrom);
         }
-    
+
         // Determine the From Relation.
         Relation relationFrom;
         if (interfaceFrom.parameters == null) {
@@ -600,7 +591,7 @@ public class NCApp2MoML {
                 if (!(o instanceof Relation)) {
                     throw new InternalErrorException(
                             "Single port should only be connected to a "
-                            + "Relation.");
+                                    + "Relation.");
                 }
                 relationFrom = (Relation) o;
             } else {
@@ -631,7 +622,7 @@ public class NCApp2MoML {
                 if (!(o instanceof ArrayList)) {
                     throw new InternalErrorException(
                             "Multiport should only be connected to an "
-                            + "ArrayList of Relation.");
+                                    + "ArrayList of Relation.");
                 }
                 ArrayList arrayList = (ArrayList) o;
                 arrayList.add(relationFrom);
@@ -647,7 +638,7 @@ public class NCApp2MoML {
             _Link link = new _Link(portFrom, relationFrom);
             _linkList.add(link);
         }
-    
+
         // Determine the To Relation.
         Relation relationTo;
         if (interfaceTo.parameters == null) {
@@ -658,7 +649,7 @@ public class NCApp2MoML {
                 if (!(o instanceof Relation)) {
                     throw new InternalErrorException(
                             "Single port should only be connected to a "
-                            + "Relation.");
+                                    + "Relation.");
                 }
                 relationTo = (Relation) o;
             } else {
@@ -689,7 +680,7 @@ public class NCApp2MoML {
                 if (!(o instanceof ArrayList)) {
                     throw new InternalErrorException(
                             "Multiport should only be connected to an "
-                            + "ArrayList of Relation.");
+                                    + "ArrayList of Relation.");
                 }
                 ArrayList arrayList = (ArrayList) o;
                 arrayList.add(relationTo);
@@ -705,70 +696,59 @@ public class NCApp2MoML {
             _Link link = new _Link(relationTo, portTo);
             _linkList.add(link);
         }
-    
+
         // Check for extra connections that might appear/disappear
         // when translating from a nesC graph to a Ptolemy graph.
-    
+
         {
             // If relationTo is connected to an input port to
             // which relationFrom is not already connected, warn
             // the user the extra connections will be formed.
-            List portListTo = ((IORelation) relationTo).
-                linkedDestinationPortList((IOPort)portTo);
-            List portListFrom = ((IORelation) relationFrom).
-                linkedDestinationPortList();
-    
+            List portListTo = ((IORelation) relationTo)
+                    .linkedDestinationPortList((IOPort) portTo);
+            List portListFrom = ((IORelation) relationFrom)
+                    .linkedDestinationPortList();
+
             for (int i = 0; i < portListTo.size(); i++) {
                 Port tempPortTo = (Port) portListTo.get(i);
                 if (!portListFrom.contains(tempPortTo)) {
-                    System.err.println(
-                            "Warning: An extra link from "
-                            + portFrom.getContainer().getName()
-                            + "."
-                            + portFrom.getName()
-                            + " to "
-                            + tempPortTo.getContainer().getName()
-                            + "."
-                            + tempPortTo.getName()
-                            + " will be formed.");
+                    System.err.println("Warning: An extra link from "
+                            + portFrom.getContainer().getName() + "."
+                            + portFrom.getName() + " to "
+                            + tempPortTo.getContainer().getName() + "."
+                            + tempPortTo.getName() + " will be formed.");
                 }
             }
         }
-        
+
         {
             // If relationTo is already connected to relationFrom,
             // warn the user that this second connection will
             // disappear in the current Ptolemy relation group
             // implementation.
-            List portListTo = ((IORelation) relationTo).
-                linkedDestinationPortList();
-            List portListFrom = ((IORelation) relationFrom).
-                linkedDestinationPortList();
+            List portListTo = ((IORelation) relationTo)
+                    .linkedDestinationPortList();
+            List portListFrom = ((IORelation) relationFrom)
+                    .linkedDestinationPortList();
             for (int i = 0; i < portListFrom.size(); i++) {
                 Port tempPortFrom = (Port) portListFrom.get(i);
                 if (portListTo.contains(tempPortFrom)) {
-                    System.err.println(
-                            "Warning: "
-                            + portFrom.getContainer().getName()
-                            + "."
-                            + portFrom.getName()
-                            + " is already connected to "
-                            + portTo.getContainer().getName()
-                            + "."
+                    System.err.println("Warning: "
+                            + portFrom.getContainer().getName() + "."
+                            + portFrom.getName() + " is already connected to "
+                            + portTo.getContainer().getName() + "."
                             + portTo.getName()
                             + ".  Additional links will be dropped.");
                 }
             }
         }
-        
-    
+
         // Create link and a _Link from relationFrom to
         // relationTo, and add the _Link to the list of links.
         relationFrom.link(relationTo);
         _Link link = new _Link(relationFrom, relationTo);
         _linkList.add(link);
     }
-
 
     /** Create an IOPort that represents this interface.
      *
@@ -778,16 +758,16 @@ public class NCApp2MoML {
      *  @exception NameDuplicationException If there is a problem creating 
      *  the port.
      */
-    protected void createInterfaceIOPort(Xinterface intf) 
+    protected void createInterfaceIOPort(Xinterface intf)
             throws IllegalActionException, NameDuplicationException {
         if (!_interfaceIOPortTable.containsKey(intf)) {
             if (!_componentActorTable.containsKey(intf.container)) {
                 throw new InternalErrorException(
                         "Could not find the actor associated with the "
-                        + "container of this interface.");
+                                + "container of this interface.");
             }
-            AtomicActor actor =
-                (AtomicActor)_componentActorTable.get(intf.container);
+            AtomicActor actor = (AtomicActor) _componentActorTable
+                    .get(intf.container);
             IOPort port;
             // Check if this is an input port.
             if (intf.provided) {
@@ -800,7 +780,7 @@ public class NCApp2MoML {
             if (intf.parameters != null) {
                 port.setMultiport(true);
             }
-            
+
             _interfaceIOPortTable.put(intf, port);
         }
     }
@@ -812,57 +792,51 @@ public class NCApp2MoML {
      *  @exception NameDuplicationException If there is a problem creating 
      *  an interface IOport or connection.
      */
-    protected void readLinks()
-            throws IllegalActionException, NameDuplicationException {
+    protected void readLinks() throws IllegalActionException,
+            NameDuplicationException {
 
         // Get the list of interfaces for this nesC component.
         ListIterator interfaces = Xnesc.interfaceList.listIterator();
-    
+
         while (interfaces.hasNext()) {
             // Get the next interface for this nesC component.
             Xinterface interfaceFrom = (Xinterface) interfaces.next();
             saveInterfaceContainer(interfaceFrom);
-    
+
             // Create IOPort for the From interface.
             createInterfaceIOPort(interfaceFrom);
-    
+
             WiringNode checkNode = Xwiring.wg.lookup(interfaceFrom);
-    
+
             if (!interfaceFrom.provided) {
                 WiringScanForwards from = new WiringScanForwards(checkNode);
                 ListIterator out = from.edges();
                 WiringScan temp = null;
-    
+
                 while (out.hasNext()) {
                     Xwire e = (Xwire) out.next();
                     temp = from.duplicate();
-    
+
                     if (temp.follow(e)) {
                         if (temp.node.ep instanceof Xinterface) {
                             Xinterface interfaceTo = (Xinterface) temp.node.ep;
                             saveInterfaceContainer(interfaceTo);
-                            
+
                             // Create IOPort for the To interface.
                             createInterfaceIOPort(interfaceTo);
-    
+
                             // Create link.
-                            createConnection(interfaceFrom,
-                                    interfaceTo);
+                            createConnection(interfaceFrom, interfaceTo);
                         } else {
-                            System.err
-                                    .println("Error: expected Xinterface in "
-                                            + "link "
-                                            + "from "
-                                            + interfaceFrom
-                                            + "to "
-                                            + temp.node.ep);
+                            System.err.println("Error: expected Xinterface in "
+                                    + "link " + "from " + interfaceFrom + "to "
+                                    + temp.node.ep);
                         }
                     }
                 }
             }
         }
     }
-
 
     /** Store the container of the interface (a component) and path to
      * source file.
@@ -873,32 +847,32 @@ public class NCApp2MoML {
      *  @exception NameDuplicationException If there is a problem creating
      *  the atomic actor.
      */
-    protected void saveInterfaceContainer(Xinterface intf) 
+    protected void saveInterfaceContainer(Xinterface intf)
             throws IllegalActionException, NameDuplicationException {
 
         Xcomponent component = (Xcomponent) intf.container;
-        
+
         // Make sure the component has not already been stored.
-        if (!_componentFileTable.containsKey(component) &&
-                !_componentActorTable.containsKey(component)) {
+        if (!_componentFileTable.containsKey(component)
+                && !_componentActorTable.containsKey(component)) {
 
             // Store the location of the component file.
             _ComponentFile componentFile = new _ComponentFile(component,
                     intf.location.filename);
             _componentFileTable.put(component, componentFile);
-    
+
             // Create an actor to which to attach this component.
-            AtomicActor actor = new AtomicActor(_compositeActor,
-                    intf.container.toString());
+            AtomicActor actor = new AtomicActor(_compositeActor, intf.container
+                    .toString());
             _componentActorTable.put(component, actor);
 
-        } else if (_componentFileTable.containsKey(component) ^
-                _componentActorTable.containsKey(component)) {
+        } else if (_componentFileTable.containsKey(component)
+                ^ _componentActorTable.containsKey(component)) {
             // ^ is XOR.
             throw new InternalErrorException(
                     "The _componentFileTable and _componentActorTable do not "
-                    + "match.  They should have dual entries for the "
-                    + "component.");
+                            + "match.  They should have dual entries for the "
+                            + "component.");
         }
     }
 
@@ -939,6 +913,7 @@ public class NCApp2MoML {
         }
 
         String _filename;
+
         Xcomponent _component;
     }
 
@@ -968,7 +943,6 @@ public class NCApp2MoML {
             return "relation" + (++_relationCounter);
         }
 
-
         private int _relationCounter = 0;
     }
 
@@ -994,7 +968,7 @@ public class NCApp2MoML {
 
     /** Contains list of Links (links between ports/relations). */
     private ArrayList _linkList = new ArrayList();
-    
+
     /** Contains (key, value) pairs of type (Xinterface,
      *  List(Relation)) if single port, or (Xinterface, Relation) if
      *  multi-port.

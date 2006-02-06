@@ -514,7 +514,7 @@ public class TypeLattice {
             StructuredType unionRep = (new UnionType(labels, types))
                     ._getRepresentative();
 
-            /*StructuredType functionRep = */ new ptolemy.data.type.FunctionType(
+            /*StructuredType functionRep = */new ptolemy.data.type.FunctionType(
                     new ptolemy.data.type.Type[0],
                     ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
 
@@ -576,7 +576,7 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
                     BaseType.COMPLEX_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);
-            
+
             _basicLattice.addEdge(BaseType.PETITE, BaseType.DOUBLE);
             _basicLattice.addEdge(BaseType.COMPLEX, BaseType.SCALAR);
             _basicLattice.addEdge(BaseType.COMPLEX, BaseType.COMPLEX_MATRIX);

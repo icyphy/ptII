@@ -112,7 +112,6 @@ public abstract class PtinyOSCompositeActor extends TypeOpaqueCompositeActor {
     /** An output port of type String. */
     public TypedIOPort packetOut;
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

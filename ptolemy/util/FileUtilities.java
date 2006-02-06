@@ -385,12 +385,12 @@ public class FileUtilities {
             // This change suggested by Dan Higgins and Kevin Kruland
             // See kepler/src/util/URLToLocalFile.java
             try {
-                String fixedURLAsString = 
-                        url.toString().replaceFirst("(https?:)//?", "$1//" );
-                    url = new URL( fixedURLAsString );
-                } catch( Exception e ) {
-                    // Ignore
-                }
+                String fixedURLAsString = url.toString().replaceFirst(
+                        "(https?:)//?", "$1//");
+                url = new URL(fixedURLAsString);
+            } catch (Exception e) {
+                // Ignore
+            }
             return url;
         }
     }

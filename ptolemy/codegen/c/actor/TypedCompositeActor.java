@@ -63,7 +63,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public TypedCompositeActor(ptolemy.actor.TypedCompositeActor component) {
         super(component);
     }
-    
+
     /** Create read and write offset variables if needed for the associated 
      *  composite actor. It delegates to the director helper of the local 
      *  director.
@@ -72,11 +72,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *   or the director helper throws it.
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();    
-        
-        Director directorHelper = (Director) _getHelper((NamedObj) 
-                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
-        code.append(directorHelper.createOffsetVariablesIfNeeded()); 
+        StringBuffer code = new StringBuffer();
+
+        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+        code.append(directorHelper.createOffsetVariablesIfNeeded());
         return code.toString();
     }
 
@@ -98,8 +98,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        Director directorHelper = (Director) _getHelper((NamedObj) 
-                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
 
         // Transfer the data to the inside.
         Iterator inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
@@ -112,7 +112,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
         // Generate the fire code by the director helper.
         code.append(directorHelper.generateFireCode());
- 
+
         // Transfer the data to the outside. 
         Iterator outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().iterator();
@@ -136,7 +136,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
-        
+
         // Reset the offset for all of the contained actors' input ports.
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
@@ -149,12 +149,12 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         // Reset the offset for all of the output ports.
         initializeCode.append(resetOutputPortsOffset());
 
-        Director directorHelper = (Director) _getHelper((NamedObj) 
-                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
-        
+        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+
         // Generate the initialize code by the director helper.
         initializeCode.append(directorHelper.generateInitializeCode());
-        
+
         return initializeCode.toString();
     }
 
@@ -166,13 +166,13 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  @exception IllegalActionException If the director helper throws it 
      *   while generating mode transition code. 
      */
-    public void generateModeTransitionCode(StringBuffer code) 
+    public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
-        Director directorHelper = (Director) _getHelper((NamedObj) 
-                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
-        directorHelper.generateModeTransitionCode(code);       
+        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
+        directorHelper.generateModeTransitionCode(code);
     }
-    
+
     /** Generate the preinitialize code of the associated composite actor.
      *  It first creates buffer size and offset map for its input ports and 
      *  output ports. It then gets the result of generatePreinitializeCode() 
@@ -187,8 +187,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         StringBuffer result = new StringBuffer();
         result.append(super.generatePreinitializeCode());
 
-        Director directorHelper = (Director) _getHelper((NamedObj) 
-                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
         result.append(directorHelper.generatePreinitializeCode());
 
         return result.toString();
@@ -203,7 +203,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *   an actor throws it while generating shared code for the actor.
      */
     public Set generateSharedCode() throws IllegalActionException {
-        
+
         Set sharedCode = new HashSet();
         sharedCode.addAll(super.generateSharedCode());
 
@@ -212,8 +212,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) 
-                    _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             sharedCode.addAll(helperObject.generateSharedCode());
         }
 
@@ -229,22 +228,21 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *   the actor.
      */
     public String generateVariableDeclaration() throws IllegalActionException {
-    	StringBuffer code = new StringBuffer();
+        StringBuffer code = new StringBuffer();
         code.append("\n/* Composite actor's variable declarations. */\n");
         code.append(super.generateVariableDeclaration());
-        
+
         // Generate variable declarations for modified variables.
-        Iterator modifiedVariables = getModifiedVariables().iterator();        
+        Iterator modifiedVariables = getModifiedVariables().iterator();
         while (modifiedVariables.hasNext()) {
             Variable variable = (Variable) modifiedVariables.next();
-            code.append("\t" + _generateType(variable.getType()));            
+            code.append("\t" + _generateType(variable.getType()));
             code.append(" " + variable.getFullName().replace('.', '_'));
             code.append(" = ");
             PtParser parser = new PtParser();
-            ASTPtRootNode parseTree = 
-                    parser.generateParseTree(variable.getExpression());
-            ParseTreeCodeGenerator parseTreeCodeGenerator = 
-                    new ParseTreeCodeGenerator();
+            ASTPtRootNode parseTree = parser.generateParseTree(variable
+                    .getExpression());
+            ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
             parseTreeCodeGenerator.evaluateParseTree(parseTree,
                     new HelperScope(variable));
             code.append(parseTreeCodeGenerator.generateFireCode());
@@ -256,8 +254,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) 
-                    _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(helperObject.generateVariableDeclaration());
         }
         return processCode(code.toString());
@@ -272,8 +269,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        Director directorHelper = (Director) _getHelper((NamedObj) 
-                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
         code.append(directorHelper.generateWrapupCode());
         return code.toString();
     }
@@ -295,14 +292,13 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) 
-                    _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             files.addAll(helperObject.getHeaderFiles());
         }
 
         return files;
     }
-    
+
     /** Return an int array of firings per global iteration. For each internal 
      *  configuration of this composite actor, the array contains a corresponding 
      *  element representing the number of firings of this composite actor per 
@@ -311,7 +307,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  @return An int array of firings per global iteration.
      */
     public int[] getFiringsPerGlobalIteration() {
-        return _firingsPerGlobalIteration;    
+        return _firingsPerGlobalIteration;
     }
 
     /** Return a set of parameters that will be modified during the execution
@@ -327,12 +323,12 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         Set set = new HashSet();
         set.addAll(super.getModifiedVariables());
 
-        Director directorHelper = (Director) _getHelper((NamedObj) 
-                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+                .getDirector());
         set.addAll(directorHelper.getModifiedVariables());
         return set;
     }
-    
+
     /** Return a two-dimensional int array of rates of this actor. For each internal 
      *  configuration of this composite actor, the array contains a corresponding 
      *  one-dimensional int array representing the rates of all ports of this 
@@ -361,13 +357,13 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             IOPort port = (IOPort) outputPorts.next();
 
             for (int i = 0; i < port.getWidthInside(); i++) {
-                Object readOffset = getReadOffset(port, i);              
+                Object readOffset = getReadOffset(port, i);
                 if (readOffset instanceof Integer) {
                     // Read offset is a number.
                     setReadOffset(port, i, new Integer(0));
                 } else {
                     // Read offset is a variable.
-                    code.append(((String) readOffset) + " = 0;\n");         
+                    code.append(((String) readOffset) + " = 0;\n");
                 }
                 Object writeOffset = getWriteOffset(port, i);
                 if (writeOffset instanceof Integer) {
@@ -375,7 +371,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                     setWriteOffset(port, i, new Integer(0));
                 } else {
                     // Write offset is a variable.
-                    code.append(((String) writeOffset) + " = 0;\n");         
+                    code.append(((String) writeOffset) + " = 0;\n");
                 }
             }
         }
@@ -391,9 +387,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *   global iteration
      */
     public void setFiringsPerGlobalIteration(int[] firingsPerGlobalIteration) {
-        _firingsPerGlobalIteration = firingsPerGlobalIteration;    
+        _firingsPerGlobalIteration = firingsPerGlobalIteration;
     }
-    
+
     /** Set the two-dimensional int array of rates of this actor. For each internal 
      *  configuration of this composite actor, the array contains a corresponding 
      *  one-dimensional int array representing the rates of all ports of this 
@@ -417,7 +413,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      * @exception IllegalActionException If thrown while getting helper
      *  or buffer size.
      */
-    protected void _createBufferSizeAndOffsetMap() throws IllegalActionException {
+    protected void _createBufferSizeAndOffsetMap()
+            throws IllegalActionException {
         super._createBufferSizeAndOffsetMap();
 
         Iterator outputPorts = ((Actor) getComponent()).outputPortList()
@@ -430,8 +427,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             int[] bufferSizes = new int[length];
             _bufferSizes.put(port, bufferSizes);
 
-            Director directorHelper = (Director) _getHelper((NamedObj) 
-                    (((Actor) getComponent()).getDirector()));
+            Director directorHelper = (Director) _getHelper((NamedObj) (((Actor) getComponent())
+                    .getDirector()));
 
             for (int i = 0; i < port.getWidthInside(); i++) {
                 // If the local director is an SDF director, then the buffer
@@ -447,17 +444,17 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
 
             Object[] writeOffsets = new Object[length];
             _writeOffsets.put(port, writeOffsets);
-            
+
             for (int i = 0; i < length; i++) {
                 setReadOffset(port, i, new Integer(0));
                 setWriteOffset(port, i, new Integer(0));
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** An int array of firings per global iteration.
      */
     private int[] _firingsPerGlobalIteration;

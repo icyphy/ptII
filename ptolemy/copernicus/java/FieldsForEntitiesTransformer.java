@@ -177,11 +177,13 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
                 Local newLocal = Jimple.v().newLocal("container",
                         RefType.v(PtolemyUtilities.entityClass));
                 body.getLocals().add(newLocal);
-                body.getUnits().insertBefore(
-                        Jimple.v().newAssignStmt(
-                                newLocal,
-                                Jimple.v().newInstanceFieldRef(
-                                        entityContainerLocal, field.makeRef())), unit);
+                body.getUnits()
+                        .insertBefore(
+                                Jimple.v().newAssignStmt(
+                                        newLocal,
+                                        Jimple.v().newInstanceFieldRef(
+                                                entityContainerLocal,
+                                                field.makeRef())), unit);
                 return newLocal;
             } else {
                 // Otherwise, the source class must be something up
@@ -196,9 +198,10 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
                         .getContainerFieldName());
                 body.getLocals().add(containerLocal);
                 body.getUnits().insertBefore(
-                        Jimple.v().newAssignStmt(containerLocal,
-                                Jimple.v().newInstanceFieldRef(local, field.makeRef())),
-                        unit);
+                        Jimple.v().newAssignStmt(
+                                containerLocal,
+                                Jimple.v().newInstanceFieldRef(local,
+                                        field.makeRef())), unit);
                 return getLocalReferenceForEntity(entity, containerClass,
                         containerLocal, body, unit, options); // FIXME!
             }
@@ -217,14 +220,11 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
             SootField field = sourceClass.getFieldByName(ModelTransformer
                     .getContainerFieldName());
             body.getLocals().add(containerLocal);
-            body
-                    .getUnits()
-                    .insertBefore(
-                            Jimple.v().newAssignStmt(
-                                    containerLocal,
-                                    Jimple.v()
-                                            .newInstanceFieldRef(local, field.makeRef())),
-                            unit);
+            body.getUnits().insertBefore(
+                    Jimple.v().newAssignStmt(
+                            containerLocal,
+                            Jimple.v().newInstanceFieldRef(local,
+                                    field.makeRef())), unit);
 
             //   Local containerLocal = Jimple.v().newLocal("container",
             //                                 RefType.v(PtolemyUtilities.entityClass));
@@ -332,7 +332,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
                         body.getUnits().insertBefore(
                                 Jimple.v().newAssignStmt(
                                         Jimple.v().newInstanceFieldRef(
-                                                body.getThisLocal(), field.makeRef()),
+                                                body.getThisLocal(),
+                                                field.makeRef()),
                                         NullConstant.v()), insertPoint);
                     }
                 }
@@ -447,10 +448,12 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements
             // classes we are generating.
             //            Entity container = (Entity)object.getContainer();
             //    return ModelTransformer.getFieldRefForEntity(container);
-            return Jimple.v().newInstanceFieldRef(
-                    baseLocal,
-                    theClass.getFieldByName(ModelTransformer
-                            .getContainerFieldName()).makeRef());
+            return Jimple.v()
+                    .newInstanceFieldRef(
+                            baseLocal,
+                            theClass.getFieldByName(
+                                    ModelTransformer.getContainerFieldName())
+                                    .makeRef());
         } else {
             DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
             FieldRef ref = (FieldRef) stmt.getRightOp();

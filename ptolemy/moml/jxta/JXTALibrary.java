@@ -619,7 +619,7 @@ public class JXTALibrary extends EntityLibrary implements ChangeListener,
             _authenticator = membershipService.apply(authCred);
 
             if (_authenticator.isReadyForJoin()) {
-                /*_credential = */ membershipService.join(_authenticator);
+                /*_credential = */membershipService.join(_authenticator);
                 System.out.println("Info: join group successful.");
 
                 //_credential.getDocument(_XML_MIME_TYPE)

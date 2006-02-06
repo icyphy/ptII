@@ -72,13 +72,12 @@ public class Wire extends DETransformer {
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-20\" y=\"-20\" " + "width=\"40\" height=\"2\" "
-                + "style=\"fill:black\"/>\n"
-                + "<rect x=\"-20\" y=\"-10\" " + "width=\"40\" height=\"2\" "
-                + "style=\"fill:black\"/>\n"
+                + "style=\"fill:black\"/>\n" + "<rect x=\"-20\" y=\"-10\" "
+                + "width=\"40\" height=\"2\" " + "style=\"fill:black\"/>\n"
                 + "<rect x=\"-20\" y=\"0\" " + "width=\"40\" height=\"2\" "
-                + "style=\"fill:black\"/>\n"
-                + "<rect x=\"-20\" y=\"10\" " + "width=\"40\" height=\"2\" "
-                + "style=\"fill:black\"/>\n" + "</svg>\n");
+                + "style=\"fill:black\"/>\n" + "<rect x=\"-20\" y=\"10\" "
+                + "width=\"40\" height=\"2\" " + "style=\"fill:black\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,9 +105,9 @@ public class Wire extends DETransformer {
                 _lastInputs[i] = input.get(i);
             }
             output.send(i, _lastInputs[i]);
-        }        
+        }
     }
-    
+
     /** Return true if there is any token on an input port.
      *  @exception IllegalActionException If the base class throws it.
      */
@@ -118,8 +117,8 @@ public class Wire extends DETransformer {
 
         for (int i = 0; i < inputWidth; i++) {
             writeRequest = writeRequest || input.hasToken(i);
-        }            
-        
+        }
+
         return writeRequest || super.prefire();
     }
 
@@ -136,5 +135,5 @@ public class Wire extends DETransformer {
     ////                         private variables                 ////
 
     /** The recorded inputs last seen. */
-    protected Token[] _lastInputs;    
+    protected Token[] _lastInputs;
 }

@@ -155,7 +155,7 @@ public class IOPortController extends AttributeController {
         // which side of the icon it should be on, and whether the
         // actor has an attribute that rotates the ports. If both
         // are present, the port attribute takes precedence.
-        
+
         boolean isInput = false;
         boolean isOutput = false;
         boolean isInputOutput = false;
@@ -172,17 +172,18 @@ public class IOPortController extends AttributeController {
         StringAttribute cardinal = null;
         int portRotation = 0;
         try {
-            cardinal = (StringAttribute) port.getAttribute("_cardinal", StringAttribute.class);
+            cardinal = (StringAttribute) port.getAttribute("_cardinal",
+                    StringAttribute.class);
             NamedObj container = port.getContainer();
             if (container != null) {
-                Parameter rotationParameter = (Parameter)
-                        container.getAttribute("_rotatePorts", Parameter.class);
+                Parameter rotationParameter = (Parameter) container
+                        .getAttribute("_rotatePorts", Parameter.class);
                 if (rotationParameter != null) {
                     Token rotationValue = rotationParameter.getToken();
                     if (rotationValue instanceof IntToken) {
-                        portRotation = ((IntToken)rotationValue).intValue();
+                        portRotation = ((IntToken) rotationValue).intValue();
                     }
-                }                    
+                }
             }
         } catch (IllegalActionException ex) {
             // Ignore and use defaults.
@@ -208,18 +209,18 @@ public class IOPortController extends AttributeController {
 
         // Ensure that the port rotation is one of
         // {-270, -180, -90, 0, 90, 180, 270}.
-        portRotation = 90 * ((portRotation/90)%4);
+        portRotation = 90 * ((portRotation / 90) % 4);
 
         // Finally, check for horizontal or vertical flipping.
         try {
             NamedObj container = port.getContainer();
             if (container != null) {
-                Parameter flipHorizontalParameter = (Parameter)
-                        container.getAttribute("_flipPortsHorizontal", Parameter.class);
+                Parameter flipHorizontalParameter = (Parameter) container
+                        .getAttribute("_flipPortsHorizontal", Parameter.class);
                 if (flipHorizontalParameter != null) {
                     Token rotationValue = flipHorizontalParameter.getToken();
                     if (rotationValue instanceof BooleanToken
-                            && ((BooleanToken)rotationValue).booleanValue()) {
+                            && ((BooleanToken) rotationValue).booleanValue()) {
                         if (portRotation == 0 || portRotation == -180) {
                             portRotation += 180;
                         } else if (portRotation == 180) {
@@ -227,12 +228,12 @@ public class IOPortController extends AttributeController {
                         }
                     }
                 }
-                Parameter flipVerticalParameter = (Parameter)
-                container.getAttribute("_flipPortsVertical", Parameter.class);
+                Parameter flipVerticalParameter = (Parameter) container
+                        .getAttribute("_flipPortsVertical", Parameter.class);
                 if (flipVerticalParameter != null) {
                     Token rotationValue = flipVerticalParameter.getToken();
                     if (rotationValue instanceof BooleanToken
-                            && ((BooleanToken)rotationValue).booleanValue()) {
+                            && ((BooleanToken) rotationValue).booleanValue()) {
                         if (portRotation == -270 || portRotation == -90) {
                             portRotation += 180;
                         } else if (portRotation == 90 || portRotation == 270) {

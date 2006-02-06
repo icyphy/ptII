@@ -195,7 +195,6 @@ public class IOPort extends ComponentPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Append a listener to the current set of token sent listeners.
      *  If the listener is already in the set, it will not be added again.
      *  Note that this method is basically the same as addDebugListener
@@ -2369,8 +2368,8 @@ public class IOPort extends ComponentPort {
                     + " token array of length " + vectorLength);
         }
         if (_notifyingTokensSent) {
-            _tokenSent(new TokenSentEvent
-                    (this, channelIndex, tokenArray, vectorLength));
+            _tokenSent(new TokenSentEvent(this, channelIndex, tokenArray,
+                    vectorLength));
         }
 
         try {

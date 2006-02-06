@@ -84,7 +84,8 @@ public class EntitySootClass extends SootClass {
 
             // Call the __CGInit method.
             units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newVirtualInvokeExpr(thisLocal, _initMethod.makeRef())));
+                    Jimple.v().newVirtualInvokeExpr(thisLocal,
+                            _initMethod.makeRef())));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -129,8 +130,8 @@ public class EntitySootClass extends SootClass {
 
         // Call the super constructor.
         units.add(Jimple.v().newInvokeStmt(
-                Jimple.v().newSpecialInvokeExpr(thisLocal, superConstructor.makeRef(),
-                        parameterList)));
+                Jimple.v().newSpecialInvokeExpr(thisLocal,
+                        superConstructor.makeRef(), parameterList)));
 
         return constructor;
     }

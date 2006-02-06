@@ -117,7 +117,7 @@ public class SampleDelay extends CCodeGeneratorHelper {
         // FIXME: Do we need /Should we update the offset of input of
         // the SampleDelay?
         //setOffset(actor.input, 0, new Integer(initialOutputs.length));
-        
+
         return processCode(code.toString());
     }
 }

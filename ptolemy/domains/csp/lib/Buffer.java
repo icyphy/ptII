@@ -62,7 +62,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  */
 public class Buffer extends CSPActor {
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -77,11 +77,11 @@ public class Buffer extends CSPActor {
     public Buffer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         capacity = new Parameter(this, "capacity");
         capacity.setTypeEquals(BaseType.INT);
         capacity.setExpression("1");
-        
+
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
     }
@@ -93,7 +93,7 @@ public class Buffer extends CSPActor {
      *  set this to a negative number.
      */
     public Parameter capacity;
-    
+
     /** The input port.
      */
     public TypedIOPort input;
@@ -123,17 +123,17 @@ public class Buffer extends CSPActor {
         if (_debugging) {
             _debug("Buffer size: " + bufferSize);
         }
-        int capacityValue = ((IntToken)capacity.getToken()).intValue();
+        int capacityValue = ((IntToken) capacity.getToken()).intValue();
         if (capacityValue == 0) {
             throw new IllegalActionException(this,
                     "Capacity is required to be greater than zero.");
         }
-        
+
         // Deal with simple cases first.
         // If the buffer is full and there is a token, send it to the output.
         if (bufferSize >= capacityValue // Buffer is full.
-                && bufferSize >= 1) {  // There is a token.
-            Token token = (Token)_buffer.remove(0);
+                && bufferSize >= 1) { // There is a token.
+            Token token = (Token) _buffer.remove(0);
             if (_debugging) {
                 _debug("Sending token: " + token);
             }
@@ -154,7 +154,7 @@ public class Buffer extends CSPActor {
             // and act accordingly.
             ConditionalBranch[] branches = new ConditionalBranch[2];
             branches[0] = new ConditionalReceive(input, 0, 0);
-            Token token = (Token)_buffer.get(0);
+            Token token = (Token) _buffer.get(0);
             branches[1] = new ConditionalSend(output, 0, 1, token);
             if (_debugging && _VERBOSE_DEBUGGING) {
                 branches[0].addDebugListener(this);
@@ -188,7 +188,7 @@ public class Buffer extends CSPActor {
             }
         }
     }
-    
+
     /** Clear the buffer.
      *  @exception IllegalActionException Not thrown in this base class,
      *  but might be in a derived class.
@@ -197,7 +197,7 @@ public class Buffer extends CSPActor {
         super.initialize();
         _buffer.clear();
     }
-    
+
     /** Return true unless none of the branches were enabled in
      *  the most recent invocation of fire().
      *  @return True if another iteration can occur.
@@ -209,16 +209,16 @@ public class Buffer extends CSPActor {
         }
         return _branchEnabled;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The current buffer. */
     private List _buffer = new LinkedList();
-    
+
     /** Indicator that a branch was successfully enabled in the fire() method. */
     private boolean _branchEnabled;
-    
+
     /** Flag to set verbose debugging messages. */
     private static boolean _VERBOSE_DEBUGGING = true;
 }

@@ -113,7 +113,7 @@ import ptolemy.kernel.util.Nameable;
  @Pt.AcceptedRating Green (kienhuis)
  */
 public abstract class ConditionalBranch implements Debuggable {
-    
+
     /** Create a guarded communication statement. This class contains
      *  all of the information necessary to carry out a guarded
      *  communication statement, with the exception of the type of
@@ -153,8 +153,8 @@ public abstract class ConditionalBranch implements Debuggable {
      *   the port is not of type CSPActor, or if no controller is
      *   provided, and the actor is not an instance of BranchActor.
      */
-    public ConditionalBranch(
-            boolean guard, IOPort port, int branchID, ConditionalBranchController controller)
+    public ConditionalBranch(boolean guard, IOPort port, int branchID,
+            ConditionalBranchController controller)
             throws IllegalActionException {
         _branchID = branchID;
         _guard = guard;
@@ -167,8 +167,7 @@ public abstract class ConditionalBranch implements Debuggable {
                         "A conditional branch can only be created"
                                 + "with a port contained by BranchActor.");
             }
-            _controller = ((BranchActor) portContainer)
-                    .getBranchController();
+            _controller = ((BranchActor) portContainer).getBranchController();
         }
     }
 
@@ -216,7 +215,7 @@ public abstract class ConditionalBranch implements Debuggable {
     public AbstractBranchController getController() {
         return _controller;
     }
-    
+
     /** Return the port associated with this conditional branch.
      *  @return The port specified in the constructor.
      */
@@ -276,7 +275,7 @@ public abstract class ConditionalBranch implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                      package friendly methods             ////
-    
+
     /** Set a flag indicating this branch should fail.
      *  @param value Boolean indicating whether this branch is still alive.
      */
@@ -323,12 +322,12 @@ public abstract class ConditionalBranch implements Debuggable {
             }
         }
     }
-    
+
     /** Return true if this conditional branch is ready to rendezvous.
      *  @return True if the conditional branch is ready to rendezvous.
      */
     protected abstract boolean _isReady();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -360,7 +359,7 @@ public abstract class ConditionalBranch implements Debuggable {
 
     /** The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
-    
+
     /** The port specified in the constructor. */
     private IOPort _port;
 

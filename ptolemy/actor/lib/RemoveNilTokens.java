@@ -70,7 +70,6 @@ public class RemoveNilTokens extends Transformer {
         super(container, name);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

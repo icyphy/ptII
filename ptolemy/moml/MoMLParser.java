@@ -482,7 +482,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             _currentCharData.append(chars, offset, length);
         }
     }
-    
+
     /** Clear the top objects list. The top objects list
      *  is a list of top-level objects that this parser has
      *  created.
@@ -918,8 +918,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             undoMoML = _undoContext.generateUndoEntry();
 
             if (_undoDebug) {
-                System.out.println("Completed element: " + elementName
-                        + "\n" + _undoContext.getUndoMoML());
+                System.out.println("Completed element: " + elementName + "\n"
+                        + _undoContext.getUndoMoML());
             }
         }
         // Have to pop even if undo is not enabled!
@@ -1300,10 +1300,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // If you change this code, try running 
             // ptolemy.moml.test.MoMLParserLeak with the heap profiler
             // and look for leaks.
-            if (_toplevel != null
-                    && _toplevel instanceof ComponentEntity) {
+            if (_toplevel != null && _toplevel instanceof ComponentEntity) {
                 ((ComponentEntity) _toplevel).setContainer(null);
-                
+
                 // Since the container is probably already null, then
                 // the setContainer(null) call probably did not do anything.
                 // so, we remove the object from the workspace so it
@@ -1320,7 +1319,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _toplevel = null;
             }
 
-            _paramsToParse.clear(); 
+            _paramsToParse.clear();
             reset();
             if (base != null) {
                 purgeModelRecord(base);
@@ -1331,7 +1330,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             _xmlParser = null;
             buffered.close();
         }
-
 
         if (_toplevel == null) {
             // If we try to read a HSIF file but Ptolemy is not properly
@@ -1800,7 +1798,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (_undoContext != null) {
                 _undoContexts.push(_undoContext);
                 pushedUndoContexts = true;
-                _undoEnabled = _undoEnabled && _undoContext.hasUndoableChildren();
+                _undoEnabled = _undoEnabled
+                        && _undoContext.hasUndoableChildren();
             }
 
             // Create a new current context
@@ -1966,7 +1965,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // contained MoML
                         _undoContext.setChildrenUndoable(false);
                         _undoContext.setUndoable(false);
-                        
+
                         // Prevent any further undo entries for this context.
                         _undoEnabled = false;
                     }
@@ -2256,7 +2255,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // contained MoML
                         _undoContext.setChildrenUndoable(false);
                         _undoContext.setUndoable(false);
-                        
+
                         // Prevent any further undo entries for this context.
                         _undoEnabled = false;
                     }
@@ -2454,8 +2453,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Classname is not given.  Invoke newPort() on the
                         // container.
                         port = container.newPort(portName);
-                        
-                        if ((_topObjectsCreated != null) && (container == _originalContext)) {
+
+                        if ((_topObjectsCreated != null)
+                                && (container == _originalContext)) {
                             _topObjectsCreated.add(port);
                         }
 
@@ -2509,7 +2509,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // contained MoML
                         _undoContext.setChildrenUndoable(false);
                         _undoContext.setUndoable(false);
-                        
+
                         // Prevent any further undo entries for this context.
                         _undoEnabled = false;
                     }
@@ -2611,8 +2611,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     if (newClass == null) {
                         // No classname. Use the newRelation() method.
                         newRelation = container.newRelation(relationName);
-                        
-                        if ((_topObjectsCreated != null) && (container == _originalContext)) {
+
+                        if ((_topObjectsCreated != null)
+                                && (container == _originalContext)) {
                             _topObjectsCreated.add(newRelation);
                         }
 
@@ -2676,7 +2677,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // contained MoML
                         _undoContext.setChildrenUndoable(false);
                         _undoContext.setUndoable(false);
-                        
+
                         // Prevent any further undo entries for this context.
                         _undoEnabled = false;
                     }
@@ -2803,7 +2804,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // I could see of doing the rename without having to
                         // change the semantics or location of the rename
                         // element
-                        UndoContext parentContext = (UndoContext)_undoContexts.peek();
+                        UndoContext parentContext = (UndoContext) _undoContexts
+                                .peek();
                         parentContext.applyRename(newName);
 
                         // Simply create in the undo MoML another rename
@@ -3010,7 +3012,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             throw new XmlException("XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.getTargetException(),
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber(), ex.getTargetException());
+                    _getColumnNumber(), ex.getTargetException());
         } catch (Exception ex) {
             exceptionThrown = true;
 
@@ -3255,7 +3257,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // both were.
                     throw new XmlException("Could not find '" + classAsFile
                             + "' or '" + altClassAsFile + "' using base '"
-                            + _base + "': ", _currentExternalEntity(), 
+                            + _base + "': ", _currentExternalEntity(),
                             _getLineNumber(), _getColumnNumber(), ex2);
                 }
             } else {
@@ -3270,7 +3272,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             throw new XmlException("File " + classAsFile
                     + " does not define a ComponentEntity.",
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber());
+                    _getColumnNumber());
         }
 
         // Check that the classname matches the name of the
@@ -3282,7 +3284,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             throw new XmlException("File " + classAsFile
                     + " does not define a class named " + className,
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber());
+                    _getColumnNumber());
         }
 
         // Load an associated icon, if there is one.
@@ -3345,7 +3347,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     + "of another that is not a CompositeEntity "
                     + "(Container is '" + _current + "').",
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber());
+                    _getColumnNumber());
         }
 
         CompositeEntity container = (CompositeEntity) _current;
@@ -3762,8 +3764,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             derivedObjects = reverse.iterator();
 
             while (derivedObjects.hasNext()) {
-                ComponentEntity derived = (ComponentEntity) derivedObjects.next();
-                
+                ComponentEntity derived = (ComponentEntity) derivedObjects
+                        .next();
+
                 // Generate Undo commands. Note that despite the
                 // fact that the entity will get created by propagation
                 // on undo, we still have to record it in the undo record
@@ -3837,7 +3840,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (portContainer == null) {
             throw new XmlException("No container for the port: " + portName,
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber());
+                    _getColumnNumber());
         }
 
         // Ensure that derived objects aren't changed.
@@ -4144,7 +4147,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Return the column number from the XmlParser.
      *  @return the column number from the XmlParser.  Return -1 if
      *  _xmlParser is null.
-     */ 
+     */
     private int _getColumnNumber() {
         // _parser can be null if a method is called outside of a callback
         // for XmlParser.  All calls should go through parser(URL, Reader)
@@ -4185,7 +4188,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Return the line number from the XmlParser.
      *  @return the line number from the XmlParser.  Return -1 if
      *  _xmlParser is null.
-     */ 
+     */
     private int _getLineNumber() {
         // _xmlParser can be null if a method is called outside of a callback
         // for XmlParser.  All calls should go through parser(URL, Reader)
@@ -4300,7 +4303,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // relations that are not derived.
             Iterator relations = toDelete.linkedRelationList().iterator();
             while (relations.hasNext()) {
-                Relation relation = (Relation)relations.next();
+                Relation relation = (Relation) relations.next();
                 if (relation != null) {
                     if (relation.getDerivedLevel() == Integer.MAX_VALUE) {
                         filter.add(relation);
@@ -4444,7 +4447,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // relations that are not derived.
             Iterator objects = toDelete.linkedObjectsList().iterator();
             while (objects.hasNext()) {
-                NamedObj portOrRelation = (Relation)objects.next();
+                NamedObj portOrRelation = (Relation) objects.next();
                 if (portOrRelation != null) {
                     if (portOrRelation.getDerivedLevel() == Integer.MAX_VALUE) {
                         filter.add(portOrRelation);
@@ -4663,13 +4666,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     newClass = Class.forName(className, true, _classLoader);
                 } catch (NoClassDefFoundError ex) {
                     throw new XmlException("Failed to find class '" + className
-                            + "'", _currentExternalEntity(),
-                            _getLineNumber(), _getColumnNumber(), ex);
+                            + "'", _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber(), ex);
                 } catch (SecurityException ex) {
                     // An applet might throw this.
                     throw new XmlException("Failed to find class '" + className
-                            + "'", _currentExternalEntity(),
-                            _getLineNumber(), _getColumnNumber(), ex);
+                            + "'", _currentExternalEntity(), _getLineNumber(),
+                            _getColumnNumber(), ex);
                 }
             }
 
@@ -4770,9 +4773,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                             throw new XmlException("Property is not an "
                                     + "instance of Attribute. ",
-                                    _currentExternalEntity(),
-                                            _getLineNumber(),
-                                            _getColumnNumber());
+                                    _currentExternalEntity(), _getLineNumber(),
+                                    _getColumnNumber());
                         }
 
                         // Propagate.
@@ -4783,9 +4785,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         if (property == null) {
                             throw new XmlException("Property does not exist: "
                                     + propertyName + "\n",
-                                    _currentExternalEntity(),
-                                            _getLineNumber(),
-                                            _getColumnNumber());
+                                    _currentExternalEntity(), _getLineNumber(),
+                                    _getColumnNumber());
                         }
 
                         if (!(property instanceof Settable)) {
@@ -4795,8 +4796,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                             + " (instance of "
                                             + property.getClass().toString()
                                             + ")\n", _currentExternalEntity(),
-                                    _getLineNumber(),
-                                            _getColumnNumber());
+                                    _getLineNumber(), _getColumnNumber());
                         }
 
                         Settable settable = (Settable) property;
@@ -4828,9 +4828,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         throw new XmlException("Property is not an "
                                 + "instance of Settable, "
                                 + "so can't set the value.",
-                                _currentExternalEntity(),
-                                        _getLineNumber(),
-                                        _getColumnNumber());
+                                _currentExternalEntity(), _getLineNumber(),
+                                _getColumnNumber());
                     }
 
                     Settable settable = (Settable) property;
@@ -4869,7 +4868,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // contained MoML
                     _undoContext.setChildrenUndoable(false);
                     _undoContext.setUndoable(false);
-                    
+
                     // Prevent any further undo entries for this context.
                     _undoEnabled = false;
                 } else {
@@ -5160,7 +5159,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if ((relation1Name == null) || (relation2Name == null)) {
             throw new XmlException("Element link requires two relations.",
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber());
+                    _getColumnNumber());
         }
 
         CompositeEntity context = (CompositeEntity) _current;
@@ -5210,8 +5209,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (relation1.getDerivedLevel() == Integer.MAX_VALUE
                     || relation2.getDerivedLevel() == Integer.MAX_VALUE) {
                 // Enclose in a group to prevent deferral on undo.
-                _undoContext.appendUndoMoML("<group><unlink relation1=\"" + relation1Name
-                        + "\" relation2=\"" + relation2Name + "\" /></group>\n");
+                _undoContext.appendUndoMoML("<group><unlink relation1=\""
+                        + relation1Name + "\" relation2=\"" + relation2Name
+                        + "\" /></group>\n");
             }
         }
     }
@@ -5250,14 +5250,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             throw new XmlException("Element link requires at least one of "
                     + "an insertAt, an insertInsideAt, or a relation.",
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber());
+                    _getColumnNumber());
         }
 
         if ((insertAtSpec != null) && (insertInsideAtSpec != null)) {
             throw new XmlException("Element link requires at most one of "
                     + "insertAt and insertInsideAt, not both.",
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber());
+                    _getColumnNumber());
         }
 
         CompositeEntity context = (CompositeEntity) _current;
@@ -5373,16 +5373,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     if (insertAt != -1) {
                         if (port.numLinks() != origNumOutsideLinks) {
                             // Enclose in a group to prevent deferral on undo.
-                            _undoContext.appendUndoMoML("<group><unlink port=\""
-                                    + portName + "\" index=\"" + insertAtSpec
-                                    + "\" /></group>\n");
+                            _undoContext
+                                    .appendUndoMoML("<group><unlink port=\""
+                                            + portName + "\" index=\""
+                                            + insertAtSpec + "\" /></group>\n");
                         }
                     } else {
                         if (port.numInsideLinks() != origNumInsideLinks) {
                             // Enclose in a group to prevent deferral on undo.
-                            _undoContext.appendUndoMoML("<group><unlink port=\""
-                                    + portName + "\" insideIndex=\""
-                                    + insertInsideAtSpec + "\" /></group>\n");
+                            _undoContext
+                                    .appendUndoMoML("<group><unlink port=\""
+                                            + portName + "\" insideIndex=\""
+                                            + insertInsideAtSpec
+                                            + "\" /></group>\n");
                         }
                     }
                 }
@@ -5399,15 +5402,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             insertInsideAt = port.numInsideLinks() - 1;
                         }
                         // Enclose in a group to prevent deferral on undo.
-                        _undoContext.appendUndoMoML("<group><unlink port=\"" + portName
-                                + "\" insideIndex=\"" + insertInsideAt + "\" /></group>\n");
+                        _undoContext.appendUndoMoML("<group><unlink port=\""
+                                + portName + "\" insideIndex=\""
+                                + insertInsideAt + "\" /></group>\n");
                     } else if (port.numLinks() != origNumOutsideLinks) {
                         if (insertAt == -1) {
                             insertAt = port.numLinks() - 1;
                         }
                         // Enclose in a group to prevent deferral on undo.
-                        _undoContext.appendUndoMoML("<group><unlink port=\"" + portName
-                                + "\" index=\"" + insertAt + "\" /></group>\n");
+                        _undoContext.appendUndoMoML("<group><unlink port=\""
+                                + portName + "\" index=\"" + insertAt
+                                + "\" /></group>\n");
                     } else {
                         // No change so do not need to generate any undo MoML
                     }
@@ -5443,9 +5448,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             // that it is a user cancellation with the special
                             // string pattern "*** Canceled." in the message.
                             throw new XmlException("*** Canceled.",
-                                    _currentExternalEntity(),
-                                            _getLineNumber(),
-                                            _getColumnNumber());
+                                    _currentExternalEntity(), _getLineNumber(),
+                                    _getColumnNumber());
                         }
                     } else {
                         // No handler.  Throw the original exception.
@@ -5480,9 +5484,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             // that it is a user cancellation with the special
                             // string pattern "*** Canceled." in the message.
                             throw new XmlException("*** Canceled.",
-                                    _currentExternalEntity(),
-                                            _getLineNumber(),
-                                            _getColumnNumber());
+                                    _currentExternalEntity(), _getLineNumber(),
+                                    _getColumnNumber());
                         }
                     } else {
                         // No handler.  Throw the original exception.
@@ -5505,7 +5508,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if ((relation1Name == null) || (relation2Name == null)) {
             throw new XmlException("Element unlink requires two relations.",
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber());
+                    _getColumnNumber());
         }
 
         CompositeEntity context = (CompositeEntity) _current;
@@ -5554,8 +5557,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // the class definition and should not be recreated in undo.
             if (relation1.getDerivedLevel() == Integer.MAX_VALUE
                     || relation2.getDerivedLevel() == Integer.MAX_VALUE) {
-                _undoContext.appendUndoMoML("<link relation1=\"" + relation1Name
-                        + "\" relation2=\"" + relation2Name + "\" />\n");
+                _undoContext.appendUndoMoML("<link relation1=\""
+                        + relation1Name + "\" relation2=\"" + relation2Name
+                        + "\" />\n");
             }
         }
     }
@@ -5594,7 +5598,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             throw new XmlException("Element unlink requires exactly one of "
                     + "an index, an insideIndex, or a relation.",
                     _currentExternalEntity(), _getLineNumber(),
-                            _getColumnNumber());
+                    _getColumnNumber());
         }
 
         CompositeEntity context = (CompositeEntity) _current;
@@ -5621,8 +5625,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Generate a link in the undo only if one or the other relation is
             // not derived. If they are both derived, then the link belongs to
             // the class definition and should not be recreated in undo.
-            if (_undoEnabled && (port.getDerivedLevel() == Integer.MAX_VALUE
-                    || relation.getDerivedLevel() == Integer.MAX_VALUE)) {
+            if (_undoEnabled
+                    && (port.getDerivedLevel() == Integer.MAX_VALUE || relation
+                            .getDerivedLevel() == Integer.MAX_VALUE)) {
                 // Get the relation at the given index
                 List linkedRelations = port.linkedRelationList();
                 int index = linkedRelations.indexOf(tmpRelation);
@@ -5667,10 +5672,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // expensive.
             List relationList = port.linkedRelationList();
             if (relationList.size() <= index) {
-                throw new IllegalActionException(port,
-                        "Cannot unlink index "
-                        + indexSpec
-                        + ", because there is no such link.");
+                throw new IllegalActionException(port, "Cannot unlink index "
+                        + indexSpec + ", because there is no such link.");
             }
             Relation relation = (Relation) relationList.get(index);
 
@@ -5695,7 +5698,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // FIXME: need to worry about vertex?
                     _undoContext.appendUndoMoML("<link port=\"" + portName
                             + "\" insertAt=\"" + indexSpec + "\" ");
-                    
+
                     // Only need to specify the relation if there was
                     // a relation at that index. Otherwise a null
                     // link is inserted
@@ -5711,7 +5714,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             Iterator derivedObjects = port.getDerivedList().iterator();
 
             while (derivedObjects.hasNext()) {
-                ComponentPort derivedPort = (ComponentPort) derivedObjects.next();
+                ComponentPort derivedPort = (ComponentPort) derivedObjects
+                        .next();
                 derivedPort.unlink(index);
             }
 
@@ -5744,7 +5748,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // FIXME: need to worry about vertex?
                     _undoContext.appendUndoMoML("<link port=\"" + portName
                             + "\" insertInsideAt=\"" + index + "\" ");
-                    
+
                     // Only need to specify the relation if there was
                     // a relation at that index. Otherwise a null
                     // link is inserted
@@ -5822,8 +5826,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         if (result == null) {
             throw new XmlException("No such property: " + name + " in "
-                    + currentName, _currentExternalEntity(),
-                    _getLineNumber(), _getColumnNumber());
+                    + currentName, _currentExternalEntity(), _getLineNumber(),
+                    _getColumnNumber());
         }
 
         return result;
@@ -6025,8 +6029,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         if (result == null) {
             throw new XmlException("No such port: " + name + " in "
-                    + topLevelName, _currentExternalEntity(),
-                    _getLineNumber(), _getColumnNumber());
+                    + topLevelName, _currentExternalEntity(), _getLineNumber(),
+                    _getColumnNumber());
         }
 
         return result;
@@ -6067,8 +6071,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
         if (result == null) {
             throw new XmlException("No such relation: " + name + " in "
-                    + topLevelName, _currentExternalEntity(),
-                    _getLineNumber(), _getColumnNumber());
+                    + topLevelName, _currentExternalEntity(), _getLineNumber(),
+                    _getColumnNumber());
         }
 
         return result;
@@ -6174,14 +6178,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The stack of maps for name translations.
     private Stack _namespaceTranslations = new Stack();
-    
+
     // The original context set by setContext().
     private NamedObj _originalContext = null;
 
     // A list of settable parameters specified in property tags.
     private List _paramsToParse = new LinkedList();
 
-    /** The XmlParser. */ 
+    /** The XmlParser. */
     private XmlParser _xmlParser;
 
     // Status of the deferral of the top-level.

@@ -85,7 +85,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
         GUIUtilities.addToolBarButton(toolbar, _pauseModelAction);
         GUIUtilities.addHotKey(getFrame().getJGraph(), _stopModelAction);
         GUIUtilities.addToolBarButton(toolbar, _stopModelAction);
-        ((ButtonFigureAction)_stopModelAction).setSelected(true);
+        ((ButtonFigureAction) _stopModelAction).setSelected(true);
     }
 
     /** Report that an execution error has occurred.  This method
@@ -114,25 +114,24 @@ public abstract class RunnableGraphController extends WithIconGraphController
         if (newState != _previousState) {
             getFrame().report(manager.getState().getDescription());
             _previousState = newState;
-       
+
             if (newState == Manager.INITIALIZING
                     || newState == Manager.ITERATING
                     || newState == Manager.PREINITIALIZING
                     || newState == Manager.RESOLVING_TYPES
                     || newState == Manager.WRAPPING_UP
-                    || newState == Manager.EXITING
-                ) {
-                ((ButtonFigureAction)_runModelAction).setSelected(true);
-                ((ButtonFigureAction)_pauseModelAction).setSelected(false);
-                ((ButtonFigureAction)_stopModelAction).setSelected(false);
+                    || newState == Manager.EXITING) {
+                ((ButtonFigureAction) _runModelAction).setSelected(true);
+                ((ButtonFigureAction) _pauseModelAction).setSelected(false);
+                ((ButtonFigureAction) _stopModelAction).setSelected(false);
             } else if (newState == Manager.PAUSED) {
-                ((ButtonFigureAction)_runModelAction).setSelected(false);
-                ((ButtonFigureAction)_pauseModelAction).setSelected(true);
-                ((ButtonFigureAction)_stopModelAction).setSelected(false);
+                ((ButtonFigureAction) _runModelAction).setSelected(false);
+                ((ButtonFigureAction) _pauseModelAction).setSelected(true);
+                ((ButtonFigureAction) _stopModelAction).setSelected(false);
             } else {
-                ((ButtonFigureAction)_runModelAction).setSelected(false);
-                ((ButtonFigureAction)_pauseModelAction).setSelected(false);
-                ((ButtonFigureAction)_stopModelAction).setSelected(true);
+                ((ButtonFigureAction) _runModelAction).setSelected(false);
+                ((ButtonFigureAction) _pauseModelAction).setSelected(false);
+                ((ButtonFigureAction) _stopModelAction).setSelected(true);
             }
         }
     }
@@ -205,14 +204,13 @@ public abstract class RunnableGraphController extends WithIconGraphController
         public ButtonFigureAction(String description) {
             super(description);
         }
-        
+
         public void setSelected(boolean state) {
-            JButton button = (JButton)
-                getValue("toolBarButton");
-            button.setSelected(state);            
+            JButton button = (JButton) getValue("toolBarButton");
+            button.setSelected(state);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     ///////////////////////////////////////////////////////////////////
@@ -232,15 +230,15 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String [][] {
-                {"/ptolemy/vergil/basic/img/run.gif",
-                 GUIUtilities.LARGE_ICON},
-                {"/ptolemy/vergil/basic/img/run_o.gif",
-                 GUIUtilities.ROLLOVER_ICON},
-                {"/ptolemy/vergil/basic/img/run_ov.gif",
-                 GUIUtilities.ROLLOVER_SELECTED_ICON},
-                {"/ptolemy/vergil/basic/img/run_on.gif",
-                 GUIUtilities.SELECTED_ICON}});
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/basic/img/run.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/run_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/basic/img/run_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/run_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+R)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -282,15 +280,15 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String [][] {
-                {"/ptolemy/vergil/basic/img/pause.gif",
-                 GUIUtilities.LARGE_ICON},
-                {"/ptolemy/vergil/basic/img/pause_o.gif",
-                 GUIUtilities.ROLLOVER_ICON},
-                {"/ptolemy/vergil/basic/img/pause_ov.gif",
-                 GUIUtilities.ROLLOVER_SELECTED_ICON},
-                {"/ptolemy/vergil/basic/img/pause_on.gif",
-                 GUIUtilities.SELECTED_ICON}});
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/basic/img/pause.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/pause_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/basic/img/pause_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/pause_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+U)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
@@ -327,15 +325,15 @@ public abstract class RunnableGraphController extends WithIconGraphController
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String [][] {
-                {"/ptolemy/vergil/basic/img/stop.gif",
-                 GUIUtilities.LARGE_ICON},
-                {"/ptolemy/vergil/basic/img/stop_o.gif",
-                 GUIUtilities.ROLLOVER_ICON},
-                {"/ptolemy/vergil/basic/img/stop_ov.gif",
-                 GUIUtilities.ROLLOVER_SELECTED_ICON},
-                {"/ptolemy/vergil/basic/img/stop_on.gif",
-                 GUIUtilities.SELECTED_ICON}});
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/basic/img/stop.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/stop_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/basic/img/stop_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/stop_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description + " (Ctrl+H)");
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(

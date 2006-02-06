@@ -1359,7 +1359,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             /** Handled a failed change request.
              *  @param change  The change request.
              *  @param exception The exception.
-             */   
+             */
             public void changeFailed(ChangeRequest change, Exception exception) {
                 // If we fail here, then we remove the link entirely.
                 _linkSet.remove(_link);
@@ -1380,7 +1380,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
             /** Called after the change has been executed.
              *  @param change The change request.
-             */ 
+             */
             public void changeExecuted(ChangeRequest change) {
                 // modification to the linkset HAS to occur in the swing
                 // thread.

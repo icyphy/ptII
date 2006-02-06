@@ -57,7 +57,6 @@ public interface ExecuteCommands {
     /** Clear the text area, status bar and progress bar. */
     public void clear();
 
-
     /** Return the return code of the last subprocess that was executed.
      *  @return the return code of the last subprocess that was executed.
      */
@@ -78,7 +77,6 @@ public interface ExecuteCommands {
     /** Start running the commands. */
     public void start();
 
-
     /** Append the text message to stderr.  Classes that implement
      *  this method could append to a StringBuffer or JTextArea.
      *  The output automatically gets a trailing newline  appended.
@@ -92,7 +90,6 @@ public interface ExecuteCommands {
      *  @param text The text to append to standard out.
      */
     public void stdout(final String text);
-
 
     /** Set the text of the status bar.  In this base class, do
      *  nothing, derived classes may update a status bar.

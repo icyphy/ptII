@@ -212,10 +212,10 @@ public class SoundCapture {
     public int getChannels() throws IllegalStateException {
         if (_isAudioCaptureActive == true) {
             return _channels;
-        } 
+        }
         throw new IllegalStateException("SoundCapture: "
-                    + "getChannels() was called while audio capture was"
-                    + " inactive (startCapture() was never called).");
+                + "getChannels() was called while audio capture was"
+                + " inactive (startCapture() was never called).");
     }
 
     /** Return the sampling rate in Hz. This method will
@@ -243,8 +243,8 @@ public class SoundCapture {
             return _sampleRate;
         }
         throw new IllegalStateException("SoundCapture: "
-                    + "getSampleRate() was called while audio capture was"
-                    + " inactive (startCapture() was never called).");
+                + "getSampleRate() was called while audio capture was"
+                + " inactive (startCapture() was never called).");
     }
 
     /** Return an array of captured audio samples. This method
@@ -322,9 +322,9 @@ public class SoundCapture {
             return null;
         }
         throw new IllegalStateException("SoundCapture: "
-                    + "getSamples() was called while audio capture was"
-                    + " inactive (startCapture() was never called or "
-                    + "stopCapture has already been called).");
+                + "getSamples() was called while audio capture was"
+                + " inactive (startCapture() was never called or "
+                + "stopCapture has already been called).");
     }
 
     /** Return an array of captured audio samples. This method
@@ -403,9 +403,9 @@ public class SoundCapture {
             return null;
         }
         throw new IllegalStateException("SoundCapture: "
-                    + "getSamples() was called while audio capture was"
-                    + " inactive (startCapture() was never called or "
-                    + "stopCapture has already been called).");
+                + "getSamples() was called while audio capture was"
+                + " inactive (startCapture() was never called or "
+                + "stopCapture has already been called).");
     }
 
     /** Begin capturing audio. This method must be invoked prior
@@ -506,10 +506,9 @@ public class SoundCapture {
         if (_isAudioCaptureActive == true) {
             return _sampleSizeInBits;
         }
-        throw new IllegalStateException(
-                    "SoundCapture: "
-                            + "getSampleSizeInBits() was called while audio capture was"
-                            + " inactive (startCapture() was never called).");
+        throw new IllegalStateException("SoundCapture: "
+                + "getSampleSizeInBits() was called while audio capture was"
+                + " inactive (startCapture() was never called).");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -678,7 +677,8 @@ public class SoundCapture {
                     result = (result << 8) + (_b[i] & 0xff);
                 }
 
-                _doubleArray[currChannel][currSamp] =  result * maxSampleReciprocal;
+                _doubleArray[currChannel][currSamp] = result
+                        * maxSampleReciprocal;
             }
         }
 

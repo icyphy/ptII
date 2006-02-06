@@ -74,20 +74,20 @@ public class FSMDirector extends Director {
      *   an actor throws it while generating fire code for the actor.
      */
     public String generateFireCode() throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor controller = 
-                ((ptolemy.domains.fsm.kernel.FSMDirector) 
-                getComponent()).getController();
+        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+                .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
-        
+
         StringBuffer code = new StringBuffer();
 
         // generate code for preemptive transition
         code.append("\n/* Preepmtive Transition */\n\n");
-        controllerHelper.generateTransitionCode(code, new TransitionRetriever() {
-            public Iterator retrieveTransitions(State state) {
-                return state.preemptiveTransitionList().iterator();
-            }
-        });
+        controllerHelper.generateTransitionCode(code,
+                new TransitionRetriever() {
+                    public Iterator retrieveTransitions(State state) {
+                        return state.preemptiveTransitionList().iterator();
+                    }
+                });
 
         code.append("\n");
 
@@ -101,14 +101,15 @@ public class FSMDirector extends Director {
 
         // generate code for non-preemptive transition
         code.append("\n/* Nonpreepmtive Transition */\n\n");
-        controllerHelper.generateTransitionCode(code, new TransitionRetriever() {
-            public Iterator retrieveTransitions(State state) {
-                return state.nonpreemptiveTransitionList().iterator();
-            }
-        });
+        controllerHelper.generateTransitionCode(code,
+                new TransitionRetriever() {
+                    public Iterator retrieveTransitions(State state) {
+                        return state.nonpreemptiveTransitionList().iterator();
+                    }
+                });
 
         code.append("}");
-        
+
         return code.toString();
     }
 
@@ -120,34 +121,33 @@ public class FSMDirector extends Director {
      */
     protected void _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
-        
-        ptolemy.domains.fsm.kernel.FSMDirector director = 
-                (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
+
+        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
+        ptolemy.domains.fsm.kernel.FSMActor controller = director
+                .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
- 
-        boolean inline = 
-            ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
-    
+
+        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+                .booleanValue();
+
         if (!inline) {
             StringBuffer functionCode = new StringBuffer();
             Iterator actors = container.deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
                 if (actor == controller) {
-                     continue;   
+                    continue;
                 }
-                functionCode.append("\nvoid " + 
-                        actor.getFullName().replace('.' , '_') + "() {\n");
-                CodeGeneratorHelper actorHelper = 
-                        (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+                functionCode.append("\nvoid "
+                        + actor.getFullName().replace('.', '_') + "() {\n");
+                CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
                 functionCode.append(actorHelper.generateFireCode());
                 functionCode.append("}\n");
             }
             code.insert(0, functionCode);
-        }   
-        
+        }
+
         int depth = 1;
         code.append(_getIndentPrefix(depth));
         code.append("switch ("
@@ -170,49 +170,51 @@ public class FSMDirector extends Director {
 
             if (actors != null) {
                 for (int i = 0; i < actors.length; i++) {
-                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) 
-                            _getHelper((NamedObj) actors[i]);
-                    
+                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
+
                     // fire the actor
                     if (inline) {
                         code.append(actorHelper.generateFireCode());
                     } else {
-                        code.append(actors[i].getFullName().replace('.' , '_')
-                                + "();\n");   
+                        code.append(actors[i].getFullName().replace('.', '_')
+                                + "();\n");
                     }
-                    
+
                     // update buffer offset after firing each actor once
                     int[][] rates = actorHelper.getRates();
                     Iterator ports = ((Entity) actors[i]).portList().iterator();
                     int portNumber = 0;
-                    while (ports.hasNext()) {                    
+                    while (ports.hasNext()) {
                         IOPort port = (IOPort) ports.next();
                         if (rates != null) {
-                            code.append("switch (" + actorHelper.processCode
-                                    ("$actorSymbol(currentConfiguration)")
-                                    + ") {\n");
+                            code
+                                    .append("switch ("
+                                            + actorHelper
+                                                    .processCode("$actorSymbol(currentConfiguration)")
+                                            + ") {\n");
                             for (int k = 0; k < rates.length; k++) {
-                               code.append("case " + k + ":\n");
-                               int rate = rates[k][portNumber];
-                               if (port.isInput()) {
-                                   _updatePortOffset(port, code, rate);     
-                               } else {
-                                   _updateConnectedPortsOffset(port, code, rate);   
-                               } 
-                               code.append("break;\n");
+                                code.append("case " + k + ":\n");
+                                int rate = rates[k][portNumber];
+                                if (port.isInput()) {
+                                    _updatePortOffset(port, code, rate);
+                                } else {
+                                    _updateConnectedPortsOffset(port, code,
+                                            rate);
+                                }
+                                code.append("break;\n");
                             }
                             code.append("}\n");
                         } else {
                             int rate = DFUtilities.getRate(port);
                             if (port.isInput()) {
-                                _updatePortOffset(port, code, rate);     
+                                _updatePortOffset(port, code, rate);
                             } else {
-                                _updateConnectedPortsOffset(port, code, rate);   
-                            } 
+                                _updateConnectedPortsOffset(port, code, rate);
+                            }
                         }
                         portNumber++;
                     }
-                    
+
                 }
             }
 

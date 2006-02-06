@@ -487,9 +487,9 @@ public abstract class BaseType implements Type, Serializable {
             return 12;
         }
     }
-    
+
     public static final EventType EVENT = new EventType();
-    
+
     /** The petite data type */
     public static class PetiteType extends BaseType {
         private PetiteType() {
@@ -505,10 +505,7 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
-    public static final PetiteType PETITE= new PetiteType();
-
-
-    
+    public static final PetiteType PETITE = new PetiteType();
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////

@@ -52,10 +52,10 @@ public class NamedObjClassesSeen implements MoMLFilter {
      *  qualified dot separated String naming the class; and the key
      *  is a Set where each element is a String that is a relative
      *  path that refres to the model.
-     */   
+     */
 
     public NamedObjClassesSeen(HashMap classesToBeIndexed) {
-        reset(null); 
+        reset(null);
         _classesToBeIndexed = classesToBeIndexed;
     }
 
@@ -86,8 +86,7 @@ public class NamedObjClassesSeen implements MoMLFilter {
             if (!_classesSeen.contains(attributeValue)) {
                 _classesSeen.add(attributeValue);
                 Set models = null;
-                if ((models = (Set)_classesToBeIndexed.get(attributeValue)) 
-                        != null) {
+                if ((models = (Set) _classesToBeIndexed.get(attributeValue)) != null) {
                     Class theClass = null;
                     try {
                         theClass = Class.forName(attributeValue);
@@ -100,20 +99,20 @@ public class NamedObjClassesSeen implements MoMLFilter {
                     if (theClass != null
                             && _namedObjClass.isAssignableFrom(theClass)) {
                         if (container != null
-                                && container.getFullName().indexOf(".", 1)
-                                != -1) {
+                                && container.getFullName().indexOf(".", 1) != -1) {
                             // If the container is not a top level, then
                             // link to the inner part
-                            String compositePath = _modelPath + "#" +
-                                    container.getFullName().substring(
-                                            container.getFullName()
-                                            .indexOf(".", 1) + 1);
-//                             System.out.println("NamedObjClasssesSeen: "
-//                                 + compositePath + " " + container
-//                                     + " " + element
-//                                     + " " + attributeName
-//                                     + " " + attributeValue);
-                             models.add(compositePath);
+                            String compositePath = _modelPath
+                                    + "#"
+                                    + container.getFullName().substring(
+                                            container.getFullName().indexOf(
+                                                    ".", 1) + 1);
+                            //                             System.out.println("NamedObjClasssesSeen: "
+                            //                                 + compositePath + " " + container
+                            //                                     + " " + element
+                            //                                     + " " + attributeName
+                            //                                     + " " + attributeValue);
+                            models.add(compositePath);
                         } else {
                             models.add(_modelPath);
                         }
@@ -138,7 +137,6 @@ public class NamedObjClassesSeen implements MoMLFilter {
     //    public Set getNamedObjClassesSeen() {
     //        return _namedObjClassesSeen;
     //    }
-
     /** Reset the filter. 
      */
     public void reset(String modelPath) {
@@ -152,9 +150,9 @@ public class NamedObjClassesSeen implements MoMLFilter {
      */
     public String toString() {
         return getClass().getName()
-            + ": Create a Set of classes that have been parsed thus far. "
-            + "The classes extend NamedObj. "
-            + "This filter does not modify the model. ";
+                + ": Create a Set of classes that have been parsed thus far. "
+                + "The classes extend NamedObj. "
+                + "This filter does not modify the model. ";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -162,7 +160,7 @@ public class NamedObjClassesSeen implements MoMLFilter {
 
     /** Set of classes seen the far.  Each element is a String that
      *  is a dot separated fully qualified class name.
-     */ 
+     */
     private Set _classesSeen;
 
     /**  A HashMap, where the key is a fully

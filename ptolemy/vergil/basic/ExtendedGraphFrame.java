@@ -228,15 +228,15 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             // Use the resource locator of the class.
             // For more information, see
             // jdk1.3/docs/guide/resources/resources.html
-            GUIUtilities.addIcons(this, new String [][] {
-                {"/ptolemy/vergil/basic/img/fullscreen.gif",
-                 GUIUtilities.LARGE_ICON},
-                {"/ptolemy/vergil/basic/img/fullscreen_o.gif",
-                 GUIUtilities.ROLLOVER_ICON},
-                {"/ptolemy/vergil/basic/img/fullscreen_ov.gif",
-                 GUIUtilities.ROLLOVER_SELECTED_ICON},
-                {"/ptolemy/vergil/basic/img/fullscreen_on.gif",
-                 GUIUtilities.SELECTED_ICON}});
+            GUIUtilities.addIcons(this, new String[][] {
+                    { "/ptolemy/vergil/basic/img/fullscreen.gif",
+                            GUIUtilities.LARGE_ICON },
+                    { "/ptolemy/vergil/basic/img/fullscreen_o.gif",
+                            GUIUtilities.ROLLOVER_ICON },
+                    { "/ptolemy/vergil/basic/img/fullscreen_ov.gif",
+                            GUIUtilities.ROLLOVER_SELECTED_ICON },
+                    { "/ptolemy/vergil/basic/img/fullscreen_on.gif",
+                            GUIUtilities.SELECTED_ICON } });
 
             putValue("tooltip", description);
 

@@ -97,7 +97,7 @@ public interface DEEventQueue extends Debuggable {
      *  @exception InvalidStateException If the queue is empty.
      */
     public DEEvent take() throws InvalidStateException;
-    
+
     /** Return the events currently in the queue as an array.
      *  @return The events currently in the queue.
      */

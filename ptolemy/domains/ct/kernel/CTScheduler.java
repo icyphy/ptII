@@ -549,7 +549,7 @@ public class CTScheduler extends Scheduler {
                                 && insideReceivers[0] != null
                                 && insideReceivers[0].length > 0) {
                             Receiver insideReceiver = insideReceivers[0][0];
-                            
+
                             if (insideReceiver instanceof StateReceiver) {
                                 _signalTypeMap.setType(port, CONTINUOUS);
                             } else {

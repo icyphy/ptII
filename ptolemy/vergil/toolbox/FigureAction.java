@@ -129,7 +129,7 @@ public class FigureAction extends AbstractAction {
                 // Probably a submenu.
                 // FIXME: This only supports one level of submenus.
                 if (contextMenu instanceof JPopupMenu) {
-                    contextMenu = ((JPopupMenu)contextMenu).getInvoker();
+                    contextMenu = ((JPopupMenu) contextMenu).getInvoker();
                 }
                 if (contextMenu instanceof JMenu) {
                     contextMenu = contextMenu.getParent();
@@ -147,23 +147,23 @@ public class FigureAction extends AbstractAction {
                 _sourceType = MENUBAR_TYPE;
             }
             /*
-        } else if (source instanceof JMenuItem) {
-            // Action activated using a context menu.
-            JMenuItem item = (JMenuItem) source;
+             } else if (source instanceof JMenuItem) {
+             // Action activated using a context menu.
+             JMenuItem item = (JMenuItem) source;
 
-            if (item.getParent() instanceof JContextMenu) {
-                _sourceType = CONTEXTMENU_TYPE;
+             if (item.getParent() instanceof JContextMenu) {
+             _sourceType = CONTEXTMENU_TYPE;
 
-                JContextMenu menu = (JContextMenu) item.getParent();
-                parent = menu.getInvoker();
-                _target = (NamedObj) menu.getTarget();
-                _x = item.getX();
-                _y = item.getY();
-            } else {
-                // Not implicit location.. should there be?
-                _sourceType = MENUBAR_TYPE;
-            }
-            */
+             JContextMenu menu = (JContextMenu) item.getParent();
+             parent = menu.getInvoker();
+             _target = (NamedObj) menu.getTarget();
+             _x = item.getX();
+             _y = item.getY();
+             } else {
+             // Not implicit location.. should there be?
+             _sourceType = MENUBAR_TYPE;
+             }
+             */
         } else if (source instanceof JButton) {
             // presumably we are in a toolbar...
             _sourceType = TOOLBAR_TYPE;

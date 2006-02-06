@@ -51,10 +51,10 @@ import ptolemy.util.StringUtilities;
 //// ActorIndex
 
 /** Generate actor/demo index files.
-    For each actor that is listed in a file, generate a html file that
-    lists the models in which the actor appears.
-    
-    
+ For each actor that is listed in a file, generate a html file that
+ lists the models in which the actor appears.
+ 
+ 
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 5.1
@@ -80,26 +80,23 @@ public class ActorIndex {
      *  a file.
      */
     public static void generateActorIndex(String classesFileName,
-            String modelsFileName, String outputDirectory) 
-            throws Exception {
+            String modelsFileName, String outputDirectory) throws Exception {
         // The class name is the key, a set of models is the value.
         HashMap classesToBeIndexed = new HashMap();
         BufferedReader classesReader = null;
         BufferedReader modelReader = null;
         try {
             // Read classesFileName and populate the classes Set
-            classesReader = new BufferedReader(
-                    new FileReader(classesFileName));
+            classesReader = new BufferedReader(new FileReader(classesFileName));
             String className;
-            while ( (className = classesReader.readLine()) != null ) {
+            while ((className = classesReader.readLine()) != null) {
                 System.out.println("Going to index " + className);
                 classesToBeIndexed.put(className, new HashSet());
             }
 
             // Read modelsFileName and parse each model, looking
             // for classes in which we are interested.
-            modelReader = new BufferedReader(
-                    new FileReader(modelsFileName));
+            modelReader = new BufferedReader(new FileReader(modelsFileName));
             String modelName;
             MoMLParser parser = new MoMLParser();
 
@@ -109,10 +106,10 @@ public class ActorIndex {
             // Add a MoML filter that updates the values of classesToBeIndexed
             // with models that contain classes named by the key of
             // classesToBeIndexed
-            NamedObjClassesSeen namedObjClassesSeen
-                = new NamedObjClassesSeen(classesToBeIndexed);
+            NamedObjClassesSeen namedObjClassesSeen = new NamedObjClassesSeen(
+                    classesToBeIndexed);
             parser.addMoMLFilter(namedObjClassesSeen);
-            while ( (modelName = modelReader.readLine()) != null ) {
+            while ((modelName = modelReader.readLine()) != null) {
                 // Reset the list of classes seen, read the model
                 // The filter updates the classesToBeIndexed hashMap
                 namedObjClassesSeen.reset(modelName);
@@ -121,15 +118,13 @@ public class ActorIndex {
                 System.out.println("Parsing: " + modelURL);
 
                 try {
-                    parser.parse(null, modelURL); 
+                    parser.parse(null, modelURL);
                 } catch (Exception ex) {
-                    System.err.println("Warning, failed to parse " +
-                            modelURL);
+                    System.err.println("Warning, failed to parse " + modelURL);
                     ex.printStackTrace();
                 }
             }
-            
-            
+
         } finally {
             if (classesReader != null) {
                 try {
@@ -147,13 +142,12 @@ public class ActorIndex {
             }
         }
 
-
         // Write the output files.
         Iterator classes = classesToBeIndexed.entrySet().iterator();
         while (classes.hasNext()) {
             Map.Entry entry = (Map.Entry) classes.next();
-            String actorClassName = (String)entry.getKey();
-            if (((Set)entry.getValue()).size() == 0) {
+            String actorClassName = (String) entry.getKey();
+            if (((Set) entry.getValue()).size() == 0) {
                 // Skip classes that are not used in a demo
                 // ptolemy.vergil.actor.DocManager checks to see if 
                 // the Idx.htm file exists before creating a link to it.
@@ -162,29 +156,28 @@ public class ActorIndex {
             BufferedWriter writer = null;
             try {
                 String outputFileName = outputDirectory + File.separator
-                    + actorClassName.replace('.', File.separatorChar)
-                    + "Idx.htm";
+                        + actorClassName.replace('.', File.separatorChar)
+                        + "Idx.htm";
                 System.out.println("Writing " + outputFileName);
                 writer = new BufferedWriter(new FileWriter(outputFileName));
 
                 writer.write("<html>\n<head>\n<title>Index for "
                         + actorClassName + "</title>\n</head>\n<body>\n"
                         + "<h2>" + actorClassName + "</h2>\n"
-                        + "Below are demonstration models that use " 
+                        + "Below are demonstration models that use "
                         + actorClassName + "\n<ul>\n");
 
                 // Determine the relative path to $PTII from this
                 // file.  We need this so that we can link to the models.
-                String canonicalOutputFileName =
-                    new File(outputFileName).getCanonicalPath()
-                    .replace('\\', '/');
+                String canonicalOutputFileName = new File(outputFileName)
+                        .getCanonicalPath().replace('\\', '/');
 
                 // Get PTII as C:/cxh/ptII
                 String ptII = null;
                 try {
-                    ptII = new URI(
-                            StringUtilities.getProperty("ptolemy.ptII.dirAsURL"))
-                        .normalize().getPath();
+                    ptII = new URI(StringUtilities
+                            .getProperty("ptolemy.ptII.dirAsURL")).normalize()
+                            .getPath();
                     // Under Windows, convert /C:/foo/bar to C:/foo/bar
                     ptII = new File(ptII).getCanonicalPath().replace('\\', '/');
                 } catch (URISyntaxException ex) {
@@ -197,22 +190,21 @@ public class ActorIndex {
                 }
 
                 String relativePath = "";
-                if (canonicalOutputFileName.startsWith(ptII)) { 
+                if (canonicalOutputFileName.startsWith(ptII)) {
                     // If the canonical output file name starts with ptII
                     // we then generate a relative path
-                    String relativeOutputFileName =
-                        StringUtilities.substitute(canonicalOutputFileName,
-                                ptII, "");
+                    String relativeOutputFileName = StringUtilities.substitute(
+                            canonicalOutputFileName, ptII, "");
                     StringBuffer relativePathBuffer = new StringBuffer();
                     int index = 0;
-                    while ( relativeOutputFileName.indexOf('/', index) != -1) {
+                    while (relativeOutputFileName.indexOf('/', index) != -1) {
                         index = relativeOutputFileName.indexOf('/', index) + 1;
                         relativePathBuffer.append("../");
                     }
                     relativePath = relativePathBuffer.toString();
                     // Strip off the last ../
-                    relativePath = relativePath.substring(0,
-                            relativePath.length() - 3);
+                    relativePath = relativePath.substring(0, relativePath
+                            .length() - 3);
                 }
 
                 // Loop through all the models that use this actor
@@ -223,12 +215,10 @@ public class ActorIndex {
                         model = model.substring(11);
                     }
                     writer.write("<li><a href=\"" + relativePath + model
-                            + "\">" + model
-                        + "</a>\n");
+                            + "\">" + model + "</a>\n");
                 }
                 writer.write("</ul>\n</body>\n</html>\n");
-            }
-            finally {
+            } finally {
                 if (writer != null) {
                     writer.close();
                 }
@@ -242,7 +232,7 @@ public class ActorIndex {
      *  java -classpath "$PTII;$PTII/lib/diva.jar" ptolemy.moml.filter.ActorIndex allActors.txt models.txt doc/codeDoc
      *  </pre>
      */
-    public static void main(String [] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         ActorIndex.generateActorIndex(args[0], args[1], args[2]);
     }
 }

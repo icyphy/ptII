@@ -131,8 +131,7 @@ public class FixPoint implements Cloneable, Serializable {
             _initFromBigDecimal(bigDecimal, quant);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("NumberFormatException "
-                    + "while converting \"" + doubleValue +
-                    "\" to a FixPoint.");
+                    + "while converting \"" + doubleValue + "\" to a FixPoint.");
         }
     }
 
@@ -172,10 +171,8 @@ public class FixPoint implements Cloneable, Serializable {
     public FixPoint(int intValue, boolean signed) {
         // Create a new integer FixPoint value with
         // a small precision but with a "grow" overflow strategy.
-        this(intValue, new FixPointQuantization(
-                new Precision( (signed ? 1 : 0), (signed ? 1 : 0) + 1, 0),
-                Overflow.GROW,
-                Rounding.HALF_EVEN));
+        this(intValue, new FixPointQuantization(new Precision((signed ? 1 : 0),
+                (signed ? 1 : 0) + 1, 0), Overflow.GROW, Rounding.HALF_EVEN));
     }
 
     /** Construct a FixPoint by converting the BigDecimal interpretation of
@@ -227,8 +224,8 @@ public class FixPoint implements Cloneable, Serializable {
     public FixPoint add(FixPoint arg) {
 
         // Align the two arguments
-        int minExponent = Math.min(_precision.getExponent(),
-                arg._precision.getExponent());
+        int minExponent = Math.min(_precision.getExponent(), arg._precision
+                .getExponent());
         BigInteger thisValue = _alignToExponent(minExponent);
         BigInteger thatValue = arg._alignToExponent(minExponent);
 
@@ -238,8 +235,8 @@ public class FixPoint implements Cloneable, Serializable {
         // Create new precision
         int sign = _determineSign(_precision, arg._precision);
         int new_bits = newValue.bitLength() + sign;
-        int max_bits = Math.max(_precision.getNumberOfBits(),
-                arg._precision.getNumberOfBits());
+        int max_bits = Math.max(_precision.getNumberOfBits(), arg._precision
+                .getNumberOfBits());
         int bits = (new_bits > max_bits ? new_bits : max_bits);
 
         Precision newPrecision = new Precision(sign, bits, minExponent);
@@ -261,15 +258,15 @@ public class FixPoint implements Cloneable, Serializable {
         return add(arg).quantize(quant);
     }
 
-     /** Return the value of this FixPoint as a BigDecimal number.
+    /** Return the value of this FixPoint as a BigDecimal number.
      *  This is lossless, since the scale of the BigDecimal is set
      *  to the number of fractional bits.
      *
      *  @return The BigDecimal value of this FixPoint.
      */
     public BigDecimal bigDecimalValue() {
-        return Precision.shiftBigDecimal(new BigDecimal(_value),
-                _precision.getExponent());
+        return Precision.shiftBigDecimal(new BigDecimal(_value), _precision
+                .getExponent());
     }
 
     /** Return this, that is, return the reference to this object.
@@ -300,11 +297,11 @@ public class FixPoint implements Cloneable, Serializable {
      */
     public FixPoint divide(FixPoint arg) throws IllegalArgumentException {
 
-        int minExponent = Math.min(_precision.getExponent(),
-                arg._precision.getExponent());
+        int minExponent = Math.min(_precision.getExponent(), arg._precision
+                .getExponent());
         int sign = _determineSign(_precision, arg._precision);
-        int maxLength = Math.max(_precision.getNumberOfBits(),
-                arg._precision.getNumberOfBits());
+        int maxLength = Math.max(_precision.getNumberOfBits(), arg._precision
+                .getNumberOfBits());
 
         Precision netPrecision = new Precision(sign, maxLength, minExponent);
         Quantization netQuantization = new FixPointQuantization(netPrecision,
@@ -327,7 +324,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  @exception IllegalArgumentException If division by zero.
      */
     public FixPoint divide(FixPoint arg, Quantization quant)
-        throws IllegalArgumentException {
+            throws IllegalArgumentException {
 
         try {
 
@@ -349,8 +346,8 @@ public class FixPoint implements Cloneable, Serializable {
             BigDecimal result = numerator.divide(denominator, scale,
                     BigDecimal.ROUND_HALF_EVEN);
 
-            int result_shift = this._precision.getExponent() -
-                arg.getPrecision().getExponent();
+            int result_shift = this._precision.getExponent()
+                    - arg.getPrecision().getExponent();
             result = Precision.shiftBigDecimal(result, result_shift);
 
             return new FixPoint(result, quant);
@@ -360,13 +357,13 @@ public class FixPoint implements Cloneable, Serializable {
             BigInteger infinity = (_value.signum() >= 0) ? anOverflow
                     .plusInfinity(quant) : anOverflow.minusInfinity(quant);
 
-                    if (infinity != null) {
-                        return new FixPoint(infinity, quant.getPrecision());
-                    }
+            if (infinity != null) {
+                return new FixPoint(infinity, quant.getPrecision());
+            }
 
-                    throw new IllegalArgumentException("ArithmeticException " +
-                            "while dividing " + toString() + " by " +
-                            arg.toString() + '.');
+            throw new IllegalArgumentException("ArithmeticException "
+                    + "while dividing " + toString() + " by " + arg.toString()
+                    + '.');
         }
     }
 
@@ -390,8 +387,8 @@ public class FixPoint implements Cloneable, Serializable {
      *  @return True if the FixPoints are equal; false otherwise.
      */
     public boolean equals(FixPoint arg) {
-        int exponentBits = Math.min(_precision.getExponent(),
-                arg._precision.getExponent());
+        int exponentBits = Math.min(_precision.getExponent(), arg._precision
+                .getExponent());
         BigInteger thisValue = _alignToExponent(exponentBits);
         BigInteger thatValue = arg._alignToExponent(exponentBits);
         return thisValue.equals(thatValue);
@@ -459,8 +456,8 @@ public class FixPoint implements Cloneable, Serializable {
         // determine minimum length of "new value"
         int new_bitlength = newVal.bitLength() + new_sign;
 
-        Precision newPrecision = new Precision(new_sign,
-                new_bitlength, new_exponent);
+        Precision newPrecision = new Precision(new_sign, new_bitlength,
+                new_exponent);
         return new FixPoint(newVal, newPrecision);
     }
 
@@ -482,10 +479,10 @@ public class FixPoint implements Cloneable, Serializable {
         // 1. Create FixPoint value with "worst case" precision
         BigInteger newValue = _value.multiply(arg._value);
         int new_sign = _determineSign(_precision, arg._precision);
-        int new_exponent = _precision.getExponent() +
-        arg._precision.getExponent();
-        Precision worstCasePrecision = new Precision(new_sign,
-                new_sign + newValue.bitLength(), new_exponent);
+        int new_exponent = _precision.getExponent()
+                + arg._precision.getExponent();
+        Precision worstCasePrecision = new Precision(new_sign, new_sign
+                + newValue.bitLength(), new_exponent);
         FixPoint newVal = new FixPoint(newValue, worstCasePrecision);
 
         // 2. Requantize the value with the minimum quantization necessary
@@ -493,16 +490,15 @@ public class FixPoint implements Cloneable, Serializable {
 
         // 3. Determine "Growth" precision for result. This will be the
         //    "maximium" of the precision of the arguments and the result.
-        Precision newPrecision =
-            Precision.matchThePoint(_precision, arg._precision);
+        Precision newPrecision = Precision.matchThePoint(_precision,
+                arg._precision);
         newPrecision = Precision.matchThePoint(newPrecision, newVal._precision);
 
         // 4. Requantize the result with the new precision (this
         //    precision should be adequate and will not cause overflow
         //    or rounding.
-        FixPoint fp = new FixPoint(newVal,
-                new FixPointQuantization(newPrecision,
-                Overflow.GENERAL, Rounding.GENERAL));
+        FixPoint fp = new FixPoint(newVal, new FixPointQuantization(
+                newPrecision, Overflow.GENERAL, Rounding.GENERAL));
         return fp;
     }
 
@@ -570,8 +566,8 @@ public class FixPoint implements Cloneable, Serializable {
     public FixPoint subtract(FixPoint arg) {
 
         // Align the two arguments
-        int minExponent = Math.min(_precision.getExponent(),
-                arg._precision.getExponent());
+        int minExponent = Math.min(_precision.getExponent(), arg._precision
+                .getExponent());
         BigInteger thisValue = _alignToExponent(minExponent);
         BigInteger thatValue = arg._alignToExponent(minExponent);
 
@@ -586,8 +582,8 @@ public class FixPoint implements Cloneable, Serializable {
             sign = 1;
 
         int new_bits = newValue.bitLength() + sign;
-        int max_bits = Math.max(_precision.getNumberOfBits(),
-                arg._precision.getNumberOfBits());
+        int max_bits = Math.max(_precision.getNumberOfBits(), arg._precision
+                .getNumberOfBits());
         int bits = (new_bits > max_bits ? new_bits : max_bits);
 
         Precision newPrecision = new Precision(sign, bits, minExponent);
@@ -607,7 +603,6 @@ public class FixPoint implements Cloneable, Serializable {
     public FixPoint subtract(FixPoint arg, Quantization quant) {
         return subtract(arg).quantize(quant);
     }
-
 
     /** Return a bit string representation of this number.
      *  The string takes the form "<i>sign integerBits . fractionBits</i>",
@@ -703,8 +698,7 @@ public class FixPoint implements Cloneable, Serializable {
         // we need to strip redundant trailing 0's.
         int i = bigString.length() - 1;
 
-        while ((bigString.charAt(i) == '0') &&
-               (bigString.charAt(i - 1) != '.')) {
+        while ((bigString.charAt(i) == '0') && (bigString.charAt(i - 1) != '.')) {
             --i;
         }
 
@@ -728,7 +722,7 @@ public class FixPoint implements Cloneable, Serializable {
      *  precision.
      */
     public String toStringValuePrecision() {
-        return toString() + " ["+_precision.toString()+"="+_value+"]";
+        return toString() + " [" + _precision.toString() + "=" + _value + "]";
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -747,15 +741,14 @@ public class FixPoint implements Cloneable, Serializable {
      */
     FixPoint(BigInteger unscaledIntegerValue, Precision precision) {
         if (Overflow.isOutOfRange(unscaledIntegerValue, precision))
-            throw new ArithmeticException("Precision "+precision+
-                    " not sufficient to represent "+unscaledIntegerValue);
+            throw new ArithmeticException("Precision " + precision
+                    + " not sufficient to represent " + unscaledIntegerValue);
         _precision = precision;
         _value = unscaledIntegerValue;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       private constructor                 ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -811,22 +804,20 @@ public class FixPoint implements Cloneable, Serializable {
      *  @param quant The quantization specification.
      *  @return The quantized and rounded BigInteger value.
      */
-    private void _initFromBigDecimal(BigDecimal bigDecimal,
-            Quantization quant) {
+    private void _initFromBigDecimal(BigDecimal bigDecimal, Quantization quant) {
 
         // Step 1: - Check to see if the number is negative and the
         //           precision is unsigned. If so, throw an exception.
         if (!quant.getPrecision().isSigned() && bigDecimal.signum() < 0)
-            throw new ArithmeticException("Attempting to create a unsigned"+
-                    " FixPoint from a negative double:"+bigDecimal);
+            throw new ArithmeticException("Attempting to create a unsigned"
+                    + " FixPoint from a negative double:" + bigDecimal);
 
         // Step 2: - Handle the right side (lsb) of the BigDecimal value
         //           by shifting.
         //   If the exponent is less than zero, shift the result left.
         //   If the exponent is greater than zero, shift the result right.
-        BigDecimal shiftedDecimal =
-            Precision.shiftBigDecimal(bigDecimal,
-                    -quant.getPrecision().getExponent());
+        BigDecimal shiftedDecimal = Precision.shiftBigDecimal(bigDecimal,
+                -quant.getPrecision().getExponent());
 
         // Step 3: Round the shifted decimal value
         BigInteger roundedInteger = quant.getRounding().round(shiftedDecimal);
@@ -855,14 +846,13 @@ public class FixPoint implements Cloneable, Serializable {
      *  @param quant The quantization specification.
      *  @return The quantized and rounded BigInteger value.
      */
-    private void _initFromBigInteger(BigInteger bigInteger,
-            Quantization quant) {
+    private void _initFromBigInteger(BigInteger bigInteger, Quantization quant) {
 
         // Step 1: - Check to see if the number is negative and the
         //           precision is unsigned. If so, throw an exception.
         if (!quant.getPrecision().isSigned() && bigInteger.signum() < 0)
-            throw new ArithmeticException("Attempting to create a unsigned"+
-                    " FixPoint from a negative integer:"+bigInteger);
+            throw new ArithmeticException("Attempting to create a unsigned"
+                    + " FixPoint from a negative integer:" + bigInteger);
 
         // Step 2: Shift the BigInteger value to match the desired
         //         Precision. There are two cases. If the exponent

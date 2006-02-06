@@ -295,7 +295,6 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
     //private void debug(String s) {
     //    System.err.println(s);
     //}
-
     /**
      * Return the absolute cost of an individual edge.  By default the
      * cost function is:

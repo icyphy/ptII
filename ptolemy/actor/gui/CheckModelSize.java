@@ -70,16 +70,16 @@ public class CheckModelSize {
         StringBuffer results = new StringBuffer();
         for (int i = 0; i < args.length; i++) {
             String fileName = args[i];
-//             if (fileName.endsWith("ENM_11_18_04.xml") 
-//                     || fileName.endsWith("IPCC_Base_Layers.xml")
-//                     || fileName.endsWith("dataFrame_R.xml")
-//                     || fileName.endsWith("eml_Table_as_Record_R.xml")
-//                     || fileName.endsWith("emlToRecord_R.xml")
-//                     || fileName.endsWith("eml-simple-linearRegression-R.xml")
-//                     || fileName.endsWith("eml-pairs-R.xml")) {
-//                 System.out.println("CheckModelSize: skipping " + fileName);
-//                 continue;
-//             }
+            //             if (fileName.endsWith("ENM_11_18_04.xml") 
+            //                     || fileName.endsWith("IPCC_Base_Layers.xml")
+            //                     || fileName.endsWith("dataFrame_R.xml")
+            //                     || fileName.endsWith("eml_Table_as_Record_R.xml")
+            //                     || fileName.endsWith("emlToRecord_R.xml")
+            //                     || fileName.endsWith("eml-simple-linearRegression-R.xml")
+            //                     || fileName.endsWith("eml-pairs-R.xml")) {
+            //                 System.out.println("CheckModelSize: skipping " + fileName);
+            //                 continue;
+            //             }
             StringBuffer analysis = new StringBuffer();
 
             MoMLParser parser = new MoMLParser();
@@ -190,13 +190,13 @@ public class CheckModelSize {
                 analysis.append(KernelException.stackTraceToString(throwable));
             }
             results.append("<tr>\n  <td><a href=\"" + fileName + "\">"
-                    + fileName + "</a></td>\n  <td>"+ analysis + "</td>\n");
+                    + fileName + "</a></td>\n  <td>" + analysis + "</td>\n");
 
         }
 
         return "<h1>Check Size</h1>\nBelow are the results from checking the "
-            + "sizes of and centering of models\n<table>\n"
-            + results.toString() + "</table>\n";
+                + "sizes of and centering of models\n<table>\n"
+                + results.toString() + "</table>\n";
     }
 
     /** Check the size, zoom and location of the models named

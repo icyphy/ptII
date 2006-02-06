@@ -528,7 +528,7 @@ public class Transition extends ComponentRelation {
      *   cannot be evaluated.
      */
     public boolean isDefault() throws IllegalActionException {
-        return ((BooleanToken)defaultTransition.getToken()).booleanValue();
+        return ((BooleanToken) defaultTransition.getToken()).booleanValue();
     }
 
     /** Return true if the transition is enabled, that is the guard is true, or

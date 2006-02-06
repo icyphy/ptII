@@ -39,17 +39,17 @@ import java.util.List;
 
  <p>Sample usage:
  <pre> 
-        List execCommands = new LinkedList();
-        execCommands.add("date");
-        execCommands.add("sleep 3");
-        execCommands.add("date");
-        execCommands.add("notACommand");
+ List execCommands = new LinkedList();
+ execCommands.add("date");
+ execCommands.add("sleep 3");
+ execCommands.add("date");
+ execCommands.add("notACommand");
 
-        final StreamExec exec = new StreamExec();
-        exec.setCommands(execCommands);
+ final StreamExec exec = new StreamExec();
+ exec.setCommands(execCommands);
 
-        exec.start();
-  </pre>
+ exec.start();
+ </pre>
 
 
  <p>Loosely based on Example1.java from
@@ -200,7 +200,6 @@ public class StreamExec implements ExecuteCommands {
                         stdout("About to execute:\n");
                     }
 
-
                     StringBuffer statusCommand = new StringBuffer();
 
                     for (int i = 0; i < commandTokens.length; i++) {
@@ -229,11 +228,11 @@ public class StreamExec implements ExecuteCommands {
 
                     // Set up a Thread to read in any error messages
                     _StreamReaderThread errorGobbler = new _StreamReaderThread(
-                            _process.getErrorStream(),  this);
+                            _process.getErrorStream(), this);
 
                     // Set up a Thread to read in any output messages
                     _StreamReaderThread outputGobbler = new _StreamReaderThread(
-                            _process.getInputStream(),  this);
+                            _process.getInputStream(), this);
 
                     // Start up the Threads
                     errorGobbler.start();

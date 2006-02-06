@@ -98,12 +98,10 @@ public class ClassDefinitionController extends ActorController {
 
         if (access == FULL) {
             // Use a submenu.
-            Action[] actions = {
-                    _createInstanceAction, 
-                    _createSubclassAction,
-                    _convertToInstanceAction};
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    actions, "Class Actions"));
+            Action[] actions = { _createInstanceAction, _createSubclassAction,
+                    _convertToInstanceAction };
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
+                    "Class Actions"));
         }
 
         // Set up a listener to lay out the ports when graph changes.

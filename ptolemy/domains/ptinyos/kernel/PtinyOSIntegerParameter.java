@@ -106,8 +106,9 @@ public class PtinyOSIntegerParameter extends SharedParameter {
      *  @exception NameDuplicationException If the name coincides with
      *   a parameter already in the container.
      */
-    public PtinyOSIntegerParameter(NamedObj container, String name, int incrementValue)
-            throws IllegalActionException, NameDuplicationException {
+    public PtinyOSIntegerParameter(NamedObj container, String name,
+            int incrementValue) throws IllegalActionException,
+            NameDuplicationException {
         this(container, name, null);
         _incrementValue = incrementValue;
     }
@@ -179,7 +180,7 @@ public class PtinyOSIntegerParameter extends SharedParameter {
             if (token != null) {
                 value = token.intValue();
             }
-            
+
             if (value == _defaultValue) {
                 // Call again without suppression of propagation.
                 super.setExpression(expression);
@@ -194,35 +195,37 @@ public class PtinyOSIntegerParameter extends SharedParameter {
                                 toplevel).iterator();
 
                         while (sharedParameters.hasNext()) {
-                            PtinyOSIntegerParameter sharedParameter =
-                                (PtinyOSIntegerParameter) sharedParameters.next();
+                            PtinyOSIntegerParameter sharedParameter = (PtinyOSIntegerParameter) sharedParameters
+                                    .next();
 
                             if (sharedParameter != this) {
                                 try {
-                                    sharedParameter.setSuppressingPropagation(true);
-                                    if (((IntToken)sharedParameter.getToken())
+                                    sharedParameter
+                                            .setSuppressingPropagation(true);
+                                    if (((IntToken) sharedParameter.getToken())
                                             .intValue() != 0) {
                                         // Only auto increment value
                                         // if the current value is not
                                         // 0.
                                         value += _incrementValue;
-    
+
                                         String newExpression = String
                                                 .valueOf(value);
-    
+
                                         if (!sharedParameter.getExpression()
                                                 .equals(newExpression)) {
                                             sharedParameter
                                                     .setExpression(newExpression);
-    
+
                                             // Make sure the new value
                                             // is not persistent.
-                                            sharedParameter.setPersistent(false);
+                                            sharedParameter
+                                                    .setPersistent(false);
                                         }
                                     }
                                 } finally {
-                                    sharedParameter.setSuppressingPropagation(
-                                            previousSuppress);
+                                    sharedParameter
+                                            .setSuppressingPropagation(previousSuppress);
                                 }
                             }
                         }

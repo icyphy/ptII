@@ -46,7 +46,7 @@ import ptolemy.actor.Actor;
  @see ConditionalBranchController
  */
 public interface BranchActor extends Actor {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

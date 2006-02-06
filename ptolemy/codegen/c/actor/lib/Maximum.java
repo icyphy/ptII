@@ -64,8 +64,7 @@ public class Maximum extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        ptolemy.actor.lib.Maximum actor = 
-            (ptolemy.actor.lib.Maximum) getComponent();
+        ptolemy.actor.lib.Maximum actor = (ptolemy.actor.lib.Maximum) getComponent();
 
         // FIXME: we need to resolve the token type in the future
         ArrayList args = new ArrayList();

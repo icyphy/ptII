@@ -60,7 +60,7 @@ public class DocEffigy extends Effigy {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,7 +71,7 @@ public class DocEffigy extends Effigy {
     public DocAttribute getDocAttribute() {
         return _docAttribute;
     }
-    
+
     /** Set the DocAttribute represented by this effigy, if any.
      *  @param docAttribute The DocAttribute represented by this effigy.
      *  @see #getDocAttribute()
@@ -82,7 +82,7 @@ public class DocEffigy extends Effigy {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The doc attribute represented by this effigy, if any. */
     private DocAttribute _docAttribute;
 
@@ -153,8 +153,8 @@ public class DocEffigy extends Effigy {
                         if (contents.startsWith(dtd)) {
                             // This is a doc file.
                             reader.close();
-                            DocEffigy effigy = new DocEffigy(container, container
-                                    .uniqueName("effigy"));
+                            DocEffigy effigy = new DocEffigy(container,
+                                    container.uniqueName("effigy"));
                             effigy.uri.setURL(input);
                             return effigy;
                         }

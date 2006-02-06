@@ -73,7 +73,7 @@ public class Queue extends CIActor {
 
     /** An output port that sends the length of queue.  The default type
      *  is integer.
-     */ 
+     */
     public TypedIOPort length;
 
     ///////////////////////////////////////////////////////////////////

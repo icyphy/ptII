@@ -783,7 +783,6 @@ public class LevelLayout extends AbstractGlobalLayout {
     //private void debug(String s) {
     //    System.err.println(s);
     //}
-
     /**
      * Get the level of <i>n</i> in the graph.
      * Requires that all nodes have LevelInfo attributes.

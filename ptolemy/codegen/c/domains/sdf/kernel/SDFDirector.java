@@ -78,7 +78,7 @@ public class SDFDirector extends Director {
      *  @exception IllegalActionException If thrown while creating offset variables.
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();  
+        StringBuffer code = new StringBuffer();
         code.append(_createOffsetVariablesIfNeeded());
         code.append(super.createOffsetVariablesIfNeeded());
         return code.toString();
@@ -92,34 +92,34 @@ public class SDFDirector extends Director {
      *   fired cannot find its associated helper.
      */
     public String generateFireCode() throws IllegalActionException {
-        
+
         StringBuffer code = new StringBuffer();
-        boolean inline = 
-                ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
-        
+        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+                .booleanValue();
+
         if (!inline) {
             StringBuffer functionCode = new StringBuffer();
-            CompositeActor container = (CompositeActor) getComponent().getContainer();
+            CompositeActor container = (CompositeActor) getComponent()
+                    .getContainer();
             Iterator actors = container.deepEntityList().iterator();
             while (actors.hasNext()) {
                 Actor actor = (Actor) actors.next();
-                functionCode.append("\t\nvoid " + 
-                        actor.getFullName().replace('.' , '_') + "() {\n");
-                CodeGeneratorHelper actorHelper = 
-                        (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+                functionCode.append("\t\nvoid "
+                        + actor.getFullName().replace('.', '_') + "() {\n");
+                CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
                 functionCode.append(actorHelper.generateFireCode());
                 functionCode.append(actorHelper.generateTypeConvertFireCode());
                 functionCode.append("}\t\n");
             }
             code.insert(0, functionCode);
-            
+
             code.append("\tint i;\n");
-        }     
-      
+        }
+
         // Generate code for one iteration.
         Schedule schedule = ((StaticSchedulingDirector) getComponent())
                 .getScheduler().getSchedule();
-       
+
         Iterator actorsToFire = schedule.firingIterator();
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing) actorsToFire.next();
@@ -128,9 +128,8 @@ public class SDFDirector extends Director {
             // FIXME: Before looking for a helper class, we should check to
             // see whether the actor contains a code generator attribute.
             // If it does, we should use that as the helper.
-            CodeGeneratorHelper helper = 
-                    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+
             if (inline) {
                 for (int i = 0; i < firing.getIterationCount(); i++) {
 
@@ -154,14 +153,14 @@ public class SDFDirector extends Director {
                     }
                 }
             } else {
-                
+
                 int count = firing.getIterationCount();
                 if (count > 1) {
                     code.append("for (i = 0; i < " + count + " ; i++) {\n");
-                }   
-                    
-                code.append(actor.getFullName().replace('.' , '_') + "();\n");
-                    
+                }
+
+                code.append(actor.getFullName().replace('.', '_') + "();\n");
+
                 // update buffer offset after firing each actor once
                 Iterator inputPorts = actor.inputPortList().iterator();
                 while (inputPorts.hasNext()) {
@@ -176,10 +175,10 @@ public class SDFDirector extends Director {
                     int rate = DFUtilities.getRate(port);
                     _updateConnectedPortsOffset(port, code, rate);
                 }
-                    
+
                 if (count > 1) {
                     code.append("}\n");
-                } 
+                }
             }
         }
         return code.toString();
@@ -193,21 +192,19 @@ public class SDFDirector extends Director {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helper = 
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             // Initialize code for the actor.
             code.append(helper.generateTypeConvertInitializeCode());
         }
-        
+
         code.append(super.generateInitializeCode());
 
-        ptolemy.actor.CompositeActor container = 
-                (ptolemy.actor.CompositeActor) getComponent().getContainer();
-        CodeGeneratorHelper containerHelper = (
-                CodeGeneratorHelper) _getHelper(container);
+        ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
+                .getContainer();
+        CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
 
         // Generate code for creating external initial production.
         Iterator outputPorts = container.outputPortList().iterator();
@@ -225,16 +222,16 @@ public class SDFDirector extends Director {
                         }
 
                         for (int k = 0; k < rate; k++) {
-                            code.append(containerHelper.getReference(name
-                                    + "," + k));
+                            code.append(containerHelper.getReference(name + ","
+                                    + k));
                             code.append(" = ");
-                            code.append(containerHelper.getReference("@"
-                                    + name + "," + k));
+                            code.append(containerHelper.getReference("@" + name
+                                    + "," + k));
                             code.append(";\n");
                         }
                     }
                 }
-                
+
                 // The offset of the ports connected to the output port is 
                 // updated by outside director.
                 _updatePortOffset(outputPort, code, rate);
@@ -242,7 +239,7 @@ public class SDFDirector extends Director {
         }
         return code.toString();
     }
-    
+
     /** Generate code for transferring enough tokens to complete an internal
      *  iteration.
      *  @param inputPort The port to transfer tokens.
@@ -255,9 +252,8 @@ public class SDFDirector extends Director {
 
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = 
-                (ptolemy.codegen.c.actor.TypedCompositeActor) 
-                _getHelper(getComponent().getContainer());
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(getComponent()
+                .getContainer());
 
         for (int i = 0; i < inputPort.getWidth(); i++) {
             if (i < inputPort.getWidthInside()) {
@@ -294,9 +290,8 @@ public class SDFDirector extends Director {
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
-        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = 
-                (ptolemy.codegen.c.actor.TypedCompositeActor) 
-                _getHelper(getComponent().getContainer());
+        ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(getComponent()
+                .getContainer());
 
         for (int i = 0; i < outputPort.getWidthInside(); i++) {
             if (i < outputPort.getWidth()) {
@@ -371,14 +366,16 @@ public class SDFDirector extends Director {
      *  @return Code that declares the read and write offset variables.
      *  @exception IllegalActionException If getting the rate or
      *   reading parameters throws it.   
-     */   
-    protected String _createOffsetVariablesIfNeeded() throws IllegalActionException {
+     */
+    protected String _createOffsetVariablesIfNeeded()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        CompositeActor container = (CompositeActor) getComponent().getContainer();
+        CompositeActor container = (CompositeActor) getComponent()
+                .getContainer();
 
-        boolean inline = 
-            ((BooleanToken) _codeGenerator.inline.getToken()).booleanValue();
-        
+        boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
+                .booleanValue();
+
         Iterator outputPorts = container.outputPortList().iterator();
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
@@ -389,52 +386,52 @@ public class SDFDirector extends Director {
                 // and write positions in the buffer must return to the 
                 // previous values after one iteration of the container actor
                 // in order to avoid using read and write offset variables.
-                if (inline) { 
+                if (inline) {
                     readTokens = DFUtilities.getRate(outputPort);
                     writeTokens = readTokens;
-                // If each actor firing is wrapped in a function, then read
-                // and write positions in the buffer must return to the 
-                // previous values after one firing of this actor or one
-                // firing of the actor that produces tokens consumed by the 
-                // inside receiver of this actor in order to avoid using 
-                // read and write offset variables.
-                } else { 
+                    // If each actor firing is wrapped in a function, then read
+                    // and write positions in the buffer must return to the 
+                    // previous values after one firing of this actor or one
+                    // firing of the actor that produces tokens consumed by the 
+                    // inside receiver of this actor in order to avoid using 
+                    // read and write offset variables.
+                } else {
                     readTokens = DFUtilities.getRate(outputPort);
-                    Iterator sourcePorts = 
-                            outputPort.insideSourcePortList().iterator();
-                    label1:
-                    while (sourcePorts.hasNext()) {
+                    Iterator sourcePorts = outputPort.insideSourcePortList()
+                            .iterator();
+                    label1: while (sourcePorts.hasNext()) {
                         IOPort sourcePort = (IOPort) sourcePorts.next();
-                        CodeGeneratorHelper helper = (CodeGeneratorHelper) 
-                                _getHelper(sourcePort.getContainer());
+                        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
+                                .getContainer());
                         int width;
                         if (sourcePort.isInput()) {
                             width = sourcePort.getWidthInside();
                         } else {
-                            width = sourcePort.getWidth();   
+                            width = sourcePort.getWidth();
                         }
                         for (int j = 0; j < width; j++) {
-                            Iterator channels = 
-                                    helper.getSinkChannels(sourcePort, j).iterator();
+                            Iterator channels = helper.getSinkChannels(
+                                    sourcePort, j).iterator();
                             while (channels.hasNext()) {
                                 Channel channel = (Channel) channels.next();
-                                if (channel.port == outputPort 
+                                if (channel.port == outputPort
                                         && channel.channelNumber == i) {
-                                    writeTokens = DFUtilities.getRate(sourcePort);
+                                    writeTokens = DFUtilities
+                                            .getRate(sourcePort);
                                     break label1;
                                 }
                             }
                         }
-                    }                        
+                    }
                 }
-                code.append(_createOffsetVariablesIfNeeded
-                        (outputPort, i, readTokens, writeTokens));
+                code.append(_createOffsetVariablesIfNeeded(outputPort, i,
+                        readTokens, writeTokens));
             }
-        }    
-       
+        }
+
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();            
+            Actor actor = (Actor) actors.next();
             Iterator inputPorts = actor.inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
@@ -445,52 +442,53 @@ public class SDFDirector extends Director {
                     // and write positions in the buffer must return to the 
                     // previous values after one iteration of the container actor
                     // in order to avoid using read and write offset variables.
-                    if (inline) { 
-                        Variable firings = (Variable) ((NamedObj) actor).
-                                getAttribute("firingsPerIteration");
-                        int firingsPerIteration = 
-                                ((IntToken) firings.getToken()).intValue();
-                        readTokens = DFUtilities.getRate(inputPort) * 
-                                firingsPerIteration;
+                    if (inline) {
+                        Variable firings = (Variable) ((NamedObj) actor)
+                                .getAttribute("firingsPerIteration");
+                        int firingsPerIteration = ((IntToken) firings
+                                .getToken()).intValue();
+                        readTokens = DFUtilities.getRate(inputPort)
+                                * firingsPerIteration;
                         writeTokens = readTokens;
-                    // If each actor firing is wrapped in a function, then read
-                    // and write positions in the buffer must return to the 
-                    // previous values after one firing of this actor or one
-                    // firing of the actor that produces tokens consumed by 
-                    // this actor in order to avoid using read and write offset 
-                    // variables.
-                    } else { 
+                        // If each actor firing is wrapped in a function, then read
+                        // and write positions in the buffer must return to the 
+                        // previous values after one firing of this actor or one
+                        // firing of the actor that produces tokens consumed by 
+                        // this actor in order to avoid using read and write offset 
+                        // variables.
+                    } else {
                         readTokens = DFUtilities.getRate(inputPort);
-                        Iterator sourcePorts = inputPort.sourcePortList().iterator();
-                        label2:
-                        while (sourcePorts.hasNext()) {
+                        Iterator sourcePorts = inputPort.sourcePortList()
+                                .iterator();
+                        label2: while (sourcePorts.hasNext()) {
                             IOPort sourcePort = (IOPort) sourcePorts.next();
-                            CodeGeneratorHelper helper = (CodeGeneratorHelper) 
-                                    _getHelper(sourcePort.getContainer());
+                            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sourcePort
+                                    .getContainer());
                             int width;
                             if (sourcePort.isInput()) {
                                 width = sourcePort.getWidthInside();
                             } else {
-                                width = sourcePort.getWidth();   
+                                width = sourcePort.getWidth();
                             }
                             for (int j = 0; j < width; j++) {
-                                Iterator channels = 
-                                        helper.getSinkChannels(sourcePort, j).iterator();
+                                Iterator channels = helper.getSinkChannels(
+                                        sourcePort, j).iterator();
                                 while (channels.hasNext()) {
                                     Channel channel = (Channel) channels.next();
-                                    if (channel.port == inputPort 
+                                    if (channel.port == inputPort
                                             && channel.channelNumber == i) {
-                                        writeTokens = DFUtilities.getRate(sourcePort);
+                                        writeTokens = DFUtilities
+                                                .getRate(sourcePort);
                                         break label2;
                                     }
                                 }
                             }
-                        }                        
+                        }
                     }
-                    code.append(_createOffsetVariablesIfNeeded
-                            (inputPort, i, readTokens, writeTokens));
+                    code.append(_createOffsetVariablesIfNeeded(inputPort, i,
+                            readTokens, writeTokens));
                 }
-            }    
+            }
         }
         return code.toString();
     }
@@ -511,33 +509,33 @@ public class SDFDirector extends Director {
      *  @exception IllegalActionException If getting the rate or
      *   reading parameters throws it.   
      */
-    protected String _createOffsetVariablesIfNeeded(IOPort port, 
-            int channelNumber, int readTokens, int writeTokens) 
+    protected String _createOffsetVariablesIfNeeded(IOPort port,
+            int channelNumber, int readTokens, int writeTokens)
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        
-        CodeGeneratorHelper helper = 
-                (CodeGeneratorHelper) _getHelper(port.getContainer());
-        
+
+        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
+                .getContainer());
+
         int bufferSize = helper.getBufferSize(port, channelNumber);
         if (readTokens % bufferSize != 0 || writeTokens % bufferSize != 0) {
-                    
+
             // Increase the buffer size of that channel to the power of two.
             int newBufferSize = _ceilToPowerOfTwo(bufferSize);
             helper.setBufferSize(port, channelNumber, newBufferSize);
-            
+
             int width;
             if (port.isInput()) {
-                width = port.getWidth();   
+                width = port.getWidth();
             } else {
-                width = port.getWidthInside();   
+                width = port.getWidthInside();
             }
 
             // We check again if the new bufferSize divides readTokens or 
             // writeTokens. If yes, we could avoid using variable to represent 
             // offset.
             if (readTokens % newBufferSize != 0) {
-                
+
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
                 channelReadOffset.append(port.getFullName().replace('.', '_'));
@@ -546,28 +544,31 @@ public class SDFDirector extends Director {
                 }
                 channelReadOffset.append("_readoffset");
                 String channelReadOffsetVariable = channelReadOffset.toString();
-                code.append("static int " + channelReadOffsetVariable + " = " 
+                code.append("static int " + channelReadOffsetVariable + " = "
                         + helper.getReadOffset(port, channelNumber) + ";\n");
                 // Now replace the concrete offset with the variable.
-                helper.setReadOffset(port, channelNumber, channelReadOffsetVariable);                    
+                helper.setReadOffset(port, channelNumber,
+                        channelReadOffsetVariable);
             }
-            
+
             if (writeTokens % newBufferSize != 0) {
-                
+
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(port.getFullName().replace('.', '_'));                    
+                channelWriteOffset.append(port.getFullName().replace('.', '_'));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
                 }
                 channelWriteOffset.append("_writeoffset");
-                String channelWriteOffsetVariable = channelWriteOffset.toString();
-                code.append("static int " + channelWriteOffsetVariable + " = " 
+                String channelWriteOffsetVariable = channelWriteOffset
+                        .toString();
+                code.append("static int " + channelWriteOffsetVariable + " = "
                         + helper.getWriteOffset(port, channelNumber) + ";\n");
                 // Now replace the concrete offset with the variable.
-                helper.setWriteOffset(port, channelNumber, channelWriteOffsetVariable);                    
+                helper.setWriteOffset(port, channelNumber,
+                        channelWriteOffsetVariable);
             }
-        }        
+        }
         return code.toString();
     }
 }

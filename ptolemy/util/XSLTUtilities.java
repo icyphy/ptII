@@ -213,23 +213,25 @@ public class XSLTUtilities {
                 .newInstance();
         // Use an ErrorListener so as to avoid error output on stderr
         // which causes problems with the test harness
-        transformerFactory.setErrorListener(new ErrorListener () {
-                /** Receive notification of a recoverable error. */
-                public void error(TransformerException exception)
-                        throws TransformerException {
-                    throw exception;
-                }
-                /** Receive notification of a non-recoverable error. */
-                public void fatalError(TransformerException exception)
-                        throws TransformerException {
-                    throw exception;
-                }
-                /** Receive notification of a warning. */
-                public void warning(TransformerException exception) {
-                    System.err.println("ptolemy.util.XSLTUtilities.transform()"
-                            + ": Warning: " + exception);
-                }
-            });
+        transformerFactory.setErrorListener(new ErrorListener() {
+            /** Receive notification of a recoverable error. */
+            public void error(TransformerException exception)
+                    throws TransformerException {
+                throw exception;
+            }
+
+            /** Receive notification of a non-recoverable error. */
+            public void fatalError(TransformerException exception)
+                    throws TransformerException {
+                throw exception;
+            }
+
+            /** Receive notification of a warning. */
+            public void warning(TransformerException exception) {
+                System.err.println("ptolemy.util.XSLTUtilities.transform()"
+                        + ": Warning: " + exception);
+            }
+        });
         Transformer transformer = null;
 
         // Set a valid transformer.

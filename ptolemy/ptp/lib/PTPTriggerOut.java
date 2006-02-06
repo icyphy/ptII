@@ -1,5 +1,5 @@
 /* Precision Time Protocol Actor that consumes real tokens
-and generates a signal on the TriggerOut port of a PTP P100 box.
+ and generates a signal on the TriggerOut port of a PTP P100 box.
 
  Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
@@ -37,8 +37,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// PTPTriggerOut
 
 /**
-  A Precision Time Protocol Actor that consumes real tokens
-and generates a signal on the TriggerOut port of a PTP P100 box.
+ A Precision Time Protocol Actor that consumes real tokens
+ and generates a signal on the TriggerOut port of a PTP P100 box.
 
  @author Christopher Brooks
  @version $Id$
@@ -64,7 +64,6 @@ public class PTPTriggerOut extends DDESink {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -408,8 +408,8 @@ public class Precision implements Cloneable, Serializable {
     public static Precision matchThePoint(Precision precisionA,
             Precision precisionB) {
 
-        int minExponent = (precisionA._exponent < precisionB._exponent) ?
-                precisionA._exponent : precisionB._exponent;
+        int minExponent = (precisionA._exponent < precisionB._exponent) ? precisionA._exponent
+                : precisionB._exponent;
 
         int aDataMSB = precisionA.getMostSignificantDataBitPosition();
         int bDataMSB = precisionB.getMostSignificantDataBitPosition();
@@ -464,8 +464,7 @@ public class Precision implements Cloneable, Serializable {
         // n is the power of 2.
         int scaleShift = -shiftval + val.scale();
 
-        BigDecimal result = val.divide(_getTwoRaisedTo(-shiftval),
-                scaleShift,
+        BigDecimal result = val.divide(_getTwoRaisedTo(-shiftval), scaleShift,
                 BigDecimal.ROUND_HALF_EVEN);
         return result;
     }
@@ -664,10 +663,9 @@ public class Precision implements Cloneable, Serializable {
          *  Example: (S3.2) */
         protected final static String _regex = OPTIONAL_WHITE_SPACE
                 + OPTIONAL_L_PARANBRACKET + OPTIONAL_WHITE_SPACE
-                + OPTIONAL_U_OR_S_GROUP
-                + OPTIONAL_WHITE_SPACE + SIGNED_INTEGER_GROUP + PERIOD
-                + SIGNED_INTEGER_GROUP + OPTIONAL_WHITE_SPACE
-                + OPTIONAL_R_PARANBRACKET
+                + OPTIONAL_U_OR_S_GROUP + OPTIONAL_WHITE_SPACE
+                + SIGNED_INTEGER_GROUP + PERIOD + SIGNED_INTEGER_GROUP
+                + OPTIONAL_WHITE_SPACE + OPTIONAL_R_PARANBRACKET
                 + OPTIONAL_WHITE_SPACE;
 
         public Precision parseString(String str)
@@ -751,11 +749,11 @@ public class Precision implements Cloneable, Serializable {
          *   Example (S3,2) or (S3/2) */
         protected final static String _regex = OPTIONAL_WHITE_SPACE
                 + OPTIONAL_L_PARANBRACKET + OPTIONAL_WHITE_SPACE
-                + OPTIONAL_U_OR_S_GROUP
-                + OPTIONAL_WHITE_SPACE + UNSIGNED_INTEGER_GROUP
-                + COMMA_OR_FORWARDSLASH + OPTIONAL_WHITE_SPACE
-                + SIGNED_INTEGER_GROUP + OPTIONAL_WHITE_SPACE
-                + OPTIONAL_R_PARANBRACKET + OPTIONAL_WHITE_SPACE;
+                + OPTIONAL_U_OR_S_GROUP + OPTIONAL_WHITE_SPACE
+                + UNSIGNED_INTEGER_GROUP + COMMA_OR_FORWARDSLASH
+                + OPTIONAL_WHITE_SPACE + SIGNED_INTEGER_GROUP
+                + OPTIONAL_WHITE_SPACE + OPTIONAL_R_PARANBRACKET
+                + OPTIONAL_WHITE_SPACE;
 
         public Precision parseString(String str)
                 throws IllegalArgumentException {
@@ -830,9 +828,8 @@ public class Precision implements Cloneable, Serializable {
         /** Regular expression for IntegerFractionPrecisionFormat.
          *   Example (S3e2) */
         protected final String _regex = OPTIONAL_WHITE_SPACE
-                + OPTIONAL_L_PARANBRACKET
-                + OPTIONAL_WHITE_SPACE + OPTIONAL_U_OR_S_GROUP
-                + OPTIONAL_WHITE_SPACE
+                + OPTIONAL_L_PARANBRACKET + OPTIONAL_WHITE_SPACE
+                + OPTIONAL_U_OR_S_GROUP + OPTIONAL_WHITE_SPACE
                 + UNSIGNED_INTEGER_GROUP + "e" + SIGNED_INTEGER_GROUP
                 + OPTIONAL_WHITE_SPACE + OPTIONAL_R_PARANBRACKET
                 + OPTIONAL_WHITE_SPACE;
@@ -908,15 +905,12 @@ public class Precision implements Cloneable, Serializable {
     public static class VHDLPrecisionFormat extends PrecisionFormat {
         /** Regular expression for IntegerFractionPrecisionFormat.
          *   Example ([US]{digit}:{digit}) */
-        protected final String _regex = OPTIONAL_WHITE_SPACE
-                + OPTIONAL_L_PARAN
+        protected final String _regex = OPTIONAL_WHITE_SPACE + OPTIONAL_L_PARAN
                 + OPTIONAL_WHITE_SPACE + OPTIONAL_U_OR_S_GROUP
-                + OPTIONAL_WHITE_SPACE
-                + SIGNED_INTEGER_GROUP + OPTIONAL_WHITE_SPACE + ":"
-                + OPTIONAL_WHITE_SPACE
+                + OPTIONAL_WHITE_SPACE + SIGNED_INTEGER_GROUP
+                + OPTIONAL_WHITE_SPACE + ":" + OPTIONAL_WHITE_SPACE
                 + SIGNED_INTEGER_GROUP + OPTIONAL_WHITE_SPACE
-                + OPTIONAL_R_PARAN
-                + OPTIONAL_WHITE_SPACE;
+                + OPTIONAL_R_PARAN + OPTIONAL_WHITE_SPACE;
 
         public Precision parseString(String str) {
             int sign = 1;
@@ -962,20 +956,17 @@ public class Precision implements Cloneable, Serializable {
     /**
      * static IntegerFractionPrecisionFormat object.
      */
-    public final static PrecisionFormat INTEGER_FRACTION =
-        new IntegerFractionPrecisionFormat();
+    public final static PrecisionFormat INTEGER_FRACTION = new IntegerFractionPrecisionFormat();
 
     /**
      * static LengthExponentPrecisionFormat object.
      */
-    public final static PrecisionFormat LENGTH_EXPONENT =
-        new LengthExponentPrecisionFormat();
+    public final static PrecisionFormat LENGTH_EXPONENT = new LengthExponentPrecisionFormat();
 
     /**
      * static LengthIntegerPrecisionFormat object.
      */
-    public final static PrecisionFormat LENGTH_INTEGER =
-        new LengthIntegerPrecisionFormat();
+    public final static PrecisionFormat LENGTH_INTEGER = new LengthIntegerPrecisionFormat();
 
     /**
      * static VHDLPrecisionFormat object.

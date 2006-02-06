@@ -1427,7 +1427,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                                 Jimple
                                                                         .v()
                                                                         .newStaticInvokeExpr(
-                                                                                PtolemyUtilities.arraycopyMethod.makeRef(),
+                                                                                PtolemyUtilities.arraycopyMethod
+                                                                                        .makeRef(),
                                                                                 argumentList)),
                                                 unit);
                             }
@@ -1457,7 +1458,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                                 Jimple
                                                                         .v()
                                                                         .newStaticInvokeExpr(
-                                                                                PtolemyUtilities.arraycopyMethod.makeRef(),
+                                                                                PtolemyUtilities.arraycopyMethod
+                                                                                        .makeRef(),
                                                                                 argumentList)),
                                                 unit);
                             }
@@ -1639,8 +1641,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
 
                     if (PtolemyUtilities.isTokenType(assignmentType)) {
                         if (stmt.getLeftOp() instanceof Local
-                                && (stmt.getRightOp() instanceof Local ||
-                                        stmt.getRightOp() instanceof Constant)) {
+                                && (stmt.getRightOp() instanceof Local || stmt
+                                        .getRightOp() instanceof Constant)) {
                             if (debug) {
                                 System.out
                                         .println("handling as local-immediate assign");
@@ -1696,11 +1698,13 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                 .newInstanceFieldRef(
                                                         ((InstanceFieldRef) oldFieldRef)
                                                                 .getBase(),
-                                                        replacementField.makeRef());
+                                                        replacementField
+                                                                .makeRef());
                                     } else {
                                         isNotNullFieldRef = Jimple.v()
                                                 .newStaticFieldRef(
-                                                        replacementField.makeRef());
+                                                        replacementField
+                                                                .makeRef());
                                     }
 
                                     body
@@ -1749,12 +1753,15 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                         Local base = (Local) ((InstanceFieldRef) stmt
                                                 .getLeftOp()).getBase();
                                         fieldRef = Jimple.v()
-                                                .newInstanceFieldRef(base,
-                                                        replacementField.makeRef());
+                                                .newInstanceFieldRef(
+                                                        base,
+                                                        replacementField
+                                                                .makeRef());
                                     } else {
                                         fieldRef = Jimple.v()
                                                 .newStaticFieldRef(
-                                                        replacementField.makeRef());
+                                                        replacementField
+                                                                .makeRef());
                                     }
 
                                     body.getUnits().insertBefore(
@@ -1769,7 +1776,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                         } else if (stmt.getLeftOp() instanceof Local
                                 && stmt.getRightOp() instanceof FieldRef) {
                             if (debug) {
-                                System.out.println("handling as assignment from Field");
+                                System.out
+                                        .println("handling as assignment from Field");
                             }
 
                             FieldRef oldFieldRef = (FieldRef) stmt.getRightOp();
@@ -1824,54 +1832,44 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                         System.out.println("localField = "
                                                 + localField);
                                     }
-                                    
+
                                     if (localField.getName().equals("_isNil")) {
                                         Local replacementLocal = (Local) fieldToReplacementLocal
-                                            .get(localField);
-                                        
+                                                .get(localField);
+
                                         body
-                                            .getUnits()
-                                            .insertBefore(
-                                                    Jimple
-                                                    .v()
-                                                    .newAssignStmt(
-                                                            replacementLocal,
-                                                            IntConstant
-                                                            .v(1)),
-                                                    unit);
-                                    } else if (localField.getName().equals("_value")) {
-                                  
-                                    
+                                                .getUnits()
+                                                .insertBefore(
+                                                        Jimple
+                                                                .v()
+                                                                .newAssignStmt(
+                                                                        replacementLocal,
+                                                                        IntConstant
+                                                                                .v(1)),
+                                                        unit);
+                                    } else if (localField.getName().equals(
+                                            "_value")) {
+
                                         Local replacementLocal = (Local) fieldToReplacementLocal
-                                            .get(localField);
-                                        
+                                                .get(localField);
+
                                         if (isBooleanTokenTrueSingleton) {
-                                            body
-                                                .getUnits()
-                                                .insertBefore(
-                                                        Jimple
-                                                        .v()
-                                                        .newAssignStmt(
-                                                                replacementLocal,
-                                                                IntConstant
-                                                                .v(1)),
-                                                        unit);
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            IntConstant.v(1)),
+                                                    unit);
                                         } else {
-                                            body
-                                                .getUnits()
-                                                .insertBefore(
-                                                        Jimple
-                                                        .v()
-                                                        .newAssignStmt(
-                                                                replacementLocal,
-                                                                IntConstant
-                                                                .v(0)),
-                                                        unit);
+                                            body.getUnits().insertBefore(
+                                                    Jimple.v().newAssignStmt(
+                                                            replacementLocal,
+                                                            IntConstant.v(0)),
+                                                    unit);
                                         }
                                     } else {
                                         throw new RuntimeException(
                                                 "Unknown Field in BooleanToken: "
-                                                + localField.getName());
+                                                        + localField.getName());
                                     }
                                 }
 
@@ -1896,11 +1894,13 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                                 .newInstanceFieldRef(
                                                         ((InstanceFieldRef) oldFieldRef)
                                                                 .getBase(),
-                                                        replacementField.makeRef());
+                                                        replacementField
+                                                                .makeRef());
                                     } else {
                                         isNotNullFieldRef = Jimple.v()
                                                 .newStaticFieldRef(
-                                                        replacementField.makeRef());
+                                                        replacementField
+                                                                .makeRef());
                                     }
 
                                     body
@@ -1942,12 +1942,15 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                                         Local base = (Local) ((InstanceFieldRef) stmt
                                                 .getRightOp()).getBase();
                                         fieldRef = Jimple.v()
-                                                .newInstanceFieldRef(base,
-                                                        replacementField.makeRef());
+                                                .newInstanceFieldRef(
+                                                        base,
+                                                        replacementField
+                                                                .makeRef());
                                     } else {
                                         fieldRef = Jimple.v()
                                                 .newStaticFieldRef(
-                                                        replacementField.makeRef());
+                                                        replacementField
+                                                                .makeRef());
                                     }
 
                                     if (debug) {

@@ -63,7 +63,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
-    
+
     /** Generate code for declaring read and write offset variables if needed. 
      *  First find out the maximum buffer sizes needed for controller ports
      *  in one global iteration. Then relay the information of firings per global
@@ -81,20 +81,18 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     // Most of the time (or all of the time? )this should be true. If the index
     // can be dynamically changed, then this would not work.
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();  
-        
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = 
-                (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        StringBuffer code = new StringBuffer();
+
+        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.domains.fsm.kernel.FSMActor controller = director.getController();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = 
-                (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-        CodeGeneratorHelper controllerHelper =
-                (CodeGeneratorHelper) _getHelper(controller);
-        int[] arrayOfFiringsPerGlobalIterationOfContainer = 
-                containerHelper.getFiringsPerGlobalIteration();
+        ptolemy.domains.fsm.kernel.FSMActor controller = director
+                .getController();
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        CodeGeneratorHelper controllerHelper = (CodeGeneratorHelper) _getHelper(controller);
+        int[] arrayOfFiringsPerGlobalIterationOfContainer = containerHelper
+                .getFiringsPerGlobalIteration();
         int[][] containerRates = containerHelper.getRates();
-        
+
         Iterator states = controller.entityList().iterator();
         int configurationNumber = 0;
         while (states.hasNext()) {
@@ -102,20 +100,17 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             TypedActor[] actors = state.getRefinement();
             if (actors != null) {
                 // There should be at most one refinement for each state.
-                CodeGeneratorHelper refinementHelper = 
-                        (CodeGeneratorHelper) _getHelper((NamedObj) actors[0]);
+                CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[0]);
                 int[][] rates = refinementHelper.getRates();
                 int length = 1;
                 if (rates != null) {
                     // The length of rates represents the number of configurations
                     // of the refinement.
                     length = rates.length;
-                }    
+                }
                 for (int i = 0; i < length; i++) {
-                    
-                    int firingsPerGlobalIterationOfContainer
-                            = arrayOfFiringsPerGlobalIterationOfContainer
-                            [configurationNumber]; 
+
+                    int firingsPerGlobalIterationOfContainer = arrayOfFiringsPerGlobalIterationOfContainer[configurationNumber];
                     Iterator ports = controller.portList().iterator();
                     int portNumber = 0;
                     while (ports.hasNext()) {
@@ -123,52 +118,49 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                         // Find the new controller port buffer sizes needed in one 
                         // global iteration from container port rates and container's
                         // firings per global iteration.
-                        int newSize = firingsPerGlobalIterationOfContainer * 
-                                containerRates[configurationNumber][portNumber];
+                        int newSize = firingsPerGlobalIterationOfContainer
+                                * containerRates[configurationNumber][portNumber];
                         // All channels have same buffer size, so we use channel 0.
                         int oldSize = controllerHelper.getBufferSize(port, 0);
                         if (oldSize < newSize) {
                             for (int j = 0; j < port.getWidth(); j++) {
-                                controllerHelper.setBufferSize(port, j, newSize);
-                            }    
+                                controllerHelper
+                                        .setBufferSize(port, j, newSize);
+                            }
                         }
                         portNumber++;
                     }
-                    
+
                     // If the refinement's local director is HDFDirector
                     // or HDFFSMDirector, set the firings per global iteration
                     // of the refinemenet the same as the firings per global 
                     // iteration of the container. This way we can relay the 
                     // information of firings per global iteration to the inside.
                     if (actors[0] instanceof CompositeActor) {
-                        ptolemy.actor.Director localDirector = actors[0].getDirector();
-                        if(localDirector instanceof 
-                                ptolemy.domains.hdf.kernel.HDFDirector ||
-                                localDirector instanceof 
-                                ptolemy.domains.hdf.kernel.HDFFSMDirector) {
-                            TypedCompositeActor actorHelper = (TypedCompositeActor) 
-                                    _getHelper((NamedObj) actors[0]);
-                            int[] arrayOfFiringsPerGlobalIterationOfActor =
-                                    actorHelper.getFiringsPerGlobalIteration();
+                        ptolemy.actor.Director localDirector = actors[0]
+                                .getDirector();
+                        if (localDirector instanceof ptolemy.domains.hdf.kernel.HDFDirector
+                                || localDirector instanceof ptolemy.domains.hdf.kernel.HDFFSMDirector) {
+                            TypedCompositeActor actorHelper = (TypedCompositeActor) _getHelper((NamedObj) actors[0]);
+                            int[] arrayOfFiringsPerGlobalIterationOfActor = actorHelper
+                                    .getFiringsPerGlobalIteration();
                             if (arrayOfFiringsPerGlobalIterationOfActor == null) {
-                                arrayOfFiringsPerGlobalIterationOfActor = 
-                                        new int[length];
-                                actorHelper.setFiringsPerGlobalIteration
-                                        (arrayOfFiringsPerGlobalIterationOfActor);
+                                arrayOfFiringsPerGlobalIterationOfActor = new int[length];
+                                actorHelper
+                                        .setFiringsPerGlobalIteration(arrayOfFiringsPerGlobalIterationOfActor);
                             }
-                            arrayOfFiringsPerGlobalIterationOfActor[i] =
-                                    firingsPerGlobalIterationOfContainer;                               
+                            arrayOfFiringsPerGlobalIterationOfActor[i] = firingsPerGlobalIterationOfContainer;
                         }
                     }
                     configurationNumber++;
-                }               
-            }    
+                }
+            }
         }
 
         code.append(super.createOffsetVariablesIfNeeded());
         return code.toString();
     }
-    
+
     /** Generate the code for the firing of actors controlled by this director.
      *  It generates code for firing refinements and setting a variable to record it.
      * 
@@ -176,31 +168,29 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
      */
-    public String generateFireCode() throws IllegalActionException {       
-        
+    public String generateFireCode() throws IllegalActionException {
+
         StringBuffer code = new StringBuffer();
-        
+
         // Like MultirateFSMDirector, no preemptive transition is taken under 
         // the control of this director.
-        
+
         // generate code for refinements
         _generateRefinementCode(code);
-        
-        ptolemy.domains.hdf.kernel.HDFFSMDirector director = 
-                (ptolemy.domains.hdf.kernel.HDFFSMDirector) getComponent();
+
+        ptolemy.domains.hdf.kernel.HDFFSMDirector director = (ptolemy.domains.hdf.kernel.HDFFSMDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = 
-                (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-        
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+
         // Unlike MultirateFSMDirector, no non-preemptive transition is taken
         // at this point. Instead a variable is set to record the firing of the
         // modal model. This variable is used when doing mode transition after
         // one global iteration.
         code.append(containerHelper.processCode("$actorSymbol(fired) = 1;\n"));
-        
+
         return code.toString();
-    }   
-    
+    }
+
     /** Generate mode transition code. The mode transition code generated in this 
      *  method is executed after each global iteration. 
      * 
@@ -213,30 +203,30 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
         super.generateModeTransitionCode(code);
 
-        ptolemy.domains.fsm.kernel.FSMActor controller = 
-                ((ptolemy.domains.fsm.kernel.FSMDirector) 
-                getComponent()).getController();
+        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+                .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
-        ptolemy.domains.hdf.kernel.HDFFSMDirector director = 
-                (ptolemy.domains.hdf.kernel.HDFFSMDirector) getComponent();
-        CompositeActor container = (CompositeActor) director.getContainer();        
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = 
-                (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.domains.hdf.kernel.HDFFSMDirector director = (ptolemy.domains.hdf.kernel.HDFFSMDirector) getComponent();
+        CompositeActor container = (CompositeActor) director.getContainer();
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
 
-        code.append(containerHelper.processCode("if ($actorSymbol(fired)) {\n"));
+        code
+                .append(containerHelper
+                        .processCode("if ($actorSymbol(fired)) {\n"));
         // generate code for non-preemptive transition
         code.append("\n/* Nonpreepmtive Transition */\n\n");
-        controllerHelper.generateTransitionCode(code, new TransitionRetriever() {
-            public Iterator retrieveTransitions(State state) {
-                return state.nonpreemptiveTransitionList().iterator();  
-            }
-        });
+        controllerHelper.generateTransitionCode(code,
+                new TransitionRetriever() {
+                    public Iterator retrieveTransitions(State state) {
+                        return state.nonpreemptiveTransitionList().iterator();
+                    }
+                });
         // reset the variable 
         code.append(containerHelper.processCode("$actorSymbol(fired) = 0;\n"));
         code.append("}\n");
     }
-    
+
     /** Generate the preinitialize code for this director. Declare a variable
      *  which is used to record the firing of this director.
      *  @return The generated preinitialize code.
@@ -247,17 +237,15 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-        
-        ptolemy.domains.hdf.kernel.HDFFSMDirector director = 
-                (ptolemy.domains.hdf.kernel.HDFFSMDirector)
-                getComponent();
+
+        ptolemy.domains.hdf.kernel.HDFFSMDirector director = (ptolemy.domains.hdf.kernel.HDFFSMDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper 
-                = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-        
-        code.append(containerHelper.processCode
-                ("static unsigned char $actorSymbol(fired) = 0;\n"));
-        
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+
+        code
+                .append(containerHelper
+                        .processCode("static unsigned char $actorSymbol(fired) = 0;\n"));
+
         return code.toString();
-    }    
+    }
 }

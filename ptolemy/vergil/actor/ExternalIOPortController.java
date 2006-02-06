@@ -271,7 +271,7 @@ public class ExternalIOPortController extends AttributeController {
                         } else {
                             fill = Color.white;
                         }
-                        if (ioport.isOutput() &&  ioport.isInput()) {
+                        if (ioport.isOutput() && ioport.isInput()) {
                             polygon.lineTo(-4, 4);
                             polygon.lineTo(-4, 9);
                             polygon.lineTo(2, 4);
@@ -324,7 +324,7 @@ public class ExternalIOPortController extends AttributeController {
                         } else {
                             fill = Color.black;
                         }
-                        if (ioport.isOutput() &&  ioport.isInput()) {
+                        if (ioport.isOutput() && ioport.isInput()) {
                             polygon.lineTo(0, 4);
                             polygon.lineTo(0, 9);
                             polygon.lineTo(6, 4);

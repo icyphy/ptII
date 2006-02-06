@@ -106,7 +106,6 @@ public class ConnectorInteractor extends DragInteractor {
     //private void debug(Object o) {
     //    System.out.println("ConnectorInteractor: " + o);
     //}
-
     /** Detach the connector from its current site and attach
      * it to a new autonomous site at the given coordinates
      */

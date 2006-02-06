@@ -260,7 +260,6 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
         appendJTextArea(text);
     }
 
-
     /** Update the status area with the text message.
      *  @param text The text with which the status area is updated.
      */

@@ -126,8 +126,7 @@ public class TestAbstractReceiver extends AbstractReceiver {
      *  @exception IllegalActionException If the put fails
      *   (e.g. because of incompatible types).
      */
-    public void put(Token token) throws NoRoomException,
-            IllegalActionException {
+    public void put(Token token) throws NoRoomException, IllegalActionException {
 
     }
 }

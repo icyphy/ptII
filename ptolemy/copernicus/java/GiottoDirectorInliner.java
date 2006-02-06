@@ -229,7 +229,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
 
                 // Get a reference to the actor.
                 units.insertBefore(Jimple.v().newAssignStmt(modelLocal,
-                                Jimple.v().newStaticFieldRef(modelField.makeRef())), insertPoint);
+                        Jimple.v().newStaticFieldRef(modelField.makeRef())),
+                        insertPoint);
                 units.insertBefore(Jimple.v().newAssignStmt(
                         actorLocal,
                         Jimple.v().newVirtualInvokeExpr(modelLocal,
@@ -254,8 +255,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
                     units.insertBefore(Jimple.v().newAssignStmt(
                             portVarLocal,
                             Jimple.v().newVirtualInvokeExpr(paramLocal,
-                                    getPortVariableMethod.makeRef(), IntConstant.v(i))),
-                            insertPoint);
+                                    getPortVariableMethod.makeRef(),
+                                    IntConstant.v(i))), insertPoint);
 
                     // Cast the port variable to the correct type.
                     units.insertBefore(Jimple.v().newAssignStmt(
@@ -268,15 +269,16 @@ public class GiottoDirectorInliner implements DirectorInliner {
                     units.insertBefore(Jimple.v().newAssignStmt(
                             tokenLocal,
                             Jimple.v().newVirtualInvokeExpr(tokenPortVarLocal,
-                                    getPortVariableTokenMethod.makeRef())), insertPoint);
+                                    getPortVariableTokenMethod.makeRef())),
+                            insertPoint);
 
                     // Get the buffer to put the token into.
                     units.insertBefore(Jimple.v().newAssignStmt(
                             bufferLocal,
                             Jimple.v().newInstanceFieldRef(
                                     actorLocal,
-                                    portInliner.getBufferField(port, port
-                                            .getType()).makeRef())),
+                                    portInliner.getBufferField(port,
+                                            port.getType()).makeRef())),
                             insertPoint);
 
                     // Store the token.
@@ -313,8 +315,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
                             bufferLocal,
                             Jimple.v().newInstanceFieldRef(
                                     actorLocal,
-                                    portInliner.getBufferField(port, port
-                                            .getType()).makeRef())),
+                                    portInliner.getBufferField(port,
+                                            port.getType()).makeRef())),
                             insertPoint);
 
                     // Retrieve the token.
@@ -341,8 +343,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
                     // Set the token.
                     units.insertBefore(Jimple.v().newInvokeStmt(
                             Jimple.v().newVirtualInvokeExpr(tokenPortVarLocal,
-                                    setPortVariableTokenMethod.makeRef(), tokenLocal)),
-                            insertPoint);
+                                    setPortVariableTokenMethod.makeRef(),
+                                    tokenLocal)), insertPoint);
                 }
 
                 body.getUnits().add(Jimple.v().newReturnVoidStmt());
@@ -419,7 +421,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
 
                 // Get a reference to the actor.
                 units.insertBefore(Jimple.v().newAssignStmt(modelLocal,
-                                Jimple.v().newStaticFieldRef(modelField.makeRef())), insertPoint);
+                        Jimple.v().newStaticFieldRef(modelField.makeRef())),
+                        insertPoint);
                 units.insertBefore(Jimple.v().newAssignStmt(
                         actorLocal,
                         Jimple.v().newVirtualInvokeExpr(modelLocal,
@@ -455,7 +458,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
                                                             .v()
                                                             .newVirtualInvokeExpr(
                                                                     actorLocal,
-                                                                    PtolemyUtilities.getAttributeMethod.makeRef(),
+                                                                    PtolemyUtilities.getAttributeMethod
+                                                                            .makeRef(),
                                                                     StringConstant
                                                                             .v(initialValueNameInContext))),
                                     insertPoint);
@@ -492,7 +496,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
                                                             .v()
                                                             .newVirtualInvokeExpr(
                                                                     initialValueVariableLocal,
-                                                                    PtolemyUtilities.variableGetTokenMethod.makeRef())),
+                                                                    PtolemyUtilities.variableGetTokenMethod
+                                                                            .makeRef())),
                                     insertPoint);
 
                     // Get the Parameter argument.
@@ -503,8 +508,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
                     units.insertBefore(Jimple.v().newAssignStmt(
                             portVarLocal,
                             Jimple.v().newVirtualInvokeExpr(paramLocal,
-                                    getPortVariableMethod.makeRef(), IntConstant.v(0))),
-                            insertPoint);
+                                    getPortVariableMethod.makeRef(),
+                                    IntConstant.v(0))), insertPoint);
 
                     // Cast to a Token port variable.
                     units.insertBefore(Jimple.v().newAssignStmt(
@@ -516,8 +521,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
                     // Set the token.
                     units.insertBefore(Jimple.v().newInvokeStmt(
                             Jimple.v().newVirtualInvokeExpr(tokenPortVarLocal,
-                                    setPortVariableTokenMethod.makeRef(), tokenLocal)),
-                            insertPoint);
+                                    setPortVariableTokenMethod.makeRef(),
+                                    tokenLocal)), insertPoint);
                 }
 
                 units.add(Jimple.v().newReturnVoidStmt());
@@ -536,8 +541,8 @@ public class GiottoDirectorInliner implements DirectorInliner {
 
             // Set the static field pointing to the model.
             units.insertBefore(Jimple.v().newAssignStmt(
-                                       Jimple.v().newStaticFieldRef(modelField.makeRef()), thisLocal),
-                    insertPoint);
+                    Jimple.v().newStaticFieldRef(modelField.makeRef()),
+                    thisLocal), insertPoint);
 
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
@@ -561,9 +566,10 @@ public class GiottoDirectorInliner implements DirectorInliner {
                 body.getLocals().add(actorLocal);
 
                 // Get the actor.
-                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                                Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
-                        insertPoint);
+                units.insertBefore(Jimple.v().newAssignStmt(
+                        actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal,
+                                field.makeRef())), insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
                                 preinitializeMethod.makeRef())), insertPoint);
@@ -597,9 +603,10 @@ public class GiottoDirectorInliner implements DirectorInliner {
                         .searchForMethodByName(theClass, "initialize");
 
                 // Set the field.
-                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                                Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
-                        insertPoint);
+                units.insertBefore(Jimple.v().newAssignStmt(
+                        actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal,
+                                field.makeRef())), insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
                                 initializeMethod.makeRef())), insertPoint);
@@ -684,9 +691,10 @@ public class GiottoDirectorInliner implements DirectorInliner {
                 Local tempPortLocal = Jimple.v().newLocal("tempPort",
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
-                units.insertBefore(Jimple.v().newAssignStmt(tempPortLocal,
-                                Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
-                        insertPoint);
+                units.insertBefore(Jimple.v().newAssignStmt(
+                        tempPortLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal,
+                                field.makeRef())), insertPoint);
                 units.insertBefore(Jimple.v().newAssignStmt(
                         portLocal,
                         Jimple.v().newCastExpr(tempPortLocal,
@@ -710,9 +718,12 @@ public class GiottoDirectorInliner implements DirectorInliner {
 
                     // Write
                     bodyList.add(Jimple.v().newInvokeStmt(
-                            Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.sendInsideMethod.makeRef(),
-                                    IntConstant.v(i), tokenLocal)));
+                            Jimple.v()
+                                    .newVirtualInvokeExpr(
+                                            portLocal,
+                                            PtolemyUtilities.sendInsideMethod
+                                                    .makeRef(),
+                                            IntConstant.v(i), tokenLocal)));
 
                     // Increment the index.
                     bodyList.add(Jimple.v()
@@ -780,9 +791,10 @@ public class GiottoDirectorInliner implements DirectorInliner {
                 Local tempPortLocal = Jimple.v().newLocal("tempPort",
                         PtolemyUtilities.ioportType);
                 body.getLocals().add(tempPortLocal);
-                units.insertBefore(Jimple.v().newAssignStmt(tempPortLocal,
-                                Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
-                        insertPoint);
+                units.insertBefore(Jimple.v().newAssignStmt(
+                        tempPortLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal,
+                                field.makeRef())), insertPoint);
                 units.insertBefore(Jimple.v().newAssignStmt(
                         portLocal,
                         Jimple.v().newCastExpr(tempPortLocal,
@@ -899,9 +911,10 @@ public class GiottoDirectorInliner implements DirectorInliner {
                         theClass, "wrapup");
 
                 // Set the field.
-                units.insertBefore(Jimple.v().newAssignStmt(actorLocal,
-                                Jimple.v().newInstanceFieldRef(thisLocal, field.makeRef())),
-                        insertPoint);
+                units.insertBefore(Jimple.v().newAssignStmt(
+                        actorLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal,
+                                field.makeRef())), insertPoint);
                 units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newVirtualInvokeExpr(actorLocal,
                                 wrapupMethod.makeRef())), insertPoint);

@@ -103,7 +103,7 @@ public class BasicGraphModelTest extends TestSuite {
             //BasicGraphModel g;
 
             public void init() throws Exception {
-                /*g = */ factory.createGraph();
+                /*g = */factory.createGraph();
             }
 
             public void run() throws Exception {

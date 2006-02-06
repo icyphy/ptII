@@ -103,7 +103,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the data associated to the thread.
      * 
      *  @param thread The thread.
@@ -134,7 +134,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
         }
         return _notDone && !_stopRequested;
     }
-    
+
     /** Set the data associated with the thread.
      * 
      *  @param thread The thread.
@@ -198,7 +198,6 @@ public class RendezvousDirector extends CompositeProcessDirector {
         return false;
     }
 
-
     /** If the model is deadlocked, report the deadlock if parameter
      *  "SuppressDeadlockReporting" is not set to boolean true, and
      *  return false.  Otherwise, return true. Deadlock occurs if the
@@ -207,7 +206,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If thrown while getting
      *  the "SuppressDeadlockReporting" token.
      */
-    protected synchronized boolean _resolveInternalDeadlock() 
+    protected synchronized boolean _resolveInternalDeadlock()
             throws IllegalActionException {
         if (_getBlockedThreadsCount() == _getActiveThreadsCount()) {
             // Report deadlock.
@@ -239,10 +238,10 @@ public class RendezvousDirector extends CompositeProcessDirector {
      *  which it waits for all actors to stop.
      */
     protected boolean _inWrapup = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                          private variables                ////
-    
+
     /** The map that records the data associated to the threads, which
      *  are used by the actors in this model.
      */

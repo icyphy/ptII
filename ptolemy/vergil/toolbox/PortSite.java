@@ -54,7 +54,8 @@ public class PortSite extends AbstractSite {
      *  @param count The number of ports of its kind.
      *  @param direction One of SwingConstants.{WEST, NORTH, EAST, SOUTH}.
      */
-    public PortSite(Figure figure, Port port, int number, int count, int direction) {
+    public PortSite(Figure figure, Port port, int number, int count,
+            int direction) {
         _parentFigure = figure;
         // Ignored _port = port;
         _number = number;
@@ -97,8 +98,7 @@ public class PortSite extends AbstractSite {
             return bounds.getX() + bounds.getWidth();
         } else {
             // Port is on the top or bottom side.
-            double offset = (bounds.getWidth() / 2.0)
-                    - ((_count / 2) * _snap);
+            double offset = (bounds.getWidth() / 2.0) - ((_count / 2) * _snap);
 
             // If there are an even number of ports, skip the middle
             // position to get symmetry.
@@ -124,8 +124,7 @@ public class PortSite extends AbstractSite {
             return bounds.getY();
         } else {
             // Port is on the left or right.
-            double offset = (bounds.getHeight() / 2.0)
-                    - ((_count / 2) * _snap);
+            double offset = (bounds.getHeight() / 2.0) - ((_count / 2) * _snap);
 
             // If there are an even number of ports, skip the middle
             // position to get symmetry.
@@ -164,7 +163,7 @@ public class PortSite extends AbstractSite {
 
     /** The number of ports of the kind as this one. */
     private int _count;
-    
+
     /** The direction of the port. */
     private int _direction;
 

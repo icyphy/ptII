@@ -85,7 +85,7 @@ import ptolemy.kernel.util.Workspace;
 
  */
 public class ResourcePool extends CSPActor {
-    
+
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -100,13 +100,13 @@ public class ResourcePool extends CSPActor {
     public ResourcePool(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         grant = new TypedIOPort(this, "grant", false, true);
         grant.setMultiport(true);
 
         release = new TypedIOPort(this, "release", true, false);
         release.setMultiport(true);
-        
+
         initialPool = new Parameter(this, "initialPool");
         initialPool.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         initialPool.setExpression("{1}");
@@ -132,7 +132,7 @@ public class ResourcePool extends CSPActor {
      *  of the <i>initialPool</i> parameter.
      */
     public TypedIOPort release;
-    
+
     /** The initial resource pool. This is an array with default
      *  value {1} (an integer array with one entry with value 1).
      */
@@ -147,9 +147,10 @@ public class ResourcePool extends CSPActor {
      *  @exception IllegalActionException If the change is not acceptable
      *   to this container (not thrown in this base class).
      */
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         if (attribute == initialPool) {
-            ArrayToken pool = (ArrayToken)initialPool.getToken();
+            ArrayToken pool = (ArrayToken) initialPool.getToken();
             // Reset the pool.
             _pool.clear();
             // Copy the tokens into the pool.
@@ -160,7 +161,7 @@ public class ResourcePool extends CSPActor {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Override the base class to set the type constraints.
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
@@ -169,7 +170,7 @@ public class ResourcePool extends CSPActor {
      *  @return A new ResourcePool actor.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ResourcePool newObject = (ResourcePool)super.clone(workspace);
+        ResourcePool newObject = (ResourcePool) super.clone(workspace);
         // set type constraints.
         ArrayType paramType = (ArrayType) newObject.initialPool.getType();
         InequalityTerm elementTerm = paramType.getElementTypeTerm();
@@ -177,7 +178,7 @@ public class ResourcePool extends CSPActor {
         newObject.grant.setTypeAtLeast(newObject.release);
         return newObject;
     }
-    
+
     /** If there are available resources, then perform a conditional
      *  branch on any <i>release</i> input or <i>grant</i> output. If the selected
      *  branch is a release input, then add the provided token to the
@@ -208,7 +209,7 @@ public class ResourcePool extends CSPActor {
             }
         }
         if (_pool.size() > 0) {
-            Token token = (Token)_pool.get(0);
+            Token token = (Token) _pool.get(0);
             for (int i = release.getWidth(); i < numberOfConditionals; i++) {
                 int channel = i - release.getWidth();
                 branches[i] = new ConditionalSend(grant, channel, i, token);
@@ -231,24 +232,21 @@ public class ResourcePool extends CSPActor {
             Token received = branches[successfulBranch].getToken();
             _pool.add(received);
             if (_debugging) {
-                _debug("Resource released on channel "
-                        + successfulBranch
-                        + ": "
-                        + received);
+                _debug("Resource released on channel " + successfulBranch
+                        + ": " + received);
             }
         } else {
             // Rendezvous occurred with a grant output.
             _branchEnabled = true;
             if (_debugging) {
                 _debug("Resource granted on channel "
-                        + (successfulBranch - release.getWidth())
-                        + ": "
+                        + (successfulBranch - release.getWidth()) + ": "
                         + _pool.get(0));
             }
             _pool.remove(0);
         }
     }
-    
+
     /** Return true unless none of the branches were enabled in
      *  the most recent invocation of fire().
      *  @return True if another iteration can occur.
@@ -257,16 +255,16 @@ public class ResourcePool extends CSPActor {
         super.postfire();
         return _branchEnabled;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The current resource pool. */
     private List _pool = new LinkedList();
-    
+
     /** Indicator that a branch was successfully enabled in the fire() method. */
     private boolean _branchEnabled;
-    
+
     /** Flag to set verbose debugging messages. */
     private static boolean _VERBOSE_DEBUGGING = true;
 }

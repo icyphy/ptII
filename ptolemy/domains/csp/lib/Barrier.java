@@ -64,9 +64,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cxh)
 
  */
-public class Barrier extends TypedAtomicActor implements
-        BranchActor {
-    
+public class Barrier extends TypedAtomicActor implements BranchActor {
+
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -124,7 +123,8 @@ public class Barrier extends TypedAtomicActor implements
             _listeningToBranchController = false;
         }
         if (input.getWidth() == 0) {
-            throw new IllegalActionException(this, "Barrier requires at least one input.");
+            throw new IllegalActionException(this,
+                    "Barrier requires at least one input.");
         }
         ConditionalBranch[] branches = new ConditionalBranch[input.getWidth()];
         for (int i = 0; i < input.getWidth(); i++) {
@@ -156,13 +156,14 @@ public class Barrier extends TypedAtomicActor implements
         for (int i = 0; i < input.getWidth(); i++) {
             data[i] = branches[i].getToken();
             if (_debugging) {
-                _debug("Completed read input from channel " + i + ": " + data[i]);
+                _debug("Completed read input from channel " + i + ": "
+                        + data[i]);
             }
             if (data[i] == null) {
                 throw new InternalErrorException("Input data is null!");
             }
         }
-        
+
         if (output.getWidth() > 0) {
             branches = new ConditionalBranch[output.getWidth()];
             Token token = null;
@@ -189,7 +190,7 @@ public class Barrier extends TypedAtomicActor implements
                 if (_debugging) {
                     _debug("Output channels failed.");
                 }
-            }                
+            }
             if (_debugging && _VERBOSE_DEBUGGING) {
                 for (int i = 0; i < branches.length; i++) {
                     branches[i].removeDebugListener(this);
@@ -197,13 +198,13 @@ public class Barrier extends TypedAtomicActor implements
             }
         }
     }
-   
+
     /** Return the conditional branch control of this actor.
      */
     public AbstractBranchController getBranchController() {
         return _branchController;
     }
-    
+
     /** Initialize this actor.
      *  @exception IllegalActionException If a derived class throws it.
      */
@@ -225,16 +226,16 @@ public class Barrier extends TypedAtomicActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The controller for multiway branches. */
     private MultiwayBranchController _branchController;
-    
+
     /** Flag indicating whether a branch was terminated during fire(). */
     private boolean _terminate = false;
-    
+
     /** Boolean flag indicating that we are already listening to the branch controller. */
     private boolean _listeningToBranchController = false;
-    
+
     /** Flag to set verbose debugging messages. */
     private static boolean _VERBOSE_DEBUGGING = true;
 }

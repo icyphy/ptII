@@ -2050,8 +2050,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
                         ASTPtRootNode tree = _typeParser
                                 .generateParseTree(cellValue);
-                        /* Token result = */ _parseTreeEvaluator.evaluateParseTree(
-                                tree, null);
+                        /* Token result = */_parseTreeEvaluator
+                                .evaluateParseTree(tree, null);
                     } catch (IllegalActionException e) {
                         setMessage(e.getMessage());
                         return false;

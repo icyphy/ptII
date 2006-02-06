@@ -65,8 +65,7 @@ public class MCApplication {
 
             Counter counter = new Counter(_toplevel, "Couter");
             Leds leds = new Leds(_toplevel, "Leds");
-            _toplevel.connect(counter.output,
-                    leds.display, "R1");
+            _toplevel.connect(counter.output, leds.display, "R1");
 
             //generate moml file to be tested in vergil
             StringWriter buffer = new StringWriter();

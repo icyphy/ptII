@@ -78,7 +78,7 @@ public class IntegerList extends AbstractList {
 
     /** The size of the list.
      *  @return The size of the list. (b-a)+1
-     */   
+     */
     public int size() {
         return (_b - _a) + 1;
     }

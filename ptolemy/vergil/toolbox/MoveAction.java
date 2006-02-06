@@ -79,10 +79,10 @@ public class MoveAction extends FigureAction {
 
         if (_type == TO_FIRST) {
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                             KeyEvent.VK_B, Event.CTRL_MASK));
+                    KeyEvent.VK_B, Event.CTRL_MASK));
         } else if (_type == TO_LAST) {
             putValue(GUIUtilities.ACCELERATOR_KEY, KeyStroke.getKeyStroke(
-                             KeyEvent.VK_F, Event.CTRL_MASK));
+                    KeyEvent.VK_F, Event.CTRL_MASK));
         }
     }
 

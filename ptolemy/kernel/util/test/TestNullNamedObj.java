@@ -76,8 +76,8 @@ public class TestNullNamedObj extends NamedObj {
      *  @exception IllegalActionException If the object exists
      *   and has the wrong class. Not thrown in this base class.
      */
-    public NamedObj getContainedObject(NamedObj container,
-            String relativeName) throws IllegalActionException {
+    public NamedObj getContainedObject(NamedObj container, String relativeName)
+            throws IllegalActionException {
         return _getContainedObject(container, relativeName);
     }
 

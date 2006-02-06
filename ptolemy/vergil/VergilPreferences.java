@@ -42,7 +42,7 @@ import ptolemy.vergil.kernel.attributes.TextAttribute;
  *
  * @author Edward A. Lee
  * @version $Id$
-@since Ptolemy II 5.1
+ @since Ptolemy II 5.1
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -125,16 +125,14 @@ public class VergilPreferences extends ScopeExtendingAttribute {
             try {
                 return result.getToken();
             } catch (IllegalActionException ex) {
-                System.out
-                        .println("Warning: Invalid preference: "
-                                + ex);
+                System.out.println("Warning: Invalid preference: " + ex);
             }
         }
 
         // If no scoped variable is found, try for a defined constant.
         return Constants.get(preferenceName);
     }
-    
+
     /** Check to see whether a preference of the specified name is
      *  defined in the container of the specified context, either directly
      *  or within an instance of VergilPreferences, or
@@ -148,20 +146,23 @@ public class VergilPreferences extends ScopeExtendingAttribute {
      *  @param preferenceName The name of the preference.
      *  @return The value of the preference, or null if it is not set.
      */
-    public static Token preferenceValueLocal(NamedObj context, String preferenceName) {
+    public static Token preferenceValueLocal(NamedObj context,
+            String preferenceName) {
         try {
             NamedObj container = context.getContainer();
             if (container != null) {
                 Attribute attribute = container.getAttribute(preferenceName);
                 if (attribute instanceof Variable) {
-                    return ((Variable)attribute).getToken();                    
+                    return ((Variable) attribute).getToken();
                 }
-                Iterator preferences = container.attributeList(VergilPreferences.class).iterator();
+                Iterator preferences = container.attributeList(
+                        VergilPreferences.class).iterator();
                 while (preferences.hasNext()) {
-                    VergilPreferences preference = (VergilPreferences)preferences.next();
+                    VergilPreferences preference = (VergilPreferences) preferences
+                            .next();
                     attribute = preference.getAttribute(preferenceName);
                     if (attribute instanceof Variable) {
-                        return ((Variable)attribute).getToken();
+                        return ((Variable) attribute).getToken();
                     }
                 }
             }

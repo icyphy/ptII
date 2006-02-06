@@ -170,7 +170,7 @@ public class PtinyOSDirector extends Director {
      *  default), do nothing.
      */
     public Parameter isBaseStation;
-    
+
     /** Port for TOSSIM to accept commands.
      */
     public PtinyOSIntegerParameter commandPort;
@@ -358,8 +358,8 @@ public class PtinyOSDirector extends Director {
             String toplevelName = _sanitizedFullName(toplevel);
 
             // Add the destinationDirectory to the classpath.
-            String fileSeparator =
-                StringUtilities.getProperty("file.separator");
+            String fileSeparator = StringUtilities
+                    .getProperty("file.separator");
             String outputDir = destinationDirectory.stringValue()
                     + fileSeparator + "build" + fileSeparator + "ptII";
 
@@ -407,8 +407,7 @@ public class PtinyOSDirector extends Director {
 
                     if (_debugging) {
                         _debug("Done with load(), about to call main("
-                                + argsToMain[0] + ", " + argsToMain[1]
-                                + ")");
+                                + argsToMain[0] + ", " + argsToMain[1] + ")");
                     }
 
                     if (_loader.main(argsToMain) < 0) {
@@ -716,14 +715,14 @@ public class PtinyOSDirector extends Director {
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Could not compile generated code, \"" + commandString
-                    + "\" failed. "
-                    + "Output:\n" + outputWriter + "Error:\n" + errorWriter);
+                            + "\" failed. " + "Output:\n" + outputWriter
+                            + "Error:\n" + errorWriter);
         }
 
         if (exitValue != 0) {
             throw new IllegalActionException("Running \"" + commandString
-                    + "\" returned a nonzero value.\n"
-                    + "Output:\n" + outputWriter + "Error:\n" + errorWriter);
+                    + "\" returned a nonzero value.\n" + "Output:\n"
+                    + outputWriter + "Error:\n" + errorWriter);
         }
     }
 
@@ -830,9 +829,11 @@ public class PtinyOSDirector extends Director {
         text.addLine("    }");
 
         text.addLine("    public void startThreads() {");
-        text.addLine("        this.eventAcceptThread = new EventAcceptThread();");
+        text
+                .addLine("        this.eventAcceptThread = new EventAcceptThread();");
         text.addLine("        this.eventAcceptThread.start();");
-        text.addLine("        this.commandReadThread = new CommandReadThread();");
+        text
+                .addLine("        this.commandReadThread = new CommandReadThread();");
         text.addLine("        this.commandReadThread.start();");
         text.addLine("    }");
 
@@ -841,11 +842,12 @@ public class PtinyOSDirector extends Director {
         text.addLine("            this.commandReadThread.join();");
         text.addLine("            this.eventAcceptThread.join();");
         text.addLine("        } catch (Exception e) {");
-        text.addLine("            System.err.println(\"Could not join thread: \" + e);");
+        text
+                .addLine("            System.err.println(\"Could not join thread: \" + e);");
         text.addLine("            return -1;");
         text.addLine("        }");
         text.addLine("        return 0;");
-        text.addLine("    }"); 
+        text.addLine("    }");
 
         text.addLine("    public void wrapup() {");
         text.addLine("        wrapup" + toplevelName + "();");
@@ -896,8 +898,10 @@ public class PtinyOSDirector extends Director {
 
         text.addLine("    private native int main" + toplevelName
                 + "(String argsToMain[]);");
-        text.addLine("    private native void commandReadThread" + toplevelName + "();");
-        text.addLine("    private native void eventAcceptThread" + toplevelName + "();");
+        text.addLine("    private native void commandReadThread" + toplevelName
+                + "();");
+        text.addLine("    private native void eventAcceptThread" + toplevelName
+                + "();");
         text.addLine("    private native void wrapup" + toplevelName + "();");
         text.addLine("    private native void processEvent" + toplevelName
                 + "(long currentTime);");
@@ -939,64 +943,60 @@ public class PtinyOSDirector extends Director {
 
     /** Generate makefile.
      // FIXME example
-        
-TOSROOT=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x
-TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
-TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
-COMPONENT=_SenseToLedsInWireless_MicaBoard_MicaActor3071
-PFLAGS += -I%T/lib/Counters
-PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
-PFLAGS += -D_PTII_NODEID=0
-MY_PTCC_FLAGS += -D_PTII_NODE_NAME=_1SenseToLedsInWireless_1MicaBoard_1MicaActor3071
-PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
-include /home/celaine/ptII/mk/ptII.mk
-include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
+     
+     TOSROOT=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x
+     TOSDIR=/home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tos
+     TOSMAKE_PATH += $(TOSROOT)/contrib/ptII/ptinyos/tools/make
+     COMPONENT=_SenseToLedsInWireless_MicaBoard_MicaActor3071
+     PFLAGS += -I%T/lib/Counters
+     PFLAGS += -DCOMMAND_PORT=10584 -DEVENT_PORT=10585
+     PFLAGS += -D_PTII_NODEID=0
+     MY_PTCC_FLAGS += -D_PTII_NODE_NAME=_1SenseToLedsInWireless_1MicaBoard_1MicaActor3071
+     PFLAGS += "-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet"
+     include /home/celaine/ptII/mk/ptII.mk
+     include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
      * @exception CancelException If the directory named by the
      * ptolemy.ptII.tosroot property does not exist.
      */
-    private String _generateMakefile()
-            throws IllegalActionException, CancelException {
+    private String _generateMakefile() throws IllegalActionException,
+            CancelException {
 
         // Check to make sure that tosRoot exists
-        if ( tosRoot == null || tosRoot.asFile() == null
+        if (tosRoot == null || tosRoot.asFile() == null
                 || !tosRoot.asFile().isDirectory()) {
-            String fileName = 
-                (tosRoot == null? "null" : tosRoot.asFile().toString());
-            fileName = (fileName == null? "null": fileName);
-            String tosRootMessage =
-                "The TOSROOT directory \""
-                + fileName + "\" does not exist?  Compilation "
-                + "is likely to fail.  The TOSROOT environment "
-                + "variable should be set to the location of the "
-                + "TinyOS tree, typically "
-                + "$PTII/vendors/ptinyos/tinyos-1.x.";
-            if (!MessageHandler.yesNoQuestion(
-                        tosRootMessage + "\nWould you like to proceed?"
-                        )) {
+            String fileName = (tosRoot == null ? "null" : tosRoot.asFile()
+                    .toString());
+            fileName = (fileName == null ? "null" : fileName);
+            String tosRootMessage = "The TOSROOT directory \"" + fileName
+                    + "\" does not exist?  Compilation "
+                    + "is likely to fail.  The TOSROOT environment "
+                    + "variable should be set to the location of the "
+                    + "TinyOS tree, typically "
+                    + "$PTII/vendors/ptinyos/tinyos-1.x.";
+            if (!MessageHandler.yesNoQuestion(tosRootMessage
+                    + "\nWould you like to proceed?")) {
                 throw new CancelException();
             }
         }
 
         // Check to make sure that tosDir exists
-        if ( tosDir == null || tosDir.asFile() == null
+        if (tosDir == null || tosDir.asFile() == null
                 || !tosDir.asFile().isDirectory()) {
-            String fileName = 
-                (tosDir == null? "null" : tosDir.asFile().toString());
-            fileName = (fileName == null? "null": fileName);
-            String tosDirMessage =
-                "The TOSDIR directory \""
-                + fileName + "\" does not exist?  Compilation "
-                + "is likely to fail.  The TOSDIR environment "
-                + "variable should be set to the location of the "
-                + "TinyOS tree, typically "
-                + "$PTII/vendors/ptinyos/tinyos-1.x/tos.";
-            if (!MessageHandler.yesNoQuestion(
-                        tosDirMessage + "\nWould you like to proceed?"
-                        )) {
+            String fileName = (tosDir == null ? "null" : tosDir.asFile()
+                    .toString());
+            fileName = (fileName == null ? "null" : fileName);
+            String tosDirMessage = "The TOSDIR directory \"" + fileName
+                    + "\" does not exist?  Compilation "
+                    + "is likely to fail.  The TOSDIR environment "
+                    + "variable should be set to the location of the "
+                    + "TinyOS tree, typically "
+                    + "$PTII/vendors/ptinyos/tinyos-1.x/tos.";
+            if (!MessageHandler.yesNoQuestion(tosDirMessage
+                    + "\nWould you like to proceed?")) {
                 throw new CancelException();
             }
-        }        
+        }
 
         // String containing makefile text to generate.
         _CodeString text = new _CodeString();
@@ -1018,13 +1018,14 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
         text.addLine("PFLAGS +=" + " -DCOMMAND_PORT=" + commandPort.getToken()
                 + " -DEVENT_PORT=" + eventPort.getToken());
 
-        boolean isBaseStationValue = ((BooleanToken) isBaseStation.getToken()).booleanValue();
+        boolean isBaseStationValue = ((BooleanToken) isBaseStation.getToken())
+                .booleanValue();
         if (isBaseStationValue == true) {
             text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + "0");
         } else {
             text.addLine("PFLAGS +=" + "-D_PTII_NODEID=" + nodeID.getToken());
         }
-        
+
         // Turn _ into _1 for JNI compatibility.
         String nativeMethodName = toplevelName.replaceAll("_", "_1");
         text.addLine("MY_PTCC_FLAGS +=" + " -D_PTII_NODE_NAME="
@@ -1037,23 +1038,24 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
                 // Note: we do not conditionally add this in, so
                 // makefile must be regenerated if user wants to use
                 // makefile with non-ptII platform.
-                text.addLine("PFLAGS += "
-                        + "\"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
+                text
+                        .addLine("PFLAGS += "
+                                + "\"-I$(TOSROOT)/contrib/ptII/ptinyos/beta/TOSSIM-packet\"");
                 break;
             }
         }
-        
+
         // Expand $PTII, substitute / for \, and backslash space for space.
         String ptIImk = StringUtilities.getProperty("ptolemy.ptII.dir")
-            + "/mk/ptII.mk";
+                + "/mk/ptII.mk";
         text.addLine("include " + ptIImk.replaceAll(" ", "\\\\ "));
-        
+
         // Handle pathnames with spaces: substitute / for \ and
         // backslash space for space.
         text.addLine("include "
                 + tosRoot.stringValue().replace('\\', '/').replaceAll(" ",
                         "\\\\ ") + "/tools/make/Makerules");
-        
+
         // Use .mk so that Emacs will be in the right mode
         String makefileName = toplevelName + ".mk";
         File directory = destinationDirectory.asFile();
@@ -1243,16 +1245,19 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
      */
     private void _initParameters() {
         try {
-            _attachText("_iconDescription", "<svg>\n"
-                    + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
-                    + "style=\"fill:blue\"/>" + "<text x=\"-36\" y=\"8\" "
-                    + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
-                    + "PtinyOS</text></svg>");
+            _attachText(
+                    "_iconDescription",
+                    "<svg>\n"
+                            + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
+                            + "style=\"fill:blue\"/>"
+                            + "<text x=\"-36\" y=\"8\" "
+                            + "style=\"font-size:20; font-family:SansSerif; fill:white\">"
+                            + "PtinyOS</text></svg>");
 
             // Set the code generation output directory to the current
             // working directory.
-            destinationDirectory =
-                new FileParameter(this, "destinationDirectory");
+            destinationDirectory = new FileParameter(this,
+                    "destinationDirectory");
             new Parameter(destinationDirectory, "allowFiles",
                     BooleanToken.FALSE);
             new Parameter(destinationDirectory, "allowDirectories",
@@ -1270,8 +1275,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             tosRoot = new FileParameter(this, "TOSROOT");
             new Parameter(tosRoot, "allowFiles", BooleanToken.FALSE);
             new Parameter(tosRoot, "allowDirectories", BooleanToken.TRUE);
-            String tosRootProperty =
-                StringUtilities.getProperty("ptolemy.ptII.tosroot");
+            String tosRootProperty = StringUtilities
+                    .getProperty("ptolemy.ptII.tosroot");
             if (tosRootProperty != null) {
                 tosRoot.setExpression(tosRootProperty);
             } else {
@@ -1282,18 +1287,18 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             tosDir = new FileParameter(this, "TOSDIR");
             new Parameter(tosDir, "allowFiles", BooleanToken.FALSE);
             new Parameter(tosDir, "allowDirectories", BooleanToken.TRUE);
-            String tosDirProperty =
-                StringUtilities.getProperty("ptolemy.ptII.tosdir");
+            String tosDirProperty = StringUtilities
+                    .getProperty("ptolemy.ptII.tosdir");
             if (tosDirProperty != null) {
                 tosDir.setExpression(tosDirProperty);
             } else {
                 tosDir.setExpression("$PTII/vendors/ptinyos/tinyos-1.x/tos");
             }
-        
+
             // Set additional make flags.
             pflags = new StringParameter(this, "pflags");
             pflags.setExpression("-I%T/lib/Counters");
-            
+
             // Set number of nodes to be simulated to be equal to 1.
             // NOTE: only the top level value of this parameter matters.
             numNodes = new Parameter(this, "numNodes", new IntToken(1));
@@ -1302,8 +1307,8 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
             // Set the boot up time range to the defaul to of 10 sec.
             // NOTE: only the top level value of this parameter matters.
-            bootTimeRange =
-                new Parameter(this, "bootTimeRange", new IntToken(10));
+            bootTimeRange = new Parameter(this, "bootTimeRange", new IntToken(
+                    10));
             bootTimeRange.setTypeEquals(BaseType.INT);
 
             // Set compile target platform to ptII.
@@ -1320,10 +1325,9 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             isBaseStation = new Parameter(this, "isBaseStation",
                     BooleanToken.FALSE);
             isBaseStation.setTypeEquals(BaseType.BOOLEAN);
-            
+
             // Set command and event ports for TOSSIM.
-            commandPort =
-                new PtinyOSIntegerParameter(this, "commandPort", 2);
+            commandPort = new PtinyOSIntegerParameter(this, "commandPort", 2);
             commandPort.setExpression("10584");
             eventPort = new Parameter(this, "eventPort");
             eventPort.setExpression("commandPort + 1");
@@ -1337,7 +1341,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
             // depending on how many other nodes are in the model.
             nodeID = new PtinyOSIntegerParameter(this, "nodeID", 1);
             nodeID.setExpression("1");
-            
+
         } catch (KernelException ex) {
             throw new InternalErrorException(this, ex, "Cannot set parameter");
         }
@@ -1481,7 +1485,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** Class for creating a StringBuffer that represents generated
      *  code.
      */
@@ -1528,7 +1532,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
          *  @param stringWriter The StringWriter that is written.
          */
         _StreamReaderThread(InputStream inputStream, String name,
-                OutputStream redirect, StringWriter stringWriter ) {
+                OutputStream redirect, StringWriter stringWriter) {
             _inputStream = inputStream;
             _name = name;
             _outputStream = redirect;
@@ -1584,7 +1588,7 @@ include /home/celaine/ptII/vendors/ptinyos/tinyos-1.x/tools/make/Makerules
 
         /** Stream to which to write the redirected input. */
         private OutputStream _outputStream;
-        
+
         /** StringWriter that is written to */
         private StringWriter _stringWriter;
     }

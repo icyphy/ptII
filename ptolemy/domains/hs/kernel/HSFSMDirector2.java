@@ -539,18 +539,18 @@ public class HSFSMDirector2 extends HSFSMDirector {
             // satisfied with the current step size.
             if (_enabledRefinements != null) {
                 Iterator refinements = _enabledRefinements.iterator();
-                
+
                 while (refinements.hasNext()) {
                     Actor refinement = (Actor) refinements.next();
-                    
+
                     if (refinement instanceof CTStepSizeControlActor) {
                         result = result
-                        && ((CTStepSizeControlActor) refinement)
-                        .isOutputAccurate();
+                                && ((CTStepSizeControlActor) refinement)
+                                        .isOutputAccurate();
                     }
                 }
             }
-            
+
             // Even if the result is false, this method does not return immediately.
             // Instead, we continue to check whether there is any transition
             // enabled with respect to the current inputs.
@@ -565,8 +565,8 @@ public class HSFSMDirector2 extends HSFSMDirector {
             // operations.
             // It seems very time consuming, try to optimize it.
             // Check if there is any preemptive transition enabled.
-            List preemptiveEnabledTransitions = 
-                _checkTransition(_currentState.preemptiveTransitionList());
+            List preemptiveEnabledTransitions = _checkTransition(_currentState
+                    .preemptiveTransitionList());
 
             if (preemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {
@@ -575,8 +575,8 @@ public class HSFSMDirector2 extends HSFSMDirector {
             }
 
             // Check if there is any non-preemptive transition enabled.
-            List nonpreemptiveEnabledTransitions = 
-                _checkTransition(_currentState.nonpreemptiveTransitionList());
+            List nonpreemptiveEnabledTransitions = _checkTransition(_currentState
+                    .nonpreemptiveTransitionList());
 
             if (nonpreemptiveEnabledTransitions.size() != 0) {
                 if (_debugging && _verbose) {

@@ -181,61 +181,62 @@ public class ConstructorSpecializer extends SceneTransformer implements
         Scene.v().setFastHierarchy(new FastHierarchy());
 
         // Fix the specialInvokes.
-        for (Iterator i = Scene.v().getApplicationClasses().iterator();
-             i.hasNext();) {
-            
+        for (Iterator i = Scene.v().getApplicationClasses().iterator(); i
+                .hasNext();) {
+
             SootClass theClass = (SootClass) i.next();
             // Loop through all the methods in the class.
-            for (Iterator methods = theClass.getMethods().iterator();
-                 methods.hasNext();) {
-                SootMethod method = (SootMethod)methods.next();
-                
-                JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                
-                for (Iterator units = body.getUnits().snapshotIterator();
-                     units.hasNext();) {
-                    Stmt unit = (Stmt)units.next();
+            for (Iterator methods = theClass.getMethods().iterator(); methods
+                    .hasNext();) {
+                SootMethod method = (SootMethod) methods.next();
+
+                JimpleBody body = (JimpleBody) method.retrieveActiveBody();
+
+                for (Iterator units = body.getUnits().snapshotIterator(); units
+                        .hasNext();) {
+                    Stmt unit = (Stmt) units.next();
                     if (unit.containsInvokeExpr()) {
                         ValueBox box = unit.getInvokeExprBox();
                         Value value = box.getValue();
-                        
+
                         if (value instanceof SpecialInvokeExpr) {
                             System.out.println("invoke = " + unit);
-                     
+
                             // If we're constructing one of our actor classes,
                             // then switch to the modified constructor.
-                            SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
-                            SootClass declaringClass =
-                                expr.getMethodRef().declaringClass();
-                            System.out.println("declaringClass = " + declaringClass);
-                            if (expr.getMethod().getName().equals("<init>") &&
-                                    modifiedConstructorClassList.contains(
-                                            declaringClass)) {
-                                System.out.println(
-                                        "replacing constructor invocation = "
-                                        + unit + " in method " + method);
-                                SootMethod newConstructor =
-                                    declaringClass.getMethodByName("<init>");
+                            SpecialInvokeExpr expr = (SpecialInvokeExpr) value;
+                            SootClass declaringClass = expr.getMethodRef()
+                                    .declaringClass();
+                            System.out.println("declaringClass = "
+                                    + declaringClass);
+                            if (expr.getMethod().getName().equals("<init>")
+                                    && modifiedConstructorClassList
+                                            .contains(declaringClass)) {
+                                System.out
+                                        .println("replacing constructor invocation = "
+                                                + unit + " in method " + method);
+                                SootMethod newConstructor = declaringClass
+                                        .getMethodByName("<init>");
                                 if (newConstructor.getParameterCount() == 2) {
-                                    SpecialInvokeExpr r = (SpecialInvokeExpr)value;
+                                    SpecialInvokeExpr r = (SpecialInvokeExpr) value;
                                     r.setMethodRef(newConstructor.makeRef());
                                 }//  else if (newConstructor.getParameterCount() == 1) {
-//                                     // Replace with just container arg constructor.
-//                                     List args = new LinkedList();
-//                                     args.add(expr.getArg(0));
-//                                     box.setValue(
-//                                             Jimple.v().newSpecialInvokeExpr(
-//                                                     (Local)expr.getBase(),
-//                                                     newConstructor.makeRef(),
-//                                                     args));
-//                                 } else {
-//                                     // Replace with zero arg constructor.
-//                                     box.setValue(
-//                                             Jimple.v().newSpecialInvokeExpr(
-//                                                     (Local)expr.getBase(),
-//                                                     newConstructor.makeRef(),
-//                                                     Collections.EMPTY_LIST));
-//                                 }
+                                //                                     // Replace with just container arg constructor.
+                                //                                     List args = new LinkedList();
+                                //                                     args.add(expr.getArg(0));
+                                //                                     box.setValue(
+                                //                                             Jimple.v().newSpecialInvokeExpr(
+                                //                                                     (Local)expr.getBase(),
+                                //                                                     newConstructor.makeRef(),
+                                //                                                     args));
+                                //                                 } else {
+                                //                                     // Replace with zero arg constructor.
+                                //                                     box.setValue(
+                                //                                             Jimple.v().newSpecialInvokeExpr(
+                                //                                                     (Local)expr.getBase(),
+                                //                                                     newConstructor.makeRef(),
+                                //                                                     Collections.EMPTY_LIST));
+                                //                                 }
                             }
                         }
                     }

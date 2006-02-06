@@ -228,7 +228,8 @@ public class FieldsForPortsTransformer extends SceneTransformer implements
             SootField portField = (SootField) _portToFieldMap.get(port);
 
             if (portField != null) {
-                return Jimple.v().newInstanceFieldRef(baseLocal, portField.makeRef());
+                return Jimple.v().newInstanceFieldRef(baseLocal,
+                        portField.makeRef());
             } else {
                 return NullConstant.v();
             }
@@ -242,7 +243,8 @@ public class FieldsForPortsTransformer extends SceneTransformer implements
 
             SootField portField = baseField.getDeclaringClass().getFieldByName(
                     baseField.getName() + "_" + name);
-            return Jimple.v().newInstanceFieldRef(baseLocal, portField.makeRef());
+            return Jimple.v().newInstanceFieldRef(baseLocal,
+                    portField.makeRef());
         }
     }
 

@@ -127,8 +127,8 @@ public class GUIUtilities {
      *  {@link #LARGE_ICON}, {@link #ROLLOVER_ICON}, 
      *  {@link #ROLLOVER_SELECTED_ICON} or {@link #SELECTED_ICON}.
      */
-    public static void addIcons(Action action, String [][]iconRoles) {
-        for (int i = 0; i < iconRoles.length; i ++) {
+    public static void addIcons(Action action, String[][] iconRoles) {
+        for (int i = 0; i < iconRoles.length; i++) {
             URL img = action.getClass().getResource(iconRoles[i][0]);
             if (img != null) {
                 ImageIcon icon = new ImageIcon(img);
@@ -298,8 +298,8 @@ public class GUIUtilities {
         if (rolloverIcon != null) {
             button.setRolloverIcon(rolloverIcon);
         }
-        Icon rolloverSelectedIcon =
-            (Icon) action.getValue(ROLLOVER_SELECTED_ICON);
+        Icon rolloverSelectedIcon = (Icon) action
+                .getValue(ROLLOVER_SELECTED_ICON);
         if (rolloverSelectedIcon != null) {
             button.setRolloverSelectedIcon(rolloverSelectedIcon);
         }

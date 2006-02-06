@@ -121,15 +121,14 @@ public class PetriNetActor extends TypedCompositeActor {
      *
      *
      */
-//    public void fire() throws IllegalActionException {
-//        System.out.println("PetriNetActor.fire, the actors is " + "  "
-//                + getFullName() + " Container is "
-//                + getContainer().getFullName());
-//
-//        PetriNetDirector director = (PetriNetDirector) getDirector();
-//        director.fire();
-//    }
-
+    //    public void fire() throws IllegalActionException {
+    //        System.out.println("PetriNetActor.fire, the actors is " + "  "
+    //                + getFullName() + " Container is "
+    //                + getContainer().getFullName());
+    //
+    //        PetriNetDirector director = (PetriNetDirector) getDirector();
+    //        director.fire();
+    //    }
     /** This method tests whether the PetriNetActor or its component
      *  contains any enabled Transitions or not. If any of the components
      *  is enabled, the method returns true, otherwise returns false.

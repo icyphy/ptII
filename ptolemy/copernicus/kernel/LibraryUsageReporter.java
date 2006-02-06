@@ -103,7 +103,8 @@ public class LibraryUsageReporter extends SceneTransformer implements
                 + phaseName + ", " + options + ")");
         Scene.v().releaseCallGraph();
 
-        CallGraphBuilder cg = new CallGraphBuilder( DumbPointerAnalysis.v(), true );
+        CallGraphBuilder cg = new CallGraphBuilder(DumbPointerAnalysis.v(),
+                true);
         cg.build();
         CallGraph callGraph = Scene.v().getCallGraph();
         ReachableMethods reachableMethods = new ReachableMethods(callGraph,

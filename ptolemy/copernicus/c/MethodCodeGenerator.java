@@ -179,8 +179,7 @@ public class MethodCodeGenerator {
      *  @param visitor The visitor.
      *  @return The code.
      */
-    protected String _generateEpilogue(ExceptionTracker tracker,
-            CSwitch visitor) {
+    protected String _generateEpilogue(ExceptionTracker tracker, CSwitch visitor) {
         StringBuffer code = new StringBuffer();
 
         //Epilogue

@@ -174,7 +174,7 @@ public class HSMultiSolverDirector extends HSDirector {
         }
         super.addDebugListener(listener);
     }
-    
+
     /** React to a change in an attribute. If the changed attribute matches
      *  a parameter of the director, then the corresponding private copy of the
      *  parameter value will be updated.
@@ -295,16 +295,16 @@ public class HSMultiSolverDirector extends HSDirector {
             // set up the solver and step size used for this iteration. 
             if (hasCurrentEvent()) {
                 _setDiscretePhase(true);
-                
+
                 // Choose 0 as the step size.
                 setCurrentStepSize(0.0);
-                
+
                 // The discrete phase of execution resolves the final states at the
                 // current time by processing discrete events according to the SR
                 // semantics.
                 _discretePhaseExecution();
                 _setDiscretePhase(false);
-                
+
                 // FIXME: will this be necessary?
                 // It seems unnecessary because the immediately following 
                 // continuous phase of execution will propogate the resolved states.
@@ -318,12 +318,12 @@ public class HSMultiSolverDirector extends HSDirector {
                 if (getExecutiveCTGeneralDirector() == null) {
                     // Choose a suggested step size, which is a guess.
                     setCurrentStepSize(getSuggestedNextStepSize());
-                    
+
                     // Refine the correct step size for the continuous phase execution
                     // with respect to the breakpoint table.
                     setCurrentStepSize(_refinedStepWRTBreakpoints());
                 }
-                
+
                 // If the current time is the stop time, then the fire method
                 // should immediately return. No further execution is necessary.
                 // The final states at the model stop time are resolved before
@@ -332,7 +332,7 @@ public class HSMultiSolverDirector extends HSDirector {
                 if (getModelTime().equals(getModelStopTime()) || _stopRequested) {
                     return;
                 }
-                
+
                 // The continuous phase execution resolves the initial states
                 // in some future time point through numerical integration.
                 _continuousPhaseExecution();
@@ -448,7 +448,7 @@ public class HSMultiSolverDirector extends HSDirector {
         // with the model or the CTScheduler.
         // FIXME: leverage the algorithm for the Data Type resolution.
         _schedule = (HSSchedule) getScheduler().getSchedule();
-        
+
         _firstFiring = true;
 
         if (_debugging) {
@@ -604,7 +604,7 @@ public class HSMultiSolverDirector extends HSDirector {
 
             dynamic.emitCurrentStates();
         }
-        
+
         // need to propogate the states across the hierarchy
         _ODESolver.fire();
 

@@ -98,8 +98,7 @@ public class Fraction extends Object {
      */
     public Fraction add(Fraction b) {
         Fraction f = new Fraction((_numerator * b._denominator)
-                + (_denominator * b._numerator), _denominator
-                * b._denominator);
+                + (_denominator * b._numerator), _denominator * b._denominator);
         return f;
     }
 
@@ -114,8 +113,8 @@ public class Fraction extends Object {
             throw new ArithmeticException("Division by zero!");
         }
 
-        Fraction f = new Fraction(_numerator * b._denominator,
-                _denominator * b._numerator);
+        Fraction f = new Fraction(_numerator * b._denominator, _denominator
+                * b._numerator);
         return f;
     }
 
@@ -127,8 +126,7 @@ public class Fraction extends Object {
         // The Fractions are already in lowest terms, so we just compare the
         // numerator and denominator
         if (b instanceof Fraction) {
-            return ((_numerator == ((Fraction) b)._numerator)
-                    && (_denominator == ((Fraction) b)._denominator));
+            return ((_numerator == ((Fraction) b)._numerator) && (_denominator == ((Fraction) b)._denominator));
         }
         return false;
     }
@@ -159,7 +157,7 @@ public class Fraction extends Object {
 
         if (thisScaled > inputScaled) {
             return true;
-        }        
+        }
         return false;
     }
 
@@ -194,8 +192,8 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms.
      */
     public Fraction multiply(Fraction b) {
-        Fraction f = new Fraction(_numerator * b._numerator,
-                _denominator * b._denominator);
+        Fraction f = new Fraction(_numerator * b._numerator, _denominator
+                * b._denominator);
         return f;
     }
 
@@ -212,8 +210,7 @@ public class Fraction extends Object {
      */
     public Fraction subtract(Fraction b) {
         Fraction f = new Fraction((_numerator * b._denominator)
-                - (_denominator * b._numerator),
-                _denominator * b._denominator);
+                - (_denominator * b._numerator), _denominator * b._denominator);
         return f;
     }
 
@@ -256,7 +253,6 @@ public class Fraction extends Object {
      * useful when this class is made into a Token.
      */
     public static final Fraction ZERO = new Fraction(0, 1);
-
 
     /** Reduce the fraction to lowest terms by dividing the Numerator and
      *  Denominator by their Greatest Common Divisor.  In addition the

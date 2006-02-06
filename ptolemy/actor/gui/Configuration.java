@@ -230,13 +230,13 @@ public class Configuration extends CompositeEntity {
                         if (effigy instanceof PtolemyEffigy) {
                             MessageHandler.error("Failed to open "
                                     + ((PtolemyEffigy) effigy).getModel()
-                                    .getFullName(), ex);
+                                            .getFullName(), ex);
                         } else {
                             // Opening a link to a non-existant .htm file
                             // might get us to here because the effigy is
                             // not a PtolemyEffigy
-                            MessageHandler.error("Failed to open " +
-                                    effigy, ex);
+                            MessageHandler
+                                    .error("Failed to open " + effigy, ex);
                         }
                     }
 

@@ -1417,7 +1417,7 @@ public class LiveSound {
     // for debugging;
     //private static boolean _debug = true;
     private static boolean _debug = false;
-    
+
     private static int _frameSizeInBytes;
 
     private static List _liveSoundListeners = new LinkedList();

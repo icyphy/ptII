@@ -74,8 +74,9 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ConditionalReceive
  @see ConditionalSend
  */
-public class MultiwayBranchController extends AbstractBranchController implements Debuggable {
-    
+public class MultiwayBranchController extends AbstractBranchController
+        implements Debuggable {
+
     /** Construct a controller in the specified container, which should
      *  be an actor that implements BranchActor.
      *  @param container The parent actor that contains this object.
@@ -107,7 +108,8 @@ public class MultiwayBranchController extends AbstractBranchController implement
      *  @exception IllegalActionException If the rendezvous fails
      *   (e.g. because of incompatible types).
      */
-    public boolean executeBranches(ConditionalBranch[] branches) throws IllegalActionException {
+    public boolean executeBranches(ConditionalBranch[] branches)
+            throws IllegalActionException {
         CSPDirector director = _getDirector();
         synchronized (director) {
             try {
@@ -117,7 +119,7 @@ public class MultiwayBranchController extends AbstractBranchController implement
                     _debug("** Executing branches.");
                 }
                 _branches = branches;
-                
+
                 // reset the state that controls the conditional branches
                 _resetConditionalState();
 
@@ -167,7 +169,8 @@ public class MultiwayBranchController extends AbstractBranchController implement
                         }
                         int result = onlyBranch.getID();
                         if (_debugging) {
-                            _debug("** The only enabled branch (a ConditionalSend) has succeeded: " + result);
+                            _debug("** The only enabled branch (a ConditionalSend) has succeeded: "
+                                    + result);
                         }
                         return true;
                     } else {
@@ -177,7 +180,8 @@ public class MultiwayBranchController extends AbstractBranchController implement
                         onlyBranch._setToken(token);
                         int result = onlyBranch.getID();
                         if (_debugging) {
-                            _debug("** The only enabled branch (a ConditionalReceive) has succeeded: " + result);
+                            _debug("** The only enabled branch (a ConditionalReceive) has succeeded: "
+                                    + result);
                         }
                         return true;
                     }
@@ -215,9 +219,10 @@ public class MultiwayBranchController extends AbstractBranchController implement
                         // a race condition (see below), and if we call
                         // thread.join(), then we will block while holdingb
                         // a lock on the director, which will lead to deadlock.
-                        while(director.isThreadActive(thread)) {
+                        while (director.isThreadActive(thread)) {
                             if (_debugging) {
-                                _debug("** Waiting for thread to exit: " + thread.getName());
+                                _debug("** Waiting for thread to exit: "
+                                        + thread.getName());
                             }
                             director.wait();
                         }
@@ -357,10 +362,10 @@ public class MultiwayBranchController extends AbstractBranchController implement
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The controller thread, when it is blocked. */
     private Thread _controllerThread = null;
-    
+
     /** Indicator of whether branches were terminated. */
     private boolean _failed = false;
 }

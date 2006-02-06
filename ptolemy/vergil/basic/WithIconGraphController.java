@@ -192,7 +192,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
          *  @see diva.gui.GUIUtilities#addIcons(Action, String[][])
          */
         public NewPortAction(IOPort prototype, String description,
-                int mnemonicKey, String [][]iconRoles) {
+                int mnemonicKey, String[][] iconRoles) {
             super(description);
             _prototype = prototype;
 

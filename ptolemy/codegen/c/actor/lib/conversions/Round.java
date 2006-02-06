@@ -66,8 +66,7 @@ public class Round extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        ptolemy.actor.lib.conversions.Round actor = 
-            (ptolemy.actor.lib.conversions.Round) getComponent();
+        ptolemy.actor.lib.conversions.Round actor = (ptolemy.actor.lib.conversions.Round) getComponent();
 
         String function = actor.function.getExpression();
         String codeBlockName = (function.equals("ceil")) ? "ceilBlock"

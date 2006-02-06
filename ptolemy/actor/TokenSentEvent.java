@@ -95,8 +95,7 @@ public class TokenSentEvent {
      *  @param tokens The token array used for the broadcast.
      *  @param vectorLength The number of tokens sent.
      */
-    public TokenSentEvent(IOPort source, Token[] tokens,
-            int vectorLength) {
+    public TokenSentEvent(IOPort source, Token[] tokens, int vectorLength) {
         _port = source;
         _channel = -1;
         _tokenArray = tokens;
@@ -131,7 +130,7 @@ public class TokenSentEvent {
     }
 
     /** Return the array of tokens that the IOPort sent. The variable
-	 *  _tokenArray will be null if an individual token was sent instead
+     *  _tokenArray will be null if an individual token was sent instead
      *  of an array.
      *  @return The array of tokens which were sent.
      */
@@ -141,7 +140,7 @@ public class TokenSentEvent {
     }
 
     /** Return the number of tokens in the array sent by the IOPort.
-	 *  The variable _vectorLength will be -1 if an individual token
+     *  The variable _vectorLength will be -1 if an individual token
      *  was sent instead of an array of tokens.
      *  @return The number of tokens sent by the port.
      */
@@ -169,7 +168,6 @@ public class TokenSentEvent {
 
         return buffer.toString();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

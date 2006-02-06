@@ -80,8 +80,8 @@ import ptolemy.util.MessageHandler;
  does nothing.
 
  <p> This class will bring up the GUI and usually requires access
-to a display. The {@link ptolemy.actor.gui.MoMLSimpleApplication}
-class will run models in a non-graphical context.
+ to a display. The {@link ptolemy.actor.gui.MoMLSimpleApplication}
+ class will run models in a non-graphical context.
  
  @author Edward A. Lee, Steve Neuendorffer Christopher Hylands
  @version $Id$
@@ -117,8 +117,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  @param manager The manager calling this method.
      */
 
-    public synchronized void executionError(Manager manager,
-            Throwable throwable) {
+    public synchronized void executionError(Manager manager, Throwable throwable) {
 
         // If you modify this code, make sure that the following command
         // prints a meaningful message to stdout:
@@ -158,7 +157,7 @@ public class PtExecuteApplication extends MoMLApplication {
             System.err.print(KernelException.stackTraceToString(throwable));
 
             _exitValue++;
-            
+
             // Keep the process running so the dialog can be displayed.
             _test = true;
         }
@@ -185,8 +184,7 @@ public class PtExecuteApplication extends MoMLApplication {
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
         if (_configurationURL == null) {
-            _configurationURL =
-                specToURL("ptolemy/configs/runConfiguration.xml");
+            _configurationURL = specToURL("ptolemy/configs/runConfiguration.xml");
         }
 
         MoMLParser parser = new MoMLParser();
@@ -324,7 +322,7 @@ public class PtExecuteApplication extends MoMLApplication {
 
     // Return value of this process.  0 = everything ok, 2 = had an exception.
     private static int _exitValue = 0;
-    
+
     // Flag indicating that the previous argument was -conf
     private boolean _expectingConfiguration = false;
 }

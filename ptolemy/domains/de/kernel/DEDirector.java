@@ -658,24 +658,24 @@ public class DEDirector extends Director implements TimedDirector {
             DEEvent event = (DEEvent) events[i];
             Time eventTime = event.timeStamp();
             int eventMicrostep = event.microstep();
-            if (eventTime.compareTo(getModelTime()) > 0 ||
-                    eventMicrostep > _microstep) {
+            if (eventTime.compareTo(getModelTime()) > 0
+                    || eventMicrostep > _microstep) {
                 aFutureTime = eventTime;
                 break;
             }
         }
-        
+
         // Go through hierarchy to find the minimum step.
-        Director executiveDirector = 
-            ((CompositeActor) getContainer()).getExecutiveDirector();
+        Director executiveDirector = ((CompositeActor) getContainer())
+                .getExecutiveDirector();
         if (executiveDirector != null) {
-            Time aFutureTimeOfUpperLevel = 
-                executiveDirector.getModelNextIterationTime();
+            Time aFutureTimeOfUpperLevel = executiveDirector
+                    .getModelNextIterationTime();
             if (aFutureTime.compareTo(aFutureTimeOfUpperLevel) > 0) {
                 aFutureTime = aFutureTimeOfUpperLevel;
             }
         }
-        
+
         return aFutureTime;
     }
 
@@ -1260,9 +1260,9 @@ public class DEDirector extends Director implements TimedDirector {
         _actorToDepth = new Hashtable(numberOfActors);
 
         Iterator actorsIterator = actors.iterator();
-        
+
         // The depth of an actor starts with a negative number.
-        int defaultActorDepth = - numberOfActors;
+        int defaultActorDepth = -numberOfActors;
 
         while (actorsIterator.hasNext()) {
             Actor actor = (Actor) actorsIterator.next();
@@ -1278,7 +1278,7 @@ public class DEDirector extends Director implements TimedDirector {
             // is to reduce unnecessary number of firings. In particular,
             // if an actor receives a trigger event that has the same tag as
             // one of its pure event, one firing is sufficient.
-            
+
             int depth = -1;
             Iterator inputs = actor.inputPortList().iterator();
 

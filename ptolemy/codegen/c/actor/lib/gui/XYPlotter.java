@@ -67,7 +67,7 @@ public class XYPlotter extends CCodeGeneratorHelper {
 
         // FIXME: how do we add legend to the file??
         code.append(_generateBlockCode("writeFile"));
-        
+
         return code.toString();
     }
 

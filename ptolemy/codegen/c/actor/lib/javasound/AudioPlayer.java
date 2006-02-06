@@ -67,15 +67,14 @@ public class AudioPlayer extends CCodeGeneratorHelper {
         code.append(super.generateFireCode());
 
         _codeStream.clear();
-        ptolemy.actor.lib.javasound.AudioPlayer actor = 
-            (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
+        ptolemy.actor.lib.javasound.AudioPlayer actor = (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
         if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
             _codeStream.appendCodeBlock("fireBlock_8");
         } else { // assume bitsPerSample == 16 
             _codeStream.appendCodeBlock("fireBlock_16");
         }
         code.append(processCode(_codeStream.toString()));
-        
+
         return code.toString();
     }
 

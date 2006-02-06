@@ -134,22 +134,24 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
         String outputDirWithSep = "";
 
         if (!outputDir.equals("")) {
-            outputDirWithSep = 
-                outputDir + System.getProperty("file.separator");
+            outputDirWithSep = outputDir + System.getProperty("file.separator");
         }
 
         try {
-            File tempFile =
-                new File(outputDirWithSep + 
-                        cl.getName().replace('.', System.getProperty("file.separator").toCharArray()[0]) + ".class");
-            
+            File tempFile = new File(outputDirWithSep
+                    + cl.getName()
+                            .replace(
+                                    '.',
+                                    System.getProperty("file.separator")
+                                            .toCharArray()[0]) + ".class");
+
             _create(tempFile.getAbsoluteFile());
 
             OutputStream streamOut = new JasminOutputStream(
                     new FileOutputStream(tempFile));
 
-            PrintWriter writerOut =
-                new PrintWriter(new OutputStreamWriter(streamOut));
+            PrintWriter writerOut = new PrintWriter(new OutputStreamWriter(
+                    streamOut));
 
             if (cl.containsBafBody())
                 new soot.baf.JasminClass(cl).print(writerOut);
@@ -161,8 +163,8 @@ public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
 
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException(
-                "Could not produce new classfile! (" + e + ")");
+            throw new RuntimeException("Could not produce new classfile! (" + e
+                    + ")");
         }
     }
 

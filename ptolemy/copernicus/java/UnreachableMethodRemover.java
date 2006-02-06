@@ -150,7 +150,8 @@ public class UnreachableMethodRemover extends SceneTransformer implements
         // Construct the graph of all method invocations, so we know what
         // method contains each invocation and what method(s) can be
         // targeted by that invocation.
-        CallGraphBuilder cg = new CallGraphBuilder( DumbPointerAnalysis.v(), true );
+        CallGraphBuilder cg = new CallGraphBuilder(DumbPointerAnalysis.v(),
+                true);
         cg.build();
         CallGraph callGraph = Scene.v().getCallGraph();
         ReachableMethods reachables = new ReachableMethods(callGraph,

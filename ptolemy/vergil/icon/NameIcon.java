@@ -74,15 +74,16 @@ public class NameIcon extends EditorIcon {
     public NameIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // Create an icon for this attribute.
         // This has the side effect of making it visible
         // in Vergil, and giving a reasonable rendition.
         TextIcon icon = new TextIcon(this, "_icon");
         icon.setIconText("-N-");
-        icon.setText("NameIcon attribute: This sets the icon to be a box with the name.");
+        icon
+                .setText("NameIcon attribute: This sets the icon to be a box with the name.");
         icon.setPersistent(false);
-        
+
         // Hide the name.
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
@@ -112,7 +113,7 @@ public class NameIcon extends EditorIcon {
         LabelFigure label = new LabelFigure(name, _labelFont, 1.0,
                 SwingConstants.CENTER);
         Rectangle2D stringBounds = label.getBounds();
-        
+
         // NOTE: Padding of 20. Quantize the height so that
         // snap to grid still works.
         width = Math.floor(stringBounds.getWidth()) + 20;
@@ -141,7 +142,7 @@ public class NameIcon extends EditorIcon {
         result.add(label);
         return result;
     }
-    
+
     /** Override the base class to add or set a _hideName parameter.
      *  @param container The container to attach this attribute to..
      *  @exception IllegalActionException If this attribute is not of the
@@ -151,12 +152,12 @@ public class NameIcon extends EditorIcon {
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
-    public void setContainer(NamedObj container)
-            throws IllegalActionException, NameDuplicationException {
+    public void setContainer(NamedObj container) throws IllegalActionException,
+            NameDuplicationException {
         NamedObj previousContainer = getContainer();
         if (previousContainer != container && previousContainer != null) {
-            SingletonParameter hide = (SingletonParameter)previousContainer.getAttribute(
-                    "_hideName", SingletonParameter.class);
+            SingletonParameter hide = (SingletonParameter) previousContainer
+                    .getAttribute("_hideName", SingletonParameter.class);
             if (hide != null) {
                 hide.setToken(BooleanToken.FALSE);
             }
@@ -164,12 +165,13 @@ public class NameIcon extends EditorIcon {
         super.setContainer(container);
         if (previousContainer != container && container != null) {
             // Hide the name.
-            SingletonParameter hide = new SingletonParameter(container, "_hideName");
+            SingletonParameter hide = new SingletonParameter(container,
+                    "_hideName");
             hide.setToken(BooleanToken.TRUE);
             hide.setVisibility(Settable.EXPERT);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 

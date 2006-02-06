@@ -176,14 +176,11 @@ public class GiottoPortInliner implements PortInliner {
                                 .getBufferFieldName(relation, i, port.getType()));
 
                 // load the buffer array.
-                body
-                        .getUnits()
-                        .insertBefore(
-                                Jimple.v().newAssignStmt(
-                                        bufferLocal,
-                                        Jimple.v()
-                                        .newStaticFieldRef(arrayField.makeRef())),
-                                stmt);
+                body.getUnits().insertBefore(
+                        Jimple.v().newAssignStmt(
+                                bufferLocal,
+                                Jimple.v().newStaticFieldRef(
+                                        arrayField.makeRef())), stmt);
 
                 // If we are calling with just a token, then send the token.
                 if (expr.getArgCount() == 1) {
@@ -762,7 +759,8 @@ public class GiottoPortInliner implements PortInliner {
             body.getUnits().insertBefore(
                     Jimple.v().newAssignStmt(
                             Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                    bufferField.makeRef()), channelLocal), insertPoint);
+                                    bufferField.makeRef()), channelLocal),
+                    insertPoint);
         }
     }
 
@@ -863,7 +861,8 @@ public class GiottoPortInliner implements PortInliner {
             body.getUnits().insertBefore(
                     Jimple.v().newAssignStmt(
                             Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                    bufferField.makeRef()), channelLocal), insertPoint);
+                                    bufferField.makeRef()), channelLocal),
+                    insertPoint);
         }
     }
 
@@ -905,10 +904,9 @@ public class GiottoPortInliner implements PortInliner {
         if (typeLocal != null) {
             list.add(Jimple.v().newAssignStmt(
                     tokenLocal,
-                    Jimple.v()
-                            .newInterfaceInvokeExpr(typeLocal,
-                                    PtolemyUtilities.typeConvertMethod.makeRef(),
-                                    inputTokenLocal)));
+                    Jimple.v().newInterfaceInvokeExpr(typeLocal,
+                            PtolemyUtilities.typeConvertMethod.makeRef(),
+                            inputTokenLocal)));
 
             list.add(Jimple.v().newAssignStmt(
                     outputTokenLocal,

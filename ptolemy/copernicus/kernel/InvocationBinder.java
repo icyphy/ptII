@@ -77,7 +77,7 @@ public class InvocationBinder extends SceneTransformer {
         String modifierOptions = "unsafe";
         HashMap instanceToStaticMap = new HashMap();
 
-        Scene.v().setCallGraph( new CallGraph() );
+        Scene.v().setCallGraph(new CallGraph());
         CallGraph cg = Scene.v().getCallGraph();
 
         Iterator classesIt = Scene.v().getApplicationClasses().iterator();

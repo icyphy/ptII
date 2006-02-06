@@ -370,7 +370,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     }
                     return null;
                 }
-                
+
                 // Check for DTD designation.
                 String dtd1 = "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML";
                 String dtd2 = "<!DOCTYPE class PUBLIC \"-//UC Berkeley//DTD MoML";

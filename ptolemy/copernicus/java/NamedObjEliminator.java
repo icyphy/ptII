@@ -272,7 +272,8 @@ public class NamedObjEliminator extends SceneTransformer implements
                                                                             .v()
                                                                             .newSpecialInvokeExpr(
                                                                                     local,
-                                                                                    initMethod.makeRef(),
+                                                                                    initMethod
+                                                                                            .makeRef(),
                                                                                     StringConstant
                                                                                             .v(uriString))),
                                                     unit);
@@ -375,7 +376,8 @@ public class NamedObjEliminator extends SceneTransformer implements
                                 // Replace with zero arg object constructor.
                                 box.setValue(Jimple.v().newSpecialInvokeExpr(
                                         (Local) expr.getBase(),
-                                        PtolemyUtilities.objectConstructor.makeRef(),
+                                        PtolemyUtilities.objectConstructor
+                                                .makeRef(),
                                         Collections.EMPTY_LIST));
                             }
                         }
@@ -456,9 +458,9 @@ public class NamedObjEliminator extends SceneTransformer implements
                             if (expr.getMethodRef().name().equals("<init>")
                                     && modifiedConstructorClassList
                                             .contains(declaringClass)) {
-                                System.out.println(
-                                        "replacing constructor invocation = "
-                                        + unit + " in method " + method);
+                                System.out
+                                        .println("replacing constructor invocation = "
+                                                + unit + " in method " + method);
                                 SootMethod newConstructor = declaringClass
                                         .getMethodByName("<init>");
 
@@ -469,7 +471,8 @@ public class NamedObjEliminator extends SceneTransformer implements
                                     box.setValue(Jimple.v()
                                             .newSpecialInvokeExpr(
                                                     (Local) expr.getBase(),
-                                                    newConstructor.makeRef(), args));
+                                                    newConstructor.makeRef(),
+                                                    args));
                                 } else {
                                     // Replace with zero arg constructor.
                                     box.setValue(Jimple.v()
@@ -528,7 +531,8 @@ public class NamedObjEliminator extends SceneTransformer implements
                         Type type = value.getType();
 
                         if (_isRemovableType(type)) {
-                            System.out.println("Unit with removable type " + type + ": " + unit);
+                            System.out.println("Unit with removable type "
+                                    + type + ": " + unit);
                             body.getUnits().remove(unit);
                             break;
                         }

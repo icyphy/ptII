@@ -169,7 +169,7 @@ public class PSDFDirector extends SDFDirector {
      */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
-        /* PSDFScheduler scheduler = */ new PSDFScheduler(this,
+        /* PSDFScheduler scheduler = */new PSDFScheduler(this,
                 uniqueName("Scheduler"));
     }
 }

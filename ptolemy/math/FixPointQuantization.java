@@ -188,8 +188,7 @@ public class FixPointQuantization extends Quantization {
      *  @return A new quantization.
      */
     public FixPointQuantization setPrecision(Precision precision) {
-        return new FixPointQuantization(precision, getOverflow(),
-                getRounding());
+        return new FixPointQuantization(precision, getOverflow(), getRounding());
     }
 
     /** Return a FixPointQuantization with a changed rounding strategy.

@@ -221,7 +221,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                     _openBaseClassAction));
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -388,14 +388,12 @@ public abstract class BasicGraphController extends AbstractGraphController
         // it is an interactor.  EAL 2/5/05.
         pane.getBackgroundEventLayer().addInteractor(_menuCreator);
         pane.getBackgroundEventLayer().setConsuming(false);
-        
-        Action[] actions = {
-                _getDocumentationAction,
+
+        Action[] actions = { _getDocumentationAction,
                 new CustomizeDocumentationAction(),
-                new RemoveCustomDocumentationAction()
-        };
-        _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                actions, "Documentation"));
+                new RemoveCustomDocumentationAction() };
+        _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
+                "Documentation"));
 
         if (_configuration != null) {
             // NOTE: The following requires that the configuration be
@@ -442,7 +440,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     // The configuration.
     private Configuration _configuration;
-    
+
     // The get documentation action.
     private GetDocumentationAction _getDocumentationAction = new GetDocumentationAction();
 

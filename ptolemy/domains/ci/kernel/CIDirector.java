@@ -628,8 +628,7 @@ public class CIDirector extends Director {
      *  @exception IllegalActionException If calling prefire() on an actor
      *  in that provides data to the actor being pulled throws it
      */
-    protected void _requestSyncPull(Actor actor)
-            throws IllegalActionException {
+    protected void _requestSyncPull(Actor actor) throws IllegalActionException {
         _pulledActors.add(actor);
 
         if (_isPullThrough(actor)) {

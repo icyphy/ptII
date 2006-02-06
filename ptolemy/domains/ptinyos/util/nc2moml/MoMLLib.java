@@ -56,19 +56,19 @@ import ptolemy.util.FileUtilities;
  Existing <i>input suffix</i> files are overwritten.
 
  <p>Usage:
-<pre>
-   java -classpath $PTII:$PTII/ptolemy/domains/ptinyos/lib/jdom.jar \
-      ptolemy.domains.ptinyos.util.nc2moml.MoMLLib \
-      <i>input suffix</i> <i>top-level output filename</i> \
-      <i>output filename</i> <i>root dir of input files</i>
-</pre>
+ <pre>
+ java -classpath $PTII:$PTII/ptolemy/domains/ptinyos/lib/jdom.jar \
+ ptolemy.domains.ptinyos.util.nc2moml.MoMLLib \
+ <i>input suffix</i> <i>top-level output filename</i> \
+ <i>output filename</i> <i>root dir of input files</i>
+ </pre>
 
-<p>Example:
-<pre>
-   java -classpath $PTII:$PTII/ptolemy/domains/ptinyos/lib/jdom.jar \
-      ptolemy.domains.ptinyos.util.nc2moml.MoMLLib \
-      .moml _TOSIndex.moml _index.moml $PTII/vendors/ptinyos/moml
-</pre>
+ <p>Example:
+ <pre>
+ java -classpath $PTII:$PTII/ptolemy/domains/ptinyos/lib/jdom.jar \
+ ptolemy.domains.ptinyos.util.nc2moml.MoMLLib \
+ .moml _TOSIndex.moml _index.moml $PTII/vendors/ptinyos/moml
+ </pre>
 
 
 
@@ -81,7 +81,7 @@ import ptolemy.util.FileUtilities;
 public class MoMLLib {
     /** Generate the .moml index file for the given arguments.
      *  Example:
-<pre>
+     <pre>
      &lt;?xml version="1.0"?&gt;
      &lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
 
@@ -102,7 +102,7 @@ public class MoMLLib {
      ?&gt;
      &lt;/configure&gt;
      &lt;/entity&gt;
-</pre>
+     </pre>
      *
      *  @param components Array containing the components in short
      *  path format relative to the root.
@@ -226,10 +226,9 @@ public class MoMLLib {
      */
     public static void main(String[] args) {
         if (args.length < 3) {
-            System.err
-                    .println("Usage: java MoMLLib <input suffix> "
-                            + "<top-level output filename> <output filename> "
-                            + "<root dir of input files>");
+            System.err.println("Usage: java MoMLLib <input suffix> "
+                    + "<top-level output filename> <output filename> "
+                    + "<root dir of input files>");
             return;
         }
 
@@ -313,8 +312,7 @@ public class MoMLLib {
                 if (indexFileSubNames.length < 2) {
                     throw new Exception("Invalid index file path.");
                 } else {
-                    String newIndexFileName =
-                        indexFileSubNames[indexFileSubNames.length - 2]
+                    String newIndexFileName = indexFileSubNames[indexFileSubNames.length - 2]
                             + "/"
                             + indexFileSubNames[indexFileSubNames.length - 1];
                     indexFiles.add(newIndexFileName);

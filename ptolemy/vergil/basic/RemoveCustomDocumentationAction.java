@@ -47,7 +47,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  @Pt.AcceptedRating Red (johnr)
  */
 public class RemoveCustomDocumentationAction extends FigureAction {
-    
+
     /** Construct an instance of this action. */
     public RemoveCustomDocumentationAction() {
         super("Remove Custom Documentation");
@@ -65,7 +65,7 @@ public class RemoveCustomDocumentationAction extends FigureAction {
         super.actionPerformed(e);
 
         final NamedObj target = getTarget();
-        
+
         // If the object does not contain an attribute of class
         // DocAttribute, then do nothing. Otherwise, remove it.
         if (target != null) {
@@ -73,9 +73,10 @@ public class RemoveCustomDocumentationAction extends FigureAction {
             if (docAttributeList.size() != 0) {
                 // Remove the doc attribute.
                 String moml = "<deleteProperty name=\""
-                        + ((DocAttribute)docAttributeList.get(0)).getName()
+                        + ((DocAttribute) docAttributeList.get(0)).getName()
                         + "\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, target, moml);
+                MoMLChangeRequest request = new MoMLChangeRequest(this, target,
+                        moml);
                 target.requestChange(request);
             }
         }

@@ -62,27 +62,25 @@ public class Commutator extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        ptolemy.actor.lib.Commutator actor = 
-            (ptolemy.actor.lib.Commutator) getComponent();
-        
-        ArrayList args = new ArrayList();        
+        ptolemy.actor.lib.Commutator actor = (ptolemy.actor.lib.Commutator) getComponent();
+
+        ArrayList args = new ArrayList();
         args.add("");
-        String type = 
-            _getCodeGenTypeFromPtolemyType(actor.input.getType());            
+        String type = _getCodeGenTypeFromPtolemyType(actor.input.getType());
         args.add(type);
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, new Integer(i));
             String codeBlock;
             if (_isPrimitiveType(type)) {
                 if (_isPrimitiveType(actor.output.getType())) {
-                	codeBlock = "primitiveToPrimitiveFireBlock";
+                    codeBlock = "primitiveToPrimitiveFireBlock";
                 } else {
-                	codeBlock = "primitiveToTokenFireBlock";
+                    codeBlock = "primitiveToTokenFireBlock";
                 }
             } else {
                 codeBlock = "tokenFireBlock";
             }
-            code.append(_generateBlockCode(codeBlock, args));                
+            code.append(_generateBlockCode(codeBlock, args));
         }
         return processCode(code.toString());
     }

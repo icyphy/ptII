@@ -194,7 +194,7 @@ public class TextIcon extends DynamicEditorIcon {
 
         SwingUtilities.invokeLater(doSet);
     }
-    
+
     /** Specify the text to display in the icon.
      *  If this is not called, then the text displayed
      *  is "-A-".

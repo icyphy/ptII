@@ -1677,6 +1677,7 @@ public class CompositeEntity extends ComponentEntity {
             _entityListIterator = entityList().iterator();
             _relationListIterator = relationList().iterator();
         }
+
         /** Return true if the iteration has more elements.
          *  In this class, this returns true if there are more
          *  attributes, ports, classes, entities, or relations.
@@ -1719,7 +1720,7 @@ public class CompositeEntity extends ComponentEntity {
          *  supported in NamedObj.ContainedObjectsIterator.remove().
          */
         public void remove() {
-                super.remove();
+            super.remove();
         }
 
         private Iterator _classListIterator = null;

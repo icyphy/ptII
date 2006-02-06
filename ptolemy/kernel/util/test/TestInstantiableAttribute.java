@@ -12,9 +12,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
-public class TestInstantiableAttribute extends Attribute implements Instantiable{
+public class TestInstantiableAttribute extends Attribute implements
+        Instantiable {
 
-    
     public TestInstantiableAttribute() {
         super();
     }
@@ -27,7 +27,7 @@ public class TestInstantiableAttribute extends Attribute implements Instantiable
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     public List getChildren() {
         List results = new LinkedList();
         Iterator attributes = attributeList().iterator();
@@ -46,7 +46,9 @@ public class TestInstantiableAttribute extends Attribute implements Instantiable
         return null;
     }
 
-    public Instantiable instantiate(NamedObj container, String name) throws CloneNotSupportedException, IllegalActionException, NameDuplicationException {
+    public Instantiable instantiate(NamedObj container, String name)
+            throws CloneNotSupportedException, IllegalActionException,
+            NameDuplicationException {
         return null;
     }
 

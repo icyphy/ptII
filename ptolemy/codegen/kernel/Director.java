@@ -71,24 +71,23 @@ public class Director implements ActorCodeGenerator {
 
     /////////////////////////////////////////////////////////////////
     ////                Public Methods                           ////
-    
+
     /** Generate code for declaring read and write offset variables if needed. 
      *  It delegates to the helpers of contained actors.
      *  @return The generated code.
      *  @exception IllegalActionException If thrown while creating offset variables.
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();    
+        StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = 
-                    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(helperObject.createOffsetVariablesIfNeeded());
-        }      
+        }
         return code.toString();
-}
+    }
 
     /** Generate the code for the firing of actors.
      *  In this base class, it is attempted to fire all the actors once.
@@ -101,7 +100,7 @@ public class Director implements ActorCodeGenerator {
      *   an actor throws it while generating fire code for the actor.
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer(); 
+        StringBuffer code = new StringBuffer();
         code.append("/* The firing of the director. */\n");
 
         Iterator actors = ((CompositeActor) _director.getContainer())
@@ -109,9 +108,8 @@ public class Director implements ActorCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) 
-                    _getHelper((NamedObj) actor);
-            code.append(helperObject.generateFireCode());            
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            code.append(helperObject.generateFireCode());
         }
         return code.toString();
     }
@@ -131,8 +129,7 @@ public class Director implements ActorCodeGenerator {
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = 
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             // Initialize code for the actor.
             code.append(helperObject.generateInitializeCode());
             // Update write offset due to initial tokens produced. 
@@ -141,7 +138,7 @@ public class Director implements ActorCodeGenerator {
                 IOPort port = (IOPort) outputPorts.next();
                 int rate = DFUtilities.getTokenInitProduction(port);
                 _updateConnectedPortsOffset(port, code, rate);
-            }    
+            }
         }
         return code.toString();
     }
@@ -163,14 +160,13 @@ public class Director implements ActorCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = 
-                    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(helperObject.generatePreinitializeCode());
         }
 
         return code.toString();
     }
-    
+
     /** Generate mode transition code. It delegates to the helpers of actors 
      *  under the control of this director. The mode transition code generated 
      *  in this method is executed after each global iteration, e.g., in HDF model. 
@@ -179,16 +175,15 @@ public class Director implements ActorCodeGenerator {
      *  @exception IllegalActionException If an actor helper throws it 
      *   while generating mode transition code. 
      */
-    public void generateModeTransitionCode(StringBuffer code) 
+    public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = 
-                    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             helperObject.generateModeTransitionCode(code);
-        }      
+        }
     }
 
     /** Generate code for transferring enough tokens to complete an internal 
@@ -201,9 +196,8 @@ public class Director implements ActorCodeGenerator {
             throws IllegalActionException {
         code.append("\n/* Transfer tokens to the inside */\n\n");
 
-        ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = 
-                (ptolemy.codegen.c.actor.TypedCompositeActor) 
-                _getHelper(_director.getContainer());
+        ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(_director
+                .getContainer());
 
         for (int i = 0; i < inputPort.getWidth(); i++) {
             if (i < inputPort.getWidthInside()) {
@@ -219,7 +213,7 @@ public class Director implements ActorCodeGenerator {
                 code.append(";\n");
             }
         }
-        
+
         // The offset of the input port itself is updated by outside director.
         _updateConnectedPortsOffset(inputPort, code, 1);
     }
@@ -234,9 +228,8 @@ public class Director implements ActorCodeGenerator {
             throws IllegalActionException {
         code.append("\n/* Transfer tokens to the outside */\n\n");
 
-        ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = 
-                (ptolemy.codegen.c.actor.TypedCompositeActor) 
-                _getHelper(_director.getContainer());
+        ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(_director
+                .getContainer());
 
         for (int i = 0; i < outputPort.getWidthInside(); i++) {
             if (i < outputPort.getWidth()) {
@@ -252,7 +245,7 @@ public class Director implements ActorCodeGenerator {
                 code.append(";\n");
             }
         }
-        
+
         // The offset of the ports connected to the output port is 
         // updated by outside director.
         _updatePortOffset(outputPort, code, 1);
@@ -324,8 +317,7 @@ public class Director implements ActorCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) 
-                    _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             set.addAll(helperObject.getModifiedVariables());
         }
 
@@ -342,7 +334,7 @@ public class Director implements ActorCodeGenerator {
 
     /////////////////////////////////////////////////////////////////////
     ////                   protected methods                         ////
-    
+
     /** Return the minimum number of power of two that is greater than or
      *  equal to the given integer.
      *  @param value The given integer.
@@ -384,7 +376,7 @@ public class Director implements ActorCodeGenerator {
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
     }
-    
+
     /** Update the read offsets of the buffer associated with the given port.
      * 
      *  @param port The port whose read offset is to be updated.
@@ -392,41 +384,42 @@ public class Director implements ActorCodeGenerator {
      *  @exception IllegalActionException If thrown while reading or writing
      *   offsets, or getting buffer size.
      */
-    protected void _updatePortOffset(IOPort port, StringBuffer code, int rate) 
+    protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
             throws IllegalActionException {
-        
+
         if (rate == 0) {
-             return;   
+            return;
         } else if (rate < 0) {
-            throw new IllegalActionException((NamedObj)port, 
-                    "the rate: " + rate + "is negative.");   
+            throw new IllegalActionException((NamedObj) port, "the rate: "
+                    + rate + "is negative.");
         }
-     
-        CodeGeneratorHelper helper = 
-                (CodeGeneratorHelper) _getHelper(port.getContainer());
-        
+
+        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
+                .getContainer());
+
         int length = 0;
         if (port.isInput()) {
             length = port.getWidth();
         } else {
             length = port.getWidthInside();
         }
-     
+
         for (int j = 0; j < length; j++) {
             // Update the offset for each channel.
             if (helper.getReadOffset(port, j) instanceof Integer) {
-                int offset = ((Integer) helper.getReadOffset(port, j)).intValue();
-                offset = (offset + rate)% helper.getBufferSize(port, j);
+                int offset = ((Integer) helper.getReadOffset(port, j))
+                        .intValue();
+                offset = (offset + rate) % helper.getBufferSize(port, j);
                 helper.setReadOffset(port, j, new Integer(offset));
             } else { // If offset is a variable.
                 int modulo = helper.getBufferSize(port, j) - 1;
                 String offsetVariable = (String) helper.getReadOffset(port, j);
-                code.append((String) offsetVariable + " = (" + offsetVariable 
+                code.append((String) offsetVariable + " = (" + offsetVariable
                         + " + " + rate + ")&" + modulo + ";\n");
             }
         }
     }
-    
+
     /** Update the offsets of the buffers associated with the ports connected 
      *  with the given port in its downstream.
      * 
@@ -436,19 +429,19 @@ public class Director implements ActorCodeGenerator {
      *  @exception IllegalActionException If thrown while reading or writing
      *   offsets, or getting buffer size.
      */
-    protected void _updateConnectedPortsOffset(IOPort port, 
-            StringBuffer code, int rate) throws IllegalActionException {
-        
+    protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
+            int rate) throws IllegalActionException {
+
         if (rate == 0) {
-            return;   
+            return;
         } else if (rate < 0) {
-            throw new IllegalActionException((NamedObj)port, 
-                   "the rate: " + rate + "is negative.");   
+            throw new IllegalActionException((NamedObj) port, "the rate: "
+                    + rate + "is negative.");
         }
-    
-        CodeGeneratorHelper helper = 
-                (CodeGeneratorHelper) _getHelper(port.getContainer());
-        
+
+        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
+                .getContainer());
+
         int length = 0;
         if (port.isInput()) {
             length = port.getWidthInside();
@@ -463,25 +456,26 @@ public class Director implements ActorCodeGenerator {
                 Channel channel = (Channel) sinkChannels.get(k);
                 IOPort sinkPort = (IOPort) channel.port;
                 int sinkChannelNumber = channel.channelNumber;
-         
-                Object offsetObject = helper
-                        .getWriteOffset(sinkPort, sinkChannelNumber);
+
+                Object offsetObject = helper.getWriteOffset(sinkPort,
+                        sinkChannelNumber);
                 if (offsetObject instanceof Integer) {
                     int offset = ((Integer) offsetObject).intValue();
-                    offset = (offset + rate) % helper.getBufferSize
-                            (sinkPort, sinkChannelNumber);
-                    helper.setWriteOffset(sinkPort, 
-                            sinkChannelNumber, new Integer(offset));
+                    offset = (offset + rate)
+                            % helper.getBufferSize(sinkPort, sinkChannelNumber);
+                    helper.setWriteOffset(sinkPort, sinkChannelNumber,
+                            new Integer(offset));
                 } else { // If offset is a variable. 
-                    int modulo = helper.getBufferSize
-                            (sinkPort, sinkChannelNumber) - 1;
-                    String offsetVariable = (String) helper.getWriteOffset
-                            (sinkPort, sinkChannelNumber);
-                    code.append((String) offsetVariable + " = (" + offsetVariable 
-                            + " + " + rate + ")&" + modulo + ";\n");
+                    int modulo = helper.getBufferSize(sinkPort,
+                            sinkChannelNumber) - 1;
+                    String offsetVariable = (String) helper.getWriteOffset(
+                            sinkPort, sinkChannelNumber);
+                    code.append((String) offsetVariable + " = ("
+                            + offsetVariable + " + " + rate + ")&" + modulo
+                            + ";\n");
                 }
             }
-        }    
+        }
     }
 
     ////////////////////////////////////////////////////////////////////

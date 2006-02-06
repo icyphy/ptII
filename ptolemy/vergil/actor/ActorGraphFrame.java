@@ -150,11 +150,13 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
         GUIUtilities.addHotKey(_getRightComponent(), _importLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
         GUIUtilities.addMenuItem(_graphMenu, _instantiateAttributeAction);
-        GUIUtilities.addHotKey(_getRightComponent(), _instantiateAttributeAction);
+        GUIUtilities.addHotKey(_getRightComponent(),
+                _instantiateAttributeAction);
         GUIUtilities.addMenuItem(_graphMenu, _instantiateEntityAction);
         GUIUtilities.addHotKey(_getRightComponent(), _instantiateEntityAction);
         _graphMenu.addSeparator();
-        diva.gui.GUIUtilities.addHotKey(_getRightComponent(), _createHierarchyAction);
+        diva.gui.GUIUtilities.addHotKey(_getRightComponent(),
+                _createHierarchyAction);
         diva.gui.GUIUtilities.addMenuItem(_graphMenu, _createHierarchyAction);
 
         // Add any commands to graph menu and toolbar that the controller
@@ -247,7 +249,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     /** The action for saving the current model in a library. */
     protected Action _saveInLibraryAction;
 
-    /** The action for importing a library of components. */ 
+    /** The action for importing a library of components. */
     protected Action _importLibraryAction;
 
     /** The action for instantiating an attribute. */

@@ -275,10 +275,11 @@ public class LocatableNodeController extends BasicNodeController {
                 // with other highlights.
                 Rectangle2D bounds = cf.getBackgroundFigure().getBounds();
                 double padding = 3.0;
-                bounds = new Rectangle2D.Double(bounds.getX() - padding,
-                        bounds.getY() - padding,
-                        bounds.getWidth() + padding * 2.0,
-                        bounds.getHeight() + padding * 2.0);
+                bounds = new Rectangle2D.Double(bounds.getX() - padding, bounds
+                        .getY()
+                        - padding, bounds.getWidth() + padding * 2.0, bounds
+                        .getHeight()
+                        + padding * 2.0);
                 BasicFigure bf = new BasicFigure(bounds);
                 bf.setStroke(stroke);
                 bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);

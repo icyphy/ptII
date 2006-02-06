@@ -85,7 +85,8 @@ public class HTMLViewer extends TableauFrame implements Printable,
     /** Construct a blank viewer.
      */
     public HTMLViewer() {
-        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        getContentPane().setLayout(
+                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         pane.setContentType("text/html");
         pane.setEditable(false);
         pane.addHyperlinkListener(this);
@@ -201,7 +202,8 @@ public class HTMLViewer extends TableauFrame implements Printable,
                 // If the URL is the same as the one we are currently in,
                 // then we are dealing with a link within the same file,
                 // so we want to stay in the same window.
-                if (getPage() != null && newURL.getFile().equals(getPage().getFile())) {
+                if (getPage() != null
+                        && newURL.getFile().equals(getPage().getFile())) {
                     pane.setPage(newURL);
                 } else {
                     // Attempt to open in a new window.
@@ -366,13 +368,13 @@ public class HTMLViewer extends TableauFrame implements Printable,
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    
+
     /** The main scroll pane. */
     protected JScrollPane _scroller;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The base as specified by setBase(). */
     private URL _base;
 }

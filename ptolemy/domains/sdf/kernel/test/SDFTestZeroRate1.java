@@ -138,7 +138,7 @@ public class SDFTestZeroRate1 extends Transformer {
 
         // debug sdf schedules:
         SDFDirector dir = (SDFDirector) getDirector();
-        /*SDFScheduler scheduler = (SDFScheduler)*/ dir.getScheduler();
+        /*SDFScheduler scheduler = (SDFScheduler)*/dir.getScheduler();
 
         // For debugging the SDF scheduler...
         //StreamListener sa = new StreamListener();

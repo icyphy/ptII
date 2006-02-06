@@ -59,7 +59,7 @@ import ptolemy.kernel.util.StringAttribute;
  @Pt.AcceptedRating Red (cxh)
  */
 public class DocAttribute extends SingletonAttribute {
-    
+
     /** Construct a documentation attribute with the given name contained
      *  by the specified entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -76,25 +76,25 @@ public class DocAttribute extends SingletonAttribute {
     public DocAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         description = new StringParameter(this, "description");
         TextStyle style = new TextStyle(description, "_style");
         style.height.setExpression("10");
         style.width.setExpression("70");
 
-        author = new StringAttribute(this, "author");        
+        author = new StringAttribute(this, "author");
         version = new StringAttribute(this, "version");
         since = new StringAttribute(this, "since");
-        
+
         refreshParametersAndPorts();
-        
+
         // Provide an icon, in case this gets instantiated in Vergil.
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"20\" "
                 + "style=\"fill:yellow\"/>" + "<text x=\"-40\" y=\"-5\" "
                 + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
                 + "Documentation</text></svg>");
-        
+
         // Hide the name, if this gets instantiated in Vergil.
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
@@ -106,10 +106,10 @@ public class DocAttribute extends SingletonAttribute {
 
     /** The author field. */
     public StringAttribute author;
-    
+
     /** The description. */
     public StringParameter description;
-    
+
     /** The since field. */
     public StringAttribute since;
 
@@ -118,7 +118,7 @@ public class DocAttribute extends SingletonAttribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the documentation for the given parameter, or null if there
      *  none.
      *  @param name The name of the parameter.
@@ -126,18 +126,19 @@ public class DocAttribute extends SingletonAttribute {
      *   is none.
      */
     public String getParameterDoc(String name) {
-        StringParameter parameterAttribute = (StringParameter)getAttribute(name + " (parameter)");
+        StringParameter parameterAttribute = (StringParameter) getAttribute(name
+                + " (parameter)");
         if (parameterAttribute != null) {
             return parameterAttribute.getExpression();
         }
         // Might be a port-parameter.  Try that.
-        parameterAttribute = (StringParameter)getAttribute(name + " (port-parameter)");
+        parameterAttribute = (StringParameter) getAttribute(name
+                + " (port-parameter)");
         if (parameterAttribute != null) {
             return parameterAttribute.getExpression();
         }
         return null;
     }
-
 
     /** Return the documentation for the given port, or null if there
      *  none.
@@ -146,7 +147,8 @@ public class DocAttribute extends SingletonAttribute {
      *   is none.
      */
     public String getPortDoc(String name) {
-        StringAttribute portAttribute = (StringAttribute)getAttribute(name + " (port)");
+        StringAttribute portAttribute = (StringAttribute) getAttribute(name
+                + " (port)");
         if (portAttribute != null) {
             return portAttribute.getExpression();
         }
@@ -160,10 +162,11 @@ public class DocAttribute extends SingletonAttribute {
      */
     public void refreshParametersAndPorts() {
         NamedObj container = getContainer();
-        Iterator parameters = container.attributeList(Settable.class).iterator();
+        Iterator parameters = container.attributeList(Settable.class)
+                .iterator();
         while (parameters.hasNext()) {
-            NamedObj attribute = (NamedObj)parameters.next();
-            if (((Settable)attribute).getVisibility() == Settable.FULL) {
+            NamedObj attribute = (NamedObj) parameters.next();
+            if (((Settable) attribute).getVisibility() == Settable.FULL) {
                 String modifier = " (parameter)";
                 if (attribute instanceof PortParameter) {
                     modifier = " (port-parameter)";
@@ -178,11 +181,11 @@ public class DocAttribute extends SingletonAttribute {
                 }
             }
         }
-        
+
         if (container instanceof Entity) {
-            Iterator ports = ((Entity)container).portList().iterator();
+            Iterator ports = ((Entity) container).portList().iterator();
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
+                Port port = (Port) ports.next();
                 if (port instanceof ParameterPort) {
                     // Skip this one.
                     continue;
@@ -195,7 +198,7 @@ public class DocAttribute extends SingletonAttribute {
                         throw new InternalErrorException(e);
                     }
                 }
-            }            
+            }
         }
     }
 }

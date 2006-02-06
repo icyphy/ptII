@@ -44,14 +44,15 @@ import ptolemy.kernel.undo.UndoStackAttribute;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh) 
  */
-public class UndoActionTest  implements UndoAction{
+public class UndoActionTest implements UndoAction {
 
     /** Create a UndoActionTest.
      *  @parm name The name of this UndoAction.
-     */ 
+     */
     public UndoActionTest(String name) {
         _name = name;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -71,5 +72,6 @@ public class UndoActionTest  implements UndoAction{
     public String toString() {
         return "UndoActionTest-" + _name;
     }
+
     private String _name;
 }

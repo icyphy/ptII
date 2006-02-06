@@ -61,94 +61,94 @@ import java.util.Map;
  <ul>
 
  <li> <i><b>up</b></i> <br>
-     Rounding mode to round away from zero.
-     Always increments the digit prior to a non-zero discarded fraction.
-     Note that this rounding mode never decreases the magnitude of
-     the calculated value.
-     This rounding mode is suppored by the static
-     {@link #roundUp(BigDecimal) roundUp} method and the Rounding
-     singletons {@link #GENERAL}, {@link #UNKNOWN} and {@link #UP}.
+ Rounding mode to round away from zero.
+ Always increments the digit prior to a non-zero discarded fraction.
+ Note that this rounding mode never decreases the magnitude of
+ the calculated value.
+ This rounding mode is suppored by the static
+ {@link #roundUp(BigDecimal) roundUp} method and the Rounding
+ singletons {@link #GENERAL}, {@link #UNKNOWN} and {@link #UP}.
 
  <li> <i><b>down</b></i> <br>
-     Rounding mode to round towards zero.
-     Never increments the digit prior to a discarded fraction
-     (i.e., truncates). Note that this rounding mode never increases
-     the magnitude of the calculated value.
-     This rounding mode is suppored by the static
-     {@link #roundDown(BigDecimal) roundDown} method and the Rounding
-     singleton {@link #DOWN}.
+ Rounding mode to round towards zero.
+ Never increments the digit prior to a discarded fraction
+ (i.e., truncates). Note that this rounding mode never increases
+ the magnitude of the calculated value.
+ This rounding mode is suppored by the static
+ {@link #roundDown(BigDecimal) roundDown} method and the Rounding
+ singleton {@link #DOWN}.
 
  <li> <i><b>floor</b></i> <br>
-     Rounding mode to round towards negative infinity.
-     If decimal is positive, behave as <b>round down</b>;
-     if decimal is negative, behave as <b>round up</b>.
-     This rounding mode is suppored by the static
-     {@link #roundFloor(BigDecimal) roundFloor} method and the Rounding
-     singleton {@link #FLOOR}.
+ Rounding mode to round towards negative infinity.
+ If decimal is positive, behave as <b>round down</b>;
+ if decimal is negative, behave as <b>round up</b>.
+ This rounding mode is suppored by the static
+ {@link #roundFloor(BigDecimal) roundFloor} method and the Rounding
+ singleton {@link #FLOOR}.
 
  <li> <i><b>ceiling</b></i> <br>
-     Rounding mode to round towards positive infinity.
-     If decimal is positive, behave as <b>round up</b>;
-     if decimal is negative, behave as <b>round down</b>.
-     This rounding mode is suppored by the static
-     {@link #roundCeiling(BigDecimal) roundCeiling} method and the Rounding
-     singleton {@link #CEILING}.
+ Rounding mode to round towards positive infinity.
+ If decimal is positive, behave as <b>round up</b>;
+ if decimal is negative, behave as <b>round down</b>.
+ This rounding mode is suppored by the static
+ {@link #roundCeiling(BigDecimal) roundCeiling} method and the Rounding
+ singleton {@link #CEILING}.
 
  <li> <i><b>half up</b></i> <br>
-     Rounding mode to round towards "nearest neighbor" unless
-     both neighbors are equidistant, in which case round up.
-     Behaves as for <b>round up</b> if the discarded fraction is >= .5;
-     otherwise, behaves as for <b>round down</b>. Note that this is the
-     rounding mode that most of us were taught in grade school.
-     Rounding mode to round towards zero.
-     This rounding mode is suppored by the static
-     {@link #roundHalfUp(BigDecimal) roundHalfUp} method and the Rounding
-     singleton {@link #HALF_UP}.
+ Rounding mode to round towards "nearest neighbor" unless
+ both neighbors are equidistant, in which case round up.
+ Behaves as for <b>round up</b> if the discarded fraction is >= .5;
+ otherwise, behaves as for <b>round down</b>. Note that this is the
+ rounding mode that most of us were taught in grade school.
+ Rounding mode to round towards zero.
+ This rounding mode is suppored by the static
+ {@link #roundHalfUp(BigDecimal) roundHalfUp} method and the Rounding
+ singleton {@link #HALF_UP}.
 
  <li> <i><b>half down</b></i> <br>
-     Rounding mode to round towards "nearest neighbor" unless
-     both neighbors are equidistant, in which case round down.
-     Behaves as for <b>round up</b> if the discarded fraction is > .5;
-     otherwise, behaves as for <b>ROUND_DOWN</b>.
-     This rounding mode is suppored by the static
-     {@link #roundHalfDown(BigDecimal) roundHalfDown} method and the Rounding
-     singleton {@link #HALF_DOWN}.
+ Rounding mode to round towards "nearest neighbor" unless
+ both neighbors are equidistant, in which case round down.
+ Behaves as for <b>round up</b> if the discarded fraction is > .5;
+ otherwise, behaves as for <b>ROUND_DOWN</b>.
+ This rounding mode is suppored by the static
+ {@link #roundHalfDown(BigDecimal) roundHalfDown} method and the Rounding
+ singleton {@link #HALF_DOWN}.
 
  <li> <i><b>half even</b></i> <br>
-     Rounding mode to round towards the "nearest neighbor" unless
-     both neighbors are equidistant, in which case, round towards
-     the even neighbor. Behaves as for <b>round half up</b>
-     if the digit to the left of the discarded fraction is odd;
-     behaves as for <b>round half down</b> if it's even.
-     Note that this is the rounding
-     mode that minimizes cumulative error when applied repeatedly
-     over a sequence of calculations.
-     This rounding mode is suppored by the static
-     {@link #roundHalfEven(BigDecimal) roundHalfEven} method and the Rounding
-     singletons {@link #HALF_EVEN} and {@link #CONVERGENT}.
+ Rounding mode to round towards the "nearest neighbor" unless
+ both neighbors are equidistant, in which case, round towards
+ the even neighbor. Behaves as for <b>round half up</b>
+ if the digit to the left of the discarded fraction is odd;
+ behaves as for <b>round half down</b> if it's even.
+ Note that this is the rounding
+ mode that minimizes cumulative error when applied repeatedly
+ over a sequence of calculations.
+ This rounding mode is suppored by the static
+ {@link #roundHalfEven(BigDecimal) roundHalfEven} method and the Rounding
+ singletons {@link #HALF_EVEN} and {@link #CONVERGENT}.
 
  <li> <i><b>half floor</b></i> <br>
-     Rounding mode to round towards "nearest neighbor" unless
-     both neighbors are equidistant, in which case round
-     "ceiling". Behaves as <b>round half down</b>
-     if the decimal is positive and as <b>round half up</b>
-     if the decimal is negative. Note that there is no half floor rounding
-     mode supported for BigDecimal values.
-     This rounding mode is suppored by the static
-     {@link #roundHalfFloor(BigDecimal) roundHalfFloor} method and
-     the Rounding singleton {@link #HALF_FLOOR}.
+ Rounding mode to round towards "nearest neighbor" unless
+ both neighbors are equidistant, in which case round
+ "ceiling". Behaves as <b>round half down</b>
+ if the decimal is positive and as <b>round half up</b>
+ if the decimal is negative. Note that there is no half floor rounding
+ mode supported for BigDecimal values.
+ This rounding mode is suppored by the static
+ {@link #roundHalfFloor(BigDecimal) roundHalfFloor} method and
+ the Rounding singleton {@link #HALF_FLOOR}.
 
  <li> <i><b>half ceiling</b></i> <br>
-     Rounding mode to round towards "nearest neighbor" unless
-     both neighbors are equidistant, in which case round
-     "ceiling". Behaves as <b>round half up</b> if the decimal
-     is positive and as <b>round half down</b>
-     if the decimal is negative.
-     Note that there is no half ceiling rounding mode
-     supported for BigDecimal values.
-     This rounding mode is suppored by the static
-     {@link #roundHalfFloor(BigDecimal) roundHalfCeiling} method and
-     the Rounding singleton {@link #HALF_CEILING}.
+ Rounding mode to round towards "nearest neighbor" unless
+ both neighbors are equidistant, in which case round
+ "ceiling". Behaves as <b>round half up</b> if the decimal
+ is positive and as <b>round half down</b>
+ if the decimal is negative.
+ Note that there is no half ceiling rounding mode
+ supported for BigDecimal values.
+ This rounding mode is suppored by the static
+ {@link #roundHalfFloor(BigDecimal) roundHalfCeiling} method and
+ the Rounding singleton {@link #HALF_CEILING}.
 
  </ul>
 
@@ -212,8 +212,7 @@ public abstract class Rounding implements Cloneable, Serializable {
      *  @exception IllegalArgumentException If the string does not
      *   match one of the known strategies.
      */
-    public static Rounding getName(String name)
-            throws IllegalArgumentException {
+    public static Rounding getName(String name) throws IllegalArgumentException {
         Rounding rounding = (Rounding) _nameToRounding.get(name);
 
         if (rounding != null) {
@@ -399,7 +398,6 @@ public abstract class Rounding implements Cloneable, Serializable {
     // ptolemy.data.type.BaseType where an explanation that was valid
     // for that usage may be found.
 
-
     /** Singleton implementing ceiling rounding strategy. */
     public static final RoundCeiling CEILING = new RoundCeiling();
 
@@ -448,7 +446,6 @@ public abstract class Rounding implements Cloneable, Serializable {
 
     /** Singleton implementing unnecessary rounding strategy. */
     public static final Rounding UNNECESSARY = HALF_UP;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public inner classes              ////
@@ -539,7 +536,7 @@ public abstract class Rounding implements Cloneable, Serializable {
     public static class RoundHalfUp extends Rounding {
         private RoundHalfUp() {
             super("half_up");
-            _addRounding(this,"unnecessary");
+            _addRounding(this, "unnecessary");
         }
 
         public BigInteger round(BigDecimal dec) {
@@ -559,7 +556,6 @@ public abstract class Rounding implements Cloneable, Serializable {
             return roundUp(dec).toBigInteger();
         }
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////

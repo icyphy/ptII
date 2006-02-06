@@ -40,7 +40,7 @@ import java.util.Map;
  handling numeric overflows for FixPoint data types.
  Overflows are typically resolved after performing a FixPoint
  arithmetic operation or transformation.
-<p>
+ <p>
  The active class functionality is provided by the
  {@link #quantize(BigInteger, Precision) quantize} method. This method
  evaluates an unscaled {@link BigInteger BigInteger} value and a
@@ -51,68 +51,68 @@ import java.util.Map;
  part of the overflow process.
  <p>
  The overflow strategies supported are as follows:
-  <ul>
+ <ul>
 
  <li> <i><b>grow</b></i> <br>
-     If the integer value does not fall within the dynamic range
-     of the Precision constraint, increase the Precision to the
-     minimum dynamic range needed to include the integerValue.
-     Note that the actual integer unscaled value will not change
-     during this overflow strategy.
-     This rounding mode is suppored by the static
-     {@link #quantizeGrow(BigInteger, Precision) quantizeGrow} method
-     and the Overflow singletons {@link #GROW} and {@link #GENERAL}.
+ If the integer value does not fall within the dynamic range
+ of the Precision constraint, increase the Precision to the
+ minimum dynamic range needed to include the integerValue.
+ Note that the actual integer unscaled value will not change
+ during this overflow strategy.
+ This rounding mode is suppored by the static
+ {@link #quantizeGrow(BigInteger, Precision) quantizeGrow} method
+ and the Overflow singletons {@link #GROW} and {@link #GENERAL}.
 
  <li> <i><b>minimize</b></i> <br>
-     Represent the unscaled integer value with the minimum
-     number of data bits. The sign and exponent of the
-     new precision constraint is determined by the Precision
-     parameter. The use of this overflow strategy may increase
-     or decrease the Precision of the value.
-     Note that the actual integer unscaled value will not change
-     during this overflow strategy.
-     This rounding mode is suppored by the static
-     {@link #quantizeMinimum(BigInteger, Precision) quantizeMinimize}
-     method and the Overflow singleton {@link #MINIMIZE} .
+ Represent the unscaled integer value with the minimum
+ number of data bits. The sign and exponent of the
+ new precision constraint is determined by the Precision
+ parameter. The use of this overflow strategy may increase
+ or decrease the Precision of the value.
+ Note that the actual integer unscaled value will not change
+ during this overflow strategy.
+ This rounding mode is suppored by the static
+ {@link #quantizeMinimum(BigInteger, Precision) quantizeMinimize}
+ method and the Overflow singleton {@link #MINIMIZE} .
 
  <li> <i><b>modulo</b></i> <br>
-     This overflow strategy will perform a twos complement modulo
-     operation any integer values that are outside of the
-     dynamic range of the Precision constraint.
-     Note that the actual precision will not change
-     during this overflow strategy.
-     This rounding mode is suppored by the static
-     {@link #quantizeModulo(BigInteger, Precision) quantizeModulo}
-     method and the Overflow singletons {@link #MODULO} and {@link #WRAP}.
+ This overflow strategy will perform a twos complement modulo
+ operation any integer values that are outside of the
+ dynamic range of the Precision constraint.
+ Note that the actual precision will not change
+ during this overflow strategy.
+ This rounding mode is suppored by the static
+ {@link #quantizeModulo(BigInteger, Precision) quantizeModulo}
+ method and the Overflow singletons {@link #MODULO} and {@link #WRAP}.
 
  <li> <i><b>saturate</b></i> <br>
-     If the integer value falls outside of the Precision dynamic
-     range, this overflow strategy will saturate result.
-     If the value is below the minimum of the range, the
-     minimum value of the range is used. If the value is above
-     the maximum of the range, the maximum value of the range
-     is used.
-     Note that the precision will not change during this overflow strategy.
-     This rounding mode is suppored by the static
-     {@link #quantizeSaturate(BigInteger, Precision) quantizeSaturate}
-     method and the Overflow singletons {@link #SATURATE} and
-     {@link #CLIP}.
+ If the integer value falls outside of the Precision dynamic
+ range, this overflow strategy will saturate result.
+ If the value is below the minimum of the range, the
+ minimum value of the range is used. If the value is above
+ the maximum of the range, the maximum value of the range
+ is used.
+ Note that the precision will not change during this overflow strategy.
+ This rounding mode is suppored by the static
+ {@link #quantizeSaturate(BigInteger, Precision) quantizeSaturate}
+ method and the Overflow singletons {@link #SATURATE} and
+ {@link #CLIP}.
 
  <li> <i><b>to_zero</b></i> <br>
-     If the integer value falls outside of the Precision dynamic
-     range, this overflow strategy will set the integer value to zero.
-     Note that the actual precision will not change
-     during this overflow strategy.
-     This rounding mode is suppored by the static
-     {@link #quantizeToZero(BigInteger, Precision) quantizeToZero}
-     method and the Overflow singleton {@link #TO_ZERO}.
+ If the integer value falls outside of the Precision dynamic
+ range, this overflow strategy will set the integer value to zero.
+ Note that the actual precision will not change
+ during this overflow strategy.
+ This rounding mode is suppored by the static
+ {@link #quantizeToZero(BigInteger, Precision) quantizeToZero}
+ method and the Overflow singleton {@link #TO_ZERO}.
 
  <li> <i><b>trap</b></i> <br>
-     If the integer value falls outside of the Precision dynamic
-     range, a {@link java.lang.ArithmeticException} is generated.
-     This rounding mode is suppored by the
-     singleton {@link #TRAP}.
-  </ul>
+ If the integer value falls outside of the Precision dynamic
+ range, a {@link java.lang.ArithmeticException} is generated.
+ This rounding mode is suppored by the
+ singleton {@link #TRAP}.
+ </ul>
 
  <p>
  A specific strategy may be chosen dynamically by invoking
@@ -174,8 +174,7 @@ public abstract class Overflow implements Cloneable, Serializable {
      *  @exception IllegalArgumentException If the string does not
      *   match one of the known strategies.
      */
-    public static Overflow getName(String name)
-        throws IllegalArgumentException {
+    public static Overflow getName(String name) throws IllegalArgumentException {
         Overflow overflow = (Overflow) _nameToOverflow.get(name);
 
         if (overflow != null) {
@@ -205,8 +204,8 @@ public abstract class Overflow implements Cloneable, Serializable {
      * false otherwise.
      */
     public static boolean isOutOfRange(BigInteger bigInt, Precision precision) {
-        if (bigInt.compareTo(precision.getMaximumUnscaledValue()) > 0 ||
-            bigInt.compareTo(precision.getMinimumUnscaledValue()) < 0)
+        if (bigInt.compareTo(precision.getMaximumUnscaledValue()) > 0
+                || bigInt.compareTo(precision.getMinimumUnscaledValue()) < 0)
             return true;
         return false;
     }
@@ -321,8 +320,7 @@ public abstract class Overflow implements Cloneable, Serializable {
             int_bits++;
         int new_bits = int_bits + sign;
 
-        Precision newPrecision =
-            new Precision(sign, new_bits, p.getExponent());
+        Precision newPrecision = new Precision(sign, new_bits, p.getExponent());
         return new FixPoint(bigInt, newPrecision);
 
     }
@@ -350,8 +348,8 @@ public abstract class Overflow implements Cloneable, Serializable {
             // If the precision is unsigned, the BigInteger will
             // be positive and the "modulo" value is the
             // remainder of "integerValue divided by # of levels".
-            moduloInteger =
-                integerValue.remainder(precision.getNumberOfLevels());
+            moduloInteger = integerValue.remainder(precision
+                    .getNumberOfLevels());
         } else {
             // If the precision is signed, we need to perform a
             // twos complement modulo.
@@ -387,11 +385,9 @@ public abstract class Overflow implements Cloneable, Serializable {
     public static FixPoint quantizeSaturate(BigInteger integerValue,
             Precision precision) {
         if (isUnderflow(integerValue, precision))
-            return new FixPoint(precision.getMinimumUnscaledValue(),
-                    precision);
+            return new FixPoint(precision.getMinimumUnscaledValue(), precision);
         if (isOverflow(integerValue, precision))
-            return new FixPoint(precision.getMaximumUnscaledValue(),
-                    precision);
+            return new FixPoint(precision.getMaximumUnscaledValue(), precision);
         return new FixPoint(integerValue, precision);
     }
 
@@ -419,7 +415,6 @@ public abstract class Overflow implements Cloneable, Serializable {
     public String toString() {
         return _name;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
@@ -462,15 +457,13 @@ public abstract class Overflow implements Cloneable, Serializable {
     /** Singleton implementing Trap overflow strategy. */
     public static final Trap THROW = TRAP;
 
-
     /** The grow overflow strategy. Allow growth of value. */
     public static class Grow extends Overflow {
         private Grow() {
             super("grow");
         }
 
-        public FixPoint quantize(BigInteger integerValue,
-                Precision precision) {
+        public FixPoint quantize(BigInteger integerValue, Precision precision) {
             return quantizeGrow(integerValue, precision);
         }
 
@@ -501,7 +494,6 @@ public abstract class Overflow implements Cloneable, Serializable {
         }
 
     }
-
 
     /** The saturate overflows strategy. */
     public static class Saturate extends Overflow {
@@ -552,16 +544,14 @@ public abstract class Overflow implements Cloneable, Serializable {
 
         public FixPoint quantize(BigInteger integerValue, Precision precision) {
             if (isUnderflow(integerValue, precision)) {
-                throw new ArithmeticException(
-                    "Minimum overflow threshold of " +
-                    precision.getMinimumUnscaledValue() +
-                    " exceeded with value "+integerValue);
+                throw new ArithmeticException("Minimum overflow threshold of "
+                        + precision.getMinimumUnscaledValue()
+                        + " exceeded with value " + integerValue);
             }
             if (isOverflow(integerValue, precision)) {
-                throw new ArithmeticException(
-                    "Maximum overflow threshold of " +
-                    precision.getMaximumUnscaledValue() +
-                    " exceeded with value "+integerValue);
+                throw new ArithmeticException("Maximum overflow threshold of "
+                        + precision.getMaximumUnscaledValue()
+                        + " exceeded with value " + integerValue);
             }
             return new FixPoint(integerValue, precision);
         }
@@ -582,6 +572,7 @@ public abstract class Overflow implements Cloneable, Serializable {
         _name = name;
         _addOverflow(this, name);
     }
+
     // The constructor is protected to make a type safe enumeration.
 
     ///////////////////////////////////////////////////////////////////

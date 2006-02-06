@@ -201,7 +201,7 @@ public abstract class ChangeRequest {
 
                     throw new InternalErrorException(object, _exception,
                             "ChangeRequest failed (NOTE: there is no "
-                            + "ChangeListener):\n" + _description);
+                                    + "ChangeListener):\n" + _description);
                 }
             }
         } finally {

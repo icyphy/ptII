@@ -409,7 +409,7 @@ public class PlotBoxMLParser extends HandlerBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-   
+
     // The external entities being parsed.
     private Stack _externalEntities = new Stack();
 

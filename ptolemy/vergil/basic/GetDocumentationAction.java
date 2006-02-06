@@ -46,10 +46,10 @@ import ptolemy.vergil.toolbox.FigureAction;
 //// GetDocumentationAction
 
 /** This is an action that accesses the documentation for a Ptolemy
-    object associated with a figure.  Note that this base class does
-    not put this action in a menu, since some derived classes will
-    not want it.  But by having it here, it is available to all
-    derived classes.
+ object associated with a figure.  Note that this base class does
+ not put this action in a menu, since some derived classes will
+ not want it.  But by having it here, it is available to all
+ derived classes.
 
  This class provides an action for removing instance-specific documentation.
 
@@ -60,30 +60,31 @@ import ptolemy.vergil.toolbox.FigureAction;
  @Pt.AcceptedRating Red (johnr)
  */
 public class GetDocumentationAction extends FigureAction {
-    
+
     /** Construct an instance of this action. */
     public GetDocumentationAction() {
         super("Get Documentation");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Perform the action by opening documentation for the target.
-     */    
+     */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        
+
         if (_configuration == null) {
-            MessageHandler.error("Cannot get documentation without a configuration.");
+            MessageHandler
+                    .error("Cannot get documentation without a configuration.");
         }
-        
+
         NamedObj target = getTarget();
         if (target == null) {
             // Ignore and return.
             return;
         }
-        
+
         // If the object contains
         // an attribute named of class DocAttribute or if there
         // is a doc file for the object in the standard place,
@@ -105,7 +106,7 @@ public class GetDocumentationAction extends FigureAction {
                     String docName = "doc.codeDoc." + className;
                     toRead = getClass().getClassLoader().getResource(
                             docName.replace('.', '/') + ".html");
-                }                    
+                }
                 if (toRead != null) {
                     _configuration.openModel(null, toRead, toRead
                             .toExternalForm());
@@ -121,13 +122,15 @@ public class GetDocumentationAction extends FigureAction {
             }
         } else {
             // Have a doc attribute. Use that.
-            DocAttribute docAttribute = (DocAttribute)docAttributes.get(docAttributes.size() - 1);
+            DocAttribute docAttribute = (DocAttribute) docAttributes
+                    .get(docAttributes.size() - 1);
             // Need to create an effigy and tableau.
             Effigy context = Configuration.findEffigy(target);
             if (context == null) {
                 context = Configuration.findEffigy(target.getContainer());
                 if (context == null) {
-                    MessageHandler.error("Cannot find an effigy for " + target.getFullName());
+                    MessageHandler.error("Cannot find an effigy for "
+                            + target.getFullName());
                 }
             }
             ComponentEntity effigy = context.getEntity("DocEffigy");
@@ -139,26 +142,25 @@ public class GetDocumentationAction extends FigureAction {
                 }
             }
             if (!(effigy instanceof DocEffigy)) {
-                MessageHandler.error(
-                        "Found an effigy named DocEffigy that " +
-                "is not an instance of DocEffigy!");
+                MessageHandler.error("Found an effigy named DocEffigy that "
+                        + "is not an instance of DocEffigy!");
             }
-            ((DocEffigy)effigy).setDocAttribute(docAttribute);
-            ComponentEntity tableau = ((Effigy)effigy).getEntity("DocTableau");
+            ((DocEffigy) effigy).setDocAttribute(docAttribute);
+            ComponentEntity tableau = ((Effigy) effigy).getEntity("DocTableau");
             if (tableau == null) {
                 try {
-                    tableau = new DocTableau((DocEffigy)effigy, "DocTableau");
-                    ((DocTableau)tableau).setTitle("Documentation for " + target.getFullName());
+                    tableau = new DocTableau((DocEffigy) effigy, "DocTableau");
+                    ((DocTableau) tableau).setTitle("Documentation for "
+                            + target.getFullName());
                 } catch (KernelException exception) {
                     throw new InternalErrorException(exception);
                 }
             }
             if (!(tableau instanceof DocTableau)) {
-                MessageHandler.error(
-                        "Found a tableau named DocTableau that " +
-                "is not an instance of DocTableau!");
+                MessageHandler.error("Found a tableau named DocTableau that "
+                        + "is not an instance of DocTableau!");
             }
-            ((DocTableau)tableau).show();
+            ((DocTableau) tableau).show();
         }
     }
 

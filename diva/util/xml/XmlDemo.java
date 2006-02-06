@@ -37,9 +37,9 @@ import java.io.Writer;
  * @version $Id$
  */
 public class XmlDemo {
-   /** Construct a new instance of Xml demo.
-    * @param argv Command line arguments, currently ignored.
-    */
+    /** Construct a new instance of Xml demo.
+     * @param argv Command line arguments, currently ignored.
+     */
     public static void main(String[] argv) {
         File file = new File("xml1.xml");
         XmlReader reader;

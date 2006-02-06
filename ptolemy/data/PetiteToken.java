@@ -35,10 +35,10 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A token that contains a number which is essentially a 
-   simulation equivalent for fixed point numbers in embedded processors.
-   By definition it is between -1 (inclusive) and 1 (exclusive). It is
-   a extension of the Double Token and maintains the same precision as
-   Double Token.
+ simulation equivalent for fixed point numbers in embedded processors.
+ By definition it is between -1 (inclusive) and 1 (exclusive). It is
+ a extension of the Double Token and maintains the same precision as
+ Double Token.
  @see ptolemy.data.Token
  @author Shamik Bandyopadhyay
  @version $Id$
@@ -76,7 +76,6 @@ public class PetiteToken extends DoubleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
     /** Convert the specified token into an instance of PetiteToken.
      *  This method does lossless conversion.  The units of the returned
      *  token will be the same as the units of the given token.
@@ -94,9 +93,9 @@ public class PetiteToken extends DoubleToken {
         if (token instanceof PetiteToken) {
             return (PetiteToken) token;
         } else {
-            if (token instanceof DoubleToken){
+            if (token instanceof DoubleToken) {
                 // Need to get the value of the DoubleToken and _adjust it
-                return new PetiteToken (((DoubleToken)token).doubleValue());
+                return new PetiteToken(((DoubleToken) token).doubleValue());
             } else {
                 throw new IllegalActionException(notSupportedConversionMessage(
                         token, "petite"));
@@ -136,7 +135,6 @@ public class PetiteToken extends DoubleToken {
     public Type getType() {
         return BaseType.PETITE;
     }
-
 
     /** Returns a new PetiteToken with value nearest 1.0.......
      *  @return A new PetiteToken with value nearest 1.0.
@@ -215,7 +213,6 @@ public class PetiteToken extends DoubleToken {
         return new PetiteToken(sum);
     }
 
-
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
      *  the type of the argument is an DoubleToken. The token to divide by 
@@ -227,7 +224,7 @@ public class PetiteToken extends DoubleToken {
      *  @return A new PetiteToken containing the result.
      */
     protected ScalarToken _divide(ScalarToken divisor) {
-        double quotient = _value /((DoubleToken) divisor).doubleValue();
+        double quotient = _value / ((DoubleToken) divisor).doubleValue();
         return new PetiteToken(quotient);
     }
 
@@ -327,15 +324,16 @@ public class PetiteToken extends DoubleToken {
      * DoubleToken.
      */
     protected double _adjust(double number) {
-        if(number >= 1.0) {
+        if (number >= 1.0) {
             return (1.0 - Double.MIN_VALUE);
-        }else{
-            if(number < -1.0) {
+        } else {
+            if (number < -1.0) {
                 return -1.0;
             }
         }
         return number;
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private double _value;

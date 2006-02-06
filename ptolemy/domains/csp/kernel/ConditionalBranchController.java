@@ -80,8 +80,9 @@ import ptolemy.kernel.util.Nameable;
  @see ConditionalReceive
  @see ConditionalSend
  */
-public class ConditionalBranchController extends AbstractBranchController implements Debuggable {
-    
+public class ConditionalBranchController extends AbstractBranchController
+        implements Debuggable {
+
     /** Construct a controller in the specified container, which should
      *  be an actor.
      *  @param container The parent actor that contains this object.
@@ -114,7 +115,8 @@ public class ConditionalBranchController extends AbstractBranchController implem
      *  @exception IllegalActionException If the rendezvous fails
      *   (e.g. because of incompatible types).
      */
-    public int chooseBranch(ConditionalBranch[] branches) throws IllegalActionException {
+    public int chooseBranch(ConditionalBranch[] branches)
+            throws IllegalActionException {
         try {
             CSPDirector director = _getDirector();
             synchronized (director) {
@@ -122,7 +124,7 @@ public class ConditionalBranchController extends AbstractBranchController implem
                     _debug("** Choosing branches.");
                 }
                 _branches = branches;
-                
+
                 // reset the state that controls the conditional branches
                 _resetConditionalState();
 
@@ -171,7 +173,8 @@ public class ConditionalBranchController extends AbstractBranchController implem
                         }
                         int result = onlyBranch.getID();
                         if (_debugging) {
-                            _debug("** Succeessful branch is the only branch (ConditionalSend): " + result);
+                            _debug("** Succeessful branch is the only branch (ConditionalSend): "
+                                    + result);
                         }
                         return result;
                     } else {
@@ -181,7 +184,8 @@ public class ConditionalBranchController extends AbstractBranchController implem
                         onlyBranch._setToken(token);
                         int result = onlyBranch.getID();
                         if (_debugging) {
-                            _debug("** Succeessful branch is the only branch (ConditionalReceive): " + result);
+                            _debug("** Succeessful branch is the only branch (ConditionalReceive): "
+                                    + result);
                         }
                         return result;
                     }
@@ -203,8 +207,7 @@ public class ConditionalBranchController extends AbstractBranchController implem
                     _blockedController = Thread.currentThread();
                     director.threadBlocked(_blockedController, null);
                     // wait for a branch to succeed
-                    while ((_successfulBranch == -1)
-                            && (_branchesActive > 0)
+                    while ((_successfulBranch == -1) && (_branchesActive > 0)
                             && !director.isStopRequested()) {
                         director.wait();
                     }
@@ -262,7 +265,7 @@ public class ConditionalBranchController extends AbstractBranchController implem
             }
 
             _threadList = null;
-            
+
             // Is it necessary to copy this? Note the finally clause below.
             int result = _successfulBranch;
             if (_debugging) {
@@ -297,7 +300,7 @@ public class ConditionalBranchController extends AbstractBranchController implem
         }
         super._branchFailed(branchNumber);
     }
-    
+
     /** Release the status of the calling branch as the first branch
      *  to be ready to rendezvous. This method is only called when both
      *  sides of a communication at a receiver are conditional. In
@@ -330,7 +333,6 @@ public class ConditionalBranchController extends AbstractBranchController implem
                 + ": Error: branch releasing first without possessing it! :"
                 + _branchTrying + " & " + branchNumber);
     }
-
 
     /** Registers the calling branch as the successful branch. It
      *  reduces the count of active branches, and notifies chooseBranch()
@@ -404,15 +406,15 @@ public class ConditionalBranchController extends AbstractBranchController implem
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The ID of the branch currently trying to rendezvous. It
      *  is -1 if no branch is currently trying.
      */
     private int _branchTrying = -1;
-    
+
     /** The ID of the branch that has successfully completed a rendezvous. */
     private int _successfulBranch = -1;
-    
+
     /** The thread running chooseBranch if it is blocked. */
     private Thread _blockedController = null;
 }

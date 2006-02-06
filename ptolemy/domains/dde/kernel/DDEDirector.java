@@ -403,8 +403,7 @@ public class DDEDirector extends CompositeProcessDirector implements
      * @exception IllegalActionException If there is an error while
      * attempting to set the capacity of a DDE receiver.
      */
-    protected void _incrementLowestCapacityPort()
-            throws IllegalActionException {
+    protected void _incrementLowestCapacityPort() throws IllegalActionException {
         if (_writeBlockedQueues == null) {
             return;
         }

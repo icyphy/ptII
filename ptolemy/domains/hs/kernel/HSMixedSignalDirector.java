@@ -318,9 +318,9 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
             if (aheadLength < timeResolution) {
                 if (aheadLength != 0) {
                     // For debugging only. This should not happen.
-                    throw new InternalErrorException("The difference " +
-                            "between two time objects cannot be " +
-                            "less than the time resolutions!");
+                    throw new InternalErrorException("The difference "
+                            + "between two time objects cannot be "
+                            + "less than the time resolutions!");
                 }
                 if (_debugging) {
                     _debug("This is an iteration with the step size as 0.");
@@ -328,8 +328,8 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
                 aheadLength = 0;
             } else if (aheadLength > _runAheadLength) {
                 aheadLength = _runAheadLength;
-            } 
-            
+            }
+
             setSuggestedNextStepSize(aheadLength);
         }
         return super.prefire();
@@ -353,7 +353,7 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
         Receiver localReceiver = localReceivers[0][0];
         _receivedDiscreteInput = false;
         if (!(localReceiver instanceof StateReceiver)) {
-            for (int i=0; i<port.getWidthInside(); i++) {
+            for (int i = 0; i < port.getWidthInside(); i++) {
                 if (port.hasToken(i)) {
                     _receivedDiscreteInput = true;
                     break;
@@ -531,7 +531,7 @@ public class HSMixedSignalDirector extends HSMultiSolverDirector {
 
     // The local variable of the run ahead length parameter.
     private double _runAheadLength;
-    
+
     // The local boolean variable indicating whether there is some discrete 
     // input
     private boolean _receivedDiscreteInput;

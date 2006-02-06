@@ -219,22 +219,20 @@ public class TypeSpecializer extends SceneTransformer implements
                     FieldRef ref = (FieldRef) assignStmt.getRightOp();
                     SootFieldRef fieldRef = ref.getFieldRef();
                     SootField field = ref.getField();
-                    
+
                     Type type = field.getType();
 
                     if (!PtolemyUtilities.isTokenType(type)) {
                         continue;
-                    }                    
+                    }
                     // Things that aren't token types are ignored.
                     // Things that are already the same type are ignored.
                     Type newType = typeAnalysis.getSpecializedSootType(field);
                     if ((newType != null) && !newType.equals(type)) {
 
                         ref.setFieldRef(Scene.v().makeFieldRef(
-                                                fieldRef.declaringClass(),
-                                                fieldRef.name(),
-                                                newType,
-                                                fieldRef.isStatic()));
+                                fieldRef.declaringClass(), fieldRef.name(),
+                                newType, fieldRef.isStatic()));
                     }
                     continue;
                 }
@@ -315,10 +313,8 @@ public class TypeSpecializer extends SceneTransformer implements
                             unit);
                     assignStmt.setRightOp(tempLocal);
                     ref.setFieldRef(Scene.v().makeFieldRef(
-                                                 fieldRef.declaringClass(),
-                                                 fieldRef.name(),
-                                                 newType,
-                                                 fieldRef.isStatic()));
+                            fieldRef.declaringClass(), fieldRef.name(),
+                            newType, fieldRef.isStatic()));
                 }
 
                 //     }

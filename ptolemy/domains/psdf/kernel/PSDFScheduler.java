@@ -468,7 +468,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 // Super node
             } else {
                 // FIXME: why call new Schedule here?
-                /*Schedule schedule = */ new Schedule();
+                /*Schedule schedule = */new Schedule();
 
                 // Expand the super node with adjacent nodes contained
                 // within it.

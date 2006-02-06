@@ -66,8 +66,7 @@ public class Display extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        ptolemy.actor.lib.gui.Display actor = 
-            (ptolemy.actor.lib.gui.Display) getComponent();
+        ptolemy.actor.lib.gui.Display actor = (ptolemy.actor.lib.gui.Display) getComponent();
         _codeStream.clear();
 
         String type = "";
@@ -75,7 +74,7 @@ public class Display extends CCodeGeneratorHelper {
         if (!_isPrimitiveType(type)) {
             type = "Token";
         }
-        
+
         ArrayList args = new ArrayList();
         args.add(actor.getName());
         args.add(new Integer(0));
@@ -84,7 +83,7 @@ public class Display extends CCodeGeneratorHelper {
             _codeStream.appendCodeBlock(type + "PrintBlock", args);
         }
         code.append(processCode(_codeStream.toString()));
-        
+
         return code.toString();
     }
 

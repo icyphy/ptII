@@ -314,9 +314,8 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                     stmt.getInvokeExprBox().setValue(
                             Jimple.v().newSpecialInvokeExpr(
                                     (Local) expr.getBase(),
-                                    constructorWithoutToken.makeRef(), 
-                                    r.getArg(0),
-                                    r.getArg(1)));
+                                    constructorWithoutToken.makeRef(),
+                                    r.getArg(0), r.getArg(1)));
                 }
             }
         }

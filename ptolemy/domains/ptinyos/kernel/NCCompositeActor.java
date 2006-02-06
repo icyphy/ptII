@@ -49,14 +49,14 @@ import ptolemy.kernel.util.Workspace;
 
  <p>
  This class differs from PtinyOSCompositeActor
-   {@link ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor}
+ {@link ptolemy.domains.ptinyos.kernel.PtinyOSCompositeActor}
  in that NCCompositeActor has no ports (no nesC interfaces).
  NCCompositeActor is used as a place holder for nesC (.nc) code that the
  user must write separately in an editor like
-   {@link ptolemy.domains.ptinyos.gui.NCCompositeActorTableauFactory}.
+ {@link ptolemy.domains.ptinyos.gui.NCCompositeActorTableauFactory}.
  The user should add ports in the gui as necessary when adding nesC
  interfaces to their nesC component.
-   
+ 
  @author  Elaine Cheong
  @version $Id$
  @since Ptolemy II 5.1
@@ -78,7 +78,6 @@ public class NCCompositeActor extends CompositeActor {
     // only contain entities that implement the TypedActor interface.
     //   in .<Unnamed Object> and .ncCompositeActor
 
-
     /** Construct a NCCompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
@@ -91,7 +90,6 @@ public class NCCompositeActor extends CompositeActor {
 
         _setClassName();
     }
-
 
     /** Construct a NCCompositeActor in the specified workspace with no
      *  container
@@ -147,8 +145,7 @@ public class NCCompositeActor extends CompositeActor {
 
     /** Relative orientation of ports on the icon of this actor. */
     public Parameter rotatePorts;
-    
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

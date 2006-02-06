@@ -396,8 +396,8 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                                 .getDeclaringClass())
                                 && newClass.declaresFieldByName(r.getField()
                                         .getName())) {
-                            r.setFieldRef(newClass.getFieldByName(r.getField()
-                                            .getName()).makeRef());
+                            r.setFieldRef(newClass.getFieldByName(
+                                    r.getField().getName()).makeRef());
 
                             //   System.out.println("fieldRef = " +
                             //              box.getValue());

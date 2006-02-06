@@ -90,10 +90,10 @@ public class MenuActionFactory implements MenuItemFactory {
 
     /** The action that will be added to the context menu. */
     private Action _action;
-    
+
     /** The group of actions that will be added in a submenu. */
     private Action[] _actions;
-    
+
     /** The submenu label, if one was given. */
     private String _label;
 }

@@ -57,7 +57,6 @@ public class RandomIncrLayout implements IncrementalLayout {
     //private void debug(String s) {
     //    System.out.println("RandomIncrLayout: " + s);
     //}
-
     /** Called in response to the given edge being drawn.
      */
     public void edgeDrawn(Object edge) {

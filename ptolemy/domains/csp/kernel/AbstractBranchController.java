@@ -59,7 +59,7 @@ import ptolemy.kernel.util.Debuggable;
  @see ConditionalSend
  */
 public abstract class AbstractBranchController implements Debuggable {
-    
+
     /** Construct a controller in the specified container, which should
      *  be an actor that implements BranchActor.
      *  @param container The parent actor that contains this object.
@@ -210,7 +210,7 @@ public abstract class AbstractBranchController implements Debuggable {
             }
         }
     }
-    
+
     /** Get the director that controls the execution of its parent actor.
      *  @return The executive director if the actor is composite, and
      *   otherwise, the director.
@@ -226,7 +226,7 @@ public abstract class AbstractBranchController implements Debuggable {
                     + "director => terminate.");
         }
     }
-    
+
     /** Called by ConditionalSend and ConditionalReceive to check whether
      *  the calling branch is ready to rendezvous.
      *  @param branchNumber The ID assigned to the calling branch
@@ -238,7 +238,7 @@ public abstract class AbstractBranchController implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The set of branches currently being chosen from in
      *  chooseBranch().
      */
@@ -260,7 +260,7 @@ public abstract class AbstractBranchController implements Debuggable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The list of DebugListeners registered with this object. */
     private LinkedList _debugListeners = null;
 

@@ -56,7 +56,7 @@ import diva.canvas.toolbox.LabelFigure;
  @Pt.AcceptedRating Red (celaine)
  */
 public class ActorNameIcon extends BoxedValueIcon {
-    
+
     /** Create a new icon with the given name in the given container.
      *  The container is required to implement Settable, or an exception
      *  will be thrown.
@@ -72,7 +72,7 @@ public class ActorNameIcon extends BoxedValueIcon {
 
         displayWidth.setExpression("20");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -97,12 +97,12 @@ public class ActorNameIcon extends BoxedValueIcon {
             // snap to grid still works.
             width = Math.floor(stringBounds.getWidth()) + 20;
             height = Math.floor(stringBounds.getHeight()) + 20;
-            
+
             // If the container name exists, hide it.
             if (displayString.trim().length() > 0) {
                 try {
-                    SingletonParameter hideName = new SingletonParameter(
-                            this.getContainer(), "_hideName");
+                    SingletonParameter hideName = new SingletonParameter(this
+                            .getContainer(), "_hideName");
                     hideName.setExpression("true");
                 } catch (Exception e) {
                     // Do nothing.

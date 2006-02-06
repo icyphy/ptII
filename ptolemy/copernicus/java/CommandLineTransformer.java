@@ -189,8 +189,8 @@ public class CommandLineTransformer extends SceneTransformer implements
             SootMethod constructor = SootUtilities.getMatchingMethod(
                     modelClass, "<init>", args);
             units.insertBefore(Jimple.v().newInvokeStmt(
-                                       Jimple.v().newSpecialInvokeExpr(modelLocal, constructor.makeRef(),
-                            args)), insertPoint);
+                    Jimple.v().newSpecialInvokeExpr(modelLocal,
+                            constructor.makeRef(), args)), insertPoint);
 
             FieldRef fieldRef = Jimple.v().newInstanceFieldRef(
                     body.getThisLocal(), modelField.makeRef());
@@ -208,8 +208,10 @@ public class CommandLineTransformer extends SceneTransformer implements
 
             if (iterationLimit != Integer.MAX_VALUE) {
                 units.insertBefore(Jimple.v().newAssignStmt(
-                        Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                mainClass.getFieldByName("_iterationLimit").makeRef()),
+                        Jimple.v().newInstanceFieldRef(
+                                body.getThisLocal(),
+                                mainClass.getFieldByName("_iterationLimit")
+                                        .makeRef()),
                         IntConstant.v(iterationLimit)), insertPoint);
             }
         }
@@ -292,10 +294,9 @@ public class CommandLineTransformer extends SceneTransformer implements
                         body.getUnits().insertBefore(
                                 Jimple.v().newAssignStmt(
                                         modelLocal,
-                                        Jimple.v()
-                                                .newInstanceFieldRef(
-                                                        body.getThisLocal(),
-                                                        modelField.makeRef())), stmt);
+                                        Jimple.v().newInstanceFieldRef(
+                                                body.getThisLocal(),
+                                                modelField.makeRef())), stmt);
 
                         _insertIterateCalls(body, stmt, mainClass, modelClass,
                                 modelLocal, options);
@@ -438,18 +439,12 @@ public class CommandLineTransformer extends SceneTransformer implements
             iterationLimitLocal = Jimple.v().newLocal("iterationLimit",
                     IntType.v());
             body.getLocals().add(iterationLimitLocal);
-            units
-                    .insertBefore(
-                            Jimple
-                                    .v()
-                                    .newAssignStmt(
-                                            iterationLimitLocal,
-                                            Jimple
-                                                    .v()
-                                                    .newInstanceFieldRef(
-                                                            body.getThisLocal(),
-                                                            mainClass.getFieldByName("_iterationLimit").makeRef())),
-                            unit);
+            units.insertBefore(Jimple.v().newAssignStmt(
+                    iterationLimitLocal,
+                    Jimple.v().newInstanceFieldRef(
+                            body.getThisLocal(),
+                            mainClass.getFieldByName("_iterationLimit")
+                                    .makeRef())), unit);
         }
 
         // call preinitialize
@@ -477,11 +472,10 @@ public class CommandLineTransformer extends SceneTransformer implements
 
         // call fire on the model
         units.insertBefore(Jimple.v().newInvokeStmt(
-                Jimple.v()
-                        .newVirtualInvokeExpr(
-                                modelLocal,
-                                SootUtilities.searchForMethodByName(modelClass,
-                                        "fire").makeRef())), unit);
+                Jimple.v().newVirtualInvokeExpr(
+                        modelLocal,
+                        SootUtilities.searchForMethodByName(modelClass, "fire")
+                                .makeRef())), unit);
 
         // call postfire on the model.
         units.insertBefore(Jimple.v().newAssignStmt(

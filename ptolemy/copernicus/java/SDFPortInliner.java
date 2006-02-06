@@ -1089,7 +1089,8 @@ public class SDFPortInliner implements PortInliner {
                                 insertPoint);
                         initUnits.insertBefore(Jimple.v().newAssignStmt(
                                 Jimple.v().newInstanceFieldRef(containerLocal,
-                                        field.makeRef()), arrayLocal), insertPoint);
+                                        field.makeRef()), arrayLocal),
+                                insertPoint);
                     }
                 }
             }
@@ -1163,8 +1164,8 @@ public class SDFPortInliner implements PortInliner {
                             Jimple.v().newAssignStmt(
                                     Jimple.v().newInstanceFieldRef(
                                             body.getThisLocal(),
-                                            indexArrayField.makeRef()), indexesLocal),
-                            insertPoint);
+                                            indexArrayField.makeRef()),
+                                    indexesLocal), insertPoint);
                 }
 
                 // If the port is an input, then it references
@@ -1299,7 +1300,8 @@ public class SDFPortInliner implements PortInliner {
             body.getUnits().insertBefore(
                     Jimple.v().newAssignStmt(
                             Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                    bufferField.makeRef()), channelLocal), insertPoint);
+                                    bufferField.makeRef()), channelLocal),
+                    insertPoint);
 
             // For each channel of the port, make the buffer for that
             // channel point to the appropriate buffer of the relation.
@@ -1324,12 +1326,14 @@ public class SDFPortInliner implements PortInliner {
                                     _options);
 
                     // Load the buffer array.
-                    body.getUnits().insertBefore(
-                            Jimple.v().newAssignStmt(
-                                    bufferLocal,
-                                    Jimple.v().newInstanceFieldRef(
-                                            containerLocal, arrayField.makeRef())),
-                            insertPoint);
+                    body.getUnits()
+                            .insertBefore(
+                                    Jimple.v().newAssignStmt(
+                                            bufferLocal,
+                                            Jimple.v().newInstanceFieldRef(
+                                                    containerLocal,
+                                                    arrayField.makeRef())),
+                                    insertPoint);
 
                     // Store to the port array.
                     body.getUnits().insertBefore(
@@ -1405,8 +1409,8 @@ public class SDFPortInliner implements PortInliner {
                             Jimple.v().newAssignStmt(
                                     Jimple.v().newInstanceFieldRef(
                                             body.getThisLocal(),
-                                            indexArrayField.makeRef()), indexesLocal),
-                            insertPoint);
+                                            indexArrayField.makeRef()),
+                                    indexesLocal), insertPoint);
                 }
 
                 // If the port is an input, then it might have to
@@ -1489,7 +1493,8 @@ public class SDFPortInliner implements PortInliner {
             body.getUnits().insertBefore(
                     Jimple.v().newAssignStmt(
                             Jimple.v().newInstanceFieldRef(body.getThisLocal(),
-                                    bufferField.makeRef()), channelLocal), insertPoint);
+                                    bufferField.makeRef()), channelLocal),
+                    insertPoint);
 
             // For each channel of the port, make the buffer for that
             // channel point to the appropriate buffer of the relation.
@@ -1514,12 +1519,14 @@ public class SDFPortInliner implements PortInliner {
                                     _options);
 
                     // Load the buffer array.
-                    body.getUnits().insertBefore(
-                            Jimple.v().newAssignStmt(
-                                    bufferLocal,
-                                    Jimple.v().newInstanceFieldRef(
-                                            containerLocal, arrayField.makeRef())),
-                            insertPoint);
+                    body.getUnits()
+                            .insertBefore(
+                                    Jimple.v().newAssignStmt(
+                                            bufferLocal,
+                                            Jimple.v().newInstanceFieldRef(
+                                                    containerLocal,
+                                                    arrayField.makeRef())),
+                                    insertPoint);
 
                     // Store to the port array.
                     body.getUnits().insertBefore(
@@ -1545,10 +1552,9 @@ public class SDFPortInliner implements PortInliner {
         if (typeLocal != null) {
             list.add(Jimple.v().newAssignStmt(
                     tokenLocal,
-                    Jimple.v()
-                            .newInterfaceInvokeExpr(typeLocal,
-                                    PtolemyUtilities.typeConvertMethod.makeRef(),
-                                    inputTokenLocal)));
+                    Jimple.v().newInterfaceInvokeExpr(typeLocal,
+                            PtolemyUtilities.typeConvertMethod.makeRef(),
+                            inputTokenLocal)));
 
             list.add(Jimple.v().newAssignStmt(
                     outputTokenLocal,
@@ -1646,8 +1652,8 @@ public class SDFPortInliner implements PortInliner {
                                 Jimple.v().newAssignStmt(
                                         bufferLocal,
                                         Jimple.v().newInstanceFieldRef(
-                                                containerLocal, arrayField.makeRef())),
-                                stmt);
+                                                containerLocal,
+                                                arrayField.makeRef())), stmt);
 
                         int bufferSize = _getBufferSize(relation);
 

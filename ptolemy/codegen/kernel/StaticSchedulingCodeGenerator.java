@@ -85,7 +85,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         StringBuffer code = new StringBuffer();
         code.append(comment("Static schedule:"));
         CompositeEntity model = (CompositeEntity) getContainer();
-        
+
         TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
 
         // NOTE: The cast is safe because setContainer ensures
@@ -123,19 +123,19 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         }
 
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
-        
+
         if (inline) {
-            code.append(generateFireCode());  
+            code.append(generateFireCode());
         } else {
-            code.append(model.getFullName().replace('.' , '_') + "();\n");
+            code.append(model.getFullName().replace('.', '_') + "();\n");
         }
-        
+
         // The code generated in generateModeTransitionCode() is executed
         // after one global iteration, e.g., in HDF model.
         modelHelper.generateModeTransitionCode(code);
-        
+
         code.append("}\n");
-        
+
         return code.toString();
     }
 
@@ -177,7 +177,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         StringBuffer code = new StringBuffer();
         CompositeEntity model = (CompositeEntity) getContainer();
         TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
-        code.append(modelHelper.generateFireCode());  
+        code.append(modelHelper.generateFireCode());
         return code.toString();
     }
 

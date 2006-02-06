@@ -66,7 +66,7 @@ import ptolemy.vergil.basic.DocAttribute;
  @see MoMLApplication#specToURL(String)
  */
 public class DocTableau extends Tableau {
-    
+
     /** Construct a new tableau for the model represented by the given effigy.
      *  This creates an instance of DocViewer.  It does not make the frame
      *  visible.  To do that, call show().
@@ -84,21 +84,24 @@ public class DocTableau extends Tableau {
             throw new IllegalActionException(container,
                     "Needs to be an instance of DocEffigy to contain a DocTableau.");
         }
-        DocAttribute docAttribute = ((DocEffigy)container).getDocAttribute();
+        DocAttribute docAttribute = ((DocEffigy) container).getDocAttribute();
         if (docAttribute != null) {
             // Have a doc attribute.
-            DocViewer frame = new DocViewer(docAttribute.getContainer(), (Configuration)container.toplevel());
+            DocViewer frame = new DocViewer(docAttribute.getContainer(),
+                    (Configuration) container.toplevel());
             setFrame(frame);
             frame.setTableau(this);
         } else {
             // No doc attribute. Find the URL of the enclosing effigy.
             try {
                 URL effigyURL = container.uri.getURL();
-                DocViewer frame = new DocViewer(effigyURL, (Configuration)container.toplevel());
+                DocViewer frame = new DocViewer(effigyURL,
+                        (Configuration) container.toplevel());
                 setFrame(frame);
                 frame.setTableau(this);
             } catch (MalformedURLException e) {
-                throw new IllegalActionException(this, container, e, "Malformed URL");
+                throw new IllegalActionException(this, container, e,
+                        "Malformed URL");
             }
         }
     }
@@ -148,7 +151,8 @@ public class DocTableau extends Tableau {
 
                 // First see whether the effigy already contains an
                 // DocTableau.
-                DocTableau tableau = (DocTableau) effigy.getEntity("DocTableau");
+                DocTableau tableau = (DocTableau) effigy
+                        .getEntity("DocTableau");
 
                 if (tableau == null) {
                     tableau = new DocTableau((DocEffigy) effigy, "DocTableau");

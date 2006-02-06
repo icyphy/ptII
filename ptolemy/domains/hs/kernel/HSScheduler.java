@@ -366,7 +366,7 @@ public class HSScheduler extends Scheduler {
 
         // FIXME: before this, perform a topological sort so that the signal
         // type propogation makes sense and does something.
-        
+
         // Examine and propagate the signal types of the input ports of 
         // the container.
         Iterator containerInPorts = container.inputPortList().iterator();
@@ -615,7 +615,7 @@ public class HSScheduler extends Scheduler {
                             // signal type must have been resolved already.
                             if (inputType == UNKNOWN) {
                                 throw new InvalidStateException(inPort,
-                                    " signalType not resolvable.");
+                                        " signalType not resolvable.");
                             }
                         }
                     }

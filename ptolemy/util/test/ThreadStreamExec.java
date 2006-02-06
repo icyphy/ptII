@@ -40,7 +40,7 @@ import ptolemy.util.StreamExec;
  */
 public class ThreadStreamExec extends Thread {
     public ThreadStreamExec(String name, List args) {
-        super(name); 
+        super(name);
         streamExec = new StreamExec();
         streamExec.setCommands(args);
     }
@@ -49,5 +49,5 @@ public class ThreadStreamExec extends Thread {
         streamExec.start();
     }
 
-    public StreamExec streamExec; 
+    public StreamExec streamExec;
 }

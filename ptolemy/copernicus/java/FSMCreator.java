@@ -210,8 +210,8 @@ public class FSMCreator implements AtomicActorCreator {
             int initialStateIndex = entity.entityList().indexOf(
                     entity.getEntity(initialStateName));
             units.add(Jimple.v().newAssignStmt(
-                    Jimple.v()
-                            .newInstanceFieldRef(thisLocal, currentStateField.makeRef()),
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                            currentStateField.makeRef()),
                     IntConstant.v(initialStateIndex)));
 
             // return void
@@ -260,11 +260,10 @@ public class FSMCreator implements AtomicActorCreator {
 
                     SootField portField = entityInstanceClass
                             .getFieldByName(StringUtilities.sanitizeName(name));
-                    units
-                            .add(Jimple.v().newAssignStmt(
-                                    portLocal,
-                                    Jimple.v().newInstanceFieldRef(thisLocal,
-                                            portField.makeRef())));
+                    units.add(Jimple.v().newAssignStmt(
+                            portLocal,
+                            Jimple.v().newInstanceFieldRef(thisLocal,
+                                    portField.makeRef())));
                     units.add(Jimple.v().newAssignStmt(
                             hasTokenLocal,
                             Jimple.v().newVirtualInvokeExpr(portLocal,
@@ -281,7 +280,8 @@ public class FSMCreator implements AtomicActorCreator {
                             .get(name + "_isPresent");
                     units.add(Jimple.v().newAssignStmt(
                             Jimple.v().newInstanceFieldRef(thisLocal,
-                                    tokenIsPresentField.makeRef()), hasTokenToken));
+                                    tokenIsPresentField.makeRef()),
+                            hasTokenToken));
 
                     Stmt target = Jimple.v().newNopStmt();
                     units.add(Jimple.v().newIfStmt(
@@ -334,11 +334,10 @@ public class FSMCreator implements AtomicActorCreator {
                     "nextTransitionLocal", IntType.v());
             body.getLocals().add(nextTransitionLocal);
 
-            units
-                    .add(Jimple.v().newAssignStmt(
-                            currentStateLocal,
-                            Jimple.v().newInstanceFieldRef(thisLocal,
-                                    currentStateField.makeRef())));
+            units.add(Jimple.v().newAssignStmt(
+                    currentStateLocal,
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                            currentStateField.makeRef())));
 
             // Start by doing nothing.
             units.add(Jimple.v().newAssignStmt(transitionTakenLocal,
@@ -394,8 +393,10 @@ public class FSMCreator implements AtomicActorCreator {
 
                         units.add(Jimple.v().newAssignStmt(
                                 containerLocal,
-                                Jimple.v().newInterfaceInvokeExpr(thisLocal,
-                                        PtolemyUtilities.getContainerMethod.makeRef())));
+                                Jimple.v().newInterfaceInvokeExpr(
+                                        thisLocal,
+                                        PtolemyUtilities.getContainerMethod
+                                                .makeRef())));
                         units
                                 .add(Jimple
                                         .v()
@@ -409,8 +410,10 @@ public class FSMCreator implements AtomicActorCreator {
                                                                         .v(PtolemyUtilities.compositeActorClass))));
                         units.add(Jimple.v().newAssignStmt(
                                 entityLocal,
-                                Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                        PtolemyUtilities.getEntityMethod.makeRef(),
+                                Jimple.v().newVirtualInvokeExpr(
+                                        containerLocal,
+                                        PtolemyUtilities.getEntityMethod
+                                                .makeRef(),
                                         StringConstant.v(deepName))));
 
                         units
@@ -483,8 +486,10 @@ public class FSMCreator implements AtomicActorCreator {
                                                                     .v(PtolemyUtilities.booleanTokenClass))));
                     units.add(Jimple.v().newAssignStmt(
                             flagLocal,
-                            Jimple.v().newVirtualInvokeExpr(tokenLocal,
-                                    PtolemyUtilities.booleanValueMethod.makeRef())));
+                            Jimple.v().newVirtualInvokeExpr(
+                                    tokenLocal,
+                                    PtolemyUtilities.booleanValueMethod
+                                            .makeRef())));
 
                     Stmt skipStmt = Jimple.v().newNopStmt();
 
@@ -536,14 +541,15 @@ public class FSMCreator implements AtomicActorCreator {
 
             // Store the next state.
             units.add(Jimple.v().newAssignStmt(
-                    Jimple.v()
-                            .newInstanceFieldRef(thisLocal, currentStateField.makeRef()),
-                    nextStateLocal));
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                            currentStateField.makeRef()), nextStateLocal));
 
             // And the next Transition.
-            units.add(Jimple.v().newAssignStmt(
-                    Jimple.v().newInstanceFieldRef(thisLocal,
-                            nextTransitionField.makeRef()), nextTransitionLocal));
+            units.add(Jimple.v()
+                    .newAssignStmt(
+                            Jimple.v().newInstanceFieldRef(thisLocal,
+                                    nextTransitionField.makeRef()),
+                            nextTransitionLocal));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
@@ -647,8 +653,10 @@ public class FSMCreator implements AtomicActorCreator {
 
                         units.add(Jimple.v().newAssignStmt(
                                 containerLocal,
-                                Jimple.v().newInterfaceInvokeExpr(thisLocal,
-                                        PtolemyUtilities.getContainerMethod.makeRef())));
+                                Jimple.v().newInterfaceInvokeExpr(
+                                        thisLocal,
+                                        PtolemyUtilities.getContainerMethod
+                                                .makeRef())));
                         units
                                 .add(Jimple
                                         .v()
@@ -662,8 +670,10 @@ public class FSMCreator implements AtomicActorCreator {
                                                                         .v(PtolemyUtilities.compositeActorClass))));
                         units.add(Jimple.v().newAssignStmt(
                                 entityLocal,
-                                Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                        PtolemyUtilities.getEntityMethod.makeRef(),
+                                Jimple.v().newVirtualInvokeExpr(
+                                        containerLocal,
+                                        PtolemyUtilities.getEntityMethod
+                                                .makeRef(),
                                         StringConstant.v(deepName))));
 
                         units
@@ -747,21 +757,17 @@ public class FSMCreator implements AtomicActorCreator {
                             Jimple.v().newAssignStmt(
                                     portLocal,
                                     Jimple.v().newInstanceFieldRef(
-                                            body.getThisLocal(), portField.makeRef())));
-                    body
-                            .getUnits()
-                            .add(
-                                    Jimple
-                                            .v()
-                                            .newInvokeStmt(
-                                                    Jimple
-                                                            .v()
-                                                            .newVirtualInvokeExpr(
-                                                                    portLocal,
-                                                                    PtolemyUtilities.sendMethod.makeRef(),
-                                                                    IntConstant
-                                                                            .v(0),
-                                                                    outputTokenLocal)));
+                                            body.getThisLocal(),
+                                            portField.makeRef())));
+                    body.getUnits().add(
+                            Jimple.v()
+                                    .newInvokeStmt(
+                                            Jimple.v().newVirtualInvokeExpr(
+                                                    portLocal,
+                                                    PtolemyUtilities.sendMethod
+                                                            .makeRef(),
+                                                    IntConstant.v(0),
+                                                    outputTokenLocal)));
                 } else if (destination instanceof Parameter) {
                     // set the computed token
                     Local paramLocal = Jimple.v().newLocal("param",
@@ -783,33 +789,21 @@ public class FSMCreator implements AtomicActorCreator {
                     String deepName = ((NamedObj) destination)
                             .getName(containerModel);
 
-                    body
-                            .getUnits()
-                            .add(
-                                    Jimple
-                                            .v()
-                                            .newAssignStmt(
-                                                    containerLocal,
-                                                    Jimple
-                                                            .v()
-                                                            .newInterfaceInvokeExpr(
-                                                                    body
-                                                                            .getThisLocal(),
-                                                                    PtolemyUtilities.getContainerMethod.makeRef())));
-                    body
-                            .getUnits()
-                            .add(
-                                    Jimple
-                                            .v()
-                                            .newAssignStmt(
-                                                    attributeLocal,
-                                                    Jimple
-                                                            .v()
-                                                            .newVirtualInvokeExpr(
-                                                                    containerLocal,
-                                                                    PtolemyUtilities.getAttributeMethod.makeRef(),
-                                                                    StringConstant
-                                                                            .v(deepName))));
+                    body.getUnits().add(
+                            Jimple.v().newAssignStmt(
+                                    containerLocal,
+                                    Jimple.v().newInterfaceInvokeExpr(
+                                            body.getThisLocal(),
+                                            PtolemyUtilities.getContainerMethod
+                                                    .makeRef())));
+                    body.getUnits().add(
+                            Jimple.v().newAssignStmt(
+                                    attributeLocal,
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            containerLocal,
+                                            PtolemyUtilities.getAttributeMethod
+                                                    .makeRef(),
+                                            StringConstant.v(deepName))));
 
                     body
                             .getUnits()
@@ -834,7 +828,8 @@ public class FSMCreator implements AtomicActorCreator {
                                                             .v()
                                                             .newVirtualInvokeExpr(
                                                                     paramLocal,
-                                                                    PtolemyUtilities.variableSetTokenMethod.makeRef(),
+                                                                    PtolemyUtilities.variableSetTokenMethod
+                                                                            .makeRef(),
                                                                     outputTokenLocal)));
                 } else {
                     throw new RuntimeException("unknown object");

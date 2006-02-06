@@ -175,11 +175,10 @@ public class ExpressionCreator implements AtomicActorCreator {
 
                     SootField portField = entityInstanceClass
                             .getFieldByName(StringUtilities.sanitizeName(name));
-                    units
-                            .add(Jimple.v().newAssignStmt(
-                                    portLocal,
-                                    Jimple.v().newInstanceFieldRef(thisLocal,
-                                            portField.makeRef())));
+                    units.add(Jimple.v().newAssignStmt(
+                            portLocal,
+                            Jimple.v().newInstanceFieldRef(thisLocal,
+                                    portField.makeRef())));
                     units.add(Jimple.v().newAssignStmt(
                             hasTokenLocal,
                             Jimple.v().newVirtualInvokeExpr(portLocal,
@@ -221,12 +220,14 @@ public class ExpressionCreator implements AtomicActorCreator {
 
             SootField portField = entityInstanceClass.getFieldByName(name);
 
-            units.add(Jimple.v().newAssignStmt(portLocal,
-                    Jimple.v().newInstanceFieldRef(thisLocal, portField.makeRef())));
+            units.add(Jimple.v().newAssignStmt(
+                    portLocal,
+                    Jimple.v().newInstanceFieldRef(thisLocal,
+                            portField.makeRef())));
             units.add(Jimple.v().newInvokeStmt(
                     Jimple.v().newVirtualInvokeExpr(portLocal,
-                            PtolemyUtilities.sendMethod.makeRef(), IntConstant.v(0),
-                            local)));
+                            PtolemyUtilities.sendMethod.makeRef(),
+                            IntConstant.v(0), local)));
 
             // return void
             units.add(Jimple.v().newReturnVoidStmt());

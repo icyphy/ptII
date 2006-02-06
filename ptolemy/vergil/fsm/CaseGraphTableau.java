@@ -114,7 +114,8 @@ public class CaseGraphTableau extends Tableau {
      */
     public void createGraphFrame(CompositeEntity model,
             LibraryAttribute defaultLibrary) {
-        CaseGraphFrame frame = new CaseGraphFrame((Case)model, this, defaultLibrary);
+        CaseGraphFrame frame = new CaseGraphFrame((Case) model, this,
+                defaultLibrary);
 
         try {
             setFrame(frame);
@@ -180,7 +181,7 @@ public class CaseGraphTableau extends Tableau {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Background color. */
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }

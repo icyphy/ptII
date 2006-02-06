@@ -108,8 +108,7 @@ import ptolemy.kernel.util.Workspace;
  @see ConditionalReceive
  @see ConditionalSend
  */
-public class CSPActor extends TypedAtomicActor implements
-        BranchActor {
+public class CSPActor extends TypedAtomicActor implements BranchActor {
     /** Construct a CSPActor in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -161,7 +160,8 @@ public class CSPActor extends TypedAtomicActor implements
      *  @exception IllegalActionException If the rendezvous fails
      *   (e.g. because of incompatible types).
      */
-    public int chooseBranch(ConditionalBranch[] branches) throws IllegalActionException {
+    public int chooseBranch(ConditionalBranch[] branches)
+            throws IllegalActionException {
         return _conditionalBranchController.chooseBranch(branches);
     }
 
@@ -307,7 +307,7 @@ public class CSPActor extends TypedAtomicActor implements
      */
     protected void _waitForDeadlock() {
         try {
-            CSPDirector director = (CSPDirector)getDirector();
+            CSPDirector director = (CSPDirector) getDirector();
             synchronized (director) {
                 _delayed = true;
                 director._actorDelayed(0.0, this);

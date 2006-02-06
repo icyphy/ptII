@@ -283,13 +283,15 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  by the _execute() method just after doing the parse.
      *  Subclasses may override this.
      */
-    protected void _postParse(MoMLParser parser) {}
+    protected void _postParse(MoMLParser parser) {
+    }
 
     /** Do nothing. This is a strategy pattern method that is called
      *  by the _execute() method just before doing the parse.
      *  Subclasses may override this to do some setup of the parser.
      */
-    protected void _preParse(MoMLParser parser) {}
+    protected void _preParse(MoMLParser parser) {
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

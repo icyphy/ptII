@@ -80,8 +80,7 @@ public class NCCompositeActorTableauFactory extends ActorGraphTableau.Factory {
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
         if (effigy instanceof PtolemyEffigy) {
-            if (((PtolemyEffigy) effigy).getModel()
-                    instanceof NCCompositeActor) {
+            if (((PtolemyEffigy) effigy).getModel() instanceof NCCompositeActor) {
                 return super.createTableau(effigy);
             }
         }

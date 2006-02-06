@@ -402,7 +402,8 @@ public class Exec extends TypedAtomicActor {
 
             directoryAsFile = directory.asFile();
             if (!directoryAsFile.isDirectory()) {
-                throw new IllegalActionException("No such directory: " + directoryAsFile);
+                throw new IllegalActionException("No such directory: "
+                        + directoryAsFile);
             }
 
             if (_debugging) {
@@ -472,8 +473,8 @@ public class Exec extends TypedAtomicActor {
             _inputBufferedWriter = new BufferedWriter(inputStreamWriter);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                    "Problem executing the command '" + command.getExpression() + "'\n"
-                    + "in the directory: " + directoryAsFile);
+                    "Problem executing the command '" + command.getExpression()
+                            + "'\n" + "in the directory: " + directoryAsFile);
         }
     }
 

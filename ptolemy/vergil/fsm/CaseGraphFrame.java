@@ -107,7 +107,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
     public CaseGraphFrame(Case entity, Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
-        
+
         _case = entity;
         _addCaseAction = new AddCaseAction();
         _removeCaseAction = new RemoveCaseAction();
@@ -126,17 +126,17 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
     public void stateChanged(ChangeEvent event) {
         Object source = event.getSource();
         if (source instanceof JTabbedPane) {
-            Component selected = ((JTabbedPane)source).getSelectedComponent();
+            Component selected = ((JTabbedPane) source).getSelectedComponent();
             if (selected instanceof JGraph) {
-                setJGraph((JGraph)selected);
+                setJGraph((JGraph) selected);
             }
             if (_graphPanner != null) {
-                _graphPanner.setCanvas((JGraph)selected);
+                _graphPanner.setCanvas((JGraph) selected);
                 _graphPanner.repaint();
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -153,7 +153,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         GUIUtilities.addHotKey(_getRightComponent(), _removeCaseAction);
         GUIUtilities.addMenuItem(_caseMenu, _removeCaseAction);
     }
-    
+
     /** Create the component that goes to the right of the library.
      *  NOTE: This is called in the base class constructor, before
      *  things have been initialized. Hence, it cannot reference
@@ -167,10 +167,11 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         }
         _tabbedPane = new JTabbedPane();
         _tabbedPane.addChangeListener(this);
-        Iterator cases = ((Case)entity).entityList(Refinement.class).iterator();
+        Iterator cases = ((Case) entity).entityList(Refinement.class)
+                .iterator();
         boolean first = true;
         while (cases.hasNext()) {
-            Refinement refinement = (Refinement)cases.next();
+            Refinement refinement = (Refinement) cases.next();
             JGraph jgraph = _addTabbedPane(refinement, false);
             // The first JGraph is the one with the focus.
             if (first) {
@@ -230,16 +231,16 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The action to add a case. */
     private AddCaseAction _addCaseAction;
-    
+
     /** The Case actor displayed by this frame. */
     private Case _case;
 
     /** The action to remove a case. */
     private RemoveCaseAction _removeCaseAction;
-    
+
     /** The tabbed pane for cases. */
     private JTabbedPane _tabbedPane;
 
@@ -248,45 +249,47 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
 
     /** Class implementing the Add Case menu command. */
     public class AddCaseAction extends FigureAction {
-        
+
         /** Create a case action with label "Add Case". */
         public AddCaseAction() {
             super("Add Case");
             putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_A));
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////////
         ////                            public methods                             ////
-        
+
         /** Perform the action. */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             // Dialog to ask for a case name.
             Query query = new Query();
-            query.addLine("case", "Pattern that the control input must match", "");
-            ComponentDialog dialog = new ComponentDialog(
-                    CaseGraphFrame.this, "Add Case", query);
+            query.addLine("case", "Pattern that the control input must match",
+                    "");
+            ComponentDialog dialog = new ComponentDialog(CaseGraphFrame.this,
+                    "Add Case", query);
             if (dialog.buttonPressed().equals("OK")) {
                 final String pattern = query.getStringValue("case");
                 // NOTE: We do not use a TransitionRefinement because we don't
                 // want the sibling input ports that come with output ports.
                 String moml = "<entity name=\""
-                    + StringUtilities.escapeForXML(pattern)
-                    + "\" class=\"ptolemy.domains.fsm.modal.Refinement\"/>";
-                
+                        + StringUtilities.escapeForXML(pattern)
+                        + "\" class=\"ptolemy.domains.fsm.modal.Refinement\"/>";
+
                 // The following is, regrettably, copied from ModalTransitionController.
                 MoMLChangeRequest change = new MoMLChangeRequest(this, _case,
                         moml) {
                     protected void _execute() throws Exception {
                         super._execute();
-                        
+
                         // Mirror the ports of the container in the refinement.
                         // Note that this is done here rather than as part of
                         // the MoML because we have set protected variables
                         // in the refinement to prevent it from trying to again
                         // mirror the changes in the container.
-                        Refinement entity = (Refinement)_case.getEntity(pattern);
-                        
+                        Refinement entity = (Refinement) _case
+                                .getEntity(pattern);
+
                         // Get the initial port configuration from the container.
                         Iterator ports = _case.portList().iterator();
 
@@ -341,16 +344,16 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
 
     /** Class implementing the Remove Case menu command. */
     public class RemoveCaseAction extends FigureAction {
-        
+
         /** Create a case action with label "Add Case". */
         public RemoveCaseAction() {
             super("Remove Case");
             putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_R));
         }
-        
+
         ///////////////////////////////////////////////////////////////////////////////
         ////                            public methods                             ////
-        
+
         /** Perform the action. */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
@@ -364,7 +367,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                 Iterator cases = refinements.iterator();
                 int i = 0;
                 while (cases.hasNext()) {
-                    String name = ((Nameable)cases.next()).getName();
+                    String name = ((Nameable) cases.next()).getName();
                     if (!name.equals("default")) {
                         caseNames[i] = name;
                         i++;
@@ -376,17 +379,17 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                 if (dialog.buttonPressed().equals("OK")) {
                     final String name = query.getStringValue("case");
                     String moml = "<deleteEntity name=\""
-                        + StringUtilities.escapeForXML(name)
-                        + "\"/>";
-                    
+                            + StringUtilities.escapeForXML(name) + "\"/>";
+
                     // The following is, regrettably, copied from ModalTransitionController.
-                    MoMLChangeRequest change = new MoMLChangeRequest(this, _case, moml)  {
-                        protected void _execute() throws Exception{
+                    MoMLChangeRequest change = new MoMLChangeRequest(this,
+                            _case, moml) {
+                        protected void _execute() throws Exception {
                             super._execute();
                             // Find the tabbed pane that matches the name and remove it.
                             int count = _tabbedPane.getTabCount();
                             for (int i = 0; i < count; i++) {
-                                if(name.equals(_tabbedPane.getTitleAt(i))) {
+                                if (name.equals(_tabbedPane.getTitleAt(i))) {
                                     _tabbedPane.remove(i);
                                     break;
                                 }
@@ -394,7 +397,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                         }
                     };
                     _case.requestChange(change);
-                }                    
+                }
             }
         }
     }

@@ -455,25 +455,25 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         //String style = (String) attributes.get("style");
 
         //if (style != null) {
-            //StringTokenizer t = new StringTokenizer(style, ";");
+        //StringTokenizer t = new StringTokenizer(style, ";");
 
-            //while (t.hasMoreTokens()) {
-                //String string = t.nextToken().trim();
-                //int index = string.indexOf(":");
+        //while (t.hasMoreTokens()) {
+        //String string = t.nextToken().trim();
+        //int index = string.indexOf(":");
 
-                // String name = string.substring(0, index);
-                // String value = string.substring(index + 1);
+        // String name = string.substring(0, index);
+        // String value = string.substring(index + 1);
 
-                /* FIXME: Figure out how to do this. See SVGParser.
-                 if (name.equals("fill")) {
-                 ps.fillPaint = lookupColor(value);
-                 } else if (name.equals("stroke")) {
-                 ps.strokePaint = lookupColor(value);
-                 } else if (name.equals("stroke-width")) {
-                 ps.setLineWidth(Float.parseFloat(value));
-                 }
-                 */
-            //}
+        /* FIXME: Figure out how to do this. See SVGParser.
+         if (name.equals("fill")) {
+         ps.fillPaint = lookupColor(value);
+         } else if (name.equals("stroke")) {
+         ps.strokePaint = lookupColor(value);
+         } else if (name.equals("stroke-width")) {
+         ps.setLineWidth(Float.parseFloat(value));
+         }
+         */
+        //}
         //}
     }
 
@@ -488,25 +488,25 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         //String style = (String) attributes.get("style");
 
         //if (style != null) {
-            //StringTokenizer t = new StringTokenizer(style, ";");
+        //StringTokenizer t = new StringTokenizer(style, ";");
 
-            //while (t.hasMoreTokens()) {
-                //String string = t.nextToken().trim();
-                //int index = string.indexOf(":");
+        //while (t.hasMoreTokens()) {
+        //String string = t.nextToken().trim();
+        //int index = string.indexOf(":");
 
-                // String name = string.substring(0, index);
-                // String value = string.substring(index + 1);
+        // String name = string.substring(0, index);
+        // String value = string.substring(index + 1);
 
-                /* FIXME: Figure out how to do this. See SVGParser.
-                 if (name.equals("fill")) {
-                 ps.fillPaint = lookupColor(value);
-                 } else if (name.equals("stroke")) {
-                 ps.strokePaint = lookupColor(value);
-                 } else if (name.equals("stroke-width")) {
-                 ps.setLineWidth(Float.parseFloat(value));
-                 }
-                 */
-            //}
+        /* FIXME: Figure out how to do this. See SVGParser.
+         if (name.equals("fill")) {
+         ps.fillPaint = lookupColor(value);
+         } else if (name.equals("stroke")) {
+         ps.strokePaint = lookupColor(value);
+         } else if (name.equals("stroke-width")) {
+         ps.setLineWidth(Float.parseFloat(value));
+         }
+         */
+        //}
         //}
     }
 

@@ -89,7 +89,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
 
         codeBuffer.append(";\n");
         code.append(processCode(codeBuffer.toString()));
-        
+
         return code.toString();
     }
 }

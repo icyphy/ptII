@@ -37,7 +37,7 @@ import ptolemy.moml.MoMLParser;
  Leak memory in MoMLParser by throwing an Exception.
  <p> Under Java 1.4, run this with:
  <pre>
-java -Xrunhprof:depth=15 -classpath "$PTII;." ptolemy.moml.test.MoMLParserLeak
+ java -Xrunhprof:depth=15 -classpath "$PTII;." ptolemy.moml.test.MoMLParserLeak
  </pre>
  and then look in java.hprof.txt.
 
@@ -48,20 +48,20 @@ java -Xrunhprof:depth=15 -classpath "$PTII;." ptolemy.moml.test.MoMLParserLeak
  @Pt.AcceptedRating Red (cxh)
  */
 public class MoMLParserLeak {
- 
+
     /** Attempt to leak code by parsing MoML that looks for a class
      *  that does not exist.
      */
     public static CompositeEntity leak() throws Exception {
         //MoMLParser parser = new MoMLParser();
-        CompositeEntity toplevel = (CompositeEntity)
-            parser.parse("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                    + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n"
-                    + "<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">\n"
-                    + "<entity name=\"myRamp\" class=\"ptolemy.actor.lib.Ramp\"/>\n"
-                    + "<entity name=\"notaclass\" class=\"Not.A.Class\"/>\n"
-                    + "</entity>\n");
+        CompositeEntity toplevel = (CompositeEntity) parser
+                .parse("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n"
+                        + "<entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">\n"
+                        + "<entity name=\"myRamp\" class=\"ptolemy.actor.lib.Ramp\"/>\n"
+                        + "<entity name=\"notaclass\" class=\"Not.A.Class\"/>\n"
+                        + "</entity>\n");
         return toplevel;
     }
 
@@ -69,8 +69,8 @@ public class MoMLParserLeak {
      *  that does not exist.
      *  @param args Ignored.
      *  @exception Exception if there is a problem parsing
-     */ 
-    public static void main(String []args) throws Exception {
+     */
+    public static void main(String[] args) throws Exception {
         parser = new MoMLParser();
         //CompositeEntity toptop = new CompositeEntity();
         //parser.setContext(toptop);

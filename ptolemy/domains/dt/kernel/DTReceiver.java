@@ -46,7 +46,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DTReceiver
 
@@ -90,7 +89,7 @@ public class DTReceiver extends SDFReceiver {
         _init();
 
         Time localTime = new Time(((Actor) container.getContainer())
-                        .getDirector());
+                .getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -106,7 +105,7 @@ public class DTReceiver extends SDFReceiver {
         _init();
 
         Time localTime = new Time(((Actor) container.getContainer())
-                        .getDirector());
+                .getDirector());
         initializeLocalTime(localTime);
     }
 
@@ -129,11 +128,11 @@ public class DTReceiver extends SDFReceiver {
 
         if (_from == null) {
             throw new InternalErrorException(
-                "internal DT error: Receiver with null source");
+                    "internal DT error: Receiver with null source");
         }
 
-        Parameter param = (Parameter) _fromPort.getAttribute(
-                "tokenProductionRate");
+        Parameter param = (Parameter) _fromPort
+                .getAttribute("tokenProductionRate");
 
         if (param == null) {
             _outrate = 1;
@@ -158,7 +157,7 @@ public class DTReceiver extends SDFReceiver {
         DTDirector localDirector;
 
         if ((containerActor instanceof TypedCompositeActor)
-                    && (!containerPort.isOutput())) {
+                && (!containerPort.isOutput())) {
             localDirector = (DTDirector) containerActor.getExecutiveDirector();
         } else {
             localDirector = (DTDirector) containerActor.getDirector();
@@ -200,12 +199,12 @@ public class DTReceiver extends SDFReceiver {
 
         Iterator portListIterator = listOfConnectedPorts.iterator();
 
-foundReceiver: 
-        while (portListIterator.hasNext()) {
+        foundReceiver: while (portListIterator.hasNext()) {
             connectedPort = (IOPort) portListIterator.next();
 
             if (connectedPort.isOutput() == true) {
-                Receiver[][] remoteReceivers = connectedPort.getRemoteReceivers();
+                Receiver[][] remoteReceivers = connectedPort
+                        .getRemoteReceivers();
 
                 for (int i = 0; i < connectedPort.getWidth(); i++) {
                     for (int j = 0; j < remoteReceivers[i].length; j++) {
@@ -215,7 +214,7 @@ foundReceiver:
 
                             if (_fromPort == null) {
                                 throw new InternalErrorException(
-                                    "DT error: Receiver with null source");
+                                        "DT error: Receiver with null source");
                             }
 
                             break foundReceiver;
@@ -229,7 +228,7 @@ foundReceiver:
 
                 if (_fromPort == null) {
                     throw new InternalErrorException(
-                        "internal DT error: Receiver with null source");
+                            "internal DT error: Receiver with null source");
                 }
 
                 break foundReceiver;
@@ -242,7 +241,7 @@ foundReceiver:
 
         if (_fromPort == null) {
             throw new InternalErrorException(
-                "internal DT error: Receiver with null source");
+                    "internal DT error: Receiver with null source");
         }
     }
 
@@ -344,7 +343,7 @@ foundReceiver:
     public void put(Token token) {
         if (_fromPort == null) {
             throw new InternalErrorException(
-                "internal DT error: Receiver with null source");
+                    "internal DT error: Receiver with null source");
         }
 
         super.put(token);

@@ -2764,12 +2764,12 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
                                  * To test, create a class an an instance, then
                                  * drop an SDFDirector into the class. This used
                                  * to result in this exception being thrown.
-                                throw new InternalErrorException("Expected "
-                                        + other.getFullName()
-                                        + " to contain an object named "
-                                        + relativeName + " of type "
-                                        + getClass().toString());
-                                        */
+                                 throw new InternalErrorException("Expected "
+                                 + other.getFullName()
+                                 + " to contain an object named "
+                                 + relativeName + " of type "
+                                 + getClass().toString());
+                                 */
                             }
                         }
 
@@ -2943,7 +2943,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  ports, relations, and entities as well.
      */
     protected class ContainedObjectsIterator implements Iterator {
-        
+
         /** Create an interator over all the contained objects. */
         public ContainedObjectsIterator() {
             super();

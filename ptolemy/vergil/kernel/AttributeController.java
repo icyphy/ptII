@@ -76,19 +76,16 @@ public class AttributeController extends IconController {
         if (access == FULL) {
             // Add to the context menu.
             _menuFactory.addMenuItemFactory(new RenameDialogFactory());
-            Action[] actions = {
-                    _getDocumentationAction,
+            Action[] actions = { _getDocumentationAction,
                     new CustomizeDocumentationAction(),
-                    new RemoveCustomDocumentationAction()
-            };
-            _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    actions, "Documentation"));
+                    new RemoveCustomDocumentationAction() };
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
+                    "Documentation"));
             // Note that we 
             // Note that we also have "Send to Back" in
             // vergil/basic/BasicGraphFrame.java
-            _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(new MoveAction(
-                            "Send to Back", MoveAction.TO_FIRST)));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    new MoveAction("Send to Back", MoveAction.TO_FIRST)));
 
             /* The following doesn't work, and seems confusing anyway.
              _menuFactory.addMenuItemFactory(
@@ -97,9 +94,8 @@ public class AttributeController extends IconController {
              */
             // Note that we also have "Bring to Front" in
             // vergil/basic/BasicGraphFrame.java
-            _menuFactory
-                    .addMenuItemFactory(new MenuActionFactory(new MoveAction(
-                            "Bring to Front", MoveAction.TO_LAST)));
+            _menuFactory.addMenuItemFactory(new MenuActionFactory(
+                    new MoveAction("Bring to Front", MoveAction.TO_LAST)));
 
             /* The following doesn't work, and seems confusing anyway.
              _menuFactory.addMenuItemFactory(

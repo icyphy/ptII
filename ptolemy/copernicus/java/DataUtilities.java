@@ -193,9 +193,10 @@ public class DataUtilities {
                         PtolemyUtilities.tokenType);
                 _body.getLocals().add(tokenLocal);
 
-                _units.insertBefore(Jimple.v().newAssignStmt(tokenLocal,
-                        Jimple.v().newInstanceFieldRef(thisLocal, portField.makeRef())),
-                        _insertPoint);
+                _units.insertBefore(Jimple.v().newAssignStmt(
+                        tokenLocal,
+                        Jimple.v().newInstanceFieldRef(thisLocal,
+                                portField.makeRef())), _insertPoint);
                 _units
                         .insertBefore(
                                 Jimple
@@ -250,9 +251,10 @@ public class DataUtilities {
                     _body.getLocals().add(containerLocal2);
                     _units.insertBefore(Jimple.v().newAssignStmt(
                             containerLocal2,
-                            Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                    PtolemyUtilities.getContainerMethod.makeRef())),
-                            _insertPoint);
+                            Jimple.v().newVirtualInvokeExpr(
+                                    containerLocal,
+                                    PtolemyUtilities.getContainerMethod
+                                            .makeRef())), _insertPoint);
                     container = (NamedObj) container.getContainer();
                     containerLocal = containerLocal2;
                 }
@@ -269,9 +271,10 @@ public class DataUtilities {
                         _insertPoint);
                 _units.insertBefore(Jimple.v().newAssignStmt(
                         tokenLocal,
-                        Jimple.v().newVirtualInvokeExpr(attributeLocal,
-                                PtolemyUtilities.variableGetTokenMethod.makeRef())),
-                        _insertPoint);
+                        Jimple.v().newVirtualInvokeExpr(
+                                attributeLocal,
+                                PtolemyUtilities.variableGetTokenMethod
+                                        .makeRef())), _insertPoint);
 
                 return tokenLocal;
             } else {

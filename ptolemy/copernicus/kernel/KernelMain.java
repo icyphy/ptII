@@ -186,8 +186,7 @@ public abstract class KernelMain {
         //         // As of soot 2.0.1, this is all that is required.
         //         //        soot.Main.main(args);
         if (!soot.options.Options.v().parse(args))
-            throw new KernelRuntimeException(
-                    "Option parse error");
+            throw new KernelRuntimeException("Option parse error");
         PackManager.v().getPack("wjtp").apply();
     }
 

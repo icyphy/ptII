@@ -49,7 +49,7 @@ import ptolemy.vergil.toolbox.FigureAction;
  @Pt.AcceptedRating Red (johnr)
  */
 public class CustomizeDocumentationAction extends FigureAction {
-    
+
     /** Construct an instance of this action. */
     public CustomizeDocumentationAction() {
         super("Customize Documentation");
@@ -66,7 +66,7 @@ public class CustomizeDocumentationAction extends FigureAction {
         super.actionPerformed(e);
 
         final NamedObj target = getTarget();
-        
+
         // If the object does not contain an attribute of class
         // DocAttribute, then create one.  Then open a dialog to edit
         // the parameters of the first such encountered attribute.
@@ -74,22 +74,24 @@ public class CustomizeDocumentationAction extends FigureAction {
             List docAttributeList = target.attributeList(DocAttribute.class);
             if (docAttributeList.size() == 0) {
                 // Create a doc attribute, then edit its parameters.
-                String moml = "<property name=\""
-                        + "DocAttribute"
+                String moml = "<property name=\"" + "DocAttribute"
                         + "\" class=\"ptolemy.vergil.basic.DocAttribute\"/>";
-                MoMLChangeRequest request = new MoMLChangeRequest(this, target, moml) {
+                MoMLChangeRequest request = new MoMLChangeRequest(this, target,
+                        moml) {
                     protected void _execute() throws Exception {
                         super._execute();
-                        List docAttributes = target.attributeList(DocAttribute.class);
+                        List docAttributes = target
+                                .attributeList(DocAttribute.class);
                         // There shouldn't be more than one of these, but if there are,
                         // the new one is the last one.
-                        DocAttribute attribute = (DocAttribute)docAttributes.get(docAttributes.size() - 1);
+                        DocAttribute attribute = (DocAttribute) docAttributes
+                                .get(docAttributes.size() - 1);
                         _editDocAttribute(getFrame(), attribute, target);
                     }
                 };
                 target.requestChange(request);
             } else {
-                DocAttribute attribute = (DocAttribute)docAttributeList.get(0);
+                DocAttribute attribute = (DocAttribute) docAttributeList.get(0);
                 // In case parameters or ports have been added since the
                 // DocAttribute was constructed, refresh it.
                 attribute.refreshParametersAndPorts();
@@ -106,8 +108,9 @@ public class CustomizeDocumentationAction extends FigureAction {
      *  @param attribute The attribute to edit.
      *  @param taget The target whose documentation is being edited.
      */
-    private void _editDocAttribute(Frame owner, DocAttribute attribute, NamedObj target) {
-        new EditParametersDialog(owner, attribute,
-                "Edit Documentation for " + target.getName());
+    private void _editDocAttribute(Frame owner, DocAttribute attribute,
+            NamedObj target) {
+        new EditParametersDialog(owner, attribute, "Edit Documentation for "
+                + target.getName());
     }
 }

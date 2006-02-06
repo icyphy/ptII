@@ -76,7 +76,7 @@ public class TrigFunction extends CCodeGeneratorHelper {
                         .equals("asin")) ? "asinBlock" : ((function
                         .equals("acos")) ? "acosBlock" : "atanBlock"))));
         code.append(_generateBlockCode(codeBlockName));
-        
+
         return code.toString();
     }
 

@@ -210,7 +210,8 @@ public class ExceptionEliminator extends SceneTransformer implements
                                             .v()
                                             .newSpecialInvokeExpr(
                                                     (Local) expr.getBase(),
-                                                    PtolemyUtilities.runtimeExceptionConstructor.makeRef(),
+                                                    PtolemyUtilities.runtimeExceptionConstructor
+                                                            .makeRef(),
                                                     Collections.EMPTY_LIST));
                         } else {
                             box
@@ -218,7 +219,8 @@ public class ExceptionEliminator extends SceneTransformer implements
                                             .v()
                                             .newSpecialInvokeExpr(
                                                     (Local) expr.getBase(),
-                                                    PtolemyUtilities.runtimeExceptionStringConstructor.makeRef(),
+                                                    PtolemyUtilities.runtimeExceptionStringConstructor
+                                                            .makeRef(),
                                                     foundArg));
                         }
                     }

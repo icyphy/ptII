@@ -95,7 +95,7 @@ import diva.graph.JGraph;
  @Pt.AcceptedRating Red (cxh)
  */
 public class DocViewer extends HTMLViewer {
-    
+
     /** Construct a documentation viewer for the specified target.
      *  @param target The object to get documentation for.
      *  @param configuration The configuration in charge of this viewer.
@@ -145,7 +145,7 @@ public class DocViewer extends HTMLViewer {
     public Configuration getConfiguration() {
         return _configuration;
     }
-    
+
     /** Override the base class to react to links of the form
      *  #parentClass.
      *  @param event The hyperlink event.
@@ -156,12 +156,15 @@ public class DocViewer extends HTMLViewer {
             // This should only occur if DocManager has already checked that the following will work.
             // Nonetheless, we look for exceptions and report them.
             try {
-                NamedObj parent = (NamedObj)((Instantiable)_target).getParent();
+                NamedObj parent = (NamedObj) ((Instantiable) _target)
+                        .getParent();
                 List docAttributes = parent.attributeList(DocAttribute.class);
-                DocAttribute attribute = (DocAttribute)docAttributes.get(docAttributes.size() - 1);
+                DocAttribute attribute = (DocAttribute) docAttributes
+                        .get(docAttributes.size() - 1);
                 Effigy effigy = getEffigy();
-                DocEffigy newEffigy = new DocEffigy((CompositeEntity)effigy.getContainer(),
-                        effigy.getContainer().uniqueName("parentClass"));
+                DocEffigy newEffigy = new DocEffigy((CompositeEntity) effigy
+                        .getContainer(), effigy.getContainer().uniqueName(
+                        "parentClass"));
                 newEffigy.setDocAttribute(attribute);
                 DocTableau tableau = new DocTableau(newEffigy, "docTableau");
                 tableau.show();
@@ -181,7 +184,7 @@ public class DocViewer extends HTMLViewer {
      */
     protected void _addMainPane() {
     }
-    
+
     /** Override the base class to do nothing.
      *  @param width The width.
      *  @param height The width.
@@ -192,7 +195,6 @@ public class DocViewer extends HTMLViewer {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     /** Adjust the icon display for the specified target.
      * @param sample The instance whose icon is displayed.
      * @param container The container of the sample instance.
@@ -201,60 +203,61 @@ public class DocViewer extends HTMLViewer {
      * @throws IllegalActionException
      * @throws NameDuplicationException
      */
-    private void _adjustIconDisplay(
-            final NamedObj sample,
-            final CompositeEntity container,
-            final GraphPane graphPane,
-            final JGraph jgraph)
-            throws IllegalActionException, NameDuplicationException {
+    private void _adjustIconDisplay(final NamedObj sample,
+            final CompositeEntity container, final GraphPane graphPane,
+            final JGraph jgraph) throws IllegalActionException,
+            NameDuplicationException {
         // Now make appropriate modifications.
         // First, if the object has ports, add parameters to the ports
         // to display them.
         if (sample instanceof Entity) {
-            Iterator ports = ((Entity)sample).portList().iterator();
+            Iterator ports = ((Entity) sample).portList().iterator();
             while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                SingletonParameter show = new SingletonParameter(port, "_showName");
+                Port port = (Port) ports.next();
+                SingletonParameter show = new SingletonParameter(port,
+                        "_showName");
                 show.setExpression("true");
             }
         }
         // Next, set options to display parameter values.
         StringParameter show = new StringParameter(container, "_showParameters");
         show.setExpression("All");
-        
+
         // Defer this to get it to happen after rendering.
         Runnable defer = new Runnable() {
             public void run() {
-                Rectangle2D bounds = graphPane.getForegroundLayer().getLayerBounds();
+                Rectangle2D bounds = graphPane.getForegroundLayer()
+                        .getLayerBounds();
                 if (!bounds.isEmpty()) {
                     Dimension size = jgraph.getSize();
-                    Rectangle2D viewSize = new Rectangle2D.Double(
-                            _PADDING, _PADDING,
-                            size.getWidth() - 2 * _PADDING, size.getHeight() - 2 * _PADDING);
-                    AffineTransform newTransform = CanvasUtilities.computeFitTransform(
-                            bounds, viewSize);
+                    Rectangle2D viewSize = new Rectangle2D.Double(_PADDING,
+                            _PADDING, size.getWidth() - 2 * _PADDING, size
+                                    .getHeight()
+                                    - 2 * _PADDING);
+                    AffineTransform newTransform = CanvasUtilities
+                            .computeFitTransform(bounds, viewSize);
                     JCanvas canvas = graphPane.getCanvas();
                     canvas.getCanvasPane().setTransform(newTransform);
-                }                        
+                }
             }
         };
         SwingUtilities.invokeLater(defer);
     }
-    
+
     /** Return HTML that colorizes the rating text.
      *  @param rating The rating text, such as "Red (mrptolemy)"
      *  @return HTML, such as "<td bgcolor="#FF0000">Red (mrptolemy)</td>"
      */
     private String _colorizeRating(String rating) {
-        String color="#FFFFFF";
+        String color = "#FFFFFF";
         if (rating.startsWith("Red")) {
-            color="#FF0000";
+            color = "#FF0000";
         } else if (rating.startsWith("Yellow")) {
-            color="#AAAA00";
+            color = "#AAAA00";
         } else if (rating.startsWith("Green")) {
-            color="#00FF00";
+            color = "#00FF00";
         } else if (rating.startsWith("Blue")) {
-            color="#0000FF";
+            color = "#0000FF";
         }
         //return "<td bgcolor=\"" + color + "\">" + rating + "</td>";
         return "<td><font color=\"" + color + "\">" + rating + "</font></td>";
@@ -275,7 +278,7 @@ public class DocViewer extends HTMLViewer {
         boolean foundOne = false;
         Iterator attributes = target.attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
-            Settable parameter = (Settable)attributes.next();
+            Settable parameter = (Settable) attributes.next();
             if (parameter instanceof PortParameter) {
                 // Skip this one.
                 continue;
@@ -286,7 +289,8 @@ public class DocViewer extends HTMLViewer {
                 // See if the next tier has documentation.
                 DocManager nextTier = manager.getNextTier();
                 if (nextTier != null) {
-                    String nextDoc = nextTier.getPropertyDoc(parameter.getName());
+                    String nextDoc = nextTier.getPropertyDoc(parameter
+                            .getName());
                     if (nextDoc != null) {
                         doc = nextDoc;
                     }
@@ -330,9 +334,9 @@ public class DocViewer extends HTMLViewer {
         StringBuffer outputPorts = new StringBuffer();
         StringBuffer inputOutputPorts = new StringBuffer();
         StringBuffer neitherPorts = new StringBuffer();
-        Iterator ports = ((Entity)target).portList().iterator();
+        Iterator ports = ((Entity) target).portList().iterator();
         while (ports.hasNext()) {
-            Port port = (Port)ports.next();
+            Port port = (Port) ports.next();
             if (port instanceof ParameterPort) {
                 // Skip this one.
                 continue;
@@ -351,7 +355,7 @@ public class DocViewer extends HTMLViewer {
                 }
             }
             if (port instanceof IOPort) {
-                if (((IOPort)port).isInput() && !((IOPort)port).isOutput()) {
+                if (((IOPort) port).isInput() && !((IOPort) port).isOutput()) {
                     inputPorts.append(_tr);
                     inputPorts.append(_td);
                     inputPorts.append(portName);
@@ -362,7 +366,8 @@ public class DocViewer extends HTMLViewer {
                     inputPorts.append(_tre);
                     foundInput = true;
                     foundOne = true;
-                } else if (((IOPort)port).isOutput() && !((IOPort)port).isInput()) {
+                } else if (((IOPort) port).isOutput()
+                        && !((IOPort) port).isInput()) {
                     outputPorts.append(_tr);
                     outputPorts.append(_td);
                     outputPorts.append(portName);
@@ -371,9 +376,10 @@ public class DocViewer extends HTMLViewer {
                     outputPorts.append(doc);
                     outputPorts.append(_tde);
                     outputPorts.append(_tre);
-                    foundOutput = true;                        
+                    foundOutput = true;
                     foundOne = true;
-                } else if (((IOPort)port).isOutput() && ((IOPort)port).isInput()) {
+                } else if (((IOPort) port).isOutput()
+                        && ((IOPort) port).isInput()) {
                     inputOutputPorts.append(_tr);
                     inputOutputPorts.append(_td);
                     inputOutputPorts.append(portName);
@@ -382,7 +388,7 @@ public class DocViewer extends HTMLViewer {
                     inputOutputPorts.append(doc);
                     inputOutputPorts.append(_tde);
                     inputOutputPorts.append(_tre);
-                    foundInputOutput = true;                    
+                    foundInputOutput = true;
                     foundOne = true;
                 } else {
                     neitherPorts.append(_tr);
@@ -393,7 +399,7 @@ public class DocViewer extends HTMLViewer {
                     neitherPorts.append(doc);
                     neitherPorts.append(_tde);
                     neitherPorts.append(_tre);
-                    foundNeither = true;                    
+                    foundNeither = true;
                     foundOne = true;
                 }
             } else {
@@ -405,7 +411,7 @@ public class DocViewer extends HTMLViewer {
                 neitherPorts.append(doc);
                 neitherPorts.append(_tde);
                 neitherPorts.append(_tre);
-                foundNeither = true;                    
+                foundNeither = true;
                 foundOne = true;
             }
         }
@@ -461,16 +467,18 @@ public class DocViewer extends HTMLViewer {
         parameters.append(_tde);
         parameters.append(_tre);
         boolean foundOne = false;
-        Iterator attributes = target.attributeList(PortParameter.class).iterator();
+        Iterator attributes = target.attributeList(PortParameter.class)
+                .iterator();
         while (attributes.hasNext()) {
-            Settable parameter = (Settable)attributes.next();
+            Settable parameter = (Settable) attributes.next();
             String doc = manager.getPropertyDoc(parameter.getName());
             if (doc == null) {
                 doc = "No description.";
                 // See if the next tier has documentation.
                 DocManager nextTier = manager.getNextTier();
                 if (nextTier != null) {
-                    String nextDoc = nextTier.getPropertyDoc(parameter.getName());
+                    String nextDoc = nextTier.getPropertyDoc(parameter
+                            .getName());
                     if (nextDoc != null) {
                         doc = nextDoc;
                     }
@@ -494,7 +502,7 @@ public class DocViewer extends HTMLViewer {
             return null;
         }
     }
-    
+
     /** Append to the specified buffer any locally defined base classes
      *  that are needed to define the specified target.
      *  @param target The target whose parent may need to be included.
@@ -502,13 +510,15 @@ public class DocViewer extends HTMLViewer {
      */
     private void _includeClassDefinitions(NamedObj target, StringBuffer buffer) {
         if (target instanceof Instantiable) {
-            NamedObj parent = (NamedObj)((Instantiable)target).getParent();
+            NamedObj parent = (NamedObj) ((Instantiable) target).getParent();
             if (parent != null && target.toplevel().deepContains(parent)) {
                 // Parent is locally defined. Include its definition.
                 // First recursively take care of the parent.
                 if (parent instanceof Instantiable) {
-                    NamedObj parentsParent = (NamedObj)((Instantiable)parent).getParent();
-                    if (parentsParent != null && parent.toplevel().deepContains(parentsParent)) {
+                    NamedObj parentsParent = (NamedObj) ((Instantiable) parent)
+                            .getParent();
+                    if (parentsParent != null
+                            && parent.toplevel().deepContains(parentsParent)) {
                         _includeClassDefinitions(parent, buffer);
                     }
                 }
@@ -518,7 +528,8 @@ public class DocViewer extends HTMLViewer {
                 buffer.append(parent.getElementName());
                 buffer.append(" name=\"");
                 buffer.append(parent.getName());
-                buffer.append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"true\"/></");
+                buffer
+                        .append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"true\"/></");
                 buffer.append(parent.getElementName());
                 buffer.append(">");
             }
@@ -536,15 +547,11 @@ public class DocViewer extends HTMLViewer {
      *  @param url The URL from which to read the doc file, or null to
      *   infer it from the target or className.
      */
-    private void _init(
-            final NamedObj target,
-            Configuration configuration,
-            String className,
-            URL url)
-            throws ClassNotFoundException {
+    private void _init(final NamedObj target, Configuration configuration,
+            String className, URL url) throws ClassNotFoundException {
         _configuration = configuration;
         _target = target;
-        
+
         // Start by creating a doc manager.
         final DocManager manager;
         if (target != null) {
@@ -554,7 +561,8 @@ public class DocViewer extends HTMLViewer {
         } else if (url != null) {
             manager = new DocManager(url);
         } else {
-            throw new InternalErrorException("Need to specify one of target, className, or url!");
+            throw new InternalErrorException(
+                    "Need to specify one of target, className, or url!");
         }
         className = manager.getClassName();
         final String rootName;
@@ -584,43 +592,49 @@ public class DocViewer extends HTMLViewer {
         Dimension horizontalSpace = new Dimension(_SPACING, 0);
         Dimension verticalSpace = new Dimension(0, _SPACING);
         contentPane.add(Box.createRigidArea(verticalSpace));
-        
+
         // Panel for title.
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.X_AXIS));
         contentPane.add(titlePanel);
-        
+
         // Create a title area.
         String title = className;
         // The instance has its own documentation.
-        if (target instanceof InstantiableNamedObj 
-                && ((InstantiableNamedObj)target).isClassDefinition()) {
+        if (target instanceof InstantiableNamedObj
+                && ((InstantiableNamedObj) target).isClassDefinition()) {
             // FIXME: getFullName() isn't right here.  How to get the full class name?
-            title = target.getName() + "&nbsp; &nbsp; &nbsp; (" + target.getFullName() + ")";
+            title = target.getName() + "&nbsp; &nbsp; &nbsp; ("
+                    + target.getFullName() + ")";
         } else {
             if (manager.isInstanceDoc()) {
-                title = target.getName() + "&nbsp; &nbsp; &nbsp; (Instance of " + className + ")";
+                title = target.getName() + "&nbsp; &nbsp; &nbsp; (Instance of "
+                        + className + ")";
             } else {
-                title = rootName + "&nbsp; &nbsp; &nbsp; (" + className + ")";                
+                title = rootName + "&nbsp; &nbsp; &nbsp; (" + className + ")";
             }
         }
         JEditorPane titlePane = new JEditorPane();
         titlePane.setContentType("text/html");
         titlePane.setEditable(false);
-        titlePane.setText(_HTML_HEADER + "<H2>&nbsp; " + title + "</H2>" + _HTML_TAIL);
+        titlePane.setText(_HTML_HEADER + "<H2>&nbsp; " + title + "</H2>"
+                + _HTML_TAIL);
         // Set the view to the start of the text.
         titlePane.getCaret().setDot(0);
-        Dimension titleSize = new Dimension(_DESCRIPTION_WIDTH + _ICON_WINDOW_WIDTH + _SPACING, 40);
+        Dimension titleSize = new Dimension(_DESCRIPTION_WIDTH
+                + _ICON_WINDOW_WIDTH + _SPACING, 40);
         titlePane.setPreferredSize(titleSize);
         titlePane.setSize(titleSize);
-        titlePane.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        titlePane.setBorder(BorderFactory
+                .createEtchedBorder(EtchedBorder.RAISED));
         titlePanel.add(Box.createRigidArea(horizontalSpace));
         titlePanel.add(titlePane);
         titlePanel.add(Box.createRigidArea(horizontalSpace));
-        
+
         // Panel for icon and description.
         JPanel descriptionPanel = new JPanel();
-        descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.X_AXIS));
+        descriptionPanel.setLayout(new BoxLayout(descriptionPanel,
+                BoxLayout.X_AXIS));
         contentPane.add(Box.createRigidArea(verticalSpace));
         contentPane.add(descriptionPanel);
         descriptionPanel.add(Box.createRigidArea(horizontalSpace));
@@ -640,19 +654,26 @@ public class DocViewer extends HTMLViewer {
                     super.changeFailed(change, exception);
                     return;
                 }
-                LabelFigure newFigure = new LabelFigure("No icon available", _font);
+                LabelFigure newFigure = new LabelFigure("No icon available",
+                        _font);
                 _graphPane.getForegroundLayer().add(newFigure);
                 CanvasUtilities.translateTo(newFigure, 100.0, 100.0);
-                controller.dispatch(new GraphViewEvent(this, GraphViewEvent.NODE_DRAWN, newFigure));
+                controller.dispatch(new GraphViewEvent(this,
+                        GraphViewEvent.NODE_DRAWN, newFigure));
             }
         };
         _graphPane = new GraphPane(controller, graphModel);
         _jgraph = new JGraph(_graphPane);
-        _jgraph.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        _jgraph
+                .setBorder(BorderFactory
+                        .createEtchedBorder(EtchedBorder.RAISED));
         // The icon window is fixed size.
-        _jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
-        _jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
-        _jgraph.setPreferredSize(new Dimension(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT));
+        _jgraph.setMinimumSize(new Dimension(_ICON_WINDOW_WIDTH,
+                _ICON_WINDOW_HEIGHT));
+        _jgraph.setMaximumSize(new Dimension(_ICON_WINDOW_WIDTH,
+                _ICON_WINDOW_HEIGHT));
+        _jgraph.setPreferredSize(new Dimension(_ICON_WINDOW_WIDTH,
+                _ICON_WINDOW_HEIGHT));
         _jgraph.setSize(_ICON_WINDOW_WIDTH, _ICON_WINDOW_HEIGHT);
         _jgraph.setBackground(BasicGraphFrame.BACKGROUND_COLOR);
         descriptionPanel.add(_jgraph);
@@ -663,11 +684,13 @@ public class DocViewer extends HTMLViewer {
         descriptionPane.setContentType("text/html");
         descriptionPane.setEditable(false);
         JScrollPane scroller = new JScrollPane(descriptionPane);
-        scroller.setPreferredSize(new Dimension(_DESCRIPTION_WIDTH, _ICON_WINDOW_HEIGHT));
-        scroller.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        scroller.setPreferredSize(new Dimension(_DESCRIPTION_WIDTH,
+                _ICON_WINDOW_HEIGHT));
+        scroller.setBorder(BorderFactory
+                .createEtchedBorder(EtchedBorder.RAISED));
         descriptionPanel.add(scroller);
         descriptionPanel.add(Box.createRigidArea(horizontalSpace));
-        
+
         // Add the main content pane now.
         JPanel middle = new JPanel();
         middle.setLayout(new BoxLayout(middle, BoxLayout.X_AXIS));
@@ -675,8 +698,10 @@ public class DocViewer extends HTMLViewer {
         contentPane.add(middle);
         _scroller = new JScrollPane(pane);
         // Default, which can be overridden by calling setSize().
-        _scroller.setPreferredSize(new Dimension(_MAIN_WINDOW_WIDTH, _MAIN_WINDOW_HEIGHT));
-        _scroller.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        _scroller.setPreferredSize(new Dimension(_MAIN_WINDOW_WIDTH,
+                _MAIN_WINDOW_HEIGHT));
+        _scroller.setBorder(BorderFactory
+                .createEtchedBorder(EtchedBorder.RAISED));
         middle.add(Box.createRigidArea(horizontalSpace));
         middle.add(_scroller);
         middle.add(Box.createRigidArea(horizontalSpace));
@@ -694,10 +719,12 @@ public class DocViewer extends HTMLViewer {
         authorPane.setContentType("text/html");
         authorPane.setEditable(false);
         JScrollPane authorScroller = new JScrollPane(authorPane);
-        Dimension authorSize = new Dimension(_AUTHOR_WINDOW_WIDTH, _BOTTOM_HEIGHT);
+        Dimension authorSize = new Dimension(_AUTHOR_WINDOW_WIDTH,
+                _BOTTOM_HEIGHT);
         authorScroller.setPreferredSize(authorSize);
         authorScroller.setSize(authorSize);
-        authorScroller.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        authorScroller.setBorder(BorderFactory
+                .createEtchedBorder(EtchedBorder.RAISED));
         bottom.add(authorScroller);
         bottom.add(Box.createRigidArea(horizontalSpace));
         // Pane for "see also" information.
@@ -709,13 +736,14 @@ public class DocViewer extends HTMLViewer {
         Dimension seeAlsoSize = new Dimension(_SEE_ALSO_WIDTH, _BOTTOM_HEIGHT);
         seeAlsoScroller.setPreferredSize(seeAlsoSize);
         seeAlsoScroller.setSize(seeAlsoSize);
-        seeAlsoScroller.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
+        seeAlsoScroller.setBorder(BorderFactory
+                .createEtchedBorder(EtchedBorder.RAISED));
         bottom.add(seeAlsoScroller);
         bottom.add(Box.createRigidArea(horizontalSpace));
 
         //////////////////////////////////////////////////////
         // Create the content.
-        
+
         // Now generate the body of the documentation.
         StringBuffer html = new StringBuffer();
         html.append(_HTML_HEADER);
@@ -725,7 +753,7 @@ public class DocViewer extends HTMLViewer {
         descriptionPane.setText(html.toString());
         // Set the view to the start of the text.
         descriptionPane.getCaret().setDot(0);
-        
+
         // Create an instance to display.
         // Note that this will display something that looks just
         // like the object we are asking about, including any customizations
@@ -746,7 +774,8 @@ public class DocViewer extends HTMLViewer {
             buffer.append(target.getElementName());
             buffer.append(" name=\"");
             buffer.append(target.getName());
-            buffer.append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"false\"/></");
+            buffer
+                    .append("\"><property name=\"_hide\" class=\"ptolemy.data.expr.ExpertParameter\" value=\"false\"/></");
             buffer.append(target.getElementName());
             buffer.append(">");
 
@@ -759,20 +788,26 @@ public class DocViewer extends HTMLViewer {
             // it is, and whether it has an appropriate constructor.
             if (manager.isTargetInstantiableAttribute()) {
                 // To make it visible, need to include a location attribute.
-                moml = "<property name=\"" + rootName + "\" class=\"" + className + "\">"
+                moml = "<property name=\""
+                        + rootName
+                        + "\" class=\""
+                        + className
+                        + "\">"
                         + "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{50, 50}\"/>"
                         + "</property>";
             } else if (manager.isTargetInstantiableEntity()) {
-                moml = "<entity name=\"" + rootName + "\" class=\"" + className + "\"/>";
+                moml = "<entity name=\"" + rootName + "\" class=\"" + className
+                        + "\"/>";
             } else if (manager.isTargetInstantiablePort()) {
                 // NOTE: The port has to be an input or an output or it can't be rendered.
                 // Since we aren't dealing with a specific instance, we make it an input.
-                moml = "<port name=\"" + rootName + "\" class=\"" + className + "\">" +
-                        "<property name=\"input\"/></port>";
+                moml = "<port name=\"" + rootName + "\" class=\"" + className
+                        + "\">" + "<property name=\"input\"/></port>";
             }
         }
         if (moml != null) {
-            MoMLChangeRequest request = new MoMLChangeRequest(this, _iconContainer, moml) {
+            MoMLChangeRequest request = new MoMLChangeRequest(this,
+                    _iconContainer, moml) {
                 protected void _execute() throws Exception {
                     super._execute();
                     NamedObj sample = null;
@@ -789,7 +824,8 @@ public class DocViewer extends HTMLViewer {
                     }
                     if (sample != null) {
                         _populatePortsAndParametersTable(sample, manager);
-                        _adjustIconDisplay(sample, _iconContainer, _graphPane, _jgraph);
+                        _adjustIconDisplay(sample, _iconContainer, _graphPane,
+                                _jgraph);
                     }
                 }
             };
@@ -874,7 +910,8 @@ public class DocViewer extends HTMLViewer {
      *  @param target The target object whose ports and parameters will be described.
      *  @param manager The doc manager.
      */
-    private void _populatePortsAndParametersTable(NamedObj target, DocManager manager) {
+    private void _populatePortsAndParametersTable(NamedObj target,
+            DocManager manager) {
         // Create tables to contain the information about parameters and ports.
         // Start with parameters.
         boolean foundOne = false;
@@ -885,7 +922,8 @@ public class DocViewer extends HTMLViewer {
             table.append(parameterTableEntries);
         }
         // Next do the port-parameters.
-        String portParameterTableEntries = _getPortParameterEntries(target, manager);
+        String portParameterTableEntries = _getPortParameterEntries(target,
+                manager);
         if (portParameterTableEntries != null) {
             foundOne = true;
             table.append(portParameterTableEntries);
@@ -915,47 +953,43 @@ public class DocViewer extends HTMLViewer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Author window width. */
     private static int _AUTHOR_WINDOW_WIDTH = 350;
 
     /** The configuration specified in the constructor. */
     private Configuration _configuration;
-    
+
     /** Bottom window height. */
     private static int _BOTTOM_HEIGHT = 150;
 
     /** Width of the description pane. */
     private static int _DESCRIPTION_WIDTH = 500;
-    
+
     /** The font to use for No icon available message. */
     private Font _font = new Font("SansSerif", Font.PLAIN, 14);
-    
+
     /** The graph pane. */
     private GraphPane _graphPane;
-    
+
     /** HTML Header information. */
-    private static String _HTML_HEADER
-            = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
+    private static String _HTML_HEADER = "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
             + "\"http://www.w3.org/TR/html4/loose.dtd\">"
             + "\n<html>\n<head>\n"
             + "<title>Ptolemy II Documentation</title>"
             + "<STYLE TYPE=\"text/css\">\n"
             + "<!--\n"
             + "h1, h2, h3, td, tr, body, p {font-family: Arial, Helvetica, sans-serif;}\n"
-            + "-->\n"
-            + "</STYLE>"
-            + "</head><body>";
+            + "-->\n" + "</STYLE>" + "</head><body>";
 
-    private static String _HTML_TAIL
-            = "</body></html>";
+    private static String _HTML_TAIL = "</body></html>";
 
     /** The composite entity containing the icon. */
     private CompositeEntity _iconContainer;
-    
+
     /** Icon window width. */
     private static int _ICON_WINDOW_HEIGHT = 200;
-    
+
     /** Icon window width. */
     private static int _ICON_WINDOW_WIDTH = 200;
 
@@ -967,7 +1001,7 @@ public class DocViewer extends HTMLViewer {
 
     /** Main window width. */
     private static int _MAIN_WINDOW_WIDTH = 700;
-    
+
     /** Padding in icon window. */
     private static int _PADDING = 10;
 
@@ -976,17 +1010,24 @@ public class DocViewer extends HTMLViewer {
 
     /** Spacing between subwindows. */
     private static int _SPACING = 5;
-    
+
     /** The target given in the constructor, if any. */
     private NamedObj _target;
-    
+
     private static String _tr = "<tr valign=top>\n";
+
     private static String _tre = "</tr>\n";
+
     private static String _td = "<td>";
+
     private static String _td20 = "<td width=20%>";
+
     private static String _tdColSpan = "<td colspan=2>";
+
     private static String _tde = "</td>";
+
     private static String _tableOpening = "<table cellspacing=2 cellpadding=2>\n";
+
     private static String _tableClosing = "</table>";
 
 }
