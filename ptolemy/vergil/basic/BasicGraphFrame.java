@@ -1911,8 +1911,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     ///////////////////////////////////////////////////////////////////
     //// EditPreferencesAction
 
-    /** Action to move the current selection to the back (which corresponds
-     *  to first in the ordered list).
+    /** Action to edit the preferences.
      */
     private class EditPreferencesAction extends AbstractAction {
         public EditPreferencesAction() {

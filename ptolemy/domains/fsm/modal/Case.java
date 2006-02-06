@@ -37,6 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Case
@@ -91,6 +92,18 @@ public class Case extends ModalModel {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
+    /** Override the base class to ensure that the _default member
+     *  points to the default refinement.
+     *  @return A new Case.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Case newObject = (Case)super.clone();
+        newObject._default = (Refinement)newObject.getEntity("default");
+        return newObject;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -122,6 +135,12 @@ public class Case extends ModalModel {
                 // Create a self loop connection.
                 _state.incomingPort.link(transition);
                 _state.outgoingPort.link(transition);
+            }
+            // Ensure that the default refinement remains the last one.
+            // Note however that this is called on the default itself,
+            // at which time the local member has not been set.
+            if (_default != null) {
+                _default.moveToLast();
             }
         }
     }
@@ -169,6 +188,6 @@ public class Case extends ModalModel {
         // Create the default refinement.
         // NOTE: We do not use a TransitionRefinement because we don't
         // want the sibling input ports that come with output ports.
-        Refinement refinement = new Refinement(this, "default");
+        _default = new Refinement(this, "default");
     }
 }

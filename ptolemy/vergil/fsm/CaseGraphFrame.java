@@ -31,6 +31,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -41,16 +42,17 @@ import javax.swing.event.ChangeListener;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.fsm.modal.Case;
-import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.domains.fsm.modal.Refinement;
 import ptolemy.domains.fsm.modal.RefinementPort;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -108,6 +110,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         
         _case = entity;
         _addCaseAction = new AddCaseAction();
+        _removeCaseAction = new RemoveCaseAction();
 
         // Override the default help file.
         // FIXME
@@ -127,6 +130,10 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
             if (selected instanceof JGraph) {
                 setJGraph((JGraph)selected);
             }
+            if (_graphPanner != null) {
+                _graphPanner.setCanvas((JGraph)selected);
+                _graphPanner.repaint();
+            }
         }
     }
     
@@ -143,6 +150,8 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         _menubar.add(_caseMenu);
         GUIUtilities.addHotKey(_getRightComponent(), _addCaseAction);
         GUIUtilities.addMenuItem(_caseMenu, _addCaseAction);
+        GUIUtilities.addHotKey(_getRightComponent(), _removeCaseAction);
+        GUIUtilities.addMenuItem(_caseMenu, _removeCaseAction);
     }
     
     /** Create the component that goes to the right of the library.
@@ -156,38 +165,20 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         if (!(entity instanceof Case)) {
             return super._createRightComponent(entity);
         }
-        // FIXME: Is it OK to assign to a local variable?
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addChangeListener(this);
+        _tabbedPane = new JTabbedPane();
+        _tabbedPane.addChangeListener(this);
         Iterator cases = ((Case)entity).entityList(Refinement.class).iterator();
+        boolean first = true;
         while (cases.hasNext()) {
             Refinement refinement = (Refinement)cases.next();
-            GraphPane pane = _createGraphPane(refinement);
-            pane.getForegroundLayer().setPickHalo(2);
-            pane.getForegroundEventLayer().setConsuming(false);
-            pane.getForegroundEventLayer().setEnabled(true);
-            pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
-                /** Invoked when the mouse is pressed on a layer
-                 * or figure.
-                 */
-                public void mousePressed(LayerEvent event) {
-                    Component component = event.getComponent();
-
-                    if (!component.hasFocus()) {
-                        component.requestFocus();
-                    }
-                }
-            });
-            JGraph jgraph = new JGraph(pane);
-            tabbedPane.add(refinement.getName(), jgraph);
-            setJGraph(jgraph);
-            jgraph.setBackground(BACKGROUND_COLOR);
-
-            // Create a drop target for the jgraph.
-            // FIXME: Should override _setDropIntoEnabled to modify all the drop targets created.
-            new EditorDropTarget(jgraph);
+            JGraph jgraph = _addTabbedPane(refinement, false);
+            // The first JGraph is the one with the focus.
+            if (first) {
+                first = false;
+                setJGraph(jgraph);
+            }
         }
-        return tabbedPane;
+        return _tabbedPane;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -195,6 +186,47 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
 
     /** The case menu. */
     protected JMenu _caseMenu;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Add a tabbed pane for the specified case.
+     *  @param refinement The case.
+     *  @param newPane True to add the pane prior to the last pane.
+     *  @return The pane.
+     */
+    private JGraph _addTabbedPane(Refinement refinement, boolean newPane) {
+        GraphPane pane = _createGraphPane(refinement);
+        pane.getForegroundLayer().setPickHalo(2);
+        pane.getForegroundEventLayer().setConsuming(false);
+        pane.getForegroundEventLayer().setEnabled(true);
+        pane.getForegroundEventLayer().addLayerListener(new LayerAdapter() {
+            /** Invoked when the mouse is pressed on a layer
+             * or figure.
+             */
+            public void mousePressed(LayerEvent event) {
+                Component component = event.getComponent();
+
+                if (!component.hasFocus()) {
+                    component.requestFocus();
+                }
+            }
+        });
+        JGraph jgraph = new JGraph(pane);
+        String name = refinement.getName();
+        jgraph.setName(name);
+        int index = _tabbedPane.getComponentCount();
+        // Put before the default pane, unless this is the default.
+        if (newPane) {
+            index--;
+        }
+        _tabbedPane.add(jgraph, index);
+        jgraph.setBackground(BACKGROUND_COLOR);
+        // Create a drop target for the jgraph.
+        // FIXME: Should override _setDropIntoEnabled to modify all the drop targets created.
+        new EditorDropTarget(jgraph);
+        return jgraph;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -205,6 +237,12 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
     /** The Case actor displayed by this frame. */
     private Case _case;
 
+    /** The action to remove a case. */
+    private RemoveCaseAction _removeCaseAction;
+    
+    /** The tabbed pane for cases. */
+    private JTabbedPane _tabbedPane;
+
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
 
@@ -214,6 +252,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
         /** Create a case action with label "Add Case". */
         public AddCaseAction() {
             super("Add Case");
+            putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_A));
         }
         
         ///////////////////////////////////////////////////////////////////////////////
@@ -231,7 +270,9 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                 final String pattern = query.getStringValue("case");
                 // NOTE: We do not use a TransitionRefinement because we don't
                 // want the sibling input ports that come with output ports.
-                String moml = "<entity name=\"" + pattern + "\" class=\"ptolemy.domains.fsm.modal.Refinement\"/>";
+                String moml = "<entity name=\""
+                    + StringUtilities.escapeForXML(pattern)
+                    + "\" class=\"ptolemy.domains.fsm.modal.Refinement\"/>";
                 
                 // The following is, regrettably, copied from ModalTransitionController.
                 MoMLChangeRequest change = new MoMLChangeRequest(this, _case,
@@ -239,21 +280,13 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                     protected void _execute() throws Exception {
                         super._execute();
                         
-                        // Move the default to last.
-                        Entity defaultRefinement = _case.getEntity("default");
-                        if (defaultRefinement != null) {
-                            defaultRefinement.moveToLast();
-                        }
-                        
-                        // FIXME: use setModel() and make the new case the current one.
-
                         // Mirror the ports of the container in the refinement.
                         // Note that this is done here rather than as part of
                         // the MoML because we have set protected variables
                         // in the refinement to prevent it from trying to again
                         // mirror the changes in the container.
-                        Entity entity = _case.getEntity(pattern);
-
+                        Refinement entity = (Refinement)_case.getEntity(pattern);
+                        
                         // Get the initial port configuration from the container.
                         Iterator ports = _case.portList().iterator();
 
@@ -266,16 +299,8 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                             }
 
                             try {
-                                // NOTE: This is awkward.
-                                if (entity instanceof Refinement) {
-                                    ((Refinement) entity).setMirrorDisable(true);
-                                } else if (entity instanceof ModalController) {
-                                    ((ModalController) entity)
-                                            .setMirrorDisable(true);
-                                }
-
+                                ((Refinement) entity).setMirrorDisable(true);
                                 Port newPort = entity.newPort(port.getName());
-
                                 if (newPort instanceof RefinementPort
                                         && port instanceof IOPort) {
                                     try {
@@ -302,19 +327,74 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                                     }
                                 }
                             } finally {
-                                // NOTE: This is awkward.
-                                if (entity instanceof Refinement) {
-                                    ((Refinement) entity).setMirrorDisable(false);
-                                } else if (entity instanceof ModalController) {
-                                    ((ModalController) entity)
-                                            .setMirrorDisable(false);
-                                }
+                                ((Refinement) entity).setMirrorDisable(false);
                             }
                         }
+                        _addTabbedPane(entity, true);
                     }
                 };
 
                 _case.requestChange(change);
+            }
+        }
+    }
+
+    /** Class implementing the Remove Case menu command. */
+    public class RemoveCaseAction extends FigureAction {
+        
+        /** Create a case action with label "Add Case". */
+        public RemoveCaseAction() {
+            super("Remove Case");
+            putValue(MNEMONIC_KEY, new Integer(KeyEvent.VK_R));
+        }
+        
+        ///////////////////////////////////////////////////////////////////////////////
+        ////                            public methods                             ////
+        
+        /** Perform the action. */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            // Dialog to ask for a case name.
+            Query query = new Query();
+            List refinements = _case.entityList(Refinement.class);
+            if (refinements.size() < 2) {
+                MessageHandler.error("No cases to remove.");
+            } else {
+                String[] caseNames = new String[refinements.size() - 1];
+                Iterator cases = refinements.iterator();
+                int i = 0;
+                while (cases.hasNext()) {
+                    String name = ((Nameable)cases.next()).getName();
+                    if (!name.equals("default")) {
+                        caseNames[i] = name;
+                        i++;
+                    }
+                }
+                query.addChoice("case", "Remove case", caseNames, caseNames[0]);
+                ComponentDialog dialog = new ComponentDialog(
+                        CaseGraphFrame.this, "Remove Case", query);
+                if (dialog.buttonPressed().equals("OK")) {
+                    final String name = query.getStringValue("case");
+                    String moml = "<deleteEntity name=\""
+                        + StringUtilities.escapeForXML(name)
+                        + "\"/>";
+                    
+                    // The following is, regrettably, copied from ModalTransitionController.
+                    MoMLChangeRequest change = new MoMLChangeRequest(this, _case, moml)  {
+                        protected void _execute() throws Exception{
+                            super._execute();
+                            // Find the tabbed pane that matches the name and remove it.
+                            int count = _tabbedPane.getTabCount();
+                            for (int i = 0; i < count; i++) {
+                                if(name.equals(_tabbedPane.getTitleAt(i))) {
+                                    _tabbedPane.remove(i);
+                                    break;
+                                }
+                            }
+                        }
+                    };
+                    _case.requestChange(change);
+                }                    
             }
         }
     }
