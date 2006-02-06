@@ -42,6 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @author  Joern Janneck and Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.0
+ @deprecated Use ptolemy.domains.fsm.modal.Case instead.
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
