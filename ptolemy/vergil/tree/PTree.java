@@ -44,8 +44,8 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.toolbox.PtolemyTransferable;
 import ptolemy.moml.EntityLibrary;
+import ptolemy.vergil.toolbox.PtolemyTransferable;
 
 /**
  This class provides a tree view of a ptolemy model, showing only the

@@ -30,10 +30,10 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URL;
 
 import javax.swing.Action;
 import javax.swing.Icon;

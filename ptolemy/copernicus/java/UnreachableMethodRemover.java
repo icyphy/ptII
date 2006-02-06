@@ -33,10 +33,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import soot.FastHierarchy;
-import soot.Hierarchy;
 import soot.EntryPoints;
+import soot.FastHierarchy;
 import soot.HasPhaseOptions;
+import soot.Hierarchy;
 import soot.PhaseOptions;
 import soot.Scene;
 import soot.SceneTransformer;

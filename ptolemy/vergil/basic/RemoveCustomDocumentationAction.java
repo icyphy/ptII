@@ -27,11 +27,9 @@
  */
 package ptolemy.vergil.basic;
 
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;

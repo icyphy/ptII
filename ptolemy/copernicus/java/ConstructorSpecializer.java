@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -45,13 +44,13 @@ import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
 import soot.Value;
-import soot.Local;
 import soot.ValueBox;
 import soot.jimple.IdentityStmt;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
 import soot.jimple.ParameterRef;
-import soot.jimple.*;
+import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.Stmt;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstructorSpecializer

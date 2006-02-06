@@ -34,7 +34,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.util.FIFOQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;

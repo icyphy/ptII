@@ -27,6 +27,7 @@
 package ptolemy.kernel.undo.test;
 
 import ptolemy.kernel.undo.UndoAction;
+import ptolemy.kernel.undo.UndoStackAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// UndoActionTest

@@ -67,7 +67,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.DocAttribute;
 import diva.canvas.CanvasUtilities;

@@ -27,13 +27,7 @@
  */
 package ptolemy.vergil.basic;
 
-import java.net.URL;
-
 import ptolemy.actor.gui.Configuration;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.util.MessageHandler;
-import ptolemy.vergil.actor.DocViewer;
-import ptolemy.vergil.toolbox.FigureAction;
 import diva.graph.GraphController;
 
 //////////////////////////////////////////////////////////////////////////

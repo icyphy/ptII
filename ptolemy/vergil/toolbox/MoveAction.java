@@ -44,7 +44,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
-
 import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////

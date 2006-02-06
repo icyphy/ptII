@@ -26,12 +26,11 @@
  */
 package ptolemy.copernicus.kernel;
 
-import java.util.Iterator;
-import java.util.Map;
-
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import soot.Body;
@@ -42,9 +41,6 @@ import soot.SootClass;
 import soot.SootMethod;
 import soot.Unit;
 import soot.Value;
-import soot.FastHierarchy;
-import soot.Hierarchy;
-
 import soot.jimple.DefinitionStmt;
 import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
@@ -54,10 +50,10 @@ import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.CallGraphBuilder;
 import soot.jimple.toolkits.callgraph.Targets;
+import soot.jimple.toolkits.pointer.DumbPointerAnalysis;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
-import soot.jimple.toolkits.pointer.DumbPointerAnalysis;
 
 /**
  @author Steve Neuendorffer

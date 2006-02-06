@@ -27,7 +27,6 @@
  */
 package ptolemy.actor;
 
-import ptolemy.actor.IOPort;
 import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////

@@ -47,7 +47,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.colt.ColtSeedParameter;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;

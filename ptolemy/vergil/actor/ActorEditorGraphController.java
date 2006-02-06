@@ -71,9 +71,9 @@ import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Interactor;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.JContextMenu;
-import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ActorEditorGraphController

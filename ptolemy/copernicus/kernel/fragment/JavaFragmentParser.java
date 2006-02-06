@@ -28,25 +28,16 @@ import soot.SootMethod;
 import soot.Type;
 import soot.Value;
 import soot.VoidType;
-import soot.jimple.BooleanClassConstant;
-import soot.jimple.ByteClassConstant;
-import soot.jimple.CharClassConstant;
 import soot.jimple.ClassConstant;
-import soot.jimple.DoubleClassConstant;
 import soot.jimple.FieldRef;
-import soot.jimple.FloatClassConstant;
 import soot.jimple.FloatConstant;
-import soot.jimple.IntClassConstant;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
 import soot.jimple.JimpleBody;
-import soot.jimple.LongClassConstant;
 import soot.jimple.NullConstant;
-import soot.jimple.ShortClassConstant;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
-import soot.jimple.VoidClassConstant;
 
 public class JavaFragmentParser implements JavaFragmentParserConstants {
 

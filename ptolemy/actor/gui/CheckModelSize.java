@@ -30,7 +30,6 @@ import java.io.File;
 import java.net.URL;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntMatrixToken;
