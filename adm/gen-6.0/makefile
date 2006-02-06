@@ -1631,7 +1631,8 @@ REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
 # Log file to save the results in
 REMOTE4LOG = $(GENLOGDIR)/remote4.out
 
-fortytwo_test: $(PTII_SRC)
+fortytwo_test: $(PTII_SRC) 
+	if [ ! -d test ]; then mkdir test; fi
 	$(MAKE) REMOTE4HOME=$(GENDIR)/test \
 		PTII_FULL=$(PTII_SRC) \
 		remote4nuke remote4ptiidist remote4configure \
