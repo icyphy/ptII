@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="RemoveNilTokens" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 1, 815, 511}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 393]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 196.5}">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
@@ -20,6 +20,26 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests handling nil tokens.&#10;The RemoveNilTokens actor removes tokens that&#10;have had the Token.nil() method called.&#10;We can generate these nil tokens by using&#10;the &quot;nil&quot; Constant in the expression language.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 290.0]">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Christopher Brooks</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 350.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -35,8 +55,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 185.0]">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 107, 290, 227}, maximized=false}">
+    <entity name="Data without nil tokens" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={670, 532, 290, 227}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 50.0]">
         </property>
@@ -239,8 +259,8 @@
             </property>
         </port>
     </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 270, 290, 227}, maximized=false}">
+    <entity name="Data with nil tokens" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 532, 290, 227}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 60.0]">
         </property>
@@ -280,7 +300,7 @@
         </vertex>
     </relation>
     <link port="Const.output" relation="relation3"/>
-    <link port="Display.input" relation="relation5"/>
+    <link port="Data without nil tokens.input" relation="relation5"/>
     <link port="Ramp.output" relation="relation4"/>
     <link port="BooleanSelect.trueInput" relation="relation4"/>
     <link port="BooleanSelect.falseInput" relation="relation3"/>
@@ -299,5 +319,5 @@
     <link port="Const2.output" relation="relation8"/>
     <link port="RemoveNilTokens.input" relation="relation9"/>
     <link port="RemoveNilTokens.output" relation="relation5"/>
-    <link port="Display2.input" relation="relation9"/>
+    <link port="Data with nil tokens.input" relation="relation9"/>
 </entity>
