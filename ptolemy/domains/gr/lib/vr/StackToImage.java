@@ -159,9 +159,9 @@ public class StackToImage extends SDFTransformer {
     }
 
     /*  public boolean postfire() throws IllegalActionException{
-              if(_index < _stackSize){
+              if (_index < _stackSize) {
                           return true  ;
-              }else{
+              }else {
                       return false;
               }
       }*/

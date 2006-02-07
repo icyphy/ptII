@@ -240,7 +240,7 @@ public class Random implements Serializable, Rollbackable {
      * bits = next(31);
      * val = bits % n;
      * }
-     * while(bits - val + (n-1) &lt; 0);
+     * while (bits - val + (n-1) &lt; 0);
      * return val;
      * }</pre>
      * <p>This algorithm would return every value with exactly the same

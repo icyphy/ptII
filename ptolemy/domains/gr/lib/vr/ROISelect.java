@@ -281,7 +281,7 @@ public class ROISelect extends TypedAtomicActor {
         }
 
         //FIXME Make user wait for mouse
-        //while(_paused){
+        //while (_paused) {
         //Listen for mouse released and then _paused = false;
         //draw rectangle as it is being outline.
         //}

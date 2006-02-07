@@ -439,7 +439,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements
                 } finally {
                     director.threadUnblocked(thisThread, null);
                 }
-            } // while(true)
+            } // while (true)
         } // synchronized(director)
     }
 
@@ -1022,7 +1022,7 @@ public class AlternateRendezvousReceiver extends AbstractReceiver implements
                 } finally {
                     director.threadUnblocked(thisThread, null);
                 }
-            } // while(true)
+            } // while (true)
         } // synchronized(director)
     }
 

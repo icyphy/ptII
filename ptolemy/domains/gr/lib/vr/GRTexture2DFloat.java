@@ -152,7 +152,7 @@ public class GRTexture2DFloat extends GRGeometry {
      _debug("Does port have token?" + _parameterPort.hasToken(0));
      }
 
-     if (_parameterPort.hasToken(0)){
+     if (_parameterPort.hasToken(0)) {
      texture.update();
 
      /** Set _isSceneGraphInitialized back to false so

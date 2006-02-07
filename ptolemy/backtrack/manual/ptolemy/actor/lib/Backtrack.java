@@ -131,7 +131,7 @@ public class Backtrack extends TypedAtomicActor {
                 // Override this method to offset the locations of pasted objects.
                 protected void _postParse(MoMLParser parser) {
                     Iterator topObjects = parser.topObjectsCreated().iterator();
-                    while(topObjects.hasNext()) {
+                    while (topObjects.hasNext()) {
                         NamedObj topObject = (NamedObj)topObjects.next();
                         try {
                             Iterator locations = topObject.attributeList(Locatable.class).iterator();

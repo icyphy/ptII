@@ -195,7 +195,7 @@ public class ImageCrop extends TypedAtomicActor {
 
         /* if (imageInput.hasToken(0) && roi.hasToken(0)) {
              return true;
-         }else{
+         }else {
                  return false;
          }*/
         return true;

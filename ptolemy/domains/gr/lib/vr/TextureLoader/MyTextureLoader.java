@@ -508,7 +508,7 @@ public class MyTextureLoader extends Object {
         System.out.println("Inside of createBufferedImage");
         observer.prepareImage(image, null);
 
-        /* while(true) {
+        /* while (true) {
          System.out.println("Inside while loop of createBufferedImage");
          status = observer.checkImage(image, null);
          if ((status & ImageObserver.ERROR) != 0) {

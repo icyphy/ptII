@@ -147,7 +147,7 @@ public class GRTexture2DImageReslice extends GRGeometry {
      _debug("Does port have token?" + _parameterPort.hasToken(0));
      }
 
-     if (_parameterPort.hasToken(0)){
+     if (_parameterPort.hasToken(0)) {
      texture.update();
 
      /** Set _isSceneGraphInitialized back to false so
@@ -269,7 +269,7 @@ public class GRTexture2DImageReslice extends GRGeometry {
 
             _texCoords[6] = 0;
             _texCoords[7] = 1;
-        } /*else if (_axis == 0){
+        } /*else if (_axis == 0) {
            float curX = _counter * _planeSpacing -.5;
 
            //Set coordinates for the plane.  These coordinates assume

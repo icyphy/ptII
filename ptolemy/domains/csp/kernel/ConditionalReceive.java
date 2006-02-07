@@ -238,7 +238,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                             controller._branchSucceeded(getID());
 
                             // Rendezvous complete.
-                            break; // exit while(true).
+                            break; // exit while (true).
                         }
                     } else if (receiver._isConditionalSendWaiting()) {
                         if (_debugging) {
@@ -288,7 +288,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                     receiver._checkFlagsAndWait();
                     // FIXME: This is probably too soon to mark this unblocked!
                     // controller._branchUnblocked(receiver);
-                } // while(true)
+                } // while (true)
             } catch (InterruptedException ex) {
                 receiver._setConditionalReceive(false, null, -1);
                 controller._branchFailed(getID());

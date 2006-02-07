@@ -288,7 +288,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                             }
                             // Convert the conditional send to a put.
                             // Do this by falling out of the loop.
-                            break; // exit while(true).
+                            break; // exit while (true).
                         }
                     } else if (_isGetOrConditionalReceiveWaitingOnAll(receivers)) {
                         if (_debugging) {
@@ -349,7 +349,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 }
                                 // Convert the conditional send to a put.
                                 // Do this by falling out of the loop.
-                                break; // exit while(true).
+                                break; // exit while (true).
                             } else {
                                 // At least one conditional receive is not first.
                                 // Release those that have grabbed the "first" flag,
@@ -390,7 +390,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                     controller._branchBlocked(null);
                     ((CSPReceiver) receivers[0])._checkFlagsAndWait();
                     controller._branchUnblocked(null);
-                } // while(true)
+                } // while (true)
 
                 // When we get here, it is time to convert the conditional
                 // send to a put.
