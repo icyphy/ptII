@@ -86,6 +86,15 @@ test DoubleToken-1.4 {Create a non-empty instance from an String} {
 ######################################################################
 ####
 # 
+test DoubleToken-1.5 {Create a nil Token from an String} {
+    set p [java::new {ptolemy.data.DoubleToken String} nil]
+    set p2 [java::new {ptolemy.data.DoubleToken String} [java::null]]
+    list [$p toString] [$p2 toString] [$p isNil] [$p2 isNil]
+} {NaN NaN 1 1}
+
+######################################################################
+####
+# 
 test DoubleToken-2.0 {Create a non-empty instance and query its value as a Complex} {
     set p [java::new {ptolemy.data.DoubleToken double} 3.3]
     set res [$p complexValue]

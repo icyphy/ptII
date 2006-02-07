@@ -66,14 +66,24 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Construct a DoubleToken from the specified string.
+     *  @param init The initialization string, which is in a format
+     *  suitable for java.lang.Double.parseDouble(String).   
+     *  If the value is null or the string "nil", then the token is
+     *  marked as being nil, the value is set to Double.NaN, see
+     *  {@link ptolemy.data.Token#nil()}.
      *  @exception IllegalActionException If the Token could not
      *   be created with the given String.
      */
     public DoubleToken(String init) throws IllegalActionException {
-        try {
-            _value = Double.parseDouble(init);
-        } catch (NumberFormatException e) {
-            throw new IllegalActionException(e.getMessage());
+        if (init == null || init.equals("nil")) {
+            _value = Double.NaN;
+            nil();
+        } else {
+            try {
+                _value = Double.parseDouble(init);
+            } catch (NumberFormatException e) {
+                throw new IllegalActionException(e.getMessage());
+            }
         }
     }
 
