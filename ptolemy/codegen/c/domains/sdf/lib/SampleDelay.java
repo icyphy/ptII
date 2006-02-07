@@ -1,6 +1,6 @@
 /* A code generation helper class for ptolemy.domains.sdf.lib.SampleDelay
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 1997-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
