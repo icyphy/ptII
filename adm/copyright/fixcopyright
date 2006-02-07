@@ -16,18 +16,23 @@
 #    cd ptII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
 #    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f)
 #
-# 4. Update the script
+# 4. Find files modified since the start of the year
+#    find . -name CVS -prune -o -type f -mtime -`date +%j` | sort > /tmp/new
+#    sort /tmp/f > /tmp/f.sort
+#    comm -12 /tmp/new /tmp/f.sort > /tmp/f.new
+#
+# 5. Update the script
 #    - Update the year regex in the lines marked 'EVERY_YEAR' below
 #
-# 5. Run the script in testing mode:
-#    PtII:  cat /tmp/f | xargs $PTII/adm/copyright/fixcopyright -n >& /tmp/fc.txt
-#    Metro: cat /tmp/f | xargs $METRO/adm/bin/fixcopyright -n >& /tmp/fc.txt
+# 6. Run the script in testing mode:
+#    PtII:  cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright -n >& /tmp/fc.txt
+#    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright -n >& /tmp/fc.txt
 #
 # 6. Check the output in /tmp/fc.txt
 #
 # 7. Run it for real:
-#    PtII:  cat /tmp/f | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
-#    Metro: cat /tmp/f | xargs $METRO/adm/bin/fixcopyright >& /tmp/fc2.txt
+#    PtII:  cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
+#    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright >& /tmp/fc2.txt
 #
 # 8. Do a clean checkout somewhere and rebuild and test
 #    cd ~/tmp_2; cvs -d :ext:gigasource:/home/cvs co ptII
@@ -106,55 +111,55 @@ search $@
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-200[01234]/Copyright (c) \1-2005/' \
+    sed 's/Copyright (c) \(199[0-9]\)-200[012345]/Copyright (c) \1-2006/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH='Copyright \(c\) 199[0-9]-200[01234]'
-LOGMESSAGE="Changed copyright to 2005"
+EGREPMATCH='Copyright \(c\) 199[0-9]-200[012345]'
+LOGMESSAGE="Changed copyright to 2006"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[01234]\)-200[01234] /Copyright (c) \1-2005 /' \
+    sed 's/Copyright (c) \(200[01234]\)-200[012345] /Copyright (c) \1-2006 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH='Copyright \(c\) 200[01234]-200[01234]'
-LOGMESSAGE="Changed copyright to 2005"
+EGREPMATCH='Copyright \(c\) 200[01234]-200[012345]'
+LOGMESSAGE="Changed copyright to 2006"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2005 /' \
+    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2006 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 199[0-9] "
-LOGMESSAGE="Changed copyright to 2005"
+LOGMESSAGE="Changed copyright to 2006"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[01234]\) /Copyright (c) \1-2005 /' \
+    sed 's/Copyright (c) \(200[012345]\) /Copyright (c) \1-2006 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 200[01234] "
-LOGMESSAGE="Changed copyright to 2005"
+EGREPMATCH="Copyright \(c\) 200[012345] "
+LOGMESSAGE="Changed copyright to 2006"
 
 search $@
 
