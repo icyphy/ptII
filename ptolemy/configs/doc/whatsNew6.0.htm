@@ -40,7 +40,15 @@ See also <a href="whatsNew5.1.htm">What's new in Version 5.1</a>.
 <h2><a name="other">Other Key New Capabilities</a>
 </h2>
 <ul>
-
+<li> A Token can now be "nil", which means that the data is missing.
+If <a href="../../../doc/codeDoc/ptolemy/data/Token.html#nil()">Token.nil()</a> is
+called, it indicates that a token is a nil or missing token, which contains no data.
+  Nil or missing tokens are common in analytical systems like R and SAS
+  where they are used to handle sparsely populated data sources.
+  In database parlance, missing tokens are sometimes called 
+  null tokens.  Since null is a Java keyword, we use the term "nil".
+The PN <a href="../../domains/pn/demo/RemoveNilTokens/RemoveNilTokens.xml">Remove Nil Tokens</a>
+demo illustrates use of nil tokens.
 </ul>
 
 <h2><a name="libraries">New and Enhanced Actor Libraries</a>
