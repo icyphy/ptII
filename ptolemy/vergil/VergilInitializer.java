@@ -47,7 +47,6 @@ package ptolemy.vergil;
 public class VergilInitializer {
     /** Perform any Vergil initialization. */
     public VergilInitializer() {
-        //
-        System.out.println("VergilInitializer called");
+        // Do nothing.
     }
 }
