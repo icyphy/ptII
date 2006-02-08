@@ -628,13 +628,36 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             isInputPort = true;
 
             // Find the source helper
+            /*
             TypedIOPort sinkPort = port;
             int sourceChannel = new Integer(channel).intValue();
             port = (TypedIOPort) port.connectedPortList().get(sourceChannel);
             portName = port.getName();
             channel = "" + _getChannelIndex(sinkPort, sourceChannel, port);
             sourceHelper = (CodeGeneratorHelper) _getHelper(port.getContainer());
+            */
             // else if (port.isOutput()), that means THIS is the source helper.
+            
+            int channelNumber = new Integer(channel).intValue();
+            Receiver receiver = port.getReceivers()[channelNumber][0];
+            Iterator sourcePorts = port.sourcePortList().iterator();
+            breakOutLabel:
+            while (sourcePorts.hasNext()) {
+                IOPort sourcePort = (IOPort) sourcePorts.next();
+                Receiver[][] remoteReceivers = sourcePort.getRemoteReceivers();
+                for (int i = 0; i < remoteReceivers.length; i++) {
+                    for (int j = 0; j < remoteReceivers[i].length; j++) {
+                        if (remoteReceivers[i][j] == receiver) {
+                            portName = sourcePort.getName();
+                            channel = "" + i;
+                            sourceHelper = (CodeGeneratorHelper) 
+                                    _getHelper(sourcePort.getContainer());
+                            break breakOutLabel;
+                        }
+                    }
+                }
+            }
+            
         }
 
         String refName = _getReference(name);
