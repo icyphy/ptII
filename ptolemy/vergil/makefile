@@ -74,6 +74,7 @@ JSRCS = \
 	TypeAnimatorApplet.java \
 	VergilApplication.java \
 	VergilErrorHandler.java \
+	VergilInitializer.java \
 	VergilPreferences.java
 
 EXTRA_SRCS =	$(JSRCS) \

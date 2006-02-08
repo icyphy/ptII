@@ -17,6 +17,12 @@
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
   </entity>
 
+  <!-- Specify the name of the class that initialized the application. -->
+  <property name="_applicationInitializer"
+            class="ptolemy.data.expr.StringParameter"
+            value="ptolemy.vergil.VergilInitializer"/>
+
+
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->
   <!-- These are searched in the order listed here, until one of -->
