@@ -1035,6 +1035,11 @@ public class Director extends Attribute implements Executable {
      *  so that the next call to postfire() returns false.
      */
     public void stop() {
+        // Set _stopRequested first before looping through actors below
+        // so isStopRequested() more useful while we are still looping
+        // below.  Kepler's EML2000DataSource needed this.
+        _stopRequested = true;
+
         Nameable container = getContainer();
 
         if (container instanceof CompositeActor) {
@@ -1046,8 +1051,6 @@ public class Director extends Attribute implements Executable {
                 actor.stop();
             }
         }
-
-        _stopRequested = true;
     }
 
     /** Request that execution of the current iteration stop.
