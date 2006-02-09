@@ -97,11 +97,12 @@ public abstract class ModelScope implements ParserScope {
      *  then an attribute more deeply in the hierarchy is searched
      *  for.  The scope of the object includes any container of the
      *  given object, and any variable contained in a scope extending
-     *  attribute inside any of those containers.  If no variable
-     *  exists with the given name, then return null.
+     *  attribute inside any of those containers. 
      *  @param exclude A variable to exclude from the search.
      *  @param container The container to search upwards from.
      *  @param name The variable name to search for.
+     *  @return The variable with the given name or null if the variable
+     *  does not exist.
      */
     public static Variable getScopedVariable(Variable exclude,
             NamedObj container, String name) {
