@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Manager;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.moml.MoMLParser;
@@ -176,9 +177,13 @@ public class PtExecuteApplication extends MoMLApplication {
     ////                         protected methods                 ////
 
     /** Return a default Configuration, which in this case is given by
-     *  the MoML file ptolemy/configuration/runPanelConfiguration.xml.
-     *  That configuration supports executing, but not editing,
+     *  the MoML file ptolemy/configs/runConfiguration.xml.
+     *  The default configuration supports executing, but not editing,
      *  Ptolemy models.
+     *  If there is an _applicationInitializer parameter, then
+     *  construct it.  The _applicationInitializer parameter contains
+     *  a string that names a class to be initialized.
+
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */
@@ -187,9 +192,12 @@ public class PtExecuteApplication extends MoMLApplication {
             _configurationURL = specToURL("ptolemy/configs/runConfiguration.xml");
         }
 
-        MoMLParser parser = new MoMLParser();
-        _configuration = (Configuration) parser.parse(_configurationURL,
-                _configurationURL);
+        _configuration = readConfiguration(_configurationURL);
+
+        // This has the side effect of merging properties from ptII.properties.
+        super._createDefaultConfiguration();
+
+
         return _configuration;
     }
 

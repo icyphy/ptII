@@ -44,6 +44,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
@@ -350,6 +352,10 @@ public class MoMLApplication implements ExecutionListener {
      *  The URL may absolute, or relative to the Ptolemy II tree root,
      *  or in the classpath.  To convert a String to a URL suitable for
      *  use by this method, call specToURL(String).
+     *  <p>If there is an _applicationInitializer parameter, then
+     *  instiantiate the class named by that parameter.  The
+     *  _applicationInitializer parameter contains a string that names
+     *  a class to be initialized.
      *  @param specificationURL A string describing a URL.
      *  @return A configuration.
      *  @exception Exception If the configuration cannot be opened, or
@@ -360,23 +366,44 @@ public class MoMLApplication implements ExecutionListener {
         MoMLParser parser = new MoMLParser();
         parser.reset();
 
-        Configuration toplevel = (Configuration) parser.parse(specificationURL,
-                specificationURL);
+        Configuration configuration =
+            (Configuration) parser.parse(specificationURL, specificationURL);
 
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
         // in the directory.
-        ComponentEntity directory = ((Configuration) toplevel)
-                .getEntity("directory");
+        ComponentEntity directory = configuration.getEntity("directory");
 
         if (directory instanceof ModelDirectory) {
             PtolemyEffigy effigy = new PtolemyEffigy(
-                    (ModelDirectory) directory, toplevel.getName());
-            effigy.setModel(toplevel);
+                    (ModelDirectory) directory, configuration.getName());
+            effigy.setModel(configuration);
             effigy.identifier.setExpression(specificationURL.toExternalForm());
         }
 
-        return toplevel;
+        // If there is an _applicationInitializer parameter, then
+        // construct it.  The _applicationInitializer parameter contains
+        // a string that names a class to be initialized.
+        StringParameter applicationInitializerParameter =
+            (StringParameter) configuration.getAttribute(
+                    "_applicationInitializer", Parameter.class);
+
+        if (applicationInitializerParameter != null) {
+            String applicationInitializerClassName =
+                applicationInitializerParameter.stringValue();
+            try {
+                Class applicationInitializer =
+                    Class.forName(applicationInitializerClassName);
+                applicationInitializer.newInstance();
+            } catch (Throwable throwable) {
+                throw new Exception("Failed to call application initializer "  
+                        + "class \"" + applicationInitializerClassName
+                        + "\".  Perhaps the configuration file \""
+                        + specificationURL + "\" has a problem?", throwable);
+            }
+        }
+
+        return configuration;
     }
 
     /** Start the models running, each in a new thread, then return.

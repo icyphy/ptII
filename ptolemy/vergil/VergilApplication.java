@@ -43,7 +43,6 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -310,9 +309,6 @@ public class VergilApplication extends MoMLApplication {
      *  {@link ptolemy.util.StringUtilities#preferencesDirectory()}
      *  If the configuration contains a top level Parameter named
      *  _hideUserLibrary, then we do not open the user library.
-     *  If there is an _applicationInitializer parameter, then
-     *  construct it.  The _applicationInitializer parameter contains
-     *  a string that names a class to be initialized.
      *
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
@@ -349,31 +345,8 @@ public class VergilApplication extends MoMLApplication {
                     + _configurationURL + "'", ex);
         }
 
-
         // Read the user preferences, if any.
         VergilPreferences.setDefaultPreferences(configuration);
-
-        // If there is an _applicationInitializer parameter, then
-        // construct it.  The _applicationInitializer parameter contains
-        // a string that names a class to be initialized.
-        StringParameter applicationInitializerParameter =
-            (StringParameter) configuration.getAttribute(
-                    "_applicationInitializer", Parameter.class);
-
-        if (applicationInitializerParameter != null) {
-            String applicationInitializerClassName =
-                applicationInitializerParameter.stringValue();
-            try {
-                Class applicationInitializer =
-                    Class.forName(applicationInitializerClassName);
-                applicationInitializer.newInstance();
-            } catch (Throwable throwable) {
-                throw new Exception("Failed to call application initializer "  
-                        + "class \"" + applicationInitializerClassName
-                        + "\".  Perhaps the configuration file \""
-                        + _configurationURL + "\" has a problem?", throwable);
-            }
-        }
 
         // If _hideUserLibraryAttribute is not present, or is false,
         // call openLibrary().  openLibrary() will open either the
