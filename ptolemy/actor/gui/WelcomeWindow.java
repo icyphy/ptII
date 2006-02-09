@@ -75,11 +75,12 @@ public class WelcomeWindow extends HTMLViewer {
 
         // Add the close panel
         _closePanel = new JPanel();
-        JTextField _message = new JTextField(80);
+        String message = "FIXME: need \"Show this Dialog on Startup\" "
+            + "and Close Button"; 
+        JTextField _message = new JTextField(message.length() + 2);
         _message.setEditable(false);
         _message.setAlignmentX(LEFT_ALIGNMENT);
-        _message.setText("FIXME: need \"Show this Dialog on Startup\" "
-                + "and Close Button"); 
+        _message.setText(message);
 
         _closePanel.add(_message);
     }
