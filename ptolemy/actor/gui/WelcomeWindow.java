@@ -27,6 +27,7 @@
  */
 package ptolemy.actor.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -41,7 +42,9 @@ import java.net.URL;
 
 import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
@@ -68,15 +71,28 @@ public class WelcomeWindow extends HTMLViewer {
      */
     public WelcomeWindow() {
         super(); 
+        _statusBar = null;
+
+        // Add the close panel
+        _closePanel = new JPanel();
+        JTextField _message = new JTextField(80);
+        _message.setEditable(false);
+        _message.setAlignmentX(LEFT_ALIGNMENT);
+        _message.setText("FIXME: need \"Show this Dialog on Startup\" "
+                + "and Close Button"); 
+
+        _closePanel.add(_message);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Center this window.  Hide the menu bar.
+    /** Make this window displayable.  The menubar is hidden and
+     *  close panel is added.
      */
     public void pack() {
         hideMenuBar();
+        getContentPane().add(_closePanel, BorderLayout.SOUTH);
         super.pack();
     }
 
@@ -96,5 +112,13 @@ public class WelcomeWindow extends HTMLViewer {
 //         }
         super.show();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The panel at the bottom that contains the
+     *  "Show this dialog on startup" checkbox and the close button.
+     */
+    private JPanel _closePanel;
 }
 
