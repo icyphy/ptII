@@ -340,15 +340,15 @@ public class VergilApplication extends MoMLApplication {
         // This has the side effects of merging properties from ptII.properties
         Configuration configuration = super._createDefaultConfiguration();
 
-        // Read the user preferences, if any.
-        PtolemyPreferences.setDefaultPreferences(configuration);
-
         try {
             configuration = readConfiguration(_configurationURL);
         } catch (Exception ex) {
             throw new Exception("Failed to read configuration '"
                     + _configurationURL + "'", ex);
         }
+
+        // Read the user preferences, if any.
+        PtolemyPreferences.setDefaultPreferences(configuration);
 
         // If _hideUserLibraryAttribute is not present, or is false,
         // call openLibrary().  openLibrary() will open either the
