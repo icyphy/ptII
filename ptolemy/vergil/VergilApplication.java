@@ -458,7 +458,7 @@ public class VergilApplication extends MoMLApplication {
 
     /** Return a default Configuration to use when there are no command-line
      *  arguments, which in this case is given by the default configuration
-     *  augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
+     *  augmented by the MoML file ptolemy/configs/full/welcomeWindow.xml
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
