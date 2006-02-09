@@ -197,6 +197,8 @@ public class PtExecuteApplication extends MoMLApplication {
         // This has the side effect of merging properties from ptII.properties.
         super._createDefaultConfiguration();
 
+        // Read the user preferences, if any.
+        PtolemyPreferences.setDefaultPreferences(_configuration);
 
         return _configuration;
     }

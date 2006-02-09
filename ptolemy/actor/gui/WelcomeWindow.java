@@ -100,16 +100,15 @@ public class WelcomeWindow extends HTMLViewer {
      *  or is false.
      */
     public void show() {
-        // FIXME: Need to move VergilPreferences
-//         BooleanToken hideWelcomeWindow = 
-//             ((BooleanToken) PtolemyPreferences.preferenceValue(getDirectory(),
-//                     "_hideWelcomeWindow"));
+        BooleanToken hideWelcomeWindow = 
+            ((BooleanToken) PtolemyPreferences.preferenceValue(getDirectory(),
+                    "_hideWelcomeWindow"));
 
-//         if (hideWelcomeWindow != null && hideWelcomeWindow.booleanValue()) {
-//             // The _hideWelcomeWindow parameter is true
-//             System.out.println("Hide the welcome window");
-//             return;
-//         }
+        if (hideWelcomeWindow != null && hideWelcomeWindow.booleanValue()) {
+            // The _hideWelcomeWindow parameter is true
+            System.out.println("Hide the welcome window");
+            return;
+        }
         super.show();
     }
 

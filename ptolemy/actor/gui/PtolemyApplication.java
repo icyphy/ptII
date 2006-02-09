@@ -97,8 +97,18 @@ public class PtolemyApplication extends MoMLApplication {
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createDefaultConfiguration() throws Exception {
-        URL specificationURL = specToURL("ptolemy/configs/runPanelConfiguration.xml");
-        return readConfiguration(specificationURL);
+        URL specificationURL = 
+            specToURL("ptolemy/configs/runPanelConfiguration.xml");
+       
+        Configuration configuration = readConfiguration(specificationURL);
+
+        // This has the side effect of merging properties from ptII.properties.
+        super._createDefaultConfiguration();
+
+        // Read the user preferences, if any.
+        PtolemyPreferences.setDefaultPreferences(_configuration);
+
+        return configuration;
     }
 
     /** Return a default Configuration to use when there are no command-line

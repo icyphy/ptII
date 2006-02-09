@@ -683,7 +683,10 @@ public class MoMLApplication implements ExecutionListener {
      *  This configuration will be created before any command-line arguments
      *  are processed.  If there are no command-line arguments, then
      *  the default configuration is given by _createEmptyConfiguration()
-     *  instead.
+     *  instead.  This method merges the compile-time configuration file
+     *  values from {@link ptolemy.util.StringUtilities#mergePropertiesFile()}.
+     *  Subclasses should call 
+     * {@link ptolemy.actor.gui.PtolemyPreferences#setDefaultPreferences(Configuraton)}.
      *  @return null
      *  @exception Exception Thrown in derived classes if the default
      *   configuration cannot be opened.
