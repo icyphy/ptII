@@ -336,7 +336,8 @@ public class VergilApplication extends MoMLApplication {
             }
         }
 
-        // This has the side effect of merging properties from ptII.properties.
+        // This has the side effects of merging properties from
+        // ptII.properties and loading the user PtolemyPreferences.
         Configuration configuration = super._createDefaultConfiguration();
 
         try {
