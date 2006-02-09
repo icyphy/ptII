@@ -74,8 +74,7 @@ JSRCS = \
 	TypeAnimatorApplet.java \
 	VergilApplication.java \
 	VergilErrorHandler.java \
-	VergilInitializer.java \
-	VergilPreferences.java
+	VergilInitializer.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	TODO.txt \
