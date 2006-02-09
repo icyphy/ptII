@@ -28,7 +28,7 @@
 package ptolemy.vergil.actor;
 
 import ptolemy.actor.gui.Configuration;
-import ptolemy.vergil.PtolemyPreferences;
+import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.Port;
