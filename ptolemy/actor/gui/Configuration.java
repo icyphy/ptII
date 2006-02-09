@@ -97,6 +97,11 @@ import ptolemy.util.StringUtilities;
  it removes itself from the configuration. When this happens, the
  configuration calls System.exit() to exit the application.
 
+ <p>To access the configuration from a random place, if you have a
+ NamedObj, then you can call Configuration.findEffigy().  This is a
+ static method.  Then call Effigy.toplevel(). The result will always be
+ the configuration.
+
  @author Steve Neuendorffer and Edward A. Lee
  @version $Id$
  @since Ptolemy II 1.0
@@ -127,6 +132,15 @@ public class Configuration extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a list of all the configurations that have been created.
+     *  Note  that if this method is called before a configuration
+     *  is created, then it will return an empty linked list.
+     *  @param A list of configurations, where each element of the list
+     *  is of type Configuration.
+     */
+    public static List configurations() {
+        return _configurations;
+    }
     /** Create the first tableau for the given effigy, using the
      *  tableau factory.  This is called after an effigy is first opened,
      *  or when a new effigy is created.  If the method fails
@@ -748,6 +762,7 @@ public class Configuration extends CompositeEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The list of configurations that have been created.
+
+    /** The list of configurations that have been created. */
     private static List _configurations = new LinkedList();
 }
