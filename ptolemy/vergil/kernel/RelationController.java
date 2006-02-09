@@ -35,12 +35,12 @@ import javax.swing.SwingConstants;
 
 import ptolemy.actor.IORelation;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
-import ptolemy.vergil.VergilPreferences;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.GetDocumentationAction;
 import ptolemy.vergil.basic.ParameterizedNodeController;
@@ -133,7 +133,7 @@ public class RelationController extends ParameterizedNodeController {
                 relation = (Relation) vertex.getContainer();
 
                 // NOTE: The preferences mechanism may set this.
-                Token relationSize = VergilPreferences.preferenceValue(
+                Token relationSize = PtolemyPreferences.preferenceValue(
                         relation, "_relationSize");
 
                 if (relationSize instanceof DoubleToken) {

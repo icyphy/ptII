@@ -36,6 +36,7 @@ import java.util.Iterator;
 
 import javax.swing.SwingConstants;
 
+import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -49,7 +50,6 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.vergil.VergilPreferences;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
@@ -325,7 +325,7 @@ public class EditorIcon extends Attribute {
         }
 
         // If specified by a preference, then show parameters.
-        Token show = VergilPreferences.preferenceValueLocal(container,
+        Token show = PtolemyPreferences.preferenceValueLocal(container,
                 "_showParameters");
 
         if (show instanceof StringToken) {

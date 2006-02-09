@@ -80,6 +80,7 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
+import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
@@ -112,7 +113,6 @@ import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-import ptolemy.vergil.VergilPreferences;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.MoveAction;
 import ptolemy.vergil.tree.EntityTreeModel;
@@ -1957,17 +1957,16 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
         public void actionPerformed(ActionEvent e) {
             Configuration configuration = getConfiguration();
-            VergilPreferences preferences = null;
+            PtolemyPreferences preferences = null;
 
             try {
-                preferences = (VergilPreferences) configuration.getAttribute(
-                        VergilPreferences.PREFERENCES_WITHIN_CONFIGURATION,
-                        VergilPreferences.class);
+                preferences = (PtolemyPreferences) configuration.getAttribute(
+                        PtolemyPreferences.PREFERENCES_WITHIN_CONFIGURATION,
+                        PtolemyPreferences.class);
             } catch (IllegalActionException ex) {
                 MessageHandler
-                        .error(
-                                "Preferences attribute found, but not of the right class.",
-                                ex);
+                        .error("Preferences attribute found, "
+                                + "but not of the right class.", ex);
             }
 
             if (preferences == null) {
@@ -1976,9 +1975,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
             } else {
                 // Open a modal dialog to edit the parameters.
                 new EditParametersDialog(BasicGraphFrame.this, preferences,
-                        "Edit Vergil Preferences");
+                        "Edit Ptolemy Preferences");
 
-                // Make the current global variables conform with the new values.
+                // Make the current global variables conform with the
+                // new values.
                 try {
                     preferences.setAsDefault();
                 } catch (IllegalActionException ex) {

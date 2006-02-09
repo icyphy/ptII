@@ -28,6 +28,7 @@
 package ptolemy.vergil.actor;
 
 import ptolemy.actor.gui.Configuration;
+import ptolemy.vergil.PtolemyPreferences;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.Port;
@@ -35,7 +36,6 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
-import ptolemy.vergil.VergilPreferences;
 import ptolemy.vergil.basic.PopupMouseFilter;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.ConfigureAction;
@@ -251,8 +251,9 @@ public class LinkController extends BasicEdgeController {
                 }
 
                 // NOTE: The preferences mechanism may set this.
-                Token radiusValue = VergilPreferences.preferenceValue(relation,
-                        "_linkBendRadius");
+                Token radiusValue =
+                    PtolemyPreferences.preferenceValue(relation,
+                            "_linkBendRadius");
 
                 if (radiusValue instanceof DoubleToken) {
                     double overrideRadius = ((DoubleToken) radiusValue)

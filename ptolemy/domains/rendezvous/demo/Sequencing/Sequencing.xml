@@ -69,7 +69,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 340.0]">
         </property>
     </property>
-    <property name="LocalPreferences" class="ptolemy.vergil.VergilPreferences">
+    <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences">
         <property name="_showParameters" class="ptolemy.data.expr.StringParameter" value="Overridden parameters only">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 90.0]">

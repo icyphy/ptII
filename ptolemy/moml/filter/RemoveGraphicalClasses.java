@@ -247,7 +247,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         // unless we remove CheckBoxStyle
         _graphicalClasses.put("ptolemy.actor.gui.style.CheckBoxStyle", null);
 
-        _graphicalClasses.put("ptolemy.vergil.VergilPreferences",
+        _graphicalClasses.put("ptolemy.actor.gui.PtolemyPreferences",
                 "ptolemy.data.expr.ScopeExtendingAttribute");
     }
 }
