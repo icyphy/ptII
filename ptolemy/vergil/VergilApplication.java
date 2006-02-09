@@ -346,9 +346,6 @@ public class VergilApplication extends MoMLApplication {
                     + _configurationURL + "'", ex);
         }
 
-        // Read the user preferences, if any.
-        VergilPreferences.setDefaultPreferences(configuration);
-
         // If _hideUserLibraryAttribute is not present, or is false,
         // call openLibrary().  openLibrary() will open either the
         // user library or the library named by the _alternateLibraryBuilder.
