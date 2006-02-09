@@ -98,7 +98,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         text.text.setExpression("LocalPreferences");
 
         // Hide the name.
-        SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
+        SingletonParameter _hideName = new SingletonParameter(this,
+                "_hideName");
         _hideName.setToken(BooleanToken.TRUE);
         _hideName.setVisibility(Settable.EXPERT);
     }
@@ -107,7 +108,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
     ////                       public methods                      ////
 
     /** Check to see whether a preference of the specified name is
-     *  defined in the specified context, and if it is, return it's value.
+     *  defined in the specified context, and if it is, return its value.
      *  Note that if there is an error in the expression for the preference,
      *  then this method will return null and report the error to standard out.
      *  This is done because we assume the error will normally be caught
@@ -116,7 +117,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
      *  @param preferenceName The name of the preference.
      *  @return The value of the preference, or null if it is not set.
      */
-    public static Token preferenceValue(NamedObj context, String preferenceName) {
+    public static Token preferenceValue(NamedObj context,
+            String preferenceName) {
         Variable result = ModelScope.getScopedVariable(null, context,
                 preferenceName);
 
@@ -157,8 +159,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
                 Iterator preferences = container.attributeList(
                         PtolemyPreferences.class).iterator();
                 while (preferences.hasNext()) {
-                    PtolemyPreferences preference = (PtolemyPreferences) preferences
-                            .next();
+                    PtolemyPreferences preference =
+                        (PtolemyPreferences) preferences.next();
                     attribute = preference.getAttribute(preferenceName);
                     if (attribute instanceof Variable) {
                         return ((Variable) attribute).getToken();
@@ -221,7 +223,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
                     PtolemyPreferences.class);
         } catch (IllegalActionException ex) {
             System.out
-                    .println("Warning: Problem with preferences attribute in the configuration: "
+                    .println("Warning: Problem with preferences attribute "
+                            + "in the configuration: "
                             + ex.getMessage());
 
             // Can't do anything further.
