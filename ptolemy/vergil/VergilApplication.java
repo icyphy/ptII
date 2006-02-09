@@ -49,6 +49,7 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryBuilder;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
@@ -433,8 +434,7 @@ public class VergilApplication extends MoMLApplication {
     }
 
     /** Return a default Configuration to use when there are no command-line
-     *  arguments, which in this case is given by the default configuration
-     *  augmented by the MoML file ptolemy/configs/full/welcomeWindow.xml
+     *  arguments, which in this case is a blank PtolemyEffigy.
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
@@ -442,6 +442,15 @@ public class VergilApplication extends MoMLApplication {
         Configuration configuration = _createDefaultConfiguration();
         URL welcomeURL = null;
         URL introURL = null;
+
+        ModelDirectory directory = configuration.getDirectory();
+
+        PtolemyEffigy.Factory factory =
+            new PtolemyEffigy.Factory(directory,
+                    directory.uniqueName("ptolemyEffigy"));
+                
+        Effigy effigy = factory.createEffigy(directory, null, null);
+        configuration.createPrimaryTableau(effigy);
 
         try {
             // First, we see if we can find the welcome window by
@@ -477,6 +486,7 @@ public class VergilApplication extends MoMLApplication {
         Effigy doc = (Effigy) configuration.getEntity("directory.doc");
 
         doc.identifier.setExpression(introURL.toExternalForm());
+
 
         return configuration;
     }
