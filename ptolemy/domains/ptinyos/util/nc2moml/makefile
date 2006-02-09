@@ -94,7 +94,7 @@ test: jclass
 	./nc2moml -v tos/lib/Counters
 	./nc2moml -v tos/system
 	./nc2moml -v tos/sensorboards/micasb
-	"$(PTII)/bin/vergil" -viptos ../../demo/SenseToLeds/SenseToLeds-InWireless.xm;
+	"$(PTII)/bin/vergil" -viptos ../../demo/SenseToLeds/SenseToLeds-InWireless.xml
 
 include $(ROOT)/mk/ptcommon.mk
 

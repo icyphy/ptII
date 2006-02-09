@@ -492,6 +492,22 @@ make pc
       $TOSROOT/doc/tutorial/lesson5.html for more information.
     </li>
 
+    <li> Unzip the pre-generated libraries:
+      <pre>
+cd $PTII/vendors/ptinyos
+cat $PTII/ptolemy/domains/ptinyos/util/nc2moml/nc2moml-tinyos-1.1.15Dec2005cvs-1.tar.gz | gunzip | tar -xvf -
+      </pre>
+      This will create <CODE>$PTII/vendors/ptinyos/moml</CODE> and contains the MoML libraries corresponding to the Dec 2005 TinyOS RPM release.
+    </li>
+
+    <li> Unzip the pre-generated applications:
+      <pre>
+cd $PTII/vendors/ptinyos
+cat $PTII/ptolemy/domains/ptinyos/util/ncapp2moml/ncapp2moml-tinyos-1.1.15Dec2005cvs-1.tar.gz | gunzip | tar -xvf -
+      </pre>
+      This will create <CODE>$PTII/vendors/ptinyos/momlapp</CODE> and contains the MoML applications corresponding to the Dec 2005 TinyOS RPM release.
+    </li>
+
     <li> Make sure JNI works with your setup:
       <pre>
 cd $PTII/jni/test

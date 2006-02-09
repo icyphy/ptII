@@ -9,7 +9,7 @@ Viptos is an interface between TinyOS and Ptolemy II.
  <p>To get started, you must have the AVR tools, TinyOS and Nesc installed
 and some environment variables must be set.
 
- <p>For details, see <a href="../../../ptolemy/domains/ptinyos/util/nc2moml/index.htm"><CODE>$PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm</CODE></a>
+ <p>For details, see <a href="../../../ptolemy/domains/ptinyos/doc/installation.htm"><CODE>$PTII/ptolemy/domains/ptinyos/doc/installation.htm</CODE></a>
 
 <h2>The quick installation guide</h2>
 
@@ -20,12 +20,13 @@ the top level Viptos directory.
 installing Ptolemy II, see
 <a href="../../../doc/install.htm">$PTII/doc/install.htm</a>
 
-<li> Install the AVR tools, TinyOS, Nesc as per 
-<a href="../../../ptolemy/domains/ptinyos/util/nc2moml/index.htm"><CODE>$PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm</CODE></a>
+<li> Install the AVR tools, TinyOS, NesC as per 
+<a href="../../../ptolemy/domains/ptinyos/doc/installation.htm"><CODE>$PTII/ptolemy/domains/ptinyos/doc/installation.htm</CODE></a>
  <p>At the minimum, you should have the
-<CODE>TOSDIR</CODE>,
-<CODE>PTINYOS_MOMLROOT</CODE>,
-<CODE>TOSROOT</CODE> environment variables set
+<CODE>TOSROOT</CODE>,
+<CODE>TOSDIR</CODE>, and
+<CODE>PTINYOS_MOMLROOT</CODE>
+ environment variables set.
 
 <li> Configure Ptolemy II with:
 <pre>
@@ -37,14 +38,6 @@ cd $PTII
 <pre>
 make fast
 </pre>
-
-
-<li> Run a simple test:
-<pre>
-cd $PTII/ptolemy/domains/ptinyos/util/nc2moml
-make test
-</pre>
-
 
 <li> Start up Viptos:
 <pre>

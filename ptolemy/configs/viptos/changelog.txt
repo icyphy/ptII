@@ -1,0 +1,9 @@
+Changes in viptos-1.0beta:
+
+- automatic commandPort and eventPort socket numbering.
+- automatic node numbering.
+- nesc 1.2.2 compatible: Using copy of nesc/tools/nesc.jar, 
+    and removed create-nescdumpjar.sh
+- Replaced all pthread constructs with JNI constructs for cygwin compatibility.
+- New icon look-and-feel: using rotated ports and NameIcon.
+- ncapp2moml now compatible with Ptolemy II relation groups.
