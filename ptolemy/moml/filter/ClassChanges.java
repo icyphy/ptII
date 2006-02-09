@@ -226,6 +226,11 @@ public class ClassChanges implements MoMLFilter {
 
         _classChanges.put("ptolemy.domains.sr.lib.Latch",
                 "ptolemy.domains.sr.lib.Current");
+
+        // Renamed VergilPreferences
+        _classChanges.put("ptolemy.vergil.VergilPreferences",
+                "ptolemy.actor.gui.PtolemyPreferences");
+
     }
 
     // Set of class names that are obsolete and should be simply
