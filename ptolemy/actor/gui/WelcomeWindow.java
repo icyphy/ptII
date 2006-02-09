@@ -47,6 +47,7 @@ import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 
+import ptolemy.data.BooleanToken;
 import ptolemy.gui.Top;
 import ptolemy.util.MessageHandler;
 
@@ -67,24 +68,33 @@ public class WelcomeWindow extends HTMLViewer {
      */
     public WelcomeWindow() {
         super(); 
-        _fileMenuItems = null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Center this window.  Do not add menus.
+    /** Center this window.  Hide the menu bar.
      */
     public void pack() {
-        Runnable doPack = new Runnable() {
-            public void run() {     
-                if (getCentering()) {
-                    centerOnScreen();
-                }
-            }
-        };
+        hideMenuBar();
+        super.pack();
+    }
 
-        deferIfNecessary(doPack);
+    /** Show the window if the _hideWelcomeWindow parameter is not set 
+     *  or is false.
+     */
+    public void show() {
+        // FIXME: Need to move VergilPreferences
+//         BooleanToken hideWelcomeWindow = 
+//             ((BooleanToken) PtolemyPreferences.preferenceValue(getDirectory(),
+//                     "_hideWelcomeWindow"));
+
+//         if (hideWelcomeWindow != null && hideWelcomeWindow.booleanValue()) {
+//             // The _hideWelcomeWindow parameter is true
+//             System.out.println("Hide the welcome window");
+//             return;
+//         }
+        super.show();
     }
 }
 
