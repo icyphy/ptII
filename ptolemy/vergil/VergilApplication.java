@@ -42,6 +42,7 @@ import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.data.expr.Parameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.kernel.CompositeEntity;
@@ -336,9 +337,11 @@ public class VergilApplication extends MoMLApplication {
             }
         }
 
-        // This has the side effects of merging properties from
-        // ptII.properties and loading the user PtolemyPreferences.
+        // This has the side effects of merging properties from ptII.properties
         Configuration configuration = super._createDefaultConfiguration();
+
+        // Read the user preferences, if any.
+        PtolemyPreferences.setDefaultPreferences(configuration);
 
         try {
             configuration = readConfiguration(_configurationURL);
