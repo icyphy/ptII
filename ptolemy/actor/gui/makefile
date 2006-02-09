@@ -142,6 +142,8 @@ JSRCS = \
 	TokenEffigy.java \
 	UnitConstraintsDialog.java \
 	UnitSolverDialog.java \
+	WelcomeWindow.java \
+	WelcomeWindowTableau.java \
 	WindowPropertiesAttribute.java
 
 # Files to be included in the jar file
