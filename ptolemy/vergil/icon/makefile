@@ -49,6 +49,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	ActorNameIcon.java \
 	AttributeValueIcon.java \
 	BoxedValueIcon.java \
 	BoxedValuesIcon.java \
