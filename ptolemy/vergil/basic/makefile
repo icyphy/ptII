@@ -114,6 +114,7 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$OpenLibraryMenuItemFactory.class' \
 	'BasicGraphFrame$$RedoAction.class' \
 	'BasicGraphFrame$$UndoAction.class' \
+	'CustomizeDocumentationAction$$1.class' \
 	'EditorDropTarget$$1.class' \
 	'EditorDropTarget$$2.class' \
 	'EditorDropTarget$$3.class' \
@@ -124,6 +125,7 @@ OPTIONAL_FILES = \
 	'IconController$$IconRenderer.class' \
 	'NamedObjController$$GetDocumentationAction.class' \
 	'ParameterizedNodeController$$1.class' \
+	'RunnableGraphController$$ButtonFigureAction.class' \
 	'RunnableGraphController$$PauseModelAction.class' \
 	'RunnableGraphController$$RunModelAction.class' \
 	'RunnableGraphController$$StopModelAction.class' \
