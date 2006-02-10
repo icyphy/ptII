@@ -439,6 +439,7 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/hdf \
 		ptolemy/domains/petrinet \
 		ptolemy/domains/psdf \
+		ptolemy/domains/rendezvous \
 		ptolemy/domains/sdf/test/auto/sdf_inside_pn.xml \
 		ptolemy/domains/sr \
 		ptolemy/domains/test \
