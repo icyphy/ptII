@@ -397,12 +397,7 @@ KRUFT = \
 	codeDocVisualSense.jar \
 	docConfig.jar
 
-all: suball whatsnew.htm whatsnewVergil.htm \
-	codeDoc/tree.html \
-	codeDoc/ptolemy/actor/lib/Ramp.xml \
-	codeDocHyVisual/doc/codeDoc/tree.html \
-	codeDocVisualSense/doc/codeDoc/tree.html \
-	codeDocViptos/doc/codeDoc/tree.html
+all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html codeDoc/ptolemy/actor/lib/Ramp.xml codeDocHyVisual/doc/codeDoc/tree.html codeDocVisualSense/doc/codeDoc/tree.html codeDocViptos/doc/codeDoc/tree.html
 
 #	codeDoc/ptolemy/actor/lib/RampIdx.xml
 
