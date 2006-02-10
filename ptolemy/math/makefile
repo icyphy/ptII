@@ -104,6 +104,7 @@ OPTIONAL_FILES = \
 	'Overflow$$1.class' \
 	'Overflow$$General.class' \
 	'Overflow$$Grow.class' \
+	'Overflow$$Minimize.class' \
 	'Overflow$$Modulo.class' \
 	'Overflow$$Saturate.class' \
 	'Overflow$$ToZero.class' \
