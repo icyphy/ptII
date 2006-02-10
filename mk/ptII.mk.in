@@ -459,7 +459,10 @@ PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
 PTJNI_DIR =	@PTJNI_DIR@
 
 # Flag to use with TinyOS under Cygwin (-mno-cygwin)
-PTJNI_NO_CYGWIN =	@PTJNI_NO_CYGWIN@
+#PTJNI_NO_CYGWIN =	@PTJNI_NO_CYGWIN@
+# Under Windows with Cygwin-1.3.22 and gcc-3.2, we do not use -mno-cygwin
+PTJNI_NO_CYGWIN =
+
 
 # JNI shared library C compiler flag, under Solaris this would be -fPIC.
 PTJNI_SHAREDLIBRARY_CFLAG =	@PTJNI_SHAREDLIBRARY_CFLAG@
