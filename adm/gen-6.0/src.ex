@@ -65,6 +65,7 @@ config.cache
 config.log
 config.status
 core
+core.[0-9]*
 doc/design/src
 doc/design/html
 doc/img/PtolemyIISplash.psd
