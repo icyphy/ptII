@@ -696,9 +696,8 @@ public class MoMLApplication implements ExecutionListener {
         try {
             StringUtilities.mergePropertiesFile();
         } catch (Exception ex) {
-            System.out.println("Failed to load properties pile, try "
-                    + "rerunning configure with:\n  cd $PTII; ./configure\n"
-                    + " Exception was:\n  " + ex);
+            // FIXME: this should be logged, not ignored
+            // Ignore the exception, it clutters the start up.
         }
 
         return null;
