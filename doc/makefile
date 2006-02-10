@@ -222,6 +222,7 @@ EXPERIMENTALPACKAGES = \
 
 # Packages used by HyVisual
 HYVISUALPACKAGES = \
+			$(PTCOLT_PACKAGES) \
 			ptolemy.actor.lib.javasound \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.comm \
@@ -297,7 +298,6 @@ ALL1_4PACKAGES =	$(COMPACKAGES) \
 			$(DIVAPACKAGES) \
 			$(EXPERIMENTALPACKAGES) \
 			$(PTBACKTRACK_PACKAGES) \
-			$(PTCOLT_PACKAGES) \
 			$(PTCOMM_PACKAGES) \
 			$(PTDISTRIBUTED_PACKAGES) \
 			$(PTGR_PACKAGES) \
