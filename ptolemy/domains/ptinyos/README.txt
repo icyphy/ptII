@@ -5,4 +5,4 @@ $PTII/bin/vergil -viptos
 or 
 $PTII/bin/viptos
 
-For details, see util/nc2moml/index.htm
+For details, see doc/installation.htm
