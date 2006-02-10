@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SenseToLeds-InWireless" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 24, 884, 660}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 24, 732, 554}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[662, 551]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[517, 436]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2396387260339">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{256.0439189189189, 215.2242398648649}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.5, 218.0}">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
@@ -447,33 +447,33 @@
                 </property>
             </port>
             <entity name="Main" class="tos.system.Main">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 70.0}">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 70.0}">
                 </property>
             </entity>
             <entity name="TimerC" class="tos.system.TimerC">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 385.0}">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 385.0}">
                 </property>
             </entity>
             <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 365.0]">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 365.0]">
                 </property>
             </entity>
             <entity name="SenseToInt" class="tos.lib.Counters.SenseToInt">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 180.0}">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 180.0}">
                 </property>
             </entity>
             <entity name="DemoSensorC" class="tos.sensorboards.micasb.DemoSensorC">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 395.0]">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 395.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.IORelation">
