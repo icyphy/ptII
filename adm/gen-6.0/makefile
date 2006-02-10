@@ -680,13 +680,13 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/viptos$(VIPTOS_VERSION)/ptolemy/configs/makefile.tmp \
 		src_jar/viptos$(VIPTOS_VERSION)/ptolemy/configs/makefile \
 	# Fix up doc/design/makefile
-	egrep -v "hyvisual.pdf|ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
+	egrep -v "hyvisual.jar|hyvisual.pdf|ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/design/makefile \
 		> src_jar/viptos$(VIPTOS_VERSION)/doc/design/makefile.tmp
 	mv src_jar/viptos$(VIPTOS_VERSION)/doc/design/makefile.tmp \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/design/makefile
 	# Fix up doc/makefile/img
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbaner2.psd"\
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd"\
 		src_jar/viptos$(VIPTOS_VERSION)/doc/img/makefile \
 		> src_jar/viptos$(VIPTOS_VERSION)/doc/img/makefile.tmp
 	mv src_jar/viptos$(VIPTOS_VERSION)/doc/img/makefile.tmp \
