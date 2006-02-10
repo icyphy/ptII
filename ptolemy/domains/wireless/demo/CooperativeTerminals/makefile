@@ -48,6 +48,7 @@ JSRCS = \
 	CooperationEvaluator.java
 
 OTHER_FILES_TO_BE_JARED = \
+	CooperativeTerminals.xml \
 	aau_logo_en.gif \
 	basestation.gif \
 	ctiflogowoT.png \
