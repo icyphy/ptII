@@ -16,12 +16,14 @@
     domain) installed.
 
     <p>If you are running on Windows, you must have Cygwin installed
-    with gcc 3.2.  Note that gcc 3.3 and 3.4 on Cygwin produce .dll's
+    with gcc 3.2 and Cygwin 1.3.22.
+    Note that gcc 3.3 and 3.4 on Cygwin produce .dll's
     that are incompatible with JNI as used in the current version of
     Ptolemy II and Viptos.  We highly recommend that you use the
     version of cygwinDevel available <a
     href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/cygwin.htm"
-    target="_top">here</a>.
+    target="_top">here</a>.  
+
 
     <p>We assume that you have neither the nesC compiler nor TinyOS
     installed.  If you wish to use pre-existing installations, please
@@ -194,14 +196,26 @@ rpm -ivh *.rpm
         <ul>
           <li>Windows (Cygwin):
             <br>
-            <a href="http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm</a>
+	    Download make-3.80 from
+	    <a href="http://www.gnu.org/order/ftp.html">one of the GNU Mirrors</a>
+	    <pre>
+	    tar -zxf make-3.80.tar.gz
+	    cd make-3.80
+	    ./configure
+	    make
+	    make install
+	    cd /usr/local/bin
+	    cp make.exe gmake.exe
+	    </pre>
+            <p><b>or</b>
+            <br><a href="http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm</a>
             
             Install the rpm on the command line with
             <pre>
 rpm -ivh make-3.80tinyos-1.cygwin.i386.rpm
             </pre>
             in the directory where you saved the file.
-            
+
           <li>Linux:
             <br>
             <a href="http://www.tinyos.net/dist-1.2.0/tools/linux/make-3.80tinyos-1.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/linux/make-3.80tinyos-1.i386.rpm</a>
