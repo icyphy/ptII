@@ -476,7 +476,8 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		doc/codeDocHyVisual.jar \
 		doc/codeDocVisualSense \
 		doc/codeDocVisualSense.jar \
-		ptolemy/configs/hyvisual
+		ptolemy/configs/hyvisual \
+		ptolemy/domains/ptinyDomains.xml
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
 JAR=c:/j2sdk1.4.2_05/bin/jar
