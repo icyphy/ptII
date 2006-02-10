@@ -1,8 +1,5 @@
 /*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
-
-Copyright (c) 1995-2006 The Regents of the University of California.
+Copyright (c) 2005-2006 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -24,6 +21,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
+
 package ptolemy.kernel.util.test;
 
 import java.lang.ref.WeakReference;

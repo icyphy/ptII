@@ -1,8 +1,7 @@
-/*
-Below is the copyright agreement for the Ptolemy II system.
-Version: $Id$
+/** Default preferences definition for Vergil. */
 
-Copyright (c) 1995-2006 The Regents of the University of California.
+/*
+Copyright (c) 2005-2006 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -24,7 +23,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 */
-/** Default preferences definition for Vergil. */
+
 package ptolemy.actor.gui;
 import java.io.File;
 import java.io.FileWriter;
