@@ -17,7 +17,7 @@
 # Javadoc page, for example
 # http://java.sun.com/j2se/1.5.0/docs/api/java/util/Properties.html
 #
-# This file is read in by VergilApplication.mergePropertiesFile().
+# This file is read in by StringUtilities.mergePropertiesFile().
 # Properties listed in this file do not override preexisting properties.
 # To view the properties, start up vergil, do 
 # File -> New -> Graph Editor -> View -> JVM Properties
@@ -45,6 +45,7 @@ ptolemy.ptII.java.home=@PTJAVA_HOME@
 # Usually one of win32, linux or solaris
 ptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@
 
+# Viptos requires TOSROOT and TOSDIR
 # TOSROOT without /cygdrive
 ptolemy.ptII.tosroot=@TOSROOT_NO_CYGDRIVE@
 
