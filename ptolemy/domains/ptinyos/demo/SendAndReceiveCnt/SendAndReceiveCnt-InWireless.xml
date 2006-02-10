@@ -2,19 +2,19 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SendAndReceiveCnt-InWireless" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="Wireless Director" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 46, 1208, 539}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 158, 926, 436}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[986, 430]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 318]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3167213114754">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.078125, 162.3892045454545}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.5, 159.0}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -236,33 +236,33 @@
                 </property>
             </port>
             <entity name="Main" class="tos.system.Main">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 50.0}">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 50.0}">
                 </property>
             </entity>
             <entity name="Counter" class="tos.lib.Counters.Counter">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 175.0]">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 175.0]">
                 </property>
             </entity>
             <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 340.0]">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 340.0]">
                 </property>
             </entity>
             <entity name="IntToRfm" class="tos.lib.Counters.IntToRfm">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 340.0]">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 340.0]">
                 </property>
             </entity>
             <entity name="TimerC" class="tos.system.TimerC">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 340.0]">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 340.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.IORelation">
@@ -500,21 +500,21 @@
                 </property>
             </port>
             <entity name="Main" class="tos.system.Main">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 40.0}">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 40.0}">
                 </property>
             </entity>
             <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 320.0}">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 320.0}">
                 </property>
             </entity>
             <entity name="RfmToInt" class="tos.lib.Counters.RfmToInt">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 175.0}">
-                </property>
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 175.0}">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.IORelation">

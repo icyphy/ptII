@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CntToLedsAndRfm-InDE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={222, 437, 822, 509}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 188, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -130,33 +130,33 @@
             </property>
         </port>
         <entity name="Main" class="tos.system.Main">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 40.0]">
-            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 40.0]">
             </property>
         </entity>
         <entity name="Counter" class="tos.lib.Counters.Counter">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 155.0]">
-            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 155.0]">
             </property>
         </entity>
         <entity name="IntToLeds" class="tos.lib.Counters.IntToLeds">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 315.0]">
-            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 315.0]">
             </property>
         </entity>
         <entity name="IntToRfm" class="tos.lib.Counters.IntToRfm">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 315.0]">
-            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 315.0]">
             </property>
         </entity>
         <entity name="TimerC" class="tos.system.TimerC">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 315.0]">
-            </property>
             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 315.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.IORelation">
