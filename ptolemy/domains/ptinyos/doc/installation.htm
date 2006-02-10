@@ -15,15 +15,94 @@
     Viptos (or a release of Ptolemy II that includes the PtinyOS
     domain) installed.
 
+    <blockquote>
+    <table border=1>
+      <tr><td>
+      <h3>Windows Notes</h3>
     <p>If you are running on Windows, you must have Cygwin installed
     with gcc 3.2 and Cygwin 1.3.22.
     Note that gcc 3.3 and 3.4 on Cygwin produce .dll's
     that are incompatible with JNI as used in the current version of
-    Ptolemy II and Viptos.  We highly recommend that you use the
-    version of cygwinDevel available <a
+    Ptolemy II and Viptos.  
+
+    <p>We highly recommend that you use the
+    version of cygwinDevel shipped with Ptolemy II 3.0 and <a
     href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/cygwin.htm"
     target="_top">here</a>.  
+    <br>Once you have installed Cygwin, you should have these versions:
+<pre>
+cxh@DOPLAP35 ~/ptII
+$ gcc -v
+Reading specs from /usr/lib/gcc-lib/i686-pc-cygwin/3.2/specs
+Configured with: /netrel/src/gcc-3.2-3/configure --enable-languages
+va --enable-libgcj --enable-threads=posix --with-system-zlib --enab
+out-included-gettext --enable-interpreter --disable-sjlj-exceptions
+rsion-specific-runtime-libs --enable-shared --build=i686-pc-linux -
+-cygwin --target=i686-pc-cygwin --enable-haifa --prefix=/usr --exec
+--sysconfdir=/etc --libdir=/usr/lib --includedir=/nonexistent/inclu
+ir=/usr/sbin
+Thread model: posix
+gcc version 3.2 20020927 (prerelease)
 
+cxh@DOPLAP35 ~/ptII
+$ uname -a
+CYGWIN_NT-5.1 DOPLAP35 1.3.22(0.78/3/2) 2003-03-18 09:20 i686 unkno
+gwin
+</pre>
+    <p>Windows users should verify that JNI works before proceeding
+    
+      <pre>
+cd /usr/bin
+cp make.exe gmake.exe
+cd $PTII/jni/test
+make
+      </pre>
+      You should see
+<pre>
+Failed: 0  Total Tests: 4  ((Passed: 4, Newly Passed: 0)  Known Failed: 0) C:/cxh/ptII/jni/test
+</pre>
+    <p><b>If the above test fail for you under Cygwin, then it is
+    very unlikely that running a TinyOS model within Viptos will work.</b>
+
+    <p>Despite the bug above, Windows users and other users can
+    generate code by changing the PtinyOSDirector target
+    from <code>ptII</code> to <code>pc</code> or some other tinyos target like
+    <code>mica</code> or <code>mica install</code>.
+    See <code>$PTII/ptolemy/configs/viptos/help.htm</code> for details.
+    Only running a simulation within ptII involves JNI.
+
+
+    <p>Cygwin users should make sure that <code>/usr/local/bin</code>
+    is in your path before <code>/usr/bin</code>
+	    <br>Under Cygwin, the easiest was to add
+	    <code>/usr/local/bin</code> to your path is to 
+	    edit <code>$HOME/.bashrc</code> and add
+	    <pre>
+PATH=/usr/local/bin:${PATH}
+            </pre>
+	    Another way is via the System control panel
+	    (For details, see 
+        <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#settingptII">Set the value of the PTII environment variable</a>).
+
+    <p>If you use the Ptolemy II 3.0 cygwinDevel, you will also need
+    to upgrade to 
+    <ul> 
+       <li>autoconf-2.53 or later, (2.59 preferred)
+       <li>automake-1.5 or later (1.9.6 preferred)
+       <li>make-3.80 or later (3.80 preferred)
+     </ul>
+
+     <p>For each of the packages, download the .tar.gz or bzip2 file from
+     <a href="http://www.gnu.org/order/ftp.html">one of the GNU Mirrors</a>,
+     unzip it, and run
+     <pre>
+configure
+make
+make install
+     </pre>
+       </td></tr>
+     </table>
+    </blockquote>
 
     <p>We assume that you have neither the nesC compiler nor TinyOS
     installed.  If you wish to use pre-existing installations, please
@@ -210,7 +289,10 @@ cd /usr/local/bin
 cp make.exe gmake.exe
 	    </pre>
             <p><b>or</b>
-            <br><a href="http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm</a>
+            <p><i>Ptolemy II 3.0 CygwinDevel users will not have rpm installed,
+	    so this step won't work.  Grab the tar file instead.</i>
+	    Download 
+	    <a href="http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm</a>
             
             Install the rpm on the command line with
             <pre>
@@ -235,6 +317,7 @@ rpm -ivh make-3.80tinyos-1.i386.rpm
             If you install this under Cygwin, make sure
             <code>/usr/local/bin</code> is in your path and comes
             before any other paths to any older version.
+
         </ul>
         
       <li>Make a directory into which to store the source code for
@@ -400,12 +483,10 @@ setenv PTINYOS_MOMLROOT $PTII/vendors/ptinyos/moml
 
         <li>Under Windows with Cygwin, you can permanently set
         environment variables from the System control panel. (For
-        details, see <a
-        href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/ptII/doc/install.htm#settingptII">Set
-        the value of the PTII environment variable</a>).
+        details, see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/install.htm#settingptII">Set the value of the PTII environment variable</a>).
 
           <p>
-            Go to Start Menu -> Settings -> Control Panels -> System -> Advanced -> Environment Variables.
+            Go to Start Menu -&gt; Settings -&gt; Control Panels -&gt; System -&gt; Advanced -&gt; Environment Variables.
             <br>
             Set <code>TOSROOT</code> to <code>%PTII%/vendors/ptinyos/tinyos-1.x</code>
             <br>
@@ -434,8 +515,8 @@ cd $PTII
       <li>Under Linux or Cygwin, you must have the following programs
       installed on your system:
         <ul>
-          <li>automake-1.5 or later
           <li>autoconf-2.53 or later
+          <li>automake-1.5 or later
         </ul>
         If you install these under Cygwin, make sure
         <code>/usr/local/bin</code> is in your path and comes before
@@ -529,6 +610,10 @@ cat $PTII/ptolemy/domains/ptinyos/util/ncapp2moml/ncapp2moml-tinyos-1.1.15Dec200
 cd $PTII/jni/test
 make
       </pre>
+      You should see
+<pre>
+Failed: 0  Total Tests: 4  ((Passed: 4, Newly Passed: 0)  Known Failed: 0) C:/cxh/ptII/jni/test
+</pre>
   </ol>
 
 </body>
