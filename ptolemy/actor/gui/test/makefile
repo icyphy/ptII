@@ -50,9 +50,6 @@ JSRCS = \
 	TestModel.java
 
 # Non-graphical Java tests written in Tcl
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
 # NOTE: Please do not put tests that use diva in JSIMPLE_TESTS
 # If you do, then the nightly build will report these tests as failing
 # tests that use diva and graphical tests in general should go
@@ -66,7 +63,7 @@ JGRAPHICAL_TESTS = \
 	MoMLApplication.tcl \
 	PtExecuteApplication.tcl
 EXTRA_SRCS =	\
-	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TEST) $(JGRAPHICAL_TESTS) test.xml
+	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) $(JGRAPHICAL_TESTS) test.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

@@ -116,6 +116,7 @@ MISC_FILES =	$(DOMAINS) test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(EXPERIMENTAL_DOMAINS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 	dfm \
 	generic \
 	gr \

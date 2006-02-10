@@ -116,6 +116,7 @@ OPTIONAL_FILES = \
 	'BaseType$$MatrixType.class' \
 	'BaseType$$NumericalType.class' \
 	'BaseType$$ObjectType.class' \
+	'BaseType$$PetiteType.class' \
 	'BaseType$$ScalarType.class' \
 	'BaseType$$StringType.class' \
 	'BaseType$$UnknownType.class' \

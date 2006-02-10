@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	MoMLParserLeak.java \
 	RecorderErrorHandler.java
 
 # Non-graphical Java tests written in Tcl
@@ -85,6 +86,8 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	UndoDeleteEntityComposite.xml \
+	p1.moml \
+	p2.moml \
 	testClass.xml \
 	testClass2.xml \
 	testClass2DotMoml.moml \
