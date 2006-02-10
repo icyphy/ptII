@@ -144,7 +144,9 @@ ln -s <I>location_of_your_nesc_tree</I> nesc
 
                 and install them on the cygwin command line by typing:
                 
-                <pre>rpm --ignoreos -ivh *.rpm</pre> 
+                <pre>
+rpm --ignoreos -ivh *.rpm
+                </pre> 
 
                 in the directory where you saved the files.
 		
@@ -155,15 +157,15 @@ ln -s <I>location_of_your_nesc_tree</I> nesc
 
 		 <p>If you get
 		<pre>
-		bash-3.00$ rpm --ignoreos -ivh *.rpm
-		error: Failed dependencies:
-		/bin/sh is needed by make-3.80tinyos-1
-		/bin/sh is needed by mspgcc-win32tinyos-20041204-2
-	        bash-3.00$
+bash-3.00$ rpm --ignoreos -ivh *.rpm
+error: Failed dependencies:
+/bin/sh is needed by make-3.80tinyos-1
+/bin/sh is needed by mspgcc-win32tinyos-20041204-2
+bash-3.00$
 		</pre>
 		Then try 
 		<pre>
-		rpm --ignoreos --nodeps -ivh *.rpm
+rpm --ignoreos --nodeps -ivh *.rpm
 		</pre>
 
                 Note: make is installed in the next step.
@@ -199,13 +201,13 @@ rpm -ivh *.rpm
 	    Download make-3.80 from
 	    <a href="http://www.gnu.org/order/ftp.html">one of the GNU Mirrors</a>
 	    <pre>
-	    tar -zxf make-3.80.tar.gz
-	    cd make-3.80
-	    ./configure
-	    make
-	    make install
-	    cd /usr/local/bin
-	    cp make.exe gmake.exe
+tar -zxf make-3.80.tar.gz
+cd make-3.80
+./configure
+make
+make install
+cd /usr/local/bin
+cp make.exe gmake.exe
 	    </pre>
             <p><b>or</b>
             <br><a href="http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm">http://www.tinyos.net/dist-1.2.0/tools/windows/make-3.80tinyos-1.cygwin.i386.rpm</a>
@@ -238,7 +240,7 @@ rpm -ivh make-3.80tinyos-1.i386.rpm
       <li>Make a directory into which to store the source code for
       TinyOS and nesC:
         <pre>
-    mkdir -p $PTII/vendors/ptinyos
+mkdir -p $PTII/vendors/ptinyos
         </pre>
 
         The rest of these instructions assume the above path.
@@ -336,9 +338,9 @@ make install
       <code>c:/cygwin/usr/local/lib/ncc/</code> to
       <code>c:/usr/local/lib/ncc/</code>:
       <pre>
-		  mkdir -p c:/usr/local/lib
-		  cd c:/usr/local/lib
-		  cp -r /usr/local/lib/ncc .
+mkdir -p c:/usr/local/lib
+cd c:/usr/local/lib
+cp -r /usr/local/lib/ncc .
       </pre>
       The reason is that Cygwin mounts directories under
       </code>c:/cygwin</code> and the WinAVR binaries don't know how
@@ -459,7 +461,7 @@ make install
 	</pre>
 
 	make failed for me:
-<pre>
+	<pre>
 Making all in libcompat
 make[3]: Entering directory `/cygdrive/c/cxh/ptII/vendors/ptinyos/nesc/src/libcompat'
 if gcc -DHAVE_CONFIG_H -I. -I. -I.. -DNMEMDEBUG -DNDEBUG -O9    -g -Wall -MT regions.o -MD -MP -MF ".deps/regions.Tpo" -c -o regions.o regions.c; \
@@ -480,9 +482,9 @@ In file included from /usr/local/include/fcntl.h:1,
                  from regions.c:40:
 /usr/local/include/sys/fcntl.h:139: error: redefinition of `struct flock'
 make[3]: *** [regions.o] Error 1
-</pre>
+        </pre>
 	The solution was to uninstall one of the rpms.
-<pre>
+	<pre>
 cd <I>Location of avr rpms</I>
 rpm -e arm-thumb-elf-gcc-3.2-1
 cd $PTII/vendors/ptinyos/nesc
@@ -490,7 +492,7 @@ make
 make install
 cd <I>Location of avr rpms</I>
 rpm -force --ignoreos --nodeps -ivh *.rpm
-</pre>
+        </pre>
 
     </li>
 
