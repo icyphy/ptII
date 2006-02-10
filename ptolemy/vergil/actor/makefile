@@ -122,6 +122,11 @@ OPTIONAL_FILES = \
 	'ClassDefinitionController$$ConvertToInstanceAction.class' \
 	'ClassDefinitionController$$CreateInstanceAction.class' \
 	'ClassDefinitionController$$CreateSubclassAction.class' \
+	'DocEffigy$$Factory.class' \
+	'DocTableau$$Factory.class' \
+	'DocViewer$$1.class' \
+	'DocViewer$$2.class' \
+	'DocViewer$$3.class' \
 	'ExternalIOPortController$$1.class' \
 	'ExternalIOPortController$$2.class' \
 	'ExternalIOPortController$$NameWrapper.class' \
