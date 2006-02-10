@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={62, 158, 926, 436}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={24, 4, 926, 468}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 318]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 350]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.5, 159.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.5, 175.0}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -287,7 +287,7 @@
             <link port="TimerC.Timer" relation="relation2"/>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={413, 410, 453, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 399, 657, 227}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 40.0]">
             </property>
@@ -530,7 +530,7 @@
             <link port="RfmToInt.StdControl" relation="relation"/>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={412, 617, 453, 201}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={364, 539, 653, 227}, maximized=false}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 100.0]">
             </property>

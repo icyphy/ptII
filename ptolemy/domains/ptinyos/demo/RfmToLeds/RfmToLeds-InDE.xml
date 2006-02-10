@@ -172,7 +172,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={413, 410, 453, 201}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={723, 510, 290, 227}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 80.0]">
         </property>

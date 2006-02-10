@@ -4,13 +4,13 @@
 <entity name="CntToLedsAndRfm-InDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 188, 870, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 55, 813, 440}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[655, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[598, 322]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{327.5, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{299.0, 161.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
@@ -21,7 +21,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This application blinks the LEDS as a binary counter and &#10;sends a radio packet with the current value of the counter.&#10;The packet is displayed in the Display window.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 220.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -41,13 +41,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 285.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command.&#10;To see the make command, look inside the MicaCompositeActor &#10;and select Debug -&gt; Listen to Director.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Running this demo executes a &quot;make&quot; command.&#10;To see the make command &#10;look inside the MicaCompositeActor &#10;and select Debug -&gt; Listen to Director.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 60.0]">
         </property>
@@ -195,7 +195,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={413, 410, 453, 201}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={247, 462, 656, 227}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 65.0]">
         </property>
