@@ -205,14 +205,16 @@ the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CO
 
 <li> Run the nightly build, build a release and run
 <CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the files.
+<br>First, edit <code>chkcopyright</code> and update the year.
+<br>Then, do:
+<pre>
+find . -type f -print &gt; /tmp/ff
+sh $PTII/adm/copyright/chkcopyright `cat /tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v gif`
+</pre>
+
 
 <li> Run <CODE>$PTII/adm/bin/fixsince</CODE> (not shipped with
 the release) and update the @since tags
-
-<pre>
-find . -type f -print &gt; ~/tmp/ff
-sh ~ptII/adm/copyright/chkcopyright `cat ~/tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v gif`
-</pre>
 
 <li> Concatenate all the javadoc files in to one file and run
 <code>$PTII/util/testsuite/ptspell</code>. 
