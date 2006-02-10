@@ -233,8 +233,8 @@ it is still worth getting the other error messages.
 <BLOCKQUOTE>
 cd $PTII
 make clean
-make -k JAVAC=gcj34 JFLAGS="-O2 -Wunused -Wextraneous-semicolon -Wno-deprecated -C" all &gt;&amp; make.out &amp;
-
+make -k JAVAC=gcj JFLAGS="-O2 -Wunused -Wextraneous-semicolon -Wno-deprecated -C" all &gt;&amp; make.out &amp;
+grep error: make.out | awk -F: '{for(i=3;i<=NF;i++) {printf("%s ",$i)} printf("\n");}' | sort  | uniq | grep -v "not found in the decl"
 </BLOCKQUOTE>
 
 <li> Currently, we use 
@@ -253,9 +253,9 @@ below are some things to be aware of
 <pre>
 cd /home/cvs/ptII
 chmod -R a+rX .
-find . -name "*.java,v" -exec chmod a-x {}\;
-find . -name "*makefile,v" -exec chmod a-x {}\;
-find . -name "*.tcl,v" -exec chmod a-x {}\;
+find . -name "*.java,v" -exec chmod a-x {} \;
+find . -name "*makefile,v" -exec chmod a-x {} \;
+find . -name "*.tcl,v" -exec chmod a-x {} \;
 </pre>
 
 <li> Tag the tree as the release tree and create a branch
