@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/domains/pn/demo
 
-DIRS =		NondeterministicMerge OrderedMerge QR
+DIRS =		NondeterministicMerge OrderedMerge QR RemoveNilTokens
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -51,7 +51,8 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	NondeterministicMerge/NondeterministicMerge.jar \
 	OrderedMerge/OrderedMerge.jar \
-	QR/QR.jar
+	QR/QR.jar \
+	RemoveNilTokens/RemoveNilTokens.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
