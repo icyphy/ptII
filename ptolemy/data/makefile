@@ -80,6 +80,7 @@ JSRCS = \
 	MatrixToken.java \
 	Numerical.java \
 	ObjectToken.java \
+	PetiteToken.java \
 	RecordToken.java \
 	ScalarToken.java \
 	StringToken.java \
