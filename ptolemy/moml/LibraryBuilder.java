@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Workspace;
  * be to create a library from a directory of ksw files.
  * @author Chad Berkley
  * @version $Id$
- * @since Ptolemy II 5.1
+ * @since Ptolemy II 5.2
  * @Pt.ProposedRating Red (berkley)
  * @Pt.AcceptedRating Red (berkley)
  */

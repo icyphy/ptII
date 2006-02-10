@@ -47,7 +47,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  <p>
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */

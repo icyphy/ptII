@@ -1,6 +1,6 @@
 /* Execute commands in a subprocess.
 
- Copyright (c) 2003-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,7 @@ import java.util.List;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 5.2;
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

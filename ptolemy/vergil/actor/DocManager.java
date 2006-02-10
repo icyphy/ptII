@@ -1,6 +1,6 @@
 /* A parser for DocML (Doc Markup Language).
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -132,7 +132,7 @@ import com.microstar.xml.XmlParser;
  
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */

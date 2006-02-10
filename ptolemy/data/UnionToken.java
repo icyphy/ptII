@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Yuhong Xiong, Steve Neuendorffer, Elaine Cheong, Edward Lee
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (yuhong)
  @Pt.AcceptedRating Red (cxh)
  */

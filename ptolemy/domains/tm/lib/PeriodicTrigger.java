@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
  Produce a ramp at 2 Hz.
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */

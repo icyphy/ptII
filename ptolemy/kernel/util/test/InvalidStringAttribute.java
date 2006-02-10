@@ -42,7 +42,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

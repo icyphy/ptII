@@ -1,6 +1,6 @@
 /* Wrap StreamExec in a Thread
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -34,7 +34,7 @@ import ptolemy.util.StreamExec;
 /** Wrap StreamExec in a thread
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

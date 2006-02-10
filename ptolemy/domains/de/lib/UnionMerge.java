@@ -69,7 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Edward A. Lee, Haiyang Zheng, Yuhong Xiong
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (yuhongx)
  @Pt.AcceptedRating Red (yuhongx)
  */

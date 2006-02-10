@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NamedObj;
 
  @author Christopher Hylands
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

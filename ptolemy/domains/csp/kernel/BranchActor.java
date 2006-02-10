@@ -1,6 +1,6 @@
 /* Interface for the actor that contain a ConditionalBranchControl.
 
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,7 +39,7 @@ import ptolemy.actor.Actor;
 
  @author Bilung Lee
  @version $Id$
- @since Ptolemy II 0.4
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (bilung)
  @Pt.AcceptedRating Red (bilung)
  @see ConditionalBranch

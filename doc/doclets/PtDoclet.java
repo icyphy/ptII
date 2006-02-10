@@ -45,7 +45,7 @@ import ptolemy.util.StringUtilities;
 
  *  @author Christopher Brooks, Edward A. Lee
  *  @version $Id$
- *  @since Ptolemy II 5.2  
+ *  @since Ptolemy II 5.2
  */
 public class PtDoclet {
     /** Given a command line option, return the number of command line

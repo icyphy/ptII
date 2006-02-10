@@ -1,6 +1,6 @@
 /* A terminal for ports that supports multiports.
 
-Copyright (c) 2005-2006 The Regents of the University of California.
+Copyright (c) 2006 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -52,7 +52,7 @@ import diva.canvas.connector.TerminalFigure;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @see PortSite
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)

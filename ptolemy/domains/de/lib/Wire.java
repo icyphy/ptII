@@ -1,6 +1,6 @@
 /* A Wire with one trigger port that accepts read requests.
 
- Copyright (c) 2004-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Adam Cataldo
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (acataldo)
  @Pt.AcceptedRating Red (acataldo)
  @see ptolemy.domains.de.lib.Wire

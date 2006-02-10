@@ -30,7 +30,7 @@ package ptolemy.util.test;
 /** This class has an inner class so that we can test objectToSourceFileName
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

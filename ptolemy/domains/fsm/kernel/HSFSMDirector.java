@@ -69,7 +69,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Xiaojun Liu, Haiyang Zheng
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (liuxj)
  */

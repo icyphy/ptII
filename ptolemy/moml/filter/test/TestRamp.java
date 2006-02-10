@@ -40,7 +40,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (bilung)
  */

@@ -57,7 +57,7 @@ import ptolemy.kernel.util.InternalErrorException;
 
  @author Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (yuhongx)
  @Pt.AcceptedRating Red (cxh)
  */

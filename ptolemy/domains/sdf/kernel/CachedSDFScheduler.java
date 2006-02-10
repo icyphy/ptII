@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Ye Zhou. Contributor: Brian K. Vogel
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (zhouye)
  @Pt.AcceptedRating Red (cxh)
  */
