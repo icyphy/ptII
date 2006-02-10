@@ -695,7 +695,18 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|jni |lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|ptolemy.hsif|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/makefile \
 		| sed 's/codeDocHyVisual.jar codeDocVisualSense.jar//' \
+	        | sed 's@^all:.*$$@all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html #codeDoc/ptolemy/actor/lib/RampIdx.xml@' \
+		| sed 's@^codeDoc/tree.html:@codeDocFull/tree.html:@' \
 		> src_jar/viptos$(VIPTOS_VERSION)/doc/makefile.tmp
+        # Add a codeDoc/tree.html rule at the bottom
+	echo "##############" \
+		>> src_jar/viptos$(VIPTOS_VERSION)/doc/makefile.tmp
+	echo "codeDoc/tree.html:" \
+		>> src_jar/viptos$(VIPTOS_VERSION)/doc/makefile.tmp
+	echo "	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi" \
+		>> src_jar/viptos$(VIPTOS_VERSION)/doc/makefile.tmp
+	echo "	-(cd ..; CLASSPATH=\"\$$(CLASSPATH)\" \"\$$(JAVADOC)\" \$$(JDOCFLAGS) -d doc/codeDoc \$$(VIPTOSPACKAGES) \$$(VISUALSENSEPACKAGES) \$$(PTINYPACKAGES))" \
+		>> src_jar/viptos$(VIPTOS_VERSION)/doc/makefile.tmp
 	mv src_jar/viptos$(VIPTOS_VERSION)/doc/makefile.tmp \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/makefile
 	# Fix up actor/lib/test/makefile
