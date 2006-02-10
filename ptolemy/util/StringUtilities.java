@@ -407,7 +407,8 @@ public class StringUtilities {
         // systemProperties is a HashSet, so we merge in the new properties.
         newProperties.putAll(systemProperties);
         System.setProperties(newProperties);
-        System.out.println("Loaded " + propertyFileURL);
+        // FIXME: This should be logged, not printed.
+        //System.out.println("Loaded " + propertyFileURL);
     }
 
     /** Return a string representing the name of the file expected to
