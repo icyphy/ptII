@@ -1,6 +1,6 @@
 /* An event that represents a token or tokens sent.
 
- Copyright (c) 2000-2006 The Regents of the University of California.
+ Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,7 +43,7 @@ import ptolemy.data.Token;
  @author  Oscar Barney
  @version $Id$
  @Pt.ProposedRating Red (barney)
- @Pt.AcceptedRating
+ @Pt.AcceptedRating Red (barney)
  */
 public class TokenSentEvent {
     /** Create a new token sent event with the given parameters.  This
