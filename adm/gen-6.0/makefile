@@ -447,6 +447,7 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
 		ptolemy/plot/build.xml \
 		ptolemy/plot/plotml/build.xml \
+		ptolemy/ptp \
 		thales
 
 # Files to be removed from HyVisual source distributions
