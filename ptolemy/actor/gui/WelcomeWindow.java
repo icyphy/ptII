@@ -80,9 +80,9 @@ public class WelcomeWindow extends HTMLViewer {
         JTextField _message = new JTextField(message.length() + 2);
         _message.setEditable(false);
         _message.setAlignmentX(LEFT_ALIGNMENT);
-        _message.setText(message);
+        //_message.setText(message);
 
-        _closePanel.add(_message);
+//         _closePanel.add(_message);
     }
 
     ///////////////////////////////////////////////////////////////////
