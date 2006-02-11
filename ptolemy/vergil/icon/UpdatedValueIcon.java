@@ -93,7 +93,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
                 _associatedAttribute = null;
             }
 
-            NamedObj container = (NamedObj) getContainer();
+            NamedObj container = getContainer();
 
             if (container != null) {
                 Attribute candidateAttribute = container

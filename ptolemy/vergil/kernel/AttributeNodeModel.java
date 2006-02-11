@@ -54,7 +54,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *  @return A valid MoML string.
      */
     public String getDeleteNodeMoML(Object node) {
-        NamedObj attribute = (NamedObj) ((Locatable) node).getContainer();
+        NamedObj attribute = ((Locatable) node).getContainer();
         return "<deleteProperty name=\"" + attribute.getName() + "\"/>\n";
     }
 
@@ -91,8 +91,8 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *  @param node The node.
      */
     public void removeNode(final Object eventSource, final Object node) {
-        NamedObj attribute = (NamedObj) ((Locatable) node).getContainer();
-        NamedObj container = (NamedObj) attribute.getContainer();
+        NamedObj attribute = ((Locatable) node).getContainer();
+        NamedObj container = attribute.getContainer();
         ;
 
         String moml = getDeleteNodeMoML(node);
