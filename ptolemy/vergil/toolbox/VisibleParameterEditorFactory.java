@@ -86,7 +86,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
         if (dialog.buttonPressed().equals("Cancel")) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    NamedObj parent = (NamedObj) object.getContainer();
+                    NamedObj parent = object.getContainer();
                     String moml = "<property name=\"" + object.getName()
                             + "\" value=\""
                             + StringUtilities.escapeForXML(_oldExpression)
@@ -110,7 +110,7 @@ public class VisibleParameterEditorFactory extends EditorFactory {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
-        NamedObj object = (NamedObj) getContainer();
+        NamedObj object = getContainer();
         PtolemyQuery query = new PtolemyQuery(object);
         query.setTextWidth(25);
 

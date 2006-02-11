@@ -262,14 +262,14 @@ public class SingleWindowConfiguration extends Configuration {
                 // and open a tableau for it.
                 // Put the effigy inside the effigy of the parent,
                 // rather than directly into the directory.
-                NamedObj parent = (NamedObj) entity.getContainer();
+                NamedObj parent = entity.getContainer();
                 PtolemyEffigy parentEffigy = null;
 
                 // Find the first container above in the hierarchy that
                 // has an effigy.
                 while ((parent != null) && (parentEffigy == null)) {
                     parentEffigy = getEffigy(parent);
-                    parent = (NamedObj) parent.getContainer();
+                    parent = parent.getContainer();
                 }
 
                 boolean isContainerSet = false;

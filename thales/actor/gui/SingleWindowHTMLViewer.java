@@ -267,7 +267,7 @@ public class SingleWindowHTMLViewer extends HTMLViewer implements
                     Tableau tableau = findComponentTableau(name);
 
                     if (tableau != null) {
-                        fillMainFrame(((Tableau) tableau).getFrame()
+                        fillMainFrame(tableau.getFrame()
                                 .getJMenuBar());
                         _statusBar.setVisible(false);
                     }

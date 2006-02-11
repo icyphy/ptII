@@ -125,7 +125,7 @@ public class TextEditorConfigureFactory extends EditorFactory implements
     public void createEditor(NamedObj object, Frame parent) {
         if (_editor == null) {
             try {
-                StringAttribute attributeToEdit = (StringAttribute) ((NamedObj) getContainer())
+                StringAttribute attributeToEdit = (StringAttribute) getContainer()
                         .getAttribute(attributeName.getExpression(),
                                 StringAttribute.class);
                 int numberOfRows = ((IntToken) rowsDisplayed.getToken())

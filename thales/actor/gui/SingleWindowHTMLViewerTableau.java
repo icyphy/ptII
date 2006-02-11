@@ -160,7 +160,7 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
 
                 if (tableau == null) {
                     tableau = new SingleWindowHTMLViewerTableau(
-                            (HTMLEffigy) effigy, "SingleWHtmlTableau");
+                            effigy, "SingleWHtmlTableau");
                 }
 
                 // Unfortunately, if we have a jar url, (for example

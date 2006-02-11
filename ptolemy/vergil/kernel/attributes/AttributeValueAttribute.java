@@ -213,7 +213,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @param attributeName The attribute name.
      */
     protected void _setAttributeName(String attributeName) {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container =  getContainer();
 
         if (container != null) {
             Attribute newAttribute = ModelScope.getScopedVariable(null,
@@ -241,7 +241,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @return A new shape.
      */
     protected String _getText() {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         try {
             if (container != null) {
@@ -261,7 +261,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
 
                     return truncated;
                 } else if (_attribute instanceof Settable) {
-                    String value = ((Settable) _attribute).getExpression();
+                    String value = _attribute.getExpression();
                     String truncated = value;
                     int width = _displayWidth;
 

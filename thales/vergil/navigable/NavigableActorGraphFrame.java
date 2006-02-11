@@ -182,7 +182,7 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
         }
 
         public void actionPerformed(ActionEvent e) {
-            NamedObj toOpen = (NamedObj) getModel().getContainer();
+            NamedObj toOpen = getModel().getContainer();
 
             if (toOpen != null) {
                 Configuration configuration = SingleWindowApplication._mainFrame

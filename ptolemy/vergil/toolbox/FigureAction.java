@@ -103,7 +103,7 @@ public class FigureAction extends AbstractAction {
             GraphController controller = pane.getGraphController();
             GraphModel model = controller.getGraphModel();
 
-            _figure = (Figure) event.getFigureSource();
+            _figure = event.getFigureSource();
 
             // Set the target.
             if (_figure == null) {
@@ -173,7 +173,7 @@ public class FigureAction extends AbstractAction {
             // This is an absurdly convoluted way to get the info we need.
             // But there seems to be no other way.
             // This is an architectural flaw in vergil.
-            GraphPane pane = (GraphPane) ((JGraph) source).getGraphPane();
+            GraphPane pane = ((JGraph) source).getGraphPane();
             FigureLayer layer = pane.getForegroundLayer();
             CanvasComponent currentFigure = layer.getCurrentFigure();
             GraphController controller = pane.getGraphController();
