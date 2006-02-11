@@ -87,6 +87,7 @@ import ptolemy.kernel.util.Workspace;
  @author Edward A. Lee
  @see Merge
  @version $Id$
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 

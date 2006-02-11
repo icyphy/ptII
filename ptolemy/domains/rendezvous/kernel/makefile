@@ -62,8 +62,7 @@ MISC_FILES = $(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	'CSPDirector$$1.class' \
-	'CSPDirector$$DelayListLink.class'
+	'RendezvousReceiver$$TopologicalSort.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

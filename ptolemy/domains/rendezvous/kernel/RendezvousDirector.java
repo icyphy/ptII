@@ -1,6 +1,6 @@
 /* A director that supports threaded actors with rendezvous communication.
 
- Copyright (c) 1997-2006 The Regents of the University of California.
+ Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
 
-// Java imports.
 //////////////////////////////////////////////////////////////////////////
 //// RendezvousDirector
 

@@ -69,6 +69,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @author Edward A. Lee
  @version $Id$
  @see ResourcePool
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
 
