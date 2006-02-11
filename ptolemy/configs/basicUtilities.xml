@@ -6,7 +6,18 @@
 <!-- Note that this library is included in modal models as part  -->
 <!-- of its custom library.  -->
 <group>
-<property name="Documentation" class="ptolemy.vergil.basic.DocAttribute"/>
+<property name="DocViewerAttribute" class="ptolemy.kernel.util.SingletonAttribute">
+  <property name="viewer" class="ptolemy.vergil.basic.DocViewerFactory"/>
+  <property name="_hideName" class="ptolemy.data.expr.Parameter" value="true"/>
+  <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+    <configure>
+      <svg>
+        <rect x="-50" y="-20" width="100" height="20" style="fill:yellow"/>
+        <text x="-40" y="-5" style="font-size:12; font-family:SansSerif; fill:black">Documentation</text>
+      </svg>
+    </configure>
+  </property>  
+</property>
 <property name="LocalPreferences" class="ptolemy.actor.gui.PtolemyPreferences"/>
 <input source="ptolemy/vergil/kernel/attributes/decorative.xml"/>
 <input source="ptolemy/configs/utilityParameters.xml"/>
