@@ -215,7 +215,7 @@ public class TokenTableau extends Tableau {
                 // NOTE: Normally need to check effigy tokens for
                 // compatibility here, but they are always compatible,
                 // so we don't bother.
-                return new TokenTableau((TokenEffigy) effigy, "tokenTableau");
+                return new TokenTableau(effigy, "tokenTableau");
             }
 
             return null;

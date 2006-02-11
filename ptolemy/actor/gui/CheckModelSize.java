@@ -133,17 +133,17 @@ public class CheckModelSize {
                                     y = ((ScalarToken) vergilCenterToken
                                             .getElement(1)).doubleValue();
 
-                                    if ((x != (((double) width) / 2.0))
-                                            || (y != (((double) height) / 2.0))) {
+                                    if (x !=  width / 2.0
+                                            || y != height / 2.0) {
                                         analysis
                                                 .append(" Center(["
                                                         + x
                                                         + ", "
                                                         + y
                                                         + "]) is not centered, should be ["
-                                                        + (((double) width) / 2.0)
+                                                        + width / 2.0
                                                         + ", "
-                                                        + (((double) height) / 2.0)
+                                                        + height / 2.0
                                                         + "]");
                                     }
                                 } catch (IllegalActionException ex) {

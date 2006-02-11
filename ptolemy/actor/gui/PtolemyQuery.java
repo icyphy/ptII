@@ -645,7 +645,7 @@ public class PtolemyQuery extends Query implements QueryListener,
                 // The context for the MoML should be the first container
                 // above this attribute in the hierarchy that defers its
                 // MoML definition, or the immediate parent if there is none.
-                NamedObj parent = (NamedObj) castAttribute.getContainer();
+                NamedObj parent = castAttribute.getContainer();
                 String moml = "<property name=\"" + castAttribute.getName()
                         + "\" value=\""
                         + StringUtilities.escapeForXML(stringValue) + "\"/>";

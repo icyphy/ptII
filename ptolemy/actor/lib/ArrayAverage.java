@@ -116,7 +116,7 @@ public class ArrayAverage extends Transformer {
                 return;
             }
 
-            Token sum = (Token) token.getElement(0);
+            Token sum = token.getElement(0);
 
             for (int i = 1; i < token.length(); i++) {
                 sum = sum.add(token.getElement(i));

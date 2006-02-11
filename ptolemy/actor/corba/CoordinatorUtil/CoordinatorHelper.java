@@ -48,7 +48,7 @@ abstract public class CoordinatorHelper {
 
     public static void write(org.omg.CORBA.portable.OutputStream ostream,
             ptolemy.actor.corba.CoordinatorUtil.Coordinator value) {
-        ostream.write_Object((org.omg.CORBA.Object) value);
+        ostream.write_Object(value);
     }
 
     public static ptolemy.actor.corba.CoordinatorUtil.Coordinator narrow(

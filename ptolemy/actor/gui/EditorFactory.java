@@ -86,7 +86,7 @@ public abstract class EditorFactory extends Attribute {
      *  This editor will have no parent window.
      */
     public void createEditor() {
-        createEditor((NamedObj) getContainer(), null);
+        createEditor(getContainer(), null);
     }
 
     /** Create an editor for configuring the specified object.

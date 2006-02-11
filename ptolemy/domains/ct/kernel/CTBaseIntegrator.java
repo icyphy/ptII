@@ -327,7 +327,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
                     + "used in CT models.");
         }
 
-        ODESolver solver = (ODESolver) dir.getCurrentODESolver();
+        ODESolver solver = dir.getCurrentODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this, " no ODE solver available");

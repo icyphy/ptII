@@ -700,7 +700,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                             + " TypedIOPort requires TypedIORelation.");
         }
 
-        super._checkLiberalLink((TypedIORelation) relation);
+        super._checkLiberalLink(relation);
     }
 
     /** Override the method in the super class to ensure compatibility of
@@ -721,7 +721,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                             + " TypedIOPort requires TypedIORelation.");
         }
 
-        super._checkLink((TypedIORelation) relation);
+        super._checkLink(relation);
     }
 
     /** Check that the specified token is compatible with the
@@ -946,7 +946,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                         .updateType((StructuredType) type);
             }
 
-            if (!oldType.equals((Type) type)) {
+            if (!oldType.equals(type)) {
                 _notifyTypeListener(oldType, _resolvedType);
             }
         }

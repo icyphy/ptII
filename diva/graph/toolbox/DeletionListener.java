@@ -54,8 +54,7 @@ public class DeletionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JGraph jgraph = (JGraph) e.getSource();
         GraphPane graphPane = jgraph.getGraphPane();
-        GraphController controller = (GraphController) graphPane
-                .getGraphController();
+        GraphController controller = graphPane.getGraphController();
         GraphModel graphModel = controller.getGraphModel();
         SelectionModel model = controller.getSelectionModel();
         Object[] selection = model.getSelectionAsArray();

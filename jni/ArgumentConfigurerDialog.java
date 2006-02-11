@@ -96,7 +96,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
             // ArgumentConfigurerDialog.
             // First, create a string array with the names of all the
             // ports.
-            List argumentsList = ((GenericJNIActor) _target).argumentsList();
+            List argumentsList = _target.argumentsList();
             String[] argumentNames = new String[argumentsList.size()];
             Iterator arguments = argumentsList.iterator();
             int index = 0;
@@ -120,13 +120,11 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
                 String argumentName = query.getStringValue("delete");
 
                 if (argumentName != null) {
-                    Argument argument = ((GenericJNIActor) _target)
-                            .getArgument(argumentName);
+                    Argument argument = _target.getArgument(argumentName);
 
                     if (argument != null) {
                         try {
-                            ((GenericJNIActor) _target)
-                                    ._removeArgument(argument);
+                            _target._removeArgument(argument);
                         } catch (Exception e) {
                             MessageHandler.error("Unable to remove argument '"
                                     + argument + "'.", e);
@@ -136,7 +134,7 @@ public class ArgumentConfigurerDialog extends ComponentDialog implements
                         // container above this port in the hierarchy
                         // that defers its MoML definition, or the
                         // immediate parent if there is none.
-                        NamedObj container = (NamedObj) argument.getContainer();
+                        NamedObj container = argument.getContainer();
                         String moml = "<deleteProperty name=\""
                                 + argument.getName() + "\"/>\n";
 

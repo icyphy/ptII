@@ -126,7 +126,7 @@ public class TextEditorForStringAttributes extends TextEditor {
         // Issue a change request to ensure the change is
         // applied at a safe time and that the model is marked
         // modified.
-        NamedObj context = (NamedObj) _attributeToEdit.getContainer();
+        NamedObj context = _attributeToEdit.getContainer();
         String request = "<property name=\"" + _attributeToEdit.getName()
                 + "\" value=\""
                 + StringUtilities.escapeForXML(_factory.getText()) + "\"/>";

@@ -161,7 +161,7 @@ public class MatrixPane extends JScrollPane {
                 return (_emptyStringToken);
             }
 
-            return (Object) (_matrix.getElementAsToken(row, column)).toString();
+            return _matrix.getElementAsToken(row, column).toString();
         }
 
         ///////////////////////////////////////////////////////////////////

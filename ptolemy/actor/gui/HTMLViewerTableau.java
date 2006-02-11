@@ -173,8 +173,7 @@ public class HTMLViewerTableau extends Tableau {
                         .getEntity("htmlTableau");
 
                 if (tableau == null) {
-                    tableau = new HTMLViewerTableau((HTMLEffigy) effigy,
-                            "htmlTableau");
+                    tableau = new HTMLViewerTableau(effigy, "htmlTableau");
                 }
 
                 // Unfortunately, if we have a jar url, (for example

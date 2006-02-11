@@ -243,8 +243,7 @@ public class PlotTableau extends Tableau {
                         .getEntity("plotTableau");
 
                 if (tableau == null) {
-                    tableau = new PlotTableau((PlotEffigy) effigy,
-                            "plotTableau");
+                    tableau = new PlotTableau(effigy, "plotTableau");
                 }
 
                 PlotBox plotBox = ((PlotEffigy) effigy).getPlot();

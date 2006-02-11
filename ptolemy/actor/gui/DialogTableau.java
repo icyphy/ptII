@@ -101,29 +101,26 @@ public class DialogTableau extends Tableau {
         if (PtolemyDialog.class.isAssignableFrom(dialogClass)) {
             // First see whether the effigy already contains a dialog of
             // dialogClas on this entity.
-            if (effigy instanceof Effigy) {
-                Iterator dialogs = effigy.entityList(DialogTableau.class)
-                        .iterator();
+            Iterator dialogs = effigy.entityList(DialogTableau.class)
+                    .iterator();
 
-                while (dialogs.hasNext()) {
-                    DialogTableau dialogTableau = (DialogTableau) dialogs
-                            .next();
-                    PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
-                            .getFrame()));
+            while (dialogs.hasNext()) {
+                DialogTableau dialogTableau = (DialogTableau) dialogs.next();
+                PtolemyDialog existingDialog = ((PtolemyDialog) (dialogTableau
+                        .getFrame()));
 
-                    if ((existingDialog != null)
-                            && (existingDialog.getClass() == dialogClass)
-                            && (dialogTableau.hasTarget(target))) {
-                        return dialogTableau;
-                    }
+                if ((existingDialog != null)
+                        && (existingDialog.getClass() == dialogClass)
+                        && (dialogTableau.hasTarget(target))) {
+                    return dialogTableau;
                 }
             }
 
             // Now, do the same test on the container of the effigy.
-            NamedObj container = (NamedObj) (effigy.getContainer());
+            NamedObj container = effigy.getContainer();
 
             if ((container != null) && (container instanceof PtolemyEffigy)) {
-                Iterator dialogs = ((PtolemyEffigy) container).entityList(
+                dialogs = ((PtolemyEffigy) container).entityList(
                         DialogTableau.class).iterator();
 
                 while (dialogs.hasNext()) {

@@ -60,7 +60,7 @@ public class PathFigure extends BasicFigure {
      * @deprecated  Use the float constructor instead.
      */
     public PathFigure(Shape shape, int lineWidth) {
-        this(shape, null, (float) lineWidth);
+        this(shape, null, lineWidth);
     }
 
     /** Create a new figure with the given shape and outline width.

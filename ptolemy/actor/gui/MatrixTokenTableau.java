@@ -230,8 +230,7 @@ public class MatrixTokenTableau extends TokenTableau {
                     }
                 }
 
-                return new MatrixTokenTableau((TokenEffigy) effigy,
-                        "tokenTableau");
+                return new MatrixTokenTableau(effigy, "tokenTableau");
             }
 
             return null;

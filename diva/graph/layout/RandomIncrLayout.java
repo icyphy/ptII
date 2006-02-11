@@ -93,7 +93,7 @@ public class RandomIncrLayout implements IncrementalLayout {
                 Iterator j = getLayoutTarget().intersectingNodes(bounds);
 
                 while (j.hasNext()) {
-                    Object n2 = (Object) j.next();
+                    Object n2 = j.next();
 
                     if (node != n2) {
                         overlap = false;

@@ -48,7 +48,7 @@ abstract public class ClientHelper {
 
     public static void write(org.omg.CORBA.portable.OutputStream ostream,
             ptolemy.actor.corba.CoordinatorUtil.Client value) {
-        ostream.write_Object((org.omg.CORBA.Object) value);
+        ostream.write_Object(value);
     }
 
     public static ptolemy.actor.corba.CoordinatorUtil.Client narrow(

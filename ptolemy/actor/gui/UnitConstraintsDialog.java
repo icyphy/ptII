@@ -255,8 +255,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
         _unitsTableModel = new UnitsTableModel(constraintExpressions);
         _unitsTable.setModel(_unitsTableModel);
 
-        TableColumn _constraintColumn = ((TableColumn) (_unitsTable
-                .getColumnModel().getColumn(0)));
+        TableColumn _constraintColumn = _unitsTable.getColumnModel().getColumn(0);
         JTextField textField = new JTextField();
         final DefaultCellEditor constraintEditor = new DefaultCellEditor(
                 textField);

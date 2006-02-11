@@ -215,7 +215,7 @@ public final class ShapeUtilities {
     public static BasicStroke getStroke(float floatwidth) {
         int width = Math.round(floatwidth);
 
-        if ((float) width == floatwidth) {
+        if (width == floatwidth) {
             return getStroke(width);
         } else {
             return new BasicStroke(floatwidth);

@@ -2165,7 +2165,7 @@ public class XmlParser {
      * @return true if the character is whitespace.
      */
     final boolean isWhitespace(char c) {
-        switch ((int) c) {
+        switch (c) {
         case 0x20:
         case 0x09:
         case 0x0d:
@@ -2204,7 +2204,7 @@ public class XmlParser {
     void dataBufferAppend(char[] ch, int start, int length) {
         dataBuffer = (char[]) extendArray(dataBuffer, dataBuffer.length,
                 dataBufferPos + length);
-        System.arraycopy((Object) ch, start, (Object) dataBuffer,
+        System.arraycopy(ch, start, dataBuffer,
                 dataBufferPos, length);
         dataBufferPos += length;
     }
@@ -2355,7 +2355,7 @@ public class XmlParser {
 
         // Generate a hash code.
         for (int i = start; i < (start + length); i++) {
-            hash = ((hash << 1) & 0xffffff) + (int) ch[i];
+            hash = ((hash << 1) & 0xffffff) + ch[i];
         }
 
         hash = hash % SYMBOL_TABLE_LENGTH;
@@ -3763,7 +3763,7 @@ public class XmlParser {
             readBuffer[readBufferLength++] = (char) ch;
 
             switch (ch) {
-            case (int) '>':
+            case '>':
                 return;
 
             case -1:
@@ -4108,7 +4108,7 @@ public class XmlParser {
             if (value < 0x0000ffff) {
                 readBuffer[j++] = (char) value;
 
-                if (value == (int) '\r') {
+                if (value == '\r') {
                     sawCR = true;
                 }
             } else if (value < 0x000fffff) {

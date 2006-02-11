@@ -136,7 +136,7 @@ public abstract class RandomSource extends Source {
 
         long sd = ((LongToken) (seed.getToken())).longValue();
 
-        if (sd != (long) 0) {
+        if (sd != 0) {
             _random.setSeed(sd);
         } else {
             _random.setSeed(System.currentTimeMillis() + hashCode());

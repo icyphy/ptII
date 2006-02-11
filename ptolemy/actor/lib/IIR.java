@@ -223,7 +223,7 @@ public class IIR extends Transformer {
             Token savedState = _stateVector[_currentTap];
 
             // Compute the current output sample given the input sample.
-            Token yCurrent = _computeOutput((Token) input.get(0));
+            Token yCurrent = _computeOutput(input.get(0));
 
             // Shadowed state. used in postfire().
             _latestWindow = _stateVector[_currentTap];
@@ -285,7 +285,7 @@ public class IIR extends Transformer {
 
     private void _initStateVector() throws IllegalActionException {
         if (_numerator.length > 0) {
-            int stateSize = (int) java.lang.Math.max(_numerator.length,
+            int stateSize = java.lang.Math.max(_numerator.length,
                     _denominator.length);
             _stateVector = new Token[stateSize];
 

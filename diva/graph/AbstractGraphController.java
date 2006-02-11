@@ -229,7 +229,7 @@ public abstract class AbstractGraphController implements GraphController {
      * Return the graphics pane of this controller cast as a GraphPane.
      */
     public GraphPane getGraphPane() {
-        return (GraphPane) _pane;
+        return _pane;
     }
 
     /**

@@ -361,7 +361,7 @@ public class FigureTutorial {
          */
         public void transform(AffineTransform at) {
             repaint();
-            _bounds = (Rectangle2D) ShapeUtilities.transformBounds(_bounds, at);
+            _bounds = ShapeUtilities.transformBounds(_bounds, at);
             repaint();
         }
     }

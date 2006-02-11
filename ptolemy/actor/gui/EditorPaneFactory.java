@@ -90,7 +90,7 @@ public class EditorPaneFactory extends Attribute {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
-        return createEditorPane((NamedObj) getContainer());
+        return createEditorPane(getContainer());
     }
 
     /** Return a new default widget for configuring the specified object.

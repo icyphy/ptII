@@ -1010,7 +1010,7 @@ public class JNIUtilities {
                         + _getArgumentsOutWithJType(actor, ",") + ") {\n\n");
 
         //if there is a returned value
-        Argument argRet = (Argument) actor.getArgumentReturn();
+        Argument argRet = actor.getArgumentReturn();
 
         if ((argRet != null) && !(argRet.getJType().equals("void"))) {
             results.append(_indent2
@@ -1183,7 +1183,7 @@ public class JNIUtilities {
             if ((argument != null) && (argument.isInput() == isInput)
                     && (argument.isOutput() == isOutput)
                     && (argument.isReturn() == isReturn)) {
-                returnValue.add((Object) argument);
+                returnValue.add(argument);
             }
         }
 

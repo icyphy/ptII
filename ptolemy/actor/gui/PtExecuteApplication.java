@@ -32,10 +32,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Manager;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////

@@ -210,9 +210,9 @@ public class FigureTest extends TestSuite {
             }
 
             public void run() throws Exception {
-                shape = (Shape) figure.getShape();
+                shape = figure.getShape();
                 shape = ShapeUtilities.transformModify(shape, at);
-                bounds = (Rectangle2D) figure.getBounds();
+                bounds = figure.getBounds();
                 bounds = (Rectangle2D) bounds.clone();
                 ShapeUtilities.transformModify(bounds, at);
 
@@ -250,10 +250,10 @@ public class FigureTest extends TestSuite {
             }
 
             public void run() throws Exception {
-                shape = (Shape) figure.getShape();
+                shape = figure.getShape();
                 shape = new GeneralPath(shape);
                 shape = ShapeUtilities.translateModify(shape, 10.0, -20.0);
-                bounds = (Rectangle2D) figure.getBounds();
+                bounds = figure.getBounds();
                 bounds = (Rectangle2D) bounds.clone();
                 bounds = (Rectangle2D) ShapeUtilities.translateModify(bounds,
                         10.0, -20.0);

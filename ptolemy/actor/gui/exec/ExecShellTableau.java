@@ -241,7 +241,7 @@ public class ExecShellTableau extends Tableau implements ShellInterpreter {
                 // and converting substrings that begin and end
                 // with double quotes into one array element.
                 final String[] commandTokens = StringUtilities
-                        .tokenizeForExec((String) command);
+                        .tokenizeForExec(command);
 
                 //stdout("About to execute:\n");
                 StringBuffer statusCommand = new StringBuffer();

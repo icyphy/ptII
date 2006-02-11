@@ -79,7 +79,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * in the target's view.
      */
     public Rectangle2D getBounds(Object node) {
-        Figure f = (Figure) _controller.getFigure(node);
+        Figure f = _controller.getFigure(node);
         return f.getBounds();
     }
 
@@ -165,7 +165,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * visible in the view.
      */
     public boolean isNodeVisible(Object node) {
-        Figure nf = (Figure) _controller.getFigure(node);
+        Figure nf = _controller.getFigure(node);
         return ((nf != null) && nf.isVisible() && (nf.getParent() != null));
     }
 
@@ -256,7 +256,7 @@ public class BasicLayoutTarget implements LayoutTarget {
      * target's view by the given delta.
      */
     public void translate(Object node, double dx, double dy) {
-        Figure f = (Figure) _controller.getFigure(node);
+        Figure f = _controller.getFigure(node);
         f.translate(dx, dy);
     }
 }

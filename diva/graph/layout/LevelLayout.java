@@ -885,7 +885,7 @@ public class LevelLayout extends AbstractGlobalLayout {
             }
         }
 
-        nonEmptyLevels = (int) Math.max(1, nonEmptyLevels);
+        nonEmptyLevels = Math.max(1, nonEmptyLevels);
 
         if (getOrientation() == VERTICAL) {
             double ystep;

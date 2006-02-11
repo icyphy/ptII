@@ -110,7 +110,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      * @deprecated  Use the float constructor instead.
      */
     public BasicFigure(Shape shape, int lineWidth) {
-        this(shape, null, (float) lineWidth);
+        this(shape, null, lineWidth);
     }
 
     /** Create a new figure with the given shape and outline width.

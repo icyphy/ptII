@@ -215,7 +215,7 @@ public class ConnectorInteractor extends DragInteractor {
 
         // Get the "target" which is the figure this end of
         // the connector is connected to
-        _target = (Figure) _handle.getSite().getFigure();
+        _target = _handle.getSite().getFigure();
 
         // This is really nasty...
         _connector = (Connector) ((Manipulator) _handle.getParent()).getChild();

@@ -180,7 +180,7 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener,
      *  @return The attribute modified by this actor.
      */
     public Attribute getModifiedVariable() throws IllegalActionException {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container == null) {
             throw new IllegalActionException(this, "No container.");

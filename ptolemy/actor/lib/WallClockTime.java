@@ -149,7 +149,7 @@ public class WallClockTime extends Source {
         // here because if we do, it breaks deep codegen because
         // deep codegen removes the Actor classes, and actor.util.Time
         // needs to keep track of the Director.
-        return (((double) elapsedTime) / 1000.0);
+        return elapsedTime / 1000.0;
     }
 
     ///////////////////////////////////////////////////////////////////

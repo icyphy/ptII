@@ -113,7 +113,7 @@ public abstract class MDIApplication extends AbstractApplication {
         super.removeView(v);
 
         // Remove the display.
-        JComponent pane = (JComponent) v.getComponent();
+        JComponent pane = v.getComponent();
         _viewMap.remove(pane);
 
         //FIXME do this last, to avoid circular loop

@@ -110,7 +110,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
         BasicGraphFrame parent = (BasicGraphFrame) (_tableau.getFrame());
         JGraph jGraph = parent.getJGraph();
         GraphPane graphPane = jGraph.getGraphPane();
-        _controller = (GraphController) graphPane.getGraphController();
+        _controller = graphPane.getGraphController();
         _selectionModel = _controller.getSelectionModel();
 
         Interactor interactor = _controller.getEdgeController(new Object())

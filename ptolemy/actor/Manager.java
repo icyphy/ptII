@@ -862,14 +862,14 @@ public class Manager extends NamedObj implements Runnable {
         // actor twice when it is added as part of a container that is
         // being added.
         {
-            NamedObj container = (NamedObj) ((NamedObj) actor).getContainer();
+            NamedObj container = actor.getContainer();
 
             while (container != null) {
                 if (_actorsToInitialize.contains(container)) {
                     return;
                 }
 
-                container = (NamedObj) container.getContainer();
+                container = container.getContainer();
             }
         }
 
@@ -880,7 +880,7 @@ public class Manager extends NamedObj implements Runnable {
 
         for (Iterator actors = list.iterator(); actors.hasNext();) {
             NamedObj otherActor = (NamedObj) actors.next();
-            NamedObj otherActorContainer = (NamedObj) otherActor.getContainer();
+            NamedObj otherActorContainer = otherActor.getContainer();
 
             while (otherActorContainer != null) {
                 // If otherActor is contained by actor, then remove it.
@@ -888,8 +888,7 @@ public class Manager extends NamedObj implements Runnable {
                     _actorsToInitialize.remove(otherActor);
                     otherActorContainer = null;
                 } else {
-                    otherActorContainer = (NamedObj) otherActorContainer
-                            .getContainer();
+                    otherActorContainer = otherActorContainer.getContainer();
                 }
             }
         }

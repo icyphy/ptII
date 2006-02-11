@@ -5067,22 +5067,22 @@ class CLexGen {
      **************************************************************/
     private String interp_int(int i) {
         switch (i) {
-        case (int) '\b':
+        case '\b':
             return (new String("\\b"));
 
-        case (int) '\t':
+        case '\t':
             return (new String("\\t"));
 
-        case (int) '\n':
+        case '\n':
             return (new String("\\n"));
 
-        case (int) '\f':
+        case '\f':
             return (new String("\\f"));
 
-        case (int) '\r':
+        case '\r':
             return (new String("\\r"));
 
-        case (int) ' ':
+        case ' ':
             return (new String("\\ "));
 
         default:

@@ -150,7 +150,7 @@ public class PortConfigurer extends Query implements QueryListener {
                     // above this port in the hierarchy that defers its
                     // MoML definition, or the immediate parent
                     // if there is none.
-                    parent = (NamedObj) port.getContainer();
+                    parent = port.getContainer();
                     foundOne = true;
                     moml.append("<port name=\"");
                     moml.append(port.getName());
@@ -185,7 +185,7 @@ public class PortConfigurer extends Query implements QueryListener {
                     // above this port in the hierarchy that defers its
                     // MoML definition, or the immediate parent
                     // if there is none.
-                    parent = (NamedObj) port.getContainer();
+                    parent = port.getContainer();
                     foundOne = true;
                     moml.append("<port name=\"");
                     moml.append(port.getName());

@@ -298,7 +298,7 @@ public class Argument extends AbstractSettableAttribute {
      *  @return the Visibility
      */
     public Visibility getVisibility() {
-        return (Visibility) null;
+        return null;
     }
 
     /** Return true if it is an input.
@@ -524,7 +524,7 @@ public class Argument extends AbstractSettableAttribute {
      *   @exception IllegalActionException If a error occurs
      */
     public void validate() throws IllegalActionException {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.attributeChanged(this);

@@ -1833,7 +1833,7 @@ public class IOPort extends ComponentPort {
 
             while (ports.hasNext()) {
                 IOPort port = (IOPort) ports.next();
-                int depth = ((NamedObj) port.getContainer()).depthInHierarchy();
+                int depth = port.getContainer().depthInHierarchy();
 
                 if (port.isInput() && (depth >= depthOfDirector)) {
                     result.addLast(port);
@@ -1879,7 +1879,7 @@ public class IOPort extends ComponentPort {
 
             while (ports.hasNext()) {
                 IOPort port = (IOPort) ports.next();
-                int depth = ((NamedObj) port.getContainer()).depthInHierarchy();
+                int depth = port.getContainer().depthInHierarchy();
 
                 if (port.isInput() && (depth < depthOfDirector)) {
                     result.addLast(port);
@@ -2688,7 +2688,7 @@ public class IOPort extends ComponentPort {
 
             while (ports.hasNext()) {
                 IOPort port = (IOPort) ports.next();
-                int depth = ((NamedObj) port.getContainer()).depthInHierarchy();
+                int depth = port.getContainer().depthInHierarchy();
 
                 if (port.isInput() && (depth >= depthOfDirector)) {
                     result.addLast(port);

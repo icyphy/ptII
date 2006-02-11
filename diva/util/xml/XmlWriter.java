@@ -391,7 +391,7 @@ public class XmlWriter extends LoggableOp {
         for (int i = 0; i < ch.length; i++) {
             if (ch[i] == '"') {
                 buf.append("&#22;");
-            } else if ((int) ch[i] > 0x7f) {
+            } else if (ch[i] > 0x7f) {
                 buf.append("&#" + (int) ch[i] + ";");
             } else {
                 buf.append(ch[i]);

@@ -61,7 +61,7 @@ public class PolygonIterator implements PathIterator {
 
             if ((at == null) || at.isIdentity()) {
                 for (int i = 0; i < count; i++) {
-                    _coords[i] = (double) f._coords[i];
+                    _coords[i] = f._coords[i];
                 }
             } else {
                 at.transform(f._coords, 0, _coords, 0, count / 2);

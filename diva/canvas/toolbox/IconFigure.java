@@ -144,8 +144,7 @@ public class IconFigure extends AbstractFigure {
      */
     public Rectangle2D getBounds() {
         Rectangle2D bounds = (Rectangle2D) _background.getBounds().clone();
-        bounds = (Rectangle2D) ShapeUtilities.transformBounds(bounds,
-                _transform);
+        bounds = ShapeUtilities.transformBounds(bounds, _transform);
 
         for (Iterator i = _terminals.iterator(); i.hasNext();) {
             Rectangle2D.union(bounds, ((Figure) i.next()).getBounds(), bounds);

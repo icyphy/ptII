@@ -126,7 +126,7 @@ public abstract class AbstractPaintedGraphic implements PaintedGraphic {
     public static BasicStroke getStroke(float floatwidth) {
         int width = Math.round(floatwidth);
 
-        if ((float) width == floatwidth) {
+        if (width == floatwidth) {
             return getStroke(width);
         } else {
             return new BasicStroke(floatwidth);

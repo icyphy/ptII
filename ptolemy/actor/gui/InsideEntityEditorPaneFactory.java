@@ -81,7 +81,7 @@ public class InsideEntityEditorPaneFactory extends EditorPaneFactory {
      *  @return A new widget for configuring the container.
      */
     public Component createEditorPane() {
-        NamedObj object = (NamedObj) getContainer();
+        NamedObj object = getContainer();
 
         if (object instanceof CompositeEntity) {
             Iterator entities = ((CompositeEntity) object).entityList()
