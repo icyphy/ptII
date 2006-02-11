@@ -88,13 +88,6 @@ public class DocAttribute extends SingletonAttribute {
 
         refreshParametersAndPorts();
 
-        // Provide an icon, in case this gets instantiated in Vergil.
-        _attachText("_iconDescription", "<svg>\n"
-                + "<rect x=\"-50\" y=\"-20\" width=\"100\" height=\"20\" "
-                + "style=\"fill:yellow\"/>" + "<text x=\"-40\" y=\"-5\" "
-                + "style=\"font-size:12; font-family:SansSerif; fill:black\">"
-                + "Documentation</text></svg>");
-
         // Hide the name, if this gets instantiated in Vergil.
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
