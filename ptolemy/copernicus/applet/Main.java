@@ -80,7 +80,7 @@ public class Main extends KernelMain {
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");
 
         //String sootArgs = attribute.getParameter("sootArgs");
-        return new String[1];
+        return new String[0];
     }
 
     private static String _generatorAttributeFileName = "unsetParameter";
