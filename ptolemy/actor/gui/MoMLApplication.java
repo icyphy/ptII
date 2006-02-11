@@ -686,7 +686,7 @@ public class MoMLApplication implements ExecutionListener {
      *  instead.  This method merges the compile-time configuration file
      *  values from {@link ptolemy.util.StringUtilities#mergePropertiesFile()}.
      *  Subclasses should call 
-     * {@link ptolemy.actor.gui.PtolemyPreferences#setDefaultPreferences(Configuraton)}.
+     * {@link ptolemy.actor.gui.PtolemyPreferences#setDefaultPreferences(Configuration)}.
      *  @return null
      *  @exception Exception Thrown in derived classes if the default
      *   configuration cannot be opened.

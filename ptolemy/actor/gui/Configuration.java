@@ -135,7 +135,7 @@ public class Configuration extends CompositeEntity {
     /** Return a list of all the configurations that have been created.
      *  Note  that if this method is called before a configuration
      *  is created, then it will return an empty linked list.
-     *  @param A list of configurations, where each element of the list
+     *  @return A list of configurations, where each element of the list
      *  is of type Configuration.
      */
     public static List configurations() {
