@@ -231,6 +231,16 @@ public class ClassChanges implements MoMLFilter {
         _classChanges.put("ptolemy.vergil.VergilPreferences",
                 "ptolemy.actor.gui.PtolemyPreferences");
 
+        // Look for Kepler's NamedObjId, and if we don't find it, then
+        // add it to the filter.  This makes it much easier to open
+        // Kepler models in Ptolemy.
+        try {
+            Class.forName("org.kepler.moml.NamedObjId");
+        } catch (ClassNotFoundException ex) {
+            _classChanges.put("org.kepler.moml.NamedObjId",
+                    "ptolemy.kernel.util.StringAttribute");
+        }
+
     }
 
     // Set of class names that are obsolete and should be simply
