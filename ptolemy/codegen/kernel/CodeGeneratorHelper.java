@@ -54,6 +54,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -260,7 +261,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     code.append(" ");
                     code.append(parameter.getFullName().replace('.', '_'));
                     code.append(" = ");
-                    code.append(parameter.getToken().toString());
+                    //code.append(parameter.getToken().toString());
+                    code.append(getParameterValue(parameter.getName(), _component));
                     code.append(";\n");
                 }
             }
@@ -461,12 +463,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 + constructorString.substring(openFuncParenIndex);
     }
 
+    
     /**
      * Find the port with the given name. The format of the given name string
      * is strictly the port name with NO channel or offset number.
      * @param name The given name.
      * @return The port with the given name, or null if no port is found.
      */
+    /*
     public TypedIOPort getPort(String name) {
         // Search from both input and output ports
         Actor actor = (Actor) _component;
@@ -482,6 +486,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return null;
     }
+    */
 
     /** Return the value or an expression in the target language for the specified
      *  parameter of the associated actor.
@@ -621,7 +626,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         String portName = nameChannelOffset[0];
         String channel = nameChannelOffset[1];
 
-        TypedIOPort port = getPort(portName);
+        IOPort port = (IOPort)((Entity)_component).getPort(portName);
 
         CodeGeneratorHelper sourceHelper = this;
         if (port != null && port.isInput()) {
@@ -1569,7 +1574,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
 
             if (!channelAndOffset[1].equals("")) {
-                result.append("[" + channelAndOffset[1] + "]");
+                //result.append("[" + channelAndOffset[1] + "]");
+                result.insert(0, "Array_get(");
+                result.append(" ," + channelAndOffset[1] + ")" + 
+                        ".payload.");
+                Type elementType = ((ArrayType) ((Parameter) 
+                        attribute).getType()).getElementType();
+                result.append(_getCodeGenTypeFromPtolemyType(elementType));
             }
 
             return result.toString();
