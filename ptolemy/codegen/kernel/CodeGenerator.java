@@ -239,16 +239,18 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String sharedCode = generateSharedCode();
         String includeFiles = generateIncludeFiles();
         String preinitializeCode = generatePreinitializeCode();
-        String variableDeclareCode = generateVariableDeclaration();
+        
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         String fireFunctionCode = null;
-        ;
+      
         if (!inline) {
             fireFunctionCode = generateFireFunctionCode();
         }
         String wrapupCode = generateWrapupCode();
 
+        String variableDeclareCode = generateVariableDeclaration();
+        
         // generate type resolution code has to be after 
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeResolutionCode();
