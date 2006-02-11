@@ -1051,6 +1051,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/pn/kernel/event \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ptinyos/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ptinyos/lib \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/ptinyos/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rendezvous/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/rtp/kernel \
