@@ -99,8 +99,8 @@ public class Case extends ModalModel {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Case newObject = (Case) super.clone();
-        newObject._default = (Refinement) newObject.getEntity("default");
+        Case newObject = (Case)super.clone(workspace);
+        newObject._default = (Refinement)newObject.getEntity("default");
         return newObject;
     }
 
