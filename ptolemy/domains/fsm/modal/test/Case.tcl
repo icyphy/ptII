@@ -47,4 +47,5 @@ test Case-1.1 {Create a Case, clone it} {
     set toplevel [java::new ptolemy.kernel.CompositeEntity $workspace]
     set case [java::new ptolemy.domains.fsm.modal.Case $toplevel myCase]
     set clone [$case clone $workspace]
-} {}
+    list [$case equals clone]
+} {0}
