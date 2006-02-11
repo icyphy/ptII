@@ -56,7 +56,7 @@ import ptolemy.kernel.util.InternalErrorException;
  <p>
  @author John S. Davis II, Thomas Feng, Edward A. Lee, Neil Smyth, Yang Zhao
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (nsmyth)
  @Pt.AcceptedRating Red (cxh)
  @deprecated Use RendezvousReceiver instead.
