@@ -505,31 +505,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 + constructorString.substring(openFuncParenIndex);
     }
 
-    
-    /**
-     * Find the port with the given name. The format of the given name string
-     * is strictly the port name with NO channel or offset number.
-     * @param name The given name.
-     * @return The port with the given name, or null if no port is found.
-     */
-    /*
-    public TypedIOPort getPort(String name) {
-        // Search from both input and output ports
-        Actor actor = (Actor) _component;
-        List allPorts = new ArrayList();
-        allPorts.addAll(actor.inputPortList());
-        allPorts.addAll(actor.outputPortList());
-
-        for (int i = 0; i < allPorts.size(); i++) {
-            TypedIOPort port = (TypedIOPort) allPorts.get(i);
-            if (port.getName().equals(name)) {
-                return port;
-            }
-        }
-        return null;
-    }
-    */
-
     /** Return the value or an expression in the target language for the specified
      *  parameter of the associated actor.
      *  If the parameter is specified by an expression, then the expression will
@@ -1262,7 +1237,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         for (int i = 0; i < sourcePorts.size(); i++) {
             TypedIOPort sourcePort = (TypedIOPort) sourcePorts.get(i);
             String sourcePortName = sourcePort.getName() + "#"
-                    + +_getChannelIndex(port, i, sourcePort);
+                    + _getChannelIndex(port, i, sourcePort);
             CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort
                     .getContainer());
 

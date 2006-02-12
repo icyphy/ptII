@@ -177,15 +177,6 @@ public class SDFDirector extends Director {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        Iterator actors = ((CompositeActor) _director.getContainer())
-                .deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            // Initialize code for the actor.
-            code.append(helper.generateTypeConvertInitializeCode());
-        }
-
         code.append(super.generateInitializeCode());
 
         ptolemy.actor.CompositeActor container = (ptolemy.actor.CompositeActor) getComponent()
