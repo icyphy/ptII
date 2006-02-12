@@ -83,7 +83,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      */
     public String generateBodyCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("Static schedule:"));
+        code.append(comment("\nStatic schedule:"));
         CompositeEntity model = (CompositeEntity) getContainer();
 
         TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);

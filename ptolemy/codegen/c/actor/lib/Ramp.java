@@ -93,9 +93,9 @@ public class Ramp extends CCodeGeneratorHelper {
         int comparison = TypeLattice.compare(initType, stepType);
 
         if ((comparison == CPO.HIGHER) || (comparison == CPO.SAME)) {
-            code.append(initType.toString() + " $actorSymbol(state);\n");
+            code.append("static " + initType.toString() + " $actorSymbol(state);\n");
         } else if (comparison == CPO.LOWER) {
-            code.append(stepType.toString() + " $actorSymbol(state);\n");
+            code.append("static " + stepType.toString() + " $actorSymbol(state);\n");
         } else {
             throw new IllegalActionException(actor, "type incomparable.");
         }

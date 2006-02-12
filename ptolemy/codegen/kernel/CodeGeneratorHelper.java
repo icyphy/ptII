@@ -38,6 +38,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
@@ -110,17 +111,34 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String generateFireCode() throws IllegalActionException {
         return "\n/* fire " + getComponent().getName() + " */\n";
     }
+    
+    /** Generate The fire function code. This method is called when the firing
+     *  code of each actor is not inlined. Each actor's firing code is in a 
+     *  function with the same name as that of the actor.
+     * 
+     *  @return The fire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateFireFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append("\nvoid " + getComponent().getFullName().replace('.', '_')
+                + "() {\n");
+        code.append(generateFireCode());
+        code.append(generateTypeConvertFireCode());
+        code.append("}\n");
+        return code.toString();
+    }
 
     /**
-     * Generate the initialize code. In this base class, return an empty
-     * string. Subclasses may extend this method to generate the initialize
-     * code of the associated component and append the code to the given
-     * string buffer.
+     * Generate the initialize code. In this base class, return empty
+     * string. Subclasses may extend this method to generate initialize 
+     * code of the associated component and append the code to the 
+     * given string buffer.
      * @return The initialize code of the containing composite actor.
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        return "\n/* initialize " + getComponent().getName() + " */\n";
+        return "\n/* initialize " + getComponent().getName() + " */\n";      
     }
 
     /** Generate mode transition code. The mode transition code generated in 
@@ -256,14 +274,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 // avoid duplicate declaration.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    code.append("\t");
-                    code.append(_generateType(parameter.getType()));
-                    code.append(" ");
-                    code.append(parameter.getFullName().replace('.', '_'));
-                    code.append(" = ");
-                    //code.append(parameter.getToken().toString());
-                    code.append(getParameterValue(parameter.getName(), _component));
-                    code.append(";\n");
+                    code.append("static " + _generateType(parameter.getType())
+                            + " " + parameter.getFullName().replace('.', '_') 
+                            + ";\n");
                 }
             }
         }
@@ -280,7 +293,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             String cType = _generateType(inputPort.getType());
 
-            code.append("\t" + cType + " ");
+            code.append("static " + cType + " ");
             code.append(inputPort.getFullName().replace('.', '_'));
 
             if (inputPort.isMultiport()) {
@@ -307,7 +320,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             // the output port has inside receivers.
             if ((outputPort.getWidth() == 0)
                     || (outputPort.getWidthInside() != 0)) {
-                code.append("\t" + _generateType(outputPort.getType()) + " ");
+                code.append("static " + _generateType(outputPort.getType()) + " ");
                 code.append(outputPort.getFullName().replace('.', '_'));
 
                 if (outputPort.isMultiport()) {
@@ -325,6 +338,35 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return processCode(code.toString());
     }
+    
+    /** Generate variable initialization for the referenced parameters.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableInitialization() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append("\n/* " + _component.getName()
+                + "'s variable initialization. */\n");
+
+        //  Generate variable initialization for referenced parameters.    
+        if (_referencedParameters != null) {
+            Iterator parameters = _referencedParameters.iterator();
+
+            while (parameters.hasNext()) {
+                Parameter parameter = (Parameter) parameters.next();
+
+                // avoid duplication.
+                if (!_codeGenerator._modifiedVariables.contains(parameter)) {
+                    code.append(parameter.getFullName().replace('.', '_')
+                            + " = " 
+                            + getParameterValue(parameter.getName(), _component)
+                            + ";\n");
+                }
+            }
+        }
+        return code.toString();
+    }    
 
     /**
      * Generate the wrapup code. In this base class, do nothing. Subclasses
@@ -1197,7 +1239,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param ptType The port or parameter.
      *  @return The generated code for the type.
      */
-    protected String _generateType(Type ptType) {
+    protected static String _generateType(Type ptType) {
         return _getCTypeFromPtolemyType(ptType);
     }
 
@@ -1266,7 +1308,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         Receiver receiver = sinkPort.getReceivers()[sourceIndex][0];
 
         // Iterate receivers in source port to find the receiver.
-        Receiver[][] receivers = sourcePort.getRemoteReceivers();
+        Receiver[][] receivers = null;
+        if (sourcePort.isOutput()) {
+            receivers = sourcePort.getRemoteReceivers();
+        } else {
+            receivers = sourcePort.deepGetReceivers();
+        }
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {
                 if (receiver.equals(receivers[i][j])) {

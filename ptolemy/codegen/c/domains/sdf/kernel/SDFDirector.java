@@ -96,30 +96,12 @@ public class SDFDirector extends Director {
         StringBuffer code = new StringBuffer();
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
-
-        if (!inline) {
-            StringBuffer functionCode = new StringBuffer();
-            CompositeActor container = (CompositeActor) getComponent()
-                    .getContainer();
-            Iterator actors = container.deepEntityList().iterator();
-            while (actors.hasNext()) {
-                Actor actor = (Actor) actors.next();
-                functionCode.append("\t\nvoid "
-                        + actor.getFullName().replace('.', '_') + "() {\n");
-                CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-                functionCode.append(actorHelper.generateFireCode());
-                functionCode.append(actorHelper.generateTypeConvertFireCode());
-                functionCode.append("}\t\n");
-            }
-            code.insert(0, functionCode);
-
-            code.append("\tint i;\n");
-        }
-
+     
         // Generate code for one iteration.
         Schedule schedule = ((StaticSchedulingDirector) getComponent())
                 .getScheduler().getSchedule();
 
+        boolean isIDefined = false;
         Iterator actorsToFire = schedule.firingIterator();
         while (actorsToFire.hasNext()) {
             Firing firing = (Firing) actorsToFire.next();
@@ -156,6 +138,10 @@ public class SDFDirector extends Director {
 
                 int count = firing.getIterationCount();
                 if (count > 1) {
+                    if (!isIDefined) { 
+                        code.append("int i;\n");
+                        isIDefined = true;
+                    }
                     code.append("for (i = 0; i < " + count + " ; i++) {\n");
                 }
 

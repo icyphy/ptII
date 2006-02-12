@@ -48,12 +48,16 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.actor.lib.CodeStream;
+import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
+import ptolemy.codegen.kernel.CodeGeneratorHelper.HelperScope;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
@@ -238,19 +242,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // for adding additional code into different sections.
         String sharedCode = generateSharedCode();
         String includeFiles = generateIncludeFiles();
-        String preinitializeCode = generatePreinitializeCode();
-        
+        String preinitializeCode = generatePreinitializeCode();      
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         String fireFunctionCode = null;
-      
         if (!inline) {
             fireFunctionCode = generateFireFunctionCode();
         }
         String wrapupCode = generateWrapupCode();
 
         String variableDeclareCode = generateVariableDeclaration();
-        
+        String variableInitCode = generateVariableInitialization();
         // generate type resolution code has to be after 
         // fire(), wrapup(), preinit(), init()...
         String typeResolutionCode = generateTypeResolutionCode();
@@ -258,13 +260,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // The appending phase.
         code.append(includeFiles);
         code.append(sharedCode);
-        code.append(typeResolutionCode);
+        code.append(typeResolutionCode);      
+        code.append(variableDeclareCode);
+        code.append(preinitializeCode);
         if (!inline) {
             code.append(fireFunctionCode);
         }
         code.append("\n\nmain(int argc, char *argv[]) {\n");
-        code.append(variableDeclareCode);
-        code.append(preinitializeCode);
+        code.append(variableInitCode);
         code.append(initializeCode);
         code.append(bodyCode);
         code.append(wrapupCode);
@@ -372,14 +375,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(_model);
-
-        // FIXME: use _sanitizedModelName here, which is more likely to be properly
-        // sanitized
-        code.append("\nvoid " + _model.getFullName().replace('.', '_')
-                + "() {\n");
-        code.append(modelHelper.generateFireCode());
-        code.append("}\n");
+        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        code.append(compositeActorHelper.generateFireFunctionCode());
         return code.toString();
     }
 
@@ -415,7 +412,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("Initialize " + getContainer().getFullName()));
+        code.append(comment("\nInitialize " + getContainer().getFullName()));
 
         TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
         code.append(compositeActorHelper.generateInitializeCode());
@@ -662,10 +659,55 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append("\n\n");
         code.append(comment("Variable Declarations "
                 + getContainer().getFullName()));
+        
+        // Generate variable declarations for modified variables.
+        if (_modifiedVariables != null) {
+            Iterator modifiedVariables = _modifiedVariables.iterator();
+            while (modifiedVariables.hasNext()) {
+                Parameter parameter = (Parameter) modifiedVariables.next();
 
+                code.append("static " 
+                        + CodeGeneratorHelper._generateType(parameter.getType())
+                        + " " + parameter.getFullName().replace('.', '_') 
+                        + ";\n");                
+            }
+        }
+        
         TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
 
         code.append(compositeActorHelper.generateVariableDeclaration());
+        return code.toString();
+    }
+    
+    /** Generate variable initialization for the referenced parameters.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableInitialization() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append("\n\n");
+        code.append(comment("Variable initialization "
+                + getContainer().getFullName()));
+        
+        // Generate variable initialization for modified variables.
+        if (_modifiedVariables != null) {
+            Iterator modifiedVariables = _modifiedVariables.iterator();
+            while (modifiedVariables.hasNext()) {
+                Parameter parameter = (Parameter) modifiedVariables.next();
+
+                NamedObj container = parameter.getContainer();
+                CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
+                code.append(parameter.getFullName().replace('.', '_')
+                        + " = " 
+                        + containerHelper.getParameterValue(parameter.getName(), parameter.getContainer())
+                        + ";\n");
+            }
+        }
+
+        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+
+        code.append(compositeActorHelper.generateVariableInitialization());
         return code.toString();
     }
 
