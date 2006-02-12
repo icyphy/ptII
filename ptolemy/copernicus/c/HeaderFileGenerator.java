@@ -226,25 +226,4 @@ public class HeaderFileGenerator extends CodeGenerator {
 
         return headerCode.toString();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // Characters that end a comment.
-    private static final String _commentEnd = "*/";
-
-    // Characters that start a comment.
-    private static final String _commentStart = "/*";
-
-    // The end of a comment for generated code that is to be
-    // commented-out.
-    private static final String _closeComment = "**********************************"
-            + _commentEnd + "\n";
-
-    // The beginning of a comment for generated code that is to be
-    // The beginning of a comment for generated code that is to be
-    // commented-out.
-    private static final String _openComment = _commentStart
-            + "**********************************\n";
 }
