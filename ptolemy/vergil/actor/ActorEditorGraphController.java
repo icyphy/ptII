@@ -456,12 +456,6 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             String name = "Listen to Actor";
             final NamedObj target = object;
 
-            // Ensure that we actually have a target, and that it
-            // implements Debuggable.
-            if (!(target instanceof Debuggable)) {
-                return null;
-            }
-
             _action = new ActorController.ListenToActorAction(target,
                     ActorEditorGraphController.this);
             _action.setConfiguration(_configuration);
