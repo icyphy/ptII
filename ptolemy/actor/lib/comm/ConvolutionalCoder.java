@@ -304,7 +304,7 @@ public class ConvolutionalCoder extends Transformer {
 
         // Read from the input port and shift the bits into
         // the shift register.
-        Token[] inputToken = (Token[]) input.get(0, _inputNumber);
+        Token[] inputToken = input.get(0, _inputNumber);
         int reg = _latestShiftReg;
 
         for (int i = 0; i < _inputNumber; i++) {

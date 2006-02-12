@@ -397,7 +397,7 @@ public class SerialComm extends TypedAtomicActor implements
                         _debug("Discarding input bytes: " + excess);
                     }
 
-                    bytesAvailable -= (int) in.skip((long) excess);
+                    bytesAvailable -= (int) in.skip(excess);
                 }
 
                 int outputSize = bytesAvailable;

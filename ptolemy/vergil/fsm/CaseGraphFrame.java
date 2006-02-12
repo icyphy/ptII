@@ -302,7 +302,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                             }
 
                             try {
-                                ((Refinement) entity).setMirrorDisable(true);
+                                entity.setMirrorDisable(true);
                                 Port newPort = entity.newPort(port.getName());
                                 if (newPort instanceof RefinementPort
                                         && port instanceof IOPort) {
@@ -330,7 +330,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                                     }
                                 }
                             } finally {
-                                ((Refinement) entity).setMirrorDisable(false);
+                                entity.setMirrorDisable(false);
                             }
                         }
                         _addTabbedPane(entity, true);

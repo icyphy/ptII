@@ -74,7 +74,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         code.append(directorHelper.createOffsetVariablesIfNeeded());
         return code.toString();
@@ -98,7 +98,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
 
         // Transfer the data to the inside.
@@ -149,7 +149,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         // Reset the offset for all of the output ports.
         initializeCode.append(resetOutputPortsOffset());
 
-        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
 
         // Generate the initialize code by the director helper.
@@ -168,7 +168,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
-        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         directorHelper.generateModeTransitionCode(code);
     }
@@ -187,7 +187,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         StringBuffer result = new StringBuffer();
         result.append(super.generatePreinitializeCode());
 
-        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         result.append(directorHelper.generatePreinitializeCode());
 
@@ -269,7 +269,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         code.append(directorHelper.generateWrapupCode());
         return code.toString();
@@ -323,7 +323,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         Set set = new HashSet();
         set.addAll(super.getModifiedVariables());
 
-        Director directorHelper = (Director) _getHelper((NamedObj) ((ptolemy.actor.CompositeActor) getComponent())
+        Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
         set.addAll(directorHelper.getModifiedVariables());
         return set;
@@ -427,7 +427,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             int[] bufferSizes = new int[length];
             _bufferSizes.put(port, bufferSizes);
 
-            Director directorHelper = (Director) _getHelper((NamedObj) (((Actor) getComponent())
+            Director directorHelper = (Director) _getHelper((((Actor) getComponent())
                     .getDirector()));
 
             for (int i = 0; i < port.getWidthInside(); i++) {

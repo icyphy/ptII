@@ -401,7 +401,7 @@ public class MultirateFSMDirector extends FSMDirector {
                             int modulo = helper.getBufferSize(sinkPort, i) - 1;
                             String offsetVariable = (String) helper
                                     .getWriteOffset(sinkPort, i);
-                            code.append((String) offsetVariable + " = ("
+                            code.append(offsetVariable + " = ("
                                     + offsetVariable + " + " + rate + ")&"
                                     + modulo + ";\n");
                         }
@@ -642,8 +642,7 @@ public class MultirateFSMDirector extends FSMDirector {
                 while (destinationNameList.hasNext()) {
                     String destinationName = (String) destinationNameList
                             .next();
-                    NamedObj destination = (NamedObj) action
-                            .getDestination(destinationName);
+                    NamedObj destination = action.getDestination(destinationName);
                     ASTPtRootNode parseTree = action
                             .getParseTree(destinationName);
                     if (destination instanceof Variable) {

@@ -162,7 +162,7 @@ public class BoxedValuesIcon extends XMLIcon {
      *  @return The string to display, or null if none is found.
      */
     protected String _displayString() {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             StringBuffer buffer = new StringBuffer();

@@ -83,7 +83,7 @@ public class Transform {
         // Paint image.
         Graphics2D graphics2d = outputImage.createGraphics();
         graphics2d
-                .drawImage((Image) originalImage, rotateAffineTransform, null);
+                .drawImage(originalImage, rotateAffineTransform, null);
         graphics2d.dispose();
 
         return outputImage;

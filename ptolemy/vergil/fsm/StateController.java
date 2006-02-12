@@ -199,7 +199,7 @@ public class StateController extends AttributeController {
          */
         public Figure render(Object n) {
             Locatable location = (Locatable) n;
-            final NamedObj object = (NamedObj) location.getContainer();
+            final NamedObj object = location.getContainer();
             EditorIcon icon;
 
             try {

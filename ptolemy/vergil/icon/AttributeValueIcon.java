@@ -128,7 +128,7 @@ public class AttributeValueIcon extends XMLIcon {
      *  @return The string to display, or a string with one space if none is found.
      */
     protected String _displayString() {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             Attribute associatedAttribute = container

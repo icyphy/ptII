@@ -229,8 +229,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     while (destinationNameList.hasNext()) {
                         String destinationName = (String) destinationNameList
                                 .next();
-                        NamedObj destination = (NamedObj) action
-                                .getDestination(destinationName);
+                        NamedObj destination = action.getDestination(destinationName);
 
                         int channel = -1;
                         if (action.isChannelSpecified(destinationName)) {
@@ -333,8 +332,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     while (destinationNameList.hasNext()) {
                         String destinationName = (String) destinationNameList
                                 .next();
-                        NamedObj destination = (NamedObj) action
-                                .getDestination(destinationName);
+                        NamedObj destination = action.getDestination(destinationName);
 
                         int channel = -1;
                         if (action.isChannelSpecified(destinationName)) {
@@ -404,7 +402,7 @@ public class FSMActor extends CCodeGeneratorHelper {
 
                 Director director = fsmActor.getExecutiveDirector();
                 if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
-                    MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper((NamedObj) director);
+                    MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                     directorHelper._updateConfigurationNumber(codeBuffer,
                             destinationState);
                 }
@@ -434,7 +432,7 @@ public class FSMActor extends CCodeGeneratorHelper {
 
             Director director = fsmActor.getExecutiveDirector();
             if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
-                MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper((NamedObj) director);
+                MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                 directorHelper._updateConfigurationNumber(codeBuffer, state);
             }
             depth--;

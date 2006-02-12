@@ -474,7 +474,7 @@ public class ViterbiDecoder extends Transformer {
         }
 
         // Read from the input port.
-        Token[] inputToken = (Token[]) input.get(0, inputRate);
+        Token[] inputToken = input.get(0, inputRate);
 
         // Search the optimal path (minimum distance) for each state.
         for (int state = 0; state < _rowNum; state++) {
@@ -506,8 +506,8 @@ public class ViterbiDecoder extends Transformer {
                         y[i] = ((BooleanToken) inputToken[i]).booleanValue();
                     }
 
-                    d = (double) (_computeHardDistance(y,
-                            _truthTable[state][colIndex][0], _maskNumber));
+                    d = _computeHardDistance(y,
+                            _truthTable[state][colIndex][0], _maskNumber);
                 }
 
                 // The previous state for that possibility.

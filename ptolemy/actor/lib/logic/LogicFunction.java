@@ -184,7 +184,7 @@ public class LogicFunction extends Transformer {
                 value = value.not();
             }
 
-            output.send(0, (BooleanToken) value);
+            output.send(0, value);
         }
     }
 

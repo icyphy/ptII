@@ -390,8 +390,8 @@ public class Director implements ActorCodeGenerator {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
-            throw new IllegalActionException((NamedObj) port, "the rate: "
-                    + rate + "is negative.");
+            throw new IllegalActionException(port, "the rate: "
+                    + rate + " is negative.");
         }
 
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
@@ -414,7 +414,7 @@ public class Director implements ActorCodeGenerator {
             } else { // If offset is a variable.
                 int modulo = helper.getBufferSize(port, j) - 1;
                 String offsetVariable = (String) helper.getReadOffset(port, j);
-                code.append((String) offsetVariable + " = (" + offsetVariable
+                code.append(offsetVariable + " = (" + offsetVariable
                         + " + " + rate + ")&" + modulo + ";\n");
             }
         }
@@ -435,8 +435,8 @@ public class Director implements ActorCodeGenerator {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
-            throw new IllegalActionException((NamedObj) port, "the rate: "
-                    + rate + "is negative.");
+            throw new IllegalActionException(port, "the rate: "
+                    + rate + " is negative.");
         }
 
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
@@ -454,7 +454,7 @@ public class Director implements ActorCodeGenerator {
 
             for (int k = 0; k < sinkChannels.size(); k++) {
                 Channel channel = (Channel) sinkChannels.get(k);
-                IOPort sinkPort = (IOPort) channel.port;
+                IOPort sinkPort = channel.port;
                 int sinkChannelNumber = channel.channelNumber;
 
                 Object offsetObject = helper.getWriteOffset(sinkPort,
@@ -470,7 +470,7 @@ public class Director implements ActorCodeGenerator {
                             sinkChannelNumber) - 1;
                     String offsetVariable = (String) helper.getWriteOffset(
                             sinkPort, sinkChannelNumber);
-                    code.append((String) offsetVariable + " = ("
+                    code.append(offsetVariable + " = ("
                             + offsetVariable + " + " + rate + ")&" + modulo
                             + ";\n");
                 }

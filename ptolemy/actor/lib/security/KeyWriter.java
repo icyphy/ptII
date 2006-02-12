@@ -100,7 +100,7 @@ public class KeyWriter extends KeyStoreActor {
         // See io.LineWriter for an example of an actor that writes to a file.
         if (input.hasToken(0)) {
             KeyToken keyToken = (KeyToken) input.get(0);
-            java.security.Key key = (java.security.Key) keyToken.getValue();
+            java.security.Key key = keyToken.getValue();
 
             if (key instanceof java.security.PrivateKey) {
                 throw new IllegalActionException(this,

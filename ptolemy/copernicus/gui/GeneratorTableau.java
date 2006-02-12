@@ -258,7 +258,7 @@ public class GeneratorTableau extends Tableau {
             // Adjust the divider so that the control panel does not
             // have a horizontal scrollbar.
             Dimension preferred = left.getPreferredSize();
-            splitPane.setDividerLocation((int) (preferred.width + 20));
+            splitPane.setDividerLocation(preferred.width + 20);
 
             getContentPane().add(splitPane, BorderLayout.CENTER);
 

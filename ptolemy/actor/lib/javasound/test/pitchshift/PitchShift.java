@@ -186,7 +186,7 @@ public class PitchShift {
 
                     // Period scale factor.
                     periodRatio = 1.0 / (correctedPitchScale);
-                    _outputRingBufPitchMarkerPos = (int) (_outputRingBufPitchMarkerPos + (int) (inputPeriodLength * periodRatio))
+                    _outputRingBufPitchMarkerPos = (int) (_outputRingBufPitchMarkerPos + (inputPeriodLength * periodRatio))
                             % ringBufSize;
 
                     /* Do an OLA (in the output buffer)
@@ -202,7 +202,7 @@ public class PitchShift {
                      */
                     for (olaIndex = -inputPeriodLength; olaIndex <= inputPeriodLength; ++olaIndex) {
                         windowVal = (1 + Math.cos((Math.PI * olaIndex)
-                                / (float) inputPeriodLength)) * 0.5;
+                                /  inputPeriodLength)) * 0.5;
 
                         _outputRingBuf[(olaIndex + _outputRingBufPitchMarkerPos + ringBufSize)
                                 % ringBufSize] += (windowVal * _inputRingBuf[((olaIndex + _inputRingBufWritePos)
@@ -249,7 +249,7 @@ public class PitchShift {
                 }
 
                 // correctedPitchIn = 441.0;  // FOR DEBUG
-                inputPeriodLength = (int) ((1.0 / correctedPitchIn) * (float) _sampleRate);
+                inputPeriodLength = (int) ((1.0 / correctedPitchIn) * _sampleRate);
 
                 // inputPeriodLength = 100;  // FOR DEBUG
                 samplesLeftInPeriod = inputPeriodLength;

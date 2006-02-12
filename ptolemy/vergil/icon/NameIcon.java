@@ -100,7 +100,7 @@ public class NameIcon extends EditorIcon {
      */
     public Figure createBackgroundFigure() {
         String name = "No Name";
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
         if (container != null) {
             name = container.getName();
         }
@@ -131,7 +131,7 @@ public class NameIcon extends EditorIcon {
         CompositeFigure result = (CompositeFigure) super.createFigure();
 
         String name = "No Name";
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
         if (container != null) {
             name = container.getName();
         }

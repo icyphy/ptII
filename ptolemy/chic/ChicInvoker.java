@@ -243,7 +243,7 @@ public class ChicInvoker extends Attribute {
 
                         // Replace port_name.remote.action with
                         // remote_port_ull_name.action
-                        if (entity.deepContains((NamedObj) port)) {
+                        if (entity.deepContains(port)) {
                             Iterator connectedPorts = port
                                     .deepConnectedPortList().iterator();
 
@@ -253,7 +253,7 @@ public class ChicInvoker extends Attribute {
 
                                 if (entity.isOpaque()) {
                                     if (model
-                                            .deepContains((NamedObj) connectedPort)) {
+                                            .deepContains(connectedPort)) {
                                         chicInterface = chicInterface
                                                 .replaceAll(
                                                         "(?<!(\\w|\\$|\\.))"
@@ -261,7 +261,7 @@ public class ChicInvoker extends Attribute {
                                                                         .getName()
                                                                 + "\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
                                                         ((Actor) connectedPort
-                                                                .getContainer() == (Actor) model) ? _sanitizeName(connectedPort
+                                                                .getContainer() ==  model) ? _sanitizeName(connectedPort
                                                                 .getName()
                                                                 + ".inside")
                                                                 : _sanitizeName(connectedPort
@@ -278,7 +278,7 @@ public class ChicInvoker extends Attribute {
                                     }
                                 } else {
                                     if (model
-                                            .deepContains((NamedObj) connectedPort)) {
+                                            .deepContains(connectedPort)) {
                                         chicInterface = chicInterface
                                                 .replaceAll(
                                                         "(?<!(\\w|\\$|\\.))"
@@ -286,7 +286,7 @@ public class ChicInvoker extends Attribute {
                                                                         .getFullName()
                                                                 + "\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
                                                         ((Actor) connectedPort
-                                                                .getContainer() == (Actor) model) ? _sanitizeName(connectedPort
+                                                                .getContainer() == model) ? _sanitizeName(connectedPort
                                                                 .getName()
                                                                 + ".inside")
                                                                 : _sanitizeName(connectedPort
@@ -322,7 +322,7 @@ public class ChicInvoker extends Attribute {
                                             + "implementation.");
                         }
 
-                        if (entity.deepContains((NamedObj) port)) {
+                        if (entity.deepContains(port)) {
                             if (entity.isOpaque()) {
                                 if (port.isInput()) {
                                     Iterator sourcePorts = port
@@ -336,7 +336,7 @@ public class ChicInvoker extends Attribute {
                                                 .next();
 
                                         if (model
-                                                .deepContains((NamedObj) sourcePort)) {
+                                                .deepContains(sourcePort)) {
                                             chicInterface = chicInterface
                                                     .replaceAll(
                                                             "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
@@ -344,7 +344,7 @@ public class ChicInvoker extends Attribute {
                                                                             .getName()
                                                                     + "(?!(\\w|\\$|\\.))",
                                                             ((Actor) sourcePort
-                                                                    .getContainer() == (Actor) model) ? _sanitizeName(sourcePort
+                                                                    .getContainer() == model) ? _sanitizeName(sourcePort
                                                                     .getName()
                                                                     + ".inside")
                                                                     : _sanitizeName(sourcePort
@@ -389,7 +389,7 @@ public class ChicInvoker extends Attribute {
                                                 .next();
 
                                         if (model
-                                                .deepContains((NamedObj) sourcePort)) {
+                                                .deepContains(sourcePort)) {
                                             chicInterface = chicInterface
                                                     .replaceAll(
                                                             "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
@@ -397,7 +397,7 @@ public class ChicInvoker extends Attribute {
                                                                             .getFullName()
                                                                     + "(?!(\\w|\\$|\\.))",
                                                             ((Actor) sourcePort
-                                                                    .getContainer() == (Actor) model) ? _sanitizeName(sourcePort
+                                                                    .getContainer() ==  model) ? _sanitizeName(sourcePort
                                                                     .getName()
                                                                     + ".inside")
                                                                     : _sanitizeName(sourcePort
@@ -461,7 +461,7 @@ public class ChicInvoker extends Attribute {
                                                         + port.getName()
                                                         + "\\.inside\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
                                                 ((Actor) insidePort
-                                                        .getContainer() == (Actor) model) ? _sanitizeName(insidePort
+                                                        .getContainer() == model) ? _sanitizeName(insidePort
                                                         .getName()
                                                         + ".inside")
                                                         : _sanitizeName(insidePort
@@ -500,7 +500,7 @@ public class ChicInvoker extends Attribute {
                                                         + ".inside"
                                                         + "(?!(\\w|\\$|\\.))",
                                                 ((Actor) sourcePort
-                                                        .getContainer() == (Actor) model) ? _sanitizeName(sourcePort
+                                                        .getContainer() == model) ? _sanitizeName(sourcePort
                                                         .getName()
                                                         + ".inside")
                                                         : _sanitizeName(sourcePort

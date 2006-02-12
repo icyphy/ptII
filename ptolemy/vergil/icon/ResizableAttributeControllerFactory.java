@@ -107,7 +107,7 @@ public class ResizableAttributeControllerFactory extends NodeControllerFactory {
             // FIXME: This is only a prototype.  But due to a Diva bug,
             // the prototype is what gets the mouse events!  I.e., not
             // the instance decorator that is created from the prototype!
-            NamedObj container = (NamedObj) getContainer();
+            NamedObj container = getContainer();
             _manipulator = new AttributeBoundsManipulator(container);
 
             interactor.setPrototypeDecorator(_manipulator);

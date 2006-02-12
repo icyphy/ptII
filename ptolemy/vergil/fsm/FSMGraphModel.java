@@ -1377,10 +1377,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             }
 
             String moml = "<" + elementName + " name=\""
-                    + ((NamedObj) deleteObj).getName() + "\"/>\n";
+                    + deleteObj.getName() + "\"/>\n";
 
             // Make the request in the context of the container.
-            NamedObj container = (NamedObj) deleteObj.getContainer();
+            NamedObj container = deleteObj.getContainer();
             MoMLChangeRequest request = new MoMLChangeRequest(
                     FSMGraphModel.this, container, moml);
             request.addChangeListener(new ChangeListener() {

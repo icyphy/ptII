@@ -320,7 +320,7 @@ public class DatagramWriter extends TypedAtomicActor {
             for (int j = 0; j < dataArrayToken.length(); j++) {
                 UnsignedByteToken token = (UnsignedByteToken) dataArrayToken
                         .getElement(j);
-                dataBytes[j] = (byte) token.byteValue();
+                dataBytes[j] = token.byteValue();
             }
 
             DatagramPacket packet = new DatagramPacket(dataBytes,

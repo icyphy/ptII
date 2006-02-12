@@ -297,7 +297,7 @@ public class IterateOverArray extends TypedCompositeActor implements
         while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort) ports.next();
             ArrayType arrayType = new ArrayType(BaseType.UNKNOWN);
-            ((TypedIOPort) port).setTypeEquals(arrayType);
+            port.setTypeEquals(arrayType);
         }
 
         super.getDirector();

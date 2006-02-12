@@ -555,8 +555,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         while (classNames.hasNext()) {
             String className = (String) classNames.next();
 
-            if (jarFilesThatHaveBeenRequired.contains((String) classMap
-                    .get(className))) {
+            if (jarFilesThatHaveBeenRequired.contains(classMap.get(className))) {
                 // If we have already possibly copied the jar file, then skip
                 continue;
             }

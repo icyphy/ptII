@@ -100,7 +100,7 @@ public class RealTimePlotter extends Plotter {
      */
     public boolean postfire() throws IllegalActionException {
         long elapsedTime = System.currentTimeMillis() - _startTime;
-        double currentTime = ((double) elapsedTime) / 1000.0;
+        double currentTime = elapsedTime / 1000.0;
         int width = input.getWidth();
         int offset = ((IntToken) startingDataset.getToken()).intValue();
 

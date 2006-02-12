@@ -92,7 +92,7 @@ public class UnsignedByteArrayToString extends Converter {
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken = (UnsignedByteToken) dataArrayToken
                     .getElement(j);
-            dataBytes[j] = (byte) dataToken.byteValue();
+            dataBytes[j] = dataToken.byteValue();
         }
 
         // Convert using the default character encoding.

@@ -105,7 +105,7 @@ public class ConverterRangeModel implements BoundedRangeModel {
     }
 
     public int getMinimum() {
-        return (int) minimum;
+        return minimum;
     }
 
     public void setMinimum(int newMinimum) {
@@ -127,7 +127,7 @@ public class ConverterRangeModel implements BoundedRangeModel {
             System.out.println("In ConverterRangeModel setValue");
         }
 
-        setDoubleValue((double) newValue);
+        setDoubleValue(newValue);
     }
 
     public double getDoubleValue() {
@@ -147,7 +147,7 @@ public class ConverterRangeModel implements BoundedRangeModel {
     }
 
     public int getExtent() {
-        return (int) extent;
+        return extent;
     }
 
     public void setExtent(int newExtent) {

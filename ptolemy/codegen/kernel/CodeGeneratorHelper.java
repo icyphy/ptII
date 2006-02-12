@@ -365,7 +365,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
             }
         } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) port
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
                     .getContainer());
             bufferSize = actorHelper.getBufferSize(port);
         }
@@ -385,7 +385,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         if (port.getContainer() == _component) {
             return ((int[]) _bufferSizes.get(port))[channelNumber];
         } else {
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) port
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
                     .getContainer());
             return actorHelper.getBufferSize(port, channelNumber);
         }
@@ -1083,7 +1083,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         for (int i = 0; i < sinkChannels.size(); i++) {
             Channel channel = (Channel) sinkChannels.get(i);
-            IOPort sinkPort = (IOPort) channel.port;
+            IOPort sinkPort = channel.port;
             int sinkChannelNumber = channel.channelNumber;
             setWriteOffset(sinkPort, sinkChannelNumber, writeOffset);
         }
@@ -1169,8 +1169,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             int[] bufferSizes = new int[length];
             _bufferSizes.put(port, bufferSizes);
 
-            Director directorHelper = (Director) _getHelper((NamedObj) (((Actor) _component)
-                    .getExecutiveDirector()));
+            Director directorHelper = (Director) _getHelper(((Actor) _component)
+                    .getExecutiveDirector());
 
             for (int i = 0; i < port.getWidth(); i++) {
                 int bufferSize = directorHelper.getBufferSize(port, i);
@@ -1414,7 +1414,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 for (int i = 0; i < sinkChannels.size(); i++) {
                     Channel channel = (Channel) sinkChannels.get(i);
-                    IOPort sinkPort = (IOPort) channel.port;
+                    IOPort sinkPort = channel.port;
                     int sinkChannelNumber = channel.channelNumber;
 
                     if (i != 0) {

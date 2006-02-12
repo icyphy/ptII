@@ -139,8 +139,7 @@ public class SymmetricEncryption extends CipherActor {
                 KeyToken keyToken = (KeyToken) key.get(0);
 
                 // FIXME: do we really want to initialize the key each time?
-                java.security.Key securityKey = (java.security.Key) keyToken
-                        .getValue();
+                java.security.Key securityKey = keyToken.getValue();
 
                 if (!_algorithm.equals(securityKey.getAlgorithm())) {
                     // We have the name of the algorithm from the Key,

@@ -200,7 +200,7 @@ public class TimedEvent {
                     average = average.add(diff[i - 1]);
                 }
 
-                average = average.divide((long) diff.length);
+                average = average.divide(diff.length);
 
                 Time effAverage = zero;
                 int nEffSamples = 0;
@@ -218,7 +218,7 @@ public class TimedEvent {
                     return;
                 }
 
-                effAverage = effAverage.divide((long) nEffSamples);
+                effAverage = effAverage.divide(nEffSamples);
                 _binWidth = effAverage.multiply(3L);
             } catch (IllegalActionException e) {
                 // Malformed time resolution would have been caught by now.

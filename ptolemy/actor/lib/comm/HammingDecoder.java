@@ -209,7 +209,7 @@ public class HammingDecoder extends Transformer {
         }
 
         // Read from the input; set up output size.
-        Token[] inputToken = (Token[]) input.get(0, _codeSizeValue);
+        Token[] inputToken = input.get(0, _codeSizeValue);
         BooleanToken[] input = new BooleanToken[_codeSizeValue];
 
         for (int i = 0; i < _codeSizeValue; i++) {

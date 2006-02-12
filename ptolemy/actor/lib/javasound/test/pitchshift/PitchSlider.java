@@ -143,7 +143,7 @@ public class PitchSlider extends JFrame {
     class SliderListener implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
             JSlider source = (JSlider) e.getSource();
-            int fps = (int) source.getValue();
+            int fps = source.getValue();
 
             // Update pitch while user is sliding the slider.
             processAudio.updatePitchScaleFactor((double) fps / (double) 1000);

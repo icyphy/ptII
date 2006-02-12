@@ -160,7 +160,7 @@ public class StaticSchedulingDirector extends Director {
 
         while (firings.hasNext() && !_stopRequested) {
             Firing firing = (Firing) firings.next();
-            Actor actor = (Actor) firing.getActor();
+            Actor actor = firing.getActor();
             int iterationCount = firing.getIterationCount();
 
             if (_debugging) {
@@ -173,7 +173,7 @@ public class StaticSchedulingDirector extends Director {
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
             } else if (returnValue == NOT_READY) {
-                throw new IllegalActionException(this, (ComponentEntity) actor,
+                throw new IllegalActionException(this, actor,
                         "Actor " + "is not ready to fire.");
             }
 

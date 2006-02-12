@@ -74,7 +74,7 @@ public class BoundaryDetector {
         if (_connectedBoundaryCacheIsOn) {
             return _isConnectedBoundaryValue;
         } else {
-            IOPort contPort = (IOPort) _receiver.getContainer();
+            IOPort contPort = _receiver.getContainer();
 
             if (contPort == null) {
                 _connectedBoundaryCacheIsOn = false;
@@ -150,7 +150,7 @@ public class BoundaryDetector {
         if (_connectedInsideOfBoundaryCacheIsOn) {
             return _isConnectedInsideOfBoundaryValue;
         } else {
-            IOPort contPort = (IOPort) _receiver.getContainer();
+            IOPort contPort = _receiver.getContainer();
 
             if (contPort == null) {
                 _connectedInsideOfBoundaryCacheIsOn = false;
@@ -210,7 +210,7 @@ public class BoundaryDetector {
         if (_connectedOutsideOfBoundaryCacheIsOn) {
             return _isConnectedOutsideOfBoundaryValue;
         } else {
-            IOPort contPort = (IOPort) _receiver.getContainer();
+            IOPort contPort = _receiver.getContainer();
 
             if (contPort == null) {
                 _connectedOutsideOfBoundaryCacheIsOn = false;
@@ -264,7 +264,7 @@ public class BoundaryDetector {
         if (_insideBoundaryCacheIsOn) {
             return _isInsideBoundaryValue;
         } else {
-            IOPort innerPort = (IOPort) _receiver.getContainer();
+            IOPort innerPort = _receiver.getContainer();
 
             if (innerPort == null) {
                 _insideBoundaryCacheIsOn = false;
@@ -317,7 +317,7 @@ public class BoundaryDetector {
         if (_outsideBoundaryCacheIsOn) {
             return _isInsideBoundaryValue;
         } else {
-            IOPort innerPort = (IOPort) _receiver.getContainer();
+            IOPort innerPort = _receiver.getContainer();
 
             if (innerPort == null) {
                 _outsideBoundaryCacheIsOn = false;

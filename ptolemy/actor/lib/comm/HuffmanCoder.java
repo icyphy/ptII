@@ -108,7 +108,7 @@ public class HuffmanCoder extends HuffmanBasic {
         }
 
         // Get the input token. Ready for output.
-        Token inputToken = (Token) input.get(0);
+        Token inputToken = input.get(0);
 
         // Find the token in the alphabet;
         //boolean validInput = false;

@@ -311,7 +311,7 @@ public class ApplyFilterOverArray extends TypedAtomicActor implements
             ArrayToken array = (ArrayToken) inputArray.get(0);
 
             while ((i < _outputLength) && (j < array.length())) {
-                Token t = (Token) array.getElement(j);
+                Token t = array.getElement(j);
                 _updateParameter(t);
 
                 if (_debugging) {

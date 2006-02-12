@@ -405,7 +405,7 @@ public class SketchedSource extends SequencePlotter implements EditListener {
                             .doubleValue();
                 }
 
-                ((Plot) plot).addPoint(0, (double) i, value, connected);
+                ((Plot) plot).addPoint(0, i, value, connected);
                 connected = true;
             }
 

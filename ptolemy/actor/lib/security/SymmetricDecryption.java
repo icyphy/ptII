@@ -127,7 +127,7 @@ public class SymmetricDecryption extends CipherActor {
         try {
             if (key.hasToken(0)) {
                 KeyToken keyToken = (KeyToken) key.get(0);
-                _key = (java.security.Key) keyToken.getValue();
+                _key = keyToken.getValue();
 
                 if (!_algorithm.equals(_key.getAlgorithm())) {
                     // We have the name of the algorithm from the Key,

@@ -911,7 +911,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         try {
             helperObject = constructor.newInstance(new Object[] { component });
         } catch (Exception e) {
-            throw new IllegalActionException((NamedObj) component, e,
+            throw new IllegalActionException(component, e,
                     "Failed to create helper class code generator.");
         }
 

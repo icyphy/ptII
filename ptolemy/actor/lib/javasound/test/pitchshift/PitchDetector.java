@@ -54,8 +54,8 @@ public class PitchDetector {
      */
     public PitchDetector(int vectorSize, int sampleRate) {
         PitchDetector._sampleRate = sampleRate;
-        this._minAutoCorInd = (int) ((double) _sampleRate / _maxAllowablePitch);
-        this._maxAutoCorInd = (int) ((1.1 * (double) _sampleRate) / _minAllowablePitch);
+        this._minAutoCorInd = (int) (_sampleRate / _maxAllowablePitch);
+        this._maxAutoCorInd = (int) ((1.1 * _sampleRate) / _minAllowablePitch);
 
         // FIXME: Should force _recentInputArraySize to be a power of 2.
         this._recentInputArraySize = 2048;

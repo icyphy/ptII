@@ -210,7 +210,7 @@ public class HammingCoder extends Transformer {
         }
 
         // Read from the input; set up output size.
-        Token[] inputToken = (Token[]) input.get(0, _uncodeSizeValue);
+        Token[] inputToken = input.get(0, _uncodeSizeValue);
         BooleanToken[] result = new BooleanToken[_codeSizeValue];
 
         for (int i = 0; i < _uncodeSizeValue; i++) {

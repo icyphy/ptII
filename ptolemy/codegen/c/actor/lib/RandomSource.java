@@ -83,7 +83,7 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
 
         long sd = ((LongToken) (actor.seed.getToken())).longValue();
 
-        if (sd != (long) 0) {
+        if (sd != 0) {
             code.append("    $actorSymbol(seed) = " + sd + ";\n");
         } else {
             code.append("    $actorSymbol(seed) = (time(0) + "

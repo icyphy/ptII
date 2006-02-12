@@ -565,7 +565,7 @@ public class DatagramReader extends TypedAtomicActor {
                                 // Wait for receive to finish, if it
                                 // does not take very long that is.
                                 try {
-                                    _syncSocket.wait((long) 444);
+                                    _syncSocket.wait(444);
                                 } catch (InterruptedException ex) {
                                     throw new IllegalActionException(this, ex,
                                             "Interrupted while waiting");
@@ -605,7 +605,7 @@ public class DatagramReader extends TypedAtomicActor {
                                 // Wait for receive to finish, if it
                                 // does not take very long that is.
                                 try {
-                                    _syncSocket.wait((long) 444);
+                                    _syncSocket.wait(444);
                                 } catch (InterruptedException ex) {
                                     throw new IllegalActionException(this, ex,
                                             "Interrupted while waiting");
