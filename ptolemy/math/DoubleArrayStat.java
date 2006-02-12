@@ -291,7 +291,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double mean(double[] array) {
         _nonZeroLength(array, "DoubleArrayStat.mean");
-        return sumOfElements(array) / (double) array.length;
+        return sumOfElements(array) / array.length;
     }
 
     /** Return the minimum value in the array.

@@ -352,9 +352,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
         }
 
         Port port1 = (Port) linkedPortList.get(0);
-        Locatable location1 = _getLocation((NamedObj) port1.getContainer());
+        Locatable location1 = _getLocation(port1.getContainer());
         Port port2 = (Port) linkedPortList.get(1);
-        Locatable location2 = _getLocation((NamedObj) port2.getContainer());
+        Locatable location2 = _getLocation(port2.getContainer());
 
         Arc link;
 
@@ -445,7 +445,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             final Arc link = (Arc) edge;
             //NamedObj linkHead = (NamedObj) link.getHead();
             //NamedObj linkTail = (NamedObj) link.getTail();
-            Relation linkRelation = (Relation) link.getRelation();
+            Relation linkRelation = link.getRelation();
 
             // This moml is parsed to execute the change
             StringBuffer moml = new StringBuffer();
@@ -574,7 +574,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          */
         public void removeEdge(final Object edge) {
             final Arc link = (Arc) edge;
-            Relation linkRelation = (Relation) link.getRelation();
+            Relation linkRelation = link.getRelation();
 
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
@@ -623,7 +623,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             final Arc link = (Arc) edge;
             NamedObj linkHead = (NamedObj) link.getHead();
             NamedObj linkTail = (NamedObj) link.getTail();
-            Relation linkRelation = (Relation) link.getRelation();
+            Relation linkRelation = link.getRelation();
 
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
@@ -668,7 +668,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     link.setHead(newArcHead);
 
                     if (relationNameToAdd != null) {
-                        ComponentRelation relation = (ComponentRelation) ((CompositeEntity) getPtolemyModel())
+                        ComponentRelation relation = ((CompositeEntity) getPtolemyModel())
                                 .getRelation(relationNameToAdd);
                         link.setRelation(relation);
                     }
@@ -723,7 +723,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             final Arc link = (Arc) edge;
             NamedObj linkHead = (NamedObj) link.getHead();
             NamedObj linkTail = (NamedObj) link.getTail();
-            Relation linkRelation = (Relation) link.getRelation();
+            Relation linkRelation = link.getRelation();
 
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
@@ -839,8 +839,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     // appropriate ports.
                     State headState = (State) head;
                     State tailState = (State) tail;
-                    ComponentPort headPort = (ComponentPort) headState.incomingPort;
-                    ComponentPort tailPort = (ComponentPort) tailState.outgoingPort;
+                    ComponentPort headPort = headState.incomingPort;
+                    ComponentPort tailPort = tailState.outgoingPort;
                     NamedObj ptolemyModel = getPtolemyModel();
 
                     // If the context is not the entity that we're editing,
@@ -967,8 +967,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     // appropriate ports.
                     State headState = (State) head;
                     State tailState = (State) tail;
-                    ComponentPort headPort = (ComponentPort) headState.incomingPort;
-                    ComponentPort tailPort = (ComponentPort) tailState.outgoingPort;
+                    ComponentPort headPort = headState.incomingPort;
+                    ComponentPort tailPort = tailState.outgoingPort;
                     NamedObj ptolemyModel = getPtolemyModel();
 
                     // If the context is not the entity that we're editing,
@@ -1048,7 +1048,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 Relation relation) {
             NamedObj head = (NamedObj) getSemanticObject(linkHead);
             State headState = (State) head;
-            ComponentPort headPort = (ComponentPort) headState.incomingPort;
+            ComponentPort headPort = headState.incomingPort;
             return "<unlink port=\"" + headPort.getName(container)
                     + "\" relation=\"" + relation.getName(container) + "\"/>\n";
         }
@@ -1060,7 +1060,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 Relation relation) {
             NamedObj tail = (NamedObj) getSemanticObject(linkTail);
             State tailState = (State) tail;
-            ComponentPort tailPort = (ComponentPort) tailState.outgoingPort;
+            ComponentPort tailPort = tailState.outgoingPort;
             return "<unlink port=\"" + tailPort.getName(container)
                     + "\" relation=\"" + relation.getName(container) + "\"/>\n";
         }
@@ -1076,7 +1076,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
+            NamedObj deleteObj = ((Locatable) node).getContainer();
             String moml = "<deletePort name=\"" + deleteObj.getName()
                     + "\"/>\n";
             return moml;
@@ -1123,7 +1123,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  to be an icon.
          */
         public void removeNode(final Object eventSource, Object node) {
-            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
+            NamedObj deleteObj = ((Locatable) node).getContainer();
             String elementName = null;
 
             if (deleteObj instanceof ComponentPort) {
@@ -1136,10 +1136,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             }
 
             String moml = "<" + elementName + " name=\""
-                    + ((NamedObj) deleteObj).getName() + "\"/>\n";
+                    + deleteObj.getName() + "\"/>\n";
 
             // Make the request in the context of the container.
-            NamedObj container = (NamedObj) deleteObj.getContainer();
+            NamedObj container = deleteObj.getContainer();
             MoMLChangeRequest request = new MoMLChangeRequest(
                     FSMGraphModel.this, container, moml);
             request.setUndoable(true);
@@ -1173,8 +1173,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
-            NamedObj container = (NamedObj) deleteObj.getContainer();
+            NamedObj deleteObj = ((Locatable) node).getContainer();
+            NamedObj container = deleteObj.getContainer();
 
             StringBuffer moml = new StringBuffer("<group>\n");
 
@@ -1345,7 +1345,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  to be a Locatable belonging to an entity.
          */
         public void removeNode(final Object eventSource, Object node) {
-            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
+            NamedObj deleteObj = ((Locatable) node).getContainer();
 
             // First remove all the in and out edges.
             // This isn't done automatically by the Ptolemy kernel, because

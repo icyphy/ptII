@@ -608,7 +608,7 @@ public class SignalProcessing {
         if (_IDCTfactors[type][order] == null) {
             _IDCTfactors[type][order] = new Complex[twoSize];
 
-            double oneOverTwoSize = 1.0 / (double) twoSize;
+            double oneOverTwoSize = 1.0 / twoSize;
 
             double factor = 1.0;
             double oneOverE0 = 2.0;
@@ -620,7 +620,7 @@ public class SignalProcessing {
                 break;
 
             case DCT_TYPE_ORTHONORMAL:
-                factor = Math.sqrt((double) twoSize); // == 2 * sqrt(N/2)
+                factor = Math.sqrt(twoSize); // == 2 * sqrt(N/2)
                 oneOverE0 = ExtendedMath.SQRT_2;
                 break;
 
@@ -710,7 +710,7 @@ public class SignalProcessing {
         Complex[] y = ComplexArrayMath.conjugate(yConj);
 
         // scale by 1/N
-        double oneOverN = 1.0 / (double) (1 << order);
+        double oneOverN = 1.0 / (1 << order);
         return ComplexArrayMath.scale(y, oneOverN);
     }
 
@@ -749,7 +749,7 @@ public class SignalProcessing {
         realrealX = DoubleArrayMath.add(realrealX, imagimagX);
 
         // scale by 1/N
-        double oneOverN = 1.0 / (double) (1 << order);
+        double oneOverN = 1.0 / (1 << order);
         return DoubleArrayMath.scale(realrealX, oneOverN);
     }
 
@@ -778,7 +778,7 @@ public class SignalProcessing {
         double[] y = FFTRealOut(x, order);
 
         // scale by 1/N
-        double oneOverN = 1.0 / (double) (1 << order);
+        double oneOverN = 1.0 / (1 << order);
         return DoubleArrayMath.scale(y, oneOverN);
     }
 
@@ -800,7 +800,7 @@ public class SignalProcessing {
         double[] window = new double[length];
 
         int halfM = M / 2;
-        double twoOverM = 2.0 / (double) M;
+        double twoOverM = 2.0 / M;
 
         for (n = 0; n <= halfM; n++) {
             window[n] = n * twoOverM;
@@ -830,7 +830,7 @@ public class SignalProcessing {
         int n;
         double[] window = new double[length];
 
-        double twoPiOverM = (2.0 * Math.PI) / (double) M;
+        double twoPiOverM = (2.0 * Math.PI) / M;
         double fourPiOverM = 2.0 * twoPiOverM;
 
         for (n = 0; n < length; n++) {
@@ -858,7 +858,7 @@ public class SignalProcessing {
         int n;
         double[] window = new double[length];
 
-        double twoPiOverM = (2.0 * Math.PI) / (double) M;
+        double twoPiOverM = (2.0 * Math.PI) / M;
         double fourPiOverM = 2.0 * twoPiOverM;
         double sixPiOverM = 3.0 * twoPiOverM;
 
@@ -906,7 +906,7 @@ public class SignalProcessing {
         int n;
         double[] window = new double[length];
 
-        double twoPiOverM = (2.0 * Math.PI) / (double) M;
+        double twoPiOverM = (2.0 * Math.PI) / M;
 
         for (n = 0; n < length; n++) {
             window[n] = 0.54 - (0.46 * Math.cos(twoPiOverM * n));
@@ -932,7 +932,7 @@ public class SignalProcessing {
         int n;
         double[] window = new double[length];
 
-        double twoPiOverM = (2.0 * Math.PI) / (double) M;
+        double twoPiOverM = (2.0 * Math.PI) / M;
 
         for (n = 0; n < length; n++) {
             window[n] = 0.5 - (0.5 * Math.cos(twoPiOverM * n));

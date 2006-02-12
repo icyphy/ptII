@@ -203,7 +203,7 @@ public class ClassDefinitionController extends ActorController {
      *   an instance.
      */
     private void _createChangeRequest(NamedObj object, boolean subclass) {
-        NamedObj container = (NamedObj) object.getContainer();
+        NamedObj container = object.getContainer();
         StringBuffer moml = new StringBuffer();
         moml.append("<group name=\"auto\">");
 
@@ -261,7 +261,7 @@ public class ClassDefinitionController extends ActorController {
             // NOTE: This cast should be safe because this controller is
             // used for actors.
             InstantiableNamedObj object = (InstantiableNamedObj) getTarget();
-            NamedObj container = (NamedObj) object.getContainer();
+            NamedObj container = object.getContainer();
 
             // Assumes MoML parser will convert to instance.
             if (!object.isClassDefinition()) {

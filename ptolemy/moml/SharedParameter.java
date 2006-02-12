@@ -159,7 +159,7 @@ public class SharedParameter extends Parameter {
         NamedObj result = this;
 
         while (result.getContainer() != null) {
-            result = (NamedObj) result.getContainer();
+            result = result.getContainer();
 
             // FIXME: this means that ptolemy.moml depends on
             // ptolemy.actor.gui.  We could either do instanceof

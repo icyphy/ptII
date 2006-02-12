@@ -96,7 +96,7 @@ public class IconController extends ParameterizedNodeController {
          */
         public Figure render(Object n) {
             Locatable location = (Locatable) n;
-            final NamedObj object = (NamedObj) location.getContainer();
+            final NamedObj object = location.getContainer();
 
             // NOTE: this code is similar to that in PtolemyTreeCellRenderer
             Figure result = null;

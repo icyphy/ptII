@@ -167,14 +167,14 @@ public class MoMLChangeRequest extends ChangeRequest {
         if (object == null) {
             return null;
         } else if (!(object instanceof InstantiableNamedObj)) {
-            return getDeferredToParent((NamedObj) object.getContainer());
+            return getDeferredToParent(object.getContainer());
         } else {
             List deferList = ((InstantiableNamedObj) object).getChildren();
 
             if ((deferList != null) && (deferList.size() > 0)) {
                 return object;
             } else {
-                return getDeferredToParent((NamedObj) object.getContainer());
+                return getDeferredToParent(object.getContainer());
             }
         }
     }

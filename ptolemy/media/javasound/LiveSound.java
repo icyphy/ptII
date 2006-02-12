@@ -814,7 +814,7 @@ public class LiveSound {
      *  @see #getSampleRate()
      */
     public static void setSampleRate(int sampleRate) throws IOException {
-        _sampleRate = (float) sampleRate;
+        _sampleRate = sampleRate;
 
         if (_debug) {
             System.out.println("LiveSound: setSampleRate() invoked "
@@ -1153,7 +1153,7 @@ public class LiveSound {
                     result += (_captureBytes[j++] | 0xff);
                 }
 
-                doubleArray[currChannel][currSamp] = ((double) result * maxSampleReciprocal);
+                doubleArray[currChannel][currSamp] =  result * maxSampleReciprocal;
             }
         }
     }
@@ -1335,7 +1335,7 @@ public class LiveSound {
         boolean signed = true;
         boolean bigEndian = true;
 
-        AudioFormat format = new AudioFormat((float) _sampleRate,
+        AudioFormat format = new AudioFormat(_sampleRate,
                 _bitsPerSample, _channels, signed, bigEndian);
 
         _frameSizeInBytes = format.getFrameSize();

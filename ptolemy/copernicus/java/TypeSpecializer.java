@@ -114,7 +114,6 @@ public class TypeSpecializer extends SceneTransformer implements
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        int localCount = 0;
         System.out.println("TypeSpecializer.internalTransform(" + phaseName
                 + ", " + options + ")");
 

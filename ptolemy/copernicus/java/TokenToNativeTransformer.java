@@ -162,7 +162,6 @@ public class TokenToNativeTransformer extends SceneTransformer implements
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        int localCount = 0;
         _phaseName = phaseName;
         System.out.println("TokenToNativeTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
@@ -787,7 +786,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                     System.out.println("static invoking = " + r.getMethod());
                 }
 
-                SootMethod inlinee = (SootMethod) r.getMethod();
+                SootMethod inlinee = r.getMethod();
                 SootClass declaringClass = inlinee.getDeclaringClass();
                 Type returnType = inlinee.getReturnType();
 

@@ -375,7 +375,7 @@ public class EditorDropTarget extends DropTarget {
 
             // Object might be a Location, in which case we want its container.
             if (objectUnderMouse instanceof Location) {
-                return (NamedObj) ((NamedObj) objectUnderMouse).getContainer();
+                return ((NamedObj) objectUnderMouse).getContainer();
             } else if (objectUnderMouse instanceof NamedObj) {
                 return (NamedObj) objectUnderMouse;
             }

@@ -393,7 +393,7 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                returnValue[i][j] = 1.0 / (double) (i + j + 1);
+                returnValue[i][j] = 1.0 / (i + j + 1);
             }
         }
 
@@ -790,7 +790,7 @@ public class DoubleMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             orthogonalMatrix[i] = DoubleArrayMath.scale(orthogonalMatrix[i],
-                    (double) Math.sqrt(oneOverNormSquaredArray[i]));
+                    Math.sqrt(oneOverNormSquaredArray[i]));
         }
 
         return orthogonalMatrix;
@@ -839,7 +839,7 @@ public class DoubleMatrixMath {
         }
 
         for (int i = 0; i < columns; i++) {
-            double oneOverNorm = (double) Math.sqrt(oneOverNormSquaredArray[i]);
+            double oneOverNorm = Math.sqrt(oneOverNormSquaredArray[i]);
             qT[i] = DoubleArrayMath.scale(qT[i], oneOverNorm);
 
             // R is upper triangular, so normalize only upper elements

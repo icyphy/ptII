@@ -85,17 +85,17 @@ public class PlotFourierSeries extends PlotApplet {
                         .sin((i * 2.0 * Math.PI * ((2 * j) - 1)) / 400.0))
                         / (Math.PI * ((2 * j) - 1));
                 approximation += sig;
-                plot.addPoint(j, (double) i, approximation, !first);
+                plot.addPoint(j, i, approximation, !first);
             }
 
             first = false;
 
             if (i <= 200) {
-                plot.addPoint(0, (double) i, 1.0, true);
+                plot.addPoint(0, i, 1.0, true);
             }
 
             if (i >= 200) {
-                plot.addPoint(0, (double) i, -1.0, true);
+                plot.addPoint(0, i, -1.0, true);
             }
         }
 

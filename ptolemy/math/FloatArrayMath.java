@@ -497,7 +497,7 @@ public class FloatArrayMath {
         Complex[] returnValue = new Complex[length];
 
         for (int i = 0; i < length; i++) {
-            returnValue[i] = new Complex((double) array[i], 0.0);
+            returnValue[i] = new Complex(array[i], 0.0);
         }
 
         return returnValue;
@@ -514,7 +514,7 @@ public class FloatArrayMath {
         double[] returnValue = new double[length];
 
         for (int i = 0; i < length; i++) {
-            returnValue[i] = (double) array[i];
+            returnValue[i] = array[i];
         }
 
         return returnValue;

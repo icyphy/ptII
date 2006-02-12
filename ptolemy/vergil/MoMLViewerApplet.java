@@ -210,7 +210,7 @@ public class MoMLViewerApplet extends MoMLApplet {
 
             controller.setConfiguration(_configuration);
 
-            GraphModel model = new ActorGraphModel((CompositeEntity) _toplevel);
+            GraphModel model = new ActorGraphModel(_toplevel);
             pane = new GraphPane(controller, model);
         }
 

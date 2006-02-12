@@ -609,7 +609,7 @@ public class ComplexArrayMath {
             return resize(array, newLength); // allocates a new array
         }
 
-        double halfLength = ((double) length) * 0.5;
+        double halfLength = length * 0.5;
         int halfLengthFloor = (int) Math.floor(halfLength);
         int halfLengthCeil = (int) Math.ceil(halfLength);
         Complex[] returnValue = new Complex[newLength];

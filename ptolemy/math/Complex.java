@@ -877,7 +877,7 @@ public class Complex implements Cloneable, Serializable {
 
         Complex[] returnValue = new Complex[n];
 
-        double oneOverN = 1.0 / (double) n;
+        double oneOverN = 1.0 / n;
         double twoPIOverN = 2.0 * Math.PI * oneOverN;
         double thetaOverN = angle() * oneOverN;
         double twoPIkOverN = 0.0;

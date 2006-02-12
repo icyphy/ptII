@@ -127,7 +127,7 @@ public class ActorViewerGraphController extends RunnableGraphController {
 
                 while ((objToHighlight != null)
                         && (objToHighlight.getContainer() != toplevel)) {
-                    objToHighlight = (NamedObj) objToHighlight.getContainer();
+                    objToHighlight = objToHighlight.getContainer();
                 }
 
                 if (objToHighlight == null) {

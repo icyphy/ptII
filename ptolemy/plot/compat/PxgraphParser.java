@@ -668,7 +668,7 @@ public class PxgraphParser {
             } else {
                 if (arg.startsWith("=")) {
                     // Process =WxH+X+Y
-                    width = (int) Integer.valueOf(
+                    width = Integer.valueOf(
                             arg.substring(1, arg.indexOf('x'))).intValue();
 
                     int plusIndex = arg.indexOf('+');

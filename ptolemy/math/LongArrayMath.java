@@ -687,7 +687,7 @@ public class LongArrayMath {
         Complex[] returnValue = new Complex[length];
 
         for (int i = 0; i < length; i++) {
-            returnValue[i] = new Complex((double) array[i], 0.0);
+            returnValue[i] = new Complex(array[i], 0.0);
         }
 
         return returnValue;
@@ -705,7 +705,7 @@ public class LongArrayMath {
         double[] returnValue = new double[length];
 
         for (int i = 0; i < length; i++) {
-            returnValue[i] = (double) array[i];
+            returnValue[i] = array[i];
         }
 
         return returnValue;
@@ -723,7 +723,7 @@ public class LongArrayMath {
         float[] returnValue = new float[length];
 
         for (int i = 0; i < length; i++) {
-            returnValue[i] = (float) array[i];
+            returnValue[i] = array[i];
         }
 
         return returnValue;

@@ -105,7 +105,6 @@ public class NamedObjEliminator extends SceneTransformer implements
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        int localCount = 0;
         System.out.println("NamedObjEliminator.internalTransform(" + phaseName
                 + ", " + options + ")");
 

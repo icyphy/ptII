@@ -460,7 +460,7 @@ public class EPSGraphics extends Graphics {
         double fullscale = Math.sqrt(255.0 * 255.0 * ((bluescale * bluescale)
                 + (redscale * redscale) + (greenscale * greenscale)));
         double graylevel = Math
-                .sqrt((double) ((red * red * redscale * redscale)
+                .sqrt(((red * red * redscale * redscale)
                         + (blue * blue * bluescale * bluescale) + (green
                         * green * greenscale * greenscale)))
                 / fullscale;

@@ -388,7 +388,7 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                returnValue[i][j] = 1.0f / (float) (i + j + 1);
+                returnValue[i][j] = 1.0f / (i + j + 1);
             }
         }
 
@@ -867,7 +867,7 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = new Complex((double) matrix[i][j], 0.0);
+                returnValue[i][j] = new Complex(matrix[i][j], 0.0);
             }
         }
 
@@ -887,7 +887,7 @@ public class FloatMatrixMath {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = (double) matrix[i][j];
+                returnValue[i][j] = matrix[i][j];
             }
         }
 

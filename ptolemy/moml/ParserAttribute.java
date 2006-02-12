@@ -106,7 +106,7 @@ public class ParserAttribute extends SingletonAttribute {
                 return attribute.getParser();
             }
 
-            container = (NamedObj) container.getContainer();
+            container = container.getContainer();
         }
 
         // No parser attribute was found.

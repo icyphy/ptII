@@ -625,7 +625,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         int reply = _handler.handleError("<param name=\""
                                 + param.getName() + "\" value=\""
                                 + param.getExpression() + "\"/>",
-                                (NamedObj) param.getContainer(), ex);
+                                param.getContainer(), ex);
 
                         if (reply == ErrorHandler.CONTINUE) {
                             continue;
@@ -4215,7 +4215,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         ComponentPort port = (ComponentPort) context.getPort(portspec);
         _checkForNull(port, "No port named \"" + portspec + "\" in "
                 + context.getFullName());
-        return (ComponentPort) port;
+        return port;
     }
 
     /** Return the MoML commands to undo deleting the specified attribute
@@ -4524,7 +4524,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
 
             _pushContext();
-            _current = (Attribute) _current.getAttribute(propertyName);
+            _current = _current.getAttribute(propertyName);
             _namespace = _DEFAULT_NAMESPACE;
 
             // Handle undo
@@ -4580,7 +4580,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             _pushContext();
 
-            _current = (Attribute) _current.getAttribute(propertyName);
+            _current = _current.getAttribute(propertyName);
             _namespace = _DEFAULT_NAMESPACE;
 
             // Handle undo
@@ -4635,7 +4635,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
 
             _pushContext();
-            _current = (Attribute) _current.getAttribute(propertyName);
+            _current = _current.getAttribute(propertyName);
             _namespace = _DEFAULT_NAMESPACE;
 
             // Handle undo
@@ -4656,7 +4656,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             NamedObj property = null;
 
             if (_current != null) {
-                property = (Attribute) _current.getAttribute(propertyName);
+                property = _current.getAttribute(propertyName);
             }
 
             Class newClass = null;
@@ -4921,8 +4921,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     private boolean _isLinkInClass(NamedObj context, Port port,
             Relation relation) {
         boolean portIsInClass = (port.getContainer() == context) ? (port
-                .getDerivedLevel() < Integer.MAX_VALUE) : (((NamedObj) port
-                .getContainer()).getDerivedLevel() < Integer.MAX_VALUE);
+                .getDerivedLevel() < Integer.MAX_VALUE)
+                : ((port.getContainer()).getDerivedLevel() < Integer.MAX_VALUE);
         return (portIsInClass && ((relation == null) || (relation
                 .getDerivedLevel() < Integer.MAX_VALUE)));
     }
@@ -5860,7 +5860,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // an instance or subclass into a new context.
         while (((candidate == null) || !candidate.isClassDefinition())
                 && (context != null)) {
-            context = (NamedObj) context.getContainer();
+            context = context.getContainer();
 
             if (context instanceof CompositeEntity) {
                 candidate = ((CompositeEntity) context).getEntity(name);

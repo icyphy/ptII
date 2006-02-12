@@ -741,7 +741,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         public void removeNode(final Object eventSource, Object node) {
             Locatable location = (Locatable) node;
             ComponentPort port = (ComponentPort) location.getContainer();
-            NamedObj container = (NamedObj) port.getContainer();
+            NamedObj container = port.getContainer();
             ;
 
             StringBuffer moml = new StringBuffer();
@@ -767,7 +767,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
+            NamedObj deleteObj = ((Locatable) node).getContainer();
             String moml = "<deleteEntity name=\"" + deleteObj.getName()
                     + "\"/>\n";
             return moml;
@@ -859,7 +859,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @param node The node.
          */
         public void removeNode(final Object eventSource, Object node) {
-            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
+            NamedObj deleteObj = ((Locatable) node).getContainer();
 
             if (!(deleteObj instanceof ComponentEntity)) {
                 throw new InternalErrorException(
@@ -868,7 +868,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             }
 
             // Make the request in the context of the container.
-            NamedObj container = (NamedObj) deleteObj.getContainer();
+            NamedObj container = deleteObj.getContainer();
             ;
 
             String moml = "<deleteEntity name=\"" + deleteObj.getName()
@@ -930,7 +930,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             final Link link = (Link) edge;
             NamedObj linkHead = (NamedObj) link.getHead();
             NamedObj linkTail = (NamedObj) link.getTail();
-            Relation linkRelation = (Relation) link.getRelation();
+            Relation linkRelation = link.getRelation();
 
             // This moml is parsed to execute the change
             StringBuffer moml = new StringBuffer();
@@ -1149,7 +1149,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             final Link link = (Link) edge;
             final NamedObj linkHead = (NamedObj) link.getHead();
             final NamedObj linkTail = (NamedObj) link.getTail();
-            Relation linkRelation = (Relation) link.getRelation();
+            Relation linkRelation = link.getRelation();
 
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
@@ -1213,8 +1213,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     link.setHead(newLinkHead);
 
                     if (relationNameToAdd != null) {
-                        ComponentRelation relation = (ComponentRelation) container
-                                .getRelation(relationNameToAdd);
+                        ComponentRelation relation = container.getRelation(relationNameToAdd);
 
                         if (relation == null) {
                             throw new InternalErrorException(
@@ -1251,7 +1250,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             final Link link = (Link) edge;
             final NamedObj linkHead = (NamedObj) link.getHead();
             final NamedObj linkTail = (NamedObj) link.getTail();
-            Relation linkRelation = (Relation) link.getRelation();
+            Relation linkRelation = link.getRelation();
 
             // This moml is parsed to execute the change
             final StringBuffer moml = new StringBuffer();
@@ -1314,8 +1313,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     link.setTail(newLinkTail);
 
                     if (relationNameToAdd != null) {
-                        ComponentRelation relation = (ComponentRelation) container
-                                .getRelation(relationNameToAdd);
+                        ComponentRelation relation = container.getRelation(relationNameToAdd);
 
                         if (relation == null) {
                             throw new InternalErrorException(
@@ -1418,8 +1416,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-            NamedObj deleteObj = (NamedObj) ((Locatable) node).getContainer();
-            NamedObj container = (NamedObj) deleteObj.getContainer();
+            NamedObj deleteObj = ((Locatable) node).getContainer();
+            NamedObj container = deleteObj.getContainer();
             ;
 
             String moml = "<deletePort name=\"" + deleteObj.getName(container)
@@ -1528,7 +1526,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         public void removeNode(final Object eventSource, Object node) {
             ComponentPort port = (ComponentPort) node;
-            NamedObj container = (NamedObj) port.getContainer();
+            NamedObj container = port.getContainer();
             ;
 
             // Delete the port.
@@ -1645,7 +1643,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         public void removeNode(final Object eventSource, Object node) {
             ComponentRelation relation = (ComponentRelation) ((Vertex) node)
                     .getContainer();
-            NamedObj container = (NamedObj) relation.getContainer();
+            NamedObj container = relation.getContainer();
 
             // Delete the relation.
             String moml = "<deleteRelation name=\"" + relation.getName()

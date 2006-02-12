@@ -343,7 +343,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
                                 while ((director == null)
                                         && model instanceof Actor) {
-                                    model = (NamedObj) model.getContainer();
+                                    model = model.getContainer();
 
                                     if (model instanceof Actor) {
                                         director = ((Actor) model)

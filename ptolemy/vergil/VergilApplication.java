@@ -50,7 +50,6 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryBuilder;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;

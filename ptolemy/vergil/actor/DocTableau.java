@@ -155,7 +155,7 @@ public class DocTableau extends Tableau {
                         .getEntity("DocTableau");
 
                 if (tableau == null) {
-                    tableau = new DocTableau((DocEffigy) effigy, "DocTableau");
+                    tableau = new DocTableau(effigy, "DocTableau");
                 }
                 // Don't call show() here.  If show() is called here,
                 // then you can't set the size of the window after

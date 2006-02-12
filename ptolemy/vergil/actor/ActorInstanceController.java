@@ -153,7 +153,7 @@ public class ActorInstanceController extends ActorController {
             super.actionPerformed(e);
 
             NamedObj object = getTarget();
-            NamedObj container = (NamedObj) object.getContainer();
+            NamedObj container = object.getContainer();
 
             // Assumes MoML parser will convert to class.
             // NOTE: This cast should be safe because this controller is

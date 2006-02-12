@@ -263,7 +263,7 @@ public class LocatableNodeController extends BasicNodeController {
                     && object instanceof NamedObj
                     && (((NamedObj) object).getDerivedLevel() < Integer.MAX_VALUE)
                     && (cf != null)) {
-                float[] dash = { 2.0f, 5.0f };
+                // float[] dash = { 2.0f, 5.0f };
                 Stroke stroke = new BasicStroke(2f, /* width */
                 BasicStroke.CAP_SQUARE, /* cap   */
                 BasicStroke.JOIN_MITER, /* join  */

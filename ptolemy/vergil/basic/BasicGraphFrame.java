@@ -598,11 +598,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             }
 
                             if (port != null) {
-                                ComponentEntity entity = (ComponentEntity) ((IOPort) port)
-                                        .getContainer();
+                                ComponentEntity entity =
+                                    (ComponentEntity) port.getContainer();
                                 String portName = "port_" + i;
-                                boolean isInput = ((IOPort) port).isInput();
-                                boolean isOutput = ((IOPort) port).isOutput();
+                                boolean isInput = port.isInput();
+                                boolean isOutput = port.isOutput();
                                 newPorts
                                         .append("<port name=\""
                                                 + portName
@@ -943,7 +943,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                 Location location = (Location) nodes.next();
 
                 // Get the containing element
-                NamedObj element = (NamedObj) location.getContainer();
+                NamedObj element = location.getContainer();
 
                 // Give default values in case the previous locations value
                 // has not yet been set
@@ -1523,7 +1523,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
      */
     protected GraphController _getGraphController() {
         GraphPane graphPane = getJGraph().getGraphPane();
-        return (GraphController) graphPane.getGraphController();
+        return graphPane.getGraphController();
     }
 
     /** Return the graph model associated with this frame.

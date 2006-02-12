@@ -89,7 +89,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
         _graphController = graphController;
 
         // Get the director associated with _actor.
-        Director director = ((Actor) _actor).getExecutiveDirector();
+        Director director = _actor.getExecutiveDirector();
 
         if (director == null) {
             // This should not be thrown because the context menu
@@ -177,7 +177,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
 
         // The director should not be null because we already checked
         // in the constructor.
-        Director director = ((Actor) _actor).getExecutiveDirector();
+        Director director = _actor.getExecutiveDirector();
         DebugController debugController = (DebugController) director
                 .getAttribute(_DEBUGCONTROLLER);
 
@@ -219,8 +219,7 @@ public class BreakpointConfigurer extends Query implements ChangeListener {
      *   the change was not done via a ChangeRequest.
      */
     public void changeExecuted(ChangeRequest change) {
-        Director director = ((Actor) _actor).getExecutiveDirector();
-
+        Director director = _actor.getExecutiveDirector();
         // The DebugController should not be null since the change
         // request should have added the DebugController to the
         // director.

@@ -276,7 +276,7 @@ public class DoubleArrayMath {
      *  the sum of the squares of the elements.
      */
     public static final double l2norm(final double[] array) {
-        return (double) Math.sqrt(sumOfSquares(array));
+        return Math.sqrt(sumOfSquares(array));
     }
 
     /** Return a new array that is a copy of the argument except that

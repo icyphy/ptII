@@ -277,7 +277,7 @@ public class PlotApplication extends PlotFrame {
                     throw new CmdLineArgException(_usage());
                 }
 
-                height = (int) Integer.valueOf(args[i++]).intValue();
+                height = Integer.valueOf(args[i++]).intValue();
                 continue;
             } else if (arg.equals("-help")) {
                 System.out.println(_usage());
@@ -299,7 +299,7 @@ public class PlotApplication extends PlotFrame {
                             "-width requires an integer argument");
                 }
 
-                width = (int) Integer.valueOf(args[i++]).intValue();
+                width = Integer.valueOf(args[i++]).intValue();
                 continue;
             } else if (arg.equals("")) {
                 // Ignore blank argument.

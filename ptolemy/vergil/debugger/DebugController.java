@@ -123,7 +123,7 @@ public class DebugController extends SingletonConfigurableAttribute implements
 
                 while ((objToHighlight != null)
                         && (objToHighlight.getContainer() != toplevel)) {
-                    objToHighlight = (NamedObj) objToHighlight.getContainer();
+                    objToHighlight = objToHighlight.getContainer();
                 }
 
                 if (objToHighlight == null) {

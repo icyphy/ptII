@@ -220,8 +220,8 @@ public class Fraction extends Object {
     public double toDouble() {
         double numerator;
         double denominator;
-        numerator = (double) _numerator;
-        denominator = (double) _denominator;
+        numerator = _numerator;
+        denominator = _denominator;
         return numerator / denominator;
     }
 
@@ -231,8 +231,8 @@ public class Fraction extends Object {
     public float toFloat() {
         float numerator;
         float denominator;
-        numerator = (float) _numerator;
-        denominator = (float) _denominator;
+        numerator = _numerator;
+        denominator = _denominator;
         return numerator / denominator;
     }
 

@@ -693,7 +693,7 @@ public class Engine {
                 if (anyIntegers && anyDoubles) {
                     for (int m = 0; m < ta.length; m++) {
                         if (ta[m] instanceof IntToken) {
-                            ta[m] = (DoubleToken) DoubleToken.convert(ta[m]);
+                            ta[m] = DoubleToken.convert(ta[m]);
                         }
                     }
                 }

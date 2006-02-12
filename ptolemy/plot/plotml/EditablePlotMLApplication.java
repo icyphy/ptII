@@ -98,7 +98,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         super(plot, args);
 
         // The default is that no set is editable.
-        ((EditablePlot) plot).setEditable(-1);
+        plot.setEditable(-1);
 
         // Edit menu
         JMenuItem select = new JMenuItem("Edit Dataset", KeyEvent.VK_E);

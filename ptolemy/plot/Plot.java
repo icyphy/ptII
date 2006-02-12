@@ -528,7 +528,7 @@ public class Plot extends PlotBox {
                     boolean first = true;
 
                     for (int i = 0; i <= 100; i++) {
-                        double xvalue = (double) i;
+                        double xvalue = i;
 
                         // NOTE: jdk 1.3beta has a bug exhibited here.
                         // The value of the second argument in the calls
@@ -1145,10 +1145,10 @@ public class Plot extends PlotBox {
                 // to not loose precision on extremely close zooms.
                 if (startx != endx) {
                     if (endx < _ulx) {
-                        endy = (int) (endy + (((long) (starty - endy) * (_ulx - endx)) / (startx - endx)));
+                        endy = (int) (endy + (((starty - endy) * (_ulx - endx)) / (startx - endx)));
                         endx = _ulx;
                     } else if (endx > _lrx) {
-                        endy = (int) (endy + (((long) (starty - endy) * (_lrx - endx)) / (startx - endx)));
+                        endy = (int) (endy + (((starty - endy) * (_lrx - endx)) / (startx - endx)));
                         endx = _lrx;
                     }
                 }
@@ -1157,10 +1157,10 @@ public class Plot extends PlotBox {
                 // Note that y increases downward
                 if (starty != endy) {
                     if (endy < _uly) {
-                        endx = (int) (endx + (((long) (startx - endx) * (_uly - endy)) / (starty - endy)));
+                        endx = (int) (endx + (((startx - endx) * (_uly - endy)) / (starty - endy)));
                         endy = _uly;
                     } else if (endy > _lry) {
-                        endx = (int) (endx + (((long) (startx - endx) * (_lry - endy)) / (starty - endy)));
+                        endx = (int) (endx + (((startx - endx) * (_lry - endy)) / (starty - endy)));
                         endy = _lry;
                     }
                 }
@@ -1168,20 +1168,20 @@ public class Plot extends PlotBox {
                 // Adjust current point to lie on the boundary.
                 if (startx != endx) {
                     if (startx < _ulx) {
-                        starty = (int) (starty + (((long) (endy - starty) * (_ulx - startx)) / (endx - startx)));
+                        starty = (int) (starty + (((endy - starty) * (_ulx - startx)) / (endx - startx)));
                         startx = _ulx;
                     } else if (startx > _lrx) {
-                        starty = (int) (starty + (((long) (endy - starty) * (_lrx - startx)) / (endx - startx)));
+                        starty = (int) (starty + (((endy - starty) * (_lrx - startx)) / (endx - startx)));
                         startx = _lrx;
                     }
                 }
 
                 if (starty != endy) {
                     if (starty < _uly) {
-                        startx = (int) (startx + (((long) (endx - startx) * (_uly - starty)) / (endy - starty)));
+                        startx = (int) (startx + (((endx - startx) * (_uly - starty)) / (endy - starty)));
                         starty = _uly;
                     } else if (starty > _lry) {
-                        startx = (int) (startx + (((long) (endx - startx) * (_lry - starty)) / (endy - starty)));
+                        startx = (int) (startx + (((endx - startx) * (_lry - starty)) / (endy - starty)));
                         starty = _lry;
                     }
                 }

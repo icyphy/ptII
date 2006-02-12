@@ -211,7 +211,7 @@ public class StringAttribute extends AbstractSettableAttribute {
 
         // Notify the container and any value listeners immediately,
         // rather than deferring to validate().
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.attributeChanged(this);

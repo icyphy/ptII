@@ -363,7 +363,7 @@ public class Audio {
             double[] result = new double[intdata.length];
 
             for (int i = intdata.length - 1; i >= 0; i--) {
-                result[i] = ((double) (intdata[i])) / 31616.0;
+                result[i] = intdata[i] / 31616.0;
             }
 
             return result;

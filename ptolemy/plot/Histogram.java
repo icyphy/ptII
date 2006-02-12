@@ -293,7 +293,7 @@ public class Histogram extends PlotBox {
         Random random = new Random();
 
         for (int i = 0; i <= 1000; i++) {
-            this.addPoint(0, 5.0 * Math.cos((Math.PI * ((double) i)) / 500.0));
+            this.addPoint(0, 5.0 * Math.cos((Math.PI * i) / 500.0));
             this.addPoint(1, (10.0 * random.nextDouble()) - 5.0);
             this.addPoint(2, 2.0 * random.nextGaussian());
         }
@@ -732,8 +732,8 @@ public class Histogram extends PlotBox {
             _xTop = xtop;
         }
 
-        if ((double) count > _yTop) {
-            _yTop = (double) count;
+        if (count > _yTop) {
+            _yTop = count;
         }
 
         _yBottom = 0.0;
@@ -804,7 +804,7 @@ public class Histogram extends PlotBox {
             graphics.setColor(_foreground);
         }
 
-        double y = (double) count;
+        double y = count;
         double x = (_binWidth * bin) + _binOffset;
 
         if (_xlog) {

@@ -435,7 +435,7 @@ public class SoundPlayback {
         boolean signed = true;
         boolean bigEndian = true;
 
-        AudioFormat format = new AudioFormat((float) _sampleRate,
+        AudioFormat format = new AudioFormat(_sampleRate,
                 _sampleSizeInBits, _channels, signed, bigEndian);
 
         _frameSizeInBytes = format.getFrameSize();
@@ -477,7 +477,7 @@ public class SoundPlayback {
         boolean signed = true;
         boolean bigEndian = true;
 
-        _playToFileFormat = new AudioFormat((float) _sampleRate,
+        _playToFileFormat = new AudioFormat(_sampleRate,
                 _sampleSizeInBits, _channels, signed, bigEndian);
 
         _frameSizeInBytes = _playToFileFormat.getFrameSize();

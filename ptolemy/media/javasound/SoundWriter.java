@@ -244,7 +244,7 @@ public class SoundWriter {
         boolean signed = true;
         boolean bigEndian = true;
 
-        _playToFileFormat = new AudioFormat((float) _sampleRate,
+        _playToFileFormat = new AudioFormat(_sampleRate,
                 _bitsPerSample, _channels, signed, bigEndian);
 
         _frameSizeInBytes = _playToFileFormat.getFrameSize();

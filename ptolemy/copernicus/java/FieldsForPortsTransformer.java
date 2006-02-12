@@ -119,7 +119,6 @@ public class FieldsForPortsTransformer extends SceneTransformer implements
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        int localCount = 0;
         System.out.println("FieldsForPortsTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
 

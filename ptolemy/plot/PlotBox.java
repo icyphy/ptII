@@ -1032,8 +1032,8 @@ public class PlotBox extends JPanel implements Printable {
 
         // Scale the printout to fit the pages.
         // Contributed by Laurent ETUR, Schlumberger Riboud Product Center
-        double scalex = format.getImageableWidth() / (double) getWidth();
-        double scaley = format.getImageableHeight() / (double) getHeight();
+        double scalex = format.getImageableWidth() / getWidth();
+        double scaley = format.getImageableHeight() / getHeight();
         double scale = Math.min(scalex, scaley);
         graphics2D.translate((int) format.getImageableX(), (int) format
                 .getImageableY());
@@ -1689,7 +1689,7 @@ public class PlotBox extends JPanel implements Printable {
             for (int i = 0; i <= last; i++) {
                 output.println("  <tick label=\""
                         + (String) _xticklabels.elementAt(i) + "\" position=\""
-                        + (Double) _xticks.elementAt(i) + "\"/>");
+                        + _xticks.elementAt(i) + "\"/>");
             }
 
             output.println("</xTicks>");
@@ -1703,7 +1703,7 @@ public class PlotBox extends JPanel implements Printable {
             for (int i = 0; i <= last; i++) {
                 output.println("  <tick label=\""
                         + (String) _yticklabels.elementAt(i) + "\" position=\""
-                        + (Double) _yticks.elementAt(i) + "\"/>");
+                        + _yticks.elementAt(i) + "\"/>");
             }
 
             output.println("</yTicks>");
@@ -1956,7 +1956,7 @@ public class PlotBox extends JPanel implements Printable {
         int ny = 2 + (height / (labelheight + 10));
 
         // Compute y increment.
-        double yStep = _roundUp((_ytickMax - _ytickMin) / (double) ny);
+        double yStep = _roundUp((_ytickMax - _ytickMin) / ny);
 
         // Compute y starting point so it is a multiple of yStep.
         double yStart = yStep * Math.ceil(_ytickMin / yStep);
@@ -2245,7 +2245,7 @@ public class PlotBox extends JPanel implements Printable {
                 int count = 0;
 
                 while (count++ <= 10) {
-                    xStep = _roundUp((_xtickMax - _xtickMin) / (double) nx);
+                    xStep = _roundUp((_xtickMax - _xtickMin) / nx);
 
                     // Compute the width of a label for this xStep
                     numfracdigits = _numFracDigits(xStep);
@@ -2275,7 +2275,7 @@ public class PlotBox extends JPanel implements Printable {
                 }
             }
 
-            xStep = _roundUp((_xtickMax - _xtickMin) / (double) nx);
+            xStep = _roundUp((_xtickMax - _xtickMin) / nx);
             numfracdigits = _numFracDigits(xStep);
 
             // Compute x starting point so it is a multiple of xStep.
@@ -2717,11 +2717,11 @@ public class PlotBox extends JPanel implements Printable {
 
             for (int i = 0; i < last; i++) {
                 output.print("\"" + (String) _xticklabels.elementAt(i) + "\" "
-                        + (Double) _xticks.elementAt(i) + ", ");
+                        + _xticks.elementAt(i) + ", ");
             }
 
             output.println("\"" + (String) _xticklabels.elementAt(last) + "\" "
-                    + (Double) _xticks.elementAt(last));
+                    + _xticks.elementAt(last));
         }
 
         if ((_yticks != null) && (_yticks.size() > 0)) {
@@ -2731,11 +2731,11 @@ public class PlotBox extends JPanel implements Printable {
 
             for (int i = 0; i < last; i++) {
                 output.print("\"" + (String) _yticklabels.elementAt(i) + "\" "
-                        + (Double) _yticks.elementAt(i) + ", ");
+                        + _yticks.elementAt(i) + ", ");
             }
 
             output.println("\"" + (String) _yticklabels.elementAt(last) + "\" "
-                    + (Double) _yticks.elementAt(last));
+                    + _yticks.elementAt(last));
         }
 
         if (_xlog) {
@@ -3529,7 +3529,7 @@ public class PlotBox extends JPanel implements Printable {
 
         // Use the exponent only if it's larger than 1 in magnitude.
         if ((_xExp > 1) || (_xExp < -1)) {
-            double xs = 1.0 / Math.pow(10.0, (double) _xExp);
+            double xs = 1.0 / Math.pow(10.0, _xExp);
             _xtickMin = _xMin * xs;
             _xtickMax = _xMax * xs;
         } else {
@@ -3579,7 +3579,7 @@ public class PlotBox extends JPanel implements Printable {
 
         // Use the exponent only if it's larger than 1 in magnitude.
         if ((_yExp > 1) || (_yExp < -1)) {
-            double ys = 1.0 / Math.pow(10.0, (double) _yExp);
+            double ys = 1.0 / Math.pow(10.0, _yExp);
             _ytickMin = _yMin * ys;
             _ytickMax = _yMax * ys;
         } else {
@@ -3681,8 +3681,8 @@ public class PlotBox extends JPanel implements Printable {
             graphics.setPaintMode();
 
             // Calculate zoom factor.
-            double a = (double) (Math.abs(_zoomx - x)) / 30.0;
-            double b = (double) (Math.abs(_zoomy - y)) / 30.0;
+            double a = (Math.abs(_zoomx - x)) / 30.0;
+            double b = (Math.abs(_zoomy - y)) / 30.0;
             double newx1 = _xMax + ((_xMax - _xMin) * a);
             double newx2 = _xMin - ((_xMax - _xMin) * a);
 
