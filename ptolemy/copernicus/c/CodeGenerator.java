@@ -175,7 +175,7 @@ public abstract class CodeGenerator {
         int numberOfParameters = 0;
 
         if (!method.isStatic()) {
-            SootClass source = method.getDeclaringClass();
+            /*SootClass source = */ method.getDeclaringClass();
             code.append(CNames.instanceNameOf(method.getDeclaringClass()));
             numberOfParameters++;
         }

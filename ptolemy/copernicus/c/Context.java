@@ -139,7 +139,7 @@ public class Context {
      *  @return True if and only if single class mode translation is enabled.
      */
     public static boolean getSingleClassMode() {
-        return ((String) Options.v().get("compileMode")).equals("singleClass");
+        return Options.v().get("compileMode").equals("singleClass");
     }
 
     /** Return an Iterator over the set of string constants in the context.

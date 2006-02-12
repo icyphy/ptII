@@ -45,7 +45,6 @@ import soot.Value;
 import soot.ValueBox;
 import soot.jimple.FieldRef;
 import soot.jimple.InstanceOfExpr;
-import soot.jimple.InvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.spark.SparkTransformer;
 import soot.jimple.toolkits.callgraph.CallGraph;
@@ -366,15 +365,14 @@ public class CallGraphPruner {
 
                     // Add accessed fields.
                     if (stmt.containsFieldRef()) {
-                        FieldRef fieldRef = (FieldRef) stmt.getFieldRef();
+                        FieldRef fieldRef = stmt.getFieldRef();
                         SootField field = fieldRef.getField();
                         nodes.add(field);
                     }
 
                     // Add directly called methods.
                     if (!leaf && stmt.containsInvokeExpr()) {
-                        SootMethod m = ((InvokeExpr) stmt.getInvokeExpr())
-                                .getMethod();
+                        SootMethod m = stmt.getInvokeExpr().getMethod();
                         nodes.add(m);
                         nodes.add(m.getDeclaringClass());
                     }
@@ -513,8 +511,8 @@ public class CallGraphPruner {
     protected void _processMethod(SootMethod method) {
         // If the method is in an undiscovered class, refresh the
         // invokeGraph.
-        SootClass source = method.getDeclaringClass();
-        int oldSize = _gray.size();
+        /*SootClass source = */ method.getDeclaringClass();
+        //int oldSize = _gray.size();
 
         // Care must be taken in what goes inside this if block. All trails
         // that terminate at leaf nodes must be inside it.
@@ -622,43 +620,9 @@ public class CallGraphPruner {
         return methods;
     }
 
-    /** Set all classes in the Scene as library classes. */
-    private void _setAllClassesAsLibrary() {
-        if (_verbose) {
-            System.out.println("Setting all classes to library classes ...");
-        }
-
-        Iterator classes = Scene.v().getClasses().iterator();
-
-        while (classes.hasNext()) {
-            SootClass source = (SootClass) classes.next();
-            source.setLibraryClass();
-        }
-    }
-
-    /** Set all classes in the Scene that are not overridden as library
-     classes.
-     */
-    private void _setUnOverriddenClassesAsLibrary() {
-        if (_verbose) {
-            System.out
-                    .println("Setting all un-overridden classes to library classes ...");
-        }
-
-        Iterator classes = Scene.v().getClasses().iterator();
-
-        while (classes.hasNext()) {
-            SootClass source = (SootClass) classes.next();
-
-            if (OverriddenMethodGenerator.isOverridden(source)) {
-                source.setLibraryClass();
-            }
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
     /** True if the "verbose" option is on. */
-    private boolean _verbose;
+    //private boolean _verbose;
 }

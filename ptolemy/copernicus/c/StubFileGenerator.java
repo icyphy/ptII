@@ -30,8 +30,6 @@
  */
 package ptolemy.copernicus.c;
 
-import java.util.Iterator;
-
 import soot.SootClass;
 
 /** A C code generator for generating "stub header files"
@@ -66,7 +64,7 @@ public class StubFileGenerator extends CodeGenerator {
         // An iterator over all different member declarations
         // (declarations for fields, methods, constructors, etc.) of the
         // given Java class declaration.
-        Iterator membersIter;
+        //Iterator membersIter;
 
         // Extract the unique class name and instance-specific type name to
         // use for the class.

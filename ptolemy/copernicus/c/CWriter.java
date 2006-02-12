@@ -81,7 +81,7 @@ public class CWriter extends SceneTransformer {
 
         // We use soot.Options to avoid confusion with
         // copernicus.c.options.
-        String outDir = soot.PhaseOptions.getString(options, "outDir");
+        //String outDir = soot.PhaseOptions.getString(options, "outDir");
         String mainFile = soot.PhaseOptions.getString(options, "targetPackage")
                 + ".Main";
 
@@ -124,11 +124,11 @@ public class CWriter extends SceneTransformer {
 
             //fileName += sootClass.getName();
             // FIXME: move these out of the loop?
-            HeaderFileGenerator hGenerator = new HeaderFileGenerator();
+            /*HeaderFileGenerator hGenerator = */ new HeaderFileGenerator();
 
             /*CodeFileGenerator cGenerator = */new CodeFileGenerator();
 
-            StubFileGenerator sGenerator = new StubFileGenerator();
+            /*StubFileGenerator sGenerator = */new StubFileGenerator();
             CNames.setup();
 
             RequiredFileGenerator RFG = new RequiredFileGenerator();

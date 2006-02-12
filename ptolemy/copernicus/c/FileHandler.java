@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 
 /** A class that takes care of common File I/O functions.
 
@@ -132,7 +131,7 @@ public class FileHandler {
             FileOutputStream file = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(file);
 
-            out.writeObject((Serializable) object);
+            out.writeObject(object);
             out.close();
         } catch (IOException e) {
             throw new RuntimeException("IOException while writing object to "

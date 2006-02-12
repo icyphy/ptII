@@ -125,7 +125,7 @@ public class RequiredFileGenerator {
      *  @return The set of all required Classes.
      */
     public static Collection getRequiredClasses() {
-        return (Collection) _requiredClasses;
+        return _requiredClasses;
     }
 
     /** Initialize and compute the required classes and methods.
