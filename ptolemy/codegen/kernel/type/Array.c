@@ -52,7 +52,8 @@ Token Array_new(int size, int given, ...) {
     // convert all the elements to the max type.
     if (doConvert) {
         for (i = 0; i < given; i++) {
-            result.payload.Array->elements[i] = (Token) functionTable[elementType][FUNC_convert](result.payload.Array->elements[i]);
+            // Don't cast to a Token here, the MS VisualC compiler fails
+            result.payload.Array->elements[i] = functionTable[elementType][FUNC_convert](result.payload.Array->elements[i]);
         }
     }
     return result;
