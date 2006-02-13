@@ -141,10 +141,12 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
 
     /** Generate code.  This is the main entry point.
      *  @param code The code buffer into which to generate the code.
+     *  @return The return value of the last subprocess that was executed.
+     *  or -1 if no commands were executed.
      *  @exception KernelException If a type conflict occurs or the model
      *  is running.
      */
-    public void generateCode(StringBuffer code) throws KernelException {
+    public int generateCode(StringBuffer code) throws KernelException {
         // If necessary, create a manager.
         Actor container = ((Actor) getContainer());
         Manager manager = container.getManager();
@@ -156,12 +158,14 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
             toplevel.setManager(manager);
         }
 
+        int returnValue = -1;
         try {
             manager.preinitializeAndResolveTypes();
-            super.generateCode(code);
+            returnValue = super.generateCode(code);
         } finally {
             manager.wrapup();
         }
+        return returnValue;
     }
 
     /** Generate into the specified code buffer the code associated
