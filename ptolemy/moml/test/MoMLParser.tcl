@@ -3624,49 +3624,51 @@ Caused by:
 test MoMLParser-24.1 {purgeModelRecord} {
     set parser [java::new ptolemy.moml.MoMLParser]
     $parser reset
-    # We parse the same file three times
+    # We parse the same file three times and substitute new contents
+    # after the first time
 
-    # parse it once with data from testdir.moml
+    # Parse it once with data from p1.moml, which creates .p1
     file delete -force purgeModelRecordTest.moml
+
+    # Make sure that the file does not exist
     set r0 [file exists	purgeModelRecordTest.moml]
+
     file copy -force p1.moml purgeModelRecordTest.moml
 
     set url1 [[java::new java.io.File purgeModelRecordTest.moml] toURL]
-    #$parser purgeModelRecord $url1
-    set toplevel1 [$parser {parse java.net.URL java.net.URL} [java::null] $url1]
-    #set toplevel1 [$parser parseFile purgeModelRecordTest.moml]
+    set toplevel1 [$parser {parse java.net.URL java.net.URL} \
+	[java::null] $url1]
 
+    # This is .p1
     set r1 [$toplevel1 getFullName]
+
     # Update the file contents, note that toplevel2 is the same
-    # as toplevel1 
+    # as toplevel1 because we have not called purgeModelRecord.
     file delete -force purgeModelRecordTest.moml
+
+    # Make sure that the file does not exist.
     set r2 [file exists	purgeModelRecordTest.moml]
+
     file copy -force p2.moml purgeModelRecordTest.moml
 
-    set url2 [[java::new java.io.File purgeModelRecordTest.moml] toURL]
-    set toplevel2 [$parser {parse java.net.URL java.net.URL} [java::null] $url2]
-    #set toplevel2 [$parser parseFile purgeModelRecordTest.moml]
+    set toplevel2 [$parser {parse java.net.URL java.net.URL} \
+	[java::null] $url1]
+    # I would expect that this is .p2, but we have not yet purged and reset.
     set r3 [$toplevel2 getFullName]
 
-    [java::cast ptolemy.kernel.CompositeEntity $toplevel1] setContainer [java::null]
-    [java::cast ptolemy.kernel.CompositeEntity $toplevel2] setContainer [java::null]
-    set toplevel1 [java::null] 
-    set toplevel2 [java::null] 
     $parser purgeModelRecord $url1
-    $parser purgeModelRecord $url2
-    # Need to purge the record to see the change
+    $parser reset
+    # Need to purge the record and reset to see the change
 
-    set url3 [[java::new java.io.File purgeModelRecordTest.moml] toURL]
-
-    set toplevel3 [$parser {parse java.net.URL java.net.URL} [java::null] $url3]
+    set toplevel3 [$parser {parse java.net.URL java.net.URL} \
+	[java::null] $url1]
     set r4 [$toplevel3 getFullName]
-    #[java::cast ptolemy.kernel.CompositeEntity $toplevel3] setContainer [java::null]
-    #set toplevel3 [java::null] 
 
-    $parser purgeModelRecord $url3
+    # Do a little cleanup	
+    $parser purgeModelRecord $url1
+    $parser reset
+    file delete -force purgeModelRecordTest.moml
 
-    #set toplevel3 [$parser parseFile purgeModelRecordTest.moml]
 
-    #file delete -force purgeModelRecordTest.moml
     list $r0 $r1 $r2 $r3 $r4
-} {.p1 0 .p1 .p2}
+} {0 .p1 0 .p1 .p2}
