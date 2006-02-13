@@ -1651,7 +1651,7 @@ public class CompositeEntity extends ComponentEntity {
                 + "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>"
                 + "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>"
                 + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
-                + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n");
+                + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n";
 
     /** Cache of entity list. */
     private transient List _entityListCache;
