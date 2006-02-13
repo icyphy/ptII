@@ -273,7 +273,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(initializeCode);
         code.append(bodyCode);
         code.append(wrapupCode);
-        code.append("return 0;\n");
+        code.append("exit(0);\n");
         code.append("}\n");
 
         if (_executeCommands == null) {

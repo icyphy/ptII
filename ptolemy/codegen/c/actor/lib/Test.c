@@ -10,7 +10,7 @@ static int $actorSymbol(count) = 0;
         // FIXME: what about types other than double?
         printf("Test fails in iteration %d.\n Value was: %f. Should have been: %f\n",
             $actorSymbol(count), (double)$ref(input#0), (double)$ref(correctValues, $actorSymbol(count)));
-        return -1;    
+        exit(-1);    
     }
     $actorSymbol(count) ++;
 /**/
