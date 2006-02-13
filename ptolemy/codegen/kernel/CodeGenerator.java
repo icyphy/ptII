@@ -226,10 +226,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  written will be <code>$HOME/Foo.c</code>
      *  This method is the main entry point.
      *  @param code The given string buffer.
+     *  @return The return value of the last subprocess that was executed.
+     *  or -1 if no commands were executed.
      *  @exception KernelException If the target file cannot be overwritten
      *   or write-to-file throw any exception.
      */
-    public void generateCode(StringBuffer code) throws KernelException {
+    public int generateCode(StringBuffer code) throws KernelException {
 
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
@@ -279,7 +281,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         _writeCode(code);
         _writeMakefile();
-        _executeCommands();
+        return _executeCommands();
     }
 
     /** Generate code for a model.
@@ -992,22 +994,25 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Execute the compile and run commands in the
      *  <i>codeDirectory</i> directory.
+     *  @return The return value of the last subprocess that was executed
+     *  or -1 if no commands were executed.
      */
-    private void _executeCommands() throws IllegalActionException {
+    private int _executeCommands() throws IllegalActionException {
 
         List commands = new LinkedList();
         if (((BooleanToken) compile.getToken()).booleanValue()) {
             commands.add("make -f " + _sanitizedModelName + ".mk");
         }
         if (((BooleanToken) compile.getToken()).booleanValue()) {
-            commands
-                    .add(codeDirectory.stringValue()
-                            + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                                    .stringValue().endsWith("\\")) ? "/" : "")
-                            + _sanitizedModelName);
+            String command = codeDirectory.stringValue()
+                + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
+                           .stringValue().endsWith("\\")) ? "/" : "")
+                + _sanitizedModelName;
+
+            commands.add("\"" + command.replace('\\', '/') + "\"");
         }
         if (commands.size() == 0) {
-            return;
+            return -1;
         }
 
         _executeCommands.setCommands(commands);
@@ -1025,6 +1030,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             throw new IllegalActionException("Problem executing the "
                     + "commands:\n" + errorMessage);
         }
+        return _executeCommands.getLastSubprocessReturnCode();
     }
 
     /** Write the code to a directory named by the codeDirectory
