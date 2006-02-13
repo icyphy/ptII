@@ -7,4 +7,4 @@
 
 # We need -lm so we can get floor() for ftoi() 
 @modelName@: @modelName@.c
-	gcc @modelName@.c -o @modelName@ -lm
+	gcc -g @modelName@.c -o @modelName@ -lm
