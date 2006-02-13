@@ -1204,26 +1204,32 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
 
+     
             InputStream inputStream = null;
-
+           
             try {
-                inputStream = input.openStream();
-            } catch (Exception ex) {
-                // Try opening it up as a Jar URL.
-                // vergilPtiny.jnlp needs this.
-                URL jarURL = ClassUtilities.jarURLEntryResource(input
-                        .toExternalForm());
-
-                if (jarURL != null) {
-                    inputStream = jarURL.openStream();
-                } else {
-                    throw ex;
+                try {
+                    inputStream = input.openStream();
+                } catch (Exception ex) {
+                    // Try opening it up as a Jar URL.
+                    // vergilPtiny.jnlp needs this.
+                    URL jarURL = ClassUtilities.jarURLEntryResource(input
+                            .toExternalForm());
+                    
+                    if (jarURL != null) {
+                        inputStream = jarURL.openStream();
+                    } else {
+                        throw ex;
+                    }
+                }
+                NamedObj result = parse(base, inputStream);
+                _imports.put(input, new WeakReference(result));
+                return result;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
                 }
             }
-
-            NamedObj result = parse(base, inputStream);
-            _imports.put(input, new WeakReference(result));
-            return result;
         } finally {
             _xmlFile = null;
         }
@@ -1468,7 +1474,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Purge any record of a model opened from the specified
-     *  URL.
+     *  URL.  Note that you may also need to call {@link #reset()} so
+     *  that the _toplevel is reset.
      *  @param url The URL.
      *  @see #parse(URL, URL)
      */
@@ -1485,6 +1492,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  property, which is not generally available in applets.  Hence
      *  it is probably not a good idea to use this method in applet code,
      *  since it will probably fail outright.
+     *  
+     *  <p> Note that you may also need to call {@link #reset()} so
+     *  that the _toplevel is reset.
      *
      *  @param filename The file name from which to read MoML.
      *  @exception MalformedURLException If the file name cannot be converted to a URL.
