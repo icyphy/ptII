@@ -273,6 +273,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(initializeCode);
         code.append(bodyCode);
         code.append(wrapupCode);
+        code.append("return 0;\n");
         code.append("}\n");
 
         if (_executeCommands == null) {
@@ -1003,6 +1004,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (((BooleanToken) compile.getToken()).booleanValue()) {
             commands.add("make -f " + _sanitizedModelName + ".mk");
         }
+        
         if (((BooleanToken) compile.getToken()).booleanValue()) {
             String command = codeDirectory.stringValue()
                 + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
@@ -1011,6 +1013,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
             commands.add("\"" + command.replace('\\', '/') + "\"");
         }
+        
+        
         if (commands.size() == 0) {
             return -1;
         }
