@@ -167,9 +167,6 @@ Token Int_new(int i) {
 }
 
 
-main(int argc, char *argv[]) {
-
-
 /* Variable Declarations .top */
 
 /* Composite actor's variable declarations. */
@@ -179,10 +176,21 @@ main(int argc, char *argv[]) {
 /* preinitialize top */
 /* The preinitialization of the director. */
 static int iteration = 0;
-/* Initialize .top */
+
+
+main(int argc, char *argv[]) {
+
+
+/* Variable initialization .top */
+
+/* Composite actor's variable initializations. */
+
+/* top's variable initialization. */
+/* 
+Initialize .top */
 /* The initialization of the director. */
 /* Wrapup .top */
 /* The wrapup of the director. */
+exit(0);
 }
 }}
-
