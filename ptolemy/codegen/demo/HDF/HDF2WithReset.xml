@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="test17" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+<entity name="HDF2WithReset" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 124, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 124, 815, 536}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -243,7 +243,7 @@ to another. Then delete this annotation.</text>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 1, 2, 1, 2, 0, 0, 4, 5, 4, 5, 0, 0, 7, 8, 7, 8, 0, 0, 10, 11, 10, 11, 0, 0, 13, 14, 13, 14, 0, 0, 16, 17, 16, 17, 0, 0, 19, 20, 19, 20, 0, 0, 22, 23, 22, 23, 0, 0, 25, 26, 25, 26, 0, 0, 28, 29, 28, 29}">
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 190.0]">
         </property>
