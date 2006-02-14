@@ -1364,6 +1364,7 @@ public class DEDirector extends Director implements TimedDirector {
         // In particular, the dependency between ports belonging
         // to the same actor may be considered.
         Object[] sort = (Object[]) portsGraph.topologicalSort();
+        int numberOfPorts = sort.length;
 
         if (_debugging && _verbose) {
             _debug("## Result of topological sort (highest depth to lowest):");
@@ -1373,21 +1374,26 @@ public class DEDirector extends Director implements TimedDirector {
         // number of IO ports sorted.
         // This composite actor is set to the highest depth
         // (the lowest priority).
-        _portToDepth = new Hashtable(sort.length);
+        _portToDepth = new Hashtable(numberOfPorts);
 
         // assign depths to ports based on the topological sorting result.
         LinkedList ports = new LinkedList();
-
-        for (int i = 0; i <= (sort.length - 1); i++) {
+        
+        for (int i = 0; i <= (numberOfPorts - 1); i++) {
             IOPort ioPort = (IOPort) sort[i];
             ports.add(ioPort);
-
-            if (_debugging && _verbose) {
-                _debug(((Nameable) ioPort).getFullName(), "depth: " + i);
+            int depth  = i;
+            Actor portContainer = (Actor) ioPort.getContainer();
+            if (ioPort.isOutput() && portContainer.equals(getContainer())) {
+                depth += numberOfPorts;
             }
-
+            
             // Insert the hashtable entry.
-            _portToDepth.put(ioPort, new Integer(i));
+            _portToDepth.put(ioPort, new Integer(depth));
+            if (_debugging && _verbose) {
+                _debug(((Nameable) ioPort).getFullName(), 
+                        "depth: " + depth);
+            }
         }
 
         if (_debugging && _verbose) {
