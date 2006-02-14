@@ -279,6 +279,8 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
+        
+        _fireCode.append("(");
 
         //ptolemy.data.Token result = tokens[0];
         ptolemy.data.Token result = _evaluateChild(node, 0);
@@ -295,15 +297,13 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _assert(node.isBitwiseAnd() ^ node.isBitwiseOr() ^ node.isBitwiseXor(),
                 node, "Invalid operation");
 
-        _fireCode.append("(");
-
         for (int i = 1; i < numChildren; i++) {
             if (node.isBitwiseAnd()) {
-                _fireCode.append(" & ");
+                _fireCode.append("&");
             } else if (node.isBitwiseOr()) {
-                _fireCode.append(" | ");
+                _fireCode.append("|");
             } else {
-                _fireCode.append(" ^ ");
+                _fireCode.append("^");
             }
 
             //ptolemy.data.Token nextToken = tokens[i];
@@ -1253,7 +1253,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             _evaluateChild(node, i);
         }
 
-        _fireCode.append(")");
+       _fireCode.append(")");
 
         _evaluatedChildToken = (result);
 

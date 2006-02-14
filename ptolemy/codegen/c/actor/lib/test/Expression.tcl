@@ -44,16 +44,17 @@ proc parseTreeTest {expression} {
 	[java::new ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator]
     # We have to eval the parse tree first, though we ignore the value
     set token [$parseTreeCodeGenerator evaluateParseTree $parseTree]
-    return [list [$token toString] [$parseTreeCodeGenerator generateFireCode]]
+    # return [list [$token toString] [$parseTreeCodeGenerator generateFireCode]]
+    return [list [$parseTreeCodeGenerator generateFireCode]]
 }
 
 test Expression-1.1 {Simple tests of ParseTreeCodeGenerator} {
     parseTreeTest {1+3}
-} {4 1+3}
+} {(1+3)}
 
 test Expression-1.2 {A more complex example} {
     parseTreeTest {((3+4)+(1|2)+232)}
-} {242 3+4+1|2+232}
+} {((3+4)+(1|2)+232)}
 
 test Expression-2.1 {Define a variable in a regular parse tree } {
     # This test uses the regular (non codegen) parse tree
@@ -93,6 +94,6 @@ test Expression-2.2 {Define a variable in a codegen parse tree } {
     set ptParser [java::new ptolemy.data.expr.PtParser]
     set root [ $ptParser generateStringParseTree {1+$foo} ]
     set results  [ $evaluator evaluateParseTree $root $scope]
-    list [$results toString] [$evaluator generateFireCode]
+    list [$evaluator generateFireCode]
 
-} {{"1+42"} {"1+42"}}
+} {{"1+42"}}
