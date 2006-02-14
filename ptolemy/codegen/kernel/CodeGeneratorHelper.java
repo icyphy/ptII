@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.kernel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,7 +37,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
@@ -222,6 +220,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             for (int i = 0; i < sourcePorts.size(); i++) {
                 TypedIOPort sourcePort = (TypedIOPort) sourcePorts.get(i);
+                if (inputPort.getType().equals(sourcePort.getType())) {
+                    continue;
+                }
                 String sourcePortName = sourcePort.getName() + "#"
                         + _getChannelIndex(inputPort, i, sourcePort);
                 CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort
@@ -1236,6 +1237,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         List sourcePorts = port.sourcePortList();
         for (int i = 0; i < sourcePorts.size(); i++) {
             TypedIOPort sourcePort = (TypedIOPort) sourcePorts.get(i);
+            if (port.getType().equals(sourcePort.getType())) {
+                continue;
+            }
             String sourcePortName = sourcePort.getName() + "#"
                     + _getChannelIndex(port, i, sourcePort);
             CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort

@@ -818,6 +818,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     protected void _checkPortTypeConversion() throws IllegalActionException {
 
+        // FIXME: This method only applies to flat model (one hierarchy) . 
         Iterator actors = ((ptolemy.actor.CompositeActor) _getHelper(
                 getContainer()).getComponent()).deepEntityList().iterator();
 
@@ -850,6 +851,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                         // **Source port reference name is uniquely identified
                         // by "[NAME]#[INDEX]", its name and its channel#.
                         String refName = sourcePort.getName();
+                        // FIXME: 1. inputPort.sourcePortList() returns a list 
+                        // of source ports. The API does not say the 1st source
+                        // port in the list connects to the 1st channel of input 
+                        // port, the 2nd to the 2nd, etc. _getChannelIndex(inputPort, j,
+                        // sourcePort) uses this assumption which is not guaranteed.
+                        // 2. It does not consider the case that the same channel
+                        // of the input port may be connected to more than one source
+                        // port, e.g., in modal model.
                         refName += "#"
                                 + sourceHelper._getChannelIndex(inputPort, j,
                                         sourcePort);
