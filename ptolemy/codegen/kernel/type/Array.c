@@ -30,7 +30,7 @@ Token Array_new(int size, int given, ...) {
     result.payload.Array = (ArrayToken) malloc(sizeof(struct array));
     result.payload.Array->size = size;
     if (given > 0) {
-        element = (Token*) (&size + 2);
+        element = (Token*) (&given + 1);
         elementType = element->type;
     }
 

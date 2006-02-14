@@ -12,10 +12,10 @@
     };
     
     // FIXME: how should we determine the buffer size??
-    #define $actorClass(BUFFER_SIZE) 32500   // ~50 KB buffer size
+    #define $actorClass(BUFFER_SIZE) 8192   // ~50 KB buffer size
 
     // FIXME: what should we set the audio buffer size in samples equals to??
-    #define $actorClass(SAMPLE_BUFFER_SIZE) 16384
+    #define $actorClass(SAMPLE_BUFFER_SIZE) 8192
     
     double $actorClass(clip) (double num) {
         return num > 1.0 ? 1.0 : num < -1.0 ? -1.0 : num;
@@ -28,7 +28,7 @@
     
     //const int _debug = 0;
         
-    struct AudioPlayer_sample $actorSymbol(sounds)[$val(channels)];
+    struct $actorClass(sample) $actorSymbol(sounds)[$val(channels)];
         
     SDL_sem *$actorSymbol(sem);
     SDL_AudioSpec $actorSymbol(fmt);
@@ -110,7 +110,7 @@
     
     //const int _debug = 0;
         
-    struct AudioPlayer_sample $actorSymbol(sounds)[$val(channels)];
+    struct $actorClass(sample) $actorSymbol(sounds)[$val(channels)];
         
     SDL_sem *$actorSymbol(sem);
     SDL_AudioSpec $actorSymbol(fmt);
@@ -194,7 +194,7 @@
         exit(1);
     }
 
-    if (($actorSymbol(sem) = SDL_CreateSemaphore(AudioPlayer_BUFFER_SIZE)) == NULL) {
+    if (($actorSymbol(sem) = SDL_CreateSemaphore($actorClass(BUFFER_SIZE))) == NULL) {
         fprintf(stderr, "Error creating semaphor: %s\n",SDL_GetError());
         exit(1);
     }
@@ -203,7 +203,7 @@
     $actorSymbol(fmt).freq = $val(sampleRate);
     $actorSymbol(fmt).format = AUDIO_U$val(bitsPerSample);
     $actorSymbol(fmt).channels = $val(channels);
-    $actorSymbol(fmt).samples = AudioPlayer_SAMPLE_BUFFER_SIZE;    
+    $actorSymbol(fmt).samples = $actorClass(SAMPLE_BUFFER_SIZE);    
     $actorSymbol(fmt).callback = $actorSymbol(mixaudio);
     $actorSymbol(fmt).userdata = NULL;
 
@@ -213,7 +213,7 @@
         exit(1);
     }
     for ( $actorSymbol(i)=0; $actorSymbol(i)<$val(channels); ++$actorSymbol(i) ) {
-        $actorSymbol(sounds)[$actorSymbol(i)].data = (Uint8*) malloc(AudioPlayer_BUFFER_SIZE);
+        $actorSymbol(sounds)[$actorSymbol(i)].data = (Uint8*) malloc($actorClass(BUFFER_SIZE));
         $actorSymbol(sounds)[$actorSymbol(i)].dataPosition = 0;
         $actorSymbol(sounds)[$actorSymbol(i)].dataLength = 0;
     }
@@ -229,8 +229,8 @@
         // Input range [-1.0, 1.0] --> output range [0, 255]
         
         //Use the following line if RINT() is not defined
-        //$actorSymbol(convertedSample) = floor((AudioPlayer_clip($ref(input)) * 127) + 128); //128 = 2^7
-        $actorSymbol(convertedSample) = rint((AudioPlayer_clip($ref(input)) * 127) + 128); //128 = 2^7
+        //$actorSymbol(convertedSample) = floor(($actorClass(clip)($ref(input)) * 127) + 128); //128 = 2^7
+        $actorSymbol(convertedSample) = rint(($actorClass(clip)($ref(input)) * 127) + 128); //128 = 2^7
         $actorSymbol(putSample) ($actorSymbol(convertedSample), $actorSymbol(j));
     }
 /**/
@@ -244,8 +244,8 @@
         // Input range [-1.0, 1.0] --> output range [0, 65535]
 
         //Use the following line if RINT() is not defined
-        //$actorSymbol(convertedSample) = floor((AudioPlayer_clip($ref(input)) * 32767) + 32768); //32768 = 2^15
-        $actorSymbol(convertedSample) = rint((AudioPlayer_clip($ref(input)) * 32767) + 32768); //32768 = 2^15
+        //$actorSymbol(convertedSample) = floor(($actorClass(clip)($ref(input)) * 32767) + 32768); //32768 = 2^15
+        $actorSymbol(convertedSample) = rint(($actorClass(clip)($ref(input)) * 32767) + 32768); //32768 = 2^15
         $actorSymbol(putSample) ($actorSymbol(convertedSample), $actorSymbol(j));
     }
 /**/

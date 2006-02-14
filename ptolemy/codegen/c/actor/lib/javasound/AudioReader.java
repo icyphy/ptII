@@ -84,12 +84,13 @@ public class AudioReader extends CCodeGeneratorHelper {
         super.generateInitializeCode();
         _codeStream.clear();
 
-        ptolemy.actor.lib.javasound.AudioReader actor = (ptolemy.actor.lib.javasound.AudioReader) getComponent();
-        String fileNameString;
-
+        ptolemy.actor.lib.javasound.AudioReader actor = 
+            (ptolemy.actor.lib.javasound.AudioReader) getComponent();
+        String fileNameString = actor.fileOrURL.getExpression();
+        fileNameString.replace("file:/", "");
         try {
             fileNameString = FileUtilities.nameToFile(
-                    actor.fileOrURL.getExpression(), null).getCanonicalPath();
+                    fileNameString, null).getCanonicalPath();
             fileNameString = fileNameString.replace('\\', '/');
         } catch (IOException e) {
             throw new IllegalActionException("Cannot find file: "
