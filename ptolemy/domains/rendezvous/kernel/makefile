@@ -49,7 +49,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	RendezvousDirector.java \
-	AlternateRendezvousReceiver.java \
 	RendezvousReceiver.java
 
 EXTRA_SRCS =	$(JSRCS)
