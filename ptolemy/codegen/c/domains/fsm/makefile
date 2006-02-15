@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/domains/fsm
 
-DIRS =		kernel modal
+DIRS =		kernel modal test
 
 # Root of the Java directory
 ROOT =		../../../../..
