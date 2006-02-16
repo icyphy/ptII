@@ -269,7 +269,7 @@ public class DECQEventQueue implements DEEventQueue {
                 Time[] diff = new Time[entryArray.length - 1];
                 Time average = (((DEEvent) entryArray[entryArray.length - 1])
                         .timeStamp().subtract(((DEEvent) entryArray[0])
-                        .timeStamp())).divide((long) (entryArray.length - 1));
+                        .timeStamp())).divide((entryArray.length - 1));
                 Time zero = new Time(_director, 0.0);
                 Time effectiveAverage = zero;
                 int effectiveSamples = 0;
@@ -296,7 +296,7 @@ public class DECQEventQueue implements DEEventQueue {
                 }
 
                 effectiveAverage = effectiveAverage
-                        .divide((long) effectiveSamples);
+                        .divide(effectiveSamples);
                 _binWidth = new DEEvent((Actor) null, effectiveAverage
                         .multiply(3L), 0, 0);
             } catch (IllegalActionException e) {

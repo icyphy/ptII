@@ -111,7 +111,7 @@ public class ReplaceComplexParameters extends SceneTransformer implements
                 + phaseName + ", " + options + ")");
 
         _options = options;
-        _phaseName = phaseName;
+        //_phaseName = phaseName;
         _debug = PhaseOptions.getBoolean(options, "debug");
 
         _replaceComplexParametersIn(ModelTransformer.getModelClass(), _model);
@@ -558,5 +558,5 @@ public class ReplaceComplexParameters extends SceneTransformer implements
 
     private Map _options;
 
-    private String _phaseName;
+    //private String _phaseName;
 }

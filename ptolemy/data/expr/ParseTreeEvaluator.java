@@ -647,8 +647,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
-                            .createSequence((ScalarToken) tokens[3 * i],
-                                    (ScalarToken) tokens[(3 * i) + 1],
+                            .createSequence(tokens[3 * i],
+                                    tokens[(3 * i) + 1],
                                     columnCount);
                     System.arraycopy(newTokens, 0, matrixTokens, columnCount
                             * i, columnCount);
@@ -855,7 +855,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
-        Token operator = (Token) node.getOperator();
+        Token operator = node.getOperator();
         ptolemy.data.Token leftToken = tokens[0];
         ptolemy.data.Token rightToken = tokens[1];
         ptolemy.data.Token result;
@@ -912,7 +912,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
-        Token operator = (Token) node.getOperator();
+        Token operator = node.getOperator();
         ptolemy.data.Token token = tokens[0];
         ptolemy.data.Token bitsToken = tokens[1];
         ptolemy.data.Token result = null;

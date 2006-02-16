@@ -35,6 +35,7 @@ import java.util.Set;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.StringUtilities;
 
 /**
  * A helper class for ptolemy.actor.lib.javasound.AudioReader.
@@ -87,7 +88,7 @@ public class AudioReader extends CCodeGeneratorHelper {
         ptolemy.actor.lib.javasound.AudioReader actor = 
             (ptolemy.actor.lib.javasound.AudioReader) getComponent();
         String fileNameString = actor.fileOrURL.getExpression();
-        fileNameString.replace("file:/", "");
+        fileNameString = StringUtilities.substitute(fileNameString, "file:/", "");
         try {
             fileNameString = FileUtilities.nameToFile(
                     fileNameString, null).getCanonicalPath();

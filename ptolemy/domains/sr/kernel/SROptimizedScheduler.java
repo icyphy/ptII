@@ -140,8 +140,7 @@ public class SROptimizedScheduler extends Scheduler {
         FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) compositeActor
                 .getFunctionDependency();
 
-        Object[] cycleNodes = ((FunctionDependencyOfCompositeActor) functionDependency)
-                .getCycleNodes();
+        Object[] cycleNodes = functionDependency.getCycleNodes();
 
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
@@ -171,7 +170,7 @@ public class SROptimizedScheduler extends Scheduler {
             _debug("## dependency graph is:" + dependencyGraph.toString());
         }
 
-        Object[] sort = (Object[]) dependencyGraph.topologicalSort();
+        Object[] sort = dependencyGraph.topologicalSort();
 
         if (_debugging) {
             _debug("## Result of topological sort (highest depth to lowest):");

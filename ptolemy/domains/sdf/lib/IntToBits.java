@@ -136,7 +136,7 @@ public class IntToBits extends SDFConverter {
             bits[0] = new BooleanToken(true);
 
             //integer = (int)(2147483648L + integer);
-            integer = (int) ((1 << (rate - 1)) + integer);
+            integer = ((1 << (rate - 1)) + integer);
         } else {
             if (integer > ((1 << (rate - 1)) - 1)) {
                 throw new IllegalActionException(this,

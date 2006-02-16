@@ -75,7 +75,7 @@ public class ExceptionEliminator extends SceneTransformer implements
     /** Construct a new transformer
      */
     private ExceptionEliminator(CompositeActor model) {
-        _model = model;
+        //_model = model;
     }
 
     /** Return an instance of this transformer that will operate on
@@ -100,7 +100,7 @@ public class ExceptionEliminator extends SceneTransformer implements
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        int localCount = 0;
+        //int localCount = 0;
         System.out.println("ExceptionEliminator.internalTransform(" + phaseName
                 + ", " + options + ")");
 
@@ -162,7 +162,7 @@ public class ExceptionEliminator extends SceneTransformer implements
 
                 // FIXME: This is currently way too simple.
                 Value value = box.getValue();
-                Type type = value.getType();
+                //Type type = value.getType();
 
                 if (value instanceof NewExpr) {
                     // Fix kernel exceptions to be runtime exceptions.
@@ -250,7 +250,7 @@ public class ExceptionEliminator extends SceneTransformer implements
         }
     }
 
-    private CompositeActor _model;
+    //private CompositeActor _model;
 
     private boolean _obfuscate;
 }

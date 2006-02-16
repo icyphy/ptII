@@ -32,7 +32,6 @@ import java.util.Iterator;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;

@@ -144,7 +144,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
 
         long seedValue = ((LongToken) (seed.getToken())).longValue();
 
-        if (seedValue != (long) 0) {
+        if (seedValue != 0) {
             _random.setSeed(seedValue);
         } else {
             _random.setSeed(System.currentTimeMillis() + hashCode());

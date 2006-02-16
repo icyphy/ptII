@@ -124,7 +124,7 @@ public class MatlabUtilities {
                     if ((packageDirectories != null)
                             && packageDirectories instanceof StringToken) {
                         StringTokenizer dirs = new StringTokenizer(
-                                (String) ((StringToken) packageDirectories)
+                                ((StringToken) packageDirectories)
                                         .stringValue(), ",");
                         StringBuffer cellFormat = new StringBuffer(512);
                         cellFormat.append("{");

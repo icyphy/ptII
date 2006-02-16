@@ -119,7 +119,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                     return (UndoStackAttribute) attrList.get(0);
                 }
 
-                container = (NamedObj) container.getContainer();
+                container = container.getContainer();
             }
 
             // If we get here, there is no such attribute.

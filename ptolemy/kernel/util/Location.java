@@ -436,7 +436,7 @@ public class Location extends SingletonAttribute implements Locatable {
             _location[i] = location[i];
         }
 
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.attributeChanged(this);

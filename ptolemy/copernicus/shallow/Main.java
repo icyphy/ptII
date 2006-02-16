@@ -113,7 +113,7 @@ public class Main extends KernelMain {
             throws Exception {
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
-        _watchDogTimeout = attribute.getParameter("watchDogTimeout");
+        //_watchDogTimeout = attribute.getParameter("watchDogTimeout");
         _outputDirectory = attribute.getParameter("outputDirectory");
         _generatorAttributeFileName = attribute
                 .getParameter("generatorAttributeFileName");
@@ -124,7 +124,7 @@ public class Main extends KernelMain {
 
     private static String _generatorAttributeFileName = "unsetParameter";
 
-    private static String _watchDogTimeout = "unsetParameter";
+    //private static String _watchDogTimeout = "unsetParameter";
 
     private static String _targetPackage = "unsetParameter";
 

@@ -221,7 +221,7 @@ public class ConversionUtilities {
             FixToken[] temp = new FixToken[((FixPoint[]) object).length];
 
             for (int j = 0; j < temp.length; j++) {
-                temp[j] = new FixToken((FixPoint) ((FixPoint[]) object)[j]);
+                temp[j] = new FixToken(((FixPoint[]) object)[j]);
             }
 
             returnValue = new ArrayToken(temp);

@@ -181,7 +181,7 @@ public class NodeRandomizer extends TypedAtomicActor {
 
         long seedValue = ((LongToken) (seed.getToken())).longValue();
 
-        if (seedValue == (long) 0) {
+        if (seedValue == 0) {
             seedValue = System.currentTimeMillis() + hashCode();
         }
 

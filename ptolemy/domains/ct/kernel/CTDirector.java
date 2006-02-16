@@ -364,7 +364,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         Time currentTime = getModelTime();
 
         if (time.compareTo(currentTime) < 0) {
-            throw new IllegalActionException((Nameable) actor,
+            throw new IllegalActionException(actor,
                     "Requested fire time: " + time + " is earlier than"
                             + " the current time." + currentTime);
         }
@@ -650,7 +650,7 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
                 if (!ready) {
                     _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                     throw new IllegalActionException(
-                            (Nameable) actor,
+                            actor,
                             "Actor is not ready to fire. In the CT domain, all "
                                     + "dynamic actors should be ready to fire at "
                                     + "all times.\n Does the actor only operate on "

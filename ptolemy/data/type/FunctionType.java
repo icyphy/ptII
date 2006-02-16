@@ -244,7 +244,7 @@ public class FunctionType extends StructuredType {
     public void initialize(Type type) {
         try {
             for (int i = 0; i < getArgCount(); i++) {
-                FieldTypeTerm fieldType = (FieldTypeTerm) getArgTypeTerm(i);
+                FieldTypeTerm fieldType = getArgTypeTerm(i);
 
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);

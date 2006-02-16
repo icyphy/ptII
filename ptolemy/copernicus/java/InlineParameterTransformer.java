@@ -435,7 +435,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
 
                         Entity container = FieldsForEntitiesTransformer
                                 .getEntityContainerOfObject(attribute);
-                        Local thisLocal = body.getThisLocal();
+                        //Local thisLocal = body.getThisLocal();
 
                         Local containerLocal = getAttributeContainerRef(
                                 container, method, (Local) r.getBase(), stmt,
@@ -891,7 +891,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = (Value) stmt.getRightOp();
+            Value value = stmt.getRightOp();
 
             if (value instanceof Local) {
                 return getAttributeContainerRef(container, method,
@@ -966,7 +966,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = (Value) stmt.getRightOp();
+            Value value = stmt.getRightOp();
 
             if (value instanceof Local) {
                 return getAttributeValue(method, (Local) value, stmt,
@@ -1098,7 +1098,7 @@ public class InlineParameterTransformer extends SceneTransformer implements
                             .getSootTypeForTokenType(type);
 
                     boolean isConstant = constantAnalysis.getConstVariables(
-                            (Entity) context).contains(attribute);
+                            context).contains(attribute);
 
                     int modifier;
 

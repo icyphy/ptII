@@ -592,7 +592,7 @@ public class HSScheduler extends Scheduler {
                 if (predecessorList(a).isEmpty()) {
                     // This actor is either receiving inputs from the outside
                     // or producing outputs as a source.
-                    List inputPorts = ((Actor) a).inputPortList();
+                    List inputPorts = a.inputPortList();
                     Iterator inPorts = inputPorts.iterator();
                     SignalType inputType = CTReceiver.UNKNOWN;
                     // If there is no input ports, such as a source actor,
@@ -627,7 +627,7 @@ public class HSScheduler extends Scheduler {
                     // NOTE: Two tests are provided. They are 
                     // CTSubsystemAsDelay_zeroDelay.xml and 
                     // CTSubsystemAsDelay_nonZeroDelay.xml
-                    List outputPorts = ((Actor) a).outputPortList();
+                    List outputPorts = a.outputPortList();
                     Iterator outPorts = outputPorts.iterator();
                     while (outPorts.hasNext()) {
                         IOPort outPort = (IOPort) outPorts.next();

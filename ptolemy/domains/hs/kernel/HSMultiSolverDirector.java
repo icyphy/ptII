@@ -574,7 +574,7 @@ public class HSMultiSolverDirector extends HSDirector {
             // ready to fire. This should never happen.
             if (!ready) {
                 throw new IllegalActionException(
-                        (Nameable) actor,
+                        actor,
                         "Actor is not ready to fire. In the CT domain, all "
                                 + "dynamic actors should be ready to fire at "
                                 + "all times.\n Does the actor only operate on "
@@ -681,7 +681,7 @@ public class HSMultiSolverDirector extends HSDirector {
             Actor actor = (Actor) actors.next();
 
             if (_debugging) {
-                _debug("Postfire " + (Nameable) actor);
+                _debug("Postfire " + actor);
             }
 
             boolean postfireReturns = actor.postfire();
@@ -695,7 +695,7 @@ public class HSMultiSolverDirector extends HSDirector {
             CTStatefulActor actor = (CTStatefulActor) actors.next();
 
             if (_debugging) {
-                _debug("Postfire " + (Nameable) actor);
+                _debug("Postfire " + actor);
             }
 
             actor.markState();
@@ -825,7 +825,7 @@ public class HSMultiSolverDirector extends HSDirector {
                     CTStatefulActor actor = (CTStatefulActor) actors.next();
 
                     if (_debugging) {
-                        _debug("Restore states " + (Nameable) actor);
+                        _debug("Restore states " + actor);
                     }
 
                     actor.goToMarkedState();
@@ -879,7 +879,7 @@ public class HSMultiSolverDirector extends HSDirector {
                     CTStatefulActor actor = (CTStatefulActor) actors.next();
 
                     if (_debugging) {
-                        _debug("Restore states " + (Nameable) actor);
+                        _debug("Restore states " + actor);
                     }
 
                     actor.goToMarkedState();

@@ -634,7 +634,7 @@ public class MultirateFSMDirector extends FSMDirector {
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
             IOPort port, String name, List dependents)
             throws IllegalActionException {
-        Variable variable = (Variable) DFUtilities.getRateVariable(port, name);
+        Variable variable = DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration) variable
                 .getAttribute("_MultirateFSMRateDependencyDeclaration",
                         DependencyDeclaration.class);
@@ -749,8 +749,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
         while (insidePorts.hasNext()) {
             IOPort insidePort = (IOPort) insidePorts.next();
-            Variable variable = (Variable) DFUtilities.getRateVariable(
-                    insidePort, parameterName);
+            Variable variable = DFUtilities.getRateVariable(insidePort, parameterName);
 
             if (variable != null) {
                 list.add(variable);

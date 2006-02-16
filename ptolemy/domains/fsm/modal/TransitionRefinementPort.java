@@ -399,7 +399,7 @@ public class TransitionRefinementPort extends RefinementPort {
      */
     public void setContainer(Entity container) throws IllegalActionException,
             NameDuplicationException {
-        NamedObj oldContainer = (NamedObj) getContainer();
+        NamedObj oldContainer = getContainer();
 
         if (container == oldContainer) {
             // Nothing to do.

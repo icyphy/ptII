@@ -171,7 +171,7 @@ public class DEReceiver extends AbstractReceiver {
      *   or if the director is not an instance of DEDirector.
      */
     private DEDirector _getDirector() throws IllegalActionException {
-        IOPort port = (IOPort) getContainer();
+        IOPort port = getContainer();
 
         if (port != null) {
             if (_directorVersion == port.workspace().getVersion()) {

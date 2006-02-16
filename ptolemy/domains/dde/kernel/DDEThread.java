@@ -98,15 +98,14 @@ public class DDEThread extends ProcessThread {
      * @see ptolemy.domains.dde.kernel.PrioritizedTimedQueue
      */
     public synchronized void noticeOfTermination() {
-        Actor actor = (Actor) getActor();
+        Actor actor = getActor();
         Iterator outputPorts = actor.outputPortList().iterator();
         double endTime = PrioritizedTimedQueue.INACTIVE;
 
         if (outputPorts != null) {
             while (outputPorts.hasNext()) {
                 IOPort port = (IOPort) outputPorts.next();
-                Receiver[][] receivers = (Receiver[][]) port
-                        .getRemoteReceivers();
+                Receiver[][] receivers = port.getRemoteReceivers();
 
                 if (receivers == null) {
                     break;

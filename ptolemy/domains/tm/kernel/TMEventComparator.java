@@ -75,7 +75,7 @@ public class TMEventComparator implements CQComparator {
      *
      */
     public final long getVirtualBinNumber(Object event) {
-        return (long) ((TMEvent) event).priority();
+        return ((TMEvent) event).priority();
     }
 
     /** Do nothing.

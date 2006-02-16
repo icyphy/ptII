@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -257,7 +256,7 @@ public class CommandLineTransformer extends SceneTransformer implements
         // just seems simpler here.
         SootClass managerClass = Scene.v()
                 .getSootClass("ptolemy.actor.Manager");
-        SootMethod managerStartRunMethod = managerClass
+        /* SootMethod managerStartRunMethod = */ managerClass
                 .getMethodByName("startRun");
         SootMethod mainStartRunMethod = mainClass.getMethodByName("startRun");
 
@@ -380,13 +379,13 @@ public class CommandLineTransformer extends SceneTransformer implements
          }
          }
          */
-        for (Iterator methods = mainClass.getMethods().iterator(); methods
-                .hasNext();) {
-            SootMethod method = (SootMethod) methods.next();
-
-            //  System.out.println("method = " + method.toString());
-            SootMethod method2 = Scene.v().getMethod(method.toString());
-        }
+//        for (Iterator methods = mainClass.getMethods().iterator(); methods
+//                .hasNext();) {
+//            SootMethod method = (SootMethod) methods.next();
+//
+//            //  System.out.println("method = " + method.toString());
+//            SootMethod method2 = Scene.v().getMethod(method.toString());
+//        }
 
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setFastHierarchy(new FastHierarchy());
@@ -398,18 +397,18 @@ public class CommandLineTransformer extends SceneTransformer implements
      */
     protected String _commandLineTemplateDefault = "ptolemy.copernicus.java.CommandLineTemplate";
 
-    private String _getFinalName(String dottedName) {
-        // Take the entity and it's class name and munge them into a
-        // unique name for the generated class
-        StringTokenizer tokenizer = new StringTokenizer(dottedName, ".");
-        String endName = "error";
-
-        while (tokenizer.hasMoreElements()) {
-            endName = tokenizer.nextToken();
-        }
-
-        return endName;
-    }
+//    private String _getFinalName(String dottedName) {
+//        // Take the entity and it's class name and munge them into a
+//        // unique name for the generated class
+//        StringTokenizer tokenizer = new StringTokenizer(dottedName, ".");
+//        String endName = "error";
+//
+//        while (tokenizer.hasMoreElements()) {
+//            endName = tokenizer.nextToken();
+//        }
+//
+//        return endName;
+//    }
 
     /** Insert into the given body before the given unit, calls to
      *  iterate the model that is referred to by the given local

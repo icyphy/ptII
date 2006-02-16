@@ -379,7 +379,7 @@ public class Argument extends AbstractSettableAttribute {
 
         try {
             _workspace.getWriteAccess();
-            _checkContainer((GenericJNIActor) container);
+            _checkContainer(container);
 
             // NOTE: The following code is quite tricky.
             // It is very careful
@@ -543,7 +543,7 @@ public class Argument extends AbstractSettableAttribute {
      *  @exception IllegalActionException If the container is not of
      *   an acceptable class.  Not thrown in this base class.
      */
-    protected void _checkContainer(GenericJNIActor container)
+    protected void _checkContainer(NamedObj container)
             throws IllegalActionException {
         if (!(container instanceof GenericJNIActor)) {
             throw new IllegalActionException(this, container,

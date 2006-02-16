@@ -81,7 +81,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
         new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
         output.setMultiport(true);
         new Parameter(output, "signalType", new StringToken("DISCRETE"));
-        _samplePeriod = (double) 0.1;
+        _samplePeriod = 0.1;
         samplePeriod = new Parameter(this, "samplePeriod", new DoubleToken(
                 _samplePeriod));
 

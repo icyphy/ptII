@@ -101,8 +101,7 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
             // This does not include variables inside the container itself,
             // which take precedence.
             if (container != null) {
-                _invalidateShadowedSettables((NamedObj) container
-                        .getContainer());
+                _invalidateShadowedSettables(container.getContainer());
             }
 
             // Every variable inside this attribute, and anything that
@@ -154,7 +153,7 @@ public class ScopeExtendingAttribute extends Attribute implements ScopeExtender 
             }
         }
 
-        NamedObj container = (NamedObj) object.getContainer();
+        NamedObj container = object.getContainer();
 
         if (container != null) {
             _invalidateShadowedSettables(container);

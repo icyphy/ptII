@@ -111,16 +111,16 @@ public class HelicopterActor extends TypedAtomicActor {
         outputDDTh.setMultiport(false);
         outputDDTh.setTypeEquals(BaseType.DOUBLE);
 
-        _Iy = (double) 0.271256;
+        _Iy = 0.271256;
         paramIy = new Parameter(this, "Iy", new DoubleToken(_Iy));
 
-        _hm = (double) 0.2943;
+        _hm = 0.2943;
         paramHm = new Parameter(this, "hm", new DoubleToken(_hm));
 
-        _Mm = (double) 25.23;
+        _Mm = 25.23;
         paramMm = new Parameter(this, "Mm", new DoubleToken(_Mm));
 
-        _mass = (double) 4.9;
+        _mass = 4.9;
         paramMass = new Parameter(this, "Mass", new DoubleToken(_mass));
     }
 

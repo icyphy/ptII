@@ -769,7 +769,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *   the given name is found.
      */
     public int getSize(String name) throws IllegalActionException {
-        int size = 1;
 
         // Try if the name is a parameter.
         Attribute attribute = _component.getAttribute(name);
@@ -1453,7 +1452,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         result.append("[" + sinkChannelNumber + "]");
                     }
 
-                    int sinkPortBufferSize = getBufferSize(sinkPort);
+                    //int sinkPortBufferSize = getBufferSize(sinkPort);
 
                     if (!channelAndOffset[1].equals("")
                             && (getBufferSize(sinkPort) > 1)) {

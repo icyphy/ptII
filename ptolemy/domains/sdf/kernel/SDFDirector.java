@@ -413,7 +413,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     // safely cast to a double.  This means that
                     // the SDF domain has an upper limit on running
                     // time of Double.MAX_VALUE milliseconds.
-                    double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+                    double elapsedTimeInSeconds = elapsedTime/ 1000.0;
                     double currentTime = getModelTime().getDoubleValue();
 
                     if (currentTime <= elapsedTimeInSeconds) {

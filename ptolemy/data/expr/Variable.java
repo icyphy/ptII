@@ -465,7 +465,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             object.workspace().getReadAccess();
 
             NamedList scope = new NamedList();
-            NamedObj container = (NamedObj) object.getContainer();
+            NamedObj container = object.getContainer();
 
             while (container != null) {
                 Iterator level1 = container.attributeList().iterator();
@@ -524,7 +524,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     }
                 }
 
-                container = (NamedObj) container.getContainer();
+                container = container.getContainer();
             }
 
             return scope;
@@ -1302,7 +1302,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         // EAL 9/16/03
         // if (!_isLazy && !neededEvaluation) {
         if (!_isLazy) {
-            NamedObj container = (NamedObj) getContainer();
+            NamedObj container = getContainer();
 
             if (container != null) {
                 container.attributeChanged(this);
@@ -1726,7 +1726,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         try {
             _setToken(newToken);
 
-            NamedObj container = (NamedObj) getContainer();
+            NamedObj container = getContainer();
 
             if (container != null) {
                 if (!oldVarType.equals(_varType)
@@ -1817,7 +1817,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             }
         }
 
-        NamedObj container = (NamedObj) object.getContainer();
+        NamedObj container = object.getContainer();
 
         if (container != null) {
             _invalidateShadowedSettables(container);
@@ -2062,7 +2062,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             NamedObj reference = _reference;
 
             if (_reference == null) {
-                reference = (NamedObj) Variable.this.getContainer();
+                reference = Variable.this.getContainer();
             }
 
             Variable result = getScopedVariable(Variable.this, reference, name);
@@ -2093,7 +2093,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             NamedObj reference = _reference;
 
             if (_reference == null) {
-                reference = (NamedObj) Variable.this.getContainer();
+                reference = Variable.this.getContainer();
             }
 
             Variable result = getScopedVariable(Variable.this, reference, name);
@@ -2118,7 +2118,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             NamedObj reference = _reference;
 
             if (_reference == null) {
-                reference = (NamedObj) Variable.this.getContainer();
+                reference = Variable.this.getContainer();
             }
 
             Variable result = getScopedVariable(Variable.this, reference, name);
@@ -2137,7 +2137,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             NamedObj reference = _reference;
 
             if (_reference == null) {
-                reference = (NamedObj) Variable.this.getContainer();
+                reference = Variable.this.getContainer();
             }
 
             return getAllScopedVariableNames(Variable.this, reference);

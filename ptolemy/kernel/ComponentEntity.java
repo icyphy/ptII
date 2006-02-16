@@ -505,7 +505,7 @@ public class ComponentEntity extends Entity {
             // not yet changed any state.
             if (container != null) {
                 // checkContainer() above ensures that this cast is valid.
-                ((CompositeEntity) container)._addEntity(this);
+                container._addEntity(this);
 
                 if (previousContainer == null) {
                     _workspace.remove(this);
@@ -532,7 +532,7 @@ public class ComponentEntity extends Entity {
                 _setParent(null);
             } else {
                 // checkContainer() above ensures that this cast is valid.
-                ((CompositeEntity) container)._finishedAddEntity(this);
+                container._finishedAddEntity(this);
 
                 // Transfer any queued change requests to the
                 // new container.  There could be queued change
@@ -574,8 +574,7 @@ public class ComponentEntity extends Entity {
         CompositeEntity container = (CompositeEntity) getContainer();
 
         if ((container != null)) {
-            ComponentEntity another = (ComponentEntity) container
-                    .getEntity(name);
+            ComponentEntity another = container.getEntity(name);
 
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
@@ -659,7 +658,7 @@ public class ComponentEntity extends Entity {
         while ((aboveLevel < levelsToSearch)
                 && ((candidate == null) || !candidate.isClassDefinition())
                 && (context != null)) {
-            context = (NamedObj) context.getContainer();
+            context = context.getContainer();
 
             if (context instanceof CompositeEntity) {
                 candidate = ((CompositeEntity) context).getEntity(className);

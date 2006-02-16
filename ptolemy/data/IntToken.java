@@ -84,7 +84,7 @@ public class IntToken extends ScalarToken {
      *  @return A Complex.
      */
     public Complex complexValue() {
-        return new Complex((double) _value);
+        return new Complex(_value);
     }
 
     /** Convert the specified token into an instance of IntToken.
@@ -134,7 +134,7 @@ public class IntToken extends ScalarToken {
      *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
-        return (double) _value;
+        return _value;
     }
 
     /** Return true if the argument's class is IntToken and it has the
@@ -204,7 +204,7 @@ public class IntToken extends ScalarToken {
      *  @return The int value contained in this token as a long.
      */
     public long longValue() {
-        return (long) _value;
+        return _value;
     }
 
     /** Returns a new IntToken with value 1.

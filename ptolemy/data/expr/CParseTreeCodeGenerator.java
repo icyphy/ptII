@@ -1113,7 +1113,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        Token operator = (Token) node.getOperator();
+        Token operator = node.getOperator();
 
         String statement = nodeName + " = "
                 + _nodeToLocalName.get(node.jjtGetChild(0));
@@ -1146,7 +1146,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
-        Token operator = (Token) node.getOperator();
+        Token operator = node.getOperator();
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);

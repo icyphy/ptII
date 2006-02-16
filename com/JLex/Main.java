@@ -6353,7 +6353,7 @@ class CLexGen {
                         chars_printed = 0;
                     }
 
-                    str = interp_int((int) j);
+                    str = interp_int(j);
                     System.out.print(str);
 
                     chars_printed = chars_printed + str.length();

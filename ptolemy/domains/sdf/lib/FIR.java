@@ -348,7 +348,7 @@ public class FIR extends SDFTransformer {
                     + ".");
         }
 
-        _phaseLength = (int) (_taps.length / _interpolationValue);
+        _phaseLength = _taps.length / _interpolationValue;
 
         if ((_taps.length % _interpolationValue) != 0) {
             _phaseLength++;

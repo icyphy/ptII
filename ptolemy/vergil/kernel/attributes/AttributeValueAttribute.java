@@ -260,7 +260,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
                     }
 
                     return truncated;
-                } else if (_attribute instanceof Settable) {
+                } else {
                     String value = _attribute.getExpression();
                     String truncated = value;
                     int width = _displayWidth;

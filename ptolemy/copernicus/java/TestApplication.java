@@ -212,7 +212,7 @@ public class TestApplication implements ChangeListener {
         _parseStartTime = System.currentTimeMillis();
 
         try {
-            TestApplication simpleApplication = new TestApplication(args[0]);
+            new TestApplication(args[0]);
         } catch (Exception ex) {
             System.err.println("Command failed: " + ex);
             ex.printStackTrace();

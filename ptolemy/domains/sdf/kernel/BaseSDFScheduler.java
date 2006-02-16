@@ -136,7 +136,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     + " in port " + port.getFullName());
         }
 
-        Variable variable = (Variable) DFUtilities.getRateVariable(port, name);
+        Variable variable = DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration) variable
                 .getAttribute("_SDFRateDependencyDeclaration",
                         DependencyDeclaration.class);

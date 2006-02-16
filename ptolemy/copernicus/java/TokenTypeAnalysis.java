@@ -89,7 +89,7 @@ import soot.toolkits.scalar.LocalUses;
 public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
     public TokenTypeAnalysis(SootMethod method, CompleteUnitGraph g) {
         super(g);
-        _method = method;
+        //_method = method;
 
         NamedObj thisBinding = ModelTransformer.getObjectForClass(method
                 .getDeclaringClass());
@@ -210,7 +210,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
 
             if (expr instanceof SpecialInvokeExpr) {
                 SpecialInvokeExpr r = (SpecialInvokeExpr) expr;
-                String methodName = r.getMethod().getName();
+                //String methodName = r.getMethod().getName();
 
                 Type type = r.getBase().getType();
 
@@ -427,7 +427,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 Type type = castExpr.getType();
 
                 // FIXME: what if downcast???
-                RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
+                /* RefType tokenType = */ PtolemyUtilities.getBaseTokenType(type);
 
                 //       System.out.println("castType = " + tokenType);
                 //                 System.out.println("castOp = " + castExpr.getOp());
@@ -568,7 +568,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         //      System.out.println("result = " + out);
     }
 
-    private SootMethod _method;
+    //private SootMethod _method;
 
     private NamedObjAnalysis _namedObjAnalysis;
 }

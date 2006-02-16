@@ -963,7 +963,7 @@ public class InterfaceAutomaton extends FSMActor {
 
                 // change port or parameter name
                 if (ending.equals("?") || ending.equals("!")) {
-                    Port port = (Port) getPort(oldLabelName);
+                    Port port = getPort(oldLabelName);
 
                     if (port != null) {
                         port.setName(newLabelName);

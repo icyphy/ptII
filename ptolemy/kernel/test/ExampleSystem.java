@@ -156,7 +156,7 @@ public class ExampleSystem implements Serializable {
 
     /** Print the linked ports for a given ComponentRelation. The ports
      *  are restricted in the same level of hierarchy
-     *  @see ptolemy.kernel.Relation#linkedPorts()
+     *  @see ptolemy.kernel.Relation#linkedPortList()
      *  @param ComponentRelation Print the linked ports for this relation.
      */
     public String printLinkedPorts(ComponentRelation r) {
@@ -175,7 +175,7 @@ public class ExampleSystem implements Serializable {
     /** Print the deeply linked ports for a given
      *  ComponentRelation. Look through all transparent ports and return
      *  only non transparent ports (those with no inside links).
-     *  @see ptolemy.kernel.ComponentRelation#deepLinkedPorts()
+     *  @see ptolemy.kernel.ComponentRelation#deepLinkedPortList()
      *  @param ComponentRelation Print the deeply linked ports for this
      *  relation.
      */
@@ -194,7 +194,7 @@ public class ExampleSystem implements Serializable {
 
     /** Print the connected ports for a given ComponentPort.  Restricted
      *  to the same level of hierarchy.
-     *  @see ptolemy.kernel.Port#connectedPorts()
+     *  @see ptolemy.kernel.Port#connectedPortList()
      *  @param ComponentPort Print the connected ports for this Port.
      */
     public String printConnectedPorts(ComponentPort p) {
@@ -213,7 +213,7 @@ public class ExampleSystem implements Serializable {
     /** Print the deeply connected ports for a given
      *  ComponentPort. Look through all transparent ports and return
      *  only non transparent ports (those with no inside links).
-     *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts()
+     *  @see ptolemy.kernel.ComponentPort#deepConnectedPortList()
      *  @param ComponentPort Print the deeply connected ports for this Port.
      */
     public String printDeepConnectedPorts(ComponentPort p) {

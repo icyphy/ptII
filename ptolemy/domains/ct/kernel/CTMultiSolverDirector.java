@@ -407,7 +407,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     if (!actor.prefire()) {
                         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                         throw new IllegalActionException(
-                                (Nameable) actor,
+                                actor,
                                 "Actor is not ready to fire. In the CT domain, "
                                         + "all event generators should be ready to fire"
                                         + " at all times.\n"
@@ -705,7 +705,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
                 if (!actor.prefire()) {
                     throw new IllegalActionException(
-                            (Nameable) actor,
+                            actor,
                             "Actor is not ready to fire. In the CT domain, "
                                     + "all continuous actors should be ready to fire "
                                     + "at all times.\n"
@@ -842,7 +842,7 @@ public class CTMultiSolverDirector extends CTDirector {
             Actor actor = (Actor) actors.next();
 
             if (_debugging) {
-                _debug("Postfire " + (Nameable) actor);
+                _debug("Postfire " + actor);
             }
 
             boolean postfireReturns = actor.postfire();
@@ -856,7 +856,7 @@ public class CTMultiSolverDirector extends CTDirector {
             CTStatefulActor actor = (CTStatefulActor) actors.next();
 
             if (_debugging) {
-                _debug("Postfire " + (Nameable) actor);
+                _debug("Postfire " + actor);
             }
 
             actor.markState();
@@ -1554,7 +1554,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     CTStatefulActor actor = (CTStatefulActor) actors.next();
 
                     if (_debugging) {
-                        _debug("Restore states " + (Nameable) actor);
+                        _debug("Restore states " + actor);
                     }
 
                     actor.goToMarkedState();
@@ -1601,7 +1601,7 @@ public class CTMultiSolverDirector extends CTDirector {
                     CTStatefulActor actor = (CTStatefulActor) actors.next();
 
                     if (_debugging) {
-                        _debug("Restore states " + (Nameable) actor);
+                        _debug("Restore states " + actor);
                     }
 
                     actor.goToMarkedState();

@@ -90,11 +90,11 @@ public class ThresholdMonitor extends TypedAtomicActor implements
         output.setTypeEquals(BaseType.BOOLEAN);
         new Parameter(output, "signalType", new StringToken("DISCRETE"));
 
-        _thWidth = (double) 1e-2;
+        _thWidth = 1e-2;
         thresholdWidth = new Parameter(this, "thresholdWidth", new DoubleToken(
                 _thWidth));
 
-        _thCenter = (double) 0.0;
+        _thCenter = 0.0;
         thresholdCenter = new Parameter(this, "thresholdCenter",
                 new DoubleToken(_thCenter));
 
@@ -136,8 +136,8 @@ public class ThresholdMonitor extends TypedAtomicActor implements
             _thWidth = Math.abs(((DoubleToken) thresholdWidth.getToken())
                     .doubleValue());
 
-            _lowerBound = _thCenter - (_thWidth / (double) 2.0);
-            _upperBound = _thCenter + (_thWidth / (double) 2.0);
+            _lowerBound = _thCenter - (_thWidth / 2.0);
+            _upperBound = _thCenter + (_thWidth / 2.0);
         } else {
             super.attributeChanged(attribute);
         }

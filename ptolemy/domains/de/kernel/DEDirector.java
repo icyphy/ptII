@@ -1190,7 +1190,7 @@ public class DEDirector extends Director implements TimedDirector {
                 microstep = _microstep + 1;
             }
         } else if (time.compareTo(getModelTime()) < 0) {
-            throw new IllegalActionException((Nameable) actor,
+            throw new IllegalActionException(actor,
                     "Attempt to queue an event in the past:"
                             + " Current time is " + getModelTime()
                             + " while event time is " + time);
@@ -1363,7 +1363,7 @@ public class DEDirector extends Director implements TimedDirector {
         // NOTE: this topologicalSort can be smarter.
         // In particular, the dependency between ports belonging
         // to the same actor may be considered.
-        Object[] sort = (Object[]) portsGraph.topologicalSort();
+        Object[] sort = portsGraph.topologicalSort();
         int numberOfPorts = sort.length;
 
         if (_debugging && _verbose) {
@@ -1507,7 +1507,7 @@ public class DEDirector extends Director implements TimedDirector {
 
             // we skip the ports of the container and their depths are handled
             // by the upper level executive director of this container.
-            if (portContainer.equals((Actor) getContainer())) {
+            if (portContainer.equals(getContainer())) {
                 continue;
             }
 
@@ -1731,7 +1731,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // For a top-level DE director, there is no such constraint
                     // because the top-level director is responsible to advance
                     // simulation by increasing the model tag.
-                    nextEvent = (DEEvent) _eventQueue.get();
+                    nextEvent = _eventQueue.get();
 
                     // An embedded director should process events
                     // that only happen at the current tag.
@@ -1820,7 +1820,7 @@ public class DEDirector extends Director implements TimedDirector {
                     break;
                 } else {
                     // At least one event is found in the event queue.
-                    nextEvent = (DEEvent) _eventQueue.get();
+                    nextEvent = _eventQueue.get();
                 }
             }
 
@@ -1851,7 +1851,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // If synchronized to the real time.
                     synchronized (_eventQueue) {
                         while (true) {
-                            lastFoundEvent = (DEEvent) _eventQueue.get();
+                            lastFoundEvent = _eventQueue.get();
                             currentTime = lastFoundEvent.timeStamp();
 
                             long elapsedTime = System.currentTimeMillis()
@@ -1861,7 +1861,7 @@ public class DEDirector extends Director implements TimedDirector {
                             // safely cast to a double.  This means that
                             // the DE domain has an upper limit on running
                             // time of Double.MAX_VALUE milliseconds.
-                            double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+                            double elapsedTimeInSeconds = elapsedTime / 1000.0;
 
                             if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
                                 break;
@@ -1902,7 +1902,7 @@ public class DEDirector extends Director implements TimedDirector {
                 // Will this cause problems, such as setting time backwards?
                 // TESTIT How to??
                 synchronized (_eventQueue) {
-                    lastFoundEvent = (DEEvent) _eventQueue.take();
+                    lastFoundEvent = _eventQueue.take();
                     currentTime = lastFoundEvent.timeStamp();
                     actorToFire = lastFoundEvent.actor();
 

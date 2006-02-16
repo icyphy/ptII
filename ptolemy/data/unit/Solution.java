@@ -875,7 +875,7 @@ public class Solution {
 
                 for (int a = 0; a < _branchPoints.size(); a++) {
                     System.out
-                            .print(" " + (Index) (_branchPoints.elementAt(a)));
+                            .print(" " + _branchPoints.elementAt(a));
                 }
 
                 System.out.print("\n");

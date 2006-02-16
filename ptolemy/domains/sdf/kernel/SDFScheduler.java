@@ -1243,7 +1243,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 int inputCount = _countUnfulfilledInputs(actor, actorList, true);
 
                 if (inputCount == 0) {
-                    readyToScheduleActorList.addFirst((ComponentEntity) actor);
+                    readyToScheduleActorList.addFirst(actor);
                 }
 
                 if (_debugging && VERBOSE) {
@@ -1502,8 +1502,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 }
 
                 SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
-                IOPort connectedPort = (IOPort) receivers[channel][copy]
-                        .getContainer();
+                IOPort connectedPort = receivers[channel][copy].getContainer();
                 ComponentEntity connectedActor = (ComponentEntity) connectedPort
                         .getContainer();
 
@@ -1561,7 +1560,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         boolean stillReadyToSchedule = true;
 
         // Update the number of tokens waiting on the actor's input ports.
-        Iterator inputPorts = ((Actor) currentActor).inputPortList().iterator();
+        Iterator inputPorts = currentActor.inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
@@ -1629,8 +1628,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 }
 
                 SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
-                IOPort connectedPort = (IOPort) receivers[channel][copy]
-                        .getContainer();
+                IOPort connectedPort = receivers[channel][copy].getContainer();
                 ComponentEntity connectedActor = (ComponentEntity) connectedPort
                         .getContainer();
 

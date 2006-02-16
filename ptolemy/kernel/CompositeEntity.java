@@ -779,7 +779,7 @@ public class CompositeEntity extends ComponentEntity {
                     // link is implied.
                     if ((relation.getDerivedLevel() <= depth)
                             && (port.getDerivedLevel() <= (depth + 1))
-                            && (((NamedObj) port.getContainer())
+                            && ((port.getContainer())
                                     .getDerivedLevel() <= depth)) {
                         continue;
                     }

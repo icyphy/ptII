@@ -335,7 +335,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 Node column = (Node) _delayNodeList.get(i);
                 Node row = (Node) _delayNodeList.get(j);
                 double value = 0;
-                double[] distances = (double[]) ((SingleSourceLongestPathAnalysis) (D
+                double[] distances =  ((SingleSourceLongestPathAnalysis) (D
                         .get(column))).distance();
                 Node predecessor = (Node) (predecessorMap.get(row));
 

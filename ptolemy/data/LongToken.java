@@ -185,7 +185,7 @@ public class LongToken extends ScalarToken {
     /** Return the value in the token as a long.
      */
     public long longValue() {
-        return (long) _value;
+        return _value;
     }
 
     /** Returns a new LongToken with value 1.

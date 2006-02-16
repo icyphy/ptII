@@ -1007,11 +1007,11 @@ public class Copernicus {
     private List _parameterValues = new LinkedList();
 
     // The value of the ptolemy.ptII.dir property.
-    private String _ptIIDirectory;
+    //private String _ptIIDirectory;
 
     private String _modelPath = null;
 
-    private static String _momlClassName;
+    //private static String _momlClassName;
 
     private static MoMLParser _parser;
 }

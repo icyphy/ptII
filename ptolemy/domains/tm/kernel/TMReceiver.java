@@ -40,7 +40,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// TMReceiver
@@ -133,7 +132,7 @@ public class TMReceiver extends AbstractReceiver {
      *   or if the director is not an instance of TMDirector.
      */
     public TMDirector getDirector() throws IllegalActionException {
-        IOPort port = (IOPort) getContainer();
+        IOPort port = getContainer();
 
         if (port != null) {
             if (_directorVersion == port.workspace().getVersion()) {
@@ -243,8 +242,7 @@ public class TMReceiver extends AbstractReceiver {
                                     + "contained");
                 }
 
-                priority = (Parameter) ((NamedObj) port.getContainer())
-                        .getAttribute("priority");
+                priority = (Parameter) port.getContainer().getAttribute("priority");
             }
 
             int priorityValue = 5;

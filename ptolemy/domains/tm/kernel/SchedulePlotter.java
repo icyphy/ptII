@@ -201,7 +201,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                 Configuration configuration = ((TableauFrame) parent)
                         .getConfiguration();
 
-                NamedObj container = (NamedObj) object.getContainer();
+                NamedObj container = object.getContainer();
 
                 _taskMap = new HashMap();
                 _taskState = new ArrayList();

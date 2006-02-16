@@ -188,7 +188,7 @@ public class ImageSequence extends Source {
                 // This is necessary to convert from bytes to ints
                 for (i = 0, n = 0; i < _imageRows; i++) {
                     for (j = 0; j < _imageColumns; j++, n++) {
-                        _frameInts[i][j] = ((int) _frameBytes[n]) & 255;
+                        _frameInts[i][j] = _frameBytes[n] & 255;
                     }
                 }
 

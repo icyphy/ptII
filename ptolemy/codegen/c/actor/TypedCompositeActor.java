@@ -34,13 +34,9 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
-import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 

@@ -413,7 +413,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
      */
     public Time getModelNextIterationTime() {
         CompositeActor cont = (CompositeActor) getContainer();
-        Director execDir = (Director) cont.getExecutiveDirector();
+        Director execDir = cont.getExecutiveDirector();
         return execDir.getModelNextIterationTime();
     }
 
@@ -423,7 +423,7 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
      */
     public Time getModelTime() {
         CompositeActor cont = (CompositeActor) getContainer();
-        Director execDir = (Director) cont.getExecutiveDirector();
+        Director execDir = cont.getExecutiveDirector();
 
         if (execDir != null) {
             return execDir.getModelTime();

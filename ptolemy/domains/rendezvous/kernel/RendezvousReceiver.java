@@ -1162,7 +1162,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 continue;
             }
             for (int j = 0; j < receivers[i].length; j++) {
-                Receiver receiver = (Receiver) receivers[i][j];
+                Receiver receiver = receivers[i][j];
                 if (receiver == null) {
                     continue;
                 }

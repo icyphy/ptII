@@ -222,7 +222,7 @@ public abstract class SizedMatrixType extends StructuredType implements
 
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
-                return BooleanMatrixToken.convert((MatrixToken) token);
+                return BooleanMatrixToken.convert(token);
             } else {
                 throw new IllegalActionException(Token
                         .notSupportedConversionMessage(token, toString()));
@@ -242,7 +242,7 @@ public abstract class SizedMatrixType extends StructuredType implements
 
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
-                return ComplexMatrixToken.convert((MatrixToken) token);
+                return ComplexMatrixToken.convert(token);
             } else {
                 throw new IllegalActionException(Token
                         .notSupportedConversionMessage(token, toString()));
@@ -262,7 +262,7 @@ public abstract class SizedMatrixType extends StructuredType implements
 
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
-                return DoubleMatrixToken.convert((MatrixToken) token);
+                return DoubleMatrixToken.convert(token);
             } else {
                 throw new IllegalActionException(Token
                         .notSupportedConversionMessage(token, toString()));
@@ -282,7 +282,7 @@ public abstract class SizedMatrixType extends StructuredType implements
 
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
-                return IntMatrixToken.convert((MatrixToken) token);
+                return IntMatrixToken.convert(token);
             } else if ((getRowCount() == getColumnCount())
                     && token instanceof ScalarToken) {
                 return IntMatrixToken.convert((ScalarToken) token,
@@ -306,7 +306,7 @@ public abstract class SizedMatrixType extends StructuredType implements
 
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
-                return FixMatrixToken.convert((MatrixToken) token);
+                return FixMatrixToken.convert(token);
             } else {
                 throw new IllegalActionException(Token
                         .notSupportedConversionMessage(token, toString()));
@@ -326,7 +326,7 @@ public abstract class SizedMatrixType extends StructuredType implements
 
         public Token convert(Token token) throws IllegalActionException {
             if (token instanceof MatrixToken) {
-                return LongMatrixToken.convert((MatrixToken) token);
+                return LongMatrixToken.convert(token);
             } else {
                 throw new IllegalActionException(Token
                         .notSupportedConversionMessage(token, toString()));

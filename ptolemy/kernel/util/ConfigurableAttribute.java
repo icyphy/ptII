@@ -306,7 +306,7 @@ public class ConfigurableAttribute extends Attribute implements Configurable,
         }
 
         // Notify the container that the attribute has changed.
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.attributeChanged(this);

@@ -152,7 +152,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements
                     continue;
                 }
 
-                ValueBox box = (ValueBox) unit.getInvokeExprBox();
+                ValueBox box = unit.getInvokeExprBox();
                 Value value = box.getValue();
 
                 if (value instanceof InstanceInvokeExpr) {
@@ -260,7 +260,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements
 
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt) definitionList.get(0);
-            Value value = (Value) stmt.getRightOp();
+            Value value = stmt.getRightOp();
 
             if (value instanceof CastExpr) {
                 return _getFieldDef((Local) ((CastExpr) value).getOp(), stmt,

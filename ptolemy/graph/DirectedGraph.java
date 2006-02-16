@@ -615,7 +615,7 @@ public class DirectedGraph extends Graph {
      *  @see #sinkNodeCount()
      */
     public Collection sinkNodes() {
-        return (Collection) _sinkNodeAnalysis.nodes();
+        return _sinkNodeAnalysis.nodes();
     }
 
     /** Return the number of source nodes in this graph.
@@ -632,7 +632,7 @@ public class DirectedGraph extends Graph {
      *  @see #sourceNodeCount()
      */
     public Collection sourceNodes() {
-        return (Collection) _sourceNodeAnalysis.nodes();
+        return _sourceNodeAnalysis.nodes();
     }
 
     /** Return a list of disconnected subgraphs of this graph.

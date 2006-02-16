@@ -309,13 +309,13 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
 
         if ((time.compareTo(_lastTime) < 0) && (timeValue != INACTIVE)
                 && (timeValue != IGNORE)) {
-            NamedObj actor = (NamedObj) getContainer().getContainer();
+            NamedObj actor = getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName()
                     + " - Attempt to set current time to the past; time = "
                     + time + ". The _lastTime was " + _lastTime);
         } else if ((timeValue < 0.0) && (timeValue != INACTIVE)
                 && (timeValue != IGNORE)) {
-            NamedObj actor = (NamedObj) getContainer().getContainer();
+            NamedObj actor = getContainer().getContainer();
             throw new IllegalArgumentException(actor.getName()
                     + " - Attempt to set current time to a"
                     + " a negative value = " + time);

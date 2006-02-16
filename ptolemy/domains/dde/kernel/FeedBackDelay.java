@@ -238,7 +238,7 @@ public class FeedBackDelay extends DDEActor {
      *  depending on IOPort.send().
      */
     private void _sendOutToken(Token token, Time time) {
-        Receiver[][] receivers = (Receiver[][]) output.getRemoteReceivers();
+        Receiver[][] receivers = output.getRemoteReceivers();
 
         for (int i = 0; i < receivers.length; i++) {
             for (int j = 0; j < receivers[i].length; j++) {

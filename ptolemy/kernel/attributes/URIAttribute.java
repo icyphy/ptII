@@ -113,7 +113,7 @@ public class URIAttribute extends SingletonAttribute {
                 modelURI = null;
             }
 
-            container = (NamedObj) container.getContainer();
+            container = container.getContainer();
         }
 
         if (modelURI != null) {
@@ -175,7 +175,7 @@ public class URIAttribute extends SingletonAttribute {
     public void setURI(URI uri) throws IllegalActionException {
         _value = uri;
 
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.attributeChanged(this);
@@ -205,7 +205,7 @@ public class URIAttribute extends SingletonAttribute {
             }
         }
 
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.attributeChanged(this);

@@ -873,14 +873,14 @@ public class UtilityFunctions {
 
         if (arity == 1) {
             for (int i = 0; i < array.length(); i++) {
-                Token arg = (Token) array.getElement(i);
+                Token arg = array.getElement(i);
                 Token[] args = new Token[1];
                 args[0] = arg;
                 result[i] = function.apply(args);
             }
         } else if (arity > 1) {
             for (int i = 0; i < array.length(); i++) {
-                Token args = (Token) array.getElement(i);
+                Token args = array.getElement(i);
 
                 if (!(args instanceof ArrayToken)) {
                     throw new IllegalActionException(

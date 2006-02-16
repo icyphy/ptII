@@ -435,7 +435,7 @@ public class BusContentionApplet extends PtolemyApplet {
             NamedObj actor = event.getSource();
 
             // Get the corresponding graph node and its figure
-            Object node = (Object) _nodeMap.get(actor);
+            Object node = _nodeMap.get(actor);
             LabelWrapper wrapper = (LabelWrapper) _graphPane
                     .getGraphController().getFigure(node);
             final BasicFigure figure = (BasicFigure) wrapper.getChild();

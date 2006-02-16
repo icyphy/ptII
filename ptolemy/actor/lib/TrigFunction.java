@@ -99,7 +99,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Yellow (pwhitake)
  @see ptolemy.actor.lib.conversions.CartesianToPolar
  @see AbsoluteValue
- @see MathFunction
+ @see UnaryMathFunction
  @see Scale
  */
 public class TrigFunction extends Transformer {

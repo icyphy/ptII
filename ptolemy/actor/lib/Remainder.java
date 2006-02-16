@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Edward A. Lee
  @version $Id$
- @see MathFunction
+ @see UnaryMathFunction
  @since Ptolemy II 1.0.1
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (cxh)

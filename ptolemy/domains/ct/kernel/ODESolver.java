@@ -305,7 +305,7 @@ public abstract class ODESolver extends NamedObj {
 
             if (!actor.prefire()) {
                 throw new IllegalActionException(
-                        (Nameable) actor,
+                        actor,
                         "Expected prefire() to return true!\n"
                                 + "Perhaps a continuous input is being driven by a "
                                 + "discrete output?");

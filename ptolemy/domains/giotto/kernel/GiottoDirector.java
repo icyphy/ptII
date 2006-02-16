@@ -188,7 +188,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             // update to upper level directors or the postfire() method.
             if (_synchronizeToRealTime) {
                 long elapsedTime = System.currentTimeMillis() - _realStartTime;
-                double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+                double elapsedTimeInSeconds = elapsedTime / 1000.0;
 
                 if (_expectedNextIterationTime.getDoubleValue() > elapsedTimeInSeconds) {
                     long timeToWait = (long) ((_expectedNextIterationTime

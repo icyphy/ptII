@@ -42,10 +42,8 @@ import soot.SootMethod;
 import soot.Unit;
 import soot.Value;
 import soot.jimple.DefinitionStmt;
-import soot.jimple.InvokeExpr;
 import soot.jimple.InvokeStmt;
 import soot.jimple.StaticInvokeExpr;
-import soot.jimple.Stmt;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.jimple.toolkits.callgraph.CallGraphBuilder;
@@ -53,7 +51,6 @@ import soot.jimple.toolkits.callgraph.Targets;
 import soot.jimple.toolkits.pointer.DumbPointerAnalysis;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.SimpleLiveLocals;
-import soot.toolkits.scalar.SimpleLocalDefs;
 
 /**
  @author Steve Neuendorffer
@@ -168,7 +165,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
         // this will help us figure out where locals are defined.
-        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+        //SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
 
         for (Iterator units = body.getUnits().snapshotIterator(); units
@@ -203,13 +200,13 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             // instance)
             if (useValue instanceof VirtualInvokeExpr
                     || useValue instanceof StaticInvokeExpr) {
-                InvokeExpr invokeExpr = (InvokeExpr) useValue;
+                //InvokeExpr invokeExpr = (InvokeExpr) useValue;
 
                 // If any targets of the invocation have side effects,
                 // then they cannot be removed.
                 boolean removable = true;
 
-                for (Iterator i = new Targets(callGraph.edgesOutOf((Stmt) unit)); i
+                for (Iterator i = new Targets(callGraph.edgesOutOf(unit)); i
                         .hasNext()
                         && removable;) {
                     SootMethod targetMethod = (SootMethod) i.next();
@@ -243,8 +240,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
             SootMethod method = (SootMethod) methods.next();
 
             try {
-                SootMethod classMethod = theClass.getMethod((String) method
-                        .getSubSignature());
+                SootMethod classMethod = theClass.getMethod(method.getSubSignature());
                 forcedReachableMethodSet.add(classMethod);
             } catch (Exception ex) {
                 // Ignore..

@@ -669,7 +669,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             ChangeRequest request = new ChangeRequest(this,
                     "increment workspace version by 1") {
                 protected void _execute() throws KernelException {
-                    ((NamedObj) getContainer()).workspace().incrVersion();
+                    getContainer().workspace().incrVersion();
                 }
             };
 

@@ -252,7 +252,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Changeable
      */
     public void addChangeListener(ChangeListener listener) {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.addChangeListener(listener);
@@ -619,7 +619,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Changeable
      */
     public void executeChangeRequests() {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.executeChangeRequests();
@@ -1303,7 +1303,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Changeable
      */
     public boolean isDeferringChangeRequests() {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             return container.isDeferringChangeRequests();
@@ -1523,7 +1523,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Changeable
      */
     public synchronized void removeChangeListener(ChangeListener listener) {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.removeChangeListener(listener);
@@ -1588,7 +1588,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Changeable
      */
     public void requestChange(ChangeRequest change) {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             container.requestChange(change);
@@ -1643,7 +1643,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  @see Changeable
      */
     public boolean setDeferringChangeRequests(boolean isDeferring) {
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             return container.setDeferringChangeRequests(isDeferring);
@@ -1843,7 +1843,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         NamedObj result = this;
 
         while (result.getContainer() != null) {
-            result = (NamedObj) result.getContainer();
+            result = result.getContainer();
         }
 
         return result;
@@ -2470,7 +2470,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     protected void _removeAttribute(Attribute param) {
         try {
             _workspace.getWriteAccess();
-            _attributes.remove((Nameable) param);
+            _attributes.remove(param);
 
             if (_debugging) {
                 _debug("Removed attribute", param.getName(), "from",

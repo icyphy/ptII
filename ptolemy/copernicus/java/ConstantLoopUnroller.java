@@ -27,7 +27,6 @@
 package ptolemy.copernicus.java;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import soot.Body;
@@ -48,10 +47,6 @@ import soot.jimple.toolkits.scalar.Evaluator;
 import soot.toolkits.graph.Block;
 import soot.toolkits.graph.BlockGraph;
 import soot.toolkits.graph.CompleteBlockGraph;
-import soot.toolkits.graph.CompleteUnitGraph;
-import soot.toolkits.scalar.SimpleLiveLocals;
-import soot.toolkits.scalar.SimpleLocalDefs;
-import soot.util.Chain;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstantLoopUnroller
@@ -108,14 +103,14 @@ public class ConstantLoopUnroller extends BodyTransformer {
     }
 
     protected void internalTransform(Body body, String phaseName, Map options) {
-        Chain units = body.getUnits();
+        //Chain units = body.getUnits();
 
         BlockGraph graph = new CompleteBlockGraph(body);
-        CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+        //CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
         // this will help us figure out where locals are defined.
-        SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-        SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
+        //SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+        //SimpleLiveLocals liveLocals = new SimpleLiveLocals(unitGraph);
 
         for (Iterator blocks = graph.iterator(); blocks.hasNext();) {
             Block block = (Block) blocks.next();
@@ -222,9 +217,9 @@ public class ConstantLoopUnroller extends BodyTransformer {
             }
 
             // Lastly, find the initial value of the loop.
-            List defsList = localDefs.getDefsOfAt(counterLocal,
-                    whilePredecessor.getTail());
-            DefinitionStmt initializeStmt = (DefinitionStmt) defsList.get(0);
+            //List defsList = localDefs.getDefsOfAt(counterLocal,
+             //       whilePredecessor.getTail());
+            //DefinitionStmt initializeStmt = (DefinitionStmt) defsList.get(0);
             int initial;
 
             if (Evaluator.isValueConstantValued(counterStmt.getRightOp())) {
@@ -390,15 +385,15 @@ public class ConstantLoopUnroller extends BodyTransformer {
         }
     }
 
-    private static boolean _blockContains(Block block, Object object) {
-        for (Iterator i = block.iterator(); i.hasNext();) {
-            if (i.next().equals(object)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    private static boolean _blockContains(Block block, Object object) {
+//        for (Iterator i = block.iterator(); i.hasNext();) {
+//            if (i.next().equals(object)) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     private static ConstantLoopUnroller instance = new ConstantLoopUnroller();
 }

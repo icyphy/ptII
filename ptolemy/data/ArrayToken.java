@@ -154,7 +154,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         for (int j = 0; j < dataArrayToken.length(); j++) {
             UnsignedByteToken dataToken = (UnsignedByteToken) dataArrayToken
                     .getElement(j);
-            dataBytes[j] = (byte) dataToken.byteValue();
+            dataBytes[j] = dataToken.byteValue();
         }
 
         return dataBytes;

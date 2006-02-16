@@ -136,7 +136,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  @return The current computer time.
      */
     public Time getModelTime() {
-        double currentTime = (double) (System.currentTimeMillis() - _realStartTime);
+        double currentTime = System.currentTimeMillis() - _realStartTime;
 
         try {
             return new Time(this, currentTime);

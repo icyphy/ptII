@@ -1131,7 +1131,7 @@ public class Graph implements Cloneable {
      *  @return The self-loop edges in this graph.
      */
     public Collection selfLoopEdges() {
-        return (Collection) _selfLoopAnalysis.edges();
+        return _selfLoopAnalysis.edges();
     }
 
     /** Return the collection of all self-loop edges that are incident to

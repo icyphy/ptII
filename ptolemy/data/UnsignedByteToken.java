@@ -139,7 +139,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return A Complex.
      */
     public Complex complexValue() {
-        return new Complex((double) unsignedConvert(_value));
+        return new Complex(unsignedConvert(_value));
     }
 
     /** Convert the specified token into an instance of
@@ -181,7 +181,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The value contained in this token as a double.
      */
     public double doubleValue() {
-        return (double) unsignedConvert(_value);
+        return unsignedConvert(_value);
     }
 
     /** Return true if the class of the argument is UnsignedByteToken,
@@ -251,7 +251,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  @return The byte value contained in this token as a long.
      */
     public long longValue() {
-        return (long) unsignedConvert(_value);
+        return unsignedConvert(_value);
     }
 
     /** Returns a new UnsignedByteToken with value 1.

@@ -221,7 +221,7 @@ public class TimeKeeper {
 
         while (ports.hasNext()) {
             IOPort port = (IOPort) ports.next();
-            Receiver[][] receivers = (Receiver[][]) port.getRemoteReceivers();
+            Receiver[][] receivers = port.getRemoteReceivers();
 
             for (int i = 0; i < receivers.length; i++) {
                 for (int j = 0; j < receivers[i].length; j++) {
@@ -373,7 +373,7 @@ public class TimeKeeper {
         // First Order The Ports
         //
         while (inputPorts.hasNext()) {
-            listOfPorts.addLast((IOPort) inputPorts.next());
+            listOfPorts.addLast(inputPorts.next());
         }
 
         //

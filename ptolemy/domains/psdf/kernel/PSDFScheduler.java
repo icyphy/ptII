@@ -233,20 +233,17 @@ public class PSDFScheduler extends BaseSDFScheduler {
         // Get the vectorization factor.
         String vectorizationFactorExpression = "1";
 
-        if (director instanceof PSDFDirector) {
-            String name = ((PSDFDirector) director).vectorizationFactor
-                    .getName(model);
-            vectorizationFactorExpression = name.replaceAll("\\.", "::");
-
-            if (vectorizationFactorExpression.indexOf(" ") != -1) {
-                throw new InternalErrorException("The vectorizationFactor "
-                        + "PSDFDirector parameter must "
-                        + "not have spaces in its value.  The original value "
-                        + "was \"" + name + "\". Try changing the name of "
-                        + "director.");
-            }
+        String vectorizationName = director.vectorizationFactor.getName(model);
+        vectorizationFactorExpression = vectorizationName.replaceAll("\\.", "::");
+        
+        if (vectorizationFactorExpression.indexOf(" ") != -1) {
+            throw new InternalErrorException("The vectorizationFactor "
+                    + "PSDFDirector parameter must "
+                    + "not have spaces in its value.  The original value "
+                    + "was \"" + vectorizationName + "\". Try changing the name of "
+                    + "director.");
         }
-
+        
         PSDFGraphReader graphReader = new PSDFGraphReader();
         PSDFGraph graph = (PSDFGraph) graphReader.convert(model);
         _debug("PSDF graph = \n" + graph.toString());

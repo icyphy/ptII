@@ -133,7 +133,7 @@ public class NonStrictLogicFunction extends LogicFunction {
                 value = value.not();
             }
 
-            output.send(0, (BooleanToken) value);
+            output.send(0, value);
         }
     }
 

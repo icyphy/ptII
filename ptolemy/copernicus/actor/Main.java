@@ -406,11 +406,11 @@ public class Main extends KernelMain {
     protected String[] _parseArgs(GeneratorAttribute attribute)
             throws IllegalActionException {
         _targetPackage = attribute.getParameter("targetPackage");
-        _templateDirectory = attribute.getParameter("templateDirectory");
+        //_templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");
         _outputDirectory = attribute.getParameter("outputDirectory");
-        _generatorAttributeFileName = attribute
-                .getParameter("generatorAttributeFileName");
+        //_generatorAttributeFileName = attribute
+        //        .getParameter("generatorAttributeFileName");
         attribute.setParameter("run", "false");
 
         //String sootArgs = attribute.getParameter("sootArgs");
@@ -419,13 +419,13 @@ public class Main extends KernelMain {
 
     private static boolean _snapshots = false;
 
-    private static String _generatorAttributeFileName = "unsetParameter";
+    //private static String _generatorAttributeFileName = "unsetParameter";
 
     private static String _watchDogTimeout = "unsetParameter";
 
     private static String _targetPackage = "unsetParameter";
 
-    private static String _templateDirectory = "ptolemy/copernicus/java";
+    //private static String _templateDirectory = "ptolemy/copernicus/java";
 
     private static String _outputDirectory = "unsetParameter";
 }

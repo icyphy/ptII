@@ -275,7 +275,7 @@ public class PtinyOSDirector extends Director {
                     //System.out.println(p.getName() + " " + t);
                     try {
                         BooleanToken dt = BooleanToken.convert(t);
-                        return (boolean) dt.booleanValue();
+                        return dt.booleanValue();
                     } catch (IllegalActionException e) {
                         System.out.println("Couldn't convert to BooleanToken.");
 

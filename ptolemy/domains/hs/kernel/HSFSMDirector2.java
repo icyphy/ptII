@@ -372,7 +372,7 @@ public class HSFSMDirector2 extends HSFSMDirector {
      */
     public Time getModelNextIterationTime() {
         CompositeActor cont = (CompositeActor) getContainer();
-        Director execDir = (Director) cont.getExecutiveDirector();
+        Director execDir = cont.getExecutiveDirector();
         return execDir.getModelNextIterationTime();
     }
 
@@ -382,7 +382,7 @@ public class HSFSMDirector2 extends HSFSMDirector {
      */
     public Time getModelTime() {
         CompositeActor cont = (CompositeActor) getContainer();
-        Director execDir = (Director) cont.getExecutiveDirector();
+        Director execDir = cont.getExecutiveDirector();
 
         if (execDir != null) {
             return execDir.getModelTime();

@@ -40,7 +40,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -170,7 +169,7 @@ public class PeriodicTrigger extends TypedAtomicActor {
                 try {
                     _container.iterate(1);
                 } catch (IllegalActionException ex) {
-                    throw new InvalidStateException((NamedObj) _container,
+                    throw new InvalidStateException(_container,
                             "IllegalActionException at execution"
                                     + ex.getMessage());
                 }

@@ -121,7 +121,7 @@ public class LevelCrossingDetector extends TypedAtomicActor implements
         useDefaultEventValue.setTypeEquals(BaseType.BOOLEAN);
         useDefaultEventValue.setToken(BooleanToken.FALSE);
 
-        _errorTolerance = (double) 1e-4;
+        _errorTolerance = 1e-4;
         errorTolerance = new Parameter(this, "errorTolerance", new DoubleToken(
                 _errorTolerance));
         errorTolerance.setTypeEquals(BaseType.DOUBLE);

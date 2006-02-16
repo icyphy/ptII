@@ -884,8 +884,7 @@ public class SootUtilities {
         }
 
         // Push the constructor code into the <clinit> method.
-        SootMethod constructorMethod = ((InvokeExpr) constructorStmt
-                .getInvokeExpr()).getMethod();
+        SootMethod constructorMethod = constructorStmt.getInvokeExpr().getMethod();
         SootMethod staticConstructorMethod = staticClass
                 .getMethod(constructorMethod.getSubSignature());
 
@@ -912,8 +911,7 @@ public class SootUtilities {
         // constructor.
         // Later we will come back and inline this after we make all the
         // method static.
-        InvokeExpr constructorExpr = (InvokeExpr) constructorStmt
-                .getInvokeExpr();
+        InvokeExpr constructorExpr = constructorStmt.getInvokeExpr();
         Stmt insertStmt = Jimple.v().newInvokeStmt(
                 Jimple.v().newStaticInvokeExpr(
                         staticConstructorMethod.makeRef(),
@@ -1054,7 +1052,7 @@ public class SootUtilities {
         for (Iterator pairs = useList.iterator(); pairs.hasNext();) {
             UnitValueBoxPair pair = (UnitValueBoxPair) pairs.next();
             Stmt useStmt = (Stmt) pair.getUnit();
-            ValueBox useBox = (ValueBox) pair.getValueBox();
+            //ValueBox useBox = pair.getValueBox();
             System.out.println("used at = " + useStmt);
         }
 
@@ -1158,7 +1156,7 @@ public class SootUtilities {
         }
 
         // Copy the field declarations.
-        List collidedFieldList = _copyFields(theClass, superClass);
+        //List collidedFieldList = _copyFields(theClass, superClass);
 
         // Now create new methods in the given class for methods that
         // exist in the super class, but not in the given class.
@@ -1285,7 +1283,7 @@ public class SootUtilities {
                     }
                 }
                 if (stmt.containsInvokeExpr()) {
-                    InvokeExpr invoke = (InvokeExpr) stmt.getInvokeExpr();
+                    InvokeExpr invoke = stmt.getInvokeExpr();
                     SootMethodRef invokeMethodRef = invoke.getMethodRef();
                     SootMethod invokeMethod = invoke.getMethod();
 
@@ -1500,7 +1498,7 @@ public class SootUtilities {
         SootMethod inlinee = Scene
                 .v()
                 .getActiveHierarchy()
-                .resolveSpecialDispatch((SpecialInvokeExpr) expr, callingMethod);
+                .resolveSpecialDispatch(expr, callingMethod);
 
         // Make sure we can access the body of the method that is
         // being inlined.
@@ -1571,7 +1569,7 @@ public class SootUtilities {
                 Stmt stmt = (Stmt) j.next();
 
                 if (stmt.containsInvokeExpr()) {
-                    InvokeExpr invoke = (InvokeExpr) stmt.getInvokeExpr();
+                    InvokeExpr invoke = stmt.getInvokeExpr();
 
                     if (invoke.getMethod() == inlineMethod) {
                         //System.out.println("inlining " + invoke.getMethod());
@@ -1599,7 +1597,7 @@ public class SootUtilities {
             Stmt stmt = (Stmt) j.next();
 
             if (stmt.containsInvokeExpr()) {
-                InvokeExpr invoke = (InvokeExpr) stmt.getInvokeExpr();
+                InvokeExpr invoke = stmt.getInvokeExpr();
 
                 if (method instanceof StaticInvokeExpr) {
                     // simply inline static methods.
@@ -2014,7 +2012,7 @@ public class SootUtilities {
                 // remove the conditional
                 for (Iterator blockStmts = whileCond.iterator(); blockStmts
                         .hasNext();) {
-                    Stmt original = (Stmt) blockStmts.next();
+                    /*Stmt original = (Stmt) */ blockStmts.next();
                     blockStmts.remove();
                 }
 

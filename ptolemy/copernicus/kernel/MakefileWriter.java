@@ -391,7 +391,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     private static Map _addedSubstitutions = new HashMap();
 
     // The relative path to $PTII, for example "../../..".
-    private String _codeBase;
+    //private String _codeBase;
 
     // The file name of the MoML file that contains the GeneratorAttribute
     // that contains the key/value pairs we will use when substituting
@@ -405,17 +405,17 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     private String _outputDirectory;
 
     // The sanitized modelName
-    private String _sanitizedModelName;
+    //private String _sanitizedModelName;
 
     // The value of the ptolemy.ptII.dir property.
-    private String _ptIIDirectory;
+    //private String _ptIIDirectory;
 
     // The user directory where we are writing.  _ptIIUserDirectory
     // will be a parent directory of _outputDirectory.
-    private String _ptIIUserDirectory;
+    //private String _ptIIUserDirectory;
 
     // Map used to map @model@ to MyModel.
-    private Map _substituteMap;
+    //private Map _substituteMap;
 
     // The parent package relative to $PTII to generate the code in
     // The code itself is generated in a child package of the parent package

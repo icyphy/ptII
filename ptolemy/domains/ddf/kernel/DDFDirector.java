@@ -52,7 +52,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -479,7 +478,7 @@ public class DDFDirector extends Director {
 
                 _actorsToCheckNumberOfFirings.add(actor);
             } else {
-                throw new IllegalActionException(this, (ComponentEntity) actor,
+                throw new IllegalActionException(this, actor,
                         "The variable "
                                 + "requiredFiringsPerIteration must contain "
                                 + "an IntToken.");

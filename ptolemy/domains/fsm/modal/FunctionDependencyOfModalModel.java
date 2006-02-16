@@ -84,7 +84,7 @@ public class FunctionDependencyOfModalModel extends
         LinkedList entities = new LinkedList();
 
         try {
-            FSMActor controller = (FSMActor) ((ModalModel) getContainer())
+            FSMActor controller = ((ModalModel) getContainer())
                     .getController();
             Actor[] actors = controller.currentState().getRefinement();
 

@@ -69,7 +69,7 @@ public abstract class ModelScope implements ParserScope {
 
         // Get variables higher in scope.  Moving up the hierarchy
         // terminates when the container is null.
-        NamedObj aboveContainer = (NamedObj) container.getContainer();
+        NamedObj aboveContainer = container.getContainer();
 
         if (aboveContainer != null) {
             nameSet.addAll(getAllScopedVariableNames(exclude, aboveContainer));
@@ -114,7 +114,7 @@ public abstract class ModelScope implements ParserScope {
             if (result != null) {
                 return result;
             } else {
-                container = (NamedObj) container.getContainer();
+                container = container.getContainer();
             }
         }
 

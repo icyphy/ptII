@@ -337,7 +337,7 @@ public class Attribute extends NamedObj {
                                 + "of attributes");
             }
 
-            NamedObj previousContainer = (NamedObj) getContainer();
+            NamedObj previousContainer = getContainer();
 
             if (previousContainer == container) {
                 return;
@@ -397,7 +397,7 @@ public class Attribute extends NamedObj {
             name = "";
         }
 
-        NamedObj container = (NamedObj) getContainer();
+        NamedObj container = getContainer();
 
         if ((container != null)) {
             Attribute another = container.getAttribute(name);

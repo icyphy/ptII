@@ -367,8 +367,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
-        ptolemy.data.expr.Token operator = (ptolemy.data.expr.Token) node
-                .getOperator();
+        ptolemy.data.expr.Token operator = node.getOperator();
         ptolemy.data.Token leftToken = tokens[0];
         ptolemy.data.Token rightToken = tokens[1];
 

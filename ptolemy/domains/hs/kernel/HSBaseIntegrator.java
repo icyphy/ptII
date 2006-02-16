@@ -210,7 +210,7 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
             // discrete input, goes here.
             output.broadcast(new DoubleToken(getTentativeState()));
         } else {
-            ODESolver solver = (ODESolver) dir.getCurrentODESolver();
+            ODESolver solver = dir.getCurrentODESolver();
 
             if (_debugging) {
                 _debug(getName() + "fire using solver: ", solver.getName());
@@ -331,7 +331,7 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
                     + "used in CT models.");
         }
 
-        ODESolver solver = (ODESolver) dir.getCurrentODESolver();
+        ODESolver solver = dir.getCurrentODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this, " no ODE solver available");
@@ -445,7 +445,7 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
             throw new IllegalActionException(this, " does not have a director.");
         }
 
-        ODESolver solver = (ODESolver) dir.getCurrentODESolver();
+        ODESolver solver = dir.getCurrentODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this,
@@ -489,7 +489,7 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
         if (_successful) {
             return step;
         } else {
-            return (double) 0.5 * step;
+            return 0.5 * step;
         }
     }
 
@@ -683,7 +683,7 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
                     if (bin < size) {
                         // Interpolation as much as possible.
-                        double remainder = (i * ratio) - (double) bin;
+                        double remainder = (i * ratio) - bin;
                         newEntry = _Hermite(history[bin + 1], history[bin],
                                 1 - remainder);
                     } else {

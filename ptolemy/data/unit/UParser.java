@@ -395,7 +395,7 @@ public class UParser implements UParserConstants {
                     // If the size was specified as long, then create a long.
                     {
                         if (true)
-                            return (double) (Long.parseLong(x, radix));
+                            return Long.parseLong(x, radix);
                     }
                 } else {
                     // Try to infer the size.  Inferred sizes are at least
@@ -403,7 +403,7 @@ public class UParser implements UParserConstants {
                     try {
                         {
                             if (true)
-                                return (double) (Integer.parseInt(x, radix));
+                                return Integer.parseInt(x, radix);
                         }
                     } catch (NumberFormatException nfe) {
                         {

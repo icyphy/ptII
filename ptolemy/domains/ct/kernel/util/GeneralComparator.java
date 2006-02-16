@@ -57,6 +57,6 @@ public class GeneralComparator implements Comparator {
      *  @return The comparison result, -1, 0, or 1.
      */
     public int compare(Object first, Object second) {
-        return ((Comparable) first).compareTo((Comparable) second);
+        return ((Comparable) first).compareTo(second);
     }
 }

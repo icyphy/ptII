@@ -1206,6 +1206,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
     private class DTActor {
         private Actor _actor;
 
+        // FIXME; this is set, but never read
         private Time _localTime;
 
         private int _repeats;

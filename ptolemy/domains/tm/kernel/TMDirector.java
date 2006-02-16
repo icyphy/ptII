@@ -36,7 +36,6 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.CalendarQueue;
@@ -299,7 +298,7 @@ public class TMDirector extends Director implements TimedDirector {
 
         // First look at interrupt events.
         while (!_interruptQueue.isEmpty()) {
-            DEEvent interruptEvent = (DEEvent) _interruptQueue.get();
+            DEEvent interruptEvent = _interruptQueue.get();
             Time timeStamp = interruptEvent.timeStamp();
 
             if (timeStamp.compareTo(getModelTime()) < 0) {
@@ -377,8 +376,8 @@ public class TMDirector extends Director implements TimedDirector {
                     } else {
                         // Use the executionTime parameter from the port
                         // or the actor.
-                        Parameter executionTime = (Parameter) ((IOPort) event
-                                .receiver().getContainer())
+                        Parameter executionTime = (Parameter) event
+                                .receiver().getContainer()
                                 .getAttribute("executionTime");
 
                         // Actor starts to execute
@@ -527,8 +526,7 @@ public class TMDirector extends Director implements TimedDirector {
         _realStartTime = System.currentTimeMillis();
 
         if (_isEmbedded() && !_interruptQueue.isEmpty()) {
-            Time nextPureEventTime = ((DEEvent) _interruptQueue.get())
-                    .timeStamp();
+            Time nextPureEventTime = _interruptQueue.get().timeStamp();
             _requestFiringAt(nextPureEventTime);
         }
 
@@ -577,7 +575,7 @@ public class TMDirector extends Director implements TimedDirector {
         if (!_isEmbedded() && _synchronizeToRealTime) {
             // Wait for real time to cache up.
             long elapsedTime = System.currentTimeMillis() - _realStartTime;
-            double elapsedTimeInSeconds = ((double) elapsedTime) / 1000.0;
+            double elapsedTimeInSeconds = elapsedTime / 1000.0;
 
             if ((_outsideTime.getDoubleValue() - elapsedTimeInSeconds) > 1e-3) {
                 long timeToWait = (long) (_outsideTime.subtract(
@@ -665,7 +663,7 @@ public class TMDirector extends Director implements TimedDirector {
 
         // check the interupt queue:
         while (!_interruptQueue.isEmpty()) {
-            DEEvent interruptEvent = (DEEvent) _interruptQueue.get();
+            DEEvent interruptEvent = _interruptQueue.get();
             Time timeStamp = interruptEvent.timeStamp();
 
             if (timeStamp.compareTo(_outsideTime) < 0) {
