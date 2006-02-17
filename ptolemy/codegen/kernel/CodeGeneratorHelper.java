@@ -220,9 +220,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             for (int i = 0; i < sourcePorts.size(); i++) {
                 TypedIOPort sourcePort = (TypedIOPort) sourcePorts.get(i);
-                if (inputPort.getType().equals(sourcePort.getType())) {
+                if (inputPort.getType() == sourcePort.getType() ||
+                        inputPort.getType() != BaseType.GENERAL) {
                     continue;
                 }
+                // FIXME: 1. inputPort.sourcePortList() returns a list 
+                // of source ports. The API does not say the 1st source
+                // port in the list connects to the 1st channel of input 
+                // port, the 2nd to the 2nd, etc. _getChannelIndex(inputPort, j,
+                // sourcePort) uses this assumption which is not guaranteed.
+                // 2. It does not consider the case that the same channel
+                // of the input port may be connected to more than one source
+                // port, e.g., in modal model.
                 String sourcePortName = sourcePort.getName() + "#"
                         + _getChannelIndex(inputPort, i, sourcePort);
                 CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort
@@ -1236,9 +1245,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         List sourcePorts = port.sourcePortList();
         for (int i = 0; i < sourcePorts.size(); i++) {
             TypedIOPort sourcePort = (TypedIOPort) sourcePorts.get(i);
-            if (port.getType().equals(sourcePort.getType())) {
+            if (port.getType() == sourcePort.getType() ||
+                    port.getType() != BaseType.STRING) {
                 continue;
             }
+            // FIXME: 1. inputPort.sourcePortList() returns a list 
+            // of source ports. The API does not say the 1st source
+            // port in the list connects to the 1st channel of input 
+            // port, the 2nd to the 2nd, etc. _getChannelIndex(inputPort, j,
+            // sourcePort) uses this assumption which is not guaranteed.
+            // 2. It does not consider the case that the same channel
+            // of the input port may be connected to more than one source
+            // port, e.g., in modal model.
             String sourcePortName = sourcePort.getName() + "#"
                     + _getChannelIndex(port, i, sourcePort);
             CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort
