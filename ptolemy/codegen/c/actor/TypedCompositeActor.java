@@ -34,6 +34,8 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.Director;
@@ -98,13 +100,31 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
 
-        // Transfer the data to the inside.
         Iterator inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
+                .inputPortList().iterator();
+
+        // Update port parameters.
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            if (inputPort instanceof ParameterPort && inputPort.getWidth() > 0) {
+                
+                PortParameter portParameter = ((ParameterPort) inputPort).getParameter();
+                code.append(generateVariableName(portParameter));
+                code.append(" = ");
+                code.append(getReference(inputPort.getName()));
+                code.append(";\n");
+            }    
+        }
+        
+        // Transfer the data to the inside.
+        inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .inputPortList().iterator();
 
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-            directorHelper.generateTransferInputsCode(inputPort, code);
+            if (!(inputPort instanceof ParameterPort)) {
+                directorHelper.generateTransferInputsCode(inputPort, code);
+            }    
         }
 
         // Generate the fire code by the director helper.
@@ -131,13 +151,9 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeActor compositeActor = (CompositeActor) getComponent();
-        Iterator actors = compositeActor.deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            code.append(actorHelper.generateFireFunctionCode());
-        }
-        
+        ptolemy.actor.Director director = compositeActor.getDirector();
+        Director directorHelper = (Director) _getHelper(director);
+        code.append(directorHelper.generateFireFunctionCode());  
         code.append(super.generateFireFunctionCode());
         return code.toString();
     }

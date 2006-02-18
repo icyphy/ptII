@@ -646,8 +646,8 @@ public class MultirateFSMDirector extends FSMDirector {
                     ASTPtRootNode parseTree = action
                             .getParseTree(destinationName);
                     if (destination instanceof Variable) {
-                        codeBuffer.append(destination.getFullName().replace(
-                                '.', '_')
+                        codeBuffer.append(
+                                CodeGeneratorHelper.generateVariableName(destination)
                                 + " = ");
                     } else {
                         throw new IllegalActionException(

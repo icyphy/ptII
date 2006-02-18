@@ -46,6 +46,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
@@ -667,8 +668,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                 code.append("static " 
                         + CodeGeneratorHelper._generateType(parameter.getType())
-                        + " " + parameter.getFullName().replace('.', '_') 
-                        + ";\n");                
+                        + " " + CodeGeneratorHelper.generateVariableName(parameter) 
+                        + ";\n");
             }
         }
         
@@ -697,7 +698,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                 NamedObj container = parameter.getContainer();
                 CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
-                code.append(parameter.getFullName().replace('.', '_')
+                code.append(CodeGeneratorHelper.generateVariableName(parameter)
                         + " = " 
                         + containerHelper.getParameterValue(parameter.getName(), parameter.getContainer())
                         + ";\n");

@@ -40,6 +40,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
@@ -285,7 +286,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // avoid duplicate declaration.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
                     code.append("static " + _generateType(parameter.getType())
-                            + " " + parameter.getFullName().replace('.', '_') 
+                            + " " + generateVariableName(parameter) 
                             + ";\n");
                 }
             }
@@ -368,7 +369,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 // avoid duplication.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    code.append(parameter.getFullName().replace('.', '_')
+                    code.append(generateVariableName(parameter)
                             + " = " 
                             + getParameterValue(parameter.getName(), _component)
                             + ";\n");
@@ -377,6 +378,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return code.toString();
     }    
+    
+    public static String generateVariableName(NamedObj namedObj) {
+        return namedObj.getFullName().replace('.', '_') + "_"; 
+    }
 
     /**
      * Generate the wrapup code. In this base class, do nothing. Subclasses
@@ -463,7 +468,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Return a set of parameters that will be modified during the execution
      *  of the model. The actor gets those variables if it implements 
-     *  ExplicitChangeContext interface. 
+     *  ExplicitChangeContext interface or it contains PortParameters. 
      * 
      *  @return a set of parameters that will be modified.
      *  @exception IllegalActionException If an actor throws it while getting 
@@ -475,6 +480,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             set.addAll(((ExplicitChangeContext) _component)
                     .getModifiedVariables());
         }
+        
+        Iterator inputPorts = ((Actor) _component).inputPortList().iterator(); 
+        while(inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+            if (inputPort instanceof ParameterPort && inputPort.getWidth() > 0) {
+                set.add(((ParameterPort) inputPort).getParameter());
+            }
+        }    
         return set;
     }
 
@@ -561,12 +574,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // is correct syntax for the target language.
                 Variable variable = (Variable) attribute;
 
+                /*
                 if (_codeGenerator._modifiedVariables.contains(variable)) {
-                    return variable.getFullName().replace('.', '_');
+                    return generateVariableName(variable);
                 } else if (variable.isStringMode()) {
                     return "\"" + variable.getExpression() + "\"";
                 }
+                */
 
+                if (variable.isStringMode()) {
+                    return "\"" + variable.getExpression() + "\"";
+                }
+                
                 PtParser parser = new PtParser();
                 ASTPtRootNode parseTree = parser.generateParseTree(variable
                         .getExpression());
@@ -1607,7 +1626,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 _referencedParameters.add(attribute);
             }
 
-            result.append(attribute.getFullName().replace('.', '_'));
+            result.append(generateVariableName(attribute));
 
             String[] channelAndOffset = _getChannelAndOffset(name);
 
@@ -1840,8 +1859,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // variable is declared in the target language and should be
                 // referenced by the name anywhere it is used.
                 if (_codeGenerator._modifiedVariables.contains(result)) {
-                    return new ObjectToken(result.getFullName().replace('.',
-                            '_'));
+                    return new ObjectToken(generateVariableName(result));
                 } else {
                     // This will lead to recursive call until a variable found 
                     // is either directly specified by a constant or it is a  

@@ -29,6 +29,8 @@ package ptolemy.codegen.c.domains.fsm.kernel;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -191,6 +193,21 @@ public class FSMActor extends CCodeGeneratorHelper {
             // that need to be tried.
             Iterator transitions = transitionRetriever
                     .retrieveTransitions(state);
+            // Reorder transitions so that default transitions are at 
+            // the end of the list.
+            List reOrderedTransitions = new LinkedList();
+            List defaultTransitions = new LinkedList();
+            while(transitions.hasNext()) {
+                Transition transition = (Transition) transitions.next();
+                if (transition.getName().equals("default")) {
+                    defaultTransitions.add(transition);
+                } else {
+                    reOrderedTransitions.add(transition);
+                }
+            }
+            reOrderedTransitions.addAll(defaultTransitions);
+            transitions = reOrderedTransitions.iterator();
+            
             int transitionCount = 0;
             depth++;
 
@@ -204,15 +221,18 @@ public class FSMActor extends CCodeGeneratorHelper {
                 transitionCount++;
 
                 Transition transition = (Transition) transitions.next();
-
                 // generate code for guard expression
-                String guard = transition.getGuardExpression();
-                PtParser parser = new PtParser();
-                ASTPtRootNode guardParseTree = parser.generateParseTree(guard);
-                ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
-                parseTreeCodeGenerator
-                        .evaluateParseTree(guardParseTree, _scope);
-                codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
+                if(transition.getName().equals("default")) {
+                    codeBuffer.append("true");
+                } else {
+                    String guard = transition.getGuardExpression();
+                    PtParser parser = new PtParser();
+                    ASTPtRootNode guardParseTree = parser.generateParseTree(guard);
+                    ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                    parseTreeCodeGenerator
+                            .evaluateParseTree(guardParseTree, _scope);
+                    codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
+                }                    
                 codeBuffer.append(") {\n");
 
                 depth++;
@@ -291,7 +311,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                             }
                         }
 
-                        parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                        ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator
@@ -360,12 +380,11 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 }
                             }
                         } else if (destination instanceof Variable) {
-                            codeBuffer.append(destination.getFullName()
-                                    .replace('.', '_')
+                            codeBuffer.append(generateVariableName(destination)
                                     + " = ");
                         }
 
-                        parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                        ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator

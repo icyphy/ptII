@@ -186,23 +186,9 @@ public class HDFDirector extends SDFDirector {
         int[] actorConfigurations = new int[numberOfActors];
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
-
         if (!inline) {
-            StringBuffer functionCode = new StringBuffer();
-            Iterator actors = container.deepEntityList().iterator();
-            while (actors.hasNext()) {
-                Actor actor = (Actor) actors.next();
-                functionCode.append("\nvoid "
-                        + actor.getFullName().replace('.', '_') + "() {\n");
-                CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-                functionCode.append(actorHelper.generateFireCode());
-                functionCode.append("}\n");
-            }
-            code.insert(0, functionCode);
-
             code.append("int i;\n");
         }
-
         code.append("switch ("
                 + containerHelper
                         .processCode("$actorSymbol(currentConfiguration)")

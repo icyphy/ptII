@@ -123,30 +123,12 @@ public class FSMDirector extends Director {
             throws IllegalActionException {
 
         ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
-        CompositeActor container = (CompositeActor) director.getContainer();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
-
-        if (!inline) {
-            StringBuffer functionCode = new StringBuffer();
-            Iterator actors = container.deepEntityList().iterator();
-            while (actors.hasNext()) {
-                Actor actor = (Actor) actors.next();
-                if (actor == controller) {
-                    continue;
-                }
-                functionCode.append("\nvoid "
-                        + actor.getFullName().replace('.', '_') + "() {\n");
-                CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-                functionCode.append(actorHelper.generateFireCode());
-                functionCode.append("}\n");
-            }
-            code.insert(0, functionCode);
-        }
 
         int depth = 1;
         code.append(_getIndentPrefix(depth));
@@ -227,4 +209,31 @@ public class FSMDirector extends Director {
         code.append(_getIndentPrefix(depth));
         code.append("}\n"); //end of switch statemen
     }
+    
+    /** Generate The fire function code. This method is called when the firing
+     *  code of each actor is not inlined. Each actor's firing code is in a 
+     *  function with the same name as that of the actor.
+     * 
+     *  @return The fire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateFireFunctionCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        Iterator actors = ((CompositeActor) _director.getContainer())
+                .deepEntityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next(); 
+            // modal controller is not used as a stand-alone actor.
+            if (((ptolemy.domains.fsm.kernel.FSMDirector)
+                    _director).getController() == actor) {
+                continue;
+            }
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            code.append(actorHelper.generateFireFunctionCode());
+        }
+        return code.toString();
+    }
+
 }
+
+
