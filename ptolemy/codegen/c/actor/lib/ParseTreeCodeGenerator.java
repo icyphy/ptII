@@ -229,7 +229,11 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
             Type valueType = tokens[i].getType();
 
-            if (valueType == BaseType.INT) {
+            
+            if (valueType == BaseType.BOOLEAN) {
+                _fireCode.insert(nextIndex, "$new(Boolean(");
+                _fireCode.append("))");
+            } else if (valueType == BaseType.INT) {
                 _fireCode.insert(nextIndex, "$new(Int(");
                 _fireCode.append("))");
             } else if (valueType == BaseType.DOUBLE) {
