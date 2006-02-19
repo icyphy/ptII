@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalBSC" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 10, 706, 581}, maximized=false}">
     </property>
@@ -11,7 +11,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 50.0}">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -72,6 +72,10 @@ refinement changing the state change to double (0.5).</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 395.0]">
         </property>
     </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 45.0]">
+        </property>
+    </property>
     <entity name="ModalBinarySymmetricChannel" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
         </property>
@@ -116,7 +120,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 552, 832, 529}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 119, 828, 530}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[613, 412]">
             </property>
@@ -255,7 +259,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
-            <property name="Pe" class="ptolemy.data.expr.Parameter" value="0.5">
+            <property name="Pe" class="ptolemy.data.expr.Parameter" value="0.0">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -272,7 +276,7 @@ refinement changing the state change to double (0.5).</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 35.0">
                 </property>
             </property>
-            <property name="PChange" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="PChange" class="ptolemy.data.expr.Parameter" value="0.1">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -432,7 +436,7 @@ from bad to normal as well</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 265.0">
                 </property>
             </property>
-            <property name="scale" class="ptolemy.data.expr.Parameter" value="0.2">
+            <property name="scale" class="ptolemy.data.expr.Parameter" value="0.8">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -536,7 +540,7 @@ from bad to normal as well</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="errors,state">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {485, 369, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={485, 369, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>

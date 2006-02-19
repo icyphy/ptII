@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{85, 45}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 1, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={213, 0, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -56,6 +56,10 @@
     </configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{275, 50}">
+        </property>
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 50.0]">
         </property>
     </property>
     <entity name="Case" class="ptolemy.domains.fsm.modal.Case">
@@ -308,8 +312,8 @@
 <title>SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="99.0"/>
-<yRange min="-9.824526126243327" max="141.1749639214755"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <noGrid/>
 <default stems="yes"/>
 </plot>?>

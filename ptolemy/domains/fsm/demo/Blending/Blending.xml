@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Blending" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 461]">
     </property>
@@ -46,11 +46,17 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 10.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, 21, 971, 570}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, 21, 971, 579}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.0, 230.5}">
+    </property>
+    <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
+        <property name="inline" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 115.0]">
+        </property>
     </property>
     <entity name="BlendingController" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 315.0">
@@ -60,7 +66,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <property name="FSM" class="ptolemy.domains.fsm.kernel.FSMDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="mode controller">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="mode_controller">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 34.5">
             </property>
@@ -69,7 +75,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         </property>
         <property name="STEP" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={138, 136, 834, 540}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={144, 59, 834, 542}, maximized=false}">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -81,7 +87,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 70.0">
             </property>
         </port>
-        <entity name="mode controller" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <entity name="mode_controller" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Mode A">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
@@ -137,15 +143,11 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <entity name="Mode A" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Controller_A">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 95.0">
                 </property>
             </entity>
             <entity name="Mode B" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Controller_B">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 315.0">
                 </property>
@@ -153,15 +155,11 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <entity name="A to B" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Controller_A, Controller_B, Blending_A_to_B">
                 </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 195.0">
                 </property>
             </entity>
             <entity name="B to A" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Controller_B, Controller_A, Blending_B_to_A">
-                </property>
-                <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="510.0, 215.0">
                 </property>
@@ -298,7 +296,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 50.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 151, 701, 466}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={270, 151, 701, 468}, maximized=false}">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -378,7 +376,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             </property>
             <property name="STEP" class="ptolemy.data.expr.Parameter" value="STEP">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={53, 295, 874, 466}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={76, 64, 874, 468}, maximized=false}">
             </property>
             <port name="inputA" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -417,7 +415,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 100.0">
                 </property>
             </entity>
-            <entity name="Blend Step" class="ptolemy.actor.lib.Expression">
+            <entity name="Blend_Step" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % STEP">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 100.0">
@@ -432,7 +430,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="Blend Expression" class="ptolemy.actor.lib.Expression">
+            <entity name="Blend_Expression" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(step * inputB + (STEP - step) * inputA) / STEP">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 180.0">
@@ -470,17 +468,17 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             <link port="output" relation="relation6"/>
             <link port="step" relation="relation7"/>
             <link port="Ramp.output" relation="relation"/>
-            <link port="Blend Step.output" relation="relation7"/>
-            <link port="Blend Step.in" relation="relation"/>
-            <link port="Blend Expression.output" relation="relation6"/>
-            <link port="Blend Expression.step" relation="relation7"/>
-            <link port="Blend Expression.inputA" relation="relation4"/>
-            <link port="Blend Expression.inputB" relation="relation5"/>
+            <link port="Blend_Step.output" relation="relation7"/>
+            <link port="Blend_Step.in" relation="relation"/>
+            <link port="Blend_Expression.output" relation="relation6"/>
+            <link port="Blend_Expression.step" relation="relation7"/>
+            <link port="Blend_Expression.inputA" relation="relation4"/>
+            <link port="Blend_Expression.inputB" relation="relation5"/>
         </entity>
         <entity name="Blending_B_to_A" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 335.0">
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[666, 350]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
             </property>
@@ -489,6 +487,12 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 </property>
             </property>
             <property name="STEP" class="ptolemy.data.expr.Parameter" value="STEP">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={122, 170, 881, 468}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.0, 175.0}">
             </property>
             <port name="inputA" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -506,7 +510,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 180.0]">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -527,7 +531,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                 <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 70.0">
                 </property>
             </entity>
-            <entity name="Blend Step" class="ptolemy.actor.lib.Expression">
+            <entity name="Blend_Step" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in % STEP">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 70.0">
@@ -542,7 +546,7 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
                     <property name="input"/>
                 </port>
             </entity>
-            <entity name="Blend Expression" class="ptolemy.actor.lib.Expression">
+            <entity name="Blend_Expression" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(step * inputA + (STEP - step) * inputB) / STEP">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 180.0">
@@ -569,23 +573,25 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
             </relation>
             <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-            </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="355.0, 70.0">
                 </vertex>
             </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
+            </relation>
             <link port="inputA" relation="relation4"/>
             <link port="inputB" relation="relation5"/>
-            <link port="output" relation="relation6"/>
+            <link port="output" relation="relation2"/>
             <link port="step" relation="relation7"/>
             <link port="Ramp.output" relation="relation"/>
-            <link port="Blend Step.output" relation="relation7"/>
-            <link port="Blend Step.in" relation="relation"/>
-            <link port="Blend Expression.output" relation="relation6"/>
-            <link port="Blend Expression.step" relation="relation7"/>
-            <link port="Blend Expression.inputA" relation="relation4"/>
-            <link port="Blend Expression.inputB" relation="relation5"/>
+            <link port="Blend_Step.output" relation="relation7"/>
+            <link port="Blend_Step.in" relation="relation"/>
+            <link port="Blend_Expression.output" relation="relation2"/>
+            <link port="Blend_Expression.step" relation="relation7"/>
+            <link port="Blend_Expression.inputA" relation="relation4"/>
+            <link port="Blend_Expression.inputB" relation="relation5"/>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
             <vertex name="vertex1" value="255.0, 220.0">
@@ -613,13 +619,13 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         </relation>
         <link port="input" relation="relation6"/>
         <link port="output" relation="relation10"/>
-        <link port="mode controller.input" relation="relation6"/>
-        <link port="mode controller.inputA" relation="relation"/>
-        <link port="mode controller.inputB" relation="relation2"/>
-        <link port="mode controller.inputAtoB" relation="relation7"/>
-        <link port="mode controller.inputBtoA" relation="relation8"/>
-        <link port="mode controller.step" relation="relation9"/>
-        <link port="mode controller.output" relation="relation10"/>
+        <link port="mode_controller.input" relation="relation6"/>
+        <link port="mode_controller.inputA" relation="relation"/>
+        <link port="mode_controller.inputB" relation="relation2"/>
+        <link port="mode_controller.inputAtoB" relation="relation7"/>
+        <link port="mode_controller.inputBtoA" relation="relation8"/>
+        <link port="mode_controller.step" relation="relation9"/>
+        <link port="mode_controller.output" relation="relation10"/>
         <link port="Controller_A.output" relation="relation"/>
         <link port="Controller_B.output" relation="relation2"/>
         <link port="Blending_A_to_B.inputA" relation="relation"/>
@@ -664,8 +670,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
       </svg>
     </configure>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -685,8 +689,6 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
       </svg>
     </configure>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            </property>
             <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                 <configure>
       <svg>
@@ -703,10 +705,10 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
         <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 315.0">
         </property>
     </entity>
-    <entity name="Control - SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <entity name="Control_SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {-2, 405, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 113, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -725,16 +727,16 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
 <title>Control - SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="99.0"/>
-<yRange min="-1.0" max="1.0"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="Input - SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <entity name="Input_SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {515, 404, 508, 348}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={522, 111, 508, 355}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -753,8 +755,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
 <title>Input - SequencePlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="99.0"/>
-<yRange min="-7.984213827426177" max="7.984213827426176"/>
+<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
 <default connected="no" marks="various" stems="yes"/>
 </plot>?>
         </configure>
@@ -780,8 +782,8 @@ http://controls.ae.gatech.edu/projects/sec/status/may01.pdf
     <link port="BlendingController.input" relation="relation2"/>
     <link port="BlendingController.output" relation="relation3"/>
     <link port="Sinewave.output" relation="relation"/>
-    <link port="Control - SequencePlotter.input" relation="relation3"/>
-    <link port="Input - SequencePlotter.input" relation="relation2"/>
+    <link port="Control_SequencePlotter.input" relation="relation3"/>
+    <link port="Input_SequencePlotter.input" relation="relation2"/>
     <link port="Scale.input" relation="relation"/>
     <link port="Scale.output" relation="relation2"/>
 </entity>
