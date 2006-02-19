@@ -76,24 +76,26 @@ test Expression-2.1 {Define a variable in a regular parse tree } {
 
 } {{"1+42"}}
 
-
-test Expression-2.2 {Define a variable in a codegen parse tree } {
-    # We need to do something similar for codegen
-    # See ptII/ptolemy/data/expr/test/PtParser.tcl
-    set namedList [java::new ptolemy.kernel.util.NamedList]
-    set variableA [java::new ptolemy.data.expr.Variable]
-    $variableA setName "foo"
-    $variableA setExpression "42"
-    $namedList prepend $variableA
-    set scope [java::new ptolemy.data.expr.ExplicitScope $namedList]    
-    #set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
-    set evaluator \
-	[java::new ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator]
-
-    #set res1  [ $evaluator evaluateParseTree $root1 $scope]
-    set ptParser [java::new ptolemy.data.expr.PtParser]
-    set root [ $ptParser generateStringParseTree {1+$foo} ]
-    set results  [ $evaluator evaluateParseTree $root $scope]
-    list [$evaluator generateFireCode]
-
-} {{"1+42"}}
+# I've commented this out. The ParseTreeCodeGenerator should not be 
+# tested this way. -- Gang
+#
+#test Expression-2.2 {Define a variable in a codegen parse tree } {
+#    # We need to do something similar for codegen
+#    # See ptII/ptolemy/data/expr/test/PtParser.tcl
+#    set namedList [java::new ptolemy.kernel.util.NamedList]
+#    set variableA [java::new ptolemy.data.expr.Variable]
+#    $variableA setName "foo"
+#    $variableA setExpression "42"
+#    $namedList prepend $variableA
+#    set scope [java::new ptolemy.data.expr.ExplicitScope $namedList]    
+#    #set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+#    set evaluator \
+#  	[java::new ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator]
+#
+#    #set res1  [ $evaluator evaluateParseTree $root1 $scope]
+#    set ptParser [java::new ptolemy.data.expr.PtParser]
+#    set root [ $ptParser generateStringParseTree {1+$foo} ]
+#    set results  [ $evaluator evaluateParseTree $root $scope]
+#    list [$evaluator generateFireCode]
+#
+#} {{"1+42"}}
