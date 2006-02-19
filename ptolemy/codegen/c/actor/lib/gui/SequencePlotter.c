@@ -10,11 +10,19 @@ static int $actorSymbol(count) = 0;
     }
     fprintf($actorSymbol(filePtr), "Grid: on\n");
     fprintf($actorSymbol(filePtr), "Impulses: on\n");
+    fprintf($actorSymbol(filePtr), "Marks: dots\n");
+    fprintf($actorSymbol(filePtr), "ReuseDataSets: on\n");
 /**/
 
-/***writeFile***/
-    // FIXME: Need to handle all channels in the multiport input.
-    fprintf($actorSymbol(filePtr),"%d %g\n", $actorSymbol(count), $ref(input#0));
+/***annotateBlock(<annotation>)***/
+    fprintf($actorSymbol(filePtr), "<annotation>\n");
+/**/
+
+/***writeFile(<channel>)***/
+    fprintf($actorSymbol(filePtr),"%d %g\n", $actorSymbol(count), $ref(input#<channel>));
+/**/
+
+/***countIncrease***/
     $actorSymbol(count) ++;
 /**/
 
@@ -23,9 +31,6 @@ static int $actorSymbol(count) = 0;
 /**/
 
 /***graphPlot***/
-    // You might need to specify c:/.../ptII/bin/pxgraph below
-    // in the final version for Ptolemy II, we use ptplot, not pxgraph
-    //system("( pxgraph -t 'Butterfly' -bb -tk =600x600+0+0 -0 xy $actorSymbol(filename); /bin/rm -f $actorSymbol(filename)) &");
-    system(" ptplot $actorSymbol(output) &"); // /bin/rm -f $actorSymbol(filename) &");
+    system("ptplot $actorSymbol(output) &"); 
 /**/
 

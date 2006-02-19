@@ -28,11 +28,16 @@
 
 package ptolemy.codegen.c.actor.lib.gui;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
+
+//////////////////////////////////////////////////////////////////////////
+//// SequencePlotter
 
 /**
  A helper class for ptolemy.actor.lib.gui.SequencePlotter.
@@ -62,7 +67,20 @@ public class SequencePlotter extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        code.append(_generateBlockCode("writeFile"));
+        ptolemy.actor.lib.gui.SequencePlotter actor 
+                = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();
+        int width = actor.input.getWidth();
+        for (int i = 0; i < width; i++) {
+            ArrayList args = new ArrayList();
+            args.add(_annotation[i]);
+            code.append(_generateBlockCode("annotateBlock", args));
+            
+            args.clear();
+            args.add(new Integer(i));
+            code.append(_generateBlockCode("writeFile", args));
+        }
+        code.append(_generateBlockCode("countIncrease"));
+        
         return code.toString();
     }
 
@@ -77,7 +95,28 @@ public class SequencePlotter extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateInitializeCode());
+        
+        ptolemy.actor.lib.gui.SequencePlotter actor 
+                = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();
+        
         code.append(_generateBlockCode("initBlock"));
+        
+        // retrieve the legends.
+        String value = actor.legend.getExpression();
+        StringTokenizer tokenizer = null;
+        if ((value != null) && !value.trim().equals("")) {
+            tokenizer = new StringTokenizer(value, ",");
+        }
+        int width = actor.input.getWidth();
+        _annotation = new String[width];
+        for (int i = 0; i < width; i++) {
+            if(tokenizer != null && tokenizer.hasMoreTokens()) {
+                _annotation[i] = "DataSet: " + tokenizer.nextToken().trim();
+            } else {
+                _annotation[i] = "DataSet: channel " + i;  
+            }
+        }
+        
         return processCode(code.toString());
     }
 
@@ -122,4 +161,8 @@ public class SequencePlotter extends CCodeGeneratorHelper {
         files.add("\"stdio.h\"");
         return files;
     }
+    
+    /** The annotation to hold legends.
+     */
+    protected String[] _annotation ;
 }
