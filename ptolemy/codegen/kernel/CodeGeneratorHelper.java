@@ -522,7 +522,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 .trim();
 
         // Record the referenced type function in the infoTable.
-        _newTypesUsed.add(typeName);
+        _codeGenerator._newTypesUsed.add(typeName);
 
         return typeName + "_new"
                 + constructorString.substring(openFuncParenIndex);
@@ -723,7 +723,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         .indexOf("_new"));
                 if (_isPrimitiveType(typeName)) {
                     refName += ".payload." + typeName;
-                    sourceHelper._newTypesUsed.add(typeName);
+                    _codeGenerator._newTypesUsed.add(typeName);
                 }
             } else if (type.equals("char*")) {
                 if (!isInputPort) {
@@ -1640,8 +1640,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 result.insert(0, "Array_get(");
                 result.append(" ," + channelAndOffset[1] + ")" + 
                         ".payload.");
-                Type elementType = ((ArrayType) ((Parameter) 
-                        attribute).getType()).getElementType();
+                Type elementType = ((ArrayType) ((Parameter) attribute).getType()).getElementType();
                 result.append(_getCodeGenTypeFromPtolemyType(elementType));
             }
 
@@ -2021,13 +2020,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** The code generator that contains this helper class.
      */
     protected CodeGenerator _codeGenerator;
-
-    /** A HashSet that contains all codegen types referenced in the model.
-     * When the codegen kernel processes a $new() macro, it would add the
-     * codegen type to this set. Codegen types are supported by the code
-     * generator package. (e.g. Int, Double, Array, and etc.)
-     */
-    protected HashSet _newTypesUsed = new HashSet();
 
     /** A HashSet that contains all type functions referenced in the model.
      *  When the codegen kernel processes a $typeFunc() macro, it would add

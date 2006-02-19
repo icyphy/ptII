@@ -528,6 +528,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         HashSet types = new HashSet();
         types.addAll(_primitiveTypes);
 
+        /*
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
 
@@ -536,6 +537,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             functions.addAll(helperObject._typeFuncUsed);
             types.addAll(helperObject._newTypesUsed);
         }
+        */
+        types.addAll(_newTypesUsed);
         // The constructor of Array requires calling the convert function.  
         if (types.contains("Array")) {
             functions.add("convert");
@@ -862,7 +865,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                         if (targetType.equals("Token")) {
                             // Record the referenced type in the infoTable.
-                            sourceHelper._newTypesUsed.add(sourceType);
+                            _newTypesUsed.add(sourceType);
                             sourceHelper._portConversions.put(refName,
                                     sourceType + "_new");
                             sourceHelper._portDeclareTypes
@@ -989,6 +992,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  changed during execution.
      */
     protected Set _modifiedVariables;
+    
+    /** A HashSet that contains all codegen types referenced in the model.
+     * When the codegen kernel processes a $new() macro, it would add the
+     * codegen type to this set. Codegen types are supported by the code
+     * generator package. (e.g. Int, Double, Array, and etc.)
+     */
+    protected HashSet _newTypesUsed = new HashSet();
 
     /** 
      * A static list of all primitive types supported by the code generator. 
