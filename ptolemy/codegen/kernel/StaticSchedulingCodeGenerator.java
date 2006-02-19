@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// StaticSchedulingCodeGenerator
@@ -127,7 +128,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         if (inline) {
             code.append(generateFireCode());
         } else {
-            code.append(model.getFullName().replace('.', '_') + "();\n");
+            code.append(StringUtilities.sanitizeName(model.getFullName()) + "();\n");
         }
 
         // The code generated in generateModeTransitionCode() is executed

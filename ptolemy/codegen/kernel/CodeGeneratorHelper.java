@@ -120,8 +120,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\nvoid " + getComponent().getFullName().replace('.', '_')
-                + "() {\n");
+        code.append("\nvoid " + _generateName(getComponent()) + "() {\n");
         code.append(generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}\n");
@@ -305,7 +304,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             String cType = _generateType(inputPort.getType());
 
             code.append("static " + cType + " ");
-            code.append(inputPort.getFullName().replace('.', '_'));
+            code.append(_generateName(inputPort));
 
             if (inputPort.isMultiport()) {
                 code.append("[" + inputPort.getWidth() + "]");
@@ -332,7 +331,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if ((outputPort.getWidth() == 0)
                     || (outputPort.getWidthInside() != 0)) {
                 code.append("static " + _generateType(outputPort.getType()) + " ");
-                code.append(outputPort.getFullName().replace('.', '_'));
+                code.append(_generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
                     code.append("[" + outputPort.getWidthInside() + "]");
@@ -379,8 +378,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return code.toString();
     }    
     
-    public static String generateVariableName(NamedObj namedObj) {
-        return namedObj.getFullName().replace('.', '_') + "_"; 
+    /** Generate variable name for the given attribute. The reason to append 
+     *  underscore is to avoid conflict with the names of other objects. For
+     *  example, the paired PortParameter and ParameterPort have the same name. 
+     *  @param attribute The attribute to generate variable name for.
+     *  @return The generated variable name.
+     */
+    public static String generateVariableName(Attribute attribute) {
+        return _generateName(attribute) + "_"; 
     }
 
     /**
@@ -1014,7 +1019,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 } else if (macro.equals("size")) {
                     result.append(getSize(name));
                 } else if (macro.equals("actorSymbol")) {
-                    result.append(_component.getFullName().replace('.', '_'));
+                    result.append(_generateName(_component));
                     result.append("_" + name);
                 } else if (macro.equals("actorClass")) {
                     result.append(_component.getClassName().replace('.', '_'));
@@ -1456,7 +1461,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 if (remoteReceivers.length == 0) {
                     // This channel of this output port doesn't have any sink.
-                    result.append(_component.getFullName().replace('.', '_'));
+                    result.append(_generateName(_component));
                     result.append("_");
                     result.append(port.getName());
                     return result.toString();
@@ -1483,7 +1488,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         result.append(" = ");
                     }
 
-                    result.append(sinkPort.getFullName().replace('.', '_'));
+                    result.append(_generateName(sinkPort));
 
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");
@@ -1555,7 +1560,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             if ((port.isInput() && !forComposite)
                     || (port.isOutput() && forComposite)) {
-                result.append(port.getFullName().replace('.', '_'));
+                result.append(_generateName(port));
 
                 String[] channelAndOffset = _getChannelAndOffset(name);
                 int channelNumber = 0;
@@ -1759,7 +1764,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // try input port name only
                 if (name.equals(inputPort.getName())) {
                     found = true;
-                    code.append(inputPort.getFullName().replace('.', '_'));
+                    code.append(_generateName(inputPort));
                     if (inputPort.isMultiport()) {
                         code.append("[0]");
                     }
@@ -1769,8 +1774,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         if (name.equals(inputPort.getName() + "_" + i)) {
                             found = true;
                             channelNumber = i;
-                            code.append(inputPort.getFullName().replace('.',
-                                    '_'));
+                            code.append(_generateName(inputPort));
                             code.append("[" + i + "]");
                             break;
                         }
@@ -1800,7 +1804,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 channelNumber = 0;
                 if (name.equals(inputPort.getName() + "Array")) {
                     found = true;
-                    code.append(inputPort.getFullName().replace('.', '_'));
+                    code.append(_generateName(inputPort));
                     if (inputPort.isMultiport()) {
                         code.append("[0]");
                     }
@@ -1811,8 +1815,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 .equals(inputPort.getName() + "_" + i + "Array")) {
                             found = true;
                             channelNumber = i;
-                            code.append(inputPort.getFullName().replace('.',
-                                    '_'));
+                            code.append(_generateName(inputPort));
                             code.append("[" + i + "]");
                             break;
                         }
@@ -1972,6 +1975,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
 
         return -1;
+    }
+    
+    /** Generate sanitized name for the given named object.
+     *  @param namedObj The named object to generate sanitized name for.
+     *  @return The sanitized name.
+     */
+    private static String _generateName(NamedObj namedObj) {
+        return StringUtilities.sanitizeName(namedObj.getFullName());
     }
 
     /** Return the channel number and offset given in a string.

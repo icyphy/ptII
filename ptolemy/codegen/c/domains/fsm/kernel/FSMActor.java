@@ -380,7 +380,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 }
                             }
                         } else if (destination instanceof Variable) {
-                            codeBuffer.append(generateVariableName(destination)
+                            codeBuffer.append(generateVariableName((Variable) destination)
                                     + " = ");
                         }
 
