@@ -158,7 +158,7 @@ public class FSMDirector extends Director {
                     if (inline) {
                         code.append(actorHelper.generateFireCode());
                     } else {
-                        code.append(actors[i].getFullName().replace('.', '_')
+                        code.append(CodeGeneratorHelper.generateName((NamedObj) actors[i])
                                 + "();\n");
                     }
 

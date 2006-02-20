@@ -120,7 +120,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\nvoid " + _generateName(getComponent()) + "() {\n");
+        code.append("\nvoid " + generateName(getComponent()) + "() {\n");
         code.append(generateFireCode());
         code.append(generateTypeConvertFireCode());
         code.append("}\n");
@@ -148,6 +148,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
+    }
+    
+    /** Generate sanitized name for the given named object.
+     *  @param namedObj The named object to generate sanitized name for.
+     *  @return The sanitized name.
+     */
+    public static String generateName(NamedObj namedObj) {
+        return StringUtilities.sanitizeName(namedObj.getFullName());
     }
 
     /**
@@ -304,7 +312,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             String cType = _generateType(inputPort.getType());
 
             code.append("static " + cType + " ");
-            code.append(_generateName(inputPort));
+            code.append(generateName(inputPort));
 
             if (inputPort.isMultiport()) {
                 code.append("[" + inputPort.getWidth() + "]");
@@ -331,7 +339,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if ((outputPort.getWidth() == 0)
                     || (outputPort.getWidthInside() != 0)) {
                 code.append("static " + _generateType(outputPort.getType()) + " ");
-                code.append(_generateName(outputPort));
+                code.append(generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
                     code.append("[" + outputPort.getWidthInside() + "]");
@@ -385,7 +393,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @return The generated variable name.
      */
     public static String generateVariableName(Attribute attribute) {
-        return _generateName(attribute) + "_"; 
+        return generateName(attribute) + "_"; 
     }
 
     /**
@@ -855,7 +863,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 openFuncParenIndex).trim();
 
         // Record the referenced type function in the infoTable.
-        _typeFuncUsed.add(functionName);
+        _codeGenerator._typeFuncUsed.add(functionName);
 
         String argumentList = functionString.substring(openFuncParenIndex + 1)
                 .trim();
@@ -1019,7 +1027,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 } else if (macro.equals("size")) {
                     result.append(getSize(name));
                 } else if (macro.equals("actorSymbol")) {
-                    result.append(_generateName(_component));
+                    result.append(generateName(_component));
                     result.append("_" + name);
                 } else if (macro.equals("actorClass")) {
                     result.append(_component.getClassName().replace('.', '_'));
@@ -1461,7 +1469,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 if (remoteReceivers.length == 0) {
                     // This channel of this output port doesn't have any sink.
-                    result.append(_generateName(_component));
+                    result.append(generateName(_component));
                     result.append("_");
                     result.append(port.getName());
                     return result.toString();
@@ -1488,7 +1496,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         result.append(" = ");
                     }
 
-                    result.append(_generateName(sinkPort));
+                    result.append(generateName(sinkPort));
 
                     if (sinkPort.isMultiport()) {
                         result.append("[" + sinkChannelNumber + "]");
@@ -1560,7 +1568,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             if ((port.isInput() && !forComposite)
                     || (port.isOutput() && forComposite)) {
-                result.append(_generateName(port));
+                result.append(generateName(port));
 
                 String[] channelAndOffset = _getChannelAndOffset(name);
                 int channelNumber = 0;
@@ -1764,7 +1772,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // try input port name only
                 if (name.equals(inputPort.getName())) {
                     found = true;
-                    code.append(_generateName(inputPort));
+                    code.append(generateName(inputPort));
                     if (inputPort.isMultiport()) {
                         code.append("[0]");
                     }
@@ -1774,7 +1782,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         if (name.equals(inputPort.getName() + "_" + i)) {
                             found = true;
                             channelNumber = i;
-                            code.append(_generateName(inputPort));
+                            code.append(generateName(inputPort));
                             code.append("[" + i + "]");
                             break;
                         }
@@ -1804,7 +1812,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 channelNumber = 0;
                 if (name.equals(inputPort.getName() + "Array")) {
                     found = true;
-                    code.append(_generateName(inputPort));
+                    code.append(generateName(inputPort));
                     if (inputPort.isMultiport()) {
                         code.append("[0]");
                     }
@@ -1815,7 +1823,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 .equals(inputPort.getName() + "_" + i + "Array")) {
                             found = true;
                             channelNumber = i;
-                            code.append(_generateName(inputPort));
+                            code.append(generateName(inputPort));
                             code.append("[" + i + "]");
                             break;
                         }
@@ -1976,14 +1984,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         return -1;
     }
-    
-    /** Generate sanitized name for the given named object.
-     *  @param namedObj The named object to generate sanitized name for.
-     *  @return The sanitized name.
-     */
-    private static String _generateName(NamedObj namedObj) {
-        return StringUtilities.sanitizeName(namedObj.getFullName());
-    }
 
     /** Return the channel number and offset given in a string.
      *  The result is an integer array of length 2. The first element
@@ -2031,12 +2031,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** The code generator that contains this helper class.
      */
     protected CodeGenerator _codeGenerator;
-
-    /** A HashSet that contains all type functions referenced in the model.
-     *  When the codegen kernel processes a $typeFunc() macro, it would add
-     *  the type function to this set. 
-     */
-    protected HashSet _typeFuncUsed = new HashSet();
 
     /** A HashMap that contains mapping for ports and their conversion method.
      *  Ports that does not need to be converted do NOT have record in this

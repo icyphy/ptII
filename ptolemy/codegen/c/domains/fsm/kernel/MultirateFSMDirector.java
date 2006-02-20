@@ -345,8 +345,7 @@ public class MultirateFSMDirector extends FSMDirector {
                             IOPort sinkPort = sinkPorts[m];
                             CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sinkPort
                                     .getContainer());
-                            code.append(sinkPort.getFullName()
-                                    .replace('.', '_'));
+                            code.append(CodeGeneratorHelper.generateName(sinkPort));
 
                             if (sinkPort.isMultiport()) {
                                 code.append("[" + i + "]");
@@ -560,8 +559,8 @@ public class MultirateFSMDirector extends FSMDirector {
 
             StringBuffer channelReadOffset = new StringBuffer();
             StringBuffer channelWriteOffset = new StringBuffer();
-            channelReadOffset.append(port.getFullName().replace('.', '_'));
-            channelWriteOffset.append(port.getFullName().replace('.', '_'));
+            channelReadOffset.append(CodeGeneratorHelper.generateName(port));
+            channelWriteOffset.append(CodeGeneratorHelper.generateName(port));
 
             if (width > 1) {
                 channelReadOffset.append("_" + channel);

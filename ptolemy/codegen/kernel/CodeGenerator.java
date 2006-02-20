@@ -538,6 +538,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             types.addAll(helperObject._newTypesUsed);
         }
         */
+        
+        functions.addAll(_typeFuncUsed);
         types.addAll(_newTypesUsed);
         // The constructor of Array requires calling the convert function.  
         if (types.contains("Array")) {
@@ -999,13 +1001,19 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * generator package. (e.g. Int, Double, Array, and etc.)
      */
     protected HashSet _newTypesUsed = new HashSet();
-
+    
     /** 
      * A static list of all primitive types supported by the code generator. 
      */
     protected static List _primitiveTypes = Arrays.asList(new String[] { "Int",
             "Double", "String", "Boolean" });
 
+    /** A HashSet that contains all type functions referenced in the model.
+     *  When the codegen kernel processes a $typeFunc() macro, it would add
+     *  the type function to this set. 
+     */
+    protected HashSet _typeFuncUsed = new HashSet();
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

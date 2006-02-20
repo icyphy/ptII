@@ -145,7 +145,7 @@ public class SDFDirector extends Director {
                     code.append("for (i = 0; i < " + count + " ; i++) {\n");
                 }
 
-                code.append(actor.getFullName().replace('.', '_') + "();\n");
+                code.append(CodeGeneratorHelper.generateName((NamedObj) actor) + "();\n");
 
                 // update buffer offset after firing each actor once
                 Iterator inputPorts = actor.inputPortList().iterator();
@@ -515,7 +515,7 @@ public class SDFDirector extends Director {
 
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
-                channelReadOffset.append(port.getFullName().replace('.', '_'));
+                channelReadOffset.append(CodeGeneratorHelper.generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
                 }
@@ -532,7 +532,7 @@ public class SDFDirector extends Director {
 
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(port.getFullName().replace('.', '_'));
+                channelWriteOffset.append(CodeGeneratorHelper.generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
                 }

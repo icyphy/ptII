@@ -259,8 +259,7 @@ public class HDFDirector extends SDFDirector {
                         code.append("for (i = 0; i < " + count + " ; i++) {\n");
                     }
 
-                    code
-                            .append(actor.getFullName().replace('.', '_')
+                    code.append(CodeGeneratorHelper.generateName((NamedObj) actor)
                                     + "();\n");
 
                     // update buffer offset after firing each actor once
@@ -694,8 +693,8 @@ public class HDFDirector extends SDFDirector {
 
             StringBuffer channelReadOffset = new StringBuffer();
             StringBuffer channelWriteOffset = new StringBuffer();
-            channelReadOffset.append(port.getFullName().replace('.', '_'));
-            channelWriteOffset.append(port.getFullName().replace('.', '_'));
+            channelReadOffset.append(CodeGeneratorHelper.generateName(port));
+            channelWriteOffset.append(CodeGeneratorHelper.generateName(port));
 
             if (width > 1) {
                 channelReadOffset.append("_" + channel);
