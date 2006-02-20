@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * A helper class for ptolemy.actor.lib.Minimum.
  *
- * @author Man-Kit Leung
+ * @author Man-Kit Leung, Gang Zhou
  * @version $Id$
  * @since Ptolemy II 5.1
  * @Pt.ProposedRating Red (mankit)
@@ -65,39 +65,25 @@ public class Minimum extends CCodeGeneratorHelper {
         code.append(super.generateFireCode());
 
         ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
-        CodeStream _codeStream = new CodeStream(this);
-
+        
+        code.append(_generateBlockCode("fireInitBlock"));
         // FIXME: we need to resolve the token type in the future
-        ArrayList args = new ArrayList();
-        args.add(actor.input.getType().toString());
-        args.add(Integer.toString(actor.input.getWidth()));
-        _codeStream.appendCodeBlock("fireBlock", args);
-        code.append(processCode(_codeStream.toString()));
-        return code.toString();
-    }
-
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initMin</code> and
-     * <code>initChannelNum</code> from Minimum.c, replaces macros with
-     * their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
-
-        CodeStream _codeStream = new CodeStream(this);
-
-        if (actor.input.getWidth() > 0) {
-            _codeStream.appendCodeBlock("initMin");
+        for (int i = 1; i < actor.input.getWidth(); i++) {
+            ArrayList args = new ArrayList();
+            args.add(new Integer(i));
+            code.append(_generateBlockCode("fireBlock", args));
         }
-
-        _codeStream.appendCodeBlock("initChannelNum");
-        return processCode(_codeStream.toString());
+        for (int i = 0; i < actor.minimumValue.getWidth(); i++) {
+            ArrayList args = new ArrayList();
+            args.add(new Integer(i));
+            code.append(_generateBlockCode("sendBlock1", args));
+        }
+        for (int i = 0; i < actor.channelNumber.getWidth(); i++) {
+            ArrayList args = new ArrayList();
+            args.add(new Integer(i));
+            code.append(_generateBlockCode("sendBlock2", args));
+        }
+        return code.toString();
     }
 
     /**

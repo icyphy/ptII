@@ -36,7 +36,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * A helper class for ptolemy.actor.lib.Maximum.
  *
- * @author Man-Kit Leung
+ * @author Man-Kit Leung, Gang Zhou
  * @version $Id$
  * @since Ptolemy II 5.1
  * @Pt.ProposedRating Red (mankit)
@@ -65,37 +65,25 @@ public class Maximum extends CCodeGeneratorHelper {
         code.append(super.generateFireCode());
 
         ptolemy.actor.lib.Maximum actor = (ptolemy.actor.lib.Maximum) getComponent();
-
+        
+        code.append(_generateBlockCode("fireInitBlock"));
         // FIXME: we need to resolve the token type in the future
-        ArrayList args = new ArrayList();
-        args.add(actor.input.getType().toString());
-        args.add(Integer.toString(actor.input.getWidth()));
-        code.append(_generateBlockCode("fireBlock", args));
-        return code.toString();
-    }
-
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initMax</code> and
-     * <code>initChannelNum</code> from Maximum.c, replaces macros with
-     * their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
-
-        CodeStream tmpStream = new CodeStream(this);
-
-        if (actor.input.getWidth() > 0) {
-            tmpStream.appendCodeBlock("initMax");
+        for (int i = 1; i < actor.input.getWidth(); i++) {
+            ArrayList args = new ArrayList();
+            args.add(new Integer(i));
+            code.append(_generateBlockCode("fireBlock", args));
         }
-
-        tmpStream.appendCodeBlock("initChannelNum");
-        return processCode(tmpStream.toString());
+        for (int i = 0; i < actor.maximumValue.getWidth(); i++) {
+            ArrayList args = new ArrayList();
+            args.add(new Integer(i));
+            code.append(_generateBlockCode("sendBlock1", args));
+        }
+        for (int i = 0; i < actor.channelNumber.getWidth(); i++) {
+            ArrayList args = new ArrayList();
+            args.add(new Integer(i));
+            code.append(_generateBlockCode("sendBlock2", args));
+        }
+        return code.toString();
     }
 
     /**

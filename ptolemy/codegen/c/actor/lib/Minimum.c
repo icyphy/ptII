@@ -1,21 +1,25 @@
 /*** preinitBlock ***/
-    int $actorSymbol(i);
+    int $actorSymbol(minimumTemp);
+    int $actorSymbol(channelTemp);
 /**/
 
-/*** initMin ***/
-    $ref(minimumValue) = $ref(input#0);
-/**/
-
-/*** initChannelNum ***/
-    $ref(channelNumber) = -1;
+/*** fireInitBlock***/
+    $actorSymbol(minimumTemp) = $ref(input#0);
+    $actorSymbol(channelTemp) = 0;
 /**/
 
 /*** fireBlock(<arg>) ***/
-    for ($actorSymbol(i) = 0; $actorSymbol(i) < <arg>; $actorSymbol(i)++) {
-        if ($ref(input#$actorSymbol(i)) < $ref(minimumValue)) {
-            $ref(minimumValue) =  $ref(input#$actorSymbol(i));
-            $ref(channelNumber) = $actorSymbol(i);
-        }
+    if ($ref(input#<arg>) < $actorSymbol(minimumTemp)) {
+        $actorSymbol(minimumTemp) = $ref(input#<arg>);
+        $actorSymbol(channelTemp) = <arg>;
     }
+/**/
+
+/*** sendBlock1(<arg>)***/
+    $ref(minimumValue#<arg>) = $actorSymbol(minimumTemp);
+/**/
+
+/*** sendBlock2(<arg>)***/
+    $ref(channelNumber#<arg>) = $actorSymbol(channelTemp);
 /**/
 
