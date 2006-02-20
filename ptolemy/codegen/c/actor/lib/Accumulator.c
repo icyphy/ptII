@@ -1,11 +1,25 @@
 /***initBlock***/
-    $ref(output) = $val(init);
+    $actorSymbol(sum) = $val(init);
 /**/
 
-/***fireBlock***/
-    if ($ref(reset)) {
-    	$ref(output) = $val(init);
-    } else {
-    	$ref(output) += $ref(input);
-    }
+/***initReset***/
+    $actorSymbol(resetTemp) = $ref(reset#0);
+/**/
+
+/***readReset(<arg>)***/
+    $actorSymbol(resetTemp) = $actorSymbol(resetTemp) || $ref(reset#<arg>);
+/**/
+
+/***initSum***/
+    if ($actorSymbol(resetTemp)) {
+        $actorSymbol(sum) = $val(init);
+    } 	
+/**/
+
+/***readInput(<arg>)***/
+    $actorSymbol(sum) += $ref(input#<arg>);
+/**/
+
+/***sendBlock***/
+    $ref(output) = $actorSymbol(sum);
 /**/
