@@ -324,9 +324,13 @@ public class MultirateFSMDirector extends FSMDirector {
                     .getName());
             IOPort[] sinkPorts = { controllerPort, refinementPort };
 
-            int rate = rates[configurationNumber][portNumber];
-
             code.append("case " + configurationNumber + ":\n");
+            
+            if (rates[configurationNumber] == null) {
+                continue;
+            }
+            
+            int rate = rates[configurationNumber][portNumber];
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
@@ -449,9 +453,13 @@ public class MultirateFSMDirector extends FSMDirector {
                 + ") {\n");
         for (int configurationNumber = 0; configurationNumber < rates.length; configurationNumber++) {
 
-            int rate = rates[configurationNumber][portNumber];
-
             code.append("case " + configurationNumber + ":\n");
+            
+            if (rates[configurationNumber] == null) {
+                continue;
+            }
+            
+            int rate = rates[configurationNumber][portNumber];
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {
@@ -756,6 +764,10 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     protected void _updatePortBufferSize(Actor refinement, int[] portRates)
             throws IllegalActionException {
+        
+        if (portRates == null) {
+            return;
+        }
 
         ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
 

@@ -36,6 +36,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.sched.Firing;
+import ptolemy.actor.sched.NotSchedulableException;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
@@ -129,16 +130,16 @@ public class HDFDirector extends SDFDirector {
                     if (localDirector instanceof ptolemy.domains.hdf.kernel.HDFDirector
                             || localDirector instanceof ptolemy.domains.hdf.kernel.HDFFSMDirector) {
                         int firingsPerLocalIteration = 0;
-                        Iterator firings = _schedules[configurationNumber]
-                                .firingIterator();
-                        while (firings.hasNext()) {
-                            Firing firing = (Firing) firings.next();
-                            if (firing.getActor() == actor) {
-                                firingsPerLocalIteration += firing
-                                        .getIterationCount();
+                        Schedule schedule = _schedules[configurationNumber];
+                        if (schedule != null) {      
+                            Iterator firings = schedule.firingIterator();
+                            while (firings.hasNext()) {
+                                Firing firing = (Firing) firings.next();
+                                if (firing.getActor() == actor) {
+                                    firingsPerLocalIteration += firing.getIterationCount();
+                                }
                             }
                         }
-
                         // key statement here
                         int firingsPerGlobalIterationOfActor = firingsPerLocalIteration
                                 * firingsPerGlobalIterationOfContainer;
@@ -205,9 +206,14 @@ public class HDFDirector extends SDFDirector {
             actorConfigurations[numberOfActors - 1] = remainder;
 
             code.append("case " + configurationNumber + ":\n");
+            
+            Schedule schedule = _schedules[configurationNumber];
+            
+            if (schedule == null) {
+                continue;
+            }
 
-            Iterator actorsToFire = _schedules[configurationNumber]
-                    .firingIterator();
+            Iterator actorsToFire = schedule.firingIterator();
             while (actorsToFire.hasNext()) {
                 Firing firing = (Firing) actorsToFire.next();
                 Actor actor = firing.getActor();
@@ -401,6 +407,7 @@ public class HDFDirector extends SDFDirector {
 
             // Set port rates of all actors for current configuration.
             int j = 0; // j is the actor number
+            boolean isRateNull = false;
             Iterator actorsIterator = actors.iterator();
             while (actorsIterator.hasNext()) {
                 Actor actor = (Actor) actorsIterator.next();
@@ -410,6 +417,10 @@ public class HDFDirector extends SDFDirector {
                 // configuration and the port rates have already been set.
                 if (rates != null) {
                     int[] portRates = rates[actorConfigurations[j]];
+                    if (portRates == null) {
+                        isRateNull = true;
+                        break;
+                    }                    
                     Iterator ports = ((Entity) actor).portList().iterator();
                     int k = 0; // k is the port number
                     while (ports.hasNext()) {
@@ -425,6 +436,12 @@ public class HDFDirector extends SDFDirector {
                     }
                 }
                 j++;
+            }
+            
+            if (isRateNull) {
+                _schedules[configurationNumber] = null;
+                containerRates[configurationNumber] = null;
+                continue;
             }
 
             // Each schedule must be computed from scratch, including updating
@@ -464,27 +481,35 @@ public class HDFDirector extends SDFDirector {
                 }
             }
 
-            // Compute the schedule.
-            _schedules[configurationNumber] = director.getScheduler()
-                    .getSchedule();
+            try {
+            
+                // Compute the schedule.
+                _schedules[configurationNumber] = director.getScheduler()
+                        .getSchedule();
 
-            // Check to see if the buffer size needed in current configuration  
-            // is greater than in previous configurations. If so, set the buffer 
-            // size to the current buffer size needed. 
-            _updatePortBufferSize();
+                // Check to see if the buffer size needed in current configuration  
+                // is greater than in previous configurations. If so, set the buffer 
+                // size to the current buffer size needed. 
+                _updatePortBufferSize();
 
-            // Record external port rates for current configuration.
-            List externalPorts = container.portList();
-            int[] externalPortRates = new int[externalPorts.size()];
-            Iterator externalPortsIterator = externalPorts.iterator();
-            int portNumber = 0;
-            while (externalPortsIterator.hasNext()) {
-                IOPort externalPort = (IOPort) externalPortsIterator.next();
-                externalPortRates[portNumber] = DFUtilities
-                        .getRate(externalPort);
-                portNumber++;
+                // Record external port rates for current configuration.
+                List externalPorts = container.portList();
+                int[] externalPortRates = new int[externalPorts.size()];
+                Iterator externalPortsIterator = externalPorts.iterator();
+                int portNumber = 0;
+                while (externalPortsIterator.hasNext()) {
+                    IOPort externalPort = (IOPort) externalPortsIterator.next();
+                    externalPortRates[portNumber] = DFUtilities
+                            .getRate(externalPort);
+                    portNumber++;
+                }
+                containerRates[configurationNumber] = externalPortRates;
+                
+            } catch(NotSchedulableException ex) {
+                _schedules[configurationNumber] = null;
+                containerRates[configurationNumber] = null;
             }
-            containerRates[configurationNumber] = externalPortRates;
+            
         }
 
         containerHelper.setRates(containerRates);
@@ -528,12 +553,16 @@ public class HDFDirector extends SDFDirector {
                 + ") {\n");
         // Each configuration has a schedule, therefore the number of configurations
         // is equal to the number of schedules.
+        int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
-
-            int[][] rates = containerHelper.getRates();
-            int rate = rates[configurationNumber][portNumber];
-
+            
             code.append("case " + configurationNumber + ":\n");
+            
+            if (rates[configurationNumber] == null) {
+                continue;
+            }
+            
+            int rate = rates[configurationNumber][portNumber];          
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
                 if (i < inputPort.getWidthInside()) {
@@ -593,12 +622,16 @@ public class HDFDirector extends SDFDirector {
                 + ") {\n");
         // Each configuration has a schedule, therefore the number of configurations
         // is equal to the number of schedules.
+        int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
 
-            int[][] rates = containerHelper.getRates();
-            int rate = rates[configurationNumber][portNumber];
-
             code.append("case " + configurationNumber + ":\n");
+            
+            if (rates[configurationNumber] == null) {
+                continue;
+            }
+            
+            int rate = rates[configurationNumber][portNumber];
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 if (i < outputPort.getWidth()) {

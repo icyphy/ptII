@@ -109,28 +109,28 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                     length = rates.length;
                 }
                 for (int i = 0; i < length; i++) {
-
                     int firingsPerGlobalIterationOfContainer = arrayOfFiringsPerGlobalIterationOfContainer[configurationNumber];
-                    Iterator ports = controller.portList().iterator();
-                    int portNumber = 0;
-                    while (ports.hasNext()) {
-                        IOPort port = (IOPort) ports.next();
-                        // Find the new controller port buffer sizes needed in one 
-                        // global iteration from container port rates and container's
-                        // firings per global iteration.
-                        int newSize = firingsPerGlobalIterationOfContainer
-                                * containerRates[configurationNumber][portNumber];
-                        // All channels have same buffer size, so we use channel 0.
-                        int oldSize = controllerHelper.getBufferSize(port, 0);
-                        if (oldSize < newSize) {
-                            for (int j = 0; j < port.getWidth(); j++) {
-                                controllerHelper
-                                        .setBufferSize(port, j, newSize);
+                    if (containerRates[configurationNumber] != null) {                       
+                        Iterator ports = controller.portList().iterator();
+                        int portNumber = 0;
+                        while (ports.hasNext()) {
+                            IOPort port = (IOPort) ports.next();
+                            // Find the new controller port buffer sizes needed in one 
+                            // global iteration from container port rates and container's
+                            // firings per global iteration.
+                            int newSize = firingsPerGlobalIterationOfContainer
+                                    * containerRates[configurationNumber][portNumber];
+                            // All channels have same buffer size, so we use channel 0.
+                            int oldSize = controllerHelper.getBufferSize(port, 0);
+                            if (oldSize < newSize) {
+                                for (int j = 0; j < port.getWidth(); j++) {
+                                    controllerHelper
+                                            .setBufferSize(port, j, newSize);
+                                }
                             }
+                            portNumber++;
                         }
-                        portNumber++;
                     }
-
                     // If the refinement's local director is HDFDirector
                     // or HDFFSMDirector, set the firings per global iteration
                     // of the refinemenet the same as the firings per global 
