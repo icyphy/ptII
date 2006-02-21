@@ -14,6 +14,7 @@
 
 /***initBlock***/
     // Generate the parity matrix and look-up table.
+    $actorSymbol(index)[0] = $val(codedRate);
     for ($actorSymbol(i) = 1; $actorSymbol(i) <= $val(codedRate); $actorSymbol(i)++) {
         if ($actorSymbol(i) == (1 << $actorSymbol(flag))) {
             $actorSymbol(index)[$actorSymbol(i)] = $val(codedRate) - 1 - $actorSymbol(flag);
