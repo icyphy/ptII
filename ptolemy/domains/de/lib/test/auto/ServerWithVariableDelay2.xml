@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ServerWithVariableDelay2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
@@ -33,6 +33,12 @@
     <entity name="Server" class="ptolemy.domains.de.lib.Server">
         <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
+        <property name="ServerIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={130, 260, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 205.0]">
         </property>
     </entity>
@@ -53,7 +59,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{1.5, 1.0}, {1.5, 0.0}, {2.0, 1.0}, {3.0, 0.0}, {5.5, 1.0}, {5.5, 0.0}, {6.0, 1.0}, {7.0, 0.0}, {9.5, 1.0}, {9.5, 0.0}, {10.0, 1.0}}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 205.0]">
         </property>
@@ -65,17 +71,19 @@
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[355.0, 205.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="Server.input" relation="relation"/>
     <link port="Server.output" relation="relation3"/>
-    <link port="Server.newServiceTime" relation="relation2"/>
+    <link port="Server.serviceTime" relation="relation2"/>
     <link port="Clock.output" relation="relation"/>
     <link port="Clock2.output" relation="relation2"/>
     <link port="Test.input" relation="relation4"/>

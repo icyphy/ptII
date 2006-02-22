@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Collisions" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -145,7 +145,7 @@ Receiver.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 70.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 126, 815, 516}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -231,7 +231,7 @@ previous message is completed.</text></svg></configure>
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="newServiceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
             </property>
             <property name="ServerIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 260, 815, 516}, maximized = false}">
@@ -417,7 +417,7 @@ displays.</text></svg></configure>
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter0, Transmitter1">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {32, 306, 477, 241}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 306, 477, 241}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[469, 186]">
             </property>
@@ -467,7 +467,7 @@ displays.</text></svg></configure>
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Transmitter0, Transmitter1">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {2, 549, 508, 215}, maximized = false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 549, 508, 215}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 160]">
             </property>
@@ -898,7 +898,7 @@ displays.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 570.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[299.9999999999999, 600.0]">
         </property>
         <property name="messageValue" class="ptolemy.data.expr.Parameter" value="true">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -1063,7 +1063,7 @@ previous message is completed.</text></svg></configure>
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="newServiceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
             </property>
             <property name="ServerIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 260, 815, 516}, maximized = false}">
