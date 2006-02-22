@@ -1,5 +1,8 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <property name="BooleanSelectIcon" class="ptolemy.vergil.icon.EditorIcon">
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {17, -12, 815, 516}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={17, -12, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -32,9 +35,9 @@
         </property>
     </property>
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="T">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="T">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-29.0, -25.0]">
         </property>
@@ -84,11 +87,11 @@
         </property>
     </property>
     <property name="annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="F">
-        </property>
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-29.0, 10.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="F">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-29.0, 10.0}">
         </property>
     </property>
     <property name="line8" class="ptolemy.vergil.kernel.attributes.LineAttribute">
