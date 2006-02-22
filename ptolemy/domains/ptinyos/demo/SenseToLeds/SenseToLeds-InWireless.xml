@@ -4,13 +4,13 @@
 <entity name="SenseToLeds-InWireless" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 24, 732, 554}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 24, 770, 544}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[517, 436]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[548, 436]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.5, 218.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{274.0, 218.0}">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="0.25E-6">
@@ -52,18 +52,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 45.0]">
         </property>
     </property>
-    <entity name="PhotoChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 35.0]">
-        </property>
-    </entity>
     <entity name="PhotoSource" class="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 195.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, -45.0]">
             </property>
         </property>
-        <property name="range" class="ptolemy.data.expr.Parameter" value="200.0">
+        <property name="range" class="ptolemy.data.expr.Parameter" value="100.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -86,9 +82,9 @@
             <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{0, 0}">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="range">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="range*2">
                 </property>
-                <property name="height" class="ptolemy.data.expr.Parameter" value="range">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="range*2">
                 </property>
                 <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
@@ -96,7 +92,7 @@
                 </property>
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={163, 510, 982, 436}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={163, 510, 982, 458}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[760, 327]">
         </property>
@@ -204,7 +200,7 @@
             </property>
         </entity>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={509, 384, 508, 355}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={509, 384, 510, 348}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
             </property>
@@ -217,7 +213,7 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="44.16"/>
+<xRange min="0.0" max="13.524999999999999"/>
 <yRange min="0.0" max="1022.0"/>
 </plot>?>
             </configure>
@@ -263,6 +259,10 @@
         <link port="Const.trigger" relation="relation4"/>
         <link port="TimedPlotter.input" relation="relation8"/>
     </entity>
+    <entity name="PhotoChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 35.0]">
+        </property>
+    </entity>
     <entity name="MicaBoard" class="ptolemy.domains.wireless.kernel.WirelessComposite">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
         </property>
@@ -270,7 +270,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 165.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={377, 131, 571, 339}, maximized=false}">
         </property>
