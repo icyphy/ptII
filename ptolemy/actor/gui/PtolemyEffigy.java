@@ -217,8 +217,19 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             } else {
                 name = filename;
             }
-
-            getModel().exportMoML(fileWriter, 0, name);
+            // If the model is not at the top level,
+            // then we have to force the writer to export
+            // the DTD, because the exportMoML() method
+            // will not do it.
+            NamedObj model = getModel();
+            if (model.getContainer() != null) {
+                fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE " + _elementName + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
+            }
+            model.exportMoML(fileWriter, 0, name);
         } finally {
             if (fileWriter != null) {
                 fileWriter.close();
@@ -294,8 +305,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  a MoML file, then also return null. A MoML file is required
          *  to have the MoML DTD designation in the first five lines.
          *  That is, it must contain a line beginning with the string
-         *  "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML" or
-         *  "<!DOCTYPE class PUBLIC \"-//UC Berkeley//DTD MoML" or
+         *  "<!DOCTYPE" and ending with the string
+         *  'PUBLIC \"-//UC Berkeley//DTD MoML"'.
          *  The specified base is used to expand any relative file references
          *  within the URL.
          *  @param container The container for the effigy.
@@ -372,8 +383,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 }
 
                 // Check for DTD designation.
-                String dtd1 = "<!DOCTYPE entity PUBLIC \"-//UC Berkeley//DTD MoML";
-                String dtd2 = "<!DOCTYPE class PUBLIC \"-//UC Berkeley//DTD MoML";
+                String dtdStart = "<!DOCTYPE";
+                String dtdEnd = "PUBLIC \"-//UC Berkeley//DTD MoML";
                 InputStream stream = input.openStream();
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(stream));
@@ -385,7 +396,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     if (contents == null) {
                         break;
                     }
-                    if (contents.startsWith(dtd1) || contents.startsWith(dtd2)) {
+                    if (contents.startsWith(dtdStart) && contents.contains(dtdEnd)) {
                         // This is a MoML file.
                         foundDTD = true;
                         break;
