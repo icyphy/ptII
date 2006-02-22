@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Collisions" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -152,7 +152,7 @@ Receiver.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 70.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 126, 815, 516}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -201,6 +201,10 @@ previous message is completed.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 240.0">
             </property>
         </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
         <port name="output" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PowerLossChannel">
@@ -221,7 +225,7 @@ previous message is completed.</text></svg></configure>
             </property>
             <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 200.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 210.0]">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -238,7 +242,7 @@ previous message is completed.</text></svg></configure>
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="newServiceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
             </property>
             <property name="ServerIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 260, 815, 516}, maximized = false}">
@@ -263,6 +267,18 @@ previous message is completed.</text></svg></configure>
         <link port="Server.output" relation="relation"/>
     </entity>
     <entity name="Receiver" class="ptolemy.domains.wireless.kernel.WirelessComposite">
+        <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 200.0]">
+            </property>
+            <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="332.0">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="238.0">
+            </property>
+            <property name="_renderFirst" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
         <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
@@ -281,7 +297,7 @@ previous message is completed.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 95.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {3, 85, 1010, 596}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 85, 1010, 598}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[795, 480]">
         </property>
@@ -370,16 +386,6 @@ displays.</text></svg></configure>
             <property name="width" class="ptolemy.data.expr.Parameter" value="293.0">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="180.0">
-            </property>
-        </property>
-        <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 200.0]">
-            </property>
-            <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.0,1.0}">
-            </property>
-            <property name="width" class="ptolemy.data.expr.Parameter" value="332.0">
-            </property>
-            <property name="height" class="ptolemy.data.expr.Parameter" value="238.0">
             </property>
         </property>
         <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -766,9 +772,7 @@ displays.</text></svg></configure>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 95.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 95.0]">
             </property>
             <port name="control" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -782,8 +786,6 @@ displays.</text></svg></configure>
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 160.0]">
             </property>
@@ -799,8 +801,6 @@ displays.</text></svg></configure>
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 335.0]">
             </property>
@@ -964,7 +964,7 @@ displays.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 60.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 126, 815, 516}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -1033,6 +1033,10 @@ previous message is completed.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 90.0">
             </property>
         </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+        </property>
         <port name="output" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="PowerLossChannel">
@@ -1053,7 +1057,7 @@ previous message is completed.</text></svg></configure>
             </property>
             <property name="fireAtStart" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 160.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 170.0]">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -1070,7 +1074,7 @@ previous message is completed.</text></svg></configure>
             </property>
         </entity>
         <entity name="Server" class="ptolemy.domains.de.lib.Server">
-            <property name="newServiceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
+            <property name="serviceTime" class="ptolemy.actor.parameters.PortParameter" value="duration + 0.1">
             </property>
             <property name="ServerIcon" class="ptolemy.vergil.icon.EditorIcon">
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {130, 260, 815, 516}, maximized = false}">
