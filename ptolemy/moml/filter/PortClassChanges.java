@@ -217,7 +217,7 @@ public class PortClassChanges implements MoMLFilter {
         serverPorts.put("ptolemy.domains.de.kernel.DEIOPort",
                 "ptolemy.actor.parameters.ParameterPort");
 
-        serverPortChanges.put("newServiceTime", serverPorts);
+        serverPortChanges.put("serviceTime", serverPorts);
 
         _actorsWithPortClassChanges.put("ptolemy.domains.de.lib.Server",
                 serverPortChanges);

@@ -70,7 +70,7 @@ import ptolemy.moml.MoMLParser;
  pnDirectorChanges);
  </pre>
  The _classesWithParameterNameChanges HashMap contains all the classes
- such as PNDirectory that have changes and each class has a map
+ such as PNDirector that have changes and each class has a map
  of the Parameter changes that are to be made.
 
  <p> Conceptually, how the code works is that when we see a class while
@@ -250,10 +250,11 @@ public class ParameterNameChanges implements MoMLFilter {
         _classesWithParameterNameChanges.put(
                 "ptolemy.domains.de.lib.VariableDelay", variableDelayChanges);
 
-        // ServerDelay: After 4.1, 'serviceTime'
+        // Server: After 4.1, 'serviceTime'
         // property is now 'newServiceTime'
+        // Regrettably, after 5.1, this reverted to serviceTime.
         HashMap serverChanges = new HashMap();
-        serverChanges.put("serviceTime", "newServiceTime");
+        serverChanges.put("newServiceTime", "serviceTime");
         _classesWithParameterNameChanges.put("ptolemy.domains.de.lib.Server",
                 serverChanges);
     }
