@@ -385,6 +385,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 // Check for DTD designation.
                 String dtdStart = "<!DOCTYPE";
                 String dtdEnd = "PUBLIC \"-//UC Berkeley//DTD MoML";
+                String dtdEndRegExp = ".*" + dtdEnd + ".*";
                 InputStream stream = input.openStream();
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(stream));
@@ -396,7 +397,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     if (contents == null) {
                         break;
                     }
-                    if (contents.startsWith(dtdStart) && contents.contains(dtdEnd)) {
+                    if (contents.startsWith(dtdStart) && contents.matches(dtdEndRegExp)) {
                         // This is a MoML file.
                         foundDTD = true;
                         break;
