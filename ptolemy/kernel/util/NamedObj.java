@@ -808,6 +808,8 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      *  &lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
      *      "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
      *  </pre>
+     *  In the above, "entity" may be replaced by "property" or "port"
+     *  if somehow a top-level property or port is exported.
      *  <p>
      *  The text that is written is indented according to the specified
      *  depth, with each line (including the last one)
@@ -843,13 +845,18 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
         if ((depth == 0) && (getContainer() == null)) {
             // No container, and this is a top level moml element.
             // Generate header information.
-            if (_elementName.equals("entity")) {
-                output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
-                        + "<!DOCTYPE " + _elementName + " PUBLIC "
-                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                        + "    \"http://ptolemy.eecs.berkeley.edu"
-                        + "/xml/dtd/MoML_1.dtd\">\n");
-            }
+            // NOTE: Used to generate this only if the top-level
+            // was an entity, with the following test:
+            // if (_elementName.equals("entity")) {}
+            // However, this meant that when saving icons,
+            // they would not have the header information,
+            // and when opened, would open as a text file
+            // instead of in the icon editor.
+            output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                    + "<!DOCTYPE " + _elementName + " PUBLIC "
+                    + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                    + "    \"http://ptolemy.eecs.berkeley.edu"
+                    + "/xml/dtd/MoML_1.dtd\">\n");
         }
 
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
