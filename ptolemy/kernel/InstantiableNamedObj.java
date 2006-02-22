@@ -188,6 +188,8 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
      *  &lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
      *      "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
      *  </pre>
+     *  In the above, "entity" may be replaced by "property" or
+     *  "port" if what is being exported is an attribute or a port.
      *  <p>
      *  The text that is written is indented according to the specified
      *  depth, with each line (including the last one)
@@ -224,6 +226,11 @@ public class InstantiableNamedObj extends NamedObj implements Instantiable {
         if ((depth == 0) && (getContainer() == null)) {
             // No container, and this is a top level moml element.
             // Generate header information.
+            // NOTE: Currently, there is only one class designation,
+            // and it always applies to an Entity. Attributes that
+            // are classes are not yet supported. When they are,
+            // then "class" below may need to replaced with something
+            // else.
             output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
                     + "<!DOCTYPE class PUBLIC "
                     + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"

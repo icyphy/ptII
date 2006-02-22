@@ -65,6 +65,8 @@ import java.io.Writer;
  &lt;!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
  "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
  </pre>
+ In the above, "entity" may be replaced by "class", "property",
+ or "port".
 
  @author Edward A. Lee
  @version $Id$
