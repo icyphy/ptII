@@ -22,11 +22,16 @@ can set up Windows to do this automatically, say every night.
 
 To automatically reboot a Windows machine every night:
 
-Schedulel a task with: Start -> Control Panel -> Scheduled Tasks. 
-The shutdown binary is shutdown.bat in this same directory.
-This script runs c:\windows\system32\shutdown -r -t0 -f,
-which does a reboot in 0 seconds with a force shutdown of any
-running commands. 
+Create a .bat file that runs the shutdown command with from the
+directory c:\Windows\System32 with the arguments -r, -t0, and -f which
+does a reboot in 0 seconds with a force shutdown of any running
+commands.  We can't include this bat file in the release because some
+over eager virus checkers mark it as a virus.
+
+Schedule a task with: Start -> Control Panel -> Scheduled Tasks
+and run the .bat file.
+
+
 
 Logging in automatically
 ========================
