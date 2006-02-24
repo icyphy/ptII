@@ -210,8 +210,8 @@ test Token-4.0 {Test toString} {
 test Token-5.0 {test isNil, nil} {
     set token [java::new ptolemy.data.Token]
     set result1 [$token isNil]
-    $token nil
-    set result2 [$token isNil]
+    set token2 [java::new ptolemy.data.Token [java::null]]
+    set result2 [$token2 isNil]
 
     list $result1 $result2
 } {0 1}

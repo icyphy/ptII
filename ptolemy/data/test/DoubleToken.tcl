@@ -1,6 +1,6 @@
 # Tests for the DoubleToken class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, contributor: Christopher Brooks
 #
 # @Version $Id$
 #
@@ -86,11 +86,21 @@ test DoubleToken-1.4 {Create a non-empty instance from an String} {
 ######################################################################
 ####
 # 
-test DoubleToken-1.5 {Create a nil Token from an String} {
+test DoubleToken-1.5 {Create a nil Token from a null token} {
+    set p [java::new ptolemy.data.DoubleToken [java::null]]
+    set p2 [java::new ptolemy.data.Token [java::null]]
+    set p3 [java::new ptolemy.data.DoubleToken $p2]
+    list [$p toString] [$p3 toString] [$p isNil] [$p3 isNil]
+} {nil nil 1 1}
+
+######################################################################
+####
+# 
+test DoubleToken-1.6 {Create a nil Token from an String} {
     set p [java::new {ptolemy.data.DoubleToken String} nil]
     set p2 [java::new {ptolemy.data.DoubleToken String} [java::null]]
     list [$p toString] [$p2 toString] [$p isNil] [$p2 isNil]
-} {NaN NaN 1 1}
+} {nil nil 1 1}
 
 ######################################################################
 ####
@@ -445,6 +455,16 @@ test DoubleToken-9.0 {Test equals} {
     set t3 [java::new {ptolemy.data.DoubleToken double} -8.0]
     list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
 } {1 1 0}
+
+######################################################################
+####
+# 
+test DoubleToken-9.1 {Test equals on nil} {
+    set p5 [java::new ptolemy.data.DoubleToken [java::null]]
+    set p6 [java::new ptolemy.data.Token [java::null]]
+    set p7 [java::new ptolemy.data.DoubleToken $p6]
+    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
+} {0 0 0 0}
 
 ######################################################################
 ####

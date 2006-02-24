@@ -1,6 +1,6 @@
 # Tests for the IntToken class
 #
-# @Author: Neil Smyth, Yuhong Xiong
+# @Author: Neil Smyth, Yuhong Xiong, contributor: Christopher Brooks
 #
 # @Version $Id$
 #
@@ -66,6 +66,26 @@ test IntToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.IntToken String} "7"]
     $p toString
 } {7}
+
+######################################################################
+####
+# 
+test IntToken-1.5 {Create a nil Token from a null token} {
+    set p [java::new ptolemy.data.IntToken [java::null]]
+    set p2 [java::new ptolemy.data.Token [java::null]]
+    set p3 [java::new ptolemy.data.IntToken $p2]
+    list [$p toString] [$p3 toString] [$p isNil] [$p3 isNil]
+} {nil nil 1 1}
+
+######################################################################
+####
+# 
+test IntToken-1.6 {Create a nil Token from an String} {
+    set p [java::new {ptolemy.data.IntToken String} nil]
+    set p2 [java::new {ptolemy.data.IntToken String} [java::null]]
+    list [$p toString] [$p2 toString] [$p isNil] [$p2 isNil]
+} {nil nil 1 1}
+
 
 ######################################################################
 ####
@@ -295,6 +315,16 @@ test IntToken-11.0 {Test equals} {
     set t3 [java::new {ptolemy.data.IntToken int} 2]
     list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
 } {1 1 0}
+
+######################################################################
+####
+# 
+test IntToken-11.1 {Test equals on nil} {
+    set p5 [java::new ptolemy.data.IntToken [java::null]]
+    set p6 [java::new ptolemy.data.Token [java::null]]
+    set p7 [java::new ptolemy.data.IntToken $p6]
+    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
+} {0 0 0 0}
 
 ######################################################################
 ####

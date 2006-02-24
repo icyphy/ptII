@@ -1,6 +1,6 @@
 # Tests for the ArrayToken class
 #
-# @Author: Yuhong Xiong
+# @Author: Yuhong Xiong, contributor: Christopher Brooks
 #
 # @Version $Id$
 #
@@ -81,23 +81,32 @@ test ArrayToken-2.0 {test add} {
     list [$tadd toString] [$tadd2 toString]
 } {{{5, 7, 9}} {{6, 7, 8}}}
 
+test ArrayToken-2.0.2 {test add with a nil} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2, nil}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{4, 5, 6}"]
+    set t3 [java::new {ptolemy.data.IntToken String} "5"]
+    set tadd [$t1 add $t2]
+    set tadd2 [$t1 elementAdd $t3]
+    list [$tadd toString] [$tadd2 toString]
+} {{{5, 7, nil}} {{6, 7, nil}}}
+
 test ArrayToken-2.1 {test subtract} {
-    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{nil, 2, 3}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t3 [java::new {ptolemy.data.IntToken String} "5"]
     set tadd [$t1 subtract $t2]
     set tadd2 [$t1 elementSubtract $t3]
     list [$tadd toString] [$tadd2 toString]
-} {{{0.5, 0.5, -3.0}} {{-4, -3, -2}}}
+} {{{nil, 0.5, -3.0}} {{nil, -3, -2}}}
 
 test ArrayToken-2.2 {test multiply} {
-    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, nil, 3}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t3 [java::new {ptolemy.data.IntToken String} "5"]
     set tadd [$t1 multiply $t2]
     set tadd2 [$t1 elementMultiply $t3]
     list [$tadd toString] [$tadd2 toString]
-} {{{0.5, 3.0, 18.0}} {{5, 10, 15}}}
+} {{{0.5, nil, 18.0}} {{5, nil, 15}}}
 
 test ArrayToken-2.3 {test divide} {
     set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 3, 3}"]
@@ -124,9 +133,10 @@ test ArrayToken-3.0 {test equals on an array of Doubles} {
     set t1 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t3 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, -6.0}"]
+    set t4 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, nil}"]
 
-    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
-} {1 1 0}
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3] [$t4 equals $t4]
+} {1 1 0 0}
 
 ######################################################################
 ####
@@ -146,6 +156,7 @@ test ArrayToken-3.2 {test isEqualTo and isCloseTo on an array of Doubles} {
     set t1 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
     set t3 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, -6.0}"]
+    set t4 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, nil}"]
 
     set res1 [$t1 {isEqualTo} $t1]
     set res2 [$t1 {isEqualTo} $t2]
@@ -153,10 +164,11 @@ test ArrayToken-3.2 {test isEqualTo and isCloseTo on an array of Doubles} {
     set res4 [$t1 {isCloseTo} $t1]
     set res5 [$t1 {isCloseTo} $t2]
     set res6 [$t1 {isCloseTo} $t3]
+    set res7 [$t4 {isCloseTo} $t4]
     list [$res1 toString] [$res2 toString] [$res3 toString] \
-	    [$res4 toString] [$res5 toString] [$res6 toString]
+	    [$res4 toString] [$res5 toString] [$res6 toString] [$res7 toString]
 
-} {true true false true true false}
+} {true true false true true false false}
 
 test ArrayToken-3.3 {test isEqualTo on an array of Complexes} {
     set t1 [java::new {ptolemy.data.ArrayToken String} \
@@ -240,3 +252,39 @@ test ArrayToken-4.1 {test isCloseTo on an array of Complexes} {
 } {true true false true true false}
 
 
+test ArrayToken-5.1 {Construct an array of doubles with a nil} {
+    set t [java::new {ptolemy.data.ArrayToken String} "{1.0, nil, 2.0, NaN}"]
+    set nilToken [$t getElement 1]
+    set nilDoubleToken [java::cast ptolemy.data.DoubleToken $nilToken]
+    list [$t toString] [$nilToken toString] \
+	[[$nilToken getType] toString] \
+	[$nilDoubleToken toString]
+} {{{1.0, nil, 2.0, NaN}} nil double nil}
+
+test ArrayToken-5.2 {Construct an array of doubles with a nil as 1st element} {
+    set t [java::new {ptolemy.data.ArrayToken String} "{nil, 2.0}"]
+    set nilToken [$t getElement 0]
+    set nilDoubleToken [java::cast ptolemy.data.DoubleToken $nilToken]
+    list [$t toString] [$nilToken toString] \
+	[[$nilToken getType] toString] \
+	[$nilDoubleToken toString]
+} {{{nil, 2.0}} nil double nil}
+
+test ArrayToken-6.1 {Construct an array of ints with a nil} {
+    set t [java::new {ptolemy.data.ArrayToken String} "{1, nil, 2}"]
+    set nilToken [$t getElement 1]
+    set nilIntToken [java::cast ptolemy.data.IntToken $nilToken]
+    list [$t toString] [$nilToken toString] \
+	[[$nilToken getType] toString] \
+	[$nilIntToken toString]
+} {{{1, nil, 2}} nil int nil}
+
+
+test ArrayToken-6.2 {Construct an array of int with a nil as 1st element} {
+    set t [java::new {ptolemy.data.ArrayToken String} "{nil, 2}"]
+    set nilToken [$t getElement 0]
+    set nilIntToken [java::cast ptolemy.data.IntToken $nilToken]
+    list [$t toString] [$nilToken toString] \
+	[[$nilToken getType] toString] \
+	[$nilIntToken toString]
+} {{{nil, 2}} nil int nil}
