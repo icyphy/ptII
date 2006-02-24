@@ -65,10 +65,38 @@ public class DoubleMatrixToken extends MatrixToken {
         _columnCount = 1;
     }
 
-    /** Construct a DoubleMatrixToken with the specified 1-D matrix.
+    /** Construct a DoubleMatrixToken from the Token.  
+     *  The value of the constructed token is set to the value returned 
+     *  by {@link #convert(Token)}.  If the token parameter is a nil
+     *  token, then this token will be a nil token.
+     *  @param token The token to be converted.
+     *  @exception IllegalActionException If the conversion
+     *   cannot be carried out.
+     */
+    public DoubleMatrixToken(Token token)
+            throws IllegalActionException {
+        // This looks like a copy constructor, does that matter?
+        DoubleMatrixToken result = convert(token);
+        if (result.isNil()) {
+            _nil();
+            return;
+        }
+        _value = DoubleArrayMath.allocCopy(
+                result._getInternalDoubleArray());
+        _rowCount = result.getRowCount();
+        _columnCount = result.getColumnCount();
+
+    }
+
+    /** Construct a DoubleMatrixToken with the specified 2-D matrix.
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 2-D matrix of doubles that is copied.  If this
+     *  argument is null, then a nil token with rows -1 and columns -1
+     *  is created, see {@link ptolemy.data.Token#nil()}.
+     *  @param rows The number of rows of the newly constructed matrix.
+     *  @param columns The number of columns of the newly constructed matrix.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -85,15 +113,21 @@ public class DoubleMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
-     *  @exception IllegalActionException If the specified matrix
-     *   is null.
+     *  @param value The source 1-D matrix of doubles.  If this argument
+     *  is null, then the constructed token will be a nil token,
+     *  see {@link ptolemy.data.Token#nil()}.
+     *  @param rows The number of rows of the newly constructed matrix.
+     *  @param columns The number of columns of the newly constructed matrix.
+     *  @param copy If {@link ptolemy.data.MatrixToken#COPY}, the the value
+     *  matrix is copied, If {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then
+     *  the value matrix is not copied.
      */
-    public DoubleMatrixToken(double[] value, int rows, int columns, int copy)
-            throws IllegalActionException {
+    public DoubleMatrixToken(double[] value, int rows, int columns, int copy) {
+
         if (value == null) {
-            throw new IllegalActionException(
-                    "DoubleMatrixToken: The specified " + "matrix is null.");
-        }
+            _nil();
+            return;
+        } 
 
         _rowCount = rows;
         _columnCount = columns;
@@ -124,25 +158,41 @@ public class DoubleMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability, although this is not enforced.
-     *  @exception IllegalActionException If the specified matrix
-     *   is null.
+     *  @param value The source 2-D matrix of doubles.  If this argument
+     *  is null, then the constructed token will be a nil token,
+     *  see {@link ptolemy.data.Token#nil()} with rows set to -1 and
+     *  columns set to -1.
+     *  @param copy If {@link ptolemy.data.MatrixToken#COPY}, the the value
+     *  matrix is copied, If {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then
+     *  the value matrix is not copied.
      */
-    public DoubleMatrixToken(double[][] value, int copy)
-            throws IllegalActionException {
+    public DoubleMatrixToken(double[][] value, int copy) {
+
         if (value == null) {
-            throw new IllegalActionException("DoubleMatrixToken: The "
-                    + "specified matrix is null.");
-        }
+            _value = null;
+            _nil();
+            _rowCount = -1;
+            _columnCount = -1;
+            return;
+        } 
 
         _initialize(value);
     }
 
     /** Construct a DoubleMatrixToken from the specified string.
      *  @param init A string expression of a 2-D double matrix.
+     *  If the init parameter is null, or "nil", or "[]", then
+     *  the token is marked as being nil, the rows and columns are both
+     *  set to -1, see {@link #_nil()}.
      *  @exception IllegalActionException If the string does
      *   not contain a parsable 2-D double matrix.
      */
     public DoubleMatrixToken(String init) throws IllegalActionException {
+        if (init == null || init.equals("nil") || init.equals("[]")) {
+            _nil();
+            return;
+        }
+
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
@@ -193,9 +243,15 @@ public class DoubleMatrixToken extends MatrixToken {
             if (token instanceof ScalarToken) {
                 _value[i] = ((ScalarToken) token).doubleValue();
             } else {
-                throw new IllegalActionException("DoubleMatrixToken: Element "
-                        + i + " in the array with value " + token
-                        + " is not a ScalarToken");
+                if (token.isNil()) {
+                    // FIXME: We don't have an underlying nil type in
+                    // java double[]. 
+                    _value[i] = Double.NaN;
+                } else {
+                    throw new IllegalActionException("DoubleMatrixToken: Element "
+                            + i + " in the array with value " + token
+                            + " is not a ScalarToken");
+                }
             }
         }
     }
@@ -213,6 +269,8 @@ public class DoubleMatrixToken extends MatrixToken {
 
     /** Convert the specified token into an instance of DoubleMatrixToken.
      *  This method does lossless conversion.
+     *  If the argument is null or a nil token, then a new nil DoubleToken
+     *  is returned, see {@link ptolemy.data.Token#_nil()}.
      *  If the argument is already an instance of DoubleMatrixToken,
      *  it is returned without any change. Otherwise, if the argument
      *  is below DoubleMatrixToken in the type hierarchy, it is converted to
@@ -230,6 +288,11 @@ public class DoubleMatrixToken extends MatrixToken {
             return (DoubleMatrixToken) token;
         }
 
+        if (token == null || token.isNil()) {
+            DoubleMatrixToken result = new DoubleMatrixToken();
+            result._nil();
+            return result;
+        }
         int compare = TypeLattice.compare(BaseType.DOUBLE_MATRIX, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
@@ -276,7 +339,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @param object An instance of Object.
      *  @return True if the argument is an instance of DoubleMatrixToken
      *   of the same dimensions and the corresponding elements of the
-     *   matrices are equal.
+     *   matrices are equal.  If either this object or the argument
+     *   is nil, return false.
      */
     public boolean equals(Object object) {
         // This test rules out instances of a subclass.
@@ -291,6 +355,10 @@ public class DoubleMatrixToken extends MatrixToken {
         }
 
         if (_columnCount != matrixArgument.getColumnCount()) {
+            return false;
+        }
+
+        if (isNil() || matrixArgument.isNil()) {
             return false;
         }
 
@@ -383,14 +451,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *   identity.
      */
     public final Token one() {
-        try {
-            return new DoubleMatrixToken(DoubleMatrixMath.identity(_rowCount),
-                    DO_NOT_COPY);
-        } catch (IllegalActionException illegalAction) {
-            // should not happen
-            throw new InternalErrorException("DoubleMatrixToken.one: "
-                    + "Cannot create identity matrix.");
-        }
+        return new DoubleMatrixToken(DoubleMatrixMath.identity(_rowCount),
+                DO_NOT_COPY);
     }
 
     /** Return a new Token representing the right multiplicative
@@ -401,14 +463,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *   identity.
      */
     public final Token oneRight() {
-        try {
-            return new DoubleMatrixToken(DoubleMatrixMath
-                    .identity(_columnCount), DO_NOT_COPY);
-        } catch (IllegalActionException illegalAction) {
-            // should not happen
-            throw new InternalErrorException("DoubleMatrixToken.oneRight: "
-                    + "Cannot create identity matrix.");
-        }
+        return new DoubleMatrixToken(DoubleMatrixMath
+                .identity(_columnCount), DO_NOT_COPY);
     }
 
     /** Return a new Token representing the additive identity.
@@ -418,14 +474,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new DoubleMatrixToken containing the additive identity.
      */
     public final Token zero() {
-        try {
-            return new DoubleMatrixToken(new double[_rowCount * _columnCount],
-                    _rowCount, _columnCount, DO_NOT_COPY);
-        } catch (IllegalActionException illegalAction) {
-            // should not happen
-            throw new InternalErrorException("DoubleMatrixToken.zero: "
-                    + "Cannot create zero matrix.");
-        }
+        return new DoubleMatrixToken(new double[_rowCount * _columnCount],
+                _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -563,6 +613,18 @@ public class DoubleMatrixToken extends MatrixToken {
         double[] result = DoubleArrayMath.multiply(_value, scalar);
         return new DoubleMatrixToken(result, _rowCount, _columnCount,
                 DO_NOT_COPY);
+    }
+
+    /** Indicate that this token is a nil or missing token, it contains
+     *  no data.  
+     *  In this derived class, the rows and columns are both set to -1.
+     *  @see #ptolemy.data.Token#isNil()
+     */
+    protected void _nil() {
+        _value = null;
+        _rowCount = -1;
+        _columnCount = -1;
+        super._nil();
     }
 
     /** Return a new token whose value is the value of the argument token

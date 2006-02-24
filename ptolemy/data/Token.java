@@ -30,10 +30,12 @@
 package ptolemy.data;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Token
@@ -71,12 +73,19 @@ import ptolemy.kernel.util.IllegalActionException;
  the type system cannot represent exactly.  Using the EventToken class,
  and the type BaseType.EVENT allows typesafe use of pure events.
 
- @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands,
+ <p>Nil or missing tokens are common in analytical systems like R and SAS
+ where they are used to handle sparsely populated data sources.
+ In database parlance, missing tokens are sometimes called 
+ null tokens.  Since null is a Java keyword, we use the term "nil".
+ Nil tokens are created by calling <code>new Token(null);</code>.  The
+ toString() method on a nil token returns the string "nil".
+
+ @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Brooks,
  Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Yellow (neuendor)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh) nil token code
 
  @see ScalarToken
  @see AbstractConvertibleToken
@@ -84,6 +93,24 @@ import ptolemy.kernel.util.IllegalActionException;
  @see MatrixToken
  */
 public class Token implements Serializable {
+    /** Create a Token.
+     */
+    public Token() {
+        super();
+    }
+
+    /** Create a Token.  In this base class, if the token parameter
+     *  is null or a nil token, then the token is a nil token.
+     *  @param token The token.
+     */
+    public Token(Token token) {
+        super();
+        if (token == null || token.isNil()) {
+            _nil();
+            return;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -208,18 +235,6 @@ public class Token implements Serializable {
      */
     public boolean isNil() {
         return _isNil;
-    }
-
-    /** Indicate that this token is a nil or missing token, it contains
-     *  no data.  
-     *  Nil or missing tokens are common in analytical systems like R and SAS
-     *  where they are used to handle sparsely populated data sources.
-     *  In database parlance, missing tokens are sometimes called 
-     *  null tokens.  Since null is a Java keyword, we use the term "nil".
-     *  @see #isNil()
-     */
-    public void nil() {
-        _isNil = true;
     }
 
     /** Return a new token whose value is the value of this token
@@ -468,6 +483,46 @@ public class Token implements Serializable {
      */
     public static Type zeroReturnType(Type type) {
         return type;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Indicate that this token is a nil or missing token, it contains
+     *  no data.  
+     *  Nil or missing tokens are common in analytical systems like R and SAS
+     *  where they are used to handle sparsely populated data sources.
+     *  In database parlance, missing tokens are sometimes called 
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  @see #isNil()
+     */
+    protected void _nil() {
+        _isNil = true;
+    }
+
+    /** Construct a new nil token of a particular type.
+     *  @param type The type of the nil token to be constructed.
+     *  @return A nil token with the same type as the type parameter.
+     *  If there is no constructor that takes a null Token, then
+     *  an InternalErrorException is thrown, indicating that the implementation
+     *  of nil is incomplete.
+     */
+    protected Token _newNilToken(Type type) {
+        Token token = null;
+        try {
+            // Construct a nil token, same type as type.
+            Class tokenClass = type.getTokenClass();
+            Constructor tokenConstructor =
+                tokenClass.getConstructor(
+                        new Class[] { Token.class });
+            token = (Token) tokenConstructor.newInstance(
+                    new Object[] { null });
+        } catch (Throwable ex) {
+            throw new InternalErrorException(null, ex, "Missing "
+                    + type + "Token(Token) constructor");
+            //token = new Token(null);
+        }
+        return token;
     }
 
     ///////////////////////////////////////////////////////////////////

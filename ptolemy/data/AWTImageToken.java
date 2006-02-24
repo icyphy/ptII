@@ -82,8 +82,11 @@ public class AWTImageToken extends ImageToken {
      *  of a record.
      */
     public String toString() {
-        return "{type=\"" + getClass() + "\" width=\"" + _value.getWidth(null)
-                + "\" height=\"" + _value.getHeight(null) + "\"}";
+        return "{type=\"" + getClass() + "\" width=\""
+            + (_value == null? -1 : _value.getWidth(null))
+            + "\" height=\""
+            + (_value == null? -1 : _value.getHeight(null))
+            + "\"}";
     }
 
     ///////////////////////////////////////////////////////////////////

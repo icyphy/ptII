@@ -247,8 +247,23 @@ public abstract class MatrixToken extends Token {
             int columns) throws IllegalActionException {
         Object[] typeTerms = new Object[tokens.length];
 
+        // Find the first non-nil element andgtes its type
+        Type baseType = BaseType.GENERAL;
         for (int i = 0; i < tokens.length; i++) {
-            typeTerms[i] = tokens[i].getType();
+            if (!tokens[i].isNil()) { 
+                baseType = tokens[i].getType();
+                break;
+            }
+        }
+
+        // If a token is nil, then default to the first type that we
+        // found.
+        for (int i = 0; i < tokens.length; i++) {
+            if (tokens[i].isNil()) {
+                typeTerms[i] = baseType;
+            } else {
+                typeTerms[i] = tokens[i].getType();
+            }
         }
 
         Type type = (Type) TypeLattice.lattice().leastUpperBound(typeTerms);

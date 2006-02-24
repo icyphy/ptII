@@ -27,6 +27,7 @@
  */
 package ptolemy.data;
 
+import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,6 +39,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToken
@@ -77,10 +79,27 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     + "length of the specified array is zero.");
         }
 
-        _elementPrototype = value[0];
-
-        Type elementType = value[0].getType();
+        
+        Type elementType = null;
         int length = value.length;
+        int nonNilIndex = 0;
+        // Look for the first non-nil token to get the type.
+        while (nonNilIndex < length) {
+            if (!value[nonNilIndex].isNil()) {
+                _elementPrototype = value[nonNilIndex];
+                elementType = value[nonNilIndex].getType();
+                break;
+            }
+            nonNilIndex++;
+        }
+        if (elementType == null) {
+            // Did not find a non-nil element, use the 0th.
+            nonNilIndex = 0;
+            elementType = value[0].getType();
+            _elementPrototype = value[0];
+
+        }
+
 
         // It would be nice to have this, but the Code generator cannot
         // deal with the least upper bound.
@@ -97,10 +116,18 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             if (elementType.equals(value[i].getType())) {
                 _value[i] = value[i]; // _elementType.convert(value[i]);
             } else {
-                throw new IllegalActionException(
-                        "Elements of the array do not have the same type:"
-                                + "value[0]=" + value[0] + " value[" + i + "]="
-                                + value[i]);
+                if (value[i].isNil()) {
+                    // Construct a nil token, same type as elementType.
+                    _value[i] = _newNilToken(elementType);
+                } else {
+                    throw new IllegalActionException(
+                            "Elements of the array do not have the same type:"
+                            + "value[0]=" + value[0]
+                            + " (type: " + elementType + ")"
+                            + " value[" + i + "]=" + value[i]
+                            + " (type: " + value[i].getType() + ")");
+
+                }
             }
         }
     }
@@ -765,17 +792,33 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     + "length of the specified array is zero.");
         }
 
-        _elementPrototype = value[0];
-
-        Type elementType = value[0].getType();
+        Type elementType = null;
         int length = value.length;
+        int nonNilIndex = 0;
+        // Look for the first non-nil token to get the type.
+        while (nonNilIndex < length) {
+            if (!value[nonNilIndex].isNil()) {
+                _elementPrototype = value[nonNilIndex];
+                elementType = value[nonNilIndex].getType();
+                break;
+            }
+            nonNilIndex++;
+        }
+        if (elementType == null) {
+            // Did not find a non-nil element, use the 0th.
+            nonNilIndex = 0;
+            elementType = value[0].getType();
+            _elementPrototype = value[0];
+
+        }
+
 
         // It would be nice to have this, but the Code generator cannot
         // deal with the least upper bound.
         //    for (int i = 0; i < length; i++) {
         //             Type valueType = value[i].getType();
         //             if (!elementType.equals(valueType)) {
-        //                 elementType = TypeLattice.leastUpperBound(
+        //                 _elementType = TypeLattice.leastUpperBound(
         //                         elementType, valueType);
         //             }
         //         }
@@ -783,12 +826,20 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
         for (int i = 0; i < length; i++) {
             if (elementType.equals(value[i].getType())) {
-                _value[i] = value[i]; // elementType.convert(value[i]);
+                _value[i] = value[i]; // _elementType.convert(value[i]);
             } else {
-                throw new IllegalActionException(
-                        "Elements of the array do not have the same type:"
-                                + "value[0]=" + value[0] + " value[" + i + "]="
-                                + value[i]);
+                if (value[i].isNil()) {
+                    // Construct a nil token, same type as elementType.
+                    _value[i] = _newNilToken(elementType);
+                } else {
+                    throw new IllegalActionException(
+                            "Elements of the array do not have the same type:"
+                            + "value[0]=" + value[0]
+                            + " (type: " + elementType + ")"
+                            + " value[" + i + "]=" + value[i]
+                            + " (type: " + value[i].getType() + ")");
+
+                }
             }
         }
     }

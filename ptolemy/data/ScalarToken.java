@@ -89,6 +89,9 @@ public abstract class ScalarToken extends Token implements
      */
     public final ScalarToken absolute() {
         ScalarToken result = _absolute();
+        if (isNil()) { 
+            return (ScalarToken)_newNilToken(getType());
+        }
         result._unitCategoryExponents = _copyOfCategoryExponents();
         return result;
     }
@@ -1355,6 +1358,10 @@ public abstract class ScalarToken extends Token implements
     private Token _doAdd(Token rightArgument) throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
+        if (isNil() || rightArgument.isNil()) {
+            return _newNilToken(getType());
+        }
+
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("add", this,
                     rightArgument)
@@ -1383,6 +1390,10 @@ public abstract class ScalarToken extends Token implements
     private BitwiseOperationToken _doBitwiseAnd(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
+
+        if (isNil() || rightArgument.isNil()) {
+            return (BitwiseOperationToken) _newNilToken(getType());
+        }
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
@@ -1416,6 +1427,10 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
+        if (isNil() || rightArgument.isNil()) {
+            return (BitwiseOperationToken) _newNilToken(getType());
+        }
+
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("bitwiseOr",
                     this, rightArgument)
@@ -1448,6 +1463,10 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
+        if (isNil() || rightArgument.isNil()) {
+            return (BitwiseOperationToken) _newNilToken(getType());
+        }
+
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("bitwiseXor",
                     this, rightArgument)
@@ -1476,6 +1495,11 @@ public abstract class ScalarToken extends Token implements
      */
     private Token _doDivide(Token rightArgument) throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
+
+        if (isNil() || rightArgument.isNil()) {
+            return _newNilToken(getType());
+        }
+
         ScalarToken result = _divide(convertedArgument);
 
         // compute units
@@ -1498,6 +1522,10 @@ public abstract class ScalarToken extends Token implements
     private BooleanToken _doIsCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
+
+        if (isNil() || rightArgument.isNil()) {
+            return BooleanToken.FALSE;
+        }
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("isCloseTo",
@@ -1525,6 +1553,10 @@ public abstract class ScalarToken extends Token implements
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
+        if (isNil() || rightArgument.isNil()) {
+            return BooleanToken.FALSE;
+        }
+
         if (!_areUnitsEqual(convertedArgument)) {
             return BooleanToken.FALSE;
         }
@@ -1547,6 +1579,12 @@ public abstract class ScalarToken extends Token implements
     private BooleanToken _doIsLessThan(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
+
+        if (isNil() || rightArgument.isNil()) {
+            throw new IllegalActionException(notSupportedMessage("isLessThan",
+                    this, rightArgument)
+                    + " because one or the other is nil");
+        }
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("isLessThan",
@@ -1573,6 +1611,10 @@ public abstract class ScalarToken extends Token implements
      */
     private Token _doModulo(Token rightArgument) throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
+
+        if (isNil() || rightArgument.isNil()) {
+            return _newNilToken(getType());
+        }
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("modulo",
@@ -1603,8 +1645,13 @@ public abstract class ScalarToken extends Token implements
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
         ScalarToken result = _multiply(convertedArgument);
 
+        if (isNil() || rightArgument.isNil()) {
+            return _newNilToken(getType());
+        }
+
         // compute units
-        result._unitCategoryExponents = _addCategoryExponents(convertedArgument);
+        result._unitCategoryExponents =
+            _addCategoryExponents(convertedArgument);
         return result;
     }
 
@@ -1625,6 +1672,10 @@ public abstract class ScalarToken extends Token implements
     private Token _doSubtract(Token rightArgument)
             throws IllegalActionException {
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
+
+        if (isNil() || rightArgument.isNil()) {
+            return _newNilToken(getType());
+        }
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("subtract",
