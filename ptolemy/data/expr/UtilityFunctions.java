@@ -1719,13 +1719,7 @@ public class UtilityFunctions {
         double[][] mtr = new double[rows][columns];
         DoubleMatrixToken result = null;
 
-        try {
-            result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException("UtilityFunctions"
-                    + ".zeroMatrixDouble: "
-                    + "Cannot create DoubleMatrixToken. " + ex.getMessage());
-        }
+        result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
 
         return result;
     }
