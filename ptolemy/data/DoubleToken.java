@@ -49,8 +49,8 @@ import ptolemy.math.Complex;
  @author Neil Smyth, Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Green (cxh)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class DoubleToken extends ScalarToken {
     /** Construct a DoubleToken with value 0.0.

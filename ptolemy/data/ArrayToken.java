@@ -54,8 +54,8 @@ import ptolemy.kernel.util.InternalErrorException;
  @author Yuhong Xiong, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.4
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Green (cxh)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh) nil token code
  */
 public class ArrayToken extends AbstractNotConvertibleToken {
     /** Construct an ArrayToken with the specified token array. All

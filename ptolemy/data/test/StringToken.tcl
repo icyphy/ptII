@@ -1,6 +1,6 @@
 # Tests for the StringToken class
 #
-# @Author: Edward A. Lee, Yuhong Xiong
+# @Author: Edward A. Lee, Yuhong Xiong, 
 #
 # @Version: $Id$
 #
@@ -40,8 +40,32 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+######################################################################
+####
 # 
-#
+test StringToken-1.5 {Create a nil Token from a null token} {
+    set p [java::new ptolemy.data.StringToken [java::null]]
+    set p2 [java::new ptolemy.data.Token [java::null]]
+    set p3 [java::new ptolemy.data.StringToken $p2]
+    list [$p toString] [$p3 toString] [$p isNil] [$p3 isNil]
+} {nil nil 1 1}
+
+######################################################################
+####
+# 
+test StringToken-1.6 {Create a nil Token from a String} {
+    set p [java::new {ptolemy.data.StringToken String} nil]
+    set p2 [java::new {ptolemy.data.StringToken String} [java::null]]
+    list [$p toString] [$p2 toString] [$p isNil] [$p2 isNil]
+} {nil nil 1 1}
+
+######################################################################
+####
+# 
+test StringToken-1.7 {Create a nil Token from a String} {
+    set p [java::new {ptolemy.data.StringToken String} "nil"]
+    list [$p toString] [$p stringValue] [$p isNil]
+} {nil 1}
 
 ######################################################################
 ####

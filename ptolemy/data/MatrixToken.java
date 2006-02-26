@@ -51,8 +51,8 @@ import ptolemy.math.Complex;
  @author Yuhong Xiong, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Yellow (wbwu)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh) nil token code
  */
 public abstract class MatrixToken extends Token {
     ///////////////////////////////////////////////////////////////////

@@ -46,11 +46,11 @@ import ptolemy.kernel.util.IllegalActionException;
  java.lang.Long.MAX_VALUE results in negative values close to
  java.lang.Long.MIN_VALUE.
 
- @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
+ @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Yellow (neuendor)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class LongToken extends ScalarToken {
     /** Construct a token with long integer 0.
@@ -65,11 +65,36 @@ public class LongToken extends ScalarToken {
         _value = value;
     }
 
+    /** Construct a LongToken from the Token.  
+     *  The value of the constructed token is set to the value returned 
+     *  by {@link #convert(Token)}.  If the token parameter is a nil
+     *  token, then this token will be a nil token.
+     *  @param token The token to be converted.
+     *  @exception IllegalActionException If the conversion
+     *   cannot be carried out.
+     */
+    public LongToken(Token token)
+            throws IllegalActionException {
+        // This looks like a copy constructor, does that matter?
+        LongToken result = convert(token);
+        _value = result.longValue();
+        if (result.isNil()) {
+            _nil();
+        }
+    }
+
     /** Construct a token from the given String.
+     *  If the value is null or the string "nil", then the token is
+
      *  @exception IllegalActionException If the Token could not
      *   be created with the given String.
      */
     public LongToken(String init) throws IllegalActionException {
+        if (init == null || init.equals("nil")) {
+            _nil();
+            return;
+        }
+
         // Throw away the ending L or l, if necessary.
         init = init.trim();
 
@@ -91,11 +116,13 @@ public class LongToken extends ScalarToken {
      *  This method does lossless conversion.  The units of the
      *  returned token will be the same as the units of the given
      *  token.  If the argument is already an instance of LongToken,
-     *  it is returned without any change. Otherwise, if the argument
-     *  is below LongToken in the type hierarchy, it is converted to
-     *  an instance of LongToken or one of the subclasses of LongToken
-     *  and returned. If none of the above condition is met, an
-     *  exception is thrown.
+     *  it is returned without any change. 
+     *  If the argument is null or a nil token, then a new nil IntToken
+     *  is returned, see {@link ptolemy.data.Token#_nil()}.
+     *  Otherwise, if the argument is below LongToken in the type
+     *  hierarchy, it is converted to an instance of LongToken or one
+     *  of the subclasses of LongToken and returned. If none of the
+     *  above condition is met, an exception is thrown.
      *  @param token The token to be converted to a LongToken.
      *  @return A LongToken.
      *  @exception IllegalActionException If the conversion
@@ -104,6 +131,12 @@ public class LongToken extends ScalarToken {
     public static LongToken convert(Token token) throws IllegalActionException {
         if (token instanceof LongToken) {
             return (LongToken) token;
+        }
+
+        if (token == null || token.isNil()) {
+            LongToken result = new LongToken();
+            result._nil();
+            return result;
         }
 
         int compare = TypeLattice.compare(BaseType.LONG, token);
@@ -129,12 +162,17 @@ public class LongToken extends ScalarToken {
     /**  Return true if the argument's class is LongToken and it has the
      *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is a LongToken with the
-     *  same value.
+     *  @return True if the argument is an IntToken with the same
+     *  value. If either this object or the argument is nil, return
+     *  false.
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
         if (object.getClass() != getClass()) {
+            return false;
+        }
+
+        if (isNil() || ((LongToken) object).isNil()) {
             return false;
         }
 
@@ -211,7 +249,18 @@ public class LongToken extends ScalarToken {
      *  @return A String formed using java.lang.Long.toString().
      */
     public String toString() {
-        return Long.toString(_value) + "L";
+        String unitString = "";
+
+        if (!_isUnitless()) {
+            unitString = " * " + unitsString();
+        }
+
+        if (isNil()) {
+            // FIXME: what about units?
+            return super.toString();
+        }
+
+        return Long.toString(_value) + "L" + unitString;
     }
 
     /** Return the value in the token truncated to an unsignedByte.
@@ -375,6 +424,18 @@ public class LongToken extends ScalarToken {
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         long product = _value * ((LongToken) rightArgument).longValue();
         return new LongToken(product);
+    }
+
+    /** Indicate that this token is a nil or missing token, it contains
+     *  no data.  
+     *  In this derived class, the value is set to java.lang.Long.MAX_VALUE.
+     *  @see #ptolemy.data.Token#isNil()
+     */
+    protected void _nil() {
+        // Set this to MAX_VALUE so that if we perform an operation on a nil
+        // token, we get strange results.
+        _value = Long.MAX_VALUE;
+        super._nil();
     }
 
     /** Return a new token whose value is the value of the argument token

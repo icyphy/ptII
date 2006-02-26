@@ -44,11 +44,11 @@ import ptolemy.math.Complex;
  are handled. In other words, overflow just past java.lang.Integer.MAX_VALUE
  results in negative values close to java.lang.Integer.MIN_VALUE.
 
- @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
+ @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Green (wbwu)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh) nil token code
  */
 public class IntToken extends ScalarToken {
     /** Construct a token with integer 0.
@@ -83,7 +83,8 @@ public class IntToken extends ScalarToken {
 
     /** Construct an IntToken from the specified string.
      *  If the value is null or the string "nil", then the token is
-     *  marked as being nil, see {@link ptolemy.data.Token#nil()}.
+     *  marked as being nil, see {@link #_nil()}.
+     *  @param init The specified string.
      *  @exception IllegalActionException If the token could not
      *   be created with the given String.
      */
@@ -130,15 +131,16 @@ public class IntToken extends ScalarToken {
      *   cannot be carried out.
      */
     public static IntToken convert(Token token) throws IllegalActionException {
+        if (token instanceof IntToken) {
+            return (IntToken) token;
+        }
+
         if (token == null || token.isNil()) {
             IntToken result = new IntToken();
             result._nil();
             return result;
         }
 
-        if (token instanceof IntToken) {
-            return (IntToken) token;
-        }
 
         int compare = TypeLattice.compare(BaseType.INT, token);
 
@@ -444,6 +446,7 @@ public class IntToken extends ScalarToken {
         _value = Integer.MAX_VALUE;
         super._nil();
     }
+
     /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed that
      *  the type of the argument is an IntToken.

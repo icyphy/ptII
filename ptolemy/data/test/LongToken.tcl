@@ -1,6 +1,6 @@
 # Tests for the LongToken class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, contributor: Christopher Brooks
 #
 # @Version $Id$
 #
@@ -74,6 +74,25 @@ test LongToken-1.2 {Create an instance from a string value} {
     set token [java::new {ptolemy.data.LongToken String} "5L"]
     $token toString
 } {5L}
+
+######################################################################
+####
+# 
+test LongToken-1.5 {Create a nil Token from a null token} {
+    set p [java::new ptolemy.data.LongToken [java::null]]
+    set p2 [java::new ptolemy.data.Token [java::null]]
+    set p3 [java::new ptolemy.data.LongToken $p2]
+    list [$p toString] [$p3 toString] [$p isNil] [$p3 isNil]
+} {nil nil 1 1}
+
+######################################################################
+####
+# 
+test LongToken-1.6 {Create a nil Token from an String} {
+    set p [java::new {ptolemy.data.LongToken String} nil]
+    set p2 [java::new {ptolemy.data.LongToken String} [java::null]]
+    list [$p toString] [$p2 toString] [$p isNil] [$p2 isNil]
+} {nil nil 1 1}
 
 ######################################################################
 ####
@@ -343,6 +362,16 @@ test LongToken-11.0 {Test hashCode} {
     set t3 [java::new {ptolemy.data.LongToken long} 2]
     list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
 } {1 1 2}
+
+######################################################################
+####
+# 
+test LongToken-11.1 {Test equals on nil} {
+    set p5 [java::new ptolemy.data.LongToken [java::null]]
+    set p6 [java::new ptolemy.data.Token [java::null]]
+    set p7 [java::new ptolemy.data.LongToken $p6]
+    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
+} {0 0 0 0}
 
 ######################################################################
 ####

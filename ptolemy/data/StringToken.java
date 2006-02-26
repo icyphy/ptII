@@ -46,11 +46,11 @@ import ptolemy.kernel.util.IllegalActionException;
  so there is no risk when two tokens refer to the same string that
  one of the strings will be changed.
 
- @author Edward A. Lee, Neil Smyth, Steve Neuendorffer
+ @author Edward A. Lee, Neil Smyth, Steve Neuendorffer, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Yellow (wbwu)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh) nil token code
  */
 public class StringToken extends AbstractConvertibleToken {
     /** Construct a token with an empty string.
@@ -59,7 +59,32 @@ public class StringToken extends AbstractConvertibleToken {
         this("");
     }
 
+    /** Construct an StringToken from the Token.  
+     *  The value of the constructed token is set to the value returned 
+     *  by {@link #convert(Token)}.  If the token parameter is a nil
+     *  token, then this token will be a nil token.
+     *  @param token The token to be converted.
+     *  @exception IllegalActionException If the conversion
+     *   cannot be carried out.
+     */
+    public StringToken(Token token)
+            throws IllegalActionException {
+        // This looks like a copy constructor, does that matter?
+        StringToken result = convert(token);
+        _value = result.stringValue();
+        if (result.isNil()) {
+            _nil();
+        }
+    }
+
     /** Construct a token with the specified string.
+     *  If the value argument is null then the empty string is created.
+     *  Note that this String constructor is different from String
+     *  constructor for the other tokens, where a null argument to the
+     *  String constructor results in a nil token.  If the value
+     *  argument is the string "nil", then the token is marked as
+     *  being nil, see {@link #_nil()}.
+     *  @param value The specified string.
      */
     public StringToken(String value) {
         if (value != null) {
@@ -104,11 +129,13 @@ public class StringToken extends AbstractConvertibleToken {
     /** Convert the specified token into an instance of StringToken.
      *  This method does lossless conversion.
      *  If the argument is already an instance of StringToken,
-     *  it is returned without any change. Otherwise, if the argument
-     *  is below StringToken in the type hierarchy, it is converted to
-     *  an instance of StringToken or one of the subclasses of
-     *  StringToken and returned. If none of the above condition is
-     *  met, an exception is thrown.
+     *  it is returned without any change. 
+     *  If the argument is null or a nil token, then a new nil IntToken
+     *  is returned, see {@link ptolemy.data.Token#_nil()}.
+     *  Otherwise, if the argument is below StringToken in the type
+     *  hierarchy, it is converted to an instance of StringToken or
+     *  one of the subclasses of StringToken and returned. If none of
+     *  the above condition is met, an exception is thrown.
      *  @param token The token to be converted to a StringToken.
      *  @return A StringToken
      *  @exception IllegalActionException If the conversion cannot
@@ -118,6 +145,12 @@ public class StringToken extends AbstractConvertibleToken {
             throws IllegalActionException {
         if (token instanceof StringToken) {
             return (StringToken) token;
+        }
+
+        if (token == null || token.isNil()) {
+            StringToken result = new StringToken();
+            result._nil();
+            return result;
         }
 
         int compare = TypeLattice.compare(BaseType.STRING, token);
@@ -142,12 +175,17 @@ public class StringToken extends AbstractConvertibleToken {
     /** Return true if the argument is an instance of StringToken with the
      *  same value.
      *  @param object An instance of Object.
-     *  @return True if the argument is an instance of StringToken with the
-     *  same value.
+     *  @return True if the argument is an IntToken with the same
+     *  value. If either this object or the argument is nil, return
+     *  false.
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
         if (object.getClass() != getClass()) {
+            return false;
+        }
+
+        if (isNil() || ((StringToken) object).isNil()) {
             return false;
         }
 
@@ -179,6 +217,9 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return The contained string.
      */
     public String stringValue() {
+        if (isNil()) {
+            return super.toString();
+        }
         return _value;
     }
 
@@ -190,6 +231,9 @@ public class StringToken extends AbstractConvertibleToken {
      *  @return A String.
      */
     public String toString() {
+        if (isNil()) {
+            return super.toString();
+        }
         return _toString;
     }
 
@@ -288,6 +332,18 @@ public class StringToken extends AbstractConvertibleToken {
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("multiply", this,
                 rightArgument));
+    }
+
+    /** Indicate that this token is a nil or missing token, it contains
+     *  no data.  
+     *  In this derived class, the value is set to the string "nil", without
+     *  the double quotes.
+     *  @see #ptolemy.data.Token#isNil()
+     */
+    protected void _nil() {
+        _value = "nil";
+        _toString = "nil";
+        super._nil();
     }
 
     /** Return a new token whose value is the value of the argument token

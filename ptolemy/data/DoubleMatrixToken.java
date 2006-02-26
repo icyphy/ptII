@@ -51,8 +51,8 @@ import ptolemy.math.DoubleMatrixMath;
  Shuvra S. Bhattacharyya
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Yellow (cxh)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh) nil token code
  */
 public class DoubleMatrixToken extends MatrixToken {
     /** Construct an DoubleMatrixToken with a one by one matrix. The
