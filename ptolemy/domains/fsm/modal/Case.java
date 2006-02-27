@@ -94,6 +94,7 @@ public class Case extends ModalModel {
 
     /** Override the base class to ensure that the _default member
      *  points to the default refinement.
+     *  @param workspace The workspace for the new object.
      *  @return A new Case.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.

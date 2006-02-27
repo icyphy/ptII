@@ -84,29 +84,29 @@ public class ColorFinder extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The upper bound on the U range */
+    /** The upper bound on the U range. */
     public Parameter uHighValue;
 
-    /** The lower bound on the U range */
+    /** The lower bound on the U range. */
     public Parameter uLowValue;
 
-    /** The upper bound on the V range */
+    /** The upper bound on the V range. */
     public Parameter vHighValue;
 
-    /** The lower bound on the V range */
+    /** The lower bound on the V range. */
     public Parameter vLowValue;
 
-    /** The upper bound on the Y range */
+    /** The upper bound on the Y range. */
     public Parameter yHighValue;
 
-    /** The lower bound on the Y range */
+    /** The lower bound on the Y range. */
     public Parameter yLowValue;
 
-    /** The port for the input, which has type ObjectToken */
+    /** The port for the input, which has type ObjectToken. */
     public TypedIOPort input;
 
     /** The output port for the horizontal component, which has type
-     *  DoubleToken
+     *  DoubleToken.
      */
     public TypedIOPort outputX;
 

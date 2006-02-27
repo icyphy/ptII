@@ -274,6 +274,7 @@ public class MovieReader extends Source implements ControllerListener {
      *  frame.
      *  @return false if the player is no longer open, otherwise
      *  return super.postfire().
+     *  @exception IllegalActionException If thrown by the super class.
      */
     public boolean postfire() throws IllegalActionException {
         if (_playerOpen == false) {
@@ -290,6 +291,8 @@ public class MovieReader extends Source implements ControllerListener {
     ////                         protected methods                 ////
 
     /** Block until the processor has transitioned to the given state.
+     *  @param processor The processor.
+     *  @param state The state.
      *  @return false if the transition failed.
      */
     protected boolean _waitForState(int state) throws IllegalActionException {

@@ -418,6 +418,10 @@ public class MovieWriter extends Sink implements ControllerListener,
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Wait for the file to be written.
+     *  @return true if the file was successfully written.
+     */
     protected boolean _waitForFileDone() throws IllegalActionException {
         synchronized (_waitFileSync) {
             try {
@@ -435,6 +439,8 @@ public class MovieWriter extends Sink implements ControllerListener,
     }
 
     /** Block until the processor has transitioned to the given state.
+     *  @param processor The processor  .
+     *  @param state The state.
      *  @return false if the transition failed.
      */
     protected boolean _waitForState(Processor processor, int state)

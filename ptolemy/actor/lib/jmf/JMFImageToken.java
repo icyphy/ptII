@@ -52,7 +52,8 @@ import ptolemy.data.type.Type;
  @Pt.AcceptedRating Red (cxh)
  */
 public class JMFImageToken extends ImageToken {
-    /** Construct a token with a specified Buffer
+    /** Construct a token with a specified Buffer.
+     *  @param value The buffer.
      */
     public JMFImageToken(Buffer value) {
         _value = value;
@@ -83,6 +84,7 @@ public class JMFImageToken extends ImageToken {
     }
 
     /** Return the value of this token.
+     *  @param The value of this token.   
      */
     public Buffer getValue() {
         return _value;

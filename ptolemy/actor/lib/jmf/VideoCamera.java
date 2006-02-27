@@ -341,11 +341,14 @@ public class VideoCamera extends Source implements ControllerListener {
 
     /** Block until the processor has transitioned to the given state.
      *  Return false if the transition failed.
+     *  @param state The state for which we are waiting.
+     *  @return True if the state transition is ok, otherwise return false.
      */
     protected boolean _waitForState(int state) {
         synchronized (_waitSync) {
             try {
-                while ((_processor.getState() != state) && _stateTransitionOK) {
+                while ((_processor.getState() != state)
+                        && _stateTransitionOK) {
                     _waitSync.wait();
                 }
             } catch (Exception e) {
@@ -355,19 +358,17 @@ public class VideoCamera extends Source implements ControllerListener {
         return _stateTransitionOK;
     }
 
-    // FIXME: Got to here.
-
-    /*********************************************************
-     * Inner class.
-     *
+    /**
      * A pass-through codec to access to individual frames.
-     *********************************************************/
+     */
     public class PreAccessCodec implements Codec {
+        /** Construct a PreAccessCodec. */
         public PreAccessCodec() throws IllegalActionException {
         }
 
         /**
          * Callback to access individual video frames.
+         * @param fram The individual video frame.
          */
         synchronized void accessFrame(Buffer frame) {
             _frameBuffer = frame;
@@ -377,6 +378,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
         /**
          * The code for a pass through codec.
+         * @return the frame.
          */
         synchronized Buffer getFrame() throws IllegalActionException {
             while (!_newFrame) {
@@ -391,30 +393,44 @@ public class VideoCamera extends Source implements ControllerListener {
             return _frameBuffer;
         }
 
+        /** The input format. */
         Format input = null;
 
+        /** The output format. */
         Format output = null;
 
+        /** Return the name of this codec.
+         *  @return Always return "Pre-Access Codec".
+         */
         public String getName() {
             return "Pre-Access Codec";
         }
 
-        // No op.
+        /** In this class, do nothing. */
         public void open() {
         }
 
-        // No op.
+        /** In this class, do nothing. */
         public void close() {
         }
 
-        // No op.
+        /** In this class, do nothing. */
         public void reset() {
         }
 
+        /** Return the supported input formats, which are YUV and RGB.
+         *  @return the supported input formats.
+         */
         public Format[] getSupportedInputFormats() {
             return new Format[] { new YUVFormat(), new RGBFormat() };
         }
 
+        /** Return the supported output formats.
+         *  @param in The input format.  If the input format is null,
+         *  then YUV and RGB format are returned.  If the input format
+         *  is non-null, then it is returned.
+         *  @return the supported output formats.
+         */
         public Format[] getSupportedOutputFormats(Format in) {
             if (in == null) {
                 return new Format[] { new YUVFormat(), new RGBFormat() };
@@ -428,26 +444,46 @@ public class VideoCamera extends Source implements ControllerListener {
             }
         }
 
+        /** Set the input format.
+         *  @parm format The input format.
+         *  @return the input format.
+         */
         public Format setInputFormat(Format format) {
             input = format;
             return input;
         }
 
+        /** Set the output format.
+         *  @parm format The output format.
+         *  @return the output format.
+         */
         public Format setOutputFormat(Format format) {
             output = format;
             return output;
         }
 
+        /** Process a individual frame.
+         *  @param in The input buffer.
+         *  @param out The output buffer.
+         *  @return BUFFER_PROCESSED_OK if no exceptin was thrown.
+         */
         public int process(Buffer in, Buffer out) {
             // This is the "Callback" to access individual frames.
             accessFrame(in);
             return BUFFER_PROCESSED_OK;
         }
 
+        /** Return the controls, in this case, an empty array
+         *  of size 0.
+         */   
         public Object[] getControls() {
             return new Object[0];
         }
 
+        /** Get the control for a type.
+         *  @param type The type, which is ignored.
+         *  @return Always return null.
+         */
         public Object getControl(String type) {
             return null;
         }
@@ -455,14 +491,15 @@ public class VideoCamera extends Source implements ControllerListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     private VideoFormat _format;
 
-    // The java.awt.Image that we are producing
+    /** The java.awt.Image that we are producing/ */ 
     private Buffer _bufferNew;
 
     private boolean _newFrame = false;
 
-    // The video processor.
+    /** The video processor. */
     private Processor _processor;
 
     private PreAccessCodec _cameraCodec;
