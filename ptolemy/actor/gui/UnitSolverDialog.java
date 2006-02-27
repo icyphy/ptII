@@ -79,7 +79,9 @@ import diva.graph.JGraph;
 //////////////////////////////////////////////////////////////////////////
 //// UnitSolverDialog
 
-/**
+/** 
+ Dialog for the Unit Solver.
+
  @author Rowland R Johnson
  @version $Id$
  @since Ptolemy II 4.0
@@ -89,6 +91,7 @@ import diva.graph.JGraph;
 public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
         ListSelectionListener, SelectionListener {
     /**
+     * Construct a Unit Solver Dialog.
      * @param dialogTableau The DialogTableau.
      * @param owner The object that, per the user, appears to be generating the
      * dialog.
@@ -323,22 +326,36 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
         }
     }
 
+    /** List of solutions
+     */
     public class SolutionListModel extends AbstractListModel {
         Vector _solutions = new Vector();
 
+        /** Return an element.
+         *  @param index The index of the element to be returned.
+         *  @return The element at the specified index.
+         */
         public Object getElementAt(int index) {
             return ((Solution) (_solutions.elementAt(index))).getStateDesc();
         }
 
+        /** Return the number of solutions.
+         *  @return The number of solutions.
+         */
         public int getSize() {
             return _solutions.size();
         }
 
-        public void setSolutions(Vector s) {
-            _solutions = s;
+        /** Set the solutions to the specified argument.
+         *  @param solutions A vector of solutions.
+         */
+        public void setSolutions(Vector solutions) {
+            _solutions = solutions;
             fireContentsChanged(this, 0, _solutions.size());
         }
 
+        /** Clear the current set of solutions.
+         */   
         public void clear() {
             _solutions = new Vector();
         }

@@ -414,6 +414,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @return The buffer size of the given port.
      * @exception IllegalActionException If the
      * {@link #getBufferSize(IOPort, int)} method throws it.
+     * @see #setBufferSize(IOPort, int, int) 
      */
     public int getBufferSize(IOPort port) throws IllegalActionException {
         int bufferSize = 1;
@@ -449,6 +450,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @return The buffer size of the given port and channel.
      *  @exception IllegalActionException If the getBufferSize()
      *   method of the actor helper class throws it.
+     * @see #setBufferSize(IOPort, int, int) 
      */
     public int getBufferSize(IOPort port, int channelNumber)
             throws IllegalActionException {
@@ -651,6 +653,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *   should be read.
      *  @exception IllegalActionException Thrown if the helper class cannot
      *   be found.
+     *  @see #setReadOffset(IOPort, int, int)
      */
     public Object getReadOffset(IOPort inputPort, int channelNumber)
             throws IllegalActionException {
@@ -885,6 +888,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *   should be put.
      *  @exception IllegalActionException Thrown if the helper class cannot
      *   be found.
+     *  @see #setWriteOffset(IOPort, int, Object)
      */
     public Object getWriteOffset(IOPort inputPort, int channelNumber)
             throws IllegalActionException {
@@ -1091,6 +1095,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param port The given port.
      *  @param channelNumber The given channel.
      *  @param bufferSize The buffer size to be set to that port and channel.
+     *  @see #getBufferSize(IOPort)
      */
     public void setBufferSize(IOPort port, int channelNumber, int bufferSize) {
         int[] bufferSizes = (int[]) _bufferSizes.get(port);
@@ -1115,6 +1120,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param readOffset The offset to be set to the buffer of that channel.
      *  @exception IllegalActionException Thrown if the helper class cannot
      *   be found.
+     *  @see #getReadOffset(IOPort, int)
      */
     public void setReadOffset(IOPort inputPort, int channelNumber,
             Object readOffset) throws IllegalActionException {
@@ -1154,6 +1160,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param writeOffset The offset to be set to the buffer of that channel.
      *  @exception IllegalActionException If 
      *   {@link #setWriteOffset(IOPort, int, Object)} method throws it.
+     *  @see #getWriteOffset(IOPort, int)
      */
     public void setWriteOffset(IOPort inputPort, int channelNumber,
             Object writeOffset) throws IllegalActionException {

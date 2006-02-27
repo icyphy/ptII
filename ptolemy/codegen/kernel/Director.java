@@ -401,8 +401,9 @@ public class Director implements ActorCodeGenerator {
      * 
      *  @param port The port whose read offset is to be updated.
      *  @param code The string buffer that the generated code is appended to.
+     *  @param rate The rate, which must be greater than or equal to 0.
      *  @exception IllegalActionException If thrown while reading or writing
-     *   offsets, or getting buffer size.
+     *   offsets, or getting the buffer size, or if the rate is less than 0.
      */
     protected void _updatePortOffset(IOPort port, StringBuffer code, int rate)
             throws IllegalActionException {
@@ -446,8 +447,9 @@ public class Director implements ActorCodeGenerator {
      *  @param port The port whose directly connected downstream actors update 
      *   their write offsets.
      *  @param code The string buffer that the generated code is appended to.
+     *  @param rate The rate, which must be greater than or equal to 0.
      *  @exception IllegalActionException If thrown while reading or writing
-     *   offsets, or getting buffer size.
+     *   offsets, or getting the buffer size, or if the rate is less than 0.
      */
     protected void _updateConnectedPortsOffset(IOPort port, StringBuffer code,
             int rate) throws IllegalActionException {

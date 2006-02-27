@@ -52,7 +52,8 @@ import ptolemy.moml.MoMLChangeRequest;
 //////////////////////////////////////////////////////////////////////////
 //// UnitConstraintsDialog
 
-/**
+/** 
+ Unit Constraint Dialog
  @author Rowland R Johnson
  @version $Id$
  @since Ptolemy II 4.0
@@ -70,14 +71,11 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
      * clicking Edit->Undo, and the help screen can be manipulated while this
      * dialog exists. The dialog is placed relative to the owner.
      *
-     * @param owner
-     *            The object that, per the user, appears to be generating the
-     *            dialog.
-     * @param target
-     *            The object whose ports are being configured.
-     * @param configuration
-     *            The configuration to use to open the help screen (or null if
-     *            help is not supported).
+     * @param tableau The object that, per the user, appears to be
+     * generating the dialog.
+     * @param target The object whose ports are being configured.
+     * @param configuration The configuration to use to open the help
+     * screen (or null if help is not supported).
      */
     public UnitConstraintsDialog(DialogTableau tableau, Frame owner,
             Entity target, Configuration configuration) {
@@ -190,10 +188,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
         // TODO Auto-generated method stub
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see ptolemy.actor.gui.PtolemyDialog#_apply()
+    /** Apply the unit constraints to the model.
      */
     protected void _apply() {
         String expr = _unitsTableModel.toString();
@@ -229,18 +224,26 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
         _buttons.add(_removeButton);
     }
 
-    protected void _enableApplyButton(boolean e) {
-        _applyButton.setEnabled(e);
+    /** Enable or disable the apply button.
+     *  @param enabled True if the apply button should be enabled.
+     */ 
+    protected void _enableApplyButton(boolean enabled) {
+        _applyButton.setEnabled(enabled);
     }
 
+    /** Return the help URL.
+     *  @return The help URL
+     */
     protected URL _getHelpURL() {
         URL helpURL = getClass().getClassLoader().getResource(
                 "ptolemy/actor/gui/doc/unitConstraintsDialog.htm");
         return helpURL;
     }
 
-    // The button semantics are
-    // Add - Add a new port.
+    /** Process a button press.  Add and Apply buttons are handled
+     *  here.  Other button presses are handled by the superclass.
+     *  @param button The button to process.
+     */
     protected void _processButtonPress(String button) {
         if (button.equals("Add")) {
             _unitsTableModel.addNewConstraint();
@@ -274,16 +277,10 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
     ////                         private variables                 ////
     private JButton _addButton;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
     private JButton _applyButton;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
     private JButton _commitButton;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
     private JButton _removeButton;
 
     private ListSelectionListener _rowSelectionListener = new ListSelectionListener() {
