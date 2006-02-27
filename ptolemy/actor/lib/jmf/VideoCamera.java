@@ -363,7 +363,9 @@ public class VideoCamera extends Source implements ControllerListener {
      */
     public class PreAccessCodec implements Codec {
 
-        /** Construct a PreAccessCodec. */
+        /** Construct a PreAccessCodec. 
+         *  @exception IllegalActionException Not thrown in this base class.
+         */
         public PreAccessCodec() throws IllegalActionException {
         }
 
