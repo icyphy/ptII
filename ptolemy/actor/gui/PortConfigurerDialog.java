@@ -451,11 +451,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
             request.setUndoable(true);
             container.addChangeListener(this);
 
-            if (_debug) {
-                System.out.println("RequestChange on " + container.toString()
-                        + " " + moml);
-            }
-
             container.requestChange(request);
         }
 
@@ -716,11 +711,6 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
         if (haveSomeUpdate) {
             moml.append("</group>");
-
-            if (_debug) {
-                System.out.println("RequestChange on " + getTarget().toString()
-                        + " " + moml);
-            }
 
             MoMLChangeRequest request = new MoMLChangeRequest(this,
                     getTarget(), moml.toString(), null);

@@ -289,10 +289,6 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
             request.setUndoable(true);
             request.setPersistent(false);
 
-            if (_debug) {
-                System.out.println("Solver.annotateGraph moml " + momlUpdate);
-            }
-
             _model.requestChange(request);
         }
     }
