@@ -194,16 +194,16 @@ public class ExtendedMath {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** sqrt(2) */
+    /** sqrt(2). */
     public static final double SQRT_2 = Math.sqrt(2.0);
 
-    /** 1 / sqrt(2) */
+    /** 1 / sqrt(2). */
     public static final double ONE_OVER_SQRT_2 = 1.0 / SQRT_2;
 
-    /** PI / 2 */
+    /** PI / 2. */
     public static final double PI_OVER_2 = Math.PI * 0.5;
 
-    /** PI / 4 */
+    /** PI / 4. */
     public static final double PI_OVER_4 = Math.PI * 0.25;
 
     /** The smallest, normalized, positive double value with a single precision.

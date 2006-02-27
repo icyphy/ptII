@@ -55,8 +55,12 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 public abstract class UnsizedMatrixType extends StructuredType implements
         Serializable {
+
     /** Construct a new matrix type that represents matrix tokens of the
      *  given class with the given number of rows and columns.
+     *  @param c The class.
+     *  @param type The type.
+     *  @param name The name.
      */
     public UnsizedMatrixType(Class c, Type type, String name) {
         _tokenClass = c;
@@ -108,6 +112,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
      *  this matrix type.  Tokens of the type returned by this method
      *  will be returned by the getElementAsToken of matrices that
      *  have this type.
+     *  @return The type of the elements. 
      */
     public Type getElementType() {
         return _elementType;
@@ -115,6 +120,8 @@ public abstract class UnsizedMatrixType extends StructuredType implements
 
     /** Return a matrix type whose element type is the given element
      *  type.
+     *  @param elementType The type of the element.
+     *  @return The matrix type.
      *  @exception IllegalActionException If the elementType is not a
      *  type that has a corresponding matrix type.
      */
@@ -232,7 +239,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The boolean matrix data type */
+    /** The boolean matrix data type. */
     public static class BooleanMatrixType extends UnsizedMatrixType {
         public BooleanMatrixType() {
             super(BooleanMatrixToken.class, BaseType.BOOLEAN, "[boolean]");
@@ -248,7 +255,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The complex matrix data type */
+    /** The complex matrix data type. */
     public static class ComplexMatrixType extends UnsizedMatrixType {
         public ComplexMatrixType() {
             super(ComplexMatrixToken.class, BaseType.COMPLEX, "[complex]");
@@ -264,7 +271,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The double matrix data type */
+    /** The double matrix data type. */
     public static class DoubleMatrixType extends UnsizedMatrixType {
         public DoubleMatrixType() {
             super(DoubleMatrixToken.class, BaseType.DOUBLE, "[double]");
@@ -280,7 +287,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The integer matrix data type */
+    /** The integer matrix data type. */
     public static class IntMatrixType extends UnsizedMatrixType {
         public IntMatrixType() {
             super(IntMatrixToken.class, BaseType.INT, "[int]");
@@ -296,7 +303,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The fix matrix data type */
+    /** The fix matrix data type. */
     public static class FixMatrixType extends UnsizedMatrixType {
         public FixMatrixType() {
             super(FixMatrixToken.class, BaseType.FIX, "[fixedpoint]");
@@ -312,7 +319,7 @@ public abstract class UnsizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The long matrix data type */
+    /** The long matrix data type. */
     public static class LongMatrixType extends UnsizedMatrixType {
         public LongMatrixType() {
             super(LongMatrixToken.class, BaseType.LONG, "[long]");

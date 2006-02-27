@@ -95,6 +95,7 @@ public class ParserAttribute extends SingletonAttribute {
      *  @param object The object for which to find an associated parser.
      *  @return The parser for the specified object.
      *  @exception NullPointerException If the argument is null.
+     *  @see #setParser(MoMLParser)
      */
     public static MoMLParser getParser(NamedObj object) {
         NamedObj container = object;

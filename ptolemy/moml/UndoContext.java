@@ -214,7 +214,7 @@ public class UndoContext {
      *  needed.
      *  <p>
      *  For example, if the containee is not already immediately
-     *  contained, and the container is an entity, the </entity>
+     *  contained, and the container is an entity, the &lt;/entity&gt;
      *  is appended to the model.
      *  @param context The current context.
      *  @param containee The containee whose immediate context we want.

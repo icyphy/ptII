@@ -146,6 +146,8 @@ public class Vertex extends Location {
      *  null if there is none.  Note that the paths are one directional,
      *  so this vertex might return null even though there is another vertex
      *  with a path to it.
+     *  @return The other vertex or null.
+     *  @see #setLinkedVertex(Vertex)
      */
     public Vertex getLinkedVertex() {
         return _linked;
@@ -172,6 +174,7 @@ public class Vertex extends Location {
     /** Set the other vertex to which there is a path from this vertex.
      *  If the argument is null, remove the path.
      *  @param vertex The vertex to link to this one.
+     *  @see #getLinkedVertex()
      */
     public void setLinkedVertex(Vertex vertex) {
         _linked = vertex;

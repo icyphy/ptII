@@ -186,13 +186,15 @@ public class FunctionType extends StructuredType {
         return true;
     }
 
-    /** Return the number of arguments in this type
+    /** Return the number of arguments in this type.
+     *  @param The number of arguments.  
      */
     public int getArgCount() {
         return _argTypeTerms.length;
     }
 
     /** Return the type of the given argument.
+     *  @param i  The index of the type.
      *  @return a Type.
      */
     public Type getArgType(int i) {
@@ -224,6 +226,7 @@ public class FunctionType extends StructuredType {
 
     /** Return the InequalityTerm representing the type of the given
      *  argument.
+     *  @param i  The index of the type.
      *  @return An InequalityTerm.
      *  @see ptolemy.graph.InequalityTerm
      */
@@ -378,8 +381,9 @@ public class FunctionType extends StructuredType {
     }
 
     /** Return the string representation of this type. The format is
-     *  function(a0:<type>, a1:<type>, ...) <type>.  Note that the
-     *  function argument names are not semantically significant.
+     *  <code>function(a0:&lt;type&gt;, a1:&lt;type&gt;, ...)
+     *  &lt;type&gt;</code> Note that the function argument names are
+     *  not semantically significant.
      *  @return A String.
      */
     public String toString() {

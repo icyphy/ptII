@@ -1153,7 +1153,7 @@ public class FloatMatrixMath {
      *     this). Put the result in returnValue[0].<br>
      * <li> An n x n matrix containing the dot products of the input
      *     row vectors and the output row vectors,
-     *     dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.  Put
+     *     dotProductMatrix[j][i] = &lt;rowArray[i], outArray[j]&gt;.  Put
      *     the result in returnValue[1].<br>
      * <li> An array containing 1 / (norm(outArray[i])<sup>2</sup>),
      *     with n entries.  Put the result in returnValue[2].<br>

@@ -1559,7 +1559,6 @@ public class SignalProcessing {
      *         + a<sub>n-1</sub>t<sup>-(n-1)</sup>
      *  </pre>
      *  depending on the direction specified.
-     *  </p>
      */
     public static class PolynomialSampleGenerator implements
             DoubleUnaryOperation {

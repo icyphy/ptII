@@ -60,7 +60,7 @@ public class UnitLibrary {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /* The Identity Unit, i.e. 1.0*<0, 0, ..., 0> */
+    /** The Identity Unit, i.e. 1.0*<0, 0, ..., 0> */
     public static final Unit Identity;
 
     ///////////////////////////////////////////////////////////////////
@@ -74,8 +74,8 @@ public class UnitLibrary {
     }
 
     /** Find the Unit in the library that is basic (scale equal to 1),
-     * singular (all but one dimensions equal to 0),  XXXXX
-     * @param catNum
+     * singular (all but one dimensions equal to 0).
+     * @param catNum The category number.
      * @return The basic, singular unit.
      */
     public static Unit getBaseUnit(int catNum) {
@@ -106,8 +106,9 @@ public class UnitLibrary {
         return null;
     }
 
-    /** Search Library to find Unit that has the same type and is the closest to
-     *  a unit in terms of the scalars.
+    /** Search Library to find Unit that has the same type and is the
+     *  closest to a unit in terms of the scalars.
+     *  @param unit The unit for which to search.
      * @return The Unit closest to this the argument. Null, if there are no
      * Units in the Library with the same type.
      */
@@ -157,7 +158,8 @@ public class UnitLibrary {
 
     /** Search Library for Unit equal to a particular unit. That is, both the
      *  type and scalar must be equal to the argument.
-     * @return Unit in Library equal to this one. Null if none found.
+     *  @param unit The unit to search for.
+     *  @return Unit in Library equal to this one. Null if none found.
      */
     public static Unit getUnit(Unit unit) {
         Unit retv = getClosestUnit(unit);
@@ -196,7 +198,7 @@ public class UnitLibrary {
     }
 
     /** Search Library for all Units with type equal to this one.
-     * @param unit
+     * @param unit The unit to search for.
      * @return Vector of Units with type equal to the argument.
      */
     public static Vector getUnitsByType(Unit unit) {

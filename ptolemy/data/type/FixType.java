@@ -183,6 +183,8 @@ public class FixType extends StructuredType implements Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                           public fields                   ////
+
+    /** The bottom fix type. */
     public static final FixType BOTTOM = new FixType();
 
     ///////////////////////////////////////////////////////////////////
