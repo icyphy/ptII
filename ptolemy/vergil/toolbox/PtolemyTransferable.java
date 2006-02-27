@@ -114,15 +114,15 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * Return an object that represents the data contained within this
      * transferable with the given flavor.  If the flavor is namedObjFlavor,
      * return an iterator of the objects that this transferable refers to.
-     * If the flavor
-     * is DataFlavor.plainTextFlavor, return an InputStream that contains a
-     * MoML representation of the objects.  If the flavor is
-     * DataFlavor.stringFlavor return a string that contains the MoML
-     * representation.
+     * If the flavor is DataFlavor.plainTextFlavor, return an
+     * InputStream that contains a MoML representation of the objects.
+     * If the flavor is DataFlavor.stringFlavor return a string that
+     * contains the MoML representation.
      *
      * @return An object with the given flavor.
      * @exception UnsupportedFlavorException If the given flavor is
      * not supported.
+     * @exception IOException If thrown while creating the MoML.
      */
     public Object getTransferData(DataFlavor flavor)
             throws UnsupportedFlavorException, IOException {
@@ -178,8 +178,10 @@ public class PtolemyTransferable implements Transferable, Serializable {
         }
     }
 
-    /** Return a string with a MoML description of all the objects in the list.
+    /** Return a string with a MoML description of all the objects in
+     *  the list.
      *  @return the MoML description.
+     *  @exception IOException If thrown while creating the MoML.
      */
     public String _getMoML() throws IOException {
         StringWriter buffer = new StringWriter();

@@ -64,6 +64,7 @@ public class SnapConstraint implements PointConstraint {
     /** Modify the specified point to snap to grid using the local
      *  resolution.
      *  @param point The point to modify (a dimension 2 array).
+     *  @return The constrained point.
      */
     public double[] constrain(double[] point) {
         double[] result = new double[2];
@@ -76,6 +77,7 @@ public class SnapConstraint implements PointConstraint {
      *  resolution.
      *  @param x The x dimension of the point to modify.
      *  @param y The y dimension of the point to modify.
+     *  @return The constrained point.
      */
     public double[] constrain(double x, double y) {
         double[] result = new double[2];
@@ -87,6 +89,7 @@ public class SnapConstraint implements PointConstraint {
     /** Modify the specified point to snap to grid using the global
      *  default resolution.
      *  @param point The point to modify.
+     *  @return The constrained point.
      */
     public static Point2D constrainPoint(Point2D point) {
         double[] originalPoint = new double[2];
@@ -100,6 +103,7 @@ public class SnapConstraint implements PointConstraint {
     /** Modify the specified point to snap to grid using the global
      *  default resolution.
      *  @param point The point to modify (a dimension 2 array).
+     *  @return The constrained point.
      */
     public static double[] constrainPoint(double[] point) {
         return constrainPoint(point[0], point[1]);
@@ -109,6 +113,7 @@ public class SnapConstraint implements PointConstraint {
      *  default resolution.
      *  @param x The x dimension of the point to modify.
      *  @param y The y dimension of the point to modify.
+     *  @return The constrained point.
      */
     public static double[] constrainPoint(double x, double y) {
         double[] result = new double[2];

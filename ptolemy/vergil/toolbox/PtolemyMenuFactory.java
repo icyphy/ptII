@@ -59,7 +59,9 @@ import diva.gui.toolbox.MenuFactory;
  @Pt.AcceptedRating Red (johnr)
  */
 public class PtolemyMenuFactory implements MenuFactory {
+
     /** Create a new menu factory that contains no menu item factories.
+     *  @param controller The controller.
      */
     public PtolemyMenuFactory(GraphController controller) {
         _factoryList = new LinkedList();
@@ -78,6 +80,7 @@ public class PtolemyMenuFactory implements MenuFactory {
 
     /** Create an instance of the menu associated with this factory.
      *  @param figure The figure for which to create a context menu.
+     *  @return The instance of the menu.
      */
     public JContextMenu create(Figure figure) {
         NamedObj object = _getObjectFromFigure(figure);
@@ -98,6 +101,7 @@ public class PtolemyMenuFactory implements MenuFactory {
     }
 
     /** Return the graph controller that created this menu factory.
+     *  @return The controller.
      */
     public GraphController getController() {
         return _controller;
@@ -111,6 +115,7 @@ public class PtolemyMenuFactory implements MenuFactory {
     }
 
     /** Remove the given menu item factory from the factory list.
+     *  @param factory The factory to be removed.
      */
     public void removeMenuItemFactory(MenuItemFactory factory) {
         _factoryList.remove(factory);
@@ -124,20 +129,23 @@ public class PtolemyMenuFactory implements MenuFactory {
      *  a diva.graph.model object, and that object is attached to the
      *  correct ptolemy object.  In many cases, this is not the case,
      *  and you will have to override this function.
+     *  @param figure The figure.
+     *  @return The Ptolemy object that the given figure represents.
      */
     protected NamedObj _getObjectFromFigure(Figure figure) {
         Object object = figure.getUserObject();
-        return (NamedObj) _controller.getGraphModel().getSemanticObject(object);
+        return (NamedObj) _controller.getGraphModel()
+            .getSemanticObject(object);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private members                       ////
 
-    /** The menu item factories.
-     */
-    private List _factoryList;
-
     /** The graph controller.
      */
     private GraphController _controller;
+
+    /** The menu item factories.
+     */
+    private List _factoryList;
 }

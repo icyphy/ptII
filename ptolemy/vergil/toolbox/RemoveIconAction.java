@@ -83,6 +83,7 @@ public class RemoveIconAction extends FigureAction {
 
     /** Specify the configuration. 
      *  In this action, this method does nothing.
+     *  @param configuration The configuration.
      */
     public void setConfiguration(Configuration configuration) {
         // Do nothing.

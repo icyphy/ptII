@@ -140,6 +140,7 @@ public class EditIconAction extends FigureAction {
 
     /** Specify the configuration.  This has to be called with a
      *  non-null argument for this action to work.
+     *  @param configuration The configuration.
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;

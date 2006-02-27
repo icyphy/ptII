@@ -232,7 +232,7 @@ public class FigureAction extends AbstractAction {
         }
     }
 
-    /** Return the figure of this action
+    /** Return the figure of this action.
      *  @return The figure of this action.
      */
     public Figure getFigure() {

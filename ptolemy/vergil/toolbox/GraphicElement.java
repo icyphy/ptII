@@ -57,6 +57,7 @@ public class GraphicElement {
      * Create a new GraphicElement with the given type.
      * By default, the GraphicElement contains no attributes and an empty
      * label
+     * @param type The type.
      */
     public GraphicElement(String type) {
         _attributes = new HashMap();
@@ -65,24 +66,30 @@ public class GraphicElement {
     }
 
     /**
-     * Return a set of all the attribute names.
+     * Return a set of all the attribute names, where each element of
+     * the set is a String.
+     * @param return The set of all attribute names
      */
     public Set attributeNameSet() {
         return _attributes.keySet();
     }
 
     /**
-     * Return the type of this graphic element.
-     * The type is immutably set when the element is created.
+     * Write the GraphicElement in XML format to the given writer.
+     * @param out The writer. 
+     * @param prefix The prefix, usually a string of spaces.
      */
-    public String getType() {
-        return _type;
+    public void exportMoML(Writer out, String prefix) throws IOException {
+        XmlElement element = new XmlElement(_type, _attributes);
+        element.setPCData(_label);
+        element.writeXML(out, prefix);
     }
 
     /**
      * Return the value of the attribute with the given name.
      * Throw an exception if there is no attribute with the
      * given name in this schematic.
+     * @see #setAttribute(String, String)
      */
     public String getAttribute(String name) {
         return (String) _attributes.get(name);
@@ -92,6 +99,8 @@ public class GraphicElement {
      * Return the label of this graphic element. This is
      * primarily useful for textual elements, but may be used for other
      * objects that have a label.
+     * @return The label.
+     * @see #setLabel(String)
      */
     public String getLabel() {
         return _label;
@@ -101,6 +110,7 @@ public class GraphicElement {
      * Return a new painted object that looks like this graphic element.
      * If the attributes are not consistent, or another error occurs, then
      * return a painted string containing "Error!".
+     * @return The painted object.
      */
     public PaintedObject getPaintedObject() {
         String type = getType();
@@ -116,7 +126,19 @@ public class GraphicElement {
     }
 
     /**
+     * Return the type of this graphic element.
+     * The type is immutably set when the element is created.
+     * @return The type.
+     */
+    public String getType() {
+        return _type;
+    }
+
+    /**
      * Test if this element has an attribute with the given name.
+     * @param name The name.
+     * @return true if this element contains an attribute with the given
+     * name.
      */
     public boolean containsAttribute(String name) {
         return _attributes.containsKey(name);
@@ -124,6 +146,7 @@ public class GraphicElement {
 
     /**
      * Remove an attribute from this element.
+     * @param name The name of the attribute to remove
      */
     public void removeAttribute(String name) {
         _attributes.remove(name);
@@ -131,6 +154,9 @@ public class GraphicElement {
 
     /**
      * Set the attribute with the given name to the given value.
+     * @param name The name of the attribute.
+     * @param value The value of the attribute.
+     * @see #getAttribute()
      */
     public void setAttribute(String name, String value) {
         _attributes.put(name, value);
@@ -138,6 +164,8 @@ public class GraphicElement {
 
     /**
      * Set the label for this graphic element.
+     * @param name The name.
+     * @see #getLabel()
      */
     public void setLabel(String name) {
         _label = name;
@@ -162,15 +190,6 @@ public class GraphicElement {
         result += ("} label {" + getLabel() + "}}");
 
         return result;
-    }
-
-    /**
-     * Write the GraphicElement in XML format to the given writer.
-     */
-    public void exportMoML(Writer out, String prefix) throws IOException {
-        XmlElement element = new XmlElement(_type, _attributes);
-        element.setPCData(_label);
-        element.writeXML(out, prefix);
     }
 
     // The painted object that is returned if an error occurs.
