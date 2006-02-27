@@ -125,6 +125,9 @@ public interface PtinyOSLoader {
     /** Start the event accept and command read threads. */
     public void startThreads();
 
-    /** Join the event accept and command read threads. */
+    /** Join the event accept and command read threads.
+     *  @return -1 if there is a problem joining the threads,
+     *  0 if successful.
+     */
     public int joinThreads();
 }

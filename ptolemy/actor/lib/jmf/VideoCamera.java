@@ -362,13 +362,14 @@ public class VideoCamera extends Source implements ControllerListener {
      * A pass-through codec to access to individual frames.
      */
     public class PreAccessCodec implements Codec {
+
         /** Construct a PreAccessCodec. */
         public PreAccessCodec() throws IllegalActionException {
         }
 
         /**
          * Callback to access individual video frames.
-         * @param fram The individual video frame.
+         * @param frame The individual video frame.
          */
         synchronized void accessFrame(Buffer frame) {
             _frameBuffer = frame;
@@ -445,7 +446,7 @@ public class VideoCamera extends Source implements ControllerListener {
         }
 
         /** Set the input format.
-         *  @parm format The input format.
+         *  @param format The input format.
          *  @return the input format.
          */
         public Format setInputFormat(Format format) {
@@ -454,7 +455,7 @@ public class VideoCamera extends Source implements ControllerListener {
         }
 
         /** Set the output format.
-         *  @parm format The output format.
+         *  @param format The output format.
          *  @return the output format.
          */
         public Format setOutputFormat(Format format) {
@@ -475,6 +476,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
         /** Return the controls, in this case, an empty array
          *  of size 0.
+         *  @return The controls.
          */   
         public Object[] getControls() {
             return new Object[0];

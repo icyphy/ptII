@@ -375,19 +375,18 @@ public class Token implements Serializable {
     }
 
     /** Return a new token computed as follows:
-     *  <ul>
-     *  <li> For positive <i>times</i> arguments, the result represents
+     *  <br> For positive <i>times</i> arguments, the result represents
      *  the product of this token multiplied by itself the number of
      *  times given by the argument.</li>
-     *  <li> For negative <i>times</i> arguments, the result
+     *  <br> For negative <i>times</i> arguments, the result
      *  represents the multiplicative inverse of the product of this
      *  token multiplied by itself the number of times given by the
      *  absolute value of the argument.</li>
      *  <br> More succinctly: one().divide(pow(-times))
-     *  <li> If the argument is zero, then the result is defined to be
+     *  <br> If the argument is zero, then the result is defined to be
      *  the result of applying the one() method to this token.</li>
-     *  </ul>
-     *  The token type returned by this method is the same as
+
+     *  <p>The token type returned by this method is the same as
      *  the type of this token.  Note that the method is different
      *  from java.lang.Math.pow(), since it returns an integer given
      *  an integer token type, and is also well defined for matrix

@@ -291,9 +291,10 @@ public class MovieReader extends Source implements ControllerListener {
     ////                         protected methods                 ////
 
     /** Block until the processor has transitioned to the given state.
-     *  @param processor The processor.
      *  @param state The state.
      *  @return false if the transition failed.
+     *  @exception IllegalActionException If there is a problem blocking
+     *  the processor until the state transition is completed.
      */
     protected boolean _waitForState(int state) throws IllegalActionException {
         synchronized (_waitSync) {

@@ -241,7 +241,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *   tokens are close.
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
-     *  @exception IllegalActionsException If thrown by calling isCloseTo()
+     *  @exception IllegalActionException If thrown by calling isCloseTo()
      *  on the value of this Token.
      */
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
