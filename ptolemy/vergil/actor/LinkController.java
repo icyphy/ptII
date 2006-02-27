@@ -156,6 +156,9 @@ public class LinkController extends BasicEdgeController {
         /** Accept the head of the connector.
          *  @param c The connector.
          *  @param f The figure.
+         *  @return True if the object is a Port, a Vertex or a Locatable
+         *  contained by a Port and the super class accepts the head.
+         *  Otherwise, return false.
          */
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
@@ -173,6 +176,9 @@ public class LinkController extends BasicEdgeController {
         /** Accept the tail of the connector.
          *  @param c The connector.
          *  @param f The figure.
+         *  @return True if the object is a Port, a Vertex or a Locatable
+         *  contained by a Port and the super class accepts the tail
+         *  Otherwise, return false.
          */
         public boolean acceptTail(Connector c, Figure f) {
             Object object = f.getUserObject();
@@ -181,7 +187,7 @@ public class LinkController extends BasicEdgeController {
                     || object instanceof Vertex
                     || (object instanceof Locatable && ((Locatable) object)
                             .getContainer() instanceof Port)) {
-                return super.acceptHead(c, f);
+                return super.acceptTail(c, f);
             } else {
                 return false;
             }
