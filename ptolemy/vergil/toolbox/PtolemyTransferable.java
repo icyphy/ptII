@@ -119,6 +119,7 @@ public class PtolemyTransferable implements Transferable, Serializable {
      * If the flavor is DataFlavor.stringFlavor return a string that
      * contains the MoML representation.
      *
+     * @param flavor The data flavor.
      * @return An object with the given flavor.
      * @exception UnsupportedFlavorException If the given flavor is
      * not supported.

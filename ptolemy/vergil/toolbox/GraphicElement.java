@@ -90,6 +90,7 @@ public class GraphicElement {
      *  Throw an exception if there is no attribute with the
      *  given name in this schematic.
      *  @param name The name of the attribute.
+     *  @return The value of the attribute with the given name.
      *  @see #setAttribute(String, String)
      */
     public String getAttribute(String name) {

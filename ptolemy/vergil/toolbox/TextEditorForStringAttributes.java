@@ -50,6 +50,8 @@ public class TextEditorForStringAttributes extends TextEditor {
     /** Create a annotation text editor for the specified attribute.
      *  @param factory The factory that created this editor.
      *  @param attributeToEdit The string attribute to edit.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
      *  @param title The window title to use.
      */
     public TextEditorForStringAttributes(TextEditorFactory factory,
