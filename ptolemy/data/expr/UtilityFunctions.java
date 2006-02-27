@@ -1731,16 +1731,7 @@ public class UtilityFunctions {
      */
     public static IntMatrixToken zeroMatrixInt(int rows, int columns) {
         int[][] mtr = new int[rows][columns];
-        IntMatrixToken result = null;
-
-        try {
-            result = new IntMatrixToken(mtr, IntMatrixToken.DO_NOT_COPY);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException("UtilityFunctions.zeroMatrixInt: "
-                    + "Cannot create IntMatrixToken. " + ex.getMessage());
-        }
-
-        return result;
+        return new IntMatrixToken(mtr, IntMatrixToken.DO_NOT_COPY);
     }
 
     /** Return a long zero matrix with the given number of rows and
@@ -1750,18 +1741,7 @@ public class UtilityFunctions {
      */
     public static LongMatrixToken zeroMatrixLong(int rows, int columns) {
         long[][] mtr = new long[rows][columns];
-        LongMatrixToken result = null;
-
-        try {
-            result = new LongMatrixToken(mtr, LongMatrixToken.DO_NOT_COPY);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(
-                    "UtilityFunctions.zeroMatrixLong: "
-                            + "Cannot create LongMatrixToken. "
-                            + ex.getMessage());
-        }
-
-        return result;
+        return new LongMatrixToken(mtr, LongMatrixToken.DO_NOT_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////
