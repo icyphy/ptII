@@ -231,7 +231,7 @@ public class Token implements Serializable {
     /** Return true if the token is nil, (aka missing).
      *  Nil or missing tokens occur when a data source is sparsely populated.
      *  @return True if the token has been marked as nil by calling
-     *  {@link #nil()}.
+     *  {@link #_nil()}.
      */
     public boolean isNil() {
         return _isNil;
@@ -528,6 +528,6 @@ public class Token implements Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Set to true if {@link #nil()} is called. */
+    /** Set to true if {@link #_nil()} is called. */
     private boolean _isNil = false;
 }

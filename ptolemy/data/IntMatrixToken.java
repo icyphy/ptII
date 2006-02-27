@@ -114,10 +114,10 @@ public class IntMatrixToken extends MatrixToken {
      *  is called to preserve immutability.
      *  @param value The source 1-D matrix of ints.  If this argument
      *  is null, then the constructed token will be a nil token,
-     *  see {@link ptolemy.data.Token#nil()}.
+     *  see {@link #_nil()}.
      *  @param rows The number of rows of the newly constructed matrix.
      *  @param columns The number of columns of the newly constructed matrix.
-     *  @param copy If {@link ptolemy.data.MatrixToken#COPY}, the the
+     *  @param copy If {@link ptolemy.data.MatrixToken#DO_COPY}, the the
      *  value matrix is copied, If {@link
      *  ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
      *  is not copied.
@@ -144,12 +144,8 @@ public class IntMatrixToken extends MatrixToken {
      *  constructed will not affect the content of this token.
      *  @param value The source 2-D matrix of doubles.  If this argument
      *  is null, then the constructed token will be a nil token,
-     *  see {@link ptolemy.data.Token#nil()} with rows set to -1 and
+     *  see {@link #_nil()} with rows set to -1 and
      *  columns set to -1.
-     *  @param copy If {@link ptolemy.data.MatrixToken#COPY}, the the
-     *  value matrix is copied, If {@link
-     *  ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
-     *  is not copied.
      */
     public IntMatrixToken(int[][] value) {
         this(value, DO_COPY);
@@ -165,9 +161,9 @@ public class IntMatrixToken extends MatrixToken {
      *  is called to preserve immutability.
      *  @param value The source 2-D matrix of doubles.  If this argument
      *  is null, then the constructed token will be a nil token,
-     *  see {@link ptolemy.data.Token#nil()} with rows set to -1 and
+     *  see {@link ptolemy.data.Token#_nil()} with rows set to -1 and
      *  columns set to -1.
-     *  @param copy If {@link ptolemy.data.MatrixToken#COPY}, the the
+     *  @param copy If {@link ptolemy.data.MatrixToken#DO_COPY}, the the
      *  value matrix is copied, If {@link
      *  ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
      *  is not copied.
@@ -185,7 +181,7 @@ public class IntMatrixToken extends MatrixToken {
      *  @param init A string expression of a 2-D int matrix.
      *  If the init parameter is null, or "nil", or "[]", then
      *  the token is marked as being nil, the rows and columns are both
-     *  set to -1, see {@link #ptolemy.data.IntMatrixToken._nil()}.
+     *  set to -1, see {@link #_nil()}.
      *  @exception IllegalActionException If the string does
      *   not contain a parsable 2-D int matrix.
      */
@@ -218,7 +214,7 @@ public class IntMatrixToken extends MatrixToken {
      *  @param tokens The array of tokens, which must contains
      *  rows*columns ScalarTokens.  If this argument is null, then the
      *  constructed token will be a nil token, see {@link
-     *  ptolemy.data.Token#nil()} with rows set to -1 and columns set
+     *  ptolemy.data.Token#_nil()} with rows set to -1 and columns set
      *  to -1.
      *  @param rows The number of rows in the matrix to be created.
      *  @param columns The number of columns in the matrix to be
@@ -281,7 +277,7 @@ public class IntMatrixToken extends MatrixToken {
      *  argument is already an instance of IntMatrixToken, it is
      *  returned without any change.  If the argument is null or a nil
      *  token, then a new nil DoubleMatrixToken is returned, see
-     *  {@link ptolemy.data.IntMatrixToken#_nil()}.  Otherwise, if the
+     *  {@link #_nil()}.  Otherwise, if the
      *  argument is below IntMatrixToken in the type hierarchy, it is
      *  converted to an instance of IntMatrixToken or one of the
      *  subclasses of IntMatrixToken and returned. If none of the
@@ -679,7 +675,7 @@ public class IntMatrixToken extends MatrixToken {
     /** Indicate that this token is a nil or missing token, it contains
      *  no data.  
      *  In this derived class, the rows and columns are both set to -1.
-     *  @see #ptolemy.data.Token#isNil()
+     *  @see ptolemy.data.Token#isNil()
      */
     protected void _nil() {
         _value = null;

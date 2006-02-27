@@ -430,7 +430,7 @@ public class LongToken extends ScalarToken {
     /** Indicate that this token is a nil or missing token, it contains
      *  no data.  
      *  In this derived class, the value is set to java.lang.Long.MAX_VALUE.
-     *  @see #ptolemy.data.Token#isNil()
+     *  @see ptolemy.data.Token#isNil()
      */
     protected void _nil() {
         // Set this to MAX_VALUE so that if we perform an operation on a nil

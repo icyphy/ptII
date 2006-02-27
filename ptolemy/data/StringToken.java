@@ -344,7 +344,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  no data.  
      *  In this derived class, the value is set to the string "nil", without
      *  the double quotes.
-     *  @see #ptolemy.data.Token#isNil()
+     *  @see ptolemy.data.Token#isNil()
      */
     protected void _nil() {
         _value = "nil";

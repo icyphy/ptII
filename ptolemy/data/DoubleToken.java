@@ -430,7 +430,7 @@ public class DoubleToken extends ScalarToken {
     /** Indicate that this token is a nil or missing token, it contains
      *  no data.  
      *  In this derived class, the value is set to java.lang.Double.NaN.
-     *  @see #ptolemy.data.Token#isNil()
+     *  @see ptolemy.data.Token#isNil()
      */
     protected void _nil() {
         _value = Double.NaN;

@@ -93,7 +93,7 @@ public class LongMatrixToken extends MatrixToken {
      *  constructed will not affect the content of this token.
      *  @param value The 2-D matrix of doubles that is copied.  If this
      *  argument is null, then a nil token with rows -1 and columns -1
-     *  is created, see {@link ptolemy.data.Token#nil()}.
+     *  is created, see {@link ptolemy.data.Token#_nil()}.
      *  @param rows The number of rows of the newly constructed matrix.
      *  @param columns The number of columns of the newly constructed matrix.
      */
@@ -111,12 +111,12 @@ public class LongMatrixToken extends MatrixToken {
      *  is called to preserve immutability.
      *  @param value The source 1-D matrix of doubles.  If this argument
      *  is null, then the constructed token will be a nil token,
-     *  see {@link ptolemy.data.Token#nil()}.
+     *  see {@link ptolemy.data.Token#_nil()}.
      *  @param rows The number of rows of the newly constructed matrix.
      *  @param columns The number of columns of the newly constructed matrix.
-     *  @param copy If {@link ptolemy.data.MatrixToken#COPY}, the the
-     *  value matrix is copied, If {@link
-     *  ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
+     *  @param copy If {@link ptolemy.data.MatrixToken#DO_COPY}, the the
+     *  value matrix is copied, if 
+     *  {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
      *  is not copied.
      */
     public LongMatrixToken(long[] value, int rows, int columns, int copy) {
@@ -154,9 +154,9 @@ public class LongMatrixToken extends MatrixToken {
      *  is called to preserve immutability, although this is not enforced.
      *  @param value The source 2-D matrix of doubles.  If this argument
      *  is null, then the constructed token will be a nil token,
-     *  see {@link ptolemy.data.Token#nil()} with rows set to -1 and
+     *  see {@link ptolemy.data.Token#_nil()} with rows set to -1 and
      *  columns set to -1.
-     *  @param copy If {@link ptolemy.data.MatrixToken#COPY}, the the
+     *  @param copy If {@link ptolemy.data.MatrixToken#DO_COPY}, the the
      *  value matrix is copied, If {@link
      *  ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
      *  is not copied.
@@ -173,7 +173,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @param init A string expression of a 2-D long matrix.
      *  If the init parameter is null, or "nil", or "[]", then
      *  the token is marked as being nil, the rows and columns are both
-     *  set to -1, see {@link #ptolemy.data.LongMatrixToken#_nil()}.
+     *  set to -1, see {@link ptolemy.data.Token#_nil()}.
      *  @exception IllegalActionException If the string does
      *   not contain a parsable 2-D long matrix.
      */
@@ -206,7 +206,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @param tokens The array of tokens, which must contains
      *  rows*columns ScalarTokens.  If this argument is null, then the
      *  constructed token will be a nil token, see {@link
-     *  ptolemy.data.Token#nil()} with rows set to -1 and columns set
+     *  ptolemy.data.Token#_nil()} with rows set to -1 and columns set
      *  to -1.
      *  @param rows The number of rows in the matrix to be created.
      *  @param columns The number of columns in the matrix to be
