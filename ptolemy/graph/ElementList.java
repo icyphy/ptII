@@ -287,8 +287,9 @@ public class ElementList extends LabeledList {
     /** Validate the weight of a given graph element, given the previous
      *  weight of that element.
      *  @param element The element.
-     *  @param oldWeight The previous weight (null if the element was previously
-     *  unweighted).
+     *  @param oldWeight The previous weight (null if the element was
+     *  previously unweighted).
+     *  @return True if the weight is valid.
      */
     public boolean validateWeight(Element element, Object oldWeight) {
         boolean changed = false;

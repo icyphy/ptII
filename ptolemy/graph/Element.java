@@ -72,6 +72,7 @@ public abstract class Element {
     /** Return the weight that has been associated with this element.
      *  @return The associated weight.
      *  @exception IllegalStateException If this is an unweighted element.
+     *  @see #setWeight(Object)
      */
     public final Object getWeight() {
         if (!hasWeight()) {
@@ -112,6 +113,7 @@ public abstract class Element {
      *  @see Graph#validEdgeWeight(Object)
      *  @see Graph#validNodeWeight(Object)
      *  @see Graph#validateWeight(Node)
+     *  @see #getWeight()
      */
     public final void setWeight(Object weight) {
         // FIXME: add @see Graph#validateWeight(Edge)

@@ -40,19 +40,19 @@ import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// LabeledList
 
-/** A list of unique objects (<i>elements</i>) with a mapping from the elements
- into consecutive integer labels. The labels are consecutive
+/** A list of unique objects (<i>elements</i>) with a mapping from the
+ elements into consecutive integer labels. The labels are consecutive
  integers between 0 and <em>N</em>-1 inclusive, where <em>N</em> is
- the total number of elements in the list. This list features <em>O</em>(1)
- list insertion, <em>O</em>(1) testing for membership in the list,
- <em>O</em>(1) access of a list element from its associated label,
- and <em>O</em>(1) access of a label from its corresponding element.
- Removal from the list is, however, an <em>O</em>(<em>1</em>) operation.
- The element labels are useful, for example, in creating mappings from
- list elements into elements of arbitrary arrays.
- More generally, element labels can be used to maintain arbitrary
- <em>m</em>-dimensional matrices that are indexed by the list elements
- (via the associated element labels).
+ the total number of elements in the list. This list features
+ <em>O</em>(1) list insertion, <em>O</em>(1) testing for membership in
+ the list, <em>O</em>(1) access of a list element from its associated
+ label, and <em>O</em>(1) access of a label from its corresponding
+ element.  Removal from the list is, however, an
+ <em>O</em>(<em>1</em>) operation.  The element labels are useful, for
+ example, in creating mappings from list elements into elements of
+ arbitrary arrays.  More generally, element labels can be used to
+ maintain arbitrary <em>m</em>-dimensional matrices that are indexed
+ by the list elements (via the associated element labels).
 
  <p> Element labels maintain their consistency (remain constant) during
  periods when no elements are removed from the list. When elements are
@@ -85,6 +85,7 @@ public class LabeledList implements List {
      *  the specified number of elements.  Memory management is more
      *  efficient with this constructor (assuming the number of elements is
      *  known).
+     *  @param size The number of elements. 
      */
     public LabeledList(int size) {
         _elements = new ArrayList(size);
@@ -158,7 +159,7 @@ public class LabeledList implements List {
     }
 
     /** Returns true if this list contains all of the elements of the
-     *  specified collection
+     *  specified collection.
      *  @param collection The specified collection.
      *  @return True if this list contains all of the elements of the
      *  specified collection.
@@ -242,6 +243,7 @@ public class LabeledList implements List {
     }
 
     /** Return the label of the specified element.
+     *  @param element  The specified element.
      *  @return The corresponding label.
      *  @exception IllegalArgumentException If the specified element is not
      *  in this list.

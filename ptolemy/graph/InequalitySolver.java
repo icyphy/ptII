@@ -128,7 +128,9 @@ public class InequalitySolver {
         return _filterVariables(bottom);
     }
 
-    /** Return a description of this solver as a String */
+    /** Return a description of this solver as a String.
+     *  @return A description of this solver.
+     */
     public String description() {
         // This method is useful for debugging.
         StringBuffer results = new StringBuffer("{_Ilist:\n ");

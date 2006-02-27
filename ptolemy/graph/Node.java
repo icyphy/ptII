@@ -70,7 +70,7 @@ public final class Node extends Element {
 
     /** Return a string representation of the node.
      *  The string representation is simply a representation of the node
-     *  weight (or the string <code>"<unweighted node>"</code> if
+     *  weight (or the string <code>"&lt;unweighted node&gt;"</code> if
      *  the node is unweighted.
      */
     public String toString() {

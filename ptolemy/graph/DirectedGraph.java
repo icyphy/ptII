@@ -636,6 +636,7 @@ public class DirectedGraph extends Graph {
     }
 
     /** Return a list of disconnected subgraphs of this graph.
+     *  @return A list of disconnected subgraphs.
      */
     public LinkedList subgraphs() {
         LinkedList subgraphList = new LinkedList();

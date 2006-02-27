@@ -231,6 +231,7 @@ public class Graph implements Cloneable {
     /** Add a pre-constructed edge (unweighted or weighted).
      *
      *  @param edge The edge.
+     *  @return The edge.
      *  @exception GraphElementException If the source or sink node
      *  of the edge is not already in the graph.
      *  @exception GraphConstructionException If the edge is already in
@@ -297,6 +298,7 @@ public class Graph implements Cloneable {
     /** Add a pre-constructed node (unweighted or weighted).
      *
      *  @param node The node.
+     *  @return The node.
      *  @exception GraphConstructionException If the node is already
      *  in the graph.
      *  @exception GraphWeightException If the weight is invalid.

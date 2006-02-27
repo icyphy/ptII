@@ -66,6 +66,7 @@ public interface InequalityTerm {
      *  @return An Object representing an element in the underlying CPO.
      *  @exception IllegalActionException If the value of this
      *  inequality term is not valid.
+     *  @see #setValue(Object)
      */
     public Object getValue() throws IllegalActionException;
 
@@ -111,6 +112,7 @@ public interface InequalityTerm {
      *  @param e An Object representing an element in the
      *   underlying CPO.
      *  @exception IllegalActionException If this term is not a variable.
+     *  @see #getValue()
      */
     public void setValue(Object e) throws IllegalActionException;
 }
