@@ -66,10 +66,10 @@ public class PortDialogFactory implements MenuItemFactory {
      * Add an item to the given context menu that will open a dialog to add or
      * remove ports from an object.
      *
-     * @param menu
-     *            The context menu.
-     * @param object
-     *            The object whose ports are being manipulated.
+     * @param menu The context menu.
+     * @param object The object whose ports are being manipulated.
+     * @return The JMenuItem or null if the object argument is not an
+     * Entity.
      */
     public JMenuItem create(final JContextMenu menu, NamedObj object) {
         JMenuItem retv = null;

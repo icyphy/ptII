@@ -51,6 +51,7 @@ import diva.util.NullIterator;
 public class AttributeNodeModel extends NamedObjNodeModel {
     /** Return a MoML String that will delete the given node from the
      *  Ptolemy model.
+     *  @param node The node to be deleted.
      *  @return A valid MoML string.
      */
     public String getDeleteNodeMoML(Object node) {

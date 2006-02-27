@@ -80,6 +80,7 @@ public class AnimationRenderer implements SelectionRenderer {
      *  decorator using the specified color and stroke. This draws
      *  an outline rather than a filled shape.
      *  @param color The color for the highlight.
+     *  @param stroke The stroke for the highlight.
      */
     public AnimationRenderer(Color color, Stroke stroke) {
         _prototypeDecorator = new BasicHighlighter(color, 4.0f, null, stroke);
@@ -97,6 +98,7 @@ public class AnimationRenderer implements SelectionRenderer {
 
     /** Get the prototype decorator.
      *  @return The prototype decorator.
+     *  @see #setDecorator(FigureDecorator)
      */
     public FigureDecorator getDecorator() {
         return _prototypeDecorator;
@@ -185,6 +187,7 @@ public class AnimationRenderer implements SelectionRenderer {
 
     /** Set the prototype decorator.
      *  @param decorator The prototype decorator.
+     *  @see #getDecorator()
      */
     public void setDecorator(FigureDecorator decorator) {
         _prototypeDecorator = decorator;
@@ -193,7 +196,7 @@ public class AnimationRenderer implements SelectionRenderer {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The prototype decorator
+    /** The prototype decorator.
      */
     protected FigureDecorator _prototypeDecorator;
 

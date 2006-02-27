@@ -51,6 +51,8 @@ import ptolemy.kernel.ComponentRelation;
 public class Link {
     /** Return the head of this link.   This may be a port, or a vertex
      *  in a relation.
+     *  @return The head of this link.
+     *  @see #setHead(Object)
      */
     public Object getHead() {
         return _head;
@@ -60,6 +62,8 @@ public class Link {
      *  from a port to a port, then this is the only way to get at the
      *  relation.  If the link goes from a vertex to a port, then the
      *  relation will be the container of the vertex.
+     *  @return The relation that this link represents.
+     *  @see #setRelation(Object)
      */
     public ComponentRelation getRelation() {
         return _relation;
@@ -67,6 +71,8 @@ public class Link {
 
     /** Return the tail of this link.   This may be a port, or a vertex
      *  in a relation.
+     *  @return The tail of this link.
+     *  @see #setTail(Object)
      */
     public Object getTail() {
         return _tail;
@@ -74,12 +80,16 @@ public class Link {
 
     /** Set the head of this link.   This may be a port, or a vertex
      *  in a relation.
+     *  @param head The head.
+     *  @see #getHead()
      */
     public void setHead(Object head) {
         _head = head;
     }
 
     /** Set the relation for this link.
+     *  @param relation The relation.
+     *  @see #getRelation()
      */
     public void setRelation(ComponentRelation relation) {
         _relation = relation;
@@ -87,12 +97,15 @@ public class Link {
 
     /** Set the tail of this link.   This may be a port, or a vertex
      *  in a relation.
+     *  @param tail The tail.
+     *  @see #getTail()
      */
     public void setTail(Object tail) {
         _tail = tail;
     }
 
     /** Return a string representation of this link.
+     *  @return A string representation of this link.   
      */
     public String toString() {
         return "Link(" + _head + ", " + _tail + ", " + _relation + ")";
