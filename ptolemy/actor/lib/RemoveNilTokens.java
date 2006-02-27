@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  the number of tokens sent to the output depends on the input.
 
  @see ptolemy.data.Token#isNil()
- @see ptolemy.data.Token#nil()
+ @see ptolemy.data.Token#_nil()
 
  @author Christopher Brooks
  @version $Id$
