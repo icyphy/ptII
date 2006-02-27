@@ -56,6 +56,10 @@ import ptolemy.moml.LibraryAttribute;
 public class EditIconTableau extends Tableau {
     /** Create a tableau in the specified workspace.
      *  @param workspace The workspace.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public EditIconTableau(Workspace workspace) throws IllegalActionException,
             NameDuplicationException {
@@ -66,6 +70,10 @@ public class EditIconTableau extends Tableau {
      *  no specified default library.
      *  @param container The container.
      *  @param name The name.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public EditIconTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -77,6 +85,10 @@ public class EditIconTableau extends Tableau {
      *  @param container The container.
      *  @param name The name.
      *  @param defaultLibrary The default library, or null to not specify one.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public EditIconTableau(PtolemyEffigy container, String name,
             LibraryAttribute defaultLibrary) throws IllegalActionException,

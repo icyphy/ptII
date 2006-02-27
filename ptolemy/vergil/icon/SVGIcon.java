@@ -77,6 +77,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  @see #setContainerToBe(NamedObj)
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the attribute.
+     *  @param name The name of this attribute.
      *  @exception IllegalActionException If the specified name contains
      *   a period.
      */
@@ -95,6 +96,10 @@ public class SVGIcon extends EditorIcon implements ValueListener {
      *  By default, the icon contains no graphic objects.
      *  @param container The container for this attribute.
      *  @param name The name of this attribute.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public SVGIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {

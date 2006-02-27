@@ -87,6 +87,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  @see #setContainerToBe(NamedObj)
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the attribute.
+     *  @param name The name of this attribute.
      *  @exception IllegalActionException If the specified name contains
      *   a period.
      */
@@ -105,6 +106,10 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  By default, the icon contains no graphic objects.
      *  @param container The container for this attribute.
      *  @param name The name of this attribute.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public XMLIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -289,6 +294,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
      *  Those derived classes are responsible for the closing bracket.
      *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
      *  This method is read-synchronized on the workspace.
+     *  @param detail The level of detail.
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.

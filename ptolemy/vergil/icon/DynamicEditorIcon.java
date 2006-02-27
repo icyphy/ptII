@@ -77,6 +77,7 @@ public class DynamicEditorIcon extends EditorIcon {
      *  @see #setContainerToBe(NamedObj)
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the attribute.
+     *  @param name The name of this attribute.
      *  @exception IllegalActionException If the specified name contains
      *   a period.
      */
@@ -134,6 +135,7 @@ public class DynamicEditorIcon extends EditorIcon {
      *  returned by the iterator are Figures, not WeakReferences.
      *  Furthermore, the objects returned by this iterator are
      *  guaranteed to not be null.
+     *  @return an iterator.
      */
     protected Iterator _liveFigureIterator() {
         final Iterator iterator = _figures.listIterator();

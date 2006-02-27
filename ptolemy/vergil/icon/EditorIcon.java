@@ -139,6 +139,7 @@ public class EditorIcon extends Attribute {
      *  @see #setContainerToBe(NamedObj)
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the attribute.
+     *  @param name The name of this attribute.
      *  @exception IllegalActionException If the specified name contains
      *   a period.
      */
@@ -423,6 +424,8 @@ public class EditorIcon extends Attribute {
      *  specified to this method is no longer relevant.
      *
      *  @see #setContainerToBe(NamedObj)
+     *  @return The container of this object, if there is one, or
+     *  if not hte container specified by setContainerToBe().
      */
     public Nameable getContainerOrContainerToBe() {
         Nameable container = getContainer();

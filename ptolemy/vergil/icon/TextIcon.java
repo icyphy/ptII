@@ -198,6 +198,7 @@ public class TextIcon extends DynamicEditorIcon {
     /** Specify the text to display in the icon.
      *  If this is not called, then the text displayed
      *  is "-A-".
+     *  @param text The text to display in the icon.
      */
     public void setIconText(String text) {
         _iconText = text;

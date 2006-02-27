@@ -66,6 +66,10 @@ public class AttributeValueIcon extends XMLIcon {
      *  will be thrown.
      *  @param container The container for this attribute.
      *  @param name The name of this attribute.
+     *  @exception IllegalActionException If thrown by the parent
+     *  class or while setting an attribute
+     *  @exception NameDuplicationException If the name coincides with
+     *   an attribute already in the container.
      */
     public AttributeValueIcon(NamedObj container, String name)
             throws NameDuplicationException, IllegalActionException {

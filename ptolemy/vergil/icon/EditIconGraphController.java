@@ -98,6 +98,7 @@ public class EditIconGraphController extends BasicGraphController {
      *  instance of Attribute, then return the attribute controller.
      *  Otherwise, throw a runtime exception.
      *  @param object A Vertex, Locatable, or Port.
+     *  @return object The node controller.
      *  @exception RuntimeException If the specified object is not
      *   a Locatable contained by an Attribute.
      */
