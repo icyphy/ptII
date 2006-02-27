@@ -649,6 +649,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  &AElig;lfred will call this method at the end of each element
      *  (including EMPTY elements).
      *  @param elementName The element type name.
+     *  @exception Exception If thrown while adding properties.
      */
     public void endElement(String elementName) throws Exception {
         // Apply MoMLFilters here.
@@ -1128,6 +1129,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  Note that this method is static. The returned error handler
      *  will handle all errors for any instance of this class.
      *  @return The ErrorHandler currently handling errors.
+     *  @see #setErrorHandler(ErrorHandler)
      */
     public static ErrorHandler getErrorHandler() {
         return _handler;
@@ -1146,6 +1148,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Get the top-level entity associated with this parser, or null if none.
      *  @return The top-level associated with this parser.
+     *  @see #setToplevel(NamedObj)
      */
     public NamedObj getToplevel() {
         return _toplevel;
@@ -1582,6 +1585,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param source The URL source
      *  @return If the class has already been instantiated, return
      *   the previous instance, otherwise return null.
+     *  @exception Exception If thrown while searching for the class
      */
     public ComponentEntity searchForClass(String name, String source)
             throws Exception {
@@ -1671,6 +1675,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  Note that this method is static. The specified error handler
      *  will handle all errors for any instance of this class.
      *  @param handler The ErrorHandler to call.
+     *  @see #getErrorHandler()
      */
     public static void setErrorHandler(ErrorHandler handler) {
         _handler = handler;
@@ -1705,6 +1710,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  parser with a pre-existing model, which can then be modified
      *  via incremental parsing.  This calls reset().
      *  @param toplevel The top-level to associate with this parser.
+     *  @see #getToplevel()
      */
     public void setToplevel(NamedObj toplevel) {
         reset();

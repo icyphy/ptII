@@ -103,6 +103,7 @@ public class MoMLAttribute extends Attribute {
      *  with a newline.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If there is a problem writing the MoML.  
      */
     public void writeMoMLDescription(Writer output, int depth)
             throws IOException {
@@ -127,6 +128,7 @@ public class MoMLAttribute extends Attribute {
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @see #isPersistent()
+     *  @exception IOException If there is a problem writing the MoML.  
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {

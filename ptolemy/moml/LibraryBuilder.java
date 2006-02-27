@@ -72,7 +72,7 @@ public abstract class LibraryBuilder {
      * Build the library.  This should be built in the form of a
      * CompontentEntity See the VergilApplication code if you want an
      * example of what the ComponentEntity should look like.
-     * @param workspace
+     * @param workspace The workspace.
      * @return ComponentEntity
      * @exception Exception
      */

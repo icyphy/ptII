@@ -38,7 +38,7 @@ import ptolemy.kernel.util.NamedObj;
  <menu>
  <li> Remove graphical classes for use in a non-graphical environment
  <li> Change the names of actors and ports for backward compatibility.
- <menu>
+ </menu>
  @author Christopher Hylands, Edward A. Lee
  @version $Id$
  @since Ptolemy II 2.0
@@ -106,6 +106,7 @@ public interface MoMLFilter {
      *  @param container The object defined by the element that this
      *   is the end of.
      *  @param elementName The element name.
+     *  @exception If there is a problem modifying the specified container.
      */
     public void filterEndElement(NamedObj container, String elementName)
             throws Exception;

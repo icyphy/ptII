@@ -160,8 +160,12 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  should give the most immediate container that makes sense for
      *  the context.  It is harmless, however, to use this method to
      *  get the context, so older code will work fine.
+     *  @param object The NamedObj to which other objects defer their MoML
+     *  definitions.
      *  @return An object that deeply contains this one, or null.
-     *  @deprecated No longer needed; just use the specified object as a context.
+     *  @deprecated No longer needed; just use the specified object as
+     *  a context.
+
      */
     public static NamedObj getDeferredToParent(NamedObj object) {
         if (object == null) {
@@ -179,7 +183,7 @@ public class MoMLChangeRequest extends ChangeRequest {
         }
     }
 
-    /** Set whether or not this change is undoable
+    /** Set whether or not this change is undoable.
      *  @param undoable whether or not this change should be treated
      *   as an incremental change that is undoable
      */
@@ -188,7 +192,7 @@ public class MoMLChangeRequest extends ChangeRequest {
     }
 
     /** Set whether or not the undo from this change should be merged with
-     *  the previous undoable change
+     *  the previous undoable change.
      *  @param mergeWithPrevious whether or not this change should be merged
      */
     public void setMergeWithPreviousUndo(boolean mergeWithPrevious) {
@@ -282,6 +286,7 @@ public class MoMLChangeRequest extends ChangeRequest {
     /** Do nothing. This is a strategy pattern method that is called
      *  by the _execute() method just after doing the parse.
      *  Subclasses may override this.
+     *  @param parser The parser
      */
     protected void _postParse(MoMLParser parser) {
     }
@@ -289,6 +294,7 @@ public class MoMLChangeRequest extends ChangeRequest {
     /** Do nothing. This is a strategy pattern method that is called
      *  by the _execute() method just before doing the parse.
      *  Subclasses may override this to do some setup of the parser.
+     *  @param parser The parser
      */
     protected void _preParse(MoMLParser parser) {
     }

@@ -58,6 +58,7 @@ public class StreamErrorHandler implements ErrorHandler {
     }
 
     /** Create an error handler that sends messages to the specified stream.
+     *  @param out The OutputStream   
      */
     public StreamErrorHandler(OutputStream out) {
         _output = new PrintStream(out);

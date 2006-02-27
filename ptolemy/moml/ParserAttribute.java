@@ -78,6 +78,7 @@ public class ParserAttribute extends SingletonAttribute {
 
     /** Get the parser.  If none has been set, then return a new one.
      *  @return A MoML parser.
+     *  @see #setParser(MoMLParser)
      */
     public MoMLParser getParser() {
         if (_parser == null) {
@@ -92,6 +93,7 @@ public class ParserAttribute extends SingletonAttribute {
      *  that contains an instance of ParserAttribute. If none is
      *  found, then a new ParserAttribute is created at the top level.
      *  @param object The object for which to find an associated parser.
+     *  @return The parser for the specified object.
      *  @exception NullPointerException If the argument is null.
      */
     public static MoMLParser getParser(NamedObj object) {
@@ -123,6 +125,8 @@ public class ParserAttribute extends SingletonAttribute {
 
     /** Set the parser.
      *  @param parser The parser.
+     *  @see #getParser()
+     *  @see #getParser(NamedObj)
      */
     public void setParser(MoMLParser parser) {
         _parser = parser;

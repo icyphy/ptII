@@ -81,6 +81,6 @@ public interface ErrorHandler {
     /** Indicator to cancel parsing XML. */
     public static final int CANCEL = 1;
 
-    /** Indicator to request that the exception be rethrown */
+    /** Indicator to request that the exception be rethrown. */
     public static final int RETHROW = 3;
 }

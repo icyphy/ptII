@@ -142,6 +142,7 @@ public class Documentation extends StringAttribute {
 
     /** Get the documentation as a string.
      *  @return The documentation.
+     *  @see #setValue(String)
      */
     public String getValue() {
         return getExpression();
@@ -172,6 +173,7 @@ public class Documentation extends StringAttribute {
 
     /** Set the documentation string.
      *  @param value The documentation.
+     *  @see #getValue()
      */
     public void setValue(String value) {
         try {

@@ -63,7 +63,8 @@ public class UndoContext {
     ////                         Constructors                      ////
 
     /**
-     *  Create a new UndoContext which may or may not need undo MoML generated
+     *  Create a new UndoContext which may or may not need undo MoML
+     *  generated.
      *
      *  @param undoableContext Whether or not undo MoML is required for this
      *  context
@@ -221,7 +222,8 @@ public class UndoContext {
      *   or an empty string if none is needed.
      *  @see #moveContextStart(NamedObj, NamedObj)
      */
-    public static String moveContextEnd(NamedObj context, NamedObj containee) {
+    public static String moveContextEnd(NamedObj context,
+            NamedObj containee) {
         if (moveContextStart(context, containee).equals("")) {
             return "";
         }
@@ -242,7 +244,7 @@ public class UndoContext {
      *  For example, if the context has full name ".top" and the
      *  containee has full name ".top.a.b.c.d", then MoML to move
      *  down the model such as the following is returned:
-     *  <entity name="a.b.c" >
+     *  &lt;entity name="a.b.c" &gt;
      *  @param context The current context.
      *  @param containee The containee whose immediate context we want.
      *  @return The MoML to put us in the right context from the current
@@ -281,7 +283,7 @@ public class UndoContext {
     }
 
     /**
-     *  Set whether or not the child contexts are undoable
+     *  Set whether or not the child contexts are undoable.
      *
      * @param  isUndoable  the new statet
      */
@@ -290,7 +292,7 @@ public class UndoContext {
     }
 
     /**
-     *  Set whether or not the current context is undoable
+     *  Set whether or not the current context is undoable.
      *
      * @param  isUndoable  the new statet
      */
@@ -298,7 +300,7 @@ public class UndoContext {
         _undoable = isUndoable;
     }
 
-    /** Return a string representation of this object */
+    /** Return a string representation of this object. */
     public String toString() {
         return "UndoContext: " + (isUndoable() ? "are" : "are not")
                 + " undoable and "

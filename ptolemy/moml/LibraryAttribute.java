@@ -125,6 +125,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
      *  @exception Exception If the library specification
      *   is invalid, for example because the MoML cannot be parsed, or
      *   because it does not define an instance of CompositeEntity.
+     *  @see #setLibrary(CompositeEntity)
      */
     public CompositeEntity getLibrary() throws Exception {
         if (_librarySet) {
@@ -157,6 +158,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
      *  ensures that the library contains an attribute named "_libraryMarker"
      *  by creating one if it is not there.
      *  @param library The library.
+     *  @see #getLibrary()
      */
     public void setLibrary(CompositeEntity library) {
         _library = library;

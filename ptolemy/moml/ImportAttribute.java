@@ -80,6 +80,7 @@ public class ImportAttribute extends Attribute {
      *   This argument is ignored.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If there is a problem writing the MoML.
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
