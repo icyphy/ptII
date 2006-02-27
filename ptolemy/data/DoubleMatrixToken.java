@@ -147,7 +147,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  see {@link #_nil()} with rows set to -1 and
      *  columns set to -1.
      */
-    public DoubleMatrixToken(double[][] value) throws IllegalActionException {
+    public DoubleMatrixToken(double[][] value) {
         this(value, DO_COPY);
     }
 
