@@ -530,14 +530,7 @@ public class UtilityFunctions {
             }
         }
 
-        try {
-            return new DoubleMatrixToken(result);
-        } catch (IllegalActionException illegalAction) {
-            // This should not happen since result should not be null.
-            throw new InternalErrorException("UtilityFunction.gaussian: "
-                    + "Cannot create the DoubleMatrixToken that contains "
-                    + "Gaussian random numbers.");
-        }
+        return new DoubleMatrixToken(result);
     }
 
     /** Get the specified property from the environment. An empty string
@@ -1163,14 +1156,7 @@ public class UtilityFunctions {
             }
         }
 
-        try {
-            return new DoubleMatrixToken(result);
-        } catch (IllegalActionException illegalAction) {
-            // This should not happen since result should not be null.
-            throw new InternalErrorException("UtilityFunction.random: "
-                    + "Cannot create the DoubleMatrixToken that contains "
-                    + "random numbers.");
-        }
+        return new DoubleMatrixToken(result);
     }
 
     /** Return the (exact) return type of the random function above.
