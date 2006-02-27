@@ -91,15 +91,16 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         return attributeValue;
     }
 
-    /** Do nothing.
+    /** In this class, do nothing.
      *  @param container The object created by this element.
      *  @param elementName The element name.
+     *  @exception Exception Not thrown in this base class
      */
     public void filterEndElement(NamedObj container, String elementName)
             throws Exception {
     }
 
-    /** Remove a class to be filtered
+    /** Remove a class to be filtered.
      *  @param className The name of the class to be filtered
      *  out, for example "ptolemy.copernicus.kernel.GeneratorAttribute".
      *  @see #put(String, String)

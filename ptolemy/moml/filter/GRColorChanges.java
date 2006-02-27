@@ -90,8 +90,10 @@ public class GRColorChanges implements MoMLFilter {
      *  of PolyCylinder3D, perform a similar change from matrix
      *  to array.
      *  @param container The object defined by the element that this
-     *   is the end of.
+     *  is the end of.
      *  @param elementName The element name.
+     *  @exception Exception if there is a problem substituting
+     *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName)
             throws Exception {

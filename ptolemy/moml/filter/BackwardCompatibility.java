@@ -55,13 +55,14 @@ import ptolemy.moml.MoMLFilter;
  */
 public class BackwardCompatibility {
     /** Return a list where each element of the list is a
-     *  MoMLFilter to be applied to handle backward compatibility
+     *  MoMLFilter to be applied to handle backward compatibility.
+     *  @return a list of all the filters.
      */
     public static List allFilters() {
         return _filterList;
     }
 
-    /** Return a string that describes all the filters
+    /** Return a string that describes all the filters.
      *  @return the String that describes all the filters and that ends with a
      *  newline.
      */

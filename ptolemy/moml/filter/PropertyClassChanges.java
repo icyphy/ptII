@@ -177,6 +177,7 @@ public class PropertyClassChanges implements MoMLFilter {
     /** Reset private variables.
      *  @param container The object created by this element.
      *  @param elementName The element name.
+     *  @exception Exception Not thrown in this base class
      */
     public void filterEndElement(NamedObj container, String elementName)
             throws Exception {

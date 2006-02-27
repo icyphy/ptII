@@ -121,6 +121,8 @@ public class AddIcon implements MoMLFilter {
      *  defined in a MoML element with the specified name.
      *  @param container The object created by this element.
      *  @param elementName The element name.
+     *  @exception Exception if there is a problem substituting
+     *  in the new value.
      */
     public void filterEndElement(NamedObj container, String elementName)
             throws Exception {

@@ -166,9 +166,10 @@ public class MultiportToSinglePort implements MoMLFilter {
         return attributeValue;
     }
 
-    /** Do nothing.
+    /** In this class, do nothing.
      *  @param container The object created by this element.
      *  @param elementName The element name.
+     *  @exception Exception Not thrown in this base class.
      */
     public void filterEndElement(NamedObj container, String elementName)
             throws Exception {

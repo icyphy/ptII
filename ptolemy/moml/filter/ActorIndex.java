@@ -76,7 +76,7 @@ public class ActorIndex {
      *  The files generated have the name <i>actorName<i>idx.htm, where
      *  <i>actorName</i> is the name of the actor.  Typically, the value
      *  for this parameter is doc/codeDoc.
-     *  @exception IOException If there is a problem reading or writing
+     *  @exception Exception If there is a problem reading or writing
      *  a file.
      */
     public static void generateActorIndex(String classesFileName,
@@ -231,6 +231,13 @@ public class ActorIndex {
      *  <pre>
      *  java -classpath "$PTII;$PTII/lib/diva.jar" ptolemy.moml.filter.ActorIndex allActors.txt models.txt doc/codeDoc
      *  </pre>
+     *  @param args An array of three Strings
+     *  <br> The name of the file that lists all the actors in which we are
+     *  interested.
+     *  <br> The name of the file that lists all the models to be indexed.
+     *  <br> The directory in which to write the index files.
+     *  @exception Exception If there is a problem reading or writing
+     *  a file.
      */
     public static void main(String[] args) throws Exception {
         ActorIndex.generateActorIndex(args[0], args[1], args[2]);
