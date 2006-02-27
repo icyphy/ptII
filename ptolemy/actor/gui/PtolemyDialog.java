@@ -54,6 +54,7 @@ import ptolemy.util.MessageHandler;
 //// PtolemyDialog
 
 /**
+ Ptolemy specific dialog.
 
  @author Rowland R Johnson
  @version $Id$
@@ -62,6 +63,15 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (rowland)
  */
 public abstract class PtolemyDialog extends JFrame implements ActionListener {
+    /**
+     * Construct a PtolemyDialog.
+     *
+     * @param title The title of the PtolemyDialog.
+     * @param dialogTableau  The dialogTableau, used to set the title.
+     * @param owner  The frame.
+     * @param target The model 
+     * @param configuration  a Configuration object
+     */
     public PtolemyDialog(String title, DialogTableau dialogTableau,
             Frame owner, Entity target, Configuration configuration) {
         super(title);
@@ -124,23 +134,16 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    // This method gets invoked as a result of a GUI action. Presently, it
-    // handles button presses. It has to be a public, not protected, or private,
-    // since it is inherited from ActionListener where it is public. Since it
-    // isn't meant to be invoked by the developer there is no javadoc.
+
+    /** If the action event is a JButton, process the button press.
+     *  @param aEvent The event.
+     */
     public void actionPerformed(ActionEvent aEvent) {
         String command = aEvent.getActionCommand();
 
         if (aEvent.getSource() instanceof JButton) {
             _processButtonPress(command);
         }
-    }
-
-    /** Return the DialogTableau.
-     * @return The DialogTableau
-     */
-    public DialogTableau getDialogTableau() {
-        return _dialogTableau;
     }
 
     /** Return the target.
@@ -150,14 +153,25 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         return _target;
     }
 
+    /** If necessary save any state.
+     *  In this base class, do nothing.  Derived classes should extend
+     *  this method so that the {@link #_cancel()} method save state
+     *  if necessary.
+     */
     public void saveIfRequired() {
     }
 
+    /** Set the contents of this dialog.
+     *  @param contents The contents.
+     */
     public void setContents(JComponent contents) {
         _contents = contents;
         getContentPane().add(_contents, BorderLayout.CENTER);
     }
 
+    /** Set the contents of this dialog.
+     *  @param contents The contents.
+     */
     public void setScrollableContents(JComponent contents) {
         _contents = contents;
 
@@ -174,11 +188,17 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Cancel this dialog, saving if necessary.
+     */
     protected void _cancel() {
         saveIfRequired();
         dispose();
     }
 
+    /** Created extended buttons.
+     *  @param _buttons The buttons to be created.
+     */
     protected abstract void _createExtendedButtons(JPanel _buttons);
 
     /** Get the URL that is the help for this dialog.
@@ -186,16 +206,21 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
      */
     protected abstract URL _getHelpURL();
 
+    /** Return true if any of the values have been changed, but the state
+     *  has not yet been saved.   
+     *  @return True if values have been changed but not saved.
+     */ 
     protected boolean _isDirty() {
         return _dirty;
     }
 
-    /** The button semantics are
-     *  Commit - Apply and then cancel the dialog.
-     *  Apply  - make the changes that have been expressed thus far.
-     *  Help   - Show the associated help.
-     *  Cancel - Remove the dialog without making any pending changes.
-     * @param button
+    /** Process button presses.
+     *  The button semantics are
+     *  <br>Commit - Apply and then cancel the dialog.
+     *  <br>Apply  - make the changes that have been expressed thus far.
+     *  <br>Help   - Show the associated help.
+     *  <br>Cancel - Remove the dialog without making any pending changes.
+     * @param button The name of the button to process.
      */
     protected void _processButtonPress(String button) {
         if (button.equals("Cancel")) {
@@ -215,6 +240,9 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
         _dirty = b;
     }
 
+    /** Display the help URL.
+     *  @see #_getHelpURL()
+     */
     protected void _showHelp() {
         URL toRead = _getHelpURL();
 
@@ -231,16 +259,22 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                   ////
+
+    /** The configuration that corresponds with this dialog.
+     *  The configuration is used to properly display the help text.
+     */   
     protected Configuration _configuration;
 
-    protected boolean _debug = false;
-
+    /** The help button. */
     protected JButton _helpButton;
 
+    /** The cancel button. */
     protected JButton _cancelButton;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Create the buttons panel. */
     private JPanel _createButtonsPanel() {
         JPanel _buttons = new JPanel();
 
@@ -269,13 +303,14 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     ////                         private members                   ////
     private JComponent _contents;
 
-    // The following is true if any of the values have been changed but not
-    // applied.
+    /** The following is true if any of the values have been changed but not
+     * applied.
+     */
     private boolean _dirty = false;
 
-    private Frame _owner;
-
     private DialogTableau _dialogTableau;
+
+    private Frame _owner;
 
     private Entity _target;
 }

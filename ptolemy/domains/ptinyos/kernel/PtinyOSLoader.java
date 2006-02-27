@@ -122,7 +122,9 @@ public interface PtinyOSLoader {
      */
     public void wrapup();
 
+    /** Start the event accept and command read threads. */
     public void startThreads();
 
+    /** Join the event accept and command read threads. */
     public int joinThreads();
 }

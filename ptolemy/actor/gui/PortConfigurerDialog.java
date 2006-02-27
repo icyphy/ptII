@@ -298,6 +298,9 @@ public class PortConfigurerDialog extends PtolemyDialog implements
         }
     }
 
+    /** Close this dialog.  If the state has not be saved, prompt
+     *  the user to save the modifications.
+     */
     public boolean close() {
         if (_isDirty()) {
             int option = JOptionPane.showConfirmDialog(getOwner(),
