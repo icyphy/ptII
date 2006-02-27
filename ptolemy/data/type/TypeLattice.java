@@ -597,8 +597,11 @@ public class TypeLattice {
             _basicLattice.addEdge(unionRep, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, unionRep);
 
-            assert _basicLattice.isLattice() : 
-                "TheTypeLattice: The type hierarchy  is not a lattice";
+            // FIXME: Replace this with an assert when we move to 1.5
+            if (!_basicLattice.isLattice()) {
+                throw new InternalErrorException("TheTypeLattice: The "
+                        + "type hierarchy is not a lattice.");
+            }
         }
 
         ///////////////////////////////////////////////////////////////
