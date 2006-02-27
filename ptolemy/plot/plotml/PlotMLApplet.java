@@ -118,6 +118,7 @@ public class PlotMLApplet extends PlotApplet {
 
     /** Create a new parser object for the applet.  Derived classes can
      *  redefine this method to return a different type of parser.
+     *  @return A new PlotMLParser.
      */
     protected PlotMLParser _newParser() {
         return new PlotMLParser((Plot) plot());

@@ -414,7 +414,10 @@ public abstract class MatrixToken extends Token {
      *  corresponding function.
      *  @param type3 The type of the third argument to the
      *  corresponding function.
-     *  @return The type of the value returned from the corresponding function.
+     *  @return The type of the value returned from the corresponding
+     *  function.
+     *  @exception IllegalActionException If thrown while creating a
+     *  new ArrayType object.
      */
     public static Type createSequenceReturnType(Type type1, Type type2,
             Type type3) throws IllegalActionException {
@@ -429,6 +432,7 @@ public abstract class MatrixToken extends Token {
      *  @param increment The difference between elements in the array.
      *  @param length The size of the array to create, which must not be
      *  negative.
+     *  @return an array of tokens.
      *  @exception IllegalActionException If the length is negative, or
      *  tokens of the given type cannot be added together.
      *  @deprecated Use createSequence() instead.

@@ -74,6 +74,8 @@ public class PlotMLParser extends PlotBoxMLParser {
      *  &AElig;lfred will call this method at the end of each element
      *  (including EMPTY elements).
      *  @param elementName The element type name.
+     *  @exception Exception If thrown by the superclass or while calling
+     *  setConnected().
      */
     public void endElement(String elementName) throws Exception {
         super.endElement(elementName);
@@ -248,6 +250,7 @@ public class PlotMLParser extends PlotBoxMLParser {
      *  The second argument is the element name, used for error reporting.
      *  @param connected If true, connect to the previous point.
      *  @param element The name of the element.
+     *  @exception Exception If there is a problem adding the point.
      */
     protected void _addPoint(boolean connected, String element)
             throws Exception {

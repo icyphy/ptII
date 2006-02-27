@@ -139,7 +139,7 @@ public class FunctionToken extends Token {
                 .isCongruent(_function));
     }
 
-    /** Return a String representation of this function
+    /** Return a String representation of this function.
      */
     public String toString() {
         return _function.toString();

@@ -67,6 +67,7 @@ public class HistogramMLParser extends PlotMLParser {
      *  &AElig;lfred will call this method at the end of each element
      *  (including EMPTY elements).
      *  @param elementName The element type name.
+     *  @exception Exception If thrown by the base class.
      */
     public void endElement(String elementName) throws Exception {
         if (elementName.equals("bars") || elementName.equals("dataset")) {
@@ -159,6 +160,7 @@ public class HistogramMLParser extends PlotMLParser {
      *  The second argument is the element name, used for error reporting.
      *  @param connected Ignored.
      *  @param element The name of the element.
+     *  @exception Exception if thrown whil parsing the y attribute.
      */
     protected void _addPoint(boolean connected, String element)
             throws Exception {

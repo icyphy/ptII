@@ -653,7 +653,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *   should be read.
      *  @exception IllegalActionException Thrown if the helper class cannot
      *   be found.
-     *  @see #setReadOffset(IOPort, int, int)
+     *  @see #setReadOffset(IOPort, int, Object)
      */
     public Object getReadOffset(IOPort inputPort, int channelNumber)
             throws IllegalActionException {

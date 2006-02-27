@@ -53,9 +53,9 @@ public class HideAnnotationNames implements MoMLFilter {
      *  If the attributeName is "name" and attributeValue ends
      *  with "annotation", then
      *  <pre>
-     *   <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-     *   </property>
-     *  <pre>
+     *   &lt;property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true"&gt;
+     *   &lt;/property&gt;
+     *  </pre>
      *  is added if it is not yet present.
      *
      *  @param container  The container for this attribute.

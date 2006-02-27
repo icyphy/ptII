@@ -92,7 +92,7 @@ public class HistogramMLApplication extends PlotMLApplication {
      *  The command to run would be:
      *  <pre>
      *  java -classpath $PTII ptolemy.plot.plotml.HistogramMLApplication
-     *  <pre>
+     *  </pre>
      *  @param args Arguments suitable for the
      *  {@link ptolemy.plot.Histogram} class.
      */

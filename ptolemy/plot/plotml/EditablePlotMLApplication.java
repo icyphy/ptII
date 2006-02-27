@@ -139,7 +139,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
      *  The command to run would be:
      *  <pre>
      *  java -classpath $PTII ptolemy.plot.plotml.EditablePlotMLApplication
-     *  <pre>
+     *  </pre>
      *  @param args Arguments suitable for the
      *  {@link ptolemy.plot.EditablePlot} class.
      */
@@ -148,7 +148,8 @@ public class EditablePlotMLApplication extends PlotMLApplication {
             Runnable doActions = new Runnable() {
                 public void run() {
                     try {
-                        new EditablePlotMLApplication(new EditablePlot(), args);
+                        new EditablePlotMLApplication(new EditablePlot(),
+                                args);
                     } catch (Exception ex) {
                         System.err.println(ex.toString());
                         ex.printStackTrace();

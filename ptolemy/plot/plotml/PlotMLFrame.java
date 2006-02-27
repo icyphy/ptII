@@ -89,6 +89,7 @@ public class PlotMLFrame extends PlotFrame {
 
     /** Construct a plot frame with the specified title and by default
      *  contains an instance of Plot.
+     *  @param title The title of the Plot frame.
      */
     public PlotMLFrame(String title) {
         this(title, null);
@@ -96,6 +97,8 @@ public class PlotMLFrame extends PlotFrame {
 
     /** Construct a plot frame with the specified title and the specified
      *  instance of PlotBox.
+     *  @param title The title of the Plot frame.
+     *  @param plotArg The specified PlotBox.
      */
     public PlotMLFrame(String title, PlotBox plotArg) {
         super(title, plotArg);

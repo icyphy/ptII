@@ -99,7 +99,7 @@ public class PlotMLApplication extends PlotApplication {
      *  The command to run would be:
      *  <pre>
      *  java -classpath $PTII ptolemy.plot.plotml.PlotMLApplication
-     *  <pre>
+     *  </pre>
      *  @param args Arguments suitable for the
      *  {@link ptolemy.plot.Plot} class.
      */

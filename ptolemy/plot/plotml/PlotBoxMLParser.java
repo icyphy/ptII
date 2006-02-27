@@ -133,6 +133,8 @@ public class PlotBoxMLParser extends HandlerBase {
      *  &AElig;lfred will call this method at the end of each element
      *  (including EMPTY elements).
      *  @param elementName The element type name.
+     *  @exception Exception If thrown while invoking a method on the
+     *  Plot object.
      */
     public void endElement(String elementName) throws Exception {
         if (elementName.equals("noGrid")) {
@@ -180,6 +182,8 @@ public class PlotBoxMLParser extends HandlerBase {
      *  </pre>
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent a valid PlotML file.
+     *  @param base The base URL for relative references, or null if
+     *   there is none.
      *  @param input The stream from which to read XML.
      *  @exception Exception If the parser fails.
      */
@@ -190,6 +194,8 @@ public class PlotBoxMLParser extends HandlerBase {
     /** Parse the given stream as a PlotML file.
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent a valid PlotML file.
+     *  @param base The base URL for relative references, or null if
+     *   there is none.
      *  @param reader The stream from which to read XML.
      *  @exception Exception If the parser fails.
      */
@@ -208,6 +214,8 @@ public class PlotBoxMLParser extends HandlerBase {
     /** Parse the given text as PlotML.
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent valid PlotML data.
+     *  @param base The base URL for relative references, or null if
+     *   there is none.
      *  @param text The PlotML data.
      *  @exception Exception If the parser fails.
      */
@@ -374,6 +382,7 @@ public class PlotBoxMLParser extends HandlerBase {
     /** If the argument is null, throw an exception with the given message.
      *  @param object The reference to check for null.
      *  @param message The message to issue if the reference is null.
+     *  @exception XmlException If the object argument is null.
      */
     protected void _checkForNull(Object object, String message)
             throws XmlException {

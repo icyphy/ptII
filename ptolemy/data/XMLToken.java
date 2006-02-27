@@ -62,7 +62,7 @@ public class XMLToken extends Token {
      *  @param init The initialization string.
      *  @exception Exception If the string is not parsable.
      */
-    public XMLToken(String xmlStr) throws Exception {
+    public XMLToken(String init) throws Exception {
         XMLParser parser = new XMLParser();
         _doc = parser.parser(xmlStr);
         _toString = xmlStr;
