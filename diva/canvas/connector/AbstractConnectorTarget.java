@@ -73,14 +73,14 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
      */
     public abstract Site getHeadSite(Figure f, double x, double y);
 
-    /** Return a suitable site to connect a connector's tail to,
-     * based on this figure and location. Return null if there
-     * is no suitable site.  In general, it is better to use the method that
-     * takes a connector, as this gives the target a chance to disallow the
-     * connection.  This method is primarily useful for manually
-     * creating new figures.  In this base class, assume that tails are treated
-     * the same way as heads, so call the getHeadSite method with the same
-     * arguments.
+    /** Return a suitable site to connect a connector's tail to, based
+     * on this figure and location. Return null if there is no
+     * suitable site.  In general, it is better to use the method that
+     * takes a connector, as this gives the target a chance to
+     * disallow the connection.  This method is primarily useful for
+     * manually creating new figures.  In this base class, assume that
+     * tails are treated the same way as heads, so call the
+     * getHeadSite method with the same arguments.
      */
     public Site getTailSite(Figure f, double x, double y) {
         return getHeadSite(f, x, y);
