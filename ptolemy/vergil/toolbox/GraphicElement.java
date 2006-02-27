@@ -68,7 +68,7 @@ public class GraphicElement {
     /**
      * Return a set of all the attribute names, where each element of
      * the set is a String.
-     * @param return The set of all attribute names
+     * @return The set of all attribute names
      */
     public Set attributeNameSet() {
         return _attributes.keySet();
@@ -78,6 +78,7 @@ public class GraphicElement {
      * Write the GraphicElement in XML format to the given writer.
      * @param out The writer. 
      * @param prefix The prefix, usually a string of spaces.
+     * @exception IOException If there is a problem writing the MoML.
      */
     public void exportMoML(Writer out, String prefix) throws IOException {
         XmlElement element = new XmlElement(_type, _attributes);
@@ -85,11 +86,11 @@ public class GraphicElement {
         element.writeXML(out, prefix);
     }
 
-    /**
-     * Return the value of the attribute with the given name.
-     * Throw an exception if there is no attribute with the
-     * given name in this schematic.
-     * @see #setAttribute(String, String)
+    /** Return the value of the attribute with the given name.
+     *  Throw an exception if there is no attribute with the
+     *  given name in this schematic.
+     *  @param name The name of the attribute.
+     *  @see #setAttribute(String, String)
      */
     public String getAttribute(String name) {
         return (String) _attributes.get(name);
@@ -156,7 +157,7 @@ public class GraphicElement {
      * Set the attribute with the given name to the given value.
      * @param name The name of the attribute.
      * @param value The value of the attribute.
-     * @see #getAttribute()
+     * @see #getAttribute(String)
      */
     public void setAttribute(String name, String value) {
         _attributes.put(name, value);
