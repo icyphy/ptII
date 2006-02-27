@@ -234,6 +234,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  of the object.
      *  A null figure clears the association.
      *  @param semanticObject The semantic object (normally a Locatable).
+     *  @param figure The figure.
      */
     public void setFigure(Object semanticObject, Figure figure) {
         super.setFigure(semanticObject, figure);

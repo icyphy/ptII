@@ -149,21 +149,24 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  event whose source is the given source.
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
+     *  @param edge The edge that is to be disconnected.
      *  @exception GraphException If the operation fails.
      */
     public abstract void disconnectEdge(Object eventSource, Object edge);
 
     /** Return a MoML String that will delete the given edge from the
      *  Ptolemy model.
+     *  @param edge The edge that is to be disconnected.
      *  @return A valid MoML string.
      */
     public abstract String getDeleteEdgeMoML(Object edge);
 
     /** Return a MoML String that will delete the given node from the
      *  Ptolemy model.
+     *  @param node The edge that is to be disconnected.
      *  @return A valid MoML string.
      */
-    public abstract String getDeleteNodeMoML(Object edge);
+    public abstract String getDeleteNodeMoML(Object node);
 
     /** Return the model for the given composite object.
      *  In this base class, return an instance of CompositePtolemyModel
@@ -184,9 +187,9 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
     /** Return the node model for the given object.  If the object is an
      *  attribute, then return an attribute model. Otherwise, return null.
      *  @param node An object which is assumed to be in this graph model.
-     *  @return An instance of the inner class AttributeNodeModel if the object
-     *   is an instance of Locatable whose container is an instance
-     *   of Attribute, and otherwise, null.
+     *  @return An instance of the inner class AttributeNodeModel if
+     *  the object is an instance of Locatable whose container is an
+     *  instance of Attribute, and otherwise, null.
      */
     public NodeModel getNodeModel(Object node) {
         if (node instanceof Locatable
@@ -208,6 +211,9 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @param object The graph object, which is assumed to be an instance of
      *   NamedObj.
      *  @param propertyName The name of the new property.
+     *  @return The property of the object associated with the given property
+     *  name.
+     *  @see #setProperty(Object, String, Object)
      */
     public Object getProperty(Object object, String propertyName) {
         try {
@@ -240,6 +246,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @param element A graph element.
      *  @return The semantic object associated with this element, or null
      *   if the object is not recognized.
+     *  @see #setSemanticObject(Object, Object)
      */
     public Object getSemanticObject(Object element) {
         if (element instanceof Port) {
@@ -256,6 +263,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  that it is an instance of Locatable.
      *  @param object The object to test for being a node
      *   (vs. an edge).
+     *  @return True if the given object is a node in this model.
      */
     public boolean isNode(Object object) {
         Object nodeModel = getNodeModel(object);
@@ -282,6 +290,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  graph listeners with a NODE_REMOVED event.
      *  @param eventSource The source of the event that will be dispatched,
      *   e.g. the view that made this call.
+     *  @param node The node to be removed.
      *  @exception GraphException if the operation fails.
      */
     public abstract void removeNode(Object eventSource, Object node);
@@ -299,6 +308,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @param object The graph object.
      *  @param propertyName The property name.
      *  @param value The new value of the property.
+     *  @see #getProperty(Object, String)
      */
     public void setProperty(final Object object, final String propertyName,
             final Object value) {
@@ -311,6 +321,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel
      *  @param object The graph object that represents a node or an edge.
      *  @param semantic The semantic object to associate with the given
      *   graph object.
+     *  @see #getSemanticObject(Object)
      */
     public void setSemanticObject(Object object, Object semantic) {
         throw new UnsupportedOperationException("Ptolemy Graph Model does"
