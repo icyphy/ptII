@@ -205,7 +205,7 @@ public class CircularSweep3D extends GRShadedShape {
      *  @return the Java3D circular sweep
      */
     protected Node _getNodeObject() {
-        return (Node) _containedNode;
+        return _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////

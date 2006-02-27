@@ -564,7 +564,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
         for (int i = 0; i < width; i++) {
             SceneGraphToken objectToken = (SceneGraphToken) sceneGraphIn.get(i);
-            Node node = (Node) objectToken.getSceneGraphNode();
+            Node node = objectToken.getSceneGraphNode();
             _addChild(node);
         }
     }
@@ -582,7 +582,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
             SceneGraphToken objectToken = (SceneGraphToken) sceneGraphIn.get(i);
 
             // node = objectToken.getSceneGraphNode();
-            Node node = (Node) objectToken.getSceneGraphNode();
+            Node node = objectToken.getSceneGraphNode();
 
             //((BranchGroup) node).detach();
             /* if (_debugging) {

@@ -514,8 +514,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
 
-        Iterator actors = ((ptolemy.actor.CompositeActor) compositeActorHelper
-                .getComponent()).deepEntityList().iterator();
+        //Iterator actors = ((ptolemy.actor.CompositeActor) compositeActorHelper
+        //        .getComponent()).deepEntityList().iterator();
 
         CodeStream sharedStream = new CodeStream(
                 "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");

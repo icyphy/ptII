@@ -187,11 +187,10 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
         int vectorizationFactor = 1;
 
-        if (director instanceof SDFDirector) {
-            Token token = ((SDFDirector) director).vectorizationFactor
-                    .getToken();
-            vectorizationFactor = ((IntToken) token).intValue();
-        }
+        //if (director instanceof SDFDirector) {
+        Token token = director.vectorizationFactor.getToken();
+        vectorizationFactor = ((IntToken) token).intValue();
+        //}
 
         if (vectorizationFactor < 1) {
             throw new NotSchedulableException(this,
@@ -344,11 +343,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
         DistributedSDFDirector director = (DistributedSDFDirector) getContainer();
 
-        if (director instanceof DistributedSDFDirector) {
-            Token token = ((DistributedSDFDirector) director).parallelSchedule
-                    .getToken();
-            parallelSchedule = ((BooleanToken) token).booleanValue();
-        }
+        Token token = director.parallelSchedule.getToken();
+        parallelSchedule = ((BooleanToken) token).booleanValue();
 
         if (parallelSchedule) {
             schedule = _getParallelSchedule();
@@ -458,7 +454,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                     // Changed from addFirst to addLast, this does not really
                     // matter since this is are all the sources that have
                     // no input requirements to be fired.
-                    readyToScheduleActorList.addLast((ComponentEntity) actor);
+                    readyToScheduleActorList.addLast(actor);
 
                     /**************************************************
                      * > NEW!                                         *
@@ -524,7 +520,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 // Changed from addFirst to addLast, this does not really
                 // matter since this is are all the sources that have
                 // no input requirements to be fired.
-                parallelLevel.addLast((Actor) actors.next());
+                parallelLevel.addLast(actors.next());
             }
 
             /**************************************************
@@ -607,7 +603,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
                 // Add it to the schedule numberOfFirings times.
                 Firing firing = new Firing();
-                firing.setActor((Actor) currentActor);
+                firing.setActor(currentActor);
                 firing.setIterationCount(numberOfFirings);
 
                 /**************************************************
@@ -622,7 +618,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
                 // Get all its outputPorts
                 // and simulate the proper production of tokens.
-                for (Iterator outputPorts = ((Actor) currentActor)
+                for (Iterator outputPorts = currentActor
                         .outputPortList().iterator(); outputPorts.hasNext();) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
@@ -698,7 +694,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                         // Otherwise the actor still has firings left.
                         // Count the number of unfulfilled inputs.
                         int inputCount = _countUnfulfilledInputs(
-                                (Actor) currentActor, unscheduledActorList,
+                                currentActor, unscheduledActorList,
                                 false);
 
                         // We've already removed currentActor from
@@ -801,7 +797,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 }
 
                 SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
-                IOPort connectedPort = (IOPort) receivers[channel][copy]
+                IOPort connectedPort = receivers[channel][copy]
                         .getContainer();
                 ComponentEntity connectedActor = (ComponentEntity) connectedPort
                         .getContainer();

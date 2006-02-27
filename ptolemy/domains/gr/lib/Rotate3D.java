@@ -171,7 +171,7 @@ public class Rotate3D extends GRTransform {
      *  @return the Java3D TransformGroup
      */
     protected Node _getNodeObject() {
-        return (Node) _topTranslate;
+        return _topTranslate;
     }
 
     /** Setup the initial rotation

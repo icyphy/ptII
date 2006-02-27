@@ -181,7 +181,7 @@ public class Sphere3D extends GRShadedShape {
      *  @return the Java3D Sphere
      */
     protected Node _getNodeObject() {
-        return (Node) _containedNode;
+        return _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////

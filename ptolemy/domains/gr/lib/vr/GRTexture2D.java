@@ -133,8 +133,8 @@ public class GRTexture2D extends GRGeometry {
     // public FilePortParameter voxelFile;
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _sSize = (int) ((IntToken) xResolution.getToken()).intValue();
-        _tSize = (int) ((IntToken) yResolution.getToken()).intValue();
+        _sSize = ((IntToken) xResolution.getToken()).intValue();
+        _tSize = ((IntToken) yResolution.getToken()).intValue();
         _counter = 0;
     }
 
@@ -346,7 +346,7 @@ public class GRTexture2D extends GRGeometry {
 
         //Read in image as a BufferedImage
         try {
-            _bufferedImage = (BufferedImage) ImageIO.read(new File(_fileRoot));
+            _bufferedImage = ImageIO.read(new File(_fileRoot));
         } catch (IOException e) {
             System.err.println(e);
             _bufferedImage = null;
@@ -566,8 +566,7 @@ public class GRTexture2D extends GRGeometry {
                     2,
                     3
                 });
-        int[] offset2 = ((ComponentSampleModel) componentSampleModelwAlpha)
-                    .getBandOffsets();
+        int[] offset2 = componentSampleModelwAlpha.getBandOffsets();
         System.out.println("componentSampleModelwAlpha band offsets = "
             + offset2[0] + ", " + offset2[1] + ", " + offset2[2] + ", "
             + offset2[3]);

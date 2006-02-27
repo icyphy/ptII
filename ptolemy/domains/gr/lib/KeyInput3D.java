@@ -73,7 +73,7 @@ public class KeyInput3D extends GRActor3D {
         super.fire();
 
         if (_hasData) {
-            keycode.send(0, new IntToken((int) _keycode));
+            keycode.send(0, new IntToken(_keycode));
 
             if (_debugging) {
                 _debug("KeyCode = " + (int) _keycode);
@@ -95,7 +95,7 @@ public class KeyInput3D extends GRActor3D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     protected Node _getNodeObject() {
-        return (Node) _userInputNode;
+        return _userInputNode;
     }
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {

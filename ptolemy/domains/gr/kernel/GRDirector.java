@@ -586,7 +586,7 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
     private void _reset() {
-        _lastIterationTime = (long) 0;
+        _lastIterationTime = 0;
     }
 
     ///////////////////////////////////////////////////////////////////

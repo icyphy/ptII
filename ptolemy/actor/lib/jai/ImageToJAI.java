@@ -82,7 +82,7 @@ public class ImageToJAI extends Transformer {
 
         ParameterBlock parameters = new ParameterBlock();
         ImageToken imageToken = (ImageToken) input.get(0);
-        Image awtImage = (Image) imageToken.asAWTImage();
+        Image awtImage = imageToken.asAWTImage();
         parameters.add(awtImage);
 
         RenderedOp jaiImage = JAI.create("awtImage", parameters);

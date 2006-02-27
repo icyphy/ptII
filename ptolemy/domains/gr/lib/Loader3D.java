@@ -58,11 +58,11 @@ public class Loader3D extends GRShadedShape {
     public Parameter filename;
 
     public Node _getNodeObject() {
-        return (Node) obj.getSceneGroup();
+        return obj.getSceneGroup();
     }
 
     protected void _createModel() throws IllegalActionException {
-        String fileName = (String) ((StringToken) filename.getToken())
+        String fileName = ((StringToken) filename.getToken())
                 .stringValue();
 
         //Appearance ap = new Appearance();

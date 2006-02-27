@@ -100,7 +100,7 @@ public class MouseInput3D extends GRActor3D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     protected Node _getNodeObject() {
-        return (Node) _containedNode;
+        return _containedNode;
     }
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {

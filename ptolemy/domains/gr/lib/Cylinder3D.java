@@ -208,7 +208,7 @@ public class Cylinder3D extends GRShadedShape {
      *  @return The Java3D Cylinder.
      */
     protected Node _getNodeObject() {
-        return (Node) _containedNode;
+        return _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////

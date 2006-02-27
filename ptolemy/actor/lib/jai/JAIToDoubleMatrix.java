@@ -139,13 +139,13 @@ public class JAIToDoubleMatrix extends Transformer {
                 break;
 
             case DataBuffer.TYPE_INT:
-                _maxValue = (double) Integer.MAX_VALUE;
-                _minValue = (double) Integer.MIN_VALUE;
+                _maxValue = Integer.MAX_VALUE;
+                _minValue = Integer.MIN_VALUE;
                 break;
 
             case DataBuffer.TYPE_SHORT:
-                _maxValue = (double) Short.MAX_VALUE;
-                _minValue = (double) Short.MIN_VALUE;
+                _maxValue = Short.MAX_VALUE;
+                _minValue = Short.MIN_VALUE;
                 break;
 
             case DataBuffer.TYPE_USHORT:
@@ -154,11 +154,11 @@ public class JAIToDoubleMatrix extends Transformer {
                 break;
 
             case DataBuffer.TYPE_FLOAT:
-                _maxValue = (double) Float.MAX_VALUE;
+                _maxValue = Float.MAX_VALUE;
                 break;
 
             case DataBuffer.TYPE_DOUBLE:
-                _maxValue = (double) Double.MAX_VALUE;
+                _maxValue = Double.MAX_VALUE;
                 break;
 
             default:

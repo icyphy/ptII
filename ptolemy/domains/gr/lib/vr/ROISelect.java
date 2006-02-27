@@ -160,7 +160,7 @@ public class ROISelect extends TypedAtomicActor {
                 _debug("got token");
             }
 
-            _image = (Image) imageToken.getValue();
+            _image = imageToken.getValue();
 
             if (_debugging) {
                 _debug("got value of token");

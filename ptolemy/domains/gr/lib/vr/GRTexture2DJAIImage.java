@@ -129,8 +129,8 @@ public class GRTexture2DJAIImage extends GRGeometry {
     // public FilePortParameter voxelFile;
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _sSize = (int) ((IntToken) xResolution.getToken()).intValue();
-        _tSize = (int) ((IntToken) yResolution.getToken()).intValue();
+        _sSize = ((IntToken) xResolution.getToken()).intValue();
+        _tSize = ((IntToken) yResolution.getToken()).intValue();
         _counter = 0;
     }
 
@@ -366,14 +366,12 @@ public class GRTexture2DJAIImage extends GRGeometry {
                     0
                 });
 
-        int[] bankIndices1 = ((ComponentSampleModel) componentSampleModel)
-                    .getBankIndices();
+        int[] bankIndices1 = componentSampleModel.getBankIndices();
         System.out.println("componentSampleModel # bank Indices = "
             + bankIndices1[0] + ", " + bankIndices1[1] + ", " + bankIndices1[2]
             + ", " + bankIndices1[3]);
 
-        int[] offset1 = ((ComponentSampleModel) componentSampleModel)
-                    .getBandOffsets();
+        int[] offset1 = componentSampleModel.getBandOffsets();
         System.out.println("componentSampleModel band offsets = " + offset1[0]
             + ", " + offset1[1] + ", " + offset1[2] + ", " + offset1[3]);
 
@@ -435,7 +433,7 @@ public class GRTexture2DJAIImage extends GRGeometry {
         _token = input.get(0);
 
         JAIImageToken imageToken = (JAIImageToken) _token;
-        _image = (Image) imageToken.asAWTImage();
+        _image = imageToken.asAWTImage();
         System.out.println("BufferedImage = " + _bufferedImage);
         System.out.println("token = " + _token.getType());
         System.out.println("token = " + _token.getClass().toString());

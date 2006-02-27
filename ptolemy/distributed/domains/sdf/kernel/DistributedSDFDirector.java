@@ -419,7 +419,7 @@ public class DistributedSDFDirector extends SDFDirector {
 
             while (firings.hasNext()) {
                 Firing firing = (Firing) firings.next();
-                Actor actor = (Actor) firing.getActor();
+                Actor actor = firing.getActor();
                 ClientThread clientThread = (ClientThread) actorsThreadsMap
                         .get(actor);
                 clientThread.setIterationCount(firing.getIterationCount());
@@ -434,7 +434,7 @@ public class DistributedSDFDirector extends SDFDirector {
 
                 while (firings.hasNext()) {
                     Firing firing = (Firing) firings.next();
-                    Actor actor = (Actor) firing.getActor();
+                    Actor actor = firing.getActor();
 
                     System.out.println("removing: " + actor.getFullName());
                     ClientThread clientThread = (ClientThread) actorsThreadsMap
@@ -837,7 +837,7 @@ public class DistributedSDFDirector extends SDFDirector {
 
             while (firings.hasNext()) {
                 Firing firing = (Firing) firings.next();
-                Actor actor = (Actor) firing.getActor();
+                Actor actor = firing.getActor();
                 ClientThread clientThread = (ClientThread) actorsThreadsMap
                         .get(actor);
                 clientThread.setIterationCount(firing.getIterationCount());
@@ -884,7 +884,7 @@ public class DistributedSDFDirector extends SDFDirector {
 
             while (firings.hasNext()) {
                 Firing firing = (Firing) firings.next();
-                Actor actor = (Actor) firing.getActor();
+                Actor actor = firing.getActor();
 
                 //                System.out.println("removing: " + actor.getFullName());
                 ClientThread clientThread = (ClientThread) actorsThreadsMap

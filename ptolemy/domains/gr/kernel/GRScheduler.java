@@ -147,7 +147,7 @@ public class GRScheduler extends Scheduler {
             return null;
         }
 
-        CompositeActor castContainer = (CompositeActor) container;
+        CompositeActor castContainer = container;
 
         // First, include all actors as nodes in the graph.
         // get all the contained actors.

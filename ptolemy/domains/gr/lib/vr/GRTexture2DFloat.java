@@ -134,8 +134,8 @@ public class GRTexture2DFloat extends GRGeometry {
     // public FilePortParameter voxelFile;
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _sSize = (int) ((IntToken) xResolution.getToken()).intValue();
-        _tSize = (int) ((IntToken) yResolution.getToken()).intValue();
+        _sSize = ((IntToken) xResolution.getToken()).intValue();
+        _tSize = ((IntToken) yResolution.getToken()).intValue();
         _counter = 0;
     }
 
@@ -347,7 +347,7 @@ public class GRTexture2DFloat extends GRGeometry {
 
         //Read in image as a BufferedImage
         try {
-            _bufferedImage = (BufferedImage) ImageIO.read(new File(_fileRoot));
+            _bufferedImage = ImageIO.read(new File(_fileRoot));
         } catch (IOException e) {
             System.err.println(e);
             _bufferedImage = null;
@@ -392,18 +392,16 @@ public class GRTexture2DFloat extends GRGeometry {
             + componentSampleModel.getSampleSize(3));
         System.out.println("componentSampleModel  = " + componentSampleModel);
         System.out.println("componentSampleModel pixelStride = "
-            + ((ComponentSampleModel) componentSampleModel).getPixelStride());
+            + componentSampleModel.getPixelStride());
         System.out.println("componentSampleModel scanlineStride = "
-            + ((ComponentSampleModel) componentSampleModel).getScanlineStride());
+            + componentSampleModel.getScanlineStride());
 
-        int[] bankIndices1 = ((ComponentSampleModel) componentSampleModel)
-                    .getBankIndices();
+        int[] bankIndices1 = componentSampleModel.getBankIndices();
         System.out.println("componentSampleModel # bank Indices = "
             + bankIndices1[0] + ", " + bankIndices1[1] + ", " + bankIndices1[2]
             + ", " + bankIndices1[3]);
 
-        int[] offset1 = ((ComponentSampleModel) componentSampleModel)
-                    .getBandOffsets();
+        int[] offset1 = componentSampleModel.getBandOffsets();
         System.out.println("componentSampleModel band offsets = " + offset1[0]
             + ", " + offset1[1] + ", " + offset1[2] + ", " + offset1[3]);
 
@@ -552,8 +550,7 @@ public class GRTexture2DFloat extends GRGeometry {
                     2,
                     3
                 });
-        int[] offset2 = ((ComponentSampleModel) componentSampleModelwAlpha)
-                    .getBandOffsets();
+        int[] offset2 = componentSampleModelwAlpha.getBandOffsets();
         System.out.println("componentSampleModelwAlpha band offsets = "
             + offset2[0] + ", " + offset2[1] + ", " + offset2[2] + ", "
             + offset2[3]);

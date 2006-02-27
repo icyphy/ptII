@@ -234,7 +234,7 @@ public class Translate3D extends GRTransform {
      *  @return the Java3D TransformGroup
      */
     protected Node _getNodeObject() {
-        return (Node) _transformNode;
+        return _transformNode;
     }
 
     ///////////////////////////////////////////////////////////////////

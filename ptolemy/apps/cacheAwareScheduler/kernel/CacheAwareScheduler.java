@@ -979,7 +979,7 @@ public class CacheAwareScheduler extends SDFScheduler {
      */
     private void _computeOrder() throws IllegalActionException {
         DirectedAcyclicGraph dag = _constructDirectedGraph();
-        Object[] sort = (Object[]) dag.topologicalSort();
+        Object[] sort = dag.topologicalSort();
 
         // Allocate a new hash table with the equal to the
         // number of actors sorted.
@@ -1106,7 +1106,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                             // on the inside, we check whether the container
                             // of the destination port deeply contains
                             // source port.
-                            if (((NamedObj) port.getContainer())
+                            if (port.getContainer()
                                     .deepContains(outputPort)) {
                                 continue;
                             }
@@ -2149,10 +2149,10 @@ public class CacheAwareScheduler extends SDFScheduler {
         // Finding the vectorization factor that is provided by the user.
         _vectorizationFactor = 1;
 
-        if (director instanceof SDFDirector) {
-            token = ((SDFDirector) director).vectorizationFactor.getToken();
-            _vectorizationFactor = ((IntToken) token).intValue();
-        }
+        //if (director instanceof SDFDirector) {
+        token = director.vectorizationFactor.getToken();
+        _vectorizationFactor = ((IntToken) token).intValue();
+        //}
 
         if (_vectorizationFactor < 1) {
             throw new NotSchedulableException(this,
@@ -2228,15 +2228,13 @@ public class CacheAwareScheduler extends SDFScheduler {
         for (int i = 0; i < _noOfActors; i++) {
             ExperimentalActor actor = (ExperimentalActor) _orderToActor
                     .get(new Integer(i));
-            _firingCount[i] = ((Integer) _firingVector
-                    .get((ComponentEntity) actor)).intValue();
+            _firingCount[i] = ((Integer) _firingVector.get(actor)).intValue();
             _actorsRecord[i].actorNo = i;
 
             if (i == 0) {
                 _actorsRecord[i].consumptionRate = 0;
             } else {
-                token = ((ExperimentalActor) actor).input_tokenConsumptionRate
-                        .getToken();
+                token = actor.input_tokenConsumptionRate.getToken();
                 _actorsRecord[i].consumptionRate = ((IntToken) token)
                         .intValue();
             }
@@ -2244,8 +2242,7 @@ public class CacheAwareScheduler extends SDFScheduler {
             if (i == (_noOfActors - 1)) {
                 _actorsRecord[i].productionRate = 0;
             } else {
-                token = ((ExperimentalActor) actor).output_tokenProductionRate
-                        .getToken();
+                token = actor.output_tokenProductionRate.getToken();
                 _actorsRecord[i].productionRate = ((IntToken) token).intValue();
             }
 
@@ -2274,7 +2271,7 @@ public class CacheAwareScheduler extends SDFScheduler {
 
             // Check if the codeSize of this actor is greater than the
             // Instruction Scratchpad size. If it is, throw an exception.
-            token = ((ExperimentalActor) actor).codeSize.getToken();
+            token = actor.codeSize.getToken();
             tempCodeSize = ((IntToken) token).intValue();
 
             if (tempCodeSize > _instructionSPMSize) {

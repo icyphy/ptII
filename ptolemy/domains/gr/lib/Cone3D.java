@@ -210,7 +210,7 @@ public class Cone3D extends GRShadedShape {
      *  @return The Java3D cone.
      */
     protected Node _getNodeObject() {
-        return (Node) _containedNode;
+        return _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////

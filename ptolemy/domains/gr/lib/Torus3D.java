@@ -203,7 +203,7 @@ public class Torus3D extends GRShadedShape {
      *  @return the torus node
      */
     protected Node _getNodeObject() {
-        return (Node) _containedNode;
+        return _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////

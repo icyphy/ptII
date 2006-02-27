@@ -123,7 +123,7 @@ abstract public class GRTransform extends GRActor3D {
             if (sceneGraphIn.hasToken(i)) {
                 SceneGraphToken nodeToken = (SceneGraphToken) sceneGraphIn
                         .get(i);
-                Node node = (Node) nodeToken.getSceneGraphNode();
+                Node node = nodeToken.getSceneGraphNode();
                 _addChild(node);
             }
         }

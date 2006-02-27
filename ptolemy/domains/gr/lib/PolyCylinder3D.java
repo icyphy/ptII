@@ -151,7 +151,7 @@ public class PolyCylinder3D extends GRShadedShape {
      *  @return the generalized polygonal cylinder
      */
     protected Node _getNodeObject() {
-        return (Node) _containedNode;
+        return _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////
