@@ -1,6 +1,6 @@
 # Tests for the IntMatrixToken class
 #
-# @Author: Neil Smyth, Yuhong Xiong
+# @Author: Neil Smyth, Yuhong Xiong, contributor: Christopher Brooks
 #
 # @Version $Id$
 #
@@ -67,6 +67,34 @@ test IntMatrixToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.IntMatrixToken String} "\[5, 4; 3, 2\]"]
     $p toString
 } {[5, 4; 3, 2]}
+
+######################################################################
+####
+# 
+test IntMatrixToken-1.5 {Create a nil Token from a null token} {
+    set p5 [java::new {ptolemy.data.IntMatrixToken int[] int int} [java::null] 0 0]
+    set p6 [java::new ptolemy.data.Token [java::null]]
+    set p7 [java::new ptolemy.data.IntMatrixToken $p6]
+    list [$p5 toString] [$p7 toString] [$p5 isNil] [$p7 isNil]
+} {{[]} {[]} 1 1}
+
+######################################################################
+####
+# 
+test IntMatrixToken-1.6 {Create a nil Token from an String} {
+    set p5 [java::new {ptolemy.data.IntMatrixToken String} nil]
+    set p6 [java::new {ptolemy.data.IntMatrixToken String} [java::null]]
+    list [$p5 toString] [$p6 toString] [$p5 isNil] [$p6 isNil]
+} {{[]} {[]} 1 1}
+
+######################################################################
+####
+# 
+test IntMatrixToken-1.7 {Create a nil Token from an String} {
+    set p5 [java::new {ptolemy.data.IntMatrixToken String} {[5, 4; 3, nil]}]
+    set t [$p5 getElementAsToken 1 1]
+    list [$p5 toString] [$t toString] [$t isNil]
+} {{[5, 4; 3, nil]} nil 1}
 
 ######################################################################
 ####
@@ -529,6 +557,16 @@ test IntMatrixToken-9.0 {Test equals} {
     set p3 [java::new {ptolemy.data.IntMatrixToken String} "\[9, 8; 7, 6\]"]
     list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
 } {1 1 0}
+
+######################################################################
+####
+# 
+test IntMatrixToken-9.1 {Test equals on nil} {
+    set p5 [java::new {ptolemy.data.IntMatrixToken int[] int int} [java::null] 0 0]
+    set p6 [java::new ptolemy.data.Token [java::null]]
+    set p7 [java::new ptolemy.data.IntMatrixToken $p6]
+    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
+} {0 0 0 0}
 
 ######################################################################
 ####

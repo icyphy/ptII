@@ -159,11 +159,17 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Construct an empty ArrayToken with the element type of the
-     *  specified token.
+     *  specified token. If the token parameter is a nil token, then a
+     *  new nil ArrayToken is returned, see {@link
+     *  ptolemy.data.Token#_nil()}.
+
      *  @param elementPrototype A token specifying the element type.
      */
     public ArrayToken(Token elementPrototype) {
         _value = new Token[0];
+        if (elementPrototype == null || elementPrototype.isNil()) {
+            _value[0] = new Token(null);
+        }
         _elementPrototype = elementPrototype;
     }
 

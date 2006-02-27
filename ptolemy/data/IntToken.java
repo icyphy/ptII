@@ -136,6 +136,7 @@ public class IntToken extends ScalarToken {
         }
 
         if (token == null || token.isNil()) {
+            // Can't call new IntToken(null) here, or we get a loop.
             IntToken result = new IntToken();
             result._nil();
             return result;

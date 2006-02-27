@@ -1,6 +1,6 @@
 # Tests for the LongMatrixToken class
 #
-# @Author: Neil Smyth
+# @Author: Neil Smyth, contributor: Christopher Brooks
 #
 # @Version $Id$
 #
@@ -67,6 +67,25 @@ test LongMatrixToken-1.2 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.LongMatrixToken String} "\[5L, 4; 3, 2\]"]
     $p toString
 } {[5L, 4L; 3L, 2L]}
+
+######################################################################
+####
+# 
+test LongMatrixToken-1.5 {Create a nil Token from a null token} {
+    set p5 [java::new {ptolemy.data.LongMatrixToken long[] int int} [java::null] 0 0]
+    set p6 [java::new ptolemy.data.Token [java::null]]
+    set p7 [java::new ptolemy.data.LongMatrixToken $p6]
+    list [$p5 toString] [$p7 toString] [$p5 isNil] [$p7 isNil]
+} {{[]} {[]} 1 1}
+
+######################################################################
+####
+# 
+test LongMatrixToken-1.6 {Create a nil Token from an String} {
+    set p5 [java::new {ptolemy.data.LongMatrixToken String} nil]
+    set p6 [java::new {ptolemy.data.LongMatrixToken String} [java::null]]
+    list [$p5 toString] [$p6 toString] [$p5 isNil] [$p6 isNil]
+} {{[]} {[]} 1 1}
 
 ######################################################################
 ####
@@ -242,6 +261,16 @@ test LongMatrixToken-9.0 {Test equals} {
     set p3 [java::new {ptolemy.data.LongMatrixToken String} "\[9L, 8L; 7L, 6L\]"]
     list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
 } {1 1 0}
+
+######################################################################
+####
+# 
+test LongMatrixToken-9.1 {Test equals on nil} {
+    set p5 [java::new {ptolemy.data.LongMatrixToken long[] int int} [java::null] 0 0]
+    set p6 [java::new ptolemy.data.Token [java::null]]
+    set p7 [java::new ptolemy.data.LongMatrixToken $p6]
+    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
+} {0 0 0 0}
 
 ######################################################################
 ####

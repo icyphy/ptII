@@ -134,6 +134,7 @@ public class LongToken extends ScalarToken {
         }
 
         if (token == null || token.isNil()) {
+            // Can't call new LongToken(null) here, or we get a loop.
             LongToken result = new LongToken();
             result._nil();
             return result;

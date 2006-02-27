@@ -28,6 +28,9 @@
  */
 package ptolemy.data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -47,8 +50,10 @@ import ptolemy.math.Complex;
  tokens. The implementation in this base class just throws an exception.
  Derived classes should override those methods where the corresponding
  conversion can be achieved without loss of information.
-
- @author Yuhong Xiong, Steve Neuendorffer
+ Derived classes should call _elementIsNil() when they encounter a nil
+ token during construction. 
+ 
+ @author Yuhong Xiong, Steve Neuendorffer, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (cxh)
@@ -1244,7 +1249,14 @@ public abstract class MatrixToken extends Token {
 
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                sb.append(getElementAsToken(i, j).toString());
+        // Handle nil token
+                if (_nils != null
+                        && _nils.contains(
+                                new Integer((i * columnCount)+j))) {
+                    sb.append("nil");
+                } else {
+                    sb.append(getElementAsToken(i, j).toString());
+                }
 
                 if (j < (columnCount - 1)) {
                     sb.append(", ");
@@ -1386,6 +1398,19 @@ public abstract class MatrixToken extends Token {
         return BooleanToken.getInstance(equals(rightArgument));
     }
 
+    /** Add the element to the _nils Set.  Subclasses should call this
+     *  when they encounter a nil token during construction.  If _nils
+     *  is null, this method constructs _nils as a new HashSet.
+     *  @param element The element index.  The format is rows * columnCount
+     *  + column.
+     */
+    protected void _elementIsNil(int element) {
+        if (_nils == null) {
+            _nils = new HashSet();
+        }
+        _nils.add(new Integer(element));
+    }
+
     /** Return a new token whose elements are the modulo of
      *  the elements of this token by the argument. It is
      *  guaranteed by the caller that the type of the argument
@@ -1483,6 +1508,14 @@ public abstract class MatrixToken extends Token {
         throw new IllegalActionException(notSupportedMessage("subtract", this,
                 rightArgument));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** HashSet of nil elements, where each element is the index of the
+     *  element in _value[] that should be nilt.
+     */
+    protected Set _nils;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

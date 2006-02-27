@@ -118,18 +118,19 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of DoubleToken.
-     *  This method does lossless conversion.  The units of the returned
-     *  token will be the same as the units of the given token.
-     *  If the argument is already an instance of DoubleToken,
-     *  it is returned without any change. If it is a PetiteToken
-     *  is it returned as a DoubleToken since lossless conversion
-     *  is possible between PetiteToken and DoubleToken. 
-     *  If the argument is null or a nil token, then a new nil DoubleToken
-     *  is returned, see {@link ptolemy.data.Token#_nil()}.
-     *  Otherwise, if the argument is below DoubleToken in the type hierarchy, 
-     *  it is converted to an instance of DoubleToken or one of the 
-     *  subclasses of DoubleToken and returned. If none of the above 
+     *  This method does lossless conversion.  The units of the
+     *  returned token will be the same as the units of the given
+     *  token.  If the argument is already an instance of DoubleToken,
+     *  it is returned without any change. If it is a PetiteToken is
+     *  it returned as a DoubleToken since lossless conversion is
+     *  possible between PetiteToken and DoubleToken.  If the argument
+     *  is null or a nil token, then a new nil DoubleToken is
+     *  returned, see {@link ptolemy.data.Token#_nil()}.  Otherwise,
+     *  if the argument is below DoubleToken in the type hierarchy, it
+     *  is converted to an instance of DoubleToken or one of the
+     *  subclasses of DoubleToken and returned. If none of the above
      *  condition is met, an exception is thrown.
+
      *  @param token The token to be converted to a DoubleToken.
      *  @return A DoubleToken.
      *  @exception IllegalActionException If the conversion
@@ -144,6 +145,7 @@ public class DoubleToken extends ScalarToken {
             return (DoubleToken) token;
         }
         if (token == null || token.isNil()) {
+            // Can't call new DoubleToken(null) here, or we get a loop.
             DoubleToken result = new DoubleToken();
             result._nil();
             return result;

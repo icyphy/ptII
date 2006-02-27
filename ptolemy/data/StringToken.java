@@ -88,11 +88,17 @@ public class StringToken extends AbstractConvertibleToken {
      */
     public StringToken(String value) {
         if (value != null) {
+            // FIXME: For all the other tokens, XXToken((String)null) is
+            // a nil token.
+            if (value.equals("nil")) {
+                _nil();
+                return;
+            }
+
             _value = value;
         } else {
             _value = "";
         }
-
         // If a String token is "has an embedded " quote", then
         // toString() should return "has an embedded \" quote"
         if (_value.indexOf('"') == -1) {

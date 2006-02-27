@@ -66,8 +66,50 @@ test ArrayToken-1.2 {trigger exception when creating empty array using wrong con
 
 test ArrayToken-1.3 {Create an int array with conversion} {
     set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3.0}"]
+    catch {java::new {ptolemy.data.ArrayToken String} "1.0"} errMsg
+    list [$valToken toString] $errMsg
+} {{{1.0, 2.0, 3.0}} {ptolemy.kernel.util.IllegalActionException: An array token cannot be created from the expression '1.0'}}
+
+test ArrayToken-1.4 {Create an array of nil DoubleTokens} {
+    set val0 [java::new ptolemy.data.DoubleToken [java::null]]
+    set val1 [java::new ptolemy.data.DoubleToken [java::null]]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
     $valToken toString
-} {{1.0, 2.0, 3.0}}
+} {{nil, nil}}
+
+test ArrayToken-1.5 {Create an array of DoubleTokens, first one nil} {
+    set val0 [java::new ptolemy.data.DoubleToken [java::null]]
+    set val1 [java::new ptolemy.data.DoubleToken 2.0]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    $valToken toString
+} {{nil, 2.0}}
+
+test ArrayToken-1.6 {Create an array of DoubleTokens, second one nil} {
+    set val0 [java::new ptolemy.data.DoubleToken 2.0]
+    set val1 [java::new ptolemy.data.DoubleToken [java::null]]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    $valToken toString
+} {{2.0, nil}}
+
+test ArrayToken-1.7.1 {Create a nil ArrayToken} {
+    set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
+		      [java::null]]
+    list [$valToken toString] [$valToken isNil]
+} {}
+
+test ArrayToken-1.7.1 {Create a Double ArrayToken} {
+    set val0 [java::new ptolemy.data.DoubleToken 2.0]
+    set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
+		      $val0]
+    list [$valToken toString] [$valToken isNil]
+} {}
+
 
 ######################################################################
 ####

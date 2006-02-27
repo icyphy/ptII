@@ -102,8 +102,9 @@ test DoubleMatrixToken-1.6 {Create a nil Token from an String} {
 # 
 test DoubleMatrixToken-1.7 {Create a nil Token from an String} {
     set p5 [java::new {ptolemy.data.DoubleMatrixToken String} {[5.0, 4.0; 3.0, nil]}]
-    list [$p5 toString]
-} {{[5.0, 4.0; 3.0, nil]}} {Known Failure, should be nil, not NaN}
+    set t [$p5 getElementAsToken 1 1]
+    list [$p5 toString] [$t toString] [$t isNil]
+} {{[5.0, 4.0; 3.0, nil]} nil 1}
 
 ######################################################################
 ####
