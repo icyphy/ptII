@@ -206,6 +206,7 @@ public abstract class ScalarToken extends Token implements
 
     /** Returns a token representing the bitwise AND of this token and
      *  the given token.
+     *  @param rightArgument The ScalarToken to bitwise AND with this one.
      *  @return The bitwise AND.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -260,6 +261,7 @@ public abstract class ScalarToken extends Token implements
 
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.
+     *  @param rightArgument The ScalarToken to bitwise OR with this one.
      *  @return The bitwise OR.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -302,6 +304,7 @@ public abstract class ScalarToken extends Token implements
 
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.
+     *  @param rightArgument The ScalarToken to bitwise XOR with this one.
      *  @return The bitwise XOR.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -1158,6 +1161,7 @@ public abstract class ScalarToken extends Token implements
 
     /** Returns a token representing the bitwise AND of this token and
      *  the given token.
+     *  @param rightArgument The ScalarToken to bitwise AND with this one.
      *  @return The bitwise AND.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -1172,10 +1176,12 @@ public abstract class ScalarToken extends Token implements
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
-    protected abstract ScalarToken _bitwiseNot() throws IllegalActionException;
+    protected abstract ScalarToken _bitwiseNot()
+            throws IllegalActionException;
 
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.
+     *  @param rightArgument The ScalarToken to bitwise OR with this one.
      *  @return The bitwise OR.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -1186,6 +1192,7 @@ public abstract class ScalarToken extends Token implements
 
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.
+     *  @param rightArgument The ScalarToken to bitwise XOR with this one.
      *  @return The bitwise XOR.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -1227,6 +1234,8 @@ public abstract class ScalarToken extends Token implements
      *   tokens are close.
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
+     *  @exception IllegalActionException If there is a problem processing
+     *  the rightArgument.
      */
     protected abstract BooleanToken _isCloseTo(ScalarToken rightArgument,
             double epsilon) throws IllegalActionException;

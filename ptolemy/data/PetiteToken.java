@@ -55,6 +55,7 @@ public class PetiteToken extends DoubleToken {
 
     /** Construct a PetiteToken with the specified value.
      *  Ensure that the value is adjusted within limits [-1,1).
+     *  @param value The specified value.
      */
     public PetiteToken(double value) {
         _value = _adjust(value);
@@ -62,6 +63,7 @@ public class PetiteToken extends DoubleToken {
 
     /** Construct a PetiteToken from the specified string.Ensure 
      *  the value is adjusted within the range of a PetiteToken.
+     *  @param init The specified string, for example <code>1.0p</code>
      *  @exception IllegalActionException If the Token could not
      *   be created with the given String. 
      */
@@ -198,13 +200,13 @@ public class PetiteToken extends DoubleToken {
         return result;
     }
 
-    /** Return a new token whose value is the value of the
-     *  argument Token added to the value of this Token.  It is assumed
-     *  that the type of the argument is an DoubleToken.The token to add  
-     *  is first adjusted to the range defined by a petite token. After 
-     *  division, the result is adjusted again to maintain the 
-     *  range of a PetiteToken. The final adjustment happens
-     *  automatically given the call to _adjust in the PetiteToken constructor.
+    /** Return a new token whose value is the value of the argument
+     *  Token added to the value of this Token.  It is assumed that
+     *  the type of the argument is an DoubleToken.The token to add is
+     *  first adjusted to the range defined by a petite token. After
+     *  division, the result is adjusted again to maintain the range
+     *  of a PetiteToken. The final adjustment happens automatically
+     *  given the call to _adjust in the PetiteToken constructor.
      *  @param rightArgument The token to add to this token.
      *  @return A new PetiteToken containing the result.
      */
@@ -215,11 +217,12 @@ public class PetiteToken extends DoubleToken {
 
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
-     *  the type of the argument is an DoubleToken. The token to divide by 
-     *  is first adjusted to the range defined by a petite token. After 
-     *  division, the result is adjusted again to maintain the 
-     *  range of a PetiteToken. The final adjustment happens
-     *  automatically given the call to _adjust in the PetiteToken constructor.
+     *  the type of the argument is an DoubleToken. The token to
+     *  divide by is first adjusted to the range defined by a petite
+     *  token. After division, the result is adjusted again to
+     *  maintain the range of a PetiteToken. The final adjustment
+     *  happens automatically given the call to _adjust in the
+     *  PetiteToken constructor.
      *  @param divisor The token to divide this token by.
      *  @return A new PetiteToken containing the result.
      */
@@ -283,7 +286,8 @@ public class PetiteToken extends DoubleToken {
      *  @return A new DoubleToken containing the result.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument) {
-        double remainder = _value % ((DoubleToken) rightArgument).doubleValue();
+        double remainder =
+            _value % ((DoubleToken) rightArgument).doubleValue();
         return new PetiteToken(remainder);
     }
 
@@ -319,11 +323,12 @@ public class PetiteToken extends DoubleToken {
     }
 
     /**
-     * Adjust the value of the PetiteToken to limit
-     * it to the range [-1,1) while maintaining the precision of 
-     * DoubleToken.
+     * Adjust the value of the PetiteToken to limit it to the range
+     * [-1,1) while maintaining the precision of DoubleToken.
+     * @param number The value to be adjusted.
+     * @return The adjusted value.
      */
-    protected double _adjust(double number) {
+    protected static double _adjust(double number) {
         if (number >= 1.0) {
             return (1.0 - Double.MIN_VALUE);
         } else {

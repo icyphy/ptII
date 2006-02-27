@@ -67,6 +67,7 @@ public class ComplexMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 2-D Complex matrix.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -91,6 +92,11 @@ public class ComplexMatrixToken extends MatrixToken {
      *  <p>
      *  Since the DO_NOT_COPY option requires some care, this constructor
      *  is protected.
+     *  @param value The 2-D Complex matrix.
+     *  @param copy If {@link ptolemy.data.MatrixToken#DO_COPY}, the the
+     *  value matrix is copied, If {@link
+     *  ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
+     *  is not copied.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */

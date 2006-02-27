@@ -386,7 +386,7 @@ public class Token implements Serializable {
      *  <br> More succinctly: one().divide(pow(-times))
      *  <li> If the argument is zero, then the result is defined to be
      *  the result of applying the one() method to this token.
-     *  <ul>
+     *  </ul>
      *  The token type returned by this method is the same as
      *  the type of this token.  Note that the method is different
      *  from java.lang.Math.pow(), since it returns an integer given

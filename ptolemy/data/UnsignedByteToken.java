@@ -78,6 +78,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  127.  Due to the difference between these definitions, this
      *  method effectively adds 256 if the argument is negative,
      *  resulting in a positive value for the UnsignedByteToken.
+     *  @param value The specified value.   
      */
     public UnsignedByteToken(byte value) {
         _value = value;
@@ -91,6 +92,7 @@ public class UnsignedByteToken extends ScalarToken {
      *  order 8 bits of the integer.  This effectively adds or
      *  subtracts a multiple of 256 to/from the argument.  The
      *  resulting UnsignedByteToken falls in the range 0 through 255.
+     *  @param value The specified value.
      */
     public UnsignedByteToken(int value) {
         _value = (byte) value;
@@ -98,6 +100,8 @@ public class UnsignedByteToken extends ScalarToken {
 
     /** Construct a UnsignedByteToken from the specified string.  The string
      *  is parsed by the parseByte() method of the Java Byte object.
+     *  @param init The initialization string, which is an integer from
+     *  0 to 255.  -1 and 256 are illegal values.
      *  @exception IllegalActionException If the token could not
      *   be created from the given string.
      */
@@ -351,6 +355,8 @@ public class UnsignedByteToken extends ScalarToken {
     /** Returns a token representing the bitwise AND of this token and
      *  the given token.  It is assumed that the type of the argument is
      *  UnsignedByteToken.
+     *  @param rightArgument The UnsignedByteToken to bitwise AND with
+     *  this one.
      *  @return The bitwise AND.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
@@ -370,6 +376,8 @@ public class UnsignedByteToken extends ScalarToken {
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.  It is assumed that the type of the argument is
      *  UnsignedByteToken.
+     *  @param rightArgument The UnsignedByteToken to bitwise OR with
+     *  this one.
      *  @return The bitwise OR.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
@@ -381,6 +389,8 @@ public class UnsignedByteToken extends ScalarToken {
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.  It is assumed that the type of the argument is
      *  UnsignedByteToken.
+     *  @param rightArgument The UnsignedByteToken to bitwise XOR with
+     *  this one.
      *  @return The bitwise XOR.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {

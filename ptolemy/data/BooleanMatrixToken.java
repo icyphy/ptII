@@ -65,10 +65,12 @@ public class BooleanMatrixToken extends MatrixToken {
      *  This method makes a copy of the matrix and stores the copy,
      *  so changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 2-D boolean matrix.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public BooleanMatrixToken(boolean[][] value) throws IllegalActionException {
+    public BooleanMatrixToken(boolean[][] value)
+            throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("BooleanMatrixToken: The "
                     + "specified matrix is null.");
@@ -364,6 +366,8 @@ public class BooleanMatrixToken extends MatrixToken {
 
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
+     *  @param dim The dimension
+     *  @return the identity matrix.
      */
     protected boolean[][] _createIdentity(int dim) {
         boolean[][] a = new boolean[dim][dim];

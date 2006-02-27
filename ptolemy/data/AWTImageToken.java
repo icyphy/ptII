@@ -46,6 +46,7 @@ import ptolemy.data.type.Type;
  */
 public class AWTImageToken extends ImageToken {
     /** Construct a token with a specified java.awt.Image.
+     *  @param value  The given value
      */
     public AWTImageToken(Image value) {
         _value = value;
@@ -65,7 +66,8 @@ public class AWTImageToken extends ImageToken {
         return BaseType.OBJECT;
     }
 
-    /** Return the java.awt.Image
+    /** Return the java.awt.Image object associated with this token.
+     *  @return the java.awt.Image object.
      */
     public Image getValue() {
         return _value;

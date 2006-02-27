@@ -53,19 +53,23 @@ import ptolemy.math.Complex;
  @Pt.AcceptedRating Green (cxh)
  */
 public class ComplexToken extends ScalarToken {
-    /** Construct a ComplexToken with Complex 0.0+0.0i
+    /** Construct a ComplexToken with Complex 0.0+0.0i.
      */
     public ComplexToken() {
         _value = Complex.ZERO;
     }
 
     /** Construct a ComplexToken with the specified value.
+     *  @param value The specified value.
      */
     public ComplexToken(Complex value) {
         _value = value;
     }
 
     /** Construct a ComplexToken from the specified string.
+     *  @param init The initialization string, of the format 
+     *  <code><i>real</i>+<i>imaginary</i>i</code>, for example
+     *  <code>1.0+2.0i</code>.
      *  @exception IllegalActionException If the string does not represent
      *   a parsable complex number.
      */
@@ -221,6 +225,7 @@ public class ComplexToken extends ScalarToken {
     }
 
     /** Throw an exception because bitwise AND is not supported.
+     *  @param rightArgument The ComplexToken to bitwise AND with this one.
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
@@ -240,6 +245,7 @@ public class ComplexToken extends ScalarToken {
     }
 
     /** Throw an exception because bitwise OR is not supported.
+     *  @param rightArgument The ComplexToken to bitwise OR with this one.
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
@@ -250,6 +256,7 @@ public class ComplexToken extends ScalarToken {
     }
 
     /** Throw an exception because bitwise XOR is not supported.
+     *  @param rightArgument The ComplexToken to bitwise XOR with this one.
      *  @exception IllegalActionException Always thrown.
      *  @return An exception.
      */
@@ -264,6 +271,7 @@ public class ComplexToken extends ScalarToken {
      *  the type of the argument is an ComplexToken
      *  @param rightArgument The token to divide this token by.
      *  @return A new ComplexToken containing the result.
+     *  @exception IllegalActionException Not thrown by this base class.
      */
     protected ScalarToken _divide(ScalarToken rightArgument)
             throws IllegalActionException {
@@ -279,10 +287,13 @@ public class ComplexToken extends ScalarToken {
      *
      *  @param rightArgument The rightArgument to compare to this
      *  rightArgument.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.
      *  @return A true-valued rightArgument if the first argument is
      *  close in value to this rightArgument.
      */
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         return BooleanToken.getInstance(complexValue().isCloseTo(
                 ((ComplexToken) rightArgument).complexValue(), epsilon));
     }

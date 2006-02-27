@@ -217,6 +217,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Add the given token to each element of this array.
+     *  @param token The token to be added to this token.   
      *  @return A new array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be added to an element of this token.
@@ -240,11 +241,13 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Divide each element of this array by the given token.
+     *  @param token The token which which to divide this token
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be divided into an element of this token.
      */
-    public ArrayToken elementDivide(Token token) throws IllegalActionException {
+    public ArrayToken elementDivide(Token token)
+            throws IllegalActionException {
         Token[] result = new Token[_value.length];
 
         try {
@@ -263,11 +266,13 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Modulo each element of this array by the given token.
+     *  @param token The token with which to modulo this token. 
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be used with modulo.
      */
-    public ArrayToken elementModulo(Token token) throws IllegalActionException {
+    public ArrayToken elementModulo(Token token)
+            throws IllegalActionException {
         Token[] result = new Token[_value.length];
 
         try {
@@ -286,6 +291,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Multiply each element of this array by the given token.
+     *  @param token The token with which to multiply this token. 
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is
      *  not of a type that can be multiplied to an element of this token.
@@ -313,11 +319,11 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  above.  This returns a new array type whose element type is
      *  the least upper bound of the element type of this token and
      *  the given type.
-     *  @param type1 The type of the base of the
-     *  corresponding function.
-     *  @param type2 The type of the argument of the
-     *  corresponding function.
-     *  @return The type of the value returned from the corresponding function.
+     *  @param type1 The type of the base of the corresponding function.
+     *  @param type2 The type of the argument of the corresponding function.
+     *  @return The type of the value returned from the corresponding
+     *  function.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public static Type elementMultiplyReturnType(Type type1, Type type2)
             throws IllegalActionException {
@@ -330,6 +336,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     /** Subtract the given token from each element of this array.
+     *  @param token The token to subtract from this token.
      *  @return An array token.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be subtracted from an element of this token.
@@ -654,6 +661,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *         an ArrayToken, and the isCloseTo() method of the array elements
      *         is used.
      *  @param token The token to compare to this token.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
      *  @exception IllegalActionException If the elements do not support
      *   this comparison.
      *  @return A true-valued token if the first argument is close

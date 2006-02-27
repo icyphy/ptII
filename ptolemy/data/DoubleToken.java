@@ -60,6 +60,7 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Construct a DoubleToken with the specified value.
+     *  @param value The specified value.   
      */
     public DoubleToken(double value) {
         _value = value;
@@ -305,10 +306,9 @@ public class DoubleToken extends ScalarToken {
 
     /** Returns a token representing the bitwise AND of this token and
      *  the given token.
+     *  @param rightArgument The DoubleToken to bitwise AND with this one.
      *  @return The bitwise AND.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
+     *  @exception IllegalActionException Always thrown by this base class.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
             throws IllegalActionException {
@@ -318,9 +318,7 @@ public class DoubleToken extends ScalarToken {
 
     /** Returns a token representing the bitwise NOT of this token.
      *  @return The bitwise NOT of this token.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
+     *  @exception IllegalActionException Always thrown by this base class.
      */
     protected ScalarToken _bitwiseNot() throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("bitwiseNot",
@@ -329,10 +327,9 @@ public class DoubleToken extends ScalarToken {
 
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.
+     *  @param rightArgument The DoubleToken to bitwise OR with this one.
      *  @return The bitwise OR.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
+     *  @exception IllegalActionException Always thrown by this base class.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
@@ -342,10 +339,9 @@ public class DoubleToken extends ScalarToken {
 
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.
+     *  @param rightArgument The DoubleToken to bitwise XOR with this one.
      *  @return The bitwise XOR.
-     *  @exception IllegalActionException If the given token is not
-     *  compatible for this operation, or the operation does not make
-     *  sense for this type.
+     *  @exception IllegalActionException Always thrown by this base class.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
             throws IllegalActionException {
@@ -364,16 +360,17 @@ public class DoubleToken extends ScalarToken {
         return new DoubleToken(quotient);
     }
 
-    /** Test that the value of this token is close to the first argument,
-     *  where "close" means that the distance between their values is less than
-     *  or equal to the second argument. It is assumed that the type of
-     *  the first argument is DoubleToken.
+    /** Test that the value of this token is close to the first
+     *  argument, where "close" means that the distance between their
+     *  values is less than or equal to the second argument. It is
+     *  assumed that the type of the first argument is DoubleToken.
      *  @param rightArgument The token to compare to this token.
      *  @param epsilon The distance.
-     *  @return A token containing true if the value of this token is close
+     *  @return A token containing tue if the value of this token is close
      *   to that of the argument.
      */
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.DoubleMatrixMath.within(); if this
         // implementation changes, also change the corresponding

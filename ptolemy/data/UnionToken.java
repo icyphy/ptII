@@ -1,6 +1,6 @@
 /* A token that contains a label/token pairs in a union.
 
- Copyright (c) 2005 The Regents of the University of California.
+ Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -155,7 +155,7 @@ public class UnionToken extends AbstractNotConvertibleToken {
     }
 
     /** Return the value of this token as a string.
-     *  The syntax is {|<label> = <value>|}
+     *  The syntax is <code>{|<i>label</i> = <i>value</i>>|}</code>
      *  @return A String beginning with "{|" that contains a label and value
      *  pair, ending with "|}".
      */
@@ -241,6 +241,8 @@ public class UnionToken extends AbstractNotConvertibleToken {
      *   tokens are close.
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
+     *  @exception IllegalActionsException If thrown by calling isCloseTo()
+     *  on the value of this Token.
      */
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {

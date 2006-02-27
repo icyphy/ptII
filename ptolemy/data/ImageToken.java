@@ -53,8 +53,8 @@ public abstract class ImageToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** An abstract method that all subclasses must implement to ensure
-     *  compatibility with the standard image processing library.
+    /** Return the value of this token as a java.awt.Image.
+     *  @return The image.
      */
     public abstract Image asAWTImage();
 }

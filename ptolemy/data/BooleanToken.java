@@ -106,6 +106,8 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  the given token.
      *  @param rightArgument The BooleanToken to bitwise AND with this one.
      *  @return The boolean AND.
+     *  @exception IllegalActionException If the rightArgument is not a 
+     *  BooleanToken.
      */
     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
             throws IllegalActionException {
@@ -128,6 +130,8 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  the given token.
      *  @param rightArgument The BooleanToken to bitwise OR with this one
      *  @return The boolean OR.
+     *  @exception IllegalActionException If the rightArgument is not a 
+     *  BooleanToken.
      */
     public BitwiseOperationToken bitwiseOr(Token rightArgument)
             throws IllegalActionException {
@@ -149,6 +153,8 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  the given token.
      *  @param rightArgument The BooleanToken to bitwise XOR with this one
      *  @return The boolean XOR.
+     *  @exception IllegalActionException If the rightArgument is not a 
+     *  BooleanToken.
      */
     public BitwiseOperationToken bitwiseXor(Token rightArgument)
             throws IllegalActionException {
@@ -214,6 +220,7 @@ public class BooleanToken extends AbstractConvertibleToken implements
 
     /** Return the instance of this class corresponding to the given
      *  boolean value.
+     *  @param value The given value.
      *  @return BooleanToken.TRUE if the argument is true, or
      *  BooleanToken.FALSE otherwise.
      */

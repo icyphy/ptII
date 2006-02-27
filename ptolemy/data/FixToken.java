@@ -234,7 +234,7 @@ public class FixToken extends ScalarToken {
     }
 
     /** Return a new token whose value is constrained to comply
-     *  with a quantization specification
+     *  with a quantization specification.
      *  @param quant The quantization specification.
      *  @return A new FixToken containing the result.
      */
@@ -297,6 +297,7 @@ public class FixToken extends ScalarToken {
 
     /** Returns a token representing the bitwise AND of this token and
      *  the given token.
+     *  @param rightArgument The FixToken to bitwise AND with this one.
      *  @return The bitwise AND.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -321,6 +322,7 @@ public class FixToken extends ScalarToken {
 
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.
+     *  @param rightArgument The FixToken to bitwise OR with this one.
      *  @return The bitwise OR.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -328,12 +330,14 @@ public class FixToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
-                rightArgument));
+        throw new IllegalActionException(notSupportedMessage("bitwiseOr",
+                                                 this,
+                                                 rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.
+     *  @param rightArgument The FixToken to bitwise XOR with this one.
      *  @return The bitwise XOR.
      *  @exception IllegalActionException If the given token is not
      *  compatible for this operation, or the operation does not make
@@ -435,7 +439,7 @@ public class FixToken extends ScalarToken {
     }
 
     /** Return a new token whose value is constrained to comply
-     *  with a quantization specification
+     *  with a quantization specification.
      *  @param quant The quantization specification.
      *  @return A new FixToken containing the result.
      */

@@ -479,6 +479,8 @@ public abstract class AbstractNotConvertibleToken extends Token {
      *  method should be overridden in derived classes to provide type
      *  specific actions for divide.
      *  @param rightArgument The token with which to test closeness.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A token that contains the result of the test.

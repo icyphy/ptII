@@ -58,6 +58,7 @@ public class IntToken extends ScalarToken {
     }
 
     /** Construct a token with the specified value.
+     *  @param value The specified value.   
      */
     public IntToken(int value) {
         _value = value;
@@ -330,8 +331,9 @@ public class IntToken extends ScalarToken {
     }
 
     /** Returns a token representing the bitwise AND of this token and
-     *  the given token.  It is assumed that
-     *  the type of the argument is an IntToken.
+     *  the given token.  It is assumed that the type of the argument
+     *  is an IntToken.
+     *  @param rightArgument The IntToken to bitwise AND with this one.
      *  @return The bitwise AND.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
@@ -350,6 +352,7 @@ public class IntToken extends ScalarToken {
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.  It is assumed that
      *  the type of the argument is an IntToken.
+     *  @param rightArgument The IntToken to bitwise OR with this one.
      *  @return The bitwise OR.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
@@ -360,6 +363,7 @@ public class IntToken extends ScalarToken {
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.  It is assumed that
      *  the type of the argument is an IntToken.
+     *  @param rightArgument The IntToken to bitwise XOR with this one.
      *  @return The bitwise XOR.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
@@ -378,15 +382,17 @@ public class IntToken extends ScalarToken {
         return new IntToken(quotient);
     }
 
-    /** Test whether the value of this token is close to the first argument,
-     *  where "close" means that the distance between their values is less than
-     *  or equal to the second argument. It is assumed that the type of
-     *  the first argument is IntToken.
+    /** Test whether the value of this token is close to the first
+     *  argument, where "close" means that the distance between their
+     *  values is less than or equal to the second argument. It is
+     *  assumed that the type of the first argument is IntToken.
      *  @param rightArgument The token to compare to this token.
+     *  @param epsilon The distance.
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.IntegerMatrixMath.within(); if this
         // implementation changes, also change the corresponding

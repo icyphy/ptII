@@ -139,6 +139,11 @@ public class LongMatrixToken extends MatrixToken {
      *  This method makes a copy of the matrix and stores the copy,
      *  so changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 2-D long matrix. If this argument
+     *  is null, then the constructed token will be a nil token,
+     *  see {@link #_nil()} with rows set to -1 and
+     *  columns set to -1.
+
      */
     public LongMatrixToken(long[][] value) {
         this(value, DO_COPY);
@@ -319,6 +324,7 @@ public class LongMatrixToken extends MatrixToken {
      *  the number of rows and columns equal to the given size.
      *  This method does lossless conversion.
      *  @param token The token to be converted to a LongMatrixToken.
+     *  @param size The size of the matrix, which will be square.
      *  @return A LongMatrixToken
      *  @exception IllegalActionException If the conversion cannot
      *  be carried out.

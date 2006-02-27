@@ -96,11 +96,13 @@ public class IntMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception IllegalActionException If the specified matrix
-     *   is null.
+     *  @param value The 2-D matrix of doubles that is copied.  If this
+     *  argument is null, then a nil token with rows -1 and columns -1
+     *  is created, see {@link ptolemy.data.Token#_nil()}.
+     *  @param rows The number of rows of the newly constructed matrix.
+     *  @param columns The number of columns of the newly constructed matrix.
      */
-    public IntMatrixToken(int[] value, int rows, int columns)
-            throws IllegalActionException {
+    public IntMatrixToken(int[] value, int rows, int columns) {
         this(value, rows, columns, DO_COPY);
     }
 
@@ -142,7 +144,7 @@ public class IntMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @param value The source 2-D matrix of doubles.  If this argument
+     *  @param value The source 2-D matrix of int.  If this argument
      *  is null, then the constructed token will be a nil token,
      *  see {@link #_nil()} with rows set to -1 and
      *  columns set to -1.
@@ -219,10 +221,10 @@ public class IntMatrixToken extends MatrixToken {
      *  @param rows The number of rows in the matrix to be created.
      *  @param columns The number of columns in the matrix to be
      *  created.
-     *  @exception IllegalActionException If the array of tokens is
-     *  null, or the length of the array is not correct, or if one of
-     *  the elements of the array is null, or if one of the elements
-     *  of the array cannot be losslessly converted to an integer.
+     *  @exception IllegalActionException If the length of the array
+     *  is not correct, or if one of the elements of the array is
+     *  null, or if one of the elements of the array cannot be
+     *  losslessly converted to an integer.
      */
     public IntMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
@@ -332,6 +334,7 @@ public class IntMatrixToken extends MatrixToken {
      *  the number of rows and columns equal to the given size.
      *  This method does lossless conversion.
      *  @param token The token to be converted to a IntMatrixToken.
+     *  @param size The size of the matrix, which will be square.
      *  @return A IntMatrixToken
      *  @exception IllegalActionException If the conversion cannot
      *  be carried out.

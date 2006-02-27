@@ -98,11 +98,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *  is created, see {@link ptolemy.data.Token#_nil()}.
      *  @param rows The number of rows of the newly constructed matrix.
      *  @param columns The number of columns of the newly constructed matrix.
-     *  @exception IllegalActionException If the specified matrix
-     *   is null.
      */
-    public DoubleMatrixToken(double[] value, int rows, int columns)
-            throws IllegalActionException {
+    public DoubleMatrixToken(double[] value, int rows, int columns) {
         this(value, rows, columns, DO_COPY);
     }
 
@@ -145,8 +142,10 @@ public class DoubleMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @exception IllegalActionException If the specified matrix
-     *   is null.
+     *  @param value The 2-D double matrix. If this argument
+     *  is null, then the constructed token will be a nil token,
+     *  see {@link #_nil()} with rows set to -1 and
+     *  columns set to -1.
      */
     public DoubleMatrixToken(double[][] value) throws IllegalActionException {
         this(value, DO_COPY);

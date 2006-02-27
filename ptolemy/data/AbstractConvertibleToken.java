@@ -671,6 +671,8 @@ public abstract class AbstractConvertibleToken extends Token implements
      *  This method should be overridden in derived classes to
      *  provide type specific actions for the comparison.
      *  @param token The token with which to test closeness.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
      *  @exception IllegalActionException If this method is not
      *   supported by a derived class.
      *  @return A token that contains the result of the test.

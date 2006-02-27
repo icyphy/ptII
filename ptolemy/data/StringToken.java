@@ -286,9 +286,11 @@ public class StringToken extends AbstractConvertibleToken {
      *  Token.  It is assumed that the type of the argument is
      *  StringToken.
      *  @param rightArgument The token to add to this token.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.  This parameter is ignored by this class.
+     *  @return A BooleanToken containing the result.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
@@ -299,9 +301,9 @@ public class StringToken extends AbstractConvertibleToken {
      *  Token.  It is assumed that the type of the argument is
      *  StringToken.
      *  @param rightArgument The token to add to this token.
+     *  @return A BooleanToken containing the result.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
      */
     protected BooleanToken _isEqualTo(Token rightArgument)
             throws IllegalActionException {

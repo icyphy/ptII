@@ -243,6 +243,9 @@ public abstract class MatrixToken extends Token {
      *  of the matrix token will be the least upper bound of the
      *  types of all of the tokens in the given array.  The size
      *  of the array must be (rows*columns).
+     *  @param tokens an array of Token objects
+     *  @param rows The number of rows. 
+     *  @param columns The number of columns.
      *  @return An instance of a subclass of MatrixToken.
      *  @exception IllegalActionException If no type exists for the
      *   matrix token, or the array of tokens is not the right size, or
@@ -280,6 +283,10 @@ public abstract class MatrixToken extends Token {
      *  element type and number of rows and columns.  The token will
      *  contain all of the elements of the given array.  The size of
      *  the array must be (rows*columns).
+     *  @param type The type of the MatrixToken.
+     *  @param tokens an array of Token objects
+     *  @param rows The number of rows. 
+     *  @param columns The number of columns.
      *  @return An instance of a subclass of MatrixToken.
      *  @exception IllegalActionException If the type is not possible,
      *  or the array of tokens is not the right size, or the array is
@@ -322,10 +329,14 @@ public abstract class MatrixToken extends Token {
      *  corresponding function.
      *  @param type3 The type of the third argument to the
      *  corresponding function.
-     *  @return The type of the value returned from the corresponding function.
+     *  @return The type of the value returned from the corresponding
+     *  function.
+     *  @exception IllegalActionException If thrown while getting the matrix
+     *  type for type1. 
      */
     public static Type arrayToMatrixReturnType(Type type1, Type type2,
             Type type3) throws IllegalActionException {
+        // FIXME: why are type2 and type3 isgnored here?
         if (type1 instanceof ArrayType) {
             Type elementType = ((ArrayType) type1).getElementType();
             return UnsizedMatrixType.getMatrixTypeForElementType(elementType);
@@ -345,11 +356,15 @@ public abstract class MatrixToken extends Token {
                 "complex matrix"));
     }
 
-    /** Create a new instance of a MatrixToken subclass with the given number
-     *  of rows and columns.  The token will contain all of the elements of the
-     *  given array.  The element type of the matrix token will be
-     *  the least upper bound of the types of all of the tokens in the given
-     *  array.  The size of the array must be (rows*columns).
+    /** Create a new instance of a MatrixToken subclass with the given
+     *  number of rows and columns.  The token will contain all of the
+     *  elements of the given array.  The element type of the matrix
+     *  token will be the least upper bound of the types of all of the
+     *  tokens in the given array.  The size of the array must be
+     *  (rows*columns).
+     *  @param tokens an array of Token objects.
+     *  @param rows The number of rows. 
+     *  @param columns The number of columns.
      *  @return An instance of a subclass of MatrixToken.
      *  @exception IllegalActionException If no type exists for the
      *  matrix token, or the array of tokens is not the right size, or
@@ -369,6 +384,7 @@ public abstract class MatrixToken extends Token {
      *  @param increment The difference between elements in the array.
      *  @param length The size of the array to create, which must not be
      *  negative.
+     *  @return An array of tokens of the given length.
      *  @exception IllegalActionException If the length is negative, or
      *  tokens of the given type cannot be added together.
      */
@@ -430,6 +446,9 @@ public abstract class MatrixToken extends Token {
      *  or the increment is positive and end is greater than start, or
      *  the increment is negative and start is greater than end,
      *  then an exception will be thrown.
+     *  @param start The given start token.
+     *  @param increment The increment.
+     *  @param end The given end token
      *  @return The size of the sequence, which will be greater than zero.
      *  @exception IllegalActionException If the length of the
      *  sequence cannot be determined, or the tokens provided do not
@@ -708,6 +727,7 @@ public abstract class MatrixToken extends Token {
 
     /** Create a new instance of ArrayToken that contains the values
      *  in the specified matrix.
+     *  @param matrix The given matrix.
      *  @return An array.
      */
     public static ArrayToken matrixToArray(MatrixToken matrix) {

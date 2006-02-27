@@ -53,6 +53,8 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class FunctionToken extends Token {
     /** Create a new FunctionToken from the given string.
+     *  @param init The initialization string, for example
+     *  <code>function(x,y) 4+x+y</code>.
      *  @exception IllegalActionException If an error occurs, or the
      *  string cannot be parsed into a function.
      */
@@ -74,8 +76,10 @@ public class FunctionToken extends Token {
     }
 
     /** Create a new FunctionToken that applies the given function.
-     * The type of the function token will be the same as the given
-     * type.
+     *  The type of the function token will be the same as the given
+     *  type.
+     *  @param f The function.
+     *  @param type The function type.
      */
     public FunctionToken(Function f, FunctionType type) {
         _function = f;
@@ -86,6 +90,8 @@ public class FunctionToken extends Token {
     ////                         public methods                    ////
 
     /** Apply this function to the given list of arguments.
+     *  @param args the arguments to which the function is applied
+     *  @return The results of applying the arguments to this function.
      *  @exception IllegalActionException If the arguments are not
      *  compatible with this function, or an error occurs during
      *  evaluation.
@@ -116,8 +122,7 @@ public class FunctionToken extends Token {
      *  @return A true-valued token if the first argument is equal to
      *  this token.
      */
-    public BooleanToken isCloseTo(Token rightArgument, double epsilon)
-            throws IllegalActionException {
+    public BooleanToken isCloseTo(Token rightArgument, double epsilon) {
         return isEqualTo(rightArgument);
     }
 

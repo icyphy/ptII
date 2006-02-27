@@ -315,7 +315,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
     /** Return the value of this token as a string.
      *  The syntax is similar to the ML record:
-     *  {<label> = <value>, <label> = <value>, ...}
+     *  <code>{<i>label</i> = <i>value</i>, <i>label</i> = <i>value</i>, ...}</code>
      *  The record fields are listed in the lexicographical order of the
      *  labels determined by the java.lang.String.compareTo() method.
      *  @return A String beginning with "{" that contains label and value
@@ -465,6 +465,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *   tokens are close.
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
+     *  @exception IllegalActionException If throw while checking
+     *  the closeness of an element of the record.
      */
     protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {

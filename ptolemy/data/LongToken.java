@@ -60,6 +60,7 @@ public class LongToken extends ScalarToken {
     }
 
     /** Construct a token with the specified value.
+     *  @param value The specified value.   
      */
     public LongToken(long value) {
         _value = value;
@@ -85,7 +86,10 @@ public class LongToken extends ScalarToken {
 
     /** Construct a token from the given String.
      *  If the value is null or the string "nil", then the token is
-
+     *  marked as being nil, see {@link #_nil()}.
+     *  @param init The specified string, for example <code>1L</code>
+     *  <code>2L</code>.  Note that <code>3</code> will also result
+     *  a LongToken with a value of 3 being created.
      *  @exception IllegalActionException If the Token could not
      *   be created with the given String.
      */
@@ -265,6 +269,7 @@ public class LongToken extends ScalarToken {
     }
 
     /** Return the value in the token truncated to an unsignedByte.
+     *  @return The truncated value   
      *  @exception IllegalActionException If the value is not in the
      *  range of an unsigned byte.
      */
@@ -321,6 +326,7 @@ public class LongToken extends ScalarToken {
     /** Returns a token representing the bitwise AND of this token and
      *  the given token.  It is assumed that the type of the argument
      *  is an LongToken.
+     *  @param rightArgument The LongToken to bitwise AND with this one.
      *  @return The bitwise AND.
      */
     protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
@@ -340,6 +346,7 @@ public class LongToken extends ScalarToken {
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.  It is assumed that the type of the argument
      *  is an LongToken.
+     *  @param rightArgument The LongToken to bitwise OR with this one.
      *  @return The bitwise OR.
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
@@ -350,6 +357,7 @@ public class LongToken extends ScalarToken {
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.  It is assumed that the type of the argument
      *  is an LongToken.
+     *  @param rightArgument The LongToken to bitwise XOR with this one.
      *  @return The bitwise XOR.
      */
     protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
@@ -368,15 +376,17 @@ public class LongToken extends ScalarToken {
         return new LongToken(quotient);
     }
 
-    /** Test whether the value of this token is close to the first argument,
-     *  where "close" means that the distance between their values is less than
-     *  or equal to the second argument. It is assumed that the type of
-     *  the first argument is LongToken.
+    /** Test whether the value of this token is close to the first
+     *  argument, where "close" means that the distance between their
+     *  values is less than or equal to the second argument. It is
+     *  assumed that the type of the first argument is LongToken.
      *  @param rightArgument The token to compare to this token.
+     *  @param epsilon The distance.
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
+            double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.LongMatrixMath.within(); if this
         // implementation changes, also change the corresponding

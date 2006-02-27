@@ -59,9 +59,8 @@ public class XMLToken extends Token {
     }
 
     /** Construct an XmlToken from the specified string.
-     *  @param xmlStr A string.
-     *  @exception IllegalActionException If the string
-     *  is not parsable.
+     *  @param init The initialization string.
+     *  @exception Exception If the string is not parsable.
      */
     public XMLToken(String xmlStr) throws Exception {
         XMLParser parser = new XMLParser();
@@ -117,6 +116,7 @@ public class XMLToken extends Token {
      *  Token.  It is assumed that the type of the argument is
      *  StringToken.
      *  @param rightArgument The token to compare to.
+     *  @param epsilon The distance, ignored by this method for this class.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
      *  @return A BooleanToken containing the result.

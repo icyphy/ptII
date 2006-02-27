@@ -62,10 +62,12 @@ public interface Function {
      *  function need only be congruent to other functions of the
      *  same class.
      *  @param function The function to check congruency against.
+     *  @return True if this function is congruent with the given function.
      */
     public boolean isCongruent(Function function);
 
-    /** Return a string representation
+    /** Return a string representation.
+     *  @return A string representation of this function.   
      */
     public String toString();
 }
