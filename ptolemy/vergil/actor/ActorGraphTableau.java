@@ -57,6 +57,8 @@ import ptolemy.moml.LibraryAttribute;
 public class ActorGraphTableau extends Tableau {
     /** Create a tableau in the specified workspace.
      *  @param workspace The workspace.
+     *  @exception IllegalActionException If thrown by the superclass.
+     *  @exception NameDuplicationException If thrown by the superclass.
      */
     public ActorGraphTableau(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
@@ -67,6 +69,8 @@ public class ActorGraphTableau extends Tableau {
      *  no specified default library.
      *  @param container The container.
      *  @param name The name.
+     *  @exception IllegalActionException If thrown by the superclass.
+     *  @exception NameDuplicationException If thrown by the superclass.
      */
     public ActorGraphTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -78,6 +82,8 @@ public class ActorGraphTableau extends Tableau {
      *  @param container The container.
      *  @param name The name.
      *  @param defaultLibrary The default library, or null to not specify one.
+     *  @exception IllegalActionException If thrown by the superclass.
+     *  @exception NameDuplicationException If thrown by the superclass.
      */
     public ActorGraphTableau(PtolemyEffigy container, String name,
             LibraryAttribute defaultLibrary) throws IllegalActionException,

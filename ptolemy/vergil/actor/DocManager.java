@@ -305,6 +305,7 @@ public class DocManager extends HandlerBase {
      *  &AElig;lfred will call this method at the end of each element
      *  (including EMPTY elements).
      *  @param elementName The element type name.
+     *  @exception Exception Not thrown in this base class.
      */
     public void endElement(String elementName) throws Exception {
         if (elementName.equals("author")) {
@@ -760,6 +761,7 @@ public class DocManager extends HandlerBase {
      *  </pre>
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent a valid DocML file.
+     *  @param base The base URL from which the XML is read.
      *  @param input The stream from which to read XML.
      *  @exception Exception If the parser fails.
      */
@@ -770,6 +772,7 @@ public class DocManager extends HandlerBase {
     /** Parse the given stream as a DocML file.
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent a valid DocML file.
+     *  @param base The base URL from which the XML is read.
      *  @param reader The stream from which to read XML.
      *  @exception Exception If the parser fails.
      */
@@ -906,6 +909,7 @@ public class DocManager extends HandlerBase {
     /** If the argument is null, throw an exception with the given message.
      *  @param object The reference to check for null.
      *  @param message The message to issue if the reference is null.
+     *  @exception XmlException If the object parameter is null.
      */
     protected void _checkForNull(Object object, String message)
             throws XmlException {

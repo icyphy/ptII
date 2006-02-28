@@ -55,6 +55,8 @@ public class DocEffigy extends Effigy {
     /** Create a new effigy in the given directory with the given name.
      *  @param container The directory that contains this effigy.
      *  @param name The name of this effigy.
+     *  @exception IllegalActionException If thrown by the superclass.
+     *  @exception NameDuplicationException If thrown by the superclass.
      */
     public DocEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {

@@ -124,6 +124,8 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
 
     /** Return the index of the given child within the given parent.
      *  If the parent is not contained in the child, return -1.
+     *  @param parent The parent.
+     *  @param child The child.
      *  @return The index of the specified child.
      */
     public int getIndexOfChild(Object parent, Object child) {
@@ -172,6 +174,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
     /** Return true if the object is a leaf node.  An object is a leaf
      *  node if it has no children that are instances of one of the classes
      *  specified by setFilter(), if a filter has been specified.
+     *  @param object The object.
      *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
@@ -197,6 +200,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
     /** Return the list of attributes, or an empty list if there are none.
      *  Override this method if you wish to show only a subset of the
      *  attributes.
+     *  @param object The object.
      *  @return A list of attributes.
      */
     protected List _attributes(Object object) {
@@ -210,6 +214,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
     /** Return the list of ports, or an empty list if there are none.
      *  Override this method if you wish to show only a subset of the
      *  ports.
+     *  @param object The object.
      *  @return A list of ports.
      */
     protected List _ports(Object object) {
@@ -223,6 +228,7 @@ public class FullTreeModel extends ClassAndEntityTreeModel {
     /** Return the list of relations, or an empty list if there are none.
      *  Override this method if you wish to show only a subset of the
      *  relations.
+     *  @param object The object.
      *  @return A list of relations.
      */
     protected List _relations(Object object) {

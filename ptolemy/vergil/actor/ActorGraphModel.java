@@ -763,7 +763,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. The returned string assumes that the context is
          *  the container of the object with an icon.
-         *  @param node The node.   
+         *  @param node The node.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
@@ -1413,6 +1413,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the port.
+         *  @param node The node.   
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
@@ -1547,6 +1548,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the vertex.
+         *  @param node The node.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {

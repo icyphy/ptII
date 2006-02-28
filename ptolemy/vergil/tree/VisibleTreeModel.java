@@ -79,6 +79,7 @@ public class VisibleTreeModel extends FullTreeModel {
     /** Return true if the object is a leaf node.  An object is a leaf
      *  node if it has no children that are instances of one of the classes
      *  specified by setFilter(), if a filter has been specified.
+     *  @param object The object.
      *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
@@ -110,6 +111,7 @@ public class VisibleTreeModel extends FullTreeModel {
     /** Return the list of attributes, or an empty list if there are none.
      *  Override this method if you wish to show only a subset of the
      *  attributes.
+     *  @param object The object.
      *  @return A list of attributes.
      */
     protected List _attributes(Object object) {
@@ -149,6 +151,7 @@ public class VisibleTreeModel extends FullTreeModel {
      *  class EditorIcon or an attribute of any class named
      *  "_iconDescription" or "_smallIconDescription".  This
      *  will result in the object being rendered in the library.
+     *  @param object The object.
      *  @return True if the object is to be rendered in the library.
      */
     protected boolean _isVisible(NamedObj object) {
@@ -166,6 +169,7 @@ public class VisibleTreeModel extends FullTreeModel {
     /** Return the list of ports, or an empty list if there are none.
      *  Override this method if you wish to show only a subset of the
      *  ports.
+     *  @param object The object.
      *  @return A list of ports.
      */
     protected List _ports(Object object) {
@@ -204,6 +208,7 @@ public class VisibleTreeModel extends FullTreeModel {
     /** Return the list of relations, or an empty list if there are none.
      *  Override this method if you wish to show only a subset of the
      *  relations.
+     *  @param object The object.
      *  @return A list of relations.
      */
     protected List _relations(Object object) {

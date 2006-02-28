@@ -59,6 +59,7 @@ import ptolemy.vergil.toolbox.PtolemyTransferable;
  */
 public class PTree extends JTree {
     /** Create a new tree that is rooted at the given entity.
+     *  @param model The model that is the root of the tree.
      */
     public PTree(TreeModel model) {
         // The use of EntityTreeModel here is what restricts the

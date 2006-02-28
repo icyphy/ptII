@@ -197,6 +197,7 @@ public class LinkController extends BasicEdgeController {
          *  @param f The figure.
          *  @param x The x location.
          *  @param y The y location.
+         *  @return The head site.
          */
         public Site getHeadSite(Figure f, double x, double y) {
             if (f instanceof Terminal) {
@@ -212,13 +213,16 @@ public class LinkController extends BasicEdgeController {
 
     /** Render a visual representation of a link. */
     public static class LinkRenderer implements EdgeRenderer {
+
         /** Render a visual representation of the given edge. If the
-         *  StringAttribute _color of the edge is set then use that color to
-         *  highlight the node. If the StringAttribute _explanation of the edge
-         *  is set then use it to set the tooltip.
+         *  StringAttribute _color of the edge is set then use that
+         *  color to highlight the node. If the StringAttribute
+         *  _explanation of the edge is set then use it to set the
+         *  tooltip.
          *  @param edge The edge.
          *  @param tailSite The tail site.
          *  @param headSite The head site.
+         *  @return The Connector that represents the edge.
          */
         public Connector render(Object edge, Site tailSite, Site headSite) {
             Link link = (Link) edge;
