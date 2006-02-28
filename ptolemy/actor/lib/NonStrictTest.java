@@ -270,7 +270,9 @@ public class NonStrictTest extends Sink {
             Token token = input.get(0);
             _numberOfInputTokensSeen++;
 
-            if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false) {
+            // FIXME: If we get a nil token on the input, what should we do?
+            // Here, we require that the referenceToken also be nil. 
+            if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false && !referenceToken.isNil()) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration + ".\n"
                                 + "Value was: " + token
