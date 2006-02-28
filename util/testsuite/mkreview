@@ -96,7 +96,7 @@ echo "   Printing using enscript . . ."
 #enscript -Gp - $shortfiles > $reviewdir/javafiles.ps
 
 # Line numbers
-enscript -C -Gp - $shortfiles > $reviewdir/javafiles.ps
+enscript --media=Letter -C -Gp - $shortfiles > $reviewdir/javafiles.ps
 
 # Pretty print + line numbers
 #enscript -E -C -Gp - $shortfiles > $reviewdir/javafiles.ps
