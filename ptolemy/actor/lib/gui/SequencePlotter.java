@@ -128,6 +128,12 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _xValue = _xInit;
+
+        int width = input.getWidth();
+        _connected = new boolean[width];
+        for (int i = 0; i < width; i++) {
+            _connected[i] = true;
+        }
     }
 
     /** Read at most one token from each input channel and plot it as
@@ -147,10 +153,18 @@ public class SequencePlotter extends Plotter implements SequenceActor {
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 DoubleToken curToken = (DoubleToken) input.get(i);
-                double curValue = curToken.doubleValue();
+                if (curToken.isNil()) {
+                    _connected[i] = false;
+                } else {
+                    double curValue = curToken.doubleValue();
 
-                // NOTE: We assume the superclass ensures this cast is safe.
-                ((Plot) plot).addPoint(i + offset, _xValue, curValue, true);
+                    // NOTE: We assume the superclass ensures this
+                    // cast is safe.
+
+                    ((Plot) plot).addPoint(i + offset, _xValue, curValue,
+                            _connected[i]);
+                    _connected[i] = true;
+                }
             }
         }
 
@@ -169,4 +183,15 @@ public class SequencePlotter extends Plotter implements SequenceActor {
 
     /** Increment of the X axis counter. */
     protected double _xUnit;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    /** An array of booleans, where if an element is true, then the
+     *  next point that is plotted for that channel will be connected.
+     *  If a channel receives a nil token, then the value for the
+     *  corresponding element will be false, meaning the next point will
+     *  not be connected to the previous point.
+     */
+    boolean [] _connected;
 }
