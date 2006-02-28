@@ -208,6 +208,13 @@ update:
 	-cvs update -P -d 
 	$(MAKE) -k clean fast
 
+cleanDerivedJavaFiles:
+	(cd $(PTII)/ptolemy/data/expr; rm -f `make -s echo_OPTIONAL_JSRCS`)
+	(cd $(PTII)/ptolemy/data/unit; rm -f `make -s echo_OPTIONAL_JSRCS`)
+	(cd $(PTII)/ptolemy/copernicus/kernel/fragment; rm -f `make -s echo_OPTIONAL_JSRCS`)
+	rm -rf vendors apps
+	rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
+
 # Include rules to build Web Start JNLP files
 include $(ROOT)/mk/jnlp.mk
 
