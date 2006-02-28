@@ -39,6 +39,7 @@ import ptolemy.data.MatrixToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.UnionToken;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
@@ -1044,6 +1045,38 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             node.setToken(_evaluatedChildToken);
         }
     }
+    
+    /** Construct a union by assigning the label value given by
+     *  the children nodes.
+     *  @param node The union constructor node.
+     *  @exception IllegalActionException If an evaluation error occurs.
+     */
+    public void visitUnionConstructNode(ASTPtUnionConstructNode node)
+            throws IllegalActionException {
+        if (node.isConstant() && node.isEvaluated()) {
+            _evaluatedChildToken = node.getToken();
+            return;
+        }
+
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+
+        int numChildren = node.jjtGetNumChildren();
+
+        _assert(node.getLabelNames().size() == numChildren, node,
+                "The number of labels and values does not "
+                        + "match in parsing a record expression.");
+
+        String[] labels = (String[]) node.getLabelNames().toArray(
+                new String[numChildren]);
+        _assert(labels.length == 1, node,
+                "has more than one member type of the union.");
+
+        _evaluatedChildToken = (new UnionToken(labels[0], tokens[0]));
+
+        if (node.isConstant()) {
+            node.setToken(_evaluatedChildToken);
+        }
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
