@@ -111,13 +111,13 @@ public class PTree extends JTree {
                 Point sourcePoint = e.getDragOrigin();
                 TreePath path = tree.getPathForLocation(sourcePoint.x,
                         sourcePoint.y);
+
+                // If we didn't select anything.. then don't drag.
+                if (path == null) {
                 if (path.getLastPathComponent() instanceof EntityLibrary) {
                     //this prevents a user from dragging a folder.
                     return;
                 }
-
-                // If we didn't select anything.. then don't drag.
-                if (path == null) {
                     return;
                 }
 
