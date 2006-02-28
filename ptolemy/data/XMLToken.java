@@ -64,8 +64,8 @@ public class XMLToken extends Token {
      */
     public XMLToken(String init) throws Exception {
         XMLParser parser = new XMLParser();
-        _doc = parser.parser(xmlStr);
-        _toString = xmlStr;
+        _doc = parser.parser(init);
+        _toString = init;
     }
 
     ///////////////////////////////////////////////////////////////////
