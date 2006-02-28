@@ -146,6 +146,10 @@ cvs update -P -d
 # Run configure
 cd $PTII
 ./configure
+#
+# Then, either run "make cleanDerivedJavaFiles", or remove
+# the files by hand:
+#
 # Remove files created by JavaCC 
 cd $PTII/ptolemy/data/expr
 rm `make echo_OPTIONAL_JSRCS`
@@ -157,6 +161,7 @@ rm `make echo_OPTIONAL_JSRCS`
 cd $PTII
 rm -rf vendors apps
 rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
+# Generate a list of files
 adm/bin/ptIItxtfiles > /tmp/f
 egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
 </pre>
