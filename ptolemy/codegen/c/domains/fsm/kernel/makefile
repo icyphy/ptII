@@ -54,8 +54,8 @@ JSRCS = \
 	FSMDirector.java \
 	MultirateFSMDirector.java
 
-OTHER_FILES_TO_BE_JARED = \
-	FSMActor.c
+OTHER_FILES_TO_BE_JARED =
+
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
