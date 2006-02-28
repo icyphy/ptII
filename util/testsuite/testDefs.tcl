@@ -181,8 +181,15 @@ proc ptFilterOutVersion {answer passing_results} {
 
 
     regsub -all [java::call System getProperty "line.separator"] \
-	    $answer "\n" answer2
-    regsub -all $createdByRegularExpression $answer2 {} answer3
+	    $answer "\n" answer2a
+    regsub -all $createdByRegularExpression $answer2a {} answer2b
+
+    # NamedObj version 1.319 changed exportMoML so that exportMoML()
+    # now exports the header.
+    set headerRegularExpression \
+	    {[ ]*<?xml version="1.0" standalone="no"?>\n<!DOCTYPE relation PUBLIC "-//UC Berkeley//DTD MoML 1//EN"\n"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">\n}
+
+    regsub -all $headerRegularExpression $answer2b {} answer3
 
     regsub -all [java::call System getProperty "line.separator"] \
 	    $passing_results "\n" passing_results2
@@ -570,8 +577,8 @@ proc jdkStackTrace {} {
 	set exceptionMessage [$exception getMessage]
 	puts "    while executing"
 	set stack [$stream toString]
-	if { [string length $stack] > 10240 } {
-	    puts "[string range $stack 0 10240] . . ."
+	if { [string length $stack] > 102400 } {
+	    puts "[string range $stack 0 102400] . . ."
 	} else {
 	    puts "$stack"
 	}
