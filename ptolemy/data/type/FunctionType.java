@@ -187,7 +187,7 @@ public class FunctionType extends StructuredType {
     }
 
     /** Return the number of arguments in this type.
-     *  @param The number of arguments.  
+     *  @return The number of arguments.  
      */
     public int getArgCount() {
         return _argTypeTerms.length;

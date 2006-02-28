@@ -63,7 +63,7 @@ public class Link {
      *  relation.  If the link goes from a vertex to a port, then the
      *  relation will be the container of the vertex.
      *  @return The relation that this link represents.
-     *  @see #setRelation(Object)
+     *  @see #setRelation(ComponentRelation)
      */
     public ComponentRelation getRelation() {
         return _relation;
