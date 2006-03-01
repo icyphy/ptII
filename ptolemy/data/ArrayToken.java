@@ -167,6 +167,9 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     public ArrayToken(Token elementPrototype) {
         _value = new Token[0];
+        if (elementPrototype == null || elementPrototype.isNil()) {
+            _nil();
+        }
         _elementPrototype = elementPrototype;
     }
 
