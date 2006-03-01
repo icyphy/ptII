@@ -145,9 +145,11 @@ public class PortNameChanges implements MoMLFilter {
 
             MoMLParser.setModified(true);
             return newPort;
-        // A port may not be contained in _containerPortMap if it is encountered
-        // the first time here --- Gang
-        } else if (attributeName.equals("port")) {
+        // The following else if() can be deleted if it causes trouble. 
+        // The reason to add the code is that a port may not be contained in 
+        // _containerPortMap if it is encountered the first time here --- Gang
+        } else if (_doneProcessingActorWithPortNameChanges 
+                && attributeName.equals("port")) {
             int lastIndex = attributeValue.lastIndexOf(".");
             NamedObj portContainer = null;
             String portContainerName = null;
@@ -160,15 +162,17 @@ public class PortNameChanges implements MoMLFilter {
                 portContainer = container;
                 portName = attributeValue;
             }
-            String className = portContainer.getClassName();
-            if (_actorsWithPortNameChanges.containsKey(className)) {
-                HashMap portMap = (HashMap) _actorsWithPortNameChanges.get(className);
-                if (portMap.containsKey(portName)) {
-                    String newPort = (String) portMap.get(portName);
-                    if (lastIndex > 0) {
-                        newPort = portContainerName + "." + newPort;
+            if (portContainer != null) {
+                String className = portContainer.getClassName();
+                if (_actorsWithPortNameChanges.containsKey(className)) {
+                    HashMap portMap = (HashMap) _actorsWithPortNameChanges.get(className);
+                    if (portMap.containsKey(portName)) {
+                        String newPort = (String) portMap.get(portName);
+                        if (lastIndex > 0) {
+                            newPort = portContainerName + "." + newPort;
+                        }
+                        return newPort;
                     }
-                    return newPort;
                 }
             }
         }
