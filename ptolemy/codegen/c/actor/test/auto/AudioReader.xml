@@ -23,7 +23,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 264.0}">
     </property>
     <entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="D:/Eclipse_Workspace/ptII/ptolemy/actor/lib/javasound/voice.wav">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 290.0]">
         </property>
