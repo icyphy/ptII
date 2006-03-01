@@ -78,6 +78,8 @@ import ptolemy.moml.MoMLParser;
  If the class was present in the HashMap, then as we go through the
  code, we look for property names that need to have their classes changed.
 
+ <p>NOTE: This class and PortNameChange might conflict if
+  a port and parameter have the same name.
 
  @author Christopher Hylands
  @version $Id$
