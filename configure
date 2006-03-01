@@ -900,10 +900,6 @@ Optional Packages:
                           defaults to \$PTII/vendors/dalsemi/tini
   --with-giotto=DIR       use GiottoSDF from DIR,
                           defaults to \$PTII/vendors/giotto
-  --with-ptvr-jar=DIR       use Volume Rendering from DIR
-                          defaults to \$PTII/lib/ptvr.jar
-  --with-imagej-jar=JARFILE       use ImageJ from JARFILE,
-                          defaults to \$PTII/vendors/ImageJ/ij.jar
   --with-waba=DIR       use PalmOS WABA from DIR,
                           defaults to \$PTII/vendors/misc/waba/wabasdk
   --with-X10=DIR       use X10 from DIR,
@@ -7288,7 +7284,9 @@ echo $ECHO_N "checking for Quicktime for Java... $ECHO_C" >&6
     startdir=`pwd`
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" quickTimeTest.java ; then
+    # Use -classpath here because that is what we use when we compile
+    # In javac 1.4.2, -classpath seems to mean we ignore $CLASSPATH
+    if "$JAVAC" -classpath "$PTII" quickTimeTest.java ; then
        echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
        PTQUICKTIME_DIR=quicktime
@@ -7760,90 +7758,6 @@ echo "$as_me: WARNING: Failed to find giotto/gdk.jar
 	# $PTII/ptolemy/copernicus/java/ if giotto was found
 	PTGIOTTO_DIR=giotto
     fi
-fi
-
-#--------------------------------------------------------------------
-#	Test for vendors.vr Volume Rendering code used by gr/lib/vr
-#--------------------------------------------------------------------
-# PTVR_DIR is set to vr and used in
-# $PTII/ptolemy/domains/gr/lib/makefile if Volume Rendering was found
-PTVR_DIR=
-
-# We only need to look for Java3D if the vr actors are present
-VR_USER_DIR="$PTII/ptolemy/domains/gr/lib/vr"
-
-if test ! -d "$VR_USER_DIR" -o -z "$PTJAVA3D_DIR"; then
-    echo "$as_me:$LINENO: result: $VR_USER_DIR is not present
-    or Java 3D was not found, so we need not find Java 3D Volume Rendering." >&5
-echo "${ECHO_T}$VR_USER_DIR is not present
-    or Java 3D was not found, so we need not find Java 3D Volume Rendering." >&6
-else
-    echo "$as_me:$LINENO: checking for Java 3D Volume Rendering" >&5
-echo $ECHO_N "checking for Java 3D Volume Rendering... $ECHO_C" >&6
-
-# Check whether --with-ptvr-jar or --without-ptvr-jar was given.
-if test "${with_ptvr_jar+set}" = set; then
-  withval="$with_ptvr_jar"
-  PTVR_JAR=$withval
-else
-  PTVR_JAR=$PTII/lib/ptvr.jar
-fi;
-
-    if test -f "$PTVR_JAR"; then
-        echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6
-        echo "$as_me:$LINENO: checking for ImageJ jar file" >&5
-echo $ECHO_N "checking for ImageJ jar file... $ECHO_C" >&6
-
-# Check whether --with-imagej-jar or --without-imagej-jar was given.
-if test "${with_imagej_jar+set}" = set; then
-  withval="$with_imagej_jar"
-  IMAGEJ_JAR=$withval
-else
-  IMAGEJ_JAR=$PTII/vendors/ImageJ/ij.jar
-fi;
-
-        if test -f "$IMAGEJ_JAR"; then
-            echo "$as_me:$LINENO: result: $IMAGEJ_JAR" >&5
-echo "${ECHO_T}$IMAGEJ_JAR" >&6
-	    # VR requires ptvr.jar and ij.jar
-            PTVR_DIR=vr
-            # PTVR_PACKAGES is used in ptII/doc/makefile
-            PTVR_PACKAGES="ptolemy.domains.gr.lib.vr"
-        else
-            { echo "$as_me:$LINENO: WARNING: Failed to find PTII/vendors/ImageJ/ij.jar
-    perhaps ImageJ is not installed?
-    You need not download ImageJ unless you plan on the Java3D VR actors
-    The ImageJ SDK can be downloaded from http://rsb.info.nih.gov/ij/" >&5
-echo "$as_me: WARNING: Failed to find PTII/vendors/ImageJ/ij.jar
-    perhaps ImageJ is not installed?
-    You need not download ImageJ unless you plan on the Java3D VR actors
-    The ImageJ SDK can be downloaded from http://rsb.info.nih.gov/ij/" >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	    IMAGEJ_JAR='${PTII}/vendors/imagej/ij.jar'
-        fi
-
-    else
-       { echo "$as_me:$LINENO: WARNING: 'Could not find $PTVR_JAR.
-    http://www.j3d.org/tutorials/quick_fix/volume.html
-    Java 3D Volume Rendering is only needed if you want to build in
-    $VR_USER_DIR,
-    otherwise the build will proceed fine without Java 3D Volume Rendering." >&5
-echo "$as_me: WARNING: 'Could not find $PTVR_JAR.
-    http://www.j3d.org/tutorials/quick_fix/volume.html
-    Java 3D Volume Rendering is only needed if you want to build in
-    $VR_USER_DIR,
-    otherwise the build will proceed fine without Java 3D Volume Rendering." >&2;}
-    fi
-    cd "$startdir"
-fi
-
-if test -z "$PTVR_DIR"; then
-    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/vr"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"$PTVR_JAR\"/> \
-	<classpathentry kind=\"lib\" path=\"$IMAGEJ_JAR\"/> "
 fi
 
 #--------------------------------------------------------------------
@@ -8589,10 +8503,9 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
-  #    will be set to the directory where LIBOBJS objects are built.
-  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
