@@ -128,17 +128,6 @@ TINI_DIR = @TINI_DIR@
 # Location of tools.jar, usually $(PTJAVA_HOME)/../lib/tools.jar
 TOOLS_JAR =	@TOOLS_JAR@
 
-# Set to vr and used in
-# $PTII/ptolemy/domains/gr/lib if Volume Rendering code was found
-PTVR_DIR =	@PTVR_DIR@
-
-# $PTII/lib/ptvr.jar file, used to for Volume Rendering
-PTVR_JAR =	@PTVR_JAR@
-
-# Ptolemy II packages that use the Java 3D Volume Rendering
-# PTVR_PACKAGES is used in ptII/doc/makefile
-PTVR_PACKAGES =	@PTVR_PACKAGES@
-
 # Waba is another JDK for PalmOS, see
 # http://www.wabasoft.clom
 WABA_CLASSES = @WABA_CLASSES@
