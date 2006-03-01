@@ -101,14 +101,14 @@ test ArrayToken-1.7.1 {Create a nil ArrayToken} {
     set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
 		      [java::null]]
     list [$valToken toString] [$valToken isNil]
-} {}
+} {{{}} 1}
 
-test ArrayToken-1.7.1 {Create a Double ArrayToken} {
+test ArrayToken-1.7.2 {Create a Double ArrayToken} {
     set val0 [java::new ptolemy.data.DoubleToken 2.0]
     set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
 		      $val0]
     list [$valToken toString] [$valToken isNil]
-} {}
+} {{{}} 0}
 
 
 ######################################################################
