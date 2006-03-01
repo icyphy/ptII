@@ -36,9 +36,7 @@ TITLE = 	"3D actors"
 
 # $PTII/configure looks for Quicktime for Java  and sets PTQUICKTIME_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTQUICKTIME_DIR is empty.
-# $PTII/configure looks for ImageJ for Java  and sets PTVR_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTVR_DIR is empty.
-DIRS =	$(PTQUICKTIME_DIR) $(PTVR_DIR)
+DIRS =	$(PTQUICKTIME_DIR)
 
 # Root of the Java directory
 ROOT =		../../../..
