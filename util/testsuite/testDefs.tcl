@@ -187,7 +187,7 @@ proc ptFilterOutVersion {answer passing_results} {
     # NamedObj version 1.319 changed exportMoML so that exportMoML()
     # now exports the header.
     set headerRegularExpression \
-	    {[ ]*<?xml version="1.0" standalone="no"?>\n<!DOCTYPE relation PUBLIC "-//UC Berkeley//DTD MoML 1//EN"\n"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">\n}
+	    {[ ]*<.xml version="1.0" standalone="no".>\n<\!DOCTYPE relation PUBLIC "-//UC Berkeley//DTD MoML 1//EN"\n[ ]*"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">\n}
 
     regsub -all $headerRegularExpression $answer2b {} answer3
 
