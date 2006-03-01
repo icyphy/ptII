@@ -94,9 +94,10 @@ test LibraryAttribute-2.1 {No arg constructor} {
     set libraryAttribute [java::new ptolemy.moml.LibraryAttribute]
     catch {$libraryAttribute getLibrary} errMsg
     list [$libraryAttribute exportMoML] $errMsg
-} {{<property name="" class="ptolemy.moml.LibraryAttribute">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
-    </property>
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="" class="ptolemy.moml.LibraryAttribute">
 </property>
 } {java.io.EOFException: XML parser input stack was empty, end of file or xml fragment reached. Perhaps there is a missing '>' or a comment is unterminated by '->'?}}
 
@@ -110,9 +111,10 @@ test LibraryAttribute-3.1 {Workspace constructor} {
     set libraryAttribute [java::new ptolemy.moml.LibraryAttribute $w]
     catch {$libraryAttribute getLibrary} errMsg
     list [$libraryAttribute exportMoML] $errMsg
-} {{<property name="" class="ptolemy.moml.LibraryAttribute">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
-    </property>
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE property PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<property name="" class="ptolemy.moml.LibraryAttribute">
 </property>
 } {java.io.EOFException: XML parser input stack was empty, end of file or xml fragment reached. Perhaps there is a missing '>' or a comment is unterminated by '->'?}}
 

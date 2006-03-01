@@ -230,7 +230,10 @@ test Relation-15.1 {Test a Relation linked twice to the same port} {
 #
 test Relation-16.0 {Test exportMoML} {
     $r1 exportMoML
-} {<relation name="my relation" class="ptolemy.kernel.Relation">
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE relation PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<relation name="my relation" class="ptolemy.kernel.Relation">
 </relation>
 }
 
