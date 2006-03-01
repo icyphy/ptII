@@ -30,6 +30,7 @@ package ptolemy.moml.filter;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
@@ -141,6 +142,32 @@ public class PortNameChanges implements MoMLFilter {
 
             MoMLParser.setModified(true);
             return newPort;
+        // A port may not be contained in _containerPortMap if it is encountered
+        // the first time here --- Gang
+        } else if (attributeName.equals("port")) {
+            int lastIndex = attributeValue.lastIndexOf(".");
+            NamedObj portContainer = null;
+            String portContainerName = null;
+            String portName = null;
+            if (lastIndex > 0) {
+                portContainerName = attributeValue.substring(0, lastIndex); 
+                portContainer = ((CompositeEntity) container).getEntity(portContainerName);
+                portName = attributeValue.substring(lastIndex + 1);
+            } else {
+                portContainer = container;
+                portName = attributeValue;
+            }
+            String className = portContainer.getClassName();
+            if (_actorsWithPortNameChanges.containsKey(className)) {
+                HashMap portMap = (HashMap) _actorsWithPortNameChanges.get(className);
+                if (portMap.containsKey(portName)) {
+                    String newPort = (String) portMap.get(portName);
+                    if (lastIndex > 0) {
+                        newPort = portContainerName + "." + newPort;
+                    }
+                    return newPort;
+                }
+            }
         }
 
         return attributeValue;
