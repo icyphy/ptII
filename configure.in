@@ -2842,67 +2842,6 @@ else
 fi
 
 #--------------------------------------------------------------------
-#	Test for vendors.vr Volume Rendering code used by gr/lib/vr 
-#--------------------------------------------------------------------
-# PTVR_DIR is set to vr and used in
-# $PTII/ptolemy/domains/gr/lib/makefile if Volume Rendering was found
-PTVR_DIR=
-
-# We only need to look for Java3D if the vr actors are present
-VR_USER_DIR="$PTII/ptolemy/domains/gr/lib/vr"
-
-if test ! -d "$VR_USER_DIR" -o -z "$PTJAVA3D_DIR"; then
-    AC_MSG_RESULT([$VR_USER_DIR is not present
-    or Java 3D was not found, so we need not find Java 3D Volume Rendering.])
-else
-    AC_MSG_CHECKING([for Java 3D Volume Rendering])
-    AC_ARG_WITH(ptvr-jar, [  --with-ptvr-jar=DIR       use Volume Rendering from DIR
-                          defaults to \$PTII/lib/ptvr.jar],
-	PTVR_JAR=$withval,
-	PTVR_JAR=$PTII/lib/ptvr.jar)
-
-    if test -f "$PTVR_JAR"; then 
-        AC_MSG_RESULT(ok)
-        AC_MSG_CHECKING([for ImageJ jar file])
-        AC_ARG_WITH(imagej-jar, [  --with-imagej-jar=JARFILE       use ImageJ from JARFILE,
-                          defaults to \$PTII/vendors/ImageJ/ij.jar],
-	IMAGEJ_JAR=$withval,
-	IMAGEJ_JAR=$PTII/vendors/ImageJ/ij.jar)
-
-        if test -f "$IMAGEJ_JAR"; then
-            AC_MSG_RESULT([$IMAGEJ_JAR])
-	    # VR requires ptvr.jar and ij.jar
-            PTVR_DIR=vr
-            # PTVR_PACKAGES is used in ptII/doc/makefile
-            PTVR_PACKAGES="ptolemy.domains.gr.lib.vr"
-        else
-            AC_MSG_WARN([Failed to find PTII/vendors/ImageJ/ij.jar
-    perhaps ImageJ is not installed?
-    You need not download ImageJ unless you plan on the Java3D VR actors
-    The ImageJ SDK can be downloaded from http://rsb.info.nih.gov/ij/])
-	# Note that we don't substitute in the ${PTII} here
-	    IMAGEJ_JAR='${PTII}/vendors/imagej/ij.jar'
-        fi 
-
-    else
-       AC_MSG_WARN(['Could not find $PTVR_JAR.
-    http://www.j3d.org/tutorials/quick_fix/volume.html
-    Java 3D Volume Rendering is only needed if you want to build in
-    $VR_USER_DIR,
-    otherwise the build will proceed fine without Java 3D Volume Rendering.])
-    fi
-    cd "$startdir"
-fi
-
-if test -z "$PTVR_DIR"; then
-    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/vr"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"$PTVR_JAR\"/> \
-	<classpathentry kind=\"lib\" path=\"$IMAGEJ_JAR\"/> "
-fi 
-
-#--------------------------------------------------------------------
 #       WABA is the JDK for PalmOS
 #	See if there was a command-line option for where
 #       wabask is;  if not,
