@@ -42,7 +42,10 @@ import ptolemy.moml.MoMLParser;
  method, it will cause MoMLParser to filter so that models from
  earlier releases will run in the current release.
 
- <p>This class will filter for actors that have had port name changes
+ <p>This class will filter for actors that have had port name changes.
+
+ <p>NOTE: This class and ParameterNameChange might conflict if
+a port and parameter have the same name.  
 
  @author Christopher Hylands, Edward A. Lee
  @version $Id$
