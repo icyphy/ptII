@@ -51,22 +51,6 @@ public class StringCompare extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
-     * Read the <code>fireBlock</code> from StringCompare.c,
-     * replace macros with their values and append the processed code              
-     * block to the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String  generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-   }
-
-    /**
      * Get the files needed by the code generated for the
      * StringCompare actor.
      * @return A set of Strings that are names of the header files
