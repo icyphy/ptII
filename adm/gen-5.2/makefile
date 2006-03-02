@@ -1110,7 +1110,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm/modal \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/giotto/kernel \
@@ -1121,6 +1120,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/io \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/logic \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/fsm \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/domains/giotto \
