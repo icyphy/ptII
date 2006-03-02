@@ -1,4 +1,6 @@
 /***declareBlock***/
+#include <stdarg.h>     // Needed Array_new va_* macros
+
 struct array {
     int size;           // size of the array.
     Token* elements;    // array of Token elements.
@@ -20,6 +22,7 @@ Token Array_get(Token token, int i) {
 // assume that number of the rest of the arguments == length,
 // and they are in the form of (element, element, ...).
 Token Array_new(int size, int given, ...) {   
+    va_list argp; 
     int i;
     char elementType;
     Token* element;
@@ -30,13 +33,14 @@ Token Array_new(int size, int given, ...) {
     result.payload.Array = (ArrayToken) malloc(sizeof(struct array));
     result.payload.Array->size = size;
     if (given > 0) {
-        element = (Token*) (&given + 1);
+        va_start(argp, given);
+        element = va_arg(argp, Token*);
         elementType = element->type;
     }
 
     // Allocate an new array of Tokens.
     result.payload.Array->elements = (Token*) calloc(size, sizeof(Token));
-    for (i = 0; i < given; i++, element++) {
+    for (i = 0; i < given; i++) {
         if (element->type != elementType) {
             doConvert = true;
 
@@ -46,6 +50,7 @@ Token Array_new(int size, int given, ...) {
             }
         }
         result.payload.Array->elements[i] = *element;
+        element = va_arg(argp, Token*);
     }
     
     // If elements are not of the same type, 
