@@ -152,6 +152,8 @@ public abstract class AbstractActionsAttribute extends Action implements
      *  port, or a channel has not been specified for the name.
      */
     public int getChannel(String name) throws IllegalActionException {
+        // FIXME: if a port has several channels specified, this will always
+        // return the first channel specified, which makes it not quite useful.
         Integer integer = (Integer) _numbers.get(_destinationNames
                 .indexOf(name));
 
@@ -161,6 +163,19 @@ public abstract class AbstractActionsAttribute extends Action implements
         }
 
         return integer.intValue();
+    }
+    
+    /** Return the list of channel numbers given in expression set
+     *  for this attribute.  If no destinations are specified, then return
+     *  an empty list.
+     *  @return the list of channel numbers.
+     */
+    public List getChannelNumberList() {
+        if (_numbers == null) {
+            return new LinkedList();
+        } else {
+            return Collections.unmodifiableList(_numbers);
+        }
     }
 
     /** Return the destination object referred to by the given name.
@@ -207,6 +222,19 @@ public abstract class AbstractActionsAttribute extends Action implements
      */
     public ASTPtRootNode getParseTree(String name) {
         return (ASTPtRootNode) _parseTrees.get(_destinationNames.indexOf(name));
+    }
+    
+    /** Return the list of parse trees given in expression set
+     *  for this attribute.  If no destinations are specified, then return
+     *  an empty list.
+     *  @return the list of parse trees.
+     */
+    public List getParseTreeList() {
+        if (_parseTrees == null) {
+            return new LinkedList();
+        } else {
+            return Collections.unmodifiableList(_parseTrees);
+        }
     }
 
     /** Test if a channel number is associated with the given name.
