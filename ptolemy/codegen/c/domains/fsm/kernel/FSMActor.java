@@ -245,19 +245,20 @@ public class FSMActor extends CCodeGeneratorHelper {
                             .next();
                     Iterator destinationNameList = action
                             .getDestinationNameList().iterator();
+                    Iterator channelNumberList = action
+                            .getChannelNumberList().iterator();
+                    Iterator parseTreeList = action.getParseTreeList().iterator();
 
                     while (destinationNameList.hasNext()) {
-                        String destinationName = (String) destinationNameList
-                                .next();
+                        String destinationName = (String) destinationNameList.next();
+                        Integer channelNumber = (Integer) channelNumberList.next();
+                        ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList.next();
                         NamedObj destination = action.getDestination(destinationName);
 
                         int channel = -1;
-                        if (action.isChannelSpecified(destinationName)) {
-                            channel = action.getChannel(destinationName);
+                        if (channelNumber != null) {
+                            channel = channelNumber.intValue();
                         }
-
-                        ASTPtRootNode parseTree = action
-                                .getParseTree(destinationName);
 
                         codeBuffer.append(_getIndentPrefix(depth));
 
@@ -273,8 +274,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                             // FSMActor is used as a modal controller.
 
                             if (((IOPort) destination).isInput()) {
-                                codeBuffer.append(destination.getFullName()
-                                        .replace('.', '_'));
+                                codeBuffer.append(generateName(destination));
 
                                 if (((IOPort) destination).isMultiport()) {
                                     codeBuffer.append("[" + channel + "]");
@@ -299,8 +299,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 // a modal controller.
 
                                 if (((IOPort) destination).isInput()) {
-                                    codeBuffer.append(destination.getFullName()
-                                            .replace('.', '_'));
+                                    codeBuffer.append(generateName(destination));
 
                                     if (((IOPort) destination).isMultiport()) {
                                         codeBuffer.append("[" + i + "]");
@@ -333,9 +332,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                         if (inline) {
                             codeBuffer.append(helper.generateFireCode());
                         } else {
-                            codeBuffer.append(actors[i].getFullName().replace(
-                                    '.', '_')
-                                    + "();\n");
+                            codeBuffer.append(generateName((NamedObj) actors[i]) + "();\n");
                         }
                     }
                 }
@@ -344,23 +341,21 @@ public class FSMActor extends CCodeGeneratorHelper {
                 actions = transition.commitActionList().iterator();
 
                 while (actions.hasNext()) {
-                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions
-                            .next();
-                    Iterator destinationNameList = action
-                            .getDestinationNameList().iterator();
+                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions.next();
+                    Iterator destinationNameList = action.getDestinationNameList().iterator();
+                    Iterator channelNumberList = action.getChannelNumberList().iterator();
+                    Iterator parseTreeList = action.getParseTreeList().iterator();
 
                     while (destinationNameList.hasNext()) {
-                        String destinationName = (String) destinationNameList
-                                .next();
+                        String destinationName = (String) destinationNameList.next();
+                        Integer channelNumber = (Integer) channelNumberList.next();
+                        ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList.next();
                         NamedObj destination = action.getDestination(destinationName);
 
                         int channel = -1;
-                        if (action.isChannelSpecified(destinationName)) {
-                            channel = action.getChannel(destinationName);
+                        if (channelNumber != null) {
+                            channel = channelNumber.intValue();
                         }
-
-                        ASTPtRootNode parseTree = action
-                                .getParseTree(destinationName);
 
                         codeBuffer.append(_getIndentPrefix(depth));
 
@@ -506,6 +501,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         Iterator states = fsmActor.entityList().iterator();
         int stateCounter = 0;
 
+        codeBuffer.append(_getIndentPrefix(depth));
         while (states.hasNext()) {
             if (states.next() == state) {
                 codeBuffer.append("$actorSymbol(currentState) = "
