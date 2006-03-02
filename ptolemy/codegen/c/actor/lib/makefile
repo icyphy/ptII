@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/actor/lib
 
-DIRS =		conversions gui io javasound logic test
+DIRS =		conversions gui io javasound logic string test
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -50,7 +50,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 #Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	conversions\conversions.jar
+	conversions\conversions.jar 
+	gui/gui.jar \
+	io/io.jar \
+	javasound/javasound.jar \
+	logic/logic.jar \
+	string/string.jar
 
 # Keep this list alphabetized.
 JSRCS = \
