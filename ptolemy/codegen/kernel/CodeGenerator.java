@@ -336,7 +336,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                 if (codeGenerators.size() == 0) {
                     // Add a codeGenerator
-                    codeGenerator = new CodeGenerator(toplevel,
+                    codeGenerator = new StaticSchedulingCodeGenerator(toplevel,
                             "CodeGenerator_AutoAdded");
                 } else {
                     // Get the last CodeGenerator in the list, maybe
