@@ -47,6 +47,10 @@ test CodeGenerator-1.1 {Instantiate a CodeGenerator, call a few methods} {
     set codeGenerator \
 	    [java::new ptolemy.codegen.kernel.CodeGenerator \
 	    $model "myCodeGenerator"]
+    # Call setCodeGenerator for complete code coverage, even though it
+    # does not do anything.
+    $codeGenerator setCodeGenerator $codeGenerator
+
     list \
 	[$codeGenerator toString] \
 	[$codeGenerator comment {This is a comment}] \
