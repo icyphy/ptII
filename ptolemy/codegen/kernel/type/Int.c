@@ -11,16 +11,17 @@ Token Int_print(Token thisToken);
 /***newBlock***/
 // make a new integer token from the given value.
 Token Int_new(int i) {
-    Token result;
-    result.type = TYPE_Int;
-    result.payload.Int = i;
-    return result;
+    Token *result = (Token *) malloc(sizeof(Token));
+    result->type = TYPE_Int;
+    result->payload.Int = i;
+    return *result;
 }
 /**/
 
 
 /***deleteBlock***/
 Token Int_delete(Token token) {   
+    free(&token);
 }    
 /**/
 
