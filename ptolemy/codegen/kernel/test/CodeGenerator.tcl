@@ -61,8 +61,21 @@ test CodeGenerator-1.1 {Instantiate a CodeGenerator, call a few methods} {
 # $PTII/ptolemy/codegen/c/domains/sdf/kernel/test/SDFDirector.tcl
 # because the test relies on SDFDirector being built. 
 
+# main(String[]) is tested in
+# $PTII/ptolemy/codegen/c/actor/lib/test/CodeGenerator2.tcl
+# because the test relies on SDFDirector being built and actors being present.
+
 #####
 test CodeGenerator-3.1 {getComponent()} {
     [$codeGenerator getComponent] toString
 } {ptolemy.actor.TypedCompositeActor {.top}}
+
+#####
+test CodeGenerator-4.1 {setExecuteCommands, getExecuteCommands} {
+    set executeCommands [java::new ptolemy.util.StreamExec]
+    $codeGenerator setExecuteCommands $executeCommands
+    set executeCommands2 [$codeGenerator setExecuteCommands $executeCommands]
+    list [$executeCommands equals $executeCommands2]
+} {}
+
 
