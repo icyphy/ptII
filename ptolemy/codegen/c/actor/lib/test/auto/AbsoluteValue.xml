@@ -19,7 +19,7 @@
         </property>
     </property>
     <property name="StaticSchedulingCodeGenerator" class="ptolemy.codegen.kernel.StaticSchedulingCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME\codegen">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/codegen">
         </property>
         <property name="compile" class="ptolemy.data.expr.Parameter" value="true">
         </property>
