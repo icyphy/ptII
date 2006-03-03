@@ -74,9 +74,11 @@ public class AddSubtract extends CCodeGeneratorHelper {
 
             if (i < (actor.plus.getWidth() - 1)) {
                 codeBuffer.append(" + ");
-            } else if (actor.minus.getWidth() > 0) {
-                codeBuffer.append(" - ");
-            }
+            }    
+        }
+        
+        if (actor.minus.getWidth() > 0) {
+            codeBuffer.append(" - ");
         }
 
         for (int i = 0; i < actor.minus.getWidth(); i++) {

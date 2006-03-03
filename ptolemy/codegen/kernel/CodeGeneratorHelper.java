@@ -306,7 +306,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
 
             if (inputPort.getWidth() == 0) {
-                break;
+                continue;
             }
 
             String cType = _generateType(inputPort.getType());
