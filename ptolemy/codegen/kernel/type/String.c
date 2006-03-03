@@ -9,10 +9,10 @@ Token String_print(Token thisToken);
 
 /***newBlock***/
 // make a new integer token from the given value.
-Token String_new(char* s) {
-    Token result;
-    result.type = TYPE_String;
-    result.payload.String = s;
+Token *String_new(char* s) {
+    Token *result = (Token *) malloc(sizeof(Token));
+    result->type = TYPE_String;
+    result->payload.String = s;
     return result;
 }
 /**/
@@ -21,6 +21,7 @@ Token String_new(char* s) {
 /***deleteBlock***/
 Token String_delete(Token token) {   
     free(token.payload.String);    
+    free(&token);
 }    
 /**/
 
