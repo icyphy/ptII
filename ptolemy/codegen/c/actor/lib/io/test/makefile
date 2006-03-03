@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/codegen/c/actor/lib/conversions/test
+ME =		ptolemy/codegen/c/actor/lib/io/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
