@@ -143,10 +143,10 @@ Token String_new(char* s) {
 }
 
 // make a new integer token from the given value.
-Token Double_new(double d) {
-    Token result;
-    result.type = TYPE_Double;
-    result.payload.Double = d;
+Token * Double_new(double d) {
+    Token *result = (Token *) malloc(sizeof(Token));
+    result->type = TYPE_Double;
+    result->payload.Double = d;
     return result;
 }
 
@@ -159,10 +159,10 @@ Token Boolean_new(char b) {
 }
 
 // make a new integer token from the given value.
-Token Int_new(int i) {
-    Token result;
-    result.type = TYPE_Int;
-    result.payload.Int = i;
+Token * Int_new(int i) {
+    Token *result = (Token *) malloc(sizeof(Token));
+    result->type = TYPE_Int;
+    result->payload.Int = i;
     return result;
 }
 
