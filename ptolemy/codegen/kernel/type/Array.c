@@ -25,7 +25,7 @@ Token Array_new(int size, int given, ...) {
     va_list argp; 
     int i;
     char elementType;
-    Token* element;
+    Token element;
     boolean doConvert = false;
 
     Token result;
@@ -34,23 +34,23 @@ Token Array_new(int size, int given, ...) {
     result.payload.Array->size = size;
     if (given > 0) {
         va_start(argp, given);
-        element = va_arg(argp, Token*);
-        elementType = element->type;
+        element = va_arg(argp, Token);
+        elementType = element.type;
     }
 
     // Allocate an new array of Tokens.
     result.payload.Array->elements = (Token*) calloc(size, sizeof(Token));
     for (i = 0; i < given; i++) {
-        if (element->type != elementType) {
+        if (element.type != elementType) {
             doConvert = true;
 
             // Get the max type.
-            if (element->type > elementType) {
-                elementType = element->type;
+            if (element.type > elementType) {
+                elementType = element.type;
             }
         }
-        result.payload.Array->elements[i] = *element;
-        element = va_arg(argp, Token*);
+        result.payload.Array->elements[i] = element;
+        element = va_arg(argp, Token);
     }
     
     // If elements are not of the same type, 
@@ -61,6 +61,7 @@ Token Array_new(int size, int given, ...) {
             result.payload.Array->elements[i] = functionTable[elementType][FUNC_convert](result.payload.Array->elements[i]);
         }
     }
+    va_end(argp);
     return result;
 }    
 /**/
