@@ -9,8 +9,8 @@ Token Boolean_print(Token thisToken);
 
 /***newBlock***/
 // make a new integer token from the given value.
-Token Boolean_new(char b) {
-    Token result;
+Token *Boolean_new(char b) {
+    Token *result = (Token *) malloc(sizeof(Token));
     result.type = TYPE_Boolean;
     result.payload.Boolean = b;
     return result;
@@ -20,6 +20,7 @@ Token Boolean_new(char b) {
 
 /***deleteBlock***/
 Token Boolean_delete(Token token) {   
+    free(&token);
 }    
 /**/
 
