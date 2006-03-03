@@ -72,10 +72,11 @@ test CodeGenerator-3.1 {getComponent()} {
 
 #####
 test CodeGenerator-4.1 {setExecuteCommands, getExecuteCommands} {
+    # Trivial test to increase code coverage.
     set executeCommands [java::new ptolemy.util.StreamExec]
     $codeGenerator setExecuteCommands $executeCommands
-    set executeCommands2 [$codeGenerator setExecuteCommands $executeCommands]
+    set executeCommands2 [$codeGenerator getExecuteCommands]
     list [$executeCommands equals $executeCommands2]
-} {}
+} {1}
 
 
