@@ -10,16 +10,24 @@ Token Double_print(Token thisToken);
 /***newBlock***/
 // make a new integer token from the given value.
 Token Double_new(double d) {
-    Token result;
-    result.type = TYPE_Double;
-    result.payload.Double = d;
-    return result;
+    Token *result = (Token *) malloc(sizeof(Token));
+    result->type = TYPE_Double;
+    result->payload.Double = d;
+    return *result;
 }
+
+/* Token Double_new(double d) { */
+/*     Token result; */
+/*     result.type = TYPE_Double; */
+/*     result.payload.Double = d; */
+/*     return result; */
+/* } */
 /**/
 
 
 /***deleteBlock***/
 Token Double_delete(Token token) {
+    free(token);
 }    
 /**/
 
