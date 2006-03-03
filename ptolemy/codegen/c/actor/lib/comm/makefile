@@ -50,7 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	HammingCoder.java
+	HammingCoder.java \
 	HammingDecoder.java
 
 OTHER_FILES_TO_BE_JARED = \
