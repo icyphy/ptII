@@ -328,10 +328,12 @@ ALL1_4PACKAGES =	$(COMPACKAGES) \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
 			ptolemy.codegen.c.actor.lib \
+			ptolemy.codegen.c.actor.lib.comm \
 			ptolemy.codegen.c.actor.lib.conversions \
 			ptolemy.codegen.c.actor.lib.gui \
 			ptolemy.codegen.c.actor.lib.io \
 			ptolemy.codegen.c.actor.lib.javasound \
+			ptolemy.codegen.c.actor.lib.string \
 			ptolemy.codegen.c.domains.fsm.kernel \
 			ptolemy.codegen.c.domains.fsm.modal \
 			ptolemy.codegen.c.domains.giotto.kernel \
