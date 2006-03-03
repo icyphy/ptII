@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/actor/lib
 
-DIRS =		conversions gui io javasound logic string test
+DIRS =		comm conversions gui io javasound logic string test
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -50,7 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 #Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	conversions\conversions.jar \
+	comm/comm.jar \
+	conversions/conversions.jar \
 	gui/gui.jar \
 	io/io.jar \
 	javasound/javasound.jar \
@@ -100,7 +101,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = conversions gui io javasound logic test
+MISC_FILES = comm conversions gui io javasound logic test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
