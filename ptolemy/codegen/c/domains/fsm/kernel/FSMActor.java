@@ -504,6 +504,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         codeBuffer.append(_getIndentPrefix(depth));
         while (states.hasNext()) {
             if (states.next() == state) {
+                System.out.println("test if message shows up in the nightly build.");
                 codeBuffer.append("$actorSymbol(currentState) = "
                         + stateCounter + ";\n");
                 break;
