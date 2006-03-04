@@ -41,9 +41,9 @@ import javax.swing.event.ChangeListener;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Tableau;
-import ptolemy.domains.fsm.modal.Case;
-import ptolemy.domains.fsm.modal.Refinement;
-import ptolemy.domains.fsm.modal.RefinementPort;
+import ptolemy.actor.lib.hoc.Case;
+import ptolemy.actor.lib.hoc.Refinement;
+import ptolemy.actor.lib.hoc.RefinementPort;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.Port;
@@ -274,7 +274,7 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                 // want the sibling input ports that come with output ports.
                 String moml = "<entity name=\""
                         + StringUtilities.escapeForXML(pattern)
-                        + "\" class=\"ptolemy.domains.fsm.modal.Refinement\"/>";
+                        + "\" class=\"ptolemy.actor.lib.hoc.Refinement\"/>";
 
                 // The following is, regrettably, copied from ModalTransitionController.
                 MoMLChangeRequest change = new MoMLChangeRequest(this, _case,
