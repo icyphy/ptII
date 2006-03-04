@@ -136,9 +136,6 @@ public class CTCompositeActor extends TypedCompositeActor implements
     public void emitCurrentStates() throws IllegalActionException {
         Director director = getDirector();
 
-        // We do not need to check whether director is null, because
-        // the preinitialize() method of the CompositeActor ensures this
-        // actor to have an director.
         if (director instanceof CTTransparentDirector) {
             ((CTTransparentDirector) director).emitCurrentStates();
         }

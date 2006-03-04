@@ -57,11 +57,11 @@ import ptolemy.math.FixPoint;
 
 /**
  This actor wraps (an instance of) a Java class specified by the
- <i>className</i> parameter. The actor has no port when created.
+ <i>className</i> parameter. The actor has no ports when created.
  If an input port is added to the actor, the name of the port is
  interpreted as the name of a method of the Java class. When the
  actor is fired and a token is received from this input port, the
- content of the token is treated as the argument(s) for invoking
+ value of the token is treated as the argument(s) for invoking
  the method. If the method has a return value and the actor has
  an output port named <i>methodName</i>Result, the return value
  is wrapped in a token that is sent to the output port.
