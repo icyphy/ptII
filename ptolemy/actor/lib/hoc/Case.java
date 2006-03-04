@@ -1,6 +1,6 @@
-/* Actor with several possible refinements.
+/* Actor representing one of several refinements.
 
- Copyright (c) 2001-2006 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,69 +26,137 @@
  */
 package ptolemy.actor.lib.hoc;
 
-import java.util.Iterator;
-
-import ptolemy.actor.Actor;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// Case
 
 /**
- An actor with several possible refinements.
+ An actor that executes one of several refinements depending on the
+ value provided by the <i>control</i> port-parameter. To use this,
+ look inside, add refinement cases, and populate them with computations.
+ Each refinement is a composite that is required to have its own director.
+ The name of the refinement is value that the control must have to
+ execute this refinement.
+ This actor always provides one case called "default". This is
+ the refinement that is executed if no other refinement matches
+ the control input.  All refinements have the same ports,
+ and adding ports to any one refinement or to the case actor
+ itself results in identical ports being added to all refinements.
 
- @author  Joern Janneck and Edward A. Lee
+ @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
- @deprecated Use ptolemy.domains.fsm.modal.Case instead.
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @since Ptolemy II 5.2
+ @Pt.ProposedRating Yellow (eal)
+ @Pt.AcceptedRating Red (reviewmoderator)
  */
-public class Case extends AbstractCase {
-    /** Construct an actor with the given container and name.
+public class Case extends MultiCompositeActor {
+
+    /** Construct 
+     * a modal model with a name and a container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
-     *  @exception NameDuplicationException If the container already has an
-     *   actor with this name.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this actor.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
      */
     public Case(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The input port-parameter on which the control token is provided.
+     *  This can have any type, and is initialized with a default value
+     *  of true.
+     */
+    public PortParameter control;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    // FIXME: doc
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _entityIterator = this.deepEntityList().iterator();
+
+    /** Override the base class to ensure that the _default member
+     *  points to the default refinement.
+     *  @param workspace The workspace for the new object.
+     *  @return A new Case.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Case newObject = (Case)super.clone(workspace);
+        newObject._default = (Refinement)newObject.getEntity("default");
+        newObject._current = newObject._default;
+        return newObject;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the refinement to execute, which must be either an
-     *  atomic actor or an opaque composite actor.
-     *  @return An actor contained by this actor, or null to indicate
-     *   that none should be executed.
+    /** Override the base class to ensure that the default refinement remains
+     *  last.
+     *  @exception IllegalActionException If the entity has no name, or the
+     *   action would result in a recursive containment structure.
+     *  @exception NameDuplicationException If the name collides with a name
+     *  already in the entity.
      */
-    protected Actor _choose() {
-        if (!_entityIterator.hasNext()) {
-            _entityIterator = deepEntityList().iterator();
-
-            if (!_entityIterator.hasNext()) {
-                return null;
+    protected void _addEntity(ComponentEntity entity)
+            throws IllegalActionException, NameDuplicationException {
+        super._addEntity(entity);
+        if (entity instanceof Refinement) {
+            // Ensure that the default refinement remains the last one.
+            // Note however that this is called on the default itself,
+            // at which time the local member has not been set.
+            if (_default != null) {
+                _default.moveToLast();
             }
         }
-
-        return (Actor) _entityIterator.next();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    private Iterator _entityIterator;
+    ////                         protected variables               ////
+
+    /** The current refinement. */
+    protected Refinement _current;
+    
+    /** The default refinement. */
+    protected Refinement _default;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Initialize the model with a single state.
+     */
+    private void _init() throws IllegalActionException,
+            NameDuplicationException {
+        // Create the control port.
+        control = new PortParameter(this, "control");
+        // FIXME: This is awkward... If I provide some
+        // non-boolean control input, I get obscure type
+        // conflict error messages and have to change this
+        // to match.
+        control.setExpression("true");
+        ParameterPort port = control.getPort();
+        // Put the control input on the bottom of the actor.
+        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
+        controlCardinal.setExpression("SOUTH");
+
+        // Create the default refinement.
+        _default = new Refinement(this, "default");
+        
+        // Create the director.
+        new CaseDirector(this, "_director");
+    }
 }

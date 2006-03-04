@@ -51,11 +51,11 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AbstractCase.java \
 	ApplyFilterOverArray.java \
 	ApplyFunction.java \
 	ApplyFunctionOverSequence.java \
 	Case.java \
+	CaseDirector.java \
 	IterateOverArray.java \
 	LifeCycleManager.java \
 	MirrorPort.java \
@@ -63,7 +63,11 @@ JSRCS = \
 	MobileModel.java \
 	ModelReference.java \
 	ModelUtilities.java \
+	MultiCompositeActor.java \
+	MultiCompositePort.java \
 	MultiInstanceComposite.java \
+	Refinement.java \
+	RefinementPort.java \
 	RunCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
