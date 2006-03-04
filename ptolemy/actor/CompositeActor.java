@@ -1165,6 +1165,18 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         super._addRelation(relation);
     }
+    
+    /*  Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    protected void _createReceivers() throws IllegalActionException {
+        Iterator ports = portList().iterator();
+
+        while (ports.hasNext()) {
+            IOPort onePort = (IOPort) ports.next();
+            onePort.createReceivers();
+        }
+    }
 
     /** Notify this actor that the given entity has been added inside it.
      *  This overrides the base-class method to invalidate the schedule
@@ -1234,19 +1246,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     protected boolean _stopRequested = false;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /*  Create receivers for each input port.
-     *  @exception IllegalActionException If any port throws it.
-     */
-    private void _createReceivers() throws IllegalActionException {
-        Iterator ports = portList().iterator();
-
-        while (ports.hasNext()) {
-            IOPort onePort = (IOPort) ports.next();
-            onePort.createReceivers();
-        }
-    }
+    ////                         private variables                 ////
 
     // The director for this composite actor.
     private Director _director;
