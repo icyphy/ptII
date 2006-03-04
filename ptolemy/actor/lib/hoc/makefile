@@ -71,6 +71,7 @@ JSRCS = \
 	RunCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
+	CaseIcon.xml \
 	MobileFunctionIcon.xml \
 	MobileModelIcon.xml \
 	hoc.xml
