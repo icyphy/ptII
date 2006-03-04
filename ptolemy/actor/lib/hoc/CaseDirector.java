@@ -170,6 +170,7 @@ public class CaseDirector extends Director {
 
         try {
             _workspace.getReadAccess();
+            super.prefire();
 
             Case container = (Case)getContainer();
             // Read from port parameters, including the control port.
