@@ -426,10 +426,10 @@ public class HDFDirector extends SDFDirector {
                     while (ports.hasNext()) {
                         IOPort port = (IOPort) ports.next();
                         if (port.isInput()) {
-                            DFUtilities.setTokenConsumptionRate(port,
+                            DFUtilities.setRateVariable(port, "tokenConsumptionRate",
                                     portRates[k]);
                         } else {
-                            DFUtilities.setTokenProductionRate(port,
+                            DFUtilities.setRateVariable(port, "tokenProductionRate",
                                     portRates[k]);
                         }
                         k++;
