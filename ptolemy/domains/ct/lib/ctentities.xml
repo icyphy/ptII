@@ -8,6 +8,8 @@
       <group>
 <doc>Continuous-time actors</doc>
 
+<entity name="CTCase"
+        class="ptolemy.domains.ct.kernel.CTCase"/>
 <entity name="ContinuousClock" 
         class="ptolemy.domains.ct.lib.ContinuousClock"/>
 <entity name="TriggeredContinuousClock" 
