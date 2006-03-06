@@ -148,8 +148,6 @@ public class VergilApplication extends MoMLApplication {
                     try {
                         new VergilApplication(args);
                     } catch (Throwable throwable) {
-                        System.err.println("xxxxxxxxxxxxxxxxxxxx");
-
                         // If we get an Error or and Exception while
                         // configuring, we will end up here.
                         _errorAndExit("Command failed", args, throwable);
@@ -434,7 +432,9 @@ public class VergilApplication extends MoMLApplication {
     }
 
     /** Return a default Configuration to use when there are no command-line
-     *  arguments, which in this case is a blank PtolemyEffigy.
+     *  arguments. If the configuration contains a parameter 
+     *  _applicationBlankPtolemyEffigyAtStartup
+     *  then we create an empty up an empty PtolemyEffigy.
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
@@ -445,12 +445,20 @@ public class VergilApplication extends MoMLApplication {
 
         ModelDirectory directory = configuration.getDirectory();
 
-        PtolemyEffigy.Factory factory =
-            new PtolemyEffigy.Factory(directory,
-                    directory.uniqueName("ptolemyEffigy"));
-                
-        Effigy effigy = factory.createEffigy(directory, null, null);
-        configuration.createPrimaryTableau(effigy);
+        Parameter applicationBlankPtolemyEffigyAtStartup =
+            (Parameter) configuration
+            .getAttribute("_applicationBlankPtolemyEffigyAtStartup",
+                    Parameter.class);
+        if ((applicationBlankPtolemyEffigyAtStartup != null)
+                && applicationBlankPtolemyEffigyAtStartup
+                .getExpression().equals("true")) {
+            PtolemyEffigy.Factory factory =
+                new PtolemyEffigy.Factory(directory,
+                        directory.uniqueName("ptolemyEffigy"));
+            
+            Effigy effigy = factory.createEffigy(directory, null, null);
+            configuration.createPrimaryTableau(effigy);
+        }
 
         try {
             // First, we see if we can find the welcome window by
