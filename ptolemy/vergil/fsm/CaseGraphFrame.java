@@ -274,7 +274,9 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                 // want the sibling input ports that come with output ports.
                 String moml = "<entity name=\""
                         + StringUtilities.escapeForXML(pattern)
-                        + "\" class=\"ptolemy.actor.lib.hoc.Refinement\"/>";
+                        + "\" class=\""
+                        + _case.refinementClassName()
+                        + "\"/>";
 
                 // The following is, regrettably, copied from ModalTransitionController.
                 MoMLChangeRequest change = new MoMLChangeRequest(this, _case,
