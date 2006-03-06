@@ -381,6 +381,36 @@ public class DFUtilities {
             }
         }
     }
+    
+    /** If a variable with the given name does not exist, then create
+     *  a variable with the given name. Then set the value of the
+     *  variable to the specified value. 
+     *  @param port The port.
+     *  @param name Name of the variable.
+     *  @param value The value.
+     *  @exception IllegalActionException If a new parameter can not be
+     *  created for the given port, or the given value is not an acceptable.
+     */
+    public static void setRateVariable(Port port, String name, int value)
+            throws IllegalActionException {
+        Variable rateParameter = (Variable) port.getAttribute(name);
+
+        if (rateParameter == null) {
+            try {
+                String altName = "_" + name;
+                rateParameter = (Variable) port.getAttribute(altName);
+
+                if (rateParameter == null) {
+                    rateParameter = new Parameter(port, altName);
+                    rateParameter.setVisibility(Settable.NOT_EDITABLE);
+                    rateParameter.setPersistent(false);
+                }               
+            } catch (KernelException ex) {
+                throw new InternalErrorException(port, ex, "Should not occur");
+            }
+        }
+        rateParameter.setToken(new IntToken(value));
+    }
 
     /** Set the <i>tokenConsumptionRate</i> parameter of the given port
      *  to the given rate.  If no parameter exists, then create a new one.
