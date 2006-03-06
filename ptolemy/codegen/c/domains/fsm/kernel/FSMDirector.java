@@ -55,7 +55,9 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (zgang)
  */
 public class FSMDirector extends Director {
-    /** Construct the code generator helper associated with the given FSMDirector.
+
+    /** Construct the code generator helper associated with the given
+     * FSMDirector.
      *  @param director The associated ptolemy.domains.fsm.kernel.FSMDirector
      */
     public FSMDirector(ptolemy.domains.fsm.kernel.FSMDirector director) {
@@ -65,16 +67,18 @@ public class FSMDirector extends Director {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Generate the code for the firing of actors controlled by this director.
-     *  It generates code for making preemptive transition, checking if a transition
-     *  is taken, firing refinements and making non-preemptive transition.
+    /** Generate the code for the firing of actors controlled by this
+     *  director.  It generates code for making preemptive transition,
+     *  checking if a transition is taken, firing refinements and
+     *  making non-preemptive transition.
      *
      *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
      */
     public String generateFireCode() throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+        ptolemy.domains.fsm.kernel.FSMActor controller =
+            ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
@@ -122,7 +126,8 @@ public class FSMDirector extends Director {
     protected void _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
 
-        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
+        ptolemy.domains.fsm.kernel.FSMDirector director =
+            (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
@@ -152,13 +157,15 @@ public class FSMDirector extends Director {
 
             if (actors != null) {
                 for (int i = 0; i < actors.length; i++) {
-                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
+                    CodeGeneratorHelper actorHelper =
+                        (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
 
                     // fire the actor
                     if (inline) {
                         code.append(actorHelper.generateFireCode());
                     } else {
-                        code.append(CodeGeneratorHelper.generateName((NamedObj) actors[i])
+                        code.append(CodeGeneratorHelper.generateName(
+                                            (NamedObj) actors[i])
                                 + "();\n");
                     }
 
@@ -169,11 +176,12 @@ public class FSMDirector extends Director {
                     while (ports.hasNext()) {
                         IOPort port = (IOPort) ports.next();
                         if (rates != null) {
-                            code
-                                    .append("switch ("
-                                            + actorHelper
-                                                    .processCode("$actorSymbol(currentConfiguration)")
-                                            + ") {\n");
+                            code.append(
+                                    "switch ("
+                                    + actorHelper.processCode(
+                                            "$actorSymbol("
+                                            + "currentConfiguration)")
+                                    + ") {\n");
                             for (int k = 0; k < rates.length; k++) {
                                 code.append("case " + k + ":\n");
                                 int rate = rates[k][portNumber];
@@ -228,12 +236,12 @@ public class FSMDirector extends Director {
                     _director).getController() == actor) {
                 continue;
             }
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper =
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(actorHelper.generateFireFunctionCode());
         }
         return code.toString();
     }
-
 }
 
 

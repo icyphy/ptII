@@ -77,9 +77,11 @@ public class MultirateFSMDirector extends FSMDirector {
 
     /** Generate code for declaring read and write offset variables if needed.
      *  @return The generated code.
-     *  @exception IllegalActionException If thrown while creating offset variables.
+     *  @exception IllegalActionException If thrown while creating
+     *  offset variables.
      */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_createOffsetVariablesIfNeeded());
         code.append(super.createOffsetVariablesIfNeeded());
@@ -103,7 +105,8 @@ public class MultirateFSMDirector extends FSMDirector {
         // generate code for refinements
         _generateRefinementCode(code);
 
-        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+        ptolemy.domains.fsm.kernel.FSMActor controller =
+            ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
@@ -118,12 +121,14 @@ public class MultirateFSMDirector extends FSMDirector {
         return code.toString();
     }
 
-    /** Generate the initialize code for the associated MultirateFSMDirector.
-     *  Generate code for initializing the configuration number of the container
-     *  actor. If the initial state does not have a refinement, which usually
-     *  happens when the purpose of making transition from the initial state is
-     *  to initialize model parameters, generate code for making transition and
-     *  then initializing the configuration number of the container actor.
+    /** Generate the initialize code for the associated
+     *  MultirateFSMDirector.  Generate code for initializing the
+     *  configuration number of the container actor. If the initial
+     *  state does not have a refinement, which usually happens when
+     *  the purpose of making transition from the initial state is to
+     *  initialize model parameters, generate code for making
+     *  transition and then initializing the configuration number of
+     *  the container actor.
      *
      *  @return The generated initialize code.
      *  @exception IllegalActionException If thrown while calling the same
@@ -132,7 +137,8 @@ public class MultirateFSMDirector extends FSMDirector {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer initializeCode = new StringBuffer();
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.fsm.kernel.MultirateFSMDirector director =
+            (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
         //FSMActor controllerHelper = (FSMActor) _getHelper(controller);
@@ -166,15 +172,16 @@ public class MultirateFSMDirector extends FSMDirector {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.fsm.kernel.MultirateFSMDirector director =
+            (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
         CompositeActor container = (CompositeActor) director.getContainer();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
-
-        code
-                .append(containerHelper
-                        .processCode("static int $actorSymbol(currentConfiguration);\n"));
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper =
+            (ptolemy.codegen.c.actor.TypedCompositeActor)
+            _getHelper(container);
+        code.append(containerHelper.processCode("static int "
+                            + "$actorSymbol(currentConfiguration);\n"));
 
         int numberOfConfigurationsOfContainer = 0;
 
@@ -185,7 +192,8 @@ public class MultirateFSMDirector extends FSMDirector {
             State state = (State) states.next();
             TypedActor[] actors = state.getRefinement();
             if (actors != null) {
-                CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[0]);
+                CodeGeneratorHelper refinementHelper =
+                    (CodeGeneratorHelper) _getHelper((NamedObj) actors[0]);
                 int[][] rates = refinementHelper.getRates();
                 if (rates != null) {
                     numberOfConfigurationsOfContainer += rates.length;
@@ -203,7 +211,8 @@ public class MultirateFSMDirector extends FSMDirector {
             State state = (State) states.next();
             TypedActor[] actors = state.getRefinement();
             if (actors != null) {
-                CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[0]);
+                CodeGeneratorHelper refinementHelper =
+                    (CodeGeneratorHelper) _getHelper((NamedObj) actors[0]);
                 int[][] rates = refinementHelper.getRates();
                 if (rates != null) {
                     for (int i = 0; i < rates.length; i++) {
@@ -268,15 +277,19 @@ public class MultirateFSMDirector extends FSMDirector {
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
 
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper =
+            (ptolemy.codegen.c.actor.TypedCompositeActor)
+            _getHelper(container);
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.fsm.kernel.MultirateFSMDirector director =
+            (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
 
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
 
         // Find the port number corresponding to the given input port.
-        // Ports are numbered in the order as in the list returned by portList().
+        // Ports are numbered in the order as in the list returned by
+        // portList().
         Iterator containerPorts = container.portList().iterator();
         int portNumber = 0;
         while (containerPorts.hasNext()) {
@@ -293,7 +306,8 @@ public class MultirateFSMDirector extends FSMDirector {
                         .processCode("$actorSymbol(currentConfiguration)")
                 + ") {\n");
 
-        for (int configurationNumber = 0; configurationNumber < rates.length; configurationNumber++) {
+        for (int configurationNumber = 0; configurationNumber < rates.length;
+             configurationNumber++) {
 
             // Find the state corresponding to the given configuration number.
             Iterator states = controller.entityList().iterator();
@@ -303,7 +317,9 @@ public class MultirateFSMDirector extends FSMDirector {
                 State state = (State) states.next();
                 Actor[] actors = state.getRefinement();
                 if (actors != null) {
-                    int[][] refinementRates = ((CodeGeneratorHelper) _getHelper((NamedObj) actors[0]))
+                    int[][] refinementRates =
+                        ((CodeGeneratorHelper) _getHelper(
+                                (NamedObj) actors[0]))
                             .getRates();
                     if (refinementRates != null) {
                         number -= refinementRates.length;
@@ -347,9 +363,11 @@ public class MultirateFSMDirector extends FSMDirector {
                         for (int m = 0; m < 2; m++) {
 
                             IOPort sinkPort = sinkPorts[m];
-                            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sinkPort
-                                    .getContainer());
-                            code.append(CodeGeneratorHelper.generateName(sinkPort));
+                            CodeGeneratorHelper helper =
+                                (CodeGeneratorHelper) _getHelper(sinkPort
+                                        .getContainer());
+                            code.append(CodeGeneratorHelper
+                                    .generateName(sinkPort));
 
                             if (sinkPort.isMultiport()) {
                                 code.append("[" + i + "]");
@@ -385,12 +403,14 @@ public class MultirateFSMDirector extends FSMDirector {
                         code.append(";\n");
                     }
 
-                    // Only update the port write offsets of the controller and
-                    // the current refinement. The offset of the input port itself
-                    // is updated by outside director.
+                    // Only update the port write offsets of the
+                    // controller and the current refinement. The
+                    // offset of the input port itself is updated by
+                    // outside director.
                     for (int m = 0; m < 2; m++) {
                         IOPort sinkPort = sinkPorts[m];
-                        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(sinkPort
+                        CodeGeneratorHelper helper =
+                            (CodeGeneratorHelper) _getHelper(sinkPort
                                 .getContainer());
                         Object offsetObject = helper
                                 .getWriteOffset(sinkPort, i);
@@ -424,7 +444,8 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code)
             throws IllegalActionException {
 
         code.append("\n/* Transfer tokens to the outside */\n\n");
@@ -432,10 +453,13 @@ public class MultirateFSMDirector extends FSMDirector {
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
 
-        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(container);
+        ptolemy.codegen.c.actor.TypedCompositeActor containerHelper =
+            (ptolemy.codegen.c.actor.TypedCompositeActor)
+            _getHelper(container);
 
-        // Find the port number corresponding to the given output port.
-        // Ports are numbered in the order as in the list returned by portList().
+        // Find the port number corresponding to the given output
+        // port.  Ports are numbered in the order as in the list
+        // returned by portList().
         Iterator containerPorts = container.portList().iterator();
         int portNumber = 0;
         while (containerPorts.hasNext()) {
@@ -451,7 +475,8 @@ public class MultirateFSMDirector extends FSMDirector {
                 + containerHelper
                         .processCode("$actorSymbol(currentConfiguration)")
                 + ") {\n");
-        for (int configurationNumber = 0; configurationNumber < rates.length; configurationNumber++) {
+        for (int configurationNumber = 0; configurationNumber < rates.length;
+             configurationNumber++) {
 
             code.append("case " + configurationNumber + ":\n");
 
@@ -468,14 +493,16 @@ public class MultirateFSMDirector extends FSMDirector {
                         name = name + '#' + i;
                     }
 
-                    // FIXME: we can generate for loop in C instead of using for
-                    // loop here. Thus we can parametarize the rate and don't need
-                    // switch statement in the generated C code. Thus we can generate
-                    // more compressed C code. It requires storing the rates of each
-                    // configuration in the generated C code. We will pursue this
-                    // approach later.
-                    // Note the above approach of using for loop in the generated
-                    // C code applies to all directors supporting multi-rate.
+                    // FIXME: we can generate for loop in C instead of
+                    // using for loop here. Thus we can parametarize
+                    // the rate and don't need switch statement in the
+                    // generated C code. Thus we can generate more
+                    // compressed C code. It requires storing the
+                    // rates of each configuration in the generated C
+                    // code. We will pursue this approach later.  Note
+                    // the above approach of using for loop in the
+                    // generated C code applies to all directors
+                    // supporting multi-rate.
                     for (int k = 0; k < rate; k++) {
                         code.append(containerHelper
                                 .getReference(name + "," + k));
@@ -499,7 +526,8 @@ public class MultirateFSMDirector extends FSMDirector {
     /** Create read and write offset variables if needed for any output port
      *  of the container actor and any input port of contained actors.
      *  @return A string containing declared read and write offset variables.
-     *  @exception IllegalActionException If thrown while creating offset variables.
+     *  @exception IllegalActionException If thrown while creating
+     *  offset variables.
      */
     protected String _createOffsetVariablesIfNeeded()
             throws IllegalActionException {
@@ -516,7 +544,8 @@ public class MultirateFSMDirector extends FSMDirector {
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper =
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             int[][] rates = actorHelper.getRates();
             // If a refinement has only one configuration, then there is no
             // need to use variables.
@@ -535,13 +564,17 @@ public class MultirateFSMDirector extends FSMDirector {
      *  write offsets for the given port.
      *  @param port The given port.
      *  @return A string containing declared read and write offset variables.
-     *  @exception IllegalActionException If thrown while creating offset variables.
+     *  @exception IllegalActionException If thrown while creating
+     *  offset variables.
      */
-    // FIXME: we could record total number of tokens transferred in each port
-    // for each configuration and then check if a variable is needed for the
-    // offset. For now we always use variables.
     protected String _createOffsetVariablesIfNeeded(IOPort port)
             throws IllegalActionException {
+
+        // FIXME: we could record total number of tokens transferred
+        // in each port for each configuration and then check if a
+        // variable is needed for the offset. For now we always use
+        // variables.
+
         StringBuffer code = new StringBuffer();
         CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
                 .getContainer());
@@ -594,25 +627,29 @@ public class MultirateFSMDirector extends FSMDirector {
         return code.toString();
     }
 
-    /** Generate code for making initial transition. The purpose of this method
-     *  is to initialize parameter values because they are persistent from each
-     *  run of the model. If not properly initialized, parameters will retain
-     *  their accumulated values from previous model executions. A typical approach
-     *  is to build the model such that the initial state has an outgoing
-     *  transition with guard expression true, and use the set actions of this
-     *  transition for parameter initialization. However, this transition can
-     *  only be taken during initialization instead of after firing a refinement
-     *  because the initial state does not have a refinement.
+    /** Generate code for making initial transition. The purpose of
+     *  this method is to initialize parameter values because they are
+     *  persistent from each run of the model. If not properly
+     *  initialized, parameters will retain their accumulated values
+     *  from previous model executions. A typical approach is to build
+     *  the model such that the initial state has an outgoing
+     *  transition with guard expression true, and use the set actions
+     *  of this transition for parameter initialization. However, this
+     *  transition can only be taken during initialization instead of
+     *  after firing a refinement because the initial state does not
+     *  have a refinement.
      *
      *  @param transitions The iterator of transitions from initial state.
      *  @return The generated initial transition code.
-     *  @throws IllegalActionException If thrown while generating transition code.
+     *  @exception IllegalActionException If thrown while generating
+     *  transition code.
      */
     protected String _generateInitialTransitionCode(Iterator transitions)
             throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.fsm.kernel.MultirateFSMDirector director =
+            (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
@@ -632,7 +669,8 @@ public class MultirateFSMDirector extends FSMDirector {
             String guard = transition.getGuardExpression();
             PtParser parser = new PtParser();
             ASTPtRootNode guardParseTree = parser.generateParseTree(guard);
-            ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+            ParseTreeCodeGenerator parseTreeCodeGenerator =
+                new ParseTreeCodeGenerator();
             parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                     controllerHelper._scope);
             codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
@@ -641,7 +679,8 @@ public class MultirateFSMDirector extends FSMDirector {
             // generate code for commit action
             Iterator actions = transition.commitActionList().iterator();
             while (actions.hasNext()) {
-                AbstractActionsAttribute action = (AbstractActionsAttribute) actions
+                AbstractActionsAttribute action =
+                    (AbstractActionsAttribute) actions
                         .next();
                 Iterator destinationNameList = action.getDestinationNameList()
                         .iterator();
@@ -649,17 +688,20 @@ public class MultirateFSMDirector extends FSMDirector {
                 while (destinationNameList.hasNext()) {
                     String destinationName = (String) destinationNameList
                             .next();
-                    NamedObj destination = action.getDestination(destinationName);
+                    NamedObj destination =
+                        action.getDestination(destinationName);
                     ASTPtRootNode parseTree = action
                             .getParseTree(destinationName);
                     if (destination instanceof Variable) {
                         codeBuffer.append(
-                                CodeGeneratorHelper.generateVariableName((Variable) destination)
+                                CodeGeneratorHelper.generateVariableName(
+                                        (Variable) destination)
                                 + " = ");
                     } else {
                         throw new IllegalActionException(
                                 "No output can be"
-                                        + " produced in any action for MultirateFSMDirector.");
+                                + " produced in any action for "
+                                + "MultirateFSMDirector.");
                     }
                     parseTreeCodeGenerator = new ParseTreeCodeGenerator();
                     parseTreeCodeGenerator.evaluateParseTree(parseTree,
@@ -670,8 +712,9 @@ public class MultirateFSMDirector extends FSMDirector {
                 }
             }
 
-            // All contained actors must be initialized before the configuration
-            // number of the container actor can be updated.
+            // All contained actors must be initialized before the
+            // configuration number of the container actor can be
+            // updated.
             codeBuffer.append(super.generateInitializeCode());
 
             // Generate code for updating current state.
@@ -693,14 +736,16 @@ public class MultirateFSMDirector extends FSMDirector {
     /** Generate code for updating configuration number of the container actor
      *  according to the following equation:
      *
-     *  container's current configuration number = sum of numbers of configurations
-     *  of refinements corresponding to states before the current state +
-     *  configuration number of refinement corresponding to the current state
+     *  <p>container's current configuration number = sum of numbers of
+     *  configurations of refinements corresponding to states before
+     *  the current state + configuration number of refinement
+     *  corresponding to the current state
      *
-     *  The order of states is the same as in the list returned by calling
-     *  entityList() on the controller.
+     *  <p>The order of states is the same as in the list returned by
+     *  calling entityList() on the controller.
      *
-     *  @param codeBuffer The string buffer that the generated code is appended to.
+     *  @param codeBuffer The string buffer that the generated code is
+     *  appended to.
      *  @param state The current state.
      *  @exception IllegalActionException If helper cannot be found, refinement
      *   cannot be found or code cannot be processed.
@@ -708,16 +753,19 @@ public class MultirateFSMDirector extends FSMDirector {
     protected void _updateConfigurationNumber(StringBuffer codeBuffer,
             State state) throws IllegalActionException {
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.fsm.kernel.MultirateFSMDirector director =
+            (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
-        TypedCompositeActor containerHelper = (TypedCompositeActor) _getHelper(director
+        TypedCompositeActor containerHelper =
+            (TypedCompositeActor) _getHelper(director
                 .getContainer());
         Actor[] refinements = state.getRefinement();
         if (refinements == null) {
             return;
         }
-        TypedCompositeActor refinementHelper = (TypedCompositeActor) _getHelper((NamedObj) refinements[0]);
+        TypedCompositeActor refinementHelper =
+            (TypedCompositeActor) _getHelper((NamedObj) refinements[0]);
         Iterator states = controller.entityList().iterator();
         int tempSum = 0;
 
@@ -725,22 +773,26 @@ public class MultirateFSMDirector extends FSMDirector {
             State nextState = (State) states.next();
             Actor[] actors = nextState.getRefinement();
             if (actors != null) {
-                TypedCompositeActor helper = (TypedCompositeActor) _getHelper((NamedObj) actors[0]);
+                TypedCompositeActor helper =
+                    (TypedCompositeActor) _getHelper((NamedObj) actors[0]);
                 int[][] rates = helper.getRates();
 
                 if (nextState == state) {
                     if (rates == null) { // only one internal configuration
-                        codeBuffer
-                                .append(containerHelper
-                                        .processCode("$actorSymbol(currentConfiguration) = ")
-                                        + tempSum + ";\n");
+                        codeBuffer.append(
+                                containerHelper
+                                .processCode("$actorSymbol("
+                                        + "currentConfiguration) = ")
+                                + tempSum + ";\n");
                     } else {
-                        codeBuffer
-                                .append(containerHelper
-                                        .processCode("$actorSymbol(currentConfiguration) = ")
-                                        + refinementHelper
-                                                .processCode("$actorSymbol(currentConfiguration)")
-                                        + " + " + tempSum + ";\n");
+                        codeBuffer.append(
+                                containerHelper
+                                .processCode("$actorSymbol("
+                                        + "currentConfiguration) = ")
+                                + refinementHelper
+                                .processCode("$actorSymbol("
+                                        + "currentConfiguration)")
+                                + " + " + tempSum + ";\n");
                     }
                     break;
                 } else {
@@ -769,18 +821,22 @@ public class MultirateFSMDirector extends FSMDirector {
             return;
         }
 
-        ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
+        ptolemy.domains.fsm.kernel.MultirateFSMDirector director =
+            (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
 
         CompositeActor container = (CompositeActor) director.getContainer();
 
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
 
-        CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper((NamedObj) refinement);
+        CodeGeneratorHelper refinementHelper =
+            (CodeGeneratorHelper) _getHelper((NamedObj) refinement);
 
-        CodeGeneratorHelper controllerHelper = (CodeGeneratorHelper) _getHelper(controller);
+        CodeGeneratorHelper controllerHelper =
+            (CodeGeneratorHelper) _getHelper(controller);
 
-        CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
+        CodeGeneratorHelper containerHelper =
+            (CodeGeneratorHelper) _getHelper(container);
 
         List refinementPorts = ((Entity) refinement).portList();
         List controllerPorts = controller.portList();
