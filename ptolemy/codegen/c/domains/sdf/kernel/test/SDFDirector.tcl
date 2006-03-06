@@ -135,10 +135,10 @@ double itof (int i) {
 }
 
 // make a new integer token from the given value.
-Token String_new(char* s) {
-    Token result;
-    result.type = TYPE_String;
-    result.payload.String = s;
+Token *String_new(char* s) {
+    Token *result = (Token *) malloc(sizeof(Token));
+    result->type = TYPE_String;
+    result->payload.String = s;
     return result;
 }
 
@@ -151,10 +151,10 @@ Token * Double_new(double d) {
 }
 
 // make a new integer token from the given value.
-Token Boolean_new(char b) {
-    Token result;
-    result.type = TYPE_Boolean;
-    result.payload.Boolean = b;
+Token *Boolean_new(char b) {
+    Token *result = (Token *) malloc(sizeof(Token));
+    result->type = TYPE_Boolean;
+    result->payload.Boolean = b;
     return result;
 }
 
