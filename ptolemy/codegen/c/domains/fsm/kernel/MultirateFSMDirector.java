@@ -54,9 +54,9 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// MultirateFSMDirector
 
-/** 
+/**
  Code generator helper class associated with the MultirateFSMDirector class.
- 
+
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
@@ -66,7 +66,7 @@ import ptolemy.kernel.util.NamedObj;
 
 public class MultirateFSMDirector extends FSMDirector {
 
-    /** Construct the code generator helper associated with the 
+    /** Construct the code generator helper associated with the
      *  given MultirateFSMDirector.
      *  @param director The associated component.
      */
@@ -75,7 +75,7 @@ public class MultirateFSMDirector extends FSMDirector {
         super(director);
     }
 
-    /** Generate code for declaring read and write offset variables if needed. 
+    /** Generate code for declaring read and write offset variables if needed.
      *  @return The generated code.
      *  @exception IllegalActionException If thrown while creating offset variables.
      */
@@ -89,7 +89,7 @@ public class MultirateFSMDirector extends FSMDirector {
     /** Generate the code for the firing of actors controlled by this director.
      *  It generates code for firing refinements and making non-preemptive
      *  transition.
-     * 
+     *
      *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
@@ -118,13 +118,13 @@ public class MultirateFSMDirector extends FSMDirector {
         return code.toString();
     }
 
-    /** Generate the initialize code for the associated MultirateFSMDirector. 
+    /** Generate the initialize code for the associated MultirateFSMDirector.
      *  Generate code for initializing the configuration number of the container
-     *  actor. If the initial state does not have a refinement, which usually 
-     *  happens when the purpose of making transition from the initial state is 
+     *  actor. If the initial state does not have a refinement, which usually
+     *  happens when the purpose of making transition from the initial state is
      *  to initialize model parameters, generate code for making transition and
      *  then initializing the configuration number of the container actor.
-     * 
+     *
      *  @return The generated initialize code.
      *  @exception IllegalActionException If thrown while calling the same
      *   method in its super class or updating the configuration number.
@@ -152,11 +152,11 @@ public class MultirateFSMDirector extends FSMDirector {
     }
 
     /** Generate the preinitialize code for this director. First find out
-     *  the number of configurations of the modal model which is the container 
+     *  the number of configurations of the modal model which is the container
      *  actor of the director. For each configuration, find the port rates of
-     *  the modal model from the port rates of the corresponding refinement and 
+     *  the modal model from the port rates of the corresponding refinement and
      *  update the maximum buffer sizes needed for the ports of the refinement.
-     * 
+     *
      *  @return The generated preinitialize code.
      *  @exception IllegalActionException If getting the helper fails,
      *   or if generating the preinitialize code for a helper fails,
@@ -207,8 +207,8 @@ public class MultirateFSMDirector extends FSMDirector {
                 int[][] rates = refinementHelper.getRates();
                 if (rates != null) {
                     for (int i = 0; i < rates.length; i++) {
-                        // Extract the port rates from the current refinement 
-                        // and set the port rates of the modal model containing 
+                        // Extract the port rates from the current refinement
+                        // and set the port rates of the modal model containing
                         // the refinement.
                         int[] portRates = rates[i];
                         containerRates[configurationNumber] = portRates;
@@ -222,8 +222,8 @@ public class MultirateFSMDirector extends FSMDirector {
                     List ports = ((Entity) actors[0]).portList();
                     int[] portRates = new int[ports.size()];
                     int k = 0;
-                    // Extract the port rates from the current refinement 
-                    // and set the port rates of the modal model containing 
+                    // Extract the port rates from the current refinement
+                    // and set the port rates of the modal model containing
                     // the refinement.
                     Iterator portsIterator = ports.iterator();
                     while (portsIterator.hasNext()) {
@@ -254,7 +254,7 @@ public class MultirateFSMDirector extends FSMDirector {
         return code.toString();
     }
 
-    /** Generate code for transferring enough tokens to complete an internal 
+    /** Generate code for transferring enough tokens to complete an internal
      *  iteration.
      *  @param inputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
@@ -325,11 +325,11 @@ public class MultirateFSMDirector extends FSMDirector {
             IOPort[] sinkPorts = { controllerPort, refinementPort };
 
             code.append("case " + configurationNumber + ":\n");
-            
+
             if (rates[configurationNumber] == null) {
                 continue;
             }
-            
+
             int rate = rates[configurationNumber][portNumber];
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
@@ -342,7 +342,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
                     for (int k = 0; k < rate; k++) {
 
-                        // we should only send data to the controller and the 
+                        // we should only send data to the controller and the
                         // refinement corresponding to current state.
                         for (int m = 0; m < 2; m++) {
 
@@ -385,8 +385,8 @@ public class MultirateFSMDirector extends FSMDirector {
                         code.append(";\n");
                     }
 
-                    // Only update the port write offsets of the controller and 
-                    // the current refinement. The offset of the input port itself 
+                    // Only update the port write offsets of the controller and
+                    // the current refinement. The offset of the input port itself
                     // is updated by outside director.
                     for (int m = 0; m < 2; m++) {
                         IOPort sinkPort = sinkPorts[m];
@@ -418,7 +418,7 @@ public class MultirateFSMDirector extends FSMDirector {
 
     }
 
-    /** Generate code for transferring enough tokens to fulfill the output 
+    /** Generate code for transferring enough tokens to fulfill the output
      *  production rate.
      *  @param outputPort The port to transfer tokens.
      *  @param code The string buffer that the generated code is appended to.
@@ -454,11 +454,11 @@ public class MultirateFSMDirector extends FSMDirector {
         for (int configurationNumber = 0; configurationNumber < rates.length; configurationNumber++) {
 
             code.append("case " + configurationNumber + ":\n");
-            
+
             if (rates[configurationNumber] == null) {
                 continue;
             }
-            
+
             int rate = rates[configurationNumber][portNumber];
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
@@ -469,8 +469,8 @@ public class MultirateFSMDirector extends FSMDirector {
                     }
 
                     // FIXME: we can generate for loop in C instead of using for
-                    // loop here. Thus we can parametarize the rate and don't need 
-                    // switch statement in the generated C code. Thus we can generate 
+                    // loop here. Thus we can parametarize the rate and don't need
+                    // switch statement in the generated C code. Thus we can generate
                     // more compressed C code. It requires storing the rates of each
                     // configuration in the generated C code. We will pursue this
                     // approach later.
@@ -487,7 +487,7 @@ public class MultirateFSMDirector extends FSMDirector {
                 }
             }
 
-            // The offset of the ports connected to the output port in its 
+            // The offset of the ports connected to the output port in its
             // downstream is updated by outside director.
             _updatePortOffset(outputPort, code, rate);
 
@@ -537,8 +537,8 @@ public class MultirateFSMDirector extends FSMDirector {
      *  @return A string containing declared read and write offset variables.
      *  @exception IllegalActionException If thrown while creating offset variables.
      */
-    // FIXME: we could record total number of tokens transferred in each port 
-    // for each configuration and then check if a variable is needed for the 
+    // FIXME: we could record total number of tokens transferred in each port
+    // for each configuration and then check if a variable is needed for the
     // offset. For now we always use variables.
     protected String _createOffsetVariablesIfNeeded(IOPort port)
             throws IllegalActionException {
@@ -546,7 +546,7 @@ public class MultirateFSMDirector extends FSMDirector {
         CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
                 .getContainer());
 
-        // When buffer size is no greater than 1, there is no need for 
+        // When buffer size is no greater than 1, there is no need for
         // offset variable.
         if (actorHelper.getBufferSize(port) <= 1) {
             return code.toString();
@@ -596,11 +596,11 @@ public class MultirateFSMDirector extends FSMDirector {
 
     /** Generate code for making initial transition. The purpose of this method
      *  is to initialize parameter values because they are persistent from each
-     *  run of the model. If not properly initialized, parameters will retain 
-     *  their accumulated values from previous model executions. A typical approach 
-     *  is to build the model such that the initial state has an outgoing 
-     *  transition with guard expression true, and use the set actions of this 
-     *  transition for parameter initialization. However, this transition can 
+     *  run of the model. If not properly initialized, parameters will retain
+     *  their accumulated values from previous model executions. A typical approach
+     *  is to build the model such that the initial state has an outgoing
+     *  transition with guard expression true, and use the set actions of this
+     *  transition for parameter initialization. However, this transition can
      *  only be taken during initialization instead of after firing a refinement
      *  because the initial state does not have a refinement.
      *
@@ -681,7 +681,7 @@ public class MultirateFSMDirector extends FSMDirector {
             controllerHelper._updateCurrentState(codeBuffer, destinationState,
                     0);
 
-            // Generate code for updating configuration number of this 
+            // Generate code for updating configuration number of this
             // FSMActor's container actor.
             _updateConfigurationNumber(codeBuffer, destinationState);
 
@@ -692,14 +692,14 @@ public class MultirateFSMDirector extends FSMDirector {
 
     /** Generate code for updating configuration number of the container actor
      *  according to the following equation:
-     *  
+     *
      *  container's current configuration number = sum of numbers of configurations
-     *  of refinements corresponding to states before the current state + 
+     *  of refinements corresponding to states before the current state +
      *  configuration number of refinement corresponding to the current state
-     * 
-     *  The order of states is the same as in the list returned by calling 
+     *
+     *  The order of states is the same as in the list returned by calling
      *  entityList() on the controller.
-     * 
+     *
      *  @param codeBuffer The string buffer that the generated code is appended to.
      *  @param state The current state.
      *  @exception IllegalActionException If helper cannot be found, refinement
@@ -754,9 +754,9 @@ public class MultirateFSMDirector extends FSMDirector {
         }
     }
 
-    /** Check to see if the buffer size needed in current configuration  
-     *  is greater than in previous configurations. If so, set the buffer 
-     *  size to the current buffer size needed. 
+    /** Check to see if the buffer size needed in current configuration
+     *  is greater than in previous configurations. If so, set the buffer
+     *  size to the current buffer size needed.
      *  @param refinement The refinement to be checked.
      *  @param portRates An int array of port rates of the refinement.
      *  @exception IllegalActionException If thrown while getting helper
@@ -764,7 +764,7 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     protected void _updatePortBufferSize(Actor refinement, int[] portRates)
             throws IllegalActionException {
-        
+
         if (portRates == null) {
             return;
         }

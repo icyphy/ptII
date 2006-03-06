@@ -72,11 +72,11 @@ public class FSMActor extends CCodeGeneratorHelper {
     /////////////////////////////////////////////////////////////////////
     ////                           public methods                    ////
 
-    /** Generate the fire code of the associated FSMActor.  It provies 
+    /** Generate the fire code of the associated FSMActor.  It provies
      *  generateTransitionCode(StringBuffer, TransitionRetriever) with an
      *  anonymous class implementing a method which returns an iterator of
-     *  all outgoing transitions of the current state. 
-     * 
+     *  all outgoing transitions of the current state.
+     *
      *  @return The generated fire code.
      *  @exception IllegalActionException If thrown while generating
      *  firing code.
@@ -99,7 +99,7 @@ public class FSMActor extends CCodeGeneratorHelper {
      *  state, and initializing current configuration of the container
      *  when it applies (i.e., when this FSMActor works as a modal
      *  controller for a MultirateFSMDirector).
-     * 
+     *
      *  @return The initialize code of the associated FSMActor.
      *  @exception IllegalActionException If initial state cannot be found,
      *   configuraton number cannot be updated or code cannot be processed.
@@ -117,13 +117,13 @@ public class FSMActor extends CCodeGeneratorHelper {
     }
 
     /** Generate the preinitialize code of the associated FSMActor. It declares
-     *  two variables for this actor: currentState and transitionFlag. 
+     *  two variables for this actor: currentState and transitionFlag.
      *  currentState is an int representing this actor's current state.
      *  transitionFlag is an unsigned char to indicate if a preemptive
      *  transition is taken.
-     * 
+     *
      *  @return The preinitialize code of the associated FSMActor.
-     *  @exception IllegalActionException If thrown when creating buffer 
+     *  @exception IllegalActionException If thrown when creating buffer
      *   size and offset map or processing code.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
@@ -136,7 +136,7 @@ public class FSMActor extends CCodeGeneratorHelper {
 
     /** Generate a set of shared codes of the associated FSMActor.
      *  It generates code for defining macro true and false.
-     *  
+     *
      *  @return a set of shared codes.
      *  @exception IllegalActionException Not thrown here.
      */
@@ -147,14 +147,14 @@ public class FSMActor extends CCodeGeneratorHelper {
         return set;
     }
 
-    /** Generate code for making transition. It generates code for both choice 
+    /** Generate code for making transition. It generates code for both choice
      *  action and commit action.
-     * 
+     *
      *  @param code The string buffer that the generated code is appended to.
      *  @param transitionRetriever An instance of a class implementing
      *  a method.
-     *   which returns an iterator of all, preemptive or non-preemptive 
-     *   transitions of the current state. 
+     *   which returns an iterator of all, preemptive or non-preemptive
+     *   transitions of the current state.
      *  @throws IllegalActionException If thrown while generating
      *  transition code.
      */
@@ -167,7 +167,7 @@ public class FSMActor extends CCodeGeneratorHelper {
 
         int depth = 1;
         codeBuffer.append(_getIndentPrefix(depth));
-        // The default value 1 of transitionFlag means the transition 
+        // The default value 1 of transitionFlag means the transition
         // will be taken. If no transition is actually taken, it will be
         // set to value 0.
         codeBuffer.append("$actorSymbol(transitionFlag) = 1;\n");
@@ -193,7 +193,7 @@ public class FSMActor extends CCodeGeneratorHelper {
             // that need to be tried.
             Iterator transitions = transitionRetriever
                     .retrieveTransitions(state);
-            // Reorder transitions so that default transitions are at 
+            // Reorder transitions so that default transitions are at
             // the end of the list.
             List reOrderedTransitions = new LinkedList();
             List defaultTransitions = new LinkedList();
@@ -207,7 +207,7 @@ public class FSMActor extends CCodeGeneratorHelper {
             }
             reOrderedTransitions.addAll(defaultTransitions);
             transitions = reOrderedTransitions.iterator();
-            
+
             int transitionCount = 0;
             depth++;
 
@@ -232,7 +232,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     parseTreeCodeGenerator
                             .evaluateParseTree(guardParseTree, _scope);
                     codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
-                }                    
+                }
                 codeBuffer.append(") {\n");
 
                 depth++;
@@ -457,13 +457,13 @@ public class FSMActor extends CCodeGeneratorHelper {
             }
 
             codeBuffer.append(_getIndentPrefix(depth));
-            codeBuffer.append("break;\n"); // end of case statement 
+            codeBuffer.append("break;\n"); // end of case statement
             depth--;
         }
 
         depth--;
         codeBuffer.append(_getIndentPrefix(depth));
-        codeBuffer.append("}\n"); // end of switch statement   
+        codeBuffer.append("}\n"); // end of switch statement
         code.append(processCode(codeBuffer.toString()));
     }
 
@@ -489,7 +489,7 @@ public class FSMActor extends CCodeGeneratorHelper {
     /** Generate code for updating current state of this FSMActor. The
      *  states are numbered according to the order in the list
      *  returned by entityList().
-     * 
+     *
      *  @param codeBuffer The string buffer that the generated code is
      *  appended to.
      *  @param state The current state.
@@ -515,7 +515,7 @@ public class FSMActor extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
-    /** The scope to generate code for guard expression, choice action 
+    /** The scope to generate code for guard expression, choice action
      *  and commit action.
      */
     protected HelperScope _scope = new HelperScope();

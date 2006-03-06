@@ -68,7 +68,7 @@ public class FSMDirector extends Director {
     /** Generate the code for the firing of actors controlled by this director.
      *  It generates code for making preemptive transition, checking if a transition
      *  is taken, firing refinements and making non-preemptive transition.
-     * 
+     *
      *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
@@ -114,7 +114,7 @@ public class FSMDirector extends Director {
     }
 
     /** Generate code for the firing of refinements.
-     * 
+     *
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
@@ -209,11 +209,11 @@ public class FSMDirector extends Director {
         code.append(_getIndentPrefix(depth));
         code.append("}\n"); //end of switch statemen
     }
-    
+
     /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a 
+     *  code of each actor is not inlined. Each actor's firing code is in a
      *  function with the same name as that of the actor.
-     * 
+     *
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
      */
@@ -222,7 +222,7 @@ public class FSMDirector extends Director {
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next(); 
+            Actor actor = (Actor) actors.next();
             // modal controller is not used as a stand-alone actor.
             if (((ptolemy.domains.fsm.kernel.FSMDirector)
                     _director).getController() == actor) {
