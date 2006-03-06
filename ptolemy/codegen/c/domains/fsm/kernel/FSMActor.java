@@ -72,7 +72,7 @@ public class FSMActor extends CCodeGeneratorHelper {
     /////////////////////////////////////////////////////////////////////
     ////                           public methods                    ////
 
-    /** Generate the fire code of the associated FSMActor.  It provies
+    /** Generate the fire code of the associated FSMActor.  It provides
      *  generateTransitionCode(StringBuffer, TransitionRetriever) with an
      *  anonymous class implementing a method which returns an iterator of
      *  all outgoing transitions of the current state.
@@ -102,7 +102,7 @@ public class FSMActor extends CCodeGeneratorHelper {
      *
      *  @return The initialize code of the associated FSMActor.
      *  @exception IllegalActionException If initial state cannot be found,
-     *   configuraton number cannot be updated or code cannot be processed.
+     *   configuration number cannot be updated or code cannot be processed.
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
@@ -502,7 +502,7 @@ public class FSMActor extends CCodeGeneratorHelper {
     /** A class implementing this interface implements a method to
      *  retrieve transitions of a given state. Depending on
      *  implementation, it could return all transitions, only
-     *  preemptive transtions or only non-preemptive transitions.
+     *  preemptive transitions or only non-preemptive transitions.
      */
     public static interface TransitionRetriever {
 

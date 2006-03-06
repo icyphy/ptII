@@ -111,7 +111,7 @@ public class MultirateFSMDirector extends FSMDirector {
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         // generate code for non-preemptive transition
-        code.append("\n/* Nonpreepmtive Transition */\n\n");
+        code.append("\n/* Nonpreemptive Transition */\n\n");
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
                     public Iterator retrieveTransitions(State state) {
@@ -494,7 +494,7 @@ public class MultirateFSMDirector extends FSMDirector {
                     }
 
                     // FIXME: we can generate for loop in C instead of
-                    // using for loop here. Thus we can parametarize
+                    // using for loop here. Thus we can parameterize
                     // the rate and don't need switch statement in the
                     // generated C code. Thus we can generate more
                     // compressed C code. It requires storing the

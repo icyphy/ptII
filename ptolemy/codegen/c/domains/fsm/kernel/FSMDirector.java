@@ -85,7 +85,7 @@ public class FSMDirector extends Director {
         StringBuffer code = new StringBuffer();
 
         // generate code for preemptive transition
-        code.append("\n/* Preepmtive Transition */\n\n");
+        code.append("\n/* Preemptive Transition */\n\n");
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
                     public Iterator retrieveTransitions(State state) {
@@ -104,7 +104,7 @@ public class FSMDirector extends Director {
         _generateRefinementCode(code);
 
         // generate code for non-preemptive transition
-        code.append("\n/* Nonpreepmtive Transition */\n\n");
+        code.append("\n/* Nonpreemptive Transition */\n\n");
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
                     public Iterator retrieveTransitions(State state) {
@@ -215,7 +215,7 @@ public class FSMDirector extends Director {
 
         depth--;
         code.append(_getIndentPrefix(depth));
-        code.append("}\n"); //end of switch statemen
+        code.append("}\n"); //end of switch statement
     }
 
     /** Generate The fire function code. This method is called when the firing
