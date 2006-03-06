@@ -77,8 +77,7 @@ public class FSMDirector extends Director {
      *   an actor throws it while generating fire code for the actor.
      */
     public String generateFireCode() throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor controller =
-            ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
@@ -126,8 +125,7 @@ public class FSMDirector extends Director {
     protected void _generateRefinementCode(StringBuffer code)
             throws IllegalActionException {
 
-        ptolemy.domains.fsm.kernel.FSMDirector director =
-            (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
+        ptolemy.domains.fsm.kernel.FSMDirector director = (ptolemy.domains.fsm.kernel.FSMDirector) getComponent();
         ptolemy.domains.fsm.kernel.FSMActor controller = director
                 .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
@@ -157,15 +155,14 @@ public class FSMDirector extends Director {
 
             if (actors != null) {
                 for (int i = 0; i < actors.length; i++) {
-                    CodeGeneratorHelper actorHelper =
-                        (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
+                    CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
 
                     // fire the actor
                     if (inline) {
                         code.append(actorHelper.generateFireCode());
                     } else {
-                        code.append(CodeGeneratorHelper.generateName(
-                                            (NamedObj) actors[i])
+                        code.append(CodeGeneratorHelper
+                                .generateName((NamedObj) actors[i])
                                 + "();\n");
                     }
 
@@ -176,10 +173,8 @@ public class FSMDirector extends Director {
                     while (ports.hasNext()) {
                         IOPort port = (IOPort) ports.next();
                         if (rates != null) {
-                            code.append(
-                                    "switch ("
-                                    + actorHelper.processCode(
-                                            "$actorSymbol("
+                            code.append("switch ("
+                                    + actorHelper.processCode("$actorSymbol("
                                             + "currentConfiguration)")
                                     + ") {\n");
                             for (int k = 0; k < rates.length; k++) {
@@ -232,16 +227,13 @@ public class FSMDirector extends Director {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             // modal controller is not used as a stand-alone actor.
-            if (((ptolemy.domains.fsm.kernel.FSMDirector)
-                    _director).getController() == actor) {
+            if (((ptolemy.domains.fsm.kernel.FSMDirector) _director)
+                    .getController() == actor) {
                 continue;
             }
-            CodeGeneratorHelper actorHelper =
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(actorHelper.generateFireFunctionCode());
         }
         return code.toString();
     }
 }
-
-
