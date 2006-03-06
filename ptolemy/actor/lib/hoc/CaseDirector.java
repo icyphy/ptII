@@ -37,6 +37,7 @@ import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
@@ -174,13 +175,10 @@ public class CaseDirector extends Director {
 
             Case container = (Case)getContainer();
             // Read from port parameters, including the control port.
-            for (Iterator inputPorts = container.inputPortList().iterator(); inputPorts.hasNext()
-                    && !_stopRequested;) {
-                IOPort p = (IOPort) inputPorts.next();
-
-                if (p instanceof ParameterPort) {
-                    ((ParameterPort) p).getParameter().update();
-                }
+            Iterator portParameters = container.attributeList(PortParameter.class).iterator();
+            while (portParameters.hasNext()) {
+                PortParameter portParameter = (PortParameter)portParameters.next();
+                portParameter.update();
             }
             
             String controlValue = container.control.getToken().toString();

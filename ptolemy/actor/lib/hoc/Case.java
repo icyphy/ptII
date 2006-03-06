@@ -26,6 +26,9 @@
  */
 package ptolemy.actor.lib.hoc;
 
+import java.util.Iterator;
+
+import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.kernel.ComponentEntity;
@@ -73,7 +76,24 @@ public class Case extends MultiCompositeActor {
     public Case(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
+        
+        // Create the control port.
+        control = new PortParameter(this, "control");
+        // FIXME: This is awkward... If I provide some
+        // non-boolean control input, I get obscure type
+        // conflict error messages and have to change this
+        // to match.
+        control.setExpression("true");
+        ParameterPort port = control.getPort();
+        // Put the control input on the bottom of the actor.
+        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
+        controlCardinal.setExpression("SOUTH");
+
+        // Create the default refinement.
+        _default = newRefinement("default");
+        
+        // Create the director.
+        _director = _createDirector();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -101,6 +121,68 @@ public class Case extends MultiCompositeActor {
         newObject._current = newObject._default;
         return newObject;
     }
+    
+    /** Return the current refinement, or null if prefire() has not yet been invoked.
+     *  @return The current refinement.
+     */
+    public Refinement getCurrentRefinement() {
+        return _current;
+    }
+    
+    /** Override the base class to not read inputs, since this has been
+     *  done in prefire().  Fire the current refinement, and then
+     *  send any output data created by calling the local director's
+     *  transferOutputs method.
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's fire() method throws it, or if the actor is not
+     *   opaque.
+     */
+    public void fire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Calling fire()");
+        }
+
+        try {
+            _workspace.getReadAccess();
+
+            _director.fire();
+
+            if (_stopRequested) {
+                return;
+            }
+
+            // Use the local director to transfer outputs.
+            Iterator outports = outputPortList().iterator();
+
+            while (outports.hasNext() && !_stopRequested) {
+                IOPort p = (IOPort) outports.next();
+                _director.transferOutputs(p);
+            }
+        } finally {
+            _workspace.doneReading();
+        }
+
+        if (_debugging) {
+            _debug("Called fire()");
+        }
+    }
+
+    /** Create a new refinement with the specified name.
+     *  @return The new refinement.
+     *  @throws IllegalActionException If the refinement cannot be created.
+     *  @throws NameDuplicationException If a refinement already exists with this name.
+     */
+    public Refinement newRefinement(String name)
+            throws IllegalActionException, NameDuplicationException {
+        return new Refinement(this, name);
+    }
+
+    /** Return the class name for refinements that this Case actor expects to contain.
+     *  @return The string "ptolemy.actor.lib.hoc.Refinement".
+     */
+    public String refinementClassName() {
+        return "ptolemy.actor.lib.hoc.Refinement";
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -124,6 +206,15 @@ public class Case extends MultiCompositeActor {
             }
         }
     }
+    
+    /** Create a director. This base class creates an instance of CaseDirector.
+     *  @throws IllegalActionException If the director cannot be created.
+     *  @throws NameDuplicationException If there is already an attribute with
+     *   the name "_director".
+     */
+    protected CaseDirector _createDirector() throws IllegalActionException, NameDuplicationException {
+        return new CaseDirector(this, "_director");        
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -133,30 +224,7 @@ public class Case extends MultiCompositeActor {
     
     /** The default refinement. */
     protected Refinement _default;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Initialize the model with a single state.
-     */
-    private void _init() throws IllegalActionException,
-            NameDuplicationException {
-        // Create the control port.
-        control = new PortParameter(this, "control");
-        // FIXME: This is awkward... If I provide some
-        // non-boolean control input, I get obscure type
-        // conflict error messages and have to change this
-        // to match.
-        control.setExpression("true");
-        ParameterPort port = control.getPort();
-        // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
-        controlCardinal.setExpression("SOUTH");
-
-        // Create the default refinement.
-        _default = new Refinement(this, "default");
-        
-        // Create the director.
-        new CaseDirector(this, "_director");
-    }
+    
+    /** The director. */
+    protected CaseDirector _director;
 }

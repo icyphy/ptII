@@ -122,7 +122,7 @@ public class MultiCompositeActor extends TypedCompositeActor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "ModalModel.newPort: Internal error: " + ex.getMessage());
+                    "MultiCompositeActor.newPort(): Internal error: " + ex.getMessage());
         } finally {
             _workspace.doneWriting();
         }
