@@ -199,7 +199,7 @@ public class FSMActor extends CCodeGeneratorHelper {
             // the end of the list.
             List reOrderedTransitions = new LinkedList();
             List defaultTransitions = new LinkedList();
-            while(transitions.hasNext()) {
+            while (transitions.hasNext()) {
                 Transition transition = (Transition) transitions.next();
                 if (transition.getName().equals("default")) {
                     defaultTransitions.add(transition);
@@ -224,7 +224,7 @@ public class FSMActor extends CCodeGeneratorHelper {
 
                 Transition transition = (Transition) transitions.next();
                 // generate code for guard expression
-                if(transition.getName().equals("default")) {
+                if (transition.getName().equals("default")) {
                     codeBuffer.append("true");
                 } else {
                     String guard = transition.getGuardExpression();
