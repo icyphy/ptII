@@ -197,7 +197,7 @@ public class CodeStream {
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
         if (_codeBlockTable == null) {
-            _constructCodeTable();
+            _constructCodeTable(mayNotExist);
         }
 
         StringBuffer codeBlock = (StringBuffer) _codeBlockTable.get(blockName);
@@ -271,7 +271,7 @@ public class CodeStream {
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
         if (_codeBlockTable == null) {
-            _constructCodeTable();
+            _constructCodeTable(true);
         }
 
         Enumeration allBlockNames = _codeBlockTable.keys();
@@ -300,7 +300,7 @@ public class CodeStream {
         StringBuffer buffer = new StringBuffer();
 
         if (_codeBlockTable == null) {
-            _constructCodeTable();
+            _constructCodeTable(true);
         }
 
         for (Iterator keys = _codeBlockTable.keySet().iterator(); keys
@@ -408,10 +408,12 @@ public class CodeStream {
     /**
      * Read the helper .c file identified by the _filePath and construct the
      * code block table and parameter table.
+     * @param mayNotExist Indicate if the file is required to exist.
      * @exception IllegalActionException If an error occurs when parsing the
      *  helper .c file.
      */
-    private void _constructCodeTable() throws IllegalActionException {
+    private void _constructCodeTable(boolean mayNotExist) 
+    	throws IllegalActionException {
         _codeBlockTable = new Hashtable();
         _parameterTable = new Hashtable();
 
@@ -438,11 +440,15 @@ public class CodeStream {
             _codeBlockTable = null;
             throw ex;
         } catch (IOException ex) {
-            _codeBlockTable = null;
             if (reader == null) {
-                throw new IllegalActionException(null, ex, "Cannot open file: "
-                        + _filePath);
+            	if (mayNotExist) {
+            	} else {
+                    _codeBlockTable = null;
+	                throw new IllegalActionException(
+	                		null, ex, "Cannot open file: " + _filePath);
+            	}
             } else {
+                _codeBlockTable = null;
                 throw new IllegalActionException(null, ex,
                         "Error reading file: " + _filePath);
             }
