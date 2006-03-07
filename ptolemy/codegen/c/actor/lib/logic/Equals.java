@@ -62,10 +62,8 @@ public class Equals extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String  generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        super.generateFireCode();
         ptolemy.actor.lib.logic.Equals actor = (ptolemy.actor.lib.logic.Equals) getComponent();
-        _codeStream.clear();
 
         String type = "";
         type = _getCodeGenTypeFromPtolemyType(actor.input.getType());
@@ -75,8 +73,7 @@ public class Equals extends CCodeGeneratorHelper {
         ArrayList args = new ArrayList();
         args.add(new Integer(actor.input.getWidth()));
         _codeStream.appendCodeBlock(type + "EqualsBlock", args);
-        code.append(processCode(_codeStream.toString()));
-        return code.toString();
+        return processCode(_codeStream.toString());
    }
 
     /**

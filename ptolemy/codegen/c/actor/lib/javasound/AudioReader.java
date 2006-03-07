@@ -68,7 +68,6 @@ public class AudioReader extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        _codeStream.clear();
 
         ptolemy.actor.lib.javasound.AudioReader actor = 
             (ptolemy.actor.lib.javasound.AudioReader) getComponent();

@@ -55,17 +55,6 @@ public class SampleDelay extends CCodeGeneratorHelper {
     ////////////////////////////////////////////////////////////////////
     ////                     public methods                         ////
 
-    /** Generate the fire code of the SampleDelay actor.
-     *  @return The generated code.
-     *  @exception IllegalActionException
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("codeBlock1"));
-        return code.toString();
-    }
-
     /** Generate the initialize code for the SampleDelay actor by
      *  declaring the initial values of the sink channels of the
      *  output port of the SampleDelay actor.
@@ -77,7 +66,6 @@ public class SampleDelay extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        StringBuffer code = new StringBuffer();
         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
 
         /*
@@ -88,7 +76,7 @@ public class SampleDelay extends CCodeGeneratorHelper {
         int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
 
         for (int i = 0; i < length; i++) {
-            code.append("$ref(output, " + i + ") = " + "$val(initialOutputs, "
+            _codeStream.append("$ref(output, " + i + ") = " + "$val(initialOutputs, "
                     + i + ");\n");
 
             /*
@@ -118,6 +106,6 @@ public class SampleDelay extends CCodeGeneratorHelper {
         // the SampleDelay?
         //setOffset(actor.input, 0, new Integer(initialOutputs.length));
 
-        return processCode(code.toString());
+        return processCode(_codeStream.toString());
     }
 }

@@ -54,77 +54,6 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
-     * The method reads in <code>fireBlock</code> from
-     * VariableRecursiveLattice.c, replaces macros with their values
-     * and appends the processed code block to the given code buffer.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return processCode(code.toString());
-    }
-
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initBlock</code> from
-     * VariableRecursiveLattice.c, replaces macros with their values
-     * and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-        code.append(_generateBlockCode("initBlock"));
-        return processCode(code.toString());
-    }
-
-    /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from
-     * VariableRecursiveLattice.c, replaces macros with their values
-     * and returns the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        _codeStream.clear();
-        code.append(_generateBlockCode("preinitBlock"));
-        return processCode(code.toString());
-    }
-
-    /**
-     * Generate wrap up code.
-     * This method reads the <code>wrapupBlock</code>
-     * from VariableRecursiveLattice.c,
-     * replaces macros with their values and appends the processed code block
-     * to the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        super.generateWrapupCode();
-
-        //ptolemy.domains.sdf.lib.VariableRecursiveLattice actor = (ptolemy.domains.sdf.lib.VariableRecursiveLattice) getComponent();
-        _codeStream.clear();
-        _codeStream.appendCodeBlock("wrapupBlock");
-
-        code.append(processCode(_codeStream.toString()));
-        return code.toString();
-    }
-
-    /**
      * Get the files needed by the code generated for the
      * VariableRecursiveLattice actor.
      * @return A set of strings that are names of the header files
@@ -134,7 +63,6 @@ public class VariableRecursiveLattice extends CCodeGeneratorHelper {
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
         files.add("\"math.h\"");
-
         return files;
     }
 }

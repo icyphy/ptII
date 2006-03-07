@@ -63,19 +63,14 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-
-        _codeStream.clear();
+        super.generateFireCode();
         ptolemy.actor.lib.javasound.AudioPlayer actor = (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
         if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
             _codeStream.appendCodeBlock("fireBlock_8");
         } else { // assume bitsPerSample == 16 
             _codeStream.appendCodeBlock("fireBlock_16");
         }
-        code.append(processCode(_codeStream.toString()));
-
-        return code.toString();
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -90,10 +85,7 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
-
         ptolemy.actor.lib.javasound.AudioPlayer actor = (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
-
-        _codeStream.clear();
 
         if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
             _codeStream.appendCodeBlock("preinitBlock_8");
