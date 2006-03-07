@@ -54,53 +54,6 @@ public class XYPlotter extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
-     * The method reads in <code>writeFile</code> from XYPlotter.c
-     * replaces macros with their values and appends to the given code buffer.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-
-        // FIXME: how do we add legend to the file??
-        code.append(_generateBlockCode("writeFile"));
-
-        return code.toString();
-    }
-
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initBlock</code> from XYPlotter.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code block.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("initBlock");
-        return processCode(_codeStream.toString());
-    }
-
-    /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from XYPlotter.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code block.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        return _generateBlockCode("preinitBlock");
-    }
-
-    /**
      * Generate wrap up code.
      * This method reads the <code>closeFile</code> and <code>graphPlot</code>
      * from XYPlotter.c, replaces macros with their values and appends to the
@@ -110,20 +63,15 @@ public class XYPlotter extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
-
-        ptolemy.actor.lib.gui.XYPlotter actor = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
-
-        _codeStream.clear();
         _codeStream.appendCodeBlock("closeFile");
-
+        
+        ptolemy.actor.lib.gui.XYPlotter actor = 
+        	(ptolemy.actor.lib.gui.XYPlotter) getComponent();
         if (actor.fillOnWrapup.getExpression().equals("true")) {
             _codeStream.appendCodeBlock("graphPlot");
         }
-
-        code.append(processCode(_codeStream.toString()));
-        return code.toString();
+        return processCode(_codeStream.toString());
     }
 
     /**

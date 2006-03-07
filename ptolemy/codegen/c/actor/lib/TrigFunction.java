@@ -67,7 +67,8 @@ public class TrigFunction extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
-        ptolemy.actor.lib.TrigFunction actor = (ptolemy.actor.lib.TrigFunction) getComponent();
+        ptolemy.actor.lib.TrigFunction actor = 
+        	(ptolemy.actor.lib.TrigFunction) getComponent();
 
         String function = actor.function.getExpression();
         String codeBlockName = (function.equals("sin")) ? "sinBlock"

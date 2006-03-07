@@ -96,9 +96,10 @@ public class ElementsToArray extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generatePreinitializeCode());
-        ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
 
         ArrayList args = new ArrayList();
+        ptolemy.actor.lib.ElementsToArray actor = 
+        	(ptolemy.actor.lib.ElementsToArray) getComponent();
         args.add(new Integer(actor.input.getWidth()));
         code.append(_generateBlockCode("initBlock", args));
         return processCode(code.toString());

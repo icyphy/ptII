@@ -63,8 +63,7 @@ public class MonitorValue extends CCodeGeneratorHelper {
      *   error in processing the specified code blocks or the type is not supported.
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        super.generateFireCode();
         
         ptolemy.actor.lib.MonitorValue actor = (ptolemy.actor.lib.MonitorValue) getComponent();
         Type type = actor.input.getType();
@@ -73,18 +72,18 @@ public class MonitorValue extends CCodeGeneratorHelper {
             args.add(new Integer(i));
             args.add(actor.getName());
             if (type == BaseType.INT || type == BaseType.BOOLEAN) {
-                code.append(_generateBlockCode("intBlock", args));
+                _codeStream.appendCodeBlock("intBlock", args);
             } else if (type == BaseType.DOUBLE) {
-                code.append(_generateBlockCode("doubleBlock", args));
+            	_codeStream.appendCodeBlock("doubleBlock", args);
             } else if (type == BaseType.STRING) {
-                code.append(_generateBlockCode("stringBlock", args));
+            	_codeStream.appendCodeBlock("stringBlock", args);
             } else {
                 throw new IllegalActionException(actor, "The type: " 
                         + type + " is not supported for now.");
             }
         }
         
-        return code.toString();
+        return processCode(_codeStream.toString());
     }
     
     /** Get the files needed by the code generated for the actor.

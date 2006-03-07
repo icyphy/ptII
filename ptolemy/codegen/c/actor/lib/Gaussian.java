@@ -53,22 +53,6 @@ public class Gaussian extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
-     * Read the <code>fireBlock</code> from Gaussian.c, replace macros
-     * with their values and append the processed code block to the given
-     * code buffer.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }
-
-    /**
      * Generate initialize code.
      * Parse the seed parameter of the actor. If the seed equals zero, then
      * append code that sets the seed variable to the sum of the current time
@@ -107,39 +91,6 @@ public class Gaussian extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate preinitialize code.
-     * Read the <code>preinitBlock</code> from Gaussian.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        return processCode(_generateBlockCode("preinitBlock"));
-    }
-
-    /**
-     * Generate shared code.
-     * Reads the <code>sharedBlock</code> from Gaussian.c,
-     * replace macros with their values and append the processed code
-     * block to the given code buffer.
-     * @return A set of strings that are code shared by multiple instances of
-     *  the same actor.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public Set generateSharedCode() throws IllegalActionException {
-        // We don't need to process the code block here because the
-        // sharedCode do not contain any macros.
-        super.generateSharedCode();
-
-        Set codeBlocks = new HashSet();
-        codeBlocks.add(_generateBlockCode("sharedBlock", false));
-        return codeBlocks;
-    }
-
-    /**
      * Get the files needed by the code generated for the
      * Gaussian actor.
      * @return A set of Strings that are names of the files
@@ -148,7 +99,6 @@ public class Gaussian extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         super.getHeaderFiles();
-
         Set files = new HashSet();
         files.add("<time.h>");
         files.add("<math.h>");

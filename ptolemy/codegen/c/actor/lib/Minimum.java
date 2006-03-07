@@ -61,44 +61,27 @@ public class Minimum extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        super.generateFireCode();
 
-        ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
+        ptolemy.actor.lib.Maximum actor = (ptolemy.actor.lib.Maximum) getComponent();
         
-        code.append(_generateBlockCode("fireInitBlock"));
+        _codeStream.appendCodeBlock("fireInitBlock");
         // FIXME: we need to resolve the token type in the future
         for (int i = 1; i < actor.input.getWidth(); i++) {
             ArrayList args = new ArrayList();
             args.add(new Integer(i));
-            code.append(_generateBlockCode("fireBlock", args));
+            _codeStream.appendCodeBlock("findBlock", args);
         }
-        for (int i = 0; i < actor.minimumValue.getWidth(); i++) {
+        for (int i = 0; i < actor.maximumValue.getWidth(); i++) {
             ArrayList args = new ArrayList();
             args.add(new Integer(i));
-            code.append(_generateBlockCode("sendBlock1", args));
+            _codeStream.appendCodeBlock("sendBlock1", args);
         }
         for (int i = 0; i < actor.channelNumber.getWidth(); i++) {
             ArrayList args = new ArrayList();
             args.add(new Integer(i));
-            code.append(_generateBlockCode("sendBlock2", args));
+            _codeStream.appendCodeBlock("sendBlock2", args);
         }
-        return code.toString();
-    }
-
-    /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from Minimum.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("preinitBlock");
         return processCode(_codeStream.toString());
     }
 }

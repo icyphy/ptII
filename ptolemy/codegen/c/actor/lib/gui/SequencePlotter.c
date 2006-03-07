@@ -26,11 +26,9 @@ static int $actorSymbol(count) = 0;
     $actorSymbol(count) ++;
 /**/
 
-/***closeFile***/
+/***wrapupBlock***/
     fclose($actorSymbol(filePtr));
-/**/
-
-/***graphPlot***/
     system("ptplot $actorSymbol(output) &"); 
 /**/
+
 

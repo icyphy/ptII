@@ -62,7 +62,6 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-
         _generateRandomNumber(code);
         return code.toString();
     }
@@ -76,32 +75,20 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
+        super.generateInitializeCode();
 
         ptolemy.actor.lib.RandomSource actor = (ptolemy.actor.lib.RandomSource) getComponent();
 
         long sd = ((LongToken) (actor.seed.getToken())).longValue();
 
         if (sd != 0) {
-            code.append("    $actorSymbol(seed) = " + sd + ";\n");
+            _codeStream.append("    $actorSymbol(seed) = " + sd + ";\n");
         } else {
-            code.append("    $actorSymbol(seed) = (time(0) + "
+        	_codeStream.append("    $actorSymbol(seed) = (time(0) + "
                     + actor.hashCode() + ");\n");
         }
 
-        return processCode(code.toString());
-    }
-
-    /** Generate the preinitialize code.
-     *  @return The preinitialize code of this actor.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        code.append("unsigned int $actorSymbol(seed);\n");
-        return processCode(code.toString());
+        return processCode(_codeStream.toString());
     }
 
     /** Get the files needed by the code generated for the RandomSource actor.

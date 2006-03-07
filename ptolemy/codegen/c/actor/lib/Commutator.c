@@ -1,15 +1,12 @@
-/*** preinitBlock ***/
+/*** primitiveToPrimitiveFireBlock($channel, $type) ***/
+    $ref(output, $channel) = $ref(input#$channel);
 /**/
 
-/*** primitiveToPrimitiveFireBlock(<channel>, <type>) ***/
-    $ref(output, <channel>) = $ref(input#<channel>);
+/*** primitiveToTokenFireBlock($channel, $type) ***/
+    $token(output, $channel) = $new($type, $ref(input#$channel));
 /**/
 
-/*** primitiveToTokenFireBlock(<channel>, <type>) ***/
-    $token(output, <channel>) = $new(<type>, $ref(input#<channel>));
-/**/
-
-/*** tokenFireBlock(<channel>, <type>) ***/
-    $token(output, <channel>) = $token(input#<channel>);
+/*** tokenFireBlock($channel, $type) ***/
+    $token(output, $channel) = $token(input#$channel);
 /**/
 

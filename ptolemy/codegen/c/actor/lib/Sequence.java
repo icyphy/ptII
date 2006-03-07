@@ -62,11 +62,9 @@ public class Sequence extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        ptolemy.actor.lib.Sequence actor = (ptolemy.actor.lib.Sequence) getComponent();
-
-        CodeStream _codeStream = new CodeStream(this);
+        super.generateFireCode();
+        ptolemy.actor.lib.Sequence actor = 
+        	(ptolemy.actor.lib.Sequence) getComponent();
 
         if (actor.enable.getWidth() == 0) {
             _codeStream.appendCodeBlock("codeBlock1");
@@ -75,23 +73,6 @@ public class Sequence extends CCodeGeneratorHelper {
         }
 
         _codeStream.appendCodeBlock("codeBlock3");
-        code.append(processCode(_codeStream.toString()));
-        return code.toString();
-    }
-
-    /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from Sequence.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("preinitBlock");
         return processCode(_codeStream.toString());
     }
 }

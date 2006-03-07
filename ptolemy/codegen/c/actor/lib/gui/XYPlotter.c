@@ -9,7 +9,7 @@
     }
 /**/
 
-/***writeFile***/
+/***fireBlock***/
     fprintf($actorSymbol(filePtr),"%g %g\n",$ref(inputX#0),$ref(inputY#0));
 /**/
 

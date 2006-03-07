@@ -54,56 +54,6 @@ public class GradientAdaptiveLattice extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
-     * The method reads in <code>fireBlock</code> from
-     * GradientAdaptiveLattice.c, replaces macros with their values and
-     * appends the processed code block to the given code buffer.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }
-
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initBlock</code> from
-     * GradientAdaptiveLattice.c, replaces macros with their values and
-     * returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-        code.append(this._generateBlockCode("initBlock"));
-        return processCode(code.toString());
-    }
-
-    /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from
-     * GradientAdaptiveLattice.c, replaces macros with their values and
-     * returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        //ptolemy.actor.lib.GradientAdaptiveLattice actor = (ptolemy.actor.lib.GradientAdaptiveLattice) getComponent();
-        _codeStream.clear();
-        _codeStream.appendCodeBlock("preinitBlock");
-        return processCode(_codeStream.toString());
-    }
-
-    /**
      * Get the files needed by the code generated for the
      * GradientAdaptiveLattice actor.
      * @return A set of strings that are names of the files

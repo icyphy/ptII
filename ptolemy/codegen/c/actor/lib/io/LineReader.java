@@ -56,21 +56,6 @@ public class LineReader extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
-     * The method reads the <code>readLine</code> block from LineReader.c,
-     * replaces macros with their values and appends to the given code buffer.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("readLine"));
-        return code.toString();
-    }
-
-    /**
      * Generate initialize code.
      * This method reads the <code>initBlock</code> from LineReader.c,
      * replaces macros with their values and returns the processed code string.
@@ -120,19 +105,6 @@ public class LineReader extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from LineReader.c,
-     * replaces macros with their values and returns the processed code string.
-     * @return The processed code block.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        return processCode(_generateBlockCode("preinitBlock"));
-    }
-
-    /**
      * Generate wrap up code.
      * This method reads the <code>wrapUpBlock</code> from LineReader.c,
      * replaces macros with their values and appends to the given code buffer.
@@ -141,14 +113,11 @@ public class LineReader extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
-
         if (_fileOpen) {
-            code.append(_generateBlockCode("wrapUpBlock"));
+            _codeStream.appendCodeBlock("closeFile");
         }
-
-        return code.toString();
+        return processCode(_codeStream.toString());
     }
 
     /**

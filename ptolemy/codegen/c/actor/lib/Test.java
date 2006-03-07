@@ -51,7 +51,6 @@ public class Test extends CCodeGeneratorHelper {
      */
     public Test(ptolemy.actor.lib.Test actor) {
         super(actor);
-        _testActor = actor;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -67,37 +66,16 @@ public class Test extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-
         // FIXME: handle widths greater than 1.
-        if (_testActor.input.getWidth() > 1) {
-            throw new IllegalActionException(_testActor,
+        ptolemy.actor.lib.Test actor = 
+        	(ptolemy.actor.lib.Test) getComponent();
+        if (actor.input.getWidth() > 1) {
+            throw new IllegalActionException(actor,
                     "The C version of the Test actor currently only handles "
                             + "inputs of width 1.  The width of input was: "
-                            + _testActor.input.getWidth());
+                            + actor.input.getWidth());
         }
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("fireBlock");
-        code.append(processCode(_codeStream.toString()));
-        return code.toString();
-    }
-
-    /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from Test.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("preinitBlock");
-        return processCode(_codeStream.toString());
+        return super.generateFireCode();
     }
 
     /**
@@ -113,10 +91,4 @@ public class Test extends CCodeGeneratorHelper {
         files.add("\"math.h\"");
         return files;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Original type polymorphic Test actor. */
-    private ptolemy.actor.lib.Test _testActor;
 }

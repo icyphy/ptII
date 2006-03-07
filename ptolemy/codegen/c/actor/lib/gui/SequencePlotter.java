@@ -93,14 +93,9 @@ public class SequencePlotter extends CCodeGeneratorHelper {
      *  
      */
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-        
         ptolemy.actor.lib.gui.SequencePlotter actor 
                 = (ptolemy.actor.lib.gui.SequencePlotter) getComponent();
-        
-        code.append(_generateBlockCode("initBlock"));
-        
+
         // retrieve the legends.
         String value = actor.legend.getExpression();
         StringTokenizer tokenizer = null;
@@ -116,38 +111,7 @@ public class SequencePlotter extends CCodeGeneratorHelper {
                 _annotation[i] = "DataSet: channel " + i;  
             }
         }
-        
-        return processCode(code.toString());
-    }
-
-    /** Generate preinitialize code.
-     *  This method reads the <code>preinitBlock</code> from SequencePlotter.c,
-     *  replaces macros with their values and returns the processed code string.
-     *  @return The processed code block.
-     *  @exception IllegalActionException If the code stream encounters an
-     *   error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        code.append(_generateBlockCode("preinitBlock"));
-        return processCode(code.toString());
-    }
-
-    /** Generate wrap up code.
-     *  This method reads the <code>closeFile</code> and <code>graphPlot</code>
-     *  from SequencePlotter.c, replaces macros with their values and appends to the
-     *  given code buffer.
-     *  @return The processed code string.
-     *  @exception IllegalActionException If the code stream encounters an
-     *   error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateWrapupCode());
-        code.append(_generateBlockCode("closeFile"));
-        code.append(_generateBlockCode("graphPlot"));
-        return code.toString();
+        return super.generateInitializeCode();
     }
 
     /** Get the header files needed by the code generated for the

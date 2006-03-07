@@ -48,19 +48,4 @@ public class Const extends CCodeGeneratorHelper {
     public Const(ptolemy.actor.lib.Const actor) {
         super(actor);
     }
-
-    /**
-     * Generate fire code.
-     * This method reads the <code>fireBlock</code> from Const.c, replaces
-     * macros with their values and returns the processed code string.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }
 }

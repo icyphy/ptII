@@ -8,7 +8,7 @@
     $actorSymbol(channelTemp) = 0;
 /**/
 
-/*** fireBlock(<arg>) ***/
+/*** findBlock(<arg>) ***/
     if ($ref(input#<arg>) < $actorSymbol(minimumTemp)) {
         $actorSymbol(minimumTemp) = $ref(input#<arg>);
         $actorSymbol(channelTemp) = <arg>;

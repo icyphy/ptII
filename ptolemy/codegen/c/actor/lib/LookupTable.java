@@ -48,16 +48,4 @@ public class LookupTable extends CCodeGeneratorHelper {
     public LookupTable(ptolemy.actor.lib.LookupTable actor) {
         super(actor);
     }
-
-    /** Generate fire code.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }
 }

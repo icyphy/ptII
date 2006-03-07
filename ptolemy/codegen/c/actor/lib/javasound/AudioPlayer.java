@@ -79,19 +79,6 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate initialization code.
-     * Read the <code>initBlock</code> from AudioPlayer.c, replace
-     * macros with their values and return the processed code string.
-     * @return The processed code block.
-     * @exception IllegalActionException If the code stream encounters
-     * an error in processing the specified code block.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-        return processCode(_generateBlockCode("initBlock"));
-    }
-
-    /**
      * Generate preinitialization code.
      * Check the bitsPerSample parameter of the actor. If bitsPerSample is
      * equals to 8, then read the <code>preinitBlock_8</code>, else read the
@@ -115,41 +102,6 @@ public class AudioPlayer extends CCodeGeneratorHelper {
         }
 
         return processCode(_codeStream.toString());
-    }
-
-    /**
-     * Generate shared code.
-     * Read the <code>sharedBlock</code> from AudioPlayer.c,
-     * replaces macros with their values and appends the processed code
-     * block to the given code buffer.
-     * @return A set of strings that are code shared by multiple instances of
-     *  the same actor.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public Set generateSharedCode() throws IllegalActionException {
-        super.generateSharedCode();
-
-        // We don't need to process the code block here because the
-        // sharedCode do not contain any macros.
-        Set codeBlocks = new HashSet();
-        codeBlocks.add(_generateBlockCode("sharedBlock"));
-        return codeBlocks;
-    }
-
-    /**
-     * Generate wrap up code.
-     * Read the <code>wrapupBlock</code> from AudioPlayer.c,
-     * replace macros with their values and append the processed code block
-     * to the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        super.generateWrapupCode();
-        return code.toString();
     }
 
     /**

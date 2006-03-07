@@ -29,7 +29,6 @@
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.StringConst.
@@ -47,21 +46,5 @@ public class StringConst extends CCodeGeneratorHelper {
      */
     public StringConst(ptolemy.actor.lib.StringConst actor) {
         super(actor);
-    }
-
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initBlock</code> from StringConst.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        CodeStream _codeStream = new CodeStream(this);
-        _codeStream.appendCodeBlock("initBlock");
-        return processCode(_codeStream.toString());
     }
 }

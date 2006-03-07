@@ -62,11 +62,10 @@ public class Quantizer extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        _codeStream.clear();
+        super.generateFireCode();
 
-        ptolemy.actor.lib.Quantizer actor = (ptolemy.actor.lib.Quantizer) getComponent();
+        ptolemy.actor.lib.Quantizer actor = 
+        	(ptolemy.actor.lib.Quantizer) getComponent();
 
         ArrayList arguments = new ArrayList();
         StringTokenizer tokenizer = new StringTokenizer(actor.levels
@@ -74,8 +73,7 @@ public class Quantizer extends CCodeGeneratorHelper {
         arguments.add(new Integer(tokenizer.countTokens()));
 
         _codeStream.appendCodeBlock("fireBlock", arguments);
-        code.append(processCode(_codeStream.toString()));
-        return code.toString();
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -88,9 +86,9 @@ public class Quantizer extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        _codeStream.clear();
 
-        ptolemy.actor.lib.Quantizer actor = (ptolemy.actor.lib.Quantizer) getComponent();
+        ptolemy.actor.lib.Quantizer actor = 
+        	(ptolemy.actor.lib.Quantizer) getComponent();
 
         ArrayList arguments = new ArrayList();
         StringTokenizer tokenizer = new StringTokenizer(actor.levels
@@ -102,35 +100,6 @@ public class Quantizer extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from Quantizer.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        return _generateBlockCode("preinitBlock");
-    }
-
-    /**
-     * Generate wrap up code.
-     * Read the <code>wrapupBlock</code> from Quantizer.c,
-     * replace macros with their values and append the processed code block
-     * to the given code buffer.
-     * @return The generated wrapup code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        super.generateWrapupCode();
-        code.append(_generateBlockCode("wrapupBlock"));
-        return code.toString();
-    }
-
-    /**
      * Get the files needed by the code generated for the
      * Quantizer actor.
      * @return A set of Strings that are names of the header files
@@ -139,11 +108,9 @@ public class Quantizer extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         super.getHeaderFiles();
-
         Set files = new HashSet();
         files.add("<stdio.h>");
         files.add("<math.h>");
-
         return files;
     }
 }

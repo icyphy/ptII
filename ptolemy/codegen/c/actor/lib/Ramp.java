@@ -52,40 +52,13 @@ public class Ramp extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /** Generate fire code.
-     *  The method reads in <code>fireBlock</code> from Ramp.c,
-     *  replaces macros with their values and appends the processed code
-     *  block to the given code buffer.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }
-
-    /** Generate the initialize code.
-     *  @return The initialize code.
-     *  @exception IllegalActionException
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-        code.append(_generateBlockCode("initBlock"));
-        return processCode(code.toString());
-    }
-
     /** Generate the preinitialize code. Declare the variable state.
      *  @return The preinitialize code.
      *  @exception IllegalActionException
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         // FIXME: so far the code only works for primitive types.
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
+        super.generatePreinitializeCode();
 
         ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
         Type initType = actor.init.getType();
@@ -93,13 +66,13 @@ public class Ramp extends CCodeGeneratorHelper {
         int comparison = TypeLattice.compare(initType, stepType);
 
         if ((comparison == CPO.HIGHER) || (comparison == CPO.SAME)) {
-            code.append("static " + initType.toString() + " $actorSymbol(state);\n");
+            _codeStream.append("static " + initType.toString() + " $actorSymbol(state);\n");
         } else if (comparison == CPO.LOWER) {
-            code.append("static " + stepType.toString() + " $actorSymbol(state);\n");
+            _codeStream.append("static " + stepType.toString() + " $actorSymbol(state);\n");
         } else {
             throw new IllegalActionException(actor, "type incomparable.");
         }
 
-        return processCode(code.toString());
+        return processCode(_codeStream.toString());
     }
 }

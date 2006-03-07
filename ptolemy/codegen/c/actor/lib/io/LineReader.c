@@ -28,7 +28,7 @@
     }
 /**/
 
-/***readLine***/
+/***fireBlock***/
     //$actorSymbol(charReturned) = fscanf($actorSymbol(filePtr), "%s", $ref(output));
     $actorSymbol(index) = 0;
     do {
@@ -42,6 +42,6 @@
     $ref(endOfFile) = feof($actorSymbol(filePtr) );
 /**/
 
-/***wrapUpBlock***/
+/***closeFile***/
     fclose($actorSymbol(filePtr));
 /**/
