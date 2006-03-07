@@ -54,36 +54,6 @@ public class StringToUnsignedByteArray extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
-     * The method reads in <code>fireBlock</code> from
-     * StringToUnsignedByteArray.c, replaces macros with their values and
-     * appends the processed code block to the given code buffer.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }
-
-    /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from
-     * StringToUnsignedByteArray.c, replaces macros with their values and
-     * returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code block.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        return _generateBlockCode("preinitBlock");
-    }
-
-    /**
      * Get the files needed by the code generated for the
      * StringToUnsignedByteArray actor.
      * @return A set of strings that are names of the files

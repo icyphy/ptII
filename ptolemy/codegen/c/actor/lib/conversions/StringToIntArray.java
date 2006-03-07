@@ -48,45 +48,4 @@ public class StringToIntArray extends CCodeGeneratorHelper {
     public StringToIntArray(ptolemy.actor.lib.conversions.StringToIntArray actor) {
         super(actor);
     }
-
-    /**
-     * Generate fire code.
-     * The method reads in <code>fireBlock</code> from StringToIntArray.c,
-     * replaces macros with their values and appends the processed code
-     * block to the given code buffer.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }
-
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initBlock</code> from StringToIntArray.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-        return _generateBlockCode("initBlock");
-    }
-
-    /**
-     * Generate preinitialize code.
-     * This method reads the <code>preinitBlock</code> from StringToIntArray.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        return _generateBlockCode("preinitBlock");
-    }
 }
