@@ -70,7 +70,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateFireCode() throws IllegalActionException {
-        return super.generateFireCode();
+        _codeStream.clear();
+        _codeStream.append(super.generateFireCode());
+        _codeStream.appendCodeBlock("fireBlock", true);
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -82,9 +85,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-        return code.toString();
+        _codeStream.clear();
+        _codeStream.append(super.generateInitializeCode());
+        _codeStream.appendCodeBlock("initBlock", true);
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -96,9 +100,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        return code.toString();
+        _codeStream.clear();
+        _codeStream.append(super.generatePreinitializeCode());
+        _codeStream.appendCodeBlock("preinitBlock", true);
+        return processCode(_codeStream.toString());
     }
 
     /**
@@ -112,6 +117,8 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     public Set generateSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
         sharedCode.addAll(super.generateSharedCode());
+        _codeStream.appendCodeBlocks("sharedBlock");
+        sharedCode.add(_codeStream.toString());
         return sharedCode;
     }
 
@@ -125,9 +132,10 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateWrapupCode());
-        return code.toString();
+        _codeStream.clear();
+        _codeStream.append(super.generateWrapupCode());
+        _codeStream.appendCodeBlock("wrapupBlock", true);
+        return processCode(_codeStream.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
