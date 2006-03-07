@@ -86,10 +86,31 @@ public interface ContStepSizeControlActor extends Actor {
     public boolean isStepSizeAccurate();
 
     /** Implementations of this method should return
-     *  the suggested next step size. If the actor that implements this interface
-     *  does not have any constraints, it should
+     *  the predicted next step size. If the current integration
+     *  step is accurate, the actor will be asked for the prediction
+     *  of the next step size. If the actor that implement this interface
+     *  does not know how to predict the next step size, it should
      *  return java.lang.Double.MAX_VALUE.
      *  @return The predicted next step size.
      */
-    public double suggestedStepSize();
+    public double predictedStepSize();
+
+    /** Implementations of this method should return
+     *  the refined step size for restarting the current integration.
+     *  If this actor returns false when calling the isOutputAccurate() or
+     *  isStateAccurate() method, then it will be asked for a refined step size.
+     *  If the actor does not want to restart the current integration
+     *  step, this method should return the current step size of the
+     *  director.
+     *  @return The refined step size.
+     */
+    public double refinedStepSize();
+
+//    /** Implementations of this method should return
+//     *  the suggested next step size. If the actor that implements 
+//     *  this interface does not have any constraints, it should
+//     *  return java.lang.Double.MAX_VALUE.
+//     *  @return The predicted next step size.
+//     */
+//    public double suggestedStepSize();
 }

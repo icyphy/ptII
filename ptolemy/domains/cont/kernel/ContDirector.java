@@ -29,12 +29,15 @@ package ptolemy.domains.cont.kernel;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
+import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -51,7 +54,6 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContDirector
@@ -115,8 +117,8 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public abstract class ContDirector extends StaticSchedulingDirector implements
-        TimedDirector {
+public class ContDirector extends StaticSchedulingDirector 
+    implements TimedDirector {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -276,7 +278,8 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
      *  abstract in this abstract base class. The derived classes need to
      *  override this method for concrete implementation.
      */
-    public abstract void fire() throws IllegalActionException;
+    public void fire() throws IllegalActionException {
+    }
 
     /** Handle firing requests from the contained actors.
      *  If the specified time is earlier than the current time, or the
@@ -313,15 +316,6 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
         _breakpoints.insert(time);
     }
 
-    /** Return the breakpoint table. The result can be null if the breakpoint
-     *  table has never been created.
-     *  @return The breakpoint table.
-     */
-    public final TotallyOrderedSet getBreakPoints() {
-        // This method is final for performance reason.
-        return _breakpoints;
-    }
-
     /** Return the current ODE solver used to resolve states by the director.
      *  @return The current ODE solver used to resolve states by the director.
      */
@@ -345,16 +339,6 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
     public final double getErrorTolerance() {
         // This method is final for performance reason.
         return _errorTolerance;
-    }
-
-    /** Get the current execution phase of this director.
-     *  In this abstract class, always return the local execution phase.
-     *  The derived classes, specially the CTEmbeddedDirector, needs to
-     *  override this method.
-     *  @return The current execution phase of this director.
-     */
-    public CTExecutionPhase getExecutionPhase() {
-        return _executionPhase;
     }
 
     /** Return the initial step size.
@@ -432,15 +416,6 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
         return _stopTime;
     }
 
-    /** Return the current iteration begin time plus the current step size.
-     *  @return The iteration begin time plus the current step size.
-     *  @deprecated As of Ptolemy II 4.1, replaced by
-     *  {@link #getModelNextIterationTime}
-     */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getDoubleValue();
-    }
-
     /** Return the suggested next step size. The suggested step size is
      *  the minimum step size that all the step-size-control actors suggested
      *  at the end of last integration step. It is the prediction
@@ -493,20 +468,18 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
         return _discretePhase;
     }
 
-    /** Return true if the actor has been prefired in the current iteration.
-     *  @param actor The actor about which we are querying.
-     *  @return True if the actor has been prefired.
-     *  @see #setPrefireComplete(Actor)
-     */
-    public boolean isPrefireComplete(Actor actor) {
-        return _prefiredActors.contains(actor);
-    }
-
     /** Return a new CTReceiver.
      *  @return A new CTReceiver.
      */
     public Receiver newReceiver() {
-        return new CTReceiver();
+        Receiver receiver = new ContReceiver(this);
+
+        if (_receivers == null) {
+            _receivers = new LinkedList();
+        }
+
+        _receivers.add(receiver);
+        return receiver;
     }
 
     /** If the stop() method has not been called and all the actors return
@@ -517,8 +490,8 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If refiring can not be granted.
      */
     public boolean postfire() throws IllegalActionException {
-        if (!_isTopLevel() && (getBreakPoints().size() > 0)) {
-            Time time = (Time) getBreakPoints().removeFirst();
+        if (!_isTopLevel() && (_breakpoints.size() > 0)) {
+            Time time = (Time) _breakpoints.removeFirst();
             CompositeActor container = (CompositeActor) getContainer();
             container.getExecutiveDirector().fireAt(container, time);
         }
@@ -533,12 +506,6 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
         return postfireReturns;
     }
 
-    /** Clear the set of actors that have been prefired.
-     */
-    public void prefireClear() {
-        _prefiredActors.clear();
-    }
-
     /** Invoke prefire() on all DYNAMIC_ACTORS, such as integrators,
      *  and emit their current states.
      *  Return true if all the prefire() methods return true and stop()
@@ -548,73 +515,31 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
      *  @exception IllegalActionException If scheduler throws it, or dynamic
      *  actors throw it in their prefire() method, or they can not be prefired.
      */
-    public boolean prefireDynamicActors() throws IllegalActionException {
+    public boolean prefire() throws IllegalActionException {
         // NOTE: We will also treat dynamic actors as waveform generators.
         // This is crucial to implement Dirac function.
-        _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
-
-        try {
-            CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-            Iterator actors = schedule.get(CTSchedule.DYNAMIC_ACTORS)
-                    .actorIterator();
-
-            while (actors.hasNext() && !_stopRequested) {
-                Actor actor = (Actor) actors.next();
-
-                if (_debugging && _verbose) {
-                    _debug("Prefire dynamic actor: "
-                            + ((Nameable) actor).getName());
-                }
-
-                boolean ready = actor.prefire();
-
-                if (actor instanceof CTCompositeActor) {
-                    ready = ready
-                            && ((CTCompositeActor) actor)
-                                    .prefireDynamicActors();
-                }
-
-                // If ready is false, at least one dynamic actor is not
-                // ready to fire. This should never happen.
-                if (!ready) {
-                    _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
-                    throw new IllegalActionException(
-                            actor,
-                            "Actor is not ready to fire. In the CT domain, all "
-                                    + "dynamic actors should be ready to fire at "
-                                    + "all times.\n Does the actor only operate on "
-                                    + "sequence of tokens?");
-                }
-
-                if (_debugging && _verbose) {
-                    _debug("Prefire of " + ((Nameable) actor).getName()
-                            + " returns " + ready);
-                }
+        Schedule schedule = (Schedule) getScheduler().getSchedule();
+        Iterator actors = schedule.actorIterator();
+        
+        boolean ready = true; 
+        
+        while (actors.hasNext() && !_stopRequested) {
+            Actor actor = (Actor) actors.next();
+        
+            if (_debugging && _verbose) {
+                _debug("Prefire dynamic actor: "
+                    + ((Nameable) actor).getName());
+        }
+        
+        ready &= actor.prefire();
+        
+        if (_debugging && _verbose) {
+            _debug("Prefire of " + ((Nameable) actor).getName()
+                    + " returns " + ready);
             }
-
-            // NOTE: Need for integrators to emit their current states so that
-            // the state transition actors can operate on the most up-to
-            // date inputs and generate derivatives for integrators.
-            // Without this, on the first round of integration, the state
-            // transition actors will complain that inputs are not ready.
-            Iterator integrators = schedule.get(CTSchedule.DYNAMIC_ACTORS)
-                    .actorIterator();
-
-            while (integrators.hasNext() && !_stopRequested) {
-                CTDynamicActor dynamic = (CTDynamicActor) integrators.next();
-
-                if (_debugging && _verbose) {
-                    _debug("Emit tentative state "
-                            + ((Nameable) dynamic).getName());
-                }
-
-                dynamic.emitCurrentStates();
-            }
-        } finally {
-            _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
         }
 
-        return !_stopRequested;
+        return ready && !_stopRequested;
     }
 
     /** Preinitialize the model for an execution. This method is
@@ -647,29 +572,15 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
                     "has no CompositeActor container.");
         }
 
-        CompositeActor container = (CompositeActor) nameable;
-
-        if (container.getContainer() != null) {
-            if (!canBeInsideDirector()) {
-                throw new IllegalActionException(this,
-                        "cannot serve as an inside director.");
-            }
-        } else {
-            if (!canBeTopLevelDirector()) {
-                throw new IllegalActionException(this,
-                        "cannot serve as an top-level director.");
-            }
-        }
-
         // Construct a scheduler.
-        CTScheduler scheduler = (CTScheduler) getScheduler();
+        ContScheduler ContScheduler = (ContScheduler) getScheduler();
 
-        if (scheduler == null) {
-            throw new IllegalActionException(this, "has no scheduler.");
+        if (ContScheduler == null) {
+            throw new IllegalActionException(this, "has no ContScheduler.");
         }
 
         // Invalidate schedule and force a reconstructition of the schedule.
-        scheduler.setValid(false);
+        ContScheduler.setValid(false);
 
         // Initialize the local variables except the time objects.
         _initializeLocalVariables();
@@ -688,6 +599,17 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
         _stopTime = new Time(this, _stopTimeValue);
         _iterationBeginTime = _startTime;
         _iterationEndTime = _stopTime;
+    }
+
+    /** React to the change in receiver status by incrementing the count of
+     *  known receivers.
+     *  @param receiver This parameter is ignored, in this method we do
+     *  not make use of the value of the receiver itself; instead we
+     *  increment an internal counter.
+     */
+    public void receiverChanged(Receiver receiver) {
+        // In this implementation, we do not make use of the receiver itself.
+        _currentNumberOfKnownReceivers++;
     }
 
     /** Set the current step size. Only CT directors can call this method.
@@ -849,13 +771,6 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
         _discretePhase = discrete;
     }
 
-    /** Set the execution phase to the given phase.
-     *  @param phase The current phase of the CT director.
-     */
-    protected final void _setExecutionPhase(CTExecutionPhase phase) {
-        _executionPhase = phase;
-    }
-
     /** Set the iteration begin time. The iteration begin time is
      *  the start time for one integration step. This variable is used
      *  when the integration step is failed, and need to be restarted
@@ -919,7 +834,6 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
 
         // A simulation always starts with a discrete phase execution.
         _discretePhase = true;
-        _executionPhase = CTExecutionPhase.UNKNOWN_PHASE;
 
         // clear the existing breakpoint table or
         // create a breakpoint table if necessary
@@ -927,10 +841,8 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
             _debug(getFullName(), "create/clear break point table.");
         }
 
-        TotallyOrderedSet breakpoints = getBreakPoints();
-
-        if (breakpoints != null) {
-            breakpoints.clear();
+        if (_breakpoints != null) {
+            _breakpoints.clear();
         } else {
             _breakpoints = new TotallyOrderedSet(new GeneralComparator());
         }
@@ -940,6 +852,9 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
     ////                         private variables                 ////
     // A table for breakpoints.
     private TotallyOrderedSet _breakpoints;
+
+    // The current number of receivers with known state.
+    private int _currentNumberOfKnownReceivers;
 
     // NOTE: all the following private variables are initialized
     // in the _initializeLocalVariables() method before their usage.
@@ -954,10 +869,6 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
 
     // the error tolerance for state resolution
     private double _errorTolerance;
-
-    // The private variable indicates the current execution phase of this
-    // director.
-    private CTExecutionPhase _executionPhase;
 
     // the first step size used by solver.
     private double _initStepSize;
@@ -989,6 +900,9 @@ public abstract class ContDirector extends StaticSchedulingDirector implements
     private double _stopTimeValue;
 
     private double _suggestedNextStepSize;
+
+    // List of all receivers this director has created.
+    private List _receivers;
 
     private double _valueResolution;
 }

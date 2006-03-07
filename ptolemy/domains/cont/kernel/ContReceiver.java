@@ -1,4 +1,4 @@
-/* The receiver for the CT domain.
+/* The receiver for the Continuous Time domain.
 
  Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
@@ -25,177 +25,351 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.domains.ct.kernel;
+package ptolemy.domains.cont.kernel;
 
-import java.io.Serializable;
-
-import ptolemy.actor.IOPort;
-import ptolemy.actor.Mailbox;
-import ptolemy.actor.NoRoomException;
+import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.StateReceiver;
 import ptolemy.data.Token;
+import ptolemy.domains.sr.kernel.IllegalOutputException;
+import ptolemy.domains.sr.kernel.UnknownTokenException;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
-//// CTReceiver
+//// ContReceiver
 
 /**
- The receiver for the continuous-time and mixed-signal domain. The receiver
- can be of one of the two types: CONTINUOUS and DISCRETE. Conceptually,
- a CONTINUOUS CTReceiver contains a sample of a continuous signal at a
- particular time (defined by the CTDirector). Thus, there is one and
- only one token at all time in a CONTINUOUS CTReceiver. A DISCRETE
- CTReceiver contains a discrete event. Thus a DISCRETE CTReceiver may
- be empty if an event is not present.
- <P>
- The receiver is implemented as a Mailbox of capacity one. Any token put
- in the receiver overwrites any token previously present in the receiver.
- As a consequence, hasRoom() method always returns true.
- <P>
- The behavior of the get() method depends on the type of the receiver.
- If it is CONTINUOUS, then get() only reads the value. Consecutive calls on
- the get method will return the same token if the put method has not been
- called. For a CONTINUOUS CTReceiver, hasToken() will always return true
- after the first put() has been called. For a DISCRETE
- CTReceiver, get() will return and destroy the token, thus the token
- can only be retrived once. Therefore after the consumption, the hasToken()
- method will return false, until a token is put into this receiver.
 
- @author  Jie Liu
+ The receiver for the Synchronous Reactive (SR) domain.  This
+ receiver is a mailbox with capacity one.  The status of this
+ receiver can be known (either known to contain a token or known not
+ to contain a token) or unknown.  The isKnown() method returns true
+ if the receiver has known status.  If the receiver has known
+ status, the hasToken() method returns whether the receiver has a
+ token.  If the receiver has unknown status, the hasToken() method
+ will throw an UnknownTokenException.
+
+ <p> In the course of an iteration in SR, receivers can change from
+ unknown status to known status, but never the other way around, as
+ shown by the transitions in the diagram below.
+
+ <pre>
+ known values:     absent     value (present)
+ ^         ^
+ |         |
+ \       /
+ \     /
+ |   |
+ unknown
+ </pre>
+
+ <p> The status is automatically set to known when the put() method
+ or clear() method is called.  Once a receiver becomes known, its
+ value (or lack of a value if it is absent) cannot change until the
+ next call to reset().  The SRDirector calls reset() between
+ iterations.  The hasRoom() method returns true if the state of the
+ receiver is unknown or if it is known but not absent, since only in
+ these circumstances can it accept a token. Attempting to change the
+ status of a receiver from present to absent or from absent to
+ present will result in an exception.  An exception will also be
+ thrown if a receiver has present status and it receives a token
+ that is not the same as the one it already contains (as determined
+ by the isEqualTo() method of the token).  Thus, for an actor to be
+ valid in SR, a firing must produce the same outputs given the same
+ inputs (in a given iteration).
+
+ <p> Since the value of a receiver cannot change (once it is known)
+ in the course of an iteration, tokens need not be consumed.  A
+ receiver retains its token until the director calls the reset()
+ method at the beginning of the next iteration, which resets the
+ receiver to have unknown status.  There is no way for an actor to
+ reset a receiver to have unknown status.
+
+ @author Paul Whitaker, contributor: Christopher Hylands
  @version $Id$
- @since Ptolemy II 0.2
- @Pt.ProposedRating Green (liuj)
- @Pt.AcceptedRating Green (yuhong)
+ @since Ptolemy II 2.0
+ @Pt.ProposedRating Green (pwhitake)
+ @Pt.AcceptedRating Green (pwhitake)
+ @see ptolemy.domains.sr.kernel.SRDirector
  */
-public class CTReceiver extends Mailbox {
+public class ContReceiver extends AbstractReceiver implements StateReceiver {
     /** Construct an empty CTReceiver with no container.
      */
-    public CTReceiver() {
+    public ContReceiver() {
         super();
-        _type = UNKNOWN;
+        reset();
     }
 
-    /** Construct an empty CTReceiver with the specified container.
-     *  @param container The port that contains the receiver.
-     *  @exception IllegalActionException If this receiver cannot be
-     *   contained by the proposed container.
+    /** Construct an ContReceiver with unknown state and the given director.
+     *  @param director The director of this receiver.
      */
-    public CTReceiver(IOPort container) throws IllegalActionException {
-        super(container);
-        _type = UNKNOWN;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** Signal type: CONTINUOUS. */
-    public final static SignalType CONTINUOUS = new SignalType() {
-        public String toString() {
-            return "CONTINUOUS";
-        }
-    };
-
-    /** Signal type: DISCRETE. */
-    public final static SignalType DISCRETE = new SignalType() {
-        public String toString() {
-            return "DISCRETE";
-        }
-    };
-
-    /** Signal type: UNKNOWN. */
-    public final static SignalType UNKNOWN = new SignalType() {
-        public String toString() {
-            return "UNKNOWN";
-        }
-    };
-
-    ///////////////////////////////////////////////////////////////////
-    ////                    public inner classes                   ////
-
-    /** Inner class used for the static enumeration of indicators of
-     *  signal types. Instances of this class cannot be constructed outside
-     *  the enclosing interface because its constructor is protected.
-     */
-    public static class SignalType implements Serializable {
-        // Protected constructor prevents construction outside.
-        // This constructor should not be called!
-        // it is protected to work around a compiler bug in JDK1.2.2
-        protected SignalType() {
-        }
+    public ContReceiver(ContDirector director) {
+        super();
+        reset();
+        _director = director;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the contained token if it is not null. If the receiver
-     *  is CONTINUOUS, then the token is still available for the next
-     *  get, i.e. the token is not set to null. If the receiver is
-     *  DISCRETE, then the token is removed from the receiver, and
-     *  the receiver contains null, which means that is another get()
-     *  is called before a calling of put, then an exception will be
-     *  thrown. If the receiver contains null, then thrown a
-     *  NoTokenException.
-     *  @exception NoTokenException If the receiver contains null.
-     *  @exception InvalidStateException If this method is called and
-     *  the signal type of this receiver is UNKNOWN.
+    /** Set the state of this receiver to be known and to contain no token.
+     *  Note that during an iteration, SR semantics does not allow a receiver
+     *  to receive a token and then be cleared.  Thus, the clear will
+     *  trigger an exception.
+     *  @exception IllegalActionException If the receiver state is known
+     *   and the receiver has a token.
+     */
+    public void clear() throws IllegalActionException {
+        if (isKnown() && hasToken()) {
+            throw new IllegalActionException(
+                    "ContReceiver: Cannot transition from a present state "
+                            + "to an absent state.");
+        }
+
+        // Ivan Jeukens: Signal the SR director to increment the
+        // _currentNumberOfKnownReceivers variable. Clearing a
+        // ContReceiver in the unknown state means changing its state to
+        // known. Without that, you can get a nondeterministic
+        // behavior.
+        if (!isKnown()) {
+            // If we don't check !isKnown(), then we get a hang in
+            // sr/lib/test/auto/EnabledComposite.xml
+            // If we don't call receiverChanged, then SendClearTest fails.
+            _director.receiverChanged(this);
+        }
+
+        _token = null;
+        _known = true;
+    }
+
+    /** Get the contained Token without modifying or removing it.  If there
+     *  is none, throw an exception.
+     *  @return The token contained in the receiver.
+     *  @exception NoTokenException If this mailbox is empty.
      */
     public Token get() throws NoTokenException {
-        if (_token != null) {
-            if (_type == CONTINUOUS) {
-                return _token;
-            } else if (_type == DISCRETE) {
-                return super.get();
-            } else {
-                throw new InvalidStateException(getContainer(),
-                        "get() is called before the signal type of this port"
-                                + " has been set. Bug in CTScheduler?");
-            }
+        if (_token == null) {
+            throw new NoTokenException(
+                    "ContReceiver: Attempt to get data from an empty receiver.");
+        }
+
+        if (!isKnown()) {
+            throw new UnknownTokenException(
+                    "ContReceiver: get() called on ContReceiver with unknown state.");
+        }
+
+        return _token;
+    }
+
+    /** Return true if the state of the receiver is unknown or if it is
+     *  known and not empty.  This is equivalent to the expression
+     *  <pre>
+     *    !isKnown() || hasToken()
+     *  </pre>
+     *  @return True if the receiver can accept a token.
+     */
+    public boolean hasRoom() {
+        return !isKnown() || hasToken();
+    }
+
+    /** Return what hasRoom() returns if the argument is 1,
+     *  and otherwise return false.
+     *  @see #hasRoom()
+     *  @param numberOfTokens The number of tokens to put into the mailbox.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
+     *  @return True if the receiver can accept a token.
+     */
+    public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
+        if (numberOfTokens < 1) {
+            throw new IllegalArgumentException(
+                    "hasRoom() requires a positive argument.");
+        }
+
+        if (numberOfTokens == 1) {
+            return hasRoom();
+        }
+
+        return false;
+    }
+
+    /** Return true if the receiver contains a token, or false otherwise.
+     *  If the receiver has unknown status, this method will throw an
+     *  exception.
+     *  @return True if this receiver contains a token.
+     *  @exception UnknownTokenException If the state is unknown.
+     */
+    public boolean hasToken() {
+        if (isKnown()) {
+            return (_token != null);
         } else {
-            throw new NoTokenException(getContainer(),
-                    "Attempt to get data from an empty CTReceiver.\n"
-                            + "Are you trying to use a discrete signal "
-                            + "to drive a continuous port?");
+            throw new UnknownTokenException(getContainer(),
+                    "hasToken() called on ContReceiver with unknown state.");
         }
     }
 
-    /** Return the signal type of this receiver.
-     *  @return The signal type of the receiver.
-     *  @see #setSignalType
+    /** Return what hasToken() returns if the argument is 1,
+     *  and otherwise return false.
+     *  If the receiver has unknown status, this method will throw
+     *  an UnknownTokenException, which is a RuntimeException so it
+     *  need not be declared explicitly.
+     *  If the argument is 0 or a negative number, then this method will
+     *  throw an IllegalArgumentException, which is a RuntimeException.
+     *  @param numberOfTokens The number of tokens to get from the receiver.
+     *  @return True if the argument is 1 and the receiver has a token.
+     *  @exception IllegalArgumentException If the argument is not positive.
+     *   This is a runtime exception, so it does not need to be declared
+     *   explicitly.
+     *  @exception UnknownTokenException If the state is unknown.
+     *  @exception IllegalArgumentException If the state is unknown.
+     *  @see #hasToken()
+     *  @since Ptolemy II 2.1
      */
-    public SignalType getSignalType() {
-        return _type;
+    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+        if (!isKnown()) {
+            throw new UnknownTokenException(getContainer(), "hasToken("
+                    + numberOfTokens
+                    + ") called on ContReceiver with unknown state.");
+        }
+
+        if (numberOfTokens < 1) {
+            throw new IllegalArgumentException(
+                    "ContReceiver: hasToken() requires a positive argument.");
+        }
+
+        if (numberOfTokens == 1) {
+            return hasToken();
+        } else {
+            return false;
+        }
     }
 
-    /** Return true, since the new token will overwrite the old one.
-     *  @return True.
+    /** Return true if this receiver changes from unknown to known.
+     *  @return True if this receiver changes from unknown to known state.
      */
-    public boolean hasRoom() {
-        return true;
+    public boolean isChanged() {
+        if (_cachedToken == null) {
+            if (_token != null) {
+                // the token changes from unknown
+                // to known with some concrete value.
+                _cachedToken = _token;
+                _lastKnownStatus = _known;
+                return true;
+            } else {
+                if (_known) {
+                    // the token changes from unknown to
+                    // absent status.
+                    if (!_lastKnownStatus) {
+                        _lastKnownStatus = _known;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        } else {
+            // since tokens can not change according to
+            // the SR semantics, we simply return false.
+            // We do not check the possible violations
+            // of the SR semantics here.
+            return false;
+        }
     }
 
-    /** Put a token into this receiver. If the argument is null,
-     *  then this receiver will not contain any token after this method
-     *  returns. If the receiver already has a token, then the new token
-     *  will overwrite the old token, and the old token will be lost.
-     *
+    /** Return true if this receiver has known state, that is, the token in
+     *  this receiver is known or if this receiver is known not to contain a
+     *  token.
+     *  @return True if this receiver has known state.
+     */
+    public boolean isKnown() {
+        return _known;
+    }
+
+    /** Set the state of this receiver to be known and to contain the
+     *  specified token.  If the receiver already contains an equal token,
+     *  do nothing.
      *  @param token The token to be put into this receiver.
-     *  @exception NoRoomException Not thrown in this base class.
+     *  @exception IllegalArgumentException If the argument is null.
+     *  @exception IllegalOutputException If the state is known and absent,
+     *   or a token is present and does not have the same value.
      */
-    public void put(Token token) throws NoRoomException {
-        _token = token;
+    public void put(Token token) {
+        if (token == null) {
+            throw new IllegalArgumentException(
+                    "ContReceiver.put(null) is invalid.");
+        }
+
+        if (!isKnown()) {
+            _putToken(token);
+        } else {
+            if (!hasToken()) {
+                throw new IllegalOutputException(getContainer(),
+                        "ContReceiver cannot transition from an absent state "
+                                + "to a present state.  Call reset().");
+            } else {
+                try {
+                    if ((token.getType().equals(_token.getType()))
+                            && (token.isEqualTo(_token).booleanValue())) {
+                        // Do nothing, because this token was already present.
+                    } else {
+                        throw new IllegalOutputException(getContainer(),
+                                "ContReceiver cannot receive two tokens "
+                                        + "that differ.");
+                    }
+                } catch (IllegalActionException ex) {
+                    // Should never happen.
+                    throw new InternalErrorException("ContReceiver cannot "
+                            + "determine whether the two tokens received are "
+                            + "equal.");
+                }
+            }
+        }
     }
 
-    /** Set the signal type of this receiver. This method must be called
-     *  by the CTScheduler before any get() method are called.
-     *  @param type The SignalType to set to the receiver.
-     *  @see #getSignalType
+    /** Reset the receiver by removing any contained token and setting
+     *  the state of this receiver to be unknown.  This is called
+     *  by the director between iterations.
      */
-    public void setSignalType(SignalType type) {
-        _type = type;
+    public void reset() {
+        _token = null;
+        _known = false;
+        _cachedToken = null;
+        _lastKnownStatus = false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The token held. */
+    protected Token _token = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Discard any contained token, and replace it with the specified
+     *  token.
+     *  @param token The token to be put into this receiver.
+     */
+    private void _putToken(Token token) {
+        _token = token;
+        _known = true;
+        _director.receiverChanged(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private SignalType _type;
+    private boolean _lastKnownStatus;
+
+    private Token _cachedToken;
+
+    /** A flag indicating whether this receiver has known state.  A receiver
+     * has known state if the token in the receiver is known or if the
+     * receiver is known not to contain a token.
+     */
+    private boolean _known;
+
+    /** The director of this receiver. */
+    private ContDirector _director;
 }

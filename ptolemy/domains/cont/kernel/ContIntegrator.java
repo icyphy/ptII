@@ -202,7 +202,7 @@ public class ContIntegrator extends TypedAtomicActor
      *  of the solver.
      */
     public void fire() throws IllegalActionException {
-        CTDirector dir = (CTDirector) getDirector();
+        ContDirector dir = (ContDirector) getDirector();
         ODESolver solver = dir.getCurrentODESolver();
 
         if (_debugging) {
@@ -321,7 +321,7 @@ public class ContIntegrator extends TypedAtomicActor
      *  parameter does not contain a valid token.
      */
     public void initialize() throws IllegalActionException {
-        CTDirector dir = (CTDirector) getDirector();
+        ContDirector dir = (ContDirector) getDirector();
 
         if (dir == null) {
             throw new IllegalActionException(this, " no director available");
@@ -347,20 +347,12 @@ public class ContIntegrator extends TypedAtomicActor
         _history.clear();
     }
 
-    /** Always return true because an integrator's output is always accurate
-     *  no matter what step size is chosen.
-     *  @return True always.
-     */
-    public boolean isOutputAccurate() {
-        return true;
-    }
-
     /** Return true if the state is resolved successfully.
      *  If the input is not available, or the input is a result of
      *  divide by zero, a NumericalNonconvergeException is thrown.
      *  @return True if the state is resolved successfully.
      */
-    public boolean isStateAccurate() {
+    public boolean isStepSizeAccurate() {
         try {
             // We check the validity of the input
             // If it is NaN, or Infinity, an exception is thrown.
@@ -376,7 +368,7 @@ public class ContIntegrator extends TypedAtomicActor
                     + e.getMessage());
         }
 
-        ODESolver solver = ((CTDirector) getDirector()).getCurrentODESolver();
+        ODESolver solver = ((ContDirector) getDirector()).getCurrentODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
     }
@@ -416,7 +408,7 @@ public class ContIntegrator extends TypedAtomicActor
      *  @return The predicteded next step size.
      */
     public double predictedStepSize() {
-        ODESolver solver = ((CTDirector) getDirector()).getCurrentODESolver();
+        ODESolver solver = ((ContDirector) getDirector()).getCurrentODESolver();
         return solver.integratorPredictedStepSize(this);
     }
 
@@ -432,7 +424,7 @@ public class ContIntegrator extends TypedAtomicActor
      *  the director has no ODE solver.
      */
     public boolean prefire() throws IllegalActionException {
-        CTDirector dir = (CTDirector) getDirector();
+        ContDirector dir = (ContDirector) getDirector();
 
         if (dir == null) {
             throw new IllegalActionException(this, " does not have a director.");
@@ -477,7 +469,7 @@ public class ContIntegrator extends TypedAtomicActor
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        double step = ((CTDirector) getDirector()).getCurrentStepSize();
+        double step = ((ContDirector) getDirector()).getCurrentStepSize();
 
         if (_successful) {
             return step;
@@ -648,7 +640,7 @@ public class ContIntegrator extends TypedAtomicActor
                 }
 
                 _entries.addFirst(entry);
-                _stepsize = ((CTDirector) _container.getDirector())
+                _stepsize = ((ContDirector) _container.getDirector())
                         .getCurrentStepSize();
             } else {
                 throw new IllegalActionException(getContainer(),
@@ -671,7 +663,7 @@ public class ContIntegrator extends TypedAtomicActor
          */
         public void rebalance(double currentStepSize)
                 throws IllegalActionException {
-            double timeResolution = ((CTDirector) _container.getDirector())
+            double timeResolution = ((ContDirector) _container.getDirector())
                     .getTimeResolution();
 
             if (Math.abs(currentStepSize - _stepsize) > timeResolution) {
