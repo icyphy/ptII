@@ -641,7 +641,7 @@ codeDoc/ptolemy/actor/lib/Ramp.xml:
 
 indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
 codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt
-	$(JAVA) -classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+	"$(JAVA)" -classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
 		codeDoc/allNamedObjs.txt \
 		$(PTII)/ptolemy/configs/doc/models.txt codeDoc
