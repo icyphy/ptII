@@ -62,7 +62,7 @@ import ptolemy.kernel.util.IllegalActionException;
  if the receiver contains a token. If the receiver has an unknown status, 
  the hasToken() method will throw an UnknownTokenException.
  
- @author Haiyang Zheng and Edward A. Lee
+ @author Haiyang Zheng, Paul Whitaker
  @version $Id$
  @since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (hyzheng)

@@ -49,6 +49,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// FPDirector
@@ -113,13 +114,32 @@ import ptolemy.kernel.util.NamedObj;
  <i>fixed-point</i>.  Further execution would not result in more defined
  values, and the iteration has converged.
 
- @author Haiyang Zheng
+ @author Haiyang Zheng, Paul Whitaker
  @version $Id$
  @since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (reviewModerator)
  */
 public class FPDirector extends StaticSchedulingDirector {
+
+    /** Construct a director in the default workspace with an empty string
+     *  as its name. The director is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     */
+    public FPDirector() {
+        super();
+        _init();
+    }
+
+    /** Construct a director in the given workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace for this object.
+     */
+    public FPDirector(Workspace workspace) {
+        super(workspace);
+        _init();
+    }
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
