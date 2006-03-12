@@ -1,0 +1,25 @@
+//kind of 0 means Sedan, 1 means Hatchback, and 2 means SUV.
+{kind = 0, brand = "BMW", year = 1992}
+{kind = 1, brand = "TOYOTA", year = 1994}
+{kind = 0, brand = "TOYOTA", year = 1989}
+{kind = 2, brand = "FORD", year = 1996}
+{kind = 0, brand = "BMW", year = 1995}
+{kind = 2, brand = "TOYOTA", year = 1991}
+{kind = 1, brand = "BMW", year = 1986}
+{kind = 2, brand = "TOYOTA", year = 1990}
+{kind = 0, brand = "TOYOTA", year = 1988}
+{kind = 1, brand = "FORD", year = 1997}
+{kind = 0, brand = "BMW", year = 1990}
+{kind = 1, brand = "TOYOTA", year = 1993}
+{kind = 0, brand = "BMW", year = 1992}
+{kind = 2, brand = "TOYOTA", year = 1986}
+{kind = 0, brand = "TOYOTA", year = 1990}
+{kind = 1, brand = "FORD", year = 1991}
+{kind = 0, brand = "BMW", year = 1994}
+{kind = 2, brand = "TOYOTA", year = 1993}
+{kind = 0, brand = "BMW", year = 1998}
+{kind = 1, brand = "TOYOTA", year = 1990}
+{kind = 0, brand = "TOYOTA", year = 1987}
+{kind = 2, brand = "FORD", year = 1996}
+{kind = 0, brand = "BMW", year = 1999}
+{kind = 2, brand = "TOYOTA", year = 1991}

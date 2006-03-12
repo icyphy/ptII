@@ -1,0 +1,502 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="CharityOrg" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.1-alpha">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={175, 191, 932, 713}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[717, 595]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.5, 297.5}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="365">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 55.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates using record and union types to model a charity organization&#10;in Ptolemy II. The Cloth Donation, Car Donation and Money Donation components model&#10;three kind of donations to the charity organization. Information about each donation&#10;is represented as a record token. Type of cloth donation is {kind = int, gender = &#10;int, size = int}, type of car donation is {kind = int, brand = string, year = int}, &#10;and type of money donation is {amount = double}. The UnionMerge actor combine these&#10;three record types to a union type {| cloth = {kind = int, gender = int, size = int}, &#10;car = {kind = int, brand = string, year = int}, money = {amount = double} |}. The &#10;UnionDisassembler separates the donations by send the value of the union token to &#10;the corresponding output whose name matches its field name. &#10;&#10;This example demonstrates how types propagate through record and union composition&#10;and decomposition.&#10;&#10;Author: Yang Zhao">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 360.0]">
+        </property>
+    </property>
+    <entity name="UnionMerge" class="ptolemy.domains.de.lib.UnionMerge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 165.0]">
+        </property>
+        <port name="cloth" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="car" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="money" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Cloth Donation" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 155.0]">
+        </property>
+        <port name="cloth" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 150.0]">
+            </property>
+        </port>
+        <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="cloth.ptd">
+            </property>
+            <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 160.0]">
+            </property>
+        </entity>
+        <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+            <property name="meanTime" class="ptolemy.data.expr.Parameter" value="10.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{40, 160}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="cloth" relation="relation2"/>
+        <link port="ExpressionReader.output" relation="relation2"/>
+        <link port="ExpressionReader.trigger" relation="relation"/>
+        <link port="PoissonClock.output" relation="relation"/>
+    </entity>
+    <entity name="Car Donation" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 230.0]">
+        </property>
+        <port name="car" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 150.0]">
+            </property>
+        </port>
+        <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="car.ptd">
+            </property>
+            <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 160.0]">
+            </property>
+        </entity>
+        <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+            <property name="meanTime" class="ptolemy.data.expr.Parameter" value="10.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{40, 160}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="car" relation="relation2"/>
+        <link port="ExpressionReader.output" relation="relation2"/>
+        <link port="ExpressionReader.trigger" relation="relation"/>
+        <link port="PoissonClock.output" relation="relation"/>
+    </entity>
+    <entity name="Money Donation" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 310.0]">
+        </property>
+        <port name="money" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 175.0]">
+            </property>
+        </port>
+        <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
+            <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="money.ptd">
+            </property>
+            <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 160.0]">
+            </property>
+        </entity>
+        <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock">
+            <property name="meanTime" class="ptolemy.data.expr.Parameter" value="10.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{40, 160}">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="money" relation="relation2"/>
+        <link port="ExpressionReader.output" relation="relation2"/>
+        <link port="ExpressionReader.trigger" relation="relation"/>
+        <link port="PoissonClock.output" relation="relation"/>
+    </entity>
+    <entity name="Counter" class="ptolemy.actor.lib.Counter">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 90.0]">
+        </property>
+        <port name="decrement" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={386, 334, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 90.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="265.1815422271"/>
+<yRange min="1.0" max="72.0"/>
+<default connected="no" marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="UnionDisassembler" class="ptolemy.actor.lib.UnionDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 145.0]">
+        </property>
+        <port name="cloth" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="car" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="money" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Cloth Store" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 155.0]">
+        </property>
+        <port name="cloth" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 105.0]">
+            </property>
+        </port>
+        <port name="money" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 145.0]">
+            </property>
+        </port>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 85.0]">
+            </property>
+            <port name="kind" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="gender" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="size" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="kind ==2 ? 20:10">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{220, 135}">
+            </property>
+            <port name="kind" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+            <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 145.0]">
+            </property>
+        </entity>
+        <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+            <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="30">
+            </property>
+            <property name="UniformIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <doc>Create a sequence of uniformly distributed random numbers</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 210.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="[300.0, 135.0]">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="cloth" relation="relation"/>
+        <link port="money" relation="relation3"/>
+        <link port="RecordDisassembler.input" relation="relation"/>
+        <link port="RecordDisassembler.kind" relation="relation2"/>
+        <link port="Expression.output" relation="relation4"/>
+        <link port="Expression.kind" relation="relation2"/>
+        <link port="VariableDelay.input" relation="relation4"/>
+        <link port="VariableDelay.output" relation="relation3"/>
+        <link port="VariableDelay.delay" relation="relation5"/>
+        <link port="Uniform.output" relation="relation5"/>
+        <link port="Uniform.trigger" relation="relation4"/>
+    </entity>
+    <entity name="Car Store" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 225.0]">
+        </property>
+        <port name="car" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 115.0]">
+            </property>
+        </port>
+        <port name="money" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 135.0]">
+            </property>
+        </port>
+        <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 95.0}">
+            </property>
+            <port name="kind" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="brand" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="year" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(year-1980)*300">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 125.0]">
+            </property>
+            <port name="year" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
+            <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 135.0]">
+            </property>
+        </entity>
+        <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+            <property name="lowerBound" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="upperBound" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="UniformIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
+            <doc>Create a sequence of uniformly distributed random numbers</doc>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 205.0]">
+            </property>
+        </entity>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <vertex name="vertex1" value="[300.0, 125.0]">
+            </vertex>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </relation>
+        <link port="car" relation="relation2"/>
+        <link port="money" relation="relation"/>
+        <link port="RecordDisassembler.input" relation="relation2"/>
+        <link port="RecordDisassembler.year" relation="relation3"/>
+        <link port="Expression.output" relation="relation4"/>
+        <link port="Expression.year" relation="relation3"/>
+        <link port="VariableDelay.input" relation="relation4"/>
+        <link port="VariableDelay.output" relation="relation"/>
+        <link port="VariableDelay.delay" relation="relation5"/>
+        <link port="Uniform.output" relation="relation5"/>
+        <link port="Uniform.trigger" relation="relation4"/>
+    </entity>
+    <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={314, 597, 508, 355}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 305.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter2</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="265.1815422271"/>
+<yRange min="100.0" max="88531.75"/>
+<default connected="no" marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="RecordDisassembler" class="ptolemy.actor.lib.RecordDisassembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 275.0]">
+        </property>
+        <port name="amount" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[260.0, 165.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[310.0, 295.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <link port="UnionMerge.output" relation="relation5"/>
+    <link port="UnionMerge.cloth" relation="relation"/>
+    <link port="UnionMerge.car" relation="relation2"/>
+    <link port="UnionMerge.money" relation="relation3"/>
+    <link port="Cloth Donation.cloth" relation="relation"/>
+    <link port="Car Donation.car" relation="relation2"/>
+    <link port="Money Donation.money" relation="relation3"/>
+    <link port="Counter.increment" relation="relation5"/>
+    <link port="Counter.output" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="UnionDisassembler.input" relation="relation5"/>
+    <link port="UnionDisassembler.cloth" relation="relation6"/>
+    <link port="UnionDisassembler.car" relation="relation7"/>
+    <link port="UnionDisassembler.money" relation="relation9"/>
+    <link port="Cloth Store.cloth" relation="relation6"/>
+    <link port="Cloth Store.money" relation="relation8"/>
+    <link port="Car Store.car" relation="relation7"/>
+    <link port="Car Store.money" relation="relation10"/>
+    <link port="Accumulator.input" relation="relation8"/>
+    <link port="Accumulator.input" relation="relation10"/>
+    <link port="Accumulator.input" relation="relation12"/>
+    <link port="Accumulator.output" relation="relation11"/>
+    <link port="TimedPlotter2.input" relation="relation11"/>
+    <link port="RecordDisassembler.input" relation="relation9"/>
+    <link port="RecordDisassembler.amount" relation="relation12"/>
+</entity>
