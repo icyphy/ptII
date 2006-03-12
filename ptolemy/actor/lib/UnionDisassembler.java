@@ -1,4 +1,4 @@
-/* An actor that disassembles a RecordToken to multiple outputs.
+/* An actor that disassembles a UnionToken to the corresponding output.
 
  Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
