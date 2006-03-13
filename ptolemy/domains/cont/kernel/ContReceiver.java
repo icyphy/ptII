@@ -31,8 +31,8 @@ import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.StateReceiver;
 import ptolemy.data.Token;
-import ptolemy.domains.sr.kernel.IllegalOutputException;
-import ptolemy.domains.sr.kernel.UnknownTokenException;
+import ptolemy.domains.fp.kernel.IllegalOutputException;
+import ptolemy.domains.fp.kernel.UnknownTokenException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
