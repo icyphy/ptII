@@ -715,7 +715,7 @@ public class FPDirector extends StaticSchedulingDirector {
 
         Iterator receiverIterator = _receivers.iterator();
         while (receiverIterator.hasNext()) {
-            ((FPReceiver) receiverIterator.next())._reset();
+            ((FPReceiver) receiverIterator.next()).reset();
         }
     }
 

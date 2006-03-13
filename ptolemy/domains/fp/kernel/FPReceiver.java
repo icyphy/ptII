@@ -28,10 +28,6 @@
 package ptolemy.domains.fp.kernel;
 
 import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
@@ -75,7 +71,7 @@ public class FPReceiver extends AbstractReceiver {
      */
     public FPReceiver(FPDirector director) {
         super();
-        _reset();
+        reset();
         _director = director;
     }
 
@@ -97,7 +93,7 @@ public class FPReceiver extends AbstractReceiver {
             _token = null;
             _known = true;
             _becomesKnown = true;
-            _getDirector()._receiverChanged();
+            _director._receiverChanged();
         }
     }
 
@@ -157,7 +153,7 @@ public class FPReceiver extends AbstractReceiver {
      *  If the receiver has unknown status, this method will throw an
      *  exception.
      *  @return True if this receiver contains a token.
-     *  @exception UnknownTokenException If the state is unknown. 
+     *  @exception UnknownTokenException If the status is unknown. 
      *  This is a runtime exception, so it is not declared explicitly.
      */
     public boolean hasToken() {
@@ -180,6 +176,12 @@ public class FPReceiver extends AbstractReceiver {
      *  @see #hasToken()
      */
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+
+        if (!isKnown()) {
+            throw new UnknownTokenException(getContainer(), "hasToken("
+                    + numberOfTokens
+                    + ") called on FPReceiver with unknown status.");
+        }
 
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
@@ -207,14 +209,14 @@ public class FPReceiver extends AbstractReceiver {
      *  an exception.
      *  @param token The token to be put into this receiver.
      *  @exception IllegalArgumentException If the argument is null.
-     *  @exception IllegalOutputException If the state is known and absent,
+     *  @exception IllegalOutputException If the status is known and absent,
      *   or a token is present and does not have the same value.
      */
     public void put(Token token) throws NoRoomException, 
         IllegalActionException {
         if (token == null) {
             throw new IllegalArgumentException(
-                    "FPReceiver.put(null) is illegal. To set a receiver " +
+                    "FPReceiver.put(null) is invalid. To set a receiver " +
                     "to contain an absence value, use the clear() method.");
         }
 
@@ -222,12 +224,12 @@ public class FPReceiver extends AbstractReceiver {
             _token = token;
             _known = true;
             _becomesKnown = true;
-            _getDirector()._receiverChanged();
+            _director._receiverChanged();
         } else {
             if (!hasToken()) {
                 throw new IllegalOutputException(getContainer(),
-                        "FPReceiver cannot change its absence value"
-                        + " to a presence value.  Call reset() instead.");
+                        "FPReceiver cannot transition from an absent status " +
+                        "to a present status.  Call reset() instead.");
             } else {
                 try {
                     if (token.isEqualTo(_token).booleanValue()) {
@@ -247,6 +249,16 @@ public class FPReceiver extends AbstractReceiver {
         }
     }
 
+    /** Reset the receiver by deleting any contained tokens and setting
+     *  the status of this receiver to be unknown.  This is called
+     *  by the FPDirector at is the postfire() method.
+     */
+    public void reset() {
+        _token = null;
+        _known = false;
+        _becomesKnown = false;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -257,87 +269,14 @@ public class FPReceiver extends AbstractReceiver {
         return _becomesKnown;
     }
 
-    /** Reset the receiver by deleting any contained tokens and setting
-     *  the status of this receiver to be unknown.  This is called
-     *  by the FPDirector at is the postfire() method.
-     */
-    protected void _reset() {
-        _token = null;
-        _known = false;
-        _becomesKnown = false;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Return the director that created this receiver.
-     *  If this receiver is an inside receiver of
-     *  an output port of an opaque composite actor,
-     *  then the director will be the local director
-     *  of the container of its port. Otherwise, it's the executive
-     *  director of the container of its port.  Note that
-     *  the director returned is guaranteed to be non-null.
-     *  This method is read synchronized on the workspace.
-     *  @return An instance of FPDirector.
-     *  @exception IllegalActionException If there is no container port, or
-     *   if the port has no container actor, or if the actor has no director,
-     *   or if the director is not an instance of DEDirector.
-     */
-    private FPDirector _getDirector() throws IllegalActionException {
-        IOPort port = (IOPort) getContainer();
-
-        if (port != null) {
-            if (_directorVersion == port.workspace().getVersion()) {
-                return _director;
-            }
-
-            // Cache is invalid.  Reconstruct it.
-            try {
-                port.workspace().getReadAccess();
-
-                Actor actor = (Actor) port.getContainer();
-
-                if (actor != null) {
-                    Director director;
-
-                    if ((port.isOutput()) && (actor instanceof CompositeActor)
-                            && ((CompositeActor) actor).isOpaque()) {
-                        director = actor.getDirector();
-                    } else {
-                        director = actor.getExecutiveDirector();
-                    }
-
-                    if (director != null) {
-                        if (director instanceof FPDirector) {
-                            _director = (FPDirector) director;
-                            _directorVersion = port.workspace().getVersion();
-                            return _director;
-                        } else {
-                            throw new IllegalActionException(getContainer(),
-                                    "Does not have a FPDirector.");
-                        }
-                    }
-                }
-            } finally {
-                port.workspace().doneReading();
-            }
-        }
-
-        throw new IllegalActionException(getContainer(),
-                "This receiver doesn't have an IOPort as the container.");
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 
     // The director of this receiver.
     private FPDirector _director;
     
-    // version control for the director.
-    private long _directorVersion = -1;
-    
     // A flag indicating whether this receiver has a known status.  
-    // A receiver has known state if it has a presence or absence value.
+    // A receiver has known status if it has a presence or absence value.
     private boolean _known;
     
     // A flag indicating whether the receiver status changes from unknown 
