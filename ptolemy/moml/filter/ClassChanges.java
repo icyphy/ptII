@@ -232,6 +232,10 @@ public class ClassChanges implements MoMLFilter {
         _classChanges.put("ptolemy.vergil.VergilPreferences",
                 "ptolemy.actor.gui.PtolemyPreferences");
 
+        // Use FPScheduler instead of SROptimizedScheduler
+        _classChanges.put("ptolemy.domains.sr.kernel.SROptimizedScheduler",
+                "ptolemy.domains.fp.kernel.FPScheduler");
+
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
         // Kepler models in Ptolemy.
@@ -258,5 +262,11 @@ public class ClassChanges implements MoMLFilter {
 
         //DEIOPort
         _classesToRemove.add("ptolemy.domains.de.kernel.DEIOPort");
+
+        // SROptimizedScheduler
+        _classesToRemove.add("ptolemy.domains.sr.kernel.SROptimizedScheduler");
+
+        // SRRandomizedScheduler
+        _classesToRemove.add("ptolemy.domains.sr.kernel.SRRandomizedScheduler");
     }
 }
