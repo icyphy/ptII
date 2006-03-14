@@ -117,7 +117,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     public Set generateSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
         sharedCode.addAll(super.generateSharedCode());
-        _codeStream.appendCodeBlocks("*shared*");
+        _codeStream.appendCodeBlocks(".*shared.*");
         sharedCode.add(_codeStream.toString());
         return sharedCode;
     }
