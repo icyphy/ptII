@@ -6,12 +6,12 @@
 /**/
 
 
-/***tokenDeclareBlock (<types>)***/
+/***tokenDeclareBlock ($types)***/
 struct token {                  // Base type for tokens.
     unsigned char type;         // TYPE field has to be the first field.
     union typeMembers {
         // type member declarations [i.e. Type1Token Type1;]
-<types>                 
+$types                 
     } payload;
 };
 /**/
