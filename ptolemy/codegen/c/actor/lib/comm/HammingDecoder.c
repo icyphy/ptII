@@ -29,12 +29,12 @@
     }
 /**/
 
-/***readBlock(<arg>)***/
-    $actorSymbol(result)[<arg>] = $ref(input, <arg>);
+/***readBlock($arg)***/
+    $actorSymbol(result)[$arg] = $ref(input, $arg);
 /**/
 
 
-/***fireBlock***/
+/***workBlock***/
     for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(order); $actorSymbol(i)++) {
         $actorSymbol(syndrome)[$actorSymbol(i)] = 0;
     }
@@ -57,6 +57,6 @@
     }
 /**/
 
-/***writeBlock(<arg>)***/
-    $ref(output, <arg>) = $actorSymbol(result)[<arg>];
+/***writeBlock($arg)***/
+    $ref(output, $arg) = $actorSymbol(result)[$arg];
 /**/

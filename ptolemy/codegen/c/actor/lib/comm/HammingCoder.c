@@ -23,12 +23,12 @@
     }
 /**/
 
-/***readBlock(<arg>)***/
-    $actorSymbol(result)[<arg>] = $ref(input, <arg>);
+/***readBlock($arg)***/
+    $actorSymbol(result)[$arg] = $ref(input, $arg);
 /**/
 
 
-/***fireBlock***/
+/***workBlock***/
     // Initialize.
     for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(order); $actorSymbol(i)++) {
         $actorSymbol(parity)[$actorSymbol(i)] = 0;
@@ -45,6 +45,6 @@
     }
 /**/
 
-/***writeBlock(<arg>)***/
-    $ref(output, <arg>) = $actorSymbol(result)[<arg>];
+/***writeBlock($arg)***/
+    $ref(output, $arg) = $actorSymbol(result)[$arg];
 /**/

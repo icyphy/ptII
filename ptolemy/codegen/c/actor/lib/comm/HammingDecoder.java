@@ -72,7 +72,7 @@ public class HammingDecoder extends CCodeGeneratorHelper {
             args.add(new Integer(i));
             code.append(_generateBlockCode("readBlock", args));
         }
-        code.append(_generateBlockCode("fireBlock"));
+        code.append(_generateBlockCode("workBlock"));
         int codeSizeValue = ((IntToken) actor.uncodedRate.getToken()).intValue();
         for (int i = 0; i < codeSizeValue; i++) {
             ArrayList args = new ArrayList();
@@ -80,27 +80,5 @@ public class HammingDecoder extends CCodeGeneratorHelper {
             code.append(_generateBlockCode("writeBlock", args));
         }
         return code.toString();
-    }
-
-    /** Generate the initialize code.
-     *  @return The initialize code.
-     *  @exception IllegalActionException
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-        code.append(_generateBlockCode("initBlock"));
-        return processCode(code.toString());
-    }
-
-    /** Generate the preinitialize code.
-     *  @return The preinitialize code.
-     *  @exception IllegalActionException
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        code.append(_generateBlockCode("preinitBlock"));
-        return processCode(code.toString());
     }
 }
