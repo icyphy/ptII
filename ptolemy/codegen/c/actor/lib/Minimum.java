@@ -63,7 +63,7 @@ public class Minimum extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Maximum actor = (ptolemy.actor.lib.Maximum) getComponent();
+        ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
         
         _codeStream.appendCodeBlock("fireInitBlock");
         // FIXME: we need to resolve the token type in the future
@@ -72,7 +72,7 @@ public class Minimum extends CCodeGeneratorHelper {
             args.add(new Integer(i));
             _codeStream.appendCodeBlock("findBlock", args);
         }
-        for (int i = 0; i < actor.maximumValue.getWidth(); i++) {
+        for (int i = 0; i < actor.minimumValue.getWidth(); i++) {
             ArrayList args = new ArrayList();
             args.add(new Integer(i));
             _codeStream.appendCodeBlock("sendBlock1", args);

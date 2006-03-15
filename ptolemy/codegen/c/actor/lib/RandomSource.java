@@ -90,6 +90,17 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
 
         return processCode(_codeStream.toString());
     }
+    
+    /** Generate the preinitialize code.
+     *  @return The preinitialize code of this actor.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        code.append(super.generatePreinitializeCode());
+        code.append("unsigned int $actorSymbol(seed);\n");
+        return processCode(code.toString());
+    }
 
     /** Get the files needed by the code generated for the RandomSource actor.
      *  @return A set of strings that are names of the files
@@ -102,6 +113,8 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
         files.add("\"time.h\"");
         return files;
     }
+    
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

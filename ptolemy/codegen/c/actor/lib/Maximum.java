@@ -70,7 +70,7 @@ public class Maximum extends CCodeGeneratorHelper {
         for (int i = 1; i < actor.input.getWidth(); i++) {
             ArrayList args = new ArrayList();
             args.add(new Integer(i));
-            _codeStream.appendCodeBlock("findMaxBlock", args);
+            _codeStream.appendCodeBlock("findBlock", args);
         }
         for (int i = 0; i < actor.maximumValue.getWidth(); i++) {
             ArrayList args = new ArrayList();

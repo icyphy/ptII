@@ -87,20 +87,6 @@ public class Accumulator extends CCodeGeneratorHelper {
         return code.toString();
     }
 
-    /**
-     * Generate initialize code.
-     * This method reads the <code>initBlock</code> from Accumulator.c, replaces
-     * macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-        code.append(_generateBlockCode("initBlock"));
-        return code.toString();
-    }
     
     /** Generate the preinitialize code. 
      *  @return The preinitialize code.

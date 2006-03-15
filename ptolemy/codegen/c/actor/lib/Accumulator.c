@@ -6,8 +6,8 @@
     $actorSymbol(resetTemp) = $ref(reset#0);
 /**/
 
-/***readReset(<arg>)***/
-    $actorSymbol(resetTemp) = $actorSymbol(resetTemp) || $ref(reset#<arg>);
+/***readReset($arg)***/
+    $actorSymbol(resetTemp) = $actorSymbol(resetTemp) || $ref(reset#$arg);
 /**/
 
 /***initSum***/
@@ -16,8 +16,8 @@
     } 	
 /**/
 
-/***readInput(<arg>)***/
-    $actorSymbol(sum) += $ref(input#<arg>);
+/***readInput($arg)***/
+    $actorSymbol(sum) += $ref(input#$arg);
 /**/
 
 /***sendBlock***/
