@@ -28,7 +28,6 @@
 package ptolemy.codegen.c.actor.lib;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Pulse
@@ -49,28 +48,5 @@ public class Pulse extends CCodeGeneratorHelper {
      */
     public Pulse(ptolemy.actor.lib.Pulse actor) {
         super(actor);
-    }
-
-    /** Generate fire code.
-     *  @return The generated code.
-     *  @exception IllegalActionException If the code stream encounters an
-     *   error in processing the specified code blocks.
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }    
-
-    /** Generate the preinitialize code.
-     *  @return The preinitialize code.
-     *  @exception IllegalActionException
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        code.append(_generateBlockCode("preinitBlock"));
-        return code.toString();
     }
 }
