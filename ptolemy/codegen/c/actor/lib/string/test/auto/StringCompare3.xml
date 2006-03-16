@@ -22,6 +22,12 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 248.5}">
     </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test PortParameters.&#10;In this case, we want to use the Parameter value&#10;of the secondString Parameter in StringCompare.&#10;The tricky bit is that the port is not connected.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 270.0]">
+        </property>
+    </property>
     <entity name="StringCompare" class="ptolemy.actor.lib.string.StringCompare">
         <doc>Output a comparison function of two strings</doc>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
