@@ -44,8 +44,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+PTCLASSALLJARS = \
+	type/type.jar
 
 JSRCS = \
 	ActorCodeGenerator.java \
