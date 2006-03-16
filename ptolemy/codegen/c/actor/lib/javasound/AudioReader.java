@@ -74,7 +74,7 @@ public class AudioReader extends CCodeGeneratorHelper {
 
         // Add includes and libraries to the makefile
         _codeGenerator.addInclude("-I/usr/local/include/SDL");
-        _codeGenerator.addLibrary("-L/usr/local/lib");
+        _codeGenerator.addLibrary("-L/usr/local/lib -lsdl");
 
         ptolemy.actor.lib.javasound.AudioReader actor = 
             (ptolemy.actor.lib.javasound.AudioReader) getComponent();
