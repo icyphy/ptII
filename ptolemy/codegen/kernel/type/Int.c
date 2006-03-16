@@ -10,11 +10,10 @@ Token Int_print(Token thisToken);
 
 /***newBlock***/
 // make a new integer token from the given value.
-Token Int_new(int i) {
-    //Token *result = (Token *) malloc(sizeof(Token));
-    Token result;
-    result.type = TYPE_Int;
-    result.payload.Int = i;
+Token * Int_new(int i) {
+    Token *result = (Token *) malloc(sizeof(Token));
+    result->type = TYPE_Int;
+    result->payload.Int = i;
     return result;
 }
 /**/
