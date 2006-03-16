@@ -327,12 +327,15 @@ ALL1_4PACKAGES =	$(COMPACKAGES) \
 			ptolemy.actor.lib.net \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
+			ptolemy.codegen.c.actor \
 			ptolemy.codegen.c.actor.lib \
 			ptolemy.codegen.c.actor.lib.comm \
 			ptolemy.codegen.c.actor.lib.conversions \
 			ptolemy.codegen.c.actor.lib.gui \
+			ptolemy.codegen.c.actor.lib.hoc \
 			ptolemy.codegen.c.actor.lib.io \
 			ptolemy.codegen.c.actor.lib.javasound \
+			ptolemy.codegen.c.actor.lib.logic \
 			ptolemy.codegen.c.actor.lib.string \
 			ptolemy.codegen.c.domains.fsm.kernel \
 			ptolemy.codegen.c.domains.fsm.modal \
@@ -340,6 +343,7 @@ ALL1_4PACKAGES =	$(COMPACKAGES) \
 			ptolemy.codegen.c.domains.hdf.kernel \
 			ptolemy.codegen.c.domains.sdf.kernel \
 			ptolemy.codegen.c.domains.sdf.lib \
+			ptolemy.codegen.c.kernel \
 			ptolemy.codegen.gui \
 			ptolemy.codegen.kernel \
 			ptolemy.domains.ci.kernel \
