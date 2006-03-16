@@ -35,7 +35,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-import com.sun.tools.javac.v8.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// Bernoulli
