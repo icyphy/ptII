@@ -356,6 +356,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This method is read-synchronized on the workspace.
      *
      *  @return The director responsible for invocation of inside actors.
+     *  @see #setDirector(Director)
      */
     public Director getDirector() {
         try {
@@ -922,6 +923,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  classes if the director is not compatible.
      *  @exception NameDuplicationException If an attribute already exists
      *  in this container with the same name as the given director.
+     *  @see #getDirector();
      */
     public void setDirector(Director director) throws IllegalActionException,
             NameDuplicationException {
@@ -1166,7 +1168,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         super._addRelation(relation);
     }
     
-    /*  Create receivers for each input port.
+    /**  Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */
     protected void _createReceivers() throws IllegalActionException {

@@ -466,6 +466,7 @@ public class Director extends Attribute implements Executable {
      *  @return The current time value.
      *  @deprecated As of Ptolemy II 4.1, replaced by
      *  {@link #getModelTime()}
+     *  @see #setCurrentTime(double)
      */
     public double getCurrentTime() {
         return getModelTime().getDoubleValue();
@@ -484,6 +485,7 @@ public class Director extends Attribute implements Executable {
      *  Note that this method is not made abstract to facilitate the use
      *  of the test suite.
      *  @return The time of the next iteration.
+     *  @see #getModelTime(Time)
      */
     public Time getModelNextIterationTime() {
         return _currentTime;
@@ -666,6 +668,7 @@ public class Director extends Attribute implements Executable {
      *  the actor or checking to see whether the actor can be managed
      *  by this director.  For example, a time-based domain (such as
      *  CT) might reject sequence based actors.
+     *  @param actor The actor that is to be initialized.
      *  @exception IllegalActionException If the actor is not
      *  acceptable to the domain.  Not thrown in this base class.
      */
@@ -997,6 +1000,7 @@ public class Director extends Attribute implements Executable {
      *  @param newTime The new current simulation time.
      *  @deprecated As of Ptolemy 4.1, replaced by
      *  {@link #setModelTime}
+     *  @see #getCurrentTime()
      */
     public void setCurrentTime(double newTime) throws IllegalActionException {
         setModelTime(new Time(this, newTime));
@@ -1010,6 +1014,7 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the new time is less than
      *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
+     *  @see #getModelTime()
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
         int comparisonResult = _currentTime.compareTo(newTime);
@@ -1248,6 +1253,8 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Return true if this director is embedded inside an opaque composite
+     *  actor contained by another composite actor.
+     *  @return True if this directory is embedded inside an opaque composite
      *  actor contained by another composite actor.
      */
     protected boolean _isEmbedded() {

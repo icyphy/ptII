@@ -174,6 +174,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  be notified of all the type changes.  If the listener is already
      *  listening to this port, then do nothing.
      *  @param listener The TypeListener to add.
+     *  @see #removeTypeListener(TypeListener)
      */
     public void addTypeListener(TypeListener listener) {
         if (!_typeListeners.contains(listener)) {
@@ -304,6 +305,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  to the type returned by getType(). If the token is already
      *  of this type, then simply return the specified token.
      *  @param token The token to convert.
+     *  @param token The converted token.
      *  @exception IllegalActionException If the conversion is
      *   invalid.
      */
@@ -418,6 +420,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     /** Remove a type listener from this port.  If the listener is
      *  not attached to this port, do nothing.
      *  @param listener The TypeListener to be removed.
+     *  @see #addTypeListener(TypeListener)
      */
     public void removeTypeListener(TypeListener listener) {
         if (_typeListeners.contains(listener)) {

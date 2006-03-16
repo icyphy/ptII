@@ -95,6 +95,7 @@ public interface Receiver {
 
     /** Return the container of this receiver, or null if there is none.
      *  @return The port containing this receiver.
+     *  @see #setContainer(IOPort)
      */
     public IOPort getContainer();
 
@@ -204,6 +205,7 @@ public interface Receiver {
      *  @exception IllegalActionException If the container is not of
      *   an appropriate subclass of IOPort for the particular receiver
      *   implementation.
+     *  @see #getContainer()
      */
     public void setContainer(IOPort port) throws IllegalActionException;
 }

@@ -422,6 +422,7 @@ public class IOPort extends ComponentPort {
      *  this port. In this base class, this method simply returns
      *  the same token passed to it, performing no conversion.
      *  @param token The token to convert.
+     *  @return The converted token.
      *  @exception IllegalActionException If the conversion is
      *   invalid (not thrown in this base class).
      */

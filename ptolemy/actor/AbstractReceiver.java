@@ -111,6 +111,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  as the put() and get() methods are properly synchronized.
      *
      *  @param numberOfTokens The number of tokens to get.
+     *  @return The array of tokens.
      *  @exception NoTokenException If there are not <i>numberOfTokens</i>
      *   tokens available.  Note that if this exception is thrown, then
      *   it is possible that some tokens will have been already extracted
@@ -136,6 +137,7 @@ public abstract class AbstractReceiver implements Receiver {
 
     /** Return the container of this receiver, or null if there is none.
      *  @return The port containing this receiver.
+     *  @see #setContainer(IOPort)
      */
     public IOPort getContainer() {
         return _container;
@@ -320,6 +322,7 @@ public abstract class AbstractReceiver implements Receiver {
      *  @exception IllegalActionException If the container is not of
      *   an appropriate subclass of IOPort. Not thrown in this base class,
      *   but may be thrown in derived classes.
+     *  @see #getContainer()
      */
     public void setContainer(IOPort port) throws IllegalActionException {
         _container = port;

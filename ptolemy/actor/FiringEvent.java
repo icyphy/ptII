@@ -96,12 +96,15 @@ public class FiringEvent implements DebugEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the actor that is being activated. */
+    /** Return the actor that is being activated.
+     *  @return The actor that is being activated.
+     */
     public Actor getActor() {
         return _actor;
     }
 
     /** Return the director that activated the actor.
+     *  @return The director that activated the actor.  
      */
     public Director getDirector() {
         return _director;
@@ -116,6 +119,7 @@ public class FiringEvent implements DebugEvent {
     }
 
     /** Return the type of activation that this event represents.
+     *  @return the type of activation that this event represents.
      */
     public FiringEventType getType() {
         return _type;
@@ -208,12 +212,16 @@ public class FiringEvent implements DebugEvent {
             _name = name;
         }
 
-        /** Return the string name of this event type. */
+        /** Return the string name of this event type.
+         *  @return the string name of this event type.
+         */
         public String getName() {
             return _name;
         }
 
-        /** Return a string description of this event type. */
+        /** Return a string description of this event type.
+         *  @return a string description of this event type.
+         */
         public String toString() {
             return "FiringEventType(" + _name + ")";
         }

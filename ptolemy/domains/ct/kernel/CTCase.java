@@ -1,6 +1,6 @@
 /* A version of the Case actor designed for the CT domain.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  
  @author  Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (hyzheng)
  */
@@ -76,9 +76,11 @@ public class CTCase extends Case implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Call the emitCurrentStates() method of the current refinement director if it
-     *  is an instance of CTTransparentDirector. Otherwise, do nothing.
-     *  @exception IllegalActionException If tentative states cannot be emitted.
+    /** Call the emitCurrentStates() method of the current refinement
+     *  director if it is an instance of
+     *  CTTransparentDirector. Otherwise, do nothing.
+     *  @exception IllegalActionException If tentative states cannot
+     *  be emitted.
      */
     public void emitCurrentStates() throws IllegalActionException {
         Director director = _current.getDirector();
@@ -87,8 +89,9 @@ public class CTCase extends Case implements
         }
     }
     
-    /** Call the goToMarkedState() method of the current refinement director if it
-     *  is an instance of CTTransparentDirector. Otherwise, do nothing.
+    /** Call the goToMarkedState() method of the current refinement
+     *  director if it is an instance of
+     *  CTTransparentDirector. Otherwise, do nothing.
      *  @exception IllegalActionException If there is no marked state.
      */
     public void goToMarkedState() throws IllegalActionException {
@@ -98,10 +101,11 @@ public class CTCase extends Case implements
         }
     }
 
-    /** Call the hasCurrentEvent() method of the current refinement director if it
-     *  is an instance of CTTransparentDirector. Otherwise,
-     *  return false, indicating that this composite actor does not
-     *  have an event at the current time.
+    /** Call the hasCurrentEvent() method of the current refinement
+     *  director if it is an instance of
+     *  CTTransparentDirector. Otherwise, return false, indicating
+     *  that this composite actor does not have an event at the
+     *  current time.
      *  @return True if there is an event at the current time.
      */
     public boolean hasCurrentEvent() {
@@ -112,9 +116,10 @@ public class CTCase extends Case implements
         return false;
     }
 
-    /** Call the isOutputAccurate() method of the current refinement director if it
-     *  is an instance of CTTransparentDirector. Otherwise, return
-     *  true, which indicates the current step size is accurate w.r.t. outputs.
+    /** Call the isOutputAccurate() method of the current refinement
+     *  director if it is an instance of
+     *  CTTransparentDirector. Otherwise, return true, which indicates
+     *  the current step size is accurate w.r.t. outputs.
      *  @return True if the current step size is accurate w.r.t. outputs.
      */
     public boolean isOutputAccurate() {
@@ -125,10 +130,10 @@ public class CTCase extends Case implements
         return true;
     }
 
-    /** Call the isStateAccurate() method of the current refinement director if it
-     *  is an instance of CTTransparentDirector. Otherwise, return
-     *  true, which indicates the current step size is accurate w.r.t. the
-     *  current states.
+    /** Call the isStateAccurate() method of the current refinement
+     *  director if it is an instance of
+     *  CTTransparentDirector. Otherwise, return true, which indicates
+     *  the current step size is accurate w.r.t. the current states.
      *  @return True if the current step size is accurate w.r.t. the current
      *  states.
      */
@@ -151,17 +156,20 @@ public class CTCase extends Case implements
     }
 
     /** Create a new refinement with the specified name.
+     *  @param name The name of the new refinement.
      *  @return The new refinement.
-     *  @throws IllegalActionException If the refinement cannot be created.
-     *  @throws NameDuplicationException If a refinement already exists with this name.
+     *  @exception IllegalActionException If the refinement cannot be created.
+     *  @exception NameDuplicationException If a refinement already
+     *  exists with this name.
      */
     public Refinement newRefinement(String name)
             throws IllegalActionException, NameDuplicationException {
         return new CTRefinement(this, name);
     }
 
-    /** Call the predictedStepSize() method of the current refinement director if it
-     *  is an instance of CTTransparentDirector. Otherwise, return
+    /** Call the predictedStepSize() method of the current refinement
+     *  director if it is an instance of
+     *  CTTransparentDirector. Otherwise, return
      *  java.lang.Double.MAX_VALUE.
      *  @return The predicted step size.
      */
@@ -173,11 +181,11 @@ public class CTCase extends Case implements
         return java.lang.Double.MAX_VALUE;
     }
 
-    /** Call the prefireDynamicActors() method of the current refinement director if it
-     *  is an instance of CTTransparentDirector. Return true
-     *  if all dynamic actors are prefired, otherwise, return false. If the
-     *  local director is not an instance of CTTransparentDirector, return true
-     *  always.
+    /** Call the prefireDynamicActors() method of the current
+     *  refinement director if it is an instance of
+     *  CTTransparentDirector. Return true if all dynamic actors are
+     *  prefired, otherwise, return false. If the local director is
+     *  not an instance of CTTransparentDirector, return true always.
      *  @return True if all dynamic actors are prefired.
      *  @exception IllegalActionException If the local director throws it.
      */
@@ -189,9 +197,10 @@ public class CTCase extends Case implements
         return true;
     }
 
-    /** Call the refinedStepSize() method of the current refinement director if it
-     *  is an instance of CTTransparentDirector. Otherwise, return
-     *  the current step size of the executive director.
+    /** Call the refinedStepSize() method of the current refinement
+     *  director if it is an instance of
+     *  CTTransparentDirector. Otherwise, return the current step size
+     *  of the executive director.
      *  @return The refined step size.
      */
     public double refinedStepSize() {
@@ -203,7 +212,8 @@ public class CTCase extends Case implements
                 .getCurrentStepSize();
     }
 
-    /** Return the class name for refinements that this Case actor expects to contain.
+    /** Return the class name for refinements that this Case actor
+     *  expects to contain.
      *  @return The string "ptolemy.actor.lib.hoc.Refinement".
      */
     public String refinementClassName() {
@@ -214,11 +224,12 @@ public class CTCase extends Case implements
     ////                         protected methods                 ////
 
     /** Create a director. This class creates an instance of CTCaseDirector.
-     *  @throws IllegalActionException If the director cannot be created.
-     *  @throws NameDuplicationException If there is already an attribute with
-     *   the name "_director".
+     *  @exception IllegalActionException If the director cannot be created.
+     *  @exception NameDuplicationException If there is already an
+     *  attribute with the name "_director".
      */
-    protected CaseDirector _createDirector() throws IllegalActionException, NameDuplicationException {
+    protected CaseDirector _createDirector()
+            throws IllegalActionException, NameDuplicationException {
         return new CTCaseDirector(this, "_director");        
     }
 }

@@ -95,6 +95,8 @@ public class Mailbox extends AbstractReceiver {
     /** Return true if the argument is 1 and the mailbox is empty,
      *  and otherwise return false.
      *  @param numberOfTokens The number of tokens to put into the mailbox.
+     *  @return True if the argument is 1 and the mailbox is empty,
+     *  and otherwise return false.
      *  @exception IllegalArgumentException If the argument is not positive.
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.

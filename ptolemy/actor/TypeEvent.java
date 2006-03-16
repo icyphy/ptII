@@ -87,10 +87,11 @@ public class TypeEvent implements DebugEvent {
         return (NamedObj) _typeable;
     }
 
-    /** Return a string description for this type change. The string is
-     *  "The type on <typeable> has changed from <old type> to <new type>",
-     *  where <typeable> is the name of the Typeable, and <old type> and
-     *  <new type> are the string representation of the types.
+    /** Return a string description for this type change. The string
+     *  is "The type on <i>typeable</i> has changed from <i>old
+     *  type</i> to <i>new type</i>", where <i>typeable</i> is the
+     *  name of the Typeable, and <i>old type</i> and <i>new type</i>
+     *  are the string representation of the types.
      *  @return A string description for this type change.
      */
     public String toString() {

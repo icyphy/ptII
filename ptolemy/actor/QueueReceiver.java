@@ -148,6 +148,7 @@ public class QueueReceiver extends AbstractReceiver {
 
     /** Return the capacity, or INFINITE_CAPACITY if it is unbounded.
      *  @return The capacity of the receiver.
+     *  @see #setCapacity(int)
      */
     public int getCapacity() {
         return _queue.getCapacity();
@@ -157,6 +158,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  This will be zero if the history mechanism is disabled
      *  and INFINITE_CAPACITY if the history capacity is unbounded.
      *  @return The capacity of the history queue.
+     *  @see #setHistoryCapacity(int)
      */
     public int getHistoryCapacity() {
         return _queue.getHistoryCapacity();
@@ -263,6 +265,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  @param capacity The desired receiver capacity.
      *  @exception IllegalActionException If the receiver has more tokens
      *   than the proposed capacity or the proposed capacity is illegal.
+     *  @see #getCapacity()
      */
     public void setCapacity(int capacity) throws IllegalActionException {
         try {
@@ -282,8 +285,10 @@ public class QueueReceiver extends AbstractReceiver {
      *  supplying 0 as the argument.
      *  @param capacity The desired history capacity.
      *  @exception IllegalActionException If the desired capacity is illegal.
+     *  @see #getHistoryCapacity()
      */
-    public void setHistoryCapacity(int capacity) throws IllegalActionException {
+    public void setHistoryCapacity(int capacity)
+            throws IllegalActionException {
         try {
             _queue.setHistoryCapacity(capacity);
         } catch (IllegalActionException ex) {
