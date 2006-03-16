@@ -87,12 +87,26 @@
             <property name="input"/>
         </port>
     </entity>
+    <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
+        <property name="CommutatorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {46, 101, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 360.0]">
+        </property>
+    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0.5634363430819&quot;, &quot;{1.0, 2.3}&quot;, &quot;{\&quot;1\&quot;, \&quot;2.3\&quot;, \&quot;c\&quot;}&quot;, &quot;[1.0, 2.3, 4.0, 6.0; 1.0, 2.3, 8.0, 9.0]&quot;, &quot;-1.1548454853771&quot;, &quot;{1.0, 2.3}&quot;, &quot;{\&quot;1\&quot;, \&quot;2.3\&quot;, \&quot;c\&quot;}&quot;, &quot;[1.0, 2.3, 4.0, 6.0; 1.0, 2.3, 8.0, 9.0]&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[507.87892150878906, 350.0065231323242]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 445.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -115,14 +129,26 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Expression.output" relation="relation"/>
     <link port="Expression.input" relation="relation2"/>
     <link port="Expression2.output" relation="relation3"/>
     <link port="Expression3.output" relation="relation4"/>
     <link port="Expression4.output" relation="relation5"/>
-    <link port="Test.input" relation="relation"/>
-    <link port="Test.input" relation="relation3"/>
-    <link port="Test.input" relation="relation4"/>
-    <link port="Test.input" relation="relation5"/>
+    <link port="TokenToExpression.input" relation="relation6"/>
+    <link port="TokenToExpression.output" relation="relation7"/>
+    <link port="Commutator.input" relation="relation"/>
+    <link port="Commutator.input" relation="relation3"/>
+    <link port="Commutator.input" relation="relation4"/>
+    <link port="Commutator.input" relation="relation5"/>
+    <link port="Commutator.output" relation="relation6"/>
+    <link port="Test.input" relation="relation7"/>
 </entity>
