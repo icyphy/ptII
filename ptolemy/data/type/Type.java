@@ -124,10 +124,11 @@ public interface Type {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Used to indicate that the type comparison cache is invalid
+    /** Used to indicate that the type comparison cache is invalid.
      *  @since Ptolemy II 2.1
      */
     public static final int HASH_INVALID = Integer.MIN_VALUE;
 
+    /** The maximum size of the type hash. */
     public static final int HASH_MAX = 13;
 }

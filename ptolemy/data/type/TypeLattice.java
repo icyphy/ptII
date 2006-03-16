@@ -167,6 +167,9 @@ public class TypeLattice {
     }
 
     /** Return the least upper bound of the two given types.
+     *  @param type1 The first given type.
+     *  @param type2 The second given type.
+     *  @return The least upper bound of type1 and type2.
      */
     public static Type leastUpperBound(Type type1, Type type2) {
         return (Type) _lattice.leastUpperBound(type1, type2);
@@ -625,10 +628,11 @@ public class TypeLattice {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The infinite type lattice.
+
+    /** The infinite type lattice. */
     private static TheTypeLattice _lattice = new TheTypeLattice();
 
-    // The result cache for parts of the type lattice.
+    /** The result cache for parts of the type lattice. */
     private static int[][] _compareCache;
 
     static {

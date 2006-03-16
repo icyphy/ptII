@@ -100,6 +100,7 @@ public class TopMatrixType extends StructuredType implements Serializable {
     }
 
     /** Return the singleton instance of this class.
+     *  @return The singleton instance of this class.   
      */
     public static TopMatrixType getInstance() {
         return _instance;

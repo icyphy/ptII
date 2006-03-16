@@ -67,12 +67,13 @@ public class TypeConstant implements InequalityTerm {
 
     /** Return the constant type represented by this term.
      *  @return A Type.
+     *  @see #setValue(Object)
      */
     public Object getValue() {
         return _type;
     }
 
-    /* Return an array of size zero.
+    /** Return an array of size zero.
      * @return An array of InequalityTerm of size 0.
      */
     public InequalityTerm[] getVariables() {
@@ -110,6 +111,7 @@ public class TypeConstant implements InequalityTerm {
     /** Throw IllegalActionException since the value of this term
      *  cannot be changed.
      *  @exception IllegalActionException Always thrown.
+     *  @see #getValue()
      */
     public void setValue(Object e) throws IllegalActionException {
         throw new IllegalActionException("TypeConstant.setValue: Cannot set "

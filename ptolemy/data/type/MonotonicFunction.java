@@ -58,7 +58,10 @@ public abstract class MonotonicFunction implements InequalityTerm {
     /** Return the result of this monotonic function.   Derived
      *  classes should implement this method to return the current value
      *  of the monotonic function.
+     *  @exception IllegalActionException Thrown in derived classes if 
+     *  there is a problem getting the value.
      *  @return A Type.
+     *  @see #setValue(Object)
      */
     public abstract Object getValue() throws IllegalActionException;
 
@@ -106,6 +109,7 @@ public abstract class MonotonicFunction implements InequalityTerm {
 
     /** Throw an Exception. The value of a function term cannot be set.
      *  @exception IllegalActionException Always thrown.
+     *  @see #getValue()
      */
     public final void setValue(Object e) throws IllegalActionException {
         throw new IllegalActionException(getClass().getName()

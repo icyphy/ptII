@@ -103,6 +103,7 @@ public interface Typeable extends HasTypeConstraints {
      *  type of the argument.  Notice that this constraint
      *  is not enforced until type resolution is done, and is not
      *  enforced if type resolution is not done.
+     *  @param equal The type that this object should be the same as.
      */
     public void setTypeSameAs(Typeable equal);
 }

@@ -96,7 +96,7 @@ public abstract class BaseType implements Type, Serializable {
 
     /** Return an instance of this class that corresponds to tokens
      *  of a class with the given name, or null if none exists.
-     *  @param The name of the class.
+     *  @param className The name of the class.
      *  @return An instance of BaseType.
      */
     public static Type forClassName(String className) {
@@ -105,7 +105,7 @@ public abstract class BaseType implements Type, Serializable {
 
     /** Return an instance of this class with the specified name,
      *  or null if none exists.
-     *  @param The name of the class.
+     *  @param name The name of the type.
      *  @return An instance of BaseType.
      */
     public static Type forName(String name) {

@@ -214,8 +214,12 @@ public abstract class SizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The boolean matrix data type */
+    /** The boolean matrix data type. */
     public static class BooleanMatrixType extends SizedMatrixType {
+        /** Construct a BooleanMatrixType.
+         *  @param rows The number of rows.
+         *  @param columns The number of columns.
+         */
         public BooleanMatrixType(int rows, int columns) {
             super(BooleanMatrixToken.class, "[boolean]", rows, columns);
         }
@@ -234,8 +238,12 @@ public abstract class SizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The complex matrix data type */
+    /** The complex matrix data type. */
     public static class ComplexMatrixType extends SizedMatrixType {
+        /** Construct a ComplexMatrixType.
+         *  @param rows The number of rows.
+         *  @param columns The number of columns.
+         */
         public ComplexMatrixType(int rows, int columns) {
             super(ComplexMatrixToken.class, "[complex]", rows, columns);
         }
@@ -254,8 +262,12 @@ public abstract class SizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The double matrix data type */
+    /** The double matrix data type. */
     public static class DoubleMatrixType extends SizedMatrixType {
+        /** Construct a DoubleMatrixType.
+         *  @param rows The number of rows.
+         *  @param columns The number of columns.
+         */
         public DoubleMatrixType(int rows, int columns) {
             super(DoubleMatrixToken.class, "[double]", rows, columns);
         }
@@ -274,8 +286,12 @@ public abstract class SizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The int matrix data type */
+    /** The int matrix data type. */
     public static class IntMatrixType extends SizedMatrixType {
+        /** Construct a IntMatrixType.
+         *  @param rows The number of rows.
+         *  @param columns The number of columns.
+         */
         public IntMatrixType(int rows, int columns) {
             super(IntMatrixToken.class, "[int]", rows, columns);
         }
@@ -298,8 +314,12 @@ public abstract class SizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The fix matrix data type */
+    /** The fix matrix data type. */
     public static class FixMatrixType extends SizedMatrixType {
+        /** Construct a IntMatrixType.
+         *  @param rows The number of rows.
+         *  @param columns The number of columns.
+         */
         public FixMatrixType(int rows, int columns) {
             super(FixMatrixToken.class, "[fixedpoint]", rows, columns);
         }
@@ -318,8 +338,12 @@ public abstract class SizedMatrixType extends StructuredType implements
         }
     }
 
-    /** The long matrix data type */
+    /** The long matrix data type. */
     public static class LongMatrixType extends SizedMatrixType {
+        /** Construct a LongMatrixType.
+         *  @param rows The number of rows.
+         *  @param columns The number of columns.
+         */
         public LongMatrixType(int rows, int columns) {
             super(LongMatrixToken.class, "[long]", rows, columns);
         }
