@@ -65,8 +65,9 @@ public class HammingCoder extends CCodeGeneratorHelper {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
         ptolemy.actor.lib.comm.HammingCoder actor = (ptolemy.actor.lib.comm.HammingCoder) getComponent();
-        
-        int uncodeSizeValue = ((IntToken) actor.uncodedRate.getToken()).intValue();
+
+        int uncodeSizeValue = ((IntToken) actor.uncodedRate.getToken())
+                .intValue();
         for (int i = 0; i < uncodeSizeValue; i++) {
             ArrayList args = new ArrayList();
             args.add(new Integer(i));

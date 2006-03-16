@@ -66,8 +66,7 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        ptolemy.actor.lib.UnaryMathFunction actor = 
-        	(ptolemy.actor.lib.UnaryMathFunction) getComponent();
+        ptolemy.actor.lib.UnaryMathFunction actor = (ptolemy.actor.lib.UnaryMathFunction) getComponent();
 
         String function = actor.function.getExpression();
         String codeBlockName = (function.equals("exp")) ? "expBlock"

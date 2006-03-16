@@ -67,8 +67,7 @@ public class Test extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         // FIXME: handle widths greater than 1.
-        ptolemy.actor.lib.Test actor = 
-        	(ptolemy.actor.lib.Test) getComponent();
+        ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
         if (actor.input.getWidth() > 1) {
             throw new IllegalActionException(actor,
                     "The C version of the Test actor currently only handles "

@@ -64,8 +64,7 @@ public class Quantizer extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Quantizer actor = 
-        	(ptolemy.actor.lib.Quantizer) getComponent();
+        ptolemy.actor.lib.Quantizer actor = (ptolemy.actor.lib.Quantizer) getComponent();
 
         ArrayList arguments = new ArrayList();
         StringTokenizer tokenizer = new StringTokenizer(actor.levels
@@ -87,8 +86,7 @@ public class Quantizer extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.actor.lib.Quantizer actor = 
-        	(ptolemy.actor.lib.Quantizer) getComponent();
+        ptolemy.actor.lib.Quantizer actor = (ptolemy.actor.lib.Quantizer) getComponent();
 
         ArrayList arguments = new ArrayList();
         StringTokenizer tokenizer = new StringTokenizer(actor.levels

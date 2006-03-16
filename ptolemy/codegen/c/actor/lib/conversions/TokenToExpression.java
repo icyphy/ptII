@@ -45,7 +45,8 @@ public class TokenToExpression extends CCodeGeneratorHelper {
      * Constructor method for the TokenToExpression helper.
      * @param actor the associated actor.
      */
-    public TokenToExpression(ptolemy.actor.lib.conversions.TokenToExpression actor) {
+    public TokenToExpression(
+            ptolemy.actor.lib.conversions.TokenToExpression actor) {
         super(actor);
     }
 }

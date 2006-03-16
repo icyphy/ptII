@@ -64,7 +64,7 @@ public class Minimum extends CCodeGeneratorHelper {
         super.generateFireCode();
 
         ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
-        
+
         _codeStream.appendCodeBlock("fireInitBlock");
         // FIXME: we need to resolve the token type in the future
         for (int i = 1; i < actor.input.getWidth(); i++) {

@@ -42,7 +42,7 @@ import ptolemy.codegen.kernel.CCodeGeneratorHelper;
  @Pt.AcceptedRating Red (zgang)
  */
 public class Pulse extends CCodeGeneratorHelper {
-    
+
     /** Constructor method for the Pulse helper.
      *  @param actor the associated actor
      */

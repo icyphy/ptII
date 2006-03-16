@@ -63,8 +63,7 @@ public class Sequence extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
-        ptolemy.actor.lib.Sequence actor = 
-        	(ptolemy.actor.lib.Sequence) getComponent();
+        ptolemy.actor.lib.Sequence actor = (ptolemy.actor.lib.Sequence) getComponent();
 
         if (actor.enable.getWidth() == 0) {
             _codeStream.appendCodeBlock("codeBlock1");

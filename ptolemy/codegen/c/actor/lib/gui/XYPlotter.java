@@ -65,9 +65,8 @@ public class XYPlotter extends CCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         super.generateWrapupCode();
         _codeStream.appendCodeBlock("closeFile");
-        
-        ptolemy.actor.lib.gui.XYPlotter actor = 
-        	(ptolemy.actor.lib.gui.XYPlotter) getComponent();
+
+        ptolemy.actor.lib.gui.XYPlotter actor = (ptolemy.actor.lib.gui.XYPlotter) getComponent();
         if (actor.fillOnWrapup.getExpression().equals("true")) {
             _codeStream.appendCodeBlock("graphPlot");
         }

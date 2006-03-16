@@ -98,8 +98,7 @@ public class ElementsToArray extends CCodeGeneratorHelper {
         code.append(super.generatePreinitializeCode());
 
         ArrayList args = new ArrayList();
-        ptolemy.actor.lib.ElementsToArray actor = 
-        	(ptolemy.actor.lib.ElementsToArray) getComponent();
+        ptolemy.actor.lib.ElementsToArray actor = (ptolemy.actor.lib.ElementsToArray) getComponent();
         args.add(new Integer(actor.input.getWidth()));
         code.append(_generateBlockCode("initBlock", args));
         return processCode(code.toString());

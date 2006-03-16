@@ -61,7 +61,7 @@ public class Equals extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String  generateFireCode() throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
         ptolemy.actor.lib.logic.Equals actor = (ptolemy.actor.lib.logic.Equals) getComponent();
 
@@ -74,7 +74,7 @@ public class Equals extends CCodeGeneratorHelper {
         args.add(new Integer(actor.input.getWidth()));
         _codeStream.appendCodeBlock(type + "EqualsBlock", args);
         return processCode(_codeStream.toString());
-   }
+    }
 
     /**
      * Get the files needed by the code generated for the

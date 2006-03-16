@@ -46,7 +46,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.AcceptedRating Red (zgang)
  */
 public class MonitorValue extends CCodeGeneratorHelper {
-    
+
     /** Constructor method for the MonitorValue helper.
      *  @param actor the associated actor
      */
@@ -64,7 +64,7 @@ public class MonitorValue extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
-        
+
         ptolemy.actor.lib.MonitorValue actor = (ptolemy.actor.lib.MonitorValue) getComponent();
         Type type = actor.input.getType();
         for (int i = 0; i < actor.input.getWidth(); i++) {
@@ -74,18 +74,18 @@ public class MonitorValue extends CCodeGeneratorHelper {
             if (type == BaseType.INT || type == BaseType.BOOLEAN) {
                 _codeStream.appendCodeBlock("intBlock", args);
             } else if (type == BaseType.DOUBLE) {
-            	_codeStream.appendCodeBlock("doubleBlock", args);
+                _codeStream.appendCodeBlock("doubleBlock", args);
             } else if (type == BaseType.STRING) {
-            	_codeStream.appendCodeBlock("stringBlock", args);
+                _codeStream.appendCodeBlock("stringBlock", args);
             } else {
-                throw new IllegalActionException(actor, "The type: " 
-                        + type + " is not supported for now.");
+                throw new IllegalActionException(actor, "The type: " + type
+                        + " is not supported for now.");
             }
         }
-        
+
         return processCode(_codeStream.toString());
     }
-    
+
     /** Get the files needed by the code generated for the actor.
      *  @return A set of strings that are names of the header files
      *   needed by the code generated for the actor.

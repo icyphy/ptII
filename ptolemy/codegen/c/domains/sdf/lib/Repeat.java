@@ -61,19 +61,18 @@ public class Repeat extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
-        
-        ptolemy.domains.sdf.lib.Repeat actor = 
-        	(ptolemy.domains.sdf.lib.Repeat) getComponent();
-        int numberOfTimes = 
-        	((IntToken) actor.numberOfTimes.getToken()).intValue();
+
+        ptolemy.domains.sdf.lib.Repeat actor = (ptolemy.domains.sdf.lib.Repeat) getComponent();
+        int numberOfTimes = ((IntToken) actor.numberOfTimes.getToken())
+                .intValue();
         int blockSize = ((IntToken) actor.blockSize.getToken()).intValue();
 
         // FIXME: We eventually want to have a for loop in the c code,
         // instead of this.
         for (int i = 0; i < blockSize; i++) {
             for (int j = 0; j < numberOfTimes; j++) {
-                _codeStream.append(
-                		"$ref(output," + ((j * blockSize) + i) + ") = ");
+                _codeStream.append("$ref(output," + ((j * blockSize) + i)
+                        + ") = ");
             }
             _codeStream.append("$ref(input," + i + ");\n");
         }

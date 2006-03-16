@@ -76,15 +76,14 @@ public class AudioReader extends CCodeGeneratorHelper {
         _codeGenerator.addInclude("-I/usr/local/include/SDL");
         _codeGenerator.addLibrary("-L/usr/local/lib -lsdl");
 
-        ptolemy.actor.lib.javasound.AudioReader actor = 
-            (ptolemy.actor.lib.javasound.AudioReader) getComponent();
+        ptolemy.actor.lib.javasound.AudioReader actor = (ptolemy.actor.lib.javasound.AudioReader) getComponent();
         String fileNameString;
         try {
             // Handle $CLASSPATH, return a file name with forward slashes.
             fileNameString = actor.fileOrURL.asURL().getPath();
             // Under Windows, convert /C:/foo/bar to C:/foo/bar
-            fileNameString =
-                new File(fileNameString).getCanonicalPath().replace('\\', '/');
+            fileNameString = new File(fileNameString).getCanonicalPath()
+                    .replace('\\', '/');
         } catch (IOException e) {
             throw new IllegalActionException("Cannot find file: "
                     + actor.fileOrURL.getExpression());

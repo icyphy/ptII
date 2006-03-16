@@ -65,29 +65,28 @@ public class Accumulator extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        
+
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
         if (actor.reset.getWidth() > 0) {
             code.append(_generateBlockCode("initReset"));
             for (int i = 1; i < actor.input.getWidth(); i++) {
                 ArrayList args = new ArrayList();
                 args.add(new Integer(i));
-                code.append(_generateBlockCode("readReset", args)); 
+                code.append(_generateBlockCode("readReset", args));
             }
             code.append(_generateBlockCode("initSum"));
         }
-        
+
         for (int i = 0; i < actor.input.getWidth(); i++) {
             ArrayList args = new ArrayList();
             args.add(new Integer(i));
             code.append(_generateBlockCode("readInput", args));
         }
-        
+
         code.append(_generateBlockCode("sendBlock"));
         return code.toString();
     }
 
-    
     /** Generate the preinitialize code. 
      *  @return The preinitialize code.
      *  @exception IllegalActionException
@@ -99,11 +98,11 @@ public class Accumulator extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Accumulator actor = (ptolemy.actor.lib.Accumulator) getComponent();
         Type type = actor.input.getType();
         code.append("static " + type.toString() + " $actorSymbol(sum);\n");
-        
+
         if (actor.reset.getWidth() > 0) {
             code.append("static unsigned char $actorSymbol(resetTemp);\n");
         }
-        
+
         return processCode(code.toString());
     }
 }

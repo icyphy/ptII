@@ -113,7 +113,7 @@ public class Director implements ActorCodeGenerator {
         }
         return code.toString();
     }
-    
+
     /** Generate The fire function code. This method is called when the firing
      *  code of each actor is not inlined. Each actor's firing code is in a 
      *  function with the same name as that of the actor.
@@ -126,7 +126,7 @@ public class Director implements ActorCodeGenerator {
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();           
+            Actor actor = (Actor) actors.next();
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(actorHelper.generateFireFunctionCode());
         }
@@ -411,8 +411,8 @@ public class Director implements ActorCodeGenerator {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
-            throw new IllegalActionException(port, "the rate: "
-                    + rate + " is negative.");
+            throw new IllegalActionException(port, "the rate: " + rate
+                    + " is negative.");
         }
 
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
@@ -435,8 +435,8 @@ public class Director implements ActorCodeGenerator {
             } else { // If offset is a variable.
                 int modulo = helper.getBufferSize(port, j) - 1;
                 String offsetVariable = (String) helper.getReadOffset(port, j);
-                code.append(offsetVariable + " = (" + offsetVariable
-                        + " + " + rate + ")&" + modulo + ";\n");
+                code.append(offsetVariable + " = (" + offsetVariable + " + "
+                        + rate + ")&" + modulo + ";\n");
             }
         }
     }
@@ -457,8 +457,8 @@ public class Director implements ActorCodeGenerator {
         if (rate == 0) {
             return;
         } else if (rate < 0) {
-            throw new IllegalActionException(port, "the rate: "
-                    + rate + " is negative.");
+            throw new IllegalActionException(port, "the rate: " + rate
+                    + " is negative.");
         }
 
         CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper(port
@@ -492,9 +492,8 @@ public class Director implements ActorCodeGenerator {
                             sinkChannelNumber) - 1;
                     String offsetVariable = (String) helper.getWriteOffset(
                             sinkPort, sinkChannelNumber);
-                    code.append(offsetVariable + " = ("
-                            + offsetVariable + " + " + rate + ")&" + modulo
-                            + ";\n");
+                    code.append(offsetVariable + " = (" + offsetVariable
+                            + " + " + rate + ")&" + modulo + ";\n");
                 }
             }
         }

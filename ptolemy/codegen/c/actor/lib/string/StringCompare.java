@@ -59,7 +59,7 @@ public class StringCompare extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-    	files.addAll(super.getHeaderFiles());
+        files.addAll(super.getHeaderFiles());
         files.add("<string.h>");
         return files;
     }

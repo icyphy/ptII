@@ -84,13 +84,13 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
         if (sd != 0) {
             _codeStream.append("    $actorSymbol(seed) = " + sd + ";\n");
         } else {
-        	_codeStream.append("    $actorSymbol(seed) = (time(0) + "
+            _codeStream.append("    $actorSymbol(seed) = (time(0) + "
                     + actor.hashCode() + ");\n");
         }
 
         return processCode(_codeStream.toString());
     }
-    
+
     /** Generate the preinitialize code.
      *  @return The preinitialize code of this actor.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -113,8 +113,6 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
         files.add("\"time.h\"");
         return files;
     }
-    
-    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

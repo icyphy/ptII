@@ -108,8 +108,7 @@ public class FSMActor extends CCodeGeneratorHelper {
         StringBuffer codeBuffer = new StringBuffer();
         codeBuffer.append(super.generateInitializeCode());
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
         State initialState = fsmActor.getInitialState();
 
         _updateCurrentState(codeBuffer, initialState, 0);
@@ -164,8 +163,7 @@ public class FSMActor extends CCodeGeneratorHelper {
             throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
 
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
 
         int depth = 1;
         codeBuffer.append(_getIndentPrefix(depth));
@@ -229,14 +227,13 @@ public class FSMActor extends CCodeGeneratorHelper {
                 } else {
                     String guard = transition.getGuardExpression();
                     PtParser parser = new PtParser();
-                    ASTPtRootNode guardParseTree =
-                        parser.generateParseTree(guard);
-                    ParseTreeCodeGenerator parseTreeCodeGenerator =
-                        new ParseTreeCodeGenerator();
-                    parseTreeCodeGenerator
-                            .evaluateParseTree(guardParseTree, _scope);
-                    codeBuffer.append(
-                            parseTreeCodeGenerator.generateFireCode());
+                    ASTPtRootNode guardParseTree = parser
+                            .generateParseTree(guard);
+                    ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                    parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
+                            _scope);
+                    codeBuffer
+                            .append(parseTreeCodeGenerator.generateFireCode());
                 }
                 codeBuffer.append(") {\n");
 
@@ -246,24 +243,24 @@ public class FSMActor extends CCodeGeneratorHelper {
                 Iterator actions = transition.choiceActionList().iterator();
 
                 while (actions.hasNext()) {
-                    AbstractActionsAttribute action =
-                        (AbstractActionsAttribute) actions.next();
+                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions
+                            .next();
                     Iterator destinationNameList = action
                             .getDestinationNameList().iterator();
-                    Iterator channelNumberList = action
-                            .getChannelNumberList().iterator();
-                    Iterator parseTreeList =
-                        action.getParseTreeList().iterator();
+                    Iterator channelNumberList = action.getChannelNumberList()
+                            .iterator();
+                    Iterator parseTreeList = action.getParseTreeList()
+                            .iterator();
 
                     while (destinationNameList.hasNext()) {
-                        String destinationName =
-                            (String) destinationNameList.next();
-                        Integer channelNumber =
-                            (Integer) channelNumberList.next();
-                        ASTPtRootNode parseTree =
-                            (ASTPtRootNode) parseTreeList.next();
-                        NamedObj destination =
-                            action.getDestination(destinationName);
+                        String destinationName = (String) destinationNameList
+                                .next();
+                        Integer channelNumber = (Integer) channelNumberList
+                                .next();
+                        ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList
+                                .next();
+                        NamedObj destination = action
+                                .getDestination(destinationName);
 
                         int channel = -1;
                         if (channelNumber != null) {
@@ -309,8 +306,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 // a modal controller.
 
                                 if (((IOPort) destination).isInput()) {
-                                    codeBuffer.append(
-                                            generateName(destination));
+                                    codeBuffer
+                                            .append(generateName(destination));
 
                                     if (((IOPort) destination).isMultiport()) {
                                         codeBuffer.append("[" + i + "]");
@@ -321,8 +318,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                             }
                         }
 
-                        ParseTreeCodeGenerator parseTreeCodeGenerator =
-                            new ParseTreeCodeGenerator();
+                        ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator
@@ -339,16 +335,14 @@ public class FSMActor extends CCodeGeneratorHelper {
 
                 if (actors != null) {
                     for (int i = 0; i < actors.length; i++) {
-                        ActorCodeGenerator helper =
-                            (ActorCodeGenerator) _getHelper(
-                                    (NamedObj) actors[i]);
+                        ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper((NamedObj) actors[i]);
                         // fire the actor
                         if (inline) {
                             codeBuffer.append(helper.generateFireCode());
                         } else {
-                            codeBuffer.append(
-                                    generateName(
-                                            (NamedObj) actors[i]) + "();\n");
+                            codeBuffer
+                                    .append(generateName((NamedObj) actors[i])
+                                            + "();\n");
                         }
                     }
                 }
@@ -357,24 +351,24 @@ public class FSMActor extends CCodeGeneratorHelper {
                 actions = transition.commitActionList().iterator();
 
                 while (actions.hasNext()) {
-                    AbstractActionsAttribute action =
-                        (AbstractActionsAttribute) actions.next();
-                    Iterator destinationNameList =
-                        action.getDestinationNameList().iterator();
-                    Iterator channelNumberList =
-                        action.getChannelNumberList().iterator();
-                    Iterator parseTreeList =
-                        action.getParseTreeList().iterator();
+                    AbstractActionsAttribute action = (AbstractActionsAttribute) actions
+                            .next();
+                    Iterator destinationNameList = action
+                            .getDestinationNameList().iterator();
+                    Iterator channelNumberList = action.getChannelNumberList()
+                            .iterator();
+                    Iterator parseTreeList = action.getParseTreeList()
+                            .iterator();
 
                     while (destinationNameList.hasNext()) {
-                        String destinationName =
-                            (String) destinationNameList.next();
-                        Integer channelNumber =
-                            (Integer) channelNumberList.next();
-                        ASTPtRootNode parseTree =
-                            (ASTPtRootNode) parseTreeList.next();
-                        NamedObj destination =
-                            action.getDestination(destinationName);
+                        String destinationName = (String) destinationNameList
+                                .next();
+                        Integer channelNumber = (Integer) channelNumberList
+                                .next();
+                        ASTPtRootNode parseTree = (ASTPtRootNode) parseTreeList
+                                .next();
+                        NamedObj destination = action
+                                .getDestination(destinationName);
 
                         int channel = -1;
                         if (channelNumber != null) {
@@ -399,13 +393,12 @@ public class FSMActor extends CCodeGeneratorHelper {
                                 }
                             }
                         } else if (destination instanceof Variable) {
-                            codeBuffer.append(generateVariableName(
-                                                      (Variable) destination)
-                                    + " = ");
+                            codeBuffer
+                                    .append(generateVariableName((Variable) destination)
+                                            + " = ");
                         }
 
-                        ParseTreeCodeGenerator parseTreeCodeGenerator =
-                            new ParseTreeCodeGenerator();
+                        ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator
@@ -429,9 +422,7 @@ public class FSMActor extends CCodeGeneratorHelper {
 
                     if (actors != null) {
                         for (int i = 0; i < actors.length; ++i) {
-                            ActorCodeGenerator helper =
-                                (ActorCodeGenerator) _getHelper(
-                                        (NamedObj) actors[i]);
+                            ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper((NamedObj) actors[i]);
                             codeBuffer.append(helper.generateInitializeCode());
                         }
                     }
@@ -443,10 +434,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                 // controller for an instance of MultirateFSMDirector.
 
                 Director director = fsmActor.getExecutiveDirector();
-                if (director instanceof
-                        ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
-                    MultirateFSMDirector directorHelper =
-                        (MultirateFSMDirector) _getHelper(director);
+                if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
+                    MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                     directorHelper._updateConfigurationNumber(codeBuffer,
                             destinationState);
                 }
@@ -475,10 +464,8 @@ public class FSMActor extends CCodeGeneratorHelper {
             // MultirateFSMDirector.
 
             Director director = fsmActor.getExecutiveDirector();
-            if (director instanceof
-                    ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
-                MultirateFSMDirector directorHelper =
-                    (MultirateFSMDirector) _getHelper(director);
+            if (director instanceof ptolemy.domains.fsm.kernel.MultirateFSMDirector) {
+                MultirateFSMDirector directorHelper = (MultirateFSMDirector) _getHelper(director);
                 directorHelper._updateConfigurationNumber(codeBuffer, state);
             }
             depth--;
@@ -529,8 +516,7 @@ public class FSMActor extends CCodeGeneratorHelper {
      */
     protected void _updateCurrentState(StringBuffer codeBuffer, State state,
             int depth) {
-        ptolemy.domains.fsm.kernel.FSMActor fsmActor =
-            (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
+        ptolemy.domains.fsm.kernel.FSMActor fsmActor = (ptolemy.domains.fsm.kernel.FSMActor) getComponent();
         Iterator states = fsmActor.entityList().iterator();
         int stateCounter = 0;
 

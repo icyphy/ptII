@@ -110,7 +110,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String generateFireCode() throws IllegalActionException {
         return "\n/* fire " + getComponent().getName() + " */\n";
     }
-    
+
     /** Generate The fire function code. This method is called when the firing
      *  code of each actor is not inlined. Each actor's firing code is in a 
      *  function with the same name as that of the actor.
@@ -136,7 +136,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        return "\n/* initialize " + getComponent().getName() + " */\n";      
+        return "\n/* initialize " + getComponent().getName() + " */\n";
     }
 
     /** Generate mode transition code. The mode transition code generated in 
@@ -149,7 +149,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
     }
-    
+
     /** Generate sanitized name for the given named object.
      *  @param namedObj The named object to generate sanitized name for.
      *  @return The sanitized name.
@@ -228,8 +228,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             for (int i = 0; i < sourcePorts.size(); i++) {
                 TypedIOPort sourcePort = (TypedIOPort) sourcePorts.get(i);
-                if (inputPort.getType() == sourcePort.getType() ||
-                        inputPort.getType() != BaseType.GENERAL) {
+                if (inputPort.getType() == sourcePort.getType()
+                        || inputPort.getType() != BaseType.GENERAL) {
                     continue;
                 }
                 // FIXME: 1. inputPort.sourcePortList() returns a list 
@@ -293,8 +293,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 // avoid duplicate declaration.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
                     code.append("static " + _generateType(parameter.getType())
-                            + " " + generateVariableName(parameter) 
-                            + ";\n");
+                            + " " + generateVariableName(parameter) + ";\n");
                 }
             }
         }
@@ -338,7 +337,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             // the output port has inside receivers.
             if ((outputPort.getWidth() == 0)
                     || (outputPort.getWidthInside() != 0)) {
-                code.append("static " + _generateType(outputPort.getType()) + " ");
+                code.append("static " + _generateType(outputPort.getType())
+                        + " ");
                 code.append(generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
@@ -356,13 +356,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return processCode(code.toString());
     }
-    
+
     /** Generate variable initialization for the referenced parameters.
      *  @return code The generated code.
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
      */
-    public String generateVariableInitialization() throws IllegalActionException {
+    public String generateVariableInitialization()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append("\n/* " + _component.getName()
                 + "'s variable initialization. */\n");
@@ -376,16 +377,17 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 // avoid duplication.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    code.append(generateVariableName(parameter)
-                            + " = " 
-                            + getParameterValue(parameter.getName(), _component)
-                            + ";\n");
+                    code
+                            .append(generateVariableName(parameter)
+                                    + " = "
+                                    + getParameterValue(parameter.getName(),
+                                            _component) + ";\n");
                 }
             }
         }
         return code.toString();
-    }    
-    
+    }
+
     /** Generate variable name for the given attribute. The reason to append 
      *  underscore is to avoid conflict with the names of other objects. For
      *  example, the paired PortParameter and ParameterPort have the same name. 
@@ -393,7 +395,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @return The generated variable name.
      */
     public static String generateVariableName(Attribute attribute) {
-        return generateName(attribute) + "_"; 
+        return generateName(attribute) + "_";
     }
 
     /**
@@ -495,14 +497,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             set.addAll(((ExplicitChangeContext) _component)
                     .getModifiedVariables());
         }
-        
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator(); 
-        while(inputPorts.hasNext()) {
+
+        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
+        while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             if (inputPort instanceof ParameterPort && inputPort.getWidth() > 0) {
                 set.add(((ParameterPort) inputPort).getParameter());
             }
-        }    
+        }
         return set;
     }
 
@@ -590,17 +592,17 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 Variable variable = (Variable) attribute;
 
                 /*
-                if (_codeGenerator._modifiedVariables.contains(variable)) {
-                    return generateVariableName(variable);
-                } else if (variable.isStringMode()) {
-                    return "\"" + variable.getExpression() + "\"";
-                }
-                */
+                 if (_codeGenerator._modifiedVariables.contains(variable)) {
+                 return generateVariableName(variable);
+                 } else if (variable.isStringMode()) {
+                 return "\"" + variable.getExpression() + "\"";
+                 }
+                 */
 
                 if (variable.isStringMode()) {
                     return "\"" + variable.getExpression() + "\"";
                 }
-                
+
                 PtParser parser = new PtParser();
                 ASTPtRootNode parseTree = parser.generateParseTree(variable
                         .getExpression());
@@ -688,7 +690,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         String portName = nameChannelOffset[0];
         String channel = nameChannelOffset[1];
 
-        IOPort port = (IOPort)((Entity)_component).getPort(portName);
+        IOPort port = (IOPort) ((Entity) _component).getPort(portName);
 
         CodeGeneratorHelper sourceHelper = this;
 
@@ -702,20 +704,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             // Find the source helper
             /*
-            TypedIOPort sinkPort = port;
-            int sourceChannel = new Integer(channel).intValue();
-            port = (TypedIOPort) port.connectedPortList().get(sourceChannel);
-            portName = port.getName();
-            channel = "" + _getChannelIndex(sinkPort, sourceChannel, port);
-            sourceHelper = (CodeGeneratorHelper) _getHelper(port.getContainer());
-            */
+             TypedIOPort sinkPort = port;
+             int sourceChannel = new Integer(channel).intValue();
+             port = (TypedIOPort) port.connectedPortList().get(sourceChannel);
+             portName = port.getName();
+             channel = "" + _getChannelIndex(sinkPort, sourceChannel, port);
+             sourceHelper = (CodeGeneratorHelper) _getHelper(port.getContainer());
+             */
             // else if (port.isOutput()), that means THIS is the source helper.
-            
             int channelNumber = new Integer(channel).intValue();
             Receiver receiver = port.getReceivers()[channelNumber][0];
             Iterator sourcePorts = port.sourcePortList().iterator();
-            breakOutLabel:
-            while (sourcePorts.hasNext()) {
+            breakOutLabel: while (sourcePorts.hasNext()) {
                 IOPort sourcePort = (IOPort) sourcePorts.next();
                 Receiver[][] remoteReceivers = sourcePort.getRemoteReceivers();
                 for (int i = 0; i < remoteReceivers.length; i++) {
@@ -723,14 +723,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         if (remoteReceivers[i][j] == receiver) {
                             portName = sourcePort.getName();
                             channel = "" + i;
-                            sourceHelper = (CodeGeneratorHelper) 
-                                    _getHelper(sourcePort.getContainer());
+                            sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort
+                                    .getContainer());
                             break breakOutLabel;
                         }
                     }
                 }
             }
-            
+
         }
 
         String refName = _getReference(name);
@@ -1290,8 +1290,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         List sourcePorts = port.sourcePortList();
         for (int i = 0; i < sourcePorts.size(); i++) {
             TypedIOPort sourcePort = (TypedIOPort) sourcePorts.get(i);
-            if (port.getType() == sourcePort.getType() ||
-                    port.getType() != BaseType.STRING) {
+            if (port.getType() == sourcePort.getType()
+                    || port.getType() != BaseType.STRING) {
                 continue;
             }
             // FIXME: 1. inputPort.sourcePortList() returns a list 
@@ -1670,9 +1670,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (!channelAndOffset[1].equals("")) {
                 //result.append("[" + channelAndOffset[1] + "]");
                 result.insert(0, "Array_get(");
-                result.append(" ," + channelAndOffset[1] + ")" + 
-                        ".payload.");
-                Type elementType = ((ArrayType) ((Parameter) attribute).getType()).getElementType();
+                result.append(" ," + channelAndOffset[1] + ")" + ".payload.");
+                Type elementType = ((ArrayType) ((Parameter) attribute)
+                        .getType()).getElementType();
                 result.append(_getCodeGenTypeFromPtolemyType(elementType));
             }
 

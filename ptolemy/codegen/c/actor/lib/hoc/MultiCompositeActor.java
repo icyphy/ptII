@@ -29,7 +29,6 @@ package ptolemy.codegen.c.actor.lib.hoc;
 
 import ptolemy.codegen.c.actor.TypedCompositeActor;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// MultiCompositeActor
 
@@ -47,7 +46,8 @@ public class MultiCompositeActor extends TypedCompositeActor {
      *  with the given MultiCompositeActor actor.
      *  @param component The associated component.
      */
-    public MultiCompositeActor(ptolemy.actor.lib.hoc.MultiCompositeActor component) {
+    public MultiCompositeActor(
+            ptolemy.actor.lib.hoc.MultiCompositeActor component) {
         super(component);
     }
 }

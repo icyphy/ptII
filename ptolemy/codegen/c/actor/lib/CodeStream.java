@@ -140,8 +140,7 @@ public class CodeStream {
      * @exception IllegalActionException If 
      *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
      */
-    public void appendCodeBlock(String blockName) 
-    	throws IllegalActionException {
+    public void appendCodeBlock(String blockName) throws IllegalActionException {
         appendCodeBlock(blockName, new ArrayList(), false);
     }
 
@@ -157,8 +156,8 @@ public class CodeStream {
      * @exception IllegalActionException If 
      *  appendCodeBlock(String, ArrayList, boolean) throws the exception.
      */
-    public void appendCodeBlock(String blockName, boolean mayNotExist) 
-    	throws IllegalActionException {
+    public void appendCodeBlock(String blockName, boolean mayNotExist)
+            throws IllegalActionException {
         appendCodeBlock(blockName, new ArrayList(), mayNotExist);
     }
 
@@ -176,9 +175,9 @@ public class CodeStream {
      */
     public void appendCodeBlock(String blockName, ArrayList arguments)
             throws IllegalActionException {
-    	appendCodeBlock(blockName, arguments, false);
+        appendCodeBlock(blockName, arguments, false);
     }
-    
+
     /**
      * Append the specific code block with an array of arguments and
      * substitute each argument with the parameters of the code block in
@@ -191,8 +190,8 @@ public class CodeStream {
      *  the exception, or if the requested code block is required but cannot 
      *  be found, or if the numbers of arguments and parameters do not match.
      */
-    public void appendCodeBlock(String blockName, ArrayList arguments, 
-    		boolean mayNotExist) throws IllegalActionException {
+    public void appendCodeBlock(String blockName, ArrayList arguments,
+            boolean mayNotExist) throws IllegalActionException {
         // First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
@@ -204,48 +203,49 @@ public class CodeStream {
 
         ArrayList errors = new ArrayList();
         if (codeBlock == null) {
-        	errors.add("Cannot find code block: " +
-        					blockName + " in " + _filePath + ".");
+            errors.add("Cannot find code block: " + blockName + " in "
+                    + _filePath + ".");
         }
 
         ArrayList parameters = (ArrayList) _parameterTable.get(blockName);
 
         if (parameters == null) {
             if (arguments.size() != 0) {
-            	errors.add(blockName + " in " + 
-                		_filePath + " does not take any arguments.");
+                errors.add(blockName + " in " + _filePath
+                        + " does not take any arguments.");
             }
         } else {
             // Check if there are more parameters than arguments.
             if ((parameters.size() - arguments.size()) < 0) {
-            	errors.add(blockName + " in " + _filePath +
-            			" only takes " + parameters.size() + " arguments.");
+                errors.add(blockName + " in " + _filePath + " only takes "
+                        + parameters.size() + " arguments.");
             }
             // Check if there are more arguments than parameters.
             else if ((parameters.size() - arguments.size()) > 0) {
-                for (int i = arguments.size(); i < parameters.size(); i++)
-                {
-                	errors.add(blockName + " in " + _filePath +
-                			" expects parameter (" + parameters.get(i) + ").");
-            	}
+                for (int i = arguments.size(); i < parameters.size(); i++) {
+                    errors
+                            .add(blockName + " in " + _filePath
+                                    + " expects parameter ("
+                                    + parameters.get(i) + ").");
+                }
             }
         }
-	    
+
         if (errors.size() > 0) {
-        	if (mayNotExist) {
-        		return;
-        	} else {
-        		throw new IllegalActionException((String) errors.get(0));
-        	}
+            if (mayNotExist) {
+                return;
+            } else {
+                throw new IllegalActionException((String) errors.get(0));
+            }
         }
-        
+
         // substitute for each parameters
         for (int i = 0; i < arguments.size(); i++) {
             String replaceString = arguments.get(i).toString();
             try {
                 codeBlock = new StringBuffer(codeBlock.toString().replaceAll(
-                		_checkParameterName(parameters.get(i).toString()),
-                		replaceString));
+                        _checkParameterName(parameters.get(i).toString()),
+                        replaceString));
             } catch (IllegalArgumentException ex) {
                 throw new IllegalActionException(null, ex, blockName + " in "
                         + _filePath + " problems replacing \""
@@ -256,7 +256,7 @@ public class CodeStream {
 
         _stream.append(codeBlock);
     }
-    
+
     /**
      * Append multiple code blocks whose names match the given egular
      * expression.
@@ -265,8 +265,8 @@ public class CodeStream {
      *  the exception, or if the requested code block is required but cannot 
      *  be found, or if the numbers of arguments and parameters do not match.
      */
-    public void appendCodeBlocks(String nameExpression) 
-    	throws IllegalActionException {
+    public void appendCodeBlocks(String nameExpression)
+            throws IllegalActionException {
         // First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
@@ -276,11 +276,11 @@ public class CodeStream {
 
         Enumeration allBlockNames = _codeBlockTable.keys();
         while (allBlockNames.hasMoreElements()) {
-        	String name = (String) allBlockNames.nextElement();
-        	if (name.matches(nameExpression)) {
+            String name = (String) allBlockNames.nextElement();
+            if (name.matches(nameExpression)) {
                 _stream.append(_codeBlockTable.get(name));
-        	}
-        }        
+            }
+        }
     }
 
     /**
@@ -341,8 +341,7 @@ public class CodeStream {
      */
     public static void main(String[] args) throws IOException,
             IllegalActionException {
-        BufferedReader in = 
-        	new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("----------Testing-------------------------------");
 
         System.out.print("please input file path: ");
@@ -373,8 +372,8 @@ public class CodeStream {
      * @return The well-formed code block name after lexical checking.
      * @exception Thrown if the given name is not well-formed. 
      */
-    private static String _checkCodeBlockName(String name) 
-    	throws IllegalActionException {
+    private static String _checkCodeBlockName(String name)
+            throws IllegalActionException {
         // FIXME: extra lexical checking
         // e.g. Do we allow nested code block within code block name??
         // e.g. ...spaces??
@@ -394,17 +393,17 @@ public class CodeStream {
      * @return The well-formed parameter name after lexical checking.
      * @exception Thrown if the given name is not well-formed. 
      */
-    private static String _checkParameterName(String name) 
-    	throws IllegalActionException {
-    	if (!name.startsWith("$")) {
-    		throw new IllegalActionException (
-				"Parameter \"" + name + "\" is not well-formed.\n" +
-				"Parameter name for code block needs to starts with '$'");
-    	}
-    	name.matches("[a-zA-Z_0-9]");
-    	return '\\' + name;
+    private static String _checkParameterName(String name)
+            throws IllegalActionException {
+        if (!name.startsWith("$")) {
+            throw new IllegalActionException("Parameter \"" + name
+                    + "\" is not well-formed.\n"
+                    + "Parameter name for code block needs to starts with '$'");
+        }
+        name.matches("[a-zA-Z_0-9]");
+        return '\\' + name;
     }
-    
+
     /**
      * Read the helper .c file identified by the _filePath and construct the
      * code block table and parameter table.
@@ -412,8 +411,8 @@ public class CodeStream {
      * @exception IllegalActionException If an error occurs when parsing the
      *  helper .c file.
      */
-    private void _constructCodeTable(boolean mayNotExist) 
-    	throws IllegalActionException {
+    private void _constructCodeTable(boolean mayNotExist)
+            throws IllegalActionException {
         _codeBlockTable = new Hashtable();
         _parameterTable = new Hashtable();
 
@@ -441,12 +440,12 @@ public class CodeStream {
             throw ex;
         } catch (IOException ex) {
             if (reader == null) {
-            	if (mayNotExist) {
-            	} else {
+                if (mayNotExist) {
+                } else {
                     _codeBlockTable = null;
-	                throw new IllegalActionException(
-	                		null, ex, "Cannot open file: " + _filePath);
-            	}
+                    throw new IllegalActionException(null, ex,
+                            "Cannot open file: " + _filePath);
+                }
             } else {
                 _codeBlockTable = null;
                 throw new IllegalActionException(null, ex,
@@ -505,8 +504,7 @@ public class CodeStream {
                 endIndex));
 
         // Recursively parsing for nested code blocks
-        for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;)
-        {
+        for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
             // FIXME: do we include the nested code block into 
             // the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
@@ -597,9 +595,9 @@ public class CodeStream {
             ArrayList parameterList = (ArrayList) _parameterTable.get(name);
 
             // keep parsing for extra parameters
-            for (int commaIndex = codeInFile.indexOf(",", _parseIndex); 
-            		commaIndex != -1 && (commaIndex < parameterEndIndex); 
-            		commaIndex = codeInFile.indexOf(",", commaIndex + 1)) {
+            for (int commaIndex = codeInFile.indexOf(",", _parseIndex); commaIndex != -1
+                    && (commaIndex < parameterEndIndex); commaIndex = codeInFile
+                    .indexOf(",", commaIndex + 1)) {
                 String newParameter = codeInFile.substring(parameterIndex + 1,
                         commaIndex);
                 parameterList.add(newParameter.trim());

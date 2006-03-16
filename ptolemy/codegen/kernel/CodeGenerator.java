@@ -257,7 +257,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // for adding additional code into different sections.
         String sharedCode = generateSharedCode();
         String includeFiles = generateIncludeFiles();
-        String preinitializeCode = generatePreinitializeCode();      
+        String preinitializeCode = generatePreinitializeCode();
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
         String fireFunctionCode = null;
@@ -275,7 +275,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // The appending phase.
         code.append(includeFiles);
         code.append(sharedCode);
-        code.append(typeResolutionCode);      
+        code.append(typeResolutionCode);
         code.append(variableDeclareCode);
         code.append(preinitializeCode);
         if (!inline) {
@@ -545,16 +545,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         types.addAll(_primitiveTypes);
 
         /*
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
+         while (actors.hasNext()) {
+         Actor actor = (Actor) actors.next();
 
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+         CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
 
-            functions.addAll(helperObject._typeFuncUsed);
-            types.addAll(helperObject._newTypesUsed);
-        }
-        */
-        
+         functions.addAll(helperObject._typeFuncUsed);
+         types.addAll(helperObject._newTypesUsed);
+         }
+         */
+
         functions.addAll(_typeFuncUsed);
         types.addAll(_newTypesUsed);
         // The constructor of Array requires calling the convert function.  
@@ -680,37 +680,39 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append("\n\n");
         code.append(comment("Variable Declarations "
                 + getContainer().getFullName()));
-        
+
         // Generate variable declarations for modified variables.
         if (_modifiedVariables != null) {
             Iterator modifiedVariables = _modifiedVariables.iterator();
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();
 
-                code.append("static " 
-                        + CodeGeneratorHelper._generateType(parameter.getType())
-                        + " " + CodeGeneratorHelper.generateVariableName(parameter) 
+                code.append("static "
+                        + CodeGeneratorHelper
+                                ._generateType(parameter.getType()) + " "
+                        + CodeGeneratorHelper.generateVariableName(parameter)
                         + ";\n");
             }
         }
-        
+
         TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
 
         code.append(compositeActorHelper.generateVariableDeclaration());
         return code.toString();
     }
-    
+
     /** Generate variable initialization for the referenced parameters.
      *  @return code The generated code.
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
      */
-    public String generateVariableInitialization() throws IllegalActionException {
+    public String generateVariableInitialization()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append("\n\n");
         code.append(comment("Variable initialization "
                 + getContainer().getFullName()));
-        
+
         // Generate variable initialization for modified variables.
         if (_modifiedVariables != null) {
             Iterator modifiedVariables = _modifiedVariables.iterator();
@@ -720,8 +722,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 NamedObj container = parameter.getContainer();
                 CodeGeneratorHelper containerHelper = (CodeGeneratorHelper) _getHelper(container);
                 code.append(CodeGeneratorHelper.generateVariableName(parameter)
-                        + " = " 
-                        + containerHelper.getParameterValue(parameter.getName(), parameter.getContainer())
+                        + " = "
+                        + containerHelper.getParameterValue(
+                                parameter.getName(), parameter.getContainer())
                         + ";\n");
             }
         }
@@ -1010,14 +1013,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  changed during execution.
      */
     protected Set _modifiedVariables;
-    
+
     /** A HashSet that contains all codegen types referenced in the model.
      * When the codegen kernel processes a $new() macro, it would add the
      * codegen type to this set. Codegen types are supported by the code
      * generator package. (e.g. Int, Double, Array, and etc.)
      */
     protected HashSet _newTypesUsed = new HashSet();
-    
+
     /** 
      * A static list of all primitive types supported by the code generator. 
      */
@@ -1029,7 +1032,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  the type function to this set. 
      */
     protected HashSet _typeFuncUsed = new HashSet();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1041,7 +1044,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     private static String _concatenateElements(Set set) {
         StringBuffer buffer = new StringBuffer();
-        Iterator sets = set.iterator(); 
+        Iterator sets = set.iterator();
         while (sets.hasNext()) {
             if (buffer.length() > 0) {
                 buffer.append(" ");
@@ -1062,17 +1065,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (((BooleanToken) compile.getToken()).booleanValue()) {
             commands.add("make -f " + _sanitizedModelName + ".mk");
         }
-        
+
         if (((BooleanToken) compile.getToken()).booleanValue()) {
             String command = codeDirectory.stringValue()
-                + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
-                           .stringValue().endsWith("\\")) ? "/" : "")
-                + _sanitizedModelName;
+                    + ((!codeDirectory.stringValue().endsWith("/") && !codeDirectory
+                            .stringValue().endsWith("\\")) ? "/" : "")
+                    + _sanitizedModelName;
 
             commands.add("\"" + command.replace('\\', '/') + "\"");
         }
-        
-        
+
         if (commands.size() == 0) {
             return -1;
         }
@@ -1228,7 +1230,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     + codeDirectory.stringValue() + "\" directory.");
         }
 
-
         Map substituteMap;
         try {
             // Add substitutions for all the parameter.
@@ -1236,8 +1237,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // the value of the generatorPackage.
             substituteMap = Copernicus.newMap(this);
             substituteMap.put("@modelName@", _sanitizedModelName);
-            substituteMap.put("@PTCGIncludes@",
-                    _concatenateElements(_includes));
+            substituteMap
+                    .put("@PTCGIncludes@", _concatenateElements(_includes));
             substituteMap.put("@PTCGLibraries@",
                     _concatenateElements(_libraries));
 

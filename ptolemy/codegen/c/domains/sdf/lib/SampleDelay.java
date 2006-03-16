@@ -76,8 +76,8 @@ public class SampleDelay extends CCodeGeneratorHelper {
         int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
 
         for (int i = 0; i < length; i++) {
-            _codeStream.append("$ref(output, " + i + ") = " + "$val(initialOutputs, "
-                    + i + ");\n");
+            _codeStream.append("$ref(output, " + i + ") = "
+                    + "$val(initialOutputs, " + i + ");\n");
 
             /*
              for (int j = 0; j < sinkChannels.size(); j++) {

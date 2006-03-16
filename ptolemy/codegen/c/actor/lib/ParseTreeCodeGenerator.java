@@ -229,7 +229,6 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
             Type valueType = tokens[i].getType();
 
-            
             if (valueType == BaseType.BOOLEAN) {
                 _fireCode.insert(nextIndex, "$new(Boolean(");
                 _fireCode.append("))");
@@ -283,7 +282,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-        
+
         _fireCode.append("(");
 
         //ptolemy.data.Token result = tokens[0];
@@ -832,8 +831,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
-                            .createSequence(tokens[3 * i],
-                                    tokens[(3 * i) + 1],
+                            .createSequence(tokens[3 * i], tokens[(3 * i) + 1],
                                     columnCount);
                     System.arraycopy(newTokens, 0, matrixTokens, columnCount
                             * i, columnCount);
@@ -1257,7 +1255,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             _evaluateChild(node, i);
         }
 
-       _fireCode.append(")");
+        _fireCode.append(")");
 
         _evaluatedChildToken = (result);
 

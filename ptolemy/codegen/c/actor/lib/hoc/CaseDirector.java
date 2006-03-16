@@ -68,19 +68,19 @@ public class CaseDirector extends Director {
      *   an actor throws it while generating fire code for the actor.
      */
     public String generateFireCode() throws IllegalActionException {
- 
+
         StringBuffer code = new StringBuffer();
-        
+
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
-        
-        ptolemy.actor.lib.hoc.Case container 
-                = (ptolemy.actor.lib.hoc.Case) getComponent().getContainer();
 
-        code.append("switch (" 
-                + CodeGeneratorHelper.generateVariableName(container.control) 
+        ptolemy.actor.lib.hoc.Case container = (ptolemy.actor.lib.hoc.Case) getComponent()
+                .getContainer();
+
+        code.append("switch ("
+                + CodeGeneratorHelper.generateVariableName(container.control)
                 + ") {\n");
-        
+
         Iterator refinements = container.deepEntityList().iterator();
         while (refinements.hasNext()) {
             CompositeActor refinement = (CompositeActor) refinements.next();
@@ -89,19 +89,20 @@ public class CaseDirector extends Director {
                 code.append("case ");
             }
             code.append(refinementName + ":\n");
-            
+
             CodeGeneratorHelper refinementHelper = (CodeGeneratorHelper) _getHelper(refinement);
 
             // fire the refinement
             if (inline) {
                 code.append(refinementHelper.generateFireCode());
             } else {
-                code.append(CodeGeneratorHelper.generateName(refinement) + "();\n");
+                code.append(CodeGeneratorHelper.generateName(refinement)
+                        + "();\n");
             }
-                
-            code.append("break;\n");           
+
+            code.append("break;\n");
         }
-               
+
         code.append("}");
 
         return code.toString();
