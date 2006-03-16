@@ -189,6 +189,7 @@ public class UnionType extends StructuredType {
 
     /** Return the type of the specified label. If this type does not
      *  contain the specified label, return null.
+     *  @param label The specified label.
      *  @return a Type.
      */
     public Type get(String label) {
@@ -209,6 +210,7 @@ public class UnionType extends StructuredType {
 
     /** Return the InequalityTerm representing the type of the specified
      *  label.
+     *  @param label The specified label.
      *  @return An InequalityTerm.
      *  @see ptolemy.graph.InequalityTerm
      */

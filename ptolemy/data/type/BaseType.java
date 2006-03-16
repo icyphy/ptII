@@ -96,6 +96,7 @@ public abstract class BaseType implements Type, Serializable {
 
     /** Return an instance of this class that corresponds to tokens
      *  of a class with the given name, or null if none exists.
+     *  @param The name of the class.
      *  @return An instance of BaseType.
      */
     public static Type forClassName(String className) {
@@ -104,6 +105,7 @@ public abstract class BaseType implements Type, Serializable {
 
     /** Return an instance of this class with the specified name,
      *  or null if none exists.
+     *  @param The name of the class.
      *  @return An instance of BaseType.
      */
     public static Type forName(String name) {
@@ -226,9 +228,10 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The bottom element of the data type lattice. */
     public static final UnknownType UNKNOWN = new UnknownType();
 
-    /** The boolean data type */
+    /** The boolean data type. */
     public static class BooleanType extends BaseType {
         private BooleanType() {
             super(BooleanToken.class, "boolean");
@@ -243,11 +246,12 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The boolean data type. */
     public static final BooleanType BOOLEAN = new BooleanType();
 
     public static final UnsizedMatrixType.BooleanMatrixType BOOLEAN_MATRIX = new UnsizedMatrixType.BooleanMatrixType();
 
-    /** The unsigned byte data type */
+    /** The unsigned byte data type. */
     public static class UnsignedByteType extends BaseType {
         private UnsignedByteType() {
             super(UnsignedByteToken.class, "unsignedByte");
@@ -262,9 +266,10 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The unsigned byte data type. */
     public static final UnsignedByteType UNSIGNED_BYTE = new UnsignedByteType();
 
-    /** The complex data type */
+    /** The complex data type. */
     public static class ComplexType extends BaseType {
         private ComplexType() {
             super(ComplexToken.class, "complex");
@@ -279,11 +284,13 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The complex data type. */
     public static final ComplexType COMPLEX = new ComplexType();
 
+    /** The complex matrix data type. */
     public static final UnsizedMatrixType.ComplexMatrixType COMPLEX_MATRIX = new UnsizedMatrixType.ComplexMatrixType();
 
-    /** The double data type */
+    /** The double data type. */
     public static class DoubleType extends BaseType {
         private DoubleType() {
             super(DoubleToken.class, "double");
@@ -298,12 +305,13 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The double data type. */
     public static final DoubleType DOUBLE = new DoubleType();
 
+    /** The double matrix data type. */
     public static final UnsizedMatrixType.DoubleMatrixType DOUBLE_MATRIX = new UnsizedMatrixType.DoubleMatrixType();
 
     /** The fix data type */
-
     //   public static class FixType extends BaseType {
     //         private FixType() {
     //             super(FixToken.class, "fixedpoint");
@@ -312,11 +320,13 @@ public abstract class BaseType implements Type, Serializable {
     //             return FixToken.convert(t);
     //         }
     //     }
+    /** The fix data type. */
     public static final FixType FIX = FixType.BOTTOM; //new FixType();
 
+    /** The fix matrix data type */
     public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX = new UnsizedMatrixType.FixMatrixType();
 
-    /** The integer data type */
+    /** The integer data type. */
     public static class IntType extends BaseType {
         private IntType() {
             super(IntToken.class, "int");
@@ -331,11 +341,13 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The integer data type. */
     public static final IntType INT = new IntType();
 
+    /** The integer matrix data type. */
     public static final UnsizedMatrixType.IntMatrixType INT_MATRIX = new UnsizedMatrixType.IntMatrixType();
 
-    /** The long integer data type */
+    /** The long integer data type. */
     public static class LongType extends BaseType {
         private LongType() {
             super(LongToken.class, "long");
@@ -350,14 +362,16 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The long integer data type. */
     public static final LongType LONG = new LongType();
 
+    /** The long integer matrix data type. */
     public static final UnsizedMatrixType.LongMatrixType LONG_MATRIX = new UnsizedMatrixType.LongMatrixType();
 
     /** The matrix data type: The least upper bound of all the matrix types. */
     public static final TopMatrixType MATRIX = TopMatrixType.getInstance();
 
-    /** The numerical data type */
+    /** The numerical data type. */
     public static class NumericalType extends BaseType {
         private NumericalType() {
             super(Numerical.class, "numerical");
@@ -375,9 +389,10 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The numerical data type. */
     public static final NumericalType NUMERICAL = new NumericalType();
 
-    /** The object data type */
+    /** The object data type. */
     public static class ObjectType extends BaseType {
         private ObjectType() {
             super(ObjectToken.class, "object");
@@ -392,9 +407,10 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The object data type. */
     public static final ObjectType OBJECT = new ObjectType();
 
-    /** The XmlToken data type */
+    /** The XmlToken data type. */
     public static class XmlTokenType extends BaseType {
         private XmlTokenType() {
             super(XMLToken.class, "xmltoken");
@@ -409,6 +425,7 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The XmlToken data type. */
     public static final XmlTokenType XMLTOKEN = new XmlTokenType();
 
     /** The scalar data type: The least upper bound of all the scalar types. */
@@ -427,9 +444,10 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The scalar data type: The least upper bound of all the scalar types. */
     public static final ScalarType SCALAR = new ScalarType();
 
-    /** The string data type */
+    /** The string data type. */
     public static class StringType extends BaseType {
         private StringType() {
             super(StringToken.class, "string");
@@ -444,6 +462,7 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The string data type. */
     public static final StringType STRING = new StringType();
 
     /** The general data type: The top of the lattice.  */
@@ -466,9 +485,10 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The general data type: The top of the lattice.  */
     public static final GeneralType GENERAL = new GeneralType();
 
-    /** The event data type */
+    /** The event data type. */
     public static class EventType extends BaseType {
         private EventType() {
             super(EventToken.class, "event");
@@ -488,9 +508,10 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The event data type. */
     public static final EventType EVENT = new EventType();
 
-    /** The petite data type */
+    /** The petite data type. */
     public static class PetiteType extends BaseType {
         private PetiteType() {
             super(PetiteToken.class, "petite");
@@ -505,12 +526,15 @@ public abstract class BaseType implements Type, Serializable {
         }
     }
 
+    /** The petite data type. */
     public static final PetiteType PETITE = new PetiteType();
 
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////
-    // Add entries in this class to index the given name and class to
-    // the given type.
+
+    /** Add entries in this class to index the given name and class to
+     *  the given type.
+     */ 
     static void _addType(Type type, String name, Class theClass) {
         // Because the private variables are below the public variables
         // that call this initializer,
@@ -529,7 +553,8 @@ public abstract class BaseType implements Type, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private constructor                  ////
-    // The constructor is private to make a type safe enumeration.
+
+    /** The constructor is private to make a type safe enumeration. */
     private BaseType(Class c, String name) {
         _tokenClass = c;
         _name = name;
@@ -538,13 +563,14 @@ public abstract class BaseType implements Type, Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     private Class _tokenClass;
 
     private String _name;
 
-    // A map from type name to the type for all base types.
+    /** A map from type name to the type for all base types. */
     private static Map _nameToType;
 
-    // A map from class name to the type for all base types.
+    /** A map from class name to the type for all base types. */
     private static Map _classNameToType;
 }
