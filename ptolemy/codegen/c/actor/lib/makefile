@@ -33,7 +33,7 @@
 
 ME =		ptolemy/codegen/c/actor/lib
 
-DIRS =		comm conversions gui io javasound logic string test
+DIRS =		comm conversions gui hoc io javasound logic string test
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -53,6 +53,7 @@ PTCLASSALLJARS = \
 	comm/comm.jar \
 	conversions/conversions.jar \
 	gui/gui.jar \
+	hoc/hoc.jar \
 	io/io.jar \
 	javasound/javasound.jar \
 	logic/logic.jar \
@@ -64,50 +65,86 @@ JSRCS = \
 	Accumulator.java \
 	AddSubtract.java \
 	Average.java \
+	Bernoulli.java \
 	CodeStream.java \
+	Commutator.java \
 	Const.java \
 	Counter.java \
 	Differential.java \
+	Discard.java \
+	Distributor.java \
+	ElementsToArray.java \
+	Expression.java \
+	Gaussian.java \
+	GradientAdaptiveLattice.java \
 	Limiter.java \
+	LookupTable.java \
+	Maximum.java \
 	Minimum.java \
+	MonitorValue.java \
 	MultiplyDivide.java \
+	ParseTreeCodeGenerator.java \
+	Pulse.java \
+	Quantizer.java \
 	Ramp.java \
+	RandomSource.java \
 	Remainder.java \
 	Scale.java \
 	Sequence.java \
+	StringConst.java \
 	Test.java \
 	TrigFunction.java \
-	UnaryMathFunction.java
+	UnaryMathFunction.java \
+	Uniform.java
 
 OTHER_FILES_TO_BE_JARED = \
 	AbsoluteValue.c \
 	Accumulator.c \
+	AddSubtract.c \
 	Average.c \
+	Bernoulli.c \
+	Commutator.c \
 	Const.c \
 	Counter.c \
 	Differential.c \
+	Distributor.c \
+	ElementsToArray.c \
+	ElementsToArray_new.c \
+	Expression.c \
+	Gaussian.c \
+	GradientAdaptiveLattice.c \
 	Limiter.c \
+	LookupTable.c \
+	Maximum.c \
 	Minimum.c \
+	MonitorValue.c \
+	MultiplyDivide.c \
+	Pulse.c \
+	Quantizer.c \
 	Ramp.c \
+	RandomSource.c \
 	Remainder.c \
 	Scale.c \
 	Sequence.c \
+	StringConst.c \
 	Test.c \
 	TrigFunction.c \
-	UnaryMathFunction.c
+	UnaryMathFunction.c \
+	Uniform.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = comm conversions gui io javasound logic test
+MISC_FILES = comm conversions gui hoc io javasound logic string test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	'Expression$$VariableScope.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
