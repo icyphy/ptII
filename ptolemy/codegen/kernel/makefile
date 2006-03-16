@@ -57,6 +57,7 @@ JSRCS = \
 	CCodeGeneratorHelper.java \
 	CodeGenerator.java \
 	CodeGeneratorHelper.java \
+	CodeStream.java \
 	ComponentCodeGenerator.java \
 	Director.java \
 	StaticSchedulingCodeGenerator.java
