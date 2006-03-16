@@ -35,7 +35,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.Gamma;
 
-import com.sun.tools.javac.v8.tree.Tree.If;
 
 //////////////////////////////////////////////////////////////////////////
 //// Gamma
