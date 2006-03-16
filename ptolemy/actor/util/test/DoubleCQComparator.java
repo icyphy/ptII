@@ -88,8 +88,6 @@ public class DoubleCQComparator implements CQComparator {
      *  If the arguments are not instances of Double, then a
      *  ClassCastException will be thrown.
      *  @param entry The entry.
-     *  @param zeroReference The zero reference.
-     *  @param binWidth The width of the bin.
      *  @return The virtual bin number for the entry, according to the
      *   zero reference and the bin width.
      *  @exception ClassCastException If the arguments are not instances of

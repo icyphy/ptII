@@ -923,7 +923,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  classes if the director is not compatible.
      *  @exception NameDuplicationException If an attribute already exists
      *  in this container with the same name as the given director.
-     *  @see #getDirector();
+     *  @see #getDirector()
      */
     public void setDirector(Director director) throws IllegalActionException,
             NameDuplicationException {

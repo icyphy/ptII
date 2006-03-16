@@ -86,7 +86,8 @@ public class Case extends MultiCompositeActor {
         control.setExpression("true");
         ParameterPort port = control.getPort();
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(port,
+                "_cardinal");
         controlCardinal.setExpression("SOUTH");
 
         // Create the default refinement.
@@ -122,7 +123,8 @@ public class Case extends MultiCompositeActor {
         return newObject;
     }
     
-    /** Return the current refinement, or null if prefire() has not yet been invoked.
+    /** Return the current refinement, or null if prefire() has not
+     *  yet been invoked.
      *  @return The current refinement.
      */
     public Refinement getCurrentRefinement() {
@@ -168,16 +170,19 @@ public class Case extends MultiCompositeActor {
     }
 
     /** Create a new refinement with the specified name.
+     *  @param name The name of the refinement.
      *  @return The new refinement.
-     *  @throws IllegalActionException If the refinement cannot be created.
-     *  @throws NameDuplicationException If a refinement already exists with this name.
+     *  @exception IllegalActionException If the refinement cannot be created.
+     *  @exception NameDuplicationException If a refinement already
+     *  exists with this name.
      */
     public Refinement newRefinement(String name)
             throws IllegalActionException, NameDuplicationException {
         return new Refinement(this, name);
     }
 
-    /** Return the class name for refinements that this Case actor expects to contain.
+    /** Return the class name for refinements that this Case actor
+     *  expects to contain.
      *  @return The string "ptolemy.actor.lib.hoc.Refinement".
      */
     public String refinementClassName() {
@@ -208,11 +213,13 @@ public class Case extends MultiCompositeActor {
     }
     
     /** Create a director. This base class creates an instance of CaseDirector.
-     *  @throws IllegalActionException If the director cannot be created.
-     *  @throws NameDuplicationException If there is already an attribute with
-     *   the name "_director".
+     *  @return The created director.
+     *  @exception IllegalActionException If the director cannot be created.
+     *  @exception NameDuplicationException If there is already an
+     *  attribute with the name "_director".
      */
-    protected CaseDirector _createDirector() throws IllegalActionException, NameDuplicationException {
+    protected CaseDirector _createDirector()
+            throws IllegalActionException, NameDuplicationException {
         return new CaseDirector(this, "_director");        
     }
 

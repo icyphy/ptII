@@ -143,6 +143,7 @@ public class DFUtilities {
      *  @param name The name of the variable.
      *  @return The variable with the specified name in the given port.
      *  @exception IllegalActionException Not thrown in this method.
+     *  @see #setRateVariable(Port, String)
      */
     public static Variable getRateVariable(Port port, String name) {
         Variable parameter = (Variable) port.getAttribute(name);
@@ -390,6 +391,7 @@ public class DFUtilities {
      *  @param value The value.
      *  @exception IllegalActionException If a new parameter can not be
      *  created for the given port, or the given value is not an acceptable.
+     *  @see #setRateVariable(Port, String)
      */
     public static void setRateVariable(Port port, String name, int value)
             throws IllegalActionException {

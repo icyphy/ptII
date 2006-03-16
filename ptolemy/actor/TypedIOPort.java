@@ -305,7 +305,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  to the type returned by getType(). If the token is already
      *  of this type, then simply return the specified token.
      *  @param token The token to convert.
-     *  @param token The converted token.
+     *  @return The converted token.
      *  @exception IllegalActionException If the conversion is
      *   invalid.
      */
