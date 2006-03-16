@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.c.actor.lib.javasound;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -71,12 +72,13 @@ public class AudioReader extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.javasound.AudioReader actor = 
             (ptolemy.actor.lib.javasound.AudioReader) getComponent();
-        String fileNameString = actor.fileOrURL.getExpression();
-        fileNameString = StringUtilities.substitute(fileNameString, "file:/", "");
+        String fileNameString;
         try {
-            fileNameString = FileUtilities.nameToFile(
-                    fileNameString, null).getCanonicalPath();
-            fileNameString = fileNameString.replace('\\', '/');
+            // Handle $CLASSPATH, return a file name with forward slashes.
+            fileNameString = actor.fileOrURL.asURL().getPath();
+            // Under Windows, convert /C:/foo/bar to C:/foo/bar
+            fileNameString =
+                new File(fileNameString).getCanonicalPath().replace('\\', '/');
         } catch (IOException e) {
             throw new IllegalActionException("Cannot find file: "
                     + actor.fileOrURL.getExpression());
