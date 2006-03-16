@@ -34,7 +34,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
@@ -69,6 +71,10 @@ public class AudioReader extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
+
+        // Add includes and libraries to the makefile
+        _codeGenerator.addInclude("-I/usr/local/include/SDL");
+        _codeGenerator.addLibrary("-L/usr/local/lib");
 
         ptolemy.actor.lib.javasound.AudioReader actor = 
             (ptolemy.actor.lib.javasound.AudioReader) getComponent();
