@@ -52,8 +52,6 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
-import com.sun.tools.javac.v8.tree.Tree.If;
-
 //////////////////////////////////////////////////////////////////////////
 //// HTMLAbout
 
