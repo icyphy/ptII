@@ -691,7 +691,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         IOPort port = (IOPort)((Entity)_component).getPort(portName);
 
         CodeGeneratorHelper sourceHelper = this;
-        if (port != null && port.isInput()) {
+
+        // Note that if the width is 0, then we have no connection to
+        // the port but the port might be a PortParameter, in which
+        // case we want the Parameter.
+        // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
+        // tests this.
+        if (port != null && port.isInput() && port.getWidth() > 0) {
             isInputPort = true;
 
             // Find the source helper
@@ -1573,7 +1579,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 return result.toString();
             }
 
-            if ((port.isInput() && !forComposite)
+            // Note that if the width is 0, then we have no connection to
+            // the port but the port might be a PortParameter, in which
+            // case we want the Parameter.
+            // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
+            // tests this.
+
+            if ((port.isInput() && !forComposite && port.getWidth() > 0)
                     || (port.isOutput() && forComposite)) {
                 result.append(generateName(port));
 
