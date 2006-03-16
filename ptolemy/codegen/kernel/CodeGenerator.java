@@ -181,6 +181,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add an include command line argument the compile command.
+     *  @param libraryCommand  The library command, for example
+     *  "-L/usr/local/lib".
+     */
+    public void addInclude(String includeCommand) {
+        _includes.add(includeCommand);
+    }
+
+    /** Add a library command line argument the compile command.
+     *  @param libraryCommand  The library command, for example
+     *  "-L/usr/local/lib".
+     */
+    public void addLibrary(String libraryCommand) {
+        _libraries.add(libraryCommand);
+    }
+
     /** Return a formatted comment containing the
      *  specified string. In this base class, the
      *  comments is a C-style comment, which begins with
@@ -1017,6 +1033,24 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Given a Set of Strings, return a string where each element of the
+     *  Set is separated by a space.
+     *  @param set The Set of Strings.
+     *  @return A String that contains each element of the Set separated by
+     *  a space.
+     */
+    private static String _concatenateElements(Set set) {
+        StringBuffer buffer = new StringBuffer();
+        Iterator sets = set.iterator(); 
+        while (sets.hasNext()) {
+            if (buffer.length() > 0) {
+                buffer.append(" ");
+            }
+            buffer.append((String) sets.next());
+        }
+        return buffer.toString();
+    }
+
     /** Execute the compile and run commands in the
      *  <i>codeDirectory</i> directory.
      *  @return The return value of the last subprocess that was executed
@@ -1142,6 +1176,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  parameter, with a file name that is a sanitized version of the
      *  model name, and a ".mk" extension.  Thus, for a model named "Foo",
      *  we might generate a makefile in "$HOME/codegen/Foo.mk".
+     *
+     *  <p>The following variables are substituted
+     *  <dd>
+     *  <dt><code>@modelName@</code>
+     *  <dd>The sanitized model name, created by invoking
+     *  {@link ptolemy.util.StringUtilities#sanitizeName(String)} 
+     *  on the model name.
+     *  <dt><code>@PTCGIncludes@</code>
+     *  <dd>The elements of the set of include command arguments that
+     *  were added by calling {@link #addInclude(String)}, where each
+     *  element is separated by a space.
+     *  <dt><code>@PTCGLibraries@</code>
+     *  <dd>The elements of the set of library command arguments that
+     *  were added by calling {@link #addLibrary(String)}, where each
+     *  element is separated by a space.
+     *  </dl>
 
      *  @exception IllegalActionException  If there is a problem reading
      *  a parameter, if there is a problem creating the codeDirectory directory
@@ -1178,6 +1228,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     + codeDirectory.stringValue() + "\" directory.");
         }
 
+
         Map substituteMap;
         try {
             // Add substitutions for all the parameter.
@@ -1185,6 +1236,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // the value of the generatorPackage.
             substituteMap = Copernicus.newMap(this);
             substituteMap.put("@modelName@", _sanitizedModelName);
+            substituteMap.put("@PTCGIncludes@",
+                    _concatenateElements(_includes));
+            substituteMap.put("@PTCGLibraries@",
+                    _concatenateElements(_libraries));
+
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(this, ex,
                     "Problem generating substitution map from " + _model);
@@ -1239,6 +1295,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  with the actors.
      */
     private HashMap _helperStore = new HashMap();
+
+    /** Set of include command line arguments where each element is 
+     *  a string, for example "-I/usr/local/include".
+     */
+    private Set _includes = new HashSet();
+
+    /** Set of library command line arguments where each element is 
+     *  a string, for example "-L/usr/local/lib".
+     */
+    private Set _libraries = new HashSet();
 
     private ExecuteCommands _executeCommands;
 
