@@ -1,4 +1,5 @@
 /***sharedBlock***/
+    /* The audio actors uses SDL from http://www.libsdl.org */
     struct $actorClass(soundBuffer) {
         SDL_AudioSpec spec;
         Uint8   *sound;             /* Pointer to wave data */
@@ -12,7 +13,7 @@
     unsigned int $actorSymbol(bitsPerSample);     
 /**/
 
-/*** initBlock(<arg>) ***/
+/*** initBlock($fileName) ***/
     $actorSymbol(wave).soundPosition = 0;
     
     /* Load the SDL library */
@@ -21,8 +22,8 @@
         exit(1);
     }
 
-    if ( SDL_LoadWAV("<arg>", &$actorSymbol(wave).spec, &$actorSymbol(wave).sound, &$actorSymbol(wave).soundLength) == NULL ) {
-        fprintf(stderr, "Couldn't load <arg>: %s\n", SDL_GetError());
+    if ( SDL_LoadWAV("$fileName", &$actorSymbol(wave).spec, &$actorSymbol(wave).sound, &$actorSymbol(wave).soundLength) == NULL ) {
+        fprintf(stderr, "Couldn't load $fileName: %s\n", SDL_GetError());
         exit(1);
     }
     if ($actorSymbol(wave).spec.format == AUDIO_U8 || $actorSymbol(wave).spec.format == AUDIO_S8) {
