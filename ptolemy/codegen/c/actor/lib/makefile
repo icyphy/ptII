@@ -66,7 +66,6 @@ JSRCS = \
 	AddSubtract.java \
 	Average.java \
 	Bernoulli.java \
-	CodeStream.java \
 	Commutator.java \
 	Const.java \
 	Counter.java \

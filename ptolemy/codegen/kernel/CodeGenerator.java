@@ -47,7 +47,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.data.BooleanToken;

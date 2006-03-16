@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
