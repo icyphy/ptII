@@ -47,6 +47,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -224,17 +225,18 @@ public class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a static analysis to this manager. A static analysis is...
-     *  FIXME: Currently a static analysis is simply an object that
-     *  is recorded in a hash table and cleared at the end of preinitialize,
-     *  with no semantics associated with that object.  The intent is
-     *  for that object to serve as a repository for static analysis
-     *  results, but clearing it and the end of preinitialize isn't
-     *  quite right. The idea is that it is cleared at a point when
-     *  the analysis has to be redone after that point. But doing
-     *  this at the end of preinitialize means this won't work with
-     *  models that mutate either during preinitialize() (as in higher-
-     *  order actors) or during execution.
+    /** Add a static analysis to this manager. A static analysis is
+     *  simply an object that is recorded in a hash table and cleared
+     *  at the end of preinitialize(), with no semantics associated
+     *  with that object.  The intent is for that object to serve as a
+     *  repository for static analysis results, but clearing it and
+     *  the end of preinitialize isn't quite right. The idea is that
+     *  it is cleared at a point when the analysis has to be redone
+     *  after that point. But doing this at the end of preinitialize
+     *  means this won't work with models that mutate either during
+     *  preinitialize() (as in higher- order actors) or during
+     *  execution.
+     *
      *  @param name The name of the analysis.
      *  @param analysis The analysis to record.
      *  @see #getAnalysis(String)
@@ -640,9 +642,11 @@ public class Manager extends NamedObj implements Runnable {
         Thread thread = new Thread("Error reporting thread") {
             public void run() {
                 synchronized (Manager.this) {
-                    // We use Throwables instead of Exceptions so that we can catch
-                    // Errors like java.lang.UnsatisfiedLink.
-                    String errorMessage = shortDescription(throwable)
+                    // We use Throwables instead of Exceptions so that
+                    // we can catch Errors like
+                    // java.lang.UnsatisfiedLink.
+                    String errorMessage = 
+                        MessageHandler.shortDescription(throwable)
                             + " occurred: " + throwable.getClass() + "("
                             + throwable.getMessage() + ")";
                     _debug("-- Manager notifying listeners of exception: "
@@ -985,21 +989,10 @@ public class Manager extends NamedObj implements Runnable {
      *  @return If the throwable is an Exception, return "Exception",
      *  if it is an Error, return "Error", if it is a Throwable, return
      *  "Throwable".
+     *  @deprecated Instead ptolemy.util.MessageHandler.shortDescription()
      */
     public static String shortDescription(Throwable throwable) {
-        // FIXME: This code is a duplicate of MessageHandler.shortDescription()
-        // but we don't want to import ptolemy.actor.gui.MessageHandler here.
-        String throwableType = null;
-
-        if (throwable instanceof Exception) {
-            throwableType = "Exception";
-        } else if (throwable instanceof Error) {
-            throwableType = "Error";
-        } else {
-            throwableType = "Throwable";
-        }
-
-        return throwableType;
+        return MessageHandler.shortDescription(throwable);
     }
 
     /** Start an execution in another thread and return.  Any exceptions
