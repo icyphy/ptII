@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 100.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={169, 100, 833, 469}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 890, 614}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[618, 351]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[675, 496]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.0, 175.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{337.5, 248.0}">
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
@@ -53,16 +53,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 235.0]">
         </property>
     </entity>
-    <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
-        <property name="CommutatorIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {46, 101, 815, 516}, maximized = false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 315.0]">
-        </property>
-    </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="{1, 2}">
         </property>
@@ -75,23 +65,33 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 315.0]">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23}">
+    <entity name="Commutator" class="ptolemy.actor.lib.Commutator">
+        <property name="CommutatorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {46, 101, 815, 516}, maximized = false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
         </property>
-        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 315.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 315.0]">
         </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0&quot;, &quot;1.111&quot;, &quot;\&quot;abc\&quot;&quot;, &quot;{1, 2}&quot;, &quot;1&quot;, &quot;1.111&quot;, &quot;\&quot;abc\&quot;&quot;, &quot;{1, 2}&quot;, &quot;2&quot;, &quot;1.111&quot;, &quot;\&quot;abc\&quot;&quot;, &quot;{1, 2}&quot;}">
         </property>
-    </relation>
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 315.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
@@ -99,18 +99,28 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="StringConst.output" relation="relation3"/>
     <link port="Const.output" relation="relation2"/>
+    <link port="Expression.output" relation="relation5"/>
     <link port="Commutator.input" relation="relation"/>
     <link port="Commutator.input" relation="relation2"/>
     <link port="Commutator.input" relation="relation3"/>
     <link port="Commutator.input" relation="relation5"/>
     <link port="Commutator.output" relation="relation4"/>
-    <link port="Expression.output" relation="relation5"/>
-    <link port="Test.input" relation="relation4"/>
+    <link port="TokenToExpression.input" relation="relation4"/>
+    <link port="TokenToExpression.output" relation="relation6"/>
+    <link port="Test.input" relation="relation6"/>
 </entity>
