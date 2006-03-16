@@ -37,7 +37,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDynamicActor;
-import ptolemy.domains.ct.kernel.CTGeneralDirector;
 import ptolemy.domains.ct.kernel.CTStatefulActor;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.kernel.CompositeEntity;
@@ -322,16 +321,13 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  parameter does not contain a valid token.
      */
     public void initialize() throws IllegalActionException {
-        HSDirector dir = (HSDirector) getDirector();
+        HSDirector director = (HSDirector) getDirector();
 
-        if (dir == null) {
+        if (director == null) {
             throw new IllegalActionException(this, " no director available");
-        } else if (!(dir instanceof CTGeneralDirector)) {
-            throw new IllegalActionException("Integrators can only be "
-                    + "used in CT models.");
-        }
+        } 
 
-        ODESolver solver = dir.getCurrentODESolver();
+        ODESolver solver = director.getCurrentODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this, " no ODE solver available");

@@ -518,7 +518,7 @@ public class ContDirector extends StaticSchedulingDirector
     public boolean prefire() throws IllegalActionException {
         // NOTE: We will also treat dynamic actors as waveform generators.
         // This is crucial to implement Dirac function.
-        Schedule schedule = (Schedule) getScheduler().getSchedule();
+        Schedule schedule = getScheduler().getSchedule();
         Iterator actors = schedule.actorIterator();
         
         boolean ready = true; 

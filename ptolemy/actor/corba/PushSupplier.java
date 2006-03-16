@@ -205,22 +205,22 @@ public class PushSupplier extends Sink {
                             .narrow(ncRef.resolve(path));
                     _debug("after try to get remote consumer.");
 
-                    if (_remoteConsumer instanceof pushConsumer) {
+                    //if (_remoteConsumer instanceof pushConsumer) {
                         // FIXME: _remoteConsumer is always an
                         // instance of pushConsumer, so this will
                         // always break?
                         _debug("get remote consumer.");
                         break;
-                    }
+                    //}
 
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        _debug("thread is interrupted when trying to find"
-                                + "remote consumer");
-                    }
+                    //try {
+                    //    Thread.sleep(1000);
+                    //} catch (InterruptedException e) {
+                    //    _debug("thread is interrupted when trying to find"
+                    //            + "remote consumer");
+                    //}
                 } catch (Exception exp) {
-                    // ignor here and retry.
+                    // ignore here and retry.
                     _debug("failed to resolve the remote consumer. will try again.");
 
                     try {

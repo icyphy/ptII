@@ -106,7 +106,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
      */
     public final double getErrorTolerance() {
         CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
-        return ((CTGeneralDirector) executiveDirector).getErrorTolerance();
+        return executiveDirector.getErrorTolerance();
     }
     
     /** Return the executive CT director of this director, or null if

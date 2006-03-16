@@ -1083,7 +1083,7 @@ public class SootUtilities {
             SootClass class1 = ((RefType) type1).getSootClass();
             SootClass class2 = ((RefType) type2).getSootClass();
             return derivesFrom(class1, class2);
-        } else if (type1 instanceof Type && type2 instanceof RefType) {
+        } else if (/* type1 instanceof Type && */ type2 instanceof RefType) {
             Type elementType1 = ((ArrayType) type1).baseType;
             Type elementType2 = ((ArrayType) type2).baseType;
             return isSubtypeOf(elementType1, elementType2);

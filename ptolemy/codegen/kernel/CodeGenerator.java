@@ -527,7 +527,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment("Generate type resolution code for "
                 + getContainer().getFullName()));
 
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        //TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
 
         //Iterator actors = ((ptolemy.actor.CompositeActor) compositeActorHelper
         //        .getComponent()).deepEntityList().iterator();

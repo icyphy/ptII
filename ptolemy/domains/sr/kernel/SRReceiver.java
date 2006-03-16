@@ -27,7 +27,6 @@
  */
 package ptolemy.domains.sr.kernel;
 
-import ptolemy.domains.fp.kernel.FPDirector;
 import ptolemy.domains.fp.kernel.FPReceiver;
 
 //////////////////////////////////////////////////////////////////////////
@@ -50,6 +49,6 @@ public class SRReceiver extends FPReceiver {
      *  @param director The director of this receiver.
      */
     public SRReceiver(SRDirector director) {
-        super((FPDirector)director);
+        super(director);
     }
 }

@@ -225,15 +225,9 @@ public class ConversionUtilities {
             }
 
             returnValue = new ArrayToken(temp);
-        } else if (object instanceof Object) {
+        } else {
             // Package into an ObjectToken.
             returnValue = new ObjectToken(object);
-        } else {
-            // This should really never happen, since every class
-            // should be caught by "instanceof Object" above, but I
-            // don't like the dangling else if.
-            throw new InternalErrorException("object type not recognized: "
-                    + object);
         }
 
         return returnValue;
