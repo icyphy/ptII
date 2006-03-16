@@ -32,9 +32,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
-import com.sun.javadoc.*;
 
 import ptolemy.util.StringUtilities;
+
+import com.sun.javadoc.ClassDoc;
+import com.sun.javadoc.FieldDoc;
+import com.sun.javadoc.ProgramElementDoc;
+import com.sun.javadoc.RootDoc;
+import com.sun.javadoc.SeeTag;
+import com.sun.javadoc.Tag;
 
 /** Generate PtDoc output.
  *  See ptolemy/vergil/basic/DocML_1.dtd for the dtd. 

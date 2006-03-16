@@ -28,6 +28,7 @@
 package ptolemy.data;
 
 import java.util.HashSet;
+
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;

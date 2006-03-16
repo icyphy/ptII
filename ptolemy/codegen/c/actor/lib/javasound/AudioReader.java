@@ -34,11 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.StringUtilities;
 
 /**
  * A helper class for ptolemy.actor.lib.javasound.AudioReader.

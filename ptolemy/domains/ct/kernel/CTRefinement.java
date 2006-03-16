@@ -28,13 +28,10 @@
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.lib.hoc.Case;
 import ptolemy.actor.lib.hoc.Refinement;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTRefinement

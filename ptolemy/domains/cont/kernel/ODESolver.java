@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.sched.Schedule;
+import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;

@@ -32,8 +32,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Constants;

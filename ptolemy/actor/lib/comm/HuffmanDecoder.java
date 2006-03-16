@@ -38,6 +38,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+import com.sun.tools.javac.v8.tree.Tree.If;
+
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
 

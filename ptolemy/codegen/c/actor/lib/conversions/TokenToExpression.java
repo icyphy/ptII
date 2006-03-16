@@ -29,7 +29,6 @@
 package ptolemy.codegen.c.actor.lib.conversions;
 
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.conversions.TokenToExpression

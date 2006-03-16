@@ -41,6 +41,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.SignalProcessing;
 
+import com.sun.tools.javac.v8.tree.Tree.If;
+
 //////////////////////////////////////////////////////////////////////////
 //// DiscreteRandomSource
 

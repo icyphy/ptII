@@ -228,7 +228,7 @@ public class ColorFinder extends TypedAtomicActor {
 
     /** Convert a byte into an unsigned int */
     private int _bts(byte b) {
-        return (int) b & 0xFF;
+        return b & 0xFF;
     }
 
     /** Return the int representing the U band at this pixel*/

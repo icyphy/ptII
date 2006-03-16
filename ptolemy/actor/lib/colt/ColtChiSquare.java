@@ -35,6 +35,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import cern.jet.random.ChiSquare;
 
+import com.sun.tools.javac.v8.tree.Tree.If;
+
 //////////////////////////////////////////////////////////////////////////
 //// ChiSquare
 
