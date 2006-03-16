@@ -50,7 +50,6 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class ParseTreeWriter extends AbstractParseTreeVisitor {
     public void displayParseTree(ASTPtRootNode root) {
-        _prefix = "";
         _writer = new PrintWriter(System.out);
 
         try {
@@ -62,9 +61,7 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
 
     public String printParseTree(ASTPtRootNode root) {
-        _prefix = "";
-
-        StringWriter writer = new StringWriter();
+          StringWriter writer = new StringWriter();
         _writer = new PrintWriter(writer);
 
         try {
@@ -309,8 +306,6 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
             }
         }
     }
-
-    private String _prefix;
 
     private PrintWriter _writer = new PrintWriter(System.out);
 }
