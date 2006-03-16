@@ -235,6 +235,7 @@ public class Manager extends NamedObj implements Runnable {
      *  this at the end of preinitialize means this won't work with
      *  models that mutate either during preinitialize() (as in higher-
      *  order actors) or during execution.
+     *  @param name The name of the analysis.
      *  @param analysis The analysis to record.
      *  @see #getAnalysis(String)
      */
@@ -248,6 +249,7 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Add a listener to be notified when the model execution changes state.
      *  @param listener The listener.
+     *  @see #removeExecutionListener(ExecutionListener)
      */
     public void addExecutionListener(ExecutionListener listener) {
         if (listener == null) {
@@ -459,6 +461,8 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Get the analysis with the given name, or return null if no such
      *  analysis exists.
+     *  @param name The name of the analysis.
+     *  @return the analysis with the given name, or null.
      *  @see #addAnalysis(String, Object)
      */
     public Object getAnalysis(String name) {
@@ -702,17 +706,18 @@ public class Manager extends NamedObj implements Runnable {
     /** The thread that calls this method will wait until resume() has
      *  been called.
      *
-     *  Note: This method will block.  Should only be called from the
-     *  executing thread (the thread that is executing the model).  Do
-     *  not call this method from the same thread that will call
-     *  resume().
-     *
-     *  FIXME: Added by celaine.  Review this.  Works with
-     *  DebugController to resume execution after a breakpoint.
-     *  FIXME: in PN this could be called multiple times.  make sure
-     *  this still works with multiple threads.
+     *  <p>Note: This method will block.  It shhould only be called
+     *  from the executing thread (the thread that is executing the
+     *  model).  Do not call this method from the same thread that
+     *  will call resume().
+     *  @param breakpointMessage The message to print when paused on a
+     *  breakpoint.
      */
     public void pauseOnBreakpoint(String breakpointMessage) {
+        //  FIXME: Added by celaine.  Review this.  Works with
+        //  DebugController to resume execution after a breakpoint.
+        //  FIXME: in PN this could be called multiple times.  make sure
+        //  this still works with multiple threads.
         try {
             if (_state == ITERATING) {
                 // This will deadlock if called from, say, the UI
@@ -828,6 +833,7 @@ public class Manager extends NamedObj implements Runnable {
      *  of execution events.  If the specified listener is not on the list,
      *  do nothing.
      *  @param listener The listener to remove.
+     *  @see #addExecutionListener(ExecutionListener)
      */
     public void removeExecutionListener(ExecutionListener listener) {
         if ((listener == null) || (_executionListeners == null)) {
@@ -1084,6 +1090,10 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Return a string with the elapsed time since startTime, and
      *  the amount of memory used.
+     *  @param startTime The start time in milliseconds.  For example,
+     *  the value returned by <code>(new Date()).getTime()</code>.
+     *  @return A string with the elapsed time since startTime, and
+     *  the amount of memory used.
      */
     public static String timeAndMemory(long startTime) {
         Runtime runtime = Runtime.getRuntime();
@@ -1211,6 +1221,8 @@ public class Manager extends NamedObj implements Runnable {
      *  garbage collected.  This method should not be called directly.
      *  Instead, call setManager in the CompositeActor class (or a
      *  derived class).
+     *  @param compositeActor The composite actor that this manager will
+     *  manage.
      */
     protected void _makeManagerOf(CompositeActor compositeActor) {
         if (compositeActor != null) {
