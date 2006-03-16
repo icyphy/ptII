@@ -28,12 +28,12 @@
  */
 package ptolemy.codegen.c.actor.lib.conversions;
 
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 /**
  * A helper class for ptolemy.actor.lib.conversions.TokenToExpression
  *
- * @author Man-Kit Leung
+ * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 5.1
  * @Pt.ProposedRating Red (mankit)

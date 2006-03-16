@@ -38,7 +38,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;

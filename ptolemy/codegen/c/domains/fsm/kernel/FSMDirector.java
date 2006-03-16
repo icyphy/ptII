@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NamedObj;
 public class FSMDirector extends Director {
 
     /** Construct the code generator helper associated with the given
-     * FSMDirector.
+     *  FSMDirector.
      *  @param director The associated ptolemy.domains.fsm.kernel.FSMDirector
      */
     public FSMDirector(ptolemy.domains.fsm.kernel.FSMDirector director) {
@@ -77,8 +77,9 @@ public class FSMDirector extends Director {
      *   an actor throws it while generating fire code for the actor.
      */
     public String generateFireCode() throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
-                .getController();
+        ptolemy.domains.fsm.kernel.FSMActor controller =
+            ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+            .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         StringBuffer code = new StringBuffer();

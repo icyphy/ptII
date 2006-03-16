@@ -26,7 +26,7 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;

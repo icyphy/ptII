@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.c.actor.lib.conversions;
 
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanToAnything

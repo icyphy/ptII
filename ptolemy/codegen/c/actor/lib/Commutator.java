@@ -28,7 +28,7 @@ package ptolemy.codegen.c.actor.lib;
 
 import java.util.ArrayList;
 
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**

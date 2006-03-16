@@ -28,7 +28,7 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 /**
  * A helper class for ptolemy.actor.lib.Differential.

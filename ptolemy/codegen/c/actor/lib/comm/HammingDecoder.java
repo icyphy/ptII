@@ -29,7 +29,7 @@ package ptolemy.codegen.c.actor.lib.comm;
 
 import java.util.ArrayList;
 
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.IntToken;
 import ptolemy.kernel.util.IllegalActionException;
 

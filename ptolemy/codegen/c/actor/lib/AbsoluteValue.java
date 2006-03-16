@@ -32,7 +32,7 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 /**
  * Generate C code for an actor that produces an output token on

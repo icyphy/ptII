@@ -36,7 +36,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
@@ -91,7 +90,7 @@ public class CodeStream {
      * @param helper The actor helper associated with this code stream,
      * which is currently ignored.
      */
-    public CodeStream(CCodeGeneratorHelper helper) {
+    public CodeStream(CodeGeneratorHelper helper) {
         String classNamePath = helper.getClass().getName().replace('.', '/');
         _filePath = "$CLASSPATH/" + classNamePath + ".c";
     }

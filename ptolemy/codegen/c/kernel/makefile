@@ -1,10 +1,10 @@
-# Makefile for the Ptolemy Classic style code generation
+# Makefile for the Ptolemy Classic style code generation for C
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2005 The Regents of the University of California.
+# @Copyright (c) 2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/codegen/kernel
+ME =		ptolemy/codegen/c/kernel
 
-DIRS = 		test type
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -44,25 +44,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	kernel
-PTCLASSJAR =
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	type/type.jar
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	ActorCodeGenerator.java \
-	CodeGenerator.java \
-	CodeGeneratorHelper.java \
-	CodeStream.java \
-	ComponentCodeGenerator.java \
-	Director.java \
-	StaticSchedulingCodeGenerator.java
+	CCodeGeneratorHelper.java
 
-OTHER_FILES_TO_BE_JARED = \
-	SharedCode.c
+OTHER_FILES_TO_BE_JARED =
+
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -73,9 +61,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'CodeGeneratorHelper$$Channel.class' \
-	'CodeGeneratorHelper$$HelperScope.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -27,7 +27,7 @@
  */
 package ptolemy.codegen.c.domains.sdf.lib;
 
-import ptolemy.codegen.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.ArrayToken;
 import ptolemy.kernel.util.IllegalActionException;
 
