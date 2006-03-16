@@ -182,7 +182,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ////                         public methods                    ////
 
     /** Add an include command line argument the compile command.
-     *  @param libraryCommand  The library command, for example
+     *  @param includeCommand  The library command, for example
      *  "-L/usr/local/lib".
      */
     public void addInclude(String includeCommand) {
