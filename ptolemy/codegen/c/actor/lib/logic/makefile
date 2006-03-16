@@ -55,7 +55,8 @@ JSRCS = \
 	LogicFunction.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c)
+	Comparator.c \
+	Equals.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
