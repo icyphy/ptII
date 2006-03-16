@@ -118,7 +118,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         Set sharedCode = new HashSet();
         sharedCode.addAll(super.generateSharedCode());
         _codeStream.appendCodeBlocks(".*shared.*");
-        sharedCode.add(_codeStream.toString());
+        sharedCode.add(processCode(_codeStream.toString()));
         return sharedCode;
     }
 
