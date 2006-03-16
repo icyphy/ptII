@@ -5,6 +5,9 @@
 # where the source code is created.
 # To compile, run make -f @modelName@.mk
 
+PTCGLIBRARIES = @PTCGLibraries@
+PTCGINCLUDES = @PTCGIncludes@
+
 # We need -lm so we can get floor() for ftoi() 
 @modelName@: @modelName@.c
-	gcc -g @modelName@.c -o @modelName@ -lm
+	gcc -g @modelName@.c $(PTCGINCLUDES) -o @modelName@ -lm $(PTCGLIBRARIES)
