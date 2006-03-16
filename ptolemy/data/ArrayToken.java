@@ -27,7 +27,6 @@
  */
 package ptolemy.data;
 
-import java.lang.reflect.Constructor;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,7 +38,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToken

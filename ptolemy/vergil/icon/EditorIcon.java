@@ -30,8 +30,6 @@ package ptolemy.vergil.icon;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.Iterator;
 
 import javax.swing.SwingConstants;

@@ -26,11 +26,9 @@
  */
 package ptolemy.codegen.c.actor.lib.logic;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import ptolemy.codegen.c.actor.lib.CodeStream;
 import ptolemy.codegen.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
 
