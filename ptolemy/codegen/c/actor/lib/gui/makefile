@@ -50,6 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	Display.java \
+	SequencePlotter.java \
 	XYPlotter.java
 
 OTHER_FILES_TO_BE_JARED = \

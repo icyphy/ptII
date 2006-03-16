@@ -31,7 +31,7 @@
 
 ME =		ptolemy/codegen/kernel
 
-DIRS = 		test
+DIRS = 		test type
 
 # Root of the Java directory
 ROOT =		../../..
@@ -56,7 +56,11 @@ JSRCS = \
 	Director.java \
 	StaticSchedulingCodeGenerator.java
 
-EXTRA_SRCS =	$(JSRCS)
+OTHER_FILES_TO_BE_JARED = \
+	Shared.c
+
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -66,6 +70,8 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'CodeGeneratorHelper$$Channel.class' \
+	'CodeGeneratorHelper$$HelperScope.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
