@@ -61,6 +61,11 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'CodeGeneratorGUI$$1.class' \
+	'CodeGeneratorGUI$2.class' \
+	'CodeGeneratorGUI$3.class' \
+	'CodeGeneratorGUI$4.class' \
+	'CodeGeneratorGUI$5.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
