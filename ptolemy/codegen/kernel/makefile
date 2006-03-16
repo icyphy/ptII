@@ -76,6 +76,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'CodeGeneratorHelper$$1.class' \
 	'CodeGeneratorHelper$$Channel.class' \
 	'CodeGeneratorHelper$$HelperScope.class'
 
