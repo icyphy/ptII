@@ -25,11 +25,12 @@
 
 
  */
-package ptolemy.codegen.c.actor.lib;
+package ptolemy.codegen.c.kernel;
 
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
@@ -93,7 +94,8 @@ import ptolemy.kernel.util.InternalErrorException;
  @Pt.AcceptedRating Red
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
+public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
+    implements ParseTreeCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

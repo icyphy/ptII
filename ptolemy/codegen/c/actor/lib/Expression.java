@@ -33,6 +33,7 @@ import ptolemy.actor.AtomicActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.c.kernel.CParseTreeCodeGenerator;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -87,9 +88,9 @@ public class Expression extends CCodeGeneratorHelper {
         }
 
         //code.append(processCode("    $ref(output)." + portType + "Port = ("
-        //        + _parseTreeCodeGenerator.generateFireCode()) + ");\n");
+        //        + _cParseTreeCodeGenerator.generateFireCode()) + ");\n");
         code.append(processCode("    $ref(output) = "
-                + _parseTreeCodeGenerator.generateFireCode())
+                + _cParseTreeCodeGenerator.generateFireCode())
                 + ";\n");
         return code.toString();
     }
@@ -104,7 +105,7 @@ public class Expression extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-        return processCode(_parseTreeCodeGenerator.generateInitializeCode());
+        return processCode(_cParseTreeCodeGenerator.generateInitializeCode());
     }
 
     /**
@@ -129,7 +130,7 @@ public class Expression extends CCodeGeneratorHelper {
             ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
                     .getExpression());
 
-            result = _parseTreeCodeGenerator.evaluateParseTree(parseTree,
+            result = _cParseTreeCodeGenerator.evaluateParseTree(parseTree,
                     new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
@@ -142,7 +143,7 @@ public class Expression extends CCodeGeneratorHelper {
                             + actor.expression.getExpression());
         }
 
-        return processCode(_parseTreeCodeGenerator.generatePreinitializeCode());
+        return processCode(_cParseTreeCodeGenerator.generatePreinitializeCode());
     }
 
     /**
@@ -155,11 +156,11 @@ public class Expression extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public Set generateSharedCode() throws IllegalActionException {
-        _parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+        _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
 
         Set codeBlocks = new HashSet();
         codeBlocks
-                .add(processCode(_parseTreeCodeGenerator.generateSharedCode()));
+                .add(processCode(_cParseTreeCodeGenerator.generateSharedCode()));
         return codeBlocks;
     }
 
@@ -176,10 +177,10 @@ public class Expression extends CCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
-        code.append(processCode(_parseTreeCodeGenerator.generateWrapupCode()));
+        code.append(processCode(_cParseTreeCodeGenerator.generateWrapupCode()));
 
         // Free up memory
-        _parseTreeCodeGenerator = null;
+        _cParseTreeCodeGenerator = null;
         return code.toString();
     }
 
@@ -199,10 +200,10 @@ public class Expression extends CCodeGeneratorHelper {
     }
 
     /** The parse tree code generator. */
-    protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
+    protected CParseTreeCodeGenerator _cParseTreeCodeGenerator;
 
     /**
-     * Variable scope class customized for the ParseTreeCodeGenerator.
+     * Variable scope class customized for the CParseTreeCodeGenerator.
      */
     private class VariableScope extends ModelScope {
         /**

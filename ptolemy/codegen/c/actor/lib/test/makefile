@@ -49,8 +49,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	CodeGenerator2.tcl \
-	Expression.tcl
+	CodeGenerator2.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

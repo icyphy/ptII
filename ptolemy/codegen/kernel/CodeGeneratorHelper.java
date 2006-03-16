@@ -42,7 +42,6 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.ExplicitChangeContext;
-import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -50,6 +49,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ParserScope;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -85,6 +85,28 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public CodeGeneratorHelper(NamedObj component) {
         _component = component;
+        _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
+                /** Evaluate the parse tree with the specified root node using
+                 *  the specified scope to resolve the values of variables.
+                 *  @param node The root of the parse tree.
+                 *  @param scope The scope for evaluation.
+                 *  @return The result of evaluation.
+                 *  @exception IllegalActionException If an error occurs during
+                 *   evaluation.
+                 */
+                public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
+                        ParserScope scope) {
+                    return new Token();
+                }
+
+                /** Generate code that corresponds with the fire() method.
+                 *  @return The generated code.
+                 */
+                public String generateFireCode() {
+                    return "/* ParseTreeCodeGenerator.generateFireCode() "
+                        + "not implemented in codegen.kernel.CodeGenerator */";
+                }
+            };
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -606,7 +628,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 PtParser parser = new PtParser();
                 ASTPtRootNode parseTree = parser.generateParseTree(variable
                         .getExpression());
-                ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                ParseTreeCodeGenerator parseTreeCodeGenerator = 
+                    getParseTreeCodeGenerator();
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new HelperScope(variable));
                 return processCode(parseTreeCodeGenerator.generateFireCode());
@@ -638,8 +661,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
     }
 
-    /** Return the associated actor's rates for all configurations of this actor. 
-     *  In this base class, return null.
+    /** Return the parse tree to use with expressions.
+     *  @return the parse tree to use with expressions.
+     */
+    public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
+        return _parseTreeCodeGenerator;
+    }
+
+    /** Return the associated actor's rates for all configurations of
+     *  this actor.  In this base class, return null.
      *  @return null
      */
     public int[][] getRates() {
@@ -2050,6 +2080,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** The code generator that contains this helper class.
      */
     protected CodeGenerator _codeGenerator;
+
+    /** The parse tree to use with expressions. */
+    protected ParseTreeCodeGenerator _parseTreeCodeGenerator;
 
     /** A HashMap that contains mapping for ports and their conversion method.
      *  Ports that does not need to be converted do NOT have record in this

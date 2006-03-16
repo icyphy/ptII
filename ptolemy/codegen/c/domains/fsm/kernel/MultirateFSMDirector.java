@@ -37,7 +37,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.util.DFUtilities;
 import ptolemy.codegen.c.actor.TypedCompositeActor;
-import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
+import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.codegen.c.domains.fsm.kernel.FSMActor.TransitionRetriever;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.expr.ASTPtRootNode;
@@ -647,7 +647,8 @@ public class MultirateFSMDirector extends FSMDirector {
             String guard = transition.getGuardExpression();
             PtParser parser = new PtParser();
             ASTPtRootNode guardParseTree = parser.generateParseTree(guard);
-            ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+            ParseTreeCodeGenerator parseTreeCodeGenerator =
+                controllerHelper.getParseTreeCodeGenerator();
             parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                     controllerHelper._scope);
             codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
@@ -677,7 +678,8 @@ public class MultirateFSMDirector extends FSMDirector {
                                 + " produced in any action for "
                                 + "MultirateFSMDirector.");
                     }
-                    parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                    parseTreeCodeGenerator =
+                        controllerHelper.getParseTreeCodeGenerator();
                     parseTreeCodeGenerator.evaluateParseTree(parseTree,
                             controllerHelper._scope);
                     codeBuffer

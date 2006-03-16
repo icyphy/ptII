@@ -59,7 +59,9 @@ JSRCS = \
 	CodeStream.java \
 	ComponentCodeGenerator.java \
 	Director.java \
+	ParseTreeCodeGenerator.java \
 	StaticSchedulingCodeGenerator.java
+
 
 OTHER_FILES_TO_BE_JARED = \
 	SharedCode.c

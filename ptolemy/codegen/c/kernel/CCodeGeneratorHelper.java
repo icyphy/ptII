@@ -33,6 +33,7 @@ import java.util.Set;
 
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeStream;
+import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -58,6 +59,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      */
     public CCodeGeneratorHelper(NamedObj component) {
         super(component);
+        _parseTreeCodeGenerator = new CParseTreeCodeGenerator();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,6 +141,13 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return processCode(_codeStream.toString());
     }
 
+    /** Return the parse tree to use with expressions.
+     *  @return the parse tree to use with expressions.
+     */
+    public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
+        _parseTreeCodeGenerator = new CParseTreeCodeGenerator();
+        return _parseTreeCodeGenerator;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

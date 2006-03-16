@@ -36,7 +36,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.codegen.c.actor.lib.ParseTreeCodeGenerator;
+import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.BooleanToken;
@@ -229,7 +229,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                     PtParser parser = new PtParser();
                     ASTPtRootNode guardParseTree = parser
                             .generateParseTree(guard);
-                    ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                    ParseTreeCodeGenerator parseTreeCodeGenerator =
+                        getParseTreeCodeGenerator();
                     parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                             _scope);
                     codeBuffer
@@ -318,7 +319,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                             }
                         }
 
-                        ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                        ParseTreeCodeGenerator parseTreeCodeGenerator = 
+                            getParseTreeCodeGenerator();
                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator
@@ -398,7 +400,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                                             + " = ");
                         }
 
-                        ParseTreeCodeGenerator parseTreeCodeGenerator = new ParseTreeCodeGenerator();
+                        ParseTreeCodeGenerator parseTreeCodeGenerator =
+                            getParseTreeCodeGenerator();
                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator
