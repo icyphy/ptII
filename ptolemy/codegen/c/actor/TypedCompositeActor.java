@@ -343,6 +343,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  global iteration.  
      * 
      *  @return An int array of firings per global iteration.
+     *  @see #setFiringsPerGlobalIteration(int[])
      */
     public int[] getFiringsPerGlobalIteration() {
         return _firingsPerGlobalIteration;
@@ -374,6 +375,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  configuration, e.g., when the internal model is an SDF model.
      * 
      *  @return A two-dimensional int array of rates of this actor or null.
+     *  @see #setRates(int[][])
      */
     public int[][] getRates() {
         return _rates;
@@ -423,6 +425,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      * 
      *  @param firingsPerGlobalIteration An int array of firings per 
      *   global iteration
+     *  @see #getFiringsPerGlobalIteration()
      */
     public void setFiringsPerGlobalIteration(int[] firingsPerGlobalIteration) {
         _firingsPerGlobalIteration = firingsPerGlobalIteration;
@@ -434,6 +437,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  composite actor.  
      * 
      *  @param rates A two-dimensional int array of rates of this actor.
+     *  @see #getRates()
      */
     public void setRates(int[][] rates) {
         _rates = rates;

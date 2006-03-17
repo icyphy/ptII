@@ -249,6 +249,8 @@ public abstract class BaseType implements Type, Serializable {
     /** The boolean data type. */
     public static final BooleanType BOOLEAN = new BooleanType();
 
+
+    /** The boolean matrix data type. */
     public static final UnsizedMatrixType.BooleanMatrixType BOOLEAN_MATRIX = new UnsizedMatrixType.BooleanMatrixType();
 
     /** The unsigned byte data type. */
@@ -323,7 +325,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The fix data type. */
     public static final FixType FIX = FixType.BOTTOM; //new FixType();
 
-    /** The fix matrix data type */
+    /** The fix matrix data type. */
     public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX = new UnsizedMatrixType.FixMatrixType();
 
     /** The integer data type. */

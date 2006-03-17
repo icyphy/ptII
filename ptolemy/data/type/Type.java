@@ -80,6 +80,7 @@ public interface Type {
     public int getTypeHash();
 
     /** Return the class for tokens that this type represents.
+     *  @return The class for tokens that this type represents.
      */
     public Class getTokenClass();
 

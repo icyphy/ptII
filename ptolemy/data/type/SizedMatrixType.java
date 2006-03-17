@@ -58,6 +58,10 @@ public abstract class SizedMatrixType extends StructuredType implements
         Serializable {
     /** Construct a new matrix type that represents matrix tokens of the
      *  given class with the given number of rows and columns.
+     * @param c The given class.
+     * @param name The name of the matrix.
+     * @param rows The number of rows.
+     * @param columns The number of columns.
      */
     public SizedMatrixType(Class c, String name, int rows, int columns) {
         _tokenClass = c;
@@ -115,6 +119,7 @@ public abstract class SizedMatrixType extends StructuredType implements
 
     /** Return the number of columns in matrix tokens represented by this
      *  type.
+     *  @return The number of columns.
      */
     public int getColumnCount() {
         return _columns;
@@ -122,6 +127,7 @@ public abstract class SizedMatrixType extends StructuredType implements
 
     /** Return the number of rows in matrix tokens represented by this
      *  type.
+     *  @return The number of rows.
      */
     public int getRowCount() {
         return _rows;

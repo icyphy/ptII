@@ -31,7 +31,7 @@ package ptolemy.codegen.c.actor.lib.conversions;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
 /**
- * A helper class for ptolemy.actor.lib.conversions.TokenToExpression
+ * A helper class for ptolemy.actor.lib.conversions.TokenToExpression.
  *
  * @author Christopher Brooks
  * @version $Id$
