@@ -67,7 +67,7 @@ public class AudioReader extends CCodeGeneratorHelper {
 
         if (StringUtilities.getProperty("os.name").equals("SunOS")) { 
             codeGenerator.addLibrary(" -Wl,-Bstatic -D_REENTRANT "
-                    + "-R/usr/local/lib -lSDL -Wl,-Bdynamic"
+                    + "-R/usr/local/lib -lSDL -Wl,-Bdynamic "
                     + "-lpthread -lposix4 -lm -L/usr/openwin/lib "
                     + "-R/usr/openwin/lib -lX11 -lXext");
         } else {
