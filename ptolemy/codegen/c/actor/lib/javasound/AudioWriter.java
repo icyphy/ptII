@@ -28,6 +28,9 @@
  */
 package ptolemy.codegen.c.actor.lib.javasound;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * A helper class for ptolemy.actor.lib.javasound.AudioWriter.
  *
- * @author Man-Kit Leung
+ * @author Man-Kit Leung, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 5.1
  * @Pt.ProposedRating Red (mankit)
@@ -85,13 +88,13 @@ public class AudioWriter extends CCodeGeneratorHelper {
         String fileNameString;
         try {
             // Handle $CLASSPATH, return a file name with forward slashes.
-            fileNameString = actor.pathName;
+            fileNameString = actor.pathName.getExpression();
             // Under Windows, convert /C:/foo/bar to C:/foo/bar
             fileNameString = new File(fileNameString).getCanonicalPath()
                     .replace('\\', '/');
         } catch (IOException e) {
             throw new IllegalActionException("Cannot find file: "
-                    + actor.fileOrURL.getExpression());
+                    + actor.pathName.getExpression());
         }
 
         ArrayList args = new ArrayList();
