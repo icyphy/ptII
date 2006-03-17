@@ -104,13 +104,16 @@ public class CodeStream {
         _filePath = path;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /**
      * Append the contents of the given CodeStream to this code stream.
-     * @param codeBlock The given code stream.
+     * @param codeStream The given code stream.
      */
-    public void append(CodeStream codeBlock) {
-        _stream.append(codeBlock.toString());
-    }
+    //public void append(CodeStream codeStream) {
+    //    _stream.append(codeStream.toString());
+    //}
 
     /**
      * Append the contents of the given String to this code stream.
@@ -124,9 +127,9 @@ public class CodeStream {
      * Append the contents of the given StringBuffer to this code stream.
      * @param codeBlock The given string buffer.
      */
-    public void append(StringBuffer codeBlock) {
-        _stream.append(codeBlock);
-    }
+    //public void append(StringBuffer codeBlock) {
+    //    _stream.append(codeBlock);
+    //}
 
     /**
      * Append the code block specified the given block name. This method
@@ -337,18 +340,18 @@ public class CodeStream {
      * @exception IllegalActionException If an error occurs during parsing
      *  the helper .c file.
      */
-    public static void main(String[] args) throws IOException,
-            IllegalActionException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("----------Testing-------------------------------");
+//     public static void main(String[] args) throws IOException,
+//             IllegalActionException {
+//         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//         System.out.println("----------Testing-------------------------------");
 
-        System.out.print("please input file path: ");
+//         System.out.print("please input file path: ");
 
-        String filePath = in.readLine();
+//         String filePath = in.readLine();
 
-        System.out.println("\n----------Result------------------------------");
-        System.out.println(new CodeStream(filePath).description());
-    }
+//         System.out.println("\n----------Result------------------------------");
+//         System.out.println(new CodeStream(filePath).description());
+//     }
 
     /**
      * Return the string representation of the code stream.
