@@ -27,9 +27,11 @@
  */
 package ptolemy.codegen.kernel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,6 +87,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public CodeGeneratorHelper(NamedObj component) {
         _component = component;
+
+        _analyzeActor();
+
         _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
                 /** Evaluate the parse tree with the specified root node using
                  *  the specified scope to resolve the values of variables.
@@ -112,7 +117,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate code for declaring read and write offset variables if needed.
+	/** Generate code for declaring read and write offset variables if needed.
      *  Return empty string in this base class. 
      * 
      *  @return The empty string.
@@ -203,83 +208,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         StringBuffer code = new StringBuffer();
 
         // Type conversion code for inter-actor port conversion. 
-        Object[] ports = _portConversions.keySet().toArray();
-        for (int i = 0; i < ports.length; i++) {
-            String portName = (String) ports[i];
-            String convert = (String) _portConversions.get(portName);
-            String type = (String) _portDeclareTypes.get(portName);
-
-            if (type != null && type.equals("char*")
-                    && convert.indexOf("new") == -1) {
-                code.append("\t" + _getReference(portName) + " = " + convert
-                        + "(" + getReference(portName) + ");\n");
-            }
-        }
+        Iterator channels = _getTypeConvertChannels().iterator();
+        while (channels.hasNext()) {
+        	Channel source = (Channel) channels.next();
+        	Iterator sinkChannels = 
+        		_getTypeConvertSinkChannels(source).iterator();
+        	while (sinkChannels.hasNext()) {
+        		Channel sink = (Channel) sinkChannels.next();
+        		
+            	code.append("\t" + _generateTypeConvertMethod(source, sink));        		
+        	}
+        }        
         return code.toString();
-    }
-
-    /**
-     * Generate the type conversion initialize code. This method is called 
-     * by the Director to append necessary initialize code to handle type
-     * conversion.
-     * @return The generated code.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateTypeConvertInitializeCode()
-            throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
-        // Type conversion code for inter-actor port conversion.         
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            // See if source port(s) need to be converted.
-            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
-            List sourcePorts = inputPort.sourcePortList();
-
-            for (int i = 0; i < sourcePorts.size(); i++) {
-                TypedIOPort sourcePort = (TypedIOPort) sourcePorts.get(i);
-                if (inputPort.getType() == sourcePort.getType()
-                        || inputPort.getType() != BaseType.GENERAL) {
-                    continue;
-                }
-                // FIXME: 1. inputPort.sourcePortList() returns a list 
-                // of source ports. The API does not say the 1st source
-                // port in the list connects to the 1st channel of input 
-                // port, the 2nd to the 2nd, etc. _getChannelIndex(inputPort, j,
-                // sourcePort) uses this assumption which is not guaranteed.
-                // 2. It does not consider the case that the same channel
-                // of the input port may be connected to more than one source
-                // port, e.g., in modal model.
-                String sourcePortName = sourcePort.getName() + "#"
-                        + _getChannelIndex(inputPort, i, sourcePort);
-                CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort
-                        .getContainer());
-
-                String type = (String) sourceHelper._portDeclareTypes
-                        .get(sourcePortName);
-                String convert = (String) sourceHelper._portConversions
-                        .get(sourcePortName);
-
-                // if no given type declaration, then use the type of the port.
-                if (type == null) {
-
-                } else if (type.equals("Token")) {
-                    // Case: upgrade from primitive to Token.
-                    // We need to create the Token object.                  
-                    // The type should be a primitive type (less than String).
-                    if (_isPrimitiveType(convert.substring(0, convert
-                            .indexOf("_new")))) {
-                        for (int j = 0; j < getBufferSize(inputPort, i); j++) {
-                            code.append("\t"
-                                    + _getReference(inputPort.getName() + "#"
-                                            + i + ", " + j) + " = " + convert
-                                    + "(0);\n");
-                        }
-                    }
-                }
-            }
-        }
-        return processCode(code.toString());
     }
 
     /** Generate variable declarations for inputs and outputs and parameters.
@@ -302,8 +242,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 // avoid duplicate declaration.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    code.append("static " + _generateType(parameter.getType())
-                            + " " + generateVariableName(parameter) + ";\n");
+                    code.append("static " + _cType(parameter.getType())
+                            + " " + generateVariableName(parameter) 
+                            + ";\n");
                 }
             }
         }
@@ -318,10 +259,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 continue;
             }
 
-            String cType = _generateType(inputPort.getType());
-
-            code.append("static " + cType + " ");
-            code.append(generateName(inputPort));
+            code.append("static " + _cType(inputPort.getType()) + " "
+            		+ generateName(inputPort));
 
             if (inputPort.isMultiport()) {
                 code.append("[" + inputPort.getWidth() + "]");
@@ -332,9 +271,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (bufferSize > 1) {
                 code.append("[" + bufferSize + "]");
             }
-
             code.append(";\n");
-            _generateTypeConvertVariableDeclaration(inputPort, code);
         }
 
         // Generate variable declarations for output ports.
@@ -345,11 +282,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             // If either the output port is a dangling port or
             // the output port has inside receivers.
-            if ((outputPort.getWidth() == 0)
-                    || (outputPort.getWidthInside() != 0)) {
-                code.append("static " + _generateType(outputPort.getType())
-                        + " ");
-                code.append(generateName(outputPort));
+            if (outputPort.getWidth() == 0 || outputPort.getWidthInside() != 0) {
+                code.append("static " + _cType(outputPort.getType())
+                		+ " " + generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
                     code.append("[" + outputPort.getWidthInside() + "]");
@@ -361,8 +296,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     code.append("[" + bufferSize + "]");
                 }
                 code.append(";\n");
-                _generateTypeConvertVariableDeclaration(outputPort, code);
-            }
+            }            
+        }
+        
+        code.append("/* Type convert variable declarations. */\n");
+        Iterator channels = _getTypeConvertChannels().iterator();
+        while (channels.hasNext()) {
+        	Channel channel = (Channel) channels.next();
+        	code.append("static "); 
+        	code.append(_cType(((TypedIOPort) channel.port).getType()));
+        	code.append(" " + _getTypeConvertReference(channel) + ";\n");
         }
         return processCode(code.toString());
     }
@@ -701,82 +644,282 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *   exist or does not have a value.
      */
     public String getReference(String name) throws IllegalActionException {
-        boolean isInputPort = false;
         name = processCode(name);
+        
+        StringBuffer result = new StringBuffer();
+        Actor actor = (Actor) _component;
+        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
-        String[] nameChannelOffset = parseName(name);
-        String portName = nameChannelOffset[0];
-        String channel = nameChannelOffset[1];
+        if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
+                && (tokenizer.countTokens() != 5)) {
+            throw new IllegalActionException(_component,
+                    "Reference not found: " + name);
+        }
 
-        IOPort port = (IOPort) ((Entity) _component).getPort(portName);
+        // Get the referenced name.
+        String refName = tokenizer.nextToken().trim();
 
-        CodeGeneratorHelper sourceHelper = this;
+        boolean forComposite = false;
 
-        // Note that if the width is 0, then we have no connection to
-        // the port but the port might be a PortParameter, in which
-        // case we want the Parameter.
-        // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
-        // tests this.
-        if (port != null && port.isInput() && port.getWidth() > 0) {
-            isInputPort = true;
+        // Usually given the name of an input port, getReference(String name) 
+        // returns variable name representing the input port. Given the name 
+        // of an output port, getReference(String name) returns variable names
+        // representing the input ports connected to the output port. 
+        // However, if the name of an input port starts with '@', 
+        // getReference(String name) returns variable names representing the 
+        // input ports connected to the given input port on the inside. 
+        // If the name of an output port starts with '@', 
+        // getReference(String name) returns variable name representing the 
+        // the given output port which has inside receivers.
+        // The special use of '@' is for composite actor when
+        // tokens are transferred into or out of the composite actor.
+        if (refName.charAt(0) == '@') {
+            forComposite = true;
+            refName = refName.substring(1);
+        }
 
-            // Find the source helper
-            /*
-             TypedIOPort sinkPort = port;
-             int sourceChannel = new Integer(channel).intValue();
-             port = (TypedIOPort) port.connectedPortList().get(sourceChannel);
-             portName = port.getName();
-             channel = "" + _getChannelIndex(sinkPort, sourceChannel, port);
-             sourceHelper = (CodeGeneratorHelper) _getHelper(port.getContainer());
-             */
-            // else if (port.isOutput()), that means THIS is the source helper.
-            int channelNumber = new Integer(channel).intValue();
-            Receiver receiver = port.getReceivers()[channelNumber][0];
-            Iterator sourcePorts = port.sourcePortList().iterator();
-            breakOutLabel: while (sourcePorts.hasNext()) {
-                IOPort sourcePort = (IOPort) sourcePorts.next();
-                Receiver[][] remoteReceivers = sourcePort.getRemoteReceivers();
-                for (int i = 0; i < remoteReceivers.length; i++) {
-                    for (int j = 0; j < remoteReceivers[i].length; j++) {
-                        if (remoteReceivers[i][j] == receiver) {
-                            portName = sourcePort.getName();
-                            channel = "" + i;
-                            sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                    .getContainer());
-                            break breakOutLabel;
+        IOPort port = null;
+
+        Iterator inputPorts = actor.inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+
+            // The channel is specified as $ref(port#channelNumber).
+            if (inputPort.getName().equals(refName)) {
+                port = inputPort;
+                break;
+            }
+        }
+
+        if (port == null) {
+            Iterator outputPorts = actor.outputPortList().iterator();
+
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort) outputPorts.next();
+
+                // The channel is specified as $ref(port#channelNumber).
+                if (outputPort.getName().equals(refName)) {
+                    port = outputPort;
+                    break;
+                }
+            }
+        }
+
+        String[] channelAndOffset = _getChannelAndOffset(name);
+
+        if (port != null) {
+        	
+            int channelNumber = 0;
+            if (!channelAndOffset[0].equals("")) {
+                channelNumber = (new Integer(channelAndOffset[0]))
+                        .intValue();
+            }
+
+            // To support modal model, we need to check the following condition
+            // first because an output port of a modal controller should be
+            // mainly treated as an output port. However, during choice action,
+            // an output port of a modal controller will receive the tokens sent
+            // from the same port.  During commit action, an output port of a modal
+            // controller will NOT receive the tokens sent from the same port.
+            if ((port.isOutput() && !forComposite)
+                    || (port.isInput() && forComposite)) {
+                Receiver[][] remoteReceivers;
+                
+                // For the same reason as above, we cannot do: if (port.isInput())...
+                if (port.isOutput()) {
+            		remoteReceivers = port.getRemoteReceivers();
+                } else {
+                    remoteReceivers = port.deepGetReceivers();
+                }
+
+                if (remoteReceivers.length == 0) {
+                    // The channel of this output port doesn't have any sink.
+                    result.append(generateName(_component));
+                    result.append("_");
+                    result.append(port.getName());
+                    return result.toString();
+                }
+
+                //Jackie
+                Channel sourceChannel = new Channel(port, channelNumber);
+            	if (_isMarkedTypeConvert(sourceChannel)) {
+            		// Use source port as reference for type conversion.
+            		return _getTypeConvertReference(sourceChannel);
+            	} 
+                
+                List sinkChannels = getSinkChannels(port, channelNumber);
+
+                for (int i = 0; i < sinkChannels.size(); i++) {
+                    Channel channel = (Channel) sinkChannels.get(i);
+                    IOPort sinkPort = channel.port;
+                    int sinkChannelNumber = channel.channelNumber;
+
+                    if (i != 0) {
+                        result.append(" = ");
+                    }
+
+                    result.append(generateName(sinkPort));
+
+                    if (sinkPort.isMultiport()) {
+                        result.append("[" + sinkChannelNumber + "]");
+                    }
+
+                    if (!channelAndOffset[1].equals("")
+                            && (getBufferSize(sinkPort) > 1)) {
+                        // Specified offset.
+
+                        String temp = "";
+
+                        Object offsetObject = getWriteOffset(sinkPort,
+                                sinkChannelNumber);
+
+                        if (offsetObject instanceof Integer) {
+
+                            int offset = ((Integer) offsetObject).intValue()
+                                    + (new Integer(channelAndOffset[1]))
+                                            .intValue();
+                            offset %= getBufferSize(sinkPort, sinkChannelNumber);
+                            temp = new Integer(offset).toString();
+                            /*
+                             int divisor = getBufferSize(sinkPort,
+                             sinkChannelNumber);
+                             temp = "("
+                             + getWriteOffset(sinkPort,
+                             sinkChannelNumber) + " + "
+                             + channelAndOffset[1] + ")%" + divisor;
+                             */
+
+                        } else {
+                            int modulo = getBufferSize(sinkPort,
+                                    sinkChannelNumber) - 1;
+                            temp = "("
+                                    + (String) getWriteOffset(sinkPort,
+                                            sinkChannelNumber) + " + "
+                                    + channelAndOffset[1] + ")&" + modulo;
                         }
+
+                        result.append("[" + temp + "]");
+
+                    } else if (getBufferSize(sinkPort) > 1) {
+                        // Did not specify offset, so the receiver buffer
+                        // size is 1. This is multiple firing.
+                        String temp = "";
+
+                        Object offsetObject = getWriteOffset(sinkPort,
+                                sinkChannelNumber);
+
+                        if (offsetObject instanceof Integer) {
+                            int offset = ((Integer) offsetObject).intValue();
+                            offset %= getBufferSize(sinkPort, sinkChannelNumber);
+                            temp = new Integer(offset).toString();
+                        } else {
+                            int modulo = getBufferSize(sinkPort,
+                                    sinkChannelNumber) - 1;
+                            temp = (String) getWriteOffset(sinkPort,
+                                    sinkChannelNumber)
+                                    + "&" + modulo;
+                        }
+                        result.append("[" + temp + "]");
                     }
                 }
+
+                return result.toString(); //
             }
 
-        }
+            if ((port.isInput() && !forComposite)
+                    || (port.isOutput() && forComposite)) {
+                result.append(generateName(port));
 
-        String refName = _getReference(name);
+                //if (!channelAndOffset[0].equals("")) {
+                if (port.isMultiport()) {
+                    // Channel number specified. This must be a multiport.
+                    result.append("[" + channelAndOffset[0] + "]");
+                }
 
-        String convertMethod = (String) sourceHelper._portConversions
-                .get(portName + "#" + channel);
-        if (convertMethod != null) {
-            String type = (String) sourceHelper._portDeclareTypes.get(portName
-                    + "#" + channel);
-            if (type.equals("Token")) {
-                String typeName = convertMethod.substring(0, convertMethod
-                        .indexOf("_new"));
-                if (_isPrimitiveType(typeName)) {
-                    refName += ".payload." + typeName;
-                    _codeGenerator._newTypesUsed.add(typeName);
+                if (!channelAndOffset[1].equals("")
+                        && (getBufferSize(port) > 1)) {
+                    String temp = "";
+
+                    if (getReadOffset(port, channelNumber) instanceof Integer) {
+                        int offset = ((Integer) getReadOffset(port,
+                                channelNumber)).intValue();
+                        offset = offset
+                                + (new Integer(channelAndOffset[1])).intValue();
+                        offset = offset % getBufferSize(port, channelNumber);
+                        temp = new Integer(offset).toString();
+                    } else {
+                        // Note: This assumes the director helper will increase
+                        // the buffer size of the channel to the power of two.
+                        // Otherwise, use "%" instead.
+                        // FIXME: We haven't check if modulo is 0. But this
+                        // should never happen. For offsets that need to be
+                        // represented by string expression,
+                        // getBufferSize(port, channelNumber) will always
+                        // return a value at least 2.
+                        int modulo = getBufferSize(port, channelNumber) - 1;
+                        temp = (String) getReadOffset(port, channelNumber);
+                        temp = "(" + temp + " + " + channelAndOffset[1] + ")&"
+                                + modulo;
+                    }
+
+                    result.append("[" + temp + "]");
+                } else if (getBufferSize(port) > 1) {
+                    // Did not specify offset, so the receiver buffer
+                    // size is 1. This is multiple firing.
+                    String temp = "";
+
+                    if (getReadOffset(port, channelNumber) instanceof Integer) {
+                        int offset = ((Integer) getReadOffset(port,
+                                channelNumber)).intValue();
+                        offset = offset % getBufferSize(port, channelNumber);
+                        temp = new Integer(offset).toString();
+                    } else {
+                        int modulo = getBufferSize(port, channelNumber) - 1;
+                        temp = (String) getReadOffset(port, channelNumber);
+                        temp = temp + "&" + modulo;
+                    }
+
+                    result.append("[" + temp + "]");
                 }
-            } else if (type.equals("char*")) {
-                if (!isInputPort) {
-                    // Give the temp variable holder as reference.     
-                    refName = refName.replace('[', '_').replace(']', '_');
-                }
-            } else {
-                // FIXME: we can add code here to handle conversion 
-                // between different primitive types.   
+
+                return result.toString();
             }
         }
-        return refName;
+
+        // Try if the name is a parameter.
+        Attribute attribute = _component.getAttribute(refName);
+
+        if (attribute != null) {
+            //FIXME: potential bug: if the attribute is not a parameter,
+            //it will be referenced but not declared.
+            if (attribute instanceof Parameter) {
+                _referencedParameters.add(attribute);
+            }
+
+            result.append(generateVariableName(attribute));
+
+            if (!channelAndOffset[0].equals("")) {
+                throw new IllegalActionException(_component,
+                        "a parameter cannot have channel number.");
+            }
+
+            if (!channelAndOffset[1].equals("")) {
+                //result.append("[" + channelAndOffset[1] + "]");
+                result.insert(0, "Array_get(");
+                result.append(" ," + channelAndOffset[1] + ")" + 
+                        ".payload.");
+                Type elementType = ((ArrayType) ((Parameter) attribute).getType()).getElementType();
+                result.append(_codeGenType(elementType));
+            }
+
+            return result.toString();
+        }
+
+        throw new IllegalActionException(_component, "Reference not found: "
+                + name);
     }
+
 
     /**
      * Generate the shared code. This is the first generate method invoked out
@@ -1047,7 +1190,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             macro = macro.trim();
 
             List macroList = Arrays.asList(new String[] { "ref", "val", "type",
-                    "typeFunc", "token", "actorSymbol", "actorClass", "new",
+                    "typeFunc", "actorSymbol", "actorClass", "new",
                     "size" });
 
             if (macroList.contains(macro)) {
@@ -1057,11 +1200,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 if (macro.equals("ref")) {
                     result.append(getReference(name));
-                } else if (macro.equals("token")) {
-                    result.append(_getReference(name));
                 } else if (macro.equals("type")) {
                     // FIXME: we should be able to resolve the type in compile time.
-                    result.append(_getReference(name) + ".payload.type");
+                    result.append(getReference(name) + ".payload.type");
                 } else if (macro.equals("val")) {
                     result.append(getParameterValue(name, _component));
                 } else if (macro.equals("size")) {
@@ -1233,6 +1374,27 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         /** The channel number of this channel.
          */
         public int channelNumber;
+        
+        /** 
+         * Whether this channel is the same as the given object.
+         * @param channel The given object.
+         * @return True if this channel is the same reference as the given
+         * 	object, otherwise false;
+         */
+        public boolean equals(Object object) {
+        	return object instanceof Channel &&
+        		port.equals(((Channel) object).port) &&
+        		channelNumber == ((Channel) object).channelNumber;
+        }
+
+        /**
+         * Return the hash code for this channel. Implementing this method
+         * is required for comparing the equality of channels.
+         * @return Hash code for this channel.
+         */
+        public int hashCode() {
+        	return port.hashCode() + channelNumber;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1290,113 +1452,68 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
         }
     }
-
-    /** Given a port or parameter, append a string in the form
-     *  "static <i>type</i> <i>objectName</i>" to the given string buffer.
-     *  This method is only called in the generateVariableDeclarations() 
-     *  method.
-     *  @param ptType The port or parameter.
-     *  @return The generated code for the type.
-     */
-    protected static String _generateType(Type ptType) {
-        return _getCTypeFromPtolemyType(ptType);
-    }
-
+    
     /**
-     * Generate the type conversion variable declarations for a given port.
-     * These are extra variable declarations that are needed for port type
-     * conversion between actors.
-     * @param port The given port.
-     * @param code The given code buffer to append to.
-     * @exception IllegalActionException Thrown if the associated helper is not found, or if the
-     *  source port channel index is not found, or if the buffer size of 
-     *  the given port cannot be determined, or if the given port name
-     *  reference is not found.
+     * Generate the type conversion statement for the two given channels.
+     * @param sourc The given source channel.
+     * @param sink The given sink channel.
+     * @return The type convert statement for assigning the converted source
+     *  variable to the sink variable. 
      */
-    protected void _generateTypeConvertVariableDeclaration(TypedIOPort port,
-            StringBuffer code) throws IllegalActionException {
+    protected String _generateTypeConvertMethod (
+    		Channel source, Channel sink) throws IllegalActionException {
 
-        // See if source port(s) need to be converted.
-        List sourcePorts = port.sourcePortList();
-        for (int i = 0; i < sourcePorts.size(); i++) {
-            TypedIOPort sourcePort = (TypedIOPort) sourcePorts.get(i);
-            if (port.getType() == sourcePort.getType()
-                    || port.getType() != BaseType.STRING) {
-                continue;
+    	// The references are associated with their own helper, so we need
+    	// to find the associated helper.    	
+    	String sourceRef = 
+    		((CodeGeneratorHelper) _getHelper(source.port.getContainer()))
+    		.getReference(source.port.getName() + "#" + source.channelNumber);
+
+    	String sinkRef = 
+    		((CodeGeneratorHelper) _getHelper(sink.port.getContainer()))
+    		.getReference(sink.port.getName() + "#" + sink.channelNumber);
+
+    	Type sourceType = ((TypedIOPort) source.port).getType();
+    	Type sinkType = ((TypedIOPort) sink.port).getType();
+
+    	String result = sinkRef + " = ";
+    	
+        if (sinkType == BaseType.DOUBLE){
+        	if (sourceType == BaseType.INT) {
+        		result += "(double)" + sourceRef;
+        	} else {
+                throw new IllegalActionException(
+                		"Conversion not handled. Converting from '"
+                		+ sourceType + "' to '" + sinkType + "'\n");
+        	}
+        } else if (sinkType == BaseType.STRING) {
+    		if (sourceType == BaseType.BOOLEAN) {
+        		result += "btoa(" + sinkRef + ")";    			
+    		} else if (sourceType == BaseType.INT) {
+        		result += "itoa(" + sinkRef + ")";
+            } else if (sourceType == BaseType.LONG) {
+        		result += "ltoa(" + sinkRef + ")";
+            } else if (sourceType == BaseType.DOUBLE) {
+        		result += "ftoa(" + sinkRef + ")";
+            } else {
+                throw new IllegalActionException(
+                		"Conversion not handled. Converting from '"
+                		+ sourceType + "' to '" + sinkType + "'\n");        		
             }
-            // FIXME: 1. inputPort.sourcePortList() returns a list 
-            // of source ports. The API does not say the 1st source
-            // port in the list connects to the 1st channel of input 
-            // port, the 2nd to the 2nd, etc. _getChannelIndex(inputPort, j,
-            // sourcePort) uses this assumption which is not guaranteed.
-            // 2. It does not consider the case that the same channel
-            // of the input port may be connected to more than one source
-            // port, e.g., in modal model.
-            String sourcePortName = sourcePort.getName() + "#"
-                    + _getChannelIndex(port, i, sourcePort);
-            CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort
-                    .getContainer());
+    	} else if (sinkType == BaseType.GENERAL) {
+    		if (_isPrimitiveType(sourceType)) {
+        		result += _codeGenType(sourceType) + "_new(" + sourceRef + ")";
+    		} else {
+    			//It is a Token type, so we can just assign directly.
+    			result += sourceRef;
+    		}
+    	} else {
+    		// Use function table to convert between specific Token types.
+    		result += processCode("$typeFunc(sinkRef, convert(sourceRef))");
+    	}
+    	return result + ";\n";
+	}
 
-            String type = (String) sourceHelper._portDeclareTypes
-                    .get(sourcePortName);
-            String convert = (String) sourceHelper._portConversions
-                    .get(sourcePortName);
-
-            // if no given type declaration, then use the type of the port.
-            if (type == null) {
-
-            } else if (type.equals("char*") && convert.indexOf("_new") == -1) {
-                // Case: convert primitive type to String.
-                // We need to declare temp variable holder.
-                for (int j = 0; j < getBufferSize(port, i); j++) {
-                    String tempVariableName = _getReference(
-                            port.getName() + "#" + i + ", " + j).replace('[',
-                            '_').replace(']', '_');
-
-                    // The type should be a primitive type (less than String).
-                    String tempVariableType = sourcePort.getType().toString();
-                    code.append(tempVariableType + " " + tempVariableName
-                            + ";\n");
-                }
-            }
-        }
-    }
-
-    /**
-     * Find the index of the source port relative to the sink port, 
-     * given the source port and the relative channel index. 
-     * @param sinkPort The sink port.
-     * @param sourceIndex The source channel index in the sink port.
-     * @param sourcePort The source port.
-     * @return The index of the sink port in the source port.
-     * @exception IllegalActionException Thrown if the channel index
-     *  of the source port is not found.
-     */
-    protected int _getChannelIndex(TypedIOPort sinkPort, int sourceIndex,
-            TypedIOPort sourcePort) throws IllegalActionException {
-
-        // Get receiver from the sink port.
-        Receiver receiver = sinkPort.getReceivers()[sourceIndex][0];
-
-        // Iterate receivers in source port to find the receiver.
-        Receiver[][] receivers = null;
-        if (sourcePort.isOutput()) {
-            receivers = sourcePort.getRemoteReceivers();
-        } else {
-            receivers = sourcePort.deepGetReceivers();
-        }
-        for (int i = 0; i < receivers.length; i++) {
-            for (int j = 0; j < receivers[i].length; j++) {
-                if (receiver.equals(receivers[i][j])) {
-                    return i;
-                }
-            }
-        }
-
-        throw new IllegalActionException("Channel index not found "
-                + "for sink port (" + sinkPort.getFullName()
-                + ") and source port(" + sourcePort.getFullName() + "\n");
-    }
 
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
@@ -1416,305 +1533,52 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
     }
-
-    /** Return the reference to the specified parameter or port of the
-     *  associated actor. For a parameter, the returned string is in
-     *  the form "fullName_parameterName". For a port, the returned string
-     *  is in the form "fullName_portName[channelNumber][offset]", if
-     *  any channel number or offset is given.
-     *
-     *  FIXME: need documentation on the input string format.
-     *
-     *  @param name The name of the parameter or port
-     *  @return The reference to that parameter or port (a variable name,
-     *   for example).
-     *  @exception IllegalActionException If the parameter or port does not
-     *   exist or does not have a value.
+    
+    /**
+     * Generate a variable reference for the given channel. This varaible
+     * reference is needed for type conversion. The source helper get this
+     * reference instead of using the sink reference directly.
+     * This method assumes the given channel is a source (output) channel.
+     * @param channel The given source channel.
+     * @return The variable reference for the given channel.
      */
-    protected String _getReference(String name) throws IllegalActionException {
-        StringBuffer result = new StringBuffer();
-        Actor actor = (Actor) _component;
-        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
+    private String _getTypeConvertReference(Channel channel) {
+        return generateName(channel.port) + "_" + channel.channelNumber;
+	}
 
-        if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
-                && (tokenizer.countTokens() != 5)) {
-            throw new IllegalActionException(_component,
-                    "Reference not found: " + name);
-        }
+	/**
+     * Get the set of channels that need to be type converted.
+     * @return Set of channels that need to be type converted.
+     */
+	private Set _getTypeConvertChannels() {
+		return _portConversions.keySet();
+	}
 
-        // Get the referenced name.
-        String refName = tokenizer.nextToken().trim();
-
-        boolean forComposite = false;
-
-        // Usually given the name of an input port, getReference(String name) 
-        // returns variable name representing the input port. Given the name 
-        // of an output port, getReference(String name) returns variable names
-        // representing the input ports connected to the output port. 
-        // However, if the name of an input port starts with '@', 
-        // getReference(String name) returns variable names representing the 
-        // input ports connected to the given input port on the inside. 
-        // If the name of an output port starts with '@', 
-        // getReference(String name) returns variable name representing the 
-        // the given output port which has inside receivers.
-        // The special use of '@' is for composite actor when
-        // tokens are transferred into or out of the composite actor.
-        if (refName.charAt(0) == '@') {
-            forComposite = true;
-            refName = refName.substring(1);
-        }
-
-        IOPort port = null;
-
-        Iterator inputPorts = actor.inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-
-            // The channel is specified as $ref(port#channelNumber).
-            if (inputPort.getName().equals(refName)) {
-                port = inputPort;
-                break;
-            }
-        }
-
-        if (port == null) {
-            Iterator outputPorts = actor.outputPortList().iterator();
-
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) outputPorts.next();
-
-                // The channel is specified as $ref(port#channelNumber).
-                if (outputPort.getName().equals(refName)) {
-                    port = outputPort;
-                    break;
-                }
-            }
-        }
-
-        if (port != null) {
-            // To support modal model, we need to check the following condition 
-            // first because an output port of a modal controller should be 
-            // mainly treated as an output port. However, during choice action, 
-            // an output port of a modal controller will receive the tokens sent 
-            // from the same port.  During commit action, an output port of a modal 
-            // controller will NOT receive the tokens sent from the same port.  
-            if ((port.isOutput() && !forComposite)
-                    || (port.isInput() && forComposite)) {
-                Receiver[][] remoteReceivers;
-
-                // For the same reason as above, we cannot do: if (port.isInput())...
-                if (port.isOutput()) {
-                    remoteReceivers = port.getRemoteReceivers();
-                } else {
-                    remoteReceivers = port.deepGetReceivers();
-                }
-
-                if (remoteReceivers.length == 0) {
-                    // This channel of this output port doesn't have any sink.
-                    result.append(generateName(_component));
-                    result.append("_");
-                    result.append(port.getName());
-                    return result.toString();
-                }
-
-                String[] channelAndOffset = _getChannelAndOffset(name);
-
-                List sinkChannels = new LinkedList();
-                int channelNumber = 0;
-
-                if (!channelAndOffset[0].equals("")) {
-                    channelNumber = (new Integer(channelAndOffset[0]))
-                            .intValue();
-                }
-
-                sinkChannels = getSinkChannels(port, channelNumber);
-
-                for (int i = 0; i < sinkChannels.size(); i++) {
-                    Channel channel = (Channel) sinkChannels.get(i);
-                    IOPort sinkPort = channel.port;
-                    int sinkChannelNumber = channel.channelNumber;
-
-                    if (i != 0) {
-                        result.append(" = ");
-                    }
-
-                    result.append(generateName(sinkPort));
-
-                    if (sinkPort.isMultiport()) {
-                        result.append("[" + sinkChannelNumber + "]");
-                    }
-
-                    //int sinkPortBufferSize = getBufferSize(sinkPort);
-
-                    if (!channelAndOffset[1].equals("")
-                            && (getBufferSize(sinkPort) > 1)) {
-                        // Specified offset.
-
-                        String temp = "";
-
-                        Object offsetObject = getWriteOffset(sinkPort,
-                                sinkChannelNumber);
-
-                        if (offsetObject instanceof Integer) {
-
-                            int offset = ((Integer) offsetObject).intValue()
-                                    + (new Integer(channelAndOffset[1]))
-                                            .intValue();
-                            offset %= getBufferSize(sinkPort, sinkChannelNumber);
-                            temp = new Integer(offset).toString();
-                            /*
-                             int divisor = getBufferSize(sinkPort,
-                             sinkChannelNumber);
-                             temp = "("
-                             + getWriteOffset(sinkPort,
-                             sinkChannelNumber) + " + "
-                             + channelAndOffset[1] + ")%" + divisor;
-                             */
-
-                        } else {
-                            int modulo = getBufferSize(sinkPort,
-                                    sinkChannelNumber) - 1;
-                            temp = "("
-                                    + (String) getWriteOffset(sinkPort,
-                                            sinkChannelNumber) + " + "
-                                    + channelAndOffset[1] + ")&" + modulo;
-                        }
-
-                        result.append("[" + temp + "]");
-
-                    } else if (getBufferSize(sinkPort) > 1) {
-                        // Did not specify offset, so the receiver buffer
-                        // size is 1. This is multiple firing.
-                        String temp = "";
-
-                        Object offsetObject = getWriteOffset(sinkPort,
-                                sinkChannelNumber);
-
-                        if (offsetObject instanceof Integer) {
-                            int offset = ((Integer) offsetObject).intValue();
-                            offset %= getBufferSize(sinkPort, sinkChannelNumber);
-                            temp = new Integer(offset).toString();
-                        } else {
-                            int modulo = getBufferSize(sinkPort,
-                                    sinkChannelNumber) - 1;
-                            temp = (String) getWriteOffset(sinkPort,
-                                    sinkChannelNumber)
-                                    + "&" + modulo;
-                        }
-                        result.append("[" + temp + "]");
-                    }
-                }
-
-                return result.toString();
-            }
-
-            // Note that if the width is 0, then we have no connection to
-            // the port but the port might be a PortParameter, in which
-            // case we want the Parameter.
-            // codegen/c/actor/lib/string/test/auto/StringCompare3.xml
-            // tests this.
-
-            if ((port.isInput() && !forComposite && port.getWidth() > 0)
-                    || (port.isOutput() && forComposite)) {
-                result.append(generateName(port));
-
-                String[] channelAndOffset = _getChannelAndOffset(name);
-                int channelNumber = 0;
-
-                if (!channelAndOffset[0].equals("")) {
-                    // Channel number specified. This must be a multiport.
-                    result.append("[" + channelAndOffset[0] + "]");
-                    channelNumber = new Integer(channelAndOffset[0]).intValue();
-                }
-
-                if (!channelAndOffset[1].equals("")
-                        && (getBufferSize(port) > 1)) {
-                    String temp = "";
-
-                    if (getReadOffset(port, channelNumber) instanceof Integer) {
-                        int offset = ((Integer) getReadOffset(port,
-                                channelNumber)).intValue();
-                        offset = offset
-                                + (new Integer(channelAndOffset[1])).intValue();
-                        offset = offset % getBufferSize(port, channelNumber);
-                        temp = new Integer(offset).toString();
-                    } else {
-                        // Note: This assumes the director helper will increase
-                        // the buffer size of the channel to the power of two.
-                        // Otherwise, use "%" instead.
-                        // FIXME: We haven't check if modulo is 0. But this
-                        // should never happen. For offsets that need to be
-                        // represented by string expression,
-                        // getBufferSize(port, channelNumber) will always
-                        // return a value at least 2.
-                        int modulo = getBufferSize(port, channelNumber) - 1;
-                        temp = (String) getReadOffset(port, channelNumber);
-                        temp = "(" + temp + " + " + channelAndOffset[1] + ")&"
-                                + modulo;
-                    }
-
-                    result.append("[" + temp + "]");
-                } else if (getBufferSize(port) > 1) {
-                    // Did not specify offset, so the receiver buffer
-                    // size is 1. This is multiple firing.
-                    String temp = "";
-
-                    if (getReadOffset(port, channelNumber) instanceof Integer) {
-                        int offset = ((Integer) getReadOffset(port,
-                                channelNumber)).intValue();
-                        offset = offset % getBufferSize(port, channelNumber);
-                        temp = new Integer(offset).toString();
-                    } else {
-                        int modulo = getBufferSize(port, channelNumber) - 1;
-                        temp = (String) getReadOffset(port, channelNumber);
-                        temp = temp + "&" + modulo;
-                    }
-
-                    result.append("[" + temp + "]");
-                }
-
-                return result.toString();
-            }
-        }
-
-        // Try if the name is a parameter.
-        Attribute attribute = _component.getAttribute(refName);
-
-        if (attribute != null) {
-            //FIXME: potential bug: if the attribute is not a parameter,
-            //it will be referenced but not declared.
-            if (attribute instanceof Parameter) {
-                _referencedParameters.add(attribute);
-            }
-
-            result.append(generateVariableName(attribute));
-
-            String[] channelAndOffset = _getChannelAndOffset(name);
-
-            if (!channelAndOffset[0].equals("")) {
-                throw new IllegalActionException(_component,
-                        "a parameter cannot have channel number.");
-            }
-
-            if (!channelAndOffset[1].equals("")) {
-                //result.append("[" + channelAndOffset[1] + "]");
-                result.insert(0, "Array_get(");
-                result.append(" ," + channelAndOffset[1] + ")" + ".payload.");
-                Type elementType = ((ArrayType) ((Parameter) attribute)
-                        .getType()).getElementType();
-                result.append(_getCodeGenTypeFromPtolemyType(elementType));
-            }
-
-            return result.toString();
-        }
-
-        throw new IllegalActionException(_component, "Reference not found: "
-                + name);
-
+	/**
+     * Get the list of sink channels that the given source channel needs to
+     * be type converted to.
+     * @param source The given source channel.
+     * @return List of sink channels that the given source channel needs to
+     * be type converted to.
+     */
+    private List _getTypeConvertSinkChannels(Channel source) {
+    	if (_portConversions.containsKey(source)) {
+    		return ((List) _portConversions.get(source));
+    	}
+    	return new ArrayList();
     }
 
     /**
+     * Whether the given source channel needs to be type converted to any 
+     * of its connected sink channels.
+     * @param source The given source channel.
+     * @return True if it needs to type converted, otherwise false.
+     */
+    private boolean _isMarkedTypeConvert(Channel source) {
+    	return _getTypeConvertSinkChannels(source).size() > 0;
+    }
+    
+	/**
      * Get the corresponding type in code generation from the given Ptolemy
      * type. 
      * @param ptType The given Ptolemy type.
@@ -1722,17 +1586,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    protected static String _getCodeGenTypeFromPtolemyType(Type ptType)
+    protected static String _codeGenType(Type ptType)
             throws IllegalActionException {
         // FIXME: we may need to add more types.
-        String result = ptType == BaseType.INT ? "Int"
-                : ptType == BaseType.STRING ? "String"
-                        : ptType == BaseType.DOUBLE ? "Double"
-                                : ptType == BaseType.BOOLEAN ? "Boolean"
-                                        : ptType instanceof ArrayType ? "Array"
-                                                : ptType == BaseType.MATRIX ? "Matrix"
-                                                        : ptType == BaseType.GENERAL ? "Token"
-                                                                : "";
+        String result = ptType == BaseType.INT ? "Int" : 
+        	ptType == BaseType.STRING ? "String" : 
+        	ptType == BaseType.DOUBLE ? "Double" : 
+        	ptType == BaseType.BOOLEAN ? "Boolean" : 
+        	ptType instanceof ArrayType ? "Array" : 
+        	ptType == BaseType.MATRIX ? "Matrix" : 
+            ptType == BaseType.GENERAL ? "Token" : "";
         if (result.length() == 0) {
             throw new IllegalActionException(
                     "Cannot resolved codegen type from Ptolemy type: " + ptType);
@@ -1745,7 +1608,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @param ptType The given Ptolemy type.
      * @return The C data type.
      */
-    protected static String _getCTypeFromPtolemyType(Type ptType) {
+    protected static String _cType(Type ptType) {
         // FIXME: we may need to add more primitive types.
         return ptType == BaseType.INT ? "int"
                 : ptType == BaseType.STRING ? "char*"
@@ -1763,8 +1626,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     protected static boolean _isPrimitiveType(Type ptType)
             throws IllegalActionException {
-        return CodeGenerator._primitiveTypes
-                .contains(_getCodeGenTypeFromPtolemyType(ptType));
+        return CodeGenerator._primitiveTypes.contains(_codeGenType(ptType));
     }
 
     /**
@@ -1970,8 +1832,37 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
+    /**
+     * Find out each output port that needs to be converted for the
+     * actor associated with this helper. Then, mark these ports along
+     * with the sink ports (connection). 
+     */
+    private void _analyzeActor() {
+    	Actor actor = (Actor) _component;
+    	Iterator ports = actor.outputPortList().iterator();
 
-    /** Find the paired close parenthesis given a string and an index
+    	// for each output port.
+    	for (int i = 0; ports.hasNext(); i++) {
+            TypedIOPort sourcePort = (TypedIOPort) ports.next();
+
+            // for each channel.
+            for (int j = 0; j < sourcePort.getWidth(); j++) {
+	            Iterator sinks = getSinkChannels(sourcePort, j).iterator();
+	            
+	            // for each sink channel connected.
+	        	while (sinks.hasNext()) {
+	        		Channel sink = (Channel) sinks.next();
+	        		TypedIOPort sinkPort = (TypedIOPort) sink.port;
+	                if (!sourcePort.getType().equals(sinkPort.getType())) {
+	                	_markTypeConvert(new Channel(sourcePort, j), sink);
+	                }        		
+	        	}
+            }
+        }
+	}
+
+	/** Find the paired close parenthesis given a string and an index
      *  which is the position of an open parenthesis. Return -1 if no
      *  paired close parenthesis is found.
      *  @param string The given string.
@@ -2046,7 +1937,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     private String[] _getChannelAndOffset(String name)
             throws IllegalActionException {
+    	
+    	// FIXME: the comment says that this method return -1 for 
+    	// unspecified channel or offset. However, result is initialized to
+    	// empty strings.
         String[] result = { "", "" };
+        
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
         tokenizer.nextToken();
 
@@ -2065,9 +1961,25 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 result[1] = tokenizer.nextToken().trim();
             }
         }
-
         return result;
     }
+    
+    /**
+     * Mark the given connection between the source and the sink channels
+     * as type conversion required.
+     * @param source The given source channel.
+     * @param sink The given input channel.
+     */
+    private void _markTypeConvert(Channel source, Channel sink) {
+    	List sinks;
+    	if (_portConversions.containsKey(source)) {
+        	sinks = (List) _portConversions.get(source);
+    	} else {
+    		sinks = new ArrayList();
+        	_portConversions.put(source, sinks);
+    	}
+    	sinks.add(sink);
+	}
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -2089,14 +2001,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  map. The codegen kernel record this mapping during the first pass over
      *  the model. This map is used later in the code generation phase.
      */
-    protected HashMap _portConversions = new HashMap();
-
-    /** A HashMap that contains mapping between ports and their corresponding
-     *  c declaration types. The codegen kernel record this mapping during the
-     *  first pass over the model. This map is used later in the code
-     *  generation phase.
-     */
-    protected HashMap _portDeclareTypes = new HashMap();
+    protected Hashtable _portConversions = new Hashtable();
 
     /** A hashmap that keeps track of the read offsets of each input channel of
      *  the actor.

@@ -43,9 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedIOPort;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.data.BooleanToken;
@@ -244,10 +242,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public int generateCode(StringBuffer code) throws KernelException {
 
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
-
-        // perform port type conversion. This has to be before generation
-        // of other codes.
-        _checkPortTypeConversion();
 
         // We separate the generation and the appending into 2 phases.
         // This would be convenience for making addition passes, and
@@ -539,7 +533,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Determine the total number of referenced polymorphic functions.
         HashSet functions = new HashSet();
         HashSet types = new HashSet();
-        types.addAll(_primitiveTypes);
+        //types.addAll(_primitiveTypes);
 
         /*
          while (actors.hasNext()) {
@@ -684,9 +678,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();
 
-                code.append("static "
-                        + CodeGeneratorHelper
-                                ._generateType(parameter.getType()) + " "
+                code.append("static " 
+                        + CodeGeneratorHelper._cType(parameter.getType()) + " "
                         + CodeGeneratorHelper.generateVariableName(parameter)
                         + ";\n");
             }
@@ -824,122 +817,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**
-     * Check for port type conversion between actors and record the conversion
-     * needed in the helper's info table. The helper would knows how to convert
-     * its input ports from the recorded information. If source ports and the
-     * helper's input ports are of different types, then conversion is needed.
-     * (i.e. if a source port is a primitive type and the input port is a 
-     * general type, we need to upgrade the source type to a Token type.) 
-     * @exception IllegalActionException Thrown if helper is not found, or the conversion not
-     *  supported.
-     */
-    protected void _checkPortTypeConversion() throws IllegalActionException {
-
-        // FIXME: This method only applies to flat model (one hierarchy) . 
-        Iterator actors = ((ptolemy.actor.CompositeActor) _getHelper(
-                getContainer()).getComponent()).deepEntityList().iterator();
-
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            //CodeGeneratorHelper helper = 
-            //    (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-
-            for (int i = 0; i < actor.inputPortList().size(); i++) {
-                TypedIOPort inputPort = ((TypedIOPort) actor.inputPortList()
-                        .get(i));
-
-                // j is the source port channel index in the input port.
-                for (int j = 0; j < inputPort.sourcePortList().size(); j++) {
-                    TypedIOPort sourcePort = ((TypedIOPort) inputPort
-                            .sourcePortList().get(j));
-
-                    if (!inputPort.getType().equals(sourcePort.getType())) {
-                        String sourceType = CodeGeneratorHelper
-                                ._getCodeGenTypeFromPtolemyType(sourcePort
-                                        .getType());
-                        String targetType = CodeGeneratorHelper
-                                ._getCodeGenTypeFromPtolemyType(inputPort
-                                        .getType());
-
-                        CodeGeneratorHelper sourceHelper = (CodeGeneratorHelper) _getHelper(sourcePort
-                                .getContainer());
-
-                        // Record the needed inter-actor type conversions.
-                        // **Source port reference name is uniquely identified
-                        // by "[NAME]#[INDEX]", its name and its channel#.
-                        String refName = sourcePort.getName();
-                        // FIXME: 1. inputPort.sourcePortList() returns a list 
-                        // of source ports. The API does not say the 1st source
-                        // port in the list connects to the 1st channel of input 
-                        // port, the 2nd to the 2nd, etc. _getChannelIndex(inputPort, j,
-                        // sourcePort) uses this assumption which is not guaranteed.
-                        // 2. It does not consider the case that the same channel
-                        // of the input port may be connected to more than one source
-                        // port, e.g., in modal model.
-                        refName += "#"
-                                + sourceHelper._getChannelIndex(inputPort, j,
-                                        sourcePort);
-
-                        if (targetType.equals("Token")) {
-                            // Record the referenced type in the infoTable.
-                            _newTypesUsed.add(sourceType);
-                            sourceHelper._portConversions.put(refName,
-                                    sourceType + "_new");
-                            sourceHelper._portDeclareTypes
-                                    .put(refName, "Token");
-                        } else if (targetType.equals("String")) {
-                            if (sourceType.equals("Int")) {
-                                sourceHelper._portConversions.put(refName,
-                                        "itoa");
-                            } else if (sourceType.equals("Long")) {
-                                sourceHelper._portConversions.put(refName,
-                                        "ltoa");
-                            } else if (sourceType.equals("Double")) {
-                                sourceHelper._portConversions.put(refName,
-                                        "ftoa");
-                            } else if (sourceType.equals("Boolean")) {
-                                sourceHelper._portConversions.put(refName,
-                                        "btoa");
-                            } else {
-                                throw new IllegalActionException(
-                                        "Port type conversion not handled "
-                                                + "-- from " + sourceType
-                                                + " to " + targetType + ".\n");
-                            }
-                            sourceHelper._portDeclareTypes
-                                    .put(refName, "char*");
-                        } else if (targetType.equals("Double")) {
-                            if (sourceType.equals("Int")) {
-                                // C would take care of converting
-                                // from int to double.
-                            } else {
-                                throw new IllegalActionException(
-                                        "Port type conversion not handled "
-                                                + "-- from " + sourceType
-                                                + " to " + targetType + ".\n");
-                            }
-                        } else if (targetType.equals("Array")) {
-
-                        } else {
-
-                            // FIXME: we may have to handle other port
-                            // conversion types.
-
-                            //throw new IllegalActionException(
-                            //    "Port type conversion not handled -- from "
-                            //    + sourceType + " to " + targetType + ".\n");
-                            throw new IllegalActionException(
-                                    "Port type conversion not handled -- from "
-                                            + sourceType + " to " + targetType
-                                            + ".\n");
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
      *  @return The code generator helper.
@@ -982,8 +859,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         try {
             helperObject = constructor.newInstance(new Object[] { component });
-        } catch (Exception e) {
-            throw new IllegalActionException(component, e,
+        } catch (Exception ex) {
+            throw new IllegalActionException(component, ex,
                     "Failed to create helper class code generator.");
         }
 
@@ -1021,8 +898,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** 
      * A static list of all primitive types supported by the code generator. 
      */
-    protected static List _primitiveTypes = Arrays.asList(new String[] { "Int",
-            "Double", "String", "Boolean" });
+    protected static List _primitiveTypes = Arrays.asList(new String[] {
+    		"Int", "Double", "String", "Long", "Boolean"});
 
     /** A HashSet that contains all type functions referenced in the model.
      *  When the codegen kernel processes a $typeFunc() macro, it would add
