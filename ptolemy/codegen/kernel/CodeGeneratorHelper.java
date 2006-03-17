@@ -1398,7 +1398,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     
     /**
      * Generate the type conversion statement for the two given channels.
-     * @param sourc The given source channel.
+     * @param source The given source channel.
      * @param sink The given sink channel.
      * @return The type convert statement for assigning the converted source
      *  variable to the sink variable. 
