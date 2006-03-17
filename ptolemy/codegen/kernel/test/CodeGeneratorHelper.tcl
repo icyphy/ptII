@@ -1,10 +1,10 @@
-# Test StaticSchedulingCodeGenerator
+# Test CodeStream
 #
 # @Author: Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2005 The Regents of the University of California.
+# @Copyright (c) 2006 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -42,29 +42,11 @@ if {[info procs sdfModel] == "" } then {
 }
 
 #####
-test StaticSchedulingCodeGenerator-1.1 {constructor} {
+test CodeGeneratorHelper-1.1 {Constructor} {
     set model [sdfModel]
-    set sscc [java::new ptolemy.codegen.kernel.StaticSchedulingCodeGenerator \
-		  $model "myStaticSchedulingCodeGenerator"]
-    # For code coverage
-    $sscc generateModeTransitionCode [java::new StringBuffer]
 
-    # Call createOffsetVariablesIfNeeded for codeCoverage
-    list [$sscc toString] \
-	[$sscc createOffsetVariablesIfNeeded] \
-	[[$sscc getHeaderFiles] size] \
-	[[$sscc getSharedCode] size] \
-	[[$sscc getModifiedVariables] size]
-} {{ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.top.myStaticSchedulingCodeGenerator}} {} 0 0 0}
-
-#####
-test StaticSchedulingCodeGenerator-1.2 {no director} {
-    set compositeEntity [java::new ptolemy.kernel.CompositeEntity] 
-    set sscc [java::new ptolemy.codegen.kernel.StaticSchedulingCodeGenerator \
-		  $compositeEntity "sscc1_2"]
-    catch {$sscc generateBodyCode} errMsg
-    list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find helper class ptolemy.codegen.c.kernel.CompositeEntity
-  in .<Unnamed Object>.sscc1_2
-Because:
-ptolemy.codegen.c.kernel.CompositeEntity}}
+    set cgHelper [java::new ptolemy.codegen.kernel.CodeGeneratorHelper \
+		      $model]
+    set parseTree [$cgHelper getParseTreeCodeGenerator]
+    list [$parseTree generateFireCode]
+} {{/* ParseTreeCodeGenerator.generateFireCode() not implemented in codegen.kernel.CodeGenerator */}}

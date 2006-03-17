@@ -1,4 +1,4 @@
-# Test StaticSchedulingCodeGenerator
+# Test CodeStream
 #
 # @Author: Christopher Brooks
 #
@@ -42,29 +42,29 @@ if {[info procs sdfModel] == "" } then {
 }
 
 #####
-test StaticSchedulingCodeGenerator-1.1 {constructor} {
+test CodeStream-1.1 {Constructor that takes a CodeGeneratorHelper} {
     set model [sdfModel]
-    set sscc [java::new ptolemy.codegen.kernel.StaticSchedulingCodeGenerator \
-		  $model "myStaticSchedulingCodeGenerator"]
-    # For code coverage
-    $sscc generateModeTransitionCode [java::new StringBuffer]
 
-    # Call createOffsetVariablesIfNeeded for codeCoverage
-    list [$sscc toString] \
-	[$sscc createOffsetVariablesIfNeeded] \
-	[[$sscc getHeaderFiles] size] \
-	[[$sscc getSharedCode] size] \
-	[[$sscc getModifiedVariables] size]
-} {{ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.top.myStaticSchedulingCodeGenerator}} {} 0 0 0}
+    set cgHelper [java::new ptolemy.codegen.kernel.CodeGeneratorHelper \
+		      $model]
+    set codeStream [java::new ptolemy.codegen.kernel.CodeStream \
+			$cgHelper]
+    $codeStream append "Test 1.1"
+    list [$codeStream toString] \
+	[[$codeStream description] toString]
+} {{Test 1.1} {}}
 
 #####
-test StaticSchedulingCodeGenerator-1.2 {no director} {
-    set compositeEntity [java::new ptolemy.kernel.CompositeEntity] 
-    set sscc [java::new ptolemy.codegen.kernel.StaticSchedulingCodeGenerator \
-		  $compositeEntity "sscc1_2"]
-    catch {$sscc generateBodyCode} errMsg
-    list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Cannot find helper class ptolemy.codegen.c.kernel.CompositeEntity
-  in .<Unnamed Object>.sscc1_2
-Because:
-ptolemy.codegen.c.kernel.CompositeEntity}}
+test CodeStream-1.2 {Constructor that takes a String} {
+
+    set codeStream2 [java::new ptolemy.codegen.kernel.CodeStream \
+			"foo"]
+    $codeStream2 append "Test 1.2"
+    $codeStream2 toString
+} {Test 1.2}
+
+#####
+#test CodeStream-2.1 {append() two CodeStreams} {
+#    $codeStream append $codeStream2
+#    $codeStream toString
+#} {Test 1.1Test 1.2}
