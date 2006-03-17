@@ -26,7 +26,7 @@ Token Array_new(int size, int given, ...) {
     va_list argp; 
     int i;
     char elementType;
-    Token * element;
+    Token element;
     boolean doConvert = false;
 
     Token result;
@@ -34,36 +34,39 @@ Token Array_new(int size, int given, ...) {
     result.payload.Array = (ArrayToken) malloc(sizeof(struct array));
     result.payload.Array->size = size;
 
-    if (given > 0) {
-        va_start(argp, given);
-        element = va_arg(argp, Token *);
-        elementType = element->type;
-    }
-
-    // Allocate an new array of Tokens.
+	// Allocate an new array of Tokens.
     result.payload.Array->elements = (Token*) calloc(size, sizeof(Token));
-    for (i = 0; i < given; i++) {
-        if (element->type != elementType) {
-            doConvert = true;
 
-            // Get the max type.
-            if (element->type > elementType) {
-                elementType = element->type;
-            }
-        }
-        result.payload.Array->elements[i] = *element;
-        element = va_arg(argp, Token *);
-    }
+    if (given > 0) {
+		// Set the first element.
+        va_start(argp, given);
+		element = va_arg(argp, Token);
+		elementType = element.type;
+		result.payload.Array->elements[0] = element;
+
+		for (i = 1; i < given; i++) {
+			element = va_arg(argp, Token);
+			if (element.type != elementType) {
+				doConvert = true;
+
+				// Get the max type.
+				if (element.type > elementType) {
+					elementType = element.type;
+				}
+			}
+			result.payload.Array->elements[i] = element;
+		}
     
-    // If elements are not of the same type, 
-    // convert all the elements to the max type.
-    if (doConvert) {
-        for (i = 0; i < given; i++) {
-            // Don't cast to a Token here, the MS VisualC compiler fails
-            result.payload.Array->elements[i] = functionTable[elementType][FUNC_convert](result.payload.Array->elements[i]);
-        }
-    }
-    va_end(argp);
+		// If elements are not of the same type, 
+		// convert all the elements to the max type.
+		if (doConvert) {
+			for (i = 0; i < given; i++) {
+				// Don't cast to a Token here, the MS VisualC compiler fails
+				result.payload.Array->elements[i] = functionTable[elementType][FUNC_convert](result.payload.Array->elements[i]);
+			}
+		}
+	    va_end(argp);
+	}
     return result;
 }    
 /**/
@@ -105,7 +108,7 @@ Token Array_convert(Token token) {
         
         default:
             // FIXME: not finished
-            fprintf(stderr, "Conversion from an unsupported type.");
+            fprintf(stderr, "Convertion from a not supported type.");
             break;
     }
     return result;

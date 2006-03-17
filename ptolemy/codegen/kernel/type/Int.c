@@ -10,10 +10,10 @@ Token Int_print(Token thisToken);
 
 /***newBlock***/
 // make a new integer token from the given value.
-Token * Int_new(int i) {
-    Token *result = (Token *) malloc(sizeof(Token));
-    result->type = TYPE_Int;
-    result->payload.Int = i;
+Token Int_new(int i) {
+    Token result;
+    result.type = TYPE_Int;
+    result.payload.Int = i;
     return result;
 }
 /**/
@@ -37,7 +37,7 @@ Token Int_convert(Token token) {
         
         // FIXME: not finished
         default:
-            fprintf(stderr, "Conversion from an unsupported type.");
+            fprintf(stderr, "Convertion from a not supported type.");
             break;
     }    
     token.type = TYPE_Int;
