@@ -66,7 +66,7 @@ public class Distributor extends CCodeGeneratorHelper {
 
         ArrayList args = new ArrayList();
         args.add("");
-        String type = _getCodeGenTypeFromPtolemyType(actor.input.getType());
+        String type = _codeGenType(actor.input.getType());
         args.add(type);
         for (int i = 0; i < actor.output.getWidth(); i++) {
             args.set(0, new Integer(i));

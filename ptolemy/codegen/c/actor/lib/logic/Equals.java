@@ -66,7 +66,7 @@ public class Equals extends CCodeGeneratorHelper {
         ptolemy.actor.lib.logic.Equals actor = (ptolemy.actor.lib.logic.Equals) getComponent();
 
         String type = "";
-        type = _getCodeGenTypeFromPtolemyType(actor.input.getType());
+        type = _codeGenType(actor.input.getType());
         if (!_isPrimitiveType(type)) {
             type = "Token";
         }
