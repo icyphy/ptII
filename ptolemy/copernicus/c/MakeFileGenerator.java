@@ -42,10 +42,6 @@ import java.util.Iterator;
  @Pt.AcceptedRating Red (ankush)
  */
 public class MakeFileGenerator {
-    /** Dummy constructor.
-     */
-    private MakeFileGenerator() {
-    }
 
     /** Finds the filename corresponding to this class.
      *  @param className The name of the class.
