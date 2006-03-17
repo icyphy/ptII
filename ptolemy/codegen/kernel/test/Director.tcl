@@ -55,8 +55,12 @@ test Director-1.1 {Instantiate a Director, call a few methods} {
     $cgDirector setCodeGenerator $codeGenerator
 
     list \
-	[[$cgDirector getComponent] toString]
-} {{ptolemy.domains.sdf.kernel.SDFDirector {.top.}}}
+	[[$cgDirector getComponent] toString] \
+	[[$cgDirector getHeaderFiles] size] \
+	[[$cgDirector getSharedCode] size] \
+	[$cgDirector generateVariableDeclaration] \
+	[$cgDirector generateVariableInitialization]
+} {{ptolemy.domains.sdf.kernel.SDFDirector {.top.}} 0 0 {} {}}
 
 
 #####
