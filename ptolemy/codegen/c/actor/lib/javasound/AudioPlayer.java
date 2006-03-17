@@ -28,6 +28,7 @@
  */
 package ptolemy.codegen.c.actor.lib.javasound;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,14 +64,24 @@ public class AudioPlayer extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
         ptolemy.actor.lib.javasound.AudioPlayer actor = (ptolemy.actor.lib.javasound.AudioPlayer) getComponent();
-        if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
-            _codeStream.appendCodeBlock("fireBlock_8");
-        } else { // assume bitsPerSample == 16 
-            _codeStream.appendCodeBlock("fireBlock_16");
+        ArrayList args = new ArrayList();
+        args.add("");
+        // FIXME: not sure if this is really right.  How do we handle
+        // multiple ports?
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            String codeBlock;
+            if (Integer.parseInt(actor.bitsPerSample.getExpression()) == 8) {
+                codeBlock = "fireBlock_8";
+            } else { // assume bitsPerSample == 16 
+                codeBlock = "fireBlock_16";
+            }
+            code.append(_generateBlockCode(codeBlock, args));
         }
-        return processCode(_codeStream.toString());
+        return processCode(code.toString());
     }
 
     /**

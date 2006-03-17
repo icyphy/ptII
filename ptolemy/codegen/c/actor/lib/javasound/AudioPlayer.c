@@ -220,7 +220,7 @@
 /**/
 
 
-/*** fireBlock_8 ***/
+/*** fireBlock_8($channel) ***/
     SDL_PauseAudio(0);      /* Start the callback */
     
     // FIXME: we should not put the same sample into different channels
@@ -229,13 +229,13 @@
         // Input range [-1.0, 1.0] --> output range [0, 255]
         
         //Use the following line if RINT() is not defined
-        //$actorSymbol(convertedSample) = floor(($actorClass(clip)($ref(input)) * 127) + 128); //128 = 2^7
-        $actorSymbol(convertedSample) = rint(($actorClass(clip)($ref(input)) * 127) + 128); //128 = 2^7
+        //$actorSymbol(convertedSample) = floor(($actorClass(clip)($ref(input#$channel)) * 127) + 128); //128 = 2^7
+        $actorSymbol(convertedSample) = rint(($actorClass(clip)($ref(input#$channel)) * 127) + 128); //128 = 2^7
         $actorSymbol(putSample) ($actorSymbol(convertedSample), $actorSymbol(j));
     }
 /**/
 
-/*** fireBlock_16 ***/
+/*** fireBlock_16($channel) ***/
     SDL_PauseAudio(0);      /* Start the callback */
 
     // FIXME: we should not put the same sample into different channels
@@ -244,8 +244,8 @@
         // Input range [-1.0, 1.0] --> output range [0, 65535]
 
         //Use the following line if RINT() is not defined
-        //$actorSymbol(convertedSample) = floor(($actorClass(clip)($ref(input)) * 32767) + 32768); //32768 = 2^15
-        $actorSymbol(convertedSample) = rint(($actorClass(clip)($ref(input)) * 32767) + 32768); //32768 = 2^15
+        //$actorSymbol(convertedSample) = floor(($actorClass(clip)($ref(input#$channel)) * 32767) + 32768); //32768 = 2^15
+        $actorSymbol(convertedSample) = rint(($actorClass(clip)($ref(input#$channel)) * 32767) + 32768); //32768 = 2^15
         $actorSymbol(putSample) ($actorSymbol(convertedSample), $actorSymbol(j));
     }
 /**/
