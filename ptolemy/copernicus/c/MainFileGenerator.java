@@ -57,10 +57,11 @@ public class MainFileGenerator extends CodeGenerator {
     ///////////////////////////////////////////////////////////////////
     //////////        public methods      ///////////////
 
-    /** Generate the code for a the wrapper "main" C function that calls
+    /** Generate the code for the wrapper "main" C function that calls
      *  the main method of the appropriate class. It also generates other
      *  functions required for correct initialization.
      *  @param source The main class.
+     *  @return The code for the wrapper main() C function.
      */
     public String generate(SootClass source) {
         // Initialize the structures.

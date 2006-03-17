@@ -445,9 +445,10 @@ public class OverriddenMethodGenerator {
         return code.toString();
     }
 
-    /** Returns the code for the header of the overridden method. This is
-     * almost identical to
-     * NativeMethodGenerator._getStubHeader(SootMethod).
+    /** Returns the code for the header of the overridden method. This
+     *  is almost identical to
+     *  NativeMethodGenerator._getStubHeader(SootMethod).
+     *  @param method The overridden method.
      *
      *  @return The code for the header of the method.
      */

@@ -162,8 +162,8 @@ public class ExceptionTracker {
     }
 
     /** Initializes the class with a given body. This method must be called
-     *  before calling any of the other methods.  @param body The Body for
-     *  which exceptions are to be tracked.
+     *  before calling any of the other methods.
+     *  @param body The Body for which exceptions are to be tracked.
      */
     public void init(Body body) {
         _trapChain = body.getTraps();

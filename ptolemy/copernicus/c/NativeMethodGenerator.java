@@ -164,6 +164,7 @@ public class NativeMethodGenerator {
     }
 
     /** Returns the location of the hand-coded native library method bodies.
+     *  @return The location of the hand-coded native library method bodies.
      */
     public static String getNativeBodyLib() {
         return Options.v().get("runtimeDir") + "/native_bodies/";

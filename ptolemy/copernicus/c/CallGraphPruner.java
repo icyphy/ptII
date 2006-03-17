@@ -401,7 +401,8 @@ public class CallGraphPruner {
     }
 
     /** Gets the set of fields, methods and classes to be started off with.
-     * @return The set of nodes that are needed to start off with.
+     *  @param source The source class.
+     *  @return The set of nodes that are needed to start off with.
      */
     protected HashSet _getRoots(SootClass source) {
         // Using a HashSet prevents duplication.

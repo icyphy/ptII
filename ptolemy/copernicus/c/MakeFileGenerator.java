@@ -42,9 +42,9 @@ import java.util.Iterator;
  @Pt.AcceptedRating Red (ankush)
  */
 public class MakeFileGenerator {
-    /** Dummy constructor
+    /** Dummy constructor.
      */
-    public MakeFileGenerator() {
+    private MakeFileGenerator() {
     }
 
     /** Finds the filename corresponding to this class.

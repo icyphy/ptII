@@ -106,6 +106,7 @@ public class Context {
     /** Return true if and only if importing of referenced include files
      *  is presently disabled.
      *  @return True if and only if importing is disabled.
+     *  @see #setDisabledImports()
      */
     public boolean getDisableImports() {
         return _disableImports;
@@ -137,6 +138,7 @@ public class Context {
      *  references to other classes. Single class mode is used primarily
      *  for diagnostic purposes, and for rapid testing of new code.
      *  @return True if and only if single class mode translation is enabled.
+     *  @see #setSingleClassMode()
      */
     public static boolean getSingleClassMode() {
         return Options.v().get("compileMode").equals("singleClass");
@@ -167,13 +169,14 @@ public class Context {
     }
 
     /** Disable importing of referenced include files.
+     *  @see #getDisabledImports()
      */
     public void setDisableImports() {
         _disableImports = true;
     }
 
-    /** Turn on (enable) single class mode translation
-     *  (see {@link #getSingleClassMode()}).
+    /** Turn on (enable) single class mode translation.
+     *  @see #getSingleClassMode()
      */
     public static void setSingleClassMode() {
         Options.v().put("compileMode", "singleClass");

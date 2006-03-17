@@ -63,6 +63,7 @@ public class JavaToC {
      *  .h files).
      *  @param classPath The classpath to use during the conversion.
      *  @param className The name of the class to translate.
+     *  @exception IOException If there is a problem writing a file.
      */
     public static void convert(String classPath, String className)
             throws IOException {
@@ -130,6 +131,7 @@ public class JavaToC {
     /** Entry point for the JavaToC application. See {@link JavaToC} for
      *  instructions on usage.
      *  @param args Application arguments.
+     *  @exception IOException If there is a problem writing a file.
      */
     public static void main(String[] args) throws IOException {
         String classPath = args[0];
