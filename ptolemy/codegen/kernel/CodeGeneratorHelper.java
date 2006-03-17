@@ -1080,69 +1080,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
     }
 
-    /**
-     * Parse and type check the given name, and get the reference name,
-     * channel index and offset number.
-     * @param name The given name string.
-     * @return An array of three Strings, the first is the port name,
-     * the second is the channel and the third is the offset.
-     * @throws IllegalActionException Thrown if the name string is not 
-     *  in the proper format.
-     */
-    public String[] parseName(String name) throws IllegalActionException {
-        String[] result = new String[3];
-        StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
-
-        if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
-                && (tokenizer.countTokens() != 5)) {
-            throw new IllegalActionException(_component,
-                    "Bad formatted name string reference: " + name);
-        }
-
-        String portName = tokenizer.nextToken().trim();
-        String channel = null;
-        String offset = null;
-        if (tokenizer.hasMoreTokens()) {
-            String nextToken = tokenizer.nextToken();
-            if (nextToken.equals("#")) {
-                channel = tokenizer.nextToken().trim();
-
-                if (tokenizer.hasMoreTokens()) {
-                    if (!tokenizer.nextToken().equals(",")) {
-                        throw new IllegalActionException(_component,
-                                "Bad formatted name string reference: " + name);
-                    } else {
-                        offset = tokenizer.nextToken().trim();
-                    }
-                }
-            } else if (nextToken.equals(",")) {
-                offset = tokenizer.nextToken().trim();
-                if (tokenizer.hasMoreTokens()) {
-                    throw new IllegalActionException(_component,
-                            "Bad formatted name string reference: " + name);
-                }
-            }
-        }
-        if (channel == null) {
-            channel = "0";
-        }
-        if (offset == null) {
-            offset = "0";
-        }
-
-        try {
-            Integer.parseInt(channel); // type check for number format.
-            Integer.parseInt(offset); // type check for number format.
-        } catch (NumberFormatException ex) {
-            result[0] = portName;
-            // A variable index is passed as arguments
-        }
-        result[0] = portName;
-        result[1] = channel;
-        result[2] = offset;
-        return result;
-    }
-
     /** Process the specified code, replacing macros with their values.
      * @param code The code to process.
      * @return The processed code.
