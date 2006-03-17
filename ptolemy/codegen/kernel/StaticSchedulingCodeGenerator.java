@@ -34,7 +34,6 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.sched.StaticSchedulingDirector;
-import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Variable;
@@ -79,6 +78,18 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Create read and write offset variables if needed for the associated 
+     *  composite actor. It delegates to the director helper of the local 
+     *  director.
+     *  @return In this base clase, return the empty string. 
+     *  @exception IllegalActionException If the helper class cannot be found
+     *   or the director helper throws it.
+     */
+    public String createOffsetVariablesIfNeeded()
+            throws IllegalActionException {
+        return "";
+    }
+
     /** Generate the body code that lies between variable declaration
      *  and wrapup.
      *  @return The generated body code.
@@ -90,7 +101,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         code.append(comment("\nStatic schedule:"));
         CompositeEntity model = (CompositeEntity) getContainer();
 
-        TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
+        ActorCodeGenerator modelHelper = _getHelper(model);
 
         // NOTE: The cast is safe because setContainer ensures
         // the container is an Actor.
@@ -185,9 +196,19 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         CompositeEntity model = (CompositeEntity) getContainer();
-        TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
+        ActorCodeGenerator modelHelper = _getHelper(model);
         code.append(modelHelper.generateFireCode());
         return code.toString();
+    }
+
+    /** Generate mode transition code. 
+     *  <p> In this base class, do nothing.
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If the director helper throws it 
+     *   while generating mode transition code. 
+     */
+    public void generateModeTransitionCode(StringBuffer code)
+            throws IllegalActionException {
     }
 
     /**
@@ -228,9 +249,9 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  is not an instance of ActorCodeGenerator.
      *  @return The code generator helper.
      */
-    protected ComponentCodeGenerator _getHelper(NamedObj actor)
+    protected ActorCodeGenerator _getHelper(NamedObj actor)
             throws IllegalActionException {
-        ComponentCodeGenerator helperObject = super._getHelper(actor);
+        ActorCodeGenerator helperObject = super._getHelper(actor);
 
         if (!(helperObject instanceof ActorCodeGenerator)) {
             throw new IllegalActionException(this,

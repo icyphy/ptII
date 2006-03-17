@@ -46,7 +46,6 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.data.BooleanToken;
@@ -389,7 +388,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateFireFunctionCode());
         return code.toString();
     }
@@ -402,7 +401,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateIncludeFiles() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
         Iterator files = includingFiles.iterator();
@@ -428,7 +427,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         StringBuffer code = new StringBuffer();
         code.append(comment("\nInitialize " + getContainer().getFullName()));
 
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateInitializeCode());
         return code.toString();
     }
@@ -451,7 +450,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     + _model.getName() + " does not have a director.");
         }
 
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
         _modifiedVariables = compositeActorHelper.getModifiedVariables();
 
@@ -488,7 +487,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment("Generate shared code for "
                 + getContainer().getFullName()));
 
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
         Set sharedCodeBlocks = compositeActorHelper.getSharedCode();
 
@@ -526,7 +525,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment("Generate type resolution code for "
                 + getContainer().getFullName()));
 
-        //TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        //ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
         //Iterator actors = ((ptolemy.actor.CompositeActor) compositeActorHelper
         //        .getComponent()).deepEntityList().iterator();
@@ -693,7 +692,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             }
         }
 
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
         code.append(compositeActorHelper.generateVariableDeclaration());
         return code.toString();
@@ -727,7 +726,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             }
         }
 
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
 
         code.append(compositeActorHelper.generateVariableInitialization());
         return code.toString();
@@ -745,7 +744,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         StringBuffer code = new StringBuffer();
         code.append(comment("Wrapup " + getContainer().getFullName()));
 
-        TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateWrapupCode());
         return code.toString();
     }
@@ -946,10 +945,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return The code generator helper.
      *  @exception IllegalActionException If the helper class cannot be found.
      */
-    protected ComponentCodeGenerator _getHelper(NamedObj component)
+    protected ActorCodeGenerator _getHelper(NamedObj component)
             throws IllegalActionException {
         if (_helperStore.containsKey(component)) {
-            return (ComponentCodeGenerator) _helperStore.get(component);
+            return (ActorCodeGenerator) _helperStore.get(component);
         }
 
         String packageName = generatorPackage.stringValue();
@@ -988,14 +987,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     "Failed to create helper class code generator.");
         }
 
-        if (!(helperObject instanceof ComponentCodeGenerator)) {
+        if (!(helperObject instanceof ActorCodeGenerator)) {
             throw new IllegalActionException(this,
                     "Cannot generate code for this component: " + component
                             + ". Its helper class does not"
-                            + " implement componentCodeGenerator.");
+                            + " implement ActorodeGenerator.");
         }
 
-        ComponentCodeGenerator castHelperObject = (ComponentCodeGenerator) helperObject;
+        ActorCodeGenerator castHelperObject = (ActorCodeGenerator) helperObject;
 
         castHelperObject.setCodeGenerator(this);
 

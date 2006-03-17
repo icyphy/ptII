@@ -46,6 +46,16 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Create read and write offset variables if needed for the associated 
+     *  composite actor. It delegates to the director helper of the local 
+     *  director.
+     *  @return A string containing declared read and write offset variables. 
+     *  @exception IllegalActionException If the helper class cannot be found
+     *   or the director helper throws it.
+     */
+    public String createOffsetVariablesIfNeeded()
+            throws IllegalActionException;
+
     /** Generate into the specified string buffer the code associated
      *  with one firing of the container composite actor.
      *  @return The generated fire code.
@@ -61,6 +71,28 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException If thrown while generating fire code.
      */
     public String generateFireFunctionCode() throws IllegalActionException;
+
+    /** Generate mode transition code. It delegates to the director helper 
+     *  of the local director. The mode transition code generated in this 
+     *  method is executed after each global iteration, e.g., in HDF model. 
+     * 
+     *  @param code The string buffer that the generated code is appended to.
+     *  @exception IllegalActionException If the director helper throws it 
+     *   while generating mode transition code. 
+     */
+    public void generateModeTransitionCode(StringBuffer code)
+            throws IllegalActionException;
+    /** Generate the preinitialize code of the associated composite actor.
+     *  It first creates buffer size and offset map for its input ports and 
+     *  output ports. It then gets the result of generatePreinitializeCode() 
+     *  method of the local director helper.
+     *
+     *  @return The preinitialize code of the associated composite actor.
+     *  @exception IllegalActionException If the helper associated with
+     *   an actor throws it while generating preinitialize code for the actor
+     *   or while creating buffer size and offset map.
+     */
+    public String generatePreinitializeCode() throws IllegalActionException;
 
     /** Get the files needed by the code generated from this helper class.
      *  This base class returns an empty set.
