@@ -37,7 +37,7 @@ Token Double_convert(Token token) {
 
         // FIXME: not finished
         default:
-            fprintf(stderr, "Convertion from a not supported type.");
+            fprintf(stderr, "Conversion from an unsupported type.");
             break;
     }
     token.type = TYPE_Double;

@@ -30,7 +30,7 @@ Token Boolean_convert(Token token) {
     switch (token.type) {
         // FIXME: not finished
         default:
-            fprintf(stderr, "Convertion from a not supported type.");
+            fprintf(stderr, "Conversion from an unsupported type.");
             break;
     }    
     token.type = TYPE_Boolean;
