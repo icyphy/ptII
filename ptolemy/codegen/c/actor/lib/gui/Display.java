@@ -70,7 +70,7 @@ public class Display extends CCodeGeneratorHelper {
         _codeStream.clear();
 
         String type = "";
-        type = _getCodeGenTypeFromPtolemyType(actor.input.getType());
+        type = _codeGenType(actor.input.getType());
         if (!_isPrimitiveType(type)) {
             type = "Token";
         }
