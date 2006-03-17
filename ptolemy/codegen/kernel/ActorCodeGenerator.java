@@ -27,6 +27,8 @@
  */
 package ptolemy.codegen.kernel;
 
+import java.util.Set;
+
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -50,4 +52,56 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException If something goes wrong.
      */
     public String generateFireCode() throws IllegalActionException;
+
+    /** Generate The fire function code. This method is called when the firing
+     *  code of each actor is not inlined. Each actor's firing code is in a 
+     *  function with the same name as that of the actor.
+     * 
+     *  @return The fire function code.
+     *  @exception IllegalActionException If thrown while generating fire code.
+     */
+    public String generateFireFunctionCode() throws IllegalActionException;
+
+    /** Get the files needed by the code generated from this helper class.
+     *  This base class returns an empty set.
+     *  @return A set of strings that are header files needed by the code
+     *  generated from this helper class.
+     *  @exception IllegalActionException If something goes wrong.
+     */
+    public Set getHeaderFiles() throws IllegalActionException;
+
+    /** Return a set of parameters that will be modified during the execution
+     *  of the model. The actor gets those variables if it implements 
+     *  ExplicitChangeContext interface or it contains PortParameters. 
+     * 
+     *  @return a set of parameters that will be modified.
+     *  @exception IllegalActionException If an actor throws it while getting 
+     *   modified variables. 
+     */
+    public Set getModifiedVariables() throws IllegalActionException;
+
+    /**
+     * Generate the shared code. This is the first generate method invoked out
+     * of all, so any initialization of variables of this helper should be done
+     * in this method. In this base class, return an empty set. Subclasses may
+     * generate code for variable declaration, defining constants, etc.
+     * @return An empty set in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public Set getSharedCode() throws IllegalActionException;
+
+    /** Generate variable declarations for inputs and outputs and parameters.
+     *  Append the declarations to the given string buffer.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableDeclaration() throws IllegalActionException;
+
+    /** Generate variable initialization for the referenced parameters.
+     *  @return code The generated code.
+     *  @exception IllegalActionException If the helper class for the model
+     *   director cannot be found.
+     */
+    public String generateVariableInitialization() throws IllegalActionException;
 }

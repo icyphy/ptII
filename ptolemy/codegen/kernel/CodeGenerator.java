@@ -490,7 +490,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         TypedCompositeActor compositeActorHelper = (TypedCompositeActor) _getHelper(getContainer());
 
-        Set sharedCodeBlocks = compositeActorHelper.generateSharedCode();
+        Set sharedCodeBlocks = compositeActorHelper.getSharedCode();
 
         Iterator blocks = sharedCodeBlocks.iterator();
 

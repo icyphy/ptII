@@ -27,6 +27,9 @@
  */
 package ptolemy.codegen.kernel;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
@@ -185,6 +188,35 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         TypedCompositeActor modelHelper = (TypedCompositeActor) _getHelper(model);
         code.append(modelHelper.generateFireCode());
         return code.toString();
+    }
+
+    /**
+     * Generate the shared code. In this base class, return an empty set.
+     * @return An empty set in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public Set getSharedCode() throws IllegalActionException {
+        return new HashSet();
+    }
+
+    /** Get the files needed by the code generated from this helper class.
+     *  This base class returns an empty set.
+     *  @return A set of strings that are header files needed by the code
+     *  generated from this helper class.
+     *  @exception IllegalActionException If something goes wrong.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        return new HashSet();
+    }
+
+    /** Return a set of parameters that will be modified during the execution
+     *  of the model. 
+     * 
+     *  @return an empty set. 
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public Set getModifiedVariables() throws IllegalActionException {
+        return new HashSet();
     }
 
     ///////////////////////////////////////////////////////////////////

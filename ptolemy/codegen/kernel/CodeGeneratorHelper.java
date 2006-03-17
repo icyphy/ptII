@@ -194,18 +194,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /**
-     * Generate the shared code. This is the first generate method invoked out
-     * of all, so any initialization of variables of this helper should be done
-     * in this method. In this base class, return an empty set. Subclasses may
-     * generate code for variable declaration, defining constants, etc.
-     * @return An empty set in this base class.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public Set generateSharedCode() throws IllegalActionException {
-        return new HashSet();
-    }
-
-    /**
      * Generate the type conversion fire code. This method is called by the 
      * Director to append necessary fire code to handle type conversion.
      * @return The generated code.
@@ -788,6 +776,18 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
         }
         return refName;
+    }
+
+    /**
+     * Generate the shared code. This is the first generate method invoked out
+     * of all, so any initialization of variables of this helper should be done
+     * in this method. In this base class, return an empty set. Subclasses may
+     * generate code for variable declaration, defining constants, etc.
+     * @return An empty set in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
+     */
+    public Set getSharedCode() throws IllegalActionException {
+        return new HashSet();
     }
 
     /** Return a list of channel objects that are the sink input ports given

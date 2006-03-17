@@ -236,10 +236,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating shared code for the actor.
      */
-    public Set generateSharedCode() throws IllegalActionException {
+    public Set getSharedCode() throws IllegalActionException {
 
         Set sharedCode = new HashSet();
-        sharedCode.addAll(super.generateSharedCode());
+        sharedCode.addAll(super.getSharedCode());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
                 .deepEntityList().iterator();
@@ -247,7 +247,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            sharedCode.addAll(helperObject.generateSharedCode());
+            sharedCode.addAll(helperObject.getSharedCode());
         }
 
         return sharedCode;

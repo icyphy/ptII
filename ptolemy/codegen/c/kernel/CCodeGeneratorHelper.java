@@ -117,9 +117,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @return An empty set in this base class.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public Set generateSharedCode() throws IllegalActionException {
+    public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
-        sharedCode.addAll(super.generateSharedCode());
+        sharedCode.addAll(super.getSharedCode());
         _codeStream.appendCodeBlocks(".*shared.*");
         sharedCode.add(processCode(_codeStream.toString()));
         return sharedCode;
