@@ -485,7 +485,7 @@ public class Director extends Attribute implements Executable {
      *  Note that this method is not made abstract to facilitate the use
      *  of the test suite.
      *  @return The time of the next iteration.
-     *  @see #getModelTime(Time)
+     *  @see #getModelTime()
      */
     public Time getModelNextIterationTime() {
         return _currentTime;
