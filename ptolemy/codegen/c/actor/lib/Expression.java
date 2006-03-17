@@ -119,7 +119,12 @@ public class Expression extends CCodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         super.generatePreinitializeCode();
 
-        ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
+        if (_cParseTreeCodeGenerator == null) {
+            // FIXME: why does this need to be done here?
+            _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
+        }
+        ptolemy.actor.lib.Expression actor =
+            (ptolemy.actor.lib.Expression) getComponent();
         Token result;
 
         try {
@@ -159,8 +164,8 @@ public class Expression extends CCodeGeneratorHelper {
         _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
 
         Set codeBlocks = new HashSet();
-        codeBlocks
-                .add(processCode(_cParseTreeCodeGenerator.generateSharedCode()));
+        codeBlocks.add(processCode(
+                               _cParseTreeCodeGenerator.generateSharedCode()));
         return codeBlocks;
     }
 
@@ -177,7 +182,8 @@ public class Expression extends CCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
-        code.append(processCode(_cParseTreeCodeGenerator.generateWrapupCode()));
+        code.append(processCode(
+                            _cParseTreeCodeGenerator.generateWrapupCode()));
 
         // Free up memory
         _cParseTreeCodeGenerator = null;
