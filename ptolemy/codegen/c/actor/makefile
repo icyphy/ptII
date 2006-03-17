@@ -59,8 +59,7 @@ PTCLASSALLJARS = \
 JSRCS = \
 	TypedCompositeActor.java
 
-OTHER_FILES_TO_BE_JARED = \
-	TypedCompositeActor.c
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
