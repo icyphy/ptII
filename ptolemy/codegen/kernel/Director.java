@@ -161,7 +161,7 @@ public class Director implements ActorCodeGenerator {
             CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             // Initialize code for the actor.
             code.append(helperObject.generateInitializeCode());
-            code.append(helperObject.generateTypeConvertInitializeCode());
+
             // Update write offset due to initial tokens produced. 
             Iterator outputPorts = actor.outputPortList().iterator();
             while (outputPorts.hasNext()) {
