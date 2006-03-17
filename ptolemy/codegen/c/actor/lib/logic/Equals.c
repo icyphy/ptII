@@ -24,7 +24,7 @@
 
 /*** TokenEqualsBlock ($inputWidth)***/
 	for ($actorSymbol(i) = 0; $actorSymbol(i) < $inputWidth - 1; $actorSymbol(i)++) {
-	    if ($typeFunc($token(input, $actorSymbol(i)), equals(), $token(input, $actorSymbol(i) + 1)) {
+	    if ($typeFunc($ref(input, $actorSymbol(i)), equals(), $ref(input, $actorSymbol(i) + 1)) {
 			$ref(output) = false;
 			break;
 		}	

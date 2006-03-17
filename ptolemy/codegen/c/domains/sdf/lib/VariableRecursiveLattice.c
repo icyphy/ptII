@@ -38,7 +38,7 @@
     }
 
     // FIXME: we need to check if (newCoefficients.hasToken(0)) in the future
-    $ref(reflectionCoefficients) = $token(newCoefficients);
+    $ref(reflectionCoefficients) = $ref(newCoefficients);
    
    //--------------- reallocate -------------------------
     //if ((_backward == null) || (valueLength != (_backward.length - 1))) {
@@ -67,7 +67,7 @@
         $actorSymbol(_forwardCache)[0] = $ref(input); // _forward(0) = x(n)
 
         for ($actorSymbol(i) = 1; $actorSymbol(i) <= $actorSymbol(M); $actorSymbol(i)++) {
-            $actorSymbol(k) = $token(reflectionCoefficients).payload.Array->elements[$actorSymbol(M) - $actorSymbol(i)].payload.Double;
+            $actorSymbol(k) = $ref(reflectionCoefficients).payload.Array->elements[$actorSymbol(M) - $actorSymbol(i)].payload.Double;
             $actorSymbol(_forwardCache)[$actorSymbol(i)] = ($actorSymbol(k) * $actorSymbol(_backwardCache)[$actorSymbol(i)]) + $actorSymbol(_forwardCache)[$actorSymbol(i) - 1];
         }
 
@@ -75,7 +75,7 @@
 
         // Backward:  Compute the w's for the next round
         for ($actorSymbol(i) = 1; $actorSymbol(i) < $actorSymbol(M); $actorSymbol(i)++) {
-            $actorSymbol(k) = -$token(reflectionCoefficients).payload.Array->elements[$actorSymbol(M) - 1 - $actorSymbol(i)].payload.Double;
+            $actorSymbol(k) = -$ref(reflectionCoefficients).payload.Array->elements[$actorSymbol(M) - 1 - $actorSymbol(i)].payload.Double;
             $actorSymbol(_backwardCache)[$actorSymbol(i)] = $actorSymbol(_backwardCache)[$actorSymbol(i) + 1] + ($actorSymbol(k) * $actorSymbol(_forwardCache)[$actorSymbol(i) + 1]);
         }
 

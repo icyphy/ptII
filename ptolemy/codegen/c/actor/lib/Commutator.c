@@ -3,10 +3,10 @@
 /**/
 
 /*** primitiveToTokenFireBlock($channel, $type) ***/
-    $token(output, $channel) = $new($type, $ref(input#$channel));
+    $ref(output, $channel) = $new($type, $ref(input#$channel));
 /**/
 
 /*** tokenFireBlock($channel, $type) ***/
-    $token(output, $channel) = $token(input#$channel);
+    $ref(output, $channel) = $ref(input#$channel);
 /**/
 

@@ -12,6 +12,6 @@
 
 /*** TokenPrintBlock($name, $channel) ***/
     printf("$name: ");
-    $typeFunc($token(input#$channel), print());
+    $typeFunc($ref(input#$channel), print());
     printf("\n");
 /**/

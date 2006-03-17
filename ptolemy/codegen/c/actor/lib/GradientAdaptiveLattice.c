@@ -5,7 +5,7 @@
     double $actorSymbol(_backwardCache)[$actorSymbol(_order)+1];
     double $actorSymbol(_forward)[$actorSymbol(_order)+1];
     double $actorSymbol(_forwardCache)[$actorSymbol(_order)+1];
-    Token  $actorSymbol(_reflectionCoefficients) = $val(reflectionCoefficients);
+    Token  $actorSymbol(_reflectionCoefficients);
     double $actorSymbol(_estimatedErrorPower)[$actorSymbol(_order)+1];
     double $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(_order)+1];
     double $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(_order)];
@@ -23,10 +23,11 @@
 /**/
 
 /*** initBlock ***/
-    $token(adaptedReflectionCoefficients) = $new(Array($actorSymbol(_order), 0));
-    //$token(adaptedReflectionCoefficients).payload.Array->elementsType = TYPE_Double;
+    $actorSymbol(_reflectionCoefficients) = $val(reflectionCoefficients);
+    $ref(adaptedReflectionCoefficients) = $new(Array($actorSymbol(_order), 0));
+    //$ref(adaptedReflectionCoefficients).payload.Array->elementsType = TYPE_Double;
     for ($actorSymbol(i) = 0; $actorSymbol(i) < $actorSymbol(_order); $actorSymbol(i)++) {
-        $token(adaptedReflectionCoefficients).payload.Array->elements[$actorSymbol(i)].type = TYPE_Double;
+        $ref(adaptedReflectionCoefficients).payload.Array->elements[$actorSymbol(i)].type = TYPE_Double;
     }
     
     for ($actorSymbol(i) = 0; $actorSymbol(i) <= $actorSymbol(_order); $actorSymbol(i)++) {
@@ -82,7 +83,7 @@
             }
         }
 
-        $token(adaptedReflectionCoefficients).payload.Array->elements[$actorSymbol(i) - 1].payload.Double = $actorSymbol(newCoefficient);
+        $ref(adaptedReflectionCoefficients).payload.Array->elements[$actorSymbol(i) - 1].payload.Double = $actorSymbol(newCoefficient);
         $actorSymbol(_reflectionCoefficientsCache)[$actorSymbol(i) - 1] = $actorSymbol(newCoefficient);
         $actorSymbol(_estimatedErrorPowerCache)[$actorSymbol(i)] = $actorSymbol(newError);
     }
