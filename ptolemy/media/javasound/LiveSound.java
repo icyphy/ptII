@@ -1262,6 +1262,27 @@ public class LiveSound {
         }
     }
 
+    /** Return a string that describes the possible encodings for an
+     *  AudioFormat.
+     *  @param format The audio format.
+     *  @return A string describing the audio formats available.
+     */   
+    private static String _encodings(AudioFormat format) {
+        // Print out the possible encodings
+        AudioFormat.Encoding[] encodings = 
+            AudioSystem.getTargetEncodings(format);
+        StringBuffer encodingDescriptions = new StringBuffer();
+        for (int i = 0; i < encodings.length; i++) {
+            encodingDescriptions.append(encodings[i] + "\n");
+            AudioFormat[] formats =
+                AudioSystem.getTargetFormats(encodings[i], format);
+            for (int j = 0; j < formats.length; j++) {
+                encodingDescriptions.append("  " + formats[j] + "\n");
+            }
+        }
+        return encodingDescriptions.toString();
+    }
+
     private static void _flushCaptureBuffer() {
         _targetLine.flush();
     }
@@ -1314,21 +1335,9 @@ public class LiveSound {
             // garbage collection, etc. is an issue.
             _targetLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (IllegalArgumentException ex) {
-            // Print out the possible encodings
-            AudioFormat.Encoding[] encodings = 
-                AudioSystem.getTargetEncodings(format);
-            StringBuffer encodingDescriptions = new StringBuffer();
-            for (int i = 0; i < encodings.length; i++) {
-                encodingDescriptions.append(encodings[i] + "\n");
-                AudioFormat[] formats =
-                    AudioSystem.getTargetFormats(encodings[i], format);
-                for (int j = 0; j < formats.length; j++) {
-                    encodingDescriptions.append("  " + formats[j] + "\n");
-                }
-            }
             IOException exception = new IOException(
                     "Incorrect argument, possible encodings for\n"
-                    + format + "\n are:\n" + encodingDescriptions);
+                    + format + "\n are:\n" + _encodings(format));
             exception.initCause(ex);
             throw exception;
         } catch (LineUnavailableException ex2) {
@@ -1370,6 +1379,12 @@ public class LiveSound {
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.
             _sourceLine.open(format, _bufferSize * _frameSizeInBytes);
+        } catch (IllegalArgumentException ex) {
+            IOException exception = new IOException(
+                    "Incorrect argument, possible encodings for\n"
+                    + format + "\n are:\n" + _encodings(format));
+            exception.initCause(ex);
+            throw exception;
         } catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for "
                     + "real-time audio playback: " + ex);
