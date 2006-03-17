@@ -86,6 +86,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param component The associated component.
      */
     public CodeGeneratorHelper(NamedObj component) {
+        // FIXME: Why is this a namedObj when the analyzeActor()
+        // method requires an Actor? 
         _component = component;
 
         _analyzeActor();
