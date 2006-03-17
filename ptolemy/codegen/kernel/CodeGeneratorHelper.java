@@ -1320,7 +1320,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         
         /** 
          * Whether this channel is the same as the given object.
-         * @param channel The given object.
+         * @param object The given object.
          * @return True if this channel is the same reference as the given
          * 	object, otherwise false;
          */

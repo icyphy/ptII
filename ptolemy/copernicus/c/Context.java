@@ -106,7 +106,7 @@ public class Context {
     /** Return true if and only if importing of referenced include files
      *  is presently disabled.
      *  @return True if and only if importing is disabled.
-     *  @see #setDisabledImports()
+     *  @see #setDisableImports()
      */
     public boolean getDisableImports() {
         return _disableImports;
@@ -169,7 +169,7 @@ public class Context {
     }
 
     /** Disable importing of referenced include files.
-     *  @see #getDisabledImports()
+     *  @see #getDisableImports()
      */
     public void setDisableImports() {
         _disableImports = true;
