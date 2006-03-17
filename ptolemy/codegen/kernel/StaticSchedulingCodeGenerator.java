@@ -70,7 +70,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  @exception IllegalActionException If super class throws it.
      *  @exception NameDuplicationException If super class throws it.
      */
-    public StaticSchedulingCodeGenerator(NamedObj container, String name)
+    public StaticSchedulingCodeGenerator(CompositeEntity container,
+            String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
