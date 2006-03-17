@@ -47,7 +47,7 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Yellow (mankit)
  * @Pt.AcceptedRating Yellow (mankit)
  */
-public class AudioReader extends CCodeGeneratorHelper {
+public class AudioReader extends AudioSDLActor {
     /**
      * Constructor method for the AudioReader helper.
      * @param actor the associated actor.
@@ -57,24 +57,6 @@ public class AudioReader extends CCodeGeneratorHelper {
     }
 
     
-    /** Add the necessary include and library directives to the makefile.
-     *  @param codeGenerator The code generator to which the include and
-     *  library directives are added.
-     */ 
-    public static void addIncludesAndLibraries(CodeGenerator codeGenerator) {
-        // This method is static so that all the Audio* actors can call it 
-        codeGenerator.addInclude("-I/usr/local/include/SDL");
-
-        if (StringUtilities.getProperty("os.name").equals("SunOS")) { 
-            codeGenerator.addLibrary(" -Wl,-Bstatic -D_REENTRANT "
-                    + "-R/usr/local/lib -lSDL -Wl,-Bdynamic "
-                    + "-lpthread -lposix4 -lm -L/usr/openwin/lib "
-                    + "-R/usr/openwin/lib -lX11 -lXext");
-        } else {
-            codeGenerator.addLibrary("-L/usr/local/lib -lsdl");
-        }
-    }
-
     /**
      * Generate initialization code.
      * Get the file path from the actor's fileOrURL parameter. Read the
@@ -106,22 +88,5 @@ public class AudioReader extends CCodeGeneratorHelper {
         args.add(fileNameString);
         _codeStream.appendCodeBlock("initBlock", args);
         return processCode(_codeStream.toString());
-    }
-
-    /**
-     * Get the files needed by the code generated for the
-     * AudioReader actor.
-     * @return A set of Strings that are names of the files
-     *  needed by the code generated for the AudioReader actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        super.getHeaderFiles();
-        Set files = new HashSet();
-        files.add("<math.h>");
-        files.add("<stdio.h>");
-        files.add("\"SDL.h\"");
-        files.add("\"SDL_audio.h\"");
-        return files;
     }
 }

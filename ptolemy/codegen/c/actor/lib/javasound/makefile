@@ -52,10 +52,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	AudioReader.java \
 	AudioPlayer.java \
+	AudioSDLActor.java \
 	AudioWriter.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c)
+	AudioReader.c \
+	AudioPlayer.c \
+	AudioWriter.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

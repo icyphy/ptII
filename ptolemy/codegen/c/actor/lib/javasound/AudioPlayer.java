@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Yellow (mankit)
  * @Pt.AcceptedRating Yellow (mankit)
  */
-public class AudioPlayer extends CCodeGeneratorHelper {
+public class AudioPlayer extends AudioSDLActor {
     /**
      * Constructor method for the AudioPlayer helper.
      * @param actor the associated actor.
@@ -105,26 +105,5 @@ public class AudioPlayer extends CCodeGeneratorHelper {
         }
 
         return processCode(_codeStream.toString());
-    }
-
-    /**
-     * Get the files needed by the code generated for the
-     * AudioPlayer actor.
-     * @return A set of strings that are names of the files
-     *  needed by the code generated for the AudioPlayer actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        super.getHeaderFiles();
-
-        AudioReader.addIncludesAndLibraries(_codeGenerator);
-
-        Set files = new HashSet();
-        files.add("<stdio.h>");
-        files.add("<math.h>");
-        files.add("\"SDL.h\"");
-        files.add("\"SDL_audio.h\"");
-        files.add("\"SDL_thread.h\"");
-        return files;
     }
 }
