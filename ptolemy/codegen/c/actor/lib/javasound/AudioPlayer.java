@@ -117,6 +117,8 @@ public class AudioPlayer extends CCodeGeneratorHelper {
     public Set getHeaderFiles() throws IllegalActionException {
         super.getHeaderFiles();
 
+        AudioReader.addIncludesAndLibraries(_codeGenerator);
+
         Set files = new HashSet();
         files.add("<stdio.h>");
         files.add("<math.h>");

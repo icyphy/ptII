@@ -34,7 +34,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 /**
  * A helper class for ptolemy.actor.lib.javasound.AudioReader.
@@ -54,6 +56,25 @@ public class AudioReader extends CCodeGeneratorHelper {
         super(actor);
     }
 
+    
+    /** Add the necessary include and library directives to the makefile.
+     *  @param codeGenerator The code generator to which the include and
+     *  library directives are added.
+     */ 
+    public static void addIncludesAndLibraries(CodeGenerator codeGenerator) {
+        // This method is static so that all the Audio* actors can call it 
+        codeGenerator.addInclude("-I/usr/local/include/SDL");
+
+        if (StringUtilities.getProperty("os.name").equals("SunOS")) { 
+            codeGenerator.addLibrary(" -Wl,-Bstatic -D_REENTRANT "
+                    + "-R/usr/local/lib -lSDL -Wl,-Bdynamic"
+                    + "-lpthread -lposix4 -lm -L/usr/openwin/lib "
+                    + "-R/usr/openwin/lib -lX11 -lXext");
+        } else {
+            codeGenerator.addLibrary("-L/usr/local/lib -lsdl");
+        }
+    }
+
     /**
      * Generate initialization code.
      * Get the file path from the actor's fileOrURL parameter. Read the
@@ -67,10 +88,6 @@ public class AudioReader extends CCodeGeneratorHelper {
      */
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
-
-        // Add includes and libraries to the makefile
-        _codeGenerator.addInclude("-I/usr/local/include/SDL");
-        _codeGenerator.addLibrary("-L/usr/local/lib -lsdl");
 
         ptolemy.actor.lib.javasound.AudioReader actor = (ptolemy.actor.lib.javasound.AudioReader) getComponent();
         String fileNameString;
