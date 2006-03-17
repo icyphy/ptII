@@ -37,6 +37,34 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs sdfModel] == "" } then {
+    source [file join $PTII util testsuite models.tcl]
+}
+
 #####
-test StaticSchedulingCodeGenerator-1.1 {dummy test} {
-} {}
+test StaticSchedulingCodeGenerator-1.1 {constructor} {
+    set model [sdfModel]
+    set sscc [java::new ptolemy.codegen.kernel.StaticSchedulingCodeGenerator \
+		  $model "myStaticSchedulingCodeGenerator"]
+    # For code coverage
+    $sscc generateModeTransitionCode [java::new StringBuffer]
+
+    # Call createOffsetVariablesIfNeeded for codeCoverage
+    list [$sscc toString] \
+	[$sscc createOffsetVariablesIfNeeded] \
+	[[$sscc getSharedCode] size] \
+	[[$sscc getHeaderFiles] size] \
+	[[$sscc getModifiedVariables] size]
+} {{ptolemy.codegen.kernel.StaticSchedulingCodeGenerator {.top.myStaticSchedulingCodeGenerator}} {} 0 0 0}
+
+#####
+test StaticSchedulingCodeGenerator-1.2 {no director} {
+    set compositeEntity [java::new ptolemy.kernel.CompositeEntity] 
+    set sscc [java::new ptolemy.codegen.kernel.StaticSchedulingCodeGenerator \
+		  $compositeEntity "sscc1_2"]
+    catch {$sscc generateBodyCode} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Cannot find helper class ptolemy.codegen.c.kernel.CompositeEntity
+  in .<Unnamed Object>.sscc1_2
+Because:
+ptolemy.codegen.c.kernel.CompositeEntity}}
