@@ -1327,7 +1327,7 @@ public class LiveSound {
                 }
             }
             IOException exception = new IOException(
-                    "Incorrect argument, possible encodings for "
+                    "Incorrect argument, possible encodings for\n"
                     + format + "\n are:\n" + encodingDescriptions);
             exception.initCause(ex);
             throw exception;
