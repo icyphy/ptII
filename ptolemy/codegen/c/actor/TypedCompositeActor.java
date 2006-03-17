@@ -228,13 +228,13 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return result.toString();
     }
 
-    /** Generate a set of shared codes of the associated composite actor.
-     *  It returns the result of calling generateSharedCode() method of 
-     *  the helpers of all contained actors.
+    /** Generate a set of shared code fragments of the associated
+     *  composite actor.  It returns the result of calling
+     *  getSharedCode() method of the helpers of all contained actors.
      *  
-     *  @return a set of shared codes.
+     *  @return a set of shared code fragments.
      *  @exception IllegalActionException If the helper associated with
-     *   an actor throws it while generating shared code for the actor.
+     *  an actor throws it while generating shared code for the actor.
      */
     public Set getSharedCode() throws IllegalActionException {
 

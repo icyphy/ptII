@@ -105,7 +105,7 @@ public class Comparator extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public Set generateSharedCode() throws IllegalActionException {
+    public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
         sharedCode.addAll(super.getHeaderFiles());
         return sharedCode;

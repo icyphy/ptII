@@ -140,7 +140,7 @@ public class FSMActor extends CCodeGeneratorHelper {
      *  @return a set of shared codes.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public Set generateSharedCode() throws IllegalActionException {
+    public Set getSharedCode() throws IllegalActionException {
         Set set = new HashSet();
         set.addAll(super.getSharedCode());
         set.add("#define true 1\n#define false 0\n");

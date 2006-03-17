@@ -1,4 +1,5 @@
 /* A code generation helper class for actor.lib.string.StringIndexOf
+
  @Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -52,10 +53,9 @@ public class StringIndexOf extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate fire code.
-     * Read the <code>fireBlock</code> from StringIndexOf.c,
-     * replace macros with their values and append the processed code              
-     * block to the given code buffer.
+     * Generate fire code.  Read the <code>fireBlock</code> from
+     * StringIndexOf.c, replace macros with their values and append
+     * the processed code block to the given code buffer.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -98,14 +98,13 @@ public class StringIndexOf extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate shared code.
-     * Read the  from StringIndexOf.c,
-     * replace macros with their values and return the processed code string.
+     * Get shared code.  Read the from StringIndexOf.c, replace macros
+     * with their values and return the processed code string.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public Set generateSharedCode() throws IllegalActionException {
+    public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
         sharedCode.addAll(super.getHeaderFiles());
 

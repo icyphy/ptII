@@ -152,15 +152,15 @@ public class Expression extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate shared code.
-     * This method reads the <code>sharedBlock</code> from Expression.c,
-     * replaces macros with their values and returns the processed code string.
+     * Get shared code.  This method reads the
+     * <code>sharedBlock</code> from Expression.c, replaces macros
+     * with their values and returns the processed code string.
      * @return A set of strings that are code shared by multiple instances of
      *  the same actor.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public Set generateSharedCode() throws IllegalActionException {
+    public Set getSharedCode() throws IllegalActionException {
         _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
 
         Set codeBlocks = new HashSet();
