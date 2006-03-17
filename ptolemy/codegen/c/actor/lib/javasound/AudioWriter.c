@@ -2,9 +2,9 @@
     FILE* $actorSymbol(filePtr);
 /**/
 
-/*** initBlock ***/    
-    if (!($actorSymbol(filePtr) = fopen ($ref(fileOrURL),"w"))) {
-        fprintf(stderr,"ERROR: cannot open file \"%s\" for AudioWriter actor.\n", $ref(fileOrURL));
+/*** initBlock($fileName) ***/
+    if (!($actorSymbol(filePtr) = fopen ($fileName,"w"))) {
+        fprintf(stderr,"ERROR: cannot open file $fileName for AudioWriter actor.\n");
         exit(1);
     }
 /**/

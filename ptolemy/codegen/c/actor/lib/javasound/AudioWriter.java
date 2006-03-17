@@ -67,6 +67,39 @@ public class AudioWriter extends CCodeGeneratorHelper {
         return code.toString();
     }
 
+    /**
+     * Generate initialization code.
+     * Get the file path from the actor's fileOrURL parameter. Read the
+     * <code>initBlock</code> from AudioWriter.c and pass the file path
+     * string as an argument to code block. Replace macros with their values
+     * and return the processed code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the file path parameter is invalid
+     *  or the code stream encounters an error in processing the specified code
+     *  block(s).
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
+
+        ptolemy.actor.lib.javasound.AudioWriter actor = (ptolemy.actor.lib.javasound.AudioWriter) getComponent();
+        String fileNameString;
+        try {
+            // Handle $CLASSPATH, return a file name with forward slashes.
+            fileNameString = actor.pathName;
+            // Under Windows, convert /C:/foo/bar to C:/foo/bar
+            fileNameString = new File(fileNameString).getCanonicalPath()
+                    .replace('\\', '/');
+        } catch (IOException e) {
+            throw new IllegalActionException("Cannot find file: "
+                    + actor.fileOrURL.getExpression());
+        }
+
+        ArrayList args = new ArrayList();
+        args.add(fileNameString);
+        _codeStream.appendCodeBlock("initBlock", args);
+        return processCode(_codeStream.toString());
+    }
+
     /** Get the files needed by the code generated for the
      *  AudioWriter actor.
      *  @return A set of strings that are names of the files
@@ -79,4 +112,5 @@ public class AudioWriter extends CCodeGeneratorHelper {
         files.add("<stdio.h>");
         return files;
     }
+
 }
