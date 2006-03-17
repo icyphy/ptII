@@ -1313,9 +1313,27 @@ public class LiveSound {
             // Larger values increase latency but may be required if
             // garbage collection, etc. is an issue.
             _targetLine.open(format, _bufferSize * _frameSizeInBytes);
-        } catch (LineUnavailableException ex) {
+        } catch (IllegalArgumentException ex) {
+            // Print out the possible encodings
+            AudioFormat.Encoding[] encodings = 
+                AudioSystem.getTargetEncodings(format);
+            StringBuffer encodingDescriptions = new StringBuffer();
+            for (int i = 0; i < encodings.length; i++) {
+                encodingDescriptions.append(encodings[i] + "\n");
+                AudioFormat[] formats =
+                    AudioSystem.getTargetFormats(encodings[i], format);
+                for (int j = 0; j < formats.length; j++) {
+                    encodingDescriptions.append("  " + formats[j] + "\n");
+                }
+            }
+            IOException exception = new IOException(
+                    "Incorrect argument, possible encodings for "
+                    + format + "\n are:\n" + encodingDescriptions);
+            exception.initCause(ex);
+            throw exception;
+        } catch (LineUnavailableException ex2) {
             throw new IOException("Unable to open the line for "
-                    + "real-time audio capture: " + ex);
+                    + "real-time audio capture: " + ex2);
         }
 
         //int targetBufferLengthInBytes = _transferSize * _frameSizeInBytes;
