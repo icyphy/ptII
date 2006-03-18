@@ -1406,7 +1406,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     	
         if (sinkType == BaseType.DOUBLE){
         	if (sourceType == BaseType.INT) {
-        		result += "(double)" + sourceRef;
+        		result += "(double) " + sourceRef;
         	} else {
                 throw new IllegalActionException(
                 		"Conversion not handled. Converting from '"
@@ -1428,16 +1428,16 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
     	} else if (sinkType == BaseType.GENERAL) {
     		if (_isPrimitiveType(sourceType)) {
-        		result += _codeGenType(sourceType) + "_new(" + sourceRef + ")";
+        		result += "$new(" + _codeGenType(sourceType) + "(" + sourceRef + "))";
     		} else {
     			//It is a Token type, so we can just assign directly.
     			result += sourceRef;
     		}
     	} else {
     		// Use function table to convert between specific Token types.
-    		result += processCode("$typeFunc(sinkRef, convert(sourceRef))");
+    		result += "$typeFunc(sinkRef, convert(sourceRef))";
     	}
-    	return result + ";\n";
+    	return processCode(result) + ";\n";
 	}
 
 
