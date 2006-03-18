@@ -76,6 +76,7 @@ import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluator
@@ -152,7 +153,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         } catch (Exception ex) {
             // If an exception occurs, then bind the exception into
             // the trace and return the trace.
-            _trace(ex.toString());
+            _trace(KernelException.stackTraceToString(ex));
         }
 
         _scope = null;
@@ -383,17 +384,22 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
             value = _scope.get(node.getFunctionName());
         }
 
-        // The following block of codes applies when multirate expression is used.
-        int index = functionName.indexOf("Array");
-        if (index > 0) {
-            String label = value.toString();
-            if (label.startsWith("object(")) {
-                label = label.substring(7, label.length() - 1);
-                int position = label.indexOf("(@)");
-                _fireCode.append(label.substring(0, position + 1));
-                _evaluateChild(node, 1);
-                _fireCode.append(label.substring(position + 2));
-                return;
+
+        // The following block of codes applies when multirate
+        // expression is used.  Anonymous functions have no name!
+
+        if (functionName != null) {
+            int index = functionName.indexOf("Array");
+            if (index > 0) {
+                String label = value.toString();
+                if (label.startsWith("object(")) {
+                    label = label.substring(7, label.length() - 1);
+                    int position = label.indexOf("(@)");
+                    _fireCode.append(label.substring(0, position + 1));
+                    _evaluateChild(node, 1);
+                    _fireCode.append(label.substring(position + 2));
+                    return;
+                }
             }
         }
 
@@ -589,9 +595,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
         if (!(test instanceof BooleanToken)) {
             throw new IllegalActionException(
-                    "Functional-if must branch on a boolean, but instead was "
-                            + test.toString() + " an instance of "
-                            + test.getClass().getName());
+                    "Functional-if must branch on a boolean, but instead test "
+                    + (test == null ? "was null " : "was " + test.toString()
+                            + "an instance of "
+                            + test.getClass().getName()));
         }
 
         boolean value = ((BooleanToken) test).booleanValue();
