@@ -1398,29 +1398,28 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     	String sinkRef = 
     		((CodeGeneratorHelper) _getHelper(sink.port.getContainer()))
     		.getReference(sink.port.getName() + "#" + sink.channelNumber);
-
     	Type sourceType = ((TypedIOPort) source.port).getType();
     	Type sinkType = ((TypedIOPort) sink.port).getType();
 
     	String result = sinkRef + " = ";
     	
         if (sinkType == BaseType.DOUBLE){
-        	if (sourceType == BaseType.INT) {
-        		result += "(double) " + sourceRef;
-        	} else {
+            if (sourceType == BaseType.INT) {
+                result += "(double) " + sourceRef;
+            } else {
                 throw new IllegalActionException(
-                		"Conversion not handled. Converting from '"
-                		+ sourceType + "' to '" + sinkType + "'\n");
-        	}
+                        "Conversion not handled. Converting from '"
+                        + sourceType + "' to '" + sinkType + "'\n");
+            }
         } else if (sinkType == BaseType.STRING) {
-    		if (sourceType == BaseType.BOOLEAN) {
-        		result += "btoa(" + sinkRef + ")";    			
-    		} else if (sourceType == BaseType.INT) {
-        		result += "itoa(" + sinkRef + ")";
+            if (sourceType == BaseType.BOOLEAN) {
+                result += "btoa(" + sourceRef + ")";
+            } else if (sourceType == BaseType.INT) {
+                result += "itoa(" + sourceRef + ")";
             } else if (sourceType == BaseType.LONG) {
-        		result += "ltoa(" + sinkRef + ")";
+                result += "ltoa(" + sourceRef + ")";
             } else if (sourceType == BaseType.DOUBLE) {
-        		result += "ftoa(" + sinkRef + ")";
+                result += "ftoa(" + sourceRef + ")";
             } else {
                 throw new IllegalActionException(
                 		"Conversion not handled. Converting from '"
