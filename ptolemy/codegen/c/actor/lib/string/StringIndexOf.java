@@ -27,10 +27,12 @@
  */
 package ptolemy.codegen.c.actor.lib.string;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -61,10 +63,25 @@ public class StringIndexOf extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
+        ptolemy.actor.lib.string.StringIndexOf actor = (ptolemy.actor.lib.string.StringIndexOf) getComponent();
+
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
+        ArrayList args = new ArrayList();
+        //int startIndexValue = ((IntToken) startIndex.getToken()).intValue();
+        //args.add(new Integer(startIndexValue));
+        if (((BooleanToken) actor.searchForwards.getToken()).booleanValue()) {
+            args.add(new Integer(1));
+        } else {
+            args.add(new Integer(-1));
+        }
+
+        if (((BooleanToken) actor.ignoreCase.getToken()).booleanValue()) {
+            code.append(_generateBlockCode("matchCaseFireBlock", args));
+        } else {
+            code.append(_generateBlockCode("ignoreCaseFireBlock", args));
+        }
+        return processCode(code.toString());
     }
 
     /**
