@@ -1097,6 +1097,13 @@ public class Manager extends NamedObj implements Runnable {
 
     /** Return a string with the elapsed time since startTime,
      *  and the amount of memory used.
+     *  the value returned by <code>(new Date()).getTime()</code>.
+     *  @param startTime The start time in milliseconds.  For example,
+     *  the value returned by <code>(new Date()).getTime()</code>.
+     *  @param totalMemory The total amount of memory used in kilobytes.
+     *  @param freeMemory The total amount of memory free in kilobytes.
+     *  @return A string with the elapsed time since startTime, and
+     *  the amount of memory used.
      */
     public static String timeAndMemory(long startTime, long totalMemory,
             long freeMemory) {

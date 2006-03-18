@@ -527,6 +527,7 @@ public class Director extends Attribute implements Executable {
      *  times.
      *
      *  @return The current time.
+     *  @see #setModelTime(Time)   
      */
     public Time getModelTime() {
         return _currentTime;

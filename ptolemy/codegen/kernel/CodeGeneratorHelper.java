@@ -1385,6 +1385,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @param sink The given sink channel.
      * @return The type convert statement for assigning the converted source
      *  variable to the sink variable. 
+     * @exception IllegalActionException If there is a problem getting the
+     * helpers for the ports or if the conversion cannot be handled.
      */
     protected String _generateTypeConvertMethod (
     		Channel source, Channel sink) throws IllegalActionException {
