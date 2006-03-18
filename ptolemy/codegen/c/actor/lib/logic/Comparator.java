@@ -61,83 +61,23 @@ public class Comparator extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        code.append(_generateBlockCode("fireBlock"));
-        return code.toString();
-    }
-
-    /**
-     * Generate initialize code.
-     * Read the  from Comparator.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-
-        return code.toString();
-    }
-
-    /**
-     * Generate preinitialize code.
-     * Reads the  from Comparator.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-
-        return code.toString();
-    }
-
-    /**
-     * Generate shared code.
-     * Read the  from Comparator.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public Set getSharedCode() throws IllegalActionException {
-        Set sharedCode = new HashSet();
-        sharedCode.addAll(super.getHeaderFiles());
-        return sharedCode;
-    }
-
-    /**
-     * Generate wrap up code.
-     * Read the  from Comparator.c, 
-     * replace macros with their values and append the processed code block
-     * to the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateWrapupCode());
-
-        return code.toString();
-    }
-
-    /**
-     * Get the files needed by the code generated for the
-     * Comparator actor.
-     * @return A set of Strings that are names of the header files
-     *  needed by the code generated for the Comparator actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
-        files.addAll(super.getHeaderFiles());
-        files.add("<string.h>");
-        return files;
+        super.generateFireCode();
+        ptolemy.actor.lib.logic.Comparator actor = 
+        	(ptolemy.actor.lib.logic.Comparator) getComponent();
+        
+        String comparison = actor.comparison.getExpression();
+        
+        if (comparison.equals(">")) {
+        	_codeStream.appendCodeBlock("GTBlock");
+        } else if (comparison.equals(">=")) {
+        	_codeStream.appendCodeBlock("GEBlock");
+        } else if (comparison.equals("<")) {
+        	_codeStream.appendCodeBlock("LTBlock");
+        } else if (comparison.equals("<=")) {
+        	_codeStream.appendCodeBlock("LEBlock");
+        } else if (comparison.equals("==")) {
+        	_codeStream.appendCodeBlock("EQBlock");
+        }
+        return processCode(_codeStream.toString());
     }
 }
