@@ -164,7 +164,7 @@ Node ptolemy.data.expr.ASTPtShiftNode evaluated to 32
 
 test Expression-16.1 {visitFunctionApplicationNode} {
     parseTreeTraceTest {(function(x:double) x*5.0) (10.0)}
-} {} {Why does this have null(10.0}
+} {} {Why does this have null 10.0}
 
 test Expression-16.2 {visitFunctionApplicationNode} {
     parseTreeTraceTest {map(function(x:int) x+3, {0, 2, 3})}
@@ -204,6 +204,32 @@ test Expression-16.3 {visitFunctionApplicationNode} {
     		[$parseTreeCodeGenerator generateFireCode]]
     list $r1 $r2
 } {} {known failure}
+
+test Expression-16.4 {visitFunctionApplicationNode} {
+    parseTreeTraceTest {iterate(function(x:int) x+3, 5, 0)}
+} {} {Why does this have iterate(, 5, 0)}
+
+
+test Expression-16.5 {visitFunctionApplicationNode, cover _evaluateArrayIndex} {
+    parseTreeTraceTest {{1,2}(1)}
+} {{null(1$new(Array(2, 2, $new(Int(1)), $new(Int(2))))}} \
+{why does this have null in it}
+
+test Expression-16.5 {visitFunctionApplicationNode, cover _evaluateMatrixIndex} {
+    parseTreeTraceTest {[1, 2; 3, 4](0,0)}
+} {   {null(0, 0((Token*) $new(Matrix(2, 2, $new(Int(1)), TYPE_Int, $new(Int(2)), TYPE_Int, $new(Int(3)), TYPE_Int, $new(Int(4)), TYPE_Int)))}
+} {Why Does this have null in it}
+
+
+test Expression-17.1 {visitRecordConstructNode} {
+    parseTreeTraceTest {{a=1,b=2}}
+} {{Entering node ptolemy.data.expr.ASTPtRecordConstructNode
+  Entering node ptolemy.data.expr.ASTPtLeafNode
+  Node ptolemy.data.expr.ASTPtLeafNode evaluated to 1
+  Entering node ptolemy.data.expr.ASTPtLeafNode
+  Node ptolemy.data.expr.ASTPtLeafNode evaluated to 2
+Node ptolemy.data.expr.ASTPtRecordConstructNode evaluated to {a = 1, b = 2}
+} 12}
 
 
 # I've commented this out. The ParseTreeCodeGenerator should not be 
