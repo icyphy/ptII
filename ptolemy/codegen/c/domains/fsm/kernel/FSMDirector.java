@@ -161,6 +161,7 @@ public class FSMDirector extends Director {
                     // fire the actor
                     if (inline) {
                         code.append(actorHelper.generateFireCode());
+                        code.append(actorHelper.generateTypeConvertFireCode());
                     } else {
                         code.append(CodeGeneratorHelper
                                 .generateName((NamedObj) actors[i])

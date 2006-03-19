@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
@@ -50,13 +51,13 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ModelScope;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.kernel.Entity;
+import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -136,7 +137,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateFireCode() throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {       
         return "\n/* fire " + getComponent().getName() + " */\n";
     }
 
@@ -1390,18 +1391,42 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     protected String _generateTypeConvertMethod (
     		Channel source, Channel sink) throws IllegalActionException {
-
+        
     	// The references are associated with their own helper, so we need
     	// to find the associated helper.    	
-    	String sourceRef = 
-    		((CodeGeneratorHelper) _getHelper(source.port.getContainer()))
-    		.getReference(source.port.getName() + "#" + source.channelNumber);
+        String sourcePortChannel = source.port.getName() + "#" + source.channelNumber;
+    	String sourceRef = ((CodeGeneratorHelper) _getHelper
+                (source.port.getContainer())).getReference(sourcePortChannel);
 
-    	String sinkRef = 
-    		((CodeGeneratorHelper) _getHelper(sink.port.getContainer()))
-    		.getReference(sink.port.getName() + "#" + sink.channelNumber);
+        String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber;
+        // For composite actor, generate a variable corresponding to 
+        // the inside receiver of an output port.
+        if (sink.port.getContainer() instanceof CompositeActor && sink.port.isOutput()) {
+            sinkPortChannel = "@" + sinkPortChannel; 
+        }
+    	String sinkRef = ((CodeGeneratorHelper) _getHelper
+                (sink.port.getContainer())).getReference(sinkPortChannel);
+        // When the sink port is contained by a modal controller, it is 
+        // possible that the port is both input and output port. we need
+        // to pay special attention. Directly calling getReference() will
+        // treat it as output port and this is not correct.
+        if (sink.port.getContainer() instanceof ModalController) {
+            sinkRef = generateName(sink.port);
+            if (sink.port.isMultiport()) {
+                sinkRef = sinkRef + "[" + sink.channelNumber + "]";
+            }
+        }
+        
     	Type sourceType = ((TypedIOPort) source.port).getType();
     	Type sinkType = ((TypedIOPort) sink.port).getType();
+        
+        // In a modal model, a refinement may have an output port which is
+        // not connected inside, in this case the type of the port is 
+        // unknown and there is no need to generate type conversion code
+        // because there is no token transferred from the port.
+        if (sourceType == BaseType.UNKNOWN) {
+            return "";
+        }
 
     	String result = sinkRef + " = ";
     	

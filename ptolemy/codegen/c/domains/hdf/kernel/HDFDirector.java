@@ -238,6 +238,7 @@ public class HDFDirector extends SDFDirector {
 
                         // generate fire code for the actor
                         code.append(helper.generateFireCode());
+                        code.append(helper.generateTypeConvertFireCode());
 
                         // update buffer offset after firing each actor once
                         Iterator ports = ((Entity) actor).portList().iterator();

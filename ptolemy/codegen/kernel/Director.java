@@ -108,8 +108,9 @@ public class Director implements ActorCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-            code.append(helperObject.generateFireCode());
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            code.append(helper.generateFireCode());
+            code.append(helper.generateTypeConvertFireCode());
         }
         return code.toString();
     }

@@ -95,6 +95,7 @@ public class CaseDirector extends Director {
             // fire the refinement
             if (inline) {
                 code.append(refinementHelper.generateFireCode());
+                code.append(refinementHelper.generateTypeConvertFireCode());
             } else {
                 code.append(CodeGeneratorHelper.generateName(refinement)
                         + "();\n");

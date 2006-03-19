@@ -14,12 +14,12 @@ static int $actorSymbol(count) = 0;
     fprintf($actorSymbol(filePtr), "ReuseDataSets: on\n");
 /**/
 
-/***annotateBlock(<annotation>)***/
-    fprintf($actorSymbol(filePtr), "<annotation>\n");
+/***annotateBlock($annotation)***/
+    fprintf($actorSymbol(filePtr), "$annotation\n");
 /**/
 
-/***writeFile(<channel>)***/
-    fprintf($actorSymbol(filePtr),"%d %g\n", $actorSymbol(count), $ref(input#<channel>));
+/***writeFile($channel)***/
+    fprintf($actorSymbol(filePtr),"%d %g\n", $actorSymbol(count), $ref(input#$channel));
 /**/
 
 /***countIncrease***/

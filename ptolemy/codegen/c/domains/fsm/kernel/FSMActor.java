@@ -36,9 +36,10 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
-import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
-import ptolemy.codegen.kernel.ActorCodeGenerator;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.kernel.ActorCodeGenerator;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
+import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
@@ -337,10 +338,11 @@ public class FSMActor extends CCodeGeneratorHelper {
 
                 if (actors != null) {
                     for (int i = 0; i < actors.length; i++) {
-                        ActorCodeGenerator helper = (ActorCodeGenerator) _getHelper((NamedObj) actors[i]);
+                        CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actors[i]);
                         // fire the actor
                         if (inline) {
                             codeBuffer.append(helper.generateFireCode());
+                            codeBuffer.append(helper.generateTypeConvertFireCode());
                         } else {
                             codeBuffer
                                     .append(generateName((NamedObj) actors[i])
