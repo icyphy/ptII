@@ -1461,19 +1461,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         }
     }
 
-    /** Evaluate the given parse tree in the scope given to the
-     *  constructor of this class.
-     *  @param node The root of the parse tree to evaluate.
-     *  @return The resulting token.
-     *  @exception IllegalActionException If an parse error occurs.
-     */
-    protected ptolemy.data.Token _evaluateParseTree(ASTPtRootNode node)
-            throws IllegalActionException {
-        // Evaluate the value of the root node.
-        node.visit(this);
-        return _evaluatedChildToken;
-    }
-
     /** Evaluate the specified function.  The function must be defined
      *  as one of the registered functions with PtParser.
      *  @param functionName The function name.
