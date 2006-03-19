@@ -32,6 +32,7 @@ OLD
 */devel
 */junk/*
 */logs/*
+*/doc/ptdoc/*
 */tclIndex
 */.glimpse_exclude
 */ptolemy/copernicus/java/cg/*
