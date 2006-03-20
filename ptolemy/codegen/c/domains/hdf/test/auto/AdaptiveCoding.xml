@@ -42,9 +42,9 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A noisy channel">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A channel without error">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 25.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
