@@ -314,12 +314,13 @@ public class SDFDirector extends Director {
             receivers = port.getReceivers();
         } else if (port.isOutput()) {
             receivers = port.getInsideReceivers();
-        } else {
-            throw new IllegalActionException(port,
-                    "Port is neither an input nor an output.");
         }
+        // else {
+        //    throw new IllegalActionException(port,
+        //           "Port is neither an input nor an output.");
+        //}
 
-        try {
+        //try {
             int size = 0;
 
             for (int copy = 0; copy < receivers[channelNumber].length; copy++) {
@@ -329,13 +330,25 @@ public class SDFDirector extends Director {
                 if (copySize > size) {
                     size = copySize;
                 }
+                
+                // When an output port of a composite actor is directly
+                // connected to an input port of the same composite actor,
+                // calling getCapacity() will return 0. Therefore we use
+                // the rate to determine the buffer size.
+                if (port.isOutput()) {
+                    copySize = DFUtilities.getRate(port);
+                    if (copySize > size) {
+                        size = copySize;
+                    }
+                }
             }
 
             return size;
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            throw new IllegalActionException(port, "Channel out of bounds: "
-                    + channelNumber);
-        }
+        //} 
+        //catch (ArrayIndexOutOfBoundsException ex) {
+        //    throw new IllegalActionException(port, "Channel out of bounds: "
+        //            + channelNumber);
+        //}
     }
 
     /** Check to see if variables are needed to represent read and
