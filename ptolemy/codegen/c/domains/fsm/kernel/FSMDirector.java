@@ -181,14 +181,16 @@ public class FSMDirector extends Director {
                                     + ") {\n");
                             for (int k = 0; k < rates.length; k++) {
                                 code.append("case " + k + ":\n");
-                                int rate = rates[k][portNumber];
-                                if (port.isInput()) {
-                                    _updatePortOffset(port, code, rate);
-                                } else {
-                                    _updateConnectedPortsOffset(port, code,
-                                            rate);
+                                if (rates[k] != null) {
+                                    int rate = rates[k][portNumber];
+                                    if (port.isInput()) {
+                                        _updatePortOffset(port, code, rate);
+                                    } else {
+                                        _updateConnectedPortsOffset(port, code,
+                                                rate);
+                                    }
+                                    code.append("break;\n");
                                 }
-                                code.append("break;\n");
                             }
                             code.append("}\n");
                         } else {
