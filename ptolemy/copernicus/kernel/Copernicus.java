@@ -585,7 +585,7 @@ public class Copernicus {
      *  and String values like "../../..".
      *  @return  A string with the keys properly substituted with
      *  their corresponding values.
-     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(String, Map)
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(String, Map)}
      */
     public static String substitute(String input, Map substituteMap) {
         return CodeGeneratorUtilities.substitute(input, substituteMap);
@@ -600,7 +600,7 @@ public class Copernicus {
      *  @param namedObj The NamedObj that contains Parameters to
      *  be searched for in inputFileName.
      *  @return The contents of inputFileName after doing the substitutions
-     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(String, NamedObj)
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(String, NamedObj)}
      */
     public static String substitute(String inputFileName, NamedObj namedObj)
             throws FileNotFoundException, IOException {
@@ -616,7 +616,7 @@ public class Copernicus {
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
      *  @see #substitute(String, Map, String)
-     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(BufferedReader, Map, String)
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(BufferedReader, Map, String)}
      */
     public static void substitute(BufferedReader inputFile, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
@@ -633,7 +633,7 @@ public class Copernicus {
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
      *  @see #substitute(BufferedReader, Map, String)
-     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(String, Map, String);
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(String, Map, String)}
      */
     public static void substitute(String inputFileName, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
