@@ -30,6 +30,11 @@
 
 /***fireBlock***/
     //$actorSymbol(charReturned) = fscanf($actorSymbol(filePtr), "%s", $ref(output));
+    if ($ref(endOfFile)) {
+        // FIXME: This seems wrong, how do we stop execution?
+        break;
+    }
+
     $actorSymbol(index) = 0;
     do {
         $actorSymbol(charRead) = fgetc($actorSymbol(filePtr));
