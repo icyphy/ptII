@@ -53,7 +53,7 @@ public class FileReader extends CCodeGeneratorHelper {
      * Constructor method for the LineReader helper.
      * @param actor the associated actor.
      */
-    public FileReader(ptolemy.actor.lib.io.LineReader actor) {
+    public FileReader(ptolemy.actor.lib.io.FileReader actor) {
         super(actor);
     }
 
