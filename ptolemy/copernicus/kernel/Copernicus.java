@@ -48,6 +48,7 @@ import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.MoMLApplication;
+import ptolemy.codegen.kernel.CodeGeneratorUtilities;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -447,38 +448,12 @@ public class Copernicus {
     /** Given a NamedObj, generate a HashMap containing String key/value
      *  pairs where each key is a Parameter contained in the namedObj
      *  argument, and each value is the value of the Parameter.
+     *  @param namedObj The NamedObj that contains Parameters.
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#newMap(NamedObj)}
      */
     public static HashMap newMap(NamedObj namedObj)
             throws IllegalActionException {
-        HashMap substituteMap = new HashMap();
-        Iterator attributes = namedObj.attributeList().iterator();
-
-        while (attributes.hasNext()) {
-            Attribute attribute = (Attribute) attributes.next();
-
-            if (attribute instanceof Variable) {
-                Variable variable = (Variable) attribute;
-
-                // If getToken() fails, make sure that you are calling
-                // setExpression with a string that has double quotes.
-                String value = variable.getToken().toString();
-
-                // Strip out any leading and trailing double quotes
-                if (value.startsWith("\"") && (value.length() > 2)) {
-                    value = value.substring(1, value.length() - 1);
-                }
-
-                substituteMap.put("@" + variable.getName() + "@", value);
-            }
-        }
-
-        //         System.out.println("The map for " + namedObj +":");
-        //         Iterator keys = substituteMap.keySet().iterator();
-        //         while (keys.hasNext()) {
-        //             String key = (String)keys.next();
-        //             System.out.println(key + "\t" + (String)substituteMap.get(key));
-        //         }
-        return substituteMap;
+        return CodeGeneratorUtilities.newMap(namedObj);
     }
 
     /** Given a string that names a file or URL, try to
@@ -488,27 +463,11 @@ public class Copernicus {
      *  @exception FileNotFoundException If the file cannot be found.
      *  @exception IOException If there were problems creating
      *  the BufferedReader.
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#openAsFileOrURL(String)}
      */
     public static BufferedReader openAsFileOrURL(String inputFileName)
             throws FileNotFoundException, IOException {
-        BufferedReader inputFile;
-
-        try {
-            inputFile = new BufferedReader(new FileReader(inputFileName));
-        } catch (IOException ex) {
-            // Try it as a resource
-            URL inputFileURL = Thread.currentThread().getContextClassLoader()
-                    .getResource(inputFileName);
-
-            if (inputFileURL == null) {
-                throw ex;
-            }
-
-            inputFile = new BufferedReader(new InputStreamReader(inputFileURL
-                    .openStream()));
-        }
-
-        return inputFile;
+        return CodeGeneratorUtilities.openAsFileOrURL(inputFileName);
     }
 
     /** Read in a MoML class, either as a top level model or
@@ -626,22 +585,10 @@ public class Copernicus {
      *  and String values like "../../..".
      *  @return  A string with the keys properly substituted with
      *  their corresponding values.
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(String, Map)
      */
     public static String substitute(String input, Map substituteMap) {
-        // At first glance it would appear that we could use StringTokenizer
-        // however, the token is really the String @codeBase@, not
-        // the @ character.  StringTokenizer has problems with
-        // "@codebase", which reports as having one token, but
-        // should not be substituted since it is not "@codebase@"
-        Iterator keys = substituteMap.keySet().iterator();
-
-        while (keys.hasNext()) {
-            String key = (String) keys.next();
-            input = StringUtilities.substitute(input, key,
-                    (String) substituteMap.get(key));
-        }
-
-        return input;
+        return CodeGeneratorUtilities.substitute(input, substituteMap);
     }
 
     /** Read in the contents of inputFileName, and for each Parameter
@@ -653,42 +600,11 @@ public class Copernicus {
      *  @param namedObj The NamedObj that contains Parameters to
      *  be searched for in inputFileName.
      *  @return The contents of inputFileName after doing the substitutions
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(String, NamedObj)
      */
     public static String substitute(String inputFileName, NamedObj namedObj)
             throws FileNotFoundException, IOException {
-        Map substituteMap;
-
-        try {
-            substituteMap = newMap(namedObj);
-        } catch (IllegalActionException ex) {
-            // IOException does not have a constructor that takes a
-            // cause argument.
-            IOException exception = new IOException("Problem generating a "
-                    + "substitution map for " + namedObj.getName());
-            exception.initCause(ex);
-            throw exception;
-        }
-
-        URL inputFileURL = Thread.currentThread().getContextClassLoader()
-                .getResource(inputFileName);
-
-        if (inputFileURL == null) {
-            throw new FileNotFoundException("Failed to find '" + inputFileName
-                    + "' as a resource");
-        }
-
-        BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                inputFileURL.openStream()));
-        String inputLine;
-        StringBuffer output = new StringBuffer();
-        String lineSeparator = System.getProperty("line.separator");
-
-        while ((inputLine = inputReader.readLine()) != null) {
-            output.append(substitute(inputLine + lineSeparator, substituteMap));
-        }
-
-        inputReader.close();
-        return output.toString();
+        return CodeGeneratorUtilities.substitute(inputFileName, namedObj);
     }
 
     /** Read in the contents of inputFile, and replace each matching
@@ -700,19 +616,12 @@ public class Copernicus {
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
      *  @see #substitute(String, Map, String)
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(BufferedReader, Map, String)
      */
     public static void substitute(BufferedReader inputFile, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
-        PrintWriter outputFile = new PrintWriter(new BufferedWriter(
-                new FileWriter(outputFileName)));
-        String inputLine;
-
-        while ((inputLine = inputFile.readLine()) != null) {
-            outputFile.println(substitute(inputLine, substituteMap));
-        }
-
-        inputFile.close();
-        outputFile.close();
+        CodeGeneratorUtilities.substitute(inputFile, substituteMap,
+                outputFileName);
     }
 
     /** Read in the contents of inputFileName, and replace each
@@ -724,11 +633,13 @@ public class Copernicus {
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
      *  @see #substitute(BufferedReader, Map, String)
+     *  @deprecated See {@link ptolemy.codegen.kernel.CodeGeneratorUtilities#substitute(String, Map, String);
      */
     public static void substitute(String inputFileName, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
-        BufferedReader inputFile = openAsFileOrURL(inputFileName);
-        substitute(inputFile, substituteMap, outputFileName);
+        CodeGeneratorUtilities.substitute(inputFileName, substituteMap,
+                outputFileName);
+
     }
 
     ///////////////////////////////////////////////////////////////////
