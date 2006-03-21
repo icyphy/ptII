@@ -56,6 +56,7 @@ JSRCS = \
 	ActorCodeGenerator.java \
 	CodeGenerator.java \
 	CodeGeneratorHelper.java \
+	CodeGeneratorUtilities.java \
 	CodeStream.java \
 	ComponentCodeGenerator.java \
 	Director.java \

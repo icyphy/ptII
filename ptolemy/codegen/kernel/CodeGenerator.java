@@ -45,7 +45,6 @@ import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
-import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.FileParameter;
@@ -1109,7 +1108,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // Add substitutions for all the parameter.
             // For example, @generatorPackage@ will be replaced with
             // the value of the generatorPackage.
-            substituteMap = Copernicus.newMap(this);
+            substituteMap = CodeGeneratorUtilities.newMap(this);
             substituteMap.put("@modelName@", _sanitizedModelName);
             substituteMap
                     .put("@PTCGIncludes@", _concatenateElements(_includes));
@@ -1135,7 +1134,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         try {
             try {
-                makefileTemplateReader = Copernicus
+                makefileTemplateReader = CodeGeneratorUtilities
                         .openAsFileOrURL(makefileTemplateName);
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "Failed to open \""
@@ -1144,7 +1143,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
             _executeCommands.stdout("Reading \"" + makefileTemplateName
                     + "\", writing \"" + makefileOutputName + "\"");
-            Copernicus.substitute(makefileTemplateReader, substituteMap,
+            CodeGeneratorUtilities.substitute(makefileTemplateReader, substituteMap,
                     makefileOutputName);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Failed to read \""
