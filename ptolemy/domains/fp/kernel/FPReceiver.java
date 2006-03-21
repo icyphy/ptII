@@ -37,28 +37,30 @@ import ptolemy.kernel.util.IllegalActionException;
 //// FPReceiver
 
 /**
- The receiver for the Fixed Point (FP) domain. This receiver has capacity 1.  
- <p> 
- The status of this receiver can be either <i>known</i> or <i>unknown</i>. 
- A receiver has a known status if the receiver is either known to contain a 
- token or known not to contain a token.  
- <p> 
- During the fire() method of an iteration, this receiver changes its status 
- from unknown to known when the put() or clear() methods are called. Once the 
- status of a receiver becomes known, the token contained by the receiver 
- cannot be changed. Otherwise, an IllegalOutputException will be thrown. The 
- status of receiver changes from known to unknown when the reset() method is 
- called. The reset() method deletes the token contained by the receiver.
- The FPDirector calls the reset() method at its initialize() and postfire() 
- methods. An actor cannot change the status of a receiver to unknown.
+ The receiver for use with FixedPointDirector or any of its subclasses.
+ This receiver has capacity 1. 
+ The status of this receiver can be either <i>known</i> or <i>unknown</i>.
+ If it is known, then it can be either <i>present</i> or <i>absent</i>.
+ If it is present, then it has a token, which provides a value.
  <p>
- The isKnown() method returns true if the receiver has a known status. 
- The hasRoom() method returns true if the receiver has a unknown status. 
+ At first, an instance of this class has status unknown.
+ The clear() method makes the status known and absent.
+ The put() method makes the status known and present, and provides a value.
+ The reset() method reverts the status to unknown.
+ Once the status of a receiver becomes known, the value
+ cannot be changed, nor can the status be changed from present to absent
+ or vice versa. To change the value or the status, call reset() first.
+ Normally, the reset() method is called only by the director.
+ <p>
+ The isKnown() method returns true if the receiver has status known. 
+ The hasRoom() method returns true if the receiver has status unknown. 
  If the receiver has a known status, the hasToken() method returns true 
  if the receiver contains a token. If the receiver has an unknown status, 
  the hasToken() method will throw an UnknownTokenException.
+ <p>
+ This class is based on the original SRReceiver, written by Paul Whitaker.
  
- @author Haiyang Zheng, Paul Whitaker
+ @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 5.1
  @Pt.ProposedRating Yellow (hyzheng)
@@ -78,16 +80,15 @@ public class FPReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the status of this receiver to be known and to contain no token.
-     *  @exception IllegalActionException If this receiver is known to 
-     *  contain a token. 
+    /** Set the status of this receiver to be known and absent.
+     *  @exception IllegalActionException If this receiver is known and present. 
      */
     public void clear() throws IllegalActionException {
         if (isKnown()) {
             if (hasToken()) {
-                throw new IllegalActionException(
-                        "FPReceiver: Cannot change its value from presence"
-                        + " to absence.");
+                throw new IllegalActionException(getContainer(),
+                        "Cannot change the status from present"
+                        + " to absent.");
             }
         } else {
             _token = null;
@@ -97,43 +98,42 @@ public class FPReceiver extends AbstractReceiver {
         }
     }
 
-    /** Return the contained token without modifying it.  If there
+    /** Return the contained token.  If there
      *  is no token or the status of this receiver is unknown, throw an 
      *  exception.
      *  @return The token contained in the receiver.
-     *  @exception NoTokenException If there is no token or the status of 
-     *  this receiver is unknown.
+     *  @exception NoTokenException If there is no token.
+     *  @exception UnknownTokenException If the status is unknown.
      */
     public Token get() throws NoTokenException {
+        if (!isKnown()) {
+            throw new UnknownTokenException(
+                    "FPReceiver: get() called on an FPReceiver " +
+                    "with status unknown.");
+        }
         if (_token == null) {
             throw new NoTokenException(
                     "FPReceiver: Attempt to get data from an " +
                     "empty receiver.");
         }
-
-        if (!isKnown()) {
-            throw new UnknownTokenException(
-                    "FPReceiver: get() called on an FPReceiver " +
-                    "with an unknown status.");
-        }
-
         return _token;
     }
 
     /** Return true if the status of the receiver is unknown. 
      *  @return True if the status of the receiver is unknown. 
+     *  @see #isKnown()
      */
     public boolean hasRoom() {
         return !isKnown();
     }
 
-    /** Return what the hasRoom() method returns if the argument is 1. 
-     *  If the argument is less than 1, throw an exception. Otherwise return 
-     *  false.
+    /** If the argument is 1, return true if the status of the receiver
+     *  is unknown. Otherwise, throw an exception. This receiver has
+     *  capacity one.
      *  @param numberOfTokens The number of tokens to put into the receiver.
      *  @return True if the receiver can accept a token.
      *  @exception IllegalArgumentException If the argument is not positive.
-     *   This is a runtime exception, so it is not declared explicitly.
+     *  @see #isKnown()
      *  @see #hasRoom()
      */
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
@@ -141,22 +141,19 @@ public class FPReceiver extends AbstractReceiver {
             throw new IllegalArgumentException(
                     "FPReceiver: hasRoom() requires a positive argument.");
         }
-
         if (numberOfTokens == 1) {
-            return hasRoom();
+            return !isKnown();
         }
-
         return false;
     }
 
-    /** Return true if the receiver contains a token, or false otherwise.
-     *  If the receiver has unknown status, this method will throw an
+    /** Return true if the receiver contains a token, and false otherwise.
+     *  If the receiver has status unknown, this method will throw an
      *  exception.
      *  @return True if this receiver contains a token.
      *  @exception UnknownTokenException If the status is unknown. 
-     *  This is a runtime exception, so it is not declared explicitly.
      */
-    public boolean hasToken() {
+    public boolean hasToken() throws UnknownTokenException {
         if (isKnown()) {
             return (_token != null);
         } else {
@@ -165,59 +162,54 @@ public class FPReceiver extends AbstractReceiver {
         }
     }
 
-    /** Return what hasToken() returns if the argument is 1. 
-     *  If the argument is less than 1, throw an exception. 
-     *  Otherwise return false.
-     *  @param numberOfTokens The number of tokens to get from the receiver.
+    /** If the argument is 1, return true if the receiver
+     *  contains a token, and false otherwise. If the argument is
+     *  larger than 1, return false (this receiver has capacity one).
+     *  If the receiver has status unknown, throw an exception.
+     *  @param numberOfTokens The number of tokens.
      *  @return True if the argument is 1 and the receiver has a token.
      *  @exception IllegalArgumentException If the argument is not positive.
-     *   This is a runtime exception, so it does not need to be declared
-     *   explicitly.
      *  @see #hasToken()
      */
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
-
         if (!isKnown()) {
-            throw new UnknownTokenException(getContainer(), "hasToken("
-                    + numberOfTokens
-                    + ") called on FPReceiver with unknown status.");
+            throw new UnknownTokenException(getContainer(), "hasToken(int)"
+                    + " called on FPReceiver with unknown status.");
         }
-
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "FPReceiver: hasToken() requires a positive argument.");
+                    "FPReceiver: hasToken(int) requires a positive argument.");
         }
-
         if (numberOfTokens == 1) {
             return hasToken();
         }
-        
         return false;
     }
 
-    /** Return true if this receiver has a known status, that is, this receiver
+    /** Return true if this receiver has status known, that is, this receiver
      *  either is either known to have a token or known to not to have a token.
-     *  @return True if this receiver has a known status.
+     *  @return True if this receiver has status known.
      */
     public boolean isKnown() {
         return _known;
     }
 
-    /** Set the status of this receiver to known and to contain the
+    /** Set the status of this receiver to known and present, and to contain the
      *  specified token.  If the receiver is already known and the value of
      *  the contained token is different from that of the new token, throw 
      *  an exception.
      *  @param token The token to be put into this receiver.
      *  @exception IllegalArgumentException If the argument is null.
-     *  @exception IllegalOutputException If the status is known and absent,
-     *   or a token is present and does not have the same value.
+     *  @exception IllegalActionException If the status is known and absent,
+     *   or a token is present but not have the same value, or a token
+     *   is present and cannot be compared to the specified token.
      */
     public void put(Token token) throws NoRoomException, 
-        IllegalActionException {
+            IllegalActionException {
         if (token == null) {
             throw new IllegalArgumentException(
-                    "FPReceiver.put(null) is invalid. To set a receiver " +
-                    "to contain an absence value, use the clear() method.");
+                    "FPReceiver.put(null) is invalid. To set the status" +
+                    " to absent, use the clear() method.");
         }
 
         if (!isKnown()) {
@@ -227,31 +219,23 @@ public class FPReceiver extends AbstractReceiver {
             _director._receiverChanged();
         } else {
             if (!hasToken()) {
-                throw new IllegalOutputException(getContainer(),
-                        "FPReceiver cannot transition from an absent status " +
-                        "to a present status.  Call reset() instead.");
+                throw new IllegalActionException(getContainer(),
+                        "Cannot change from an absent status " +
+                        "to a present status.  Call reset() first.");
             } else {
-                try {
-                    if (token.isEqualTo(_token).booleanValue()) {
-                        // The token contains the same value. Do nothing.
-                    } else {
-                        throw new IllegalOutputException(getContainer(),
-                                "FPReceiver cannot receive two tokens "
-                                        + "that differ.");
-                    }
-                } catch (IllegalActionException ex) {
-                    throw new IllegalActionException("FPReceiver cannot "
-                            + "determine whether the two tokens received are "
-                            + "equal. Make sure that the actor writes to " 
-                            + "this receiver is deterministic (monotonic).");
+                if (!token.isEqualTo(_token).booleanValue()) {
+                    throw new IllegalActionException(getContainer(),
+                            "Cannot put a token with a different value" +
+                            " into a receiver with present status.");
                 }
             }
         }
     }
 
     /** Reset the receiver by deleting any contained tokens and setting
-     *  the status of this receiver to be unknown.  This is called
-     *  by the FPDirector at is the postfire() method.
+     *  the status of this receiver to unknown.  This is called
+     *  by the director, normally in its initialize() and postfire()
+     *  methods.
      */
     public void reset() {
         _token = null;

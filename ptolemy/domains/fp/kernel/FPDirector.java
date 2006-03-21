@@ -55,10 +55,13 @@ import ptolemy.kernel.util.Workspace;
 //// FPDirector
 
 /**
- A director for the Fixed Point (FP) model of computation.  In FP,
- both computation and communication are considered to happen instantaneously.
- In models with cycles, this introduces interesting issues involving
- instantaneous feedback.
+ A base class for directors that have fixed point semantics at each
+ iteration. An iteration consists of repeated firings of the
+ actors controlled by this director until all signal values are known.
+ The prefire() and fire() methods of the controlled actors may be
+ repeatedly invoked, but the postfire() method will be invoked exactly
+ once after the fixed point (which defines the values of the signals)
+ has been found.
  <p>
  FP is an untimed domain, so it has no notion of the passage of time.
  Computation happens in a series of instants.  An instant is one iteration of
