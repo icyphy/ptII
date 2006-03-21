@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	FileReader.java \
 	LineReader.java \
 	LineWriter.java
 
