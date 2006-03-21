@@ -83,15 +83,7 @@ public class LineReader extends CCodeGeneratorHelper {
         } else {
             _fileOpen = true;
 
-            try {
-                fileNameString = FileUtilities.nameToFile(
-                        actor.fileOrURL.getExpression(), null)
-                        .getCanonicalPath();
-            } catch (IOException e) {
-                throw new IllegalActionException("Cannot open file: "
-                        + fileNameString);
-            }
-
+            fileNameString = FileReader.getFileName(actor.fileOrURL);
             ArrayList args = new ArrayList();
             args.add(fileNameString);
             _codeStream.appendCodeBlock("openForRead", args);
