@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import ptolemy.codegen.c.actor.lib.io.FileReader;
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
@@ -55,7 +56,6 @@ public class AudioReader extends AudioSDLActor {
     public AudioReader(ptolemy.actor.lib.javasound.AudioReader actor) {
         super(actor);
     }
-
     
     /**
      * Generate initialization code.
@@ -72,18 +72,7 @@ public class AudioReader extends AudioSDLActor {
         super.generateInitializeCode();
 
         ptolemy.actor.lib.javasound.AudioReader actor = (ptolemy.actor.lib.javasound.AudioReader) getComponent();
-        String fileNameString;
-        try {
-            // Handle $CLASSPATH, return a file name with forward slashes.
-            fileNameString = actor.fileOrURL.asURL().getPath();
-            // Under Windows, convert /C:/foo/bar to C:/foo/bar
-            fileNameString = new File(fileNameString).getCanonicalPath()
-                    .replace('\\', '/');
-        } catch (IOException e) {
-            throw new IllegalActionException("Cannot find file: "
-                    + actor.fileOrURL.getExpression());
-        }
-
+        String fileNameString = FileReader.getFileName(actor.fileOrURL);
         ArrayList args = new ArrayList();
         args.add(fileNameString);
         _codeStream.appendCodeBlock("initBlock", args);

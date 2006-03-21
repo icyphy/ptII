@@ -90,10 +90,7 @@ public class LineWriter extends CCodeGeneratorHelper {
         if (actor.fileName.getExpression().equals("System.out")) {
             _codeStream.appendCodeBlock("openForStdout");
         } else {
-            // FIXME: how do we handle relative file path??
-            String fileNameString = actor.fileName.getExpression();
-            fileNameString = fileNameString.replaceFirst("file:/", "");
-            fileNameString = fileNameString.replaceAll("%20", " ");
+            String fileNameString = FileReader.getFileName(actor.fileName);
 
             boolean fileExist = FileUtilities.nameToFile(fileNameString, null)
                     .exists();

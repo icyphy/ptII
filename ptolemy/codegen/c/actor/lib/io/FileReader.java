@@ -28,12 +28,14 @@
  */
 package ptolemy.codegen.c.actor.lib.io;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
@@ -53,5 +55,50 @@ public class FileReader extends CCodeGeneratorHelper {
      */
     public FileReader(ptolemy.actor.lib.io.LineReader actor) {
         super(actor);
+    }
+
+    /**
+     * Generate initialization code.
+     * Get the file path from the actor's fileOrURL parameter. Read the
+     * <code>initBlock</code> from AudioReader.c and pass the file path
+     * string as an argument to code block. Replace macros with their values
+     * and return the processed code string.
+     * @return The processed code string.
+     * @exception IllegalActionException If the file path parameter is invalid
+     *  or the code stream encounters an error in processing the specified code
+     *  block(s).
+     */
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
+
+        ptolemy.actor.lib.io.FileReader actor = (ptolemy.actor.lib.io.FileReader) getComponent();
+        String fileNameString = getFileName(actor.fileOrURL);
+        ArrayList args = new ArrayList();
+        args.add(fileNameString);
+        _codeStream.appendCodeBlock("initBlock", args);
+        return processCode(_codeStream.toString());
+    }
+
+    /** Get the file name from a parameter and convert backward slashes
+     *  to forward slashes.
+     *  @param fileOrURL The file name or URL.
+     *  @return a pathname suitable for use with C: no backslashes,
+     *  "C:/foo/bar", not "/C:/foo/bar"
+     *  @exception If the file cannot be found.
+     */
+    public static String getFileName(FileParameter fileOrURL) 
+            throws IllegalActionException {
+                String fileNameString;
+        try {
+            // Handle $CLASSPATH, return a file name with forward slashes.
+            fileNameString = fileOrURL.asURL().getPath();
+            // Under Windows, convert /C:/foo/bar to C:/foo/bar
+            fileNameString = new File(fileNameString).getCanonicalPath()
+                    .replace('\\', '/');
+        } catch (IOException e) {
+            throw new IllegalActionException("Cannot find file: "
+                    + fileOrURL.getExpression());
+        }
+        return fileNameString;
     }
 }
