@@ -52,7 +52,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Comparator.java \
 	Equals.java \
-	LogicFunction.java
+	LogicFunction.java \
+	LogicalNot.java
 
 OTHER_FILES_TO_BE_JARED = \
 	Comparator.c \
