@@ -88,6 +88,16 @@ import ptolemy.kernel.util.KernelException;
  Two exceptions are logic nodes and the ternary if node (the ? : construct),
  which do not necessarily evaluate all children nodes.
 
+ <p>This class has the following limitations:
+ <ul>
+ <li> It is a copy of ParseTreeCodeGenerator from data/expr and thus
+      has lots of code for evaluating expressions, which we don't need
+ <li> It is not properly converting types: We need to add logic to
+      convert types.
+ <li> The .tcl test has known failures involving nulls
+ <li> It does not evaluate constants.
+ </ul>
+
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 2.1
@@ -97,6 +107,8 @@ import ptolemy.kernel.util.KernelException;
  */
 public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
     implements ParseTreeCodeGenerator {
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
