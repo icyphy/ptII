@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Jackie
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Red (mankit)
+ * @Pt.ProposedRating Red (mankit) Need to handle plot configuration info
  * @Pt.AcceptedRating Red (mankit)
  */
 public class XYPlotter extends CCodeGeneratorHelper {

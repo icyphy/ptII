@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.2
- @Pt.ProposedRating Red (zgang)
+ @Pt.ProposedRating Red (zgang) Need to handle plot configuration info
  @Pt.AcceptedRating Red (zgang)
  */
 public class SequencePlotter extends CCodeGeneratorHelper {
