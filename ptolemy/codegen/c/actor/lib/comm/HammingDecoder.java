@@ -41,9 +41,10 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Gang Zhou
  @version $Id$
+ @see ptolemy.actor.lib.comm.HammingDecoder
  @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (zgang)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.AcceptedRating Yellow (cxh)
  */
 public class HammingDecoder extends CCodeGeneratorHelper {
     /** Constructor method for the HammingDecoder helper.
