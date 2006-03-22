@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung, Gang Zhou
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Yellow (cxh) Does this work on strings?
+ * @Pt.ProposedRating Red (cxh) String, Complex, Fix, Matrix and Array inputs are not supported.
  * @Pt.AcceptedRating Red (zgang)
  */
 public class Accumulator extends CCodeGeneratorHelper {
