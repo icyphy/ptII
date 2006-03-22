@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (zgang)
+ @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (zgang)
  */
 public class TypedCompositeActor extends CCodeGeneratorHelper {
