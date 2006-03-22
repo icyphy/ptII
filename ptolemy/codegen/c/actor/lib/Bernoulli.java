@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.Bernoulli
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -34,12 +34,15 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A helper class for ptolemy.actor.lib.Bernoulli.
+ <p>Note that this class will generate different random numbers than
+ the Java version.  To change this, RandomSource would need to be updated
+ to generate numbers using the same algorithm as Java.
 
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class Bernoulli extends RandomSource {
     /** Constructor method for the Bernoulli helper.
