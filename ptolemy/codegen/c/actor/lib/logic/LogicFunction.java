@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.logic.LogicFunction
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,8 +39,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh) 
  */
 public class LogicFunction extends CCodeGeneratorHelper {
     /** Constructor method for the LogicFunction helper.
@@ -52,8 +52,7 @@ public class LogicFunction extends CCodeGeneratorHelper {
 
     /** Generate fire code.
      * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer codeBuffer = new StringBuffer();
