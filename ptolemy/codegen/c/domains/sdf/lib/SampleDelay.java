@@ -40,8 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Ye Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Red (zhouye)
+ @Pt.AcceptedRating Red (zhouy)
  */
 public class SampleDelay extends CCodeGeneratorHelper {
     /** Construct a helper with the given
