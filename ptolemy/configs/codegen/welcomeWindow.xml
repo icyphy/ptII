@@ -5,7 +5,7 @@
   <entity name="doc" class="ptolemy.actor.gui.HTMLEffigy">
     <entity name="tableau" class="ptolemy.actor.gui.HTMLViewerTableau">
       <property name="size" value="[650, 160]"/>
-      <property name="url" value="ptolemy/configs/ptiny/intro.htm"/>
+      <property name="url" value="ptolemy/configs/codegen/intro.htm"/>
     </entity>
   </entity>
 </entity>
