@@ -38,8 +38,8 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (zgang)
  */
 public class Scale extends CCodeGeneratorHelper {
     /** Construct a helper with the given ptolemy.actor.lib.Scale actor.

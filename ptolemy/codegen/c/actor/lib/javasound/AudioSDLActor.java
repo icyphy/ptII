@@ -46,7 +46,7 @@ import ptolemy.util.StringUtilities;
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Red (cxh)
+ * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
 

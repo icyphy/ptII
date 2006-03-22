@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung, Gang Zhou
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Red (mankit)
+ * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (mankit)
  */
 public class Maximum extends CCodeGeneratorHelper {

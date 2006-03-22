@@ -38,7 +38,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.2
- @Pt.ProposedRating Red (zgang)
+ @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (zgang)
  */
 public class Discard extends CCodeGeneratorHelper {
