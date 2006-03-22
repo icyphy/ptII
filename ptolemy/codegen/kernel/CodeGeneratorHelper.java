@@ -1532,17 +1532,21 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     protected static String _codeGenType(Type ptType)
             throws IllegalActionException {
-        // FIXME: we may need to add more types.
+        // FIXME: We may need to add more types.
+    	// FIXME: We have to create separate type for different matrix types.
         String result = ptType == BaseType.INT ? "Int" : 
         	ptType == BaseType.STRING ? "String" : 
         	ptType == BaseType.DOUBLE ? "Double" : 
         	ptType == BaseType.BOOLEAN ? "Boolean" : 
         	ptType instanceof ArrayType ? "Array" : 
         	ptType == BaseType.MATRIX ? "Matrix" : 
-            ptType == BaseType.GENERAL ? "Token" : "";
+        	ptType == BaseType.INT_MATRIX ? "Matrix" :          		
+        	ptType == BaseType.LONG_MATRIX ? "Matrix" :          		
+            ptType == BaseType.DOUBLE_MATRIX ? "Matrix" :  
+        	ptType == BaseType.GENERAL ? "Token" : "";
         if (result.length() == 0) {
             throw new IllegalActionException(
-                    "Cannot resolved codegen type from Ptolemy type: " + ptType);
+                "Cannot resolved codegen type from Ptolemy type: " + ptType);
         }
         return result;
     }
