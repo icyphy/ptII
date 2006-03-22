@@ -41,8 +41,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
+ @Pt.AcceptedRating Red (mankit)
  */
 public class Ramp extends CCodeGeneratorHelper {
     /** Constructor method for the Ramp helper.
