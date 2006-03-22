@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @version $Id$
  @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (zgang)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.AcceptedRating Yellow (cxh)
  */
 public class HammingCoder extends CCodeGeneratorHelper {
     /** Constructor method for the HammingCoder helper.
