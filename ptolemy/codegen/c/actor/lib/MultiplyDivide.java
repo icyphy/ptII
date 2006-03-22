@@ -39,8 +39,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit (Jackie) Leung, Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Yellow (mankit)
- @Pt.AcceptedRating Yellow (mankit)
+ @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
+ @Pt.AcceptedRating Red (cxh)
  */
 public class MultiplyDivide extends CCodeGeneratorHelper {
     /**
