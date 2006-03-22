@@ -1,6 +1,6 @@
 /* A helper class for ptolemy.actor.lib.logic.LogicalNot
 
- Copyright (c) 1997-2005 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,8 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @version $Id$
  @since Ptolemy II 5.1
  @see ptolemy.actor.lib.logic.LogicalNot
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Yellow (cxh)
  */
 public class LogicalNot extends CCodeGeneratorHelper {
     /** Constructor method for the LogicFunction helper.
@@ -57,10 +57,13 @@ public class LogicalNot extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
+        // FIXME: move this to .c file so that we have language specific code
+        // elsewhere.
         StringBuffer codeBuffer = new StringBuffer();
         codeBuffer.append(super.generateFireCode());
 
         codeBuffer.append("\n    ");
+        // FIXME: use true and false
         codeBuffer.append("$ref(output) = ($ref(input)? 0: 1);");
 
         return processCode(codeBuffer.toString());
