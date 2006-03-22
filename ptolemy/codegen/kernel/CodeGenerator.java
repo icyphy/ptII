@@ -91,7 +91,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public CodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
+        
         codeDirectory = new FileParameter(this, "codeDirectory");
 
         codeDirectory.setExpression("$HOME/codegen/");
@@ -532,7 +532,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // Determine the total number of referenced polymorphic functions.
         HashSet functions = new HashSet();
         HashSet types = new HashSet();
-        //types.addAll(_primitiveTypes);
+        types.add("String");
+        types.add("Boolean");
 
         /*
          while (actors.hasNext()) {
@@ -544,7 +545,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
          types.addAll(helperObject._newTypesUsed);
          }
          */
-
+        functions.add("toString");
         functions.addAll(_typeFuncUsed);
         types.addAll(_newTypesUsed);
         // The constructor of Array requires calling the convert function.  
@@ -616,7 +617,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append("#define NUM_TYPE " + types.size() + "\n");
             code.append("#define NUM_FUNC " + functions.size() + "\n");
             code.append("Token (*functionTable"
-                    + "[NUM_TYPE][NUM_FUNC])(Token)= {\n");
+                    + "[NUM_TYPE][NUM_FUNC])(Token, ...)= {\n");
             for (int i = 0; i < types.size(); i++) {
                 code.append("\t");
                 for (int j = 0; j < functions.size(); j++) {
@@ -895,9 +896,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     protected HashSet _newTypesUsed = new HashSet();
 
     /** 
+     * A static list of all macros supported by the code generator. 
+     */
+    protected static final List _macros = Arrays.asList(new String[] {
+    		"ref", "val", "type", "typeFunc", 
+    		"actorSymbol", "actorClass", "new", "size" });
+    
+    /** 
      * A static list of all primitive types supported by the code generator. 
      */
-    protected static List _primitiveTypes = Arrays.asList(new String[] {
+    protected static final List _primitiveTypes = Arrays.asList(new String[] {
     		"Int", "Double", "String", "Long", "Boolean"});
 
     /** A HashSet that contains all type functions referenced in the model.

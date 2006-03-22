@@ -26,10 +26,12 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,15 +68,30 @@ public class Test extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        // FIXME: handle widths greater than 1.
+    	super.generateFireCode();
+    	// FIXME: handle widths greater than 1.
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
-        if (actor.input.getWidth() > 1) {
+/*
+         if (actor.input.getWidth() > 1) {
             throw new IllegalActionException(actor,
                     "The C version of the Test actor currently only handles "
                             + "inputs of width 1.  The width of input was: "
                             + actor.input.getWidth());
         }
-        return super.generateFireCode();
+*/
+        ArrayList args = new ArrayList();
+        args.add(new Integer(0));
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+        	args.set(0, new Integer(i));
+            if (actor.input.getType() == BaseType.STRING) {
+            	_codeStream.appendCodeBlock("stringBlock", args);        	
+            } else if (actor.input.getType() == BaseType.GENERAL) { 
+            	_codeStream.appendCodeBlock("tokenBlock", args);        	
+            } else { // assume the input type is numeric.
+            	_codeStream.appendCodeBlock("numberBlock", args);
+            }        	
+        }
+        return processCode(_codeStream.toString());
     }
 
     /**

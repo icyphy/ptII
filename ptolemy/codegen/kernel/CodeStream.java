@@ -551,6 +551,12 @@ public class CodeStream {
     }
 
     /**
+     * Parse the header of the code block. Usually code block header starts
+     * with the code block name followed by the list of parameters. Users can
+     * also overload the code block by giving different number of arguments,
+     * and/or specifying different types for the ports. appendCodeBlock would
+     * append the corresponding block by checking the number of given
+     * arguments.
      * Parse from the _parseIndex for the next code block header and
      * return the next code block name. This method parses for any parameter
      * declarations and put the list of parameter(s) into the _parameterTable.
@@ -624,17 +630,17 @@ public class CodeStream {
      * String pattern which represents the end of a code block.
      * Both _BLOCKSTART and _BLOCKEND cannot be the prefix of the other.
      */
-    private static String _BLOCKEND = "/**/";
+    private static final String _BLOCKEND = "/**/";
 
     /**
      * String pattern which represents the start of a code block.
      */
-    private static String _BLOCKSTART = "/***";
+    private static final String _BLOCKSTART = "/***";
 
     /**
      * String pattern which represents the end of a code block header.
      */
-    private static String _HEADEREND = "***/";
+    private static final String _HEADEREND = "***/";
 
     /**
      * The code block table that stores the code block body (StringBuffer)

@@ -3,8 +3,11 @@ typedef int IntToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Int_convert(Token token);
-Token Int_print(Token thisToken);
+Token Int_convert(Token token, ...);
+Token Int_print(Token thisToken, ...);
+Token Int_toString(Token thisToken, ...);
+Token Int_toExpression(Token thisToken, ...);
+Token Int_equals(Token thisToken, ...);
 /**/
 
 
@@ -18,6 +21,14 @@ Token Int_new(int i) {
 }
 /**/
 
+/***equalsBlock***/
+Token Int_equals(Token thisToken, ...) {
+    va_list argp; 
+    va_start(argp, thisToken);
+	Token otherToken = va_arg(argp, Token);
+	return Boolean_new(thisToken.payload.Int == otherToken.payload.Int);
+}
+/**/
 
 /***deleteBlock***/
 Token Int_delete(Token token) {   
@@ -27,7 +38,7 @@ Token Int_delete(Token token) {
 
 
 /***convertBlock***/
-Token Int_convert(Token token) {
+Token Int_convert(Token token, ...) {
     switch (token.type) {
         #ifdef TYPE_Double
             case TYPE_Double:
@@ -46,7 +57,23 @@ Token Int_convert(Token token) {
 /**/
 
 /***printBlock***/
-Token Int_print(Token thisToken) {
+Token Int_print(Token thisToken, ...) {
     printf("%d", thisToken.payload.Int);
 }
 /**/
+
+/***toStringBlock***/
+Token Int_toString(Token thisToken, ...) {
+	return String_new(itoa(thisToken.payload.Int));
+}
+/**/
+
+/***toExpressionBlock***/
+Token Int_toExpression(Token thisToken, ...) {
+	return Int_toString(thisToken);
+}
+/**/
+
+
+
+

@@ -4,13 +4,17 @@
 struct array {
     int size;           // size of the array.
     Token* elements;    // array of Token elements.
+    //unsigned char elementsType;  // type of all the elements.
 };
 typedef struct array* ArrayToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Array_convert(Token token);
-Token Array_print(Token thisToken);
+Token Array_convert(Token token, ...);
+Token Array_print(Token thisToken, ...);
+Token  Array_toString(Token thisToken, ...);
+Token Array_toExpression(Token thisToken, ...);
+Token Array_equals(Token thisToken, ...);
 
 Token Array_get(Token token, int i) {   
     return token.payload.Array->elements[i];
@@ -82,8 +86,25 @@ Token Array_delete(Token token) {
 }
 /**/
 
+
+/***equalsBlock***/
+Token Array_equals(Token thisToken, ...) {
+	int i;
+	if (thisToken.payload.Array->size != otherToken.payload.Array->size) {
+		return Boolean_new(false);
+	}
+	for (i = 0; i < thisToken.size; i++) {
+	 	if (!$typeFunc(Array_get(thisToken, i), equals(Array_get(otherToken, i)))) {
+			return Boolean_new(false);
+	 	}
+	}
+	return Boolean_new(true);
+}
+/**/
+
+
 /***convertBlock***/
-Token Array_convert(Token token) {
+Token Array_convert(Token token, ...) {
     Token oldToken = token;
     Token result = token;    // return the old pointer by default.
 
@@ -116,7 +137,11 @@ Token Array_convert(Token token) {
 /**/
 
 /***printBlock***/
-Token Array_print(Token thisToken) {
+Token Array_print(Token thisToken, ...) {
+	// Token string = Array_toString(thisToken);
+	// printf(string.payload.String);
+	// free(string.payload.String);
+	
     int i;
     printf("{");
     for (i = 0; i < thisToken.payload.Array->size; i++) {
@@ -126,5 +151,43 @@ Token Array_print(Token thisToken) {
         functionTable[thisToken.payload.Array->elements[i].type][FUNC_print](thisToken.payload.Array->elements[i]);
     }
     printf("}");
+}
+/**/
+
+/***toStringBlock***/
+Token Array_toString(Token thisToken, ...) {
+    int i;
+    int currentSize, allocatedSize;
+    char* string;
+	Token elementString;
+
+	allocatedSize = 256;
+	string = (char*) malloc(allocatedSize);
+	string[0] = '{';
+	string[1] = '\0';
+	currentSize = 2;
+
+    for (i = 0; i < thisToken.payload.Array->size; i++) {
+        if (i != 0) {
+			strcat(string, ", ");
+        }
+        elementString = functionTable[thisToken.payload.Array->elements[i].type][FUNC_toString](thisToken.payload.Array->elements[i]);
+		currentSize += strlen(elementString.payload.String);
+        if (currentSize > allocatedSize) {
+        	allocatedSize *= 2;
+			string = (char*) realloc(string, allocatedSize);
+        }
+
+        strcat(string, elementString.payload.String);
+        free(elementString.payload.String);
+    }
+	strcat(string, "}");
+	return String_new(string);
+}
+/**/
+
+/***toExpressionBlock***/
+Token Array_toExpression(Token thisToken, ...) {
+	return Array_toString(thisToken);
 }
 /**/

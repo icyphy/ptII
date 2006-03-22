@@ -1131,15 +1131,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 continue;
             }
 
-            boolean foundIt = false;
             String macro = code.substring(currentPos + 1, openParenIndex);
             macro = macro.trim();
 
-            List macroList = Arrays.asList(new String[] { "ref", "val", "type",
-                    "typeFunc", "actorSymbol", "actorClass", "new",
-                    "size" });
-
-            if (macroList.contains(macro)) {
+            
+            if (!CodeGenerator._macros.contains(macro)) {
+                result.append(subcode);
+            } else {
                 String name = code.substring(openParenIndex + 1,
                         closeParenIndex);
                 name = name.trim();
@@ -1168,14 +1166,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     throw new IllegalActionException("Macro is not handled.");
                 }
 
-                foundIt = true;
                 result.append(code.substring(closeParenIndex + 1, nextPos));
             }
-
-            if (!foundIt) {
-                result.append(subcode);
-            }
-
             currentPos = nextPos;
         }
 
