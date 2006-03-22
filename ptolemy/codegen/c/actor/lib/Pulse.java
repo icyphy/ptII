@@ -38,7 +38,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.2
- @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported.
+ @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported: Needs tests for these
  @Pt.AcceptedRating Red (zgang)
  */
 public class Pulse extends CCodeGeneratorHelper {
