@@ -38,8 +38,8 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.2
- @Pt.ProposedRating Yellow (cxh)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class Discard extends CCodeGeneratorHelper {
     /** Constructor method for the Ramp helper.
