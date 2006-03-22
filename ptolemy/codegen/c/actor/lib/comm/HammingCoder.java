@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Gang Zhou
  @version $Id$
+ @see ptolemy.actor.lib.comm.HammingCoder
  @since Ptolemy II 5.2
  @Pt.ProposedRating Yellow (zgang)
  @Pt.AcceptedRating Yellow (cxh)
