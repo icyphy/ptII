@@ -40,8 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Ye Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (zhouye)
- @Pt.AcceptedRating Red (zhouy)
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class SampleDelay extends CCodeGeneratorHelper {
     /** Construct a helper with the given
@@ -68,43 +68,12 @@ public class SampleDelay extends CCodeGeneratorHelper {
 
         ptolemy.domains.sdf.lib.SampleDelay actor = (ptolemy.domains.sdf.lib.SampleDelay) getComponent();
 
-        /*
-         Token[] initialOutputs = ((ArrayToken) actor.initialOutputs.getToken())
-         .arrayValue();
-         List sinkChannels = getSinkChannels(actor.output, 0);
-         */
         int length = ((ArrayToken) actor.initialOutputs.getToken()).length();
 
         for (int i = 0; i < length; i++) {
             _codeStream.append("$ref(output, " + i + ") = "
                     + "$val(initialOutputs, " + i + ");\n");
-
-            /*
-             for (int j = 0; j < sinkChannels.size(); j++) {
-             Channel channel = (Channel) sinkChannels.get(j);
-             IOPort port = (IOPort) channel.port;
-             code.append(port.getFullName().replace('.', '_'));
-
-             if (port.isMultiport()) {
-             code.append("[" + channel.channelNumber + "]");
-             }
-
-             int bufferSize = getBufferSize(port);
-
-             if (bufferSize > 1) {
-             code.append("[" + i + "]");
-             }
-
-             code.append(" = ");
-             }
-
-             code.append(initialOutputs[i].toString() + ";\n");
-             */
         }
-
-        // FIXME: Do we need /Should we update the offset of input of
-        // the SampleDelay?
-        //setOffset(actor.input, 0, new Integer(initialOutputs.length));
 
         return processCode(_codeStream.toString());
     }

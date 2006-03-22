@@ -1,4 +1,5 @@
-/*
+/* A helper class for ptolemy.actor.lib.TrigFunction.
+
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
 
@@ -40,8 +41,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (cxh)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class TrigFunction extends CCodeGeneratorHelper {
     /**

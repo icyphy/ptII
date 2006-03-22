@@ -1,4 +1,4 @@
-/* Base class for C Code Generation Audio Actors
+/* Base class for C Code Generation Audio Actors that use SDL.
 
  @Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
@@ -46,8 +46,8 @@ import ptolemy.util.StringUtilities;
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (cxh)
+ * @Pt.ProposedRating Green (cxh)
+ * @Pt.AcceptedRating Green (cxh)
  */
 
 public class AudioSDLActor extends CCodeGeneratorHelper {
@@ -63,7 +63,7 @@ public class AudioSDLActor extends CCodeGeneratorHelper {
      * Get the files needed by the code generated for the
      * AudioSDLActor. 
      * @return A set of Strings that are names of the files
-     *  needed by the code generated for the AudioReader actor.
+     *  needed by the code generated for the actor that uses SDL.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {

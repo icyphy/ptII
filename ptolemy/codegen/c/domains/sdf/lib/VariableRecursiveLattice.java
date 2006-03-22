@@ -40,8 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (cxh)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class VariableRecursiveLattice extends CCodeGeneratorHelper {
     /**
