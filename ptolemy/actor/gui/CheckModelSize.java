@@ -189,8 +189,9 @@ public class CheckModelSize {
                 analysis.append(" can't be parsed because ");
                 analysis.append(KernelException.stackTraceToString(throwable));
             }
-            results.append("<tr>\n  <td><a href=\"" + fileName + "\">"
-                    + fileName + "</a></td>\n  <td>" + analysis + "</td>\n");
+            String fileURL = new File(fileName).toURL().toString();
+            results.append("<tr>\n  <td><a href=\"" + fileURL + "\">"
+                    + fileURL + "</a></td>\n  <td>" + analysis + "</td>\n");
 
         }
 
