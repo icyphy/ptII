@@ -38,8 +38,8 @@ import ptolemy.codegen.c.domains.fsm.kernel.FSMActor;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class ModalController extends FSMActor {
     /** Construct the code generator helper associated

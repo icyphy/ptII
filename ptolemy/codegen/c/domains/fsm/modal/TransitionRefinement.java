@@ -36,8 +36,8 @@ package ptolemy.codegen.c.domains.fsm.modal;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
  */
 public class TransitionRefinement extends Refinement {
     /** Construct the code generator helper associated
