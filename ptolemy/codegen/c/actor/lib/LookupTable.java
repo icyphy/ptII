@@ -37,7 +37,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (zgang)
+ @Pt.ProposedRating Yellow (zgang) Before Yellow, need test for array and String
  @Pt.AcceptedRating Red (zgang)
  */
 public class LookupTable extends CCodeGeneratorHelper {
