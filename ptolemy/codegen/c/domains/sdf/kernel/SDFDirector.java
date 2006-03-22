@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Ye Zhou, Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (zhouye)
+ @Pt.ProposedRating Yellow (cxh) Cleanup, then review.
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector extends Director {
