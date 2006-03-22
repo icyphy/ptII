@@ -91,5 +91,451 @@ Use the command below to invoke the code generator by hand.
 <pre>
 $PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
 </pre>
+
+
+ <p>For each class, the number represent the number of demos that use that class.
+    The text underneath is the names of the demos that use that class.
+    And then the proposed and accepted ratings
+    And then comments  about the state
+
+<pre>
+
+7 ptolemy.codegen.c.kernel.CParseTreeCodeGenerator
+AdaptiveCoding
+Butterfly
+Hysteresis
+Merge
+ModalBSC
+SynthesizedVoice
+ @Pt.ProposedRating Red
+ @Pt.AcceptedRating Red
+ Has these limitations, will not be Yellow for release.
+ * It is a copy of ParseTreeCodeGenerator from data/expr and thus
+   has lots of code for evaluating expressions, which we don't need
+ * It is not properly converting types: We need to add logic to
+   convert types.
+ * The .tcl test has known failures involving nulls
+ * It does not evaluate constants.
+
+
+
+7 ptolemy.codegen.c.kernel.CCodeGeneratorHelper
+AdaptiveCoding
+Butterfly
+Hysteresis
+Merge
+ModalBSC
+SynthesizedVoice
+ @Pt.ProposedRating Red (mankit)
+ @Pt.AcceptedRating Red (mankit)
+ Need to look for c code in actor super classes.
+
+
+7 ptolemy.codegen.c.actor.TypedCompositeActor
+AdaptiveCoding
+Butterfly
+Hysteresis
+Merge
+ModalBSC
+SynthesizedVoice
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (zgang)
+ Ready for review
+
+6 ptolemy.codegen.c.domains.sdf.kernel.SDFDirector
+AdaptiveCoding
+Butterfly
+Hysteresis
+Merge
+ModalBSC
+SynthesizedVoice
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (eal)
+ Cleanup, then review (cxh)
+
+5 ptolemy.codegen.c.domains.fsm.modal.Refinement
+AdaptiveCoding
+Hysteresis
+Merge
+ModalBSC
+ @Pt.ProposedRating Red (zgang)
+ @Pt.AcceptedRating Red (zgang)
+ *** DONE ***
+
+5 ptolemy.codegen.c.domains.fsm.modal.ModalModel
+AdaptiveCoding
+Hysteresis
+Merge
+ModalBSC
+ @Pt.ProposedRating Red (zgang)
+ @Pt.AcceptedRating Red (zgang)
+ *** DONE ***
+
+5 ptolemy.codegen.c.domains.fsm.modal.ModalController
+AdaptiveCoding
+Hysteresis
+Merge
+ModalBSC
+ @Pt.ProposedRating Red (zgang)
+ @Pt.AcceptedRating Red (zgang)
+ *** DONE ***
+
+5 ptolemy.codegen.c.domains.fsm.kernel.FSMActor
+AdaptiveCoding
+Hysteresis
+Merge
+ModalBSC
+ @Pt.ProposedRating Red (zgang)
+ @Pt.AcceptedRating Red (zgang)
+ Gang: we reviewed this on March 7, can you update the tag?
+
+4 ptolemy.codegen.c.domains.fsm.kernel.FSMDirector
+AdaptiveCoding
+Hysteresis
+Merge
+ModalBSC
+ @Pt.ProposedRating Red (zgang)
+ @Pt.AcceptedRating Red (zgang)
+ Gang: we reviewed this on March 7, can you update the tag?
+
+3 ptolemy.codegen.c.actor.lib.Ramp
+AdaptiveCoding
+Butterfly
+Hysteresis
+ @Pt.ProposedRating Red (cxh) String, Complex, Fix, Matrix and Array inputs are not supported
+ @Pt.AcceptedRating Red (mankit) 
+ Jackie: Add support for String and Array
+
+3 ptolemy.codegen.c.actor.lib.MultiplyDivide
+AdaptiveCoding
+Butterfly
+SynthesizedVoice
+ @Pt.ProposedRating Red (mankit)
+ @Pt.AcceptedRating Red (mankit)
+ Complex, Fix, Matrix and Array inputs are not supported
+
+3 ptolemy.codegen.c.actor.lib.Const
+Butterfly
+Hysteresis
+ModalBSC
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ Need to test with Strings, Arrays before shipping
+ What about Fix, Matrix
+
+2 ptolemy.codegen.c.domains.hdf.kernel.HDFFSMDirector
+AdaptiveCoding
+Merge
+ @Pt.ProposedRating Red (cxh)  Cleanup, then review
+ @Pt.AcceptedRating Red (zgang)
+ Cleanup, then review
+
+2 ptolemy.codegen.c.domains.hdf.kernel.HDFDirector
+AdaptiveCoding
+Merge
+ @Pt.ProposedRating Red (cxh)  Cleanup, then review
+ @Pt.AcceptedRating Red (zgang)
+ Gang: what's the status of this, can we review it?
+
+2 ptolemy.codegen.c.domains.fsm.kernel.MultirateFSMDirector
+AdaptiveCoding
+Merge
+ @Pt.ProposedRating Red (zgang)
+ @Pt.AcceptedRating Red (zgang)
+ Gang: we reviewed this on March 7, can you update the tag?
+
+2 ptolemy.codegen.c.domains.fsm.kernel.FSMDirector
+AdaptiveCoding
+Hysteresis
+Merge
+ModalBSC
+ @Pt.ProposedRating Red (zgang)
+ @Pt.AcceptedRating Red (zgang)
+ Gang: we reviewed this on March 7, can you update the tag?
+
+2 ptolemy.codegen.c.actor.lib.logic.LogicFunction
+AdaptiveCoding
+ModalBSC
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh) 
+ *** Done ***
+
+2 ptolemy.codegen.c.actor.lib.gui.SequencePlotter
+Hysteresis
+ModalBSC
+ @Pt.ProposedRating Red (zgang) Need to handle plot configuration info
+ @Pt.AcceptedRating Red (zgang)
+ Need to handle plot configuration info
+
+2 ptolemy.codegen.c.actor.lib.conversions.BooleanToAnything
+AdaptiveCoding
+ModalBSC
+ @Pt.ProposedRating Green (zgang)
+ @Pt.AcceptedRating Green (zgang)
+ Need tests for Array before shipping.
+
+2 ptolemy.codegen.c.actor.lib.TrigFunction
+Butterfly
+Hysteresis
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (mankit)
+ *** Done ***
+
+2 ptolemy.codegen.c.actor.lib.RandomSource
+AdaptiveCoding
+ModalBSC
+ @Pt.ProposedRating Red (zgang)
+ @Pt.AcceptedRating Red (zgang)
+  
+ Gang: I think this is ready for review? Can you check and update the 
+ ProposedRating tag
+
+2 ptolemy.codegen.c.actor.lib.Gaussian
+Hysteresis
+SynthesizedVoice
+ * @Pt.ProposedRating Red (cxh) Extend RandomSource, move code to RandomSource
+ * @Pt.AcceptedRating Red (mankit)
+ Extend RandomSource, move code to RandomSource
+
+2 ptolemy.codegen.c.actor.lib.Bernoulli
+AdaptiveCoding
+ModalBSC
+ @Pt.ProposedRating Green (zgang)
+ @Pt.AcceptedRating Green (zgang)
+ *** Done ***
+
+2 ptolemy.codegen.c.actor.lib.AddSubtract
+Butterfly
+Hysteresis
+ @Pt.ProposedRating Red (eal)
+ @Pt.AcceptedRating Red (eal)
+ Complex, Fix, Matrix and Array inputs are not supported
+
+1 ptolemy.codegen.c.domains.sdf.lib.VariableRecursiveLattice
+SynthesizedVoice
+ * @Pt.ProposedRating Green (cxh)
+ * @Pt.AcceptedRating Green (mankit)
+ *** Done ***
+
+1 ptolemy.codegen.c.domains.sdf.lib.SampleDelay
+Merge
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
+ *** Done ***
+
+1 ptolemy.codegen.c.domains.fsm.modal.TransitionRefinement
+ModalBSC
+ @Pt.ProposedRating Red (zgang)
+ @Pt.AcceptedRating Red (zgang)
+ *** DONE ***
+
+1 ptolemy.codegen.c.actor.lib.javasound.AudioSDLActor
+SynthesizedVoice
+ * @Pt.ProposedRating Green (cxh)
+ * @Pt.AcceptedRating Green (cxh)
+ **** Done**** 
+
+1 ptolemy.codegen.c.actor.lib.javasound.AudioReader
+SynthesizedVoice
+ * @Pt.ProposedRating Yellow (mankit)
+ * @Pt.AcceptedRating Yellow (mankit)
+ **** Done**** 
+
+1 ptolemy.codegen.c.actor.lib.javasound.AudioPlayer
+SynthesizedVoice
+ * @Pt.ProposedRating Yellow (mankit)
+ * @Pt.AcceptedRating Yellow (mankit)
+ **** Done**** 
+
+1 ptolemy.codegen.c.actor.lib.io.FileReader
+SynthesizedVoice
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ This needs lots of work
+
+1 ptolemy.codegen.c.actor.lib.gui.XYPlotter
+Butterfly
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ Need to handle plot configuration info
+
+1 ptolemy.codegen.c.actor.lib.gui.Display
+Merge
+ * @Pt.ProposedRating Red (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ Jackie, this handles Ints, Doubles, Strings and Tokens, is it ready
+ for review? 
+
+1 ptolemy.codegen.c.actor.lib.conversions.PolarToCartesian
+Butterfly
+ * @Pt.ProposedRating Yellow (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ Ready for review
+
+1 ptolemy.codegen.c.actor.lib.comm.HammingDecoder
+AdaptiveCoding
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ ***Done***
+
+1 ptolemy.codegen.c.actor.lib.comm.HammingCoder
+AdaptiveCoding
+ @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh)
+ ***Done***
+
+1 ptolemy.codegen.c.actor.lib.UnaryMathFunction
+Butterfly
+ * @Pt.ProposedRating Yellow (mankit)
+ * @Pt.AcceptedRating Red (mankit)
+ Ready for review
+
+1 ptolemy.codegen.c.actor.lib.Scale
+ModalBSC
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (zgang)
+  Complex, Fix, Matrix and Array inputs are not supported.
+
+1 ptolemy.codegen.c.actor.lib.Pulse
+Merge
+ @Pt.ProposedRating Red (cxh)
+ @Pt.AcceptedRating Red (zgang)
+  Complex, Fix, Matrix and Array inputs might work, though it needs tests.
+
+
+1 ptolemy.codegen.c.actor.lib.MonitorValue
+AdaptiveCoding
+ *  @Pt.ProposedRating Yellow (zgang)
+ *  @Pt.AcceptedRating Red (zgang)
+ Works with ints, doubles, strings
+ Complex, Fix, Matrix and Array inputs are not supported
+ Needs to work with Array to be shipped 
+
+1 ptolemy.codegen.c.actor.lib.Minimum
+Merge
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (mankit)
+ Ready for review
+
+1 ptolemy.codegen.c.actor.lib.Maximum
+Merge
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (mankit)
+ Ready for review
+
+1 ptolemy.codegen.c.actor.lib.LookupTable
+ModalBSC
+ @Pt.ProposedRating Yellow (zgang)
+ @Pt.AcceptedRating Red (zgang)
+ Will this work with strings? 
+ Before Yellow, need test for array and String
+
+1 ptolemy.codegen.c.actor.lib.GradientAdaptiveLattice
+SynthesizedVoice
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (mankit)
+
+1 ptolemy.codegen.c.actor.lib.Discard
+Merge
+ @Pt.ProposedRating Green (cxh)
+ @Pt.AcceptedRating Green (cxh)
+ **** Done ***
+
+1 ptolemy.codegen.c.actor.lib.Accumulator
+AdaptiveCoding
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (zgang)
+ Ready for review, does this work on strings?
+
+1 ptolemy.codegen.c.actor.lib.AbsoluteValue
+SynthesizedVoice
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (mankit)
+ Ready for review
+
+</pre>
+
+Edward wrote:
+<BLOCKQUOTE>
+the following should have highest priority, I think:
+<ul>
+<li> MathFunction
+     <br>(deprecated, use UnaryMathFunction instead, which is used by Butterfly)
+
+
+<li> FileReader.java
+<pre>
+    Not used in demo.
+    The use of FileReader below is because we are using a
+    static method in FileReader.
+    The interpreted version of this actor needs work
+</pre>
+
+
+
+<li> Comparator.java
+     <br>No demo, have tests
+
+
+<li> Equals.java
+     <br>No demo, have test
+
+
+<li> LogicalNot.java
+     <br>No demo, have test, Use true/false, move to .c file
+    
+</ul>
+
+Of the ones with no annotation, I think the following
+are important:
+ <ul>
+
+<li>   Discard.java
+ <br>      *** Done ***
+
+
+<li>  DiscreteRandomSource.java
+ <br>      Don't have a helper yet (jackie)
+
+
+<li>  Distributor.java
+ <br>      No demo, have tests
+
+
+<li>     ExpressionWriter
+ <br>      Don't have a helper yet
+
+
+<li>    Exit.java
+<br>       Don't have a helper yet
+
+
+<li>    IIR.java
+<br>      IIR is important!
+ <br>      Don't have a helper yet
+
+
+<li>   Multiplexor.java
+ <br>      Don't have a helper yet
+
+</ul>
+
+Next level of priority should be the array actors,
+I think:
+
+<pre>
+     ArrayAppend.java
+     ArrayAverage.java
+     ArrayElement.java
+     ArrayExtract.java
+     ArrayLength.java
+     ArrayMaximum.java
+     ArrayMinimum.java
+     ArraySort.java
+     ArrayToElements.java
+</pre>
+None of these actors have helpers or tests
+
+
 </body>
 </html>
