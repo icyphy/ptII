@@ -129,9 +129,11 @@ OTHER_FILES_TO_BE_JARED = \
 	TrigFunction.c \
 	UnaryMathFunction.c \
 	Uniform.c \
+	genericsinks.xml \
 	math.xml \
 	random.xml \
-	signalprocessing.xml
+	signalprocessing.xml \
+	sinks.xml
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
