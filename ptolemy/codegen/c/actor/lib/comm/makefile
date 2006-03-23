@@ -54,7 +54,8 @@ JSRCS = \
 	HammingDecoder.java
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS:%.java=%.c)
+	$(JSRCS:%.java=%.c) \
+	comm.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
