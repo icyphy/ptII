@@ -130,7 +130,8 @@ OTHER_FILES_TO_BE_JARED = \
 	UnaryMathFunction.c \
 	Uniform.c \
 	math.xml \
-	random.xml
+	random.xml \
+	signalprocessing.xml
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
