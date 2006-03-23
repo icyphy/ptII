@@ -129,7 +129,8 @@ OTHER_FILES_TO_BE_JARED = \
 	TrigFunction.c \
 	UnaryMathFunction.c \
 	Uniform.c \
-	math.xml
+	math.xml \
+	random.xml
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)

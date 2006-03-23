@@ -1,0 +1,17 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Random" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+      <doc>Actors that generate random data.</doc>
+
+        <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+	  <doc>Create a sequence of bernoulli random variables</doc>
+	</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
