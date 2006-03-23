@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<group>
+  <input source="ptolemy/actor/lib/sources.xml"/>
+  <input source="ptolemy/actor/lib/sinks.xml"/>
+  <input source="ptolemy/actor/lib/array.xml"/>
+  <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+  <input source="ptolemy/actor/lib/flowcontrol.xml"/>
+  <input source="ptolemy/actor/lib/hoc/hoc.xml"/>
+  <input source="ptolemy/actor/lib/io/io.xml"/>
+  <input source="ptolemy/actor/lib/logic/logic.xml"/>
+  <input source="ptolemy/actor/lib/math.xml"/>
+  <input source="ptolemy/actor/lib/matrix.xml"/>
+  <input source="ptolemy/actor/lib/random.xml"/>
+  <input source="ptolemy/actor/lib/realtime.xml"/>
+  <input source="ptolemy/actor/lib/signalprocessing.xml"/>
+  <input source="ptolemy/actor/lib/string/string.xml"/>
+  <input source="ptolemy/domains/ptinyDomains.xml"/>
+</group>

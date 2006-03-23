@@ -29,24 +29,8 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-    <!-- Use a custom graph editor with an SDF director already in it. -->
-    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
-        <property name="SDF Director" 
-                  class="ptolemy.domains.sdf.kernel.SDFDirector">
-          <property name="iterations"
-                    class="ptolemy.data.expr.Parameter" value="1">
-          </property>
-          <property name="_location"
-                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
-          </property>
-        </property>
-        <property name="FSM Director"
-	          class="ptolemy.domains.fsm.kernel.FSMDirector"/>
-        <property name="HDF Director"
-	          class="ptolemy.domains.hdf.kernel.HDFDirector"/>
-      </entity>
-    </entity>
+    <input source="ptolemy/configs/graphEffigyFactory.xml"/>
+    <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <!-- Import HTML viewer, text editor, etc. -->
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity>
@@ -61,44 +45,6 @@
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
 
-  <!-- Main default library -->
-  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
-
-    <!-- Marker so that tree view expands the library. -->
-    <property name="_libraryMarker"
-              class="ptolemy.kernel.util.SingletonAttribute"/>
-
-    <!-- Default utilities library. -->
-    <entity name="Utilities" class="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-            <input source="ptolemy/configs/basicUtilities.xml"/>
-            <!-- Blank composite actor. -->
-            <entity name="typed composite actor"
-                    class="ptolemy.actor.TypedCompositeActor"/>
-          </group>
-        ?>
-      </configure>
-    </entity>
-
-    <!-- Default entity library to appear in the library browser. -->
-    <entity name="Actors" class="ptolemy.moml.EntityLibrary">
-      <configure>
-        <?moml
-          <group>
-            <doc>default entity library</doc>
-               <entity name="Math" class="ptolemy.moml.EntityLibrary">
-                  <configure>
-                    <group>
-		       <entity name="Multiply"
-		               class="ptolemy.actor.lib.Multiply"/>
-	            </group>
-                  </configure>
-                </entity>
-          </group>
-        ?>
-      </configure>
-    </entity>
-  </entity>
+  <!-- codegen library. -->
+  <input source="ptolemy/configs/codegen/codegenLibrary.xml"/>
 </entity>
