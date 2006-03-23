@@ -42,7 +42,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @Pt.AcceptedRating Green (cxh)
  */
 public class Discard extends CCodeGeneratorHelper {
-    /** Constructor method for the Ramp helper.
+    /** Constructor method for the Discard helper.
      *  @param actor the associated actor
      */
     public Discard(ptolemy.actor.lib.Discard actor) {
