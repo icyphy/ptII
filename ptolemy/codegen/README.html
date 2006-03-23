@@ -51,35 +51,37 @@ $ref(init) += $val(step);
 When the code generator runs, it runs <code>generateFireCode()</code>
 which reads in <code>codeBlock1</code> and writes it to the output file.
 
-The <code>$ref</code> and <code>$val</code> in <code>codeBlock1</code> are macros, which represent
-ports, states (including parameters) of the actor. For example, <code>$ref(output)</code> represents
-the <code>output</code> port of the <code>Ramp</code> actor in this model. When the code generator
-process a macro in the code string, it replaces the macro with a unique variable or a concrete value
+The <code>$ref</code> and <code>$val</code> in <code>codeBlock1</code>
+are macros, which represent ports, states (including parameters) of
+the actor. For example, <code>$ref(output)</code> represents the
+<code>output</code> port of the <code>Ramp</code> actor in this
+model. When the code generator process a macro in the code string, it
+replaces the macro with a unique variable or a concrete value
 pertinent to the actor.
+
 <p>
 Currently, we have the following macros:
-<p>
-<code>$ref(name)</code>
-<br>
-Returns a reference of a state or a port. If the argument, <code>name</code>, refers to a port, it
-by default refers to the first token in the buffer of that port. If the port is a multiport, say
-<code>input</code>, we use <code>$ref(input#0)</code> to refer to the first channel of the
-<code>input</code> port.
-<p>
-<code>$ref(name, offset)</code>
-<br>
-Returns a reference to an array state or a port with an offset that is not negative.
-For a port, it refers to the <code>offset</code>-th token in the buffer of that port. For an
-array state, it refers to the <code>offset</code>-th element in the array.
-<p>
-<code>$val(name)</code>
-<br>
-Returns the current value of a state.
-<p>
-<code>$size(name)</code>
-<br>
-Returns the size of a state. The size of a non-array state is one; the size of an array state
-is the length of the array.
+<p> <code>$ref(name)</code>
+
+<br>Returns a reference of a state or a port. If the argument,
+<code>name</code>, refers to a port, it by default refers to the first
+token in the buffer of that port. If the port is a multiport, say
+<code>input</code>, we use <code>$ref(input#0)</code> to refer to the
+first channel of the <code>input</code> port.
+
+<p> <code>$ref(name, offset)</code>
+
+<br> Returns a reference to an array state or a port with an offset
+that is not negative.  For a port, it refers to the
+<code>offset</code>-th token in the buffer of that port. For an array
+state, it refers to the <code>offset</code>-th element in the array.
+
+<p><code>$val(name)</code>
+<br>Returns the current value of a state.
+<p><code>$size(name)</code>
+
+<br>Returns the size of a state. The size of a non-array state is one;
+the size of an array state is the length of the array.
 <p>
 <code>$actorSymbol(name)</code>
 <br>
@@ -92,11 +94,25 @@ Use the command below to invoke the code generator by hand.
 $PTII/bin/ptinvoke ptolemy.codegen.kernel.CodeGenerator $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
 </pre>
 
+<h2>Helper writer style guide</h2>
+<menu>
+<li> Be sure to add and @see tag to the base actor
+
+<li> When writing helpers, try to put as much as possible into
+the .c file.  The reason is that if we have keep the language
+specific code in the .c files, then in the future it will be easier
+to support other languages.
+
+</menu>
+
+
+
+
 
  <p>For each class, the number represent the number of demos that use that class.
-    The text underneath is the names of the demos that use that class.
-    And then the proposed and accepted ratings
-    And then comments  about the state
+     <br>The text underneath is the names of the demos that use that class.
+     <br>And then the proposed and accepted ratings
+     <br>And then comments  about the state
 
 <pre>
 
