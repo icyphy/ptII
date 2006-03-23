@@ -57,7 +57,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	Comparator.c \
-	Equals.c
+	Equals.c \
+	LogicalNot.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
