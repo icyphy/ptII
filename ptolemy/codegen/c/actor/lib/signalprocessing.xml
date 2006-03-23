@@ -9,8 +9,8 @@
 
         <!-- use ptolemy/ instead of ../ here so that we look in the jar-->
         <!-- NOTE: javasound actors only work under jdk1.3. -->
-        <input source="ptolemy/actor/lib/javasound/javasound.xml"/>
-        <input source="ptolemy/actor/lib/comm/comm.xml"/>
+        <input source="ptolemy/codegen/c/actor/lib/javasound/javasound.xml"/>
+        <input source="ptolemy/codegen/c/actor/lib/comm/comm.xml"/>
 
       </group>
     ?>
