@@ -29,6 +29,7 @@ package ptolemy.domains.ct.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Receiver;
 import ptolemy.actor.lib.hoc.Case;
 import ptolemy.actor.lib.hoc.CaseDirector;
 import ptolemy.actor.util.Time;
@@ -272,6 +273,19 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
         if (actor instanceof CTStatefulActor) {
             ((CTStatefulActor) actor).markState();
         }
+    }
+
+    /** Return a CTReceiver. By default, the signal type is continuous.
+     *  @return a new CTReceiver with signal type as continuous.
+     */
+    public Receiver newReceiver() {
+        CTReceiver receiver = new CTReceiver();
+
+        //FIXME: this is not right. Instead of blindly assigning a "continuous"
+        //signal type, we need to derive the actual signal type from the
+        //connections between ports.
+        receiver.setSignalType(CTReceiver.CONTINUOUS);
+        return receiver;
     }
 
     /** Return the smallest next step size predicted by the all the
