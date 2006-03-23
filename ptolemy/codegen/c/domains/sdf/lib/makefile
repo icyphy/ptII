@@ -56,7 +56,8 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	SampleDelay.c \
-	VariableRecursiveLattice.c
+	VariableRecursiveLattice.c \
+	sdfentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
