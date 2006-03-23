@@ -58,7 +58,8 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	Comparator.c \
 	Equals.c \
-	LogicalNot.c
+	LogicalNot.c \
+	logic.xml 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
