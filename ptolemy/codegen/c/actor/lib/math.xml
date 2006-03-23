@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Math" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Arithmetic and mathematical functions</doc>
+
+  <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
+    <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+        <property name="attributeName" value="function"/>
+    </property>
+  </entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
