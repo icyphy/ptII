@@ -26,7 +26,7 @@
   <!--  Used in VergilApplication.java-->
   <property name="_applicationBlankPtolemyEffigyAtStartup"
             class="ptolemy.data.expr.Parameter"
-            value="true"/>
+            value="false"/>
 
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->
