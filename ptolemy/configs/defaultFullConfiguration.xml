@@ -22,11 +22,11 @@
             class="ptolemy.data.expr.StringParameter"
             value="ptolemy.vergil.VergilInitializer"/>
 
-  <!-- Do not create a blank Graph Editor at start time. -->
+  <!-- Create a blank Graph Editor at start time. -->
   <!--  Used in VergilApplication.java-->
   <property name="_applicationBlankPtolemyEffigyAtStartup"
             class="ptolemy.data.expr.Parameter"
-            value="false"/>
+            value="true"/>
 
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->
