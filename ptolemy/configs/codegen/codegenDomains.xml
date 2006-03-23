@@ -11,7 +11,7 @@
 	     paths that start with ptolemy/ so that we can find these
 	     files if they are in a jar file besides the jar file that
 	     contains this file. -->
-            <input source="ptolemy/domains/sdf/lib/sdfentities.xml"/>
+            <input source="ptolemy/codegen/c/domains/sdf/lib/sdfentities.xml"/>
        </group>
     ?>
   </configure>
