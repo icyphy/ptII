@@ -58,7 +58,8 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	AudioReader.c \
 	AudioPlayer.c \
-	AudioWriter.c
+	AudioWriter.c \
+	javasound.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
