@@ -116,7 +116,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             } else {
                 if (value[i].isNil()) {
                     // Construct a nil token, same type as elementType.
-                    _value[i] = _newNilToken(elementType);
+                    _value[i] = Token.NIL;
                 } else {
                     throw new IllegalActionException(
                             "Elements of the array do not have the same type:"
@@ -165,9 +165,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     public ArrayToken(Token elementPrototype) {
         _value = new Token[0];
-        if (elementPrototype == null || elementPrototype.isNil()) {
-            _nil();
-        }
         _elementPrototype = elementPrototype;
     }
 
@@ -382,7 +379,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         Token[] array = arrayArgument._value;
 
         for (int i = 0; i < length; i++) {
-            if (!_value[i].equals(array[i])) {
+            if (!_value[i].equals(array[i]) || _value[i].isNil()) {
                 return false;
             }
         }
@@ -843,7 +840,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             } else {
                 if (value[i].isNil()) {
                     // Construct a nil token, same type as elementType.
-                    _value[i] = _newNilToken(elementType);
+                    // FIXME: what?
+                    _value[i] = Token.NIL;
                 } else {
                     throw new IllegalActionException(
                             "Elements of the array do not have the same type:"

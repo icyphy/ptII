@@ -1,6 +1,6 @@
 # Tests for the DoubleMatrixToken class
 #
-# @Author: Neil Smyth, Shuvra S. Bhattacharyya, contributor: Christopher Brooks
+# @Author: Neil Smyth, Shuvra S. Bhattacharyya 
 #
 # @Version $Id$
 #
@@ -77,34 +77,6 @@ test DoubleMatrixToken-1.3 {Create a non-empty instance from a double array} {
     $p2 toString
 } {[2.0; 5.5; 4.0; 3.0; 2.0]}
 
-
-######################################################################
-####
-# 
-test DoubleMatrixToken-1.5 {Create a nil Token from a null token} {
-    set p5 [java::new {ptolemy.data.DoubleMatrixToken double[] int int} [java::null] 0 0]
-    set p6 [java::new ptolemy.data.Token [java::null]]
-    set p7 [java::new ptolemy.data.DoubleMatrixToken $p6]
-    list [$p5 toString] [$p7 toString] [$p5 isNil] [$p7 isNil]
-} {{[]} {[]} 1 1}
-
-######################################################################
-####
-# 
-test DoubleMatrixToken-1.6 {Create a nil Token from an String} {
-    set p5 [java::new {ptolemy.data.DoubleMatrixToken String} nil]
-    set p6 [java::new {ptolemy.data.DoubleMatrixToken String} [java::null]]
-    list [$p5 toString] [$p6 toString] [$p5 isNil] [$p6 isNil]
-} {{[]} {[]} 1 1}
-
-######################################################################
-####
-# 
-test DoubleMatrixToken-1.7 {Create a nil Token from an String} {
-    set p5 [java::new {ptolemy.data.DoubleMatrixToken String} {[5.0, 4.0; 3.0, nil]}]
-    set t [$p5 getElementAsToken 1 1]
-    list [$p5 toString] [$t toString] [$t isNil]
-} {{[5.0, 4.0; 3.0, nil]} nil 1}
 
 ######################################################################
 ####
@@ -264,7 +236,6 @@ test DoubleMatrixToken-3.7 {Test adding DoubleMatrixToken to ComplexToken.} {
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
 } {{[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]} {[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]} {[7.0 + 0.0i, 6.0 + 0.0i; 5.0 + 0.0i, 4.0 + 0.0i]}}
-
 
 ######################################################################
 ####
@@ -597,17 +568,6 @@ test DoubleMatrixToken-9.0 {Test equals} {
     set p3 [java::new {ptolemy.data.DoubleMatrixToken String} "\[9.0, 8.0; 7.0, 6.0\]"]
     list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
 } {1 1 0}
-
-
-######################################################################
-####
-# 
-test DoubleMatrixToken-9.1 {Test equals on nil} {
-    set p5 [java::new {ptolemy.data.DoubleMatrixToken double[] int int} [java::null] 0 0]
-    set p6 [java::new ptolemy.data.Token [java::null]]
-    set p7 [java::new ptolemy.data.DoubleMatrixToken $p6]
-    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
-} {0 0 0 0}
 
 ######################################################################
 ####

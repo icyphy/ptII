@@ -79,20 +79,18 @@ test LongToken-1.2 {Create an instance from a string value} {
 ####
 # 
 test LongToken-1.5 {Create a nil Token from a null token} {
-    set p [java::new ptolemy.data.LongToken [java::null]]
-    set p2 [java::new ptolemy.data.Token [java::null]]
-    set p3 [java::new ptolemy.data.LongToken $p2]
-    list [$p toString] [$p3 toString] [$p isNil] [$p3 isNil]
-} {nil nil 1 1}
+    catch {java::new ptolemy.data.LongToken [java::null]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with LongToken(null) is not supported.  Use Token.NIL instead.}}
 
 ######################################################################
 ####
 # 
 test LongToken-1.6 {Create a nil Token from an String} {
-    set p [java::new {ptolemy.data.LongToken String} nil]
-    set p2 [java::new {ptolemy.data.LongToken String} [java::null]]
-    list [$p toString] [$p2 toString] [$p isNil] [$p2 isNil]
-} {nil nil 1 1}
+    catch {java::new {ptolemy.data.DoubleToken String} nil} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with DoubleToken("nil") is not supported.  Use Token.NIL instead.}}
+
 
 ######################################################################
 ####
@@ -366,12 +364,12 @@ test LongToken-11.0 {Test hashCode} {
 ######################################################################
 ####
 # 
-test LongToken-11.1 {Test equals on nil} {
-    set p5 [java::new ptolemy.data.LongToken [java::null]]
-    set p6 [java::new ptolemy.data.Token [java::null]]
-    set p7 [java::new ptolemy.data.LongToken $p6]
-    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
-} {0 0 0 0}
+#test LongToken-11.1 {Test equals on nil} {
+#    set p5 [java::new ptolemy.data.LongToken [java::null]]
+#    set p6 [java::new ptolemy.data.Token [java::null]]
+#    set p7 [java::new ptolemy.data.LongToken $p6]
+#    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
+#} {0 0 0 0}
 
 ######################################################################
 ####

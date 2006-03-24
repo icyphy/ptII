@@ -28,8 +28,6 @@
  */
 package ptolemy.data;
 
-import java.util.HashSet;
-
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
@@ -52,11 +50,11 @@ import ptolemy.math.LongMatrixMath;
 /**
  A token that contains a 2-D int matrix.
 
- @author Yuhong Xiong, Jeff Tsay, Steve Neuendorffer, contributor: Christopher Brooks
+ @author Yuhong Xiong, Jeff Tsay, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Yellow (cxh)
- @Pt.AcceptedRating Red (cxh) nil token code
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (wbwu)
  */
 public class IntMatrixToken extends MatrixToken {
     /** Construct an IntMatrixToken with a one by one matrix. The
@@ -69,40 +67,15 @@ public class IntMatrixToken extends MatrixToken {
         _columnCount = 1;
     }
 
-    /** Construct an IntMatrixToken from the Token.  
-     *  The value of the constructed token is set to the value returned 
-     *  by {@link #convert(Token)}.  If the token parameter is a nil
-     *  token, then this token will be a nil token.
-     *  @param token The token to be converted.
-     *  @exception IllegalActionException If the conversion
-     *   cannot be carried out.
-     */
-    public IntMatrixToken(Token token)
-            throws IllegalActionException {
-        // This looks like a copy constructor, does that matter?
-        IntMatrixToken result = convert(token);
-        if (result.isNil()) {
-            _nil();
-            return;
-        }
-        _value = IntegerArrayMath.allocCopy(
-                result._getInternalIntArray());
-        _rowCount = result.getRowCount();
-        _columnCount = result.getColumnCount();
-
-    }
-
     /** Construct a IntMatrixToken with the specified 1-D matrix.
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @param value The 2-D matrix of doubles that is copied.  If this
-     *  argument is null, then a nil token with rows -1 and columns -1
-     *  is created, see {@link ptolemy.data.Token#_nil()}.
-     *  @param rows The number of rows of the newly constructed matrix.
-     *  @param columns The number of columns of the newly constructed matrix.
+     *  @exception IllegalActionException If the specified matrix
+     *   is null.
      */
-    public IntMatrixToken(int[] value, int rows, int columns) {
+    public IntMatrixToken(int[] value, int rows, int columns)
+            throws IllegalActionException {
         this(value, rows, columns, DO_COPY);
     }
 
@@ -114,21 +87,15 @@ public class IntMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
-     *  @param value The source 1-D matrix of ints.  If this argument
-     *  is null, then the constructed token will be a nil token,
-     *  see {@link #_nil()}.
-     *  @param rows The number of rows of the newly constructed matrix.
-     *  @param columns The number of columns of the newly constructed matrix.
-     *  @param copy If {@link ptolemy.data.MatrixToken#DO_COPY}, the the
-     *  value matrix is copied, If {@link
-     *  ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
-     *  is not copied.
+     *  @exception IllegalActionException If the specified matrix
+     *   is null.
      */
-    public IntMatrixToken(int[] value, int rows, int columns, int copy) {
+    public IntMatrixToken(int[] value, int rows, int columns, int copy)
+            throws IllegalActionException {
         if (value == null) {
-            _nil();
-            return;
-        } 
+            throw new IllegalActionException("IntMatrixToken: The specified "
+                    + "matrix is null.");
+        }
 
         _rowCount = rows;
         _columnCount = columns;
@@ -144,12 +111,10 @@ public class IntMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
-     *  @param value The source 2-D matrix of int.  If this argument
-     *  is null, then the constructed token will be a nil token,
-     *  see {@link #_nil()} with rows set to -1 and
-     *  columns set to -1.
+     *  @exception IllegalActionException If the specified matrix
+     *   is null.
      */
-    public IntMatrixToken(int[][] value) {
+    public IntMatrixToken(int[][] value) throws IllegalActionException {
         this(value, DO_COPY);
     }
 
@@ -161,48 +126,34 @@ public class IntMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
-     *  @param value The source 2-D matrix of doubles.  If this argument
-     *  is null, then the constructed token will be a nil token,
-     *  see {@link ptolemy.data.Token#_nil()} with rows set to -1 and
-     *  columns set to -1.
-     *  @param copy If {@link ptolemy.data.MatrixToken#DO_COPY}, the the
-     *  value matrix is copied, If {@link
-     *  ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
-     *  is not copied.
+     *  <p>
+     *  Since the DO_NOT_COPY option requires some care, this constructor
+     *  is protected.
+     *  @exception IllegalActionException If the specified matrix
+     *   is null.
      */
-    public IntMatrixToken(int[][] value, int copy) {
+    public IntMatrixToken(int[][] value, int copy)
+            throws IllegalActionException {
         if (value == null) {
-            _nil();
-            return;
-        } 
+            throw new IllegalActionException("IntMatrixToken: The specified "
+                    + "matrix is null.");
+        }
 
         _initialize(value);
     }
 
     /** Construct an IntMatrixToken from the specified string.
      *  @param init A string expression of a 2-D int matrix.
-     *  If the init parameter is null, or "nil", or "[]", then
-     *  the token is marked as being nil, the rows and columns are both
-     *  set to -1, see {@link #_nil()}.
      *  @exception IllegalActionException If the string does
      *   not contain a parsable 2-D int matrix.
      */
     public IntMatrixToken(String init) throws IllegalActionException {
-        if (init == null || init.equals("nil") || init.equals("[]")) {
-            _nil();
-            return;
-        }
-
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
         Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
 
         if (token instanceof IntMatrixToken) {
-            IntMatrixToken intMatrixToken = (IntMatrixToken) token;
-            if (intMatrixToken._nils != null) {
-                _nils = new HashSet(intMatrixToken._nils);
-            }
-            int[][] value = intMatrixToken.intMatrix();
+            int[][] value = ((IntMatrixToken) token).intMatrix();
             _initialize(value);
         } else {
             throw new IllegalActionException("A matrix token cannot be"
@@ -214,25 +165,22 @@ public class IntMatrixToken extends MatrixToken {
      *  tokens.  The tokens in the array must be scalar tokens
      *  convertible into integers.
      *  @param tokens The array of tokens, which must contains
-     *  rows*columns ScalarTokens.  If this argument is null, then the
-     *  constructed token will be a nil token, see {@link
-     *  ptolemy.data.Token#_nil()} with rows set to -1 and columns set
-     *  to -1.
+     *  rows * columns ScalarTokens.
      *  @param rows The number of rows in the matrix to be created.
      *  @param columns The number of columns in the matrix to be
      *  created.
-     *  @exception IllegalActionException If the length of the array
-     *  is not correct, or if one of the elements of the array is
-     *  null, or if one of the elements of the array cannot be
-     *  losslessly converted to an integer.
+     *  @exception IllegalActionException If the array of tokens is
+     *  null, or the length of the array is not correct, or if one of
+     *  the elements of the array is null, or if one of the elements
+     *  of the array cannot be losslessly converted to an integer.
      */
     public IntMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
         int elements = rows * columns;
 
         if (tokens == null) {
-            _nil();
-            return;
+            throw new IllegalActionException("IntMatrixToken: The specified"
+                    + " array is null.");
         }
 
         if (tokens.length != elements) {
@@ -247,18 +195,12 @@ public class IntMatrixToken extends MatrixToken {
         for (int i = 0; i < elements; i++) {
             Token token = tokens[i];
 
-            if (token.isNil()) {
-                _elementIsNil(i);
-                _value[i] = Integer.MAX_VALUE;
+            if (token instanceof ScalarToken) {
+                _value[i] = ((ScalarToken) token).intValue();
             } else {
-                if (token instanceof ScalarToken) {
-                    _value[i] = ((ScalarToken) token).intValue();
-                } else {
-                    throw new IllegalActionException("IntMatrixToken: "
-                            + "Element " + i
-                            + " in the array with value " + token
-                            + " is not a ScalarToken");
-                }
+                throw new IllegalActionException("IntMatrixToken: Element " + i
+                        + " in the array with value " + token
+                        + " is not a ScalarToken");
             }
         }
     }
@@ -274,16 +216,14 @@ public class IntMatrixToken extends MatrixToken {
                 .toComplexArray(_value), _rowCount, _columnCount);
     }
 
-    /** Convert the specified token into an instance of
-     *  IntMatrixToken.  This method does lossless conversion.  If the
-     *  argument is already an instance of IntMatrixToken, it is
-     *  returned without any change.  If the argument is null or a nil
-     *  token, then a new nil DoubleMatrixToken is returned, see
-     *  {@link #_nil()}.  Otherwise, if the
-     *  argument is below IntMatrixToken in the type hierarchy, it is
-     *  converted to an instance of IntMatrixToken or one of the
-     *  subclasses of IntMatrixToken and returned. If none of the
-     *  above condition is met, an exception is thrown.
+    /** Convert the specified token into an instance of IntMatrixToken.
+     *  This method does lossless conversion.
+     *  If the argument is already an instance of IntMatrixToken,
+     *  it is returned without any change. Otherwise, if the argument
+     *  is below IntMatrixToken in the type hierarchy, it is converted to
+     *  an instance of IntMatrixToken or one of the subclasses of
+     *  IntMatrixToken and returned. If none of the above condition is
+     *  met, an exception is thrown.
      *  @param token The token to be converted to a IntMatrixToken.
      *  @return A IntMatrixToken
      *  @exception IllegalActionException If the conversion cannot
@@ -293,12 +233,6 @@ public class IntMatrixToken extends MatrixToken {
             throws IllegalActionException {
         if (token instanceof IntMatrixToken) {
             return (IntMatrixToken) token;
-        }
-
-        if (token == null || token.isNil()) {
-            IntMatrixToken result = new IntMatrixToken();
-            result._nil();
-            return result;
         }
 
         int compare = TypeLattice.compare(BaseType.INT_MATRIX, token);
@@ -334,7 +268,6 @@ public class IntMatrixToken extends MatrixToken {
      *  the number of rows and columns equal to the given size.
      *  This method does lossless conversion.
      *  @param token The token to be converted to a IntMatrixToken.
-     *  @param size The size of the matrix, which will be square.
      *  @return A IntMatrixToken
      *  @exception IllegalActionException If the conversion cannot
      *  be carried out.
@@ -374,8 +307,7 @@ public class IntMatrixToken extends MatrixToken {
      *  @param object An instance of Object.
      *  @return True if the argument is an instance of IntMatrixToken
      *   of the same dimensions and the corresponding elements of the
-     *   matrices are equal.  If either this object or the argument
-     *   is nil, return false.
+     *   matrices are equal.
      */
     public boolean equals(Object object) {
         // This test rules out instances of a subclass.
@@ -390,10 +322,6 @@ public class IntMatrixToken extends MatrixToken {
         }
 
         if (_columnCount != matrixArgument.getColumnCount()) {
-            return false;
-        }
-
-        if (isNil() || matrixArgument.isNil()) {
             return false;
         }
 
@@ -426,18 +354,6 @@ public class IntMatrixToken extends MatrixToken {
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
-        // Handle nil token
-        if (_nils != null
-                && _nils.contains(
-                        new Integer((row * _columnCount) + column))) {
-            try {
-                return new IntToken((Token)null);
-            } catch (IllegalActionException ex) {
-                throw new InternalErrorException(null, ex, "Failed to create "
-                        + "nil token");
-
-            }
-        }
         return new IntToken(_value[(row * _columnCount) + column]);
     }
 
@@ -516,8 +432,14 @@ public class IntMatrixToken extends MatrixToken {
      *   identity.
      */
     public Token one() {
-        return new IntMatrixToken(IntegerMatrixMath.identity(_rowCount),
-                DO_NOT_COPY);
+        try {
+            return new IntMatrixToken(IntegerMatrixMath.identity(_rowCount),
+                    DO_NOT_COPY);
+        } catch (IllegalActionException illegalAction) {
+            // should not happen
+            throw new InternalErrorException("IntMatrixToken.one: "
+                    + "Cannot create identity matrix.");
+        }
     }
 
     /** Return a new Token representing the right multiplicative
@@ -528,8 +450,14 @@ public class IntMatrixToken extends MatrixToken {
      *   identity.
      */
     public Token oneRight() {
-        return new IntMatrixToken(IntegerMatrixMath.identity(_columnCount),
-                DO_NOT_COPY);
+        try {
+            return new IntMatrixToken(IntegerMatrixMath.identity(_columnCount),
+                    DO_NOT_COPY);
+        } catch (IllegalActionException illegalAction) {
+            // should not happen
+            throw new InternalErrorException("IntMatrixToken.oneRight: "
+                    + "Cannot create identity matrix.");
+        }
     }
 
     /** Return a new Token representing the additive identity.
@@ -539,8 +467,14 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A new IntMatrixToken containing the additive identity.
      */
     public Token zero() {
-        return new IntMatrixToken(new int[_rowCount * _columnCount],
-                _rowCount, _columnCount, DO_NOT_COPY);
+        try {
+            return new IntMatrixToken(new int[_rowCount * _columnCount],
+                    _rowCount, _columnCount, DO_NOT_COPY);
+        } catch (IllegalActionException illegalAction) {
+            // should not happen
+            throw new InternalErrorException("IntMatrixToken.zero: "
+                    + "Cannot create zero matrix.");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -673,18 +607,6 @@ public class IntMatrixToken extends MatrixToken {
         int scalar = ((IntToken) rightArgument).intValue();
         int[] result = IntegerArrayMath.multiply(_value, scalar);
         return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
-    }
-
-    /** Indicate that this token is a nil or missing token, it contains
-     *  no data.  
-     *  In this derived class, the rows and columns are both set to -1.
-     *  @see ptolemy.data.Token#isNil()
-     */
-    protected void _nil() {
-        _value = null;
-        _rowCount = -1;
-        _columnCount = -1;
-        super._nil();
     }
 
     /** Return a new token whose value is the value of the argument token

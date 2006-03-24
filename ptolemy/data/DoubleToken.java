@@ -66,37 +66,17 @@ public class DoubleToken extends ScalarToken {
         _value = value;
     }
 
-    /** Construct a DoubleToken from the Token.  
-     *  The value of the constructed token is set to the value returned 
-     *  by {@link #convert(Token)}.  If the token parameter is a nil
-     *  token, then this token will be a nil token.
-     *  @param token The token to be converted.
-     *  @exception IllegalActionException If the conversion
-     *   cannot be carried out.
-     */
-    public DoubleToken(Token token)
-            throws IllegalActionException {
-        // This looks like a copy constructor, does that matter?
-        DoubleToken result = convert(token);
-        _value = result.doubleValue();
-        if (result.isNil()) {
-            _nil();
-        }
-    }
-
     /** Construct a DoubleToken from the specified string.
      *  @param init The initialization string, which is in a format
      *  suitable for java.lang.Double.parseDouble(String).   
-     *  If the value is null or the string "nil", then the token is
-     *  marked as being nil, the value is set to Double.NaN, see
-     *  {@link #_nil()}.
      *  @exception IllegalActionException If the Token could not
      *   be created with the given String.
      */
     public DoubleToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            _nil();
-            return;
+            throw new IllegalActionException(
+                    notSupportedNullNilStringMessage("DoubleToken",
+                            init));
         }
         try {
             _value = Double.parseDouble(init);
@@ -125,13 +105,13 @@ public class DoubleToken extends ScalarToken {
      *  it is returned without any change. If it is a PetiteToken is
      *  it returned as a DoubleToken since lossless conversion is
      *  possible between PetiteToken and DoubleToken.  If the argument
-     *  is null or a nil token, then a new nil DoubleToken is
-     *  returned, see {@link ptolemy.data.Token#_nil()}.  Otherwise,
-     *  if the argument is below DoubleToken in the type hierarchy, it
-     *  is converted to an instance of DoubleToken or one of the
-     *  subclasses of DoubleToken and returned. If none of the above
-     *  condition is met, an exception is thrown.
-
+     *  is null or a nil token, then {@link ptolemy.data.Token#NIL} is
+     *  returned.  Otherwise, if the argument is below DoubleToken in
+     *  the type hierarchy, it is converted to an instance of
+     *  DoubleToken or one of the subclasses of DoubleToken and
+     *  returned. If none of the above condition is met, an exception
+     *  is thrown.
+     *
      *  @param token The token to be converted to a DoubleToken.
      *  @return A DoubleToken.
      *  @exception IllegalActionException If the conversion
@@ -142,14 +122,11 @@ public class DoubleToken extends ScalarToken {
         if (token instanceof DoubleToken) {
             return (DoubleToken) token;
         }
+        if (token == null || token.isNil()) {
+            return (DoubleToken)Token.NIL;
+        }
         if (token instanceof PetiteToken) {
             return (DoubleToken) token;
-        }
-        if (token == null || token.isNil()) {
-            // Can't call new DoubleToken(null) here, or we get a loop.
-            DoubleToken result = new DoubleToken();
-            result._nil();
-            return result;
         }
         int compare = TypeLattice.compare(BaseType.DOUBLE, token);
 
@@ -182,7 +159,7 @@ public class DoubleToken extends ScalarToken {
      *  same values as this token.
      *  @param object An instance of Object.
      *  @return True if the argument is a DoubleToken with the same
-     *  value. If either this object or the argument is nil, return
+     *  value. If either this object or the argument is a nil Token, return
      *  false.
      */
     public boolean equals(Object object) {
@@ -246,11 +223,12 @@ public class DoubleToken extends ScalarToken {
             unitString = " * " + unitsString();
         }
 
+        if (isNil()) {
+            // FIXME: what about units?
+            return super.toString();
+        }
+
         if (Double.isNaN(_value) || Double.isInfinite(_value)) {
-            if (isNil()) {
-                // FIXME: what about units?
-                return super.toString();
-            }
             return Double.toString(_value) + unitString;
         } else {
             double mag = Math.abs(_value);
@@ -422,16 +400,6 @@ public class DoubleToken extends ScalarToken {
     protected ScalarToken _multiply(ScalarToken rightArgument) {
         double product = _value * ((DoubleToken) rightArgument).doubleValue();
         return new DoubleToken(product);
-    }
-
-    /** Indicate that this token is a nil or missing token, it contains
-     *  no data.  
-     *  In this derived class, the value is set to java.lang.Double.NaN.
-     *  @see ptolemy.data.Token#isNil()
-     */
-    protected void _nil() {
-        _value = Double.NaN;
-        super._nil();
     }
 
     /** Return a new token whose value is the value of the argument token

@@ -530,7 +530,14 @@ public class UtilityFunctions {
             }
         }
 
-        return new DoubleMatrixToken(result);
+        try {
+            return new DoubleMatrixToken(result);
+        } catch (IllegalActionException illegalAction) {
+            // This should not happen since result should not be null.
+            throw new InternalErrorException("UtilityFunction.gaussian: "
+                    + "Cannot create the DoubleMatrixToken that contains "
+                    + "Gaussian random numbers.");
+        }
     }
 
     /** Get the specified property from the environment. An empty string
@@ -1156,7 +1163,14 @@ public class UtilityFunctions {
             }
         }
 
-        return new DoubleMatrixToken(result);
+        try {
+            return new DoubleMatrixToken(result);
+        } catch (IllegalActionException illegalAction) {
+            // This should not happen since result should not be null.
+            throw new InternalErrorException("UtilityFunction.random: "
+                    + "Cannot create the DoubleMatrixToken that contains "
+                    + "random numbers.");
+        }
     }
 
     /** Return the (exact) return type of the random function above.
@@ -1705,7 +1719,13 @@ public class UtilityFunctions {
         double[][] mtr = new double[rows][columns];
         DoubleMatrixToken result = null;
 
-        result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
+        try {
+            result = new DoubleMatrixToken(mtr, DoubleMatrixToken.DO_NOT_COPY);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException("UtilityFunctions"
+                    + ".zeroMatrixDouble: "
+                    + "Cannot create DoubleMatrixToken. " + ex.getMessage());
+        }
 
         return result;
     }
@@ -1717,7 +1737,16 @@ public class UtilityFunctions {
      */
     public static IntMatrixToken zeroMatrixInt(int rows, int columns) {
         int[][] mtr = new int[rows][columns];
-        return new IntMatrixToken(mtr, IntMatrixToken.DO_NOT_COPY);
+        IntMatrixToken result = null;
+
+        try {
+            result = new IntMatrixToken(mtr, IntMatrixToken.DO_NOT_COPY);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException("UtilityFunctions.zeroMatrixInt: "
+                    + "Cannot create IntMatrixToken. " + ex.getMessage());
+        }
+
+        return result;
     }
 
     /** Return a long zero matrix with the given number of rows and
@@ -1727,7 +1756,18 @@ public class UtilityFunctions {
      */
     public static LongMatrixToken zeroMatrixLong(int rows, int columns) {
         long[][] mtr = new long[rows][columns];
-        return new LongMatrixToken(mtr, LongMatrixToken.DO_NOT_COPY);
+        LongMatrixToken result = null;
+
+        try {
+            result = new LongMatrixToken(mtr, LongMatrixToken.DO_NOT_COPY);
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(
+                    "UtilityFunctions.zeroMatrixLong: "
+                            + "Cannot create LongMatrixToken. "
+                            + ex.getMessage());
+        }
+
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

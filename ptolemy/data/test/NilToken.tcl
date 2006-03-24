@@ -48,23 +48,30 @@ set types [list DoubleToken IntToken LongToken]
 foreach type $types {
     puts -nonewline "$type"
     # Perform binary operations on nil types
+    # bitwiseAnd bitwiseOr bitwiseXor are excluded, they only work on scalars?
     set binaryOperations \
-	[list add bitwiseAnd bitwiseOr bitwiseXor \
+	[list add \
 	     divide modulo multiply subtract]
     foreach binaryOperation $binaryOperations {
 	test "$type-$binaryOperation" "Test $binaryOperation binary op on $type" {
 
 	    puts -nonewline " $binaryOperation"
-	    set nil [java::new ptolemy.data.$type [java::null]] 
-	    set one [java::cast ptolemy.data.$type [$nil one]]
+	    #set nil [java::new ptolemy.data.$type [java::null]] 
+	    set nil [java::field ptolemy.data.Token NIL]
+	    set typeToken [java::new ptolemy.data.$type] 
+	    set one [java::cast ptolemy.data.$type [$typeToken one]]
+
+	    # Try the binaryop with both args nil
 	    set results [java::cast ptolemy.data.Token \
 			     [$nil $binaryOperation $nil]]
 	    set resultsClassName [[$results getClass] getName] 
 
+	    # Try the binaryop with one arg nil
 	    set results1 [java::cast ptolemy.data.Token \
 			     [$nil $binaryOperation $one]]
 	    set results1ClassName [[$results1 getClass] getName] 
 
+	    # Try the binaryop with the other arg nil
 	    set results2 [java::cast ptolemy.data.Token \
 			     [$one $binaryOperation $nil]]
 	    set results2ClassName [[$results2 getClass] getName] 
@@ -73,58 +80,69 @@ foreach type $types {
 	    list [list \
 		      [$results toString] \
 		      [$results isNil] \
-		      [expr {"$resultsClassName" == "ptolemy.data.$type"}]] \
+		      [expr {"$resultsClassName" == "ptolemy.data.Token"}]] \
 		[list \
 		     [$results1 toString] \
 		     [$results1 isNil] \
-		     [expr {"$results1ClassName" == "ptolemy.data.$type"}]] \
+		     [expr {"$results1ClassName" == "ptolemy.data.Token"}]] \
 		[list \
 		     [$results2 toString] \
 		     [$results2 isNil] \
-		     [expr {"$results1ClassName" == "ptolemy.data.$type"}]] \
+		     [expr {"$results1ClassName" == "ptolemy.data.Token"}]] \
 
 	} {{nil 1 1} {nil 1 1} {nil 1 1}}
     }
 
 
-    # Perform unary operations on nil types
-    set unaryOperations \
-	[list absolute]
-    foreach unaryOperation $unaryOperations {
-	test "$type-$unaryOperation" "Test $unaryOperation unary op on $type" {
-	    puts -nonewline " $unaryOperation"
-	    set nil [java::new ptolemy.data.$type [java::null]] 
-	    set results [$nil $unaryOperation]
-	    set resultsClassName [[$results getClass] getName] 
-	    list [$results toString] \
-		[$results isNil] \
-		[expr {"$resultsClassName" == "ptolemy.data.$type"}]
-	} {nil 1 1}
-    }
+#    # Perform unary operations on nil types
+#    set unaryOperations \
+#	[list absolute]
+#    foreach unaryOperation $unaryOperations {
+#	test "$type-$unaryOperation" "Test $unaryOperation unary op on $type" {
+#	    puts -nonewline " $unaryOperation"
+#	    #set nil [java::new ptolemy.data.$type [java::null]] 
+#	    set nil [java::field ptolemy.data.Token NIL]
+#	    set results [$nil $unaryOperation]
+#	    set resultsClassName [[$results getClass] getName] 
+#	    list [$results toString] \
+#		[$results isNil] \
+#		[expr {"$resultsClassName" == "ptolemy.data.$type"}]
+#	} {nil 1 1}
+#    }
 
     # Perform isEqualTo on nil types.  isEqualTo always returns false
     set relationalOperations [list isEqualTo]
     foreach relationalOperation $relationalOperations {
 	test "$type-$relationalOperation" "Test $relationalOperation on $type" {
 	    puts -nonewline " $relationalOperation"
-	    set nil [java::new ptolemy.data.$type [java::null]] 
+	    #set nil [java::new ptolemy.data.$type [java::null]] 
+	    set nil [java::field ptolemy.data.Token NIL]
+	    set typeToken [java::new ptolemy.data.$type] 
+	    set one [java::cast ptolemy.data.$type [$typeToken one]]
 	    set result [$nil $relationalOperation $nil]
-	    list [$result toString]
-	} {false}
+	    set result2 [$one $relationalOperation $nil]
+	    set result3 [$nil $relationalOperation $one]
+	    set result4 [$one $relationalOperation $one]
+	    list [$result toString] [$result2 toString] \
+		[$result3 toString] [$result4 toString]
+	} {false false false true}
     }
 
-    # Perform isLessThan on nil types. isLessThan throws an exception
-    set relationalOperations [list isLessThan]
-    foreach relationalOperation $relationalOperations {
-	test "$type-$relationalOperation" "Test $relationalOperation on $type" {
-
-	    puts -nonewline " $relationalOperation"
-	    set nil [java::new ptolemy.data.$type [java::null]] 
-	    catch {$nil $relationalOperation $nil} msg
-	    regsub -all $type $msg "XXXToken" result
-	    list $result
-	} {{ptolemy.kernel.util.IllegalActionException: isLessThan operation not supported between ptolemy.data.XXXToken 'nil' and ptolemy.data.XXXToken 'nil' because one or the other is nil}}
-    }
-
+#    # Perform isLessThan on nil types. isLessThan throws an exception
+#    set relationalOperations [list isLessThan]
+#    foreach relationalOperation $relationalOperations {
+#	test "$type-$relationalOperation" "Test $relationalOperation on $type" {
+#
+#	    puts -nonewline " $relationalOperation"
+#	    #set nil [java::new ptolemy.data.$type [java::null]] 
+#	    set nil [java::field ptolemy.data.Token NIL]
+#	    set typeToken [java::new ptolemy.data.$type] 
+#	    set one [java::cast ptolemy.data.$type [$typeToken one]]
+#	    catch {$one $relationalOperation $nil} msg
+#	    regsub -all $type $msg "XXXToken" result
+#	    list $result
+#	} {{ptolemy.kernel.util.IllegalActionException: isLessThan operation not supported between ptolemy.data.XXXToken 'nil' and ptolemy.data.XXXToken 'nil' because one or the other is nil}}
+#    }
+#
     puts "."
 }

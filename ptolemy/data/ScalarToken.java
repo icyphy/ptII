@@ -86,12 +86,14 @@ public abstract class ScalarToken extends Token implements
      *  behavior.
      *  @return A ScalarToken with the same units, and likely to be of
      *  the same type as this token.
+     *  If this token is a nil token, then {@link ptolemy.data.Token#NIL}
+     *  is returned.
      */
     public final ScalarToken absolute() {
-        ScalarToken result = _absolute();
         if (isNil()) { 
-            return (ScalarToken)_newNilToken(getType());
+            return (ScalarToken) Token.NIL;
         }
+        ScalarToken result = _absolute();
         result._unitCategoryExponents = _copyOfCategoryExponents();
         return result;
     }
@@ -1359,18 +1361,18 @@ public abstract class ScalarToken extends Token implements
      *  Derived classes should implement that method instead to
      *  provide type-specific operation.
      *  @param rightArgument The token to add to this token.
-     *  @exception IllegalActionException If the units are not
-     *  compatible, or this operation is not supported by the derived
-     *  class.
      *  @return A new Token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  then {@link ptolemy.data.Token#NIL} is returned.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
      */
     private Token _doAdd(Token rightArgument) throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
         if (isNil() || rightArgument.isNil()) {
-            return _newNilToken(getType());
+            return Token.NIL;
         }
 
+        ScalarToken convertedArgument = (ScalarToken) rightArgument;
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("add", this,
                     rightArgument)
@@ -1391,18 +1393,18 @@ public abstract class ScalarToken extends Token implements
      *  token will have the same units as the operands. This method defers
      *  to the _bitwiseAnd() method that takes a ScalarToken.
      *  @param rightArgument The token to bitwise AND to this token.
-     *  @exception IllegalActionException If the units are not
-     *  compatible, or this operation is not supported by the derived
-     *  class.
      *  @return A new Token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  then {@link ptolemy.data.Token#NIL} is returned.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
      */
     private BitwiseOperationToken _doBitwiseAnd(Token rightArgument)
             throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
         if (isNil() || rightArgument.isNil()) {
-            return (BitwiseOperationToken) _newNilToken(getType());
+            return (BitwiseOperationToken) Token.NIL;
         }
+        ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("bitwiseAnd",
@@ -1427,18 +1429,19 @@ public abstract class ScalarToken extends Token implements
      *  token will have the same units as the operands. This method defers
      *  to the _bitwiseOr() method that takes a ScalarToken.
      *  @param rightArgument The token to bitwise OR to this token.
-     *  @exception IllegalActionException If the units are not
-     *  compatible, or this operation is not supported by the derived
-     *  class.
      *  @return A new Token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  then {@link ptolemy.data.Token#NIL} is returned.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
      */
     private BitwiseOperationToken _doBitwiseOr(Token rightArgument)
             throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
         if (isNil() || rightArgument.isNil()) {
-            return (BitwiseOperationToken) _newNilToken(getType());
+            return (BitwiseOperationToken) Token.NIL;
         }
+
+        ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("bitwiseOr",
@@ -1463,18 +1466,19 @@ public abstract class ScalarToken extends Token implements
      *  token will have the same units as the operands. This method defers
      *  to the _bitwiseXOR() method that takes a ScalarToken.
      *  @param rightArgument The token to bitwise XOR to this token.
-     *  @exception IllegalActionException If the units are not
-     *  compatible, or this operation is not supported by the derived
-     *  class.
      *  @return A new Token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  then {@link ptolemy.data.Token#NIL} is returned.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
      */
     private BitwiseOperationToken _doBitwiseXor(Token rightArgument)
             throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
         if (isNil() || rightArgument.isNil()) {
-            return (BitwiseOperationToken) _newNilToken(getType());
+            return (BitwiseOperationToken) Token.NIL;
         }
+
+        ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("bitwiseXor",
@@ -1499,15 +1503,20 @@ public abstract class ScalarToken extends Token implements
      *  should implement that method instead to provide type-specific
      *  operation.
      *  @param rightArgument The token to divide this token by.
+     *  @return A new Token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  then {@link ptolemy.data.Token#NIL} is returned.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      */
-    private Token _doDivide(Token rightArgument) throws IllegalActionException {
+    private Token _doDivide(Token rightArgument)
+            throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return Token.NIL;
+        }
+
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
-        if (isNil() || rightArgument.isNil()) {
-            return _newNilToken(getType());
-        }
 
         ScalarToken result = _divide(convertedArgument);
 
@@ -1523,18 +1532,20 @@ public abstract class ScalarToken extends Token implements
      *  takes a ScalarToken.  Derived classes should implement that
      *  method instead to provide type-specific operation.
      *  @param rightArgument The token with which to test closeness.
+     *  @return A BooleanToken which contains the result of the test.
+     *  If either this token or the argument token is a nil token, then
+     *  a BooleanToken that contains the value false is returned.
      *  @exception IllegalActionException If the units of the argument
      *  are not the same as the units of this token, or the method is
      *  not supported by the derived class.
-     *  @return A BooleanToken which contains the result of the test.
      */
     private BooleanToken _doIsCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
         if (isNil() || rightArgument.isNil()) {
             return BooleanToken.FALSE;
         }
+
+        ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("isCloseTo",
@@ -1554,17 +1565,19 @@ public abstract class ScalarToken extends Token implements
      *  should implement that method instead to provide type-specific
      *  operation.
      *  @param rightArgument The token with which to test equality.
+     *  @return A BooleanToken which contains the result of the test.
+     *  If either this token or the argument token is a nil token, then
+     *  a BooleanToken that contains the value false is returned.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
-     *  @return A BooleanToken which contains the result of the test.
      */
     private BooleanToken _doIsEqualTo(Token rightArgument)
             throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
         if (isNil() || rightArgument.isNil()) {
             return BooleanToken.FALSE;
         }
+
+        ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
             return BooleanToken.FALSE;
@@ -1580,20 +1593,21 @@ public abstract class ScalarToken extends Token implements
      *  ScalarToken.  Derived classes should implement that method
      *  instead to provide type-specific operation.
      *  @param rightArgument The token with which to test ordering.
+     *  @return A BooleanToken which contains the result of the test.
      *  @exception IllegalActionException If the units of the argument
      *  are not the same as the units of this token, or the method is
-     *  not supported by the derived class.
-     *  @return A BooleanToken which contains the result of the test.
+     *  not supported by the derived class or if either this token or
+     *  the argument token is a nil token.
      */
     private BooleanToken _doIsLessThan(Token rightArgument)
             throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
         if (isNil() || rightArgument.isNil()) {
             throw new IllegalActionException(notSupportedMessage("isLessThan",
                     this, rightArgument)
                     + " because one or the other is nil");
         }
+
+        ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("isLessThan",
@@ -1613,17 +1627,19 @@ public abstract class ScalarToken extends Token implements
      *  ScalarToken.  Derived classes should implement that method
      *  instead to provide type-specific operation.
      *  @param rightArgument The token to modulo this token by.
+     *  @return A new Token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  then {@link ptolemy.data.Token#NIL} is returned.
      *  @exception IllegalActionException If the units are not
      *  compatible, or this operation is not supported by the derived
      *  class.
-     *  @return A new Token containing the result.
      */
-    private Token _doModulo(Token rightArgument) throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
+    private Token _doModulo(Token rightArgument)
+            throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
-            return _newNilToken(getType());
+            return Token.NIL;
         }
+        ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("modulo",
@@ -1645,18 +1661,20 @@ public abstract class ScalarToken extends Token implements
      *  classes should implement that method instead to provide
      *  type-specific operation.
      *  @param rightArgument The token to multiply this token by.
+     *  @return A new Token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  then {@link ptolemy.data.Token#NIL} is returned.
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
-     *  @return A new Token containing the result.
      */
     private Token _doMultiply(Token rightArgument)
             throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return Token.NIL;
+        }
+
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
         ScalarToken result = _multiply(convertedArgument);
-
-        if (isNil() || rightArgument.isNil()) {
-            return _newNilToken(getType());
-        }
 
         // compute units
         result._unitCategoryExponents =
@@ -1673,18 +1691,19 @@ public abstract class ScalarToken extends Token implements
      *  a ScalarToken.  Derived classes should implement that method
      *  instead to provide type-specific operation.
      *  @param rightArgument The token to subtract from this token.
+     *  @return A new Token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  then {@link ptolemy.data.Token#NIL} is returned.
      *  @exception IllegalActionException If the units are not
      *  compatible, or this operation is not supported by the derived
      *  class.
-     *  @return A new Token containing the result.
      */
     private Token _doSubtract(Token rightArgument)
             throws IllegalActionException {
-        ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
         if (isNil() || rightArgument.isNil()) {
-            return _newNilToken(getType());
+            return Token.NIL;
         }
+        ScalarToken convertedArgument = (ScalarToken) rightArgument;
 
         if (!_areUnitsEqual(convertedArgument)) {
             throw new IllegalActionException(notSupportedMessage("subtract",

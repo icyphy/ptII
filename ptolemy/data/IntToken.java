@@ -64,35 +64,16 @@ public class IntToken extends ScalarToken {
         _value = value;
     }
 
-    /** Construct an IntToken from the Token.  
-     *  The value of the constructed token is set to the value returned 
-     *  by {@link #convert(Token)}.  If the token parameter is a nil
-     *  token, then this token will be a nil token.
-     *  @param token The token to be converted.
-     *  @exception IllegalActionException If the conversion
-     *   cannot be carried out.
-     */
-    public IntToken(Token token)
-            throws IllegalActionException {
-        // This looks like a copy constructor, does that matter?
-        IntToken result = convert(token);
-        _value = result.intValue();
-        if (result.isNil()) {
-            _nil();
-        }
-    }
-
     /** Construct an IntToken from the specified string.
-     *  If the value is null or the string "nil", then the token is
-     *  marked as being nil, see {@link #_nil()}.
      *  @param init The specified string.
      *  @exception IllegalActionException If the token could not
-     *   be created with the given String.
+     *  be created with the given String.
      */
     public IntToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            _nil();
-            return;
+            throw new IllegalActionException(
+                    notSupportedNullNilStringMessage("IntToken",
+                            init));
         }
         try {
             _value = Integer.parseInt(init);
@@ -116,16 +97,14 @@ public class IntToken extends ScalarToken {
     /** Convert the specified token into an instance of IntToken.
      *  This method does lossless conversion.  The units of the
      *  returned token will be the same as the units of the given
-     *  token.  
-     *  If the argument is already an instance of IntToken, it
-     *  is returned without any change. 
-     *  If the argument is null or a nil token, then a new nil IntToken
-     *  is returned, see {@link ptolemy.data.Token#_nil()}.
-     *  Otherwise, if the argument is
-     *  below IntToken in the type hierarchy, it is converted to an
-     *  instance of IntToken or one of the subclasses of IntToken and
-     *  returned. If none of the above condition is met, an exception
-     *  is thrown.
+     *  token.  If the argument is already an instance of IntToken, it
+     *  is returned without any change.  If the argument is null or a
+     *  nil token, then {@link ptolemy.data.Token#NIL} is returned.
+     *  Otherwise, if the argument is below IntToken in the type
+     *  hierarchy, it is converted to an instance of IntToken or one
+     *  of the subclasses of IntToken and returned. If none of the
+     *  above condition is met, an exception is thrown.
+     *
      *  @param token The token to be converted to a IntToken.
      *  @return A IntToken.
      *  @exception IllegalActionException If the conversion
@@ -135,14 +114,9 @@ public class IntToken extends ScalarToken {
         if (token instanceof IntToken) {
             return (IntToken) token;
         }
-
         if (token == null || token.isNil()) {
-            // Can't call new IntToken(null) here, or we get a loop.
-            IntToken result = new IntToken();
-            result._nil();
-            return result;
+            return (IntToken)Token.NIL;
         }
-
 
         int compare = TypeLattice.compare(BaseType.INT, token);
 
@@ -178,8 +152,8 @@ public class IntToken extends ScalarToken {
     /** Return true if the argument's class is IntToken and it has the
      *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is an IntToken with the same
-     *  value. If either this object or the argument is nil, return
+     *  @return True if the argument is a DoubleToken with the same
+     *  value. If either this object or the argument is a nil Token, return
      *  false.
      */
     public boolean equals(Object object) {
@@ -442,19 +416,7 @@ public class IntToken extends ScalarToken {
         return new IntToken(product);
     }
 
-    /** Indicate that this token is a nil or missing token, it contains
-     *  no data.  
-     *  In this derived class, the value is set to java.lang.Integer.MAX_VALUE.
-     *  @see ptolemy.data.Token#isNil()
-     */
-    protected void _nil() {
-        // Set this to MAX_VALUE so that if we perform an operation on a nil
-        // token, we get strange results.
-        _value = Integer.MAX_VALUE;
-        super._nil();
-    }
-
-    /** Return a new token whose value is the value of the argument token
+   /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed that
      *  the type of the argument is an IntToken.
      *  @param rightArgument The token to subtract from this token.

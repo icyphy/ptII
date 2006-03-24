@@ -73,12 +73,9 @@ import ptolemy.kernel.util.InternalErrorException;
  the type system cannot represent exactly.  Using the EventToken class,
  and the type BaseType.EVENT allows typesafe use of pure events.
 
- <p>Nil or missing tokens are common in analytical systems like R and SAS
+ <p>Nil, null or missing tokens are common in analytical systems like R and SAS
  where they are used to handle sparsely populated data sources.
- In database parlance, missing tokens are sometimes called 
- null tokens.  Since null is a Java keyword, we use the term "nil".
- Nil tokens are created by calling <code>new Token(null);</code>.  The
- toString() method on a nil token returns the string "nil".
+ This class has support for such tokens, see {@link #NIL} for details.  
 
  @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Brooks,
  Steve Neuendorffer
@@ -93,22 +90,11 @@ import ptolemy.kernel.util.InternalErrorException;
  @see MatrixToken
  */
 public class Token implements Serializable {
+
     /** Create a Token.
      */
     public Token() {
         super();
-    }
-
-    /** Create a Token.  In this base class, if the token parameter
-     *  is null or a nil token, then the token is a nil token.
-     *  @param token The token.
-     */
-    public Token(Token token) {
-        super();
-        if (token == null || token.isNil()) {
-            _nil();
-            return;
-        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,12 +103,17 @@ public class Token implements Serializable {
     /** Return a new token whose value is the sum of this token and
      *  the argument.
      *  @param rightArgument The token to add to this token.
-     *  @return A new token containing the result.
+     *  @return A new token containing the result.  
+     *  If either this token or the argument token is a nil token, then
+     *  {@link #NIL} is returned.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
     public Token add(Token rightArgument) throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("add", this,
                 rightArgument));
     }
@@ -131,11 +122,16 @@ public class Token implements Serializable {
      *  and the argument.
      *  @param leftArgument The token to add this token to.
      *  @return A new token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  {@link #NIL} is returned.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
     public Token addReverse(Token leftArgument) throws IllegalActionException {
+        if (isNil() || leftArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("addReverse",
                 this, leftArgument));
     }
@@ -144,11 +140,16 @@ public class Token implements Serializable {
      *  divided by the value of the argument token.
      *  @param rightArgument The token to divide into this token.
      *  @return A new token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  {@link #NIL} is returned.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
     public Token divide(Token rightArgument) throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("divide", this,
                 rightArgument));
     }
@@ -164,6 +165,9 @@ public class Token implements Serializable {
      */
     public Token divideReverse(Token leftArgument)
             throws IllegalActionException {
+        if (isNil() || leftArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("divideReverse",
                 this, leftArgument));
     }
@@ -186,6 +190,8 @@ public class Token implements Serializable {
      *  @return a boolean token that contains the value true if the
      *  value and units of this token are close to those of the
      *  argument token.
+     *  If either this token or the argument token is a nil token, then
+     *  a boolean token that contains the value false is returned.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be compared with this token.
      */
@@ -205,11 +211,16 @@ public class Token implements Serializable {
      *  @return A boolean token that contains the value true if the
      *   value of this token are close to those of the
      *   argument token.
+     *  If either this token or the argument token is a nil token, then
+     *  a boolean token that contains the value false is returned.
      *  @exception IllegalActionException If the argument token is not
      *   of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
+        if (isNil() || token.isNil()) {
+            return BooleanToken.FALSE;
+        }
         throw new IllegalActionException(notSupportedMessage("isCloseTo", this,
                 token));
     }
@@ -219,33 +230,44 @@ public class Token implements Serializable {
      *
      *  @param rightArgument The token with which to test equality.
      *  @return A BooleanToken which contains the result of the test.
+     *  If either this token or the argument token is a nil token, then
+     *  a boolean token that contains the value false is returned.
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be compared with this token.
      */
     public BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return BooleanToken.FALSE;
+        }
         throw new IllegalActionException(notSupportedMessage("isEqualTo", this,
                 rightArgument));
     }
 
-    /** Return true if the token is nil, (aka missing).
+    /** Return true if the token is nil, (aka null or missing).
      *  Nil or missing tokens occur when a data source is sparsely populated.
-     *  @return True if the token has been marked as nil by calling
-     *  {@link #_nil()}.
+     *  @return True if the token is equals() to {@link #NIL}.
      */
     public boolean isNil() {
-        return _isNil;
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        return this.equals(NIL);
     }
 
     /** Return a new token whose value is the value of this token
      *  modulo the value of the argument token.
      *  @param rightArgument The token to divide into this token.
      *  @return A new token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  {@link #NIL} is returned.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
     public Token modulo(Token rightArgument) throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("modulo", this,
                 rightArgument));
     }
@@ -254,6 +276,8 @@ public class Token implements Serializable {
      *  modulo the value of this token.
      *  @param leftArgument The token to apply modulo to by the value
      *  of this token.
+     *  If either this token or the argument token is a nil token, then
+     *  {@link #NIL} is returned.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
@@ -261,6 +285,9 @@ public class Token implements Serializable {
      */
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
+        if (isNil() || leftArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("moduloReverse",
                 this, leftArgument));
     }
@@ -269,11 +296,16 @@ public class Token implements Serializable {
      *  multiplied by the value of the argument token.
      *  @param rightArgument The token to multiply this token by.
      *  @return A new token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  {@link #NIL} is returned.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
     public Token multiply(Token rightArgument) throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("multiply", this,
                 rightArgument));
     }
@@ -289,6 +321,9 @@ public class Token implements Serializable {
      */
     public Token multiplyReverse(Token leftArgument)
             throws IllegalActionException {
+        if (isNil() || leftArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("multiplyReverse",
                 this, leftArgument));
     }
@@ -367,8 +402,12 @@ public class Token implements Serializable {
      *  @exception IllegalActionException If this method is not
      *   supported by the derived class.
      *  @return A new Token containing the multiplicative identity.
+     *  If this token is a nil token, then {@link #NIL} is returned.
      */
     public Token one() throws IllegalActionException {
+        if (isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(
                 "Multiplicative identity not supported on "
                         + this.getClass().getName() + ".");
@@ -393,6 +432,7 @@ public class Token implements Serializable {
      *  types.
      *  @param times The number of times to multiply.
      *  @return The power.
+     *  If this token is a nil token, then {@link #NIL} is returned.
      *  @exception IllegalActionException If the token is not
      *  compatible for this operation.  Specifically, if the Token
      *  type does not support division (for example matrices) then
@@ -425,11 +465,16 @@ public class Token implements Serializable {
      *  subtracted from the value of this token.
      *  @param rightArgument The token to subtract from this token.
      *  @return A new token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  {@link #NIL} is returned.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
     public Token subtract(Token rightArgument) throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("subtract", this,
                 rightArgument));
     }
@@ -438,12 +483,17 @@ public class Token implements Serializable {
      *  subtracted from the value of the argument token.
      *  @param leftArgument The token to subtract this token from.
      *  @return A new token containing the result.
+     *  If either this token or the argument token is a nil token, then
+     *  {@link #NIL} is returned.
      *  @exception IllegalActionException If the argument token and
      *  this token are of incomparable types, or the operation does
      *  not make sense for the given types.
      */
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
+        if (isNil() || leftArgument.isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException(notSupportedMessage("subtractReverse",
                 this, leftArgument));
     }
@@ -452,13 +502,13 @@ public class Token implements Serializable {
      *  by the expression language to recover a token with the same value.
      *  This method should be overridden by derived classes.
      *  In this base class, return the String "present" to indicate
-     *  that an event is present. If the nil() method has been called,
-     *  then return "nil"
-     *  @return The String "present", unless the nil() method has
-     *  been called.
+     *  that an event is present. If this token is {@link #NIL} then
+     *  return "nil"
+     *  @return The String "present", unless this token is {@link @NIL},
+     *  in which case return the String "nil".
      */
     public String toString() {
-        if (_isNil) {
+        if (isNil()) {
             return "nil";
         }
         return "present";
@@ -467,10 +517,14 @@ public class Token implements Serializable {
     /** Returns a new token representing the additive identity.
      *  It should be overridden in subclasses.
      *  @return A new Token containing the additive identity.
+     *  If this token is a nil token, then {@link #NIL} is returned.
      *  @exception IllegalActionException If this method is not
      *  supported by the derived class.
      */
     public Token zero() throws IllegalActionException {
+        if (isNil()) {
+            return Token.NIL;
+        }
         throw new IllegalActionException("Additive identity not supported on "
                 + this.getClass().getName() + ".");
     }
@@ -485,48 +539,34 @@ public class Token implements Serializable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         public variables                  ////
 
-    /** Indicate that this token is a nil or missing token, it contains
-     *  no data.  
-     *  Nil or missing tokens are common in analytical systems like R and SAS
-     *  where they are used to handle sparsely populated data sources.
-     *  In database parlance, missing tokens are sometimes called 
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
      *  null tokens.  Since null is a Java keyword, we use the term "nil".
-     *  @see #isNil()
+     *  The toString() method on a nil token returns the string "nil".
      */
-    protected void _nil() {
-        _isNil = true;
-    }
-
-    /** Construct a new nil token of a particular type.
-     *  @param type The type of the nil token to be constructed.
-     *  @return A nil token with the same type as the type parameter.
-     *  If there is no constructor that takes a null Token, then
-     *  an InternalErrorException is thrown, indicating that the implementation
-     *  of nil is incomplete.
-     */
-    protected Token _newNilToken(Type type) {
-        Token token = null;
-        try {
-            // Construct a nil token, same type as type.
-            Class tokenClass = type.getTokenClass();
-            Constructor tokenConstructor =
-                tokenClass.getConstructor(
-                        new Class[] { Token.class });
-            token = (Token) tokenConstructor.newInstance(
-                    new Object[] { null });
-        } catch (Throwable ex) {
-            throw new InternalErrorException(null, ex, "Missing "
-                    + type + "Token(Token) constructor");
-            //token = new Token(null);
-        }
-        return token;
-    }
+    public static final Token NIL = new Token();
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected methods                 ////
+    /** Return a string with an error message that states that 
+     *  the token cannot be created with a string that is null or
+     *  "nil"
+     *  @param type The type we are trying to create.
+     *  @param init The initialization string.
+     *  @return A string error message.
+     */
+    public static String notSupportedNullNilStringMessage(String type,
+            String init) {
+        return "Creating a nil token with "
+            + type +"(" + (init == null
+                    ? "null" 
+                    : "\"" + init + "\"")
+            + ") is not supported.  Use Token.NIL instead.";
+    }
 
-    /** Set to true if {@link #_nil()} is called. */
-    private boolean _isNil = false;
+
 }

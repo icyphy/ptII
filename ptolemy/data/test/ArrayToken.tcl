@@ -71,8 +71,8 @@ test ArrayToken-1.3 {Create an int array with conversion} {
 } {{{1.0, 2.0, 3.0}} {ptolemy.kernel.util.IllegalActionException: An array token cannot be created from the expression '1.0'}}
 
 test ArrayToken-1.4 {Create an array of nil DoubleTokens} {
-    set val0 [java::new ptolemy.data.DoubleToken [java::null]]
-    set val1 [java::new ptolemy.data.DoubleToken [java::null]]
+    set val0 [java::field ptolemy.data.Token NIL]
+    set val1 [java::field ptolemy.data.Token NIL]
     set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
     set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
 
@@ -80,7 +80,7 @@ test ArrayToken-1.4 {Create an array of nil DoubleTokens} {
 } {{nil, nil}}
 
 test ArrayToken-1.5 {Create an array of DoubleTokens, first one nil} {
-    set val0 [java::new ptolemy.data.DoubleToken [java::null]]
+    set val0 [java::field ptolemy.data.Token NIL]
     set val1 [java::new ptolemy.data.DoubleToken 2.0]
     set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
     set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
@@ -90,7 +90,7 @@ test ArrayToken-1.5 {Create an array of DoubleTokens, first one nil} {
 
 test ArrayToken-1.6 {Create an array of DoubleTokens, second one nil} {
     set val0 [java::new ptolemy.data.DoubleToken 2.0]
-    set val1 [java::new ptolemy.data.DoubleToken [java::null]]
+    set val1 [java::field ptolemy.data.Token NIL]
     set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
     set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
 
@@ -98,10 +98,12 @@ test ArrayToken-1.6 {Create an array of DoubleTokens, second one nil} {
 } {{2.0, nil}}
 
 test ArrayToken-1.7.1 {Create a nil ArrayToken} {
-    set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
+    set valToken [java::field ptolemy.data.Token NIL]
+    set valToken2 [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
 		      [java::null]]
-    list [$valToken toString] [$valToken isNil]
-} {{{}} 1}
+    list [$valToken toString] [$valToken isNil] \
+	[$valToken2 toString] [$valToken2 isNil]
+} {nil 1 {{}} 0}
 
 test ArrayToken-1.7.2 {Create a Double ArrayToken} {
     set val0 [java::new ptolemy.data.DoubleToken 2.0]
@@ -297,36 +299,34 @@ test ArrayToken-4.1 {test isCloseTo on an array of Complexes} {
 test ArrayToken-5.1 {Construct an array of doubles with a nil} {
     set t [java::new {ptolemy.data.ArrayToken String} "{1.0, nil, 2.0, NaN}"]
     set nilToken [$t getElement 1]
-    set nilDoubleToken [java::cast ptolemy.data.DoubleToken $nilToken]
+    #set nilDoubleToken [java::cast ptolemy.data.DoubleToken $nilToken]
     list [$t toString] [$nilToken toString] \
-	[[$nilToken getType] toString] \
-	[$nilDoubleToken toString]
-} {{{1.0, nil, 2.0, NaN}} nil double nil}
+	[[$nilToken getType] toString]
+} {{{1.0, nil, 2.0, NaN}} nil general}
 
 test ArrayToken-5.2 {Construct an array of doubles with a nil as 1st element} {
     set t [java::new {ptolemy.data.ArrayToken String} "{nil, 2.0}"]
     set nilToken [$t getElement 0]
-    set nilDoubleToken [java::cast ptolemy.data.DoubleToken $nilToken]
+    #set nilDoubleToken [java::cast ptolemy.data.DoubleToken $nilToken]
     list [$t toString] [$nilToken toString] \
-	[[$nilToken getType] toString] \
-	[$nilDoubleToken toString]
-} {{{nil, 2.0}} nil double nil}
+	[[$nilToken getType] toString]
+
+} {{{nil, 2.0}} nil general}
 
 test ArrayToken-6.1 {Construct an array of ints with a nil} {
     set t [java::new {ptolemy.data.ArrayToken String} "{1, nil, 2}"]
     set nilToken [$t getElement 1]
-    set nilIntToken [java::cast ptolemy.data.IntToken $nilToken]
+    #set nilIntToken [java::cast ptolemy.data.IntToken $nilToken]
     list [$t toString] [$nilToken toString] \
-	[[$nilToken getType] toString] \
-	[$nilIntToken toString]
-} {{{1, nil, 2}} nil int nil}
+	[[$nilToken getType] toString]
+
+} {{{1, nil, 2}} nil general}
 
 
 test ArrayToken-6.2 {Construct an array of int with a nil as 1st element} {
     set t [java::new {ptolemy.data.ArrayToken String} "{nil, 2}"]
     set nilToken [$t getElement 0]
-    set nilIntToken [java::cast ptolemy.data.IntToken $nilToken]
+    #set nilIntToken [java::cast ptolemy.data.IntToken $nilToken]
     list [$t toString] [$nilToken toString] \
-	[[$nilToken getType] toString] \
-	[$nilIntToken toString]
-} {{{nil, 2}} nil int nil}
+	[[$nilToken getType] toString]
+} {{{nil, 2}} nil general}

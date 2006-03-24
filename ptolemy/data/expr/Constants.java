@@ -237,7 +237,7 @@ public class Constants {
 
         _table.putAll(_types);
 
-        ptolemy.data.Token nil = new ptolemy.data.Token(null);
+        ptolemy.data.Token nil = ptolemy.data.Token.NIL;
         _table.put("nil", nil);
 
     }

@@ -59,46 +59,19 @@ public class StringToken extends AbstractConvertibleToken {
         this("");
     }
 
-    /** Construct an StringToken from the Token.  
-     *  The value of the constructed token is set to the value returned 
-     *  by {@link #convert(Token)}.  If the token parameter is a nil
-     *  token, then this token will be a nil token.
-     *  @param token The token to be converted.
-     *  @exception IllegalActionException If the conversion
-     *   cannot be carried out.
-     */
-    public StringToken(Token token)
-            throws IllegalActionException {
-        // This looks like a copy constructor, does that matter?
-        StringToken result = convert(token);
-        _value = result.stringValue();
-        if (result.isNil()) {
-            _nil();
-        }
-    }
-
     /** Construct a token with the specified string.
      *  If the value argument is null then the empty string is created.
-     *  Note that this String constructor is different from String
-     *  constructor for the other tokens, where a null argument to the
-     *  String constructor results in a nil token.  If the value
-     *  argument is the string "nil", then the token is marked as
-     *  being nil, see {@link #_nil()}.
+     *  If the value argument is the string "nil", then the Token is not a  
+     *  nil token it is the string "nil".
      *  @param value The specified string.
      */
     public StringToken(String value) {
-        if (value != null) {
-            // FIXME: For all the other tokens, XXToken((String)null) is
-            // a nil token.
-            if (value.equals("nil")) {
-                _nil();
-                return;
-            }
-
-            _value = value;
-        } else {
+        if (value == null) {
             _value = "";
+        } else {
+            _value = value;
         }
+
         // If a String token is "has an embedded " quote", then
         // toString() should return "has an embedded \" quote"
         if (_value.indexOf('"') == -1) {
@@ -136,8 +109,8 @@ public class StringToken extends AbstractConvertibleToken {
      *  This method does lossless conversion.
      *  If the argument is already an instance of StringToken,
      *  it is returned without any change. 
-     *  If the argument is null or a nil token, then a new nil IntToken
-     *  is returned, see {@link ptolemy.data.Token#_nil()}.
+     *  If the argument is null or a nil token, then 
+     *  {@link ptolemy.data.Token#NIL} is returned
      *  Otherwise, if the argument is below StringToken in the type
      *  hierarchy, it is converted to an instance of StringToken or
      *  one of the subclasses of StringToken and returned. If none of
@@ -154,9 +127,7 @@ public class StringToken extends AbstractConvertibleToken {
         }
 
         if (token == null || token.isNil()) {
-            StringToken result = new StringToken();
-            result._nil();
-            return result;
+            return (StringToken) Token.NIL;
         }
 
         int compare = TypeLattice.compare(BaseType.STRING, token);
@@ -340,18 +311,6 @@ public class StringToken extends AbstractConvertibleToken {
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("multiply", this,
                 rightArgument));
-    }
-
-    /** Indicate that this token is a nil or missing token, it contains
-     *  no data.  
-     *  In this derived class, the value is set to the string "nil", without
-     *  the double quotes.
-     *  @see ptolemy.data.Token#isNil()
-     */
-    protected void _nil() {
-        _value = "nil";
-        _toString = "nil";
-        super._nil();
     }
 
     /** Return a new token whose value is the value of the argument token
