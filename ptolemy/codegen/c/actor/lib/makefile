@@ -73,6 +73,7 @@ JSRCS = \
 	Discard.java \
 	Distributor.java \
 	ElementsToArray.java \
+	Exit.java \
 	Expression.java \
 	Gaussian.java \
 	GradientAdaptiveLattice.java \
