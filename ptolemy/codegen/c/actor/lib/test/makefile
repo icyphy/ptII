@@ -49,7 +49,8 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	CodeGenerator2.tcl
+	CodeGenerator2.tcl \
+	Exit.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -68,7 +69,8 @@ MISC_FILES =	alljtests.tcl \
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	Exit.xml
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
