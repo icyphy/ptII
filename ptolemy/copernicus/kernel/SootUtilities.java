@@ -1156,7 +1156,7 @@ public class SootUtilities {
         }
 
         // Copy the field declarations.
-        //List collidedFieldList = _copyFields(theClass, superClass);
+        /*List collidedFieldList = */ _copyFields(theClass, superClass);
 
         // Now create new methods in the given class for methods that
         // exist in the super class, but not in the given class.
