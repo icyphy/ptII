@@ -32,6 +32,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
@@ -176,6 +177,9 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         final JTextAreaExec exec = new JTextAreaExec("Code Generator Commands",
                 false);
 
+        // If we execute any commands, print the output in the text area.
+        codeGenerator.setExecuteCommands(exec);
+
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 left, exec);
         splitPane.setOneTouchExpandable(true);
@@ -222,7 +226,21 @@ public class CodeGeneratorGUI extends PtolemyFrame {
 
                     StringBuffer code = new StringBuffer();
                     codeGenerator.generateCode(code);
-                    exec.updateStatusBar(code.toString());
+                    String codeFileNameWritten =
+                        codeGenerator.getCodeFileName();
+
+                    if (codeFileNameWritten != null) {
+                        Configuration configuration = getConfiguration();
+
+                        URL codeURL = new File(codeFileNameWritten).toURL();
+                        // Use Thread.currentThread() so that this code will
+                        // work under WebStart.
+                        configuration.openModel(null, codeURL,
+                                codeURL.toExternalForm());
+                        
+                    }
+                    // Don't write the file to the window
+                    //exec.updateStatusBar(code.toString());
 
                     exec.updateStatusBar("// Code generation " + "complete.");
                 } catch (Exception ex) {
