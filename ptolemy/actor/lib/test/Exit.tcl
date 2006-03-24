@@ -47,3 +47,4 @@ test Exit-1.1 {} {
     list $errMsg
 } {{ptolemy.kernel.util.KernelRuntimeException: Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.
   in .Exit.MoMLSimpleApplication}}
+
