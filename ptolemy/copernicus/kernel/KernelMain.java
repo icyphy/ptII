@@ -141,6 +141,11 @@ public abstract class KernelMain {
         // Parse any copernicus args.
         String[] sootArgs = _parseArgs(attribute);
 
+        if (sootArgs == null) {
+            throw new NullPointerException("Failed to parse args for "
+                    + attribute + ", resulting arg array was null");
+        }
+
         // Add Transforms to the Scene.
         addTransforms();
 
