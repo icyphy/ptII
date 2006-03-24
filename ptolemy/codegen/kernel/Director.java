@@ -75,9 +75,11 @@ public class Director implements ActorCodeGenerator {
     /** Generate code for declaring read and write offset variables if needed. 
      *  It delegates to the helpers of contained actors.
      *  @return The generated code.
-     *  @exception IllegalActionException If thrown while creating offset variables.
+     *  @exception IllegalActionException If thrown while creating
+     *  offset variables.
      */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -108,7 +110,8 @@ public class Director implements ActorCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helper =
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(helper.generateFireCode());
             code.append(helper.generateTypeConvertFireCode());
         }
@@ -128,7 +131,8 @@ public class Director implements ActorCodeGenerator {
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper =
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(actorHelper.generateFireFunctionCode());
         }
         return code.toString();
@@ -159,7 +163,8 @@ public class Director implements ActorCodeGenerator {
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject =
+                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             // Initialize code for the actor.
             code.append(helperObject.generateInitializeCode());
 
@@ -198,9 +203,10 @@ public class Director implements ActorCodeGenerator {
         return code.toString();
     }
 
-    /** Generate mode transition code. It delegates to the helpers of actors 
-     *  under the control of this director. The mode transition code generated 
-     *  in this method is executed after each global iteration, e.g., in HDF model. 
+    /** Generate mode transition code. It delegates to the helpers of
+     *  actors under the control of this director. The mode transition
+     *  code generated in this method is executed after each global
+     *  iteration, e.g., in HDF model.
      * 
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If an actor helper throws it 
@@ -524,7 +530,8 @@ public class Director implements ActorCodeGenerator {
                 if (offsetObject instanceof Integer) {
                     int offset = ((Integer) offsetObject).intValue();
                     offset = (offset + rate)
-                            % helper.getBufferSize(sinkPort, sinkChannelNumber);
+                            % helper.getBufferSize(sinkPort,
+                                    sinkChannelNumber);
                     helper.setWriteOffset(sinkPort, sinkChannelNumber,
                             new Integer(offset));
                 } else { // If offset is a variable. 
