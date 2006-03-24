@@ -36,7 +36,6 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 
-import com.sun.tools.javac.v8.tree.Tree.If;
 
 /**
  * A helper class for ptolemy.actor.lib.io.FileReader.
