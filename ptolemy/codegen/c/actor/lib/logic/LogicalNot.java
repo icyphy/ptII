@@ -28,7 +28,6 @@
 package ptolemy.codegen.c.actor.lib.logic;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// LogicalNot

@@ -28,14 +28,12 @@
  */
 package ptolemy.codegen.c.actor.lib.io;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.FileUtilities;
 
 /**
  * A helper class for ptolemy.actor.lib.io.LineReader.
