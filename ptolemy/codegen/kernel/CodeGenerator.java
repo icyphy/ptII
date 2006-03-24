@@ -240,6 +240,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public int generateCode(StringBuffer code) throws KernelException {
 
+        _codeFileName = null;
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
         // We separate the generation and the appending into 2 phases.
@@ -283,7 +284,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             _executeCommands = new StreamExec();
         }
 
-        _writeCode(code);
+        _codeFileName = _writeCode(code);
         _writeMakefile();
         return _executeCommands();
     }
@@ -760,6 +761,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         return _executeCommands;
     }
 
+    /** Return the name of the code file that was written, if any.
+     *  If no file was written, then return null.
+     *  @return The name of the file that was written.
+     */
+    public String getCodeFileName() {
+        return _codeFileName;
+    }
+
     /** Generate code for a model.
      *  <p>For example:
      *  <pre>
@@ -983,11 +992,13 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  model name, and an extension that is the last package of
      *  the generatorPackage.
      *  @param code The StringBuffer containing the code.
+     *  @return The name of the file that was written.
      *  @exception IllegalActionException  If there is a problem reading
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
-    private void _writeCode(StringBuffer code) throws IllegalActionException {
+    private String _writeCode(StringBuffer code)
+            throws IllegalActionException {
         // This method is private so that the body of the caller shorter.
 
         String extension = generatorPackage.stringValue().substring(
@@ -1039,6 +1050,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     writer.close();
                 }
             }
+            return FileUtilities.nameToFile(codeFileName,
+                    codeDirectory.getBaseDirectory()).getCanonicalPath();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Failed to write \""
                     + codeFileName + "\" in "
@@ -1172,6 +1185,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The name of the file that was written.
+     *  If no file was written, then the value is null.
+     */ 
+    private String _codeFileName = null;
 
     /** A hash map that stores the code generator helpers associated
      *  with the actors.
