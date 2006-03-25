@@ -272,11 +272,17 @@ public class NonStrictTest extends Sink {
 
             // FIXME: If we get a nil token on the input, what should we do?
             // Here, we require that the referenceToken also be nil. 
-            if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false && !referenceToken.isNil()) {
+            // If the token is an ArrayToken and two corresponding elements
+            // are nil, then we consider them "close".
+            if (token.isCloseTo(referenceToken, _tolerance).booleanValue()
+                    == false
+                    && !referenceToken.isNil()
+                    && !_isCloseToIfNilArrayElement(token, referenceToken,
+                            _tolerance)) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration + ".\n"
-                                + "Value was: " + token
-                                + ". Should have been: " + referenceToken);
+                        + "Value was: " + token
+                        + ". Should have been: " + referenceToken);
             }
         }
 
@@ -392,6 +398,67 @@ public class NonStrictTest extends Sink {
             + "  that are checked into the nightly build!"
             + "  To run the tests in nightly build mode, use"
             + "     make nightly";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Test whether the value of this token is close to the first argument,
+     *  where "close" means that the distance between them is less than
+     *  or equal to the second argument.  This method only makes sense
+     *  for tokens where the distance between them is reasonably
+     *  represented as a double. It is assumed that the argument is
+     *  an ArrayToken, and the isCloseTo() method of the array elements
+     *  is used.
+     *  This method differs from {@link ptolemy.data.Array#_isCloseTo()}
+     *  in that if corresponding elements are both nil tokens, then
+     *  those two elements are considered "close", see 
+     *  {@link ptolemy.data.Token#NIL}.
+     *  @param token1 The first array token to compare.
+     *  @param token2 The second array token to compare.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
+     *  @exception IllegalActionException If the elements do not support
+     *   this comparison.
+     *  @return True if the first argument is close
+     *  to this token.  False if the arguments are not ArrayTokens
+     */
+    protected static boolean _isCloseToIfNilArrayElement(Token token1,
+            Token token2,
+            double epsilon)
+            throws IllegalActionException {
+        if (!(token1 instanceof ArrayToken)
+                || !(token2 instanceof ArrayToken)) {
+            return false;
+        }
+
+        ArrayToken array1 = (ArrayToken) token1;
+        ArrayToken array2 = (ArrayToken) token2;
+        if (array1.length() != array2.length()) {
+            return false;
+        }
+
+
+        for (int i = 0; i < array1.length(); i++) {
+            // Here is where isCloseTo() differs from isEqualTo().
+            // Note that we return false the first time we hit an
+            // element token that is not close to our current element token.
+            BooleanToken result = array1.getElement(i).isCloseTo(
+                    array2.getElement(i), epsilon);
+
+            // If the tokens are not close and array1[i] and is not nil, then
+            // the arrays really aren't close.
+            if (result.booleanValue() == false) {
+                if (array1.getElement(i).isNil()
+                        && array2.getElement(i).isNil()) {
+                    // They are not close, but both are nil, so for
+                    // our purposes, the are close.
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
