@@ -61,7 +61,7 @@ import ptolemy.math.Complex;
  @author Winthrop Williams, Steve Neuendorffer, Contributor: Christopher Hylands
  @version $Id$
  @since Ptolemy II 2.0
- @Pt.ProposedRating Green (neuendor)
+ @Pt.ProposedRating Green (cxh) ONE, ZERO
  @Pt.AcceptedRating Yellow (winthrop)
  */
 public class UnsignedByteToken extends ScalarToken {
@@ -258,11 +258,11 @@ public class UnsignedByteToken extends ScalarToken {
         return unsignedConvert(_value);
     }
 
-    /** Returns a new UnsignedByteToken with value 1.
-     *  @return A new UnsignedByteToken with value 1.
+    /** Returns an UnsignedByteToken with value 1.
+     *  @return an UnsignedByteToken with value 1.
      */
     public Token one() {
-        return new UnsignedByteToken(1);
+        return ONE;
     }
 
     /** Returns a token representing the result of shifting the bits
@@ -313,12 +313,21 @@ public class UnsignedByteToken extends ScalarToken {
         return intValue;
     }
 
-    /** Returns a new UnsignedByteToken with value 0.
-     *  @return A new UnsignedByteToken with value 0.
+    /** Returns an UnsignedByteToken with value 0.
+     *  @return An UnsignedByteToken with value 0.
      */
     public Token zero() {
-        return new UnsignedByteToken(0);
+        return ZERO;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variablesds                ////
+
+    /** A UnsignedByteToken with the value 1. */
+    public static final UnsignedByteToken ONE = new UnsignedByteToken(1);
+
+    /** A UnsignedByteToken with the value 0. */
+    public static final UnsignedByteToken ZERO = new UnsignedByteToken(0);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -49,7 +49,7 @@ import ptolemy.math.Complex;
  @author Neil Smyth, Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Yellow (cxh)
+ @Pt.ProposedRating Yellow (cxh) nil token, ONE, ZERO
  @Pt.AcceptedRating Red (cxh)
  */
 public class DoubleToken extends ScalarToken {
@@ -194,11 +194,11 @@ public class DoubleToken extends ScalarToken {
         return (int) _value;
     }
 
-    /** Returns a new DoubleToken with value 1.0.
-     *  @return A new DoubleToken with value 1.0.
+    /** Returns a DoubleToken with value 1.0.
+     *  @return A DoubleToken with value 1.0.
      */
     public Token one() {
-        return new DoubleToken(1.0);
+        return ONE;
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -242,12 +242,21 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Returns a new DoubleToken with value 0.0.
+    /** Returns a DoubleToken with value 0.0.
      *  @return A DoubleToken with value 0.0.
      */
     public Token zero() {
-        return new DoubleToken(0);
+        return ZERO;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A DoubleToken with the value 1.0. */
+    public static final DoubleToken ONE = new DoubleToken(1);
+
+    /** A DoubleToken with the value 0.0. */
+    public static final DoubleToken ZERO = new DoubleToken(0);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

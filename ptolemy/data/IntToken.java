@@ -47,8 +47,8 @@ import ptolemy.math.Complex;
  @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
+ @Pt.ProposedRating Yellow (cxh) nil token, ONE, ZERO
  @Pt.ProposedRating Yellow (cxh)
- @Pt.AcceptedRating Red (cxh) nil token code
  */
 public class IntToken extends ScalarToken {
     /** Construct a token with integer 0.
@@ -224,11 +224,11 @@ public class IntToken extends ScalarToken {
         return _value;
     }
 
-    /** Returns a new IntToken with value 1.
-     *  @return A new IntToken with value 1.
+    /** Returns an IntToken with value 1.
+     *  @return An IntToken with value 1.
      */
     public Token one() {
-        return new IntToken(1);
+        return ONE;
     }
 
     /** Returns a token representing the result of shifting the bits
@@ -264,12 +264,21 @@ public class IntToken extends ScalarToken {
         return Integer.toString(_value) + unitString;
     }
 
-    /** Returns a new IntToken with value 0.
-     *  @return A new IntToken with value 0.
+    /** Returns anIntToken with value 0.
+     *  @return An IntToken with value 0.
      */
     public Token zero() {
-        return new IntToken(0);
+        return ZERO;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A IntToken with the value 1.0. */
+    public static final IntToken ONE = new IntToken(1);
+
+    /** A IntToken with the value 0.0. */
+    public static final IntToken ZERO = new IntToken(0);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

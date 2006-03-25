@@ -138,11 +138,11 @@ public class PetiteToken extends DoubleToken {
         return BaseType.PETITE;
     }
 
-    /** Returns a new PetiteToken with value nearest 1.0.......
-     *  @return A new PetiteToken with value nearest 1.0.
+    /** Returns a PetiteToken with value nearest 1.0.......
+     *  @return A PetiteToken with value nearest 1.0.
      */
     public Token one() {
-        return new PetiteToken(1.0);
+        return ONE;
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -169,12 +169,21 @@ public class PetiteToken extends DoubleToken {
         return TokenUtilities.regularFormat.format(_value) + "p" + unitString;
     }
 
-    /** Returns a new PetiteToken with value 0.0.
+    /** Returns a PetiteToken with value 0.0.
      *  @return A PetiteToken with value 0.0.
      */
     public Token zero() {
-        return new PetiteToken(0.0);
+        return ZERO;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variablesds                ////
+
+    /** A PetiteToken with the value 1.0. */
+    public static final PetiteToken ONE = new PetiteToken(1.0);
+
+    /** A PetiteToken with the value 0.0. */
+    public static final PetiteToken ZERO = new PetiteToken(0.0);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer, contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Yellow (cxh)
+ @Pt.ProposedRating Yellow (cxh) nil token, ONE, ZERO
  @Pt.AcceptedRating Red (cxh)
  */
 public class LongToken extends ScalarToken {
@@ -210,11 +210,11 @@ public class LongToken extends ScalarToken {
         return _value;
     }
 
-    /** Returns a new LongToken with value 1.
-     *  @return A new LongToken with value 1.
+    /** Returns a LongToken with value 1.
+     *  @return A LongToken with value 1.
      */
     public Token one() {
-        return new LongToken(1);
+        return ONE;
     }
 
     /** Returns a token representing the result of shifting the bits
@@ -262,12 +262,21 @@ public class LongToken extends ScalarToken {
         }
     }
 
-    /** Returns a new LongToken with value 0.
-     *  @return A new LongToken with value 0.
+    /** Returns a LongToken with value 0.
+     *  @return A LongToken with value 0.
      */
     public Token zero() {
-        return new LongToken(0);
+        return ZERO;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A LongToken with the value 1.0. */
+    public static final LongToken ONE = new LongToken(1);
+
+    /** A LongToken with the value 0.0. */
+    public static final LongToken ZERO = new LongToken(0);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
