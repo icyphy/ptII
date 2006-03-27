@@ -12,7 +12,7 @@ typedef struct array* ArrayToken;
 /***funcDeclareBlock***/
 Token Array_convert(Token token, ...);
 Token Array_print(Token thisToken, ...);
-Token  Array_toString(Token thisToken, ...);
+Token Array_toString(Token thisToken, ...);
 Token Array_toExpression(Token thisToken, ...);
 Token Array_equals(Token thisToken, ...);
 
