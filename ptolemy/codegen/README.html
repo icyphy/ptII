@@ -108,6 +108,30 @@ the .c file.  The reason is that if we have keep the language
 specific code in the .c files, then in the future it will be easier
 to support other languages.
 
+
+<li> To add a comment to output from within a Java file, use
+<CODE>CodeGenerator.comment()</CODE> so that the comment is
+properly indented and has the appropriate language specific
+comment tag.  For example,
+<pre>
+       code.append(_codeGenerator.comment("My Comment.");
+</pre>
+will append
+<pre>
+    /* My Comment. */
+</pre>
+to the output.
+<br>Currently, only C-style comments are supported
+<CODE>/* <I>comment</I> */</CODE>, but support for other 
+languages will be easier if we avoid C specific code.
+
+<li> Code should be properly indented.  Usually, actor
+helper code written in .c files is indented 8 spaces so that
+it is properly indented in the output file (four spaces
+for the <CODE>main()</CODE> body, four spaces for the
+<CODE>while()</CODE> or <CODE>for()</CODE> loop that
+iterates through the actors.
+
 </menu>
 
 
@@ -267,8 +291,7 @@ ModalBSC
  @Pt.ProposedRating Red (zgang)
  @Pt.AcceptedRating Red (zgang)
   
- Gang: I think this is ready for review? Can you check and update the 
- ProposedRating tag
+ Gang:  ProposedRating tag
 
 2 ptolemy.codegen.c.actor.lib.Gaussian
 Hysteresis
