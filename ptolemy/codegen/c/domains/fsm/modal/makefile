@@ -50,6 +50,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	Case.java \
 	ModalController.java \
 	ModalModel.java \
 	Refinement.java \
