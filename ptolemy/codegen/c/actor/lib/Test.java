@@ -81,14 +81,19 @@ public class Test extends CCodeGeneratorHelper {
 */
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
+        String multiChannel = "";
+        if (actor.input.getWidth() > 1) {
+            // If we have multiple inputs, use different blocks
+            multiChannel = "MultiChannel";
+        }
         for (int i = 0; i < actor.input.getWidth(); i++) {
         	args.set(0, new Integer(i));
             if (actor.input.getType() == BaseType.STRING) {
-            	_codeStream.appendCodeBlock("stringBlock", args);        	
+            	_codeStream.appendCodeBlock("stringBlock" + multiChannel, args);        	
             } else if (actor.input.getType() == BaseType.GENERAL) { 
-            	_codeStream.appendCodeBlock("tokenBlock", args);        	
+            	_codeStream.appendCodeBlock("tokenBlock" + multiChannel, args);        	
             } else { // assume the input type is numeric.
-            	_codeStream.appendCodeBlock("numberBlock", args);
+            	_codeStream.appendCodeBlock("numberBlock" + multiChannel, args);
             }        	
         }
         return processCode(_codeStream.toString());

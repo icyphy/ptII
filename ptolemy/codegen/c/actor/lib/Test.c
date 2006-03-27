@@ -4,7 +4,7 @@ static int $actorSymbol(count) = 0;
 /**/
 
 /***numberBlock($channel)***/
-        // FIXME: Need to handle all channels in the multiport input.
+        // Handling $actorSymbol(), which has only one channel
         if ($actorSymbol(count) <
                 $size(correctValues)
                 && fabs($ref(input#$channel)
@@ -22,6 +22,26 @@ static int $actorSymbol(count) = 0;
         $actorSymbol(count) ++;
 
 /**/
+
+/***numberBlockMultiChannel($channel)***/
+        // Handling channel $channel of $actorSymbol()
+        ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, $actorSymbol(count));
+        if ($actorSymbol(count) <
+                $size(correctValues)
+                && fabs($ref(input#$channel)
+                        - $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Int /*FIXME: need to properly handle type. */)
+                > $ref(tolerance)) {
+            // FIXME: what about types other than double?
+            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
+                    $actorSymbol(count),
+                    (double)$ref(input#$channel),
+                    $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Int);
+            exit(-1);    
+        }
+        $actorSymbol(count) ++;
+
+/**/
+
 
 /***stringBlock($channel)***/
 	if (strcmp($ref(correctValues,
