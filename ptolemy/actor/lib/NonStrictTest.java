@@ -409,7 +409,8 @@ public class NonStrictTest extends Sink {
      *  represented as a double. It is assumed that the argument is
      *  an ArrayToken, and the isCloseTo() method of the array elements
      *  is used.
-     *  This method differs from {@link ptolemy.data.Array#_isCloseTo()}
+     *  This method differs from
+     *  {@link ptolemy.data.ArrayToken#_isCloseTo(Token, double)}
      *  in that if corresponding elements are both nil tokens, then
      *  those two elements are considered "close", see 
      *  {@link ptolemy.data.Token#NIL}.

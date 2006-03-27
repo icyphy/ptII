@@ -102,8 +102,8 @@ public class LongToken extends ScalarToken {
      *  returned token will be the same as the units of the given
      *  token.  If the argument is already an instance of LongToken,
      *  it is returned without any change.  If the argument is null or
-     *  a nil token, then a new nil IntToken is returned, see {@link
-     *  ptolemy.data.Token#_nil()}.  Otherwise, if the argument is
+     *  a nil token, then a new nil Token is returned, see {@link
+     *  ptolemy.data.Token#NIL()}.  Otherwise, if the argument is
      *  below LongToken in the type hierarchy, it is converted to an
      *  instance of LongToken or one of the subclasses of LongToken
      *  and returned. If none of the above condition is met, an

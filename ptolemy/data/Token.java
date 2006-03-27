@@ -504,7 +504,7 @@ public class Token implements Serializable {
      *  In this base class, return the String "present" to indicate
      *  that an event is present. If this token is {@link #NIL} then
      *  return "nil"
-     *  @return The String "present", unless this token is {@link @NIL},
+     *  @return The String "present", unless this token is {@link #NIL},
      *  in which case return the String "nil".
      */
     public String toString() {
