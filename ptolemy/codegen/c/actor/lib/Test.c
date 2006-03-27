@@ -23,19 +23,18 @@ static int $actorSymbol(count) = 0;
 
 /**/
 
-/***numberBlockMultiChannel($channel)***/
+/***numberBlockMultiChannel($channel,$inputType)***/
         // Handling channel $channel of $actorSymbol()
         ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, $actorSymbol(count));
         if ($actorSymbol(count) <
                 $size(correctValues)
                 && fabs($ref(input#$channel)
-                        - $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Int /*FIXME: need to properly handle type. */)
+                        - $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType)
                 > $ref(tolerance)) {
-            // FIXME: what about types other than double?
             printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
                     $actorSymbol(count),
                     (double)$ref(input#$channel),
-                    $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Int);
+                    $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
             exit(-1);    
         }
         $actorSymbol(count) ++;
