@@ -251,7 +251,7 @@ public class SDFDirector extends Director {
                             + compositeActorHelper.getReference("@" + name
                             + "," + k));
                     code.append(" =\n");
-                    code.append(_INDENT3
+                    code.append(_INDENT4
                             + compositeActorHelper.getReference(name + ","
                             + k));
                     code.append(";\n");
@@ -293,7 +293,7 @@ public class SDFDirector extends Director {
                             + compositeActorHelper.getReference(name + ","
                             + k));
                     code.append(" =\n");
-                    code.append(_INDENT3 
+                    code.append(_INDENT4 
                             + compositeActorHelper.getReference("@" + name
                             + "," + k));
                     code.append(";\n");

@@ -599,4 +599,9 @@ public class Director implements ActorCodeGenerator {
      *  @see #_getIndentPrefix(int)
      */ 
     protected static String _INDENT3 = _getIndentPrefix(3);
+
+    /** Indent string for indent level 4.
+     *  @see #_getIndentPrefix(int)
+     */ 
+    protected static String _INDENT4 = _getIndentPrefix(4);
 }
