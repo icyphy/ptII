@@ -221,4 +221,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */ 
     protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
+
+    /** Indent string for indent level 2.
+     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
+     */ 
+    protected static String _INDENT2 = StringUtilities.getIndentPrefix(2);
 }
