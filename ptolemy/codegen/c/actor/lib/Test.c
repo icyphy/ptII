@@ -12,7 +12,7 @@ static int $actorSymbol(count) = 0;
                                 $actorSymbol(count)))
                 > $ref(tolerance)) {
             // FIXME: what about types other than double?
-            printf("Test fails in iteration %d.\n Value was: %f. Should have been: %f\n",
+            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
                     $actorSymbol(count),
                     (double)$ref(input#$channel),
                     (double)$ref(correctValues,
@@ -27,7 +27,7 @@ static int $actorSymbol(count) = 0;
 	if (strcmp($ref(correctValues,
                            $actorSymbol(count)),
                     $ref(input#$channel))) {
-            printf("Test fails in iteration %d.\n Value was: %s. Should have been: %s\n",
+            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been: %s\n",
                     $actorSymbol(count),
                     $ref(input#$channel),
                     $ref(correctValues,
