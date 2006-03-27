@@ -56,7 +56,7 @@ test CodeGenerator-1.1 {Instantiate a CodeGenerator, call a few methods} {
     list \
 	[$codeGenerator toString] \
 	[$codeGenerator comment {This is a comment}] \
-} {{ptolemy.codegen.kernel.CodeGenerator {.top.myCodeGenerator}} {/* This is a comment */
+} {{ptolemy.codegen.kernel.CodeGenerator {.top.myCodeGenerator}} {    /* This is a comment */
 }}
 
 # generateCode(StringBuffer) is tested in
