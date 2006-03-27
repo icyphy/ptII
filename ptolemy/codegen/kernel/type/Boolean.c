@@ -44,7 +44,7 @@ Token Boolean_convert(Token token, ...) {
     switch (token.type) {
         // FIXME: not finished
         default:
-            fprintf(stderr, "Convertion from a not supported type.");
+            fprintf(stderr, "Boolean_convert(): Conversion from an supported type. (%d)", token.type);
             break;
     }    
     token.type = TYPE_Boolean;
