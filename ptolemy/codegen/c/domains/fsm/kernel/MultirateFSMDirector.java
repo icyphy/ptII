@@ -109,7 +109,9 @@ public class MultirateFSMDirector extends FSMDirector {
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         // generate code for non-preemptive transition
-        code.append("\n/* Nonpreemptive Transition */\n\n");
+        code.append(_codeGenerator.comment(1,
+                            "MultirateFSMDirector: "
+                            + "Nonpreemptive Transition.");
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
                     public Iterator retrieveTransitions(State state) {
@@ -263,8 +265,9 @@ public class MultirateFSMDirector extends FSMDirector {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-
-        code.append("\n/* Transfer tokens to the inside */\n\n");
+        code.append(_codeGenerator.comment(1,
+                            "MultirateFSMDirector: "
+                            + "Transfer tokens to the inside."));
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
@@ -431,7 +434,9 @@ public class MultirateFSMDirector extends FSMDirector {
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
 
-        code.append("\n/* Transfer tokens to the outside */\n\n");
+        code.append(_codeGenerator.comment(1,
+                            "MultirateFSMDirector: "
+                            + "Transfer tokens to the outside."));
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();

@@ -64,7 +64,8 @@ import ptolemy.kernel.util.NamedObj;
 
 public class HDFDirector extends SDFDirector {
 
-    /** Construct the code generator helper associated with the given HDFDirector.
+    /** Construct the code generator helper associated with the given
+     * HDFDirector.
      *  @param director The associated ptolemy.domains.hdf.kernel.HDFDirector
      */
     public HDFDirector(ptolemy.domains.hdf.kernel.HDFDirector director) {
@@ -74,14 +75,16 @@ public class HDFDirector extends SDFDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Generate code for declaring read and write offset variables if needed.
-     *  First relay the information of firings per global iteration of the 
-     *  container actor to the contained actors if necessary. Then call the same 
-     *  method in its super class to create read and write offset variables 
-     *  if needed.
+    /** Generate code for declaring read and write offset variables if
+     *  needed.  First relay the information of firings per global
+     *  iteration of the container actor to the contained actors if
+     *  necessary. Then call the same method in its super class to
+     *  create read and write offset variables if needed.
      * 
      *  @return The generated code.
-     *  @exception IllegalActionException If thrown while creating offset variables.
+     *  @exception IllegalActionException If thrown while creating
+     *  offset variables.
+
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -321,9 +324,10 @@ public class HDFDirector extends SDFDirector {
         return initializeCode.toString();
     }
 
-    /** Generate mode transition code. It generates code for updating configuration
-     *  number of the container actor. The code generated in this method is executed 
-     *  after each global iteration.
+    /** Generate mode transition code. It generates code for updating
+     *  configuration number of the container actor. The code
+     *  generated in this method is executed after each global
+     *  iteration.
      * 
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If getting helper fails, processing 
@@ -346,9 +350,10 @@ public class HDFDirector extends SDFDirector {
         code.append("}\n");
     }
 
-    /** Generate the preinitialize code for this director. It computes and records
-     *  schedules for all configurations of the container actor, also records 
-     *  external port rates of the container actor under all configurations.
+    /** Generate the preinitialize code for this director. It computes
+     *  and records schedules for all configurations of the container
+     *  actor, also records external port rates of the container actor
+     *  under all configurations.
      * 
      *  @return The generated preinitialize code.
      *  @exception IllegalActionException If getting the helper fails,
@@ -532,7 +537,9 @@ public class HDFDirector extends SDFDirector {
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
 
-        code.append("\n/* Transfer tokens to the inside */\n\n");
+        code.append(_codeGenerator.comment(1,
+                            "HDFDirector: "
+                            + "Transfer tokens to the inside."));
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
@@ -598,10 +605,13 @@ public class HDFDirector extends SDFDirector {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code)
             throws IllegalActionException {
 
-        code.append("\n/* Transfer tokens to the outside */\n\n");
+        code.append(_codeGenerator.comment(1,
+                            "HDFDirector: "
+                            + "Transfer tokens to the outside."));
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
@@ -652,8 +662,8 @@ public class HDFDirector extends SDFDirector {
                 }
             }
 
-            // The offset of the ports connected to the output port in its downstream 
-            // is updated by outside director.
+            // The offset of the ports connected to the output port in
+            // its downstream is updated by outside director.
             _updatePortOffset(outputPort, code, rate);
 
             code.append("break;\n");
@@ -664,7 +674,8 @@ public class HDFDirector extends SDFDirector {
     /** Create read and write offset variables if needed for any output port
      *  of the container actor and any input port of contained actors.
      *  @return A string containing declared read and write offset variables.
-     *  @exception IllegalActionException If thrown while creating offset variables.
+     *  @exception IllegalActionException If thrown while creating
+     *  offset variables.
      */
     protected String _createOffsetVariablesIfNeeded()
             throws IllegalActionException {
@@ -694,13 +705,17 @@ public class HDFDirector extends SDFDirector {
      *  write offsets for the given port.
      *  @param port The given port.
      *  @return A string containing declared read and write offset variables.
-     *  @exception IllegalActionException If thrown while creating offset variables.
+     *  @exception IllegalActionException If thrown while creating
+     *  offset variables.
      */
-    // FIXME: we could record total number of tokens transferred in each port 
-    // for each schedule and then check if a variale is needed for each offset. 
-    // For now we always use variables.
     protected String _createOffsetVariablesIfNeeded(IOPort port)
             throws IllegalActionException {
+
+        // FIXME: we could record total number of tokens transferred
+        // in each port for each schedule and then check if a variale
+        // is needed for each offset.  For now we always use
+        // variables.
+
         StringBuffer code = new StringBuffer();
 
         CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper(port
