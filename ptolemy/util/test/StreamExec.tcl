@@ -71,13 +71,9 @@ test StreamExec-2.1 {call execute a few commands, get stdout} {
     } stdout
     list $stdout [$streamExec getLastSubprocessReturnCode]	
 } {{About to execute:
-
-        sleep
-        1
+    sleep 1
 About to execute:
-
-        sleep
-        2
+    sleep 2
 All Done
 } 0}
 
@@ -112,15 +108,14 @@ test StreamExec-2.3 {execute a command that does not exist, get stderr} {
     # FIXME: should the return code be non-zero?
     list $stdout $retval [$streamExec getLastSubprocessReturnCode]
 } {{About to execute:
-
-        NotACommand
+    NotACommand
 All Done
 } 1 0}
 
 ######################################################################
 ####
 #
-test StreamExec-2.3 {execute a command that does not exist, get stderr} {
+test StreamExec-2.3a {execute a command that does not exist, get stderr} {
     set streamExec [java::new ptolemy.util.StreamExec]
     set commands [java::new java.util.LinkedList]
     $commands add "grep fofofofofofo makefile"
@@ -133,12 +128,10 @@ test StreamExec-2.3 {execute a command that does not exist, get stderr} {
     # Here, the return code is 1 because grep returns 1
     list $stdout $stderr [$streamExec getLastSubprocessReturnCode]
 } {{About to execute:
-
-        grep
-        fofofofofofo
-        makefile
+    grep fofofofofofo makefile
 All Done
 } {} 1}
+
 
 ######################################################################
 ####
