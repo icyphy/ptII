@@ -41,6 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
@@ -60,7 +61,7 @@ import ptolemy.util.StringUtilities;
  *  @version $Id$
  *  @since Ptolemy II 5.1
  *  @Pt.ProposedRating Yellow (eal)
- *  @Pt.AcceptedRating Yellow (eal)
+ *  @Pt.AcceptedRating Red (cxh) Needs class documentation
  */
 public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         ActorCodeGenerator {
@@ -181,7 +182,16 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
             manager.preinitializeAndResolveTypes();
             returnValue = super.generateCode(code);
         } finally {
-            manager.wrapup();
+            // We call wrapup here so that the state gets set to idle.
+            // This makes it difficult to test the Exit actor.
+            try {
+                manager.wrapup();
+            } catch (KernelRuntimeException ex) {
+                // The Exit actor causes Manager.wrapup() to throw this.
+                if (!manager.isExitingAfterWrapup()) {
+                    throw ex;
+                }
+            }
         }
         return returnValue;
     }
