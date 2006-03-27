@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.codegen.c.actor.TypedCompositeActor;
 import ptolemy.codegen.gui.CodeGeneratorGUIFactory;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -175,6 +176,17 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Analyze the model to find out what connections need to be type
+     * converted. This should be called before all the generate methods.
+     * @exception IllegalActionException Thrown if the helper of the
+     * top composite actor is unavailable.
+     */
+    public void analyzeTypeConvert() throws IllegalActionException {
+        ((TypedCompositeActor) 
+        		_getHelper(getContainer())).analyzeTypeConvert();    	
+    }
+    
     /** Add an include command line argument the compile command.
      *  @param includeCommand  The library command, for example
      *  "-L/usr/local/lib".
@@ -255,14 +267,21 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public int generateCode(StringBuffer code) throws KernelException {
 
+    	// List actors = get all actors
+    	// for each actor in actors
+    	// 		actor._analyzeActor();
+
         _codeFileName = null;
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
 
         // We separate the generation and the appending into 2 phases.
         // This would be convenience for making addition passes, and
         // for adding additional code into different sections.
+        analyzeTypeConvert();
+
         // FIXME: these should be in the order they are used unless
         // otherwise necessary.  If it is necessary, it should be noted.
+
         String sharedCode = generateSharedCode();
         String includeFiles = generateIncludeFiles();
         String preinitializeCode = generatePreinitializeCode();
@@ -281,7 +300,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         String variableInitCode = generateVariableInitialization();
         // generate type resolution code has to be after 
         // fire(), wrapup(), preinit(), init()...
-        String typeResolutionCode = generateTypeResolutionCode();
+        String typeResolutionCode = generateTypeConvertCode();
 
         // The appending phase.
         code.append(includeFiles);
@@ -417,6 +436,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         Set includingFiles = compositeActorHelper.getHeaderFiles();
 
+        includingFiles.add("<stdarg.h>");
         Iterator files = includingFiles.iterator();
 
         while (files.hasNext()) {
@@ -520,7 +540,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     }
 
     /**
-     * Generate type resolution code.
+     * Generate type conversion code.
      * Determine the proper code put into the source to support dynamic type
      * resolution. First, find out the different types used in the model.
      * Second, find out the different polymorphic functions used. (note: types
@@ -535,7 +555,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  director cannot be found, or if an error occurs when the helper
      *  actor generates the type resolution code.
      */
-    public String generateTypeResolutionCode() throws IllegalActionException {
+    public String generateTypeConvertCode() throws IllegalActionException {
         // FIXME: This is C specific and should be moved elsewhere
         StringBuffer code = new StringBuffer();
         code.append(comment(0, "Generate type resolution code for "
@@ -568,6 +588,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
          types.addAll(helperObject._newTypesUsed);
          }
          */
+
+        functions.add("delete");
         functions.add("toString");
         functions.addAll(_typeFuncUsed);
         types.addAll(_newTypesUsed);
@@ -614,18 +636,29 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append(typeStreams[i].toString());
         }
 
+        ArrayList args = new ArrayList();
+        args.add("");
         // Token declareBlock.
         if (!typeMembers.equals("")) {
-            ArrayList args = new ArrayList();
-            args.add(typeMembers);
+            args.set(0, typeMembers);
             sharedStream.clear();
             sharedStream.appendCodeBlock("tokenDeclareBlock", args);
-            code.append(sharedStream.toString());
         }
 
+        // Append type-polymorphic functions included in the function table. 
         for (int i = 0; i < types.size(); i++) {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
+            for (int j = 0; j < functions.size(); j++) {
+                args.set(0, typesArray[i] + "_" + functionsArray[j]);
+            	sharedStream.appendCodeBlock("funcHeaderBlock", args);
+            }
+        }
+        code.append(sharedStream.toString());
+
+        // Append functions that are specified used by this type (without
+        // going through the function table).
+        for (int i = 0; i < types.size(); i++) {
             typeStreams[i].clear();
             typeStreams[i].appendCodeBlock("funcDeclareBlock");
             code.append(typeStreams[i].toString());
@@ -709,7 +742,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
                 // FIXME: This is C specific and should be moved elsewhere
                 code.append("static " 
-                        + CodeGeneratorHelper._cType(parameter.getType()) + " "
+                        + CodeGeneratorHelper.cType(parameter.getType()) + " "
                         + CodeGeneratorHelper.generateVariableName(parameter)
                         + ";\n");
             }

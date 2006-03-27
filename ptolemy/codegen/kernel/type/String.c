@@ -3,11 +3,6 @@ typedef char* StringToken;
 /**/
 
 /***funcDeclareBlock***/
-Token String_convert(Token token, ...);
-Token String_print(Token thisToken, ...);
-Token String_toString(Token thisToken, ...);
-Token String_toExpression(Token thisToken, ...);
-Token String_equals(Token thisToken, ...);
 /**/
 
 /***newBlock***/
@@ -22,9 +17,8 @@ Token String_new(char* s) {
 
 
 /***deleteBlock***/
-Token String_delete(Token token) {   
+Token String_delete(Token token, ...) {   
     free(token.payload.String);    
-    free(&token);
 }    
 /**/
 
@@ -87,6 +81,19 @@ Token String_toString(Token thisToken, ...) {
 Token String_toExpression(Token thisToken, ...) {
 	char* result = (char*) malloc((5 + strlen(thisToken.payload.String)) * sizeof(char));
 	sprintf(result, "\"%s\"", thisToken.payload.String);
+	return String_new(result);
+}
+/**/
+
+/***addBlock***/
+Token String_add(Token thisToken, ...) {
+    va_list argp; 
+    va_start(argp, thisToken);
+	Token otherToken = va_arg(argp, Token);
+	
+	char* result = (char*) malloc(sizeof(char) * (1 + strlen(thisToken.payload.String) + strlen(otherToken.payload.String)));
+	strcpy(result, thisToken.payload.String);
+	strcat(result, otherToken.payload.String);
 	return String_new(result);
 }
 /**/

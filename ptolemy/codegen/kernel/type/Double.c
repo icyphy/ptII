@@ -3,11 +3,6 @@ typedef double DoubleToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Double_convert(Token token, ...);
-Token Double_print(Token thisToken, ...);
-Token Double_toString(Token thisToken, ...);
-Token Double_toExpression(Token thisToken, ...);
-Token Double_equals(Token token, ...);
 /**/
 
 /***newBlock***/
@@ -22,9 +17,7 @@ Token Double_new(double d) {
 
 
 /***deleteBlock***/
-Token Double_delete(Token token) {
-    free(&token);
-}    
+Token Double_delete(Token token, ...) {}    
 /**/
 
 /***equalsBlock***/
@@ -72,6 +65,15 @@ Token Double_toString(Token thisToken, ...) {
 /***toExpressionBlock***/
 Token Double_toExpression(Token thisToken, ...) {
 	return Double_toString(thisToken);
+}
+/**/
+
+/***addBlock***/
+Token Double_add(Token thisToken, ...) {
+    va_list argp; 
+    va_start(argp, thisToken);
+	Token otherToken = va_arg(argp, Token);	
+	return Double_new(thisToken.payload.Int + otherToken.payload.Int);
 }
 /**/
 

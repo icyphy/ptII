@@ -5,6 +5,9 @@
 #define true 1
 /**/
 
+/***funcHeaderBlock ($function)***/
+Token $function (Token thisToken, ...);
+/**/
 
 /***tokenDeclareBlock ($types)***/
 struct token {                  // Base type for tokens.

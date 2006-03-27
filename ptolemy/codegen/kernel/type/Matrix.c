@@ -13,17 +13,30 @@ typedef struct matrix* MatrixToken;
 
 
 /***funcDeclareBlock***/
-Token Matrix_convert(Token token, ...);
-Token Matrix_print(Token thisToken, ...);
-Token Matrix_toString(Token thisToken, ...);
-Token Matrix_toExpression(Token thisToken, ...);
-Token Matrix_equals(Token thisToken, ...);
-
-Token Matrix_get(Token token, int column, int row) {   
+Token Matrix_get(Token token, int row, int column) {   
     return token.payload.Matrix->elements[column * token.payload.Matrix->row + row];
 }
 /**/
 
+
+/***deleteBlock***/
+Token Matrix_delete(Token token, ...) { 
+	int i, j;
+	  
+    // Delete each elements.
+    for (i = 0; i < token.payload.Matrix->column; i++) {
+	    for (j = 0; j < token.payload.Matrix->row; j++) {
+        	functionTable[Matrix_get(j, i).type][FUNC_delete](Matrix_get(j, i));
+        }
+    }
+    free(token.payload.Matrix->elements);
+    free(token.payload.Matrix);
+}
+/**/
+
+<<<<<<< Matrix.c
+
+=======
 /***convertBlock***/
 Token Matrix_convert(Token token, ...) {
     fprintf(stderr, "Matrix_convert() not yet implemented.\n");
@@ -31,12 +44,13 @@ Token Matrix_convert(Token token, ...) {
 /**/
 
 
+>>>>>>> 1.3
 /***newBlock***/
 // make a new matrix from the given values
 // assume that number of the rest of the arguments == length,
 // and they are in the form of (element, element, ...).
 // The rest of the arguments should be of type Token *.
-Token Matrix_new(int column, int row, int given, ...) {
+Token Matrix_new(int row, int column, int given, ...) {
     va_list argp; 
     int i;
     char elementType;
@@ -45,12 +59,22 @@ Token Matrix_new(int column, int row, int given, ...) {
 
     Token result;
     result.type = TYPE_Matrix;
+<<<<<<< Matrix.c
+    result.payload.Matrix = (MatrixToken) malloc(sizeof(struct matrix));
+    result.payload.Matrix->row = row;
+    result.payload.Matrix->column = column;
+=======
     result.payload.Matrix = (MatrixToken) malloc(sizeof(struct array));
     //result.payload.Matrix->size = size;
     result.payload.Matrix->row = row;
     result.payload.Matrix->column = column;
+>>>>>>> 1.3
 
+<<<<<<< Matrix.c
+	// Allocate a new matrix of Tokens.
+=======
 	// Allocate a new 2-dimensional array (matrix) of Tokens.
+>>>>>>> 1.3
     result.payload.Matrix->elements = (Token*) calloc(row * column, sizeof(Token));
 
     if (given > 0) {
@@ -73,13 +97,13 @@ Token Matrix_equals(Token thisToken, ...) {
     va_start(argp, thisToken);
 	Token otherToken = va_arg(argp, Token);
 
-	if (( thisToken.payload.Matrix->row != otherToken.payload.Array->row ) ||
-		( thisToken.payload.Matrix->column != otherToken.payload.Array->column )) {
+	if (( thisToken.payload.Matrix->row != otherToken.payload.Matrix->row ) ||
+		( thisToken.payload.Matrix->column != otherToken.payload.Matrix->column )) {
 			return Boolean_new(false);
 	}
 	for (i = 0; i < thisToken.payload.Matrix->column; i++) { 
 		for (j = 0; j < thisToken.payload.Matrix->row; j++) { 
-		 	if (!$typeFunc(Array_get(thisToken, i, j), equals(Array_get(otherToken, i, j)))) {
+		 	if (!functionTable[Matrix_get(token, j, i).type][FUNC_equals](Matrix_get(thisToken, j, i), Matrix_get(otherToken, j, i))).payload.Boolean) {
 				return Boolean_new(false);
 		 	}
 		 }
@@ -96,7 +120,7 @@ Token Matrix_print(Token thisToken, ...) {
 	// free(string.payload.String);
 
     int i, j;
-    printf("{");
+    printf("[");
     for (i = 0; i < thisToken.payload.Matrix->column; i++) {
         if (i != 0) {
             printf("; ");
@@ -108,7 +132,7 @@ Token Matrix_print(Token thisToken, ...) {
 	        functionTable[thisToken.payload.Matrix->elements[i * thisToken.payload.Matrix->row + j].type][FUNC_print](thisToken.payload.Matrix->elements[i]);
 	    }
 	}
-    printf("}");
+    printf("]");
 }
 /**/
 
@@ -123,7 +147,7 @@ Token Matrix_toString(Token thisToken, ...) {
 
 	allocatedSize = 512;
 	string = (char*) malloc(allocatedSize);
-	string[0] = '}';
+	string[0] = '[';
 	string[1] = '\0';
 	currentSize = 2;
     for (i = 0; i < thisToken.payload.Matrix->column; i++) {
@@ -134,7 +158,7 @@ Token Matrix_toString(Token thisToken, ...) {
 	        if (j != 0) {
 				strcat(string, ", ");
 	        }
-	        elementString = functionTable[Matrix_get(thisToken, i, j).type][FUNC_toString](Matrix_get(thisToken, i, j));
+	        elementString = functionTable[Matrix_get(thisToken, j, i).type][FUNC_toString](Matrix_get(thisToken, j, i));
 			currentSize += strlen(elementString.payload.String);
 	        if (currentSize > allocatedSize) {
 	        	allocatedSize *= 2;
@@ -145,7 +169,7 @@ Token Matrix_toString(Token thisToken, ...) {
 	        free(elementString.payload.String);
 	    }
     }
-	strcat(string, "}");
+	strcat(string, "]");
 	return String_new(string);
 }
 /**/

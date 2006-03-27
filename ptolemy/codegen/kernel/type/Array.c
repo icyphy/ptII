@@ -1,6 +1,4 @@
 /***declareBlock***/
-#include <stdarg.h>     // Needed Array_new va_* macros
-
 struct array {
     int size;           // size of the array.
     Token* elements;    // array of Token elements.
@@ -10,12 +8,6 @@ typedef struct array* ArrayToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Array_convert(Token token, ...);
-Token Array_print(Token thisToken, ...);
-Token Array_toString(Token thisToken, ...);
-Token Array_toExpression(Token thisToken, ...);
-Token Array_equals(Token thisToken, ...);
-
 Token Array_get(Token token, int i) {   
     return token.payload.Array->elements[i];
 }
@@ -76,10 +68,11 @@ Token Array_new(int size, int given, ...) {
 /**/
 
 /***deleteBlock***/
-Token Array_delete(Token token) {   
+Token Array_delete(Token token, ...) { 
+	int i;  
     // Delete each elements.
     for (i = 0; i < token.payload.Array->size; i++) {
-        functionTable[token->elements[i]->type][FUNC_delete](token->elements[i]);
+        functionTable[Array_get(token, i).type][FUNC_delete](Array_get(token, i));
     }
     free(token.payload.Array->elements);
     free(token.payload.Array);
@@ -90,11 +83,15 @@ Token Array_delete(Token token) {
 /***equalsBlock***/
 Token Array_equals(Token thisToken, ...) {
 	int i;
+    va_list argp; 
+    va_start(argp, thisToken);
+	Token otherToken = va_arg(argp, Token);
+
 	if (thisToken.payload.Array->size != otherToken.payload.Array->size) {
 		return Boolean_new(false);
 	}
 	for (i = 0; i < thisToken.size; i++) {
-	 	if (!$typeFunc(Array_get(thisToken, i), equals(Array_get(otherToken, i)))) {
+	 	if (!functionTable[Array_get(token, i).type][FUNC_equals](Array_get(thisToken, i), equals(Array_get(otherToken, i))).payload.Boolean) {
 			return Boolean_new(false);
 	 	}
 	}
@@ -190,5 +187,26 @@ Token Array_toString(Token thisToken, ...) {
 /***toExpressionBlock***/
 Token Array_toExpression(Token thisToken, ...) {
 	return Array_toString(thisToken);
+}
+/**/
+
+/***addBlock***/
+// Assume the given otherToken is array type.
+// We will support other types in the future.
+Token Array_add(Token thisToken, ...) {
+	int i;
+    va_list argp; 
+	Token result; 
+	Token otherToken;
+	
+    va_start(argp, thisToken);
+	otherToken = va_arg(argp, Token);
+
+	result = Array_new(thisToken.payload.Array->size, 0);
+	
+    for (i = 0; i < thisToken.payload.Array->size; i++) {
+	  	result.payload.Array->elements[i] = functionTable[Array_get(thisToken, i).type][FUNC_add](Array_get(thisToken, i), Array_get(otherToken, i));
+	}
+	return result;
 }
 /**/

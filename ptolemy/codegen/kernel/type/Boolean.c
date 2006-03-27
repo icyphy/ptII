@@ -3,11 +3,6 @@ typedef char BooleanToken;
 /**/
 
 /***funcDeclareBlock***/
-Token Boolean_convert(Token token, ...);
-Token Boolean_print(Token thisToken, ...);
-Token Boolean_toString(Token thisToken, ...);
-Token Boolean_toExpression(Token thisToken, ...);
-Token Boolean_equals(Token thisToken, ...);
 /**/
 
 /***newBlock***/
@@ -22,9 +17,7 @@ Token Boolean_new(char b) {
 
 
 /***deleteBlock***/
-Token Boolean_delete(Token token) {   
-    free(&token);
-}    
+Token Boolean_delete(Token token, ...) {}    
 /**/
 
 /***equalsBlock***/
@@ -70,5 +63,12 @@ Token Boolean_toExpression(Token thisToken, ...) {
 }
 /**/
 
-
+/***addBlock***/
+Token Boolean_add(Token thisToken, ...) {
+    va_list argp; 
+    va_start(argp, thisToken);
+	Token otherToken = va_arg(argp, Token);
+	return Boolean_new(thisToken.payload.Boolean || otherToken.payload.Boolean);
+}
+/**/
 

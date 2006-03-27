@@ -90,6 +90,7 @@ public class CodeStream {
      * which is currently ignored.
      */
     public CodeStream(CodeGeneratorHelper helper) {
+    	_helper = helper;
         String classNamePath = helper.getClass().getName().replace('.', '/');
         _filePath = "$CLASSPATH/" + classNamePath + ".c";
     }
@@ -192,7 +193,21 @@ public class CodeStream {
      */
     public void appendCodeBlock(String blockName, ArrayList arguments,
             boolean mayNotExist) throws IllegalActionException {
-        // First, it checks if the code file is parsed already.
+        if (!mayNotExist && arguments.size() == 0) {	
+        	// That means this is a request by the user. This check prevents
+        	// user from appending duplicate code blocks that are already
+        	// appended by the code generator by default.
+        	String[] blocks = CodeGeneratorHelper.getDefaultBlocks();
+
+        	for (int i = 0 ; i < blocks .length; i++) {
+        		if (blockName.matches(blocks[i])) {
+                    throw new IllegalActionException(blockName +
+                    	" -- is a code block that is appended by default.");
+        		}
+        	}
+        }
+    	
+    	// First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
         if (_codeBlockTable == null) {
@@ -234,6 +249,7 @@ public class CodeStream {
             if (mayNotExist) {
                 return;
             } else {
+            	// FIXME: search for parent code blocks.
                 throw new IllegalActionException((String) errors.get(0));
             }
         }
@@ -651,6 +667,11 @@ public class CodeStream {
      */
     private String _filePath;
 
+    /**
+     * The helper associated with this code stream.
+     */
+    private CodeGeneratorHelper _helper = null;
+    
     /**
      * The code block table that stores the code block parameters
      * (ArrayList) with the code block names (String) as key.
