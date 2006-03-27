@@ -200,7 +200,22 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return A formatted comment.
      */
     public String comment(String comment) {
-        return "/* " + comment + " */\n";
+         return comment(1, comment);
+    }
+
+    /** Return a formatted comment containing the
+     *  specified string with a specified indent level.
+     *  In this base class, the
+     *  comments is a C-style comment, which begins with
+     *  "\/*" and ends with "*\/". Subclasses may override this
+     *  produce comments that match the code generation language.
+     *  @param comment The string to put in the comment.
+     *  @param indentLevel The indentation level.
+     *  @return A formatted comment.
+     */
+    public String comment(int indentLevel, String comment) {
+        return StringUtilities.getIndentPrefix(indentLevel)
+            + "/* " + comment + " */\n";
     }
 
     /** Generate the body code that lies between initialize and wrapup.
@@ -246,11 +261,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // We separate the generation and the appending into 2 phases.
         // This would be convenience for making addition passes, and
         // for adding additional code into different sections.
+        // FIXME: these should be in the order they are used unless
+        // otherwise necessary.  If it is necessary, it should be noted.
         String sharedCode = generateSharedCode();
         String includeFiles = generateIncludeFiles();
         String preinitializeCode = generatePreinitializeCode();
         String initializeCode = generateInitializeCode();
         String bodyCode = generateBodyCode();
+        ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
+        String mainEntryCode = compositeActorHelper.generateMainEntryCode();
+        String mainExitCode = compositeActorHelper.generateMainExitCode();
         String fireFunctionCode = null;
         if (!inline) {
             fireFunctionCode = generateFireFunctionCode();
@@ -272,13 +292,12 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         if (!inline) {
             code.append(fireFunctionCode);
         }
-        code.append("\n\nmain(int argc, char *argv[]) {\n");
+        code.append(mainEntryCode);
         code.append(variableInitCode);
         code.append(initializeCode);
         code.append(bodyCode);
         code.append(wrapupCode);
-        code.append("exit(0);\n");
-        code.append("}\n");
+        code.append(mainExitCode);
 
         if (_executeCommands == null) {
             _executeCommands = new StreamExec();
@@ -402,6 +421,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         while (files.hasNext()) {
             String file = (String) files.next();
+            // FIXME: This is C specific and should be moved elsewhere
             code.append("#include " + file + "\n");
         }
 
@@ -419,7 +439,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("\nInitialize " + getContainer().getFullName()));
+        code.append(comment("Initialize " + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
         code.append(compositeActorHelper.generateInitializeCode());
@@ -459,6 +479,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     .intValue();
 
             if (iterationCount > 0) {
+                // FIXME: This is C specific and should be moved elsewhere
                 code.append("static int iteration = 0;\n");
             }
         }
@@ -478,7 +499,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("Generate shared code for "
+        code.append(comment(0, "Generate shared code for "
                 + getContainer().getFullName()));
 
         ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
@@ -492,7 +513,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append(block);
         }
 
-        code.append(comment("Finished generate shared code for "
+        code.append(comment(0, "Finished generating shared code for "
                 + getContainer().getFullName()));
 
         return code.toString();
@@ -515,8 +536,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  actor generates the type resolution code.
      */
     public String generateTypeResolutionCode() throws IllegalActionException {
+        // FIXME: This is C specific and should be moved elsewhere
         StringBuffer code = new StringBuffer();
-        code.append(comment("Generate type resolution code for "
+        code.append(comment(0, "Generate type resolution code for "
                 + getContainer().getFullName()));
 
         //ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
@@ -565,6 +587,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i]
                             + ".c");
             // FIXME: we need to compute the [partial] order of the hierarchy. 
+            // FIXME: This is C specific and should be moved elsewhere
             code.append("#define TYPE_" + typesArray[i] + " " + i + "\n");
 
             // Dynamically generate all the types within the union.
@@ -576,8 +599,10 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // Generate function map.
         for (int i = 0; i < functions.size(); i++) {
+            // FIXME: This is C specific and should be moved elsewhere
             code.append("#define FUNC_" + functionsArray[i] + " " + i + "\n");
         }
+        // FIXME: This is C specific and should be moved elsewhere
         code.append("typedef struct token Token;");
 
         // Generate type and function definitions.
@@ -615,6 +640,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // Generate function table.
         if (functions.size() > 0 && types.size() > 0) {
+            // FIXME: This is C specific and should be moved elsewhere
             code.append("#define NUM_TYPE " + types.size() + "\n");
             code.append("#define NUM_FUNC " + functions.size() + "\n");
             code.append("Token (*functionTable"
@@ -630,6 +656,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 }
                 code.append("\n");
             }
+            // FIXME: This is C specific and should be moved elsewhere
             code.append("};\n");
         }
 
@@ -649,6 +676,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                     // not found. We have to define the function label in the
                     // generated code because the function table makes
                     // reference to this label.
+                    // FIXME: This is C specific and should be moved elsewhere
                     typeStreams[i].append("#define " + typesArray[i] + "_"
                             + functionsArray[j] + " MISSING \n");
 
@@ -670,7 +698,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append("\n\n");
-        code.append(comment("Variable Declarations "
+        code.append(comment(0, "Variable Declarations "
                 + getContainer().getFullName()));
 
         // Generate variable declarations for modified variables.
@@ -679,6 +707,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             while (modifiedVariables.hasNext()) {
                 Parameter parameter = (Parameter) modifiedVariables.next();
 
+                // FIXME: This is C specific and should be moved elsewhere
                 code.append("static " 
                         + CodeGeneratorHelper._cType(parameter.getType()) + " "
                         + CodeGeneratorHelper.generateVariableName(parameter)
@@ -891,6 +920,11 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** Indent string for indent level 1.
+     *  @see ptolemy.util.StringUtilities.getIndentPrefix(int)
+     */ 
+    protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
 
     /** A set that contains all variables in the model whose values can be 
      *  changed during execution.

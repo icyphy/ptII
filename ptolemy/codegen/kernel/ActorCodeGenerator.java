@@ -72,6 +72,21 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      */
     public String generateFireFunctionCode() throws IllegalActionException;
 
+    /** Generate the main entry point.
+     *  @return Return the definition of the main entry point for a program.
+     *  In C, this would be defining main().
+     *  @exception IllegalActionException Not thrown in this base class.
+     */ 
+    public String generateMainEntryCode() throws IllegalActionException;
+
+    /** Generate the main entry point.
+     *  @return Return the a string that closes optionally calls exit
+     *  and closes the main() method 
+     *  @exception IllegalActionException Not thrown in this base class.
+     */ 
+    public String generateMainExitCode() throws IllegalActionException;
+
+
     /** Generate mode transition code. It delegates to the director helper 
      *  of the local director. The mode transition code generated in this 
      *  method is executed after each global iteration, e.g., in HDF model. 

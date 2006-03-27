@@ -36,6 +36,7 @@ import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// CCodeGeneratorHelper
@@ -93,6 +94,27 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         _codeStream.appendCodeBlock("initBlock", true);
         return processCode(_codeStream.toString());
     }
+
+    /** Generate the main entry point.
+     *  @return In this base class, return a comment.  Subclasses
+     *  should return the definition of the main entry point for a program.
+     *  In C, this would be defining main().
+     *  @exception IllegalActionException Not thrown in this base class.
+     */ 
+    public String generateMainEntryCode() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        return "\n\nmain(int argc, char *argv[]) {\n";
+    }
+
+    /** Generate the main entry point.
+     *  @return Return a string that declares the start of the main() function.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */ 
+    public String generateMainExitCode() throws IllegalActionException {
+        // FIXME: should this be moved to class called CCodeGenerator?
+        return _INDENT1 + "exit(0);\n}\n";
+    }
+
 
     /**
      * Generate the preinitialize code. In this base class, return an empty
@@ -194,4 +216,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * The code stream associated with this helper.
      */
     protected CodeStream _codeStream = new CodeStream(this);
+
+    /** Indent string for indent level 1.
+     *  @see ptolemy.util.StringUtilities.getIndentPrefix(int)
+     */ 
+    protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
 }

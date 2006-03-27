@@ -43,8 +43,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung, Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class AudioWriter extends CCodeGeneratorHelper {
     /**

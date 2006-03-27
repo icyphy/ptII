@@ -119,7 +119,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-	/** Generate code for declaring read and write offset variables if needed.
+    /** Generate code for declaring read and write offset variables if needed.
      *  Return empty string in this base class. 
      * 
      *  @return The empty string.
@@ -137,7 +137,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateFireCode() throws IllegalActionException {       
-        return "\n/* fire " + getComponent().getName() + " */\n";
+        return _codeGenerator.comment(1,
+                "fire " + getComponent().getName());
     }
 
     /** Generate The fire function code. This method is called when the firing
@@ -165,12 +166,34 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        return "\n/* initialize " + getComponent().getName() + " */\n";
+        return _codeGenerator.comment(1,
+                "initialize " + getComponent().getName());
     }
 
-    /** Generate mode transition code. The mode transition code generated in 
-     *  this method is executed after each global iteration, e.g., in HDF model. 
-     *  Do nothing in this base class.
+    /** Generate the main entry point.
+     *  @return In this base class, return a comment.  Subclasses
+     *  should return the definition of the main entry point for a program.
+     *  In C, this would be defining main().
+     *  @exception IllegalActionException Not thrown in this base class.
+     */ 
+    public String generateMainEntryCode() throws IllegalActionException {
+        return _codeGenerator.comment("main entry code");
+    }
+
+    /** Generate the main entry point.
+     *  @return In this base class, return a comment.  Subclasses
+     *  should return the a string that closes optionally calls exit
+     *  and closes the main() method 
+     *  @exception IllegalActionException Not thrown in this base class.
+     */ 
+    public String generateMainExitCode() throws IllegalActionException {
+        return _codeGenerator.comment("main exit code");
+    }
+
+
+    /** Generate mode transition code. The mode transition code
+     *  generated in this method is executed after each global
+     *  iteration, e.g., in HDF model.  Do nothing in this base class.
      * 
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -197,7 +220,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         _createBufferSizeAndOffsetMap();
-        return "\n/* preinitialize " + getComponent().getName() + " */\n";
+        return _codeGenerator.comment(0,
+                "preinitialize " + getComponent().getName());
     }
 
     /**
@@ -232,8 +256,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n/* " + _component.getName()
-                + "'s variable declarations. */\n");
+        code.append("\n" + _codeGenerator.comment(0, _component.getName()
+                            + "'s variable declarations."));
 
         //  Generate variable declarations for referenced parameters.    
         if (_referencedParameters != null) {
@@ -301,7 +325,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }            
         }
         
-        code.append("/* Type convert variable declarations. */\n");
+        code.append(_codeGenerator.comment(0,
+                            "Type convert variable declarations."));
         Iterator channels = _getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
         	Channel channel = (Channel) channels.next();
@@ -320,8 +345,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n/* " + _component.getName()
-                + "'s variable initialization. */\n");
+        code.append("\n" + _codeGenerator.comment(_component.getName()
+                            + "'s variable initialization."));
 
         //  Generate variable initialization for referenced parameters.    
         if (_referencedParameters != null) {
@@ -332,11 +357,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 // avoid duplication.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    code
-                            .append(generateVariableName(parameter)
-                                    + " = "
-                                    + getParameterValue(parameter.getName(),
-                                            _component) + ";\n");
+                    code.append(_getIndentPrefix(1)
+                            + generateVariableName(parameter)
+                            + " = "
+                            + getParameterValue(parameter.getName(),
+                                    _component) + ";\n");
                 }
             }
         }
@@ -500,14 +525,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 + constructorString.substring(openFuncParenIndex);
     }
 
-    /** Return the value or an expression in the target language for the specified
-     *  parameter of the associated actor.
-     *  If the parameter is specified by an expression, then the expression will
-     *  be parsed. If any parameter referenced in that expression is specified
-     *  by another expression, the parsing continues recursively until either a 
-     *  parameter is directly specified by a constant or a parameter can be 
-     *  directly modified during execution in which case a reference to the 
-     *  parameter is generated.
+    /** Return the value or an expression in the target language for
+     *  the specified parameter of the associated actor.  If the
+     *  parameter is specified by an expression, then the expression
+     *  will be parsed. If any parameter referenced in that expression
+     *  is specified by another expression, the parsing continues
+     *  recursively until either a parameter is directly specified by
+     *  a constant or a parameter can be directly modified during
+     *  execution in which case a reference to the parameter is
+     *  generated.
      *   
      *  @param name The name of the parameter.
      *  @param container The container to search upwards from.

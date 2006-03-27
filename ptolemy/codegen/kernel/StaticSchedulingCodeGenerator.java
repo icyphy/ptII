@@ -99,7 +99,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      */
     public String generateBodyCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(comment("\nStatic schedule:"));
+        code.append(comment("Static schedule:"));
         CompositeEntity model = (CompositeEntity) getContainer();
 
         ActorCodeGenerator modelHelper = _getHelper(model);
@@ -128,12 +128,13 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                     .intValue();
 
             if (iterationCount <= 0) {
-                code.append("while (true) {\n");
+                code.append(_INDENT1 + "while (true) {\n");
             } else {
                 // Declare iteration outside of the loop to avoid
                 // "error: `for' loop initial declaration used outside C99
                 // mode" with gcc-3.3.3
-                code.append("for (iteration = 0; iteration < " + iterationCount
+                code.append(_INDENT1
+                        +"for (iteration = 0; iteration < " + iterationCount
                         + "; iteration ++) {\n");
             }
         }
@@ -151,7 +152,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         // after one global iteration, e.g., in HDF model.
         modelHelper.generateModeTransitionCode(code);
 
-        code.append("}\n");
+        code.append(_INDENT1 + "}\n");
 
         return code.toString();
     }
@@ -200,6 +201,26 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
         ActorCodeGenerator modelHelper = _getHelper(model);
         code.append(modelHelper.generateFireCode());
         return code.toString();
+    }
+
+    /** Generate the main entry point.
+     *  @return In this base class, return a comment.  Subclasses
+     *  should return the definition of the main entry point for a program.
+     *  In C, this would be defining main().
+     *  @exception IllegalActionException Not thrown in this base class.
+     */ 
+    public String generateMainEntryCode() throws IllegalActionException {
+        return comment("main entry code");
+    }
+
+    /** Generate the main entry point.
+     *  @return In this base class, return a comment.  Subclasses
+     *  should return the a string that closes optionally calls exit
+     *  and closes the main() method 
+     *  @exception IllegalActionException Not thrown in this base class.
+     */ 
+    public String generateMainExitCode() throws IllegalActionException {
+        return comment("main exit code");
     }
 
     /** Generate mode transition code. 

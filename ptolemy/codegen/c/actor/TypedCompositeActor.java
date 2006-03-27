@@ -262,7 +262,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n/* Composite actor's variable declarations. */\n");
+        code.append(_codeGenerator.comment(0,
+                            "Composite actor's variable declarations."));
         code.append(super.generateVariableDeclaration());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
@@ -284,7 +285,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public String generateVariableInitialization() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n/* Composite actor's variable initializations. */\n");
+        code.append(_codeGenerator.comment(
+                            "Composite actor's variable initializations."));
         code.append(super.generateVariableInitialization());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
@@ -368,10 +370,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return set;
     }
 
-    /** Return a two-dimensional int array of rates of this actor. For each internal 
-     *  configuration of this composite actor, the array contains a corresponding 
-     *  one-dimensional int array representing the rates of all ports of this 
-     *  composite actor. It returns null when there is only one internal 
+    /** Return a two-dimensional int array of rates of this actor. For
+     *  each internal configuration of this composite actor, the array
+     *  contains a corresponding one-dimensional int array
+     *  representing the rates of all ports of this composite
+     *  actor. It returns null when there is only one internal
      *  configuration, e.g., when the internal model is an SDF model.
      * 
      *  @return A two-dimensional int array of rates of this actor or null.
@@ -418,10 +421,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return code.toString();
     }
 
-    /** Set the int array of firings per global iteration. For each internal 
-     *  configuration of this composite actor, the array contains a corresponding 
-     *  element representing the number of firings of this composite actor 
-     *  per global iteration.  
+    /** Set the int array of firings per global iteration. For each
+     *  internal configuration of this composite actor, the array
+     *  contains a corresponding element representing the number of
+     *  firings of this composite actor per global iteration.
      * 
      *  @param firingsPerGlobalIteration An int array of firings per 
      *   global iteration
@@ -431,10 +434,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         _firingsPerGlobalIteration = firingsPerGlobalIteration;
     }
 
-    /** Set the two-dimensional int array of rates of this actor. For each internal 
-     *  configuration of this composite actor, the array contains a corresponding 
-     *  one-dimensional int array representing the rates of all ports of this 
-     *  composite actor.  
+    /** Set the two-dimensional int array of rates of this actor. For
+     *  each internal configuration of this composite actor, the array
+     *  contains a corresponding one-dimensional int array
+     *  representing the rates of all ports of this composite actor.
      * 
      *  @param rates A two-dimensional int array of rates of this actor.
      *  @see #getRates()

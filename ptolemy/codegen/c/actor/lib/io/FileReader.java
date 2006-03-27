@@ -73,7 +73,7 @@ public class FileReader extends CCodeGeneratorHelper {
         String fileNameString = getFileName(actor.fileOrURL);
         ArrayList args = new ArrayList();
         args.add(fileNameString);
-        _codeStream.appendCodeBlock("initBlock", args);
+        _codeStream.appendCodeBlock("openForRead", args);
         return processCode(_codeStream.toString());
     }
 

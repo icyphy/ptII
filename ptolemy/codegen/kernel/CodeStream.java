@@ -223,10 +223,9 @@ public class CodeStream {
             // Check if there are more arguments than parameters.
             else if ((parameters.size() - arguments.size()) > 0) {
                 for (int i = arguments.size(); i < parameters.size(); i++) {
-                    errors
-                            .add(blockName + " in " + _filePath
-                                    + " expects parameter ("
-                                    + parameters.get(i) + ").");
+                    errors.add(blockName + " in " + _filePath
+                            + " expects parameter ("
+                            + parameters.get(i) + ").");
                 }
             }
         }
