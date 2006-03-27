@@ -137,7 +137,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateFireCode() throws IllegalActionException {       
-        return _codeGenerator.comment(1,
+        return _codeGenerator.comment(2,
                 "fire " + getComponent().getName());
     }
 

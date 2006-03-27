@@ -230,7 +230,7 @@ public class SDFDirector extends Director {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(_codeGenerator.comment(1,
+        code.append(_codeGenerator.comment(2,
                             "SDFDirector: "
                             + "Transfer tokens to the inside."));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
@@ -247,10 +247,12 @@ public class SDFDirector extends Director {
                 }
 
                 for (int k = 0; k < rate; k++) {
-                    code.append(compositeActorHelper.getReference("@" + name
+                    code.append(_INDENT2
+                            + compositeActorHelper.getReference("@" + name
                             + "," + k));
-                    code.append(" = ");
-                    code.append(compositeActorHelper.getReference(name + ","
+                    code.append(" =\n");
+                    code.append(_INDENT3
+                            + compositeActorHelper.getReference(name + ","
                             + k));
                     code.append(";\n");
                 }
@@ -269,7 +271,7 @@ public class SDFDirector extends Director {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(_codeGenerator.comment(1,
+        code.append(_codeGenerator.comment(2,
                             "SDFDirector: "
                             + "Transfer tokens to the outside."));
 
@@ -287,11 +289,12 @@ public class SDFDirector extends Director {
                 }
 
                 for (int k = 0; k < rate; k++) {
-                    code.append(_INDENT1
+                    code.append(_INDENT2
                             + compositeActorHelper.getReference(name + ","
                             + k));
-                    code.append(" = ");
-                    code.append(compositeActorHelper.getReference("@" + name
+                    code.append(" =\n");
+                    code.append(_INDENT3 
+                            + compositeActorHelper.getReference("@" + name
                             + "," + k));
                     code.append(";\n");
                 }

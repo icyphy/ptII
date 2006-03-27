@@ -310,9 +310,11 @@ public class Director implements ActorCodeGenerator {
                     name = name + '#' + i;
                 }
 
-                code.append(_compositeActorHelper.getReference(name));
-                code.append(" = ");
-                code.append(_compositeActorHelper.getReference("@" + name));
+                code.append(_INDENT2
+                        +_compositeActorHelper.getReference(name));
+                code.append(" =\n");
+                code.append(_INDENT3
+                        +_compositeActorHelper.getReference("@" + name));
                 code.append(";\n");
             }
         }
@@ -587,4 +589,14 @@ public class Director implements ActorCodeGenerator {
      *  @see #_getIndentPrefix(int)
      */ 
     protected static String _INDENT1 = _getIndentPrefix(1);
+
+    /** Indent string for indent level 2.
+     *  @see #_getIndentPrefix(int)
+     */ 
+    protected static String _INDENT2 = _getIndentPrefix(2);
+
+    /** Indent string for indent level 3.
+     *  @see #_getIndentPrefix(int)
+     */ 
+    protected static String _INDENT3 = _getIndentPrefix(3);
 }

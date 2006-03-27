@@ -3,6 +3,6 @@
 /**/
 
 /***fireBlock***/
-    $ref(output) = $actorSymbol(state);
-    $actorSymbol(state) += $val(step);
+        $ref(output) = $actorSymbol(state);
+        $actorSymbol(state) += $val(step);
 /**/

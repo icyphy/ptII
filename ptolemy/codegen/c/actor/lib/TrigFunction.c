@@ -1,29 +1,29 @@
 /***sinBlock***/
-    $ref(output) = sin($ref(input));
+        $ref(output) = sin($ref(input));
 /**/
 
 
 /***asinBlock***/
-    $ref(output) = asin($ref(input));
+        $ref(output) = asin($ref(input));
 /**/
 
 
 /***cosBlock***/
-    $ref(output) = cos($ref(input));
+       $ref(output) = cos($ref(input));
 /**/
 
 
 /***acosBlock***/
-    $ref(output) = acos($ref(input));
+       $ref(output) = acos($ref(input));
 /**/
 
 
 /***tanBlock***/
-    $ref(output) = tan($ref(input));
+       $ref(output) = tan($ref(input));
 /**/
 
 
 /***atanBlock***/
-    $ref(output) = atan($ref(input));
+       $ref(output) = atan($ref(input));
 /**/
 
