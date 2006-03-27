@@ -1068,9 +1068,15 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         String[] labels = (String[]) node.getLabelNames().toArray(
                 new String[numChildren]);
-        _assert(labels.length == 1, node,
-                "has more than one member type of the union.");
-
+        
+        //_assert(labels.length == 1, node,
+        //        "has more than one member type of the union.");
+        
+        //If there is more than one members in the union, take the first
+        //member value as the value of the union.
+        if (labels.length > 0) {
+            _evaluatedChildToken = (new UnionToken(labels[0], tokens[0]));
+        }
         _evaluatedChildToken = (new UnionToken(labels[0], tokens[0]));
 
         if (node.isConstant()) {
