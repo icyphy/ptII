@@ -62,8 +62,11 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector extends Director {
-    /** Construct the code generator helper associated with the given SDFDirector.
-     *  @param sdfDirector The associated ptolemy.domains.sdf.kernel.SDFDirector
+
+    /** Construct the code generator helper associated with the given
+     *  SDFDirector.
+     *  @param sdfDirector The associated
+     *  ptolemy.domains.sdf.kernel.SDFDirector
      */
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
         super(sdfDirector);
@@ -75,9 +78,11 @@ public class SDFDirector extends Director {
     /** Generate code for declaring read and write offset variables if needed. 
      * 
      *  @return The generated code.
-     *  @exception IllegalActionException If thrown while creating offset variables.
+     *  @exception IllegalActionException If thrown while creating
+     *  offset variables.
      */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_createOffsetVariablesIfNeeded());
         code.append(super.createOffsetVariablesIfNeeded());
@@ -225,8 +230,9 @@ public class SDFDirector extends Director {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append("\n/* Transfer tokens to the inside */\n\n");
-
+        code.append(_codeGenerator.comment(1,
+                            "SDFDirector: "
+                            + "Transfer tokens to the inside."));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(getComponent()
@@ -263,6 +269,10 @@ public class SDFDirector extends Director {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
+        code.append(_codeGenerator.comment(1,
+                            "SDFDirector: "
+                            + "Transfer tokens to the outside."));
+
         code.append("\n/* Transfer tokens to the outside */\n\n");
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
