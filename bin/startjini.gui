@@ -3,7 +3,7 @@
 # Author:  Christopher Hylands
 # Version: $Id$
 #
-# Copyright (c) 1998-2005 The Regents of the University of California.
+# Copyright (c) 1998-2006 The Regents of the University of California.
 # 	All Rights Reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -124,7 +124,7 @@ else
 fi
 
 # Default JDK Home, may have /cygdrive in it
-PTJAVA_DIR="/usr/java/j2sdk1.4.2_09"
+PTJAVA_DIR="/cygdrive/c/Program Files/java/jdk1.5.0_05"
 
 # PTJAVA_DIR without /cygdrive
 PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
@@ -132,7 +132,7 @@ PTJAVA_DIR_CLEAN="`echo "$PTJAVA_DIR" | sed 's@/cygdrive/\([a-z]\)/@\1:/@'`"
 # Java CLASSPATH separator
 # For Unix, this would be :
 # For Cygwin, this would be ;
-CLASSPATHSEPARATOR=":"
+CLASSPATHSEPARATOR=";"
 
 
 ##################################################################
@@ -157,7 +157,7 @@ PTJACL_DIR=ptjacl
 PTJACL_JARS=""
 if [ "$PTJACL_DIR" = "ptjacl" ]; then
 
-    PTJACL_JARS="${CLASSPATHSEPARATOR}/home/celaine/ptII/lib/ptjacl.jar"
+    PTJACL_JARS="${CLASSPATHSEPARATOR}c:/cxh/ptII/lib/ptjacl.jar"
 
     # Flag to pass to java.  Solaris JDK1.2 reference version needs -native
     PTJACL_JFLAG="@PTJACL_JFLAG@"
@@ -186,7 +186,7 @@ CALTROP_JARS=""
 if [ "$PTCALTROP_DIR" = "caltrop" ]; then
     # Directory that contains the Cal jar file ptCal.jar
     # used by bin/ptinvoke.in
-    CALTROP_DIR="/home/celaine/ptII/lib"
+    CALTROP_DIR="c:/cxh/ptII/lib"
     CALTROP_JARS="${CLASSPATHSEPARATOR}${CALTROP_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/java_cup.jar"
 fi
 
@@ -196,7 +196,7 @@ fi
 PTCHIC_DIR=chic
 CHIC_JARS=""
 if [ "$PTCHIC_DIR" = "chic" ]; then
-    CHIC_DIR="/home/celaine/ptII/lib"
+    CHIC_DIR="c:/cxh/ptII/lib"
     CHIC_JARS="${CLASSPATHSEPARATOR}${CHIC_DIR}/chic.jar"
 fi
 
@@ -209,7 +209,7 @@ COLT_JARS=""
 if [ "$PTCOLT_DIR" = "colt" ]; then
     # Colt jar files.  We ship $PTII/lib/ptcolt.jar, which is a subset
     # of $PTII/vendors/misc/colt.jar
-    PTCOLT_JARS="/home/celaine/ptII/lib/ptcolt.jar"
+    PTCOLT_JARS="c:/cxh/ptII/lib/ptcolt.jar"
     COLT_JARS="${CLASSPATHSEPARATOR}${PTCOLT_JARS}"
 fi
 
@@ -222,7 +222,7 @@ COMMAPI_JARS=""
 if [ "$COMMAPI_PRESENT" = "yes" ]; then
     # Directory that contains the Java Serial Comm API, see
     # http://java.sun.com/products/javacomm/
-    COMMAPI_DIR="/home/celaine/ptII/vendors/sun/commapi"
+    COMMAPI_DIR="c:/cxh/ptII/vendors/sun/commapi"
 
     COMMAPI_JARS="${CLASSPATHSEPARATOR}${COMMAPI_DIR}/comm.jar"
 fi
@@ -234,13 +234,13 @@ PTDISTRIBUTED_DIR="distributed"
 JINI_JARS=""
 if [ "$PTDISTRIBUTED_DIR" = "distributed" ]; then
     # Jini directory
-    JINI_DIR="/home/celaine/ptII/ptolemy/distributed/jini"
+    JINI_DIR="c:/cxh/ptII/ptolemy/distributed/jini"
 
     # Flags needed for Jini
     JINI_JFLAG='"-Djava.security.policy=${PTII}/bin/policy.all" "-Doutrigger.spacename=JavaSpaces" "-Dcom.sun.jini.lookup.groups=public" "-Djava.rmi.server.codebase=http://localhost:4444/"'
 
     # Jini Jar files
-    JINI_JARS=":/home/celaine/ptII/ptolemy/distributed/jini/jar/jini-core.jar:/home/celaine/ptII/ptolemy/distributed/jini/jar/jini-ext.jar:/home/celaine/ptII/ptolemy/distributed/jini/jar/sun-util.jar"
+    JINI_JARS=";c:/cxh/ptII/ptolemy/distributed/jini/jar/jini-core.jar;c:/cxh/ptII/ptolemy/distributed/jini/jar/jini-ext.jar;c:/cxh/ptII/ptolemy/distributed/jini/jar/sun-util.jar"
 fi
 
 
@@ -262,7 +262,7 @@ TINICLASSES_JAR='${PTII}/vendors/dalsemi/tini/bin/tiniclasses.jar'
 TINI_JFLAG=
 
 # JDK Version determined by running confTest.class and getting java.version
-JVERSION=1.4.2_09
+JVERSION=1.5.0_05
 
 # See if we are running under JDK1.4.1 with XP
 if test "`uname -s`" = "CYGWIN_NT-5.1"; then
@@ -294,7 +294,7 @@ fi
 # The jode jar file.
 # JODE_JAR might contain ${JODE_DIR)
 JODE_DIR="@JODE_DIR@"
-JODE_JAR="/home/celaine/ptII/vendors/jode/1.1.1/jode.jar"
+JODE_JAR="c:/cxh/ptII/vendors/jode/1.1.1/jode.jar"
 
 JODE_JFLAG=
 
@@ -303,7 +303,7 @@ JODE_JFLAG=
 # c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
 
 # PTQUICKTIME_DIR is set to quicktime by configure if QTJava.zip was found
-PTQUICKTIME_DIR=
+PTQUICKTIME_DIR=quicktime
 QTJAVA_JARS=""
 if [ "$PTQUICKTIME_DIR" = "quicktime" ]; then
     QTJAVA_ZIP=""
@@ -313,8 +313,8 @@ fi
 
 #### Soot..  Java compiler and optimizer package.  Jasmin: a java assembler.
 # The soot and jasmin jar files.
-SOOT_DIR="/home/celaine/ptII/lib"
-JAVA_SYSTEM_JAR="/usr/java/j2sdk1.4.2_09/jre/lib/rt.jar"
+SOOT_DIR="c:/cxh/ptII/lib"
+JAVA_SYSTEM_JAR="c:\Program Files\java\jdk1.5.0_05\jre\lib\rt.jar"
 # Java 1.5 has javax.crypto.Cipher in jce.jar, Soot needs this
 JAVAX_CRYPTO_JAR="${PTJAVA_HOME}/lib/jce.jar"
 SOOT_JAR="${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}"
@@ -347,7 +347,7 @@ PTJNI_PROPERTIES=""
 #if [ "$PTJNI_DIR" = "jni" ]; then
     # Properties for compiling
     # These properties are now set in $PTII/lib/ptII.properties
-    #JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=linux -Dptolemy.ptII.java.dir=\"${PTJAVA_DIR_CLEAN}\""
+    #JNI_PROPERTIES="-Dptolemy.ptII.jni.architecture=win32 -Dptolemy.ptII.java.dir=\"${PTJAVA_DIR_CLEAN}\""
 #fi
 
 #### Joystick
@@ -366,7 +366,7 @@ fi
 PTJYTHON_DIR=python
 JYTHON_JARS=""
 if [ "$PTJYTHON_DIR" = "python" ]; then
-    JYTHON_DIR="/home/celaine/ptII/lib"
+    JYTHON_DIR="c:/cxh/ptII/lib"
     # Jar file that contains Joystick interface,
     # see http://sourceforge.net/projects/javajoystick/
     JYTHON_JARS="${CLASSPATHSEPARATOR}${JYTHON_DIR}/jython.jar"
@@ -390,13 +390,13 @@ fi
 PTPSDF_DIR=psdf
 PSDF_JARS=""
 if [ "$PTPSDF_DIR" = "psdf" ]; then 
-    PSDF_DIR="/home/celaine/ptII/lib"
+    PSDF_DIR="c:/cxh/ptII/lib"
     PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/mapss.jar"
 fi
 
 #### Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
 # At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif use Saxon.
-SAXON_JAR=${CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
+SAXON_JARS=${CLASSPATHSEPARATOR}${PTII}/lib/saxon8.jar${CLASSPATHSEPARATOR}${PTII}/lib/saxon8-dom.jar
 
 #### TinyOS - Used by the PtinyOS domain
 # FIXME: configure needs to find TinyOS and use a variable like PTTOSROOT
@@ -423,7 +423,7 @@ if [ ! -z "$PTINYOS_MOMLROOT" ]; then
 fi
 
 #### NC2MOML - Used by the PtinyOS Domain
-NC2MOML_JARS=${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/jdom.jar${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/nesc-dump.jar
+NC2MOML_JARS=${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/jdom.jar${CLASSPATHSEPARATOR}$PTII/ptolemy/domains/ptinyos/lib/nesc.jar
 
 #### PTVR is the Volume Rendering interface
 # http://www.j3d.org/tutorials/quick_fix/volume.html
@@ -437,11 +437,11 @@ fi
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
 # PTX10_DIR is set to x10 if configure found x10
-PTX10_DIR=
+PTX10_DIR=x10
 X10_JARS=""
 if [ "$PTX10_DIR" = "x10" ]; then 
-    X10_DIR="${PTII}/vendors/misc/x10"
-    X10_JARS="${CLASSPATHSEPARATOR}${X10_DIR}/tjx10p-12/lib/x10.jar"
+    X10_DIR="c:/cxh/ptII/vendors/misc/x10"
+    X10_JARS="${CLASSPATHSEPARATOR}c:/cxh/ptII/vendors/misc/x10/tjx10p-12/lib/x10.jar"
 fi
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
@@ -452,7 +452,7 @@ fi
 # a version of java cup
 #
 # If you update ALL_JARS, please update ptolemy/configs/test/makefile
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JARS}${TOSJARS}${NC2MOML_JARS}${PTVR_JARS}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
@@ -721,6 +721,16 @@ and run:
 	jarfile="$ALL_JAR"
 	javaflag="$ALL_JFLAG"
 	;;
+    ptcg)
+	help="This command generates C code for a given model \
+            For example: \
+            $commandname [commonOptions] $PTII/ptolemy/codegen/demo/Butterfly/Butterfly.xml"
+	invokeHelp="Usage: $commandname model.xml"          
+	javastartupclass=ptolemy.codegen.kernel.CodeGenerator
+	javasourcedir=
+	jarfile="$ALL_JAR"
+	javaflag="$PTJACL_FLAG"
+        ;;
     ptexecute)
         help="This command takes one or more models as command line arguments. \
             The models may be either class files or MoMLFiles.  \
@@ -865,9 +875,58 @@ and run:
 	    javastartupclass=thales.vergil.SingleWindowApplication
         fi
 
+	if [ "$1" = "-viptos" ]; then
+	    if [ -z "TOSROOT" ]; then
+		echo "$0: Warning the TOSROOT environment variable is not set?"
+		echo "TOSROOT should be set to the tinyos-1.x directory."
+		echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+		echo ""
+	    else 
+		if [ ! -d "$TOSROOT" ]; then
+		    echo "$0: Warning the \$TOSROOT directory '$TOSROOT'"
+		    echo "cannot be found."
+		    echo "\$TOSROOT should be set to the tinyos-1.x directory."
+		    echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+		    echo ""
+		fi    
+            fi
+
+	    if [ -z "TOSDIR" ]; then
+		echo "$0: Warning the TOSDIR environment variable is not set?"
+		echo "\$TOSDIR should be set to the tos/ directory in TinyOS"
+		echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+		echo ""
+	    else 	
+	        if [ ! -d "$TOSDIR" ]; then
+		    echo "$0: Warning the \$TOSDIR directory '$TOSDIR'"
+		    echo "cannot be found."
+		    echo "\$TOSDIR should be set to the tos/ directory in TinyOS"
+		    echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+		    echo ""
+                 fi
+	    fi	
+	    if [ -z "PTINYOS_MOMLROOT" ]; then
+		echo "$0: Warning the PTINYOS_MOMLROOT environment variable is not set?"
+		echo "\$PTINYOS_MOMLROOT should be set to the location of the "
+		echo "moml files created by running nc2moml."
+		echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+		echo ""
+	    else
+	        if [ ! -d "$PTINYOS_MOMLROOT" ]; then
+		    echo "$0: Warning the \$PTINYOS_MOMLROOT directory '$PTINYOS_MOMLROOT'"
+		    echo "cannot be found."
+		    echo "\$PTINYOS_MOMLROOT should be set to the location of the "
+		    echo "moml files created by running nc2moml."
+		    echo "See $PTII/ptolemy/domains/ptinyos/util/nc2moml/index.htm"
+		    echo ""
+		fi    
+            fi
+	    javaflag="\"-Dptolemy.ptII.tosroot=$TOSROOT\" \"-Dptolemy.ptII.tosdir=$TOSDIR\" $ALL_JFLAG"
+	else    
+	    javaflag="$ALL_JFLAG"
+	fi	    
 	javasourcedir=ptolemy/vergil
 	jarfile="$ALL_JAR${SINGLE_WINDOW_JARS}"
-	javaflag="$ALL_JFLAG"
 	;;
 esac
 
@@ -1023,7 +1082,7 @@ if [ "$error" = "none" ]; then
     
     if [ "$makebat" = "1" ]; then   
 	# Pathname to java binary without forward slashes or /cygdrive/c/
-	backslashJava=`echo ${PTJAVA_DIR_CLEAN}/bin/java | sed 's@/@\\\@g'`
+	backslashJava=`echo ${PTJAVA_DIR_CLEAN}/bin/javaw | sed 's@/@\\\@g'`
 
 	makebatstr="\"${backslashJava}\" $jdbflags $javaflag $ptflag $USERJAVAPROPERTIES $JAVAFLAGS $J141BUGWORKAROUND -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
 

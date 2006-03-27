@@ -721,6 +721,16 @@ and run:
 	jarfile="$ALL_JAR"
 	javaflag="$ALL_JFLAG"
 	;;
+    ptcg)
+	help="This command generates C code for a given model \
+            For example: \
+            $commandname [commonOptions] $PTII/ptolemy/codegen/demo/Butterfly/Butterfly.xml"
+	invokeHelp="Usage: $commandname model.xml"          
+	javastartupclass=ptolemy.codegen.kernel.CodeGenerator
+	javasourcedir=
+	jarfile="$ALL_JAR"
+	javaflag="$PTJACL_FLAG"
+        ;;
     ptexecute)
         help="This command takes one or more models as command line arguments. \
             The models may be either class files or MoMLFiles.  \

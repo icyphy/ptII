@@ -63,6 +63,7 @@ SHELL_FILES = \
 	mescal \
 	moml \
 	obfuscate \
+	ptcg \
 	ptexecute \
 	ptjacl \
 	ptjaclapp \
