@@ -47,7 +47,7 @@ static int $actorSymbol(count) = 0;
                 $size(correctValues)
              && (strcmp($ref(correctValues, $actorSymbol(count)),
                     $ref(input#$channel)) != 0) ) {
-            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been: %s\n",
+            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
                     $actorSymbol(count),
                     $ref(input#$channel),
                     $ref(correctValues,
@@ -63,11 +63,10 @@ static int $actorSymbol(count) = 0;
 
 	if ($actorSymbol(count) <
                 $size(correctValues)
-            && (strcmp((char *)$ref(correctValues, $actorSymbol(count)),
+            && (strcmp((char *)$ref(input#$channel),
                            $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType)) != 0) {
-            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been: %s\n",
+            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
                     $actorSymbol(count),
-                    $ref(input#$channel),
                     $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
             exit(-1);
 	}
