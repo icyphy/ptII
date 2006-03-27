@@ -538,6 +538,13 @@ public class Manager extends NamedObj implements Runnable {
         _typesResolved = false;
     }
 
+    /** Return true if exitAfterWrapup() was called.
+     *  @return true if exitAfterWrapup was called.
+     */
+    public boolean isExitingAfterWrapup() {
+        return _exitAfterWrapup;
+    }   
+
     /** Invoke one iteration of the model.  An iteration consists of
      *  first performing changes queued with requestChange()
      *  and type resolution, if necessary, and then
@@ -788,6 +795,7 @@ public class Manager extends NamedObj implements Runnable {
 
             _setState(PREINITIALIZING);
 
+            _exitAfterWrapup = false;
             _pauseRequested = false;
             _typesResolved = false;
             _iterationCount = 0;
@@ -1195,6 +1203,8 @@ public class Manager extends NamedObj implements Runnable {
             // ptolemy.ptII.exitAfterWrapup
             if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
                     .length() > 0) {
+                // Set the state to IDLE for codegen
+                _setState(IDLE);
                 throw new KernelRuntimeException(this, "Normally, we would "
                         + "exit here because Manager.exitAfterWrapup() "
                         + "was called.  However, because the "
