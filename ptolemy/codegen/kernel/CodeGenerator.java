@@ -922,7 +922,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     ////                         protected variables               ////
 
     /** Indent string for indent level 1.
-     *  @see ptolemy.util.StringUtilities.getIndentPrefix(int)
+     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */ 
     protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
 

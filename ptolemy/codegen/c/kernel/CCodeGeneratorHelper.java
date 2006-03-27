@@ -50,8 +50,8 @@ import ptolemy.util.StringUtilities;
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Yellow (eal)
+ @Pt.ProposedRating Red (mankit) Need to look for c code in actor super classes.
+ @Pt.AcceptedRating Red (mankit)
  */
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /**
@@ -218,7 +218,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     protected CodeStream _codeStream = new CodeStream(this);
 
     /** Indent string for indent level 1.
-     *  @see ptolemy.util.StringUtilities.getIndentPrefix(int)
+     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
      */ 
     protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
 }
