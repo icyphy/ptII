@@ -195,15 +195,18 @@ public class StreamExec implements ExecuteCommands {
 
                     if (_workingDirectory != null) {
                         stdout("In \"" + _workingDirectory
-                                + "\", about to execute:\n");
+                                + "\", about to execute:");
                     } else {
-                        stdout("About to execute:\n");
+                        stdout("About to execute:");
                     }
 
+                    StringBuffer commandBuffer = new StringBuffer();
                     StringBuffer statusCommand = new StringBuffer();
-
                     for (int i = 0; i < commandTokens.length; i++) {
-                        stdout("        " + commandTokens[i]);
+                        if (commandBuffer.length() > 1) {
+                            commandBuffer.append(" ");
+                        }
+                        commandBuffer.append(commandTokens[i]);
 
                         // Accumulate the first 50 chars for use in
                         // the status buffer.
@@ -215,7 +218,8 @@ public class StreamExec implements ExecuteCommands {
                             statusCommand.append(commandTokens[i]);
                         }
                     }
-
+                    stdout("    "
+                            + StringUtilities.split(commandBuffer.toString()));
                     if (statusCommand.length() >= 50) {
                         statusCommand.append(" . . .");
                     }
