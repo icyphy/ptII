@@ -129,7 +129,7 @@ Token Array_convert(Token token, ...) {
         
         default:
             // FIXME: not finished
-            fprintf(stderr, "Conversion from an supported type. (%d)",
+            fprintf(stderr, "Array_convert: Conversion from an unsupported type. (%d)\n",
                     token.type);
             break;
     }

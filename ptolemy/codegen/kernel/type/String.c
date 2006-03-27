@@ -61,7 +61,7 @@ Token String_convert(Token token, ...) {
 
         default:
             // FIXME: not finished
-            fprintf(stderr, "String_convert(): Conversion from an supported type. (%d)", token.type);
+            fprintf(stderr, "String_convert(): Conversion from an unsupported type. (%d)", token.type);
             break;
     }
     return token;
