@@ -4,7 +4,7 @@ static int $actorSymbol(count) = 0;
 /**/
 
 /***numberBlock($channel)***/
-        // Handling $actorSymbol(), which has only one channel
+        /* $actorSymbol(), which has only one channel */
         if ($actorSymbol(count) <
                 $size(correctValues)
                 && fabs($ref(input#$channel)
@@ -24,7 +24,7 @@ static int $actorSymbol(count) = 0;
 /**/
 
 /***numberBlockMultiChannel($channel,$inputType)***/
-        // Handling channel $channel of $actorSymbol()
+        /* $channel of $actorSymbol() */
         ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, $actorSymbol(count));
         if ($actorSymbol(count) <
                 $size(correctValues)
@@ -43,7 +43,9 @@ static int $actorSymbol(count) = 0;
 
 
 /***stringBlock($channel)***/
-	if (strcmp($ref(correctValues,
+	if ($actorSymbol(count) <
+                $size(correctValues)
+             && !strcmp($ref(correctValues,
                            $actorSymbol(count)),
                     $ref(input#$channel))) {
             printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been: %s\n",
@@ -52,6 +54,23 @@ static int $actorSymbol(count) = 0;
                     $ref(correctValues,
                             $actorSymbol(count)));
             exit(-1);    		
+	}
+        $actorSymbol(count) ++;
+/**/
+
+/***stringBlockMultiChannel($channel,$inputType)***/
+        /* $channel of $actorSymbol() */
+        ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, $actorSymbol(count));
+
+	if ($actorSymbol(count) <
+                $size(correctValues)
+            && !strcmp((char *)$ref(correctValues, $actorSymbol(count)),
+                           $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType)) {
+            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been: %s\n",
+                    $actorSymbol(count),
+                    $ref(input#$channel),
+                    $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
+            exit(-1);
 	}
         $actorSymbol(count) ++;
 /**/
