@@ -4,7 +4,7 @@
 struct matrix {
     unsigned int row;            // number of rows.
     unsigned int column;         // number of columns.
-    Token **elements;            // matrix of pointers to the elements. 
+    Token *elements;            // matrix of pointers to the elements. 
     //unsigned char elementsType;  // type of all the elements.
 };
 
@@ -13,7 +13,7 @@ typedef struct matrix* MatrixToken;
 
 
 /***funcDeclareBlock***/
-//Token Matrix_convert(Token token);
+Token Matrix_convert(Token token, ...);
 Token Matrix_print(Token thisToken, ...);
 Token Matrix_toString(Token thisToken, ...);
 Token Matrix_toExpression(Token thisToken, ...);
@@ -23,6 +23,13 @@ Token Matrix_get(Token token, int column, int row) {
     return token.payload.Matrix->elements[column * token.payload.Matrix->row + row];
 }
 /**/
+
+/***convertBlock***/
+Token Matrix_convert(Token token, ...) {
+    fprintf(stderr, "Matrix_convert() not yet implemented.\n");
+}
+/**/
+
 
 /***newBlock***/
 // make a new matrix from the given values
@@ -39,9 +46,11 @@ Token Matrix_new(int column, int row, int given, ...) {
     Token result;
     result.type = TYPE_Matrix;
     result.payload.Matrix = (MatrixToken) malloc(sizeof(struct array));
-    result.payload.Matrix->size = size;
+    //result.payload.Matrix->size = size;
+    result.payload.Matrix->row = row;
+    result.payload.Matrix->column = column;
 
-	// Allocate an new 2-dimenional array (matrix) of Tokens.
+	// Allocate a new 2-dimensional array (matrix) of Tokens.
     result.payload.Matrix->elements = (Token*) calloc(row * column, sizeof(Token));
 
     if (given > 0) {
