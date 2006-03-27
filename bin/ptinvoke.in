@@ -725,7 +725,7 @@ and run:
 	help="This command generates C code for a given model \
             For example: \
             $commandname [commonOptions] $PTII/ptolemy/codegen/demo/Butterfly/Butterfly.xml"
-	invokeHelp="Usage: $commandname model.xml"          
+	invokeHelp="Usage: $commandname model.xml [model2.xml . . .]"          
 	javastartupclass=ptolemy.codegen.kernel.CodeGenerator
 	javasourcedir=
 	jarfile="$ALL_JAR"
