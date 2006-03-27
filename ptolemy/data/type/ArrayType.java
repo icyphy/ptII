@@ -128,6 +128,21 @@ public class ArrayType extends StructuredType {
         return new ArrayToken(resultArray);
     }
 
+    /** Return the depth of an array type. The depth of an
+     *  array type is the number of times it 
+     *  contains other structured types. For example, an array 
+     *  of arrays has depth 2, and an array of arrays of records 
+     *  has depth 3.
+     *  @return the depth of a structured type.
+     */
+    public int depth() {
+        int depth = 1;
+        if (_elementType instanceof StructuredType) {
+            depth += ((StructuredType) _elementType).depth();
+        } 
+        return depth;
+    }
+    
     /** Determine if the argument represents the same ArrayType as this
      *  object.
      *  @param object Another object.
@@ -249,7 +264,7 @@ public class ArrayType extends StructuredType {
 
     /** Update this Type to the specified ArrayType.
      *  The specified type must be an ArrayType with the same structure as
-     *  this type.
+     *  this type, and have depth less than the MAXDEPTHDOUND.
      *  This method will only update the component whose declared type is
      *  BaseType.UNKNOWN, and leave the constant part of this type intact.
      *  @param newType A StructuredType.
@@ -258,6 +273,7 @@ public class ArrayType extends StructuredType {
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
+        super.updateType(newType);
         if (this.isConstant()) {
             if (this.equals(newType)) {
                 return;

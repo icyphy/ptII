@@ -180,6 +180,30 @@ public class RecordType extends StructuredType {
         return new RecordToken(labelStringArray, values);
     }
 
+    /** Return the depth of a record type. The depth of a 
+     *  record type is the number of times it  
+     *  contains other structured types. For example, a record  
+     *  of arrays has depth 2.
+     *  @return the depth of a record type.
+     */
+    public int depth() {
+        Object[] labelsObj = _fields.keySet().toArray();
+        String[] labels = new String[labelsObj.length];
+        int[] depth = new int[labelsObj.length];
+        int maxDepth = 1;
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = (String) labelsObj[i];
+            Type fieldType = get(labels[i]);
+            depth[i] = 1;
+            if (fieldType instanceof StructuredType) {
+                depth[i] += ((StructuredType) fieldType).depth(); 
+            }
+            if (depth[i] > maxDepth) 
+                maxDepth = depth[i];
+        } 
+        return maxDepth;
+    }
+    
     /** Determine if the argument represents the same RecordType as this
      *  object.  Two record types are equal if they have the same field names
      *  and the type of each field is the same.
@@ -458,7 +482,7 @@ public class RecordType extends StructuredType {
 
     /** Update this Type to the specified RecordType.
      *  The specified type must be a RecordType and have the same structure
-     *  as this one.
+     *  as this one, and have depth less than the MAXDEPTHDOUND.
      *  This method will only update the component whose declared type is
      *  BaseType.UNKNOWN, and leave the constant part of this type intact.
      *  @param newType A StructuredType.
@@ -467,6 +491,7 @@ public class RecordType extends StructuredType {
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
+        super.updateType(newType);
         if (this.isConstant()) {
             if (this.equals(newType)) {
                 return;

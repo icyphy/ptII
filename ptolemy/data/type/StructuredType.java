@@ -60,6 +60,17 @@ public abstract class StructuredType implements Type {
      */
     abstract public Object clone() throws CloneNotSupportedException;
 
+    /** Return the depth of a structured type. The depth of a 
+     *  structured type is the number of times a structured type 
+     *  contains other structured types. For example, an array 
+     *  of arrays has depth 2, and an array of arrays of records 
+     *  has depth 3.
+     *  @return the depth of a structured type.
+     */
+    public int depth() {
+        return 1;
+    }
+    
     /** Return a perfect hash for this type.  This number corresponds
      *  uniquely to a particular type, and is used to improve
      *  performance of certain operations in the TypeLattice class.
@@ -82,15 +93,25 @@ public abstract class StructuredType implements Type {
     public abstract void initialize(Type type);
 
     /** Update this StructuredType to the specified Structured Type.
-     ** The specified type must have the same structure as this type.
+     ** The specified type must have depth less than the MAXDEPTHBOUND, and
+     *  have the same structure as this type.
      *  This method will only update the component type that is
      *  BaseType.UNKNOWN, and leave the constant part of this type intact.
      *  @param newType A StructuredType.
      *  @exception IllegalActionException If the specified type has a
      *   different structure.
      */
-    public abstract void updateType(StructuredType newType)
-            throws IllegalActionException;
+    public void updateType(StructuredType newType)
+            throws IllegalActionException {
+ 
+        if (newType.depth() >= MAXDEPTHBOUND)
+            throw new IllegalActionException("Infinite iterations in type"
+                    + " resolution. The structured type has depth larger than" 
+                    + " the bound " 
+                    + MAXDEPTHBOUND
+                    +" , set up for detecting infinite iterations: "
+                    + newType.toString());            
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -135,4 +156,9 @@ public abstract class StructuredType implements Type {
      *   not the same structured type as this one.
      */
     protected abstract StructuredType _leastUpperBound(StructuredType type);
+    
+    /** Set up a bound for the max depth of structured types. This bound
+     *  is used to detect infinite iterations.
+     */ 
+    protected static final int MAXDEPTHBOUND = 20;
 }

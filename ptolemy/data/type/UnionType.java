@@ -150,6 +150,29 @@ public class UnionType extends StructuredType {
         return new UnionToken(label, newValue);
     }
 
+    /** Return the depth of a union type. The depth of a 
+     *  union type is the number of times it  
+     *  contains other structured types. 
+     *  @return the depth of a union type.
+     */
+    public int depth() {
+        Object[] labelsObj = _fields.keySet().toArray();
+        String[] labels = new String[labelsObj.length];
+        int[] depth = new int[labelsObj.length];
+        int maxDepth = 1;
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = (String) labelsObj[i];
+            Type fieldType = get(labels[i]);
+            depth[i] = 1;
+            if (fieldType instanceof StructuredType) {
+                depth[i] += ((StructuredType) fieldType).depth(); 
+            }
+            if (depth[i] > maxDepth) 
+                maxDepth = depth[i];
+        }       
+        return maxDepth;
+    }
+    
     /** Determine if the argument represents the same UnionType as this
      *  object.  Two record types are equal if they have the same field names
      *  and the type of each field is the same.
