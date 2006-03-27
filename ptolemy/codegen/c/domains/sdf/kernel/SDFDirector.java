@@ -273,8 +273,6 @@ public class SDFDirector extends Director {
                             "SDFDirector: "
                             + "Transfer tokens to the outside."));
 
-        code.append("\n/* Transfer tokens to the outside */\n\n");
-
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(getComponent()
@@ -289,7 +287,8 @@ public class SDFDirector extends Director {
                 }
 
                 for (int k = 0; k < rate; k++) {
-                    code.append(compositeActorHelper.getReference(name + ","
+                    code.append(_INDENT1
+                            + compositeActorHelper.getReference(name + ","
                             + k));
                     code.append(" = ");
                     code.append(compositeActorHelper.getReference("@" + name
