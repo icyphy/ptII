@@ -68,7 +68,9 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	'TupleType$$1.class' \
+	'TupleType$$FieldTypeTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
