@@ -69,6 +69,7 @@ MISC_FILES =	test #$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'StreamExec$$_StreamReaderThread.class' \
 	'XSLTUtilities$$1.class' \
 	doc
 
