@@ -232,6 +232,19 @@ Node ptolemy.data.expr.ASTPtRecordConstructNode evaluated to {a = 1, b = 2}
 } 12}
 
 
+test Expression-17.2 {Construct arrays with newline strings in them} {
+    parseTreeTraceTest {{"this is
+ a test", "test two"}}
+} {{Entering node ptolemy.data.expr.ASTPtArrayConstructNode
+  Entering node ptolemy.data.expr.ASTPtLeafNode
+  Node ptolemy.data.expr.ASTPtLeafNode evaluated to "this is
+ a test"
+  Entering node ptolemy.data.expr.ASTPtLeafNode
+  Node ptolemy.data.expr.ASTPtLeafNode evaluated to "test two"
+Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {"this is
+ a test", "test two"}
+} {$new(Array(2, 2, $new(String("this is\n a test")), $new(String("test two"))))}}
+
 # I've commented this out. The ParseTreeCodeGenerator should not be 
 # tested this way. -- Gang
 #
