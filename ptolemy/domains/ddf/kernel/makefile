@@ -59,7 +59,9 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	'DDFDirector$$1.class' \
+	'DDFDirector$$ActorInfo.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
