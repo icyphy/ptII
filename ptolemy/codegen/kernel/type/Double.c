@@ -3,6 +3,7 @@ typedef double DoubleToken;
 /**/
 
 /***funcDeclareBlock***/
+Token Double_new(double d);
 /**/
 
 /***newBlock***/
@@ -23,8 +24,9 @@ Token Double_delete(Token token, ...) {}
 /***equalsBlock***/
 Token Double_equals(Token thisToken, ...) {
     va_list argp; 
+    Token otherToken; 
     va_start(argp, thisToken);
-	Token otherToken = va_arg(argp, Token);
+	otherToken = va_arg(argp, Token);
 	return Boolean_new(thisToken.payload.Double == otherToken.payload.Double);
 }
 /**/

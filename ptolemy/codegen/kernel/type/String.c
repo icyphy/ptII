@@ -3,6 +3,7 @@ typedef char* StringToken;
 /**/
 
 /***funcDeclareBlock***/
+Token String_new(char* s);
 /**/
 
 /***newBlock***/
@@ -23,11 +24,11 @@ Token String_delete(Token token, ...) {
 /**/
 
 /***equalsBlock***/
-// boolean equals(Token, Token);
 Token String_equals(Token thisToken, ...) {
     va_list argp; 
+    Token otherToken; 
     va_start(argp, thisToken);
-	Token otherToken = va_arg(argp, Token);
+	otherToken = va_arg(argp, Token);
 	return Boolean_new(!strcmp(thisToken.payload.String, otherToken.payload.String));
 }
 /**/

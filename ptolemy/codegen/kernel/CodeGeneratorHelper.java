@@ -913,16 +913,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     IOPort sinkPort = channel.port;
                     int sinkChannelNumber = channel.channelNumber;
 
+                    if (typeConvertSinks.contains(channel) && 
+                    		hasTypeConvertReference) {
+                		// We already generated reference for this sink.
+                    	continue;
+                    }
+                    
                     if (i != 0) {
                         result.append(" = ");
                     }
 
                     // Type convert.
                     if (typeConvertSinks.contains(channel)) {
-                    	if (hasTypeConvertReference) {
-                    		// We already generated reference for this sink.
-                    		continue;
-                    	} else {
+                    	if (!hasTypeConvertReference) {
                     		result.append(_getTypeConvertReference(sourceChannel));
                     		sinkPort = port;
                     		sinkChannelNumber = channelNumber;

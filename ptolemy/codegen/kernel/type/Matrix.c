@@ -13,6 +13,7 @@ typedef struct matrix* MatrixToken;
 
 
 /***funcDeclareBlock***/
+Token Matrix_new(int row, int column, int given, ...);
 Token Matrix_get(Token token, int row, int column) {   
     return token.payload.Matrix->elements[column * token.payload.Matrix->row + row];
 }
@@ -34,9 +35,6 @@ Token Matrix_delete(Token token, ...) {
 }
 /**/
 
-<<<<<<< Matrix.c
-
-=======
 /***convertBlock***/
 Token Matrix_convert(Token token, ...) {
     fprintf(stderr, "Matrix_convert() not yet implemented.\n");
@@ -44,7 +42,6 @@ Token Matrix_convert(Token token, ...) {
 /**/
 
 
->>>>>>> 1.3
 /***newBlock***/
 // make a new matrix from the given values
 // assume that number of the rest of the arguments == length,
@@ -59,22 +56,11 @@ Token Matrix_new(int row, int column, int given, ...) {
 
     Token result;
     result.type = TYPE_Matrix;
-<<<<<<< Matrix.c
     result.payload.Matrix = (MatrixToken) malloc(sizeof(struct matrix));
     result.payload.Matrix->row = row;
     result.payload.Matrix->column = column;
-=======
-    result.payload.Matrix = (MatrixToken) malloc(sizeof(struct array));
-    //result.payload.Matrix->size = size;
-    result.payload.Matrix->row = row;
-    result.payload.Matrix->column = column;
->>>>>>> 1.3
 
-<<<<<<< Matrix.c
 	// Allocate a new matrix of Tokens.
-=======
-	// Allocate a new 2-dimensional array (matrix) of Tokens.
->>>>>>> 1.3
     result.payload.Matrix->elements = (Token*) calloc(row * column, sizeof(Token));
 
     if (given > 0) {
@@ -94,8 +80,9 @@ Token Matrix_new(int row, int column, int given, ...) {
 Token Matrix_equals(Token thisToken, ...) {
 	int i, j;
     va_list argp; 
+    Token otherToken; 
     va_start(argp, thisToken);
-	Token otherToken = va_arg(argp, Token);
+	otherToken = va_arg(argp, Token);
 
 	if (( thisToken.payload.Matrix->row != otherToken.payload.Matrix->row ) ||
 		( thisToken.payload.Matrix->column != otherToken.payload.Matrix->column )) {

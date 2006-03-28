@@ -3,6 +3,7 @@ typedef int IntToken;
 /**/
 
 /***funcDeclareBlock***/
+Token Int_new(int i);
 /**/
 
 
@@ -19,8 +20,9 @@ Token Int_new(int i) {
 /***equalsBlock***/
 Token Int_equals(Token thisToken, ...) {
     va_list argp; 
+    Token otherToken; 
     va_start(argp, thisToken);
-	Token otherToken = va_arg(argp, Token);
+	otherToken = va_arg(argp, Token);
 	return Boolean_new(thisToken.payload.Int == otherToken.payload.Int);
 }
 /**/

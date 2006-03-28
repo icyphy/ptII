@@ -3,11 +3,12 @@ typedef char BooleanToken;
 /**/
 
 /***funcDeclareBlock***/
+Token Boolean_new(boolean b);
 /**/
 
 /***newBlock***/
 // make a new integer token from the given value.
-Token Boolean_new(char b) {
+Token Boolean_new(boolean b) {
     Token result;
     result.type = TYPE_Boolean;
     result.payload.Boolean = b;
@@ -23,8 +24,9 @@ Token Boolean_delete(Token token, ...) {}
 /***equalsBlock***/
 Token Boolean_equals(Token thisToken, ...) {
     va_list argp; 
+    Token otherToken; 
     va_start(argp, thisToken);
-	Token otherToken = va_arg(argp, Token);
+	otherToken = va_arg(argp, Token);
 	return Boolean_new(
 	( thisToken.payload.Boolean && otherToken.payload.Boolean ) || 
 	( !thisToken.payload.Boolean && !otherToken.payload.Boolean ));

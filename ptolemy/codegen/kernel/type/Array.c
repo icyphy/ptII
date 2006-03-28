@@ -8,6 +8,7 @@ typedef struct array* ArrayToken;
 /**/
 
 /***funcDeclareBlock***/
+Token Array_new(int size, int given, ...);   
 Token Array_get(Token token, int i) {   
     return token.payload.Array->elements[i];
 }
@@ -84,14 +85,15 @@ Token Array_delete(Token token, ...) {
 Token Array_equals(Token thisToken, ...) {
 	int i;
     va_list argp; 
+    Token otherToken; 
     va_start(argp, thisToken);
-	Token otherToken = va_arg(argp, Token);
+	otherToken = va_arg(argp, Token);
 
 	if (thisToken.payload.Array->size != otherToken.payload.Array->size) {
 		return Boolean_new(false);
 	}
-	for (i = 0; i < thisToken.size; i++) {
-	 	if (!functionTable[Array_get(token, i).type][FUNC_equals](Array_get(thisToken, i), equals(Array_get(otherToken, i))).payload.Boolean) {
+	for (i = 0; i < thisToken.payload.Array->size; i++) {
+	 	if (!functionTable[Array_get(thisToken, i).type][FUNC_equals](Array_get(thisToken, i), Array_get(otherToken, i)).payload.Boolean) {
 			return Boolean_new(false);
 	 	}
 	}
