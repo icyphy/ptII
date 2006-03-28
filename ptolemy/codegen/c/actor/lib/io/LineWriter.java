@@ -112,35 +112,6 @@ public class LineWriter extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate preinitialization code.
-     * This method reads the <code>preinitBlock</code> from LineWriter.c,
-     * replaces macros with their values and returns the results.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        super.generatePreinitializeCode();
-        return _generateBlockCode("preinitBlock");
-    }
-
-    /**
-     * Generate wrap up code.
-     * This method reads the <code>wrapupBlock</code> from LineWriter.c,
-     * replaces macros with their values and put the processed code block
-     * into the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        super.generateWrapupCode();
-        code.append(_generateBlockCode("wrapUpBlock"));
-        return code.toString();
-    }
-
-    /**
      * Get the files needed by the code generated for the LineWriter actor.
      * @return A set of strings that are names of the files
      *  needed by the code generated for the LineWriter actor.
