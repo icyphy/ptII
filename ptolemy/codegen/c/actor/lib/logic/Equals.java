@@ -69,10 +69,19 @@ public class Equals extends CCodeGeneratorHelper {
         type = _codeGenType(actor.input.getType());
         if (!_isPrimitiveType(type)) {
             type = "Token";
+        } else if (!type.equals("String")) {
+            // Primitive type, not a String. Use EqualsBlock
+            type = "";
         }
+        _codeStream.appendCodeBlock("fireBlockOpen");
         ArrayList args = new ArrayList();
-        args.add(new Integer(actor.input.getWidth()));
-        _codeStream.appendCodeBlock(type + "EqualsBlock", args);
+        args.add(new Integer(0));
+        args.add(new Integer(1));
+        for (int i = 0; i < actor.input.getWidth() - 1; i++) {
+            args.set(0, new Integer(i));
+            args.set(1, new Integer(i+1));
+            _codeStream.appendCodeBlock(type + "EqualsBlock", args);
+        }
         return processCode(_codeStream.toString());
     }
 
