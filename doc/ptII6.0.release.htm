@@ -79,6 +79,8 @@ to the newsgroups etc.  See also main.htm
 	process networks,
 <li> <a href="../ptolemy/domains/psdf/doc/body.htm" target="body">PSDF</a>:
 	parameterized synchronous dataflow (experimental),
+<li> <a href="../ptolemy/domains/rendezvous/doc/body.htm" target="body">Rendezvous</a>:
+	rendezvous (experimental),
 <li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
 	synchronous dataflow,
 <li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
@@ -100,12 +102,6 @@ and with JDK1.4.2_08.
 
 <p>Ptolemy II 5.0 will not compile under Java 1.3 because we use the
 java.lang.URI class, which is present only in Java 1.4 and later.
-
-<p>There are various problems with Sun Java 1.5.0:
-<menu>
-<li> <a href="#webstart1.5.0-beta">Web Start</a> does not work
-<li> Caltrop does not work because of XML parser issues
-</menu>
 
  <p>Ptolemy II has been compiled and run
 under IBM JDK 1.4.2_01-b06.  There are the following limitations
@@ -138,90 +134,54 @@ Contents:
 <h3>Ptolemy II 6.0 Highlights</h3>
 
 <menu>
-<li> <a href="../configs/viptos/index.htm">Viptos</a> - an interface
-between TinyOS and Ptolemy II
 
-<li> Distributed Ptolemy
-</menu>
+<li> <a href="../ptolemy/codegen/README.html">Ptolemy II C Code Generation</a>
+ <p>Primary Developers: Jackie Leung, Gang Zhou, Ye Zhou, Edward A. Lee,
+	Christopher Brooks
+ <br>  Ptolemy II can now generate C code for SDF, FSM and HDF models.
+  This new code generator consists of actor templates (called helpers)
+  that contain C code stubs that are stitched together.  Only a subset
+  of actors have helpers, so only a subset of models can be converted
+  to C.  Creating new helpers is fairly easy though.  The code generator
+  has been written to be easily extensible to languages other than C.
 
-<h3>Ptolemy II 5.0 Highlights</h3>
 
+<li> The
+<a href="../ptolemy/domains/rendezvous/doc/body.htm" target="body">Rendezvous domain</a>:
+ <br>Primary Authors: Thomas Huining Feng, Edward A. Lee
+ <br>In the Rendezvous domain in Ptolemy II, each actor executes in
+its own thread of control, and communication between actors is
+by rendezvous.  If an actor is ready to send a message,
+it blocks until the receiving actor is ready to receive it. Similarly if
+an actor is ready to receive a message, it blocks until the sending actor
+is ready to send it.
+<p>
+This domain supports both conditional and multi-way rendezvous.
+In conditional rendezvous, an actor is willing to rendezvous with
+any one of several other actors. In multiway rendezvous, an actor requires
+rendezvous with multiple other actors at the same time.
+When using conditional rendezvous, the choice of which rendezvous
+occurs is nondeterministic, in general.
+<P>
+The model of computation is based on the Communicating Sequential
+Processesmodel first proposed by Hoare in 1978. Rendezvous-based
+communication is also known as synchronous message passing, but we
+avoid this term to avoid confusion with the SR (synchronous/reactive)
+domain.
 
-<ul>
-<li> <i>Dynamic Dataflow</i>:
-<a href="../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.htm">HanoiTower</a>
-(see also
-<a href="../ptolemy/domains/ddf/demo/Eratosthenes/Eratosthenes.htm">Eratosthenes</a>,
-<a href="../ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.htm">IfThenElse</a>,
-<a href="../ptolemy/domains/ddf/demo/Loop/Loop.htm">Loop</a>,
-<a href="../ptolemy/domains/ddf/demo/OrderedMerge/OrderedMerge.htm">OrderedMerge</a>,
-<a href="../ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.htm">RandomWalk</a>)
-<br>
-In dynamic dataflow (DDF) models, actors are fired in response to available
-input data. The schedule is dynamic and data dependent, and actors can
-change their production and consumption rates in each firing.
-Unlike synchronous dataflow, the DDF model of computation is Turing
-complete, and questions of deadlock and boundedness are undecidable.
-The <a href="../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.htm">HanoiTower</a>
-example exploits this to give an algorithmic solution to the well-known
-towers of Hanoi problem.
+<li> <a href="../configs/viptos/index.htm">Viptos</a> 
+ <i>Visual editor and code generator for TinyOS programs</i>.
+ <br>Primary Author: Elaine Cheong
+ <br><B>Viptos</B> is an interface between TinyOS and Ptolemy II that
+provides a graphical user interface for TinyOS developers.  
 
-<br>
-<li>
-<i>Modeling of hybrid systems</i>:
-<a href="../ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.htm">NewtonsCradleComplicated</a>.
-<br>
-<i>Hybrid systems</i> are a special case of modal models
-where finite-state machines (FSMs) are combined with the continuous-time (CT) models
-to get mixed continuous-time and discrete-event models.
-The HyVisual package
-is a subset of Ptolemy II that includes the FSM and CT domains and libraries
-that support the design of hybrid systems.
-Version 5.0 introduces significant rework of the hybrid systems
-modeling infrastructure to have more complete and predictable
-semantics, as described in the paper
-"<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics/#in_browser">
-Operational Semantics of Hybrid Systems</a>".
-The
-<a href="../ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.htm">NewtonsCradleComplicated</a>
-example illustrates this with a model of a physical system that has simultaneous
-events.
+<li> <a href="codeDoc/ptolemy/distributed/domains/sdf/kernel/DistributedSDFDirector.html">Distributed SDF Domain using Jini</a>
+ <br>Authors: Daniel Lazaro Cuadrado (Aalborg University).
+ <br> The Distributed-SDF domain is an extended version of the existing SDF
+ Domain that performs the simulation in a distributed manner using
+ Jini.  See the
+ <a href="ptolemy/distributed/demo/Sleep/Sleep.xml">Sleep Demo</a> for details
 
-<br>
-<li><i>Stochastic hybrid systems</i>:
-<a href="../ptolemy/domains/ct/demo/Spontaneous/IncreasingRatePoisson.htm">IncreasingRatePoisson</a>
-(see also
-<a href="../ptolemy/domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.htm">HysteresisWithRandomDelay</a>,
-<a href="../ptolemy/domains/ct/demo/Brownian/Brownian.htm">Brownian</a>
-).
-<br>
-Stochastic hybrid systems add random behavior to continuous-time models mixed
-with discrete events. The 
-<a href="../ptolemy/domains/ct/demo/Spontaneous/IncreasingRatePoisson.htm">IncreasingRatePoisson</a>
-models spontaneous mode transitions governed by a Poisson process.
-The <a href="../ptolemy/domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.htm">HysteresisWithRandomDelay</a>
-example uses similar spontaneous mode transitions to model random delay in mode transitions.
-The <a href="../ptolemy/domains/ct/demo/Brownian/Brownian.htm">Brownian</a> example
-models a stochastic differential equation describing a random walk process.
-
-<br>
-<li> <i>Heterochronous Dataflow</i>:
-<a href="../ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.htm">Fibonacci</a>
-(see also
-<a href="../ptolemy/domains/hdf/demo/Merge/Merge.htm">Merge</a>).
-<br>
-Heterochronous dataflow (HDF) is an extension of synchronous dataflow
-(SDF) that permits dynamically changing production and consumption
-patterns without sacrificing static scheduling. In SDF, the production
-and consumption patterns of an actor are constant.
-In HDF they are allowed to change between iterations of the HDF schedule.
-Modal models can be used to change these patterns.
-Although HDF can express many data-dependent computations that cannot
-be represented by SDF, it is not Turing complete.  Consequently, deadlock
-and boundedness remain decidable.
-The <a href="../ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.htm">Fibonacci</a>
-example uses this mechanism in a clever way to extract a Fibonacci sequence
-from a counting sequence.
 
 </ul>
 
@@ -229,243 +189,27 @@ from a counting sequence.
 </h2>
 <ul>
 
-<li><i>Unbounded model time</i>: LongRuns
-<br>
-Version 5.0 introduces a new
-<a href="../ptolemy/../doc/codeDoc/ptolemy/actor/util/Time.html">Time</a> class
-that represents model time in a manner that has a specified resolution
-and unbounded growth potential. Any two time values that are within the specified
-resolution are treated as equal. Moreover, time can increase forever without
-concern for loss of resolution or overflow.
-The LongRuns
-example is a discrete-event model that can be run forever, in principle,
-without (significant) growth of memory requirements and without loss
-of (internal) precision in model time.
-The precision of time representations is given by a director parameter
-whose value is shared across all directors in a model (see
-<a href="../ptolemy/../doc/codeDoc/ptolemy/moml/SharedParameter.html">SharedParameter</a>).
-<br>
+<li> <a href="codeDoc/ptolemy/data/UnionToken.html">UnionToken</a>
+ <br>Primary Authors: Yang Zhao, Yuhong Xiong (HP)
+ The UnionToken can contain one instance of multiple types.  This
+ allows type safe operations to be performed in models when the
+ token type could be any one of several possible types.
 
-<li><i>Synchronous Reactive Modeling</i>:
-<a href="../ptolemy/domains/sr/demo/GuardedCount/GuardedCount.htm">GuardedCount</a>.
-<br>
-The synchronous/reactive (SR) domain,
-which is inspired by the synchronous languages Esterel, Lustre, and Signal,
-realizes a concurrency model where actors react instantaneously and simultaneously
-at ticks of a logical clock. Version 5.0 introduces a richer set of actors
-for use with this domain, as well as a bug fix permitting
-SROptimizedScheduler to be used inside a composite actor.
-The <a href="../ptolemy/domains/sr/demo/GuardedCount/GuardedCount.htm">GuardedCount</a>
-example illustrates some of these new capabilities.
-The new actors are:
-<ul>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/domains/sr/lib/Current.html">Current</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/domains/sr/lib/Default.html">Default</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/domains/sr/lib/EnabledComposite.html">EnabledComposite</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/domains/sr/lib/Pre.html">Pre</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/domains/sr/lib/When.html">When</a>
-</ul>
-
-<li><i>Nondeterministic merge in Process Networks (PN)</i>:
-<a href="../ptolemy/domains/pn/demo/NondeterministicMerge/NondeterministicMerge.htm">NondeterministicMerge</a>.
-<br>
-The PN domain now supports a NondeterministicMerge actor, which merges two
-incoming streams nondeterministically. This new actor should be used with
-caution, since determinism is one of the key features of PN. Use of this
-actor is risky because any given execution is only representative of
-the possible executions. Nonetheless, this offers a considerable
-increment in expressiveness.
-
-<br>
-
-<li><i>New Parameters</i>:
-<br>
-A number of new parameters have been introduced.
-The <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/parameters/DoubleRangeParameter.html">DoubleRangeParameter</a>
-limits the range and precision of a double-valued parameter,
-and is supported in the user interface by providing a slider by default in parameter
-editing dialogs.
-The <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/parameters/FilePortParameter.html">FilePortParameter</a>
-is used by actors to specify a file or URL using both a
-parameter and a port. The user interface supports this by offering a file browser
-dialog by default when editing this parameter. The
-<a href="../ptolemy/../doc/codeDoc/ptolemy/moml/SharedParameter.html">SharedParameter</a>
-is a parameter
-whose value is constrained to be identical to a suite of other instances of
-SharedParameter in the same model. This parameter is used, for example, to
-handle seeds in random number generators, as illustrated for example in
-ColtRandom.
-
-<br>
-<li><i>Higher Order Components</i>:
-ExecDemos
-(see also
-<a href="../ptolemy/actor/lib/hoc/demo/IterateOverArray/IterateOverArray.htm">IterateOverArray</a>).
-<br>
-The higher-order component capabilities of Ptolemy II continue to evolve.
-The ExecDemos model, when executed, starts a new
-Java virtual machine that then executes the
-RunDemos model,
-which runs all demos in a specified directory using full-screen mode.
-This illustrates how to use higher-order actors to control the lifecylcle of other Ptolemy II
-models. This example can be set up to automatically and repeatedly run demos
-unattended by following the instructions in the
-<a href="../ptolemy/demo/README.txt">README.txt</a> file.
-The new higher-order actors include:
-<ul>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFilterOverArray.html">ApplyFilterOverArray</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFunction.html">ApplyFunction</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/hoc/ApplyFunctionOverSequence.html">ApplyFunctionOverSequence</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/hoc/IterateOverArray.html">IterateOverArray</a>
-</ul>
-
-<li> <i>Graphics domain</i>:
-<a href="../ptolemy/domains/gr/demo/SolarSystem/SolarSystem.htm">SolarSystem</a>
-(see also <a href="../ptolemy/domains/gr/demo/Helen/Helen.htm">Helen</a>).
-<br>
-The graphics (GR) domain has been extensively revised to take better advantage of underlying
-capabilities in the Java 3D package. For example, the
-<a href="../ptolemy/domains/gr/demo/SolarSystem/SolarSystem.htm">SolarSystem</a>
-model illustrates transparency (see the rings of Saturn), and the
-<a href="../ptolemy/domains/gr/demo/Helen/Helen.htm">Helen</a> model
-illustrates texture mapping and movable viewer positioning.
-The following capabilities are now supported:
-<ul>
- <li>transparency
- <li>texture mapping
- <li>shininess
- <li>colors use ColorAttribute
- <li>more colors can be set
- <li>settable resolution
- <li>wireframe option for shapes
- <li>flat facets option for shapes
- <li>run-time changes of parameter values
- <li>parameters in the Text3D actor
- <li>movable viewer position
-</ul>
 
 </ul>
 
 <h2><a name="libraries">New and Enhanced Actor Libraries</a>
 </h2>
-A number of new and enhanced actor libraries are included in version 5.0.
+A number of new and enhanced actor libraries are included in version 6.0-devel
 You may also wish to refer to the
-<a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/package-summary.html">ptolemy.actor.lib</a>
+<a href="/codeDoc/ptolemy/actor/lib/package-summary.html">ptolemy.actor.lib</a>
 package, where most of the domain-polymorphic actors reside (domain-polymorphic actors are
 those that can be used in more than one domain).
 
-<ul>
-<li><i>New generic actors</i>:
-<ul>
-<li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/Sequence.html">Sequence</a>
-</ul>
+New Actors
 
-<li><i>Random number generators</i>:
-ColtRandom.
-<br>
-A new library of random number generators, developed jointly with
-David Bauer and Kostas Oikonomou from AT&amp;T Research, is based on the popular
-Colt "Open Source Libraries for High
-Performance Scientific and Technical
-Computing in Java."
-Colt is described at
-<a href="http://hoschek.home.cern.ch/hoschek/colt/#in_browser" target="_top">
-<CODE>http://hoschek.home.cern.ch/hoschek/colt/</CODE></a>.
-The library supports many
-commonly used probability distributions and provides
-systematic management of seeds and random number generation
-techniques.
+New Demos
 
-<br>
-<li><i>New discrete-event actors</i>:
-<ul>
-<li> <a href="../ptolemy/../doc/codeDoc/ptolemy/domains/de/lib/NonInterruptibleTimer.html">NonInterruptibleTimer</a>
-<li> <a href="../ptolemy/../doc/codeDoc/ptolemy/domains/de/lib/Register.html">Register</a>
-</ul>
-
-<li> <i>Communications library</i>:
-<br>
-The <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/comm/package-summary.html">communications library</a>
-includes a number of new actors:
-<ul>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanBasic.html">HuffmanBasic</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanCoder.html">HuffmanCoder</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/comm/HuffmanDecoder.html">HuffmanDecoder</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/comm/LempelZivCoder.html">LempelZivCoder</a>
- <li> <a href="../ptolemy/../doc/codeDoc/ptolemy/actor/lib/comm/LempelZivDecoder.html">LempelZivDecoder</a>
-</ul>
-
-</ul>
-
-<h2> <a name="demos">New Demonstrations</a>
-</h2>
-<ul>
-<li>New Continuous Time demos:
-<ul>
-<li> <a href="../ptolemy/domains/ct/demo/Brownian/Brownian.htm">Brownian</a> 
-<li> <a href="../ptolemy/domains/ct/demo/ContinuousClock/ContinuousClock.htm">Continuous Clock</a>
-<li> <a href="../ptolemy/domains/ct/demo/HierarchicalExecution/HierarchicalExecution.htm">Hierarchical Execution</a>
-<li> <a href="../ptolemy/domains/ct/demo/Hysteresis/Hysteresis.htm">Hysteresis</a>
-<li> <a href="../ptolemy/domains/ct/demo/Hysteresis/HysteresisWithRandomDelay.htm">HysteresisWithRandomDelay</a>
-<li> <a href="../ptolemy/domains/ct/demo/Hysteresis/HysteresisWithRandomLosses.htm">HysteresisWithRandomLosses</a>
-<li> <a href="../ptolemy/domains/ct/demo/Spontaneous/IncreasingRatePoisson.htm">IncreasingRatePoisson</a>
-<li> <a href="../ptolemy/domains/ct/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.htm">Level Crossing Detector Detects Glitches</a>
-<li> <a href="../ptolemy/domains/ct/demo/LevelCrossingDetector/LevelCrossingDetectorDetectingDirections.htm">Level Crossing Detector with Different Detecting Directions</a>
-<li> <a href="../ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradle.htm">Newton's Cradle</a>
-<li> <a href="../ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleComplicated.htm">Newton's Cradle with Complicated Dynamics</a>
-<li> <a href="../ptolemy/domains/ct/demo/NewtonsCradle/NewtonsCradleNondeterministic.htm">Newton's Cradle with Nondeterministic State Macine</a>
-<li> <a href="../ptolemy/domains/ct/demo/Spontaneous/Poisson.htm">Poisson</a>
-<li> <a href="../ptolemy/domains/ct/demo/SampledClocks/SampledClocks.htm">Sampled Clocks</a>
-<li> <a href="../ptolemy/domains/ct/demo/Satellite/Satellite.htm">Satellite</a>
-<li> <a href="../ptolemy/domains/ct/demo/StickyMasses/StickyMassesNewVersion.htm">Sticky Point Masses Modified Version</a>
-<li> <a href="../ptolemy/domains/ct/demo/ContinuousClock/TriggeredContinuousClock.htm">Triggered Continuous Clock</a>
-<li> <a href="../ptolemy/domains/ct/demo/V2V/V2V.htm">Vehicle 2 Vehicle</a>
-</ul>
-
-<li>New Discrete Event (DE) demos:
-<ul>
- <li><a href="../ptolemy/domains/de/demo/AssemblyLine/AssemblyLine.htm">Assembly Line</a> 
- <li><a href="../ptolemy/domains/de/demo/HierarchicalModel/HierarchicalModel.htm">Hierarchical Model</a> 
-</ul>
-
-<li> New Dynamic Dataflow (DDF) demos:
-<ul>
- <li><a href="../ptolemy/domains/ddf/demo/Eratosthenes/Eratosthenes.htm">Eratosthenes</a>
- <li><a href="../ptolemy/domains/ddf/demo/Factorial/Factorial.htm">Factorial</a>
- <li><a href="../ptolemy/domains/ddf/demo/HanoiTower/HanoiTower.htm">HanoiTower</a>
- <li><a href="../ptolemy/domains/ddf/demo/IfThenElse/IfThenElse.htm">IfThenElse</a>
- <li><a href="../ptolemy/domains/ddf/demo/Loop/Loop.htm">Loop</a>
- <li><a href="../ptolemy/domains/ddf/demo/OrderedMerge/OrderedMerge.htm">OrderedMerge</a>
- <li><a href="../ptolemy/domains/ddf/demo/RandomWalk/RandomWalk.htm">RandomWalk</a>
- <li><a href="../ptolemy/domains/ddf/demo/RijndaelEncryption/RijndaelEncryption.htm">RijndaelEncryption</a>
-</ul>
-
-<li> New Heterochronous Dataflow (HDF) demos:
-<ul>
- <li><a href="../ptolemy/domains/hdf/demo/AdaptiveCoding/AdaptiveCoding.htm">AdaptiveCoding</a>
- <li><a href="../ptolemy/domains/hdf/demo/Fibonacci/Fibonacci.htm">Fibonacci</a>
- <li><a href="../ptolemy/domains/hdf/demo/Hysteresis/Hysteresis.htm">Hysteresis</a>
- <li><a href="../ptolemy/domains/hdf/demo/Merge/Merge.htm">Merge</a>
-</ul>
-
-<li>New Giotto demos:
-<ul>
-<li><a href="../ptolemy/domains/giotto/demo/Multimode/Multimode.htm">Multimode</a>
-</ul>
-
-<li> New Graphics (GR) demos
-(requires Java 3D, see the <a href="../ptolemy/domains/gr/doc/main.htm">GR domain</a>):
-<ul>
-<li> <a href="../ptolemy/domains/gr/demo/Helen/Helen.htm">Helen</a>
-<li> <a href="../ptolemy/domains/gr/demo/SolarSystem/SolarSystem.htm">SolarSystem</a>
-</ul>
-
-<li> New Wireless demos:
-<ul>
-<li> <a href="../ptolemy/domains/wireless/demo/SmartParking/SmartParking.htm">SmartParking</a>
-</ul>
-
-</ul>
 
 <h2>
 <a name="features"> Additional Features </a>
