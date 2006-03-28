@@ -54,8 +54,8 @@ JSRCS = \
 	Leds.java \
 	MCApplication.java
 
-OTHER_FILES_TO_BE_JARED =
-
+OTHER_FILES_TO_BE_JARED = \
+	NCApplication.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -69,7 +69,9 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
+	doc \
+	'Counter$$1.class' \
+	'Leds$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
