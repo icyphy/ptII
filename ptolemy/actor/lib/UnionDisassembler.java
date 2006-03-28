@@ -1,6 +1,6 @@
 /* An actor that disassembles a UnionToken to the corresponding output.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -60,9 +60,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Yang Zhao
  @version $Id$
- @since Ptolemy II 1.0
- @Pt.ProposedRating Yellow (ellen_zh)
- @Pt.AcceptedRating Yellow (cxh)
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Red (ellen_zh)
+ @Pt.AcceptedRating Red (cxh)
  @see RecordAssembler
  @see ArrayElement
  */
