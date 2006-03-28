@@ -46,6 +46,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  Code generator helper class associated with the HDFFSMDirector class.
+ @see ptolemy.domains.hdf.kernel.HDFFSMDirector
 
  @author Gang Zhou
  @version $Id$
@@ -54,8 +55,11 @@ import ptolemy.kernel.util.NamedObj;
  @Pt.AcceptedRating Red (zgang)
  */
 public class HDFFSMDirector extends MultirateFSMDirector {
-    /** Construct the code generator helper associated with the given HDFFSMDirector.
-     *  @param director The associated ptolemy.domains.hdf.kernel.HDFFSMDirector
+
+    /** Construct the code generator helper associated with the given
+     * HDFFSMDirector.
+     *  @param director The associated
+     *  ptolemy.domains.hdf.kernel.HDFFSMDirector
      */
     public HDFFSMDirector(ptolemy.domains.hdf.kernel.HDFFSMDirector director) {
         super(director);
@@ -64,23 +68,31 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Generate code for declaring read and write offset variables if needed. 
-     *  First find out the maximum buffer sizes needed for controller ports
-     *  in one global iteration. Then relay the information of firings per global
-     *  iteration of the modal model (which is the container of this director)
-     *  to the refinements if necessary. Finally call the same method in its 
-     *  super class to create read and write offset variables if needed.
+    /** Generate code for declaring read and write offset variables if
+     *  needed.  First find out the maximum buffer sizes needed for
+     *  controller ports in one global iteration. Then relay the
+     *  information of firings per global iteration of the modal model
+     *  (which is the container of this director) to the refinements
+     *  if necessary. Finally call the same method in its super class
+     *  to create read and write offset variables if needed.
      * 
      *  @return The generated code.
-     *  @exception IllegalActionException If thrown while creating offset variables.
+     *  @exception IllegalActionException If thrown while creating
+     *  offset variables.
      */
-    // FIXME: The maximum controller port buffer size in one global iteration is 
-    // potentially large. But we can infer the number of tokens needed in one 
-    // global iteration from guard expression and only keep that many spaces. 
-    // However this assumes the index into array in the expression is fixed.
-    // Most of the time (or all of the time? )this should be true. If the index
-    // can be dynamically changed, then this would not work.
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+
+    public String createOffsetVariablesIfNeeded()
+            throws IllegalActionException {
+
+        // FIXME: The maximum controller port buffer size in one
+        // global iteration is potentially large. But we can infer the
+        // number of tokens needed in one global iteration from guard
+        // expression and only keep that many spaces.  However this
+        // assumes the index into array in the expression is fixed.
+        // Most of the time (or all of the time? )this should be
+        // true. If the index can be dynamically changed, then this
+        // would not work.
+
         StringBuffer code = new StringBuffer();
 
         ptolemy.domains.fsm.kernel.MultirateFSMDirector director = (ptolemy.domains.fsm.kernel.MultirateFSMDirector) getComponent();
@@ -115,12 +127,19 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                         int portNumber = 0;
                         while (ports.hasNext()) {
                             IOPort port = (IOPort) ports.next();
-                            // Find the new controller port buffer sizes needed in one 
-                            // global iteration from container port rates and container's
-                            // firings per global iteration.
+
+                            // Find the new controller port buffer
+                            // sizes needed in one global iteration
+                            // from container port rates and
+                            // container's firings per global
+                            // iteration.
+
                             int newSize = firingsPerGlobalIterationOfContainer
                                     * containerRates[configurationNumber][portNumber];
-                            // All channels have same buffer size, so we use channel 0.
+
+                            // All channels have same buffer size, so
+                            // we use channel 0.
+
                             int oldSize = controllerHelper.getBufferSize(port, 0);
                             if (oldSize < newSize) {
                                 for (int j = 0; j < port.getWidth(); j++) {
@@ -161,8 +180,9 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         return code.toString();
     }
 
-    /** Generate the code for the firing of actors controlled by this director.
-     *  It generates code for firing refinements and setting a variable to record it.
+    /** Generate the code for the firing of actors controlled by this
+     *  director.  It generates code for firing refinements and
+     *  setting a variable to record it.
      * 
      *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with

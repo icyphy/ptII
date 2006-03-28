@@ -54,14 +54,14 @@ import ptolemy.kernel.util.NamedObj;
 
 /** 
  Code generator helper class associated with the HDFDirector class.
- 
+ @see ptolemy.domains.hdf.kernel.HDFDirector
+
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 5.1
  @Pt.ProposedRating Red (cxh) Cleanup, then review
  @Pt.AcceptedRating Red (zgang)
- */
-
+*/
 public class HDFDirector extends SDFDirector {
 
     /** Construct the code generator helper associated with the given
@@ -86,7 +86,8 @@ public class HDFDirector extends SDFDirector {
      *  offset variables.
 
      */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ptolemy.domains.hdf.kernel.HDFDirector director = (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
@@ -266,11 +267,13 @@ public class HDFDirector extends SDFDirector {
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (i = 0; i < " + count + " ; i++) {\n");
+                        code.append("for (i = 0; i < " +
+                                count + " ; i++) {\n");
                     }
 
-                    code.append(CodeGeneratorHelper.generateName((NamedObj) actor)
-                                    + "();\n");
+                    code.append(CodeGeneratorHelper.generateName(
+                                        (NamedObj) actor)
+                            + "();\n");
 
                     // update buffer offset after firing each actor once
                     Iterator ports = ((Entity) actor).portList().iterator();
@@ -400,7 +403,9 @@ public class HDFDirector extends SDFDirector {
         _schedules = new Schedule[numberOfConfigurationsOfContainer];
         int[][] containerRates = new int[numberOfConfigurationsOfContainer][];
         int[] actorConfigurations = new int[numberOfActors];
-        for (int configurationNumber = 0; configurationNumber < numberOfConfigurationsOfContainer; configurationNumber++) {
+        for (int configurationNumber = 0;
+             configurationNumber < numberOfConfigurationsOfContainer;
+             configurationNumber++) {
 
             // Find the configuration number of each contained actor
             // given the configuration number of the container actor.
@@ -432,10 +437,12 @@ public class HDFDirector extends SDFDirector {
                     while (ports.hasNext()) {
                         IOPort port = (IOPort) ports.next();
                         if (port.isInput()) {
-                            DFUtilities.setRateVariable(port, "tokenConsumptionRate",
+                            DFUtilities.setRateVariable(port,
+                                    "tokenConsumptionRate",
                                     portRates[k]);
                         } else {
-                            DFUtilities.setRateVariable(port, "tokenProductionRate",
+                            DFUtilities.setRateVariable(port,
+                                    "tokenProductionRate",
                                     portRates[k]);
                         }
                         k++;
@@ -450,8 +457,10 @@ public class HDFDirector extends SDFDirector {
                 continue;
             }
 
-            // Each schedule must be computed from scratch, including updating
-            // buffer capacity for each actor, determining external port capacity.
+            // Each schedule must be computed from scratch, including
+            // updating buffer capacity for each actor, determining
+            // external port capacity.
+
             director.invalidateSchedule();
             ((CachedSDFScheduler) director.getScheduler()).clearCaches();
 
@@ -493,9 +502,11 @@ public class HDFDirector extends SDFDirector {
                 _schedules[configurationNumber] = director.getScheduler()
                         .getSchedule();
 
-                // Check to see if the buffer size needed in current configuration  
-                // is greater than in previous configurations. If so, set the buffer 
-                // size to the current buffer size needed. 
+                // Check to see if the buffer size needed in current
+                // configuration is greater than in previous
+                // configurations. If so, set the buffer size to the
+                // current buffer size needed.
+
                 _updatePortBufferSize();
 
                 // Record external port rates for current configuration.
@@ -559,8 +570,10 @@ public class HDFDirector extends SDFDirector {
                 + containerHelper
                         .processCode("$actorSymbol(currentConfiguration)")
                 + ") {\n");
-        // Each configuration has a schedule, therefore the number of configurations
-        // is equal to the number of schedules.
+
+        // Each configuration has a schedule, therefore the number of
+        // configurations is equal to the number of schedules.
+
         int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
             
@@ -631,8 +644,10 @@ public class HDFDirector extends SDFDirector {
                 + containerHelper
                         .processCode("$actorSymbol(currentConfiguration)")
                 + ") {\n");
-        // Each configuration has a schedule, therefore the number of configurations
-        // is equal to the number of schedules.
+
+        // Each configuration has a schedule, therefore the number of
+        // configurations is equal to the number of schedules.
+
         int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
 
@@ -762,7 +777,8 @@ public class HDFDirector extends SDFDirector {
                     + actorHelper.getWriteOffset(port, channel) + ";\n");
 
             // Now replace these concrete offsets with the variables.
-            actorHelper.setReadOffset(port, channel, channelReadOffsetVariable);
+            actorHelper.setReadOffset(port, channel,
+                    channelReadOffsetVariable);
             actorHelper.setWriteOffset(port, channel,
                     channelWriteOffsetVariable);
         }
@@ -794,9 +810,10 @@ public class HDFDirector extends SDFDirector {
             Actor actor = (Actor) actors.next();
             CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             int[][] rates = actorHelper.getRates();
-            // From the following code one can find that the configuration number
-            // of the first contained actor is the "most significant" number and
-            // that of the last is the "least significant".
+            // From the following code one can find that the
+            // configuration number of the first contained actor is
+            // the "most significant" number and that of the last is
+            // the "least significant".
             if (actorNumber < numberOfActors - 1) {
                 if (rates != null) {
                     code.append(actorHelper
