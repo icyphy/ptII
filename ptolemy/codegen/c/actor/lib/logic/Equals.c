@@ -6,8 +6,14 @@
 	$ref(output) = true;	
 /**/
 
-/*** EqualsBlock ($channel0, $channel1) ***/
-    if ($ref(input#$channel0)!= $ref(input#$channel1)) {
+/*** DoubleEqualsBlock ($channel0, $channel1) ***/
+    if ($ref(input#$channel0) != $ref(input#$channel1)) {
+	    $ref(output) = false;
+    }
+/**/
+
+/*** IntEqualsBlock ($channel0, $channel1) ***/
+    if ($ref(input#$channel0) != $ref(input#$channel1)) {
 	    $ref(output) = false;
     }
 /**/
