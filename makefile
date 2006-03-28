@@ -215,6 +215,15 @@ cleanDerivedJavaFiles:
 	rm -rf vendors apps
 	rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
 
+clean_shipping:
+	rm -rf ptolemy/apps ptolemy/actor/lib/ptp \
+		ptolemy/actor/lib/gui/KeystrokeSensor* \
+		ptolemy/actor/lib/python/demo/HelloWorld \
+		ptolemy/actor/lib/python/demo/NotifyFailedTest \
+		ptolemy/copernicus/jhdl \
+		ptolemy/domains/cont ptolemy/domains/fairdf \
+		ptolemy/domains/fp ptolemy/domains/pdf
+
 # Include rules to build Web Start JNLP files
 include $(ROOT)/mk/jnlp.mk
 
