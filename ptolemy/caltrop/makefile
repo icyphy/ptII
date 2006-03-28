@@ -96,7 +96,13 @@ OPTIONAL_FILES = \
 	'PtolemyPlatform$$23.class' \
 	'PtolemyPlatform$$24.class' \
 	'PtolemyPlatform$$25.class' \
+	'PtolemyPlatform$$26.class' \
+	'PtolemyPlatform$$27.class' \
+	'PtolemyPlatform$$28.class' \
+	'PtolemyPlatform$$29.class' \
 	'PtolemyPlatform$$2.class' \
+	'PtolemyPlatform$$30.class' \
+	'PtolemyPlatform$$31.class' \
 	'PtolemyPlatform$$3.class' \
 	'PtolemyPlatform$$4.class' \
 	'PtolemyPlatform$$5.class' \
