@@ -65,7 +65,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Round.c \
 	StringToIntArray.c \
 	StringToUnsignedByteArray.c \
-	TokenToExpression.java
+	TokenToExpression.c
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
