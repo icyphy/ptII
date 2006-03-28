@@ -307,8 +307,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
      *
-     * @return True if this receiver is connected to the inside of a boundary
-     *         port; return false otherwise.
+     * @return True if this receiver is connected to the inside of a
+     * boundary port; return false otherwise.
      */
     public boolean isConnectedToBoundary() {
         return _boundaryDetector.isConnectedToBoundary();
@@ -355,10 +355,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Return true if this receiver is contained on the inside of a boundary
-     * port. A boundary port is an opaque port that is contained by a composite
-     * actor. If this receiver is contained on the inside of a boundary port
-     * then return true; otherwise return false.
+     * Return true if this receiver is contained on the inside of a
+     * boundary port. A boundary port is an opaque port that is
+     * contained by a composite actor. If this receiver is contained
+     * on the inside of a boundary port then return true; otherwise
+     * return false.
      *
      * @return True if this receiver is contained on the inside of a boundary
      * port; return false otherwise.
@@ -368,13 +369,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Return true if this receiver is contained on the outside of a boundary
-     * port. A boundary port is an opaque port that is contained by a composite
-     * actor. If this receiver is contained on the outside of a boundary port
-     * then return true; otherwise return false.
+     * Return true if this receiver is contained on the outside of a
+     * boundary port. A boundary port is an opaque port that is
+     * contained by a composite actor. If this receiver is contained
+     * on the outside of a boundary port then return true; otherwise
+     * return false.
      *
-     * @return True if this receiver is contained on the outside of a boundary
-     * ort; return false otherwise.
+     * @return True if this receiver is contained on the outside of a
+     * boundary port; return false otherwise.
      */
     public boolean isOutsideBoundary() {
         return _boundaryDetector.isOutsideBoundary();
@@ -407,7 +409,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Return true if there is either a put or a conditional send waiting on
      * this receiver.
      *
-     * @return A boolean indicating whether a write is pending on this receiver.
+     * @return A boolean indicating whether a write is pending on this
+     * receiver.
      */
     public boolean isWriteBlocked() {
         synchronized (_getDirector()) {
@@ -433,8 +436,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Put a sequence of tokens to all receivers in the specified array. This
-     * method sequentially calls putToAll() for each token in the tokens array.
+     * Put a sequence of tokens to all receivers in the specified
+     * array. This method sequentially calls putToAll() for each token
+     * in the tokens array.
      *
      * @param tokens The sequence of token to put.
      * @param numberOfTokens The number of tokens to put (the array might be
