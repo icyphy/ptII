@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 
 /**
  This actor buffers data provided at the input, sending it to the
@@ -65,7 +65,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  This actor is similar to the ResourcePool actor except that
  the input and output ports are not multiports and there are
  no initial tokens in this buffer.
- 
+
  @author Edward A. Lee
  @version $Id$
  @see ResourcePool

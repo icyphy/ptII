@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 
 /**
  This actor manages a pool of resources, where each resource is
@@ -83,7 +83,7 @@ import ptolemy.kernel.util.Workspace;
  any input, the Merge actor is ready to rendezvous with an
  input only after it has delivered the previous input to
  the output.
- 
+
  @author Edward A. Lee
  @see Merge
  @version $Id$

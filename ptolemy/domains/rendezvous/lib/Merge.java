@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 
 /**
  This actor merges any number of input sequences onto one output
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  any input, while this actor is ready to rendezvous with an
  input only after it has delivered the previous input token to
  the output.
- 
+
  @author Edward A. Lee
  @see ResourcePool
  @version $Id$
