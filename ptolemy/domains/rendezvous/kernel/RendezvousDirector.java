@@ -104,7 +104,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
     ////                         public methods                    ////
 
     /** Return the data associated to the thread.
-     * 
+     *
      *  @param thread The thread.
      *  @return The data associated with the thread, or null.
      *  @see #setThreadData(Thread, Object)
@@ -135,7 +135,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
     }
 
     /** Set the data associated with the thread.
-     * 
+     *
      *  @param thread The thread.
      *  @param data The data.
      *  @return The data previously associated with the thread, or null.

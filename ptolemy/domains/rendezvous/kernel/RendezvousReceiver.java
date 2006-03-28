@@ -59,7 +59,7 @@ import ptolemy.kernel.util.InternalErrorException;
  * for simple rendezvous (get() and put() operations). This receiver is based on
  * the CSPReceiver class by John S. Davis II, Thomas Feng, Edward A. Lee, Neil
  * Smyth, and Yang Zhao.
- * 
+ *
  * @author Thomas Feng
  * @version $Id$
  * @since Ptolemy II 5.1
@@ -80,7 +80,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /**
      * Construct a RendezvousReceiver with the specified container.
-     * 
+     *
      * @param container
      *            The port containing this receiver.
      * @exception IllegalActionException
@@ -107,7 +107,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Get a token from this receiver. This method does not return until the
      * rendezvous has been completed. This method is internally synchronized on
      * the director.
-     * 
+     *
      * @return The token contained by this receiver.
      * @exception TerminateProcessException
      *                If the actor to which this receiver belongs has been
@@ -121,7 +121,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Get from all receivers in the specified array. This method does not
      * return until all the gets are complete.
-     * 
+     *
      * @param receivers
      *            The receivers, which are assumed to all be instances of
      *            RendezvousReceiver.
@@ -166,7 +166,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * received to all receivers in putReceivers array. The put and get are to
      * be accomplished simultaneously in a rendezvous. This method does not
      * return until both the get and put are complete.
-     * 
+     *
      * @param getReceivers
      *            The receivers, which are assumed to all be instances of
      *            RendezvousReceiver, to get tokens from.
@@ -193,7 +193,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Get from any receiver in the specified array. This method does not return
      * until one of the gets is complete.
-     * 
+     *
      * @param receivers
      *            The receivers, which are assumed to all be instances of
      *            RendezvousReceiver.
@@ -233,7 +233,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * received to all receivers in putReceivers array. The put and get are to
      * be accomplished simultaneously in a rendezvous. This method does not
      * return until both the get and put are complete.
-     * 
+     *
      * @param getReceivers
      *            The receivers, which are assumed to all be instances of
      *            RendezvousReceiver, to get tokens from.
@@ -262,7 +262,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * indeed it will, even if not right away. Note that if this were to return
      * true only if a rendezvous was pending, then polymorphic actors would busy
      * wait.
-     * 
+     *
      * @return True.
      */
     public boolean hasRoom() {
@@ -275,7 +275,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * as indeed they will, even if not right away. Note that if this were to
      * return true only if a rendezvous was pending, then polymorphic actors
      * would busy wait.
-     * 
+     *
      * @param tokens
      *            Ignored by this method.
      * @return True.
@@ -290,7 +290,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * indeed it will, even if not right away. Note that if this were to return
      * true only if a rendezvous was pending, then polymorphic actors would busy
      * wait.
-     * 
+     *
      * @return True.
      */
     public boolean hasToken() {
@@ -303,7 +303,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * NoTokenException, as indeed they will, even if not right away. Note that
      * if this were to return true only if a rendezvous was pending, then
      * polymorphic actors would busy wait.
-     * 
+     *
      * @param tokens
      *            Ignored by this method.
      * @return True.
@@ -317,7 +317,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is connected to the inside of a boundary
      *         port; return false otherwise.
      */
@@ -330,7 +330,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is connected to the inside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -344,7 +344,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is connected to the outside of a boundary port,
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is connected to the outside of a boundary
      *         port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
@@ -370,7 +370,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is contained on the inside of a boundary port
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is contained on the inside of a boundary
      *         port; return false otherwise.
      */
@@ -383,7 +383,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * port. A boundary port is an opaque port that is contained by a composite
      * actor. If this receiver is contained on the outside of a boundary port
      * then return true; otherwise return false.
-     * 
+     *
      * @return True if this receiver is contained on the outside of a boundary
      *         port; return false otherwise.
      */
@@ -405,7 +405,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Return true if there is a get or a conditional receive waiting on this
      * receiver.
-     * 
+     *
      * @return True if a read is pending on this receiver.
      */
     public boolean isReadBlocked() {
@@ -417,7 +417,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Return true if there is either a put or a conditional send waiting on
      * this receiver.
-     * 
+     *
      * @return A boolean indicating whether a write is pending on this receiver.
      */
     public boolean isWriteBlocked() {
@@ -430,7 +430,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Put a token into the mailbox receiver. This method does not return until
      * the rendezvous is complete. This method is internally synchronized on the
      * director.
-     * 
+     *
      * @param token
      *            The token.
      * @exception IllegalActionException
@@ -449,7 +449,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Put a sequence of tokens to all receivers in the specified array. This
      * method sequentially calls putToAll() for each token in the tokens array.
-     * 
+     *
      * @param tokens
      *            The sequence of token to put.
      * @param numberOfTokens
@@ -484,7 +484,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Put to all receivers in the specified array. Implementers will assume
      * that all such receivers are of the same class.
-     * 
+     *
      * @param token
      *            The token to put.
      * @param receivers
@@ -506,7 +506,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * in the superclass in that it puts the token to all receivers in an atomic
      * step. The method in the superclass puts the token to one receiver in the
      * receiver array at a time.
-     * 
+     *
      * @param token
      *            The token to put.
      * @param receivers
@@ -540,7 +540,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * destination receivers (with possible type changes). If only one token in
      * each dimension is given, then that one token is copied to all destination
      * receivers in the corresponding dimension of the <i>receivers</i> array.
-     * 
+     *
      * @param tokens
      *            The tokens to put.
      * @param receivers
@@ -564,7 +564,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Put the specified token to any receiver in the specified array. This
      * method does not return until one of the puts is complete.
-     * 
+     *
      * @param token
      *            The token to put.
      * @param receivers
@@ -611,7 +611,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Wait on the specified director. This is not synchronized on the specified
      * director, so the called should be.
-     * 
+     *
      * @param director
      *            The director on which to wait.
      * @exception TerminateProcessException
@@ -641,7 +641,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Commit the rendezvous formed by the set of receivers that agree to send
      * and receive at the same time.
-     * 
+     *
      * @param receivers
      *            The receivers that participate in the rendezvous.
      * @param director
@@ -701,7 +701,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * this receiver is an inside receiver, then it is the director of the
      * container (actor) of the container (port). Otherwise, it is the executive
      * director of the container (actor) of the container (port).
-     * 
+     *
      * @return The RendezvousDirector controlling this model.
      */
     protected RendezvousDirector _getDirector() {
@@ -725,7 +725,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /**
      * Return whether a getFromAny() is pending on this receiver.
-     * 
+     *
      * @return True if a getFromAny() is pending on this receiver.
      */
     protected boolean _isConditionalReceiveWaiting() {
@@ -734,7 +734,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /**
      * Return whether a putToAny() is pending on this receiver.
-     * 
+     *
      * @return True if a putToAny() is pending on this receiver.
      */
     protected boolean _isConditionalSendWaiting() {
@@ -743,7 +743,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /**
      * Return whether a get() is waiting to rendezvous at this receiver.
-     * 
+     *
      * @return True if a get() is waiting to rendezvous.
      */
     protected boolean _isGetWaiting() {
@@ -753,7 +753,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Flag indicating whether or not a put() is waiting to rendezvous at this
      * receiver.
-     * 
+     *
      * @return True if a put() is waiting to rendezvous.
      */
     protected boolean _isPutWaiting() {
@@ -764,7 +764,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Get the receivers that are ready to form a rendezvous according to the
      * rendezvous semantics. If no rendezvous can be formed starting for the
      * given array of receivers, null is returned.
-     * 
+     *
      * @param receivers
      *            The array of receivers to be put to or get from.
      * @param isPut
@@ -787,7 +787,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /**
      * Return a string describing the status of the receiver.
-     * 
+     *
      * @return A string describing the status of the specified receiver.
      */
     protected String _status() {
@@ -804,7 +804,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * ready set contains all the receivers participating in the rendezvous
      * after the call, and true is returned; Otherwise, the ready set is not
      * meaningful.
-     * 
+     *
      * @param receivers
      *            The initial two-dimensional array of receivers on an actor.
      * @param isPut
@@ -994,7 +994,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Token}[][]), one corresponding to a receiver in the two-dimensional array
      * putReceivers. This method does not return until the requested operation
      * is finished.
-     * 
+     *
      * @param getReceivers
      *            The receivers from whith tokens are received.
      * @param putReceivers
@@ -1144,7 +1144,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * selected by previous recursive calls of {@link
      * #_checkRendezvous(Receiver[][], boolean, Set, Set, Set, boolean,
      * boolean)}.
-     * 
+     *
      * @param receivers
      *            The two-dimensional array of receivers.
      * @param beingChecked
@@ -1175,7 +1175,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /** Test whether a two-dimensional array of receivers are coonditional.
-     * 
+     *
      *  @param receivers
      *             The two-dimensional array of receivers.
      *  @param isPut
@@ -1203,7 +1203,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /**
      * Reset the flags of this receiver.
-     * 
+     *
      * @param clearGet
      *            Whether to reset the flags related to the get methods.
      * @param clearPut
@@ -1226,7 +1226,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /**
      * Reset the flags of the receivers in the given array.
-     * 
+     *
      * @param receivers
      *            An array of receivers to be reset.
      * @param clearGet
@@ -1331,7 +1331,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * at a time in the topological order. Cycles must not exist in the set of
      * receivers; Otherwise, there will be {@link InternalErrorException} or
      * infinite loop.
-     * 
+     *
      * @author Thomas Feng
      * @version $Id: RendezvousReceiver.java,v 1.18 2005/11/03 21:27:29 tfeng
      *          Exp $
@@ -1344,7 +1344,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
         /**
          * Construct a topological sort object with a set of receivers ready to
          * commit.
-         * 
+         *
          * @param receivers
          *            The set of receivers.
          */
@@ -1355,7 +1355,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
         /**
          * Test whether there are more receiver to be returned.
-         * 
+         *
          * @return true if there are more receiver; false otherwise.
          */
         public boolean hasNext() {
@@ -1364,7 +1364,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
         /**
          * Return the next receiver. There must be some receiver left.
-         * 
+         *
          * @return The next receiver.
          */
         public Receiver next() {
