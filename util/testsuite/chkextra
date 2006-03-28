@@ -41,8 +41,8 @@ files=$@
 tmpls=/tmp/chkextrals.$$
 tmpfiles=/tmp/chkextrafiles.$$
 echo `pwd`
-ls . > $tmpls
-ls -d $files >$tmpfiles 2>/dev/null
+ls . | sort > $tmpls
+ls -d $files 2>/dev/null | sort >$tmpfiles 
 files=`comm -23 $tmpls $tmpfiles`
 
 result=0
