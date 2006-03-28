@@ -147,8 +147,13 @@ Then search /tmp/cv.out for <code>-kb</code>
 <li> Run <CODE>$PTII/adm/copyright/fixcopyrights</CODE> (not shipped with
 the release) and update the copyrights on the <CODE>.java</CODE>, <CODE>.tcl</CODE> and makefiles
 
-<li> Run the nightly build, build a release and run
-<CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the files.
+<li> Run the nightly build, build a release:
+<br>For each release, we copy the most recent
+<code>$PTII/adm/gen-<i>X.Y</i></code>, update the version number
+and run make.  See the top of the file for the appropriate make command
+
+<li>Run
+<CODE>$PTII/adm/copyright/chkcopyright</CODE> on all the nightly buildfiles.
 <br>First, edit <code>chkcopyright</code> and update the year.
 <br>Then, do:
 <pre>
