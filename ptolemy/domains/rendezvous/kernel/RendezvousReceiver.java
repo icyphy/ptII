@@ -436,22 +436,19 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Put a sequence of tokens to all receivers in the specified array. This
      * method sequentially calls putToAll() for each token in the tokens array.
      *
-     * @param tokens
-     *            The sequence of token to put.
-     * @param numberOfTokens
-     *            The number of tokens to put (the array might be longer).
-     * @param receivers
-     *            The receivers.
-     * @exception NoRoomException
-     *                If there is no room for the token.
-     * @exception IllegalActionException
-     *                If the token is not acceptable to one of the ports (e.g.,
-     *                wrong type), or if the tokens array does not have at least
-     *                the specified number of tokens.
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs has been
-     *                terminated while still running i.e it was not allowed to
-     *                run to completion.
+     * @param tokens The sequence of token to put.
+     * @param numberOfTokens The number of tokens to put (the array might be
+     * longer).
+     * @param receivers The receivers.
+     * @exception NoRoomException If there is no room for the token.
+     * @exception IllegalActionException If the token is not
+     * acceptable to one of the ports (e.g., wrong type), or if the
+     * tokens array does not have at least the specified number of
+     * tokens.
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs has been terminated while still running i.e it
+     * was not allowed to run to completion.
+
      */
     public void putArrayToAll(Token[] tokens, int numberOfTokens,
             Receiver[] receivers) throws NoRoomException,
@@ -471,15 +468,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Put to all receivers in the specified array. Implementers will assume
      * that all such receivers are of the same class.
      *
-     * @param token
-     *            The token to put.
-     * @param receivers
-     *            The receivers.
-     * @exception NoRoomException
-     *                If there is no room for the token.
-     * @exception IllegalActionException
-     *                If the token is not acceptable to one of the ports (e.g.,
-     *                wrong type).
+     * @param token The token to put.
+     * @param receivers The receivers.
+     * @exception NoRoomException If there is no room for the token.
+     * @exception IllegalActionException If the token is not
+     * acceptable to one of the ports (e.g., wrong type).
      */
     public void putToAll(Token token, Receiver[] receivers)
             throws NoRoomException, IllegalActionException {
@@ -487,25 +480,22 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Put to all receivers in the specified array. This method does not return
-     * until all the puts are complete. This method differs from its counterpart
-     * in the superclass in that it puts the token to all receivers in an atomic
-     * step. The method in the superclass puts the token to one receiver in the
-     * receiver array at a time.
+     * Put to all receivers in the specified array. This method does
+     * not return until all the puts are complete. This method differs
+     * from its counterpart in the superclass in that it puts the
+     * token to all receivers in an atomic step. The method in the
+     * superclass puts the token to one receiver in the receiver array
+     * at a time.
      *
-     * @param token
-     *            The token to put.
-     * @param receivers
-     *            The receivers, which are assumed to all be instances of
-     *            RendezvousReceiver.
-     * @param director
-     *            The director, on which this method synchronizes.
-     * @exception IllegalActionException
-     *                If the token is not acceptable to one of the ports (e.g.,
-     *                wrong type).
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs is to be
-     *                terminated.
+     * @param token The token to put.
+     * @param receivers The receivers, which are assumed to all be
+     * instances of RendezvousReceiver.
+     * @param director The director, on which this method
+     * synchronizes.
+     * @exception IllegalActionException If the token is not
+     * acceptable to one of the ports (e.g., wrong type).
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs is to be terminated.
      */
     public void putToAll(Token token, Receiver[] receivers,
             RendezvousDirector director) throws IllegalActionException,
@@ -519,27 +509,25 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Put to all receivers in the specified array. This method does not return
-     * until all the puts are complete. The tokens argument can have fewer
-     * tokens than receivers argument has receivers. If only one token is given
-     * (the argument has dimension [1][1]), then that one token is copied to all
-     * destination receivers (with possible type changes). If only one token in
-     * each dimension is given, then that one token is copied to all destination
-     * receivers in the corresponding dimension of the <i>receivers</i> array.
+     * Put to all receivers in the specified array. This method does
+     * not return until all the puts are complete. The tokens argument
+     * can have fewer tokens than receivers argument has receivers. If
+     * only one token is given (the argument has dimension [1][1]),
+     * then that one token is copied to all destination receivers
+     * (with possible type changes). If only one token in each
+     * dimension is given, then that one token is copied to all
+     * destination receivers in the corresponding dimension of the
+     * <i>receivers</i> array.
      *
-     * @param tokens
-     *            The tokens to put.
-     * @param receivers
-     *            The receivers, which are assumed to all be instances of
-     *            RendezvousReceiver.
-     * @param director
-     *            The director, on which this method synchronizes.
-     * @exception IllegalActionException
-     *                If the token is not acceptable to one of the ports (e.g.,
-     *                wrong type).
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs is to be
-     *                terminated.
+     * @param tokens The tokens to put.
+     * @param receivers * The receivers, which are assumed to all be
+     * instances of RendezvousReceiver.
+     * @param director The director, on which this method
+     * synchronizes.
+     * @exception IllegalActionException If the token is not
+     * acceptable to one of the ports (e.g., wrong type).
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs is to be terminated.
      */
     public static void putToAll(Token[][] tokens, Receiver[][] receivers,
             RendezvousDirector director) throws IllegalActionException,
@@ -551,19 +539,15 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Put the specified token to any receiver in the specified array. This
      * method does not return until one of the puts is complete.
      *
-     * @param token
-     *            The token to put.
-     * @param receivers
-     *            The receivers, which are assumed to all be instances of
-     *            RendezvousReceiver.
-     * @param director
-     *            The director, on which this method synchronizes.
-     * @exception IllegalActionException
-     *                If the token is not acceptable to one of the ports (e.g.,
-     *                wrong type).
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs is to be
-     *                terminated.
+     * @param token The token to put.
+     * @param receivers The receivers, which are assumed to all be
+     * instances of RendezvousReceiver.
+     * @param director The director, on which this method
+     * synchronizes.
+     * @exception IllegalActionException If the token is not
+     * acceptable to one of the ports (e.g., wrong type).
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs is to be terminated.
      */
     public static void putToAny(Token token, Receiver[][] receivers,
             RendezvousDirector director) throws IllegalActionException,
@@ -572,9 +556,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * The model has finished executing, so set a flag so that the next time an
-     * actor tries to get or put it gets a TerminateProcessException which will
-     * cause it to finish.
+     * The model has finished executing, so set a flag so that the
+     * next time an actor tries to get or put it gets a
+     * TerminateProcessException which will cause it to finish.
      */
     public void requestFinish() {
         Object lock = _getDirector();
@@ -602,7 +586,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @exception TerminateProcessException If a finish has been
      * requested of the specified director, or if the calling thread
      * is interrupted while waiting.
-
      */
     public static void waitForChange(RendezvousDirector director)
             throws TerminateProcessException {
@@ -790,29 +773,24 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * after the call, and true is returned; Otherwise, the ready set is not
      * meaningful.
      *
-     * @param receivers
-     *            The initial two-dimensional array of receivers on an actor.
-     * @param isPut
-     *            Whether the request is put.
-     * @param beingChecked
-     *            The set of receivers that are being checked by previous
-     *            recursive calls.
-     * @param ready
-     *            The set of receivers that are ready for a rendezvous.
-     * @param notReady
-     *            The set of receivers that are not ready for a rendezvous.
-     * @param symmetricReceivers
-     *            The set of symmetric receivers that have been visited during
-     *            the traversal.
-     * @param isSymmetricGet
-     *            Whether the previous recursive call is from the other side
-     *            (the get side) of a Merge or Barrier.
-     * @param isSymmetricPut
-     *            Whether the previous recursive call is from the other side
-     *            (the put side) of a Merge or Barrier.
-     * @param farSideReceiver
-     *            The receiver that is being checked on the far side, or null if
-     *            this method is not called from the far side.
+     * @param receivers The initial two-dimensional array of receivers
+     * on an actor.
+     * @param isPut Whether the request is put.
+     * @param beingChecked The set of receivers that are being checked
+     * by previous recursive calls.
+     * @param ready The set of receivers that are ready for a
+     * rendezvous.
+     * @param notReady The set of receivers that are not ready for a
+     * rendezvous.
+     * @param symmetricReceivers The set of symmetric receivers that
+     * have been visited during the traversal.
+     * @param isSymmetricGet Whether the previous recursive call is
+     * from the other side (the get side) of a Merge or Barrier.
+     * @param isSymmetricPut Whether the previous recursive call is
+     * from the other side (the put side) of a Merge or Barrier.
+     * @param farSideReceiver The receiver that is being checked on
+     * the far side, or null if this method is not called from the far
+     * side.
      * @return Whether a rendezvous can be formed.
      */
     private static boolean _checkRendezvous(Receiver[][] receivers,
@@ -961,45 +939,43 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Get or put token(s) to the array of receivers, or both put and get at the
-     * same time. This method is commonly used by {@link
+     * Get or put token(s) to the array of receivers, or both put and
+     * get at the same time. This method is commonly used by {@link
      * #getFromAll(Receiver[][], RendezvousDirector)}, {@link
      * #getFromAny(Receiver[][], RendezvousDirector)}, {@link
      * #putToAll(Token[][], Receiver[][], RendezvousDirector)}, {@link
      * #putToAny(Token, Receiver[][], RendezvousDirector)}, and {@link
-     * #getFromAnyPutToAll(Receiver[][], Receiver[][], RendezvousDirector). The
-     * operation that it performs depends on the flag parameter. If a get is
-     * requested in the flag, getReceivers should contain the receivers to
-     * receive tokens; otherwise, getReceivers is ignored. If a put is requested
-     * in the flag, putReceivers should contain the receivers to put tokens to.
-     * The tokens are stored in the tokens parameter. If the put is to any of
-     * the receivers, the tokens parameter is the single token to put (of type
-     * {@link Token}); if the put is to all of the receivers, the tokens
-     * parameter is a two-dimensional array of tokens (of type {@link
-     * Token}[][]), one corresponding to a receiver in the two-dimensional array
-     * putReceivers. This method does not return until the requested operation
-     * is finished.
+     * #getFromAnyPutToAll(Receiver[][], Receiver[][],
+     * RendezvousDirector). The operation that it performs depends on
+     * the flag parameter. If a get is requested in the flag,
+     * getReceivers should contain the receivers to receive tokens;
+     * otherwise, getReceivers is ignored. If a put is requested in
+     * the flag, putReceivers should contain the receivers to put
+     * tokens to.  The tokens are stored in the tokens parameter. If
+     * the put is to any of the receivers, the tokens parameter is the
+     * single token to put (of type {@link Token}); if the put is to
+     * all of the receivers, the tokens parameter is a two-dimensional
+     * array of tokens (of type {@link Token}[][]), one corresponding
+     * to a receiver in the two-dimensional array putReceivers. This
+     * method does not return until the requested operation is
+     * finished.
      *
-     * @param getReceivers
-     *            The receivers from with tokens are received.
-     * @param putReceivers
-     *            The receivers to which tokens are put to.
-     * @param director
-     *            The director.
-     * @param tokens
-     *            A token if the operation is to put to any of the receivers. A
-     *            two-dimensional array of tokens if the operation is to put to
-     *            all of the receivers. Ignored if the operation is to get
-     *            tokens from the getReceivers only.
-     * @param flag
-     *            The flag representing the operation to be performed.
-     * @return The map of results on the receivers that participate in the
-     *         rendezvous. Keys of the map are receivers; values of the map are
-     *         the tokens on those receivers.
-     * @exception IllegalActionException
-     *                If the token is not acceptable to one of the ports (e.g.,
-     *                wrong type). This can happen only if the operation is put
-     *                to all or put to any.
+     * @param getReceivers The receivers from with tokens are
+     * received.
+     * @param putReceivers The receivers to which tokens are put to.
+     * @param director The director.
+     * @param tokens A token if the operation is to put to any of the
+     * receivers. A two-dimensional array of tokens if the operation
+     * is to put to all of the receivers. Ignored if the operation is
+     * to get tokens from the getReceivers only.
+     * @param flag The flag representing the operation to be
+     * performed.
+     * @return The map of results on the receivers that participate in
+     * the rendezvous. Keys of the map are receivers; values of the
+     * map are the tokens on those receivers.
+     * @exception IllegalActionException If the token is not
+     * acceptable to one of the ports (e.g., wrong type). This can
+     * happen only if the operation is put to all or put to any.
      * @exception TerminateProcessException
      *                If the actor to which this receiver belongs is to be
      *                terminated.
@@ -1125,20 +1101,18 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Get the branch of the two-dimensional array of receivers that has been
-     * selected by previous recursive calls of {@link
-     * #_checkRendezvous(Receiver[][], boolean, Set, Set, Set, boolean,
-     * boolean)}.
+     * Get the branch of the two-dimensional array of receivers that
+     * has been selected by previous recursive calls of {@link
+     * #_checkRendezvous(Receiver[][], boolean, Set, Set, Set,
+     * boolean, boolean)}.
      *
-     * @param receivers
-     *            The two-dimensional array of receivers.
-     * @param beingChecked
-     *            The set of receivers that are being checked by previous
-     *            recursive calls.
-     * @param ready
-     *            The set of receivers that are ready for a rendezvous.
-     * @return The index of the selected branch, or -1 if no branch has been
-     *         selected yet.
+     * @param receivers The two-dimensional array of receivers.
+     * @param beingChecked The set of receivers that are being checked
+     * by previous recursive calls.
+     * @param ready The set of receivers that are ready for a
+     * rendezvous.
+     * @return The index of the selected branch, or -1 if no branch
+     * has been selected yet.
      */
     private static int _getSelectedBranch(Receiver[][] receivers,
             Set beingChecked, Set ready) {
@@ -1151,7 +1125,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 if (receiver == null) {
                     continue;
                 }
-                if (beingChecked.contains(receiver) || ready.contains(receiver)) {
+                if (beingChecked.contains(receiver)
+                        || ready.contains(receiver)) {
                     return i;
                 }
             }
@@ -1161,11 +1136,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /** Test whether a two-dimensional array of receivers are conditional.
      *
-     *  @param receivers
-     *             The two-dimensional array of receivers.
-     *  @param isPut
-     *             Whether to test put conditional (true) or to test get
-     *             conditional (false).
+     *  @param receivers The two-dimensional array of receivers.
+     *  @param isPut Whether to test put conditional (true) or to test
+     *  get conditional (false).
      *  @return Whether the receivers are conditional.
      */
     private static boolean _isConditional(Receiver[][] receivers,
@@ -1305,13 +1278,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
     ///////////////////////////////////////////////////////////////////
     ////                           private classes                 ////
     /**
-     * Topological sort for the set of receivers to be committed. The set of
-     * receivers may have dependencies among them, because receivers in the
-     * up-stream of a Merge or Barrier must be committed before those in the
-     * down-stream. This sort takes a set of receivers, and returns one of them
-     * at a time in the topological order. Cycles must not exist in the set of
-     * receivers; Otherwise, there will be {@link InternalErrorException} or
-     * infinite loop.
+     * Topological sort for the set of receivers to be committed. The
+     * set of receivers may have dependencies among them, because
+     * receivers in the up-stream of a Merge or Barrier must be
+     * committed before those in the down-stream. This sort takes a
+     * set of receivers, and returns one of them at a time in the
+     * topological order. Cycles must not exist in the set of
+     * receivers; Otherwise, there will be {@link
+     * InternalErrorException} or infinite loop.
      *
      * @author Thomas Feng
      * @version $Id: RendezvousReceiver.java,v 1.18 2005/11/03 21:27:29 tfeng
