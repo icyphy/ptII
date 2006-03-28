@@ -61,7 +61,7 @@ import ptolemy.kernel.util.NamedObj;
  @since Ptolemy II 5.1
  @Pt.ProposedRating Red (cxh) Cleanup, then review
  @Pt.AcceptedRating Red (zgang)
-*/
+ */
 public class HDFDirector extends SDFDirector {
 
     /** Construct the code generator helper associated with the given
@@ -86,8 +86,7 @@ public class HDFDirector extends SDFDirector {
      *  offset variables.
 
      */
-    public String createOffsetVariablesIfNeeded()
-            throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ptolemy.domains.hdf.kernel.HDFDirector director = (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
@@ -105,8 +104,10 @@ public class HDFDirector extends SDFDirector {
             // given the configuration number of the container actor.
             int remainder = configurationNumber;
             for (int j = 0; j < numberOfActors - 1; j++) {
-                actorConfigurations[j] = remainder / _divisors[j + 1];
-                remainder = remainder % _divisors[j + 1];
+                actorConfigurations[j] = remainder
+                        / _divisors[j + 1];
+                remainder = remainder
+                        % _divisors[j + 1];
             }
             actorConfigurations[numberOfActors - 1] = remainder;
 
@@ -140,7 +141,8 @@ public class HDFDirector extends SDFDirector {
                             while (firings.hasNext()) {
                                 Firing firing = (Firing) firings.next();
                                 if (firing.getActor() == actor) {
-                                    firingsPerLocalIteration += firing.getIterationCount();
+                                    firingsPerLocalIteration += firing
+                                            .getIterationCount();
                                 }
                             }
                         }
@@ -204,12 +206,15 @@ public class HDFDirector extends SDFDirector {
             // given the configuration number of the container actor.
             int remainder = configurationNumber;
             for (int i = 0; i < numberOfActors - 1; i++) {
-                actorConfigurations[i] = remainder / _divisors[i + 1];
-                remainder = remainder % _divisors[i + 1];
+                actorConfigurations[i] = remainder
+                        / _divisors[i + 1];
+                remainder = remainder
+                        % _divisors[i + 1];
             }
             actorConfigurations[numberOfActors - 1] = remainder;
 
-            code.append("case " + configurationNumber + ":\n");
+            code.append("case "
+                    + configurationNumber + ":\n");
 
             Schedule schedule = _schedules[configurationNumber];
 
@@ -267,12 +272,12 @@ public class HDFDirector extends SDFDirector {
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (i = 0; i < " +
-                                count + " ; i++) {\n");
+                        code.append("for (i = 0; i < "
+                                + count + " ; i++) {\n");
                     }
 
-                    code.append(CodeGeneratorHelper.generateName(
-                                        (NamedObj) actor)
+                    code.append(CodeGeneratorHelper
+                            .generateName((NamedObj) actor)
                             + "();\n");
 
                     // update buffer offset after firing each actor once
@@ -403,16 +408,16 @@ public class HDFDirector extends SDFDirector {
         _schedules = new Schedule[numberOfConfigurationsOfContainer];
         int[][] containerRates = new int[numberOfConfigurationsOfContainer][];
         int[] actorConfigurations = new int[numberOfActors];
-        for (int configurationNumber = 0;
-             configurationNumber < numberOfConfigurationsOfContainer;
-             configurationNumber++) {
+        for (int configurationNumber = 0; configurationNumber < numberOfConfigurationsOfContainer; configurationNumber++) {
 
             // Find the configuration number of each contained actor
             // given the configuration number of the container actor.
             int remainder = configurationNumber;
             for (int j = 0; j < numberOfActors - 1; j++) {
-                actorConfigurations[j] = remainder / _divisors[j + 1];
-                remainder = remainder % _divisors[j + 1];
+                actorConfigurations[j] = remainder
+                        / _divisors[j + 1];
+                remainder = remainder
+                        % _divisors[j + 1];
             }
             actorConfigurations[numberOfActors - 1] = remainder;
 
@@ -438,12 +443,10 @@ public class HDFDirector extends SDFDirector {
                         IOPort port = (IOPort) ports.next();
                         if (port.isInput()) {
                             DFUtilities.setRateVariable(port,
-                                    "tokenConsumptionRate",
-                                    portRates[k]);
+                                    "tokenConsumptionRate", portRates[k]);
                         } else {
                             DFUtilities.setRateVariable(port,
-                                    "tokenProductionRate",
-                                    portRates[k]);
+                                    "tokenProductionRate", portRates[k]);
                         }
                         k++;
                     }
@@ -522,7 +525,7 @@ public class HDFDirector extends SDFDirector {
                 }
                 containerRates[configurationNumber] = externalPortRates;
 
-            } catch(NotSchedulableException ex) {
+            } catch (NotSchedulableException ex) {
                 _schedules[configurationNumber] = null;
                 containerRates[configurationNumber] = null;
             }
@@ -548,9 +551,8 @@ public class HDFDirector extends SDFDirector {
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
 
-        code.append(_codeGenerator.comment(1,
-                            "HDFDirector: "
-                            + "Transfer tokens to the inside."));
+        code.append(_codeGenerator.comment(1, "HDFDirector: "
+                + "Transfer tokens to the inside."));
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
@@ -577,7 +579,8 @@ public class HDFDirector extends SDFDirector {
         int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
 
-            code.append("case " + configurationNumber + ":\n");
+            code.append("case "
+                    + configurationNumber + ":\n");
 
             if (rates[configurationNumber] == null) {
                 continue;
@@ -590,15 +593,16 @@ public class HDFDirector extends SDFDirector {
 
                     String name = inputPort.getName();
                     if (inputPort.isMultiport()) {
-                        name = name + '#' + i;
+                        name = name
+                                + '#' + i;
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(containerHelper.getReference("@" + name
-                                + "," + k));
+                        code.append(containerHelper.getReference("@"
+                                + name + "," + k));
                         code.append(" = ");
-                        code.append(containerHelper
-                                .getReference(name + "," + k));
+                        code.append(containerHelper.getReference(name
+                                + "," + k));
                         code.append(";\n");
                     }
                 }
@@ -618,13 +622,11 @@ public class HDFDirector extends SDFDirector {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    public void generateTransferOutputsCode(IOPort outputPort,
-            StringBuffer code)
+    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
 
-        code.append(_codeGenerator.comment(1,
-                            "HDFDirector: "
-                            + "Transfer tokens to the outside."));
+        code.append(_codeGenerator.comment(1, "HDFDirector: "
+                + "Transfer tokens to the outside."));
 
         CompositeActor container = (CompositeActor) getComponent()
                 .getContainer();
@@ -651,7 +653,8 @@ public class HDFDirector extends SDFDirector {
         int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
 
-            code.append("case " + configurationNumber + ":\n");
+            code.append("case "
+                    + configurationNumber + ":\n");
 
             if (rates[configurationNumber] == null) {
                 continue;
@@ -663,15 +666,16 @@ public class HDFDirector extends SDFDirector {
                 if (i < outputPort.getWidth()) {
                     String name = outputPort.getName();
                     if (outputPort.isMultiport()) {
-                        name = name + '#' + i;
+                        name = name
+                                + '#' + i;
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(containerHelper
-                                .getReference(name + "," + k));
-                        code.append(" = ");
-                        code.append(containerHelper.getReference("@" + name
+                        code.append(containerHelper.getReference(name
                                 + "," + k));
+                        code.append(" = ");
+                        code.append(containerHelper.getReference("@"
+                                + name + "," + k));
                         code.append(";\n");
                     }
                 }
@@ -761,8 +765,10 @@ public class HDFDirector extends SDFDirector {
             channelWriteOffset.append(CodeGeneratorHelper.generateName(port));
 
             if (width > 1) {
-                channelReadOffset.append("_" + channel);
-                channelWriteOffset.append("_" + channel);
+                channelReadOffset.append("_"
+                        + channel);
+                channelWriteOffset.append("_"
+                        + channel);
             }
 
             channelReadOffset.append("_readoffset");
@@ -771,14 +777,15 @@ public class HDFDirector extends SDFDirector {
             String channelReadOffsetVariable = channelReadOffset.toString();
             String channelWriteOffsetVariable = channelWriteOffset.toString();
 
-            code.append("static int " + channelReadOffsetVariable + " = "
+            code.append("static int "
+                    + channelReadOffsetVariable + " = "
                     + actorHelper.getReadOffset(port, channel) + ";\n");
-            code.append("static int " + channelWriteOffsetVariable + " = "
+            code.append("static int "
+                    + channelWriteOffsetVariable + " = "
                     + actorHelper.getWriteOffset(port, channel) + ";\n");
 
             // Now replace these concrete offsets with the variables.
-            actorHelper.setReadOffset(port, channel,
-                    channelReadOffsetVariable);
+            actorHelper.setReadOffset(port, channel, channelReadOffsetVariable);
             actorHelper.setWriteOffset(port, channel,
                     channelWriteOffsetVariable);
         }
