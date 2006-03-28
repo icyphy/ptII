@@ -109,6 +109,7 @@ OTHER_FILES_TO_BE_JARED = \
 	Distributor.c \
 	ElementsToArray.c \
 	ElementsToArray_new.c \
+	Exit.c \
 	Expression.c \
 	Gaussian.c \
 	GradientAdaptiveLattice.c \
