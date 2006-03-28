@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	StringCompare.java \
+	StringFunction.java \
 	StringIndexOf.java
 
 OTHER_FILES_TO_BE_JARED = \
