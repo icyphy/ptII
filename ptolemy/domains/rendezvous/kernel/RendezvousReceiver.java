@@ -976,9 +976,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * @exception IllegalActionException If the token is not
      * acceptable to one of the ports (e.g., wrong type). This can
      * happen only if the operation is put to all or put to any.
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs is to be
-     *                terminated.
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs is to be terminated.
      */
     private static Map _getOrPutTokens(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director,
