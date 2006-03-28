@@ -265,8 +265,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * return true only if a rendezvous was pending, then polymorphic actors
      * would busy wait.
      *
-     * @param tokens
-     *            Ignored by this method.
+     * @param tokens Ignored by this method.
      * @return True.
      */
     public boolean hasRoom(int tokens) {
@@ -596,14 +595,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Wait on the specified director. This is not synchronized on the specified
-     * director, so the called should be.
+     * Wait on the specified director. This is not synchronized on the
+     * specified director, so the called should be.
      *
-     * @param director
-     *            The director on which to wait.
-     * @exception TerminateProcessException
-     *                If a finish has been requested of the specified director,
-     *                or if the calling thread is interrupted while waiting.
+     * @param director  The director on which to wait.
+     * @exception TerminateProcessException If a finish has been
+     * requested of the specified director, or if the calling thread
+     * is interrupted while waiting.
+
      */
     public static void waitForChange(RendezvousDirector director)
             throws TerminateProcessException {
@@ -629,10 +628,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Commit the rendezvous formed by the set of receivers that agree to send
      * and receive at the same time.
      *
-     * @param receivers
-     *            The receivers that participate in the rendezvous.
-     * @param director
-     *            The director.
+     * @param receivers The receivers that participate in the rendezvous.
+     * @param director The director.
      * @see #_receiversReadyToCommit(Receiver[][], boolean)
      */
     protected static void _commitRendezvous(Set receivers,
@@ -684,10 +681,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Return the director that is controlling the execution of this model. If
-     * this receiver is an inside receiver, then it is the director of the
-     * container (actor) of the container (port). Otherwise, it is the executive
-     * director of the container (actor) of the container (port).
+     * Return the director that is controlling the execution of this
+     * model. If this receiver is an inside receiver, then it is the
+     * director of the container (actor) of the container
+     * (port). Otherwise, it is the executive director of the
+     * container (actor) of the container (port).
      *
      * @return The RendezvousDirector controlling this model.
      */
@@ -752,13 +750,13 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * rendezvous semantics. If no rendezvous can be formed starting for the
      * given array of receivers, null is returned.
      *
-     * @param receivers
-     *            The array of receivers to be put to or get from.
-     * @param isPut
-     *            If true, the rendezvous is to put tokens to the receivers; if
-     *            false, the rendezvous is to get tokens from the receivers.
-     * @return A set of receivers that participate in the rendezvous if it can
-     *         be formed, or null if no rendezvous can be formed.
+     * @param receivers The array of receivers to be put to or get
+     * from.
+     * @param isPut If true, the rendezvous is to put tokens to the
+     * receivers; if false, the rendezvous is to get tokens from the
+     * receivers.
+     * @return A set of receivers that participate in the rendezvous
+     * if it can be formed, or null if no rendezvous can be formed.
      * @see #_commitRendezvous(Set, RendezvousDirector)
      */
     protected static Set _receiversReadyToCommit(Receiver[][] receivers,
