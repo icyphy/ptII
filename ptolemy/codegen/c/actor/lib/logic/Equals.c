@@ -32,7 +32,7 @@
 /**/
 
 /*** TokenEqualsBlock ($channel0, $channel1)***/
-    if ($typeFunc($ref(input#$channel0), equals($ref(input#$channel1))).payload.Boolean) {
+    if (!$typeFunc($ref(input#$channel0), equals($ref(input#$channel1))).payload.Boolean) {
 	    $ref(output) = false;
     }
 /**/
