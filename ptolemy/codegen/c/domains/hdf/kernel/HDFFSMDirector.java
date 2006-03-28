@@ -75,7 +75,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  (which is the container of this director) to the refinements
      *  if necessary. Finally call the same method in its super class
      *  to create read and write offset variables if needed.
-     * 
+     *
      *  @return The generated code.
      *  @exception IllegalActionException If thrown while creating
      *  offset variables.
@@ -122,7 +122,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 }
                 for (int i = 0; i < length; i++) {
                     int firingsPerGlobalIterationOfContainer = arrayOfFiringsPerGlobalIterationOfContainer[configurationNumber];
-                    if (containerRates[configurationNumber] != null) {                       
+                    if (containerRates[configurationNumber] != null) {
                         Iterator ports = controller.portList().iterator();
                         int portNumber = 0;
                         while (ports.hasNext()) {
@@ -152,8 +152,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                     }
                     // If the refinement's local director is HDFDirector
                     // or HDFFSMDirector, set the firings per global iteration
-                    // of the refinemenet the same as the firings per global 
-                    // iteration of the container. This way we can relay the 
+                    // of the refinemenet the same as the firings per global
+                    // iteration of the container. This way we can relay the
                     // information of firings per global iteration to the inside.
                     if (actors[0] instanceof CompositeActor) {
                         ptolemy.actor.Director localDirector = actors[0]
@@ -183,7 +183,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
     /** Generate the code for the firing of actors controlled by this
      *  director.  It generates code for firing refinements and
      *  setting a variable to record it.
-     * 
+     *
      *  @return The generated fire code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating fire code for the actor.
@@ -192,7 +192,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
         StringBuffer code = new StringBuffer();
 
-        // Like MultirateFSMDirector, no preemptive transition is taken under 
+        // Like MultirateFSMDirector, no preemptive transition is taken under
         // the control of this director.
 
         // generate code for refinements
@@ -211,12 +211,12 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         return code.toString();
     }
 
-    /** Generate mode transition code. The mode transition code generated in this 
-     *  method is executed after each global iteration. 
-     * 
+    /** Generate mode transition code. The mode transition code generated in this
+     *  method is executed after each global iteration.
+     *
      *  @param code The string buffer that the generated code is appended to.
-     *  @exception IllegalActionException If the director helper throws it 
-     *   while generating mode transition code. 
+     *  @exception IllegalActionException If the director helper throws it
+     *   while generating mode transition code.
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException {
@@ -242,7 +242,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                         return state.nonpreemptiveTransitionList().iterator();
                     }
                 });
-        // reset the variable 
+        // reset the variable
         code.append(containerHelper.processCode("$actorSymbol(fired) = 0;\n"));
         code.append("}\n");
     }
