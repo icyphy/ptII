@@ -56,11 +56,12 @@ foreach file [glob auto/*.xml] {
                   seconds at [clock format [clock seconds]]"
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
 
+	set returnValue 0
 	if [catch {set returnValue \
 		       [java::call ptolemy.codegen.kernel.CodeGenerator \
 			    generateCode $args]} errMsg] {
 	    $watchDog cancel
-	    error $errMsg
+	    error "$errMsg\n[jdkStackTrace]"
 	} else {
 	    $watchDog cancel
 	}
