@@ -274,7 +274,7 @@ OPTIONAL_FILES = \
 	'Scale$$1.class' \
 	'Scale$$PortParamFunction.class' \
 	'Scale$$PortParameterFunction.class' \
-	'SetVariable$$1.class'
+	'SetVariable$$1.class' \
 	'UnionDisassembler$$1.class' \
 	'UnionDisassembler$$PortFunction.class'
 
