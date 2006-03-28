@@ -63,8 +63,26 @@ rebuild an entire Windows installer.
 <a href="about:copyright"><code>about:copyright</code></a>
 to test the Web Start release.
 
+<li> Check out a clean tree and build:
+<pre>
+cvs -d :ext:source.eecs.berkeley.edu:/home/cvs co ptII
+cd ptII
+cvs update -P -d
+setenv PTII `pwd`
+./configure
+make
+</pre>
 <li> Clean the tree by running <CODE>make checkjunk</CODE>
-and adding files as appropriate to the makefiles
+and adding files as appropriate to the makefiles:
+<pre>
+make clean_shipping
+cd $PTII
+make checkjunk
+</pre>
+Look for <code>***</code> lines and add files to makefiles
+or add them to the clean_shipping rule in <code>$PTII/makefile</code>
+and the most recent <code>src.ex</code> file in
+<code>$PTII/adm/gen-<i>x.y</i></code>/src.ex.
 
 <li> Run <a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> on the java files and fix problems
 
