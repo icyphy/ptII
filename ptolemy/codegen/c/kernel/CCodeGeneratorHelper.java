@@ -127,7 +127,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     public String generatePreinitializeCode() throws IllegalActionException {
         _codeStream.clear();
         _codeStream.append(super.generatePreinitializeCode());
-        _codeStream.appendCodeBlock("preinitBlock", true);
+        // parent class will generate the preinitialization code
+        // Can this method go away?
+        //_codeStream.appendCodeBlock("preinitBlock", true);
         return processCode(_codeStream.toString());
     }
 
