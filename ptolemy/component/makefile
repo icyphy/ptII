@@ -49,7 +49,13 @@ PTPACKAGE = 	component
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	AtomicComponent.java \
+	ComponentActor.java \
+	ComponentDirector.java \
+	Component.java \
+	MethodCallPort.java \
+	Method.java
 
 OTHER_FILES_TO_BE_JARED =
 
