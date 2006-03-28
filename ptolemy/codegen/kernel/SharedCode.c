@@ -44,10 +44,11 @@ char* ftoa (double d) {
 }
 
 char* btoa (char b) {
+    char* string = (char*) malloc(sizeof(char) * 6);
     if (b) {
-        return "true";
+        strcpy(string, "true");
     } else {
-        return "false";
+        strcpy(string, "false");
     }
 }
 
