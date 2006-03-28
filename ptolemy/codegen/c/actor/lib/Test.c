@@ -41,6 +41,32 @@ static int $actorSymbol(count) = 0;
 
 /**/
 
+/***booleanBlock($channel)***/
+    if ($actorSymbol(count) < $size(correctValues) &&
+		(!$ref(correctValues, $actorSymbol(count)) && $ref(input#$channel)) ||
+	    ($ref(correctValues, $actorSymbol(count)) && !$ref(input#$channel)) ) {
+        printf("Test fails in iteration %d.\n Value was: %s. Should have been: %s\n",
+            $actorSymbol(count), $ref(input#$channel), $ref(correctValues, $actorSymbol(count)));
+        exit(-1);    		
+	}
+    $actorSymbol(count) ++;
+/**/
+
+/***booleanBlockMultiChannel($channel,$inputType)***/
+        /* $channel of $actorSymbol() */
+        ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, $actorSymbol(count));
+        if ($actorSymbol(count) < $size(correctValues) &&
+         (!$ref(correctValues, $actorSymbol(count)) && $ref(input#$channel)) ||
+	     ($ref(correctValues, $actorSymbol(count)) && !$ref(input#$channel)) ) {
+            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
+                    $actorSymbol(count),
+                    (double)$ref(input#$channel),
+                    $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
+            exit(-1);    
+        }
+        $actorSymbol(count) ++;
+
+/**/
 
 /***stringBlock($channel)***/
 	if ($actorSymbol(count) <
