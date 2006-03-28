@@ -123,6 +123,7 @@ ptolemy/copernicus/c/test/java.lang.Object.h
 ptolemy/copernicus/c/test/natives
 ptolemy/copernicus/c/test/testOutput
 ptolemy/copernicus/deep
+ptolemy/copernicus/fragment
 ptolemy/copernicus/interpreted/test/codeGenerator.tmp
 ptolemy/copernicus/java/test/codeGenerator.tmp
 ptolemy/copernicus/java/test/longjtests.tcl
