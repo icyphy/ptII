@@ -54,6 +54,9 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
+OTHER_FILES_TO_BE_JARED = \
+	hsDemos.htm
+
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
