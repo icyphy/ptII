@@ -58,6 +58,7 @@ JSRCS = \
 	BreakpointODESolver.java \
 	CTBaseIntegrator.java \
 	CTCase.java \
+	CTCaseDirector.java \
 	CTCompositeActor.java \
 	CTDirector.java \
 	CTDynamicActor.java \
