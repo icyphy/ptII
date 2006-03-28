@@ -118,7 +118,7 @@ OPTIONAL_FILES = \
 	'TypeSpecializer$$ConstantTerm.class' \
 	'TypeSpecializer$$VariableTerm.class' \
 	'TypeSpecializerAnalysis$$ConstantTerm.class' \
-	'TypeSpecializerAnalysis$$VariableTerm.class'
+	'TypeSpecializerAnalysis$$VariableTerm.class' \
 	'TypeSpecializerAnalysis$$1.class' \
 	'TypeSpecializerAnalysis$$2.class' \
 	'TypeSpecializerAnalysis$$JavaTypeLattice.class'
