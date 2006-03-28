@@ -67,8 +67,8 @@ MISC_FILES =	test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	doc
-
+	doc \
+	'GiottoCEmachineFrameworkGenerator$$CEmachineFrameworkEditorFactory.class' 
 all: jclass
 
 install: all jars
