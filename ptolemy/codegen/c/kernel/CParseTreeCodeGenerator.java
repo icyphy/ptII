@@ -657,7 +657,14 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
+            if (_evaluatedChildToken instanceof StringToken) {
+                // In C, Strings should have \n tags substituted. 
+                // See Test 17.2
+                _fireCode.append(ptolemy.util.StringUtilities.substitute(_evaluatedChildToken.toString(), "\n", "\\n"));
+            } else {
+                _fireCode.append(_evaluatedChildToken.toString());
+            }
+            
             return;
         }
 
