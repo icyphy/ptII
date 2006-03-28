@@ -64,7 +64,8 @@ OTHER_FILES_TO_BE_JARED = \
 	PolarToCartesian.c \
 	Round.c \
 	StringToIntArray.c \
-	StringToUnsignedByteArray.c
+	StringToUnsignedByteArray.c \
+	TokenToExpression.java
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -113,10 +113,15 @@ OPTIONAL_FILES = \
 	doc \
 	cg \
 	'CommandLineTemplate$$1.class' \
+	'DataUtilities$$ActorCodeGenerationScope.class' \
+	'TokenToNativeTransformer$$1.class' \
 	'TypeSpecializer$$ConstantTerm.class' \
 	'TypeSpecializer$$VariableTerm.class' \
 	'TypeSpecializerAnalysis$$ConstantTerm.class' \
 	'TypeSpecializerAnalysis$$VariableTerm.class'
+	'TypeSpecializerAnalysis$$1.class' \
+	'TypeSpecializerAnalysis$$2.class' \
+	'TypeSpecializerAnalysis$$JavaTypeLattice.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

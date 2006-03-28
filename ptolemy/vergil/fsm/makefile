@@ -77,6 +77,12 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'CaseGraphFrame$$1.class' \
+	'CaseGraphFrame$$2.class' \
+	'CaseGraphFrame$$3.class' \
+	'CaseGraphFrame$$AddCaseAction.class' \
+	'CaseGraphFrame$$RemoveCaseAction.class' \
+	'CaseGraphTableau$$Factory.class' \
 	'FSMGraphController$$1.class' \
 	'FSMGraphController$$LinkCreator.class' \
 	'FSMGraphController$$NewStateAction.class' \
