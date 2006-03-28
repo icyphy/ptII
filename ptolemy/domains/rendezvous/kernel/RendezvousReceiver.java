@@ -996,7 +996,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * is finished.
      *
      * @param getReceivers
-     *            The receivers from whith tokens are received.
+     *            The receivers from with tokens are received.
      * @param putReceivers
      *            The receivers to which tokens are put to.
      * @param director
@@ -1174,7 +1174,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
         return -1;
     }
 
-    /** Test whether a two-dimensional array of receivers are coonditional.
+    /** Test whether a two-dimensional array of receivers are conditional.
      *
      *  @param receivers
      *             The two-dimensional array of receivers.
