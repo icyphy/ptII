@@ -28,7 +28,7 @@ Token String_equals(Token thisToken, ...) {
     va_list argp; 
     va_start(argp, thisToken);
 	Token otherToken = va_arg(argp, Token);
-	return Boolean_new(!strcmp(thisToken.payload.String, otherToken.payload.String);
+	return Boolean_new(!strcmp(thisToken.payload.String, otherToken.payload.String));
 }
 /**/
 
