@@ -11,11 +11,9 @@
 /**/
 
 /*** BooleanPrintBlock($name, $channel) ***/
-	printf($ref(input#$channel) ? "$name: true\n" : "$name: true\n");
+	printf($ref(input#$channel) ? "$name: true\n" : "$name: false\n");
 /**/
 
 /*** TokenPrintBlock($name, $channel) ***/
-    printf("$name: ");
     printf("$name: %s\n", $typeFunc($ref(input#$channel), toString()));
-    printf("\n");
 /**/
