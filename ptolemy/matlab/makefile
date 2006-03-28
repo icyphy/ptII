@@ -74,6 +74,7 @@ MISC_FILES =	test \
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'Engine$$ConversionParameters.class' \
 	demo \
 	doc
 
@@ -138,7 +139,7 @@ $(PTLIB)_msvc: ptmatlab.cc Engine.class
 $(PTLIB)_gcc: ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" "$(PTJAVA_DIR)/bin/javah" -jni -o ptmatlab.h ptolemy.matlab.Engine
 	$(PTCC) -shared \
-		"-I$(MATLAB_DIR)/extern/include" \
+f		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJAVA_DIR)/include" \
 		"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)" \
 		$< \
