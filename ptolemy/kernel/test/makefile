@@ -47,6 +47,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	ComponentEntityTimeTest.java \
 	ExampleSystem.java \
 	PortNameProblem.java \
 	PortHasNoContainer.java \
