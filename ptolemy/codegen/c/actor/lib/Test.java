@@ -85,7 +85,8 @@ public class Test extends CCodeGeneratorHelper {
         if (actor.input.getWidth() > 1) {
             // If we have multiple inputs, use different blocks
             multiChannel = "MultiChannel";
-            args.add(_codeGenType(actor.input.getType()));
+
+            args.add(codeGenType(actor.input.getType()));
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
         	args.set(0, new Integer(i));
