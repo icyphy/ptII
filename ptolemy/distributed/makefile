@@ -70,6 +70,7 @@ MISC_FILES =	actor client common config domains jini rmi util #demo
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	demo \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR)
 
