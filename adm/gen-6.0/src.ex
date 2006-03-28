@@ -154,6 +154,7 @@ ptolemy/domains/dfm
 ptolemy/domains/fairdf
 ptolemy/domains/fsm/demo/Hysteresis
 ptolemy/domains/generic
+ptolemy/domains/giotto/demo/Helicopter
 ptolemy/domains/giotto/demo/Legiotto
 ptolemy/domains/giotto/kernel/test/ptolemy.giotto
 ptolemy/domains/gr/lib/Loader3D.java
