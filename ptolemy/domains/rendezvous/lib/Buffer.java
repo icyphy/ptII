@@ -141,7 +141,8 @@ public class Buffer extends TypedAtomicActor {
 
         _postfireReturns = true;
         if (_readThread == null) {
-            _readThread = new Thread(getFullName() + "_readThread") {
+            _readThread = new Thread(getFullName()
+                    + "_readThread") {
                 public void run() {
                     try {
                         if (_debugging) {
@@ -210,7 +211,8 @@ public class Buffer extends TypedAtomicActor {
                 throw _exception;
             }
             while (_buffer.size() == 0) {
-                if (_stopRequested || !_postfireReturns) {
+                if (_stopRequested
+                        || !_postfireReturns) {
                     _postfireReturns = false;
                     return;
                 }
@@ -233,7 +235,8 @@ public class Buffer extends TypedAtomicActor {
             // There is a token.
             Token token = (Token) _buffer.get(0);
             if (_debugging) {
-                _debug("Sending token to output: " + token);
+                _debug("Sending token to output: "
+                        + token);
             }
             if (_exception != null) {
                 throw _exception;
@@ -251,11 +254,13 @@ public class Buffer extends TypedAtomicActor {
             }
             _buffer.remove(0);
             if (_debugging) {
-                _debug("Buffer contents: " + _buffer);
+                _debug("Buffer contents: "
+                        + _buffer);
             }
 
             int capacityValue = ((IntToken) capacity.getToken()).intValue();
-            if (_buffer.size() == capacityValue - 1 && !_stopRequested) {
+            if (_buffer.size() == capacityValue - 1
+                    && !_stopRequested) {
                 director.threadUnblocked(_readThread, null);
                 director.notifyAll();
             }
