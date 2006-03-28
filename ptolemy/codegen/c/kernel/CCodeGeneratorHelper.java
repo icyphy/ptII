@@ -76,7 +76,9 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         _codeStream.clear();
         _codeStream.append(super.generateFireCode());
-        _codeStream.appendCodeBlock("fireBlock", true);
+        // parent class will generate the preinitialization code
+        // Can this method go away?
+        //_codeStream.appendCodeBlock("fireBlock", true);
         return processCode(_codeStream.toString());
     }
 
