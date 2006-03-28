@@ -65,8 +65,10 @@ to test the Web Start release.
 
 <li> Check out a clean tree and build:
 <pre>
+# Check out a clean tree
 cvs -d :ext:source.eecs.berkeley.edu:/home/cvs co ptII
 cd ptII
+# Make sure empty directories are removed
 cvs update -P -d
 setenv PTII `pwd`
 ./configure
@@ -85,92 +87,10 @@ and the most recent <code>src.ex</code> file in
 <code>$PTII/adm/gen-<i>x.y</i></code>/src.ex.
 
 <li> Run <a href="../../util/testsuite/chkjava"><CODE>$PTII/util/testsuite/chkjava</CODE></a> on the java files and fix problems
-
-<li> Run Jalopy to add curly brackets around single statement if,
-while and other statements:
-
-<br>Wrong:
-<pre>
-if (foo == bar) 
-    return; 
-</pre>
-
-Right:
-<pre>
-if (foo == bar) {
-    return; 
-}
-</pre>
-
-The reason this is important is because if one does
-<pre>
-if (foo == bar) 
-    System.out.println("About to return");
-    return; 
-</pre>
-then the return is not part of the if statement.
-
-<p>We indent using Jalopy to add braces and then reindent using
-jindent to get the indentation right. 
-<p>
-To set up Jalopy: 
- <ol>
- <li> Download the console version from
-<a href="http://jalopy.sourceforge.net/download.html"><code>http://jalopy.sourceforge.net/download.html</code></a>
-
- <li> Create a directory to unzip the download into and unzip it.
- <br>Note: the zip file will create directories like
- <code>bin</code>, <code>docs</code> and <code>lib</code> in the current
- directory, so be sure to unzip it inside an empty directory.
- <br> See also <a href="http://jalopy.sourceforge.net/plugin-console.html"><code>http://jalopy.sourceforge.net/plugin-console.html</code></a>
- 
- <li> Run <code>bin/preferences.sh</code>
-   <br>If you get
-   <pre>
-c:/Program: not found
-   </pre>
-   You may need to edit <code>bin/preferences.sh</code> and put double
-   quotes around <code>JAVACMD</code> in the last line:
-   <pre>
-"$JAVACMD" -classpath "$LOCALCLASSPATH" de.hunsicker.jalopy.swing.SettingsDialog
-   </pre>
- <li> Note that under Windows, the settings are stored in
-   <code>c:/Documents and Settings/<i>username</i>/.jalopy
-   <br>If things get confusing, you may want to remove that directory
-   and start <code>bin/preferences.sh</code> over again
- <li> In the "Jalopy Settings" window, under Printer -&gt; Braces
-   -&gt Misc, click all the boxes in the Insert braces section
- <li> Change the continuation indent to 8 characters:
-   under Indentation -&gt; Sizes, change the continuation indent to
-   8 characters.
-
- <li> Change the import order to match Eclipse:
-     Under Imports, move the * down to the bottom.
- <li> Change the wrapping so we wrap before operators:
-   under Printer -&gt; Wrapping -&gt; General, in the Policy section,
-   select "Wrap after assignments" and select
-   "Wrap before operators".  Also, note that the line length should be
-   80 characters so that when we print out the software for review,
-   the lines print properly.
-   <br>In the Always tab, in "Wrap always when exceeded", select
-   "After throws types"
- <li> Disable sorting: under Printer -&gt; Sorting -&gt; Declarations,
-   uncheck "Sort class elements"
-   <br>If sorting is not disabled, then the fields will be before the methods
- <li>Close the Jalopy Settings window, you are now ready to indent.
-
- </ol>
-
+<br>Shortcut: Run it only the most recent files added
 
 <br>Create a list of java files with:
 <pre>
-# Check out a clean tree
-# Make sure empty directories are removed
-cvs update -P -d
-# Run configure
-cd $PTII
-./configure
-#
 # Then, either run "make cleanDerivedJavaFiles", or remove
 # the files by hand:
 #
@@ -181,6 +101,7 @@ cd $PTII/ptolemy/data/unit
 rm `make echo_OPTIONAL_JSRCS`
 cd $PTII/ptolemy/copernicus/kernel/fragment
 rm `make echo_OPTIONAL_JSRCS`
+
 # Create a file that contains the names of the java files to include
 cd $PTII
 rm -rf vendors apps
@@ -188,12 +109,6 @@ rm -rf ptolemy/domains/ct/demo/Corba/util/*.java
 # Generate a list of files
 adm/bin/ptIItxtfiles > /tmp/f
 egrep '*.java$' /tmp/f | grep -v /vendors/ >& /tmp/j
-</pre>
-
-Run jalopy on the directory that has the pared down ptII tree:
-<pre>
-cd <i>path_to_jalopy</i>
-bin/jalopy.sh -r $PTII
 </pre>
 
 <li> Add trailing newlines to files with
