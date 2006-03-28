@@ -65,7 +65,7 @@ public class LineReader extends CCodeGeneratorHelper {
         super.generateInitializeCode();
 
         _codeStream.clear();
-        _codeStream.appendCodeBlock("initBlock");
+        _codeStream.appendCodeBlock("initBufferBlock");
 
         ptolemy.actor.lib.io.LineReader actor = (ptolemy.actor.lib.io.LineReader) getComponent();
 

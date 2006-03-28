@@ -2,10 +2,10 @@
     FILE * $actorSymbol(filePtr);
     int $actorSymbol(charRead);
     int $actorSymbol(index);
-    int $actorSymbol(length) = 80;
+    int $actorSymbol(length) = 128;
 /**/
 
-/***initBlock***/
+/***initBufferBlock***/
 	$ref(output) = (char*) malloc($actorSymbol(length) * sizeof(char));
 /**/
     
