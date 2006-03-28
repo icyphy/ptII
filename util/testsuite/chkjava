@@ -123,7 +123,7 @@ do
         fi
 
         # Look for lines longer than 80 chars
-        $awk 'length($0) > 80 {if ($0 !~ /[Hh][Rr][Ee][Ff]/ && $1 !~ /@version/ ) {print FILENAME": Line more than 80 chars:"; print $0}}' $file
+        #$awk 'length($0) > 80 {if ($0 !~ /[Hh][Rr][Ee][Ff]/ && $1 !~ /@version/ ) {print FILENAME": Line more than 80 chars:"; print $0}}' $file
 
         # Look for public statements after private etc.
         $awk '$1 == "public" {sawpublic=1
@@ -143,7 +143,7 @@ do
                                 }
                         }
         $1 == "private" {
-                            if ( $0 ~ /private class/ ) {
+                            if ( $0 ~ /private class/ || $0 ~/private static class/) {
                                 # Inner Class
                                 sawpublic=0
                                 sawprotected=0
