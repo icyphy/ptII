@@ -104,7 +104,7 @@ doit() {
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="199[0-8]-199[0-9]"
-LOGMESSAGE="Changed copyright to 2005"
+LOGMESSAGE="Changed copyright to 2006"
 
 search $@
 
