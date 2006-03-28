@@ -193,6 +193,7 @@ JSRCS = \
 	TypeTest.java \
 	UnaryMathFunction.java \
 	Uniform.java \
+	UnionDisassembler.java \
 	URLReader.java \
 	URLDirectoryReader.java \
 	VariableClock.java \
