@@ -275,6 +275,8 @@ OPTIONAL_FILES = \
 	'Scale$$PortParamFunction.class' \
 	'Scale$$PortParameterFunction.class' \
 	'SetVariable$$1.class'
+	'UnionDisassembler$$1.class' \
+	'UnionDisassembler$$PortFunction.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
