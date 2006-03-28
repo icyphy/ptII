@@ -1,5 +1,5 @@
 /***declareBlock***/
-typedef char BooleanToken;
+typedef boolean BooleanToken;
 /**/
 
 /***funcDeclareBlock***/

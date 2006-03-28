@@ -561,38 +561,23 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append(comment(0, "Generate type resolution code for "
                 + getContainer().getFullName()));
 
-        //ActorCodeGenerator compositeActorHelper = _getHelper(getContainer());
-
-        //Iterator actors = ((ptolemy.actor.CompositeActor) compositeActorHelper
-        //        .getComponent()).deepEntityList().iterator();
-
         CodeStream sharedStream = new CodeStream(
                 "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
         sharedStream.appendCodeBlock("constantsBlock");
         code.append(sharedStream.toString());
 
-        // Determine the total number of referenced types.
         // Determine the total number of referenced polymorphic functions.
         HashSet functions = new HashSet();
-        HashSet types = new HashSet();
-        types.add("String");
-        types.add("Boolean");
-
-        /*
-         while (actors.hasNext()) {
-         Actor actor = (Actor) actors.next();
-
-         CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
-
-         functions.addAll(helperObject._typeFuncUsed);
-         types.addAll(helperObject._newTypesUsed);
-         }
-         */
-
         functions.add("delete");
         functions.add("toString");
         functions.addAll(_typeFuncUsed);
+
+        // Determine the total number of referenced types.
+        HashSet types = new HashSet();
+        types.add("String");
+        types.add("Boolean");
         types.addAll(_newTypesUsed);
+        
         // The constructor of Array requires calling the convert function.  
         if (types.contains("Array")) {
             functions.add("convert");
@@ -608,7 +593,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i]
                             + ".c");
-            // FIXME: we need to compute the [partial] order of the hierarchy. 
+
             // FIXME: This is C specific and should be moved elsewhere
             code.append("#define TYPE_" + typesArray[i] + " " + i + "\n");
 
@@ -678,6 +663,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append("#define NUM_FUNC " + functions.size() + "\n");
             code.append("Token (*functionTable"
                     + "[NUM_TYPE][NUM_FUNC])(Token, ...)= {\n");
+            
             for (int i = 0; i < types.size(); i++) {
                 code.append("\t");
                 for (int j = 0; j < functions.size(); j++) {
