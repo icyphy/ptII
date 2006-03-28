@@ -67,6 +67,7 @@ static int $actorSymbol(count) = 0;
                            $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType)) != 0) {
             printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
                     $actorSymbol(count),
+                    $ref(input#$channel),
                     $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
             exit(-1);
 	}
