@@ -125,14 +125,20 @@ c:/Program: not found
  <li> Change the continuation indent to 8 characters:
    under Indentation -&gt; Sizes, change the continuation indent to
    8 characters.
- <li> Disable sorting: under Printer -&gt; Sorting -&gt; Declarations,
-   uncheck "Sort class elements"
-   <br>If sorting is not disabled, then the fields will be before the methods
+
+ <li> Change the import order to match Eclipse:
+     Under Imports, move the * down to the bottom.
  <li> Change the wrapping so we wrap before operators:
-   under Printer -&gt; Wrapping, in the Policy section, select
+   under Printer -&gt; Wrapping -&gt; General, in the Policy section,
+   select "Wrap after assignments" and select
    "Wrap before operators".  Also, note that the line length should be
    80 characters so that when we print out the software for review,
    the lines print properly.
+   <br>In the Always tab, in "Wrap always when exceeded", select
+   "After throws types"
+ <li> Disable sorting: under Printer -&gt; Sorting -&gt; Declarations,
+   uncheck "Sort class elements"
+   <br>If sorting is not disabled, then the fields will be before the methods
  <li>Close the Jalopy Settings window, you are now ready to indent.
 
  </ol>
