@@ -17,7 +17,7 @@
 #    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f)
 #
 # 4. Find files modified since the start of the year
-#    find . -name CVS -prune -o -type f -mtime -`date +%j` | sort > /tmp/new
+#    find . -type f -a -mtime -`date +%j` | grep -v CVS | sort > /tmp/new
 #    sort /tmp/f > /tmp/f.sort
 #    comm -12 /tmp/new /tmp/f.sort > /tmp/f.new
 #
