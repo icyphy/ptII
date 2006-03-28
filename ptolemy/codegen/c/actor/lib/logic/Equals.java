@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 5.1
- @Pt.ProposedRating Red (mankit) 
+ @Pt.ProposedRating Red (mankit) Works with Doubles and Strings, Needs to work with Arrays
  @Pt.AcceptedRating Red (mankit)
  */
 public class Equals extends CCodeGeneratorHelper {
