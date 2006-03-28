@@ -123,6 +123,7 @@ public class Sequencer extends Transformer implements SequenceActor {
         _fireProducedOutput = false;
         _nextSequenceNumber = ((IntToken) startingSequenceNumber.getToken())
                 .intValue();
+        _pending.clear();
     }
 
     /** If the fire() method produced the input token then check to
