@@ -139,7 +139,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
         try {
             result = _getOrPutTokens(receivers, null, director, null,
                     GET_FROM_ALL);
-        } catch (IllegalActionException iae) {
+        } catch (IllegalActionException ex) {
         }
 
         Token[][] tokens = new Token[receivers.length][];
@@ -202,7 +202,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
         try {
             result = _getOrPutTokens(receivers, null, director, null,
                     GET_FROM_ANY);
-        } catch (IllegalActionException iae) {
+        } catch (IllegalActionException ex) {
         }
 
         for (int i = 0; i < receivers.length; i++) {
