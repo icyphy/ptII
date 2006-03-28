@@ -51,8 +51,19 @@ foreach file [glob auto/*.xml] {
 	set args [java::new {String[]} 1 \
 			  [list $file]]
 
-	set returnValue [java::call ptolemy.codegen.kernel.CodeGenerator \
-		generateCode $args]
+	set timeout 60000
+	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+                  seconds at [clock format [clock seconds]]"
+	set watchDog [java::new util.testsuite.WatchDog $timeout]
+
+	if [catch {set returnValue \
+		       [java::call ptolemy.codegen.kernel.CodeGenerator \
+			    generateCode $args]} errMsg] {
+	    $watchDog cancel
+	    error $errMsg
+	} else {
+	    $watchDog cancel
+	}
 	list $returnValue
     } {0}
     test "Auto-rerun CGC" "Automatic test rerun in file $file" {
