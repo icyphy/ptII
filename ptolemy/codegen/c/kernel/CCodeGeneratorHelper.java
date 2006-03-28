@@ -74,12 +74,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateFireCode() throws IllegalActionException {
-        _codeStream.clear();
-        _codeStream.append(super.generateFireCode());
-        // parent class will generate the preinitialization code
-        // Can this method go away?
-        //_codeStream.appendCodeBlock("fireBlock", true);
-        return processCode(_codeStream.toString());
+        return super.generateFireCode();
     }
 
     /**
@@ -91,10 +86,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        _codeStream.clear();
-        _codeStream.append(super.generateInitializeCode());
-        _codeStream.appendCodeBlock("initBlock", true);
-        return processCode(_codeStream.toString());
+        return super.generateInitializeCode();
     }
 
     /** Generate the main entry point.
@@ -127,12 +119,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generatePreinitializeCode() throws IllegalActionException {
-        _codeStream.clear();
-        _codeStream.append(super.generatePreinitializeCode());
-        // parent class will generate the preinitialization code
-        // Can this method go away?
-        //_codeStream.appendCodeBlock("preinitBlock", true);
-        return processCode(_codeStream.toString());
+        return super.generatePreinitializeCode();
     }
 
     /**
@@ -144,12 +131,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public Set getSharedCode() throws IllegalActionException {
-        Set sharedCode = new HashSet();
-        sharedCode.addAll(super.getSharedCode());
-        _codeStream.clear();
-        _codeStream.appendCodeBlocks(".*shared.*");
-        sharedCode.add(processCode(_codeStream.toString()));
-        return sharedCode;
+        return super.getSharedCode();
     }
 
     /**
@@ -162,10 +144,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateWrapupCode() throws IllegalActionException {
-        _codeStream.clear();
-        _codeStream.append(super.generateWrapupCode());
-        _codeStream.appendCodeBlock("wrapupBlock", true);
-        return processCode(_codeStream.toString());
+        return super.generateWrapupCode();
     }
 
     /** Return the parse tree to use with expressions.
@@ -175,6 +154,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         _parseTreeCodeGenerator = new CParseTreeCodeGenerator();
         return _parseTreeCodeGenerator;
     }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -215,11 +195,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /**
-     * The code stream associated with this helper.
-     */
-    protected CodeStream _codeStream = new CodeStream(this);
 
     /** Indent string for indent level 1.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
