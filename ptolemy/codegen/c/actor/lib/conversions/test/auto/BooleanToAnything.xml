@@ -27,13 +27,13 @@
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 165.0]">
         </property>
     </entity>
     <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
         <property name="falseValue" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 165.0]">
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
@@ -47,7 +47,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 165.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
