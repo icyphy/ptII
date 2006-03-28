@@ -65,8 +65,8 @@ import ptolemy.kernel.util.InternalErrorException;
  * @author Thomas Feng
  * @version $Id$
  * @since Ptolemy II 5.1
- * @Pt.ProposedRating Green (acataldo)
- * @Pt.AcceptedRating Green (acataldo)
+ * @Pt.ProposedRating Green (tfeng)
+ * @Pt.AcceptedRating Green (tfeng)
  */
 public class RendezvousReceiver extends AbstractReceiver implements
         ProcessReceiver {
