@@ -50,15 +50,17 @@ import ptolemy.kernel.util.InternalErrorException;
 // // RendezvousReceiver
 
 /**
- * Receiver for rendezvous style communication. In the rendezvous domain, all
- * communication is via synchronous message passing, so both the the sending and
- * receiving processes need to rendezvous at the receiver. For rendezvous, the
- * receiver is the key synchronization point. It is assumed each receiver has at
- * most one thread trying to send to it and at most one thread trying to receive
- * from it at any one time. The receiver performs the synchronization necessary
- * for simple rendezvous (get() and put() operations). This receiver is based on
- * the CSPReceiver class by John S. Davis II, Thomas Feng, Edward A. Lee, Neil
- * Smyth, and Yang Zhao.
+ * Receiver for rendezvous style communication. In the rendezvous
+ * domain, all communication is via synchronous message passing, so
+ * both the the sending and receiving processes need to rendezvous at
+ * the receiver. For rendezvous, the receiver is the key
+ * synchronization point. It is assumed each receiver has at most one
+ * thread trying to send to it and at most one thread trying to
+ * receive from it at any one time. The receiver performs the
+ * synchronization necessary for simple rendezvous (get() and put()
+ * operations). This receiver is based on the CSPReceiver class by
+ * John S. Davis II, Thomas Feng, Edward A. Lee, Neil Smyth, and Yang
+ * Zhao.
  *
  * @author Thomas Feng
  * @version $Id$
@@ -81,11 +83,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Construct a RendezvousReceiver with the specified container.
      *
-     * @param container
-     *            The port containing this receiver.
-     * @exception IllegalActionException
-     *                If this receiver cannot be contained by the proposed
-     *                container.
+     * @param container The port containing this receiver.
+     * @exception IllegalActionException If this receiver cannot be
+     * contained by the proposed container.
      */
     public RendezvousReceiver(IOPort container) throws IllegalActionException {
         super(container);
@@ -109,10 +109,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * the director.
      *
      * @return The token contained by this receiver.
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs has been
-     *                terminated while still running i.e it was not allowed to
-     *                run to completion.
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs has been terminated while still running i.e it
+     * was not allowed to run to completion.
      */
     public Token get() throws TerminateProcessException {
         return getFromAll(_thisReceiver, _getDirector())[0][0];
@@ -122,18 +121,17 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * Get from all receivers in the specified array. This method does not
      * return until all the gets are complete.
      *
-     * @param receivers
-     *            The receivers, which are assumed to all be instances of
-     *            RendezvousReceiver.
-     * @param director
-     *            The director, on which this method synchronizes.
-     * @return An array of token arrays, where the structure of the array is the
-     *         same as the structure of the specified array of receivers. Note
-     *         that if the receivers argument has any null values in the array
-     *         of arrays, then so will the returned array or arrays.
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs is to be
-     *                terminated.
+     * @param receivers The receivers, which are assumed to all be
+     * instances of RendezvousReceiver.
+     * @param director The director, on which this method
+     * synchronizes.
+     * @return An array of token arrays, where the structure of the
+     * array is the same as the structure of the specified array of
+     * receivers. Note that if the receivers argument has any null
+     * values in the array of arrays, then so will the returned array
+     * or arrays.
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs is to be terminated.
      */
     public static Token[][] getFromAll(Receiver[][] receivers,
             RendezvousDirector director) throws TerminateProcessException {
@@ -167,20 +165,16 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * be accomplished simultaneously in a rendezvous. This method does not
      * return until both the get and put are complete.
      *
-     * @param getReceivers
-     *            The receivers, which are assumed to all be instances of
-     *            RendezvousReceiver, to get tokens from.
-     * @param putReceivers
-     *            The receivers, which are assumed to all be instances of
-     *            RendezvousReceiver, to put tokens to.
-     * @param director
-     *            The director, on which this method synchronizes.
-     * @exception IllegalActionException
-     *                If the token is not acceptable to one of the ports (e.g.,
-     *                wrong type).
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs is to be
-     *                terminated.
+     * @param getReceivers The receivers, which are assumed to all be
+     * instances of RendezvousReceiver, to get tokens from.
+     * @param putReceivers The receivers, which are assumed to all be
+     * instances of RendezvousReceiver, to put tokens to.
+     * @param director The director, on which this method
+     * synchronizes.
+     * @exception IllegalActionException If the token is not
+     * acceptable to one of the ports (e.g., wrong type).
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs is to be terminated.
      * @deprecated No longer needed by the Barrier.
      */
     public static void getFromAllPutToAll(Receiver[][] getReceivers,
@@ -191,18 +185,16 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Get from any receiver in the specified array. This method does not return
-     * until one of the gets is complete.
-     *
-     * @param receivers
-     *            The receivers, which are assumed to all be instances of
-     *            RendezvousReceiver.
-     * @param director
-     *            The director, on which this method synchronizes.
+     * Get from any receiver in the specified array. This method does
+     * not return until one of the gets is complete.
+     *  
+     * @param receivers The receivers, which are assumed to all be
+     * instances of RendezvousReceiver.
+     * @param director The director, on which this method
+     * synchronizes.
      * @return A token from one of the receivers.
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs is to be
-     *                terminated.
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs is to be terminated.
      */
     public static Token getFromAny(Receiver[][] receivers,
             RendezvousDirector director) throws TerminateProcessException {
@@ -234,20 +226,16 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * be accomplished simultaneously in a rendezvous. This method does not
      * return until both the get and put are complete.
      *
-     * @param getReceivers
-     *            The receivers, which are assumed to all be instances of
-     *            RendezvousReceiver, to get tokens from.
-     * @param putReceivers
-     *            The receivers, which are assumed to all be instances of
-     *            RendezvousReceiver, to put tokens to.
-     * @param director
-     *            The director, on which this method synchronizes.
-     * @exception IllegalActionException
-     *                If the token is not acceptable to one of the ports (e.g.,
-     *                wrong type).
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs is to be
-     *                terminated.
+     * @param getReceivers The receivers, which are assumed to all be
+     * instances of RendezvousReceiver, to get tokens from.
+     * @param putReceivers The receivers, which are assumed to all be
+     * instances of RendezvousReceiver, to put tokens to.
+     * @param director The director, on which this method
+     * synchronizes.
+     * @exception IllegalActionException If the token is not
+     * acceptable to one of the ports (e.g., wrong type).
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs is to be terminated.
      */
     public static void getFromAnyPutToAll(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director)
@@ -257,10 +245,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Return true. This method returns true in all cases to indicate that the
-     * next call to put() will succeed without throwing a NoRoomException, as
-     * indeed it will, even if not right away. Note that if this were to return
-     * true only if a rendezvous was pending, then polymorphic actors would busy
+     * Return true. This method returns true in all cases to indicate
+     * that the next call to put() will succeed without throwing a
+     * NoRoomException, as indeed it will, even if not right
+     * away. Note that if this were to return true only if a
+     * rendezvous was pending, then polymorphic actors would busy
      * wait.
      *
      * @return True.
@@ -285,10 +274,11 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Return true. This method returns true in all cases to indicate that the
-     * next call to get() will succeed without throwing a NoTokenException, as
-     * indeed it will, even if not right away. Note that if this were to return
-     * true only if a rendezvous was pending, then polymorphic actors would busy
+     * Return true. This method returns true in all cases to indicate
+     * that the next call to get() will succeed without throwing a
+     * NoTokenException, as indeed it will, even if not right
+     * away. Note that if this were to return true only if a
+     * rendezvous was pending, then polymorphic actors would busy
      * wait.
      *
      * @return True.
@@ -298,14 +288,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Return true. This method returns true in all cases to indicate that any
-     * number of calls to get() will succeed without throwing a
-     * NoTokenException, as indeed they will, even if not right away. Note that
-     * if this were to return true only if a rendezvous was pending, then
-     * polymorphic actors would busy wait.
+     * Return true. This method returns true in all cases to indicate
+     * that any number of calls to get() will succeed without throwing
+     * a NoTokenException, as indeed they will, even if not right
+     * away. Note that if this were to return true only if a
+     * rendezvous was pending, then polymorphic actors would busy
+     * wait.
      *
-     * @param tokens
-     *            Ignored by this method.
+     * @param tokens Ignored by this method.
      * @return True.
      */
     public boolean hasToken(int tokens) {
@@ -331,8 +321,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * actor. If this receiver is connected to the inside of a boundary port,
      * then return true; otherwise return false.
      *
-     * @return True if this receiver is connected to the inside of a boundary
-     *         port; return false otherwise.
+     * @return True if this receiver is connected to the inside of a
+     * boundary port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryInside() {
@@ -346,7 +336,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * then return true; otherwise return false.
      *
      * @return True if this receiver is connected to the outside of a boundary
-     *         port; return false otherwise.
+     * port; return false otherwise.
      * @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundaryOutside() {
@@ -372,7 +362,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * then return true; otherwise return false.
      *
      * @return True if this receiver is contained on the inside of a boundary
-     *         port; return false otherwise.
+     * port; return false otherwise.
      */
     public boolean isInsideBoundary() {
         return _boundaryDetector.isInsideBoundary();
@@ -385,7 +375,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      * then return true; otherwise return false.
      *
      * @return True if this receiver is contained on the outside of a boundary
-     *         port; return false otherwise.
+     * ort; return false otherwise.
      */
     public boolean isOutsideBoundary() {
         return _boundaryDetector.isOutsideBoundary();
@@ -427,19 +417,16 @@ public class RendezvousReceiver extends AbstractReceiver implements
     }
 
     /**
-     * Put a token into the mailbox receiver. This method does not return until
-     * the rendezvous is complete. This method is internally synchronized on the
-     * director.
+     * Put a token into the mailbox receiver. This method does not
+     * return until the rendezvous is complete. This method is
+     * internally synchronized on the director.
      *
-     * @param token
-     *            The token.
-     * @exception IllegalActionException
-     *                If the token is not acceptable to the port (e.g., wrong
-     *                type).
-     * @exception TerminateProcessException
-     *                If the actor to which this receiver belongs has been
-     *                terminated while still running i.e it was not allowed to
-     *                run to completion.
+     * @param token The token.
+     * @exception IllegalActionException If the token is not
+     * acceptable to the port (e.g., wrong type).
+     * @exception TerminateProcessException If the actor to which this
+     * receiver belongs has been terminated while still running i.e it
+     * was not allowed to run to completion.
      */
     public void put(Token token) throws IllegalActionException,
             TerminateProcessException {
@@ -1183,7 +1170,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *             conditional (false).
      *  @return Whether the receivers are conditional.
      */
-    private static boolean _isConditional(Receiver[][] receivers, boolean isPut) {
+    private static boolean _isConditional(Receiver[][] receivers,
+            boolean isPut) {
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {
@@ -1204,10 +1192,8 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Reset the flags of this receiver.
      *
-     * @param clearGet
-     *            Whether to reset the flags related to the get methods.
-     * @param clearPut
-     *            Whether to reset the flags related to the put methods.
+     * @param clearGet Whether to reset the flags related to the get methods.
+     * @param clearPut Whether to reset the flags related to the put methods.
      */
     private void _resetFlags(boolean clearGet, boolean clearPut) {
         if (clearGet) {
@@ -1227,12 +1213,9 @@ public class RendezvousReceiver extends AbstractReceiver implements
     /**
      * Reset the flags of the receivers in the given array.
      *
-     * @param receivers
-     *            An array of receivers to be reset.
-     * @param clearGet
-     *            Whether to reset the flags related to the get methods.
-     * @param clearPut
-     *            Whether to reset the flags related to the put methods.
+     * @param receivers An array of receivers to be reset.
+     * @param clearGet Whether to reset the flags related to the get methods.
+     * @param clearPut Whether to reset the flags related to the put methods.
      */
     private static void _resetReceiversFlags(Receiver[][] receivers,
             boolean clearGet, boolean clearPut) {
