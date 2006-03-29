@@ -30,7 +30,10 @@
 
 ME =		ptolemy/domains/giotto/demo
 
-DIRS = 		Composite Hierarchy Legiotto Multimode Simple
+# Legiotto is on a separate line so we can easily remove it from the release.
+DIRS = 		Composite Hierarchy \
+		Legiotto \
+		Multimode Simple
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
