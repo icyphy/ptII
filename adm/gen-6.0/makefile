@@ -365,7 +365,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/x10/X10Interface.class \
 		ptolemy/actor/lib/x10/demo/MotionDrivenDemos/shutdown.bat \
 		ptolemy/backtrack \
-		ptolemy/codegen \
 		ptolemy/component \
 		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
@@ -460,6 +459,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/python \
 		ptolemy/actor/lib/security \
 		ptolemy/actor/lib/xslt \
+		ptolemy/codegen \
 		ptolemy/configs/ptiny \
 		ptolemy/configs/visualsense \
 		ptolemy/domains/csp \
@@ -476,6 +476,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		doc/codeDocVisualSense \
 		doc/codeDocVisualSense.jar \
 		ptolemy/configs/hyvisual \
+		ptolemy/codegen \
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/hsif
 
