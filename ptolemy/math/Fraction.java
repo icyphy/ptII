@@ -66,7 +66,7 @@ public class Fraction extends Object {
      * Create a new fraction in lowest terms
      * with the value Numerator/Denominator.
      * @param numerator The numerator.
-     * @param denominator The demoninator. 
+     * @param denominator The denominator. 
      * @exception ArithmeticException If the denominator is specified to be
      * zero.
      */
