@@ -206,7 +206,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  The entropy is always non-negative.
      *  Throw an IllegalArgumentException if the length of the array is 0,
      *  or a negative probability is encountered.
-     *  @param p The array of probablities.
+     *  @param p The array of probabilities.
      *  @return The entropy of the array of probabilities.
      */
     public static final double entropy(double[] p) {
