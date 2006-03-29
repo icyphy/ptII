@@ -255,7 +255,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
     /** The action for instantiating an attribute. */
     protected Action _instantiateAttributeAction;
 
-    /** The action for instantiatin an entity. */
+    /** The action for instantiating an entity. */
     protected Action _instantiateEntityAction;
 
     ///////////////////////////////////////////////////////////////////
