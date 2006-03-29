@@ -42,7 +42,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  * @see ptolemy.actor.lib.AbsoluteValue
  * @author Man-Kit Leung
  * @version $Id$
- * @since Ptolemy II 5.1
+ * @since Ptolemy II 6.0
  * @Pt.ProposedRating Yellow (cxh)
  * @Pt.AcceptedRating Red (mankit)
  *

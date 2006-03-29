@@ -52,7 +52,7 @@ import ptolemy.util.StringUtilities;
  Utilities that are useful for code generators
  @author Christopher Hylands
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 6.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

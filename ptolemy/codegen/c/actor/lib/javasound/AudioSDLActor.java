@@ -44,7 +44,7 @@ import ptolemy.util.StringUtilities;
  * SDL can be found at <a href="http://www.libsdl.org">http://www.libsdl.org</a>.
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 5.1
+ * @since Ptolemy II 6.0
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */

@@ -35,7 +35,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  *
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 5.1
+ * @since Ptolemy II 6.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */

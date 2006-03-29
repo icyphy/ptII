@@ -35,7 +35,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  *
  * @author Man-Kit Leung
  * @version $Id$
- * @since Ptolemy II 5.1
+ * @since Ptolemy II 6.0
  * @Pt.ProposedRating Red (mankit) Need to test with Strings, Arrays before shipping, What about Fix, Matrix?
  * @Pt.AcceptedRating Red (mankit)
  */

@@ -38,7 +38,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  *  @version $Id$
- *  @since Ptolemy II 5.1
+ *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
  */

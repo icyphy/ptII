@@ -77,7 +77,7 @@ import ptolemy.util.FileUtilities;
  *
  * @author Man-Kit
  * @version $Id$
- * @since Ptolemy II 5.1
+ * @since Ptolemy II 6.0
  * @Pt.ProposedRating Yellow (mankit)
  * @Pt.AcceptedRating Yellow (mankit)
  */

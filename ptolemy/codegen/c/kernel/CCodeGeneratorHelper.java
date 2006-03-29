@@ -49,7 +49,7 @@ import ptolemy.util.StringUtilities;
 
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 6.0
  @Pt.ProposedRating Red (mankit) Need to look for c code in actor super classes.
  @Pt.AcceptedRating Red (mankit)
  */

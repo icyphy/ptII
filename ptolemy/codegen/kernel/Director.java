@@ -54,7 +54,7 @@ import ptolemy.util.StringUtilities;
  @see CodeGenerator
  @author Ye Zhou, Gang Zhou
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (zhouye)
  @Pt.AcceptedRating Yellow (zhouye)
 

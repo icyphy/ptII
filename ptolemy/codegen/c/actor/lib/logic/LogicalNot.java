@@ -37,7 +37,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 6.0
  @see ptolemy.actor.lib.logic.LogicalNot
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Green (cxh)

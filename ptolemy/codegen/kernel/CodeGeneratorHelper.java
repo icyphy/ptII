@@ -76,7 +76,7 @@ import ptolemy.util.StringUtilities;
  *
  * @author Ye Zhou, Gang Zhou, Edward A. Lee, Contributors: Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 5.1
+ * @since Ptolemy II 6.0
  * @Pt.ProposedRating Yellow (eal)
  * @Pt.AcceptedRating Yellow (eal)
  */
