@@ -113,7 +113,9 @@ EXTRA_SRCS = \
 	mainheader.htm \
 	oldFeatures.htm \
 	ptII$(PTVERSION).release.htm \
+	ptII$(PTVERSION).releaseHyVisual.htm \
 	ptIIfaq.htm \
+	ptinyKepler.awk \
 	removeasd \
 	toc.css \
 	toc.htm \
