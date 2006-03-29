@@ -28,7 +28,7 @@ package diva.graph;
 import diva.canvas.JCanvas;
 
 /**
- * A graph widget analagous to java.swing.JTree.
+ * A graph widget analogous to java.swing.JTree.
  * JGraph functions as a container for an
  * instance of GraphPane, which is a multi-layer graphics
  * object containing (among other things) a layer upon which
