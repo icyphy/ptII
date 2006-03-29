@@ -504,7 +504,7 @@ public class Precision implements Cloneable, Serializable {
          * PrecisionFormat that is defined. This method will return a
          * valid Precision object from the String. If the String parsing
          * does not produce a valid match, this method will return a null.
-         * If the String match is succesful but there is a problem in
+         * If the String match is successful but there is a problem in
          * the interpretation of the match, this method will throw
          * a IllegalArgumentException.
          *
