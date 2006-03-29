@@ -80,7 +80,7 @@ public interface ExecuteCommands {
     /** Append the text message to stderr.  Classes that implement
      *  this method could append to a StringBuffer or JTextArea.
      *  The output automatically gets a trailing newline  appended.
-     *  @param text The text to append to stdandard error.
+     *  @param text The text to append to standard error.
      */
     public void stderr(final String text);
 

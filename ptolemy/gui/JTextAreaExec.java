@@ -246,7 +246,7 @@ public class JTextAreaExec extends JPanel implements ExecuteCommands {
 
     /** Append the text message to stderr.
      *  The output automatically gets a trailing newline appended.
-     *  @param text The text to append to stdandard error.
+     *  @param text The text to append to standard error.
      */
     public void stderr(final String text) {
         appendJTextArea(text);

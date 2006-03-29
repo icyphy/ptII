@@ -125,7 +125,7 @@ public class StreamExec implements ExecuteCommands {
      *  append to a StringBuffer.  @link{JTextAreaExec} appends to a
      *  JTextArea. The output automatically gets a trailing newline
      *  appended.
-     *  @param text The text to append to stdandard error.
+     *  @param text The text to append to standard error.
      */
     public void stderr(final String text) {
         System.err.println(text);
