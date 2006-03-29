@@ -49,7 +49,7 @@ public class IntegerList extends AbstractList {
      *
      * @param context  a Caltrop interpreter context.
      * @param a        The lower limit of the range of integers.
-     * @param b        The upper limit ofthe range of integers.
+     * @param b        The upper limit of the range of integers.
      */
     public IntegerList(Context context, int a, int b) {
         assert a <= b;
