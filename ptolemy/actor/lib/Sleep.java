@@ -54,7 +54,7 @@ import ptolemy.kernel.util.Workspace;
  The effect of this actor is different in different domains.
  In domains where all actors are iterated from within a single director
  thread (like SDF and DE), then multiple instances of this actor will
- result in cummulative time delays. That is, the time taken by an iteration
+ result in cumulative time delays. That is, the time taken by an iteration
  of the model will be greater than the sum of the sleep times of all the
  instances. In domains where actors execute in their own thread (like PN
  and CSP), only the execution of the individual actor is slowed.
