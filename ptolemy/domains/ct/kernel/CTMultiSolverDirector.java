@@ -1438,7 +1438,7 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     /** Resolve the initial states with a normal ODE solver at a further time.
-     *  The future time is the current time puls the step size used by the
+     *  The future time is the current time pulse the step size used by the
      *  solver. Return immediately if any actor returns false in their
      *  prefire() method. After this method is called, time advances to the
      *  future time.
