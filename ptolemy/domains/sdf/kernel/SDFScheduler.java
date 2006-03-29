@@ -747,7 +747,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @param vectorizationFactor An integer scaling factor to multiply
      *   the firing vector by.
      *  @param entityToFiringsPerIteration Map representing the firing vector.
-     *  @param externalRates Map repreesenting production rates of external ports.
+     *  @param externalRates Map representing production rates of
+     *  external ports.
      */
     protected void _vectorizeFirings(int vectorizationFactor,
             Map entityToFiringsPerIteration, Map externalRates) {
