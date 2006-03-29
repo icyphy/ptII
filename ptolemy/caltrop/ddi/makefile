@@ -85,6 +85,7 @@ OPTIONAL_FILES = \
 	CSPTokenReader.class \
 	'CSPTokenReader$$DataChannelID.class' \
 	CSPTokenWriter.class \
+	'DataflowWithRates$$ActionRateSignature.class' \
 	'SDF$$1.class' \
 	'SDF$$ActionRateSignature.class'
 
