@@ -412,7 +412,7 @@ all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html codeDoc/ptolemy/ac
 install: all jars codeDoc.jar codeDocHyVisual.jar codeDocVisualSense.jar
 
 codeDoc.jar:
-	"$(JAR)" -cvf $@ -C $(ROOT) doc/codeDoc
+	"$(JAR)" $(JARFLAGS) -cvf $@ -C $(ROOT) doc/codeDoc
 
 
 # Build with all common packages
