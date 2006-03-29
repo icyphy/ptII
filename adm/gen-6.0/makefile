@@ -344,7 +344,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		lib/cachedir \
 		lib/ptII.properties \
 		lib/ptvr.jar \
-		jni \
 		mk/ptII.mk \
 		ptolemy/actor/gui/style/test/alljsimpletests.tcl \
 		ptolemy/actor/gui/test/alljsimpletests.tcl \
@@ -501,6 +500,47 @@ src_jar: #$(PTII_SRC)
 	(cd src_jar/ptII$(VERSION); $(FINDCLEAN))
 	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
 	(cd src_jar/ptII$(VERSION); rm -rf $(PTII_SRC_TO_BE_REMOVED))
+	# Fix up configs/makefile
+	egrep -v "jni.jar" \
+		src_jar/ptII$(VERSION)/ptolemy/configs/makefile \
+		> src_jar/ptII$(VERSION)/ptolemy/configs/makefile.tmp
+	mv src_jar/ptII$(VERSION)/ptolemy/configs/makefile.tmp \
+		src_jar/ptII$(VERSION)/ptolemy/configs/makefile
+	# Fix up doc/makefile
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd" \
+		src_jar/ptII$(VERSION)/doc/makefile \
+		> src_jar/ptII$(VERSION)/doc/makefile.tmp
+	mv src_jar/ptII$(VERSION)/doc/makefile.tmp \
+		src_jar/ptII$(VERSION)/doc/makefile
+	# Fix up makefile
+	cat	src_jar/ptII$(VERSION)/makefile | \
+		sed 's/\$$(PTJNI_DIR)//' \
+		> src_jar/ptII$(VERSION)/makefile.tmp
+	# Fix up ct/demo/makefile
+	egrep -v Corba \
+		src_jar/ptII$(VERSION)/ptolemy/domains/ct/demo/makefile \
+		> src_jar/ptII$(VERSION)/ptolemy/domains/ct/demo/makefile.tmp
+	mv src_jar/ptII$(VERSION)/ptolemy/domains/ct/demo/makefile.tmp \
+		src_jar/ptII$(VERSION)/ptolemy/domains/ct/demo/makefile
+	# Fix up dde/kernel/test/makefile
+	egrep -v DDEDirector.tcl \
+		src_jar/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile \
+		> src_jar/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile.tmp
+	mv src_jar/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile.tmp \
+		src_jar/ptII$(VERSION)/ptolemy/domains/dde/kernel/test/makefile
+	# Fix up giotto/makefile
+	egrep -v cgc \
+		src_jar/ptII$(VERSION)/ptolemy/domains/giotto/makefile \
+		> src_jar/ptII$(VERSION)/ptolemy/domains/giotto/makefile.tmp
+	mv src_jar/ptII$(VERSION)/ptolemy/domains/giotto/makefile.tmp \
+		src_jar/ptII$(VERSION)/ptolemy/domains/giotto/makefile
+	# Fix up tm/makefile
+	egrep -v runtime \
+		src_jar/ptII$(VERSION)/ptolemy/domains/tm/makefile \
+		> src_jar/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp
+	mv src_jar/ptII$(VERSION)/ptolemy/domains/tm/makefile.tmp \
+		src_jar/ptII$(VERSION)/ptolemy/domains/tm/makefile
+
 
 ############################################
 # HyVisual
@@ -560,7 +600,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
 		> src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile.tmp \
-		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile \
+		src_jar/hyvisual$(VERSION)/ptolemy/configs/makefile
 	# Fix up doc/design/makefile
 	egrep -v "ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
 		src_jar/hyvisual$(VERSION)/doc/design/makefile \
