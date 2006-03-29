@@ -372,7 +372,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/gr/lib/vr \
 		ptolemy/domains/hs \
 		ptolemy/distributed \
-		ptolemy/hsif \
 		ptolemy/matlab/ptmatlab.exp \
 		ptolemy/matlab/ptmatlab.lib \
 		ptolemy/matlab/ptmatlab.obj \
@@ -462,12 +461,12 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/security \
 		ptolemy/actor/lib/xslt \
 		ptolemy/configs/ptiny \
+		ptolemy/configs/visualsense \
 		ptolemy/domains/csp \
 		ptolemy/domains/pn \
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/ptinyos \
-		ptolemy/domains/wireless \
-		ptolemy/configs/visualsense
+		ptolemy/domains/wireless
 
 # Files to be removed from HyVisual source distributions
 VIPTOS_SRC_TO_BE_REMOVED = \
@@ -477,7 +476,9 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		doc/codeDocVisualSense \
 		doc/codeDocVisualSense.jar \
 		ptolemy/configs/hyvisual \
-		ptolemy/domains/ptinyDomains.xml
+		ptolemy/domains/ptinyDomains.xml \
+		ptolemy/hsif
+
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
 JAR=c:/j2sdk1.4.2_05/bin/jar
