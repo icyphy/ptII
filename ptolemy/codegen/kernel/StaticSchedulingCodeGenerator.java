@@ -54,7 +54,7 @@ import ptolemy.util.StringUtilities;
  *  FIXME: need documentation on the following:
  *  1. Define static-scheduling,
  *  2. what should the subclasses do.
- *  3. Define body code, wrapup, initialze section.
+ *  3. Define body code, wrapup, initialize section.
  *
  *
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributor: Christopher Brooks
