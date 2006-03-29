@@ -632,7 +632,7 @@ public class Precision implements Cloneable, Serializable {
      * or FRACTION (but not both). <p>
      *
      * This format supports the specification of either signed or
-     * unsigned values. The character 'U' must preceed the
+     * unsigned values. The character 'U' must precede the
      * integer.fraction format to specify an unsigned value. An 'S' character
      * may be applied to specify a signed number. If no 'U' or 'S'
      * signed specification is provided, the precision will default
@@ -719,7 +719,7 @@ public class Precision implements Cloneable, Serializable {
      * <p>
      *
      * This format supports the specification of either signed or
-     * unsigned values. The character 'U' must preceed the
+     * unsigned values. The character 'U' must precede the
      * LENGTH/INTEGER format to specify an unsigned value. An 'S' character
      * may be applied to specify a signed number. If no 'U' or 'S'
      * signed specification is provided, the precision will default
@@ -801,7 +801,7 @@ public class Precision implements Cloneable, Serializable {
      * EXPONENT field. <p>
      *
      * This format supports the specification of either signed or
-     * unsigned values. The character 'U' must preceed the
+     * unsigned values. The character 'U' must precede the
      * LENGTH/INTEGER format to specify an unsigned value. An 'S' character
      * may be applied to specify a signed number. If no 'U' or 'S'
      * signed specification is provided, the precision will default
@@ -879,7 +879,7 @@ public class Precision implements Cloneable, Serializable {
      * the MSB is greather than the LSB. <p>
      *
      * This format supports the specification of either signed or
-     * unsigned values. The character 'U' must preceed the
+     * unsigned values. The character 'U' must precede the
      * MSB:LSB format to specify an unsigned value. An 'S' character
      * may be applied to specify a signed number. If no 'U' or 'S'
      * signed specification is provided, the precision will default
