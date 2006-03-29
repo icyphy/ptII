@@ -226,6 +226,10 @@ JDOCFLAGS = 	-author -version $(JDOCCHECKFLAGS) $(JDOCTAG) $(JDOCTAGLET)
 # The jar command, used to produce jar files, which are similar to tar files
 JAR =		$(PTJAVA_DIR)/bin/jar
 
+# If Jar fails with a message about stack size being too small, 
+# set JAR_FLAGS to -JXss20m
+JAR_FLAGS = 
+
 # Command to run that indexes a jar file named tmp.jar
 # Usually it looks like '"$(JAR)" -i $@'
 JAR_INDEX =	@JAR_INDEX@
