@@ -355,7 +355,7 @@ public class Precision implements Cloneable, Serializable {
      * data bit of the given fixed point precision. If this
      * Precision is signed, this will return
      * getMostSignificantBitPosition - 1. If this Precision
-     * is unsiged, this will return getMostSignificantBitPosition.
+     * is unsigned, this will return getMostSignificantBitPosition.
      *
      * @return Least significant bit position.
      */
