@@ -137,6 +137,7 @@ ptolemy/copernicus/shallow/test/codeGenerator.tmp
 ptolemy/copernicus/shallow/ptolemy.giotto
 ptolemy/data/expr/test/CParseTreeCodeGenerator.tcl
 ptolemy/data/test/EventToken.tcl
+ptolemy/domains/cont
 ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock
 ptolemy/domains/ct/demo/Agilent
 ptolemy/domains/ct/demo/Saber
@@ -153,6 +154,7 @@ ptolemy/domains/dt/kernel/test/bugs
 ptolemy/domains/dt/kernel/test/chf
 ptolemy/domains/dfm
 ptolemy/domains/fairdf
+ptolemy/domains/fp
 ptolemy/domains/fsm/demo/Hysteresis
 ptolemy/domains/generic
 ptolemy/domains/giotto/demo/Helicopter
