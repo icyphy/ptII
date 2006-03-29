@@ -162,7 +162,7 @@ public class FixPoint implements Cloneable, Serializable {
     /** Construct a FixPoint from an integer.
      *  This is a loss-less conversion with a precision having
      *  as few bits as possible to represent the value and the
-     *  signed determeined by the signed parameter.
+     *  signed determined by the signed parameter.
      *
      *  @param intValue The integer value.
      *  @param signed if true, represent value as a signed number;
