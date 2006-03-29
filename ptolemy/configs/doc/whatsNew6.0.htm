@@ -30,8 +30,52 @@ See also <a href="whatsNew5.1.htm">What's new in Version 5.1</a>.
 </h2>
 <ul>
 <menu>
-<li> <a href="../../codegen/README.html">Code Generation</a> 
-<li> Distributed Ptolemy
+<li> <a href="../../../ptolemy/codegen/README.html">Ptolemy II C Code Generation</a>
+ <p>Primary Developers: Jackie Leung, Gang Zhou, Ye Zhou, Edward A. Lee,
+	Christopher Brooks
+ <br>  Ptolemy II can now generate C code for SDF, FSM and HDF models.
+  This new code generator consists of actor templates (called helpers)
+  that contain C code stubs that are stitched together.  Only a subset
+  of actors have helpers, so only a subset of models can be converted
+  to C.  Creating new helpers is fairly easy though.  The code generator
+  has been written to be easily extensible to languages other than C.
+
+
+<li> The
+<a href="../../../ptolemy/domains/rendezvous/doc/body.htm" target="body">Rendezvous domain</a>:
+ <br>Primary Authors: Thomas Huining Feng, Edward A. Lee
+ <br>In the Rendezvous domain in Ptolemy II, each actor executes in
+its own thread of control, and communication between actors is
+by rendezvous.  If an actor is ready to send a message,
+it blocks until the receiving actor is ready to receive it. Similarly if
+an actor is ready to receive a message, it blocks until the sending actor
+is ready to send it.
+<p>
+This domain supports both conditional and multi-way rendezvous.
+In conditional rendezvous, an actor is willing to rendezvous with
+any one of several other actors. In multiway rendezvous, an actor requires
+rendezvous with multiple other actors at the same time.
+When using conditional rendezvous, the choice of which rendezvous
+occurs is nondeterministic, in general.
+<P>
+The model of computation is based on the Communicating Sequential
+Processesmodel first proposed by Hoare in 1978. Rendezvous-based
+communication is also known as synchronous message passing, but we
+avoid this term to avoid confusion with the SR (synchronous/reactive)
+domain.
+
+<li> <a href="../../ptolemy/configs/viptos/index.htm">Viptos</a> 
+ <i>Visual editor and code generator for TinyOS programs</i>.
+ <br>Primary Author: Elaine Cheong
+ <br><B>Viptos</B> is an interface between TinyOS and Ptolemy II that
+provides a graphical user interface for TinyOS developers.  
+
+<li> <a href="../../../doc/codeDoc/ptolemy/distributed/domains/sdf/kernel/DistributedSDFDirector.html">Distributed SDF Domain using Jini</a>
+ <br>Authors: Daniel Lazaro Cuadrado (Aalborg University).
+ <br> The Distributed-SDF domain is an extended version of the existing SDF
+ Domain that performs the simulation in a distributed manner using
+ Jini.  See the
+ <a href="../../../ptolemy/distributed/demo/Sleep/Sleep.xml">Sleep Demo</a> for details
 </menu>
 
 
@@ -40,6 +84,22 @@ See also <a href="whatsNew5.1.htm">What's new in Version 5.1</a>.
 <h2><a name="other">Other Key New Capabilities</a>
 </h2>
 <ul>
+<li> <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/CaseDirector.html">CaseDirector</a><a name="Case">,</a>
+
+
+ <br>Primary Author: Edward A. Lee
+ <br>The Case actor has been further developed so that it is easier
+to build models that execute one of several refinements.
+
+<li> <a href="../../../doc/codeDoc/ptolemy/data/UnionToken.html">UnionToken</a>
+ <br>Primary Authors: Yang Zhao, Yuhong Xiong (HP)
+ The UnionToken can contain one instance of multiple types.  This
+ allows type safe operations to be performed in models when the
+ token type could be any one of several possible types.
+ <br>The
+  <a href="../../../doc/codeDocl/ptolemy/actor/lib/UnionDisassembler.html">UnionDisassembler</a>
+  actor disassembles Union tokens.
+
 <li> A Token can now be "nil", which means that the data is missing.
 If <a href="../../../doc/codeDoc/ptolemy/data/Token.html#nil()">Token.nil()</a> is
 called, it indicates that a token is a nil or missing token, which contains no data.
@@ -64,19 +124,160 @@ those that can be used in more than one domain).
 
 <li><i>New generic actors</i>:
 <ul>
-
+<li><a href="../../../doc/codeDoc/ptolemy/actor/lib/DelayStart.html">DelayStart</a>
+<li><a href="../../../doc/codeDoc/ptolemy/actor/lib/FireAccumulator.html">FireAccumulator</a>
+<li><a href="../../../doc/codeDoc/ptolemy/actor/lib/RemoveNilTokens.html">RemoveNilTokens</a>
 </ul>
 
-
-<h2>
-<a name="features"> Additional Features </a>
-</h2>
+<li><i>New Communicating Sequential Processes (CSP) actors</i>:
 <ul>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/csp/lib/Barrier.html">Barrier</a>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/csp/lib/Buffer.html">Buffer</a>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/csp/lib/ResourcePool.html">ResourcePool</a>
+</ul>
+
+<li><i>New Continuous Time (CT) actors</i>:
+<ul>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/csp/lib/Barrier.html">Barrier</a>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/csp/lib/Buffer.html">Buffer</a>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/csp/lib/ResourcePool.html">ResourcePool</a>
+</ul>
+
+<li><i>New Discrete Event (DE) actors</i>:
+<ul>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/de/lib/UnionMerge.html">UnionMerge</a>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/de/lib/Wire.html">Wire</a>
+</ul>
+
+<h2><a name="features"> Additional Features </a></h2>
+
+<ul>
+<li>Actor and model documentation system
+ <br>Primary Authors: Edward A. Lee, Christopher Brooks.
+ <br>Actor and model documentation is now displayed using custom
+ widget.  The documentation for an actor or model can be edited by 
+ the user.  To view the documentation for an actor, right click on 
+ the actor and select Documentation -&gt; Get Documentation.
+ This functionality is implemented using
+ <a
+ href="../../../doc/codeDoc/ptolemy/vergil/actor/DocTableau.html">DocTableau</a>
+ and other classes in vergil.actor and the
+ <a href="../../../doc/codeDoc/doc/doclets/PtDoclets.htm">PtDoclet</a> doclet.
+
+<li> Relation Groups
+Relations mediate connections between ports. For flexibility,
+particularly with visual syntaxes, the Ptolemy II abstract syntax
+permits any number of relations to be involved in any one
+connection. Relations may be linked to
+other relations. Any two relations that are linked are said to be
+members of the same relation group. Specifically, a relation group is
+a maximal set of linked relations. Semantically, a relation group has
+the same meaning as a single relation.
+The API of the Relation class, support linking and unlinking
+relations, and also provides a method to obtain a list of all the
+relations in a relation group.
+
+<p>In a relation group, there is no significance to the order in which
+relations are linked, unlike the order in which ports are linked to
+relations. Also, unlike links between relations and ports, there is no
+significance to multiple links between the same relations. Any two
+relations are either linked or not linked.
+
+<li>
+<a href="../../../doc/codeDoc/ptolemy/actor/gui/CheckModelSize.html">CheckModelSize</a>:
+<a href="about:copyright" target="_blank">about:copyright</a>
+facility has been extended so that model screen size and screen
+location are checked.
+
+
+<li><a href="../../../doc/codeDoc/ptolemy/actor/gui/PtolemyPreferences.html">PtolemyPreferences</a>:
+A preference system for UI related preferences
+
+<li><a href="../../../doc/codeDoc/ptolemy/actor/gui/WelcomeWindow.html">WelcomeWindow</a>,
+<a href="../../../doc/codeDoc/ptolemy/actor/gui/WelcomeWindowTableau.html">WelcomeWindowTableau</a>:
+An alternative start up screen
+
+<li><a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/AbstractCase.html">AbstractCase</a>,
+ <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/MultiCompositeActor.html">MultiCompositeActor</a>,
+ <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/MultiCompositePort.html">MultiCompositePort</a>,
+ <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/Refinement.html">Refinement</a>,
+ <a href="../../../doc/codeDoc/ptolemy/actor/lib/hoc/RefinementPort.html">RefinementPort</a>,
+ <a href="../../../doc/codeDoc/ptolemy/domains/ct/kernel/CTCaseDirector.html">CTCaseDirector</a>,
+ <a href="../../../doc/codeDoc/ptolemy/domains/ct/kernel/CTCase.html">CTCase</a>,
+ <a href="../../../doc/codeDoc/ptolemy/domains/ct/kernel/CTRefinement.html">CTRefinement</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/fsm/CaseGraphFrame.html">CaseGraphFrame</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/fsm/CaseGraphTableau.html">CaseGraphTableau</a>,
+<a href="../../../doc/codeDoc/ptolemy/domains/fsm/modal/Case.html">Case</a>:
+
+ Used by the <a href="#Case">Case facility</a>.
+
+<li><a href="../../../doc/codeDoc/ptolemy/actor/TokenSentEvent.html">TokenSentEvent</a>,
+    <a href="../../../doc/codeDoc/ptolemy/actor/TokenSentListener.html">TokenSentListener</a>:
+    Two listeners created by Oscar Barney to help with
+    <a href="http://kepler-project.org#in_browser">Kepler</a>.
+
+<li><a href="../../../doc/codeDoc/ptolemy/caltrop/ddi/DataflowWithRates.html">DataflowWithRates</a>,
+ <a href="../../../doc/codeDoc/ptolemy/caltrop/ddi/DDFFactory.html">DDFFactory</a>,
+ <a href="../../../doc/codeDoc/ptolemy/caltrop/ddi/DDF.html">DDF</a>,
+ <a href="../../../doc/codeDoc/ptolemy/caltrop/ddi/util/DataflowWithRatesActorInterpreter.html">DataflowWithRatesActorInterpreter</a>:
+ Caltrop work by J&#246;rn W. Janneck, and Steve Neuendorffer
+
+<li><a href="../../../doc/codeDoc/ptolemy/data/expr/ASTPtUnionConstructNode.html">ASTPtUnionConstructNode</a>,
+ <a href="../../../doc/codeDoc/ptolemy/data/type/UnionType.html">UnionType</a>,
+ <a href="../../../doc/codeDoc/ptolemy/data/UnionToken.html">UnionToken</a>:
+ Support for the Union type
+
+<li><a href="../../../doc/codeDoc/ptolemy/domains/csp/kernel/AbstractBranchController.html">AbstractBranchController</a>,
+ <a href="../../../doc/codeDoc/ptolemy/domains/csp/kernel/BranchActor.html">BranchActor</a>,
+ <a href="../../../doc/codeDocomains/csp/kernel/ConditionalBranchActor.html">ConditionalBranchActor</a>,
+ <a href="../../../doc/codeDoc/ptolemy/domains/csp/kernel/MultiwayBranchController.html">MultiwayBranchController</a>:
+ Support for CSP changes
+
+<li><a href="../../../doc/codeDocdomains/fsm/kernel/HSDirector.html">HSDirector</a>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/fsm/kernel/HSFSMDirector.html">HSFSMDirector</a>
+<li><a href="../../../doc/codeDoc/ptolemy/domains/sdf/kernel/CachedSDFScheduler.html">CachedSDFScheduler</a>
+
+<li><a href="../../../doc/codeDocomains/sr/kernel/IllegalOutputException.html">IllegalOutputException</a>,
+<a href="../../../doc/codeDocomains/sr/kernel/UnknownTokenException.html">UnknownTokenException</a>:
+  Synchronous/Reactive rework
+
+<li><a href="../../../doc/codeDoc/ptolemy/moml/LibraryBuilder.html">LibraryBuilder</a>:
+    Support for <a href="http://kepler-project.org#in_browser">Kepler</a>,
+    added by Chad Berkeley.
+
+<li><a href="../../../doc/codeDoc/ptolemy/util/ExecuteCommands.html">ExecuteCommands</a>,
+  <a href="../../../doc/codeDoc/ptolemy/util/StreamExec.html">StreamExec</a>:
+  Code that executes subprocesses
+
+<li><a href="../../../doc/codeDoc/ptolemy/vergil/actor/DocEffigy.html">DocEffigy</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/actor/DocManager.html">DocManager</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/actor/DocTableau.html">DocTableau</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/basic/CustomizeDocumentationAction.html">CustomizeDocumentationAction</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/basic/DocAttribute.html">DocAttribute</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/basic/DocViewerFactory.html">DocViewerFactory</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/basic/GetDocumentationAction.html">GetDocumentationAction</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/basic/RemoveCustomDocumentationAction.html">RemoveCustomDocumentationAction</a>,
+ <a href="../../../doc/codeDoc/ptolemy/moml/filter/ActorIndex.html">ActorIndex</a>
+ <a href="../../../doc/codeDoc/ptolemy/moml/filter/NamedObjClassesSeen.html">NamedObjClassesSeen</a>:
+ Support for actor and model documentation 
+
+<li>Only in gen-6.0/tmp/ptII6.0.devel/ptolemy/vergil/actor/LinkManhattanConnector.html">LinkManhattanConnector</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/actor/PortConnectSite.html">PortConnectSite</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/actor/PortTerminal.html">PortTerminal</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/icon/ActorNameIcon.html">ActorNameIcon</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/icon/NameIcon.html">NameIcon</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/kernel/attributes/VisibleAttribute.html">VisibleAttribute</a>,
+ <a href="../../../doc/codeDoc/ptolemy/vergil/toolbox/RotateOrFlipPorts.html">RotateOrFlipPorts</a>:
+  Vergil features
+  
+<li><a href="../../../doc/codeDoc/ptolemy/vergil/VergilInitializer.html">VergilInitializer</a>:
+  A class that may be called during startup.
+
 
 <li> <i>Java compatibility</i>:
 <br>
-Ptolemy II can be compiled under Java 1.5.0_01.  Java 1.4.2_08
-is preferred though.
+Ptolemy II can be compiled under Java 1.5.0_06 and Java 1.4.2_11.
+Java  1.5.0_06 is preferred though.
 
 <h2>
 <a name="bugs"> Bug fixes </a>
