@@ -38,11 +38,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  A Wire is a stateful actor in DE.  It should have an equal number 
- of input and output channels.  If it recieves input on <i>any</i> of 
- its channels, it should produce the most recent recieved on each
+ of input and output channels.  If it receives input on <i>any</i> of 
+ its channels, it should produce the most recent received on each
  input channel to the corresponding output channel for <i>all</i>
  channels. We can think its behavior similar to a wire in VHDL, where 
- the value is always the most recently recieved.
+ the value is always the most recently received.
 
  @author Adam Cataldo
  @version $Id$
