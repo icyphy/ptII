@@ -175,7 +175,7 @@ public class HDFDirector extends SDFDirector {
     }
 
     /** Send a request to the manager to get the HDF schedule if the schedule
-     *  is not valide or this director is not at the top level.
+     *  is not valid or this director is not at the top level.
      *  @exception IllegalActionException If no schedule can be found,
      *  or if the super class method throws it.
      */
