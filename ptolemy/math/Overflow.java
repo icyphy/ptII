@@ -59,7 +59,7 @@ import java.util.Map;
  minimum dynamic range needed to include the integerValue.
  Note that the actual integer unscaled value will not change
  during this overflow strategy.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #quantizeGrow(BigInteger, Precision) quantizeGrow} method
  and the Overflow singletons {@link #GROW} and {@link #GENERAL}.
 
@@ -71,7 +71,7 @@ import java.util.Map;
  or decrease the Precision of the value.
  Note that the actual integer unscaled value will not change
  during this overflow strategy.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #quantizeMinimum(BigInteger, Precision) quantizeMinimize}
  method and the Overflow singleton {@link #MINIMIZE} .
 
@@ -81,7 +81,7 @@ import java.util.Map;
  dynamic range of the Precision constraint.
  Note that the actual precision will not change
  during this overflow strategy.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #quantizeModulo(BigInteger, Precision) quantizeModulo}
  method and the Overflow singletons {@link #MODULO} and {@link #WRAP}.
 
@@ -93,7 +93,7 @@ import java.util.Map;
  the maximum of the range, the maximum value of the range
  is used.
  Note that the precision will not change during this overflow strategy.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #quantizeSaturate(BigInteger, Precision) quantizeSaturate}
  method and the Overflow singletons {@link #SATURATE} and
  {@link #CLIP}.
@@ -103,14 +103,14 @@ import java.util.Map;
  range, this overflow strategy will set the integer value to zero.
  Note that the actual precision will not change
  during this overflow strategy.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #quantizeToZero(BigInteger, Precision) quantizeToZero}
  method and the Overflow singleton {@link #TO_ZERO}.
 
  <li> <i><b>trap</b></i> <br>
  If the integer value falls outside of the Precision dynamic
  range, a {@link java.lang.ArithmeticException} is generated.
- This rounding mode is suppored by the
+ This rounding mode is supported by the
  singleton {@link #TRAP}.
  </ul>
 

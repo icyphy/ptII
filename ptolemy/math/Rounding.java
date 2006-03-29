@@ -65,7 +65,7 @@ import java.util.Map;
  Always increments the digit prior to a non-zero discarded fraction.
  Note that this rounding mode never decreases the magnitude of
  the calculated value.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #roundUp(BigDecimal) roundUp} method and the Rounding
  singletons {@link #GENERAL}, {@link #UNKNOWN} and {@link #UP}.
 
@@ -74,7 +74,7 @@ import java.util.Map;
  Never increments the digit prior to a discarded fraction
  (i.e., truncates). Note that this rounding mode never increases
  the magnitude of the calculated value.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #roundDown(BigDecimal) roundDown} method and the Rounding
  singleton {@link #DOWN}.
 
@@ -82,7 +82,7 @@ import java.util.Map;
  Rounding mode to round towards negative infinity.
  If decimal is positive, behave as <b>round down</b>;
  if decimal is negative, behave as <b>round up</b>.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #roundFloor(BigDecimal) roundFloor} method and the Rounding
  singleton {@link #FLOOR}.
 
@@ -90,7 +90,7 @@ import java.util.Map;
  Rounding mode to round towards positive infinity.
  If decimal is positive, behave as <b>round up</b>;
  if decimal is negative, behave as <b>round down</b>.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #roundCeiling(BigDecimal) roundCeiling} method and the Rounding
  singleton {@link #CEILING}.
 
@@ -101,7 +101,7 @@ import java.util.Map;
  otherwise, behaves as for <b>round down</b>. Note that this is the
  rounding mode that most of us were taught in grade school.
  Rounding mode to round towards zero.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #roundHalfUp(BigDecimal) roundHalfUp} method and the Rounding
  singleton {@link #HALF_UP}.
 
@@ -110,7 +110,7 @@ import java.util.Map;
  both neighbors are equidistant, in which case round down.
  Behaves as for <b>round up</b> if the discarded fraction is > .5;
  otherwise, behaves as for <b>ROUND_DOWN</b>.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #roundHalfDown(BigDecimal) roundHalfDown} method and the Rounding
  singleton {@link #HALF_DOWN}.
 
@@ -123,7 +123,7 @@ import java.util.Map;
  Note that this is the rounding
  mode that minimizes cumulative error when applied repeatedly
  over a sequence of calculations.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #roundHalfEven(BigDecimal) roundHalfEven} method and the Rounding
  singletons {@link #HALF_EVEN} and {@link #CONVERGENT}.
 
@@ -134,7 +134,7 @@ import java.util.Map;
  if the decimal is positive and as <b>round half up</b>
  if the decimal is negative. Note that there is no half floor rounding
  mode supported for BigDecimal values.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #roundHalfFloor(BigDecimal) roundHalfFloor} method and
  the Rounding singleton {@link #HALF_FLOOR}.
 
@@ -146,7 +146,7 @@ import java.util.Map;
  if the decimal is negative.
  Note that there is no half ceiling rounding mode
  supported for BigDecimal values.
- This rounding mode is suppored by the static
+ This rounding mode is supported by the static
  {@link #roundHalfFloor(BigDecimal) roundHalfCeiling} method and
  the Rounding singleton {@link #HALF_CEILING}.
 
