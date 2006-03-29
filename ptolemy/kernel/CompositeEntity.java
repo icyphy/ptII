@@ -1672,7 +1672,7 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected class ContainedObjectsIterator extends
             Entity.ContainedObjectsIterator {
-        /** Create an interator over all the contained objects, which
+        /** Create an iterator over all the contained objects, which
          *  for CompositeEntities are attributes, ports, classes
          *  entities, and relations.
          */

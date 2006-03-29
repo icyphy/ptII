@@ -2951,7 +2951,7 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
      */
     protected class ContainedObjectsIterator implements Iterator {
 
-        /** Create an interator over all the contained objects. */
+        /** Create an iterator over all the contained objects. */
         public ContainedObjectsIterator() {
             super();
             // This iterator gets called quite a bit, so at Kevin Ruland's

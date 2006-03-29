@@ -41,7 +41,7 @@ section basic -title "Basic tutorials" {
     section SimpleTutorial -title "Constructing a canvas and placing figures"
     section FigureTutorial  -title "Creating your own Figure class"
     section CompositeFigureTutorial  -title "Constructing composite figures"
-    section DragTutorial  -title "Drag interators"
+    section DragTutorial  -title "Drag interactors"
     section ConnectorTutorial  -title "Using straight connectors"
     section ArcTutorial  -title "Using arc connectors"
     section TransformedFigureTutorial -title "Giving a figure a transform context"

@@ -692,7 +692,7 @@ public class Entity extends InstantiableNamedObj {
      */
     protected class ContainedObjectsIterator extends
             NamedObj.ContainedObjectsIterator {
-        /** Create an interator over all the contained objects, which
+        /** Create an iterator over all the contained objects, which
          *  for Entities are attributes and then ports.
          */
         public ContainedObjectsIterator() {
