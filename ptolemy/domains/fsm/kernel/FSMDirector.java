@@ -1104,7 +1104,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      */
     protected Map _localReceiverMaps = new HashMap();
 
-    /** Boolean varialbe indicating whether model change is enabled. The
+    /** Boolean variable indicating whether model change is enabled. The
      *  default value is true.
      */
     protected boolean _mutationEnabled = true;

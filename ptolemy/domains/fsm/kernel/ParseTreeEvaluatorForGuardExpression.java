@@ -186,9 +186,11 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             }
         }
 
-        // Note usually the usage is "x_isPresent && x" or "x_isPresent"
-        // If we know that the nodeName is one of the absent discrete varialbes,
-        // such as x, we do not evaluate the "x" after the "&&".
+        // Note usually the usage is "x_isPresent && x" or
+        // "x_isPresent" If we know that the nodeName is one of the
+        // absent discrete variables, such as x, we do not evaluate
+        // the "x" after the "&&".
+
         if (_absentDiscreteVariables.contains(nodeName)) {
             // Set the result token to be false token
             // because the variable is discrete and has no value.
