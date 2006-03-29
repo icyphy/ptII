@@ -111,7 +111,6 @@ ptolemy/configs/test/vergilConfigurationNoMatlab.xml
 ptolemy/configs/test/vergilConfigurationNoMatlabNoSerialNoApps.xml
 ptolemy/configs/visualnc
 ptolemy/data/expr/TVariable.java
-ptolemy/data/test/EventToken.tcl
 ptolemy/gui/JPanelTest.java
 ptolemy/copernicus/actor/test/codeGenerator.tmp
 ptolemy/copernicus/applet/test/ptII
