@@ -4,7 +4,7 @@
  method. This simply does some initialization and calls the main method of
  the class.
 
- Copyright (c) 2002-2005 The University of Maryland.
+ Copyright (c) 2002-2006 The University of Maryland.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

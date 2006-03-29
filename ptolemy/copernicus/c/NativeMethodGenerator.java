@@ -2,7 +2,7 @@
 
  A class that handles generation and management of native methods.
 
- Copyright (c) 2002-2005 The University of Maryland.
+ Copyright (c) 2002-2006 The University of Maryland.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

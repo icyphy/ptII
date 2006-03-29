@@ -1,6 +1,6 @@
 /* A standalone plot application.
 
- Copyright (c) 1998-2005 The Regents of the University of California.
+ Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -230,7 +230,7 @@ public class PlotApplication extends PlotFrame {
                                 + ", Build: $Id$\n\n"
                                 + "For more information, see\n"
                                 + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                                + "Copyright (c) 1997-2005, "
+                                + "Copyright (c) 1997-2006, "
                                 + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }

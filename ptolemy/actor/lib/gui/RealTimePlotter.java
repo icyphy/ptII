@@ -1,6 +1,6 @@
 /* Plot input data as a function of elapsed real time.
 
- @Copyright (c) 1998-2005 The Regents of the University of California.
+ @Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

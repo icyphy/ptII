@@ -3,7 +3,7 @@
  An application that converts a Java class into  C source files (an
  "interface header" file, a .h file and a .c file) that implement the class.
 
- Copyright (c) 2001-2005 The University of Maryland.
+ Copyright (c) 2001-2006 The University of Maryland.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

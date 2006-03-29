@@ -2,7 +2,7 @@
  A C code generator for generating "stub header files"
  that implement Java classes.
 
- Copyright (c) 2003-2005 The University of Maryland.
+ Copyright (c) 2003-2006 The University of Maryland.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

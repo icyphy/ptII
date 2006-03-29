@@ -1,7 +1,7 @@
 /* Class that uses the Soot Framework to find out which methods/classes
  are really needed for code generation.
 
- Copyright (c) 2003-2005 The University of Maryland.
+ Copyright (c) 2003-2006 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

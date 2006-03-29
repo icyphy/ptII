@@ -3,7 +3,7 @@
  A C code generator for generating "header files" (.h files) that implement
  Java classes.
 
- Copyright (c) 2001-2005 The University of Maryland.
+ Copyright (c) 2001-2006 The University of Maryland.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without

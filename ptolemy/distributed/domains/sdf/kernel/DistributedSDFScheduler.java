@@ -1,6 +1,6 @@
 /* A Scheduler for the Distributed-SDF domain
 
- @Copyright (c) 2005 The Regents of Aalborg University.
+ @Copyright (c) 2005-2006 The Regents of Aalborg University.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
