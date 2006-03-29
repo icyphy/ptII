@@ -154,7 +154,6 @@ ptolemy/domains/dt/kernel/test/bugs
 ptolemy/domains/dt/kernel/test/chf
 ptolemy/domains/dfm
 ptolemy/domains/fairdf
-ptolemy/domains/fp
 ptolemy/domains/fsm/demo/Hysteresis
 ptolemy/domains/generic
 ptolemy/domains/giotto/demo/Helicopter
