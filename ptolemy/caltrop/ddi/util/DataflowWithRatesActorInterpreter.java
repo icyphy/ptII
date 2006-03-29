@@ -55,7 +55,7 @@ import caltrop.interpreter.environment.Environment;
 
  @author Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 6.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  @see caltrop.interpreter.ddi.util.DataflowActorInterpreter
