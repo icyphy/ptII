@@ -103,7 +103,7 @@ import java.util.regex.Pattern;
  <td>U8/1</td>
  </tr>
  <tr><td>{@link VHDLPrecisionFormat}</td>
- <td>[MSb position]:[LSb poistion]</td>
+ <td>[MSb position]:[LSb position]</td>
  <td>2:-2</td>
  <td>-1:-7</td>
  <td>-3:-12</td>
