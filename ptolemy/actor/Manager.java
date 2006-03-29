@@ -717,7 +717,7 @@ public class Manager extends NamedObj implements Runnable {
     /** The thread that calls this method will wait until resume() has
      *  been called.
      *
-     *  <p>Note: This method will block.  It shhould only be called
+     *  <p>Note: This method will block.  It should only be called
      *  from the executing thread (the thread that is executing the
      *  model).  Do not call this method from the same thread that
      *  will call resume().
