@@ -120,7 +120,7 @@ public class UnitExpr implements UnitPresentation {
     }
 
     /** Create a new UnitExpr that is the inverse of this UnitExpr.
-     * @return The invers of this UnitExpr.
+     * @return The inverse of this UnitExpr.
      */
     public UnitExpr invert() {
         UnitExpr retv = new UnitExpr();
