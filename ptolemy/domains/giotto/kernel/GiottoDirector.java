@@ -443,7 +443,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
      *  the outside domain is greater than or equal to the current time.
      *  However, when a giotto model is used inside a CT model, its inputs
      *  may either be DISCRETE or CONTINUOUS. When the inputs are of type
-     *  CONTINUOUS, this method should always return true. To accomodate
+     *  CONTINUOUS, this method should always return true. To accommodate
      *  this requirement, the prefire method still returns true but
      *  an internal flag will be set to false and the fire and postfire
      *  methods are forced to do nothing.
