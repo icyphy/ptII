@@ -239,7 +239,7 @@ public abstract class ActorController extends AttributeController {
     protected EditIconAction _editIconAction = new EditIconAction();
 
     /** An action that handles flipping the ports horizontally. */
-    protected RotateOrFlipPorts _flipPortsHorizonal = new RotateOrFlipPorts(
+    protected RotateOrFlipPorts _flipPortsHorizontal = new RotateOrFlipPorts(
             RotateOrFlipPorts.FLIP_HORIZONTAL, "Flip Ports Horizontally");
 
     /** An action that handles flipping the ports vertically. */
@@ -326,7 +326,8 @@ public abstract class ActorController extends AttributeController {
         _editIconAction.setConfiguration(_configuration);
         _removeIconAction.setConfiguration(_configuration);
         Action[] actions = { _editIconAction, _removeIconAction,
-                _flipPortsHorizonal, _flipPortsVertical, _rotatePortsClockwise,
+                _flipPortsHorizontal, _flipPortsVertical,
+                _rotatePortsClockwise,
                 _rotatePortsCounterclockwise };
         _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
                 "Appearance"));
