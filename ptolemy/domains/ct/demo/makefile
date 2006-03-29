@@ -40,8 +40,8 @@ DIRS = 		BouncingBall Brownian \
 		Lorenz NewtonsCradle Pendulum3D\
 		SampledClocks Satellite SigmaDelta SinuBouncingBall \
 		Spontaneous SquareWave StickyMasses Switch \
-		Transmission Thermostat V2V
-		Corba
+		Transmission Thermostat V2V \
+		Corba \
 		#$(PTJSPACES_DIR)
 
 # Root of the Java directory
