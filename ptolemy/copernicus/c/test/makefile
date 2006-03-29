@@ -107,6 +107,19 @@ EXTRA_SRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES = \
 	$(DIRS) \
+	cm \
+	simple \
+	C.tcl \
+	FIRSingleConfig.h \
+	FIRSingleMain.c \
+	FIR.tcl \
+	FIR.xml \
+	generateC.tcl \
+	HashSetTest.tcl \
+	Object.tcl \
+	ramp.tcl \
+	ramp.xml \
+	readme.txt \
 	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
