@@ -651,7 +651,7 @@ public class Precision implements Cloneable, Serializable {
      *   <li> S-2.4
      * </ul>
      *
-     * When printed, this format will always use paranthesis and
+     * When printed, this format will always use parenthesis and
      * only use the signed format specification for unsigned numbers
      * (i.e. 'U' used for unsigned numbers and NO 'S' for signed
      * numbers).
@@ -737,7 +737,7 @@ public class Precision implements Cloneable, Serializable {
      *   <li> S8/4
      * </ul>
      *
-     * When printed, this format will always use paranthesis, always
+     * When printed, this format will always use parenthesis, always
      * use the slash '/', and
      * only use the signed format specification for unsigned numbers
      * (i.e. 'U' used for unsigned numbers and NO 'S' for signed
@@ -818,7 +818,7 @@ public class Precision implements Cloneable, Serializable {
      *   <li> S8e-4
      * </ul>
      *
-     * When printed, this format will always use paranthesis and
+     * When printed, this format will always use parenthesis and
      * only use the signed format specification for unsigned numbers
      * (i.e. 'U' used for unsigned numbers and NO 'S' for signed
      * numbers).
@@ -896,7 +896,7 @@ public class Precision implements Cloneable, Serializable {
      *   <li> 4:3
      * </ul>
      *
-     * When printed, this format will always use paranthesis and
+     * When printed, this format will always use parenthesis and
      * only use the signed format specification for unsigned numbers
      * (i.e. 'U' used for unsigned numbers and NO 'S' for signed
      * numbers).
