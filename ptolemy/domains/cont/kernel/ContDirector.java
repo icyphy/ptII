@@ -563,7 +563,7 @@ public class ContDirector extends StaticSchedulingDirector
             _debug(getFullName(), "preinitializing.");
         }
 
-        // Verify that this director resides in an approriate level
+        // Verify that this director resides in an appropriate level
         // of hierarchy.
         Nameable nameable = getContainer();
 

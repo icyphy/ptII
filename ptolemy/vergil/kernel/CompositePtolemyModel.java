@@ -210,17 +210,17 @@ public class CompositePtolemyModel implements CompositeModel {
     /** Return a list of all the nodes in the graph corresponding to
      *  the specified Ptolemy II model.  If the <i>before</i> and
      *  <i>after</i> arguments are both true, then all nodes are
-     *  returned. If only <i>before</i> is true, then all nodes
-     *  except attriutes that contain an attribute named "_renderLast"
-     *  are returned.  If only <i>after</i> is true, then only
+     *  returned. If only <i>before</i> is true, then all nodes except
      *  attributes that contain an attribute named "_renderLast" are
-     *  returned. The model can be any NamedObj,
-     *  and the returned list will include attributes that contain
-     *  an attribute named "_renderFirst", followed by entities, ports,
-     *  vertexes, followed by attributes that contain neither "_renderFirst" nor
-     *  "_renderLast", in that order.
-     *  Note that this method creates a new list, and should therefore
-     *  only be called if the object has changed.
+     *  returned.  If only <i>after</i> is true, then only attributes
+     *  that contain an attribute named "_renderLast" are
+     *  returned. The model can be any NamedObj, and the returned list
+     *  will include attributes that contain an attribute named
+     *  "_renderFirst", followed by entities, ports, vertexes,
+     *  followed by attributes that contain neither "_renderFirst" nor
+     *  "_renderLast", in that order.  Note that this method creates a
+     *  new list, and should therefore only be called if the object
+     *  has changed.
      *  @param composite The composite entity.
      *  @param before True to include nodes to be rendered before edges.
      *  @param after True to include nodes to be rendered after edges.

@@ -591,7 +591,7 @@ public abstract class HSDirector extends StaticSchedulingDirector implements
             _debug(getFullName(), "preinitializing.");
         }
 
-        // Verify that this director resides in an approriate level
+        // Verify that this director resides in an appropriate level
         // of hierarchy.
         Nameable nameable = getContainer();
 

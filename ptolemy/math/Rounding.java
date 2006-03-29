@@ -45,7 +45,7 @@ import java.util.Map;
  <p>
  Rounding is an abstract class for all rounding strategies.
  The primary method of this class is {@link #round(BigDecimal) round}. This
- method will round a BigDecimal value to the approriate integer
+ method will round a BigDecimal value to the appropriate integer
  and return a BigInteger object.
  <p>
  {@link BigDecimal} objects are rounded by calling the
