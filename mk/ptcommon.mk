@@ -325,7 +325,7 @@ $(PTCLASSJAR): $(JSRCS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	mkdir -p $(PTJAR_TMPDIR)/$(ME)
 	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	@echo "Creating $@"
-	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	$(JAR_INDEX)
 	rm -rf $(PTJAR_TMPDIR)
@@ -355,7 +355,7 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	for jar in $(PTCLASSALLJARS) ; do \
 		echo "Unjarring $$jar"; \
-		(cd $(PTJAR_TMPDIR); "$(JAR)" -xf ../$$jar); \
+		(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xf ../$$jar); \
 	done
 	rm -rf $(PTJAR_TMPDIR)/META-INF
 	@echo "Creating $@"
@@ -377,11 +377,11 @@ $(PTAUXALLJAR): $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	for jar in $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED); do \
 		echo "Unjarring $$jar"; \
-		(cd $(PTJAR_TMPDIR); "$(JAR)" -xvf ../$$jar); \
+		(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xvf ../$$jar); \
 	done
 	rm -rf $(PTJAR_TMPDIR)/META-INF
 	@echo "Creating $@"
-	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -cvf tmp.jar .)
 	mv $(PTJAR_TMPDIR)/tmp.jar $@
 	$(JAR_INDEX)
 	rm -rf $(PTJAR_TMPDIR)
