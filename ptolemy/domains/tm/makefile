@@ -57,7 +57,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel lib test doc runtime
+# runtime is on a separate line so we can exclude it while building a release.
+MISC_FILES =	kernel lib test \
+		runtime \
+		doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
