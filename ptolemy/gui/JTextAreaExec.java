@@ -58,7 +58,7 @@ import ptolemy.util.ExecuteCommands;
 import ptolemy.util.StringUtilities;
 
 /** Execute commands in a subprocess and display them in a JTextArea.
- For a non-graphical versino, see {@link ptolemy.util.StreamExec}.
+ For a non-graphical version, see {@link ptolemy.util.StreamExec}.
  <p>Loosely based on Example1.java from
  http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
  <p>See also
