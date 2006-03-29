@@ -55,10 +55,12 @@ OTHER_FILES_TO_BE_JARED = \
 	README.txt \
 	ExecDemos.xml \
 	RunDemos.xml \
+	RunDemosInNewProcess.xml \
 	Shell.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
+	demo.txt \
 	rundemos.bat \
 	shutdown.bat \
 	startdemo.sh
