@@ -108,7 +108,7 @@ public abstract class ShapeAttribute extends VisibleAttribute {
 
     /** Specification of the dash pattern for dashed or dotted lines.
      *  An empty value indicates that the line should not be dashed.
-     *  The values specify the length of solid and transparent segements
+     *  The values specify the length of solid and transparent segments
      *  in an alternating fashion.
      *  This is an array of doubles that by default is empty.
      */
