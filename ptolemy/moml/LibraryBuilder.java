@@ -31,10 +31,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Workspace;
 
 /**
- * An abstract class that defines the interface for LibraryBuilder.  The main
- * purpose of a library builder is to create a moml library from something other
- * than a moml document.  The first implentation of this class is going to
- * be to create a library from a directory of ksw files.
+ * An abstract class that defines the interface for LibraryBuilder.
+ * The main purpose of a library builder is to create a moml library
+ * from something other than a moml document.  The first
+ * implementation of this class is going to be to create a library
+ * from a directory of ksw files.
  * @author Chad Berkley
  * @version $Id$
  * @since Ptolemy II 5.2
