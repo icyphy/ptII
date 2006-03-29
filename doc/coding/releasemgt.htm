@@ -203,8 +203,11 @@ below are some things to be aware of
 cd /home/cvs/ptII
 chmod -R a+rX .
 find . -name "*.java,v" -exec chmod a-x {} \;
+find . -name "*.htm,v" -exec chmod a-x {} \;
+find . -name "*.html,v" -exec chmod a-x {} \;
 find . -name "*makefile,v" -exec chmod a-x {} \;
 find . -name "*.tcl,v" -exec chmod a-x {} \;
+find . -name "*.xml,v" -exec chmod a-x {} \;
 </pre>
 
 <li> Tag the tree as the release tree and create a branch
