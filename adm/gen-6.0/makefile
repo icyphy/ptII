@@ -311,7 +311,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		bin/emachine.bat \
 		bin/giottoc.bat \
 		bin/histogram.bat \
-		bin/hyvisual \
 		bin/jode.bat \
 		bin/mescal.bat \
 		bin/moml.bat \
@@ -471,6 +470,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 # Files to be removed from HyVisual source distributions
 VIPTOS_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
+		bin/hyvisual \
 		doc/codeDocHyVisual \
 		doc/codeDocHyVisual.jar \
 		doc/codeDocVisualSense \
