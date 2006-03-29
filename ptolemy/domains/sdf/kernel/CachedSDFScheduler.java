@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
  schedule again.
  <p>
  The size of the cache in the CachedSDFScheduler is usually set by its
- containning director when constructing this scheduler. If the cache is
+ containing director when constructing this scheduler. If the cache is
  full, the least recently used schedule (at the end of the cache) is
  discarded.
 
