@@ -70,7 +70,7 @@ public interface ExecuteCommands {
     /** Set the working directory of the subprocess.
      *  @param workingDirectory The working directory of the
      *  subprocess.  If this argument is null, then the subprocess is
-     *  exectued in the working directory of the current process.
+     *  executed in the working directory of the current process.
      */
     public void setWorkingDirectory(File workingDirectory);
 
