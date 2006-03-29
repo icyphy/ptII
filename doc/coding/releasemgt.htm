@@ -157,8 +157,10 @@ and run make.  See the top of the file for the appropriate make command
 <br>First, edit <code>chkcopyright</code> and update the year.
 <br>Then, do:
 <pre>
-find . -type f -print &gt; /tmp/ff
-sh $PTII/adm/copyright/chkcopyright `cat /tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v gif`
+cat /tmp/ff | grep -v .class | grep -v codeDoc | grep -v xml | grep -v
+alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v
+gif | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp /tmp/copycheck
+grep "does not contain a Copyright" /tmp/copycheck | grep -v README
 </pre>
 
 
