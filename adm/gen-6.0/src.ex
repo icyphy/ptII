@@ -135,7 +135,6 @@ ptolemy/copernicus/java/test/runSnapShot.stats
 ptolemy/copernicus/jhdl
 ptolemy/copernicus/shallow/test/codeGenerator.tmp
 ptolemy/copernicus/shallow/ptolemy.giotto
-ptolemy/data/test/EventToken.tcl
 ptolemy/domains/cont
 ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock
 ptolemy/domains/ct/demo/Agilent
