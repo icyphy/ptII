@@ -92,6 +92,7 @@ ptolemy/actor/lib/javasound/test/outfile.wav
 ptolemy/actor/lib/jspaces
 ptolemy/actor/lib/jxta
 ptolemy/actor/lib/net/test_auto
+ptolemy/actor/lib/ptp
 ptolemy/actor/lib/python/demo/HelloWorld
 ptolemy/actor/lib/python/demo/NotifyFailedTest
 ptolemy/actor/lib/security/test/auto/foo.keystore
