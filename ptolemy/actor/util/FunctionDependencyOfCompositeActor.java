@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  <p> This class provides both an abstracted view, which gives the function
  dependency the output ports of a composite actor have on input ports, and
- a detailed view from which the abstruct view is constructed.
+ a detailed view from which the abstract view is constructed.
  The detailed view is a graph where the nodes correspond
  to the ports of a composite actor and to the ports of all deeply
  contained opaque actors, and the edges represent either the communication
