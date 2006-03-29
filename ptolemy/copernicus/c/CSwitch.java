@@ -1288,7 +1288,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     /** Allocate memory for a given array.
      * @param elementType The element type of array.
-     * @param dimensionsToFill The number of dimensinos to fill.
+     * @param dimensionsToFill The number of dimensions to fill.
      * @param sizeCode The size code
      * @return a String that will allocate the array.
      */
