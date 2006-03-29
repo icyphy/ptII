@@ -54,7 +54,7 @@ import java.util.Map;
  to support this functionality for each of the supported rounding
  modes. In addition, several static singleton rounding strategies
  are provided by this class to implement one of the supported
- routing modes.  Each of these rounding strategies are modelled
+ routing modes.  Each of these rounding strategies are modeled
  after the rounding strategies provided by {@link BigDecimal}
  and include:
 
