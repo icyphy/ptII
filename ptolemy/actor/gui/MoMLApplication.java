@@ -353,7 +353,7 @@ public class MoMLApplication implements ExecutionListener {
      *  or in the classpath.  To convert a String to a URL suitable for
      *  use by this method, call specToURL(String).
      *  <p>If there is an _applicationInitializer parameter, then
-     *  instiantiate the class named by that parameter.  The
+     *  instantiate the class named by that parameter.  The
      *  _applicationInitializer parameter contains a string that names
      *  a class to be initialized.
      *  @param specificationURL A string describing a URL.
