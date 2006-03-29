@@ -874,7 +874,7 @@ public class Precision implements Cloneable, Serializable {
     /** Defines a Precision string format using the VHDL MSB:LSB
      * precision format. The MSB value specifies the location
      * of the most significant bit and LSB specifies the location
-     * of the least significatn bit.
+     * of the least significant bit.
      * Negative values are allowed for both MSB and LSB so long as
      * the MSB is greather than the LSB. <p>
      *
