@@ -88,7 +88,7 @@ public abstract class VisibleAttribute extends Attribute {
     /** Move this object to the first position in the list
      *  of attributes of the container. This overrides the base
      *  class to create  an attribute named "_renderFirst" and to
-     *  remove an attriute named "_renderLast", if it is present.
+     *  remove an attribute named "_renderLast", if it is present.
      *  This attribute is recognized by vergil, which then renders this
      *  attribute before entities, connections, and other attributes.
      *  This method gets write access on workspace
