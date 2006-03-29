@@ -189,7 +189,7 @@ public abstract class ODESolver extends NamedObj {
      */
     public abstract int getIntegratorAuxVariableCount();
 
-    /** Perfrom one integration step. The fire() method of integrators
+    /** Perform one integration step. The fire() method of integrators
      *  delegates to this method. Derived classes need to implement
      *  the details.
      *  @param integrator The integrator that calls this method.
