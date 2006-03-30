@@ -71,7 +71,7 @@ public class Display extends CCodeGeneratorHelper {
 
         String type = "";
         type = codeGenType(actor.input.getType());
-        if (!_isPrimitiveType(type)) {
+        if (!isPrimitiveType(type)) {
             type = "Token";
         }
 

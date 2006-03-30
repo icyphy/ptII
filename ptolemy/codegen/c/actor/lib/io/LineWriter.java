@@ -28,6 +28,7 @@
  */
 package ptolemy.codegen.c.actor.lib.io;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -92,19 +93,18 @@ public class LineWriter extends CCodeGeneratorHelper {
         } else {
             String fileNameString = FileReader.getFileName(actor.fileName);
 
-            boolean fileExist = FileUtilities.nameToFile(fileNameString, null)
-                    .exists();
-            boolean askForOverwrite = actor.confirmOverwrite.getExpression()
-                    .equals("true");
-
-            if (fileExist && askForOverwrite) {
-                _codeStream.appendCodeBlock("confirmOverwrite");
+            fileNameString = FileReader.getFileName(actor.fileName);
+            ArrayList args = new ArrayList();
+            args.add(fileNameString);
+            
+            if (actor.confirmOverwrite.getExpression().equals("true")) {
+                _codeStream.appendCodeBlock("confirmOverwrite", args);
             }
 
             if (actor.append.getExpression().equals("true")) {
-                _codeStream.appendCodeBlock("openForAppend");
+                _codeStream.appendCodeBlock("openForAppend", args);
             } else {
-                _codeStream.appendCodeBlock("openForWrite");
+                _codeStream.appendCodeBlock("openForWrite", args);
             }
         }
 

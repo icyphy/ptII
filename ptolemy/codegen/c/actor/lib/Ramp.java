@@ -26,6 +26,8 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
@@ -61,20 +63,49 @@ public class Ramp extends CCodeGeneratorHelper {
         super.generatePreinitializeCode();
 
         ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
-        Type initType = actor.init.getType();
-        Type stepType = actor.step.getType();
-        int comparison = TypeLattice.compare(initType, stepType);
 
-        if ((comparison == CPO.HIGHER) || (comparison == CPO.SAME)) {
-            _codeStream.append("static " + initType.toString()
-                    + " $actorSymbol(state);\n");
-        } else if (comparison == CPO.LOWER) {
-            _codeStream.append("static " + stepType.toString()
-                    + " $actorSymbol(state);\n");
-        } else {
-            throw new IllegalActionException(actor, "type incomparable.");
+        ArrayList args = new ArrayList();
+        args.add(cType(TypeLattice.leastUpperBound(
+        		actor.init.getType(), actor.step.getType())));
+
+        _codeStream.appendCodeBlock("preinitBlock", args);
+        return processCode(_codeStream.toString());
+    }
+
+    /**
+     * Generate fire code for the Ramp actor.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.Ramp actor = 
+        	(ptolemy.actor.lib.Ramp) getComponent();
+
+
+        //actor.init.getType().;
+        
+        String type = codeGenType(TypeLattice.leastUpperBound(
+        		actor.init.getType(), actor.step.getType()));
+        if (!isPrimitiveType(type)) {
+            type = "Token";
         }
 
+        _codeStream.appendCodeBlock(type + "FireBlock");
         return processCode(_codeStream.toString());
+    }
+
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /**
+     * 
+     *
+     */
+    private void _typeConvert() {
+    	
     }
 }

@@ -1263,6 +1263,27 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             return actorHelper.getWriteOffset(inputPort, channelNumber);
         }
     }
+    
+    /**
+     * Determine if the given type is primitive.
+     * @param ptType The given ptolemy type.
+     * @return true if the given type is primitive, otherwise false.
+     * @exception IllegalActionException Thrown if there is no
+     *  corresponding codegen type.
+     */
+    public static boolean isPrimitiveType(Type ptType)
+            throws IllegalActionException {
+        return CodeGenerator._primitiveTypes.contains(codeGenType(ptType));
+    }
+
+    /**
+     * Determine if the given type is primitive.
+     * @param cgType The given codegen type.
+     * @return true if the given type is primitive, otherwise false.
+     */
+    public static boolean isPrimitiveType(String cgType) {
+        return CodeGenerator._primitiveTypes.contains(cgType);
+    }
 
     /** Process the specified code, replacing macros with their values.
      * @param code The code to process.
@@ -1620,7 +1641,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 		+ sourceType + "' to '" + sinkType + "'\n");        		
             }
     	} else if (sinkType == BaseType.GENERAL) {
-    		if (_isPrimitiveType(sourceType)) {
+    		if (isPrimitiveType(sourceType)) {
         		result += "$new(" + codeGenType(sourceType) + "(" + sourceRef + "))";
     		} else {
     			//It is a Token type, so we can just assign directly.
@@ -1652,27 +1673,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
     } 
-    
-    /**
-     * Determine if the given type is primitive.
-     * @param ptType The given ptolemy type.
-     * @return true if the given type is primitive, otherwise false.
-     * @exception IllegalActionException Thrown if there is no
-     *  corresponding codegen type.
-     */
-    protected static boolean _isPrimitiveType(Type ptType)
-            throws IllegalActionException {
-        return CodeGenerator._primitiveTypes.contains(codeGenType(ptType));
-    }
-
-    /**
-     * Determine if the given type is primitive.
-     * @param cgType The given codegen type.
-     * @return true if the given type is primitive, otherwise false.
-     */
-    protected static boolean _isPrimitiveType(String cgType) {
-        return CodeGenerator._primitiveTypes.contains(cgType);
-    }
 
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.

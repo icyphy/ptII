@@ -30,19 +30,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 180.0]">
         </property>
     </entity>
-    <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
-        <property name="function" class="ptolemy.data.expr.Parameter" value="toUpperCase">
-        </property>
-        <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 180.0]">
-        </property>
-    </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
         <property name="value" class="ptolemy.data.expr.Parameter" value=" ( Ptolemy Research ) ">
         </property>
@@ -56,16 +43,29 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 180.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="StringFunction" class="ptolemy.actor.lib.string.StringFunction">
+        <property name="function" class="ptolemy.data.expr.Parameter" value="toUpperCase">
         </property>
-    </relation>
+        <doc>Trim a string, convert a string to uppercase, or convert a string to&#10;            lowercase depending on the user's selection.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="11">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 180.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <link port="Test.input" relation="relation2"/>
+    <link port="StringConst.output" relation="relation"/>
     <link port="StringFunction.input" relation="relation"/>
     <link port="StringFunction.output" relation="relation2"/>
-    <link port="StringConst.output" relation="relation"/>
 </entity>

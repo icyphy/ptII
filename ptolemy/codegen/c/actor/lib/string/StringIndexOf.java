@@ -85,66 +85,6 @@ public class StringIndexOf extends CCodeGeneratorHelper {
     }
 
     /**
-     * Generate initialize code.
-     * Read the  from StringIndexOf.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateInitializeCode());
-
-        return code.toString();
-    }
-
-    /**
-     * Generate preinitialize code.
-     * Reads the <code>preinitBlock</code> from StringIndexOf.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        code.append(_generateBlockCode("preinitBlock"));
-        return code.toString();
-    }
-
-    /**
-     * Get shared code.  Read the from StringIndexOf.c, replace macros
-     * with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public Set getSharedCode() throws IllegalActionException {
-        Set sharedCode = new HashSet();
-        sharedCode.addAll(super.getHeaderFiles());
-
-        return sharedCode;
-    }
-
-    /**
-     * Generate wrap up code.
-     * Read the  from StringIndexOf.c, 
-     * replace macros with their values and append the processed code block
-     * to the given code buffer.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateWrapupCode());
-
-        return code.toString();
-    }
-
-    /**
      * Get the files needed by the code generated for the
      * StringIndexOf actor.
      * @return A set of Strings that are names of the header files
@@ -155,7 +95,6 @@ public class StringIndexOf extends CCodeGeneratorHelper {
         Set files = new HashSet();
         files.addAll(super.getHeaderFiles());
         files.add("<string.h>");
-
         return files;
     }
 }

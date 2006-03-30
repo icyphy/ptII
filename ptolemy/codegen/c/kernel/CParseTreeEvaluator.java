@@ -1,6 +1,6 @@
 /* A visitor for parse trees of the expression language.
 
- Copyright (c) 2006 The Regents of the University of California
+ Copyright (c) 1998-2005 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,8 +30,8 @@ package ptolemy.codegen.c.kernel;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.codegen.kernel.CodeGeneratorHelper;
-import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
+import ptolemy.data.expr.*;
+
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
@@ -41,44 +41,12 @@ import ptolemy.data.MatrixToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.ASTPtArrayConstructNode;
-import ptolemy.data.expr.ASTPtBitwiseNode;
-import ptolemy.data.expr.ASTPtFunctionApplicationNode;
-import ptolemy.data.expr.ASTPtFunctionDefinitionNode;
-import ptolemy.data.expr.ASTPtFunctionalIfNode;
-import ptolemy.data.expr.ASTPtLeafNode;
-import ptolemy.data.expr.ASTPtLogicalNode;
-import ptolemy.data.expr.ASTPtMatrixConstructNode;
-import ptolemy.data.expr.ASTPtMethodCallNode;
-import ptolemy.data.expr.ASTPtPowerNode;
-import ptolemy.data.expr.ASTPtProductNode;
-import ptolemy.data.expr.ASTPtRecordConstructNode;
-import ptolemy.data.expr.ASTPtRelationalNode;
-import ptolemy.data.expr.ASTPtRootNode;
-import ptolemy.data.expr.ASTPtShiftNode;
-import ptolemy.data.expr.ASTPtSumNode;
-import ptolemy.data.expr.ASTPtUnaryNode;
-import ptolemy.data.expr.AbstractParseTreeVisitor;
-import ptolemy.data.expr.CachedMethod;
-import ptolemy.data.expr.Constants;
-import ptolemy.data.expr.ExpressionFunction;
-import ptolemy.data.expr.MatlabUtilities;
-import ptolemy.data.expr.ParseTreeEvaluator;
-import ptolemy.data.expr.ParseTreeFreeVariableCollector;
-import ptolemy.data.expr.ParseTreeSpecializer;
-import ptolemy.data.expr.ParseTreeTypeInference;
-import ptolemy.data.expr.ParserScope;
-import ptolemy.data.expr.PtParser;
-import ptolemy.data.expr.PtParserConstants;
-import ptolemy.data.expr.Token;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.UnionToken;
 import ptolemy.data.type.FunctionType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluator
@@ -90,34 +58,21 @@ import ptolemy.kernel.util.KernelException;
  Two exceptions are logic nodes and the ternary if node (the ? : construct),
  which do not necessarily evaluate all children nodes.
 
- <p>This class has the following limitations:
- <ul>
- <li> It is a copy of ParseTreeCodeGenerator from data/expr and thus
-      has lots of code for evaluating expressions, which we don't need
- <li> It is not properly converting types: We need to add logic to
-      convert types.
- <li> The .tcl test has known failures involving nulls
- <li> It does not evaluate constants.
- </ul>
-
- @author Man-Kit Leung
+ @author Steve Neuendorffer
  @version $Id$
- @since Ptolemy II 6.0
- @Pt.ProposedRating Red
- @Pt.AcceptedRating Red
+ @since Ptolemy II 2.1
+ @Pt.ProposedRating Green (neuendor)
+ @Pt.AcceptedRating Yellow (neuendor)
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
-    implements ParseTreeCodeGenerator {
-
-
+public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Evaluate the parse tree with the specified root node.
      *  @param node The root of the parse tree.
      *  @return The result of evaluation.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
             throws IllegalActionException {
@@ -134,13 +89,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      */
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
-
-        // Make a first pass to evaluate constants and type convert.
-        //CParseTreeEvaluator evaluator = new CParseTreeEvaluator();
-        //evaluator.evaluateParseTree(node, scope);
-
         _scope = scope;
-        
+
         // Evaluate the value of the root node.
         node.visit(this);
 
@@ -172,7 +122,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         } catch (Exception ex) {
             // If an exception occurs, then bind the exception into
             // the trace and return the trace.
-            _trace(KernelException.stackTraceToString(ex));
+            _trace(ex.toString());
         }
 
         _scope = null;
@@ -183,86 +133,34 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         return trace;
     }
 
-    /** Generate code that corresponds with the fire() method.
-     *  @return The generated code.
-     */
-    public String generateFireCode() {
-        return _fireCode.toString();
-    }
-
-    /** Generate code that corresponds with the initialize() method.
-     *  @return The generated code.
-     */
-    public String generateInitializeCode() {
-        return _initializeCode.toString();
-    }
-
-    /** Generate code that corresponds with the preinitialize() method.
-     *  @return The generated code.
-     */
-    public String generatePreinitializeCode() {
-        return _preinitializeCode.toString();
-    }
-
-    /** Generate shared code.
-     *  @return The generated code.
-     */
-    public String generateSharedCode() {
-        return _sharedCode.toString();
-    }
-
-    /** Generate code that corresponds with the wrapup() method.
-     *  @return The generated code.
-     */
-    public String generateWrapupCode() {
-        return _wrapupCode.toString();
-    }
-
     /** Construct an ArrayToken that contains the tokens from the
      *  children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+
         int numChildren = node.jjtGetNumChildren();
 
-        ptolemy.data.Token[] tokens = new ptolemy.data.Token[numChildren];
-
-        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
-        _fireCode.append("$new(Array(" + numChildren + ", " + numChildren);
-
-        // Convert up to LUB. 
-        // Assume UNKNOWN is the lower type.
-        ptolemy.data.type.Type elementType = BaseType.UNKNOWN;
+        // Convert up to LUB.
+        ptolemy.data.type.Type elementType = tokens[0].getType();
 
         for (int i = 0; i < numChildren; i++) {
-            _fireCode.append(", ");
-
-            int nextIndex = _fireCode.length();
-
-            tokens[i] = _evaluateChild(node, i);
-
             Type valueType = tokens[i].getType();
 
-            if (CodeGeneratorHelper.isPrimitiveType(valueType)) {
-                _fireCode.insert(nextIndex, "$new(" +
-                		CodeGeneratorHelper.codeGenType(valueType) + "(");
-                _fireCode.append("))");
-            }
-            
-            if (!elementType.equals(valueType)) { // find max type
+            if (!elementType.equals(valueType)) {
                 elementType = TypeLattice.leastUpperBound(elementType,
                         valueType);
             }
-        }
-
+        }        
+        
         for (int i = 0; i < numChildren; i++) {
             tokens[i] = elementType.convert(tokens[i]);
         }
@@ -272,33 +170,28 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
-
-        _fireCode.append("))");
     }
 
     /** Evaluate a bitwise operator on the children of the specified
      *  node, where the particular operator is property of the node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
-        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+
         int numChildren = node.jjtGetNumChildren();
 
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
 
-        _fireCode.append("(");
-
-        //ptolemy.data.Token result = tokens[0];
-        ptolemy.data.Token result = _evaluateChild(node, 0);
+        ptolemy.data.Token result = tokens[0];
 
         if (!(result instanceof BitwiseOperationToken)) {
             throw new IllegalActionException("Operation "
@@ -313,16 +206,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 node, "Invalid operation");
 
         for (int i = 1; i < numChildren; i++) {
-            if (node.isBitwiseAnd()) {
-                _fireCode.append("&");
-            } else if (node.isBitwiseOr()) {
-                _fireCode.append("|");
-            } else {
-                _fireCode.append("^");
-            }
-
-            //ptolemy.data.Token nextToken = tokens[i];
-            ptolemy.data.Token nextToken = _evaluateChild(node, i);
+            ptolemy.data.Token nextToken = tokens[i];
 
             if (!(nextToken instanceof BitwiseOperationToken)) {
                 throw new IllegalActionException("Operation "
@@ -332,15 +216,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
             }
 
             if (node.isBitwiseAnd()) {
-                //bitwiseResult = bitwiseResult.bitwiseAnd(nextToken);
+                bitwiseResult = bitwiseResult.bitwiseAnd(nextToken);
             } else if (node.isBitwiseOr()) {
-                //bitwiseResult = bitwiseResult.bitwiseOr(nextToken);
+                bitwiseResult = bitwiseResult.bitwiseOr(nextToken);
             } else {
-                //bitwiseResult = bitwiseResult.bitwiseXor(nextToken);
+                bitwiseResult = bitwiseResult.bitwiseXor(nextToken);
             }
         }
-
-        _fireCode.append(")");
 
         _evaluatedChildToken = ((ptolemy.data.Token) bitwiseResult);
 
@@ -381,7 +263,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  {@link ptolemy.data.expr.MatlabUtilities#evaluate(String, Set, ParserScope)}
      *  .
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
             throws IllegalActionException {
@@ -393,27 +275,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
             value = _scope.get(node.getFunctionName());
         }
 
-
-        // The following block of codes applies when multirate
-        // expression is used.  Anonymous functions have no name!
-
-        if (functionName != null) {
-            int index = functionName.indexOf("Array");
-            if (index > 0) {
-                String label = value.toString();
-                if (label.startsWith("object(")) {
-                    label = label.substring(7, label.length() - 1);
-                    int position = label.indexOf("(@)");
-                    _fireCode.append(label.substring(0, position + 1));
-                    _evaluateChild(node, 1);
-                    _fireCode.append(label.substring(position + 2));
-                    return;
-                }
-            }
-        }
-
-        _fireCode.append(functionName + "(");
-
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
@@ -422,10 +283,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
         // First try to find a signature using argument token values.
         for (int i = 0; i < argCount; i++) {
-            if (i != 0) {
-                _fireCode.append(", ");
-            }
-
             // Save the resulting value.
             _evaluateChild(node, i + 1);
 
@@ -541,14 +398,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         ptolemy.data.Token result = _functionCall(node.getFunctionName(),
                 argTypes, argValues);
         _evaluatedChildToken = (result);
-        _fireCode.append(")");
     }
 
     /** Define a function, where the children specify the argument types
      *  and the expression.  The expression is not evaluated. The resulting
      *  token in the node is an instance of FunctionToken.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException {
@@ -577,13 +433,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  evaluate either the second or the third child. The result of
      *  that evaluation becomes the result of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
@@ -604,10 +459,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
         if (!(test instanceof BooleanToken)) {
             throw new IllegalActionException(
-                    "Functional-if must branch on a boolean, but instead test "
-                    + (test == null ? "was null " : "was " + test.toString()
-                            + "an instance of "
-                            + test.getClass().getName()));
+                    "Functional-if must branch on a boolean, but instead was "
+                            + test.toString() + " an instance of "
+                            + test.getClass().getName());
         }
 
         boolean value = ((BooleanToken) test).booleanValue();
@@ -649,26 +503,18 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  identifier, its value is obtained from the scope or from the list
      *  of registered constants.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            if (_evaluatedChildToken instanceof StringToken) {
-                // In C, Strings should have \n tags substituted. 
-                // See Test 17.2
-                _fireCode.append(ptolemy.util.StringUtilities.substitute(_evaluatedChildToken.toString(), "\n", "\\n"));
-            } else {
-                _fireCode.append(_evaluatedChildToken.toString());
-            }
-            
             return;
         }
 
         String name = node.getName();
 
         // The node refers to a variable, or something else that is in
-        // scope
+        // scope.
         ptolemy.data.Token value = null;
 
         if (_scope != null) {
@@ -684,16 +530,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         // Set the value, if we found one.
         if (value != null) {
             _evaluatedChildToken = value;
-
-            String label = value.toString();
-
-            if (label.startsWith("object(")) {
-                // If this is an ObjectToken, we only wants the label.
-                _fireCode.append(label.substring(7, label.length() - 1));
-            } else {
-                _fireCode.append(label);
-            }
-
             return;
         }
 
@@ -703,17 +539,14 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     /** Evaluate a logical AND or OR on the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
-
-        _fireCode.append("(");
 
         // Note that we do not always evaluate all of the children...
         // We perform short-circuit evaluation instead and evaluate the
@@ -725,15 +558,14 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
         _evaluateChild(node, 0);
 
-        //ptolemy.data.Token result = _evaluatedChildToken;
+        ptolemy.data.Token result = _evaluatedChildToken;
 
-        /*
-         if (!(result instanceof BooleanToken)) {
-         throw new IllegalActionException("Cannot perform logical "
-         + "operation on " + result + " which is a "
-         + result.getClass().getName());
-         }
-         */
+        if (!(result instanceof BooleanToken)) {
+            throw new IllegalActionException("Cannot perform logical "
+                    + "operation on " + result + " which is a "
+                    + result.getClass().getName());
+        }
+
         // Make sure that exactly one of AND or OR is set.
         _assert(node.isLogicalAnd() ^ node.isLogicalOr(), node,
                 "Invalid operation");
@@ -743,35 +575,28 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         // FIXME: I dislike that this is not done in the token classes...
         boolean flag = node.isLogicalAnd();
 
-        for (int i = 1; i < numChildren; i++) {
-            /*ASTPtRootNode child = (ASTPtRootNode)*/node.jjtGetChild(i);
-
-            _fireCode.append(flag ? " && " : " || ");
+        for (int i = 0; i < numChildren; i++) {
+            ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
 
             // Evaluate the child
-            //child.visit(this);
-            _evaluateChild(node, i);
+            child.visit(this);
 
             // Get its value.
-            //ptolemy.data.Token nextToken = _evaluatedChildToken;
+            ptolemy.data.Token nextToken = _evaluatedChildToken;
 
-            /*
-             if (!(nextToken instanceof BooleanToken)) {
-             throw new IllegalActionException("Cannot perform logical "
-             + "operation on " + nextToken + " which is a "
-             + result.getClass().getName());
-             }
+            if (!(nextToken instanceof BooleanToken)) {
+                throw new IllegalActionException("Cannot perform logical "
+                        + "operation on " + nextToken + " which is a "
+                        + result.getClass().getName());
+            }
 
-             if (flag != ((BooleanToken) nextToken).booleanValue()) {
-             _evaluatedChildToken = (BooleanToken.getInstance(!flag));
+            if (flag != ((BooleanToken) nextToken).booleanValue()) {
+                _evaluatedChildToken = (BooleanToken.getInstance(!flag));
 
-             // Note short-circuit eval.
-             return;
-             }
-             */
+                // Note short-circuit eval.
+                return;
+            }
         }
-
-        _fireCode.append(")");
 
         _evaluatedChildToken = (BooleanToken.getInstance(flag));
 
@@ -783,56 +608,25 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** Construct a matrix containing the children nodes.
      *  The specified node ends up with a MatrixToken value.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
-        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
-        int row = node.getRowCount();
-        int column = node.getColumnCount();
-        ptolemy.data.Token[] tokens = new ptolemy.data.Token[row * column];
-        _fireCode.append("((Token*) $new(Matrix(" + row + ", " + column);
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
         ptolemy.data.Token result = null;
 
         if (node.getForm() == 1) {
-            for (int i = 0; i < row; i++) {
-                for (int j = 0; j < column; j++) {
-                    _fireCode.append(", ");
-
-                    int index = (i * column) + j;
-
-                    int nextIndex = _fireCode.length();
-                    tokens[index] = _evaluateChild(node, index);
-
-                    Type valueType = tokens[index].getType();
-
-                    if (valueType.equals(BaseType.INT)) {
-                        _fireCode.insert(nextIndex, "$new(Int(");
-                        _fireCode.append(")), TYPE_Int");
-                    } else if (valueType.equals(BaseType.DOUBLE)) {
-                        _fireCode.insert(nextIndex, "$new(Double(");
-                        _fireCode.append(")), TYPE_Double");
-                    } else if (valueType.equals(BaseType.STRING)) {
-                        _fireCode.insert(nextIndex, "$new(String(");
-                        _fireCode.append(")), TYPE_String");
-                    } else if (valueType instanceof ArrayType) {
-                        _fireCode.append(", TYPE_Array");
-                    }
-                }
-            }
-
+            //int numChildren = node.jjtGetNumChildren();
             result = MatrixToken.arrayToMatrix(tokens, node.getRowCount(), node
                     .getColumnCount());
         } else if (node.getForm() == 2) {
             try {
-                // FIXME: Do codegen for the matlab form.
                 int columnCount = MatrixToken.determineSequenceLength(
                         (ScalarToken) tokens[0], (ScalarToken) tokens[1],
                         (ScalarToken) tokens[2]);
@@ -856,7 +650,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
-                            .createSequence(tokens[3 * i], tokens[(3 * i) + 1],
+                            .createSequence(tokens[3 * i],
+                                    tokens[(3 * i) + 1],
                                     columnCount);
                     System.arraycopy(newTokens, 0, matrixTokens, columnCount
                             * i, columnCount);
@@ -877,8 +672,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
-
-        _fireCode.append(")))");
     }
 
     /** Apply a method to the children of the specified node, where the
@@ -886,19 +679,18 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  rest of the children are arguments. This also handles indexing into
      *  a record, which looks the same.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitMethodCallNode(ASTPtMethodCallNode node)
             throws IllegalActionException {
-        //_fireCode.append(node.getMethodName() + "(");
         // Method calls are generally not cached...  They are repeated
         // every time the tree is evaluated.
         int argCount = node.jjtGetNumChildren();
-        ptolemy.data.Token token = _evaluateChild(node, 0);
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
         // Handle indexing into a record.
-        if ((argCount == 1) && token instanceof RecordToken) {
-            RecordToken record = (RecordToken) token;
+        if ((argCount == 1) && tokens[0] instanceof RecordToken) {
+            RecordToken record = (RecordToken) tokens[0];
 
             if (record.labelSet().contains(node.getMethodName())) {
                 _evaluatedChildToken = (record.get(node.getMethodName()));
@@ -909,15 +701,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         // The first child is the object to invoke the method on.
         Type[] argTypes = new Type[argCount];
         Object[] argValues = new Object[argCount];
-        argValues[0] = token;
-        argTypes[0] = token.getType();
 
         // First try to find a signature using argument token values.
-        for (int i = 1; i < argCount; i++) {
-            _fireCode.append(", ");
-
+        for (int i = 0; i < argCount; i++) {
             // Save the resulting value.
-            token = _evaluateChild(node, i);
+            ptolemy.data.Token token = tokens[i];
             argValues[i] = token;
             argTypes[i] = token.getType();
         }
@@ -925,45 +713,34 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         ptolemy.data.Token result = _methodCall(node.getMethodName(), argTypes,
                 argValues);
 
-        _fireCode.append("->" + node.getMethodName() + "()");
         _evaluatedChildToken = (result);
     }
 
     /** Evaluate the power operator on the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
-        _fireCode.append("(");
-
-        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
-
-        int startIndex = _fireCode.length();
 
         // Operator is always exponentiation
         // Note that since we use an iterative integer method, instead of
         // a logarithmic method, the fastest thing is to apply the
         // exponentiation inside out, i.e. left to right.
-        //ptolemy.data.Token result = tokens[0];
-        ptolemy.data.Token result = _evaluateChild(node, 0);
+        ptolemy.data.Token result = tokens[0];
 
         for (int i = 1; i < numChildren; i++) {
-            //int times = 1;
-            _fireCode.insert(startIndex, "pow(");
-            _fireCode.append(", ");
-
-            //ptolemy.data.Token token = tokens[i];
-            ptolemy.data.Token token = _evaluateChild(node, i);
+            int times = 1;
+            ptolemy.data.Token token = tokens[i];
 
             // Note that we check for ScalarTokens because anything
             // that has a meaningful intValue() method, such as
@@ -977,7 +754,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
             }
 
             try {
-                /*times =*/((ptolemy.data.ScalarToken) token).intValue();
+                times = ((ptolemy.data.ScalarToken) token).intValue();
             } catch (IllegalActionException ex) {
                 throw new IllegalActionException("Exponent must have a valid "
                         + "lossless conversion to integer. Integer or "
@@ -985,8 +762,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
                         + "Use pow(10, 3.5) for non-integer exponents");
             }
 
-            //result = result.pow(times);
-            _fireCode.append(")");
+            result = result.pow(times);
         }
 
         _evaluatedChildToken = (result);
@@ -994,23 +770,20 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
-
-        _fireCode.append(")");
     }
 
     /** Multiply the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
-        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         List lexicalTokenList = node.getLexicalTokenList();
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
@@ -1019,37 +792,23 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 "The number of child nodes is "
                         + "not equal to number of operators plus one");
 
-        _fireCode.append("(");
-
-        //ptolemy.data.Token result = tokens[0];
-        ptolemy.data.Token result = _evaluateChild(node, 0);
+        ptolemy.data.Token result = tokens[0];
 
         for (int i = 1; i < numChildren; i++) {
             Token operator = (Token) lexicalTokenList.get(i - 1);
+            ptolemy.data.Token nextToken = tokens[i];
 
             if (operator.kind == PtParserConstants.MULTIPLY) {
-                _fireCode.append("*");
+                result = result.multiply(nextToken);
             } else if (operator.kind == PtParserConstants.DIVIDE) {
-                _fireCode.append("/");
+                result = result.divide(nextToken);
             } else if (operator.kind == PtParserConstants.MODULO) {
-                _fireCode.append("%");
-            }
-
-            //ptolemy.data.Token nextToken = tokens[i];
-            /*ptolemy.data.Token nextToken =*/_evaluateChild(node, i);
-
-            if (operator.kind == PtParserConstants.MULTIPLY) {
-                //result = result.multiply(nextToken);
-            } else if (operator.kind == PtParserConstants.DIVIDE) {
-                //result = result.divide(nextToken);
-            } else if (operator.kind == PtParserConstants.MODULO) {
-                //result = result.modulo(nextToken);
+                result = result.modulo(nextToken);
             } else {
                 _assert(false, node, "Invalid operation");
             }
         }
 
-        _fireCode.append(")");
         _evaluatedChildToken = (result);
 
         if (node.isConstant()) {
@@ -1060,7 +819,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** Construct a record by assigning the fields values given by
      *  the children nodes.
      *  @param node The record constructor node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
@@ -1091,59 +850,40 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
-        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
-        _fireCode.append("(");
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
         Token operator = node.getOperator();
-        ptolemy.data.Token leftToken = _evaluateChild(node, 0);
+        ptolemy.data.Token leftToken = tokens[0];
+        ptolemy.data.Token rightToken = tokens[1];
+        ptolemy.data.Token result;
 
         if (operator.kind == PtParserConstants.EQUALS) {
-            _fireCode.append(" == ");
+            result = leftToken.isEqualTo(rightToken);
         } else if (operator.kind == PtParserConstants.NOTEQUALS) {
-            _fireCode.append(" != ");
-        } else if (operator.kind == PtParserConstants.GTE) {
-            _fireCode.append(" >= ");
-        } else if (operator.kind == PtParserConstants.GT) {
-            _fireCode.append(" > ");
-        } else if (operator.kind == PtParserConstants.LTE) {
-            _fireCode.append(" <= ");
-        } else if (operator.kind == PtParserConstants.LT) {
-            _fireCode.append(" < ");
-        }
+            result = leftToken.isEqualTo(rightToken).not();
+        } else {
+            if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
+                throw new IllegalActionException("The " + operator.image
+                        + " operator can only be applied between scalars.");
+            }
 
-        ptolemy.data.Token rightToken = _evaluateChild(node, 1);
-        ptolemy.data.Token result = null;
-        _fireCode.append(")");
-
-        if (operator.kind == PtParserConstants.EQUALS) {
-            //result = leftToken.isEqualTo(rightToken);
-        } else if (operator.kind == PtParserConstants.NOTEQUALS) {
-            //result = leftToken.isEqualTo(rightToken).not();
-        } else { /*
-         if (!((leftToken instanceof ScalarToken) && (rightToken instanceof ScalarToken))) {
-         throw new IllegalActionException("The " + operator.image
-         + " operator can only be applied between scalars.");
-         }
-
-         ScalarToken leftScalar = (ScalarToken) leftToken;
-         ScalarToken rightScalar = (ScalarToken) rightToken;
-         */
+            ScalarToken leftScalar = (ScalarToken) leftToken;
+            ScalarToken rightScalar = (ScalarToken) rightToken;
 
             if (operator.kind == PtParserConstants.GTE) {
-                //result = leftScalar.isLessThan(rightScalar).not();
+                result = leftScalar.isLessThan(rightScalar).not();
             } else if (operator.kind == PtParserConstants.GT) {
-                //result = rightScalar.isLessThan(leftScalar);
+                result = rightScalar.isLessThan(leftScalar);
             } else if (operator.kind == PtParserConstants.LTE) {
-                //result = rightScalar.isLessThan(leftScalar).not();
+                result = rightScalar.isLessThan(leftScalar).not();
             } else if (operator.kind == PtParserConstants.LT) {
-                //result = leftScalar.isLessThan(rightScalar);
+                result = leftScalar.isLessThan(rightScalar);
             } else {
                 throw new IllegalActionException("Invalid operation "
                         + operator.image + " between "
@@ -1161,39 +901,24 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     /** Apply a shift operator to the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
-        _fireCode.append("(");
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
-        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node, "The number of child nodes must be two");
 
         Token operator = node.getOperator();
-
-        //ptolemy.data.Token token = tokens[0];
-        //ptolemy.data.Token bitsToken = tokens[1];
-        ptolemy.data.Token token = _evaluateChild(node, 0);
-
-        if (operator.kind == PtParserConstants.SHL) {
-            _fireCode.append(" << ");
-        } else if (operator.kind == PtParserConstants.SHR) {
-            _fireCode.append(" >> ");
-        } else if (operator.kind == PtParserConstants.LSHR) {
-            _fireCode.append(" >>> ");
-        }
-
-        ptolemy.data.Token bitsToken = _evaluateChild(node, 1);
+        ptolemy.data.Token token = tokens[0];
+        ptolemy.data.Token bitsToken = tokens[1];
         ptolemy.data.Token result = null;
-        _fireCode.append(")");
 
         if (!(token instanceof ScalarToken)) {
             throw new IllegalActionException("The " + operator
@@ -1238,16 +963,15 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     /** Apply a sum operator to the children of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
-        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         List lexicalTokenList = node.getLexicalTokenList();
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
@@ -1256,31 +980,20 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
                 "The number of child nodes is "
                         + "not equal to number of operators plus one");
 
-        //ptolemy.data.Token result = tokens[0];
-        _fireCode.append("(");
-
-        ptolemy.data.Token result = _evaluateChild(node, 0);
+        ptolemy.data.Token result = tokens[0];
 
         for (int i = 1; i < numChildren; i++) {
             Token operator = (Token) lexicalTokenList.get(i - 1);
+            ptolemy.data.Token nextToken = tokens[i];
 
-            //ptolemy.data.Token nextToken = tokens[i];
             if (operator.kind == PtParserConstants.PLUS) {
-                _fireCode.append("+");
-
-                //result = result.add(_evaluateChild(node, i));
+                result = result.add(nextToken);
             } else if (operator.kind == PtParserConstants.MINUS) {
-                _fireCode.append("-");
-
-                //result = result.subtract(_evaluateChild(node, i));
+                result = result.subtract(nextToken);
             } else {
                 _assert(false, node, "Invalid operation");
             }
-
-            _evaluateChild(node, i);
         }
-
-        _fireCode.append(")");
 
         _evaluatedChildToken = (result);
 
@@ -1291,61 +1004,87 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     /** Apply a unary operator to the single child of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActionException If an parse error occurs.
      */
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             _evaluatedChildToken = node.getToken();
-            _fireCode.append(_evaluatedChildToken.toString());
             return;
         }
 
-        //ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
         _assert(node.jjtGetNumChildren() == 1, node,
                 "Unary node must have exactly one child!");
 
+        ptolemy.data.Token result = tokens[0];
+
         if (node.isMinus()) {
-            _fireCode.append("-");
+            result = result.zero().subtract(result);
         } else if (node.isNot()) {
-            _fireCode.append("!");
+            if (result instanceof BooleanToken) {
+                result = ((BooleanToken) result).not();
+            } else {
+                throw new IllegalActionException(
+                        "Not operator not support for non-boolean token: "
+                                + result.toString());
+            }
         } else if (node.isBitwiseNot()) {
-            _fireCode.append("~");
+            if (!(result instanceof BitwiseOperationToken)) {
+                throw new IllegalActionException("Bitwise negation"
+                        + " not defined on " + result
+                        + " which does not support bitwise operations.");
+            }
+
+            result = (ptolemy.data.Token) ((BitwiseOperationToken) result)
+                    .bitwiseNot();
+        } else {
+            _assert(false, node, "Unrecognized unary node");
         }
 
-        //ptolemy.data.Token result = tokens[0];
-        ptolemy.data.Token result = _evaluateChild(node, 0);
-
-        /*
-         if (node.isMinus()) {
-         result = result.zero().subtract(result);
-         } else if (node.isNot()) {
-         if (result instanceof BooleanToken) {
-         //result = ((BooleanToken) result).not();
-         } else {
-         throw new IllegalActionException(
-         "Not operator not support for non-boolean token: "
-         + result.toString());
-         }
-         } else if (node.isBitwiseNot()) {
-         if (!(result instanceof BitwiseOperationToken)) {
-         throw new IllegalActionException("Bitwise negation"
-         + " not defined on " + result
-         + " which does not support bitwise operations.");
-         }
-
-         //result = (ptolemy.data.Token) ((BitwiseOperationToken) result)
-         //        .bitwiseNot();
-         } else {
-         _assert(false, node, "Unrecognized unary node");
-         }
-         */
         _evaluatedChildToken = (result);
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
+    
+    /** Construct a union by assigning the label value given by
+     *  the children nodes.
+     *  @param node The union constructor node.
+     *  @exception IllegalActionException If an evaluation error occurs.
+     */
+    public void visitUnionConstructNode(ASTPtUnionConstructNode node)
+            throws IllegalActionException {
+        if (node.isConstant() && node.isEvaluated()) {
+            _evaluatedChildToken = node.getToken();
+            return;
+        }
+
+        ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
+
+        int numChildren = node.jjtGetNumChildren();
+
+        _assert(node.getLabelNames().size() == numChildren, node,
+                "The number of labels and values does not "
+                        + "match in parsing a record expression.");
+
+        String[] labels = (String[]) node.getLabelNames().toArray(
+                new String[numChildren]);
+        
+        //_assert(labels.length == 1, node,
+        //        "has more than one member type of the union.");
+        
+        //If there is more than one members in the union, take the first
+        //member value as the value of the union.
+        if (labels.length > 0) {
+            _evaluatedChildToken = (new UnionToken(labels[0], tokens[0]));
+        }
+        _evaluatedChildToken = (new UnionToken(labels[0], tokens[0]));
+
+        if (node.isConstant()) {
+            node.setToken(_evaluatedChildToken);
+        }
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1371,8 +1110,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  visiting each one of them; this will cause their token
      *  value to be determined.
      *  @param node The node whose children are evaluated.
-     *  @return The array of resulting tokens.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token[] _evaluateAllChildren(ASTPtRootNode node)
             throws IllegalActionException {
@@ -1393,7 +1131,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *   be an ArrayToken.
      *  @param index The index, which must be an integer token.
      *  @return The element of the given token at the given index.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _evaluateArrayIndex(ASTPtRootNode node,
             ptolemy.data.Token value, ptolemy.data.Token index)
@@ -1421,10 +1159,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     /** Evaluate the child with the given index of the given node.
      *  This is usually called while visiting the given node.
-     *  @param node The given node.
-     *  @param i The given index.
-     *  @return The resulting token.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _evaluateChild(ASTPtRootNode node, int i)
             throws IllegalActionException {
@@ -1442,7 +1177,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param rowIndex The row index, which must be an integer token.
      *  @param columnIndex The column index, which must be an integer token.
      *  @return The element of the given token at the given index.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _evaluateMatrixIndex(ASTPtRootNode node,
             ptolemy.data.Token value, ptolemy.data.Token rowIndex,
@@ -1482,8 +1217,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param functionName The function name.
      *  @param argTypes An array of argument types.
      *  @param argValues An array of argument values.
-     *  @return the resulting token.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _functionCall(String functionName,
             Type[] argTypes, Object[] argValues) throws IllegalActionException {
@@ -1509,8 +1243,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
      *  @param methodName The method name.
      *  @param argTypes An array of argument types.
      *  @param argValues An array of argument values.
-     *  @return the resulting token.
-     *  @exception IllegalActionException If an parse error occurs.
+     *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _methodCall(String methodName,
             Type[] argTypes, Object[] argValues) throws IllegalActionException {
@@ -1533,7 +1266,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
-     *  @param string The given message.
      */
     protected void _trace(String string) {
         if (_trace != null) {
@@ -1549,7 +1281,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** Add a record to the current trace corresponding to the start
      *  of the evaluation of the given node.  If the trace is null, then
      *  do nothing.
-     *  @param node The given node.
      */
     protected void _traceEnter(ASTPtRootNode node) {
         if (_trace != null) {
@@ -1565,7 +1296,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
     /** Add a record to the current trace corresponding to the completion
      *  of the evaluation of the given node.  If the trace is null, then
      *  do nothing.
-     *  @param node The given node.
      */
     protected void _traceLeave(ASTPtRootNode node) {
         if (_trace != null) {
@@ -1582,39 +1312,15 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** Temporary storage for the result of evaluating a child node.
-     *  This is protected so that derived classes can access it.
-     */
+    // Temporary storage for the result of evaluating a child node.
+    // This is protected so that derived classes can access it.
     protected ptolemy.data.Token _evaluatedChildToken = null;
 
-    /** The fire() method code. */
-    protected StringBuffer _fireCode = new StringBuffer();
-
-    /** The initialize() method code. */
-    protected StringBuffer _initializeCode = new StringBuffer();
-
-    /** The preinitialize() method code. */
-    protected StringBuffer _preinitializeCode = new StringBuffer();
-
-    /** Shared code code. */
-    protected StringBuffer _sharedCode = new StringBuffer();
-
-    /** The wrapup() method code. */
-    protected StringBuffer _wrapupCode = new StringBuffer();
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** The scope for evaluation. */
     private ParserScope _scope = null;
 
-    /** Used for type checking. */
     private ParseTreeTypeInference _typeInference = null;
 
-    /** Used for debugging. */
     private StringBuffer _trace = null;
 
-    /** The depth, used for debugging and indenting. */
     private int _depth = 0;
 }

@@ -109,8 +109,8 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        files.add("\"stdlib.h\"");
-        files.add("\"time.h\"");
+        files.add("<stdlib.h>");
+        files.add("<time.h>");
         return files;
     }
 

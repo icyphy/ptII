@@ -30,11 +30,13 @@ package ptolemy.codegen.c.actor.lib.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.FileUtilities;
 
 
 /**
@@ -89,13 +91,16 @@ public class FileReader extends CCodeGeneratorHelper {
                 String fileNameString;
         try {
             // Handle $CLASSPATH, return a file name with forward slashes.
-            fileNameString = fileOrURL.asURL().getPath();
+            fileNameString = FileUtilities.nameToURL(
+            		fileOrURL.stringValue().replace('\\', '/'), 
+            		fileOrURL.getBaseDirectory(), 
+            		fileOrURL.getClass().getClassLoader()).getPath();
+
             // Under Windows, convert /C:/foo/bar to C:/foo/bar
-            fileNameString = new File(fileNameString).getCanonicalPath()
-                    .replace('\\', '/');
-        } catch (IOException e) {
-            throw new IllegalActionException("Cannot find file: "
-                    + fileOrURL.getExpression());
+            fileNameString = new File(fileNameString).getCanonicalPath();
+        } catch (IOException ex) {
+            throw new IllegalActionException(null, ex,
+            		"Cannot find file: " + fileOrURL.getExpression());
         }
         return fileNameString;
     }

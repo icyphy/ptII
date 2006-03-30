@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Yellow (mankit)
  * @Pt.AcceptedRating Yellow (mankit)
  */
-public class Gaussian extends CCodeGeneratorHelper {
+public class Gaussian extends RandomSource {
     /**
      * Constructor method for the Gaussian helper.
      * @param actor the associated actor
@@ -103,5 +103,16 @@ public class Gaussian extends CCodeGeneratorHelper {
         files.add("<time.h>");
         files.add("<math.h>");
         return files;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate code for producing a new random number.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected void _generateRandomNumber(StringBuffer code)
+            throws IllegalActionException {
+        code.append(_generateBlockCode("randomBlock"));
     }
 }

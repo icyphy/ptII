@@ -1,3 +1,3 @@
 /***fireBlock***/
-    $ref(output) = $ref(input) % $val(divisor);
+    $ref(output) = remainder($ref(input), $val(divisor));
 /**/

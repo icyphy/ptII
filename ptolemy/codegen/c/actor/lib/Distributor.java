@@ -71,8 +71,8 @@ public class Distributor extends CCodeGeneratorHelper {
         for (int i = 0; i < actor.output.getWidth(); i++) {
             args.set(0, new Integer(i));
             String codeBlock;
-            if (_isPrimitiveType(type)) {
-                if (_isPrimitiveType(actor.output.getType())) {
+            if (isPrimitiveType(type)) {
+                if (isPrimitiveType(actor.output.getType())) {
                     codeBlock = "primitiveToPrimitiveFireBlock";
                 } else {
                     codeBlock = "primitiveToTokenFireBlock";

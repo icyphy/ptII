@@ -28,7 +28,11 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.Remainder.
@@ -47,4 +51,17 @@ public class Remainder extends CCodeGeneratorHelper {
     public Remainder(ptolemy.actor.lib.Remainder actor) {
         super(actor);
     }
+
+    /** 
+     * Get the files needed by the code generated for the Remainder actor.
+     * @return A set of strings that are names of the files needed by the
+     * code generated for the Remainder actor.
+     * @exception IllegalActionException Not Thrown in this subclass.
+     */
+    public Set getHeaderFiles() throws IllegalActionException {
+        Set files = new HashSet();
+        files.add("<math.h>");
+        return files;
+    }
+
 }

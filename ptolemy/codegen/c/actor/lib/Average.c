@@ -4,12 +4,12 @@ int $actorSymbol(count) = 0;
 /**/
 
 /***fireBlock***/
-if ($ref(reset)) {
-    $actorSymbol(sum) = 0;
-    $actorSymbol(count) = 0;
-} else {
-    $actorSymbol(sum) += $ref(input);
-    $actorSymbol(count)++;
-    $ref(output) = $actorSymbol(sum) / $actorSymbol(count);
-}
+	if ($ref(reset)) {
+	    $actorSymbol(sum) = 0;
+	    $actorSymbol(count) = 0;
+	} else {
+	    $actorSymbol(sum) += $ref(input);
+	    $actorSymbol(count)++;
+	    $ref(output) = $actorSymbol(sum) / $actorSymbol(count);
+	}
 /**/

@@ -63,6 +63,23 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         super(component);
     }
 
+    /**
+     * 
+     * @throws IllegalActionException Thrown if any of the helpers of the
+     * inside actors is unavailable.
+     */
+    public void analyzeTypeConvert() throws IllegalActionException {
+        Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
+        .deepEntityList().iterator();
+
+        while (actors.hasNext()) {    	
+            Actor actor = (Actor) actors.next();
+            CodeGeneratorHelper helperObject = 
+            	(CodeGeneratorHelper) _getHelper((NamedObj) actor);
+        	helperObject.analyzeTypeConvert();
+        }
+    }
+    
     /** Create read and write offset variables if needed for the associated 
      *  composite actor. It delegates to the director helper of the local 
      *  director.
@@ -126,10 +143,14 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                 directorHelper.generateTransferInputsCode(inputPort, code);
             }    
         }
+        
+        // Generate the type conversion code before fire code.
+        code.append(generateTypeConvertFireCode(true));
 
         // Generate the fire code by the director helper.
         code.append(directorHelper.generateFireCode());
 
+        
         // Transfer the data to the outside. 
         Iterator outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().iterator();

@@ -1,22 +1,29 @@
 /*** preinitBlock ***/
-	int i, j;
-/**/
-
-/*** matchCaseFireBlock ($step)***/
-	$ref(output) = -1;
-	for (i = $ref(startIndex); i < strlen($ref(inText)); i += $step) {
-		for (j = 0; j < strlen($ref(searchFor)); j++) {
-			
-		}
-	}
+	int $actorSymbol(i);
+	int $actorSymbol(j);
+	int $actorSymbol(searchForLength);
 /**/
 
 /*** ignoreCaseFireBlock ($step)***/
-    char * index;
-    $ref(output) = -1;
-	for (i = $ref(startIndex); i < strlen($ref(inText)); i += $step) {
-	    if ((index = strstr($ref(inText) + i, $ref(searchFor))) != NULL) {
-	        $ref(output) = index - $ref(inText);
+    $actorSymbol(searchForLength) = strlen($ref(searchFor));
+	$ref(output) = -1;
+
+	for ($actorSymbol(i) = $ref(startIndex); $actorSymbol(i) < 1 + strlen($ref(inText)) - $actorSymbol(searchForLength) - $ref(startIndex); $actorSymbol(i) += $step) {
+	    // FIXME: strncasecmp() is a GNU extension.
+	    if (strncasecmp($ref(inText) + $actorSymbol(i), $ref(searchFor), $actorSymbol(searchForLength)) == 0) {
+	        $ref(output) = $actorSymbol(i);
+	        break;
+	    }
+	}
+/**/
+
+/*** matchCaseFireBlock ($step)***/
+    $actorSymbol(searchForLength) = strlen($ref(searchFor));
+	$ref(output) = -1;
+
+	for ($actorSymbol(i) = $ref(startIndex); $actorSymbol(i) < 1 + strlen($ref(inText)) - $actorSymbol(searchForLength) - $ref(startIndex); $actorSymbol(i) += $step) {
+	    if (strncmp($ref(inText) + $actorSymbol(i), $ref(searchFor), $actorSymbol(searchForLength)) == 0) {
+	        $ref(output) = $actorSymbol(i);
 	        break;
 	    }
 	}
