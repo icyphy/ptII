@@ -105,7 +105,7 @@ public class DoubleToken extends ScalarToken {
      *  it is returned without any change. If it is a PetiteToken is
      *  it returned as a DoubleToken since lossless conversion is
      *  possible between PetiteToken and DoubleToken.  If the argument
-     *  is null or a nil token, then {@link ptolemy.data.Token#NIL} is
+     *  is null or a nil token, then {@link #NIL} is
      *  returned.  Otherwise, if the argument is below DoubleToken in
      *  the type hierarchy, it is converted to an instance of
      *  DoubleToken or one of the subclasses of DoubleToken and
@@ -194,6 +194,10 @@ public class DoubleToken extends ScalarToken {
         return (int) _value;
     }
 
+    /** Return true if the token is nil, (aka null or missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token is the {@link #NIL} token.
+     */
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
@@ -258,6 +262,13 @@ public class DoubleToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  The toString() method on a nil token returns the string "nil".
+     */
     public static final DoubleToken NIL = new DoubleToken(Double.NaN);
 
     /** A DoubleToken with the value 1.0. */

@@ -103,11 +103,10 @@ public class LongToken extends ScalarToken {
      *  token.  If the argument is already an instance of LongToken,
      *  it is returned without any change.  If the argument is null or
      *  a nil token, then a new nil Token is returned, see {@link
-     *  ptolemy.data.Token#NIL}.  Otherwise, if the argument is
-     *  below LongToken in the type hierarchy, it is converted to an
-     *  instance of LongToken or one of the subclasses of LongToken
-     *  and returned. If none of the above condition is met, an
-     *  exception is thrown.
+     *  #NIL}.  Otherwise, if the argument is below LongToken in the
+     *  type hierarchy, it is converted to an instance of LongToken or
+     *  one of the subclasses of LongToken and returned. If none of
+     *  the above condition is met, an exception is thrown.
      *
      *  @param token The token to be converted to a LongToken.
      *  @return A LongToken.
@@ -182,9 +181,14 @@ public class LongToken extends ScalarToken {
         return (int) _value;
     }
 
+    /** Return true if the token is nil, (aka null or missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token is the {@link #NIL} token.
+     */
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
+        // Can't use equals() here, or we'll go into an infinite loop.
         return this == LongToken.NIL;
     }
 
@@ -278,6 +282,13 @@ public class LongToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  The toString() method on a nil token returns the string "nil".
+     */
     public static final LongToken NIL = new LongToken(Long.MAX_VALUE);
 
     /** A LongToken with the value 1.0. */

@@ -534,7 +534,7 @@ public abstract class BaseType implements Type, Serializable {
     /** The nil data type. */
     public static class NilType extends BaseType {
         private NilType() {
-            super(Token.class, "nil");
+            super(Token.class, "niltype");
         }
 
         public Token convert(Token t) throws IllegalActionException {

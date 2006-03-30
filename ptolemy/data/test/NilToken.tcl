@@ -80,17 +80,16 @@ foreach type $types {
 	    list [list \
 		      [$results toString] \
 		      [$results isNil] \
-		      [expr {"$resultsClassName" == "ptolemy.data.Token"}]] \
+		      [[$results getType] toString]] \
 		[list \
 		     [$results1 toString] \
 		     [$results1 isNil] \
-		     [expr {"$results1ClassName" == "ptolemy.data.Token"}]] \
+		     [[$results getType] toString]] \
 		[list \
 		     [$results2 toString] \
 		     [$results2 isNil] \
-		     [expr {"$results1ClassName" == "ptolemy.data.Token"}]] \
-
-	} {{nil 1 1} {nil 1 1} {nil 1 1}}
+		     [[$results getType] toString]] \
+	} {{nil 1 niltype} {nil 1 niltype} {nil 1 niltype}}
     }
 
 

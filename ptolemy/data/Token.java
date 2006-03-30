@@ -251,6 +251,7 @@ public class Token implements Serializable {
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
+        // Can't use equals() here, or we'll go into an infinite loop.
         return this.equals(NIL);
     }
 
@@ -574,6 +575,4 @@ public class Token implements Serializable {
                     : "\"" + init + "\"")
             + ") is not supported.  Use Token.NIL instead.";
     }
-
-
 }

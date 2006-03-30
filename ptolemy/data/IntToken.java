@@ -99,7 +99,7 @@ public class IntToken extends ScalarToken {
      *  returned token will be the same as the units of the given
      *  token.  If the argument is already an instance of IntToken, it
      *  is returned without any change.  If the argument is null or a
-     *  nil token, then {@link ptolemy.data.Token#NIL} is returned.
+     *  nil token, then {@link #NIL} is returned.
      *  Otherwise, if the argument is below IntToken in the type
      *  hierarchy, it is converted to an instance of IntToken or one
      *  of the subclasses of IntToken and returned. If none of the
@@ -162,8 +162,7 @@ public class IntToken extends ScalarToken {
             return false;
         }
 
-        if (this.isNil() ||
-                ((IntToken) object).isNil()) {
+        if (this.isNil() || ((IntToken) object).isNil()) {
             return false;
         }
 
@@ -196,9 +195,14 @@ public class IntToken extends ScalarToken {
         return _value;
     }
 
+    /** Return true if the token is nil, (aka null or missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token is the {@link #NIL} token.
+     */
     public boolean isNil() {
         // We use a method here so that we can easily change how
         // we determine if a token is nil without modify lots of classes.
+        // Can't use equals() here, or we'll go into an infinite loop.
         return this == IntToken.NIL;
     }
 
@@ -281,6 +285,13 @@ public class IntToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  The toString() method on a nil token returns the string "nil".
+     */
     public static final IntToken NIL = new IntToken(Integer.MAX_VALUE);
 
     /** A IntToken with the value 1.0. */

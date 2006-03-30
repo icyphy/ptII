@@ -302,7 +302,7 @@ test ArrayToken-5.1 {Construct an array of doubles with a nil} {
     #set nilDoubleToken [java::cast ptolemy.data.DoubleToken $nilToken]
     list [$t toString] [$nilToken toString] \
 	[[$nilToken getType] toString]
-} {{{1.0, nil, 2.0, NaN}} nil general}
+} {{{1.0, nil, 2.0, NaN}} nil double}
 
 test ArrayToken-5.2 {Construct an array of doubles with a nil as 1st element} {
     set t [java::new {ptolemy.data.ArrayToken String} "{nil, 2.0}"]
@@ -311,7 +311,7 @@ test ArrayToken-5.2 {Construct an array of doubles with a nil as 1st element} {
     list [$t toString] [$nilToken toString] \
 	[[$nilToken getType] toString]
 
-} {{{nil, 2.0}} nil general}
+} {{{nil, 2.0}} nil double}
 
 test ArrayToken-6.1 {Construct an array of ints with a nil} {
     set t [java::new {ptolemy.data.ArrayToken String} "{1, nil, 2}"]
@@ -320,7 +320,7 @@ test ArrayToken-6.1 {Construct an array of ints with a nil} {
     list [$t toString] [$nilToken toString] \
 	[[$nilToken getType] toString]
 
-} {{{1, nil, 2}} nil general}
+} {{{1, nil, 2}} nil int}
 
 
 test ArrayToken-6.2 {Construct an array of int with a nil as 1st element} {
@@ -329,4 +329,4 @@ test ArrayToken-6.2 {Construct an array of int with a nil as 1st element} {
     #set nilIntToken [java::cast ptolemy.data.IntToken $nilToken]
     list [$t toString] [$nilToken toString] \
 	[[$nilToken getType] toString]
-} {{{nil, 2}} nil general}
+} {{{nil, 2}} nil int}
