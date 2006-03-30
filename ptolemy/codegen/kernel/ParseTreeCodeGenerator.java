@@ -56,6 +56,13 @@ public interface ParseTreeCodeGenerator {
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException;
 
+    /** Given a string, escape special characters as necessary for the
+     *  target language.   
+     *  @param string The string to escape.
+     *  @return A new string with special characters replaced.
+     */
+    public String escapeForTargetLanguage(String string);
+
     /** Generate code that corresponds with the fire() method.
      *  @return The generated code.
      */

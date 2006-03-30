@@ -92,6 +92,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _component = component;
 
         _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
+            /** Given a string, escape special characters as necessary for the
+             *  target language.   
+             *  @param string The string to escape.
+             *  @return A new string with special characters replaced.
+             */
+            public String escapeForTargetLanguage(String string) {
+                return string;
+            }
             /** Evaluate the parse tree with the specified root node using
              *  the specified scope to resolve the values of variables.
              *  @param node The root of the parse tree.
@@ -708,14 +716,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                  }
                  */
 
+                ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 if (variable.isStringMode()) {
-                    return "\"" + variable.getExpression() + "\"";
+                    return "\"" + parseTreeCodeGenerator.escapeForTargetLanguage(variable.getExpression()) + "\"";
                 }
 
                 PtParser parser = new PtParser();
                 ASTPtRootNode parseTree = parser.generateParseTree(variable
                         .getExpression());
-                ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new HelperScope(variable));
                 return processCode(parseTreeCodeGenerator.generateFireCode());
