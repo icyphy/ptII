@@ -36,7 +36,7 @@
 
 /***BooleanBlock($channel)***/
     if (iteration < $size(correctValues) && (!$ref(correctValues, iteration) && $ref(input#$channel)) || ($ref(correctValues, iteration) && !$ref(input#$channel)) ) {
-        printf("Test fails in iteration %d.\n Value was: %s. Should have been: %s\n", iteration, btoa($ref(input#$channel)), btoa($ref(correctValues, iteration)));
+        printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been: %s\n", iteration, btoa($ref(input#$channel)), btoa($ref(correctValues, iteration)));
         exit(-1);    		
 	}
 /**/
@@ -74,7 +74,7 @@
 
 /***TokenBlock($channel)***/
 	if (!$typeFunc($ref(input#$channel)::equals($ref(input#$channel)))) {
-        printf("Test fails in iteration %d.\n Value was: %s. Should have been: %s.\n", iteration, $typeFunc($ref(input#$channel)::toString()), $typeFunc($ref(correctValues, iteration)::toString()));
+        printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been: %s.\n", iteration, $typeFunc($ref(input#$channel)::toString()), $typeFunc($ref(correctValues, iteration)::toString()));
         exit(-1);    				
 	}
 /**/
