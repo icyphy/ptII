@@ -258,9 +258,12 @@
         SDL_DestroySemaphore($actorSymbol(sem));
         $actorSymbol(sem) = NULL;
     }
-    for ( $actorSymbol(j)=0; $actorSymbol(j)<$val(channels); ++$actorSymbol(j) ) {
-        free($actorSymbol(sounds)[$actorSymbol(j)].data);
-    }
+    // FIXME: Don't free here, it causes:
+    //   bash: [776: 1] tcsetattr: Inappropriate ioctl for device
+    //   Hangup
+    //for ( $actorSymbol(j)=0; $actorSymbol(j)<$val(channels); ++$actorSymbol(j) ) {
+    //    free($actorSymbol(sounds)[$actorSymbol(j)].data);
+    //}
     SDL_Quit();
 /**/
 
