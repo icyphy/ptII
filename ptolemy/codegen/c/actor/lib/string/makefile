@@ -52,7 +52,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	StringCompare.java \
 	StringFunction.java \
-	StringIndexOf.java
+	StringIndexOf.java \
+	StringLength.java \
+	StringMatches.java \
+	StringReplace.java \
+	StringSubstring.java
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS:%.java=%.c)
