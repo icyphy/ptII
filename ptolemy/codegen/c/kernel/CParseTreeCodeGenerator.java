@@ -79,6 +79,7 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParseTreeEvaluator
@@ -215,6 +216,23 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      */
     public String generateWrapupCode() {
         return _wrapupCode.toString();
+    }
+
+    /** Given a string, escape special characters as necessary.
+     *  <pre>
+     *  \( becomes \\(
+     *  \) becomes \\)
+     *  newline becomes \n
+     *  </pre>
+     *  @param string The string to escape.
+     *  @return A new string with special characters replaced.
+     *  @see ptolemy.util.StringUtilities.escapeForXML(String)
+     */
+    public static String escapeForC(String string) {
+        string = StringUtilities.substitute(string, "\\(", "\\\\(");
+        string = StringUtilities.substitute(string, "\\)", "\\\\)");
+        string = StringUtilities.substitute(string, "\n", "\\n");
+        return string;
     }
 
     /** Construct an ArrayToken that contains the tokens from the
@@ -655,8 +673,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (_evaluatedChildToken instanceof StringToken) {
                 // In C, Strings should have \n tags substituted. 
                 // See Test 17.2
-                _fireCode.append(ptolemy.util.StringUtilities.substitute(
-                        _evaluatedChildToken.toString(), "\n", "\\n"));
+                _fireCode.append(escapeForC(_evaluatedChildToken.toString()));
             } else {
                 _fireCode.append(_evaluatedChildToken.toString());
             }
