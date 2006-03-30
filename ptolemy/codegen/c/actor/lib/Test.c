@@ -1,116 +1,81 @@
-/***preinitBlock***/
-// FIXME: how do we reset count?
-static int $actorSymbol(count) = 0; 
+/***IntBlock($channel)***/
+    /* $actorSymbol(), which has only one channel */
+    if (iteration < $size(correctValues) && fabs($ref(input#$channel) - $ref(correctValues, iteration)) > $ref(tolerance)) {
+        printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been: %d\n", iteration, $ref(input#$channel), $ref(correctValues, iteration));
+        exit(-1);
+    }
 /**/
 
-/***numberBlock($channel)***/
-        /* $actorSymbol(), which has only one channel */
-        if ($actorSymbol(count) <
-                $size(correctValues)
-                && fabs($ref(input#$channel)
-                        - $ref(correctValues,
-                                $actorSymbol(count)))
-                > $ref(tolerance)) {
-            // FIXME: what about types other than double?
-            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
-                    $actorSymbol(count),
-                    (double)$ref(input#$channel),
-                    (double)$ref(correctValues,
-                            $actorSymbol(count)));
-            exit(-1);    
-        }
-        $actorSymbol(count) ++;
 
+/***IntBlockMultiChannel($channel,$inputType)***/
+    /* $channel of $actorSymbol() */
+    ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, iteration);
+    if (iteration < $size(correctValues) && fabs($ref(input#$channel) - $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType) > $ref(tolerance)) {
+        printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been: %d\n", iteration, $ref(input#$channel), $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
+        exit(-1);    
+    }
 /**/
 
-/***numberBlockMultiChannel($channel,$inputType)***/
-        /* $channel of $actorSymbol() */
-        ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, $actorSymbol(count));
-        if ($actorSymbol(count) <
-                $size(correctValues)
-                && fabs($ref(input#$channel)
-                        - $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType)
-                > $ref(tolerance)) {
-            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
-                    $actorSymbol(count),
-                    (double)$ref(input#$channel),
-                    $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
-            exit(-1);    
-        }
-        $actorSymbol(count) ++;
 
+/***DoubleBlock($channel)***/
+    /* $actorSymbol(), which has only one channel */
+    if (iteration < $size(correctValues) && fabs($ref(input#$channel) - $ref(correctValues, iteration)) > $ref(tolerance)) {
+        printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n", iteration, $ref(input#$channel), $ref(correctValues, iteration));
+        exit(-1);    
+    }
 /**/
 
-/***booleanBlock($channel)***/
-    if ($actorSymbol(count) < $size(correctValues) &&
-		(!$ref(correctValues, $actorSymbol(count)) && $ref(input#$channel)) ||
-	    ($ref(correctValues, $actorSymbol(count)) && !$ref(input#$channel)) ) {
-        printf("Test fails in iteration %d.\n Value was: %s. Should have been: %s\n",
-            $actorSymbol(count), $ref(input#$channel), $ref(correctValues, $actorSymbol(count)));
+/***DoubleBlockMultiChannel($channel,$inputType)***/
+    /* $channel of $actorSymbol() */
+    ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, iteration);
+    if (iteration < $size(correctValues) && fabs($ref(input#$channel) - $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType) > $ref(tolerance)) {
+        printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %g. Should have been: %g\n", iteration, $ref(input#$channel), $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
+        exit(-1);    
+    }
+/**/
+
+/***BooleanBlock($channel)***/
+    if (iteration < $size(correctValues) && (!$ref(correctValues, iteration) && $ref(input#$channel)) || ($ref(correctValues, iteration) && !$ref(input#$channel)) ) {
+        printf("Test fails in iteration %d.\n Value was: %s. Should have been: %s\n", iteration, btoa($ref(input#$channel)), btoa($ref(correctValues, iteration)));
         exit(-1);    		
 	}
-    $actorSymbol(count) ++;
 /**/
 
-/***booleanBlockMultiChannel($channel,$inputType)***/
-        /* $channel of $actorSymbol() */
-        ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, $actorSymbol(count));
-        if ($actorSymbol(count) < $size(correctValues) &&
-         (!$ref(correctValues, $actorSymbol(count)) && $ref(input#$channel)) ||
-	     ($ref(correctValues, $actorSymbol(count)) && !$ref(input#$channel)) ) {
-            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
-                    $actorSymbol(count),
-                    (double)$ref(input#$channel),
-                    $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
-            exit(-1);    
-        }
-        $actorSymbol(count) ++;
-
+/***BooleanBlockMultiChannel($channel,$inputType)***/
+    /* $channel of $actorSymbol() */
+    ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, iteration);
+    if (iteration < $size(correctValues) &&
+     (!$ref(correctValues, iteration) && $ref(input#$channel)) ||
+     ($ref(correctValues, iteration) && !$ref(input#$channel)) ) {
+        printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
+                iteration,
+                (double)$ref(input#$channel),
+                $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
+        exit(-1);    
+    }
 /**/
 
-/***stringBlock($channel)***/
-	if ($actorSymbol(count) <
-                $size(correctValues)
-             && (strcmp($ref(correctValues, $actorSymbol(count)),
-                    $ref(input#$channel)) != 0) ) {
-            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
-                    $actorSymbol(count),
-                    $ref(input#$channel),
-                    $ref(correctValues,
-                            $actorSymbol(count)));
-            exit(-1);    		
+/***StringBlock($channel)***/
+	if (iteration < $size(correctValues) && (strcmp($ref(correctValues, iteration), $ref(input#$channel)) != 0) ) {
+        printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n", iteration, $ref(input#$channel), $ref(correctValues, iteration));
+        exit(-1);    		
 	}
-        $actorSymbol(count) ++;
 /**/
 
-/***stringBlockMultiChannel($channel,$inputType)***/
-        /* $channel of $actorSymbol() */
-        ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, $actorSymbol(count));
+/***StringBlockMultiChannel($channel,$inputType)***/
+    /* $channel of $actorSymbol() */
+    ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, iteration);
 
-	if ($actorSymbol(count) <
-                $size(correctValues)
-            && (strcmp((char *)$ref(input#$channel),
-                           $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType)) != 0) {
-            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
-                    $actorSymbol(count),
-                    $ref(input#$channel),
-                    $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
-            exit(-1);
+	if (iteration < $size(correctValues) && (strcmp((char *)$ref(input#$channel), $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType)) != 0) {
+        printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n", iteration, $ref(input#$channel), $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
+        exit(-1);
 	}
-        $actorSymbol(count) ++;
 /**/
 
-/***tokenBlock($channel)***/
-	if (!$typeFunc($ref(input#$channel),
-                    equals($ref(input#$channel)))) {
-            printf("Test fails in iteration %d", $actorSymbol(count));
-            printf(".\n Value was: ");
-            $typeFunc($ref(input#$channel), print());
-            printf(". Should have been: ");
-            $typeFunc($ref(correctValues, $actorSymbol(count)), print());
-            printf(".\n");,
-            exit(-1);    				
+/***TokenBlock($channel)***/
+	if (!$typeFunc($ref(input#$channel), equals($ref(input#$channel)))) {
+        printf("Test fails in iteration %d.\n Value was: %s. Should have been: %s.\n", iteration, $typeFunc($ref(input#$channel), toString()), $typeFunc($ref(correctValues, iteration), toString()));
+        exit(-1);    				
 	}
-    $actorSymbol(count) ++;
 /**/
 

@@ -1,5 +1,5 @@
 /* A helper class for ptolemy.actor.lib.Test
- Copyright (c) 2005-2006 The Regents of the University of California.
+ Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -42,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 6.0
+ @since Ptolemy II 5.1
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
@@ -69,19 +70,14 @@ public class Test extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
     	super.generateFireCode();
-    	// FIXME: handle widths greater than 1.
+        
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
-/*
-         if (actor.input.getWidth() > 1) {
-            throw new IllegalActionException(actor,
-                    "The C version of the Test actor currently only handles "
-                            + "inputs of width 1.  The width of input was: "
-                            + actor.input.getWidth());
-        }
-*/
+
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
         String multiChannel = "";
+        String inputType = "";
+        
         if (actor.input.getWidth() > 1) {
             // If we have multiple inputs, use different blocks
             multiChannel = "MultiChannel";
@@ -89,15 +85,14 @@ public class Test extends CCodeGeneratorHelper {
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
         	args.set(0, new Integer(i));
-            if (actor.input.getType() == BaseType.STRING) {
-            	_codeStream.appendCodeBlock("stringBlock" + multiChannel, args);        	
-            } else if (actor.input.getType() == BaseType.BOOLEAN) {
-            	_codeStream.appendCodeBlock("booleanBlock" + multiChannel, args);        	
-            } else if (actor.input.getType() == BaseType.GENERAL) { 
-            	_codeStream.appendCodeBlock("tokenBlock" + multiChannel, args);        	
-            } else { // assume the input type is numeric.
-            	_codeStream.appendCodeBlock("numberBlock" + multiChannel, args);
-            }        	
+            if (CodeGeneratorHelper.isPrimitiveType(actor.input.getType())) {
+                inputType = 
+                    CodeGeneratorHelper.codeGenType(actor.input.getType());
+            } else {
+                inputType = "Token";
+            }
+            _codeStream.appendCodeBlock(
+                    inputType + "Block" + multiChannel, args);            
         }
         return processCode(_codeStream.toString());
     }
@@ -111,8 +106,8 @@ public class Test extends CCodeGeneratorHelper {
      */
     public Set getHeaderFiles() throws IllegalActionException {
         Set files = new HashSet();
-        files.add("\"stdio.h\"");
-        files.add("\"math.h\"");
+        files.add("<stdio.h>");
+        files.add("<math.h>");
         return files;
     }
 }
