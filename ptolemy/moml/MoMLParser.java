@@ -624,8 +624,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     if (_handler != null) {
                         int reply = _handler.handleError("<param name=\""
                                 + param.getName() + "\" value=\""
-                                + param.getExpression() + "\"/>",
-                                param.getContainer(), ex);
+                                + param.getExpression() + "\"/>", param
+                                .getContainer(), ex);
 
                         if (reply == ErrorHandler.CONTINUE) {
                             continue;
@@ -1207,9 +1207,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
 
-     
             InputStream inputStream = null;
-           
+
             try {
                 try {
                     inputStream = input.openStream();
@@ -1218,7 +1217,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // vergilPtiny.jnlp needs this.
                     URL jarURL = ClassUtilities.jarURLEntryResource(input
                             .toExternalForm());
-                    
+
                     if (jarURL != null) {
                         inputStream = jarURL.openStream();
                     } else {

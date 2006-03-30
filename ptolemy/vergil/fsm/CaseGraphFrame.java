@@ -273,10 +273,8 @@ public class CaseGraphFrame extends ActorGraphFrame implements ChangeListener {
                 // NOTE: We do not use a TransitionRefinement because we don't
                 // want the sibling input ports that come with output ports.
                 String moml = "<entity name=\""
-                        + StringUtilities.escapeForXML(pattern)
-                        + "\" class=\""
-                        + _case.refinementClassName()
-                        + "\"/>";
+                        + StringUtilities.escapeForXML(pattern) + "\" class=\""
+                        + _case.refinementClassName() + "\"/>";
 
                 // The following is, regrettably, copied from ModalTransitionController.
                 MoMLChangeRequest change = new MoMLChangeRequest(this, _case,

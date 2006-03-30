@@ -61,7 +61,7 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     }
 
     public String printParseTree(ASTPtRootNode root) {
-          StringWriter writer = new StringWriter();
+        StringWriter writer = new StringWriter();
         _writer = new PrintWriter(writer);
 
         try {

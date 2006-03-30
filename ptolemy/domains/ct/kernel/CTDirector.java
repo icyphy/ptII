@@ -364,9 +364,9 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         Time currentTime = getModelTime();
 
         if (time.compareTo(currentTime) < 0) {
-            throw new IllegalActionException(actor,
-                    "Requested fire time: " + time + " is earlier than"
-                            + " the current time." + currentTime);
+            throw new IllegalActionException(actor, "Requested fire time: "
+                    + time + " is earlier than" + " the current time."
+                    + currentTime);
         }
 
         // check the validity of breakpoint table

@@ -87,8 +87,7 @@ public class FPReceiver extends AbstractReceiver {
         if (isKnown()) {
             if (hasToken()) {
                 throw new IllegalActionException(getContainer(),
-                        "Cannot change the status from present"
-                        + " to absent.");
+                        "Cannot change the status from present" + " to absent.");
             }
         } else {
             _token = null;
@@ -108,13 +107,13 @@ public class FPReceiver extends AbstractReceiver {
     public Token get() throws NoTokenException {
         if (!isKnown()) {
             throw new UnknownTokenException(
-                    "FPReceiver: get() called on an FPReceiver " +
-                    "with status unknown.");
+                    "FPReceiver: get() called on an FPReceiver "
+                            + "with status unknown.");
         }
         if (_token == null) {
             throw new NoTokenException(
-                    "FPReceiver: Attempt to get data from an " +
-                    "empty receiver.");
+                    "FPReceiver: Attempt to get data from an "
+                            + "empty receiver.");
         }
         return _token;
     }
@@ -204,12 +203,11 @@ public class FPReceiver extends AbstractReceiver {
      *   or a token is present but not have the same value, or a token
      *   is present and cannot be compared to the specified token.
      */
-    public void put(Token token) throws NoRoomException, 
-            IllegalActionException {
+    public void put(Token token) throws NoRoomException, IllegalActionException {
         if (token == null) {
             throw new IllegalArgumentException(
-                    "FPReceiver.put(null) is invalid. To set the status" +
-                    " to absent, use the clear() method.");
+                    "FPReceiver.put(null) is invalid. To set the status"
+                            + " to absent, use the clear() method.");
         }
 
         if (!isKnown()) {
@@ -220,13 +218,13 @@ public class FPReceiver extends AbstractReceiver {
         } else {
             if (!hasToken()) {
                 throw new IllegalActionException(getContainer(),
-                        "Cannot change from an absent status " +
-                        "to a present status.  Call reset() first.");
+                        "Cannot change from an absent status "
+                                + "to a present status.  Call reset() first.");
             } else {
                 if (!token.isEqualTo(_token).booleanValue()) {
                     throw new IllegalActionException(getContainer(),
-                            "Cannot put a token with a different value" +
-                            " into a receiver with present status.");
+                            "Cannot put a token with a different value"
+                                    + " into a receiver with present status.");
                 }
             }
         }
@@ -258,11 +256,11 @@ public class FPReceiver extends AbstractReceiver {
 
     // The director of this receiver.
     private FPDirector _director;
-    
+
     // A flag indicating whether this receiver has a known status.  
     // A receiver has known status if it has a presence or absence value.
     private boolean _known;
-    
+
     // A flag indicating whether the receiver status changes from unknown 
     // to known.  
     private boolean _becomesKnown = false;

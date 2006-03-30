@@ -45,7 +45,7 @@ import ptolemy.moml.MoMLParser;
  <p>This class will filter for actors that have had port name changes.
 
  <p>NOTE: This class and ParameterNameChange might conflict if
-a port and parameter have the same name.  
+ a port and parameter have the same name.  
 
  @author Christopher Hylands, Edward A. Lee
  @version $Id$
@@ -145,18 +145,19 @@ public class PortNameChanges implements MoMLFilter {
 
             MoMLParser.setModified(true);
             return newPort;
-        // The following else if() can be deleted if it causes trouble. 
-        // The reason to add the code is that a port may not be contained in 
-        // _containerPortMap if it is encountered the first time here --- Gang
-        } else if (_doneProcessingActorWithPortNameChanges 
+            // The following else if() can be deleted if it causes trouble. 
+            // The reason to add the code is that a port may not be contained in 
+            // _containerPortMap if it is encountered the first time here --- Gang
+        } else if (_doneProcessingActorWithPortNameChanges
                 && attributeName.equals("port")) {
             int lastIndex = attributeValue.lastIndexOf(".");
             NamedObj portContainer = null;
             String portContainerName = null;
             String portName = null;
             if (lastIndex > 0) {
-                portContainerName = attributeValue.substring(0, lastIndex); 
-                portContainer = ((CompositeEntity) container).getEntity(portContainerName);
+                portContainerName = attributeValue.substring(0, lastIndex);
+                portContainer = ((CompositeEntity) container)
+                        .getEntity(portContainerName);
                 portName = attributeValue.substring(lastIndex + 1);
             } else {
                 portContainer = container;
@@ -165,7 +166,8 @@ public class PortNameChanges implements MoMLFilter {
             if (portContainer != null) {
                 String className = portContainer.getClassName();
                 if (_actorsWithPortNameChanges.containsKey(className)) {
-                    HashMap portMap = (HashMap) _actorsWithPortNameChanges.get(className);
+                    HashMap portMap = (HashMap) _actorsWithPortNameChanges
+                            .get(className);
                     if (portMap.containsKey(portName)) {
                         String newPort = (String) portMap.get(portName);
                         if (lastIndex > 0) {

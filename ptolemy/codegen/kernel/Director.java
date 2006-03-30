@@ -78,8 +78,7 @@ public class Director implements ActorCodeGenerator {
      *  @exception IllegalActionException If thrown while creating
      *  offset variables.
      */
-    public String createOffsetVariablesIfNeeded()
-            throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -110,8 +109,7 @@ public class Director implements ActorCodeGenerator {
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helper =
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(helper.generateFireCode());
             code.append(helper.generateTypeConvertFireCode());
         }
@@ -131,8 +129,7 @@ public class Director implements ActorCodeGenerator {
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper actorHelper =
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper actorHelper = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             code.append(actorHelper.generateFireFunctionCode());
         }
         return code.toString();
@@ -153,7 +150,7 @@ public class Director implements ActorCodeGenerator {
      *  should return the definition of the main entry point for a program.
      *  In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
-     */ 
+     */
     public String generateMainEntryCode() throws IllegalActionException {
         return _codeGenerator.comment("main entry code");
     }
@@ -163,7 +160,7 @@ public class Director implements ActorCodeGenerator {
      *  should return the a string that closes optionally calls exit
      *  and closes the main() method 
      *  @exception IllegalActionException Not thrown in this base class.
-     */ 
+     */
     public String generateMainExitCode() throws IllegalActionException {
         return _codeGenerator.comment("main exit code");
     }
@@ -177,15 +174,14 @@ public class Director implements ActorCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment(
-                            "The initialization of the director."));
+        code.append(_codeGenerator
+                .comment("The initialization of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject =
-                (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
             // Initialize code for the actor.
             code.append(helperObject.generateInitializeCode());
 
@@ -211,7 +207,7 @@ public class Director implements ActorCodeGenerator {
     public String generatePreinitializeCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment(0,
-                            "The preinitialization of the director."));
+                "The preinitialization of the director."));
 
         Iterator actors = ((CompositeActor) _director.getContainer())
                 .deepEntityList().iterator();
@@ -262,8 +258,7 @@ public class Director implements ActorCodeGenerator {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(_codeGenerator.comment(1,
-                            "Transfer tokens to the inside"));
+        code.append(_codeGenerator.comment(1, "Transfer tokens to the inside"));
 
         ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(_director
                 .getContainer());
@@ -296,8 +291,9 @@ public class Director implements ActorCodeGenerator {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(_codeGenerator.comment(1,
-                            "Transfer tokens to the outside"));
+        code
+                .append(_codeGenerator.comment(1,
+                        "Transfer tokens to the outside"));
 
         ptolemy.codegen.c.actor.TypedCompositeActor _compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(_director
                 .getContainer());
@@ -310,11 +306,12 @@ public class Director implements ActorCodeGenerator {
                     name = name + '#' + i;
                 }
 
-                code.append(_INDENT2
-                        +_compositeActorHelper.getReference(name));
+                code
+                        .append(_INDENT2
+                                + _compositeActorHelper.getReference(name));
                 code.append(" =\n");
                 code.append(_INDENT3
-                        +_compositeActorHelper.getReference("@" + name));
+                        + _compositeActorHelper.getReference("@" + name));
                 code.append(";\n");
             }
         }
@@ -343,7 +340,7 @@ public class Director implements ActorCodeGenerator {
             throws IllegalActionException {
         return "";
     }
-            
+
     /** Generate the wrapup code of the director associated with this helper
      *  class. For this base class, this method just generate the wrapup code
      *  for each actor.
@@ -558,8 +555,7 @@ public class Director implements ActorCodeGenerator {
                 if (offsetObject instanceof Integer) {
                     int offset = ((Integer) offsetObject).intValue();
                     offset = (offset + rate)
-                            % helper.getBufferSize(sinkPort,
-                                    sinkChannelNumber);
+                            % helper.getBufferSize(sinkPort, sinkChannelNumber);
                     helper.setWriteOffset(sinkPort, sinkChannelNumber,
                             new Integer(offset));
                 } else { // If offset is a variable. 
@@ -587,21 +583,21 @@ public class Director implements ActorCodeGenerator {
 
     /** Indent string for indent level 1.
      *  @see #_getIndentPrefix(int)
-     */ 
+     */
     protected static String _INDENT1 = _getIndentPrefix(1);
 
     /** Indent string for indent level 2.
      *  @see #_getIndentPrefix(int)
-     */ 
+     */
     protected static String _INDENT2 = _getIndentPrefix(2);
 
     /** Indent string for indent level 3.
      *  @see #_getIndentPrefix(int)
-     */ 
+     */
     protected static String _INDENT3 = _getIndentPrefix(3);
 
     /** Indent string for indent level 4.
      *  @see #_getIndentPrefix(int)
-     */ 
+     */
     protected static String _INDENT4 = _getIndentPrefix(4);
 }

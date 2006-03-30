@@ -1167,7 +1167,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         super._addRelation(relation);
     }
-    
+
     /**  Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
      */

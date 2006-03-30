@@ -164,7 +164,7 @@ public abstract class AbstractActionsAttribute extends Action implements
 
         return integer.intValue();
     }
-    
+
     /** Return the list of channel numbers given in expression set
      *  for this attribute.  If no destinations are specified, then return
      *  an empty list.
@@ -223,7 +223,7 @@ public abstract class AbstractActionsAttribute extends Action implements
     public ASTPtRootNode getParseTree(String name) {
         return (ASTPtRootNode) _parseTrees.get(_destinationNames.indexOf(name));
     }
-    
+
     /** Return the list of parse trees given in expression set
      *  for this attribute.  If no destinations are specified, then return
      *  an empty list.

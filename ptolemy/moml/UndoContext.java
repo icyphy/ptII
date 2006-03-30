@@ -222,8 +222,7 @@ public class UndoContext {
      *   or an empty string if none is needed.
      *  @see #moveContextStart(NamedObj, NamedObj)
      */
-    public static String moveContextEnd(NamedObj context,
-            NamedObj containee) {
+    public static String moveContextEnd(NamedObj context, NamedObj containee) {
         if (moveContextStart(context, containee).equals("")) {
             return "";
         }

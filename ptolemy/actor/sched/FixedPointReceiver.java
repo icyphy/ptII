@@ -88,8 +88,7 @@ public class FixedPointReceiver extends AbstractReceiver {
         if (isKnown()) {
             if (hasToken()) {
                 throw new IllegalActionException(getContainer(),
-                        "Cannot change the status from present"
-                        + " to absent.");
+                        "Cannot change the status from present" + " to absent.");
             }
         } else {
             _token = null;
@@ -108,13 +107,13 @@ public class FixedPointReceiver extends AbstractReceiver {
     public Token get() throws NoTokenException {
         if (!isKnown()) {
             throw new UnknownTokenException(
-                    "FixedPointReceiver: get() called on an " +
-                    "FixedPointReceiver " + "with status unknown.");
+                    "FixedPointReceiver: get() called on an "
+                            + "FixedPointReceiver " + "with status unknown.");
         }
         if (_token == null) {
             throw new NoTokenException(
-                    "FixedPointReceiver: Attempt to get data from an " +
-                    "empty receiver.");
+                    "FixedPointReceiver: Attempt to get data from an "
+                            + "empty receiver.");
         }
         return _token;
     }
@@ -139,8 +138,8 @@ public class FixedPointReceiver extends AbstractReceiver {
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "FixedPointReceiver: hasRoom() requires a " +
-                    "positive argument.");
+                    "FixedPointReceiver: hasRoom() requires a "
+                            + "positive argument.");
         }
         if (numberOfTokens == 1) {
             return !isKnown();
@@ -159,8 +158,8 @@ public class FixedPointReceiver extends AbstractReceiver {
             return (_token != null);
         } else {
             throw new UnknownTokenException(getContainer(),
-                    "hasToken() called on FixedPointReceiver with " +
-                    "unknown status.");
+                    "hasToken() called on FixedPointReceiver with "
+                            + "unknown status.");
         }
     }
 
@@ -180,8 +179,8 @@ public class FixedPointReceiver extends AbstractReceiver {
         }
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                    "FixedPointReceiver: hasToken(int) requires a " +
-                    "positive argument.");
+                    "FixedPointReceiver: hasToken(int) requires a "
+                            + "positive argument.");
         }
         if (numberOfTokens == 1) {
             return hasToken();
@@ -208,12 +207,11 @@ public class FixedPointReceiver extends AbstractReceiver {
      *   or a token is present but not have the same value, or a token
      *   is present and cannot be compared to the specified token.
      */
-    public void put(Token token) throws NoRoomException, 
-            IllegalActionException {
+    public void put(Token token) throws NoRoomException, IllegalActionException {
         if (token == null) {
             throw new IllegalArgumentException(
-                    "FixedPointReceiver.put(null) is invalid. To set the " +
-                    "status to absent, use the clear() method.");
+                    "FixedPointReceiver.put(null) is invalid. To set the "
+                            + "status to absent, use the clear() method.");
         }
         if (!isKnown()) {
             _token = token;
@@ -223,13 +221,13 @@ public class FixedPointReceiver extends AbstractReceiver {
         } else {
             if (!hasToken()) {
                 throw new IllegalActionException(getContainer(),
-                        "Cannot change from an absent status " +
-                        "to a present status.  Call reset() first.");
+                        "Cannot change from an absent status "
+                                + "to a present status.  Call reset() first.");
             } else {
                 if (!token.isEqualTo(_token).booleanValue()) {
                     throw new IllegalActionException(getContainer(),
-                            "Cannot put a token with a different value" +
-                            " into a receiver with present status.");
+                            "Cannot put a token with a different value"
+                                    + " into a receiver with present status.");
                 }
             }
         }
@@ -261,10 +259,10 @@ public class FixedPointReceiver extends AbstractReceiver {
 
     // The director of this receiver.
     private FixedPointDirector _director;
-    
+
     // A flag indicating whether this receiver has status known.  
     private boolean _known;
-    
+
     // A flag indicating whether the receiver status changes from unknown 
     // to known.  
     private boolean _becomesKnown = false;

@@ -509,22 +509,22 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
          * viewscreen.
          */
         public void keyPressed(KeyEvent e) {
-//            Figure selectedFigure = getSelectedFigure();
-//            Iterator allFigures = _layer.figures();
+            //            Figure selectedFigure = getSelectedFigure();
+            //            Iterator allFigures = _layer.figures();
 
-//            if (selectedFigure != null) {
-//                ((FigureInteractor) selectedFigure.getInteractor())
-//                        .keyPressed(e);
-//
-//                while (allFigures.hasNext()) {
-//                    AbstractFigure figure = ((AbstractFigure) allFigures.next());
-//                    //if (selectedFigure.hit(figure.getFigure().getBounds()))
-//                    {
-//                        //((RectangularFigure2D)selectedFigure)
-//                        //.collision(), false);
-//                    }
-//                }
-//            }
+            //            if (selectedFigure != null) {
+            //                ((FigureInteractor) selectedFigure.getInteractor())
+            //                        .keyPressed(e);
+            //
+            //                while (allFigures.hasNext()) {
+            //                    AbstractFigure figure = ((AbstractFigure) allFigures.next());
+            //                    //if (selectedFigure.hit(figure.getFigure().getBounds()))
+            //                    {
+            //                        //((RectangularFigure2D)selectedFigure)
+            //                        //.collision(), false);
+            //                    }
+            //                }
+            //            }
 
             if (e.getKeyCode() == KeyEvent.VK_O) {
                 _originRelocatable = true;

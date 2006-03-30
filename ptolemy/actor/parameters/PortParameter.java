@@ -376,19 +376,19 @@ public class PortParameter extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-//    /** Check that the specified container is of a suitable class for
-//     *  this parameter.
-//     *  @param container The proposed container.
-//     *  @exception IllegalActionException If the container is not an
-//     *   instance of Entity.
-//     */
-//    protected void _checkContainer(Entity container)
-//            throws IllegalActionException {
-//        if (!(container instanceof Entity)) {
-//            throw new IllegalActionException(this,
-//                    "PortParameter can only be used in an instance of Entity.");
-//        }
-//    }
+    //    /** Check that the specified container is of a suitable class for
+    //     *  this parameter.
+    //     *  @param container The proposed container.
+    //     *  @exception IllegalActionException If the container is not an
+    //     *   instance of Entity.
+    //     */
+    //    protected void _checkContainer(Entity container)
+    //            throws IllegalActionException {
+    //        if (!(container instanceof Entity)) {
+    //            throw new IllegalActionException(this,
+    //                    "PortParameter can only be used in an instance of Entity.");
+    //        }
+    //    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////

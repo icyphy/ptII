@@ -749,7 +749,8 @@ public class MultirateFSMDirector extends FSMDirector {
 
         while (insidePorts.hasNext()) {
             IOPort insidePort = (IOPort) insidePorts.next();
-            Variable variable = DFUtilities.getRateVariable(insidePort, parameterName);
+            Variable variable = DFUtilities.getRateVariable(insidePort,
+                    parameterName);
 
             if (variable != null) {
                 list.add(variable);

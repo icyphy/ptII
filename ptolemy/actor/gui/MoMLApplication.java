@@ -366,8 +366,8 @@ public class MoMLApplication implements ExecutionListener {
         MoMLParser parser = new MoMLParser();
         parser.reset();
 
-        Configuration configuration =
-            (Configuration) parser.parse(specificationURL, specificationURL);
+        Configuration configuration = (Configuration) parser.parse(
+                specificationURL, specificationURL);
 
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
@@ -384,19 +384,18 @@ public class MoMLApplication implements ExecutionListener {
         // If there is an _applicationInitializer parameter, then
         // construct it.  The _applicationInitializer parameter contains
         // a string that names a class to be initialized.
-        StringParameter applicationInitializerParameter =
-            (StringParameter) configuration.getAttribute(
-                    "_applicationInitializer", Parameter.class);
+        StringParameter applicationInitializerParameter = (StringParameter) configuration
+                .getAttribute("_applicationInitializer", Parameter.class);
 
         if (applicationInitializerParameter != null) {
-            String applicationInitializerClassName =
-                applicationInitializerParameter.stringValue();
+            String applicationInitializerClassName = applicationInitializerParameter
+                    .stringValue();
             try {
-                Class applicationInitializer =
-                    Class.forName(applicationInitializerClassName);
+                Class applicationInitializer = Class
+                        .forName(applicationInitializerClassName);
                 applicationInitializer.newInstance();
             } catch (Throwable throwable) {
-                throw new Exception("Failed to call application initializer "  
+                throw new Exception("Failed to call application initializer "
                         + "class \"" + applicationInitializerClassName
                         + "\".  Perhaps the configuration file \""
                         + specificationURL + "\" has a problem?", throwable);

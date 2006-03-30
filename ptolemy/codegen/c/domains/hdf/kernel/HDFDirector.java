@@ -104,10 +104,8 @@ public class HDFDirector extends SDFDirector {
             // given the configuration number of the container actor.
             int remainder = configurationNumber;
             for (int j = 0; j < numberOfActors - 1; j++) {
-                actorConfigurations[j] = remainder
-                        / _divisors[j + 1];
-                remainder = remainder
-                        % _divisors[j + 1];
+                actorConfigurations[j] = remainder / _divisors[j + 1];
+                remainder = remainder % _divisors[j + 1];
             }
             actorConfigurations[numberOfActors - 1] = remainder;
 
@@ -206,15 +204,12 @@ public class HDFDirector extends SDFDirector {
             // given the configuration number of the container actor.
             int remainder = configurationNumber;
             for (int i = 0; i < numberOfActors - 1; i++) {
-                actorConfigurations[i] = remainder
-                        / _divisors[i + 1];
-                remainder = remainder
-                        % _divisors[i + 1];
+                actorConfigurations[i] = remainder / _divisors[i + 1];
+                remainder = remainder % _divisors[i + 1];
             }
             actorConfigurations[numberOfActors - 1] = remainder;
 
-            code.append("case "
-                    + configurationNumber + ":\n");
+            code.append("case " + configurationNumber + ":\n");
 
             Schedule schedule = _schedules[configurationNumber];
 
@@ -272,8 +267,7 @@ public class HDFDirector extends SDFDirector {
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (i = 0; i < "
-                                + count + " ; i++) {\n");
+                        code.append("for (i = 0; i < " + count + " ; i++) {\n");
                     }
 
                     code.append(CodeGeneratorHelper
@@ -414,10 +408,8 @@ public class HDFDirector extends SDFDirector {
             // given the configuration number of the container actor.
             int remainder = configurationNumber;
             for (int j = 0; j < numberOfActors - 1; j++) {
-                actorConfigurations[j] = remainder
-                        / _divisors[j + 1];
-                remainder = remainder
-                        % _divisors[j + 1];
+                actorConfigurations[j] = remainder / _divisors[j + 1];
+                remainder = remainder % _divisors[j + 1];
             }
             actorConfigurations[numberOfActors - 1] = remainder;
 
@@ -579,8 +571,7 @@ public class HDFDirector extends SDFDirector {
         int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
 
-            code.append("case "
-                    + configurationNumber + ":\n");
+            code.append("case " + configurationNumber + ":\n");
 
             if (rates[configurationNumber] == null) {
                 continue;
@@ -593,16 +584,15 @@ public class HDFDirector extends SDFDirector {
 
                     String name = inputPort.getName();
                     if (inputPort.isMultiport()) {
-                        name = name
-                                + '#' + i;
+                        name = name + '#' + i;
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(containerHelper.getReference("@"
-                                + name + "," + k));
-                        code.append(" = ");
-                        code.append(containerHelper.getReference(name
+                        code.append(containerHelper.getReference("@" + name
                                 + "," + k));
+                        code.append(" = ");
+                        code.append(containerHelper
+                                .getReference(name + "," + k));
                         code.append(";\n");
                     }
                 }
@@ -653,8 +643,7 @@ public class HDFDirector extends SDFDirector {
         int[][] rates = containerHelper.getRates();
         for (int configurationNumber = 0; configurationNumber < _schedules.length; configurationNumber++) {
 
-            code.append("case "
-                    + configurationNumber + ":\n");
+            code.append("case " + configurationNumber + ":\n");
 
             if (rates[configurationNumber] == null) {
                 continue;
@@ -666,16 +655,15 @@ public class HDFDirector extends SDFDirector {
                 if (i < outputPort.getWidth()) {
                     String name = outputPort.getName();
                     if (outputPort.isMultiport()) {
-                        name = name
-                                + '#' + i;
+                        name = name + '#' + i;
                     }
 
                     for (int k = 0; k < rate; k++) {
-                        code.append(containerHelper.getReference(name
-                                + "," + k));
+                        code.append(containerHelper
+                                .getReference(name + "," + k));
                         code.append(" = ");
-                        code.append(containerHelper.getReference("@"
-                                + name + "," + k));
+                        code.append(containerHelper.getReference("@" + name
+                                + "," + k));
                         code.append(";\n");
                     }
                 }
@@ -765,10 +753,8 @@ public class HDFDirector extends SDFDirector {
             channelWriteOffset.append(CodeGeneratorHelper.generateName(port));
 
             if (width > 1) {
-                channelReadOffset.append("_"
-                        + channel);
-                channelWriteOffset.append("_"
-                        + channel);
+                channelReadOffset.append("_" + channel);
+                channelWriteOffset.append("_" + channel);
             }
 
             channelReadOffset.append("_readoffset");
@@ -777,11 +763,9 @@ public class HDFDirector extends SDFDirector {
             String channelReadOffsetVariable = channelReadOffset.toString();
             String channelWriteOffsetVariable = channelWriteOffset.toString();
 
-            code.append("static int "
-                    + channelReadOffsetVariable + " = "
+            code.append("static int " + channelReadOffsetVariable + " = "
                     + actorHelper.getReadOffset(port, channel) + ";\n");
-            code.append("static int "
-                    + channelWriteOffsetVariable + " = "
+            code.append("static int " + channelWriteOffsetVariable + " = "
                     + actorHelper.getWriteOffset(port, channel) + ";\n");
 
             // Now replace these concrete offsets with the variables.

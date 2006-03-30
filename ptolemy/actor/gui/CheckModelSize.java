@@ -133,18 +133,15 @@ public class CheckModelSize {
                                     y = ((ScalarToken) vergilCenterToken
                                             .getElement(1)).doubleValue();
 
-                                    if (x !=  width / 2.0
-                                            || y != height / 2.0) {
+                                    if (x != width / 2.0 || y != height / 2.0) {
                                         analysis
                                                 .append(" Center(["
                                                         + x
                                                         + ", "
                                                         + y
                                                         + "]) is not centered, should be ["
-                                                        + width / 2.0
-                                                        + ", "
-                                                        + height / 2.0
-                                                        + "]");
+                                                        + width / 2.0 + ", "
+                                                        + height / 2.0 + "]");
                                     }
                                 } catch (IllegalActionException ex) {
                                     analysis.append(" _vergilCenter malformed");
@@ -190,8 +187,8 @@ public class CheckModelSize {
                 analysis.append(KernelException.stackTraceToString(throwable));
             }
             String fileURL = new File(fileName).toURL().toString();
-            results.append("<tr>\n  <td><a href=\"" + fileURL + "\">"
-                    + fileURL + "</a></td>\n  <td>" + analysis + "</td>\n");
+            results.append("<tr>\n  <td><a href=\"" + fileURL + "\">" + fileURL
+                    + "</a></td>\n  <td>" + analysis + "</td>\n");
 
         }
 

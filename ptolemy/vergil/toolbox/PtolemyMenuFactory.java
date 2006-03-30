@@ -134,8 +134,7 @@ public class PtolemyMenuFactory implements MenuFactory {
      */
     protected NamedObj _getObjectFromFigure(Figure figure) {
         Object object = figure.getUserObject();
-        return (NamedObj) _controller.getGraphModel()
-            .getSemanticObject(object);
+        return (NamedObj) _controller.getGraphModel().getSemanticObject(object);
     }
 
     ///////////////////////////////////////////////////////////////////

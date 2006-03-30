@@ -1213,7 +1213,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     link.setHead(newLinkHead);
 
                     if (relationNameToAdd != null) {
-                        ComponentRelation relation = container.getRelation(relationNameToAdd);
+                        ComponentRelation relation = container
+                                .getRelation(relationNameToAdd);
 
                         if (relation == null) {
                             throw new InternalErrorException(
@@ -1313,7 +1314,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     link.setTail(newLinkTail);
 
                     if (relationNameToAdd != null) {
-                        ComponentRelation relation = container.getRelation(relationNameToAdd);
+                        ComponentRelation relation = container
+                                .getRelation(relationNameToAdd);
 
                         if (relation == null) {
                             throw new InternalErrorException(

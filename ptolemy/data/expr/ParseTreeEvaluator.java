@@ -648,8 +648,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
                 for (int i = 0; i < node.getRowCount(); i++) {
                     ptolemy.data.Token[] newTokens = MatrixToken
-                            .createSequence(tokens[3 * i],
-                                    tokens[(3 * i) + 1],
+                            .createSequence(tokens[3 * i], tokens[(3 * i) + 1],
                                     columnCount);
                     System.arraycopy(newTokens, 0, matrixTokens, columnCount
                             * i, columnCount);
@@ -1045,7 +1044,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             node.setToken(_evaluatedChildToken);
         }
     }
-    
+
     /** Construct a union by assigning the label value given by
      *  the children nodes.
      *  @param node The union constructor node.
@@ -1068,10 +1067,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         String[] labels = (String[]) node.getLabelNames().toArray(
                 new String[numChildren]);
-        
+
         //_assert(labels.length == 1, node,
         //        "has more than one member type of the union.");
-        
+
         //If there is more than one members in the union, take the first
         //member value as the value of the union.
         if (labels.length > 0) {
@@ -1082,7 +1081,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
-    }    
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

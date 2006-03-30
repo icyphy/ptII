@@ -596,7 +596,7 @@ public class CacheAwareScheduler extends SDFScheduler {
         /*int tempUsedSpace =*/_dataSPM.usedSpace();
 
         // Temp variable to store the D-Scratchpad's total size.
-        /*int tempDSPMSize =*/ _dataSPM.size();
+        /*int tempDSPMSize =*/_dataSPM.size();
 
         penalty = (maxFiringsPossible - fired)
                 * _actorsRecord[actorNo].productionRate;
@@ -1105,8 +1105,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                             // on the inside, we check whether the container
                             // of the destination port deeply contains
                             // source port.
-                            if (port.getContainer()
-                                    .deepContains(outputPort)) {
+                            if (port.getContainer().deepContains(outputPort)) {
                                 continue;
                             }
                         }

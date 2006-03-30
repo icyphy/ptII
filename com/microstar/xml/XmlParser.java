@@ -2204,8 +2204,7 @@ public class XmlParser {
     void dataBufferAppend(char[] ch, int start, int length) {
         dataBuffer = (char[]) extendArray(dataBuffer, dataBuffer.length,
                 dataBufferPos + length);
-        System.arraycopy(ch, start, dataBuffer,
-                dataBufferPos, length);
+        System.arraycopy(ch, start, dataBuffer, dataBufferPos, length);
         dataBufferPos += length;
     }
 

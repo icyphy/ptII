@@ -77,9 +77,8 @@ public class FSMDirector extends Director {
      *   an actor throws it while generating fire code for the actor.
      */
     public String generateFireCode() throws IllegalActionException {
-        ptolemy.domains.fsm.kernel.FSMActor controller =
-            ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
-            .getController();
+        ptolemy.domains.fsm.kernel.FSMActor controller = ((ptolemy.domains.fsm.kernel.FSMDirector) getComponent())
+                .getController();
         FSMActor controllerHelper = (FSMActor) _getHelper(controller);
 
         StringBuffer code = new StringBuffer();

@@ -49,7 +49,7 @@ public class AudioReader extends AudioSDLActor {
     public AudioReader(ptolemy.actor.lib.javasound.AudioReader actor) {
         super(actor);
     }
-    
+
     /**
      * Generate initialization code.
      * Get the file path from the actor's fileOrURL parameter. Read the

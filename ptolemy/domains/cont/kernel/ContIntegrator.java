@@ -107,9 +107,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see ODESolver
  @see CTDirector
  */
-public class ContIntegrator extends TypedAtomicActor
-        implements TimedActor, ContStepSizeControlActor {
-    
+public class ContIntegrator extends TypedAtomicActor implements TimedActor,
+        ContStepSizeControlActor {
+
     /** Construct an integrator with the specified name and a container.
      *  The integrator is in the same workspace as the container.
      *  @param container The container.
@@ -128,7 +128,7 @@ public class ContIntegrator extends TypedAtomicActor
         //      StringAttribute cardinality
         //            = new StringAttribute(impulseInput, "_cardinal");
         //      cardinality.setExpression("SOUTH");
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
 
@@ -142,7 +142,7 @@ public class ContIntegrator extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     // FIXME
     //  /** The impulse input port. This is a single port of type double.
     //  */

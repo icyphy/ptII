@@ -60,22 +60,21 @@ public class StringFunction extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String  generateFireCode() throws IllegalActionException {
-    	ptolemy.actor.lib.string.StringFunction actor = 
-    		(ptolemy.actor.lib.string.StringFunction) getComponent();
-    	String function = actor.function.getExpression();
-    	if (function.equals("trim")) {
-    		_codeStream.appendCodeBlock("trimBlock");    		
-    	} else if (function.equals("toLowerCase")) {
-    		_codeStream.appendCodeBlock("toLowerCaseBlock");    		
-    	} else if (function.equals("toUpperCase")) {
-    		_codeStream.appendCodeBlock("toUpperCaseBlock");
-    	} else {
-    		throw new IllegalActionException (
-    				"Unhandled function \""	+ function + "\".");
-    	}
-    	return processCode(_codeStream.toString());
-   }
+    public String generateFireCode() throws IllegalActionException {
+        ptolemy.actor.lib.string.StringFunction actor = (ptolemy.actor.lib.string.StringFunction) getComponent();
+        String function = actor.function.getExpression();
+        if (function.equals("trim")) {
+            _codeStream.appendCodeBlock("trimBlock");
+        } else if (function.equals("toLowerCase")) {
+            _codeStream.appendCodeBlock("toLowerCaseBlock");
+        } else if (function.equals("toUpperCase")) {
+            _codeStream.appendCodeBlock("toUpperCaseBlock");
+        } else {
+            throw new IllegalActionException("Unhandled function \"" + function
+                    + "\".");
+        }
+        return processCode(_codeStream.toString());
+    }
 
     /**
      * Get the files needed by the code generated for the

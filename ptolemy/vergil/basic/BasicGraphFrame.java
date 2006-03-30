@@ -598,8 +598,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                             }
 
                             if (port != null) {
-                                ComponentEntity entity =
-                                    (ComponentEntity) port.getContainer();
+                                ComponentEntity entity = (ComponentEntity) port
+                                        .getContainer();
                                 String portName = "port_" + i;
                                 boolean isInput = port.isInput();
                                 boolean isOutput = port.isOutput();
@@ -1964,9 +1964,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
                         PtolemyPreferences.PREFERENCES_WITHIN_CONFIGURATION,
                         PtolemyPreferences.class);
             } catch (IllegalActionException ex) {
-                MessageHandler
-                        .error("Preferences attribute found, "
-                                + "but not of the right class.", ex);
+                MessageHandler.error("Preferences attribute found, "
+                        + "but not of the right class.", ex);
             }
 
             if (preferences == null) {

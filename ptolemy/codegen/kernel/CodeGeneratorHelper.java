@@ -92,27 +92,27 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         _component = component;
 
         _parseTreeCodeGenerator = new ParseTreeCodeGenerator() {
-                /** Evaluate the parse tree with the specified root node using
-                 *  the specified scope to resolve the values of variables.
-                 *  @param node The root of the parse tree.
-                 *  @param scope The scope for evaluation.
-                 *  @return The result of evaluation.
-                 *  @exception IllegalActionException If an error occurs during
-                 *   evaluation.
-                 */
-                public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
-                        ParserScope scope) {
-                    return new Token();
-                }
+            /** Evaluate the parse tree with the specified root node using
+             *  the specified scope to resolve the values of variables.
+             *  @param node The root of the parse tree.
+             *  @param scope The scope for evaluation.
+             *  @return The result of evaluation.
+             *  @exception IllegalActionException If an error occurs during
+             *   evaluation.
+             */
+            public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
+                    ParserScope scope) {
+                return new Token();
+            }
 
-                /** Generate code that corresponds with the fire() method.
-                 *  @return The generated code.
-                 */
-                public String generateFireCode() {
-                    return "/* ParseTreeCodeGenerator.generateFireCode() "
+            /** Generate code that corresponds with the fire() method.
+             *  @return The generated code.
+             */
+            public String generateFireCode() {
+                return "/* ParseTreeCodeGenerator.generateFireCode() "
                         + "not implemented in codegen.kernel.CodeGenerator */";
-                }
-            };
+            }
+        };
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,40 +125,40 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception Not thrown in this base class.
      */
     public void analyzeTypeConvert() throws IllegalActionException {
-    	// reset the previous type convert info.
-    	_portConversions.clear();
-    	
-    	Actor actor = (Actor) _component;
+        // reset the previous type convert info.
+        _portConversions.clear();
 
-    	List sourcePorts = actor.outputPortList();
-    	
-    	if (actor instanceof CompositeActor) {
-    		sourcePorts.addAll(actor.inputPortList());
-    	}
+        Actor actor = (Actor) _component;
 
-    	Iterator ports = sourcePorts.iterator(); 
+        List sourcePorts = actor.outputPortList();
 
-    	// for each output port.
-    	for (int i = 0; ports.hasNext(); i++) {
+        if (actor instanceof CompositeActor) {
+            sourcePorts.addAll(actor.inputPortList());
+        }
+
+        Iterator ports = sourcePorts.iterator();
+
+        // for each output port.
+        for (int i = 0; ports.hasNext(); i++) {
             TypedIOPort sourcePort = (TypedIOPort) ports.next();
 
             // for each channel.
             for (int j = 0; j < sourcePort.getWidth(); j++) {
-	            Iterator sinks = getSinkChannels(sourcePort, j).iterator();
-	            
-	            // for each sink channel connected.
-	        	while (sinks.hasNext()) {
-	        		Channel sink = (Channel) sinks.next();
-	        		TypedIOPort sinkPort = (TypedIOPort) sink.port;
-	                if (!sourcePort.getType().equals(sinkPort.getType())) {
-	                	_markTypeConvert(new Channel(sourcePort, j), sink);
-	                }        		
-	        	}
+                Iterator sinks = getSinkChannels(sourcePort, j).iterator();
+
+                // for each sink channel connected.
+                while (sinks.hasNext()) {
+                    Channel sink = (Channel) sinks.next();
+                    TypedIOPort sinkPort = (TypedIOPort) sink.port;
+                    if (!sourcePort.getType().equals(sinkPort.getType())) {
+                        _markTypeConvert(new Channel(sourcePort, j), sink);
+                    }
+                }
             }
         }
-	}
+    }
 
-	/**
+    /**
      * Get the corresponding type in code generation from the given Ptolemy
      * type. 
      * @param ptType The given Ptolemy type.
@@ -166,20 +166,20 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Thrown if the given ptolemy cannot
      *  be resolved.
      */
-    public static String codeGenType(Type ptType)
-            throws IllegalActionException {
+    public static String codeGenType(Type ptType) throws IllegalActionException {
         // FIXME: We may need to add more types.
-    	// FIXME: We have to create separate type for different matrix types.
-        String result = ptType == BaseType.INT ? "Int" : 
-        	ptType == BaseType.STRING ? "String" : 
-        	ptType == BaseType.DOUBLE ? "Double" : 
-        	ptType == BaseType.BOOLEAN ? "Boolean" : 
-        	ptType instanceof ArrayType ? "Array" : 
-        	ptType instanceof UnsizedMatrixType ? "Matrix" : 
-        	ptType == BaseType.GENERAL ? "Token" : "";
+        // FIXME: We have to create separate type for different matrix types.
+        String result = ptType == BaseType.INT ? "Int"
+                : ptType == BaseType.STRING ? "String"
+                        : ptType == BaseType.DOUBLE ? "Double"
+                                : ptType == BaseType.BOOLEAN ? "Boolean"
+                                        : ptType instanceof ArrayType ? "Array"
+                                                : ptType instanceof UnsizedMatrixType ? "Matrix"
+                                                        : ptType == BaseType.GENERAL ? "Token"
+                                                                : "";
         if (result.length() == 0) {
             throw new IllegalActionException(
-                "Cannot resolved codegen type from Ptolemy type: " + ptType);
+                    "Cannot resolved codegen type from Ptolemy type: " + ptType);
         }
         return result;
     }
@@ -215,11 +215,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateFireCode() throws IllegalActionException {       
+    public String generateFireCode() throws IllegalActionException {
         _codeStream.clear();
-        _codeStream.append(_codeGenerator.comment(2,
-                        "fire " + getComponent().getName()));
-        _codeStream.appendCodeBlock(_defaultBlocks[2], true);  	// fireBlock
+        _codeStream.append(_codeGenerator.comment(2, "fire "
+                + getComponent().getName()));
+        _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
         return processCode(_codeStream.toString());
     }
 
@@ -249,9 +249,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateInitializeCode() throws IllegalActionException {
         _codeStream.clear();
-        _codeStream.append(_codeGenerator.comment(1,
-                "initialize " + getComponent().getName()));
-        _codeStream.appendCodeBlock(_defaultBlocks[1], true);	// initBlock
+        _codeStream.append(_codeGenerator.comment(1, "initialize "
+                + getComponent().getName()));
+        _codeStream.appendCodeBlock(_defaultBlocks[1], true); // initBlock
         return processCode(_codeStream.toString());
     }
 
@@ -260,7 +260,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  should return the definition of the main entry point for a program.
      *  In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
-     */ 
+     */
     public String generateMainEntryCode() throws IllegalActionException {
         return _codeGenerator.comment("main entry code");
     }
@@ -270,11 +270,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  should return the a string that closes optionally calls exit
      *  and closes the main() method 
      *  @exception IllegalActionException Not thrown in this base class.
-     */ 
+     */
     public String generateMainExitCode() throws IllegalActionException {
         return _codeGenerator.comment("main exit code");
     }
-
 
     /** Generate mode transition code. The mode transition code
      *  generated in this method is executed after each global
@@ -305,11 +304,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generatePreinitializeCode() throws IllegalActionException {
         _createBufferSizeAndOffsetMap();
-        
+
         _codeStream.clear();
-        _codeStream.append(_codeGenerator.comment(0,
-                "preinitialize " + getComponent().getName()));
-        _codeStream.appendCodeBlock(_defaultBlocks[0], true);	// preinitBlock
+        _codeStream.append(_codeGenerator.comment(0, "preinitialize "
+                + getComponent().getName()));
+        _codeStream.appendCodeBlock(_defaultBlocks[0], true); // preinitBlock
         return processCode(_codeStream.toString());
     }
 
@@ -320,7 +319,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateTypeConvertFireCode() throws IllegalActionException {
-    	return generateTypeConvertFireCode(false);
+        return generateTypeConvertFireCode(false);
     }
 
     /**
@@ -330,26 +329,26 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Not thrown in this base class.
      */
     public String generateTypeConvertFireCode(boolean forComposite)
-    	throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         // Type conversion code for inter-actor port conversion. 
         Iterator channels = _getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
-        	Channel source = (Channel) channels.next();
-        	
-        	if (!forComposite && source.port.isOutput() ||
-        		forComposite && source.port.isInput()) {
-        		
-	        	Iterator sinkChannels =
-	        		_getTypeConvertSinkChannels(source).iterator();
+            Channel source = (Channel) channels.next();
 
-	        	while (sinkChannels.hasNext()) {
-	        		Channel sink = (Channel) sinkChannels.next();
-	            	code.append(_generateTypeConvertMethod(source, sink));
-	        	}
-        	}
-        }        
+            if (!forComposite && source.port.isOutput() || forComposite
+                    && source.port.isInput()) {
+
+                Iterator sinkChannels = _getTypeConvertSinkChannels(source)
+                        .iterator();
+
+                while (sinkChannels.hasNext()) {
+                    Channel sink = (Channel) sinkChannels.next();
+                    code.append(_generateTypeConvertMethod(source, sink));
+                }
+            }
+        }
         return code.toString();
     }
 
@@ -361,8 +360,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n" + _codeGenerator.comment(0, _component.getName()
-                            + "'s variable declarations."));
+        code.append("\n"
+                + _codeGenerator.comment(0, _component.getName()
+                        + "'s variable declarations."));
 
         //  Generate variable declarations for referenced parameters.    
         if (_referencedParameters != null) {
@@ -373,9 +373,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 // avoid duplicate declaration.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    code.append("static " + cType(parameter.getType())
-                            + " " + generateVariableName(parameter) 
-                            + ";\n");
+                    code.append("static " + cType(parameter.getType()) + " "
+                            + generateVariableName(parameter) + ";\n");
                 }
             }
         }
@@ -391,7 +390,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
 
             code.append("static " + cType(inputPort.getType()) + " "
-            		+ generateName(inputPort));
+                    + generateName(inputPort));
 
             if (inputPort.isMultiport()) {
                 code.append("[" + inputPort.getWidth() + "]");
@@ -414,8 +413,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             // If either the output port is a dangling port or
             // the output port has inside receivers.
             if (outputPort.getWidth() == 0 || outputPort.getWidthInside() != 0) {
-                code.append("static " + cType(outputPort.getType())
-                		+ " " + generateName(outputPort));
+                code.append("static " + cType(outputPort.getType()) + " "
+                        + generateName(outputPort));
 
                 if (outputPort.isMultiport()) {
                     code.append("[" + outputPort.getWidthInside() + "]");
@@ -427,19 +426,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     code.append("[" + bufferSize + "]");
                 }
                 code.append(";\n");
-            }            
+            }
         }
-        
+
         code.append(_codeGenerator.comment(0,
-                            "Type convert variable declarations."));
+                "Type convert variable declarations."));
         Iterator channels = _getTypeConvertChannels().iterator();
         while (channels.hasNext()) {
-        	Channel channel = (Channel) channels.next();
-        	code.append("static "); 
-        	code.append(cType(((TypedIOPort) channel.port).getType()));
-        	code.append(" " + _getTypeConvertReference(channel));
+            Channel channel = (Channel) channels.next();
+            code.append("static ");
+            code.append(cType(((TypedIOPort) channel.port).getType()));
+            code.append(" " + _getTypeConvertReference(channel));
 
-        	int bufferSize = getBufferSize(channel.port);
+            int bufferSize = getBufferSize(channel.port);
 
             if (bufferSize > 1) {
                 code.append("[" + bufferSize + "]");
@@ -457,8 +456,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public String generateVariableInitialization()
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append("\n" + _codeGenerator.comment(_component.getName()
-                            + "'s variable initialization."));
+        code.append("\n"
+                + _codeGenerator.comment(_component.getName()
+                        + "'s variable initialization."));
 
         //  Generate variable initialization for referenced parameters.    
         if (_referencedParameters != null) {
@@ -469,11 +469,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 // avoid duplication.
                 if (!_codeGenerator._modifiedVariables.contains(parameter)) {
-                    code.append(_getIndentPrefix(1)
-                            + generateVariableName(parameter)
-                            + " = "
-                            + getParameterValue(parameter.getName(),
-                                    _component) + ";\n");
+                    code
+                            .append(_getIndentPrefix(1)
+                                    + generateVariableName(parameter)
+                                    + " = "
+                                    + getParameterValue(parameter.getName(),
+                                            _component) + ";\n");
                 }
             }
         }
@@ -499,9 +500,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateWrapupCode() throws IllegalActionException {
         _codeStream.clear();
-        _codeStream.append(
-        		"\n/* wrapup " + getComponent().getName() + " */\n");
-        _codeStream.appendCodeBlock(_defaultBlocks[3], true);	// wrapupBlock
+        _codeStream.append("\n/* wrapup " + getComponent().getName() + " */\n");
+        _codeStream.appendCodeBlock(_defaultBlocks[3], true); // wrapupBlock
         return processCode(_codeStream.toString());
     }
 
@@ -577,9 +577,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * that are appended by default. 
      */
     public static String[] getDefaultBlocks() {
-    	return _defaultBlocks;
+        return _defaultBlocks;
     }
-    
+
     /** Get the files needed by the code generated from this helper class.
      *  This base class returns an empty set.
      *  @return A set of strings that are header files needed by the code
@@ -715,8 +715,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 PtParser parser = new PtParser();
                 ASTPtRootNode parseTree = parser.generateParseTree(variable
                         .getExpression());
-                ParseTreeCodeGenerator parseTreeCodeGenerator = 
-                    getParseTreeCodeGenerator();
+                ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new HelperScope(variable));
                 return processCode(parseTreeCodeGenerator.generateFireCode());
@@ -801,7 +800,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String getReference(String name) throws IllegalActionException {
         name = processCode(name);
-        
+
         StringBuffer result = new StringBuffer();
         Actor actor = (Actor) _component;
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
@@ -865,11 +864,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         String[] channelAndOffset = _getChannelAndOffset(name);
 
         if (port != null) {
-        	
+
             int channelNumber = 0;
             if (!channelAndOffset[0].equals("")) {
-                channelNumber = (new Integer(channelAndOffset[0]))
-                        .intValue();
+                channelNumber = (new Integer(channelAndOffset[0])).intValue();
             }
 
             // To support modal model, we need to check the following condition
@@ -881,10 +879,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if ((port.isOutput() && !forComposite)
                     || (port.isInput() && forComposite)) {
                 Receiver[][] remoteReceivers;
-                
+
                 // For the same reason as above, we cannot do: if (port.isInput())...
                 if (port.isOutput()) {
-            		remoteReceivers = port.getRemoteReceivers();
+                    remoteReceivers = port.getRemoteReceivers();
                 } else {
                     remoteReceivers = port.deepGetReceivers();
                 }
@@ -899,9 +897,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 Channel sourceChannel = new Channel(port, channelNumber);
 
-                List typeConvertSinks = 
-                	_getTypeConvertSinkChannels(sourceChannel);
-                
+                List typeConvertSinks = _getTypeConvertSinkChannels(sourceChannel);
+
                 List sinkChannels = getSinkChannels(port, channelNumber);
 
                 boolean hasTypeConvertReference = false;
@@ -911,28 +908,29 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     IOPort sinkPort = channel.port;
                     int sinkChannelNumber = channel.channelNumber;
 
-                    if (typeConvertSinks.contains(channel) && 
-                    		hasTypeConvertReference) {
-                		// We already generated reference for this sink.
-                    	continue;
+                    if (typeConvertSinks.contains(channel)
+                            && hasTypeConvertReference) {
+                        // We already generated reference for this sink.
+                        continue;
                     }
-                    
+
                     if (i != 0) {
                         result.append(" = ");
                     }
 
                     // Type convert.
                     if (typeConvertSinks.contains(channel)) {
-                    	if (!hasTypeConvertReference) {
-                    		result.append(_getTypeConvertReference(sourceChannel));
-                    		sinkPort = port;
-                    		sinkChannelNumber = channelNumber;
-                    		hasTypeConvertReference = true;
-                    	}
+                        if (!hasTypeConvertReference) {
+                            result
+                                    .append(_getTypeConvertReference(sourceChannel));
+                            sinkPort = port;
+                            sinkChannelNumber = channelNumber;
+                            hasTypeConvertReference = true;
+                        }
                     } else {
-                    	result.append(generateName(sinkPort));
+                        result.append(generateName(sinkPort));
 
-                    	if (sinkPort.isMultiport()) {
+                        if (sinkPort.isMultiport()) {
                             result.append("[" + sinkChannelNumber + "]");
                         }
                     }
@@ -948,9 +946,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                         if (offsetObject instanceof Integer) {
 
-                            int offset = ((Integer) offsetObject).intValue() +
-                            (new Integer(channelAndOffset[1])).intValue();
-                            
+                            int offset = ((Integer) offsetObject).intValue()
+                                    + (new Integer(channelAndOffset[1]))
+                                            .intValue();
+
                             offset %= getBufferSize(sinkPort, sinkChannelNumber);
                             temp = new Integer(offset).toString();
                             /*
@@ -1085,9 +1084,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (!channelAndOffset[1].equals("")) {
                 //result.append("[" + channelAndOffset[1] + "]");
                 result.insert(0, "Array_get(");
-                result.append(" ," + channelAndOffset[1] + ")" + 
-                        ".payload.");
-                Type elementType = ((ArrayType) ((Parameter) attribute).getType()).getElementType();
+                result.append(" ," + channelAndOffset[1] + ")" + ".payload.");
+                Type elementType = ((ArrayType) ((Parameter) attribute)
+                        .getType()).getElementType();
                 result.append(codeGenType(elementType));
             }
 
@@ -1097,7 +1096,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         throw new IllegalActionException(_component, "Reference not found: "
                 + name);
     }
-
 
     /**
      * Generate the shared code. This is the first generate method invoked out
@@ -1110,7 +1108,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
         _codeStream.clear();
-        _codeStream.appendCodeBlocks(_defaultBlocks[3]);		// .*shared.*
+        _codeStream.appendCodeBlocks(_defaultBlocks[3]); // .*shared.*
         sharedCode.add(processCode(_codeStream.toString()));
         return sharedCode;
     }
@@ -1261,7 +1259,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             return actorHelper.getWriteOffset(inputPort, channelNumber);
         }
     }
-    
+
     /**
      * Determine if the given type is primitive.
      * @param ptType The given ptolemy type.
@@ -1328,7 +1326,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             String macro = code.substring(currentPos + 1, openParenIndex);
             macro = macro.trim();
 
-            
             if (!CodeGenerator._macros.contains(macro)) {
                 result.append(subcode);
             } else {
@@ -1487,7 +1484,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         /** The channel number of this channel.
          */
         public int channelNumber;
-        
+
         /** 
          * Whether this channel is the same as the given object.
          * @param object The given object.
@@ -1495,9 +1492,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
          * 	object, otherwise false;
          */
         public boolean equals(Object object) {
-        	return object instanceof Channel &&
-        		port.equals(((Channel) object).port) &&
-        		channelNumber == ((Channel) object).channelNumber;
+            return object instanceof Channel
+                    && port.equals(((Channel) object).port)
+                    && channelNumber == ((Channel) object).channelNumber;
         }
 
         /**
@@ -1506,7 +1503,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
          * @return Hash code for this channel.
          */
         public int hashCode() {
-        	return port.hashCode() + channelNumber;
+            return port.hashCode() + channelNumber;
         }
     }
 
@@ -1565,7 +1562,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
         }
     }
-    
+
     /**
      * Generate the type conversion statement for the two given channels.
      * @param source The given source channel.
@@ -1575,23 +1572,25 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException If there is a problem getting the
      * helpers for the ports or if the conversion cannot be handled.
      */
-    protected String _generateTypeConvertMethod (
-    		Channel source, Channel sink) throws IllegalActionException {
-        
-    	// The references are associated with their own helper, so we need
-    	// to find the associated helper.    	
-        String sourcePortChannel = source.port.getName() + "#" + source.channelNumber;
-    	String sourceRef = ((CodeGeneratorHelper) _getHelper
-                (source.port.getContainer())).getReference(sourcePortChannel);
+    protected String _generateTypeConvertMethod(Channel source, Channel sink)
+            throws IllegalActionException {
+
+        // The references are associated with their own helper, so we need
+        // to find the associated helper.    	
+        String sourcePortChannel = source.port.getName() + "#"
+                + source.channelNumber;
+        String sourceRef = ((CodeGeneratorHelper) _getHelper(source.port
+                .getContainer())).getReference(sourcePortChannel);
 
         String sinkPortChannel = sink.port.getName() + "#" + sink.channelNumber;
         // For composite actor, generate a variable corresponding to 
         // the inside receiver of an output port.
-        if (sink.port.getContainer() instanceof CompositeActor && sink.port.isOutput()) {
-            sinkPortChannel = "@" + sinkPortChannel; 
+        if (sink.port.getContainer() instanceof CompositeActor
+                && sink.port.isOutput()) {
+            sinkPortChannel = "@" + sinkPortChannel;
         }
-    	String sinkRef = ((CodeGeneratorHelper) _getHelper
-                (sink.port.getContainer())).getReference(sinkPortChannel);
+        String sinkRef = ((CodeGeneratorHelper) _getHelper(sink.port
+                .getContainer())).getReference(sinkPortChannel);
         // When the sink port is contained by a modal controller, it is 
         // possible that the port is both input and output port. we need
         // to pay special attention. Directly calling getReference() will
@@ -1602,10 +1601,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 sinkRef = sinkRef + "[" + sink.channelNumber + "]";
             }
         }
-        
-    	Type sourceType = ((TypedIOPort) source.port).getType();
-    	Type sinkType = ((TypedIOPort) sink.port).getType();
-        
+
+        Type sourceType = ((TypedIOPort) source.port).getType();
+        Type sinkType = ((TypedIOPort) sink.port).getType();
+
         // In a modal model, a refinement may have an output port which is
         // not connected inside, in this case the type of the port is 
         // unknown and there is no need to generate type conversion code
@@ -1614,15 +1613,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             return "";
         }
 
-    	String result = sinkRef + " = ";
-    	
-        if (sinkType == BaseType.DOUBLE){
+        String result = sinkRef + " = ";
+
+        if (sinkType == BaseType.DOUBLE) {
             if (sourceType == BaseType.INT) {
                 result += "(double) " + sourceRef;
             } else {
                 throw new IllegalActionException(
                         "Conversion not handled. Converting from '"
-                        + sourceType + "' to '" + sinkType + "'\n");
+                                + sourceType + "' to '" + sinkType + "'\n");
             }
         } else if (sinkType == BaseType.STRING) {
             if (sourceType == BaseType.BOOLEAN) {
@@ -1635,23 +1634,23 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 result += "ftoa(" + sourceRef + ")";
             } else {
                 throw new IllegalActionException(
-                		"Conversion not handled. Converting from '"
-                		+ sourceType + "' to '" + sinkType + "'\n");        		
+                        "Conversion not handled. Converting from '"
+                                + sourceType + "' to '" + sinkType + "'\n");
             }
-    	} else if (sinkType == BaseType.GENERAL) {
-    		if (isPrimitiveType(sourceType)) {
-        		result += "$new(" + codeGenType(sourceType) + "(" + sourceRef + "))";
-    		} else {
-    			//It is a Token type, so we can just assign directly.
-    			result += sourceRef;
-    		}
-    	} else {
-    		// Use function table to convert between specific Token types.
-    		result += "$typeFunc(sinkRef::convert(sourceRef))";
-    	}
-    	return processCode(result) + ";\n";
-	}
-
+        } else if (sinkType == BaseType.GENERAL) {
+            if (isPrimitiveType(sourceType)) {
+                result += "$new(" + codeGenType(sourceType) + "(" + sourceRef
+                        + "))";
+            } else {
+                //It is a Token type, so we can just assign directly.
+                result += sourceRef;
+            }
+        } else {
+            // Use function table to convert between specific Token types.
+            result += "$typeFunc(sinkRef::convert(sourceRef))";
+        }
+        return processCode(result) + ";\n";
+    }
 
     /** Get the code generator helper associated with the given component.
      *  @param component The given component.
@@ -1670,7 +1669,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
-    } 
+    }
 
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.
@@ -1863,11 +1862,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
          */
         private Variable _variable = null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-	/** Find the paired close parenthesis given a string and an index
+    /** Find the paired close parenthesis given a string and an index
      *  which is the position of an open parenthesis. Return -1 if no
      *  paired close parenthesis is found.
      *  @param string The given string.
@@ -1942,12 +1941,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     private String[] _getChannelAndOffset(String name)
             throws IllegalActionException {
-    	
-    	// FIXME: the comment says that this method return -1 for 
-    	// unspecified channel or offset. However, result is initialized to
-    	// empty strings.
+
+        // FIXME: the comment says that this method return -1 for 
+        // unspecified channel or offset. However, result is initialized to
+        // empty strings.
         String[] result = { "", "" };
-        
+
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
         tokenizer.nextToken();
 
@@ -1968,14 +1967,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
         return result;
     }
-    
-	/**
+
+    /**
      * Get the set of channels that need to be type converted.
      * @return Set of channels that need to be type converted.
      */
-	private Set _getTypeConvertChannels() {
-		return _portConversions.keySet();
-	}
+    private Set _getTypeConvertChannels() {
+        return _portConversions.keySet();
+    }
 
     /**
      * Generate a variable reference for the given channel. This varaible
@@ -1987,9 +1986,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     private String _getTypeConvertReference(Channel channel) {
         return generateName(channel.port) + "_" + channel.channelNumber;
-	}
+    }
 
-	/**
+    /**
      * Get the list of sink channels that the given source channel needs to
      * be type converted to.
      * @param source The given source channel.
@@ -1997,12 +1996,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * be type converted to.
      */
     private List _getTypeConvertSinkChannels(Channel source) {
-    	if (_portConversions.containsKey(source)) {
-    		return ((List) _portConversions.get(source));
-    	}
-    	return new ArrayList();
+        if (_portConversions.containsKey(source)) {
+            return ((List) _portConversions.get(source));
+        }
+        return new ArrayList();
     }
-    
+
     /**
      * Mark the given connection between the source and the sink channels
      * as type conversion required.
@@ -2010,15 +2009,15 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @param sink The given input channel.
      */
     private void _markTypeConvert(Channel source, Channel sink) {
-    	List sinks;
-    	if (_portConversions.containsKey(source)) {
-        	sinks = (List) _portConversions.get(source);
-    	} else {
-    		sinks = new ArrayList();
-        	_portConversions.put(source, sinks);
-    	}
-    	sinks.add(sink);
-	}
+        List sinks;
+        if (_portConversions.containsKey(source)) {
+            sinks = (List) _portConversions.get(source);
+        } else {
+            sinks = new ArrayList();
+            _portConversions.put(source, sinks);
+        }
+        sinks.add(sink);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -2067,10 +2066,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * The code block table that stores the code block body (StringBuffer)
      * with the code block name (String) as key.
      */
-    private static final String[] _defaultBlocks = {
-    	"preinitBlock", "initBlock", "fireBlock", "wrapupBlock", ".*shared.*"
-    };
-    
+    private static final String[] _defaultBlocks = { "preinitBlock",
+            "initBlock", "fireBlock", "wrapupBlock", ".*shared.*" };
+
     /** A hashset that keeps track of parameters that are referenced for
      *  the associated actor.
      */

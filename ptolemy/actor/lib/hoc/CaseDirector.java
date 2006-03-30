@@ -112,7 +112,7 @@ public class CaseDirector extends Director {
      *  @return The time of the next iteration.
      */
     public Time getModelNextIterationTime() {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         return container._current.getDirector().getModelNextIterationTime();
     }
 
@@ -123,13 +123,13 @@ public class CaseDirector extends Director {
         if (_debugging) {
             _debug("Calling fire()");
         }
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         container._current.fire();
         if (_debugging) {
             _debug("Called fire()");
         }
     }
-    
+
     /** Return a receiver that is a one-place buffer. A token put into the
      *  receiver will overwrite any token already in the receiver.
      *  @return A receiver that is a one-place buffer.
@@ -139,6 +139,7 @@ public class CaseDirector extends Director {
             public boolean hasRoom() {
                 return true;
             }
+
             public void put(Token token) {
                 try {
                     if (hasToken() == true) {
@@ -172,20 +173,22 @@ public class CaseDirector extends Director {
             _workspace.getReadAccess();
             super.prefire();
 
-            Case container = (Case)getContainer();
+            Case container = (Case) getContainer();
             // Read from port parameters, including the control port.
-            Iterator portParameters = container.attributeList(PortParameter.class).iterator();
+            Iterator portParameters = container.attributeList(
+                    PortParameter.class).iterator();
             while (portParameters.hasNext()) {
-                PortParameter portParameter = (PortParameter)portParameters.next();
+                PortParameter portParameter = (PortParameter) portParameters
+                        .next();
                 portParameter.update();
             }
-            
+
             String controlValue = container.control.getToken().toString();
             ComponentEntity refinement = container.getEntity(controlValue);
             if (!(refinement instanceof Refinement)) {
                 refinement = container._default;
             }
-            container._current = (Refinement)refinement;
+            container._current = (Refinement) refinement;
 
             // Transfer input tokens.
             for (Iterator inputPorts = container.inputPortList().iterator(); inputPorts
@@ -198,16 +201,22 @@ public class CaseDirector extends Director {
                     for (int i = 0; i < port.getWidth(); i++) {
                         if (port.hasToken(i)) {
                             Token token = port.get(i);
-                            if ((insideReceivers != null) && (insideReceivers[i] != null)) {
+                            if ((insideReceivers != null)
+                                    && (insideReceivers[i] != null)) {
                                 for (int j = 0; j < insideReceivers[i].length; j++) {
-                                    if (insideReceivers[i][j].getContainer().getContainer() == refinement) {
+                                    if (insideReceivers[i][j].getContainer()
+                                            .getContainer() == refinement) {
                                         insideReceivers[i][j].put(token);
                                         if (_debugging) {
-                                            _debug(getFullName(),
+                                            _debug(
+                                                    getFullName(),
                                                     "transferring input from "
-                                                    + port.getFullName()
-                                                    + " to "
-                                                    + (insideReceivers[i][j]).getContainer().getFullName());
+                                                            + port
+                                                                    .getFullName()
+                                                            + " to "
+                                                            + (insideReceivers[i][j])
+                                                                    .getContainer()
+                                                                    .getFullName());
                                         }
                                     }
                                 }
@@ -224,7 +233,7 @@ public class CaseDirector extends Director {
             _workspace.doneReading();
         }
     }
-    
+
     /** Invoke the postfire() method of the current local director.
      *  @return True if the execution can continue into the next iteration.
      *  @exception IllegalActionException If there is no director,
@@ -235,7 +244,7 @@ public class CaseDirector extends Director {
         if (_debugging) {
             _debug("Calling postfire()");
         }
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         return container._current.postfire();
     }
 }

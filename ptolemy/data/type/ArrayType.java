@@ -139,10 +139,10 @@ public class ArrayType extends StructuredType {
         int depth = 1;
         if (_elementType instanceof StructuredType) {
             depth += ((StructuredType) _elementType).depth();
-        } 
+        }
         return depth;
     }
-    
+
     /** Determine if the argument represents the same ArrayType as this
      *  object.
      *  @param object Another object.

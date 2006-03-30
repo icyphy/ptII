@@ -62,8 +62,7 @@ public class Loader3D extends GRShadedShape {
     }
 
     protected void _createModel() throws IllegalActionException {
-        String fileName = ((StringToken) filename.getToken())
-                .stringValue();
+        String fileName = ((StringToken) filename.getToken()).stringValue();
 
         //Appearance ap = new Appearance();
         //ap.setColoringAttributes(new ColoringAttributes(_color.x,

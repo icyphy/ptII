@@ -549,14 +549,14 @@ public class Token implements Serializable {
      *  null tokens.  Since null is a Java keyword, we use the term "nil".
      *  The toString() method on a nil token returns the string "nil".
      */
-    public static final Token NIL = new Token(){
+    public static final Token NIL = new Token() {
         /** Return the type of this token.                                  
-             *  @return BaseType.UNKNOWN.
-             */
-            public Type getType() {
-                return BaseType.NIL;
-            }
-        };
+         *  @return BaseType.UNKNOWN.
+         */
+        public Type getType() {
+            return BaseType.NIL;
+        }
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -569,10 +569,8 @@ public class Token implements Serializable {
      */
     public static String notSupportedNullNilStringMessage(String type,
             String init) {
-        return "Creating a nil token with "
-            + type +"(" + (init == null
-                    ? "null" 
-                    : "\"" + init + "\"")
-            + ") is not supported.  Use Token.NIL instead.";
+        return "Creating a nil token with " + type + "("
+                + (init == null ? "null" : "\"" + init + "\"")
+                + ") is not supported.  Use Token.NIL instead.";
     }
 }

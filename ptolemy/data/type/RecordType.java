@@ -196,14 +196,14 @@ public class RecordType extends StructuredType {
             Type fieldType = get(labels[i]);
             depth[i] = 1;
             if (fieldType instanceof StructuredType) {
-                depth[i] += ((StructuredType) fieldType).depth(); 
+                depth[i] += ((StructuredType) fieldType).depth();
             }
-            if (depth[i] > maxDepth) 
+            if (depth[i] > maxDepth)
                 maxDepth = depth[i];
-        } 
+        }
         return maxDepth;
     }
-    
+
     /** Determine if the argument represents the same RecordType as this
      *  object.  Two record types are equal if they have the same field names
      *  and the type of each field is the same.

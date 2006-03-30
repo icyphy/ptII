@@ -91,8 +91,7 @@ public class FixedPointScheduler extends Scheduler {
      *   schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-        StaticSchedulingDirector director = 
-            (StaticSchedulingDirector) getContainer();
+        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
 
         if (director == null) {
             throw new NotSchedulableException(this, "FixedPointScheduler "
@@ -108,9 +107,8 @@ public class FixedPointScheduler extends Scheduler {
         }
 
         Schedule schedule = new Schedule();
-        
-        FunctionDependencyOfCompositeActor functionDependency = 
-            (FunctionDependencyOfCompositeActor) compositeActor
+
+        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) compositeActor
                 .getFunctionDependency();
 
         Object[] cycleNodes = functionDependency.getCycleNodes();

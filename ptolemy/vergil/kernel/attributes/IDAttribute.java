@@ -100,8 +100,7 @@ public class IDAttribute extends SingletonAttribute {
         // attribute and model must be consistent with the name of the file.
         // boolean isClass = false;
         //if (container instanceof InstantiableNamedObj) {
-            /* isClass = */((InstantiableNamedObj) container)
-                    .isClassDefinition();
+        /* isClass = */((InstantiableNamedObj) container).isClassDefinition();
         //}
 
         String className = container.getClassName();

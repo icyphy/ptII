@@ -459,10 +459,9 @@ public class EPSGraphics extends Graphics {
         double greenscale = 1.0; // lightest
         double fullscale = Math.sqrt(255.0 * 255.0 * ((bluescale * bluescale)
                 + (redscale * redscale) + (greenscale * greenscale)));
-        double graylevel = Math
-                .sqrt(((red * red * redscale * redscale)
-                        + (blue * blue * bluescale * bluescale) + (green
-                        * green * greenscale * greenscale)))
+        double graylevel = Math.sqrt(((red * red * redscale * redscale)
+                + (blue * blue * bluescale * bluescale) + (green * green
+                * greenscale * greenscale)))
                 / fullscale;
         _buffer.append("" + graylevel + " setgray\n");
 

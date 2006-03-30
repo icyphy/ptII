@@ -63,7 +63,8 @@ public class MultiCompositePort extends TypedIOPort {
      *   class for the container, or if the container does not implement the
      *   TypedActor interface.
      */
-    public MultiCompositePort(Workspace workspace) throws IllegalActionException {
+    public MultiCompositePort(Workspace workspace)
+            throws IllegalActionException {
         super(workspace);
     }
 
@@ -357,7 +358,8 @@ public class MultiCompositePort extends TypedIOPort {
                 }
 
                 // Remove the relation as well.
-                ComponentRelation relation = model.getRelation(getName() + "Relation");
+                ComponentRelation relation = model.getRelation(getName()
+                        + "Relation");
 
                 if (relation != null) {
                     relation.setContainer(null);

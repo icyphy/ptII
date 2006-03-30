@@ -75,9 +75,8 @@ public class LongToken extends ScalarToken {
      */
     public LongToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            throw new IllegalActionException(
-                    notSupportedNullNilStringMessage("LongToken",
-                            init));
+            throw new IllegalActionException(notSupportedNullNilStringMessage(
+                    "LongToken", init));
         }
 
         // Throw away the ending L or l, if necessary.
@@ -392,8 +391,7 @@ public class LongToken extends ScalarToken {
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
-            double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.LongMatrixMath.within(); if this
         // implementation changes, also change the corresponding

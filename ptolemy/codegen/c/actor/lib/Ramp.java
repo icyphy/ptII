@@ -65,8 +65,8 @@ public class Ramp extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(cType(TypeLattice.leastUpperBound(
-        		actor.init.getType(), actor.step.getType())));
+        args.add(cType(TypeLattice.leastUpperBound(actor.init.getType(),
+                actor.step.getType())));
 
         _codeStream.appendCodeBlock("preinitBlock", args);
         return processCode(_codeStream.toString());
@@ -81,14 +81,12 @@ public class Ramp extends CCodeGeneratorHelper {
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.actor.lib.Ramp actor = 
-        	(ptolemy.actor.lib.Ramp) getComponent();
-
+        ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
 
         //actor.init.getType().;
-        
-        String type = codeGenType(TypeLattice.leastUpperBound(
-        		actor.init.getType(), actor.step.getType()));
+
+        String type = codeGenType(TypeLattice.leastUpperBound(actor.init
+                .getType(), actor.step.getType()));
         if (!isPrimitiveType(type)) {
             type = "Token";
         }
@@ -97,7 +95,6 @@ public class Ramp extends CCodeGeneratorHelper {
         return processCode(_codeStream.toString());
     }
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -106,6 +103,6 @@ public class Ramp extends CCodeGeneratorHelper {
      *
      */
     private void _typeConvert() {
-    	
+
     }
 }

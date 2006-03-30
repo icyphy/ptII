@@ -1134,8 +1134,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements
                 continue;
             }
 
-            RefType type = PtolemyUtilities
-                    .getBaseTokenType(fieldType);
+            RefType type = PtolemyUtilities.getBaseTokenType(fieldType);
             SootClass fieldClass = type.getSootClass();
 
             if (!SootUtilities.derivesFrom(fieldClass,

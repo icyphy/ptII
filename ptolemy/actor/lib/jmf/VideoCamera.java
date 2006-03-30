@@ -347,8 +347,7 @@ public class VideoCamera extends Source implements ControllerListener {
     protected boolean _waitForState(int state) {
         synchronized (_waitSync) {
             try {
-                while ((_processor.getState() != state)
-                        && _stateTransitionOK) {
+                while ((_processor.getState() != state) && _stateTransitionOK) {
                     _waitSync.wait();
                 }
             } catch (Exception e) {
@@ -479,7 +478,7 @@ public class VideoCamera extends Source implements ControllerListener {
         /** Return the controls, in this case, an empty array
          *  of size 0.
          *  @return The controls.
-         */   
+         */
         public Object[] getControls() {
             return new Object[0];
         }
@@ -498,7 +497,7 @@ public class VideoCamera extends Source implements ControllerListener {
 
     private VideoFormat _format;
 
-    /** The java.awt.Image that we are producing/ */ 
+    /** The java.awt.Image that we are producing/ */
     private Buffer _bufferNew;
 
     private boolean _newFrame = false;

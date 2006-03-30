@@ -202,7 +202,7 @@ public class PitchShift {
                      */
                     for (olaIndex = -inputPeriodLength; olaIndex <= inputPeriodLength; ++olaIndex) {
                         windowVal = (1 + Math.cos((Math.PI * olaIndex)
-                                /  inputPeriodLength)) * 0.5;
+                                / inputPeriodLength)) * 0.5;
 
                         _outputRingBuf[(olaIndex + _outputRingBufPitchMarkerPos + ringBufSize)
                                 % ringBufSize] += (windowVal * _inputRingBuf[((olaIndex + _inputRingBufWritePos)

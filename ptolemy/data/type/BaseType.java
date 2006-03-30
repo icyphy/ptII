@@ -249,7 +249,6 @@ public abstract class BaseType implements Type, Serializable {
     /** The boolean data type. */
     public static final BooleanType BOOLEAN = new BooleanType();
 
-
     /** The boolean matrix data type. */
     public static final UnsizedMatrixType.BooleanMatrixType BOOLEAN_MATRIX = new UnsizedMatrixType.BooleanMatrixType();
 
@@ -549,13 +548,12 @@ public abstract class BaseType implements Type, Serializable {
     /** The nil data type. */
     public static final NilType NIL = new NilType();
 
-
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////
 
     /** Add entries in this class to index the given name and class to
      *  the given type.
-     */ 
+     */
     static void _addType(Type type, String name, Class theClass) {
         // Because the private variables are below the public variables
         // that call this initializer,

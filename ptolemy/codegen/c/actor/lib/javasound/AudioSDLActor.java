@@ -70,7 +70,7 @@ public class AudioSDLActor extends CCodeGeneratorHelper {
 
         _codeGenerator.addInclude("-I/usr/local/include/SDL");
 
-        if (StringUtilities.getProperty("os.name").equals("SunOS")) { 
+        if (StringUtilities.getProperty("os.name").equals("SunOS")) {
             _codeGenerator.addLibrary(" -Wl,-Bstatic -D_REENTRANT "
                     + "-R/usr/local/lib -lSDL -Wl,-Bdynamic "
                     + "-lpthread -lposix4 -lm -L/usr/openwin/lib "

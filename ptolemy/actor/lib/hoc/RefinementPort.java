@@ -142,7 +142,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = container.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port instanceof IOPort) {
                             ((IOPort) port).moveDown();
@@ -197,7 +198,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = container.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port instanceof IOPort) {
                             ((IOPort) port).moveToFirst();
@@ -254,7 +256,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = container.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port instanceof IOPort) {
                             ((IOPort) port).moveToIndex(index);
@@ -309,7 +312,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = container.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port instanceof IOPort) {
                             ((IOPort) port).moveToLast();
@@ -361,7 +365,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = container.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port instanceof IOPort) {
                             ((IOPort) port).moveUp();
@@ -424,7 +429,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = oldContainer.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port != null) {
                             port.setContainer(null);
@@ -475,7 +481,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = container.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port instanceof IOPort) {
                             ((IOPort) port).setInput(isInput);
@@ -534,7 +541,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = container.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port instanceof IOPort) {
                             ((IOPort) port).setMultiport(isMultiport);
@@ -581,7 +589,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = container.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port != null) {
                             port.setName(name);
@@ -635,7 +644,8 @@ public class RefinementPort extends TypedIOPort {
                     Nameable modal = container.getContainer();
 
                     if (modal instanceof MultiCompositeActor) {
-                        Port port = ((MultiCompositeActor) modal).getPort(getName());
+                        Port port = ((MultiCompositeActor) modal)
+                                .getPort(getName());
 
                         if (port instanceof IOPort) {
                             ((IOPort) port).setOutput(isOutput);

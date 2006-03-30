@@ -193,5 +193,5 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      *  corresponding element will be false, meaning the next point will
      *  not be connected to the previous point.
      */
-    boolean [] _connected;
+    boolean[] _connected;
 }

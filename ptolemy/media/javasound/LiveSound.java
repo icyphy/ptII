@@ -1153,7 +1153,8 @@ public class LiveSound {
                     result += (_captureBytes[j++] | 0xff);
                 }
 
-                doubleArray[currChannel][currSamp] =  result * maxSampleReciprocal;
+                doubleArray[currChannel][currSamp] = result
+                        * maxSampleReciprocal;
             }
         }
     }
@@ -1266,16 +1267,16 @@ public class LiveSound {
      *  AudioFormat.
      *  @param format The audio format.
      *  @return A string describing the audio formats available.
-     */   
+     */
     private static String _encodings(AudioFormat format) {
         // Print out the possible encodings
-        AudioFormat.Encoding[] encodings = 
-            AudioSystem.getTargetEncodings(format);
+        AudioFormat.Encoding[] encodings = AudioSystem
+                .getTargetEncodings(format);
         StringBuffer encodingDescriptions = new StringBuffer();
         for (int i = 0; i < encodings.length; i++) {
             encodingDescriptions.append(encodings[i] + "\n");
-            AudioFormat[] formats =
-                AudioSystem.getTargetFormats(encodings[i], format);
+            AudioFormat[] formats = AudioSystem.getTargetFormats(encodings[i],
+                    format);
             for (int j = 0; j < formats.length; j++) {
                 encodingDescriptions.append("  " + formats[j] + "\n");
             }
@@ -1336,8 +1337,8 @@ public class LiveSound {
             _targetLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (IllegalArgumentException ex) {
             IOException exception = new IOException(
-                    "Incorrect argument, possible encodings for\n"
-                    + format + "\n are:\n" + _encodings(format));
+                    "Incorrect argument, possible encodings for\n" + format
+                            + "\n are:\n" + _encodings(format));
             exception.initCause(ex);
             throw exception;
         } catch (LineUnavailableException ex2) {
@@ -1362,8 +1363,8 @@ public class LiveSound {
         boolean signed = true;
         boolean bigEndian = true;
 
-        AudioFormat format = new AudioFormat(_sampleRate,
-                _bitsPerSample, _channels, signed, bigEndian);
+        AudioFormat format = new AudioFormat(_sampleRate, _bitsPerSample,
+                _channels, signed, bigEndian);
 
         _frameSizeInBytes = format.getFrameSize();
 
@@ -1381,8 +1382,8 @@ public class LiveSound {
             _sourceLine.open(format, _bufferSize * _frameSizeInBytes);
         } catch (IllegalArgumentException ex) {
             IOException exception = new IOException(
-                    "Incorrect argument, possible encodings for\n"
-                    + format + "\n are:\n" + _encodings(format));
+                    "Incorrect argument, possible encodings for\n" + format
+                            + "\n are:\n" + _encodings(format));
             exception.initCause(ex);
             throw exception;
         } catch (LineUnavailableException ex) {

@@ -274,15 +274,14 @@ public class NonStrictTest extends Sink {
             // Here, we require that the referenceToken also be nil. 
             // If the token is an ArrayToken and two corresponding elements
             // are nil, then we consider them "close".
-            if (token.isCloseTo(referenceToken, _tolerance).booleanValue()
-                    == false
+            if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false
                     && !referenceToken.isNil()
                     && !_isCloseToIfNilArrayElement(token, referenceToken,
                             _tolerance)) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration + ".\n"
-                        + "Value was: " + token
-                        + ". Should have been: " + referenceToken);
+                                + "Value was: " + token
+                                + ". Should have been: " + referenceToken);
             }
         }
 
@@ -424,11 +423,8 @@ public class NonStrictTest extends Sink {
      *  to this token.  False if the arguments are not ArrayTokens
      */
     protected static boolean _isCloseToIfNilArrayElement(Token token1,
-            Token token2,
-            double epsilon)
-            throws IllegalActionException {
-        if (!(token1 instanceof ArrayToken)
-                || !(token2 instanceof ArrayToken)) {
+            Token token2, double epsilon) throws IllegalActionException {
+        if (!(token1 instanceof ArrayToken) || !(token2 instanceof ArrayToken)) {
             return false;
         }
 
@@ -437,7 +433,6 @@ public class NonStrictTest extends Sink {
         if (array1.length() != array2.length()) {
             return false;
         }
-
 
         for (int i = 0; i < array1.length(); i++) {
             // Here is where isCloseTo() differs from isEqualTo().

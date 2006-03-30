@@ -59,21 +59,20 @@ public class Comparator extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
-        ptolemy.actor.lib.logic.Comparator actor = 
-        	(ptolemy.actor.lib.logic.Comparator) getComponent();
-        
+        ptolemy.actor.lib.logic.Comparator actor = (ptolemy.actor.lib.logic.Comparator) getComponent();
+
         String comparison = actor.comparison.getExpression();
-        
+
         if (comparison.equals(">")) {
-        	_codeStream.appendCodeBlock("GTBlock");
+            _codeStream.appendCodeBlock("GTBlock");
         } else if (comparison.equals(">=")) {
-        	_codeStream.appendCodeBlock("GEBlock");
+            _codeStream.appendCodeBlock("GEBlock");
         } else if (comparison.equals("<")) {
-        	_codeStream.appendCodeBlock("LTBlock");
+            _codeStream.appendCodeBlock("LTBlock");
         } else if (comparison.equals("<=")) {
-        	_codeStream.appendCodeBlock("LEBlock");
+            _codeStream.appendCodeBlock("LEBlock");
         } else if (comparison.equals("==")) {
-        	_codeStream.appendCodeBlock("EQBlock");
+            _codeStream.appendCodeBlock("EQBlock");
         }
         return processCode(_codeStream.toString());
     }

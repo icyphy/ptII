@@ -38,7 +38,6 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
-
 /**
  * A helper class for ptolemy.actor.lib.io.FileReader.
  *
@@ -86,21 +85,21 @@ public class FileReader extends CCodeGeneratorHelper {
      *  "C:/foo/bar", not "/C:/foo/bar"
      *  @exception If the file cannot be found.
      */
-    public static String getFileName(FileParameter fileOrURL) 
+    public static String getFileName(FileParameter fileOrURL)
             throws IllegalActionException {
-                String fileNameString;
+        String fileNameString;
         try {
             // Handle $CLASSPATH, return a file name with forward slashes.
             fileNameString = FileUtilities.nameToURL(
-            		fileOrURL.stringValue().replace('\\', '/'), 
-            		fileOrURL.getBaseDirectory(), 
-            		fileOrURL.getClass().getClassLoader()).getPath();
+                    fileOrURL.stringValue().replace('\\', '/'),
+                    fileOrURL.getBaseDirectory(),
+                    fileOrURL.getClass().getClassLoader()).getPath();
 
             // Under Windows, convert /C:/foo/bar to C:/foo/bar
             fileNameString = new File(fileNameString).getCanonicalPath();
         } catch (IOException ex) {
-            throw new IllegalActionException(null, ex,
-            		"Cannot find file: " + fileOrURL.getExpression());
+            throw new IllegalActionException(null, ex, "Cannot find file: "
+                    + fileOrURL.getExpression());
         }
         return fileNameString;
     }

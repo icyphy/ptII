@@ -292,8 +292,7 @@ public class ComplexToken extends ScalarToken {
      *  @return A true-valued rightArgument if the first argument is
      *  close in value to this rightArgument.
      */
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
-            double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         return BooleanToken.getInstance(complexValue().isCloseTo(
                 ((ComplexToken) rightArgument).complexValue(), epsilon));
     }

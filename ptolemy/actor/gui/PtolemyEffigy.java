@@ -397,7 +397,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     if (contents == null) {
                         break;
                     }
-                    if (contents.startsWith(dtdStart) && contents.matches(dtdEndRegExp)) {
+                    if (contents.startsWith(dtdStart)
+                            && contents.matches(dtdEndRegExp)) {
                         // This is a MoML file.
                         foundDTD = true;
                         break;

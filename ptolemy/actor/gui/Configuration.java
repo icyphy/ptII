@@ -141,6 +141,7 @@ public class Configuration extends CompositeEntity {
     public static List configurations() {
         return _configurations;
     }
+
     /** Create the first tableau for the given effigy, using the
      *  tableau factory.  This is called after an effigy is first opened,
      *  or when a new effigy is created.  If the method fails

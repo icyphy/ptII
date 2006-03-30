@@ -218,7 +218,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
 
             // Lastly, find the initial value of the loop.
             //List defsList = localDefs.getDefsOfAt(counterLocal,
-             //       whilePredecessor.getTail());
+            //       whilePredecessor.getTail());
             //DefinitionStmt initializeStmt = (DefinitionStmt) defsList.get(0);
             int initial;
 
@@ -385,15 +385,15 @@ public class ConstantLoopUnroller extends BodyTransformer {
         }
     }
 
-//    private static boolean _blockContains(Block block, Object object) {
-//        for (Iterator i = block.iterator(); i.hasNext();) {
-//            if (i.next().equals(object)) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
+    //    private static boolean _blockContains(Block block, Object object) {
+    //        for (Iterator i = block.iterator(); i.hasNext();) {
+    //            if (i.next().equals(object)) {
+    //                return true;
+    //            }
+    //        }
+    //
+    //        return false;
+    //    }
 
     private static ConstantLoopUnroller instance = new ConstantLoopUnroller();
 }

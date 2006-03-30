@@ -543,7 +543,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     public boolean isExitingAfterWrapup() {
         return _exitAfterWrapup;
-    }   
+    }
 
     /** Invoke one iteration of the model.  An iteration consists of
      *  first performing changes queued with requestChange()
@@ -652,9 +652,11 @@ public class Manager extends NamedObj implements Runnable {
                     // We use Throwables instead of Exceptions so that
                     // we can catch Errors like
                     // java.lang.UnsatisfiedLink.
-                    String errorMessage = 
-                        MessageHandler.shortDescription(throwable)
-                            + " occurred: " + throwable.getClass() + "("
+                    String errorMessage = MessageHandler
+                            .shortDescription(throwable)
+                            + " occurred: "
+                            + throwable.getClass()
+                            + "("
                             + throwable.getMessage() + ")";
                     _debug("-- Manager notifying listeners of exception: "
                             + throwable);

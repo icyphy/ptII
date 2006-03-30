@@ -258,7 +258,7 @@ public abstract class MatrixToken extends Token {
         // Find the first non-nil element andgtes its type
         Type baseType = BaseType.GENERAL;
         for (int i = 0; i < tokens.length; i++) {
-            if (!tokens[i].isNil()) { 
+            if (!tokens[i].isNil()) {
                 baseType = tokens[i].getType();
                 break;
             }
@@ -1273,10 +1273,9 @@ public abstract class MatrixToken extends Token {
 
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-        // Handle nil token
+                // Handle nil token
                 if (_nils != null
-                        && _nils.contains(
-                                new Integer((i * columnCount)+j))) {
+                        && _nils.contains(new Integer((i * columnCount) + j))) {
                     sb.append("nil");
                 } else {
                     sb.append(getElementAsToken(i, j).toString());

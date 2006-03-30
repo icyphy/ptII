@@ -1135,8 +1135,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 + "node = " + node);
             }
 
-            String moml = "<" + elementName + " name=\""
-                    + deleteObj.getName() + "\"/>\n";
+            String moml = "<" + elementName + " name=\"" + deleteObj.getName()
+                    + "\"/>\n";
 
             // Make the request in the context of the container.
             NamedObj container = deleteObj.getContainer();
@@ -1376,8 +1376,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 + "node = " + node);
             }
 
-            String moml = "<" + elementName + " name=\""
-                    + deleteObj.getName() + "\"/>\n";
+            String moml = "<" + elementName + " name=\"" + deleteObj.getName()
+                    + "\"/>\n";
 
             // Make the request in the context of the container.
             NamedObj container = deleteObj.getContainer();

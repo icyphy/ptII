@@ -226,7 +226,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
 
     /** Enable or disable the apply button.
      *  @param enabled True if the apply button should be enabled.
-     */ 
+     */
     protected void _enableApplyButton(boolean enabled) {
         _applyButton.setEnabled(enabled);
     }
@@ -258,7 +258,8 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
         _unitsTableModel = new UnitsTableModel(constraintExpressions);
         _unitsTable.setModel(_unitsTableModel);
 
-        TableColumn _constraintColumn = _unitsTable.getColumnModel().getColumn(0);
+        TableColumn _constraintColumn = _unitsTable.getColumnModel().getColumn(
+                0);
         JTextField textField = new JTextField();
         final DefaultCellEditor constraintEditor = new DefaultCellEditor(
                 textField);

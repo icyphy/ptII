@@ -138,7 +138,6 @@ public class NamedObjClassesSeen implements MoMLFilter {
     //    public Set getNamedObjClassesSeen() {
     //        return _namedObjClassesSeen;
     //    }
-
     /** Reset the filter. 
      *  @param modelPath The new model path.
      */

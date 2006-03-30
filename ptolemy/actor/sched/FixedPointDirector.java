@@ -239,7 +239,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _actorsFired = new HashSet();
         _cachedAllInputsKnown = new HashSet();
         _cachedAllOutputsKnown = new HashSet();
-        
+
         _resetAllReceivers();
 
         _realCost = 0;
@@ -269,9 +269,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
-        
-        _postfireReturns = false; 
-        
+
+        _postfireReturns = false;
+
         // Actors are postfired here since updating the state of contained
         // actors inherently updates the state of a composite actor.
         // They are postfired in the order specified by the schedule,
@@ -300,14 +300,14 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         }
 
         if (_debugging) {
-            _debug("FixedPointDirector: Instant " + _currentIteration +
-                    " is complete.");
+            _debug("FixedPointDirector: Instant " + _currentIteration
+                    + " is complete.");
             _debug("So far, the rough cost is " + _roughCost
                     + "; and the real cost is " + _realCost + ".");
         }
 
         _currentIteration++;
-        
+
         // All receivers must be reset before any actors are executed in the
         // next iteration.  Since some domains (including FP) might fire one
         // actor before prefiring another actor, resetting the receivers in
@@ -420,7 +420,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     private boolean _areAllInputsKnown(Actor actor)
             throws IllegalActionException {
-        
+
         if (_cachedAllInputsKnown.contains(actor)) {
             return true;
         }
@@ -475,7 +475,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 // The actor is prefired such that it can be added into
                 // the set if its prefire method returns true.
                 if (_debugging) {
-                    _debug("    FixedPointDirector is prefiring", 
+                    _debug("    FixedPointDirector is prefiring",
                             ((Nameable) actor).getName());
                 }
                 if (actor.prefire()) {
@@ -483,17 +483,17 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 }
             } else if (!_isFinishedFiring(actor)) {
                 if (_debugging) {
-                    _debug("    FixedPointDirector is firing", 
+                    _debug("    FixedPointDirector is firing",
                             ((Nameable) actor).getName());
                 }
-                
+
                 // Whether all inputs are known must be checked before
                 // firing to handle cases with self-loops.
                 // FIXME: what? why?
                 boolean allInputsKnownBeforeFiring = _areAllInputsKnown(actor);
                 actor.fire();
                 _actorsFired.add(actor);
-                
+
                 // If all of the inputs of this actor are known, firing
                 // the actor again in this iteration is not necessary.
                 // The actor will not produce any more outputs because
@@ -515,8 +515,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     private boolean _hasIterationConverged() {
         // Get the previous values for local use.
-        int previousNumberOfActorsAllowedToFire = 
-            _lastNumberOfActorsAllowedToFire;
+        int previousNumberOfActorsAllowedToFire = _lastNumberOfActorsAllowedToFire;
         int previousNumberOfKnownReceivers = _lastNumberOfKnownReceivers;
 
         // Get the current values for local use.
@@ -527,15 +526,15 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // is called.
         _lastNumberOfActorsAllowedToFire = currentNumberOfActorsAllowedToFire;
         _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
-        
+
         if (_debugging) {
-            _debug("  previousNumberOfActorsAllowedToFire is " 
+            _debug("  previousNumberOfActorsAllowedToFire is "
                     + previousNumberOfActorsAllowedToFire);
-            _debug("  currentNumberOfActorsAllowedToFire is " 
+            _debug("  currentNumberOfActorsAllowedToFire is "
                     + currentNumberOfActorsAllowedToFire);
-            _debug("  previousNumberOfKnownReceivers is " 
+            _debug("  previousNumberOfKnownReceivers is "
                     + previousNumberOfKnownReceivers);
-            _debug("  currentNumberOfKnownReceivers is " 
+            _debug("  currentNumberOfKnownReceivers is "
                     + currentNumberOfKnownReceivers);
         }
 
@@ -575,13 +574,13 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             iterations = new Parameter(this, "iterations", new IntToken(0));
             iterations.setTypeEquals(BaseType.INT);
 
-            FixedPointScheduler scheduler = 
-                new FixedPointScheduler(this, uniqueName("Scheduler"));
+            FixedPointScheduler scheduler = new FixedPointScheduler(this,
+                    uniqueName("Scheduler"));
             setScheduler(scheduler);
-            
+
         } catch (KernelException ex) {
-            throw new InternalErrorException("Cannot initialize FixedPointDirector: "
-                    + ex.getMessage());
+            throw new InternalErrorException(
+                    "Cannot initialize FixedPointDirector: " + ex.getMessage());
         }
     }
 
@@ -612,8 +611,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
-                        changed |= ((FixedPointReceiver) 
-                                receivers[i][j])._becomesKnown();
+                        changed |= ((FixedPointReceiver) receivers[i][j])
+                                ._becomesKnown();
                     }
                 }
             }
@@ -680,7 +679,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     private boolean _postfireActor(Actor actor) throws IllegalActionException {
         if (_isFiringAllowed(actor)) {
             if (_debugging) {
-                _debug("    FixedPointDirector is postfiring", 
+                _debug("    FixedPointDirector is postfiring",
                         ((Nameable) actor).getName());
             }
             return actor.postfire();
@@ -696,7 +695,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         }
 
         _currentNumberOfKnownReceivers = 0;
-        
+
         if (_receivers == null) {
             _receivers = new LinkedList();
         }
@@ -718,10 +717,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // resolved all of its outputs.
         // A nonstrict actor may intend to output undefined values.
         if (!(_isNonStrict(actor) || _isFinishedFiring(actor))) {
-            
+
             if (_debugging) {
-                _debug("  FixedPointDirector is calling sendClear() on the output " +
-                        "ports of " + ((Nameable) actor).getName());
+                _debug("  FixedPointDirector is calling sendClear() on the output "
+                        + "ports of " + ((Nameable) actor).getName());
             }
 
             Iterator outputPorts = actor.outputPortList().iterator();

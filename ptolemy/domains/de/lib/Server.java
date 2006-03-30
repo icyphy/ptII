@@ -68,7 +68,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class Server extends DETransformer {
-    
+
     /** Construct an actor with the specified container and name.
      *  @param container The composite entity to contain this one.
      *  @param name The name of this actor.
@@ -86,25 +86,25 @@ public class Server extends DETransformer {
         // FIXME: Put in a name change from newServiceTime to serviceTime in MoML filters.
         serviceTime = new PortParameter(this, "serviceTime");
         serviceTime.setExpression("1.0");
-        serviceTime.setTypeEquals(BaseType.DOUBLE);        
+        serviceTime.setTypeEquals(BaseType.DOUBLE);
         // Put the delay port at the bottom of the icon by default.
-        StringAttribute cardinality = new StringAttribute(serviceTime.getPort(),
-                "_cardinal");
+        StringAttribute cardinality = new StringAttribute(
+                serviceTime.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
-        
+
         _queue = new FIFOQueue();
-        
+
         size = new TypedIOPort(this, "size", false, true);
         size.setTypeEquals(BaseType.INT);
         // Put it at the bottom of the icon by default.
         cardinality = new StringAttribute(size, "_cardinal");
-        cardinality.setExpression("SOUTH");        
-        
+        cardinality.setExpression("SOUTH");
+
         capacity = new Parameter(this, "capacity");
         capacity.setTypeEquals(BaseType.INT);
         capacity.setExpression("0");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
 
@@ -114,7 +114,7 @@ public class Server extends DETransformer {
      *  This is an integer with default 0.
      */
     public Parameter capacity;
-    
+
     /** The current size of the queue. This port produces an output
      *  whenever the size changes. It has type int.
      */
@@ -139,14 +139,14 @@ public class Server extends DETransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serviceTime) {
-            double value = ((DoubleToken)serviceTime.getToken()).doubleValue();
+            double value = ((DoubleToken) serviceTime.getToken()).doubleValue();
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative serviceTime: " + value);
             }
         } else if (attribute == capacity) {
-            int newCapacity = ((IntToken)capacity.getToken()).intValue();
+            int newCapacity = ((IntToken) capacity.getToken()).intValue();
             if (newCapacity <= 0) {
                 if (_queue.getCapacity() != FIFOQueue.INFINITE_CAPACITY) {
                     _queue.setCapacity(FIFOQueue.INFINITE_CAPACITY);
@@ -154,10 +154,8 @@ public class Server extends DETransformer {
             } else {
                 if (newCapacity < _queue.size()) {
                     throw new IllegalActionException(this, "Queue size ("
-                            + _queue.size()
-                            + ") exceed requested capacity "
-                            + newCapacity
-                            + ").");
+                            + _queue.size() + ") exceed requested capacity "
+                            + newCapacity + ").");
                 }
                 _queue.setCapacity(newCapacity);
             }
@@ -198,7 +196,7 @@ public class Server extends DETransformer {
 
         // If appropriate, produce output.
         if (_queue.size() > 0 && currentTime.compareTo(_nextTimeFree) == 0) {
-            Token outputToken = (Token)_queue.take();
+            Token outputToken = (Token) _queue.take();
             output.send(0, outputToken);
             size.send(0, new IntToken(_queue.size()));
             // Indicate that the server is free.
@@ -223,11 +221,12 @@ public class Server extends DETransformer {
      */
     public boolean postfire() throws IllegalActionException {
         serviceTime.update();
-        double serviceTimeValue = ((DoubleToken)serviceTime.getToken()).doubleValue();
+        double serviceTimeValue = ((DoubleToken) serviceTime.getToken())
+                .doubleValue();
         Time currentTime = getDirector().getModelTime();
 
         if (_nextTimeFree.equals(Time.NEGATIVE_INFINITY) && _queue.size() > 0) {
-            _nextTimeFree = currentTime.add(serviceTimeValue);            
+            _nextTimeFree = currentTime.add(serviceTimeValue);
             getDirector().fireAt(this, _nextTimeFree);
         }
         return super.postfire();
@@ -248,7 +247,7 @@ public class Server extends DETransformer {
 
     /** Next time the server becomes free. */
     private Time _nextTimeFree;
-    
+
     /** The FIFOQueue. */
     protected FIFOQueue _queue;
 }

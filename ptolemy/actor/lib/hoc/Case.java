@@ -76,7 +76,7 @@ public class Case extends MultiCompositeActor {
     public Case(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Create the control port.
         control = new PortParameter(this, "control");
         // FIXME: This is awkward... If I provide some
@@ -86,13 +86,12 @@ public class Case extends MultiCompositeActor {
         control.setExpression("true");
         ParameterPort port = control.getPort();
         // Put the control input on the bottom of the actor.
-        StringAttribute controlCardinal = new StringAttribute(port,
-                "_cardinal");
+        StringAttribute controlCardinal = new StringAttribute(port, "_cardinal");
         controlCardinal.setExpression("SOUTH");
 
         // Create the default refinement.
         _default = newRefinement("default");
-        
+
         // Create the director.
         _director = _createDirector();
     }
@@ -117,12 +116,12 @@ public class Case extends MultiCompositeActor {
      *   cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        Case newObject = (Case)super.clone(workspace);
-        newObject._default = (Refinement)newObject.getEntity("default");
+        Case newObject = (Case) super.clone(workspace);
+        newObject._default = (Refinement) newObject.getEntity("default");
         newObject._current = newObject._default;
         return newObject;
     }
-    
+
     /** Return the current refinement, or null if prefire() has not
      *  yet been invoked.
      *  @return The current refinement.
@@ -130,7 +129,7 @@ public class Case extends MultiCompositeActor {
     public Refinement getCurrentRefinement() {
         return _current;
     }
-    
+
     /** Override the base class to not read inputs, since this has been
      *  done in prefire().  Fire the current refinement, and then
      *  send any output data created by calling the local director's
@@ -176,8 +175,8 @@ public class Case extends MultiCompositeActor {
      *  @exception NameDuplicationException If a refinement already
      *  exists with this name.
      */
-    public Refinement newRefinement(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public Refinement newRefinement(String name) throws IllegalActionException,
+            NameDuplicationException {
         return new Refinement(this, name);
     }
 
@@ -211,16 +210,16 @@ public class Case extends MultiCompositeActor {
             }
         }
     }
-    
+
     /** Create a director. This base class creates an instance of CaseDirector.
      *  @return The created director.
      *  @exception IllegalActionException If the director cannot be created.
      *  @exception NameDuplicationException If there is already an
      *  attribute with the name "_director".
      */
-    protected CaseDirector _createDirector()
-            throws IllegalActionException, NameDuplicationException {
-        return new CaseDirector(this, "_director");        
+    protected CaseDirector _createDirector() throws IllegalActionException,
+            NameDuplicationException {
+        return new CaseDirector(this, "_director");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -228,10 +227,10 @@ public class Case extends MultiCompositeActor {
 
     /** The current refinement. */
     protected Refinement _current;
-    
+
     /** The default refinement. */
     protected Refinement _default;
-    
+
     /** The director. */
     protected CaseDirector _director;
 }

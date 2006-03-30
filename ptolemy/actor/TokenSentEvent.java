@@ -42,7 +42,7 @@ import ptolemy.data.Token;
 
  @author  Oscar Barney
  @version $Id$
-@since Ptolemy II 5.2
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (barney)
  @Pt.AcceptedRating Red (barney)
  */

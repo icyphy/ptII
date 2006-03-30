@@ -74,9 +74,8 @@ public class DoubleToken extends ScalarToken {
      */
     public DoubleToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            throw new IllegalActionException(
-                    notSupportedNullNilStringMessage("DoubleToken",
-                            init));
+            throw new IllegalActionException(notSupportedNullNilStringMessage(
+                    "DoubleToken", init));
         }
         try {
             _value = Double.parseDouble(init);
@@ -375,8 +374,7 @@ public class DoubleToken extends ScalarToken {
      *  @return A token containing tue if the value of this token is close
      *   to that of the argument.
      */
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
-            double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.DoubleMatrixMath.within(); if this
         // implementation changes, also change the corresponding

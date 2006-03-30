@@ -52,7 +52,7 @@ import diva.canvas.toolbox.LabelFigure;
 
  @author Elaine Cheong
  @version $Id$
-@since Ptolemy II 5.2
+ @since Ptolemy II 5.2
  @Pt.ProposedRating Red (celaine)
  @Pt.AcceptedRating Red (celaine)
  */

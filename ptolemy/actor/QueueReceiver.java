@@ -287,8 +287,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  @exception IllegalActionException If the desired capacity is illegal.
      *  @see #getHistoryCapacity()
      */
-    public void setHistoryCapacity(int capacity)
-            throws IllegalActionException {
+    public void setHistoryCapacity(int capacity) throws IllegalActionException {
         try {
             _queue.setHistoryCapacity(capacity);
         } catch (IllegalActionException ex) {

@@ -874,8 +874,7 @@ public class Solution {
                 System.out.print("\nRemaining BranchPoints");
 
                 for (int a = 0; a < _branchPoints.size(); a++) {
-                    System.out
-                            .print(" " + _branchPoints.elementAt(a));
+                    System.out.print(" " + _branchPoints.elementAt(a));
                 }
 
                 System.out.print("\n");

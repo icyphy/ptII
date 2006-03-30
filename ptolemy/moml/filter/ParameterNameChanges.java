@@ -79,7 +79,7 @@ import ptolemy.moml.MoMLParser;
  code, we look for property names that need to have their classes changed.
 
  <p>NOTE: This class and PortNameChange might conflict if
-  a port and parameter have the same name.
+ a port and parameter have the same name.
 
  @author Christopher Hylands
  @version $Id$

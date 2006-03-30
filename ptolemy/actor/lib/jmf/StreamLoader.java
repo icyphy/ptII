@@ -71,7 +71,7 @@ public class StreamLoader extends Source {
     }
 
     /** The file or URL that it to be read.
-     */ 
+     */
     public FileParameter fileOrURL;
 
     public void initialize() throws IllegalActionException {

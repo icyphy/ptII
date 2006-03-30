@@ -325,7 +325,7 @@ public class HSBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
         if (director == null) {
             throw new IllegalActionException(this, " no director available");
-        } 
+        }
 
         ODESolver solver = director.getCurrentODESolver();
 

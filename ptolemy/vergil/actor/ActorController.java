@@ -327,8 +327,7 @@ public abstract class ActorController extends AttributeController {
         _removeIconAction.setConfiguration(_configuration);
         Action[] actions = { _editIconAction, _removeIconAction,
                 _flipPortsHorizontal, _flipPortsVertical,
-                _rotatePortsClockwise,
-                _rotatePortsCounterclockwise };
+                _rotatePortsClockwise, _rotatePortsCounterclockwise };
         _menuFactory.addMenuItemFactory(new MenuActionFactory(actions,
                 "Appearance"));
     }

@@ -70,7 +70,7 @@ public abstract class StructuredType implements Type {
     public int depth() {
         return 1;
     }
-    
+
     /** Return a perfect hash for this type.  This number corresponds
      *  uniquely to a particular type, and is used to improve
      *  performance of certain operations in the TypeLattice class.
@@ -103,14 +103,13 @@ public abstract class StructuredType implements Type {
      */
     public void updateType(StructuredType newType)
             throws IllegalActionException {
- 
+
         if (newType.depth() >= MAXDEPTHBOUND)
             throw new IllegalActionException("Infinite iterations in type"
-                    + " resolution. The structured type has depth larger than" 
-                    + " the bound " 
-                    + MAXDEPTHBOUND
-                    +" , set up for detecting infinite iterations: "
-                    + newType.toString());            
+                    + " resolution. The structured type has depth larger than"
+                    + " the bound " + MAXDEPTHBOUND
+                    + " , set up for detecting infinite iterations: "
+                    + newType.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,9 +155,9 @@ public abstract class StructuredType implements Type {
      *   not the same structured type as this one.
      */
     protected abstract StructuredType _leastUpperBound(StructuredType type);
-    
+
     /** Set up a bound for the max depth of structured types. This bound
      *  is used to detect infinite iterations.
-     */ 
+     */
     protected static final int MAXDEPTHBOUND = 20;
 }

@@ -81,8 +81,7 @@ public class SDFDirector extends Director {
      *  @exception IllegalActionException If thrown while creating
      *  offset variables.
      */
-    public String createOffsetVariablesIfNeeded()
-            throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_createOffsetVariablesIfNeeded());
         code.append(super.createOffsetVariablesIfNeeded());
@@ -101,7 +100,7 @@ public class SDFDirector extends Director {
         StringBuffer code = new StringBuffer();
         boolean inline = ((BooleanToken) _codeGenerator.inline.getToken())
                 .booleanValue();
-     
+
         // Generate code for one iteration.
         Schedule schedule = ((StaticSchedulingDirector) getComponent())
                 .getScheduler().getSchedule();
@@ -143,14 +142,15 @@ public class SDFDirector extends Director {
 
                 int count = firing.getIterationCount();
                 if (count > 1) {
-                    if (!isIDefined) { 
+                    if (!isIDefined) {
                         code.append("int i;\n");
                         isIDefined = true;
                     }
                     code.append("for (i = 0; i < " + count + " ; i++) {\n");
                 }
 
-                code.append(CodeGeneratorHelper.generateName((NamedObj) actor) + "();\n");
+                code.append(CodeGeneratorHelper.generateName((NamedObj) actor)
+                        + "();\n");
 
                 // update buffer offset after firing each actor once
                 Iterator inputPorts = actor.inputPortList().iterator();
@@ -230,9 +230,8 @@ public class SDFDirector extends Director {
      */
     public void generateTransferInputsCode(IOPort inputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(_codeGenerator.comment(2,
-                            "SDFDirector: "
-                            + "Transfer tokens to the inside."));
+        code.append(_codeGenerator.comment(2, "SDFDirector: "
+                + "Transfer tokens to the inside."));
         int rate = DFUtilities.getTokenConsumptionRate(inputPort);
 
         ptolemy.codegen.c.actor.TypedCompositeActor compositeActorHelper = (ptolemy.codegen.c.actor.TypedCompositeActor) _getHelper(getComponent()
@@ -249,11 +248,12 @@ public class SDFDirector extends Director {
                 for (int k = 0; k < rate; k++) {
                     code.append(_INDENT2
                             + compositeActorHelper.getReference("@" + name
-                            + "," + k));
+                                    + "," + k));
                     code.append(" =\n");
-                    code.append(_INDENT4
-                            + compositeActorHelper.getReference(name + ","
-                            + k));
+                    code
+                            .append(_INDENT4
+                                    + compositeActorHelper.getReference(name
+                                            + "," + k));
                     code.append(";\n");
                 }
             }
@@ -271,9 +271,8 @@ public class SDFDirector extends Director {
      */
     public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
             throws IllegalActionException {
-        code.append(_codeGenerator.comment(2,
-                            "SDFDirector: "
-                            + "Transfer tokens to the outside."));
+        code.append(_codeGenerator.comment(2, "SDFDirector: "
+                + "Transfer tokens to the outside."));
 
         int rate = DFUtilities.getTokenProductionRate(outputPort);
 
@@ -289,13 +288,14 @@ public class SDFDirector extends Director {
                 }
 
                 for (int k = 0; k < rate; k++) {
-                    code.append(_INDENT2
-                            + compositeActorHelper.getReference(name + ","
-                            + k));
+                    code
+                            .append(_INDENT2
+                                    + compositeActorHelper.getReference(name
+                                            + "," + k));
                     code.append(" =\n");
-                    code.append(_INDENT4 
+                    code.append(_INDENT4
                             + compositeActorHelper.getReference("@" + name
-                            + "," + k));
+                                    + "," + k));
                     code.append(";\n");
                 }
             }
@@ -333,29 +333,29 @@ public class SDFDirector extends Director {
         //}
 
         //try {
-            int size = 0;
+        int size = 0;
 
-            for (int copy = 0; copy < receivers[channelNumber].length; copy++) {
-                int copySize = ((SDFReceiver) receivers[channelNumber][copy])
-                        .getCapacity();
+        for (int copy = 0; copy < receivers[channelNumber].length; copy++) {
+            int copySize = ((SDFReceiver) receivers[channelNumber][copy])
+                    .getCapacity();
 
+            if (copySize > size) {
+                size = copySize;
+            }
+
+            // When an output port of a composite actor is directly
+            // connected to an input port of the same composite actor,
+            // calling getCapacity() will return 0. Therefore we use
+            // the rate to determine the buffer size.
+            if (port.isOutput()) {
+                copySize = DFUtilities.getRate(port);
                 if (copySize > size) {
                     size = copySize;
                 }
-                
-                // When an output port of a composite actor is directly
-                // connected to an input port of the same composite actor,
-                // calling getCapacity() will return 0. Therefore we use
-                // the rate to determine the buffer size.
-                if (port.isOutput()) {
-                    copySize = DFUtilities.getRate(port);
-                    if (copySize > size) {
-                        size = copySize;
-                    }
-                }
             }
+        }
 
-            return size;
+        return size;
         //} 
         //catch (ArrayIndexOutOfBoundsException ex) {
         //    throw new IllegalActionException(port, "Channel out of bounds: "
@@ -540,7 +540,8 @@ public class SDFDirector extends Director {
 
                 // Declare the read offset variable.
                 StringBuffer channelReadOffset = new StringBuffer();
-                channelReadOffset.append(CodeGeneratorHelper.generateName(port));
+                channelReadOffset
+                        .append(CodeGeneratorHelper.generateName(port));
                 if (width > 1) {
                     channelReadOffset.append("_" + channelNumber);
                 }
@@ -557,7 +558,8 @@ public class SDFDirector extends Director {
 
                 // Declare the write offset variable.
                 StringBuffer channelWriteOffset = new StringBuffer();
-                channelWriteOffset.append(CodeGeneratorHelper.generateName(port));
+                channelWriteOffset.append(CodeGeneratorHelper
+                        .generateName(port));
                 if (width > 1) {
                     channelWriteOffset.append("_" + channelNumber);
                 }

@@ -445,17 +445,15 @@ public class VergilApplication extends MoMLApplication {
 
         ModelDirectory directory = configuration.getDirectory();
 
-        Parameter applicationBlankPtolemyEffigyAtStartup =
-            (Parameter) configuration
-            .getAttribute("_applicationBlankPtolemyEffigyAtStartup",
-                    Parameter.class);
+        Parameter applicationBlankPtolemyEffigyAtStartup = (Parameter) configuration
+                .getAttribute("_applicationBlankPtolemyEffigyAtStartup",
+                        Parameter.class);
         if ((applicationBlankPtolemyEffigyAtStartup != null)
-                && applicationBlankPtolemyEffigyAtStartup
-                .getExpression().equals("true")) {
-            PtolemyEffigy.Factory factory =
-                new PtolemyEffigy.Factory(directory,
-                        directory.uniqueName("ptolemyEffigy"));
-            
+                && applicationBlankPtolemyEffigyAtStartup.getExpression()
+                        .equals("true")) {
+            PtolemyEffigy.Factory factory = new PtolemyEffigy.Factory(
+                    directory, directory.uniqueName("ptolemyEffigy"));
+
             Effigy effigy = factory.createEffigy(directory, null, null);
             configuration.createPrimaryTableau(effigy);
         }
@@ -494,7 +492,6 @@ public class VergilApplication extends MoMLApplication {
         Effigy doc = (Effigy) configuration.getEntity("directory.doc");
 
         doc.identifier.setExpression(introURL.toExternalForm());
-
 
         return configuration;
     }

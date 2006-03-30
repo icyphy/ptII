@@ -104,11 +104,11 @@ public class SideEffectAnalysis {
         }
     }
 
-//    private void _addMethod(Collection set) {
-//        for (Iterator i = set.iterator(); i.hasNext();) {
-//            _addMethod((SootMethod) i.next());
-//        }
-//    }
+    //    private void _addMethod(Collection set) {
+    //        for (Iterator i = set.iterator(); i.hasNext();) {
+    //            _addMethod((SootMethod) i.next());
+    //        }
+    //    }
 
     private void _addMethod(SootMethod method) {
         // System.out.println("adding method " + method);

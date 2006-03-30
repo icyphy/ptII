@@ -478,10 +478,9 @@ public class DDFDirector extends Director {
 
                 _actorsToCheckNumberOfFirings.add(actor);
             } else {
-                throw new IllegalActionException(this, actor,
-                        "The variable "
-                                + "requiredFiringsPerIteration must contain "
-                                + "an IntToken.");
+                throw new IllegalActionException(this, actor, "The variable "
+                        + "requiredFiringsPerIteration must contain "
+                        + "an IntToken.");
             }
         }
     }

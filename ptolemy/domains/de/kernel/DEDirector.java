@@ -1378,21 +1378,20 @@ public class DEDirector extends Director implements TimedDirector {
 
         // assign depths to ports based on the topological sorting result.
         LinkedList ports = new LinkedList();
-        
+
         for (int i = 0; i <= (numberOfPorts - 1); i++) {
             IOPort ioPort = (IOPort) sort[i];
             ports.add(ioPort);
-            int depth  = i;
+            int depth = i;
             Actor portContainer = (Actor) ioPort.getContainer();
             if (ioPort.isOutput() && portContainer.equals(getContainer())) {
                 depth += numberOfPorts;
             }
-            
+
             // Insert the hashtable entry.
             _portToDepth.put(ioPort, new Integer(depth));
             if (_debugging && _verbose) {
-                _debug(((Nameable) ioPort).getFullName(), 
-                        "depth: " + depth);
+                _debug(((Nameable) ioPort).getFullName(), "depth: " + depth);
             }
         }
 

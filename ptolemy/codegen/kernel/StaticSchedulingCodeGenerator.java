@@ -71,8 +71,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  @exception IllegalActionException If super class throws it.
      *  @exception NameDuplicationException If super class throws it.
      */
-    public StaticSchedulingCodeGenerator(CompositeEntity container,
-            String name)
+    public StaticSchedulingCodeGenerator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -87,8 +86,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  @exception IllegalActionException If the helper class cannot be found
      *   or the director helper throws it.
      */
-    public String createOffsetVariablesIfNeeded()
-            throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
         return "";
     }
 
@@ -134,9 +132,8 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
                 // Declare iteration outside of the loop to avoid
                 // "error: `for' loop initial declaration used outside C99
                 // mode" with gcc-3.3.3
-                code.append(_INDENT1
-                        +"for (iteration = 0; iteration < " + iterationCount
-                        + "; iteration ++) {\n");
+                code.append(_INDENT1 + "for (iteration = 0; iteration < "
+                        + iterationCount + "; iteration ++) {\n");
             }
         }
 
@@ -218,7 +215,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  should return the definition of the main entry point for a program.
      *  In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
-     */ 
+     */
     public String generateMainEntryCode() throws IllegalActionException {
         return comment("main entry code");
     }
@@ -228,7 +225,7 @@ public class StaticSchedulingCodeGenerator extends CodeGenerator implements
      *  should return the a string that closes optionally calls exit
      *  and closes the main() method 
      *  @exception IllegalActionException Not thrown in this base class.
-     */ 
+     */
     public String generateMainExitCode() throws IllegalActionException {
         return comment("main exit code");
     }

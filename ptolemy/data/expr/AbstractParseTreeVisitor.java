@@ -140,7 +140,7 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
     protected IllegalActionException _unsupportedVisitException(String name) {
         new Exception("Unsuppported...").printStackTrace();
         return new IllegalActionException("Nodes of type " + name
-                + " cannot be visited by a " + getClass().getName() + "." );
+                + " cannot be visited by a " + getClass().getName() + ".");
     }
 
     /** Loop through all of the children of this node,

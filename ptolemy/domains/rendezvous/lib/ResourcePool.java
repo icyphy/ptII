@@ -208,10 +208,8 @@ public class ResourcePool extends TypedAtomicActor {
                     "ResourcePool actor can only be used with RendezvousDirector.");
         }
         _postfireReturns = true;
-        if (release.getWidth() > 0
-                && _readThread == null) {
-            _readThread = new Thread(getFullName()
-                    + "_readThread") {
+        if (release.getWidth() > 0 && _readThread == null) {
+            _readThread = new Thread(getFullName() + "_readThread") {
                 public void run() {
                     try {
                         while (!_stopRequested) {
@@ -219,8 +217,7 @@ public class ResourcePool extends TypedAtomicActor {
                             // operations do.
                             synchronized (director) {
                                 if (_debugging) {
-                                    _debug("Resources available: "
-                                            + _pool);
+                                    _debug("Resources available: " + _pool);
                                 }
                                 Token resource = RendezvousReceiver.getFromAny(
                                         release.getReceivers(), director);
@@ -239,8 +236,7 @@ public class ResourcePool extends TypedAtomicActor {
             };
             director.addThread(_readThread);
             _readThread.start();
-        } else if (release.getWidth() == 0
-                && _readThread != null) {
+        } else if (release.getWidth() == 0 && _readThread != null) {
             // A mutation has eliminated the sources.
             _readThread.interrupt();
         }
@@ -248,8 +244,7 @@ public class ResourcePool extends TypedAtomicActor {
         // operations do.
         synchronized (director) {
             while (_pool.size() == 0) {
-                if (_stopRequested
-                        || !_postfireReturns) {
+                if (_stopRequested || !_postfireReturns) {
                     _postfireReturns = false;
                     return;
                 }

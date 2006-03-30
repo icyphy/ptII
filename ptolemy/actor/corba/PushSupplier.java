@@ -206,11 +206,11 @@ public class PushSupplier extends Sink {
                     _debug("after try to get remote consumer.");
 
                     //if (_remoteConsumer instanceof pushConsumer) {
-                        // FIXME: _remoteConsumer is always an
-                        // instance of pushConsumer, so this will
-                        // always break?
-                        _debug("get remote consumer.");
-                        break;
+                    // FIXME: _remoteConsumer is always an
+                    // instance of pushConsumer, so this will
+                    // always break?
+                    _debug("get remote consumer.");
+                    break;
                     //}
 
                     //try {

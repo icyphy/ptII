@@ -333,13 +333,13 @@ public class MethodCodeGenerator {
         visitor.indentLevel = 0;
 
         // Generate the method body.
-        /*Iterator units = */ body.getUnits().iterator();
+        /*Iterator units = */body.getUnits().iterator();
 
         if (thisLocalName != null) {
             visitor.setThisLocalName(thisLocalName);
         }
 
-        /*units = */ body.getUnits().iterator();
+        /*units = */body.getUnits().iterator();
 
         if (!Context.getSingleClassMode()) {
             code.append(_generateMethodPrologue(tracker, visitor));

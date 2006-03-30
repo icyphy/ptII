@@ -91,8 +91,7 @@ public class FPScheduler extends Scheduler {
      *   schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-        StaticSchedulingDirector director = 
-            (StaticSchedulingDirector) getContainer();
+        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
 
         if (director == null) {
             throw new NotSchedulableException(this, "FPScheduler "
@@ -108,9 +107,8 @@ public class FPScheduler extends Scheduler {
         }
 
         Schedule schedule = new Schedule();
-        
-        FunctionDependencyOfCompositeActor functionDependency = 
-            (FunctionDependencyOfCompositeActor) compositeActor
+
+        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) compositeActor
                 .getFunctionDependency();
 
         Object[] cycleNodes = functionDependency.getCycleNodes();

@@ -63,18 +63,18 @@ import ptolemy.data.expr.SingletonParameter;
  For example, <code>$PTII/ptolemy/configs/full/welcomeWindow.xml</code>
  might look like:
  <pre>
-&lt;?xml version="1.0" standalone="no"?&gt;
-&lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
-&lt;entity name="directory"&gt;
-  &lt;entity name="doc" class="ptolemy.actor.gui.HTMLEffigy"&gt;
-    &lt;entity name="tableau" class="ptolemy.actor.gui.WelcomeWindowTableau"&gt;
-      &lt;!-- If you adjust the size, be sure to try it under Java 1.5 --&gt;
-      &lt;property name="size" value="[600, 220]"/&gt;
-      &lt;property name="url" value="ptolemy/configs/full/intro.htm"/&gt;
-    &lt;/entity&gt;
-  &lt;/entity&gt;
-&lt;/entity&gt;
+ &lt;?xml version="1.0" standalone="no"?&gt;
+ &lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+ "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
+ &lt;entity name="directory"&gt;
+ &lt;entity name="doc" class="ptolemy.actor.gui.HTMLEffigy"&gt;
+ &lt;entity name="tableau" class="ptolemy.actor.gui.WelcomeWindowTableau"&gt;
+ &lt;!-- If you adjust the size, be sure to try it under Java 1.5 --&gt;
+ &lt;property name="size" value="[600, 220]"/&gt;
+ &lt;property name="url" value="ptolemy/configs/full/intro.htm"/&gt;
+ &lt;/entity&gt;
+ &lt;/entity&gt;
+ &lt;/entity&gt;
  </pre>
  The above configuration will create a WelcomeWindow with a 600x200
  size that displays the contents of
@@ -85,11 +85,11 @@ import ptolemy.data.expr.SingletonParameter;
  <code>_applicationBlankPtolemyEffigyAtStartup</code> parameter in the
  configuration so that a blank Graph Editor window pops up along with
  this welcome window.  For example:
-<pre>
-  &lt;property name="_applicationBlankPtolemyEffigyAtStartup"
-            class="ptolemy.data.expr.Parameter"
-            value="true"/&gt;
-<pre> 
+ <pre>
+ &lt;property name="_applicationBlankPtolemyEffigyAtStartup"
+ class="ptolemy.data.expr.Parameter"
+ value="true"/&gt;
+ <pre> 
 
 
  @author Christopher Brooks, Nandita Mangal
@@ -114,7 +114,8 @@ public class WelcomeWindow extends HTMLViewer {
         _closePanel.setLayout(new BorderLayout());
 
         _startupCheck = new JCheckBox(
-                "<html><table cellpadding=0><tr><td width=9/><td><font size=3>Show this dialog upon startup </font></td></tr></table></html>", true);
+                "<html><table cellpadding=0><tr><td width=9/><td><font size=3>Show this dialog upon startup </font></td></tr></table></html>",
+                true);
         _startupCheck.setBackground(new Color(227, 231, 236));
 
         _closeButton = new JButton("Close");
@@ -176,30 +177,26 @@ public class WelcomeWindow extends HTMLViewer {
      */
     protected boolean _close() {
         Configuration configuration = getConfiguration();
-        if ( (_showWelcomeWindowAtStartup == null 
-                     && !_startupCheck.isSelected())
-            || (_showWelcomeWindowAtStartup != null
-                    && _showWelcomeWindowAtStartup.booleanValue() 
-                    != _startupCheck.isSelected())) {
+        if ((_showWelcomeWindowAtStartup == null && !_startupCheck.isSelected())
+                || (_showWelcomeWindowAtStartup != null && _showWelcomeWindowAtStartup
+                        .booleanValue() != _startupCheck.isSelected())) {
             // Update the preferences if there is no preference and
             // the user unchecked the "Show this dialog on startup"
             // or if the value of the preference and the checkbox differ. 
             try {
-                PtolemyPreferences preferences = PtolemyPreferences.getPtolemyPreferencesWithinConfiguration(configuration);
+                PtolemyPreferences preferences = PtolemyPreferences
+                        .getPtolemyPreferencesWithinConfiguration(configuration);
                 // FIXME: is ok to create a new parameter each time? 
-                SingletonParameter showWelcomeWindowAtStartupParameter =
-                    new SingletonParameter(preferences,
-                            "_showWelcomeWindowAtStartup");
+                SingletonParameter showWelcomeWindowAtStartupParameter = new SingletonParameter(
+                        preferences, "_showWelcomeWindowAtStartup");
 
                 // FIXME: is there a better way to set a BooleanToken?
-                showWelcomeWindowAtStartupParameter.setToken(
-                        _startupCheck.isSelected()
-                        ?  BooleanToken.TRUE : BooleanToken.FALSE);
+                showWelcomeWindowAtStartupParameter.setToken(_startupCheck
+                        .isSelected() ? BooleanToken.TRUE : BooleanToken.FALSE);
                 preferences.save();
             } catch (Exception ex) {
                 MessageHandler.error("Failed to update preferences and"
-                        + "save _showWelcomeWindowAtStarupPreferences",
-                        ex);
+                        + "save _showWelcomeWindowAtStarupPreferences", ex);
             }
         }
         return super._close();

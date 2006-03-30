@@ -92,7 +92,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public CodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         codeDirectory = new FileParameter(this, "codeDirectory");
 
         codeDirectory.setExpression("$HOME/codegen/");
@@ -183,10 +183,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      * top composite actor is unavailable.
      */
     public void analyzeTypeConvert() throws IllegalActionException {
-        ((TypedCompositeActor) 
-        		_getHelper(getContainer())).analyzeTypeConvert();    	
+        ((TypedCompositeActor) _getHelper(getContainer())).analyzeTypeConvert();
     }
-    
+
     /** Add an include command line argument the compile command.
      *  @param includeCommand  The library command, for example
      *  "-L/usr/local/lib".
@@ -212,7 +211,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return A formatted comment.
      */
     public String comment(String comment) {
-         return comment(1, comment);
+        return comment(1, comment);
     }
 
     /** Return a formatted comment containing the
@@ -226,8 +225,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return A formatted comment.
      */
     public String comment(int indentLevel, String comment) {
-        return StringUtilities.getIndentPrefix(indentLevel)
-            + "/* " + comment + " */\n";
+        return StringUtilities.getIndentPrefix(indentLevel) + "/* " + comment
+                + " */\n";
     }
 
     /** Generate the body code that lies between initialize and wrapup.
@@ -267,9 +266,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public int generateCode(StringBuffer code) throws KernelException {
 
-    	// List actors = get all actors
-    	// for each actor in actors
-    	// 		actor._analyzeActor();
+        // List actors = get all actors
+        // for each actor in actors
+        // 		actor._analyzeActor();
 
         _codeFileName = null;
         boolean inline = ((BooleanToken) this.inline.getToken()).booleanValue();
@@ -577,7 +576,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         types.add("String");
         types.add("Boolean");
         types.addAll(_newTypesUsed);
-        
+
         // The constructor of Array requires calling the convert function.  
         if (types.contains("Array")) {
             functions.add("convert");
@@ -636,7 +635,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             // the type.
             for (int j = 0; j < functions.size(); j++) {
                 args.set(0, typesArray[i] + "_" + functionsArray[j]);
-            	sharedStream.appendCodeBlock("funcHeaderBlock", args);
+                sharedStream.appendCodeBlock("funcHeaderBlock", args);
             }
         }
         code.append(sharedStream.toString());
@@ -663,7 +662,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             code.append("#define NUM_FUNC " + functions.size() + "\n");
             code.append("Token (*functionTable"
                     + "[NUM_TYPE][NUM_FUNC])(Token, ...)= {\n");
-            
+
             for (int i = 0; i < types.size(); i++) {
                 code.append("\t");
                 for (int j = 0; j < functions.size(); j++) {
@@ -727,7 +726,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 Parameter parameter = (Parameter) modifiedVariables.next();
 
                 // FIXME: This is C specific and should be moved elsewhere
-                code.append("static " 
+                code.append("static "
                         + CodeGeneratorHelper.cType(parameter.getType()) + " "
                         + CodeGeneratorHelper.generateVariableName(parameter)
                         + ";\n");
@@ -942,7 +941,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** Indent string for indent level 1.
      *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
-     */ 
+     */
     protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
 
     /** A set that contains all variables in the model whose values can be 
@@ -960,15 +959,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** 
      * A static list of all macros supported by the code generator. 
      */
-    protected static final List _macros = Arrays.asList(new String[] {
-    		"ref", "val", "type", "typeFunc", 
-    		"actorSymbol", "actorClass", "new", "size" });
-    
+    protected static final List _macros = Arrays.asList(new String[] { "ref",
+            "val", "type", "typeFunc", "actorSymbol", "actorClass", "new",
+            "size" });
+
     /** 
      * A static list of all primitive types supported by the code generator. 
      */
     protected static final List _primitiveTypes = Arrays.asList(new String[] {
-    		"Int", "Double", "String", "Long", "Boolean"});
+            "Int", "Double", "String", "Long", "Boolean" });
 
     /** A HashSet that contains all type functions referenced in the model.
      *  When the codegen kernel processes a $typeFunc() macro, it would add
@@ -1050,8 +1049,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  a parameter, if there is a problem creating the codeDirectory directory
      *  or if there is a problem writing the code to a file.
      */
-    private String _writeCode(StringBuffer code)
-            throws IllegalActionException {
+    private String _writeCode(StringBuffer code) throws IllegalActionException {
         // This method is private so that the body of the caller shorter.
 
         String extension = generatorPackage.stringValue().substring(
@@ -1217,8 +1215,8 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
             _executeCommands.stdout("Reading \"" + makefileTemplateName
                     + "\", writing \"" + makefileOutputName + "\"");
-            CodeGeneratorUtilities.substitute(makefileTemplateReader, substituteMap,
-                    makefileOutputName);
+            CodeGeneratorUtilities.substitute(makefileTemplateReader,
+                    substituteMap, makefileOutputName);
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "Failed to read \""
                     + makefileTemplateName + "\" or write \""
@@ -1241,7 +1239,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
     /** The name of the file that was written.
      *  If no file was written, then the value is null.
-     */ 
+     */
     private String _codeFileName = null;
 
     /** A hash map that stores the code generator helpers associated

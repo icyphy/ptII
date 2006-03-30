@@ -159,8 +159,8 @@ public class SingleWindowHTMLViewerTableau extends Tableau {
                         .getEntity("SingleWHtmlTableau");
 
                 if (tableau == null) {
-                    tableau = new SingleWindowHTMLViewerTableau(
-                            effigy, "SingleWHtmlTableau");
+                    tableau = new SingleWindowHTMLViewerTableau(effigy,
+                            "SingleWHtmlTableau");
                 }
 
                 // Unfortunately, if we have a jar url, (for example

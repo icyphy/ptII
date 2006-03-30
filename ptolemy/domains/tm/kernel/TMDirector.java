@@ -376,9 +376,8 @@ public class TMDirector extends Director implements TimedDirector {
                     } else {
                         // Use the executionTime parameter from the port
                         // or the actor.
-                        Parameter executionTime = (Parameter) event
-                                .receiver().getContainer()
-                                .getAttribute("executionTime");
+                        Parameter executionTime = (Parameter) event.receiver()
+                                .getContainer().getAttribute("executionTime");
 
                         // Actor starts to execute
                         if (executionTime == null) {

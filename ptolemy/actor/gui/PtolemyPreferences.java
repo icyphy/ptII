@@ -1,30 +1,31 @@
 /** Default preferences definition for Vergil. */
 
 /*
-Copyright (c) 2006 The Regents of the University of California.
-All rights reserved.
+ Copyright (c) 2006 The Regents of the University of California.
+ All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ */
 
 package ptolemy.actor.gui;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -121,8 +122,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         text.text.setExpression("LocalPreferences");
 
         // Hide the name.
-        SingletonParameter _hideName = new SingletonParameter(this,
-                "_hideName");
+        SingletonParameter _hideName = new SingletonParameter(this, "_hideName");
         _hideName.setToken(BooleanToken.TRUE);
         _hideName.setVisibility(Settable.EXPERT);
     }
@@ -136,7 +136,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
      *  @return The associated PtolemyPreferences or null if not found.
      *  @exception If there is a problem getting the 
      *  {@link #PREFERENCES_WITHIN_CONFIGURATION} attribute.
-     */ 
+     */
     public static PtolemyPreferences getPtolemyPreferencesWithinConfiguration(
             Configuration configuration) throws IllegalActionException {
         PtolemyPreferences preferences = null;
@@ -150,6 +150,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
         }
         return preferences;
     }
+
     /** Check to see whether a preference of the specified name is
      *  defined in the specified context, and if it is, return its value.
      *  Note that if there is an error in the expression for the preference,
@@ -160,8 +161,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
      *  @param preferenceName The name of the preference.
      *  @return The value of the preference, or null if it is not set.
      */
-    public static Token preferenceValue(NamedObj context,
-            String preferenceName) {
+    public static Token preferenceValue(NamedObj context, String preferenceName) {
         Variable result = ModelScope.getScopedVariable(null, context,
                 preferenceName);
 
@@ -202,8 +202,8 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
                 Iterator preferences = container.attributeList(
                         PtolemyPreferences.class).iterator();
                 while (preferences.hasNext()) {
-                    PtolemyPreferences preference =
-                        (PtolemyPreferences) preferences.next();
+                    PtolemyPreferences preference = (PtolemyPreferences) preferences
+                            .next();
                     attribute = preference.getAttribute(preferenceName);
                     if (attribute instanceof Variable) {
                         return ((Variable) attribute).getToken();
@@ -263,8 +263,7 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
             preferences = getPtolemyPreferencesWithinConfiguration(configuration);
         } catch (IllegalActionException ex) {
             System.out.println("Warning: Problem with preferences attribute "
-                            + "in the configuration: "
-                            + ex.getMessage());
+                    + "in the configuration: " + ex.getMessage());
 
             // Can't do anything further.
             return;

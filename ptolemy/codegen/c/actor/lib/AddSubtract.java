@@ -68,7 +68,7 @@ public class AddSubtract extends CCodeGeneratorHelper {
         StringBuffer codeBuffer = new StringBuffer();
         codeBuffer.append("\n    ");
         codeBuffer.append("$ref(output) = ");
-        
+
         for (int i = 0; i < actor.plus.getWidth(); i++) {
             codeBuffer.append("$ref(plus#" + i + ")");
 

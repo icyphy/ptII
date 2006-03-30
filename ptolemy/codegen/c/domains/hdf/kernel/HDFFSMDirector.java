@@ -81,8 +81,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  offset variables.
      */
 
-    public String createOffsetVariablesIfNeeded()
-            throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
 
         // FIXME: The maximum controller port buffer size in one
         // global iteration is potentially large. But we can infer the
@@ -140,11 +139,12 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                             // All channels have same buffer size, so
                             // we use channel 0.
 
-                            int oldSize = controllerHelper.getBufferSize(port, 0);
+                            int oldSize = controllerHelper.getBufferSize(port,
+                                    0);
                             if (oldSize < newSize) {
                                 for (int j = 0; j < port.getWidth(); j++) {
-                                    controllerHelper
-                                            .setBufferSize(port, j, newSize);
+                                    controllerHelper.setBufferSize(port, j,
+                                            newSize);
                                 }
                             }
                             portNumber++;

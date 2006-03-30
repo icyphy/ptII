@@ -252,8 +252,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.data.expr.ScopeExtendingAttribute");
 
         // Sinewave has a DocViewerFactory, which we need to remove
-        _graphicalClasses.put(
-                "ptolemy.vergil.basic.DocViewerFactory",
+        _graphicalClasses.put("ptolemy.vergil.basic.DocViewerFactory",
                 "ptolemy.kernel.util.Attribute");
     }
 }

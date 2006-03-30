@@ -90,7 +90,7 @@ public class CodeStream {
      * which is currently ignored.
      */
     public CodeStream(CodeGeneratorHelper helper) {
-    	_helper = helper;
+        _helper = helper;
         String classNamePath = helper.getClass().getName().replace('.', '/');
         _filePath = "$CLASSPATH/" + classNamePath + ".c";
     }
@@ -114,7 +114,6 @@ public class CodeStream {
     //public void append(CodeStream codeStream) {
     //    _stream.append(codeStream.toString());
     //}
-
     /**
      * Append the contents of the given String to this code stream.
      * @param codeBlock The given string.
@@ -130,7 +129,6 @@ public class CodeStream {
     //public void append(StringBuffer codeBlock) {
     //    _stream.append(codeBlock);
     //}
-
     /**
      * Append the code block specified the given block name. This method
      * invokes appendCodeBlock(String, ArrayList) with no arguments by
@@ -193,21 +191,22 @@ public class CodeStream {
      */
     public void appendCodeBlock(String blockName, ArrayList arguments,
             boolean mayNotExist) throws IllegalActionException {
-        if (!mayNotExist && arguments.size() == 0) {	
-        	// That means this is a request by the user. This check prevents
-        	// user from appending duplicate code blocks that are already
-        	// appended by the code generator by default.
-        	String[] blocks = CodeGeneratorHelper.getDefaultBlocks();
+        if (!mayNotExist && arguments.size() == 0) {
+            // That means this is a request by the user. This check prevents
+            // user from appending duplicate code blocks that are already
+            // appended by the code generator by default.
+            String[] blocks = CodeGeneratorHelper.getDefaultBlocks();
 
-        	for (int i = 0 ; i < blocks .length; i++) {
-        		if (blockName.matches(blocks[i])) {
-                    throw new IllegalActionException(blockName +
-                    	" -- is a code block that is appended by default.");
-        		}
-        	}
+            for (int i = 0; i < blocks.length; i++) {
+                if (blockName.matches(blocks[i])) {
+                    throw new IllegalActionException(
+                            blockName
+                                    + " -- is a code block that is appended by default.");
+                }
+            }
         }
-    	
-    	// First, it checks if the code file is parsed already.
+
+        // First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
         if (_codeBlockTable == null) {
@@ -238,9 +237,10 @@ public class CodeStream {
             // Check if there are more arguments than parameters.
             else if ((parameters.size() - arguments.size()) > 0) {
                 for (int i = arguments.size(); i < parameters.size(); i++) {
-                    errors.add(blockName + " in " + _filePath
-                            + " expects parameter ("
-                            + parameters.get(i) + ").");
+                    errors
+                            .add(blockName + " in " + _filePath
+                                    + " expects parameter ("
+                                    + parameters.get(i) + ").");
                 }
             }
         }
@@ -249,7 +249,7 @@ public class CodeStream {
             if (mayNotExist) {
                 return;
             } else {
-            	// FIXME: search for parent code blocks.
+                // FIXME: search for parent code blocks.
                 throw new IllegalActionException((String) errors.get(0));
             }
         }
@@ -354,19 +354,15 @@ public class CodeStream {
      * @exception IllegalActionException If an error occurs during parsing
      *  the helper .c file.
      */
-//     public static void main(String[] args) throws IOException,
-//             IllegalActionException {
-//         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-//         System.out.println("----------Testing-------------------------------");
-
-//         System.out.print("please input file path: ");
-
-//         String filePath = in.readLine();
-
-//         System.out.println("\n----------Result------------------------------");
-//         System.out.println(new CodeStream(filePath).description());
-//     }
-
+    //     public static void main(String[] args) throws IOException,
+    //             IllegalActionException {
+    //         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+    //         System.out.println("----------Testing-------------------------------");
+    //         System.out.print("please input file path: ");
+    //         String filePath = in.readLine();
+    //         System.out.println("\n----------Result------------------------------");
+    //         System.out.println(new CodeStream(filePath).description());
+    //     }
     /**
      * Return the string representation of the code stream.
      * @return The string representation of this code stream.
@@ -671,7 +667,7 @@ public class CodeStream {
      * The helper associated with this code stream.
      */
     private CodeGeneratorHelper _helper = null;
-    
+
     /**
      * The code block table that stores the code block parameters
      * (ArrayList) with the code block names (String) as key.

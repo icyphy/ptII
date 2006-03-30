@@ -137,7 +137,8 @@ public class ConditionalBranchController extends AbstractBranchController
                     // If the guard is false, then the branch is not enabled.
                     if (branches[i].getGuard()) {
                         // Create a thread for this enabled branch
-                        Nameable actor = branches[i].getController().getParent();
+                        Nameable actor = branches[i].getController()
+                                .getParent();
                         String name = actor.getName() + branches[i].getID();
                         if (_debugging) {
                             _debug("** Creating branch: " + name);

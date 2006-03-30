@@ -382,7 +382,7 @@ public class DFUtilities {
             }
         }
     }
-    
+
     /** If a variable with the given name does not exist, then create
      *  a variable with the given name. Then set the value of the
      *  variable to the specified value. 
@@ -406,7 +406,7 @@ public class DFUtilities {
                     rateParameter = new Parameter(port, altName);
                     rateParameter.setVisibility(Settable.NOT_EDITABLE);
                     rateParameter.setPersistent(false);
-                }               
+                }
             } catch (KernelException ex) {
                 throw new InternalErrorException(port, ex, "Should not occur");
             }

@@ -512,7 +512,7 @@ public class CallGraphPruner {
     protected void _processMethod(SootMethod method) {
         // If the method is in an undiscovered class, refresh the
         // invokeGraph.
-        /*SootClass source = */ method.getDeclaringClass();
+        /*SootClass source = */method.getDeclaringClass();
         //int oldSize = _gray.size();
 
         // Care must be taken in what goes inside this if block. All trails

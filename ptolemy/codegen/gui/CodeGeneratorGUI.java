@@ -226,8 +226,8 @@ public class CodeGeneratorGUI extends PtolemyFrame {
 
                     StringBuffer code = new StringBuffer();
                     codeGenerator.generateCode(code);
-                    String codeFileNameWritten =
-                        codeGenerator.getCodeFileName();
+                    String codeFileNameWritten = codeGenerator
+                            .getCodeFileName();
 
                     if (codeFileNameWritten != null) {
                         Configuration configuration = getConfiguration();
@@ -235,9 +235,9 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                         URL codeURL = new File(codeFileNameWritten).toURL();
                         // Use Thread.currentThread() so that this code will
                         // work under WebStart.
-                        configuration.openModel(null, codeURL,
-                                codeURL.toExternalForm());
-                        
+                        configuration.openModel(null, codeURL, codeURL
+                                .toExternalForm());
+
                     }
                     // Don't write the file to the window
                     //exec.updateStatusBar(code.toString());

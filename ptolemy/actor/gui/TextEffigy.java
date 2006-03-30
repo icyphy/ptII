@@ -335,7 +335,7 @@ public class TextEffigy extends Effigy {
             try {
                 return (Effigy) _newTextEffigyURL.invoke(null, new Object[] {
                         container, base, in });
-            } catch (java.lang.reflect.InvocationTargetException ex) {   
+            } catch (java.lang.reflect.InvocationTargetException ex) {
                 throw (Exception) (ex.getCause());
                 // Uncomment this for debugging
                 // throw new java.lang.reflect.InvocationTargetException(ex,

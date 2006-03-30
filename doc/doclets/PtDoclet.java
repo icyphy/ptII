@@ -61,7 +61,7 @@ public class PtDoclet {
      */
     public static int optionLength(String option) {
         if (option.equals("-d")) {
-	    return 2;
+            return 2;
         }
         return 0;
     }
@@ -75,8 +75,8 @@ public class PtDoclet {
      *  @exception ClassNotFoundException If there is a problem finding
      *  the class of one of the fields.
      */
-    public static boolean start(RootDoc root)
-            throws IOException, ClassNotFoundException {
+    public static boolean start(RootDoc root) throws IOException,
+            ClassNotFoundException {
         _outputDirectory = _getOutputDirectory(root.options());
         // We cache the names of all actors for which we generate text.
         FileWriter allNamedObjsWriter = null;
@@ -88,8 +88,8 @@ public class PtDoclet {
                             + _outputDirectory + "\"");
                 }
             }
-            allNamedObjsWriter = new FileWriter(
-                    _outputDirectory + File.separator + "allNamedObjs.txt");
+            allNamedObjsWriter = new FileWriter(_outputDirectory
+                    + File.separator + "allNamedObjs.txt");
 
             Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
             Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
@@ -106,25 +106,23 @@ public class PtDoclet {
                     // Change the last . to a $ and try again
                     int lastDotIndex = className.lastIndexOf(".");
                     if (lastDotIndex != -1) {
-                        String innerClassName = 
-                            className.substring(0, lastDotIndex) + "$"
-                            + className.substring(lastDotIndex + 1);
+                        String innerClassName = className.substring(0,
+                                lastDotIndex)
+                                + "$" + className.substring(lastDotIndex + 1);
                         try {
                             theClass = Class.forName(innerClassName);
                         } catch (Throwable ex2) {
                             // FIXME: Use the doclet error handling mechanism
-                            System.err.println("Failed to process "
-                                    + className + ", tried "
-                                    + innerClassName);
+                            System.err.println("Failed to process " + className
+                                    + ", tried " + innerClassName);
                             ex2.printStackTrace();
                             continue;
                         }
-                        
+
                     } else {
                         // Print a message and move on.
                         // FIXME: Use the doclet error handling mechanism
-                        System.err.println("Failed to process " +
-                                className);
+                        System.err.println("Failed to process " + className);
                         ex.printStackTrace();
                         continue;
                     }
@@ -134,13 +132,11 @@ public class PtDoclet {
                     continue;
                 }
 
-
-                StringBuffer documentation =
-                    _generateClassLevelDocumentation(classes[i]);
-                documentation.append(_generateFieldDocumentation(classes[i], 
-                                             typedIOPortClass, "port"));
-                documentation.append(_generateFieldDocumentation(classes[i], 
-                                             parameterClass, "property"));
+                StringBuffer documentation = _generateClassLevelDocumentation(classes[i]);
+                documentation.append(_generateFieldDocumentation(classes[i],
+                        typedIOPortClass, "port"));
+                documentation.append(_generateFieldDocumentation(classes[i],
+                        parameterClass, "property"));
                 documentation.append("</doc>\n");
                 _writeDoc(className, documentation.toString());
                 allNamedObjsWriter.write(className + "\n");
@@ -156,33 +152,31 @@ public class PtDoclet {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    
     /** Process inlineTags and return text that contains links to the
      *  javadoc output.
      *  @param programElementDoc The class for which we are generating
      *  documentation.
      */
-    private static String _inlineTagCommentText(ProgramElementDoc
-            programElementDoc) {
+    private static String _inlineTagCommentText(
+            ProgramElementDoc programElementDoc) {
         // Process the comment as an array of tags.  Doc.commentText()
         // should do this, but it does not.
         StringBuffer documentation = new StringBuffer();
         Tag tag[] = programElementDoc.inlineTags();
         for (int i = 0; i < tag.length; i++) {
             if (tag[i] instanceof SeeTag) {
-                SeeTag seeTag = (SeeTag)tag[i]; 
+                SeeTag seeTag = (SeeTag) tag[i];
                 documentation.append("<a href=\"");
                 // The dot separated class or package name, if any.
                 String classOrPackageName = null;
                 boolean isIncluded = false;
                 if (seeTag.referencedPackage() != null) {
-                    classOrPackageName = 
-                        seeTag.referencedPackage().toString();
+                    classOrPackageName = seeTag.referencedPackage().toString();
                     isIncluded = seeTag.referencedPackage().isIncluded();
-                } 
+                }
                 if (seeTag.referencedClass() != null) {
-                    classOrPackageName = 
-                        seeTag.referencedClass().qualifiedName();
+                    classOrPackageName = seeTag.referencedClass()
+                            .qualifiedName();
                     isIncluded = seeTag.referencedClass().isIncluded();
                 }
 
@@ -198,20 +192,18 @@ public class PtDoclet {
                     if (target != null && target.indexOf("(") != -1) {
                         // The target has a paren, so can't be a port or
                         // parameter, so link to the html instead of the .xml.
-                        
+
                         isIncluded = false;
                     }
 
                     // If the .xml file is not included in the output,
                     // then link to the .html file
-                    documentation.append(
-                            _relativizePath(_outputDirectory,
-                                    classOrPackageName, programElementDoc,
-                                    isIncluded));
+                    documentation.append(_relativizePath(_outputDirectory,
+                            classOrPackageName, programElementDoc, isIncluded));
                 }
                 if (seeTag.referencedMember() != null) {
-                    documentation.append("#" +
-                            seeTag.referencedMember().name());
+                    documentation
+                            .append("#" + seeTag.referencedMember().name());
                 }
                 documentation.append("\">" + target + "</a>");
             } else {
@@ -233,28 +225,26 @@ public class PtDoclet {
         if (className.lastIndexOf(".") == -1) {
             shortClassName = className;
         } else {
-            shortClassName = 
-                className.substring(className.lastIndexOf(".") + 1);
+            shortClassName = className
+                    .substring(className.lastIndexOf(".") + 1);
         }
 
-        StringBuffer documentation = new StringBuffer(_header
-                + "<doc name=\"" + shortClassName
-                + "\" class=\"" + className + "\">\n"
+        StringBuffer documentation = new StringBuffer(_header + "<doc name=\""
+                + shortClassName + "\" class=\"" + className + "\">\n"
                 + "  <description>\n"
-                + StringUtilities.escapeForXML(
-                        _inlineTagCommentText(classDoc))
+                + StringUtilities.escapeForXML(_inlineTagCommentText(classDoc))
                 + "  </description>\n");
 
         // Handle other class tags.
-        String [] classTags = {"author", "version", "since",
-                               "Pt.ProposedRating", "Pt.AcceptedRating"};
-        for (int j = 0; j< classTags.length; j++) {
-            Tag [] tags = classDoc.tags(classTags[j]);
+        String[] classTags = { "author", "version", "since",
+                "Pt.ProposedRating", "Pt.AcceptedRating" };
+        for (int j = 0; j < classTags.length; j++) {
+            Tag[] tags = classDoc.tags(classTags[j]);
             // FIXME: This uses just the first tag.
             if (tags.length > 0) {
-                documentation.append("  <" + classTags[j] + ">" 
-                        + StringUtilities.escapeForXML(tags[0].text())
-                        + "</" + classTags[j] + ">\n");
+                documentation.append("  <" + classTags[j] + ">"
+                        + StringUtilities.escapeForXML(tags[0].text()) + "</"
+                        + classTags[j] + ">\n");
             }
         }
         return documentation;
@@ -272,8 +262,7 @@ public class PtDoclet {
      *  be found.
      */
     private static String _generateFieldDocumentation(ClassDoc classDoc,
-            Class fieldBaseClass, String element)
-            throws ClassNotFoundException {
+            Class fieldBaseClass, String element) throws ClassNotFoundException {
         StringBuffer documentation = new StringBuffer();
         FieldDoc[] fields = classDoc.fields();
         // FIXME: get fields from superclasses?
@@ -284,42 +273,47 @@ public class PtDoclet {
             try {
                 Class type = Class.forName(className);
                 if (fieldBaseClass.isAssignableFrom(type)) {
-                    documentation.append(
-                            "    <!--" + className + "-->\n"
-                            + "    <" + element + " name=\""
-                            + fields[i].name() + "\">" 
-                            + StringUtilities.escapeForXML(
-                                    _inlineTagCommentText(fields[i]))
-                            + "</" + element + ">\n");
+                    documentation
+                            .append("    <!--"
+                                    + className
+                                    + "-->\n"
+                                    + "    <"
+                                    + element
+                                    + " name=\""
+                                    + fields[i].name()
+                                    + "\">"
+                                    + StringUtilities
+                                            .escapeForXML(_inlineTagCommentText(fields[i]))
+                                    + "</" + element + ">\n");
                 }
-             } catch (ClassNotFoundException ex) {
-                 // Ignored, we probably have a primitive type like boolean.
-                 // Java 1.5 Type.isPrimitive() would help here.
-             } catch (Throwable throwable) {
-                 // Ignore, probably a loader error for Java3D
-                 System.out.println("Failed to finde class " + className);
-                 throwable.printStackTrace();
-             }
+            } catch (ClassNotFoundException ex) {
+                // Ignored, we probably have a primitive type like boolean.
+                // Java 1.5 Type.isPrimitive() would help here.
+            } catch (Throwable throwable) {
+                // Ignore, probably a loader error for Java3D
+                System.out.println("Failed to finde class " + className);
+                throwable.printStackTrace();
+            }
         }
 
-//         // Go up the hierarchy
-//         ClassDoc superClassDoc = classDoc.superclass(); 
-//         if (superClassDoc != null) {
-//             //System.out.println(element + ": SuperClass " + superClassDoc);
+        //         // Go up the hierarchy
+        //         ClassDoc superClassDoc = classDoc.superclass(); 
+        //         if (superClassDoc != null) {
+        //             //System.out.println(element + ": SuperClass " + superClassDoc);
 
-//             try {
-//                 Class superClass = Class.forName(superClassDoc.toString()); 
-//                 // Go no higher than TypedAtomicActor
-//                 if (_namedObjClass.isAssignableFrom(superClass)) {
-//                     documentation.append(_generateFieldDocumentation(
-//                                                  superClassDoc,
-//                                                  fieldBaseClass, element));
-//                 } 
-//             } catch (Throwable throwable) {
-//                 System.err.println("Failed to find superclass "
-//                         + superClassDoc + "\n" + throwable);
-//             }
-//         }
+        //             try {
+        //                 Class superClass = Class.forName(superClassDoc.toString()); 
+        //                 // Go no higher than TypedAtomicActor
+        //                 if (_namedObjClass.isAssignableFrom(superClass)) {
+        //                     documentation.append(_generateFieldDocumentation(
+        //                                                  superClassDoc,
+        //                                                  fieldBaseClass, element));
+        //                 } 
+        //             } catch (Throwable throwable) {
+        //                 System.err.println("Failed to find superclass "
+        //                         + superClassDoc + "\n" + throwable);
+        //             }
+        //         }
         return documentation.toString();
     }
 
@@ -328,7 +322,7 @@ public class PtDoclet {
      *  @param options The command line options.
      *  @return the value of the -d parameter, if any, otherwise return null.
      */
-    private static String _getOutputDirectory(String [][] options) {
+    private static String _getOutputDirectory(String[][] options) {
         for (int i = 0; i < options.length; i++) {
             String[] option = options[i];
             if (option[0].equals("-d")) {
@@ -337,7 +331,7 @@ public class PtDoclet {
         }
         return null;
     }
-    
+
     /** Given two dot separated classpath names, return a relative
      *  path to the corresponding doc file.
      *  This method is used to create relative paths
@@ -356,8 +350,7 @@ public class PtDoclet {
         // Use / here because these will be used in URLS
         //String baseFileName = baseClassName.replace('.', "/");
         String baseClassName = programElementDoc.qualifiedName();
-        String destinationFileName =
-            destinationClassName.replace('.', '/');
+        String destinationFileName = destinationClassName.replace('.', '/');
         if (baseDirectory != null) {
             // FIXME: will this work if baseDirectory is null?
             //baseFileName = baseDirectory + "/" + baseFileName;
@@ -381,22 +374,18 @@ public class PtDoclet {
             relativePath.append("../");
         }
 
-        
         // If the target is not in the list of actors we are creating
         // documentation for, then link to the .html file that
         // presumably was generated by javadoc; otherwise, link to the
         // .xml file
         String extension = (isIncluded ? ".xml" : ".html");
 
-        System.out.println("PtDoclet: relativize: "
-                + baseDirectory + " " + baseClassName + " "
-                + baseClassParts.length + " " + offset + " "
-                + relativePath + relativeURI.getPath() + extension);
-                
+        System.out.println("PtDoclet: relativize: " + baseDirectory + " "
+                + baseClassName + " " + baseClassParts.length + " " + offset
+                + " " + relativePath + relativeURI.getPath() + extension);
 
         return relativePath + relativeURI.getPath() + extension;
     }
-
 
     /** Write the output to a file.  
      *  @param className The dot separated fully qualified classname,
@@ -406,8 +395,9 @@ public class PtDoclet {
      *  @exception IOException If there is a problem writing the documentation.
      */
     private static void _writeDoc(String className, String documentation)
-        throws IOException {
-        String fileBaseName = className.replace('.', File.separatorChar) + ".xml";
+            throws IOException {
+        String fileBaseName = className.replace('.', File.separatorChar)
+                + ".xml";
         String fileName = null;
         if (_outputDirectory != null) {
             fileName = _outputDirectory + File.separator + fileBaseName;
@@ -419,8 +409,8 @@ public class PtDoclet {
         if (!directoryFile.exists()) {
             directoryFile.mkdirs();
         }
-        System.out.println("Creating "
-                + System.getProperty("user.dir") + File.separator + fileName);
+        System.out.println("Creating " + System.getProperty("user.dir")
+                + File.separator + fileName);
 
         FileWriter writer = new FileWriter(fileName);
         try {

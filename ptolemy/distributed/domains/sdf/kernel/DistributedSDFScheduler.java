@@ -618,8 +618,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
 
                 // Get all its outputPorts
                 // and simulate the proper production of tokens.
-                for (Iterator outputPorts = currentActor
-                        .outputPortList().iterator(); outputPorts.hasNext();) {
+                for (Iterator outputPorts = currentActor.outputPortList()
+                        .iterator(); outputPorts.hasNext();) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
                     int count = DFUtilities.getTokenProductionRate(outputPort);
@@ -693,9 +693,8 @@ public class DistributedSDFScheduler extends SDFScheduler {
                     } else {
                         // Otherwise the actor still has firings left.
                         // Count the number of unfulfilled inputs.
-                        int inputCount = _countUnfulfilledInputs(
-                                currentActor, unscheduledActorList,
-                                false);
+                        int inputCount = _countUnfulfilledInputs(currentActor,
+                                unscheduledActorList, false);
 
                         // We've already removed currentActor from
                         // readyToSchedule actors, and presumably
@@ -797,8 +796,7 @@ public class DistributedSDFScheduler extends SDFScheduler {
                 }
 
                 SDFReceiver receiver = (SDFReceiver) receivers[channel][copy];
-                IOPort connectedPort = receivers[channel][copy]
-                        .getContainer();
+                IOPort connectedPort = receivers[channel][copy].getContainer();
                 ComponentEntity connectedActor = (ComponentEntity) connectedPort
                         .getContainer();
 

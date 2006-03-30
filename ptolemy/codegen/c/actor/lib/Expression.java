@@ -123,8 +123,7 @@ public class Expression extends CCodeGeneratorHelper {
             // FIXME: why does this need to be done here?
             _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
         }
-        ptolemy.actor.lib.Expression actor =
-            (ptolemy.actor.lib.Expression) getComponent();
+        ptolemy.actor.lib.Expression actor = (ptolemy.actor.lib.Expression) getComponent();
         Token result;
 
         try {
@@ -132,11 +131,11 @@ public class Expression extends CCodeGeneratorHelper {
             // cases the expression doesn't change, and the parser
             // requires a large amount of memory.
             PtParser parser = new PtParser();
-            ASTPtRootNode parseTree = 
-                parser.generateParseTree(actor.expression.getExpression());
+            ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
+                    .getExpression());
 
-            result = _cParseTreeCodeGenerator.evaluateParseTree(
-                    parseTree, new VariableScope(actor));
+            result = _cParseTreeCodeGenerator.evaluateParseTree(parseTree,
+                    new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.
             throw new IllegalActionException(null, ex, "Expression invalid.");
@@ -164,8 +163,8 @@ public class Expression extends CCodeGeneratorHelper {
         _cParseTreeCodeGenerator = new CParseTreeCodeGenerator();
 
         Set codeBlocks = new HashSet();
-        codeBlocks.add(processCode(
-                               _cParseTreeCodeGenerator.generateSharedCode()));
+        codeBlocks.add(processCode(_cParseTreeCodeGenerator
+                .generateSharedCode()));
         return codeBlocks;
     }
 
@@ -182,8 +181,7 @@ public class Expression extends CCodeGeneratorHelper {
     public String generateWrapupCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         super.generateWrapupCode();
-        code.append(processCode(
-                            _cParseTreeCodeGenerator.generateWrapupCode()));
+        code.append(processCode(_cParseTreeCodeGenerator.generateWrapupCode()));
 
         // Free up memory
         _cParseTreeCodeGenerator = null;

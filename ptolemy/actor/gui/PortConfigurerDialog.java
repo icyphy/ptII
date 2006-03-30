@@ -1212,8 +1212,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                             boolean valid = true;
 
                             if (_validator != null) {
-                                valid = _validator
-                                        .isValid(jFormattedTextField.getText());
+                                valid = _validator.isValid(jFormattedTextField
+                                        .getText());
                             }
 
                             if (!valid) {
@@ -1307,7 +1307,7 @@ public class PortConfigurerDialog extends PtolemyDialog implements
                     _userWantsToEdit = false;
                     return false;
                 } else {
-                    if (!userSaysRevert(jFormattedTextField.getText())){
+                    if (!userSaysRevert(jFormattedTextField.getText())) {
                         _userWantsToEdit = true;
                         return false; //don't let the editor go away
                     }
@@ -1984,7 +1984,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
         if (_columnNames.contains(ColumnNames.COL_NAME)) {
             int col = _columnNames.indexOf(ColumnNames.COL_NAME);
-            TableColumn _portNameColumn =  _portTable.getColumnModel().getColumn(col);
+            TableColumn _portNameColumn = _portTable.getColumnModel()
+                    .getColumn(col);
             final ValidatingJTextFieldCellEditor portNameEditor = new ValidatingJTextFieldCellEditor(
                     new JFormattedTextField());
             _portNameColumn.setCellEditor(portNameEditor);
@@ -2013,14 +2014,16 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
         if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
             int col = _columnNames.indexOf(ColumnNames.COL_DIRECTION);
-            TableColumn _portLocationColumn = _portTable.getColumnModel().getColumn(col);
+            TableColumn _portLocationColumn = _portTable.getColumnModel()
+                    .getColumn(col);
             _portLocationColumn.setCellEditor(new DefaultCellEditor(
                     _portLocationComboBox));
         }
 
         if (_columnNames.contains(ColumnNames.COL_TYPE)) {
             int col = _columnNames.indexOf(ColumnNames.COL_TYPE);
-            TableColumn _portTypeColumn = _portTable.getColumnModel().getColumn(col);
+            TableColumn _portTypeColumn = _portTable.getColumnModel()
+                    .getColumn(col);
 
             final ValidatingComboBoxCellEditor portTypeEditor = new ValidatingComboBoxCellEditor(
                     _createPortTypeComboBox());
@@ -2051,7 +2054,8 @@ public class PortConfigurerDialog extends PtolemyDialog implements
 
         if (_columnNames.contains(ColumnNames.COL_UNITS)) {
             int col = _columnNames.indexOf(ColumnNames.COL_UNITS);
-            TableColumn _portUnitColumn = _portTable.getColumnModel().getColumn(col);
+            TableColumn _portUnitColumn = _portTable.getColumnModel()
+                    .getColumn(col);
             final ValidatingComboBoxCellEditor portUnitEditor = new ValidatingComboBoxCellEditor(
                     _createPortUnitComboBox());
             _portUnitColumn.setCellEditor(portUnitEditor);

@@ -242,7 +242,8 @@ public class TMReceiver extends AbstractReceiver {
                                     + "contained");
                 }
 
-                priority = (Parameter) port.getContainer().getAttribute("priority");
+                priority = (Parameter) port.getContainer().getAttribute(
+                        "priority");
             }
 
             int priorityValue = 5;

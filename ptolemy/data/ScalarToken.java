@@ -90,7 +90,7 @@ public abstract class ScalarToken extends Token implements
      *  is returned.
      */
     public final ScalarToken absolute() {
-        if (isNil()) { 
+        if (isNil()) {
             return (ScalarToken) Token.NIL;
         }
         ScalarToken result = _absolute();
@@ -1178,8 +1178,7 @@ public abstract class ScalarToken extends Token implements
      *  compatible for this operation, or the operation does not make
      *  sense for this type.
      */
-    protected abstract ScalarToken _bitwiseNot()
-            throws IllegalActionException;
+    protected abstract ScalarToken _bitwiseNot() throws IllegalActionException;
 
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.
@@ -1509,14 +1508,12 @@ public abstract class ScalarToken extends Token implements
      *  @exception IllegalActionException If this operation is not
      *  supported by the derived class.
      */
-    private Token _doDivide(Token rightArgument)
-            throws IllegalActionException {
+    private Token _doDivide(Token rightArgument) throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
             return Token.NIL;
         }
 
         ScalarToken convertedArgument = (ScalarToken) rightArgument;
-
 
         ScalarToken result = _divide(convertedArgument);
 
@@ -1634,8 +1631,7 @@ public abstract class ScalarToken extends Token implements
      *  compatible, or this operation is not supported by the derived
      *  class.
      */
-    private Token _doModulo(Token rightArgument)
-            throws IllegalActionException {
+    private Token _doModulo(Token rightArgument) throws IllegalActionException {
         if (isNil() || rightArgument.isNil()) {
             return Token.NIL;
         }
@@ -1677,8 +1673,7 @@ public abstract class ScalarToken extends Token implements
         ScalarToken result = _multiply(convertedArgument);
 
         // compute units
-        result._unitCategoryExponents =
-            _addCategoryExponents(convertedArgument);
+        result._unitCategoryExponents = _addCategoryExponents(convertedArgument);
         return result;
     }
 

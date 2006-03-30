@@ -45,9 +45,9 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class CTRefinement extends Refinement implements
-        CTDynamicActor, CTEventGenerator, CTStatefulActor,
-        CTStepSizeControlActor, CTWaveformGenerator {
+public class CTRefinement extends Refinement implements CTDynamicActor,
+        CTEventGenerator, CTStatefulActor, CTStepSizeControlActor,
+        CTWaveformGenerator {
 
     /** Create an CTRefinement with a name and a container.
      *  The container argument must not be null, or a NullPointerException

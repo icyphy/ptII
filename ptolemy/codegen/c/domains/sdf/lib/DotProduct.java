@@ -63,38 +63,37 @@ public class DotProduct extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String  generateFireCode() throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
 
-        ptolemy.domains.sdf.lib.DotProduct actor = 
-            (ptolemy.domains.sdf.lib.DotProduct) getComponent();
-        
+        ptolemy.domains.sdf.lib.DotProduct actor = (ptolemy.domains.sdf.lib.DotProduct) getComponent();
+
         ArrayList args = new ArrayList();
 
         if (actor.input1.getType() instanceof ArrayType) {
-            args.add(codeGenType(((ArrayType) 
-                    actor.input1.getType()).getElementType()));
+            args.add(codeGenType(((ArrayType) actor.input1.getType())
+                    .getElementType()));
         } else if (actor.input1.getType() instanceof UnsizedMatrixType) {
-            args.add(codeGenType(((UnsizedMatrixType) 
-                    actor.input1.getType()).getElementType()));        
+            args.add(codeGenType(((UnsizedMatrixType) actor.input1.getType())
+                    .getElementType()));
         } else {
             throw new IllegalActionException("Unhandled type for input1: ("
                     + actor.input1.getType() + ")");
         }
 
         if (actor.input2.getType() instanceof ArrayType) {
-            args.add(codeGenType(((ArrayType) 
-                    actor.input2.getType()).getElementType()));
+            args.add(codeGenType(((ArrayType) actor.input2.getType())
+                    .getElementType()));
         } else if (actor.input2.getType() instanceof UnsizedMatrixType) {
-            args.add(codeGenType(((UnsizedMatrixType) 
-                    actor.input2.getType()).getElementType()));        
+            args.add(codeGenType(((UnsizedMatrixType) actor.input2.getType())
+                    .getElementType()));
         } else {
             throw new IllegalActionException("Unhandled type for input2: ("
                     + actor.input2.getType() + ")");
         }
-        
+
         _codeStream.appendCodeBlock("fireBlock", args);
-        
+
         return processCode(_codeStream.toString());
-   }
+    }
 }

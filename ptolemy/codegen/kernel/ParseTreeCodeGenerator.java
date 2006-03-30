@@ -61,4 +61,3 @@ public interface ParseTreeCodeGenerator {
      */
     public String generateFireCode();
 }
-

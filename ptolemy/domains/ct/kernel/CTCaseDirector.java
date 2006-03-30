@@ -50,7 +50,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (liuxj)
  */
-public class CTCaseDirector extends CaseDirector implements CTTransparentDirector {
+public class CTCaseDirector extends CaseDirector implements
+        CTTransparentDirector {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
@@ -78,7 +79,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
      *  be emitted.
      */
     public void emitCurrentStates() throws IllegalActionException {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         Actor actor = container.getCurrentRefinement();
         if (actor instanceof CTDynamicActor) {
             ((CTDynamicActor) actor).emitCurrentStates();
@@ -109,7 +110,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
         CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
         return executiveDirector.getErrorTolerance();
     }
-    
+
     /** Return the executive CT director of this director, or null if
      *  this director is at the top level or the executive director is
      *  not a CT general director.
@@ -203,7 +204,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
      *  previously marked states.
      */
     public void goToMarkedState() throws IllegalActionException {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         Actor actor = container.getCurrentRefinement();
         if (actor instanceof CTStatefulActor) {
             ((CTStatefulActor) actor).goToMarkedState();
@@ -214,7 +215,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
      *  @return True if the enabled refinements may produce events.
      */
     public boolean hasCurrentEvent() {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         Actor actor = container.getCurrentRefinement();
         if (actor instanceof CTEventGenerator) {
             return ((CTEventGenerator) actor).hasCurrentEvent();
@@ -243,7 +244,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
      *  @return True if the current refinement has accurate output.
      */
     public boolean isOutputAccurate() {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         Actor refinement = container.getCurrentRefinement();
         if (refinement instanceof CTStepSizeControlActor) {
             return ((CTStepSizeControlActor) refinement).isOutputAccurate();
@@ -257,7 +258,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
      *  current step size.
      */
     public boolean isStateAccurate() {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         Actor refinement = container.getCurrentRefinement();
         if (refinement instanceof CTStepSizeControlActor) {
             return ((CTStepSizeControlActor) refinement).isStateAccurate();
@@ -268,7 +269,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
     /** Make the current states of all the enabled refinements.
      */
     public void markState() {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         Actor actor = container.getCurrentRefinement();
         if (actor instanceof CTStatefulActor) {
             ((CTStatefulActor) actor).markState();
@@ -297,7 +298,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
      *  @return The predicted next step size.
      */
     public double predictedStepSize() {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         Actor refinement = container.getCurrentRefinement();
         if (refinement instanceof CTStepSizeControlActor) {
             return ((CTStepSizeControlActor) refinement).predictedStepSize();
@@ -313,10 +314,10 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
      *  throw it.
      */
     public boolean prefireDynamicActors() throws IllegalActionException {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         Actor refinement = container.getCurrentRefinement();
         if (refinement instanceof CTTransparentDirector) {
-             return ((CTTransparentDirector) refinement).prefireDynamicActors();
+            return ((CTTransparentDirector) refinement).prefireDynamicActors();
         }
         return true;
     }
@@ -333,7 +334,7 @@ public class CTCaseDirector extends CaseDirector implements CTTransparentDirecto
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        Case container = (Case)getContainer();
+        Case container = (Case) getContainer();
         Actor refinement = container.getCurrentRefinement();
         if (refinement instanceof CTStepSizeControlActor) {
             return ((CTStepSizeControlActor) refinement).refinedStepSize();

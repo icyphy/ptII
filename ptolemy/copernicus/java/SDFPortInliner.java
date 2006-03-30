@@ -1071,8 +1071,7 @@ public class SDFPortInliner implements PortInliner {
                         initBody.getLocals().add(arrayLocal);
 
                         // Create the new buffer
-                        Stmt insertPoint = initBody
-                                .getFirstNonIdentityStmt();
+                        Stmt insertPoint = initBody.getFirstNonIdentityStmt();
 
                         // This *should* be the statment after the constructor.
                         insertPoint = (Stmt) initUnits.getSuccOf(insertPoint);

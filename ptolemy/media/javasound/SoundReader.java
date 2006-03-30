@@ -449,7 +449,8 @@ public class SoundReader {
                     result = (result << 8) + (_b[i] & 0xff);
                 }
 
-                _doubleArray[currChannel][currSamp] = result * maxSampleReciprocal;
+                _doubleArray[currChannel][currSamp] = result
+                        * maxSampleReciprocal;
             }
         }
 

@@ -252,8 +252,7 @@ public class ChicInvoker extends Attribute {
                                         .next();
 
                                 if (entity.isOpaque()) {
-                                    if (model
-                                            .deepContains(connectedPort)) {
+                                    if (model.deepContains(connectedPort)) {
                                         chicInterface = chicInterface
                                                 .replaceAll(
                                                         "(?<!(\\w|\\$|\\.))"
@@ -261,7 +260,7 @@ public class ChicInvoker extends Attribute {
                                                                         .getName()
                                                                 + "\\.remote(?=\\.(\\w|\\$)+(\\s|$))",
                                                         ((Actor) connectedPort
-                                                                .getContainer() ==  model) ? _sanitizeName(connectedPort
+                                                                .getContainer() == model) ? _sanitizeName(connectedPort
                                                                 .getName()
                                                                 + ".inside")
                                                                 : _sanitizeName(connectedPort
@@ -277,8 +276,7 @@ public class ChicInvoker extends Attribute {
                                                                 .getFullName()));
                                     }
                                 } else {
-                                    if (model
-                                            .deepContains(connectedPort)) {
+                                    if (model.deepContains(connectedPort)) {
                                         chicInterface = chicInterface
                                                 .replaceAll(
                                                         "(?<!(\\w|\\$|\\.))"
@@ -335,8 +333,7 @@ public class ChicInvoker extends Attribute {
                                         IOPort sourcePort = (IOPort) sourcePorts
                                                 .next();
 
-                                        if (model
-                                                .deepContains(sourcePort)) {
+                                        if (model.deepContains(sourcePort)) {
                                             chicInterface = chicInterface
                                                     .replaceAll(
                                                             "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
@@ -388,8 +385,7 @@ public class ChicInvoker extends Attribute {
                                         IOPort sourcePort = (IOPort) sourcePorts
                                                 .next();
 
-                                        if (model
-                                                .deepContains(sourcePort)) {
+                                        if (model.deepContains(sourcePort)) {
                                             chicInterface = chicInterface
                                                     .replaceAll(
                                                             "(?<!(^|[\\n\\r]|\\w|\\$|\\.))"
@@ -397,7 +393,7 @@ public class ChicInvoker extends Attribute {
                                                                             .getFullName()
                                                                     + "(?!(\\w|\\$|\\.))",
                                                             ((Actor) sourcePort
-                                                                    .getContainer() ==  model) ? _sanitizeName(sourcePort
+                                                                    .getContainer() == model) ? _sanitizeName(sourcePort
                                                                     .getName()
                                                                     + ".inside")
                                                                     : _sanitizeName(sourcePort

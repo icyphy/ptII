@@ -779,8 +779,7 @@ public class CompositeEntity extends ComponentEntity {
                     // link is implied.
                     if ((relation.getDerivedLevel() <= depth)
                             && (port.getDerivedLevel() <= (depth + 1))
-                            && ((port.getContainer())
-                                    .getDerivedLevel() <= depth)) {
+                            && ((port.getContainer()).getDerivedLevel() <= depth)) {
                         continue;
                     }
 
@@ -1636,22 +1635,22 @@ public class CompositeEntity extends ComponentEntity {
 
     /** The default value icon.  This is static so that we avoid doing
      *  string concatenation each time we construct this object.
-     */ 
-    private static String  _defaultIcon = "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-                + "height=\"40\" style=\"fill:red\"/>\n"
-                + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
-                + "height=\"36\" style=\"fill:lightgrey\"/>\n"
-                + "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" "
-                + "style=\"fill:white\"/>\n"
-                + "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" "
-                + "style=\"fill:white\"/>\n"
-                + "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>"
-                + "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>"
-                + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
-                + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n";
+     */
+    private static String _defaultIcon = "<svg>\n"
+            + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+            + "height=\"40\" style=\"fill:red\"/>\n"
+            + "<rect x=\"-28\" y=\"-18\" width=\"56\" "
+            + "height=\"36\" style=\"fill:lightgrey\"/>\n"
+            + "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" "
+            + "style=\"fill:white\"/>\n"
+            + "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" "
+            + "style=\"fill:white\"/>\n"
+            + "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" "
+            + "style=\"fill:white\"/>\n"
+            + "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>"
+            + "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>"
+            + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
+            + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n";
 
     /** Cache of entity list. */
     private transient List _entityListCache;

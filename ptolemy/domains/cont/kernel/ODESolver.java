@@ -184,8 +184,7 @@ public abstract class ODESolver extends NamedObj {
      *  @param integrator The integrator that calls this method.
      *  @return The suggested next step size by the given integrator.
      */
-    public abstract double integratorPredictedStepSize(
-            ContIntegrator integrator);
+    public abstract double integratorPredictedStepSize(ContIntegrator integrator);
 
     /** Return true if the states of the system have been resolved
      *  successfully.

@@ -377,8 +377,8 @@ public class InlinePortTransformer extends SceneTransformer implements
                         // If we do this, then we have to get rid of
                         // the ports.
                         //if (port instanceof Typeable) {
-                            PtolemyUtilities.inlineTypeableMethods(body, stmt,
-                                    box, r, port);
+                        PtolemyUtilities.inlineTypeableMethods(body, stmt, box,
+                                r, port);
                         //}
 
                         // Inline namedObj methods on the attribute.

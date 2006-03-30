@@ -93,9 +93,9 @@ import ptolemy.kernel.util.KernelException;
  <p>This class has the following limitations:
  <ul>
  <li> It is a copy of ParseTreeCodeGenerator from data/expr and thus
-      has lots of code for evaluating expressions, which we don't need
+ has lots of code for evaluating expressions, which we don't need
  <li> It is not properly converting types: We need to add logic to
-      convert types.
+ convert types.
  <li> The .tcl test has known failures involving nulls
  <li> It does not evaluate constants.
  </ul>
@@ -107,9 +107,8 @@ import ptolemy.kernel.util.KernelException;
  @Pt.AcceptedRating Red
  @see ptolemy.data.expr.ASTPtRootNode
  */
-public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
-    implements ParseTreeCodeGenerator {
-
+public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
+        ParseTreeCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -140,7 +139,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         //evaluator.evaluateParseTree(node, scope);
 
         _scope = scope;
-        
+
         // Evaluate the value of the root node.
         node.visit(this);
 
@@ -252,11 +251,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
             Type valueType = tokens[i].getType();
 
             if (CodeGeneratorHelper.isPrimitiveType(valueType)) {
-                _fireCode.insert(nextIndex, "$new(" +
-                		CodeGeneratorHelper.codeGenType(valueType) + "(");
+                _fireCode.insert(nextIndex, "$new("
+                        + CodeGeneratorHelper.codeGenType(valueType) + "(");
                 _fireCode.append("))");
             }
-            
+
             if (!elementType.equals(valueType)) { // find max type
                 elementType = TypeLattice.leastUpperBound(elementType,
                         valueType);
@@ -392,7 +391,6 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         if ((functionName != null) && (_scope != null)) {
             value = _scope.get(node.getFunctionName());
         }
-
 
         // The following block of codes applies when multirate
         // expression is used.  Anonymous functions have no name!
@@ -605,9 +603,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
         if (!(test instanceof BooleanToken)) {
             throw new IllegalActionException(
                     "Functional-if must branch on a boolean, but instead test "
-                    + (test == null ? "was null " : "was " + test.toString()
-                            + "an instance of "
-                            + test.getClass().getName()));
+                            + (test == null ? "was null " : "was "
+                                    + test.toString() + "an instance of "
+                                    + test.getClass().getName()));
         }
 
         boolean value = ((BooleanToken) test).booleanValue();
@@ -657,11 +655,12 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor
             if (_evaluatedChildToken instanceof StringToken) {
                 // In C, Strings should have \n tags substituted. 
                 // See Test 17.2
-                _fireCode.append(ptolemy.util.StringUtilities.substitute(_evaluatedChildToken.toString(), "\n", "\\n"));
+                _fireCode.append(ptolemy.util.StringUtilities.substitute(
+                        _evaluatedChildToken.toString(), "\n", "\\n"));
             } else {
                 _fireCode.append(_evaluatedChildToken.toString());
             }
-            
+
             return;
         }
 

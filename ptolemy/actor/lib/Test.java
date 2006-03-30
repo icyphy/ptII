@@ -233,9 +233,10 @@ public class Test extends NonStrictTest {
             try {
                 isClose = token.isCloseTo(reference[i], _tolerance)
                         .booleanValue()
-                    || token.isNil() && reference[i].isNil()
-                    ||  _isCloseToIfNilArrayElement(token, reference[i],
-                            _tolerance);
+                        || token.isNil()
+                        && reference[i].isNil()
+                        || _isCloseToIfNilArrayElement(token, reference[i],
+                                _tolerance);
             } catch (IllegalActionException ex) {
                 // Chain the exceptions together so we know which test
                 // actor failed if there was more than one...

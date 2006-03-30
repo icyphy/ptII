@@ -96,7 +96,7 @@ public class LineWriter extends CCodeGeneratorHelper {
             fileNameString = FileReader.getFileName(actor.fileName);
             ArrayList args = new ArrayList();
             args.add(fileNameString);
-            
+
             if (actor.confirmOverwrite.getExpression().equals("true")) {
                 _codeStream.appendCodeBlock("confirmOverwrite", args);
             }

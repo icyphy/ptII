@@ -53,7 +53,7 @@ import diva.canvas.Figure;
 public class Scene2DToken extends Token {
     /** Construct a Scene2DToken.
      *  @param figure The figure that is represented by a Diva canvas.
-     */   
+     */
     public Scene2DToken(Figure figure) {
         super();
         _figure = figure;

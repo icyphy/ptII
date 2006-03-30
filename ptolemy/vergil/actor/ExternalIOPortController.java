@@ -159,8 +159,7 @@ public class ExternalIOPortController extends AttributeController {
      */
     protected boolean _hide(java.lang.Object node) {
         if (node instanceof Locatable) {
-            if ((((Locatable) node).getContainer())
-                    .getAttribute("_hideInside") != null) {
+            if ((((Locatable) node).getContainer()).getAttribute("_hideInside") != null) {
                 return true;
             }
         }

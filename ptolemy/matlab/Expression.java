@@ -245,8 +245,8 @@ public class Expression extends TypedAtomicActor {
 
         if (packageDirectories != null) {
             StringTokenizer dirs = new StringTokenizer(
-                    ((StringToken) packageDirectories.getToken())
-                            .stringValue(), ",");
+                    ((StringToken) packageDirectories.getToken()).stringValue(),
+                    ",");
             StringBuffer cellFormat = new StringBuffer(512);
             cellFormat.append("{");
 

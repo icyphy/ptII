@@ -80,22 +80,22 @@ public class Queue extends DETransformer {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output.setTypeAtLeast(input);
-        
+
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(true);
         // Leave trigger type undeclared.
         // Put it at the bottom of the icon by default.
         StringAttribute cardinality = new StringAttribute(trigger, "_cardinal");
         cardinality.setExpression("SOUTH");
-        
+
         size = new TypedIOPort(this, "size", false, true);
         size.setTypeEquals(BaseType.INT);
         // Put it at the bottom of the icon by default.
         cardinality = new StringAttribute(size, "_cardinal");
-        cardinality.setExpression("SOUTH");        
+        cardinality.setExpression("SOUTH");
 
         _queue = new FIFOQueue();
-        
+
         capacity = new Parameter(this, "capacity");
         capacity.setTypeEquals(BaseType.INT);
         capacity.setExpression("0");
@@ -110,7 +110,7 @@ public class Queue extends DETransformer {
      *  This is an integer with default 0.
      */
     public Parameter capacity;
-    
+
     /** The current size of the queue. This port produces an output
      *  whenever the size changes. It has type int.
      */
@@ -121,7 +121,7 @@ public class Queue extends DETransformer {
      *  will be emitted on the <i>output</i> port.
      */
     public TypedIOPort trigger;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -136,7 +136,7 @@ public class Queue extends DETransformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == capacity) {
-            int newCapacity = ((IntToken)capacity.getToken()).intValue();
+            int newCapacity = ((IntToken) capacity.getToken()).intValue();
             if (newCapacity <= 0) {
                 if (_queue.getCapacity() != FIFOQueue.INFINITE_CAPACITY) {
                     _queue.setCapacity(FIFOQueue.INFINITE_CAPACITY);
@@ -144,10 +144,8 @@ public class Queue extends DETransformer {
             } else {
                 if (newCapacity < _queue.size()) {
                     throw new IllegalActionException(this, "Queue size ("
-                            + _queue.size()
-                            + ") exceed requested capacity "
-                            + newCapacity
-                            + ").");
+                            + _queue.size() + ") exceed requested capacity "
+                            + newCapacity + ").");
                 }
                 _queue.setCapacity(newCapacity);
             }

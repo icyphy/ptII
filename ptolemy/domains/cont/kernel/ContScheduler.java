@@ -87,7 +87,7 @@ import ptolemy.util.MessageHandler;
  @see ptolemy.actor.sched.Scheduler
  */
 public class ContScheduler extends Scheduler {
-    
+
     /** Construct a scheduler in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -121,7 +121,7 @@ public class ContScheduler extends Scheduler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Return the scheduling sequence.
      *  Overrides _getSchedule() method in the base class.
      *
@@ -135,75 +135,74 @@ public class ContScheduler extends Scheduler {
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
         ContDirector director = (ContDirector) getContainer();
-    
+
         if (director == null) {
             throw new NotSchedulableException(this, "SROptimizedScheduler "
                     + "cannot schedule graph with no director.");
         }
-    
+
         CompositeActor compositeActor = (CompositeActor) (director
                 .getContainer());
-    
+
         if (compositeActor == null) {
             throw new NotSchedulableException(this, "SROptimizedScheduler "
                     + "cannot schedule graph with no container.");
         }
-    
-        FunctionDependencyOfCompositeActor functionDependency = 
-            (FunctionDependencyOfCompositeActor) compositeActor
+
+        FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) compositeActor
                 .getFunctionDependency();
-    
+
         Object[] cycleNodes = functionDependency.getCycleNodes();
-    
+
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
-    
+
             for (int i = 0; i < cycleNodes.length; i++) {
                 if (cycleNodes[i] instanceof Nameable) {
                     if (i > 0) {
                         names.append(", ");
                     }
-    
+
                     names.append(((Nameable) cycleNodes[i]).getContainer()
                             .getFullName());
                 }
             }
-    
+
             MessageHandler.error("There are strict cycle loops in the model:"
                     + names.toString() + "\n"
                     + " The results may contain unknowns.  This optimized "
                     + "scheduler does not handle this model. Try the "
                     + "randomized scheduler instead.");
         }
-    
+
         DirectedAcyclicGraph dependencyGraph = functionDependency
                 .getDetailedDependencyGraph().toDirectedAcyclicGraph();
-    
+
         if (_debugging) {
             _debug("## dependency graph is:" + dependencyGraph.toString());
         }
-    
+
         Object[] sort = dependencyGraph.topologicalSort();
-    
+
         if (_debugging) {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
-    
+
         Schedule schedule = new Schedule();
         Actor lastActor = null;
         Actor actor = null;
-    
+
         for (int i = 0; i < sort.length; i++) {
             IOPort ioPort = (IOPort) sort[i];
-    
+
             // If this ioPort is input but has no connections,
             // we ignore it.
             if (ioPort.isInput() && (ioPort.numLinks() == 0)) {
                 continue;
             }
-    
+
             actor = (Actor) ioPort.getContainer();
-    
+
             // If the actor is the container of this director (which
             // can occur if this director is not at the top level),
             // then skip this actor. The container of the director
@@ -211,7 +210,7 @@ public class ContScheduler extends Scheduler {
             if (actor == compositeActor) {
                 continue;
             }
-    
+
             // We record the information of last actor.
             // If some consecutive ports belong to the
             // same actor, we only schedule that actor once.
@@ -224,19 +223,19 @@ public class ContScheduler extends Scheduler {
                     lastActor = actor;
                 }
             }
-    
+
             Firing firing = new Firing(actor);
             schedule.add(firing);
-    
+
             if (_debugging) {
                 _debug(((Nameable) actor).getFullName(), "depth: " + i);
             }
         }
-    
+
         if (_debugging) {
             _debug("## End of topological sort.");
         }
-    
+
         return schedule;
     }
 }

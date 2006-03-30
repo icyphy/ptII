@@ -69,30 +69,30 @@ public class Test extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-    	super.generateFireCode();
-        
+        super.generateFireCode();
+
         ptolemy.actor.lib.Test actor = (ptolemy.actor.lib.Test) getComponent();
 
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
         String multiChannel = "";
         String inputType = "";
-        
+
         if (actor.input.getWidth() > 1) {
             // If we have multiple inputs, use different blocks
             multiChannel = "MultiChannel";
             args.add(codeGenType(actor.input.getType()));
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
-        	args.set(0, new Integer(i));
+            args.set(0, new Integer(i));
             if (CodeGeneratorHelper.isPrimitiveType(actor.input.getType())) {
-                inputType = 
-                    CodeGeneratorHelper.codeGenType(actor.input.getType());
+                inputType = CodeGeneratorHelper.codeGenType(actor.input
+                        .getType());
             } else {
                 inputType = "Token";
             }
-            _codeStream.appendCodeBlock(
-                    inputType + "Block" + multiChannel, args);            
+            _codeStream.appendCodeBlock(inputType + "Block" + multiChannel,
+                    args);
         }
         return processCode(_codeStream.toString());
     }

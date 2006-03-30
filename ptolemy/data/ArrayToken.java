@@ -77,7 +77,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                     + "length of the specified array is zero.");
         }
 
-        
         Type elementType = null;
         int length = value.length;
         int nonNilIndex = 0;
@@ -97,7 +96,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             _elementPrototype = value[0];
 
         }
-
 
         // It would be nice to have this, but the Code generator cannot
         // deal with the least upper bound.
@@ -120,10 +118,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                 } else {
                     throw new IllegalActionException(
                             "Elements of the array do not have the same type:"
-                            + "value[0]=" + value[0]
-                            + " (type: " + elementType + ")"
-                            + " value[" + i + "]=" + value[i]
-                            + " (type: " + value[i].getType() + ")");
+                                    + "value[0]=" + value[0] + " (type: "
+                                    + elementType + ")" + " value[" + i + "]="
+                                    + value[i] + " (type: "
+                                    + value[i].getType() + ")");
 
                 }
             }
@@ -241,8 +239,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be divided into an element of this token.
      */
-    public ArrayToken elementDivide(Token token)
-            throws IllegalActionException {
+    public ArrayToken elementDivide(Token token) throws IllegalActionException {
         Token[] result = new Token[_value.length];
 
         try {
@@ -266,8 +263,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  @exception IllegalActionException If the argument token is not
      *  of a type that can be used with modulo.
      */
-    public ArrayToken elementModulo(Token token)
-            throws IllegalActionException {
+    public ArrayToken elementModulo(Token token) throws IllegalActionException {
         Token[] result = new Token[_value.length];
 
         try {
@@ -822,7 +818,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
         }
 
-
         // It would be nice to have this, but the Code generator cannot
         // deal with the least upper bound.
         //    for (int i = 0; i < length; i++) {
@@ -845,10 +840,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
                 } else {
                     throw new IllegalActionException(
                             "Elements of the array do not have the same type:"
-                            + "value[0]=" + value[0]
-                            + " (type: " + elementType + ")"
-                            + " value[" + i + "]=" + value[i]
-                            + " (type: " + value[i].getType() + ")");
+                                    + "value[0]=" + value[0] + " (type: "
+                                    + elementType + ")" + " value[" + i + "]="
+                                    + value[i] + " (type: "
+                                    + value[i].getType() + ")");
 
                 }
             }

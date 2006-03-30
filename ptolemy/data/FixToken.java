@@ -330,9 +330,8 @@ public class FixToken extends ScalarToken {
      */
     protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(notSupportedMessage("bitwiseOr",
-                                                 this,
-                                                 rightArgument));
+        throw new IllegalActionException(notSupportedMessage("bitwiseOr", this,
+                rightArgument));
     }
 
     /** Returns a token representing the bitwise XOR of this token and

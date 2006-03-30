@@ -261,9 +261,8 @@ public class LinkController extends BasicEdgeController {
                 }
 
                 // NOTE: The preferences mechanism may set this.
-                Token radiusValue =
-                    PtolemyPreferences.preferenceValue(relation,
-                            "_linkBendRadius");
+                Token radiusValue = PtolemyPreferences.preferenceValue(
+                        relation, "_linkBendRadius");
 
                 if (radiusValue instanceof DoubleToken) {
                     double overrideRadius = ((DoubleToken) radiusValue)

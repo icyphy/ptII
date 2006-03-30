@@ -75,37 +75,37 @@ public class UnusedFieldRemover extends SceneTransformer {
 
         SootClass stringClass = Scene.v().loadClassAndSupport(
                 "java.lang.String");
-        /* Type stringType = */ RefType.v(stringClass);
+        /* Type stringType = */RefType.v(stringClass);
         SootClass objectClass = Scene.v().loadClassAndSupport(
                 "java.lang.Object");
-        /* SootMethod toStringMethod = */ objectClass
+        /* SootMethod toStringMethod = */objectClass
                 .getMethod("java.lang.String toString()");
         SootClass namedObjClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.util.NamedObj");
-        /* SootMethod getAttributeMethod = */ namedObjClass
+        /* SootMethod getAttributeMethod = */namedObjClass
                 .getMethod("ptolemy.kernel.util.Attribute getAttribute(java.lang.String)");
-        /* SootMethod attributeChangedMethod = */ namedObjClass
+        /* SootMethod attributeChangedMethod = */namedObjClass
                 .getMethod("void attributeChanged(ptolemy.kernel.util.Attribute)");
 
         SootClass attributeClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.util.Attribute");
-        /* Type attributeType = */ RefType.v(attributeClass);
+        /* Type attributeType = */RefType.v(attributeClass);
         SootClass settableClass = Scene.v().loadClassAndSupport(
                 "ptolemy.kernel.util.Settable");
-        /* Type settableType = */ RefType.v(settableClass);
-        /* SootMethod getExpressionMethod = */ settableClass
+        /* Type settableType = */RefType.v(settableClass);
+        /* SootMethod getExpressionMethod = */settableClass
                 .getMethod("java.lang.String getExpression()");
-        /* SootMethod setExpressionMethod = */ settableClass
+        /* SootMethod setExpressionMethod = */settableClass
                 .getMethod("void setExpression(java.lang.String)");
 
         SootClass tokenClass = Scene.v().loadClassAndSupport(
                 "ptolemy.data.Token");
-        /* Type tokenType = */ RefType.v(tokenClass);
+        /* Type tokenType = */RefType.v(tokenClass);
         SootClass parameterClass = Scene.v().loadClassAndSupport(
                 "ptolemy.data.expr.Variable");
-        /* SootMethod getTokenMethod = */ parameterClass
+        /* SootMethod getTokenMethod = */parameterClass
                 .getMethod("ptolemy.data.Token getToken()");
-        /* SootMethod setTokenMethod = */ parameterClass
+        /* SootMethod setTokenMethod = */parameterClass
                 .getMethod("void setToken(ptolemy.data.Token)");
 
         Set unusedFieldSet = new HashSet();

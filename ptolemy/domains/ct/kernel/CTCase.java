@@ -47,9 +47,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class CTCase extends Case implements
-        CTDynamicActor, CTEventGenerator, CTStatefulActor,
-        CTStepSizeControlActor, CTWaveformGenerator {
+public class CTCase extends Case implements CTDynamicActor, CTEventGenerator,
+        CTStatefulActor, CTStepSizeControlActor, CTWaveformGenerator {
 
     /** Create an CTCase with a name and a container.
      *  The container argument must not be null, or a NullPointerException
@@ -88,7 +87,7 @@ public class CTCase extends Case implements
             ((CTTransparentDirector) director).emitCurrentStates();
         }
     }
-    
+
     /** Call the goToMarkedState() method of the current refinement
      *  director if it is an instance of
      *  CTTransparentDirector. Otherwise, do nothing.
@@ -162,8 +161,8 @@ public class CTCase extends Case implements
      *  @exception NameDuplicationException If a refinement already
      *  exists with this name.
      */
-    public Refinement newRefinement(String name)
-            throws IllegalActionException, NameDuplicationException {
+    public Refinement newRefinement(String name) throws IllegalActionException,
+            NameDuplicationException {
         return new CTRefinement(this, name);
     }
 
@@ -219,7 +218,7 @@ public class CTCase extends Case implements
     public String refinementClassName() {
         return "ptolemy.domains.ct.kernel.CTRefinement";
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -228,8 +227,8 @@ public class CTCase extends Case implements
      *  @exception NameDuplicationException If there is already an
      *  attribute with the name "_director".
      */
-    protected CaseDirector _createDirector()
-            throws IllegalActionException, NameDuplicationException {
-        return new CTCaseDirector(this, "_director");        
+    protected CaseDirector _createDirector() throws IllegalActionException,
+            NameDuplicationException {
+        return new CTCaseDirector(this, "_director");
     }
 }

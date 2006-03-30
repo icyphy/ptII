@@ -71,9 +71,8 @@ public class IntToken extends ScalarToken {
      */
     public IntToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
-            throw new IllegalActionException(
-                    notSupportedNullNilStringMessage("IntToken",
-                            init));
+            throw new IllegalActionException(notSupportedNullNilStringMessage(
+                    "IntToken", init));
         }
         try {
             _value = Integer.parseInt(init);
@@ -394,8 +393,7 @@ public class IntToken extends ScalarToken {
      *  @return A token containing true if the value of the first
      *   argument is close to the value of this token.
      */
-    protected BooleanToken _isCloseTo(ScalarToken rightArgument,
-            double epsilon) {
+    protected BooleanToken _isCloseTo(ScalarToken rightArgument, double epsilon) {
         // NOTE: This code is duplicated in
         // ptolemy.math.IntegerMatrixMath.within(); if this
         // implementation changes, also change the corresponding
@@ -445,7 +443,7 @@ public class IntToken extends ScalarToken {
         return new IntToken(product);
     }
 
-   /** Return a new token whose value is the value of the argument token
+    /** Return a new token whose value is the value of the argument token
      *  subtracted from the value of this token.  It is assumed that
      *  the type of the argument is an IntToken.
      *  @param rightArgument The token to subtract from this token.

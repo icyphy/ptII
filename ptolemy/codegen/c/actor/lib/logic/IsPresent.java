@@ -59,11 +59,10 @@ public class IsPresent extends CCodeGeneratorHelper {
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
      */
-    public String  generateFireCode() throws IllegalActionException {
+    public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
-        ptolemy.actor.lib.logic.IsPresent actor = 
-            (ptolemy.actor.lib.logic.IsPresent) getComponent();
-        
+        ptolemy.actor.lib.logic.IsPresent actor = (ptolemy.actor.lib.logic.IsPresent) getComponent();
+
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
         for (int i = 0; i < actor.input.getWidth(); i++) {
@@ -71,6 +70,6 @@ public class IsPresent extends CCodeGeneratorHelper {
             _codeStream.appendCodeBlock("outputBlock", args);
         }
         return processCode(_codeStream.toString());
-   }
+    }
 
 }

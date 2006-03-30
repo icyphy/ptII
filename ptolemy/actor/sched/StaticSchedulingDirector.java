@@ -172,8 +172,8 @@ public class StaticSchedulingDirector extends Director {
             if (returnValue == STOP_ITERATING) {
                 _postfireReturns = false;
             } else if (returnValue == NOT_READY) {
-                throw new IllegalActionException(this, actor,
-                        "Actor " + "is not ready to fire.");
+                throw new IllegalActionException(this, actor, "Actor "
+                        + "is not ready to fire.");
             }
 
             if (_debugging) {

@@ -69,8 +69,7 @@ public class BooleanMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public BooleanMatrixToken(boolean[][] value)
-            throws IllegalActionException {
+    public BooleanMatrixToken(boolean[][] value) throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("BooleanMatrixToken: The "
                     + "specified matrix is null.");

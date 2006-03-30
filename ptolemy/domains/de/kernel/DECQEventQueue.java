@@ -295,8 +295,7 @@ public class DECQEventQueue implements DEEventQueue {
                     return;
                 }
 
-                effectiveAverage = effectiveAverage
-                        .divide(effectiveSamples);
+                effectiveAverage = effectiveAverage.divide(effectiveSamples);
                 _binWidth = new DEEvent((Actor) null, effectiveAverage
                         .multiply(3L), 0, 0);
             } catch (IllegalActionException e) {

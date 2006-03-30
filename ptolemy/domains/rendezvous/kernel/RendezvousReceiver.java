@@ -1128,8 +1128,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 if (receiver == null) {
                     continue;
                 }
-                if (beingChecked.contains(receiver)
-                        || ready.contains(receiver)) {
+                if (beingChecked.contains(receiver) || ready.contains(receiver)) {
                     return i;
                 }
             }
@@ -1144,8 +1143,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      *  get conditional (false).
      *  @return Whether the receivers are conditional.
      */
-    private static boolean _isConditional(Receiver[][] receivers,
-            boolean isPut) {
+    private static boolean _isConditional(Receiver[][] receivers, boolean isPut) {
         for (int i = 0; i < receivers.length; i++) {
             if (receivers[i] != null) {
                 for (int j = 0; j < receivers[i].length; j++) {

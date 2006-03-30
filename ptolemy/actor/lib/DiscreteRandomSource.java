@@ -41,7 +41,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.SignalProcessing;
 
-
 //////////////////////////////////////////////////////////////////////////
 //// DiscreteRandomSource
 

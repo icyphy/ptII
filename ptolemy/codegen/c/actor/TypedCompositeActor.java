@@ -70,16 +70,15 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public void analyzeTypeConvert() throws IllegalActionException {
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
-        .deepEntityList().iterator();
+                .deepEntityList().iterator();
 
-        while (actors.hasNext()) {    	
+        while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            CodeGeneratorHelper helperObject = 
-            	(CodeGeneratorHelper) _getHelper((NamedObj) actor);
-        	helperObject.analyzeTypeConvert();
+            CodeGeneratorHelper helperObject = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
+            helperObject.analyzeTypeConvert();
         }
     }
-    
+
     /** Create read and write offset variables if needed for the associated 
      *  composite actor. It delegates to the director helper of the local 
      *  director.
@@ -124,15 +123,16 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             if (inputPort instanceof ParameterPort && inputPort.getWidth() > 0) {
-                
-                PortParameter portParameter = ((ParameterPort) inputPort).getParameter();
+
+                PortParameter portParameter = ((ParameterPort) inputPort)
+                        .getParameter();
                 code.append(generateVariableName(portParameter));
                 code.append(" = ");
                 code.append(getReference(inputPort.getName()));
                 code.append(";\n");
-            }    
+            }
         }
-        
+
         // Transfer the data to the inside.
         inputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .inputPortList().iterator();
@@ -141,16 +141,15 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
             IOPort inputPort = (IOPort) inputPorts.next();
             if (!(inputPort instanceof ParameterPort)) {
                 directorHelper.generateTransferInputsCode(inputPort, code);
-            }    
+            }
         }
-        
+
         // Generate the type conversion code before fire code.
         code.append(generateTypeConvertFireCode(true));
 
         // Generate the fire code by the director helper.
         code.append(directorHelper.generateFireCode());
 
-        
         // Transfer the data to the outside. 
         Iterator outputPorts = ((ptolemy.actor.CompositeActor) getComponent())
                 .outputPortList().iterator();
@@ -161,7 +160,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         }
         return code.toString();
     }
-    
+
     /** Generate The fire function code. This method is called when the firing
      *  code of each actor is not inlined. Each actor's firing code is in a 
      *  function with the same name as that of the actor.
@@ -174,7 +173,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         CompositeActor compositeActor = (CompositeActor) getComponent();
         ptolemy.actor.Director director = compositeActor.getDirector();
         Director directorHelper = (Director) _getHelper(director);
-        code.append(directorHelper.generateFireFunctionCode());  
+        code.append(directorHelper.generateFireFunctionCode());
         code.append(super.generateFireFunctionCode());
         return code.toString();
     }
@@ -284,7 +283,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     public String generateVariableDeclaration() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_codeGenerator.comment(0,
-                            "Composite actor's variable declarations."));
+                "Composite actor's variable declarations."));
         code.append(super.generateVariableDeclaration());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
@@ -297,17 +296,18 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         }
         return processCode(code.toString());
     }
-    
+
     /** Generate variable initialization for the referenced parameters.
      *  @return code The generated code.
      *  @exception IllegalActionException If the helper associated with
      *   an actor throws it while generating variable declarations for 
      *   the actor.
      */
-    public String generateVariableInitialization() throws IllegalActionException {
+    public String generateVariableInitialization()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_codeGenerator.comment(
-                            "Composite actor's variable initializations."));
+        code.append(_codeGenerator
+                .comment("Composite actor's variable initializations."));
         code.append(super.generateVariableInitialization());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())

@@ -117,8 +117,8 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class ContDirector extends StaticSchedulingDirector 
-    implements TimedDirector {
+public class ContDirector extends StaticSchedulingDirector implements
+        TimedDirector {
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a NullPointerException
@@ -296,9 +296,9 @@ public class ContDirector extends StaticSchedulingDirector
         Time currentTime = getModelTime();
 
         if (time.compareTo(currentTime) < 0) {
-            throw new IllegalActionException(actor,
-                    "Requested fire time: " + time + " is earlier than"
-                            + " the current time." + currentTime);
+            throw new IllegalActionException(actor, "Requested fire time: "
+                    + time + " is earlier than" + " the current time."
+                    + currentTime);
         }
 
         // check the validity of breakpoint table
@@ -520,22 +520,21 @@ public class ContDirector extends StaticSchedulingDirector
         // This is crucial to implement Dirac function.
         Schedule schedule = getScheduler().getSchedule();
         Iterator actors = schedule.actorIterator();
-        
-        boolean ready = true; 
-        
+
+        boolean ready = true;
+
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor) actors.next();
-        
+
             if (_debugging && _verbose) {
-                _debug("Prefire dynamic actor: "
-                    + ((Nameable) actor).getName());
-        }
-        
-        ready &= actor.prefire();
-        
-        if (_debugging && _verbose) {
-            _debug("Prefire of " + ((Nameable) actor).getName()
-                    + " returns " + ready);
+                _debug("Prefire dynamic actor: " + ((Nameable) actor).getName());
+            }
+
+            ready &= actor.prefire();
+
+            if (_debugging && _verbose) {
+                _debug("Prefire of " + ((Nameable) actor).getName()
+                        + " returns " + ready);
             }
         }
 

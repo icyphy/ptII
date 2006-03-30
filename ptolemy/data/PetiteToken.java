@@ -295,8 +295,7 @@ public class PetiteToken extends DoubleToken {
      *  @return A new DoubleToken containing the result.
      */
     protected ScalarToken _modulo(ScalarToken rightArgument) {
-        double remainder =
-            _value % ((DoubleToken) rightArgument).doubleValue();
+        double remainder = _value % ((DoubleToken) rightArgument).doubleValue();
         return new PetiteToken(remainder);
     }
 

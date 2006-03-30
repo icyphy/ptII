@@ -802,10 +802,10 @@ public class ComponentEntity extends Entity {
 
     /** The default value icon.  This is static so that we avoid doing
      *  string concatenation each time we construct this object.
-     */ 
-    private static String  _defaultIcon = "<svg>\n"
-                + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
-                + "height=\"40\" style=\"fill:white\"/>\n"
-                + "<polygon points=\"-20,-10 20,0 -20,10\" "
-                + "style=\"fill:blue\"/>\n" + "</svg>\n";
+     */
+    private static String _defaultIcon = "<svg>\n"
+            + "<rect x=\"-30\" y=\"-20\" width=\"60\" "
+            + "height=\"40\" style=\"fill:white\"/>\n"
+            + "<polygon points=\"-20,-10 20,0 -20,10\" "
+            + "style=\"fill:blue\"/>\n" + "</svg>\n";
 }

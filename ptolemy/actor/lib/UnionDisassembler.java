@@ -112,7 +112,7 @@ public class UnionDisassembler extends TypedAtomicActor {
             UnionToken union = (UnionToken) input.get(0);
             String label = union.label();
             Token value = union.value();
-            
+
             IOPort port = (IOPort) getPort(label);
             if (port != null) {
                 port.send(0, value);

@@ -351,7 +351,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
         }
 
         /** Clear the current set of solutions.
-         */   
+         */
         public void clear() {
             _solutions = new Vector();
         }

@@ -106,11 +106,11 @@ public interface ContStepSizeControlActor extends Actor {
      */
     public double refinedStepSize();
 
-//    /** Implementations of this method should return
-//     *  the suggested next step size. If the actor that implements 
-//     *  this interface does not have any constraints, it should
-//     *  return java.lang.Double.MAX_VALUE.
-//     *  @return The predicted next step size.
-//     */
-//    public double suggestedStepSize();
+    //    /** Implementations of this method should return
+    //     *  the suggested next step size. If the actor that implements 
+    //     *  this interface does not have any constraints, it should
+    //     *  return java.lang.Double.MAX_VALUE.
+    //     *  @return The predicted next step size.
+    //     */
+    //    public double suggestedStepSize();
 }

@@ -172,7 +172,8 @@ public class ColorFinder extends TypedAtomicActor {
 
                 if (_inCount > 0) {
                     double xLocation = (double) _sumX / _inCount;
-                    double yLocation = _frameHeight - ((double) _sumY / _inCount);
+                    double yLocation = _frameHeight
+                            - ((double) _sumY / _inCount);
                     outputX.send(0, new DoubleToken(xLocation));
                     outputY.send(0, new DoubleToken(yLocation));
 

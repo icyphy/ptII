@@ -209,7 +209,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     /** Return true if any of the values have been changed, but the state
      *  has not yet been saved.   
      *  @return True if values have been changed but not saved.
-     */ 
+     */
     protected boolean _isDirty() {
         return _dirty;
     }
@@ -262,7 +262,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     /** The configuration that corresponds with this dialog.
      *  The configuration is used to properly display the help text.
-     */   
+     */
     protected Configuration _configuration;
 
     /** The help button. */

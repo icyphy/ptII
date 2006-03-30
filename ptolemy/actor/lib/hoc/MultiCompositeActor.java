@@ -61,8 +61,8 @@ public class MultiCompositeActor extends TypedCompositeActor {
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
-    public MultiCompositeActor(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public MultiCompositeActor(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -122,7 +122,8 @@ public class MultiCompositeActor extends TypedCompositeActor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "MultiCompositeActor.newPort(): Internal error: " + ex.getMessage());
+                    "MultiCompositeActor.newPort(): Internal error: "
+                            + ex.getMessage());
         } finally {
             _workspace.doneWriting();
         }

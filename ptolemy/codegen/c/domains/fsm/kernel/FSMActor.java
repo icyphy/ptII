@@ -230,8 +230,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     PtParser parser = new PtParser();
                     ASTPtRootNode guardParseTree = parser
                             .generateParseTree(guard);
-                    ParseTreeCodeGenerator parseTreeCodeGenerator =
-                        getParseTreeCodeGenerator();
+                    ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                     parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                             _scope);
                     codeBuffer
@@ -320,8 +319,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                             }
                         }
 
-                        ParseTreeCodeGenerator parseTreeCodeGenerator = 
-                            getParseTreeCodeGenerator();
+                        ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator
@@ -342,7 +340,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                         // fire the actor
                         if (inline) {
                             codeBuffer.append(helper.generateFireCode());
-                            codeBuffer.append(helper.generateTypeConvertFireCode());
+                            codeBuffer.append(helper
+                                    .generateTypeConvertFireCode());
                         } else {
                             codeBuffer
                                     .append(generateName((NamedObj) actors[i])
@@ -402,8 +401,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                                             + " = ");
                         }
 
-                        ParseTreeCodeGenerator parseTreeCodeGenerator =
-                            getParseTreeCodeGenerator();
+                        ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                         parseTreeCodeGenerator.evaluateParseTree(parseTree,
                                 _scope);
                         codeBuffer.append(parseTreeCodeGenerator

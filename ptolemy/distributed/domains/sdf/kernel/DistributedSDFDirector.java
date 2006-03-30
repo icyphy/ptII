@@ -393,9 +393,9 @@ public class DistributedSDFDirector extends SDFDirector {
      */
     private void bufferingPhase() throws IllegalActionException {
         System.out.println("Buffering...");
-        
+
         int iterationsValue = ((IntToken) (iterations.getToken())).intValue();
-        
+
         Scheduler scheduler = getScheduler();
 
         if (scheduler == null) {
@@ -407,14 +407,14 @@ public class DistributedSDFDirector extends SDFDirector {
         // does not have a container.
         Schedule schedule = scheduler.getSchedule();
         Iterator levels = schedule.iterator();
-        
+
         int levelNumber = 0;
 
         commandsMap = new HashMap();
 
         while (levels.hasNext() && !_stopRequested) {
             Schedule level = (Schedule) levels.next();
-            
+
             Iterator firings = level.firingIterator();
 
             while (firings.hasNext()) {
@@ -426,7 +426,7 @@ public class DistributedSDFDirector extends SDFDirector {
                 commandsMap
                         .put(clientThread, new Integer(ClientThread.ITERATE));
             }
-            
+
             int aux = levelNumber - iterationsValue;
 
             if (aux >= 0) {
@@ -442,10 +442,10 @@ public class DistributedSDFDirector extends SDFDirector {
                     clientThread.setIterationCount(firing.getIterationCount());
                     commandsMap.remove(clientThread);
                 }
-            }            
+            }
 
             levelNumber = levelNumber + 1;
-            
+
             if (levels.hasNext()) {
                 synchronizer.setCommands(commandsMap);
 
@@ -690,8 +690,8 @@ public class DistributedSDFDirector extends SDFDirector {
      *  pipelining parameter and parallelExecution parameter.
      */
     private void init() throws IllegalActionException, NameDuplicationException {
-        /*DistributedSDFScheduler scheduler = */new DistributedSDFScheduler(this,
-                uniqueName("Scheduler"));
+        /*DistributedSDFScheduler scheduler = */new DistributedSDFScheduler(
+                this, uniqueName("Scheduler"));
 
         // We create the new parameter here.
         parallelSchedule = new Parameter(this, "parallelSchedule",

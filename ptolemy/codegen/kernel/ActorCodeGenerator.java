@@ -53,8 +53,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException If the helper class cannot be found
      *   or the director helper throws it.
      */
-    public String createOffsetVariablesIfNeeded()
-            throws IllegalActionException;
+    public String createOffsetVariablesIfNeeded() throws IllegalActionException;
 
     /** Generate into the specified string buffer the code associated
      *  with one firing of the container composite actor.
@@ -76,16 +75,15 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @return Return the definition of the main entry point for a program.
      *  In C, this would be defining main().
      *  @exception IllegalActionException Not thrown in this base class.
-     */ 
+     */
     public String generateMainEntryCode() throws IllegalActionException;
 
     /** Generate the main entry point.
      *  @return Return the a string that closes optionally calls exit
      *  and closes the main() method 
      *  @exception IllegalActionException Not thrown in this base class.
-     */ 
+     */
     public String generateMainExitCode() throws IllegalActionException;
-
 
     /** Generate mode transition code. It delegates to the director helper 
      *  of the local director. The mode transition code generated in this 
@@ -97,6 +95,7 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      */
     public void generateModeTransitionCode(StringBuffer code)
             throws IllegalActionException;
+
     /** Generate the preinitialize code of the associated composite actor.
      *  It first creates buffer size and offset map for its input ports and 
      *  output ports. It then gets the result of generatePreinitializeCode() 
@@ -150,5 +149,6 @@ public interface ActorCodeGenerator extends ComponentCodeGenerator {
      *  @exception IllegalActionException If the helper class for the model
      *   director cannot be found.
      */
-    public String generateVariableInitialization() throws IllegalActionException;
+    public String generateVariableInitialization()
+            throws IllegalActionException;
 }

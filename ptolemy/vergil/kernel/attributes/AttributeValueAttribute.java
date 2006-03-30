@@ -213,7 +213,7 @@ public class AttributeValueAttribute extends AbstractTextAttribute implements
      *  @param attributeName The attribute name.
      */
     protected void _setAttributeName(String attributeName) {
-        NamedObj container =  getContainer();
+        NamedObj container = getContainer();
 
         if (container != null) {
             Attribute newAttribute = ModelScope.getScopedVariable(null,

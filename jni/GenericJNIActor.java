@@ -124,10 +124,10 @@ public class GenericJNIActor extends TypedAtomicActor {
         // FIXME: Should libraryDirectory be a FileParameter?
         libraryDirectory = new Parameter(this, "libraryDirectory",
                 new StringToken("jni/lib"));
-        nativeFunction = new Parameter(this, "nativeFunction",
-                new StringToken("unknownFunction"));
-        nativeLibrary = new Parameter(this, "nativeLibrary",
-                new StringToken("unknownLibrary"));
+        nativeFunction = new Parameter(this, "nativeFunction", new StringToken(
+                "unknownFunction"));
+        nativeLibrary = new Parameter(this, "nativeLibrary", new StringToken(
+                "unknownLibrary"));
 
         _attachText("_iconDescription", "<svg>\n" + "<rect x=\"0\" y=\"0\" "
                 + "width=\"32\" height=\"38\" " + "style=\"fill:white\"/>\n"
@@ -338,8 +338,8 @@ public class GenericJNIActor extends TypedAtomicActor {
                     && !(port.isOutput() && !port.isInput())) {
                 Token tok = port.get(0);
 
-                String typ = _methods[_methodIndex]
-                        .getParameterTypes()[args.size()].toString();
+                String typ = _methods[_methodIndex].getParameterTypes()[args
+                        .size()].toString();
 
                 if (typ.equals("boolean")) {
                     args.add(Boolean.valueOf(((BooleanToken) tok)
@@ -347,19 +347,18 @@ public class GenericJNIActor extends TypedAtomicActor {
                 } else if (typ.equals("int")) {
                     args.add(new Integer(((IntToken) tok).intValue()));
                 } else if (typ.equals("double")) {
-                    args.add(new Double(((DoubleToken) tok)
-                            .doubleValue()));
+                    args.add(new Double(((DoubleToken) tok).doubleValue()));
                 } else if (typ.equals("class [I")) {
                     int siz = ((ArrayToken) tok).arrayValue().length;
                     int[] tab = new int[siz];
 
                     for (int j = 0; j < siz; j++) {
-                        tab[j] = ((IntToken) (((ArrayToken) tok)
-                                .arrayValue()[j])).intValue();
+                        tab[j] = ((IntToken) (((ArrayToken) tok).arrayValue()[j]))
+                                .intValue();
                     }
 
                     //(int[])((ArrayToken)tok).arrayValue();
-                    args.add( tab);
+                    args.add(tab);
                 } else {
                     System.out.println("The intype is not convertible "
                             + "with Ptolemy II types.");
@@ -471,14 +470,12 @@ public class GenericJNIActor extends TypedAtomicActor {
                     port.send(0, new BooleanToken(((Boolean) ret)
                             .booleanValue()));
                 } else if (typ.equals("double")) {
-                    port.send(0, new DoubleToken(((Double) ret)
-                            .doubleValue()));
+                    port.send(0, new DoubleToken(((Double) ret).doubleValue()));
                 } else if (typ.equals("int")) {
-                    port.send(0, new IntToken(((Integer) ret)
-                            .intValue()));
+                    port.send(0, new IntToken(((Integer) ret).intValue()));
                 } else if (typ.equals("char")) {
-                    port.send(0, new UnsignedByteToken(((Byte) ret)
-                            .byteValue()));
+                    port.send(0,
+                            new UnsignedByteToken(((Byte) ret).byteValue()));
                 } else {
                     System.out.println("The return type is not convertible "
                             + "with Ptolemy II types.");
@@ -519,32 +516,30 @@ public class GenericJNIActor extends TypedAtomicActor {
                 } else {
                     if (typ.equals("boolean")) {
                         try {
-                            port.send(0, new BooleanToken(field
-                                    .getBoolean(obj)));
+                            port.send(0,
+                                    new BooleanToken(field.getBoolean(obj)));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex, "Type '"
                                     + typ + "' is not castable");
                         }
                     } else if (typ.equals("double")) {
                         try {
-                            port.send(0, new DoubleToken(field
-                                    .getDouble(obj)));
+                            port.send(0, new DoubleToken(field.getDouble(obj)));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex, "Type '"
                                     + typ + "' is not castable");
                         }
                     } else if (typ.equals("int")) {
                         try {
-                            port.send(0,
-                                    new IntToken(field.getInt(obj)));
+                            port.send(0, new IntToken(field.getInt(obj)));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex, "Type '"
                                     + typ + "' is not castable");
                         }
                     } else if (typ.equals("char")) {
                         try {
-                            port.send(0, new UnsignedByteToken(
-                                    field.getChar(obj)));
+                            port.send(0, new UnsignedByteToken(field
+                                    .getChar(obj)));
                         } catch (IllegalAccessException ex) {
                             throw new IllegalActionException(this, ex, "Type '"
                                     + typ + "' is not castable");
