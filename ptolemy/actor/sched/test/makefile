@@ -49,9 +49,13 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	FixedPointDirector.tcl \
+	FixedPointReceiver.tcl \
+	IllegalOutputException.tcl \
 	NotSchedulableException.tcl \
 	Scheduler.tcl \
-	StaticSchedulingDirector.tcl
+	StaticSchedulingDirector.tcl \
+	UnknownTokenException.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

@@ -50,11 +50,16 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Firing.java \
+	FixedPointDirector.java \
+	FixedPointReceiver.java \
+	FixedPointScheduler.java \
+	IllegalOutputException.java \
 	NotSchedulableException.java \
 	Schedule.java \
 	ScheduleElement.java \
 	Scheduler.java \
-	StaticSchedulingDirector.java
+	StaticSchedulingDirector.java \
+	UnknownTokenException.java
 
 EXTRA_SRCS =	$(JSRCS)
 
