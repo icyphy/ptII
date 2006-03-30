@@ -90,13 +90,10 @@ public class FileReader extends CCodeGeneratorHelper {
         String fileNameString;
         try {
             // Handle $CLASSPATH, return a file name with forward slashes.
-            fileNameString = FileUtilities.nameToURL(
-                    fileOrURL.stringValue().replace('\\', '/'),
-                    fileOrURL.getBaseDirectory(),
-                    fileOrURL.getClass().getClassLoader()).getPath();
-
+            fileNameString = fileOrURL.asURL().getPath();
             // Under Windows, convert /C:/foo/bar to C:/foo/bar
-            fileNameString = new File(fileNameString).getCanonicalPath();
+            fileNameString = new File(fileNameString).getCanonicalPath()
+                    .replace('\\', '/');
         } catch (IOException ex) {
             throw new IllegalActionException(null, ex, "Cannot find file: "
                     + fileOrURL.getExpression());
