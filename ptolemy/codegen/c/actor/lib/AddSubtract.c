@@ -33,7 +33,7 @@
 	$ref(output) = $ref(plus#0);
 	
 	for ($actorSymbol(i) = 0; $actorSymbol(i) < $width; $actorSymbol(i)++) {
-		$typeFunc($ref(output), add($ref(plus#$actorSymbol(i))));
+		$typeFunc($ref(output)::add($ref(plus#$actorSymbol(i))));
 	}
 /**/
 
@@ -47,6 +47,6 @@
 	$ref(output) = $ref(minus#0);
 	
 	for ($actorSymbol(i) = 1; $actorSymbol(i) < $width; $actorSymbol(i)++) {
-		$ref(output) = $typeFunc($ref(output), substract($ref(minus#$actorSymbol(i))));
+		$ref(output) = $typeFunc($ref(output)::substract($ref(minus#$actorSymbol(i))));
 	}
 /**/

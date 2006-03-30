@@ -22,11 +22,8 @@ Token Array_get(Token token, int i) {
 Token Array_new(int size, int given, ...) {   
     va_list argp; 
     int i;
-    char elementType;
-    Token element;
-    boolean doConvert = false;
-
     Token result;
+    
     result.type = TYPE_Array;
     result.payload.Array = (ArrayToken) malloc(sizeof(struct array));
     result.payload.Array->size = size;
@@ -35,33 +32,12 @@ Token Array_new(int size, int given, ...) {
     result.payload.Array->elements = (Token*) calloc(size, sizeof(Token));
 
     if (given > 0) {
-		// Set the first element.
         va_start(argp, given);
-		element = va_arg(argp, Token);
-		elementType = element.type;
-		result.payload.Array->elements[0] = element;
 
-		for (i = 1; i < given; i++) {
-			element = va_arg(argp, Token);
-			if (element.type != elementType) {
-				doConvert = true;
-
-				// Get the max type.
-				if (element.type > elementType) {
-					elementType = element.type;
-				}
-			}
-			result.payload.Array->elements[i] = element;
-		}
-    
-		// If elements are not of the same type, 
-		// convert all the elements to the max type.
-		if (doConvert) {
-			for (i = 0; i < given; i++) {
-				// Don't cast to a Token here, the MS VisualC compiler fails
-				result.payload.Array->elements[i] = functionTable[elementType][FUNC_convert](result.payload.Array->elements[i]);
-			}
-		}
+		for (i = 0; i < given; i++) {
+			result.payload.Array->elements[i] = va_arg(argp, Token);
+		}    
+		
 	    va_end(argp);
 	}
     return result;
@@ -104,25 +80,22 @@ Token Array_equals(Token thisToken, ...) {
 
 /***convertBlock***/
 Token Array_convert(Token token, ...) {
-    Token oldToken = token;
-    Token result = token;    // return the old pointer by default.
-
     switch (token.type) {
         #ifdef TYPE_Int
             case TYPE_Int:
-                result = Array_new(1, TYPE_Int, token);
+                token = Array_new(1, 1, token);
                 break;
         #endif
         
         #ifdef TYPE_Double
             case TYPE_Double:
-                result = Array_new(1, TYPE_Double, token);
+                token = Array_new(1, 1, token);
                 break;
         #endif
         
         #ifdef TYPE_String
             case TYPE_String:
-                result = Array_new(1, TYPE_String, token);
+                token = Array_new(1, 1, token);
                 break;
         #endif
         
@@ -132,7 +105,7 @@ Token Array_convert(Token token, ...) {
                     token.type);
             break;
     }
-    return result;
+    return token;
 }    
 /**/
 

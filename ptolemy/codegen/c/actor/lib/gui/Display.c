@@ -15,5 +15,5 @@
 /**/
 
 /*** TokenPrintBlock($name, $channel) ***/
-    printf("$name: %s\n", $typeFunc($ref(input#$channel), toString()).payload.String);
+    printf("$name: %s\n", $typeFunc($ref(input#$channel)::toString()).payload.String);
 /**/

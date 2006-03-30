@@ -56,6 +56,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.domains.fsm.modal.ModalController;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -174,10 +175,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         	ptType == BaseType.DOUBLE ? "Double" : 
         	ptType == BaseType.BOOLEAN ? "Boolean" : 
         	ptType instanceof ArrayType ? "Array" : 
-        	ptType == BaseType.MATRIX ? "Matrix" : 
-        	ptType == BaseType.INT_MATRIX ? "Matrix" :          		
-        	ptType == BaseType.LONG_MATRIX ? "Matrix" :          		
-            ptType == BaseType.DOUBLE_MATRIX ? "Matrix" :  
+        	ptType instanceof UnsizedMatrixType ? "Matrix" : 
         	ptType == BaseType.GENERAL ? "Token" : "";
         if (result.length() == 0) {
             throw new IllegalActionException(
@@ -1207,12 +1205,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             throws IllegalActionException {
         functionString = processCode(functionString);
 
-        // i.e. "$typeFunc(token, add(arg1, arg2, ...))"
+        // i.e. "$typeFunc(token::add(arg1, arg2, ...))"
         // this transforms to ==> 
         // "functionTable[token.type][FUNC_add] (token, arg1, arg2, ...)"
         // FIXME: we need to do some more smart parsing to find the following
         // indexes.
-        int commaIndex = functionString.indexOf(',');
+        int commaIndex = functionString.indexOf("::");
         int openFuncParenIndex = functionString.indexOf('(', commaIndex);
         int closeFuncParenIndex = functionString.lastIndexOf(')');
 
@@ -1221,11 +1219,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 || (closeFuncParenIndex != (functionString.length() - 1))) {
             throw new IllegalActionException(
                     "Bad Syntax with the $typeFunc() macro. "
-                            + "[i.e. -- $typeFunc(token.func(arg1, arg2, ...))]");
+                            + "[i.e. -- $typeFunc(token::func(arg1, arg2, ...))]");
         }
 
         String typedToken = functionString.substring(0, commaIndex).trim();
-        String functionName = functionString.substring(commaIndex + 1,
+        String functionName = functionString.substring(commaIndex + 2,
                 openFuncParenIndex).trim();
 
         // Record the referenced type function in the infoTable.
@@ -1649,7 +1647,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     		}
     	} else {
     		// Use function table to convert between specific Token types.
-    		result += "$typeFunc(sinkRef, convert(sourceRef))";
+    		result += "$typeFunc(sinkRef::convert(sourceRef))";
     	}
     	return processCode(result) + ";\n";
 	}

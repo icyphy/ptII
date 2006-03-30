@@ -30,5 +30,5 @@ static $declaredType $actorSymbol(state);
 
 /***TokenFireBlock***/
     $ref(output) = $actorSymbol(state);
-	$actorSymbol(state) = $typeFunc($ref(output), add($val(step)));
+	$actorSymbol(state) = $typeFunc($ref(output)::add($val(step)));
 /**/

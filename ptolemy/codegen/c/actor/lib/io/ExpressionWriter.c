@@ -5,7 +5,7 @@
 /**/
     
 /***writeLine***/
-	$actorSymbol(expression) = $typeFunc($ref(input), toExpression()).payload.String;
+	$actorSymbol(expression) = $typeFunc($ref(input)::toExpression()).payload.String;
 	if ($actorSymbol(overwriteOK)) {
 	    fprintf($actorSymbol(filePtr), "%s\n", $actorSymbol(expression));
 	}
