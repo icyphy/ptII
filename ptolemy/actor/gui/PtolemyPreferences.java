@@ -132,10 +132,10 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
 
     /** Get the PtolemyPreferences within the specified configuration.
      *  @param configuration  The configuration in which to search for
-     *  @{link #PREFERENCES_WITHIN_CONFIGURATION}
+     *  {@link #PREFERENCES_WITHIN_CONFIGURATION}
      *  @return The associated PtolemyPreferences or null if not found.
      *  @exception If there is a problem getting the 
-     *  @{link #PREFERENCES_WITHIN_CONFIGURATION} attribute.
+     *  {@link #PREFERENCES_WITHIN_CONFIGURATION} attribute.
      */ 
     public static PtolemyPreferences getPtolemyPreferencesWithinConfiguration(
             Configuration configuration) throws IllegalActionException {
