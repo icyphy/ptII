@@ -75,7 +75,7 @@ import ptolemy.util.StringUtilities;
 /** Base class for code generator.
  *  
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks
- *  @version $Id$ CodeGenerator.java,v 1.51 2005/07/13 14:07:20 cxh Exp $
+ *  @version $Id$
  *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
@@ -1214,7 +1214,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             }
 
             _executeCommands.stdout("Reading \"" + makefileTemplateName
-                    + "\", writing \"" + makefileOutputName + "\"");
+                    + "\",\n    writing \"" + makefileOutputName + "\"");
             CodeGeneratorUtilities.substitute(makefileTemplateReader,
                     substituteMap, makefileOutputName);
         } catch (Exception ex) {
