@@ -51,15 +51,4 @@ public class Bernoulli extends RandomSource {
     public Bernoulli(ptolemy.actor.lib.Bernoulli actor) {
         super(actor);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Generate code for producing a new random number.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    protected void _generateRandomNumber(StringBuffer code)
-            throws IllegalActionException {
-        code.append(_generateBlockCode("randomBlock"));
-    }
 }
