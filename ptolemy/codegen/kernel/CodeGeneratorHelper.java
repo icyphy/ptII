@@ -1108,7 +1108,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
         _codeStream.clear();
-        _codeStream.appendCodeBlocks(_defaultBlocks[3]); // .*shared.*
+        _codeStream.appendCodeBlocks(_defaultBlocks[4]); // .*shared.*
         sharedCode.add(processCode(_codeStream.toString()));
         return sharedCode;
     }
