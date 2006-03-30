@@ -131,5 +131,5 @@ public interface Type {
     public static final int HASH_INVALID = Integer.MIN_VALUE;
 
     /** The maximum size of the type hash. */
-    public static final int HASH_MAX = 13;
+    public static final int HASH_MAX = 15;
 }

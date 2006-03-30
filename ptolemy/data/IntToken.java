@@ -115,7 +115,7 @@ public class IntToken extends ScalarToken {
             return (IntToken) token;
         }
         if (token == null || token.isNil()) {
-            return (IntToken)Token.NIL;
+            return IntToken.NIL;
         }
 
         int compare = TypeLattice.compare(BaseType.INT, token);
@@ -162,7 +162,8 @@ public class IntToken extends ScalarToken {
             return false;
         }
 
-        if (isNil() || ((IntToken) object).isNil()) {
+        if (this.isNil() ||
+                ((IntToken) object).isNil()) {
             return false;
         }
 
@@ -193,6 +194,12 @@ public class IntToken extends ScalarToken {
      */
     public int intValue() {
         return _value;
+    }
+
+    public boolean isNil() {
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        return this == IntToken.NIL;
     }
 
     /** Returns a token representing the result of shifting the bits
@@ -273,6 +280,8 @@ public class IntToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    public static final IntToken NIL = new IntToken(Integer.MAX_VALUE);
 
     /** A IntToken with the value 1.0. */
     public static final IntToken ONE = new IntToken(1);

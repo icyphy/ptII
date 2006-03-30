@@ -544,6 +544,7 @@ public class TypeLattice {
             _basicLattice.addNodeWeight(BaseType.EVENT);
             _basicLattice.addNodeWeight(BaseType.GENERAL);
             _basicLattice.addNodeWeight(BaseType.PETITE);
+            _basicLattice.addNodeWeight(BaseType.NIL);
 
             _basicLattice.addNodeWeight(arrayRep);
             _basicLattice.addNodeWeight(recordRep);
@@ -599,6 +600,11 @@ public class TypeLattice {
 
             _basicLattice.addEdge(unionRep, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, unionRep);
+
+            _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.NIL);
+            _basicLattice.addEdge(BaseType.NIL, BaseType.INT);
+            _basicLattice.addEdge(BaseType.NIL, BaseType.DOUBLE);
+            _basicLattice.addEdge(BaseType.NIL, BaseType.LONG);
 
             // FIXME: Replace this with an assert when we move to 1.5
             if (!_basicLattice.isLattice()) {

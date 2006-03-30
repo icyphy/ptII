@@ -120,7 +120,7 @@ public class LongToken extends ScalarToken {
         }
 
         if (token == null || token.isNil()) {
-            return (LongToken) Token.NIL;
+            return LongToken.NIL;
         }
 
         int compare = TypeLattice.compare(BaseType.LONG, token);
@@ -180,6 +180,12 @@ public class LongToken extends ScalarToken {
      */
     public int hashCode() {
         return (int) _value;
+    }
+
+    public boolean isNil() {
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        return this == LongToken.NIL;
     }
 
     /** Returns a token representing the result of shifting the bits
@@ -271,6 +277,8 @@ public class LongToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    public static final LongToken NIL = new LongToken(Long.MAX_VALUE);
 
     /** A LongToken with the value 1.0. */
     public static final LongToken ONE = new LongToken(1);

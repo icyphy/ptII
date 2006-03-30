@@ -123,7 +123,7 @@ public class DoubleToken extends ScalarToken {
             return (DoubleToken) token;
         }
         if (token == null || token.isNil()) {
-            return (DoubleToken)Token.NIL;
+            return DoubleToken.NIL;
         }
         if (token instanceof PetiteToken) {
             return (DoubleToken) token;
@@ -194,6 +194,12 @@ public class DoubleToken extends ScalarToken {
         return (int) _value;
     }
 
+    public boolean isNil() {
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        return this == DoubleToken.NIL;
+    }
+
     /** Returns a DoubleToken with value 1.0.
      *  @return A DoubleToken with value 1.0.
      */
@@ -251,6 +257,8 @@ public class DoubleToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    public static final DoubleToken NIL = new DoubleToken(Double.NaN);
 
     /** A DoubleToken with the value 1.0. */
     public static final DoubleToken ONE = new DoubleToken(1);

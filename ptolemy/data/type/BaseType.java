@@ -531,6 +531,25 @@ public abstract class BaseType implements Type, Serializable {
     /** The petite data type. */
     public static final PetiteType PETITE = new PetiteType();
 
+    /** The nil data type. */
+    public static class NilType extends BaseType {
+        private NilType() {
+            super(Token.class, "nil");
+        }
+
+        public Token convert(Token t) throws IllegalActionException {
+            return t;
+        }
+
+        public int getTypeHash() {
+            return 14;
+        }
+    }
+
+    /** The nil data type. */
+    public static final NilType NIL = new NilType();
+
+
     ///////////////////////////////////////////////////////////////////
     ////                    package private method                 ////
 
