@@ -7,7 +7,7 @@
 /**/
 
 /*** fireBlock ***/
-	$actorSymbol(length) = $ref(stop) - $ref(start) + 1;
+        $actorSymbol(length) = $ref(stop) - $ref(start);
 	$ref(output) = (char*) realloc($ref(output), $actorSymbol(length));
 	$ref(output) = strncpy($ref(output), $ref(input) + $ref(start), $actorSymbol(length));
 /**/
