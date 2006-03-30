@@ -219,7 +219,10 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
     }
 
     /** Given a string, escape special characters as necessary.
+     *  For C, we do:   
      *  <pre>
+     *  \{ becomes \\{
+     *  \} becomes \\}
      *  \( becomes \\(
      *  \) becomes \\)
      *  newline becomes \n
@@ -228,7 +231,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  @return A new string with special characters replaced.
      *  @see ptolemy.util.StringUtilities.escapeForXML(String)
      */
-    public static String escapeForC(String string) {
+    public /*static*/ String escapeForTargetLanguage(String string) {
+        string = StringUtilities.substitute(string, "\\{", "\\\\{");
+        string = StringUtilities.substitute(string, "\\}", "\\\\}");
         string = StringUtilities.substitute(string, "\\(", "\\\\(");
         string = StringUtilities.substitute(string, "\\)", "\\\\)");
         string = StringUtilities.substitute(string, "\n", "\\n");
@@ -673,7 +678,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             if (_evaluatedChildToken instanceof StringToken) {
                 // In C, Strings should have \n tags substituted. 
                 // See Test 17.2
-                _fireCode.append(escapeForC(_evaluatedChildToken.toString()));
+                _fireCode.append(escapeForTargetLanguage(_evaluatedChildToken.toString()));
             } else {
                 _fireCode.append(_evaluatedChildToken.toString());
             }
