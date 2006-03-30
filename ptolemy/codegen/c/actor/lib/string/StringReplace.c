@@ -14,10 +14,4 @@
 	$ref(output) = NULL;
 /**/
 
-/*** replaceAllFunctionBlock ***/
-/**/
-
-/*** replaceFunctionBlock ***/
-	replace($ref(
-/**/
 
