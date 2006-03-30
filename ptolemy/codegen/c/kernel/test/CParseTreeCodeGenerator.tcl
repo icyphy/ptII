@@ -48,15 +48,15 @@ proc parseTreeTest {expression} {
     return [list [$parseTreeCodeGenerator generateFireCode]]
 }
 
-test Expression-1.1 {Simple tests of ParseTreeCodeGenerator} {
+test CParseTreeCodeGenerator-1.1 {Simple tests of ParseTreeCodeGenerator} {
     parseTreeTest {1+3}
 } {(1+3)}
 
-test Expression-1.2 {A more complex example} {
+test CParseTreeCodeGenerator-1.2 {A more complex example} {
     parseTreeTest {((3+4)+(1|2)+232)}
 } {((3+4)+(1|2)+232)}
 
-test Expression-2.1 {Define a variable in a regular parse tree } {
+test CParseTreeCodeGenerator-2.1 {Define a variable in a regular parse tree } {
     # This test uses the regular (non codegen) parse tree
     # We need to do something similar for codegen
     # See ptII/ptolemy/data/expr/test/PtParser.tcl
@@ -90,7 +90,7 @@ proc parseTreeTraceTest {expression} {
 		[$parseTreeCodeGenerator generateFireCode]]
 }
 
-test Expression-10.1 {traceParseTreeEvaluation} {
+test CParseTreeCodeGenerator-10.1 {traceParseTreeEvaluation} {
     parseTreeTraceTest {10+1}
 } {{Entering node ptolemy.data.expr.ASTPtSumNode
   Entering node ptolemy.data.expr.ASTPtLeafNode
@@ -100,13 +100,13 @@ test Expression-10.1 {traceParseTreeEvaluation} {
 Node ptolemy.data.expr.ASTPtSumNode evaluated to 10
 } (10+1)}
 
-test Expression-11.1 {visitFunctionDefinitionNode} {
+test CParseTreeCodeGenerator-11.1 {visitFunctionDefinitionNode} {
     parseTreeTraceTest {function(x:double) x*5.0}
 } {{Entering node ptolemy.data.expr.ASTPtFunctionDefinitionNode
 Node ptolemy.data.expr.ASTPtFunctionDefinitionNode evaluated to (function(x:double) (x*5.0))
 } {}}
 
-test Expression-12.1 {visitFunctionalIfNode} {
+test CParseTreeCodeGenerator-12.1 {visitFunctionalIfNode} {
     parseTreeTraceTest { 1==0 ? 0.5: 1.5 }
 } {{Entering node ptolemy.data.expr.ASTPtFunctionalIfNode
   Entering node ptolemy.data.expr.ASTPtRelationalNode
@@ -119,7 +119,7 @@ test Expression-12.1 {visitFunctionalIfNode} {
 } {(1 == 0)}} {Why is this null}
 
 
-test Expression-13.1 {visitMethodCallNode} {
+test CParseTreeCodeGenerator-13.1 {visitMethodCallNode} {
     parseTreeTraceTest {[1, 2; 3, 4; 5, 6].getRowCount()}
 } {{Entering node ptolemy.data.expr.ASTPtMethodCallNode
   Entering node ptolemy.data.expr.ASTPtMatrixConstructNode
@@ -141,7 +141,7 @@ test Expression-13.1 {visitMethodCallNode} {
 Node ptolemy.data.expr.ASTPtMethodCallNode evaluated to 3
 } {((Token*) $new(Matrix(3, 2, $new(Int(1)), TYPE_Int, $new(Int(2)), TYPE_Int, $new(Int(3)), TYPE_Int, $new(Int(4)), TYPE_Int, $new(Int(5)), TYPE_Int, $new(Int(6)), TYPE_Int)))->getRowCount()}}
 
-test Expression-14.1 {visitPowerNode} {
+test CParseTreeCodeGenerator-14.1 {visitPowerNode} {
     parseTreeTraceTest {2^3}
 } {{Entering node ptolemy.data.expr.ASTPtPowerNode
   Entering node ptolemy.data.expr.ASTPtLeafNode
@@ -152,7 +152,7 @@ Node ptolemy.data.expr.ASTPtPowerNode evaluated to 2
 } {(pow(2, 3))}}
 
 
-test Expression-15.1 {visitShiftNode} {
+test CParseTreeCodeGenerator-15.1 {visitShiftNode} {
     parseTreeTraceTest {16<<1} 
 } {{Entering node ptolemy.data.expr.ASTPtShiftNode
   Entering node ptolemy.data.expr.ASTPtLeafNode
@@ -162,11 +162,11 @@ test Expression-15.1 {visitShiftNode} {
 Node ptolemy.data.expr.ASTPtShiftNode evaluated to 32
 } {(16 << 1)}}
 
-test Expression-16.1 {visitFunctionApplicationNode} {
+test CParseTreeCodeGenerator-16.1 {visitFunctionApplicationNode} {
     parseTreeTraceTest {(function(x:double) x*5.0) (10.0)}
 } {} {Why does this have null 10.0}
 
-test Expression-16.2 {visitFunctionApplicationNode} {
+test CParseTreeCodeGenerator-16.2 {visitFunctionApplicationNode} {
     parseTreeTraceTest {map(function(x:int) x+3, {0, 2, 3})}
 } {{Entering node ptolemy.data.expr.ASTPtFunctionApplicationNode
   Entering node ptolemy.data.expr.ASTPtFunctionDefinitionNode
@@ -184,7 +184,7 @@ test Expression-16.2 {visitFunctionApplicationNode} {
 Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {3, 5, 6}
 } {map(, $new(Array(3, 3, $new(Int(0)), $new(Int(2)), $new(Int(3)))))}}
 
-test Expression-16.3 {visitFunctionApplicationNode} {
+test CParseTreeCodeGenerator-16.3 {visitFunctionApplicationNode} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
     set parseTreeCodeGenerator \
 	[java::new ptolemy.codegen.c.kernel.CParseTreeCodeGenerator]
@@ -205,23 +205,23 @@ test Expression-16.3 {visitFunctionApplicationNode} {
     list $r1 $r2
 } {} {known failure}
 
-test Expression-16.4 {visitFunctionApplicationNode} {
+test CParseTreeCodeGenerator-16.4 {visitFunctionApplicationNode} {
     parseTreeTraceTest {iterate(function(x:int) x+3, 5, 0)}
 } {} {Why does this have iterate(, 5, 0)}
 
 
-test Expression-16.5 {visitFunctionApplicationNode, cover _evaluateArrayIndex} {
+test CParseTreeCodeGenerator-16.5 {visitFunctionApplicationNode, cover _evaluateArrayIndex} {
     parseTreeTraceTest {{1,2}(1)}
 } {{null(1$new(Array(2, 2, $new(Int(1)), $new(Int(2))))}} \
 {why does this have null in it}
 
-test Expression-16.5 {visitFunctionApplicationNode, cover _evaluateMatrixIndex} {
+test CParseTreeCodeGenerator-16.5 {visitFunctionApplicationNode, cover _evaluateMatrixIndex} {
     parseTreeTraceTest {[1, 2; 3, 4](0,0)}
 } {   {null(0, 0((Token*) $new(Matrix(2, 2, $new(Int(1)), TYPE_Int, $new(Int(2)), TYPE_Int, $new(Int(3)), TYPE_Int, $new(Int(4)), TYPE_Int)))}
 } {Why Does this have null in it}
 
 
-test Expression-17.1 {visitRecordConstructNode} {
+test CParseTreeCodeGenerator-17.1 {visitRecordConstructNode} {
     parseTreeTraceTest {{a=1,b=2}}
 } {{Entering node ptolemy.data.expr.ASTPtRecordConstructNode
   Entering node ptolemy.data.expr.ASTPtLeafNode
@@ -232,7 +232,7 @@ Node ptolemy.data.expr.ASTPtRecordConstructNode evaluated to {a = 1, b = 2}
 } 12}
 
 
-test Expression-17.2 {Construct arrays with newline strings in them} {
+test CParseTreeCodeGenerator-17.2 {Construct arrays with newline strings in them} {
     parseTreeTraceTest {{"this is
  a test", "test two", "\\(regex\\)"}}
 } {{Entering node ptolemy.data.expr.ASTPtArrayConstructNode
@@ -245,13 +245,13 @@ test Expression-17.2 {Construct arrays with newline strings in them} {
   Node ptolemy.data.expr.ASTPtLeafNode evaluated to "\(regex\)"
 Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {"this is
  a test", "test two", "\(regex\)"}
-} {$new(Array(3, 3, $new(String("this is\n a test")), $new(String("test two")), $new(String("\\(regex\)"))))}}
+} {$new(Array(3, 3, $new(String("this is\n a test")), $new(String("test two")), $new(String("\\(regex\\)"))))}}
 
 
 # I've commented this out. The ParseTreeCodeGenerator should not be 
 # tested this way. -- Gang
 #
-#test Expression-2.2 {Define a variable in a codegen parse tree } {
+#test CParseTreeCodeGenerator-2.2 {Define a variable in a codegen parse tree } {
 #    # We need to do something similar for codegen
 #    # See ptII/ptolemy/data/expr/test/PtParser.tcl
 #    set namedList [java::new ptolemy.kernel.util.NamedList]
