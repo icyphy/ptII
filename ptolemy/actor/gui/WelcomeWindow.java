@@ -142,6 +142,14 @@ public class WelcomeWindow extends HTMLViewer {
 
     }
 
+    /** Always set the title to the string "Welcome".
+     *  @param title The title, which is ignored.  The title is always
+     *  the value returned by {@link #_getName()}.
+     */
+    public void setTitle(String title) {
+        super.setTitle(_getName());
+    }
+
     /** Show the window if the _showWelcomeWindowAtStartup parameter
      *  is not set or is true.
      */
@@ -195,6 +203,14 @@ public class WelcomeWindow extends HTMLViewer {
             }
         }
         return super._close();
+    }
+
+    /** Get the name of this object, which in this case is the 
+     *  string "Welcome".
+     *  @return The string "Welcome";
+     */
+    protected String _getName() {
+        return "Welcome";
     }
 
     ///////////////////////////////////////////////////////////////////
