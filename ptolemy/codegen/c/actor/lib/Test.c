@@ -65,7 +65,7 @@
                         && $ref(input#$channel))
                 || ($ref(correctValues, iteration)
                         && !$ref(input#$channel)) ) {
-            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %s. Should have been: %s\n",
+            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
                     iteration,
                     btoa($ref(input#$channel)),
                     btoa($ref(correctValues, iteration)));
@@ -77,12 +77,14 @@
         /* $channel of $actorSymbol() */
         ArrayToken $actorSymbol(correctValuesThisFiring)_$channel = $ref(correctValues, iteration);
         if (iteration < $size(correctValues)
-                && (!$ref(correctValues, iteration) && $ref(input#$channel))
-                || ($ref(correctValues, iteration) && !$ref(input#$channel)) ) {
-            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was: %f. Should have been: %f\n",
+                && ((!$actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType
+                            && $ref(input#$channel))
+                        || ($actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType
+                                && !$ref(input#$channel)))) {
+            printf("Test $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
                     iteration,
-                    (double)$ref(input#$channel),
-                    $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType);
+                    btoa($ref(input#$channel)),
+                    btoa($actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.$inputType));
             exit(-1);    
         }
 /**/
