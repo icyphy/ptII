@@ -130,6 +130,26 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                       public methods                      ////
 
+    /** Get the PtolemyPreferences within the specified configuration.
+     *  @param configuration  The configuration in which to search for
+     *  @{link #PREFERENCES_WITHIN_CONFIGURATION}
+     *  @return The associated PtolemyPreferences or null if not found.
+     *  @exception If there is a problem getting the 
+     *  @{link #PREFERENCES_WITHIN_CONFIGURATION} attribute.
+     */ 
+    public static PtolemyPreferences getPtolemyPreferencesWithinConfiguration(
+            Configuration configuration) throws IllegalActionException {
+        PtolemyPreferences preferences = null;
+
+        try {
+            preferences = (PtolemyPreferences) configuration.getAttribute(
+                    PtolemyPreferences.PREFERENCES_WITHIN_CONFIGURATION,
+                    PtolemyPreferences.class);
+        } catch (IllegalActionException ex) {
+            return null;
+        }
+        return preferences;
+    }
     /** Check to see whether a preference of the specified name is
      *  defined in the specified context, and if it is, return its value.
      *  Note that if there is an error in the expression for the preference,
@@ -239,14 +259,10 @@ public class PtolemyPreferences extends ScopeExtendingAttribute {
      */
     public static void setDefaultPreferences(Configuration configuration) {
         PtolemyPreferences preferences = null;
-
         try {
-            preferences = (PtolemyPreferences) configuration.getAttribute(
-                    PtolemyPreferences.PREFERENCES_WITHIN_CONFIGURATION,
-                    PtolemyPreferences.class);
+            preferences = getPtolemyPreferencesWithinConfiguration(configuration);
         } catch (IllegalActionException ex) {
-            System.out
-                    .println("Warning: Problem with preferences attribute "
+            System.out.println("Warning: Problem with preferences attribute "
                             + "in the configuration: "
                             + ex.getMessage());
 
