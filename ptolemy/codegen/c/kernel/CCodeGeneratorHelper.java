@@ -169,9 +169,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     protected String _generateBlockCode(String blockName)
             throws IllegalActionException {
         // We use this method to reduce code duplication for simple blocks.
-        _codeStream.clear();
-        _codeStream.appendCodeBlock(blockName);
-        return processCode(_codeStream.toString());
+        return _generateBlockCode(blockName, new ArrayList());
     }
 
     /** Given a block name, generate code for that block.
