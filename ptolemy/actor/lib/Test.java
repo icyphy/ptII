@@ -91,6 +91,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  of the Stop actor to stop the test upon successfully matching the
  test data.
 
+ <p>This actor failed to distinguish the case where the input is a
+ single port reading arrays and the case where the input is a
+ multiport reading data from each channel.  If its correctValues is
+ type array of arrays, it assumes that its input port is a multiport
+ that has width of the size of the inner arrays. However, if it
+ receives array token as input (single port), it also produce s array
+ of arrays as its correctValues. It throws exception about the
+ expected width of the input port when training mode is turned off.
+
  @see NonStrictTest
  @author Edward A. Lee, Christopher Hylands, Jim Armstrong
  @version $Id$
