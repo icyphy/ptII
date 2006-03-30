@@ -75,7 +75,11 @@ import ptolemy.util.StringUtilities;
 /** Base class for code generator.
  *  
  *  @author Edward A. Lee, Gang Zhou, Ye Zhou, Contributors: Christopher Brooks
+<<<<<<< CodeGenerator.java
  *  @version $Id$
+=======
+ *  @version $Id$
+>>>>>>> 1.127
  *  @since Ptolemy II 6.0
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Yellow (eal)
@@ -518,6 +522,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public String generateSharedCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
+
+        // Include the constantsBlock at the top so that sharedBlocks from
+        // actors can use true and false etc.  StringMatches needs this.
+        CodeStream sharedStream = new CodeStream(
+                "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
+        sharedStream.appendCodeBlock("constantsBlock");
+        code.append(sharedStream.toString());
+
+
         code.append(comment(0, "Generate shared code for "
                 + getContainer().getFullName()));
 
@@ -559,11 +572,6 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         StringBuffer code = new StringBuffer();
         code.append(comment(0, "Generate type resolution code for "
                 + getContainer().getFullName()));
-
-        CodeStream sharedStream = new CodeStream(
-                "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
-        sharedStream.appendCodeBlock("constantsBlock");
-        code.append(sharedStream.toString());
 
         // Determine the total number of referenced polymorphic functions.
         HashSet functions = new HashSet();
@@ -619,6 +627,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
             typeStreams[i].appendCodeBlock("declareBlock");
             code.append(typeStreams[i].toString());
         }
+
+        CodeStream sharedStream = new CodeStream(
+                "$CLASSPATH/ptolemy/codegen/kernel/SharedCode.c");
 
         ArrayList args = new ArrayList();
         args.add("");
