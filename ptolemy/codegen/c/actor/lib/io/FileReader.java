@@ -30,13 +30,13 @@ package ptolemy.codegen.c.actor.lib.io;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.FileUtilities;
+
+import com.sun.tools.javac.v8.tree.Tree.If;
 
 /**
  * A helper class for ptolemy.actor.lib.io.FileReader.

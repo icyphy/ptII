@@ -63,7 +63,6 @@ import ptolemy.data.expr.CachedMethod;
 import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.ExpressionFunction;
 import ptolemy.data.expr.MatlabUtilities;
-import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.ParseTreeFreeVariableCollector;
 import ptolemy.data.expr.ParseTreeSpecializer;
 import ptolemy.data.expr.ParseTreeTypeInference;

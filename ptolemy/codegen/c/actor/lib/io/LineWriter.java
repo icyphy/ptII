@@ -34,7 +34,6 @@ import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.FileUtilities;
 
 /**
  * A helper class for ptolemy.actor.lib.io.LineWriter.

@@ -27,7 +27,6 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Bernoulli
