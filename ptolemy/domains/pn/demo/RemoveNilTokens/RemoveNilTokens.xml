@@ -4,20 +4,20 @@
 <entity name="RemoveNilTokens" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 1, 815, 511}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 1, 815, 664}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 393]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 546]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 196.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 273.0}">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 40.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests handling nil tokens.&#10;The RemoveNilTokens actor removes tokens that&#10;have had the Token.nil() method called.&#10;We can generate these nil tokens by using&#10;the &quot;nil&quot; Constant in the expression language.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests handling nil tokens.&#10;The RemoveNilTokens actor removes tokens that have no value. &#10;&#10;Null or missing tokens are common in analytical systems like&#10;R and SAS where they are used to handle sparsely populated &#10;data sources.  In database parlance, missing tokens are &#10;sometimes called null tokens.  Since null is a Java keyword, &#10;we use the term &quot;nil&quot;.               &#10; &#10;We can generate these nil tokens by using the &quot;nil&quot; Constant &#10;in the expression language.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 290.0]">
         </property>
@@ -39,7 +39,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 505.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -56,7 +56,7 @@
         </property>
     </entity>
     <entity name="Data without nil tokens" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={670, 532, 290, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={670, 532, 330, 237}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 50.0]">
         </property>
@@ -260,7 +260,7 @@
         </port>
     </entity>
     <entity name="Data with nil tokens" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 532, 290, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={346, 532, 330, 237}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 60.0]">
         </property>
