@@ -26,10 +26,8 @@ See also <a href="whatsNew5.1.htm">What's new in Version 5.1</a>.
 <li> <a href="#bugs">Bug fixes</a>
 </ul>
 
-<h2> <a name="highlights">Highlights</a>
-</h2>
+<h2> <a name="highlights">Highlights</a></h2>
 <ul>
-<menu>
 <li> <a href="../../../ptolemy/codegen/README.html">Ptolemy II C Code Generation</a>
  <p>Primary Developers: Jackie Leung, Gang Zhou, Ye Zhou, Edward A. Lee,
 	Christopher Brooks
@@ -42,7 +40,7 @@ See also <a href="whatsNew5.1.htm">What's new in Version 5.1</a>.
 
 
 <li> The
-<a href="../../../ptolemy/domains/rendezvous/doc/body.htm" target="body">Rendezvous domain</a>:
+<a href="../../../ptolemy/domains/rendezvous/doc/main.htm">Rendezvous domain</a>:
  <br>Primary Authors: Thomas Huining Feng, Edward A. Lee
  <br>In the Rendezvous domain in Ptolemy II, each actor executes in
 its own thread of control, and communication between actors is
@@ -63,8 +61,9 @@ Processesmodel first proposed by Hoare in 1978. Rendezvous-based
 communication is also known as synchronous message passing, but we
 avoid this term to avoid confusion with the SR (synchronous/reactive)
 domain.
-
-<li> <a href="../../ptolemy/configs/viptos/index.htm">Viptos</a> 
+<P><a href="../../../ptolemy/configs/doc/completeDemos.htm#rendezvous">Demonstrations</a> - 
+<a href="../../../doc/codeDoc/ptolemy/domains/rendezvous/index.html">Javadoc</a>
+<li> <a href="../../../ptolemy/configs/viptos/intro.htm">Viptos</a> 
  <i>Visual editor and code generator for TinyOS programs</i>.
  <br>Primary Author: Elaine Cheong
  <br><B>Viptos</B> is an interface between TinyOS and Ptolemy II that
@@ -74,33 +73,62 @@ provides a graphical user interface for TinyOS developers.
  <br>Authors: Daniel Lazaro Cuadrado (Aalborg University).
  <br> The Distributed-SDF domain is an extended version of the existing SDF
  Domain that performs the simulation in a distributed manner using
- Jini.  See the
- <a href="../../../ptolemy/distributed/demo/Sleep/Sleep.xml">Sleep Demo</a> for details
-</menu>
-
-
+ Jini.
+ <p><a href="../../../ptolemy/distributed/demo/Sleep/Sleep.xml">Distributed Sleep Demo</a> -
+ <a href="../../../doc/codeDoc/ptolemy/distributed/index.html">Javadoc</a>
 </ul>
 
 <h2><a name="demos">New demonstrations</a></h2>
 <ul>
+<li><i>New Communicating Sequential Processes (CSP) demonstrations</i>:
+<ul>
 <li> <a href="../../domains/csp/demo/Barrier/Barrier.xml">Barrier Synchronization</a> (New in Ptolemy II 6.0)
 <li> <a href="../../domains/csp/demo/ResourcePool/ResourcePool.xml">Resource Management</a> (New in Ptolemy II 6.0)
 <li> <a href="../../domains/csp/demo/WriteRegulator/WriteRegulator.xml">Write Regulator</a> (New in Ptolemy II 6.0)
+</ul>
+
+<li><i>New Continuous Time (CT) demonstrations</i>:
+<ul>
 <li> <a href="../../domains/ct/demo/CartPendulum/CartPendulum.xml">Cart with Pendulum</a> (New in Ptolemy II 6.0, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
 <li> <a href="../../domains/ct/demo/NewtonsCradle/NewtonsCradlePerfectlyInelastic1.xml">Newton's Cradle with Perfectly Inelastic Collisions</a> (New in Ptolemy 6.0, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
 <li> <a href="../../domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimated.xml">Newton's Cradle with Configurable Parameters</a> (New in Ptolemy 6.0, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
 <li> <a href="../../domains/ct/demo/NewtonsCradle/ParameterizedNewtonsCradleAnimatedNondeterministic.xml">Newton's Cradle with Balls Having Different Masses</a> (New in Ptolemy II 6.0, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
 <li> <a href="../../domains/ct/demo/Pendulum3D/Pendulum3D.xml">3D Pendulum</a> (New in Ptolemy II 6.0, Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
-and Server (M/M/1 Queues)</a> (New in Ptolemy II 6.0)
+</ul>
+
+<li><i>New Discrete Event (DE)demonstration</i>:
+<ul>
+<li><a href="../../domains/de/demo/QueueAndServer/QueueAndServer.xml">Queue and Server (M/M/1 Queues)</a> (New in Ptolemy II 6.0)
+</ul>
+
+<li><i>New Heterochronous Dataflow (HDF) demonstrations</i>:
+<ul>
 <li><a href="../../domains/hdf/demo/AdaptiveCoding/AdaptiveCoding.xml">AdaptiveCoding</a> (With codegen in Ptolemy II 6.0)
 <li><a href="../../domains/hdf/demo/Hysteresis/Hysteresis.xml">Hysteresis</a> (With codegen in Ptolemy II 6.0)
 <li><a href="../../domains/hdf/demo/Merge/Merge.xml">Merge</a> (With codegen in Ptolemy II 6.0)
-Nil Tokens</a> (New in Ptolemy II 6.0)
+</ul>
+
+<li><i>New Rendezvous demonstrations</i>:
+<ul>
 <li> <a href="../../domains/rendezvous/demo/Barrier/Barrier.xml">Barrier Synchronization</a>  (New in Ptolemy II 6.0)
 <li> <a href="../../domains/rendezvous/demo/ResourcePool/ResourcePool.xml">Resource Management</a>  (New in Ptolemy II 6.0)
 <li> <a href="../../domains/rendezvous/demo/Sequencing/Sequencing.xml">Sequencing</a> (New in Ptolemy II 6.0)
 <li> <a href="../../domains/rendezvous/demo/WriteRegulator/WriteRegulator.xml">Write Regulator</a>  (New in Ptolemy II 6.0)
+</ul>
+
+<li><i>New Synchronous Dataflow (SDF) demonstrations</i>:
+<ul>
 <li> <a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a> (New in Ptolemy II 6.0) (with codegen)
+</ul>
+
+<li><i>New Process Network (SDF) demonstrations</i>:
+<ul>
+<li><a href="../../domains/pn/demo/RemoveNilTokens/RemoveNilTokens.xml">Remove Nil Tokens</a> (New in Ptolemy II 6.0)
+
+</ul>
+
+<li><i>New Wireless demonstrations</i>:
+<ul>
 <li><a href="../../domains/wireless/demo/CooperativeTerminals/CooperativeTerminals.xml">Cooperative Terminals</a> (New in Ptolemy II 6.0)
 <li> <a href="../../domains/wireless/demo/Submarines/Submarines.xml">Submarines</a>, <a href="../../domains/wireless/demo/Submarines/classlessSubmarines.xml">classless Submarines</a> (New in Ptolemy II 6.0)
 </ul>
@@ -131,7 +159,7 @@ called, it indicates that a token is a nil or missing token, which contains no d
   where they are used to handle sparsely populated data sources.
   In database parlance, missing tokens are sometimes called 
   null tokens.  Since null is a Java keyword, we use the term "nil".
-The PN <a href="../../domains/pn/demo/RemoveNilTokens/RemoveNilTokens.xml">Remove Nil Tokens</a>
+The PN <a href="../../../ptolemy/domains/pn/demo/RemoveNilTokens/RemoveNilTokens.xml">Remove Nil Tokens</a>
 demo illustrates use of nil tokens.
 </ul>
 
