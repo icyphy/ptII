@@ -1779,7 +1779,7 @@ remote4build:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast -J-Xss100m)
+	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast JAVA_FLAGS=-J-Xss100m)
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) install JAR_FLAGS=-J-Xss100m)
