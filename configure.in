@@ -500,7 +500,9 @@ if test -f "$PTJAVA_DIR/bin/jar"; then
     "$PTJAVA_DIR/bin/jar" -cf jarTest.jar confTest.class
     if "$PTJAVA_DIR/bin/jar" -i jarTest.jar; then
         AC_MSG_RESULT([$PTJAVA_DIR/bin/jar -i worked])
-	JAR_INDEX='"$(JAR)" -i $@'
+	# JAR_INDEX now includes the JAR_FLAGS flag so that we can
+	# pass -J-Xss100m for linux
+	JAR_INDEX='"$(JAR)" $(JAR_FLAGS) -i $@'
     else
         AC_MSG_ERROR([$PTJAVA_DIR/bin/jar -i jarTest.jar failed,
     so we will not index the jar files])
@@ -2478,7 +2480,9 @@ else
     startdir=`pwd`
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" quickTimeTest.java ; then
+    # Use -classpath here because that is what we use when we compile
+    # In javac 1.4.2, -classpath seems to mean we ignore $CLASSPATH
+    if "$JAVAC" -classpath "$PTII" quickTimeTest.java ; then
        AC_MSG_RESULT(ok)
        PTQUICKTIME_DIR=quicktime
     else
