@@ -502,7 +502,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
 	cp "$(PTII)/ptolemy/util/package.html" \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util
-	egrep -v "CancelException|MessageHandler|XSLTUtilities" \
+	egrep -v "CancelException|ExecuteCommands|MessageHandler|StreamExec|XSLTUtilities" \
 		"$(PTII)/ptolemy/util/makefile" > \
 		$(PTTMPDIR)/$(PTDIST)/ptolemy/util/makefile
 
