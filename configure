@@ -2183,11 +2183,10 @@ echo "${ECHO_T}$PTJAVA_DIR/bin/jar -i worked" >&6
 	# pass -J-Xss100m for linux
 	JAR_INDEX='"$(JAR)" $(JAR_FLAGS) -i $@'
     else
-        { { echo "$as_me:$LINENO: error: $PTJAVA_DIR/bin/jar -i jarTest.jar failed,
+        { echo "$as_me:$LINENO: WARNING: $PTJAVA_DIR/bin/jar -i jarTest.jar failed,
     so we will not index the jar files" >&5
-echo "$as_me: error: $PTJAVA_DIR/bin/jar -i jarTest.jar failed,
+echo "$as_me: WARNING: $PTJAVA_DIR/bin/jar -i jarTest.jar failed,
     so we will not index the jar files" >&2;}
-   { (exit 1); exit 1; }; }
 	JAR_INDEX=""
     fi
 
