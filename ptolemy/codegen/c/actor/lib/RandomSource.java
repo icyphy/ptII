@@ -54,18 +54,6 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
         super(actor);
     }
 
-    /** Generate fire code.
-     * @return The generated code.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
-        _generateRandomNumber(code);
-        return code.toString();
-    }
-
     /** Generate the code for initializing the random number generator
      *  with the seed, if it has been given.  A seed of zero is interpreted
      *  to mean that no seed is specified.  In such cases, a seed based on
@@ -113,14 +101,4 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
         files.add("<time.h>");
         return files;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Generate code for producing a new random number.
-     *  @param code The code that to which we append the random number code.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    protected abstract void _generateRandomNumber(StringBuffer code)
-            throws IllegalActionException;
 }
