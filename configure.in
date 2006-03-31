@@ -504,7 +504,7 @@ if test -f "$PTJAVA_DIR/bin/jar"; then
 	# pass -J-Xss100m for linux
 	JAR_INDEX='"$(JAR)" $(JAR_FLAGS) -i $@'
     else
-        AC_MSG_ERROR([$PTJAVA_DIR/bin/jar -i jarTest.jar failed,
+        AC_MSG_WARN([$PTJAVA_DIR/bin/jar -i jarTest.jar failed,
     so we will not index the jar files])
 	JAR_INDEX=""
     fi
