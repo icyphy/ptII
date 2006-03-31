@@ -524,6 +524,11 @@ fixtmpdist:
 		"$(PTII)/doc/img/ptIIbanner3.gif" \
 		"$(PTII)/doc/img/prev.gif" \
 		$(PTTMPDIR)/$(PTDIST)/doc/img
+	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/doclets
+	cp -r "$(PTII)/doc/doclets/RatingTaglet.java" \
+		"$(PTII)/doc/doclets/PtDoclet.java" \
+		"$(PTII)/doc/doclets/makefile" \
+		$(PTTMPDIR)/$(PTDIST)/doc/doclets
 	# Create a file in the top level doc directory that points to
 	# the real docs
 	echo "<html>" > $(PTTMPDIR)/$(PTDIST)/doc/index.htm
