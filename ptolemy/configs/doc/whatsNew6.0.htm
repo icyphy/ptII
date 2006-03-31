@@ -243,7 +243,12 @@ location are checked.
 
 
 <li><a href="../../../doc/codeDoc/ptolemy/actor/gui/PtolemyPreferences.html">PtolemyPreferences</a>:
-A preference system for UI related preferences
+A preference system for UI related preferences, including:
+  <ul>
+     <li> preference to specify link bend radius
+     <li> preference to specify relation size
+     <li> preference to show parameters
+  <ul>
 
 <li><a href="../../../doc/codeDoc/ptolemy/actor/gui/WelcomeWindow.html">WelcomeWindow</a>,
 <a href="../../../doc/codeDoc/ptolemy/actor/gui/WelcomeWindowTableau.html">WelcomeWindowTableau</a>:
@@ -279,6 +284,29 @@ An alternative start up screen
  <a href="../../../doc/codeDoc/ptolemy/data/UnionToken.html">UnionToken</a>:
  Support for the Union type
 
+<li>  <a href="../../../doc/codeDoc/ptolemy/math/Precision.html">Precision</a>:
+   <ul>
+      <li> Provide support for unsigned FixPoint values
+      <li> Modify the way Precision is represented internally
+    (sign, bits, exponent offset)
+      <li> Provide 4 String representations of a given precision
+    (including ability to parse and recognize the appropriate
+     precision format)
+    <br>"3.2" (integer.fraction)
+    <br>"5/3" (length/integer)
+    <br>"2:-2" (vhdl)
+    <br>"5e-2" (length e exponent)
+   <ul> 
+   <a href="../../../doc/codeDoc/ptolemy/math/FixPoint.html">FixPoint</a>:
+   <ul> 
+     <li> Provide "lossless" arithmetic operators. These operators
+    will generate FixPoint results that "grow" if overflow occurs.
+     <li> Provide quantized versions of these operators. Quantization
+    is a parameter for each operator.
+  <ul>
+  Fixpoint and Precision work by Mike Wirthlin (Brigham Young University)
+
+
 <li><a href="../../../doc/codeDoc/ptolemy/domains/csp/kernel/AbstractBranchController.html">AbstractBranchController</a>,
  <a href="../../../doc/codeDoc/ptolemy/domains/csp/kernel/BranchActor.html">BranchActor</a>,
  <a href="../../../doc/codeDocomains/csp/kernel/ConditionalBranchActor.html">ConditionalBranchActor</a>,
@@ -313,17 +341,35 @@ An alternative start up screen
  <a href="../../../doc/codeDoc/ptolemy/moml/filter/NamedObjClassesSeen.html">NamedObjClassesSeen</a>:
  Support for actor and model documentation 
 
-<li>Only in gen-6.0/tmp/ptII6.0.devel/ptolemy/vergil/actor/LinkManhattanConnector.html">LinkManhattanConnector</a>,
+<li><a href="../../doc/codeDoc/ptolemy/vergil/actor/LinkManhattanConnector.html">LinkManhattanConnector</a>,
  <a href="../../../doc/codeDoc/ptolemy/vergil/actor/PortConnectSite.html">PortConnectSite</a>,
  <a href="../../../doc/codeDoc/ptolemy/vergil/actor/PortTerminal.html">PortTerminal</a>,
  <a href="../../../doc/codeDoc/ptolemy/vergil/icon/ActorNameIcon.html">ActorNameIcon</a>,
  <a href="../../../doc/codeDoc/ptolemy/vergil/icon/NameIcon.html">NameIcon</a>,
  <a href="../../../doc/codeDoc/ptolemy/vergil/kernel/attributes/VisibleAttribute.html">VisibleAttribute</a>,
  <a href="../../../doc/codeDoc/ptolemy/vergil/toolbox/RotateOrFlipPorts.html">RotateOrFlipPorts</a>:
-  Vergil features
+  Vergil features such as controllable port orientation.
   
 <li><a href="../../../doc/codeDoc/ptolemy/vergil/VergilInitializer.html">VergilInitializer</a>:
   A class that may be called during startup.
+
+<li> New deadlock detection mechanism in process domains supporting
+multi-threaded actors
+<li> SDFDirector has a period parameter now, making it timed.
+and a synchronizeToRealTime parameters.
+<li> SDF scheduler runs faster
+<li> Workspace has wait(object, timeout) method, and DE uses it (some deadlocks
+   prevented when using synchronizeToRealTime).
+<li> Miscellaneous user interface enhancements:
+   <ul>
+      <li> Decorative attributes properly go to background or foreground
+      <li>Display name for parameters (need not match the name)
+      <li>Multiport connections show ordering
+      <li>Bus relations displayed better
+      <li>Custom Icons can have a "dashArray" parameter, which  
+          creates dashed lines
+   </ul>
+
 
 
 <li> <i>Java compatibility</i>:
@@ -331,10 +377,24 @@ An alternative start up screen
 Ptolemy II can be compiled under Java 1.5.0_06 and Java 1.4.2_11.
 Java  1.5.0_06 is preferred though.
 
-<h2>
-<a name="bugs"> Bug fixes </a>
-</h2>
+</ul>
+
+<h2><a name="bugs">Bug fixes</a></h2>
 <ul>
+<li> Fixed memory leaks in MoMLParser
+<li> Create hierarchy didn't work with classes
+<li> Undo didn't always work with classes
+<li> Couldn't drop a director (or anything containing a SharedParameter)
+     into a class that already had an instance.
+<li> Relation groups didn't always work with hierarchy.
+<li> Paste of hierarchical models would mess up locations on the inside.
+
+<li> The highlighting of classes and of inherited elements is now opaque.
+They used to be translucent so that the highlights could compose even
+though they overlapped.  However, if you print a model to EPS or PDF,
+the presence of translucent elements forces the rendition to be
+rasterized. This results is a major loss of quality...
+<li> Paste of relations not properly offset.
 
 </ul>
 
