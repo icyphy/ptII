@@ -228,7 +228,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  </pre>
      *  @param string The string to escape.
      *  @return A new string with special characters replaced.
-     *  @see ptolemy.util.StringUtilities.escapeForXML(String)
+     *  @see ptolemy.util.StringUtilities#escapeForXML(String)
      */
     public /*static*/ String escapeForTargetLanguage(String string) {
         string = StringUtilities.substitute(string, "\\{", "\\\\{");
