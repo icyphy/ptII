@@ -881,7 +881,7 @@ Optional Packages:
   --with-lejos=DIR       use Java lejos from DIR,
                           defaults to \$PTII/vendors/lejos/lejosBeta3
   --with-javacc=DIR       use JavaCC.zip from DIR,
-                           defaults to \$PTII/vendors/sun/javacc-3.2
+                           defaults to \$PTII/vendors/sun/javacc-4.0
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
                            used for running the test scripts
   --with-jini=DIR       use Jini jars from DIR,
@@ -6075,7 +6075,7 @@ if test ! -d "$PTII/ptolemy/data/expr"; then
     so we need not find JavaCC." >&5
 echo "${ECHO_T}$PTII/ptolemy/data/expr is not present,
     so we need not find JavaCC." >&6
-    JAVACC_DIR=$PTII/vendors/sun/javacc-3.2
+    JAVACC_DIR=$PTII/vendors/sun/javacc-4.0
     JAVACC=javacc
     JJTREE=jjtree
 else
@@ -6087,7 +6087,7 @@ if test "${with_javacc+set}" = set; then
   withval="$with_javacc"
   JAVACC_DIR=$withval
 else
-  JAVACC_DIR=$PTII/vendors/sun/javacc-3.2
+  JAVACC_DIR=$PTII/vendors/sun/javacc-4.0
 fi;
 
     if test "`uname -s`" = "CYGWIN_NT-4.0" -o \
@@ -6193,7 +6193,7 @@ echo "$as_me: WARNING: Failed to find javacc in '$JAVACC_DIR/bin'" >&2;};
     Note that the zip file that gets downloaded is actually an installer
     that must be run to install the JavaCC.zip file that contains the classes.
 
-    Configure looks for JavaCC in $PTII/vendors/sun/javacc-3.2,
+    Configure looks for JavaCC in $PTII/vendors/sun/javacc-4.0
     so either install JavaCC in that location or use the --with-javacc= flag
     and then rerun configure.'" >&5
 echo "$as_me: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
@@ -6205,7 +6205,7 @@ echo "$as_me: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
     Note that the zip file that gets downloaded is actually an installer
     that must be run to install the JavaCC.zip file that contains the classes.
 
-    Configure looks for JavaCC in $PTII/vendors/sun/javacc-3.2,
+    Configure looks for JavaCC in $PTII/vendors/sun/javacc-4.0
     so either install JavaCC in that location or use the --with-javacc= flag
     and then rerun configure.'" >&2;}
 	JJTREE=touch
