@@ -98,7 +98,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.5, 35.0]">
         </property>
     </property>
-    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/domains/ct/demo/CartPendulum/cartpendulum.pdf">
+    <property name="_documentation" class="ptolemy.data.expr.FileParameter" value="ptolemy/domains/ct/demo/CartPendulum/cartpendulum.pdf">
     </property>
     <property name="Documentation" class="ptolemy.vergil.kernel.attributes.DocumentationAttribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 60.0]">
