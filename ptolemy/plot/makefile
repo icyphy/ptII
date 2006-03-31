@@ -327,6 +327,7 @@ PTTMPME= $(PTTMPDIR)/$(PTDIST)/$(ME)
 fixtmpdist:
 	@echo "Fixing $(PTTMPDIR)/$(PTDIST)"
 	echo "all makefiles sources install docs depend checkjunk sccsinfo sccsclean test extraclean clean: mk/ptII.mk" > $(PTTMPDIR)/$(PTDIST)/makefile
+	echo '	cd com/microstar/xml/; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
 	echo '	cd ptolemy/gui; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
 	echo '	cd ptolemy/util; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
 	echo '	cd ptolemy/plot; make $$@' >>$(PTTMPDIR)/$(PTDIST)/makefile
