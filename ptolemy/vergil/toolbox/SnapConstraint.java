@@ -46,6 +46,7 @@ public class SnapConstraint implements PointConstraint {
      */
     public SnapConstraint() {
         super();
+        _resolution = _defaultResolution;
     }
 
     ///////////////////////////////////////////////////////////////////
