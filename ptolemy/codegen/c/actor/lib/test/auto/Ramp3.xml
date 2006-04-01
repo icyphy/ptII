@@ -32,7 +32,7 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{1, 9}, {2, 11}, {3, 13}, {4, 15}, {5, 17}, {6, 19}, {7, 21}, {8, 23}, {9, 25}, {10, 27}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 9}}, {{2, 11}}, {{3, 13}}, {{4, 15}}, {{5, 17}}, {{6, 19}}, {{7, 21}}, {{8, 23}}, {{9, 25}}, {{10, 27}}}">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
