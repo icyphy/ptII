@@ -91,6 +91,15 @@ import ptolemy.kernel.util.NameDuplicationException;
  of the Stop actor to stop the test upon successfully matching the
  test data.
 
+ <p>This actor failed to distinguish the case where the input is a
+ single port reading arrays and the case where the input is a
+ multiport reading data from each channel.  If its correctValues is
+ type array of arrays, it assumes that its input port is a multiport
+ that has width of the size of the inner arrays. However, if it
+ receives array token as input (single port), it also produce s array
+ of arrays as its correctValues. It throws exception about the
+ expected width of the input port when training mode is turned off.
+
  @see NonStrictTest
  @author Edward A. Lee, Christopher Hylands, Jim Armstrong
  @version $Id$
@@ -193,13 +202,12 @@ public class Test extends NonStrictTest {
 
         Token referenceToken = ((ArrayToken) (correctValues.getToken()))
                 .getElement(_numberOfInputTokensSeen);
-        Token[] reference = null;
+        Token[] reference;
 
         if ((width == 1) && !(referenceToken instanceof ArrayToken)) {
             reference = new Token[1];
             reference[0] = referenceToken;
-        }
-        if ((width > 1) && (referenceToken instanceof ArrayToken)) {
+        } else {
             try {
                 reference = ((ArrayToken) referenceToken).arrayValue();
             } catch (ClassCastException ex) {
@@ -221,21 +229,22 @@ public class Test extends NonStrictTest {
             }
         }
 
-        if ((width == 1) && (referenceToken instanceof ArrayToken)) {
-            if (!input.hasToken(0)) {
+        for (int i = 0; i < width; i++) {
+            if (!input.hasToken(i)) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _numberOfInputTokensSeen
-                                + ".\n" + "Empty input on channel " + 0);
+                                + ".\n" + "Empty input on channel " + i);
             }
-            ArrayToken token = (ArrayToken)input.get(0);
+
+            Token token = input.get(i);
             boolean isClose;
 
             try {
-                isClose = token.isCloseTo(referenceToken, _tolerance)
+                isClose = token.isCloseTo(reference[i], _tolerance)
                         .booleanValue()
                         || token.isNil()
-                        && referenceToken.isNil()
-                        || _isCloseToIfNilArrayElement(token, referenceToken,
+                        && reference[i].isNil()
+                        || _isCloseToIfNilArrayElement(token, reference[i],
                                 _tolerance);
             } catch (IllegalActionException ex) {
                 // Chain the exceptions together so we know which test
@@ -243,52 +252,14 @@ public class Test extends NonStrictTest {
                 throw new IllegalActionException(this, ex,
                         "Test fails in iteration " + _numberOfInputTokensSeen
                                 + ".\n" + "Value was: " + token
-                                + ". Should have been: " + referenceToken);
+                                + ". Should have been: " + reference[i]);
             }
 
             if (!isClose) {
                 throw new IllegalActionException(this,
                         "Test fails in iteration " + _numberOfInputTokensSeen
                                 + ".\n" + "Value was: " + token
-                                + ". Should have been: " + referenceToken);
-            }
-
-        } else {
-            for (int i = 0; i < width; i++) {
-                if (!input.hasToken(i)) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration "
-                            + _numberOfInputTokensSeen
-                            + ".\n" + "Empty input on channel " + i);
-                }
-
-                Token token = input.get(i);
-                boolean isClose;
-
-                try {
-                    isClose = token.isCloseTo(reference[i], _tolerance)
-                        .booleanValue()
-                        || token.isNil()
-                        && reference[i].isNil()
-                        || _isCloseToIfNilArrayElement(token, reference[i],
-                                _tolerance);
-                } catch (IllegalActionException ex) {
-                    // Chain the exceptions together so we know which test
-                    // actor failed if there was more than one...
-                    throw new IllegalActionException(this, ex,
-                            "Test fails in iteration "
-                            + _numberOfInputTokensSeen
-                            + ".\n" + "Value was: " + token
-                            + ". Should have been: " + reference[i]);
-                }
-
-                if (!isClose) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration "
-                            + _numberOfInputTokensSeen
-                            + ".\n" + "Value was: " + token
-                            + ". Should have been: " + reference[i]);
-                }
+                                + ". Should have been: " + reference[i]);
             }
         }
 
