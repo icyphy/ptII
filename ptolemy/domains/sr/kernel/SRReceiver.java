@@ -27,7 +27,7 @@
  */
 package ptolemy.domains.sr.kernel;
 
-import ptolemy.domains.fp.kernel.FPReceiver;
+import ptolemy.actor.sched.FixedPointReceiver;
 
 //////////////////////////////////////////////////////////////////////////
 //// SRReceiver
@@ -35,7 +35,7 @@ import ptolemy.domains.fp.kernel.FPReceiver;
 /**
 
  The receiver for the Synchronous Reactive (SR) domain.  This
- receiver extends the {@link ptolemy.domains.fp.kernel.FPReceiver} class.
+ receiver extends the {@link ptolemy.domains.fp.kernel.FixedPointReceiver} class.
 
  @author Paul Whitaker, contributor: Christopher Hylands, Haiyang Zheng
  @version $Id$
@@ -44,7 +44,7 @@ import ptolemy.domains.fp.kernel.FPReceiver;
  @Pt.AcceptedRating Green (pwhitake)
  @see ptolemy.domains.sr.kernel.SRDirector
  */
-public class SRReceiver extends FPReceiver {
+public class SRReceiver extends FixedPointReceiver {
     /** Construct an SRReceiver with unknown state and the given director.
      *  @param director The director of this receiver.
      */

@@ -26,7 +26,7 @@
  */
 package ptolemy.domains.sr.kernel;
 
-import ptolemy.domains.fp.kernel.FPDirector;
+import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  A director for the Synchronous Reactive (SR) model of computation. This
- director extends the {@link ptolemy.domains.fp.kernel.FPDirector} class.
+ director extends the {@link ptolemy.domains.fp.kernel.FixedPointDirector} class.
 
  @author Paul Whitaker, Contributor: Ivan Jeukens, Haiyang Zheng
  @version $Id$
@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (pwhitake)
  @Pt.AcceptedRating Green (pwhitake)
  */
-public class SRDirector extends FPDirector {
+public class SRDirector extends FixedPointDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.

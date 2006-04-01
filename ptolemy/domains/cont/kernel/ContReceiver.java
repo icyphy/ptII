@@ -30,9 +30,9 @@ package ptolemy.domains.cont.kernel;
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.StateReceiver;
+import ptolemy.actor.sched.IllegalOutputException;
+import ptolemy.actor.sched.UnknownTokenException;
 import ptolemy.data.Token;
-import ptolemy.domains.fp.kernel.IllegalOutputException;
-import ptolemy.domains.fp.kernel.UnknownTokenException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 

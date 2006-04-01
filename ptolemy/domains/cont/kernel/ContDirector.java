@@ -37,8 +37,8 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
+import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.sched.Schedule;
-import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -117,7 +117,7 @@ import ptolemy.kernel.util.Settable;
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
-public class ContDirector extends StaticSchedulingDirector implements
+public class ContDirector extends FixedPointDirector implements
         TimedDirector {
 
     /** Construct a director in the given container with the given name.
