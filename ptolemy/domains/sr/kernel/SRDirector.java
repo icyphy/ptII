@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  A director for the Synchronous Reactive (SR) model of computation. This
- director extends the {@link ptolemy.domains.fp.kernel.FixedPointDirector} class.
+ director extends the {@link ptolemy.actor.sched.FixedPointDirector} class.
 
  @author Paul Whitaker, Contributor: Ivan Jeukens, Haiyang Zheng
  @version $Id$
