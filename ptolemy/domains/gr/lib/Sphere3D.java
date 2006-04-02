@@ -107,6 +107,7 @@ public class Sphere3D extends GRShadedShape {
      *  sphere to the new radius. Note that this will take effect
      *  only if the <i>allowRuntimeChanges</i> parameter has value true.
      *  @param attribute The attribute to change.
+     *  @exception IllegalActionException If thrown by the parent class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

@@ -96,13 +96,13 @@ public class Rotate3D extends GRTransform {
      */
     public TypedIOPort angle;
 
-    /** The initial angle of rotation
+    /** The initial angle of rotation.
      *  This parameter should contain a DoubleToken.
      *  The default value of this parameter is 0.0.
      */
     public Parameter initialAngle;
 
-    /** The direction of the axis of rotation
+    /** The direction of the axis of rotation.
      *  The parameter should contain a DoubleMatrixToken
      *  The default value of this parameter is [0.0, 1.0, 0.0]
      */
@@ -174,7 +174,7 @@ public class Rotate3D extends GRTransform {
         return _topTranslate;
     }
 
-    /** Setup the initial rotation
+    /** Setup the initial rotation.
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */

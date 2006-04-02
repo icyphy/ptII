@@ -39,11 +39,12 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(QTJAVA_ZIP)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(QTJAVA_ZIP)
 
 # Used to build jar files
 PTPACKAGE = 	quicktime

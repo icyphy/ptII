@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  <i>scaleFactor</i> parameter. Non-uniform scaling involves
  preferential scaling of the input geometry in a specified Cartesian
  axis.  Non-uniform scaling is done through modification of the
- <i>xScale<i>, <i>yScale<i/>, and <i>zScale<i/> parameters.
+ <i>xScale</i>, <i>yScale</i>, and <i>zScale<i/> parameters.
 
  @author C. Fong
  @version $Id$
@@ -119,7 +119,7 @@ public class Scale3D extends GRTransform {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Setup the transformation needed for scaling
+    /** Setup the transformation needed for scaling.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -135,18 +135,18 @@ public class Scale3D extends GRTransform {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Add a scene graph child node to this actor
+    /** Add a scene graph child node to this actor.
      *
-     *  @param node The child node to be attached
+     *  @param node The child node to be attached.
      */
     protected void _addChild(Node node) {
         _transformNode.addChild(node);
     }
 
     /** Return the encapsulated Java3D node of this 3D actor. The
-     *  encapsulated node for this actor TransformGroup
+     *  encapsulated node for this actor is a TransformGroup.
      *
-     *  @return the Java3D TransformGroup
+     *  @return the Java3D TransformGroup.
      */
     protected Node _getNodeObject() {
         return _transformNode;
@@ -154,6 +154,8 @@ public class Scale3D extends GRTransform {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The encapsulated Java 3D node of this actor. */
     protected TransformGroup _transformNode;
 
     ///////////////////////////////////////////////////////////////////

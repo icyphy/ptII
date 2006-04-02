@@ -106,7 +106,7 @@ public class Torus3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the shape and appearance of the encapsulated torus
+    /** Create the shape and appearance of the encapsulated torus.
      *  @exception IllegalActionException If the value of some parameters can't
      *  be obtained.
      */

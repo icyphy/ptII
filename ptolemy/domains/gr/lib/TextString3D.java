@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  An actor that encapsulates 3D text shapes in the GR domain.
  The <i>text</i> port/parameter gives the text to be displayed.
- The <i>fontSize<i> parameter gives the size of the font.
+ The <i>fontSize</i> parameter gives the size of the font.
  The <i>extrusionDepth</i> parameter specifies how deep the 3-D
  rendering of the text should be.
  The <i>alignment</i> parameter gives the alignment of the text
@@ -158,6 +158,7 @@ public class TextString3D extends GRShadedShape {
     /** If the attribute is <i>text</i>, then update the displayed
      *  text string.
      *  @param attribute The attribute.
+     *  @exception IllegalActionException If thrown by the parent class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -209,6 +210,7 @@ public class TextString3D extends GRShadedShape {
      *  from the value given at the port, if any.
      *  @return False if the scene graph has already been
      *   initialized.
+     *  @exception IllegalActionException If thrown by the parent class.
      */
     public boolean prefire() throws IllegalActionException {
         // NOTE: It won't do to do this in fire() because

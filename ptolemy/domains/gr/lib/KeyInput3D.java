@@ -173,8 +173,6 @@ public class KeyInput3D extends GRActor3D {
         }
     }
 
-    protected BranchGroup _userInputNode;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private React _react;

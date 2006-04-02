@@ -227,6 +227,7 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     }
 
     /** Return the Diva canvas used by this view screen.
+     *  @return The Diva canvas.
      */
     public JCanvas getCanvas() {
         return _canvas;
@@ -258,7 +259,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     }
 
     /** Return the figure currently selected in the viewscreen.
-     * @return The figure currently selected in the viewscreen.
+     *  @return The figure currently selected in the viewscreen.
+     *  @see #setSelectedFigure(Figure figure)
      */
     public Figure getSelectedFigure() {
         return _selectedFigure;
@@ -328,14 +330,15 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
     /** Update the state of this object to reflect which figure is
      *  currently selected in the viewscreen.
-     * @param figure The figure currently selected.
+     *  @param figure The figure currently selected.
+     *  @see #getSelectedFigure()
      */
     public void setSelectedFigure(Figure figure) {
         _selectedFigure = figure;
         System.out.println("setSelectedFigure Called");
     }
 
-    /** Wrap up an execution
+    /** Wrap up an execution.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -345,8 +348,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**  Add a figure to the figure layer and set its interactor.
-     *
+    /** Add a figure to the figure layer and set its interactor.
+     *  @param figure The figure that is to be added.
      *  @exception IllegalActionException Always thrown for this base class.
      */
     protected void _addChild(Figure figure) throws IllegalActionException {
@@ -358,8 +361,10 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     }
 
     /** Create the view screen component.  If place() was called with
-     * a container, then use the container.  Otherwise, create a new
-     * frame and use that.
+     *  a container, then use the container.  Otherwise, create a new
+     *  frame and use that.
+     *  @exception IllegalActionException If there is a problem reading
+     *  a parameter.
      */
     protected void _createViewScreen2D() throws IllegalActionException {
         // Default size.
@@ -463,22 +468,38 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
         _container.validate();
     }
 
+    /** Return the horizontal pixels by reading the horizontalPixels parameter.
+     *  @return the horizontal pixels.   
+     */
     protected int _getHorizontalPixels() throws IllegalActionException {
         return ((IntToken) horizontalPixels.getToken()).intValue();
     }
 
+    /** Return the vertical pixels by reading the verticalPixels parameter. 
+     *  @return the vertical pixels.
+     */
     protected int _getVerticalPixels() throws IllegalActionException {
         return ((IntToken) verticalPixels.getToken()).intValue();
     }
 
+
+    /** Return the value of the rotatable parameter.
+     *  @return The value of the rotatable parameter.
+     */
     protected boolean _isRotatable() throws IllegalActionException {
         return ((BooleanToken) rotatable.getToken()).booleanValue();
     }
 
+    /** Return the value of the scalable parameter
+     *  @return The value of the scalable parameter.
+     */
     protected boolean _isScalable() throws IllegalActionException {
         return ((BooleanToken) scalable.getToken()).booleanValue();
     }
 
+    /** Return the value of the translatable parameter
+     *  @return The value of the tranlatable parameter.
+     */
     protected boolean _isTranslatable() throws IllegalActionException {
         return ((BooleanToken) translatable.getToken()).booleanValue();
     }
@@ -496,7 +517,11 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private inner classes               ////
+    ////                       inner classes                       ////
+
+         
+    /** Listen for Layer, LayerMotion and Key events.
+     */
     public class ViewScreen2DListener implements LayerListener,
             LayerMotionListener, KeyListener {
         ///////////////////////////////////////////////////////////////////

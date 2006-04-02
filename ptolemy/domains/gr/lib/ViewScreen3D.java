@@ -204,6 +204,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
 
     /** Add the node argument as a child to the encapsulated Java3D node
      *  in this actor.
+     *  @param node The node to be added.
      */
     public void addChild(Node node) {
         _addChild(node);
@@ -238,12 +239,14 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     }
 
     /** Return the root Java 3D rendering group used by this view screen.
+     *  @return the root Java 3D rendering group used by this view screen.
      */
     public BranchGroup getBranchGroup() {
         return _branchRoot;
     }
 
     /** Return the Java 3D canvas used by this view screen.
+     *  @return the Java 3D canvas used by this view screen.
      */
     public Canvas3D getCanvas() {
         return _canvas;
@@ -422,7 +425,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         return !_stopRequested;
     }
 
-    /** Wrapup an execution
+    /** Wrapup an execution.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -525,12 +528,15 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     }
 
     /** Get the number of horizontal pixels in the rendered image.
+     *  @return the number of horizontal pixels in the rendered image.   
+     *  @exception IllegalActionException If thrown while reading the
+     *  <i>horizontalPixels</i> parameter.
      */
     protected int _getHorizontalPixels() throws IllegalActionException {
         return ((IntToken) horizontalResolution.getToken()).intValue();
     }
 
-    /** The ViewScreen does not have an associated Java3D node
+    /** The ViewScreen does not have an associated Java3D node.
      *
      *  @return null
      */
@@ -539,12 +545,15 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
     }
 
     /** Get the number of vertical pixels in the rendered image.
+     *  @return the number of vertical pixels in the rendered image.   
+     *  @exception IllegalActionException If thrown while reading the
+     *  <i>verticalPixels</i> parameter.
      */
     protected int _getVerticalPixels() throws IllegalActionException {
         return ((IntToken) verticalResolution.getToken()).intValue();
     }
 
-    /** Makes the background for the viewScreen
+    /** Makes the background for the viewScreen.
      *
      *  @return javax.media.j3d.Background
      *  @exception IllegalActionException If unable to read the color
@@ -555,6 +564,11 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         return new Background(color);
     }
 
+    /** Connect each of the channels of the <i>sceneGraphIn</i> port
+     *  to the scene.
+     *  @exception IllegalActionException If thrown while reading from a
+     *  channel.
+     */ 
     protected void _makeNodeConnection() throws IllegalActionException {
         if (_debugging) {
             _debug("Called _makeNodeConnection()");
@@ -598,7 +612,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         _isSceneGraphInitialized = true;
     }
 
-    /** Start the internal Java3D renderer
+    /** Start the internal Java3D renderer.
      */
     protected void _startRenderer() {
         if (_iterationSynchronized) {
@@ -606,7 +620,7 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         }
     }
 
-    /** Stop the internal Java3D renderer
+    /** Stop the internal Java3D renderer.
      */
     protected void _stopRenderer() {
         if (_iterationSynchronized) {
@@ -684,35 +698,40 @@ public class ViewScreen3D extends GRActor3D implements Placeable,
         ViewScreen3D _viewContainer;
     }
 
+    /** The BoundingSphere. */
     protected BoundingSphere _bounds;
 
-    // The main connection branch that connects to the universe
+    /** The main connection branch that connects to the universe. */  
     protected BranchGroup _branchRoot;
 
-    // The connection branch that incoming nodes connect to
+    /** The connection branch to which incoming nodes connect. */
     protected BranchGroup _root;
 
-    // The Java3D canvas component.
+    /** The Java3D canvas component. */
     protected Canvas3D _canvas;
 
-    // The container set in the place() method, or the content pane of the
-    // created frame if place was not called.
+    /** The container set in the place() method, or the content pane of the
+     * created frame if place was not called. 
+     */
     protected Container _container;
 
-    // The frame containing our canvas, if we created it.
+    /** The frame containing our canvas, if we created it. */
     protected JFrame _frame;
 
-    // True for manual rendering, false for default rendering.
-    // Steve doesn't think this is entirely necessary.
+    /** True for manual rendering, false for default rendering.
+     */  
     protected boolean _iterationSynchronized = false;
 
+    /** The last transform. */
     protected Transform3D _lastTransform = new Transform3D();
 
+    /** The mouse rotate view. */
     protected MouseRotateView _mouseRotate;
 
-    // The Java3D universe, displayed inside the canvas.
+    /** The Java3D universe, displayed inside the canvas. */
     protected SimpleUniverse _simpleUniverse;
 
+    /** The user tranformation. */
     protected TransformGroup _userTransformation = new TransformGroup();
 
     //  protected int _counter;

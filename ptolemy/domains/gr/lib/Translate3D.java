@@ -220,7 +220,7 @@ public class Translate3D extends GRTransform {
     ////                         protected methods                 ////
 
     /** Connect other Java3D nodes as children of the encapsulated
-     *  node in this actor
+     *  node in this actor.
      *
      *  @param node The child Java3D node.
      */
@@ -229,7 +229,7 @@ public class Translate3D extends GRTransform {
     }
 
     /** Return the encapsulated Java3D node of this 3D actor. The
-     *  encapsulated node for this actor TransformGroup
+     *  encapsulated node for this actor TransformGroup.
      *
      *  @return the Java3D TransformGroup
      */
@@ -239,6 +239,8 @@ public class Translate3D extends GRTransform {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+   
+    /** The encapsulated Java 3D node of this actor. */
     protected TransformGroup _transformNode;
 
     ///////////////////////////////////////////////////////////////////
