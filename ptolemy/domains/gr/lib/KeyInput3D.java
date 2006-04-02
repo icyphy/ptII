@@ -138,7 +138,7 @@ public class KeyInput3D extends GRActor3D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The BranchGroup to which is listened for key presses.
+    /** The BranchGroup to which is listened for key presses. */
     protected BranchGroup _userInputNode;
 
  
