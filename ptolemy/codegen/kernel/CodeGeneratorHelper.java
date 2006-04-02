@@ -130,7 +130,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * Find out each output port that needs to be converted for the
      * actor associated with this helper. Then, mark these ports along
      * with the sink ports (connection). 
-     * @exception Not thrown in this base class.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     public void analyzeTypeConvert() throws IllegalActionException {
         // reset the previous type convert info.
@@ -333,6 +333,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /**
      * Generate the type conversion fire code. This method is called by the 
      * Director to append necessary fire code to handle type conversion.
+     * @param forComposite True if we are generating code for a composite.
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */

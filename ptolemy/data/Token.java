@@ -560,9 +560,10 @@ public class Token implements Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
     /** Return a string with an error message that states that 
-     *  the token cannot be created with a string that is null or
-     *  "nil"
+     *  the token cannot be created with a string that is null
+     *  or the value of the init parameter.
      *  @param type The type we are trying to create.
      *  @param init The initialization string.
      *  @return A string error message.

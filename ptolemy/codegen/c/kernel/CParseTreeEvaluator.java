@@ -1031,6 +1031,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     /** Apply a unary operator to the single child of the specified node.
      *  @param node The specified node.
+     *  @exception IllegalActinoException If the operator is not supported.
      */
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
@@ -1137,6 +1138,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  visiting each one of them; this will cause their token
      *  value to be determined.
      *  @param node The node whose children are evaluated.
+     *  @return The token values of the nodes.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token[] _evaluateAllChildren(ASTPtRootNode node)
@@ -1186,6 +1188,9 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     /** Evaluate the child with the given index of the given node.
      *  This is usually called while visiting the given node.
+     *  @param node The node that caused this method to be called.
+     *  @param i The index of the node to evaluate.
+     *  @return the resulting token.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _evaluateChild(ASTPtRootNode node, int i)
@@ -1244,6 +1249,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param functionName The function name.
      *  @param argTypes An array of argument types.
      *  @param argValues An array of argument values.
+     *  @return The token value function call.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
     protected ptolemy.data.Token _functionCall(String functionName,
@@ -1271,6 +1277,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @param argTypes An array of argument types.
      *  @param argValues An array of argument values.
      *  @exception IllegalActionException If an evaluation error occurs.
+     *  @return The token value method call.
      */
     protected ptolemy.data.Token _methodCall(String methodName,
             Type[] argTypes, Object[] argValues) throws IllegalActionException {
@@ -1293,6 +1300,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
+     *  @param String The message.
      */
     protected void _trace(String string) {
         if (_trace != null) {
@@ -1308,6 +1316,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     /** Add a record to the current trace corresponding to the start
      *  of the evaluation of the given node.  If the trace is null, then
      *  do nothing.
+     *  @param node The node to be evaluated.
      */
     protected void _traceEnter(ASTPtRootNode node) {
         if (_trace != null) {
@@ -1323,6 +1332,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     /** Add a record to the current trace corresponding to the completion
      *  of the evaluation of the given node.  If the trace is null, then
      *  do nothing.
+     *  @param node The node that was evaluated.
      */
     protected void _traceLeave(ASTPtRootNode node) {
         if (_trace != null) {
@@ -1338,10 +1348,15 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    // Temporary storage for the result of evaluating a child node.
-    // This is protected so that derived classes can access it.
+    ////                         protectecd variables              ////
+
+    /** Temporary storage for the result of evaluating a child node.
+     *  This is protected so that derived classes can access it.
+     */   
     protected ptolemy.data.Token _evaluatedChildToken = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private ParserScope _scope = null;
 

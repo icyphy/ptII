@@ -49,7 +49,7 @@ import ptolemy.util.StringUtilities;
 //// CodeGeneratorUtilities
 
 /**
- Utilities that are useful for code generators
+ Utilities that are useful for code generators.
  @author Christopher Hylands
  @version $Id$
  @since Ptolemy II 6.0
@@ -59,8 +59,12 @@ import ptolemy.util.StringUtilities;
 public class CodeGeneratorUtilities {
 
     /** Given a NamedObj, generate a HashMap containing String key/value
-     *  pairs where each key is a Parameter contained in the namedObj
-     *  argument, and each value is the value of the Parameter.
+     *  pairs where each key is a Variable contained in the namedObj
+     *  argument, and each value is the value of the Variable.
+     *  @param namedObj The NamedObj that contains Variables
+     *  @return The HashMap consisting of key/value Strings.
+     *  @param IllegalActionException If there is a problem getting the
+     *  Variables.   
      */
     public static HashMap newMap(NamedObj namedObj)
             throws IllegalActionException {
@@ -162,6 +166,9 @@ public class CodeGeneratorUtilities {
      *  @param namedObj The NamedObj that contains Parameters to
      *  be searched for in inputFileName.
      *  @return The contents of inputFileName after doing the substitutions
+     *  @exception FileNotFoundException If the input file cannot be found.
+     *  @exception IOException If there is a problem creating the
+     *  substitution map.   
      */
     public static String substitute(String inputFileName, NamedObj namedObj)
             throws FileNotFoundException, IOException {
