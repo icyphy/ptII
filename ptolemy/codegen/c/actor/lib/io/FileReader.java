@@ -81,7 +81,7 @@ public class FileReader extends CCodeGeneratorHelper {
      *  @param fileOrURL The file name or URL.
      *  @return a pathname suitable for use with C: no backslashes,
      *  "C:/foo/bar", not "/C:/foo/bar"
-     *  @exception If the file cannot be found.
+     *  @exception IllegalActionException If the file cannot be found.
      */
     public static String getFileName(FileParameter fileOrURL)
             throws IllegalActionException {
