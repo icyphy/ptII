@@ -234,7 +234,7 @@ public class ClassChanges implements MoMLFilter {
 
         // Use FPScheduler instead of SROptimizedScheduler
         _classChanges.put("ptolemy.domains.sr.kernel.SROptimizedScheduler",
-                "ptolemy.domains.fp.kernel.FPScheduler");
+                "ptolemy.actor.sched.FixedPointScheduler");
 
         // Look for Kepler's NamedObjId, and if we don't find it, then
         // add it to the filter.  This makes it much easier to open
