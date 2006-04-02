@@ -53,13 +53,11 @@ JSRCS = \
 	FixedPointDirector.java \
 	FixedPointReceiver.java \
 	FixedPointScheduler.java \
-	IllegalOutputException.java \
 	NotSchedulableException.java \
 	Schedule.java \
 	ScheduleElement.java \
 	Scheduler.java \
-	StaticSchedulingDirector.java \
-	UnknownTokenException.java
+	StaticSchedulingDirector.java 
 
 EXTRA_SRCS =	$(JSRCS)
 

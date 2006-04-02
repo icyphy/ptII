@@ -78,7 +78,7 @@ test FixedPointReceiver-1.1 {Check put and hasToken} {
     set director [java::new ptolemy.actor.sched.FixedPointDirector]
     set r1 [java::new ptolemy.actor.sched.FixedPointReceiver $director]
     list [_testReceiver $r1]
-} {{{ptolemy.actor.sched.UnknownTokenException: hasToken(int) called on FixedPointReceiver with unknown status.} 1 0}}
+} {{{ptolemy.kernel.util.InvalidStateException: hasToken(int) called on FixedPointReceiver with unknown status.} 1 0}}
 
 ######################################################################
 ####
@@ -99,7 +99,7 @@ test FixedPointReceiver-2.1 {Check put and get and hasToken} {
     catch {$receiver hasToken 1} result1_1
 
     list $result1 $result1_1
-} {{ptolemy.actor.sched.UnknownTokenException: hasToken() called on FixedPointReceiver with unknown status.} {ptolemy.actor.sched.UnknownTokenException: hasToken(int) called on FixedPointReceiver with unknown status.}}
+} {{ptolemy.kernel.util.InvalidStateException: hasToken() called on FixedPointReceiver with unknown status.} {ptolemy.kernel.util.InvalidStateException: hasToken(int) called on FixedPointReceiver with unknown status.}}
 
 # NOTE: Continues from previous test.
 test FixedPointReceiver-2.1.1 {Check put and get and hasToken} {
@@ -156,7 +156,7 @@ test FixedPointReceiver-2.2 {Check put and get and hasToken with more than 1 tok
     # Now put another token, which will fail
     catch {$receiver {put ptolemy.data.Token} $token2} result2
     list $result1 $result2
-} {{ptolemy.actor.sched.UnknownTokenException: hasToken(int) called on FixedPointReceiver with unknown status.} {ptolemy.kernel.util.IllegalActionException: Cannot put a token with a different value into a receiver with present status.}}
+} {{ptolemy.kernel.util.InvalidStateException: hasToken(int) called on FixedPointReceiver with unknown status.} {ptolemy.kernel.util.IllegalActionException: Cannot put a token with a different value into a receiver with present status.}}
 
 
 test FixedPointReceiver-2.3 {check hasToken in an unknown status} {
@@ -166,7 +166,7 @@ test FixedPointReceiver-2.3 {check hasToken in an unknown status} {
     catch {$receiver hasToken} result1
     catch {$receiver hasToken 1} result2
     list $result1 $result2
-} {{ptolemy.actor.sched.UnknownTokenException: hasToken() called on FixedPointReceiver with unknown status.} {ptolemy.actor.sched.UnknownTokenException: hasToken(int) called on FixedPointReceiver with unknown status.}}
+} {{ptolemy.kernel.util.InvalidStateException: hasToken() called on FixedPointReceiver with unknown status.} {ptolemy.kernel.util.InvalidStateException: hasToken(int) called on FixedPointReceiver with unknown status.}}
 
 test FixedPointReceiver-2.4 {check hasToken with a non-positive} {
 
@@ -229,7 +229,7 @@ test FixedPointReceiver-4.2.1 {clear, then get} {
     $receiver reset
     catch {$receiver get} result1
     list $result1
-} {{ptolemy.actor.sched.UnknownTokenException: FixedPointReceiver: get() called on an FixedPointReceiver with status unknown.}}
+} {{ptolemy.kernel.util.InvalidStateException: FixedPointReceiver: get() called on an FixedPointReceiver with status unknown.}}
 
 ######################################################################
 ####

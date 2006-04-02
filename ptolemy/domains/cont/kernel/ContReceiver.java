@@ -30,11 +30,10 @@ package ptolemy.domains.cont.kernel;
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.StateReceiver;
-import ptolemy.actor.sched.IllegalOutputException;
-import ptolemy.actor.sched.UnknownTokenException;
 import ptolemy.data.Token;
+import ptolemy.domains.timed.kernel.IllegalOutputException;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContReceiver
@@ -155,7 +154,7 @@ public class ContReceiver extends AbstractReceiver implements StateReceiver {
         }
 
         if (!isKnown()) {
-            throw new UnknownTokenException(
+            throw new InvalidStateException(
                     "ContReceiver: get() called on ContReceiver with unknown state.");
         }
 
@@ -199,13 +198,12 @@ public class ContReceiver extends AbstractReceiver implements StateReceiver {
      *  If the receiver has unknown status, this method will throw an
      *  exception.
      *  @return True if this receiver contains a token.
-     *  @exception UnknownTokenException If the state is unknown.
      */
     public boolean hasToken() {
         if (isKnown()) {
             return (_token != null);
         } else {
-            throw new UnknownTokenException(getContainer(),
+            throw new InvalidStateException(getContainer(),
                     "hasToken() called on ContReceiver with unknown state.");
         }
     }
@@ -222,14 +220,13 @@ public class ContReceiver extends AbstractReceiver implements StateReceiver {
      *  @exception IllegalArgumentException If the argument is not positive.
      *   This is a runtime exception, so it does not need to be declared
      *   explicitly.
-     *  @exception UnknownTokenException If the state is unknown.
      *  @exception IllegalArgumentException If the state is unknown.
      *  @see #hasToken()
      *  @since Ptolemy II 2.1
      */
-    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens) {
         if (!isKnown()) {
-            throw new UnknownTokenException(getContainer(), "hasToken("
+            throw new InvalidStateException(getContainer(), "hasToken("
                     + numberOfTokens
                     + ") called on ContReceiver with unknown state.");
         }
@@ -291,11 +288,12 @@ public class ContReceiver extends AbstractReceiver implements StateReceiver {
      *  specified token.  If the receiver already contains an equal token,
      *  do nothing.
      *  @param token The token to be put into this receiver.
+     * @throws IllegalActionException 
      *  @exception IllegalArgumentException If the argument is null.
      *  @exception IllegalOutputException If the state is known and absent,
      *   or a token is present and does not have the same value.
      */
-    public void put(Token token) {
+    public void put(Token token) throws IllegalActionException {
         if (token == null) {
             throw new IllegalArgumentException(
                     "ContReceiver.put(null) is invalid.");
@@ -305,24 +303,17 @@ public class ContReceiver extends AbstractReceiver implements StateReceiver {
             _putToken(token);
         } else {
             if (!hasToken()) {
-                throw new IllegalOutputException(getContainer(),
+                throw new IllegalActionException(getContainer(),
                         "ContReceiver cannot transition from an absent state "
                                 + "to a present state.  Call reset().");
             } else {
-                try {
-                    if ((token.getType().equals(_token.getType()))
-                            && (token.isEqualTo(_token).booleanValue())) {
-                        // Do nothing, because this token was already present.
-                    } else {
-                        throw new IllegalOutputException(getContainer(),
-                                "ContReceiver cannot receive two tokens "
-                                        + "that differ.");
-                    }
-                } catch (IllegalActionException ex) {
-                    // Should never happen.
-                    throw new InternalErrorException("ContReceiver cannot "
-                            + "determine whether the two tokens received are "
-                            + "equal.");
+                if ((token.getType().equals(_token.getType()))
+                        && (token.isEqualTo(_token).booleanValue())) {
+                    // Do nothing, because this token was already present.
+                } else {
+                    throw new IllegalActionException(getContainer(),
+                            "ContReceiver cannot receive two tokens "
+                            + "that differ.");
                 }
             }
         }
