@@ -89,8 +89,8 @@ public class TokenTableau extends Tableau {
      *  If the display is not a TextEditor, do nothing.
      *  Subclasses should override this with display-specific actions.
      *  @param token The token to append.
-     *  @exception IllegalActionException If the token is not acceptable (not thrown in this
-     *   base class).
+     *  @exception IllegalActionException If the token is not
+     *  acceptable (not thrown in this base class).
      */
     public void append(Token token) throws IllegalActionException {
         if (_editor != null) {
@@ -100,8 +100,8 @@ public class TokenTableau extends Tableau {
 
     /** Append the specified tokens to the display.
      *  @param list A list of tokens.
-     *  @exception If the tokens are not acceptable (not thrown in this
-     *   base class).
+     *  @exception IllegalActionExceptoin If the tokens are not
+     *  acceptable (not thrown in this base class).
      */
     public void append(List list) throws IllegalActionException {
         if (_editor != null) {

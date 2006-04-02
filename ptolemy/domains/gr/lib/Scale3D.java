@@ -53,7 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  <i>scaleFactor</i> parameter. Non-uniform scaling involves
  preferential scaling of the input geometry in a specified Cartesian
  axis.  Non-uniform scaling is done through modification of the
- <i>xScale</i>, <i>yScale</i>, and <i>zScale<i/> parameters.
+ <i>xScale</i>, <i>yScale</i>, and <i>zScale</i> parameters.
 
  @author C. Fong
  @version $Id$

@@ -89,7 +89,7 @@ import ptolemy.data.expr.SingletonParameter;
  &lt;property name="_applicationBlankPtolemyEffigyAtStartup"
  class="ptolemy.data.expr.Parameter"
  value="true"/&gt;
- <pre> 
+ </pre> 
 
 
  @author Christopher Brooks, Nandita Mangal

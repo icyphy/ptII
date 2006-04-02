@@ -53,7 +53,8 @@ import ptolemy.moml.MoMLChangeRequest;
 //// UnitConstraintsDialog
 
 /** 
- Unit Constraint Dialog
+ Unit Constraints Dialog.
+
  @author Rowland R Johnson
  @version $Id$
  @since Ptolemy II 4.0
@@ -73,6 +74,7 @@ public class UnitConstraintsDialog extends PtolemyDialog implements
      *
      * @param tableau The object that, per the user, appears to be
      * generating the dialog.
+     * @param owner The frame.
      * @param target The object whose ports are being configured.
      * @param configuration The configuration to use to open the help
      * screen (or null if help is not supported).

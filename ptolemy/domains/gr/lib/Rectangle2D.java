@@ -85,6 +85,7 @@ public class Rectangle2D extends RectangularFigure2D {
     ////                         protected methods                 ////
 
     /** Implement the base class to create a rectangular shape.
+     *  @return A new Figure.   
      *  @exception IllegalActionException If a parameter value is not valid.
      */
     protected BasicFigure _createFigure() throws IllegalActionException {

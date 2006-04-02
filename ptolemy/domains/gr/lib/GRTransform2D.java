@@ -82,7 +82,7 @@ abstract public class GRTransform2D extends GRActor2D {
     ////                     ports and parameters                  ////
 
     /** Boolean value determining whether transformations are
-     *  accumulated or reset for each firing
+     *  accumulated or reset for each firing.
      */
     public Parameter accumulate;
 
@@ -123,7 +123,7 @@ abstract public class GRTransform2D extends GRActor2D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the value of the <i>accumulate</i> parameter
+    /** Return the value of the <i>accumulate</i> parameter.
      *  @return the accumulation mode.
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained

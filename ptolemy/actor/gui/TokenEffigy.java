@@ -73,6 +73,10 @@ public class TokenEffigy extends Effigy {
     /** Create a new effigy in the given directory with the given name.
      *  @param container The directory that contains this effigy.
      *  @param name The name of this effigy.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public TokenEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -84,6 +88,7 @@ public class TokenEffigy extends Effigy {
 
     /** Append the specified token to the token array associated with this
      *  effigy.
+     *  @param token The token to append.
      *  @exception IllegalActionException If the token is not acceptable.
      */
     public void append(Token token) throws IllegalActionException {
@@ -100,6 +105,7 @@ public class TokenEffigy extends Effigy {
 
     /** If the argument is the <i>uri</i> parameter, then read the
      *  specified URL and parse the data contained in it.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the URL cannot be read or
      *   if the data is malformed.
      */
@@ -138,6 +144,7 @@ public class TokenEffigy extends Effigy {
 
     /** Return an array of the tokens in the file.
      *  @return An array of tokens in the file.
+     *  @see #setTokens(List)
      */
     public ArrayList getTokens() {
         return _tokens;
@@ -204,6 +211,7 @@ public class TokenEffigy extends Effigy {
     /** Set the token array associated with this effigy.
      *  @param tokens An array of tokens.
      *  @exception IllegalActionException If the tokens are not acceptable.
+     *  @see #getTokens()
      */
     public void setTokens(List tokens) throws IllegalActionException {
         _tokens.clear();

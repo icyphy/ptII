@@ -199,7 +199,8 @@ public class DialogTableau extends Tableau {
         return null;
     }
 
-    /** Determines if a particular Entity is associated with this DialogTableau
+    /** Determines if a particular Entity is associated with this
+     *  DialogTableau.
      * @param entity Entity that test is performed on.,
      * @return true/false True if entity is associated with this DialogTableau.
      */

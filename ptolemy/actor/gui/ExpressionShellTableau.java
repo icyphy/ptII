@@ -191,13 +191,14 @@ public class ExpressionShellTableau extends Tableau implements ShellInterpreter 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The parameter used for evaluation.
+
+    /** The parameter used for evaluation. */
     private ParseTreeEvaluator _evaluator;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** A factory that creates a control panel to display a Tcl Shell
+    /** A factory that creates a control panel to display an Expression Shell.
      */
     public static class Factory extends TableauFactory {
         /** Create a factory with the given name and container.

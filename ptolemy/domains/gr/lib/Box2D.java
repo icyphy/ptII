@@ -60,13 +60,10 @@ public class Box2D extends GRShape2D {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-    // size.
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Create the figure for this actor.
-     *
+     *  @return A new Figure.
      *  @exception IllegalActionException If a parameter is not valid.
      */
     protected BasicFigure _createFigure() throws IllegalActionException {

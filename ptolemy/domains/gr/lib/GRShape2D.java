@@ -164,7 +164,7 @@ abstract public class GRShape2D extends GRActor2D {
 
     /** Create the figure for this actor.  Derived classes should implement
      *  this method to create the correct figure.
-     *
+     *  @return A new Figure.
      *  @exception IllegalActionException If a parameter is not valid.
      */
     abstract protected BasicFigure _createFigure()

@@ -118,7 +118,7 @@ public class Rotate3D extends GRTransform {
     ////                         public methods                    ////
 
     /** Connect other Java3D nodes as children of the encapsulated node in
-     *  this actor
+     *  this actor.
      *
      *  @param node The child Java3D node.
      */

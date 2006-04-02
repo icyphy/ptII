@@ -57,8 +57,8 @@ public class CheckModelSize {
     /** Check the size, zoom and location of the models named
      *  by the args.
      *  @param args An array of Strings naming the models to be checked.
+     *  @return HTML that describes possible probelms with the models.
      *  @exception Exception If there is a problem reading a model.
-     *
      */
     public static String checkModelSize(String[] args) throws Exception {
         int width;

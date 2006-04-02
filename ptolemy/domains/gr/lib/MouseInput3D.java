@@ -55,6 +55,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (chf)
  */
 public class MouseInput3D extends GRActor3D {
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public MouseInput3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -171,6 +179,7 @@ public class MouseInput3D extends GRActor3D {
         }
     }
 
+    /** The user input BranchGroup node contained by this actor. */
     protected BranchGroup _containedNode;
 
     ///////////////////////////////////////////////////////////////////

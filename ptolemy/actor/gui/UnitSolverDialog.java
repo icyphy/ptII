@@ -322,7 +322,7 @@ public class UnitSolverDialog extends PtolemyDialog implements ActionListener,
         }
     }
 
-    /** List of solutions
+    /** List of solutions.
      */
     public class SolutionListModel extends AbstractListModel {
         Vector _solutions = new Vector();
