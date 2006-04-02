@@ -41,7 +41,7 @@ import ptolemy.actor.sched.FixedPointReceiver;
  @since Ptolemy II 2.0
  @Pt.ProposedRating Green (pwhitake)
  @Pt.AcceptedRating Green (pwhitake)
- @see ptolemy.actor.sched.FixedPointReceiver;
+ @see ptolemy.actor.sched.FixedPointReceiver
  */
 public class SRReceiver extends FixedPointReceiver {
     /** Construct an SRReceiver with unknown state and the given director.
