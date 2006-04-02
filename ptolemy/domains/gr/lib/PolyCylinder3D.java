@@ -113,6 +113,7 @@ public class PolyCylinder3D extends GRShadedShape {
     /** If the specified attribute is <i>polygon</i> or <i>thickness</i>
      *  and runtime changes are allowed, then update the geometry.
      *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If thrown by the parent class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

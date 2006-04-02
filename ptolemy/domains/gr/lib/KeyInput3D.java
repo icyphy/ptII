@@ -55,6 +55,14 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (chf)
  */
 public class KeyInput3D extends GRActor3D {
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public KeyInput3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -65,10 +73,20 @@ public class KeyInput3D extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+
+    /** An output port that contains the keycode for a key pressed
+     *  on the viewscreen.  The default type is int.
+     */
     public TypedIOPort keycode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If a key has been pressed, send the keycode to the <i>keycode</i>
+     *  port.  If no key has been pressed, then no data is sent.
+     *  @exception IllegalActionException If thrown while sending the
+     *  data to the output port.
+     */  
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -83,6 +101,9 @@ public class KeyInput3D extends GRActor3D {
         }
     }
 
+    /** Set up this actor to listen to key presses.
+     *  @exception IllegalActionException If thrown by the parent class.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _userInputNode = new BranchGroup();
@@ -94,10 +115,18 @@ public class KeyInput3D extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Get the user input BranchGroup node.
+     *  @return The user input BranchGroup node for this actor.
+     */
     protected Node _getNodeObject() {
         return _userInputNode;
     }
 
+    /** Add this node to the viewscreen.
+     *  @exception IllegalActionException If throw while adding this
+     *  node to the viewscreen.
+     */   
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_viewScreen == null) {
             throw new IllegalActionException("GR error: no ViewScreen actor");
@@ -105,6 +134,16 @@ public class KeyInput3D extends GRActor3D {
             _viewScreen.addChild(_getNodeObject());
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The BranchGroup to which is listened for key presses.
+    protected BranchGroup _userInputNode;
+
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     private class React extends Behavior {
         public void initialize() {

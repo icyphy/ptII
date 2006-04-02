@@ -86,7 +86,7 @@ abstract public class GRShape2D extends GRActor2D {
     ////                         parameters                        ////
 
     /** The output port for connecting to other GR Actors in
-     *  the scene graph
+     *  the scene graph.
      */
     public TypedIOPort sceneGraphOut;
 
@@ -113,8 +113,10 @@ abstract public class GRShape2D extends GRActor2D {
     ////                         public methods                    ////
 
     /** Update the position and location of the figure on the screen when
-     * the user changes the parameters.
-     * @param attribute The attribute which changed.
+     *  the user changes the parameters.
+     *  @param attribute The attribute which changed.
+     *  @exception IllegalActionException If thrown while setting the
+     *  appearance of the figure or if thrown by the parent class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -126,6 +128,9 @@ abstract public class GRShape2D extends GRActor2D {
         super.attributeChanged(attribute);
     }
 
+    /** Get the figure represented by this actor.
+     *  @return The figure.
+     */
     public BasicFigure getFigure() {
         return _figure;
     }
@@ -175,6 +180,8 @@ abstract public class GRShape2D extends GRActor2D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The figure represented by this actor. */
     protected BasicFigure _figure;
 
     ///////////////////////////////////////////////////////////////////

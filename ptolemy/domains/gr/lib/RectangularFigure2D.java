@@ -81,8 +81,10 @@ public abstract class RectangularFigure2D extends GRShape2D {
     }
 
     /** Update the position and location of the figure on the screen when
-     * the user changes the parameters.
-     * @param attribute The attribute which changed.
+     *  the user changes the parameters.
+     *  @param attribute The attribute which changed.
+     *  @exception IllegalActionException If thrown while updating the
+     *  figure or by the superclass.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {

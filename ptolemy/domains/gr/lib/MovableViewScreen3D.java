@@ -46,7 +46,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// MovableViewScreen3D
 
-/** A sink actor that renders the GR geometry into a display screen with movable viewpoint
+/** A sink actor that renders the GR geometry into a display screen
+    with movable viewpoint.
 
  @author Adam Cataldo
  @version $Id$
@@ -115,7 +116,8 @@ public class MovableViewScreen3D extends ViewScreen3D {
     /** Call the ViewScreen fire() method, and translate and rotate the
      *  image if needed.
      *
-     *  @exception IllegalActionException If the input array has the wrong size.
+     *  @exception IllegalActionException If the input array has the
+     *  wrong size.
      */
     public void fire() throws IllegalActionException {
         super.fire();
@@ -233,7 +235,8 @@ public class MovableViewScreen3D extends ViewScreen3D {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private variables                 ////
+
     protected ArrayToken _position;
 
     protected ArrayToken _axis;
@@ -246,8 +249,4 @@ public class MovableViewScreen3D extends ViewScreen3D {
 
     protected DoubleToken _initialAngle;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 }

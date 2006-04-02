@@ -93,7 +93,7 @@ public class Line2D extends GRActor2D {
     ////                     ports and parameters                  ////
 
     /** The output port for connecting to other GR Actors in
-     *  the scene graph
+     *  the scene graph.
      */
     public TypedIOPort sceneGraphOut;
 
@@ -173,6 +173,7 @@ public class Line2D extends GRActor2D {
 
     /** Create the figure for this actor.
      *
+     *  @return The BasicFigure for this actor.
      *  @exception IllegalActionException If a parameter is not valid.
      */
     protected BasicFigure _createFigure() throws IllegalActionException {

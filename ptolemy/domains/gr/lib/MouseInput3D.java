@@ -46,7 +46,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/**  An actor that listens for mouse clicks on the viewscreen
+/**  An actor that listens for mouse clicks on the viewscreen.
 
  @author C. Fong
  @version $Id$
@@ -69,12 +69,26 @@ public class MouseInput3D extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
+
+    /** An output port containing an integer representing the X
+     *  coordinate of the mouse.
+     */
     public TypedIOPort x;
 
+    /** An output port containing an integer representing the Y
+     *  coordinate of the mouse.
+     */
     public TypedIOPort y;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the mouse has moved,  send the coordinates to the <i>x</i>
+     *  and <i>y</i> ports.
+     *  If mouse has not moved, then no data is sent.
+     *  @exception IllegalActionException If thrown while sending the
+     *  data to the output ports.
+     */  
     public void fire() throws IllegalActionException {
         super.fire();
 
@@ -88,6 +102,9 @@ public class MouseInput3D extends GRActor3D {
         }
     }
 
+    /** Set up this actor to listen to mouse motion events.
+     *  @exception IllegalActionException If thrown by the parent class.
+     */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _containedNode = new BranchGroup();
@@ -99,10 +116,18 @@ public class MouseInput3D extends GRActor3D {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Get the user input BranchGroup node.
+     *  @return The user input BranchGroup node for this actor.
+     */
     protected Node _getNodeObject() {
         return _containedNode;
     }
 
+    /** Add this node to the viewscreen.
+     *  @exception IllegalActionException If throw while adding this
+     *  node to the viewscreen.
+     */   
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         if (_viewScreen == null) {
             throw new IllegalActionException("GR error: no ViewScreen actor");
@@ -113,6 +138,9 @@ public class MouseInput3D extends GRActor3D {
         // It would be nice if we did this..
         //sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     private class React extends Behavior {
         public void initialize() {

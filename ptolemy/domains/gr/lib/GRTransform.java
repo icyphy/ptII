@@ -80,25 +80,25 @@ abstract public class GRTransform extends GRActor3D {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** Boolean value determining whether transformations are
+     *  accumulated or reset for each firing.
+     */
+    public Parameter accumulate;
+
     /** The input port for connecting to other GR Actors in
-     *  the scene graph
+     *  the scene graph.
      */
     public TypedIOPort sceneGraphIn;
 
     /** The output port for connecting to other GR Actors in
-     *  the scene graph
+     *  the scene graph.
      */
     public TypedIOPort sceneGraphOut;
-
-    /** Boolean value determining whether transformations are
-     *  accumulated or reset for each firing
-     */
-    public Parameter accumulate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Setup the transform object
+    /** Setup the transform object.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -107,7 +107,7 @@ abstract public class GRTransform extends GRActor3D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the value of the <i>accumulate</i> parameter
+    /** Return the value of the <i>accumulate</i> parameter.
      *  @return the accumulation mode
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained

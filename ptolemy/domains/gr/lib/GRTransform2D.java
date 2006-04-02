@@ -81,20 +81,20 @@ abstract public class GRTransform2D extends GRActor2D {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port for connecting to other GR Actors in
-     *  the scene graph
-     */
-    public TypedIOPort sceneGraphIn;
-
-    /** The output port for connecting to other GR Actors in
-     *  the scene graph
-     */
-    public TypedIOPort sceneGraphOut;
-
     /** Boolean value determining whether transformations are
      *  accumulated or reset for each firing
      */
     public Parameter accumulate;
+
+    /** The input port for connecting to other GR Actors in
+     *  the scene graph.
+     */
+    public TypedIOPort sceneGraphIn;
+
+    /** The output port for connecting to other GR Actors in
+     *  the scene graph.
+     */
+    public TypedIOPort sceneGraphOut;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -124,7 +124,7 @@ abstract public class GRTransform2D extends GRActor2D {
     ////                         protected methods                 ////
 
     /** Return the value of the <i>accumulate</i> parameter
-     *  @return the accumulation mode
+     *  @return the accumulation mode.
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
      */
@@ -151,9 +151,10 @@ abstract public class GRTransform2D extends GRActor2D {
     }
 
     /** Set the initial transform of the given figure.  This method is
-     * invoked by this base class during the initialize() method.
-     * Derived classes should implement it to provide class-specific
-     * behavior.
+     *  invoked by this base class during the initialize() method.
+     *  Derived classes should implement it to provide class-specific
+     *  behavior.
+     *  @param figure The figure to transform.
      *  @exception IllegalActionException If the value of some
      *  parameters can't be obtained.
      */
@@ -161,9 +162,10 @@ abstract public class GRTransform2D extends GRActor2D {
             throws IllegalActionException;
 
     /** Consume input tokens, and transform the given figure according
-     * to the current state of the transform.  This method is invoked
-     * by this base classes during the fire() method.  Derived classes
-     * should implement it to provide class-specific behavior.
+     *  to the current state of the transform.  This method is invoked
+     *  by this base classes during the fire() method.  Derived classes
+     *  should implement it to provide class-specific behavior.
+     *  @param figure The figure to transform.
      *  @exception IllegalActionException If the value of some
      *  parameters can't be obtained.
      */

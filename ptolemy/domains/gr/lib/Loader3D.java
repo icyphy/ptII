@@ -42,12 +42,24 @@ import com.sun.j3d.loaders.Scene;
 import com.sun.j3d.loaders.objectfile.ObjectFile;
 
 /**
+ Load a WaveFront .obj file that contains descriptions of 3-D objects.
+ See the 
+<a href="http://download.java.net/media/java3d/javadoc/1.3.2/com/sun/j3d/loaders/objectfile/ObjectFile.html" target="_top">com.sun.j3d.loader.objectfile.ObjectFile</a> documentation for details.
  @author C. Fong
  @version $Id$
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class Loader3D extends GRShadedShape {
+
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public Loader3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -55,12 +67,30 @@ public class Loader3D extends GRShadedShape {
                 "chopper.obj"));
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** A String specifiy the name of the file to be opened.  The initial
+     *  default value is "chopper.obj".
+     */
     public Parameter filename;
 
-    public Node _getNodeObject() {
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return the encapsulated Java3D node of this 3D actor.
+     *  The encapsulated node for this actor is a Java3D scene group.
+     *  @return The scene group.
+     */
+
+    protected Node _getNodeObject() {
         return obj.getSceneGroup();
     }
 
+    /** Create the model by loading the filename.
+     *  @exception IllegalActionException If the file cannot be found or
+     *  if the file is not a valid Wavefront .obj file"
+     */
     protected void _createModel() throws IllegalActionException {
         String fileName = ((StringToken) filename.getToken()).stringValue();
 
@@ -71,24 +101,23 @@ public class Loader3D extends GRShadedShape {
 
         //if (!noTriangulate) flags |= ObjectFile.TRIANGULATE;
         //if (!noStripify) flags |= ObjectFile.STRIPIFY;
-        ObjectFile f = new ObjectFile(flags,
+        ObjectFile objectFile = new ObjectFile(flags,
                 (float) ((creaseAngle * Math.PI) / 180.0));
-        Scene s = null;
+        Scene scene = null;
 
         try {
-            s = f.load(fileName);
-        } catch (FileNotFoundException e) {
-            System.err.println(e);
-            throw new IllegalActionException("File not found!");
-        } catch (ParsingErrorException e) {
-            System.err.println(e);
-            throw new IllegalActionException("File is not a valid 3D OBJ file");
-        } catch (IncorrectFormatException e) {
-            System.err.println(e);
-            throw new IllegalActionException("File is not a valid 3D OBJ file");
+            scene = objectFile.load(fileName);
+        } catch (FileNotFoundException ex) {
+            throw new IllegalActionException(this, ex, "File not found!");
+        } catch (ParsingErrorException ex) {
+            throw new IllegalActionException(this, ex,
+                    "File is not a valid Wavefront .obj file.");
+        } catch (IncorrectFormatException ex) {
+            throw new IllegalActionException(this ,ex, 
+                    "File is not a valid Wavefront .obj file.");
         }
 
-        obj = s;
+        obj = scene;
     }
 
     private double creaseAngle = 60.0;

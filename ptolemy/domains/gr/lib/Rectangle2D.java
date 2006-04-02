@@ -53,6 +53,14 @@ import diva.canvas.toolbox.BasicFigure;
  @Pt.AcceptedRating Yellow (chf)
  */
 public class Rectangle2D extends RectangularFigure2D {
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public Rectangle2D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
