@@ -36,12 +36,10 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 
-import com.sun.tools.javac.v8.tree.Tree.If;
-
 /**
  * A helper class for ptolemy.actor.lib.io.FileReader.
  *
- * @author Jackie
+ * @author Jackie Leung
  * @version $Id$
  * @since Ptolemy II 6.0
  * @Pt.ProposedRating Red (mankit)
