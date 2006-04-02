@@ -30,7 +30,6 @@ package ptolemy.actor.sched;
 import ptolemy.actor.AbstractReceiver;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
-import ptolemy.domains.timed.kernel.UnknownTokenException;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 
@@ -57,7 +56,7 @@ import ptolemy.kernel.util.InvalidStateException;
  The hasRoom() method returns true if the receiver has status unknown. 
  If the receiver has a known status, the hasToken() method returns true 
  if the receiver contains a token. If the receiver has an unknown status, 
- the hasToken() method will throw an UnknownTokenException.
+ the hasToken() method will throw an InvalidStateException.
  <p>
  This class is based on the original SRReceiver, written by Paul Whitaker.
  
@@ -102,7 +101,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  of this receiver is unknown, throw an exception.
      *  @return The token contained in the receiver.
      *  @exception NoTokenException If there is no token.
-     *  @exception UnknownTokenException If the status is unknown.
+     *  @exception InvalidStateException If the status is unknown.
      */
     public Token get() throws NoTokenException {
         if (!isKnown()) {
@@ -151,6 +150,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  If the receiver has status unknown, this method will throw an
      *  exception.
      *  @return True if this receiver contains a token.
+     *  @exception InvalidStateException If the status is unknown.
      */
     public boolean hasToken() {
         if (isKnown()) {
@@ -170,6 +170,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  @return True if the argument is 1 and the receiver has a token.
      *  @exception IllegalArgumentException If the argument is not positive.
      *  @see #hasToken()
+     *  @exception InvalidStateException If the status is unknown.
      */
     public boolean hasToken(int numberOfTokens) {
         if (!isKnown()) {
