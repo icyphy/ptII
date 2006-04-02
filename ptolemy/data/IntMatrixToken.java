@@ -71,6 +71,9 @@ public class IntMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 1-D matrix.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -87,6 +90,15 @@ public class IntMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
+     *  @param value The 1-D matrix.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
+     *  @param copy If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_COPY}, then the value matrix
+     *  is copied.  If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
+     *  is NOT copied and should not be modified after construction of this
+     *  object.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -111,6 +123,7 @@ public class IntMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 2-D matrix used to initialize this object.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -268,6 +281,7 @@ public class IntMatrixToken extends MatrixToken {
      *  the number of rows and columns equal to the given size.
      *  This method does lossless conversion.
      *  @param token The token to be converted to a IntMatrixToken.
+     *  @param size The number of rows and columns of the resulting matrix.
      *  @return A IntMatrixToken
      *  @exception IllegalActionException If the conversion cannot
      *  be carried out.

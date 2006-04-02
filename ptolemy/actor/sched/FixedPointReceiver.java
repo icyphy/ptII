@@ -207,7 +207,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      *   or a token is present but not have the same value, or a token
      *   is present and cannot be compared to the specified token.
      */
-    public void put(Token token) throws NoRoomException, IllegalActionException {
+    public void put(Token token) throws IllegalActionException {
         if (token == null) {
             throw new IllegalArgumentException(
                     "FixedPointReceiver.put(null) is invalid. To set the "

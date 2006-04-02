@@ -66,6 +66,9 @@ public class LongMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 1-D matrix.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -82,6 +85,15 @@ public class LongMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
+     *  @param value The 1-D matrix.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
+     *  @param copy If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_COPY}, then the value matrix
+     *  is copied.  If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
+     *  is NOT copied and should not be modified after construction of this
+     *  object.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -106,6 +118,7 @@ public class LongMatrixToken extends MatrixToken {
      *  This method makes a copy of the matrix and stores the copy,
      *  so changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 2-D matrix used to initialize this object.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -123,7 +136,14 @@ public class LongMatrixToken extends MatrixToken {
      *  is called to preserve immutability.
      *  <p>
      *  Since the DO_NOT_COPY option requires some care, this constructor
-     *  is protected.
+     *  should be protected.
+     *  @param value The 2-D matrix used to initialize this object.
+     *  @param copy If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_COPY}, then the value matrix
+     *  is copied.  If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
+     *  is NOT copied and should not be modified after construction of this
+     *  object.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -257,6 +277,7 @@ public class LongMatrixToken extends MatrixToken {
      *  the number of rows and columns equal to the given size.
      *  This method does lossless conversion.
      *  @param token The token to be converted to a LongMatrixToken.
+     *  @param size The number of rows and columns of the resulting matrix.
      *  @return A LongMatrixToken
      *  @exception IllegalActionException If the conversion cannot
      *  be carried out.

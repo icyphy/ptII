@@ -328,7 +328,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     }
 
     /** Initialize the firing of the director by resetting state variables.
-     *  @return Ture always.
+     *  @return True always.
+     *  @exception IllegalActionException If thrown by the parent class.
      */
     public boolean prefire() throws IllegalActionException {
         _actorsAllowedToFire.clear();

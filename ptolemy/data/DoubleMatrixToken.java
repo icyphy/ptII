@@ -69,6 +69,9 @@ public class DoubleMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 1-D matrix.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -85,6 +88,15 @@ public class DoubleMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability.
+     *  @param value The 1-D matrix.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
+     *  @param copy If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_COPY}, then the value matrix
+     *  is copied.  If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
+     *  is NOT copied and should not be modified after construction of this
+     *  object.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -109,6 +121,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  Make a copy of the matrix and store the copy,
      *  so that changes on the specified matrix after this token is
      *  constructed will not affect the content of this token.
+     *  @param value The 2-D matrix used to initialize this object.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
@@ -124,6 +137,13 @@ public class DoubleMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument matrix should NOT be modified after this constructor
      *  is called to preserve immutability, although this is not enforced.
+     *  @param value The 2-D matrix used to initialize this object.
+     *  @param copy If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_COPY}, then the value matrix
+     *  is copied.  If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
+     *  is NOT copied and should not be modified after construction of this
+     *  object.
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
