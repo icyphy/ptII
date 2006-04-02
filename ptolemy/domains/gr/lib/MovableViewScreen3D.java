@@ -237,16 +237,16 @@ public class MovableViewScreen3D extends ViewScreen3D {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    protected ArrayToken _position;
+    private ArrayToken _position;
 
-    protected ArrayToken _axis;
+    private ArrayToken _axis;
 
-    protected DoubleToken _angle;
+    private DoubleToken _angle;
 
-    protected ArrayToken _initialPosition;
+    private ArrayToken _initialPosition;
 
-    protected ArrayToken _initialAxis;
+    private ArrayToken _initialAxis;
 
-    protected DoubleToken _initialAngle;
+    private DoubleToken _initialAngle;
 
 }
