@@ -1,4 +1,4 @@
-/* Director for the Fixed Point model of computation.
+/* Base class for directors that have fixed point semantics at each iteration.
 
  Copyright (c) 2000-2006 The Regents of the University of California.
  All rights reserved.
@@ -167,8 +167,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire contained actors until the iteration converges.  This method
-     *  also calls the prefire() method of an actor before it is fired for
+    /** Keep firing contained actors until the current iteration converges,
+     *  i.e., when all the receivers have status known.  
+     *  This method also calls the prefire() method of an actor before it is fired for
      *  the first time. // FIXME: prefire() may be called each time the fire()
      *  method is called?
      *  @exception IllegalActionException If an actor attempts to modify
@@ -201,11 +202,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // _isFiringAllowed method.
         do {
             Iterator firingIterator = schedule.firingIterator();
-
             while (firingIterator.hasNext() && !_stopRequested) {
-                Firing firing = (Firing) firingIterator.next();
-                Actor actor = firing.getActor();
-
+                Actor actor = ((Firing) firingIterator.next()).getActor();
                 if (_isIterationAllowed(actor)) {
                     _fireActor(actor);
                 } else {
@@ -216,7 +214,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                     _sendClearToAllUnknownOutputsOf(actor);
                 }
             }
-
             iterationCount++;
         } while (!_hasIterationConverged() && !_stopRequested);
 
@@ -263,7 +260,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     /** Call postfire() on all contained actors.  Return false if the model
      *  has finished executing, either by reaching the iteration limit, or if
      *  no actors in the model return true in postfire(), or if stop has
-     *  been requested.
+     *  been requested. This method is called only once for each iteration.
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
@@ -275,30 +272,47 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // Actors are postfired here since updating the state of contained
         // actors inherently updates the state of a composite actor.
         // They are postfired in the order specified by the schedule,
-        // but only on their first appearance in the schedule.
+        // but only on their first appearance in the schedule. (An actor
+        // may appear in the schedule multiple times.)
         // FIXME: this requirement is necessary to avoid duplicate outputs
-        // in display? 
+        // in display? TESTIT.
+        
+        // Note that the actorsPostfired set is used to prevent an actor 
+        // from being postfired more than once in one iteration, while 
+        // the actorsNotAlledToIterated set is used to provent an actor from
+        // be iterated in the rest of EXECUTION if it returns false from its
+        // postfire() method. The actorsPostfired set gets cleared at the 
+        // end of each iteration.
+        
+        // It is expensive to construct a new set each time the postfire()
+        // method is called. Try to make it a private variable and clear it
+        // at the end of this method.
         Set actorsPostfired = new HashSet();
 
         Schedule schedule = getScheduler().getSchedule();
         Iterator firingIterator = schedule.firingIterator();
-
         while (firingIterator.hasNext() && !_stopRequested) {
-            Firing firing = (Firing) firingIterator.next();
-            Actor actor = firing.getActor();
-
+            Actor actor = ((Firing) firingIterator.next()).getActor();
             if (_isIterationAllowed(actor)) {
                 if (!actorsPostfired.contains(actor)) {
+                    actorsPostfired.add(actor);
                     if (_postfireActor(actor)) {
                         _postfireReturns = true;
                     } else {
                         _actorsNotAllowedToIterate.add(actor);
                     }
-                    actorsPostfired.add(actor);
                 }
             }
         }
 
+        // All receivers must be reset before any actors are executed in the
+        // next iteration.  Since some domains (including FP) might fire one
+        // actor before prefiring another actor, resetting the receivers in
+        // the prefire() method will not work.  By doing this at the end of
+        // each iteration, all receivers are guaranteed to be reset, even in
+        // a hierarchical model.
+        _resetAllReceivers();
+        
         if (_debugging) {
             _debug("FixedPointDirector: Instant " + _currentIteration
                     + " is complete.");
@@ -308,16 +322,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         _currentIteration++;
 
-        // All receivers must be reset before any actors are executed in the
-        // next iteration.  Since some domains (including FP) might fire one
-        // actor before prefiring another actor, resetting the receivers in
-        // the prefire() method will not work.  By doing this at the end of
-        // each iteration, all receivers are guaranteed to be reset, even in
-        // a hierarchical model.
-        _resetAllReceivers();
-
         int numberOfIterations = ((IntToken) iterations.getToken()).intValue();
-
         if ((numberOfIterations > 0)
                 && (_currentIteration >= numberOfIterations)) {
             _currentIteration = 0;
@@ -489,14 +494,15 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 }
 
                 // Whether all inputs are known must be checked before
-                // firing to handle cases with self-loops.
-                // FIXME: what? why?
+                // firing to handle cases with self-loops, because the
+                // current firing may change the status of some input
+                // receivers from unknown to known.
                 boolean allInputsKnownBeforeFiring = _areAllInputsKnown(actor);
                 actor.fire();
                 _actorsFired.add(actor);
 
                 // If all of the inputs of this actor are known, firing
-                // the actor again in this iteration is not necessary.
+                // the actor again in the current iteration is not necessary.
                 // The actor will not produce any more outputs because
                 // it will have no new inputs to react to.  Thus, we
                 // can assume that any unknown outputs of this actor

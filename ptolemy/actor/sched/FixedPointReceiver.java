@@ -1,4 +1,4 @@
-/* The receiver use with FixedPointDirector or any of its subclasses.
+/* The receiver for use with FixedPointDirector or any of its subclasses.
 
  Copyright (c) 1998-2006 The Regents of the University of California.
  All rights reserved.
@@ -28,10 +28,11 @@
 package ptolemy.actor.sched;
 
 import ptolemy.actor.AbstractReceiver;
-import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
+import ptolemy.domains.timed.kernel.UnknownTokenException;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixedPointReceiver
@@ -93,7 +94,6 @@ public class FixedPointReceiver extends AbstractReceiver {
         } else {
             _token = null;
             _known = true;
-            _becomesKnown = true;
             _director._receiverChanged();
         }
     }
@@ -106,7 +106,7 @@ public class FixedPointReceiver extends AbstractReceiver {
      */
     public Token get() throws NoTokenException {
         if (!isKnown()) {
-            throw new UnknownTokenException(
+            throw new InvalidStateException(
                     "FixedPointReceiver: get() called on an "
                             + "FixedPointReceiver " + "with status unknown.");
         }
@@ -151,13 +151,12 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  If the receiver has status unknown, this method will throw an
      *  exception.
      *  @return True if this receiver contains a token.
-     *  @exception UnknownTokenException If the status is unknown. 
      */
-    public boolean hasToken() throws UnknownTokenException {
+    public boolean hasToken() {
         if (isKnown()) {
             return (_token != null);
         } else {
-            throw new UnknownTokenException(getContainer(),
+            throw new InvalidStateException(getContainer(),
                     "hasToken() called on FixedPointReceiver with "
                             + "unknown status.");
         }
@@ -172,9 +171,9 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  @exception IllegalArgumentException If the argument is not positive.
      *  @see #hasToken()
      */
-    public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
+    public boolean hasToken(int numberOfTokens) {
         if (!isKnown()) {
-            throw new UnknownTokenException(getContainer(), "hasToken(int)"
+            throw new InvalidStateException(getContainer(), "hasToken(int)"
                     + " called on FixedPointReceiver with unknown status.");
         }
         if (numberOfTokens < 1) {
@@ -216,7 +215,6 @@ public class FixedPointReceiver extends AbstractReceiver {
         if (!isKnown()) {
             _token = token;
             _known = true;
-            _becomesKnown = true;
             _director._receiverChanged();
         } else {
             if (!hasToken()) {
@@ -241,7 +239,7 @@ public class FixedPointReceiver extends AbstractReceiver {
     public void reset() {
         _token = null;
         _known = false;
-        _becomesKnown = false;
+        _lastKnown = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -251,7 +249,12 @@ public class FixedPointReceiver extends AbstractReceiver {
      *  @return True if this receiver changes from unknown to known status.
      */
     protected boolean _becomesKnown() {
-        return _becomesKnown;
+        if (_lastKnown != _known) {
+            _lastKnown = _known;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -261,11 +264,10 @@ public class FixedPointReceiver extends AbstractReceiver {
     private FixedPointDirector _director;
 
     // A flag indicating whether this receiver has status known.  
-    private boolean _known;
+    private boolean _known = false;
 
-    // A flag indicating whether the receiver status changes from unknown 
-    // to known.  
-    private boolean _becomesKnown = false;
+    // A flag indicating whether the receiver has status known already.
+    private boolean _lastKnown = false;
 
     // The token held.
     private Token _token = null;
