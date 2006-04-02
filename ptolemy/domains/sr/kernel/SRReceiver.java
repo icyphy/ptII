@@ -34,8 +34,7 @@ import ptolemy.actor.sched.FixedPointReceiver;
 
 /**
 
- The receiver for the Synchronous Reactive (SR) domain.  This
- receiver extends the {@link ptolemy.domains.fp.kernel.FixedPointReceiver} class.
+ The receiver for the Synchronous Reactive (SR) domain.
 
  @author Paul Whitaker, contributor: Christopher Hylands, Haiyang Zheng
  @version $Id$
