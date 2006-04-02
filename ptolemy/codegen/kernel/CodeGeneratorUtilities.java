@@ -63,7 +63,7 @@ public class CodeGeneratorUtilities {
      *  argument, and each value is the value of the Variable.
      *  @param namedObj The NamedObj that contains Variables
      *  @return The HashMap consisting of key/value Strings.
-     *  @param IllegalActionException If there is a problem getting the
+     *  @exception IllegalActionException If there is a problem getting the
      *  Variables.   
      */
     public static HashMap newMap(NamedObj namedObj)
@@ -216,6 +216,9 @@ public class CodeGeneratorUtilities {
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
      *  @see #substitute(String, Map, String)
+     *  @exception FileNotFoundException If the input file cannot be found.
+     *  @exception IOException If there is a problem creating the
+     *  substitution map.   
      */
     public static void substitute(BufferedReader inputFile, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {
@@ -240,6 +243,9 @@ public class CodeGeneratorUtilities {
      *  and String values like "../../..".
      *  @param outputFileName The name of the file to write to.
      *  @see #substitute(BufferedReader, Map, String)
+     *  @exception FileNotFoundException If the input file cannot be found.
+     *  @exception IOException If there is a problem creating the
+     *  substitution map.   
      */
     public static void substitute(String inputFileName, Map substituteMap,
             String outputFileName) throws FileNotFoundException, IOException {

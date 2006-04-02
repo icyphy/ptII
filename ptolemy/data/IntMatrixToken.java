@@ -141,7 +141,15 @@ public class IntMatrixToken extends MatrixToken {
      *  is called to preserve immutability.
      *  <p>
      *  Since the DO_NOT_COPY option requires some care, this constructor
-     *  is protected.
+     *  should  be protected, but is not.
+     *  @param value The 2-D matrix used to initialize this object.
+     *  @param copy If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_COPY}, then the value matrix
+     *  is copied.  If this parameter is
+     *  {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
+     *  is NOT copied and should not be modified after construction of this
+     *  object.
+
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */

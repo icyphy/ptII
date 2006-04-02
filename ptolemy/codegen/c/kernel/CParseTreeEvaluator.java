@@ -1031,7 +1031,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     /** Apply a unary operator to the single child of the specified node.
      *  @param node The specified node.
-     *  @exception IllegalActinoException If the operator is not supported.
+     *  @exception IllegalActionException If the operator is not supported.
      */
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
@@ -1300,7 +1300,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
 
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
-     *  @param String The message.
+     *  @param string The message.
      */
     protected void _trace(String string) {
         if (_trace != null) {
