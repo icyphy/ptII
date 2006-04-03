@@ -40,7 +40,10 @@
         $actorSymbol(charRead) = fgetc($actorSymbol(filePtr));
         if ($actorSymbol(index) >= $actorSymbol(length)) {
             $actorSymbol(length) *= 2;
-            $ref(output) = (char*) realloc ($ref(output), $actorSymbol(length) * sizeof(char));
+            $ref(output) = (char*) realloc ($ref(output), ($actorSymbol(length) + 1) * sizeof(char));
+            /* Solaris: strncpy does not add a null if only */
+            /* n chars are copied. */ 
+            $ref(output)[$actorSymbol(length)] = '\0';
         }
         $ref(output)[$actorSymbol(index)++] = $actorSymbol(charRead);
     } while ( $actorSymbol(charRead) != '\n' && $actorSymbol(charRead) != EOF );

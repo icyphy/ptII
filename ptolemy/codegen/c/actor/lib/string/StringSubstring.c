@@ -8,7 +8,10 @@
 
 /*** fireBlock ***/
         $actorSymbol(length) = $ref(stop) - $ref(start);
-	$ref(output) = (char*) realloc($ref(output), $actorSymbol(length));
+        /* Realloc space for the null */
+	$ref(output) = (char*) realloc($ref(output), $actorSymbol(length) + 1);
+        /* Solaris: strncpy does not add a null if only n chars are copied. */ 
+        $ref(output)[$actorSymbol(length)] = '\0';
 	$ref(output) = strncpy($ref(output), $ref(input) + $ref(start), $actorSymbol(length));
 /**/
 
