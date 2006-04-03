@@ -52,6 +52,9 @@ test ArrayToken-1.0 {Create a string array} {
     $valToken toString
 } {{"AB", "CD"}}
 
+######################################################################
+####
+# 
 test ArrayToken-1.1 {Create an int array using expression} {
     set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
     $valToken toString
@@ -64,12 +67,18 @@ test ArrayToken-1.2 {trigger exception when creating empty array using wrong con
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: The length of the specified array is zero.}}
 
+######################################################################
+####
+# 
 test ArrayToken-1.3 {Create an int array with conversion} {
     set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3.0}"]
     catch {java::new {ptolemy.data.ArrayToken String} "1.0"} errMsg
     list [$valToken toString] $errMsg
 } {{{1.0, 2.0, 3.0}} {ptolemy.kernel.util.IllegalActionException: An array token cannot be created from the expression '1.0'}}
 
+######################################################################
+####
+# 
 test ArrayToken-1.4 {Create an array of nil DoubleTokens} {
     set val0 [java::field ptolemy.data.Token NIL]
     set val1 [java::field ptolemy.data.Token NIL]
@@ -79,6 +88,9 @@ test ArrayToken-1.4 {Create an array of nil DoubleTokens} {
     $valToken toString
 } {{nil, nil}}
 
+######################################################################
+####
+# 
 test ArrayToken-1.5 {Create an array of DoubleTokens, first one nil} {
     set val0 [java::field ptolemy.data.Token NIL]
     set val1 [java::new ptolemy.data.DoubleToken 2.0]
@@ -88,6 +100,9 @@ test ArrayToken-1.5 {Create an array of DoubleTokens, first one nil} {
     $valToken toString
 } {{nil, 2.0}}
 
+######################################################################
+####
+#
 test ArrayToken-1.6 {Create an array of DoubleTokens, second one nil} {
     set val0 [java::new ptolemy.data.DoubleToken 2.0]
     set val1 [java::field ptolemy.data.Token NIL]
@@ -97,6 +112,9 @@ test ArrayToken-1.6 {Create an array of DoubleTokens, second one nil} {
     $valToken toString
 } {{2.0, nil}}
 
+######################################################################
+####
+# 
 test ArrayToken-1.7.1 {Create a nil ArrayToken} {
     set valToken [java::field ptolemy.data.Token NIL]
     set valToken2 [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
@@ -105,6 +123,9 @@ test ArrayToken-1.7.1 {Create a nil ArrayToken} {
 	[$valToken2 toString] [$valToken2 isNil]
 } {nil 1 {{}} 0}
 
+######################################################################
+####
+# 
 test ArrayToken-1.7.2 {Create a Double ArrayToken} {
     set val0 [java::new ptolemy.data.DoubleToken 2.0]
     set valToken [java::new {ptolemy.data.ArrayToken ptolemy.data.Token} \
@@ -125,6 +146,9 @@ test ArrayToken-2.0 {test add} {
     list [$tadd toString] [$tadd2 toString]
 } {{{5, 7, 9}} {{6, 7, 8}}}
 
+######################################################################
+####
+# 
 test ArrayToken-2.0.2 {test add with a nil} {
     set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2, nil}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{4, 5, 6}"]
@@ -134,6 +158,9 @@ test ArrayToken-2.0.2 {test add with a nil} {
     list [$tadd toString] [$tadd2 toString]
 } {{{5, 7, nil}} {{6, 7, nil}}}
 
+######################################################################
+####
+# 
 test ArrayToken-2.1 {test subtract} {
     set t1 [java::new {ptolemy.data.ArrayToken String} "{nil, 2, 3}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
@@ -143,6 +170,9 @@ test ArrayToken-2.1 {test subtract} {
     list [$tadd toString] [$tadd2 toString]
 } {{{nil, 0.5, -3.0}} {{nil, -3, -2}}}
 
+######################################################################
+####
+# 
 test ArrayToken-2.2 {test multiply} {
     set t1 [java::new {ptolemy.data.ArrayToken String} "{1, nil, 3}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
@@ -152,6 +182,9 @@ test ArrayToken-2.2 {test multiply} {
     list [$tadd toString] [$tadd2 toString]
 } {{{0.5, nil, 18.0}} {{5, nil, 15}}}
 
+######################################################################
+####
+#
 test ArrayToken-2.3 {test divide} {
     set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 3, 3}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
@@ -161,6 +194,9 @@ test ArrayToken-2.3 {test divide} {
     list [$tadd toString] [$tadd2 toString]
 } {{{2.0, 2.0, 0.5}} {{0, 0, 0}}}
 
+######################################################################
+####
+# 
 test ArrayToken-2.4 {test modulo} {
     set t1 [java::new {ptolemy.data.ArrayToken String} "{-1, 1, 5}"]
     set t2 [java::new {ptolemy.data.ArrayToken String} "{3.0, 3.0, -3.0}"]
@@ -214,6 +250,9 @@ test ArrayToken-3.2 {test isEqualTo and isCloseTo on an array of Doubles} {
 
 } {true true false true true false false}
 
+######################################################################
+####
+#
 test ArrayToken-3.3 {test isEqualTo on an array of Complexes} {
     set t1 [java::new {ptolemy.data.ArrayToken String} \
 	    "{0.5 - 10.0, 0.0 + 0.0, -10.0 + 10.0}"]
@@ -268,7 +307,9 @@ test ArrayToken-4.0 {test isCloseTo on an array of Doubles} {
 	    [$res4 toString] [$res5 toString] [$res6 toString]
 } {true false false true true false}
 
-
+######################################################################
+####
+#
 test ArrayToken-4.1 {test isCloseTo on an array of Complexes} {
     set epsilon 0.001
     set oldEpsilon [java::field ptolemy.math.Complex EPSILON]
@@ -295,7 +336,9 @@ test ArrayToken-4.1 {test isCloseTo on an array of Complexes} {
 	    [$res4 toString] [$res5 toString] [$res6 toString]
 } {true true false true true false}
 
-
+######################################################################
+####
+# 
 test ArrayToken-5.1 {Construct an array of doubles with a nil} {
     set t [java::new {ptolemy.data.ArrayToken String} "{1.0, nil, 2.0, NaN}"]
     set nilToken [$t getElement 1]
@@ -304,6 +347,9 @@ test ArrayToken-5.1 {Construct an array of doubles with a nil} {
 	[[$nilToken getType] toString]
 } {{{1.0, nil, 2.0, NaN}} nil double}
 
+######################################################################
+####
+# 
 test ArrayToken-5.2 {Construct an array of doubles with a nil as 1st element} {
     set t [java::new {ptolemy.data.ArrayToken String} "{nil, 2.0}"]
     set nilToken [$t getElement 0]
@@ -313,6 +359,9 @@ test ArrayToken-5.2 {Construct an array of doubles with a nil as 1st element} {
 
 } {{{nil, 2.0}} nil double}
 
+######################################################################
+####
+# 
 test ArrayToken-6.1 {Construct an array of ints with a nil} {
     set t [java::new {ptolemy.data.ArrayToken String} "{1, nil, 2}"]
     set nilToken [$t getElement 1]
@@ -322,7 +371,9 @@ test ArrayToken-6.1 {Construct an array of ints with a nil} {
 
 } {{{1, nil, 2}} nil int}
 
-
+######################################################################
+####
+# 
 test ArrayToken-6.2 {Construct an array of int with a nil as 1st element} {
     set t [java::new {ptolemy.data.ArrayToken String} "{nil, 2}"]
     set nilToken [$t getElement 0]
@@ -330,3 +381,64 @@ test ArrayToken-6.2 {Construct an array of int with a nil as 1st element} {
     list [$t toString] [$nilToken toString] \
 	[[$nilToken getType] toString]
 } {{{nil, 2}} nil int}
+
+######################################################################
+####
+# 
+test ArrayToken-7.0 {extract} {
+    set t [java::new {ptolemy.data.ArrayToken String} \
+	       "{\"red\",\"green\",\"blue\"}"]
+    set r1 [$t extract [java::new {ptolemy.data.ArrayToken String} \
+			    "{true, false, true}"]]
+    set r2 [$t extract [java::new {ptolemy.data.ArrayToken String} \
+			    "{2,0,1,1}"]]
+    list [$r1 toString] [$r2 toString]
+} {{{"red", "blue"}} {{"blue", "red", "green", "green"}}}
+
+######################################################################
+####
+# 
+test ArrayToken-7.1 {extract, wrong length of boolean array} {
+    # Uses 7.0 above
+    catch {$t extract [java::new {ptolemy.data.ArrayToken String} \
+			   "{true}"]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: When the argument is an array of booleans, it must have the same length as this array.}} 
+
+######################################################################
+####
+# 
+test ArrayToken-7.2 {extract, wrong type} {
+    # Uses 7.0 above
+    catch {$t extract [java::new {ptolemy.data.ArrayToken String} \
+			   "{1.0}"]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: The argument must be {boolean} or {int}.}} 
+
+######################################################################
+####
+# 
+test ArrayToken-8.0 {getElementPrototype} {
+    set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    [[$valToken getElementPrototype] getType] toString
+} {int}
+
+######################################################################
+####
+# 
+test ArrayToken-9.0 {one} {
+    set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    [$valToken one] toString
+} {{1, 1, 1}}
+
+
+######################################################################
+####
+# 
+test ArrayToken-9.0 {subarray} {
+    set t [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3, 4}"]
+    catch {$t subarray -1 1} errMsg
+    set r1 [$t subarray 5 3]
+    set r2 [$t subarray 2 2]
+    list $errMsg [$r1 toString] [$r2 toString]
+} {{ptolemy.kernel.util.IllegalActionException: index argument of subarray() must be non-negative.} {{}} {{3, 4}}}
