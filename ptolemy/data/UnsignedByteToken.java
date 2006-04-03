@@ -61,8 +61,8 @@ import ptolemy.math.Complex;
  @author Winthrop Williams, Steve Neuendorffer, Contributor: Christopher Hylands
  @version $Id$
  @since Ptolemy II 2.0
- @Pt.ProposedRating Green (cxh) ONE, ZERO
- @Pt.AcceptedRating Yellow (winthrop)
+ @Pt.ProposedRating Yellow (cxh) ONE, ZERO, nil Token
+ @Pt.AcceptedRating Red (winthrop)
  */
 public class UnsignedByteToken extends ScalarToken {
     /** Construct a token with byte 0.
@@ -106,6 +106,10 @@ public class UnsignedByteToken extends ScalarToken {
      *   be created from the given string.
      */
     public UnsignedByteToken(String init) throws IllegalActionException {
+        if (init == null || init.equals("nil")) {
+            throw new IllegalActionException(notSupportedNullNilStringMessage(
+                    "IntToken", init));
+        }
         try {
             // Note that Byte.parseByte performs signed conversion,
             // which is not really what we want.
@@ -150,15 +154,16 @@ public class UnsignedByteToken extends ScalarToken {
      *  UnsignedByteToken.  The units of the returned token will be
      *  the same as the units of the given token.  If the argument is
      *  already an instance of UnsignedByteToken, it is returned
-     *  without any change. Otherwise, if the argument is above
-     *  UnsignedByteToken in the type hierarchy or is incomparable
-     *  with UnsignedByteToken, an exception is thrown with a message
-     *  stating that either the conversion is not supported, or the
-     *  types are incomparable.  If none of the above conditions is
-     *  met, then the argument must be below UnsignedByteToken in the
-     *  type hierarchy.  However, not such types exist at this time,
-     *  so an exception is thrown with a message stating simply that
-     *  the conversion is not supported.
+     *  without any change.  If the argument is null or a nil token,
+     *  then {@link #NIL} is returned.  Otherwise, if the argument is
+     *  above UnsignedByteToken in the type hierarchy or is
+     *  incomparable with UnsignedByteToken, an exception is thrown
+     *  with a message stating that either the conversion is not
+     *  supported, or the types are incomparable.  If none of the
+     *  above conditions is met, then the argument must be below
+     *  UnsignedByteToken in the type hierarchy.  However, not such
+     *  types exist at this time, so an exception is thrown with a
+     *  message stating simply that the conversion is not supported.
      *  @param token The token to be converted to a UnsignedByteToken.
      *  @return A UnsignedByteToken.
      *  @exception IllegalActionException If the conversion
@@ -170,6 +175,9 @@ public class UnsignedByteToken extends ScalarToken {
             return (UnsignedByteToken) token;
         }
 
+        if (token == null || token.isNil()) {
+            return NilToken.NIL;
+        }
         int compare = TypeLattice.compare(BaseType.UNSIGNED_BYTE, token);
 
         if ((compare == CPO.LOWER) || (compare == CPO.INCOMPARABLE)) {
@@ -192,11 +200,16 @@ public class UnsignedByteToken extends ScalarToken {
      *  and it has the same value as this token.
      *  @param object An instance of Object.
      *  @return True if the argument is an instance of
-     *  UnsignedByteToken with the same value.
+     *  UnsignedByteToken with the same value.  If either this object
+     *  or the argument is a nil Token, return false.
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
         if (object.getClass() != getClass()) {
+            return false;
+        }
+
+        if (isNil() || ((UnsignedByteToken) object).isNil()) {
             return false;
         }
 
@@ -229,13 +242,28 @@ public class UnsignedByteToken extends ScalarToken {
         return unsignedConvert(_value);
     }
 
+    /** Return true if the token is nil, (aka null or missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token is the {@link #NIL} token.
+     */
+    public boolean isNil() {
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        // Can't use equals() here, or we'll go into an infinite loop.
+        return this == UnsignedByteToken.NIL;
+    }
+
     /** Returns a token representing the result of shifting the bits
      *  of this token towards the most significant bit, filling the
      *  least significant bits with zeros.
      *  @param bits The number of bits to shift.
      *  @return The left shift.
+     *  If this token is nil, then {@link #NIL} is returned.
      */
     public ScalarToken leftShift(int bits) {
+        if (isNil()) {
+            return IntToken.NIL;
+        }
         return new UnsignedByteToken(_value << bits);
     }
 
@@ -246,8 +274,12 @@ public class UnsignedByteToken extends ScalarToken {
      *  sign of the value.
      *  @param bits The number of bits to shift.
      *  @return The logical right shift.
+     *  If this token is nil, then {@link #NIL} is returned.
      */
     public ScalarToken logicalRightShift(int bits) {
+        if (isNil()) {
+            return IntToken.NIL;
+        }
         return new UnsignedByteToken(_value >>> bits);
     }
 
@@ -271,8 +303,12 @@ public class UnsignedByteToken extends ScalarToken {
      *  the sign of the result.
      *  @param bits The number of bits to shift.
      *  @return The right shift.
+     *  If this token is nil, then {@link #NIL} is returned.
      */
     public ScalarToken rightShift(int bits) {
+        if (isNil()) {
+            return IntToken.NIL;
+        }
         // Note that this performs a logicalRightShift, since we are
         // interpreting the byte to always be unsigned.
         return new UnsignedByteToken(_value >>> bits);
@@ -291,6 +327,11 @@ public class UnsignedByteToken extends ScalarToken {
 
         if (!_isUnitless()) {
             unitString = " * " + unitsString();
+        }
+
+        if (isNil()) {
+            // FIXME: what about units?
+            return super.toString();
         }
 
         return Integer.toString(unsignedConvert(_value)) + "ub" + unitString;
@@ -322,6 +363,15 @@ public class UnsignedByteToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variablesds                ////
+
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  The toString() method on a nil token returns the string "nil".
+     */
+    public static final UnsignedByteToken NIL = new UnsignedByteToken();
 
     /** A UnsignedByteToken with the value 1. */
     public static final UnsignedByteToken ONE = new UnsignedByteToken(1);
