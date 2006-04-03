@@ -97,9 +97,9 @@ test EventToken-2.3 {Test divideReverse} {
 test EventToken-2.4 {Test equals} {
     set p1 [java::new ptolemy.data.EventToken]
     set p2 [java::new ptolemy.data.EventToken]
-    set p3 [java::new ptolemy.data.IntEventToken]
+    set p3 [java::new ptolemy.data.IntToken]
     list [$p1 equals $p1] [$p1 equals $p2] [$p1 equals $p3]
-} {1 1 0} {Known failure}
+} {1 1 0}
 
 ######################################################################
 ####
