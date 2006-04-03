@@ -162,6 +162,8 @@ public class CompositeActorSimpleApplication {
      *  We then start the model running.
      *
      *  @param model The model to execute.
+     *  @exception IllegalActionException If the model contains Placeables.
+     *  or does not have a manager.   
      *  @see ptolemy.actor.Manager#startRun()
      */
     public synchronized void startRun(CompositeActor model)
@@ -241,6 +243,7 @@ public class CompositeActorSimpleApplication {
      *  </ul>
      *  Otherwise, the argument is ignored and false is returned.
      *
+     *  @param arg The argument to be parse.
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
@@ -300,6 +303,7 @@ public class CompositeActorSimpleApplication {
     }
 
     /** Parse the command-line arguments.
+     *  @param args The arguments to be parsed.
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
@@ -407,7 +411,7 @@ public class CompositeActorSimpleApplication {
     /** The form of the command line. */
     protected String _commandTemplate = "ptolemy [ options ]";
 
-    /** The list of all the models */
+    /** The list of all the models. */
     protected List _models = new LinkedList();
 
     /** The count of currently open windows. */

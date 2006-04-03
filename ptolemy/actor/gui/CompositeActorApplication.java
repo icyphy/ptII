@@ -278,6 +278,7 @@ public class CompositeActorApplication {
      *  </ul>
      *  Otherwise, the argument is ignored and false is returned.
      *
+     *  @param arg The argument to be parse.d
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
@@ -336,6 +337,7 @@ public class CompositeActorApplication {
     }
 
     /** Parse the command-line arguments.
+     *  @param args The arguments to be parsed.
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
@@ -443,7 +445,7 @@ public class CompositeActorApplication {
     /** The form of the command line. */
     protected String _commandTemplate = "ptolemy [ options ]";
 
-    /** The list of all the models */
+    /** The list of all the models. */
     protected List _models = new LinkedList();
 
     /** The count of currently open windows. */

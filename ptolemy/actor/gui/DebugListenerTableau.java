@@ -95,6 +95,7 @@ public class DebugListenerTableau extends Tableau {
     /** Return the object that this tableau is listening to, or null
      *  if none has been set.
      *  @return The current debuggable.
+     *  @see #setDebuggable(Debuggable)
      */
     public Debuggable getDebuggable() {
         return _debug;
@@ -105,6 +106,7 @@ public class DebugListenerTableau extends Tableau {
      *  listening to an object, then first stop listening to that
      *  object.  Set the title of the window to show name of object.
      *  @param debuggable The object to listen to.
+     *  @see #getDebuggable()
      */
     public void setDebuggable(Debuggable debuggable) {
         if (_debug != null) {

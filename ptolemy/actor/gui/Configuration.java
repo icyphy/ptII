@@ -339,6 +339,7 @@ public class Configuration extends CompositeEntity {
      *  This searches all instances of PtolemyEffigy deeply contained by
      *  the directory, and returns the first one it encounters
      *  that is an effigy for the specified model.
+     *  @param model The Ptolemy model.
      *  @return The effigy for the model, or null if none is found.
      */
     public PtolemyEffigy getEffigy(NamedObj model) {

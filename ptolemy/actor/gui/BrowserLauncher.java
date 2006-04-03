@@ -110,7 +110,11 @@ public class BrowserLauncher {
      *  http://www.eecs.berkeley.edu
      *  <pre>
      *  java -classpath $PTII ptolemy.actor.gui.BrowserLauncher http://www.eecs.berkeley.edu
-     *  <pre>
+     *  </pre>
+     *  @param args An array of command line arguments.  The first
+     *  argument names a URL to be opened.  If there is no first
+     *  argument, then open http://ptolemy.eecs.berkeley.edu.  Second
+     *  and subsequent arguments are ignored.
      */
     public static void main(String[] args) throws Exception {
         if (args.length >= 1) {

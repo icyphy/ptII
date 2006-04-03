@@ -56,6 +56,10 @@ public class ConfigurationEffigy extends PtolemyEffigy {
     /** Create a new effigy in the given directory with the given name.
      *  @param container The directory that contains this effigy.
      *  @param name The name of this effigy.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public ConfigurationEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
