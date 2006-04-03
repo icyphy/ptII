@@ -151,7 +151,7 @@ public class IntToken extends ScalarToken {
     /** Return true if the argument's class is IntToken and it has the
      *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is a DoubleToken with the same
+     *  @return True if the argument is an IntToken with the same
      *  value. If either this object or the argument is a nil Token, return
      *  false.
      */
@@ -210,8 +210,12 @@ public class IntToken extends ScalarToken {
      *  least significant bits with zeros.
      *  @param bits The number of bits to shift.
      *  @return The left shift.
+     *  If this token is nil, then {@link #NIL} is returned.
      */
     public ScalarToken leftShift(int bits) {
+        if (isNil()) {
+            return IntToken.NIL;
+        }
         return new IntToken(_value << bits);
     }
 
@@ -222,8 +226,12 @@ public class IntToken extends ScalarToken {
      *  sign of the value.
      *  @param bits The number of bits to shift.
      *  @return The logical right shift.
+     *  If this token is nil, then {@link #NIL} is returned.
      */
     public ScalarToken logicalRightShift(int bits) {
+        if (isNil()) {
+            return IntToken.NIL;
+        }
         return new IntToken(_value >>> bits);
     }
 
@@ -247,8 +255,12 @@ public class IntToken extends ScalarToken {
      *  the sign of the result.
      *  @param bits The number of bits to shift.
      *  @return The right shift.
+     *  If this token is nil, then {@link #NIL} is returned.
      */
     public ScalarToken rightShift(int bits) {
+        if (isNil()) {
+            return IntToken.NIL;
+        }
         return new IntToken(_value >> bits);
     }
 
