@@ -73,8 +73,8 @@ test BooleanMatrixToken-1.2 {Create a non-empty 1-D matrix} {
 # 
 test BooleanMatrixToken-1.3 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.BooleanMatrixToken String} "\[true, true; false, false\]"]
-    $p toString
-} {[true, true; false, false]}
+    list [$p toString] [$p getElementAt 0 0]
+} {{[true, true; false, false]} 1}
 
 ######################################################################
 ####
@@ -83,6 +83,22 @@ test BooleanMatrixToken-2.0 {Create a non-empty instance and query its value} {
     set res1 [$p booleanMatrix]
     list [jdkPrintArray [$res1 get 0]] [jdkPrintArray [$res1 get 1]]
 } {{1 1} {0 0}}
+
+######################################################################
+####
+# 
+test BooleanMatrixToken-2.5 {Test additive identity} {
+    set token [$p zero] 
+    list [$token toString]
+} {{[false, false; false, false]}}
+
+######################################################################
+####
+# 
+test BooleanMatrixToken-2.5.1 {Test oneRight} {
+    set token [$p oneRight] 
+    list [$token toString]
+} {{[true, false; false, true]}}
 
 ######################################################################
 ####
