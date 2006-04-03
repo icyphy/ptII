@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
 
 /**
  A tableau that displays Java Virtual Machine information such
- as the version number and other properties
+ as the version number and other properties.
 
  @author Christopher Hylands
  @version $Id$
