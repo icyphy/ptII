@@ -65,8 +65,9 @@ test StringToken-1.6 {Don't create a nil Token from a String} {
 ######################################################################
 ####
 # 
-test StringToken-1.7 {Create a nil Token from a String} {
+test StringToken-1.7 {Create a String token with value "nil" from a String} {
     set p [java::new {ptolemy.data.StringToken String} "nil"]
+    # Note this is not a nil token
     list [$p toString] [$p stringValue] [$p isNil]
 } {{"nil"} nil 0}
 
@@ -246,7 +247,17 @@ test StringToken-5.0 {Test equals} {
 ######################################################################
 ####
 # 
-test StringToken-5.0 {Test hashCode} {
+test StringToken-5.2 {Test equals on a nil} {
+    set nil [java::field ptolemy.data.StringToken NIL]
+    set t1 [java::new {ptolemy.data.StringToken} 3]
+
+    list [$nil equals $nil] [$t1 equals $nil] [$nil equals $t]
+} {0 0 0}
+
+######################################################################
+####
+# 
+test StringToken-5.2 {Test hashCode} {
     set t1 [java::new {ptolemy.data.StringToken} 3]
     set t2 [java::new {ptolemy.data.StringToken} 3]
     set t3 [java::new {ptolemy.data.StringToken} 5]
@@ -330,7 +341,33 @@ test StringToken-13.7 {Test convert from StringToken} {
     catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
     list $msg
 } {{"One"}}
-    
+
+test StringToken-13.8 {test convert from a null and a nil} {
+    set nil [java::field ptolemy.data.StringToken NIL]
+    set r1 [java::call ptolemy.data.StringToken convert $nil]
+    set r2 [java::call ptolemy.data.StringToken convert [java::null]]
+    list [$r1 toString] [$r1 isNil] \
+	[$r2 toString] [$r2 isNil]
+} {nil 1 nil 1}    
+
+test StringToken-13.9 {Test convert from Token} {
+    set t [java::new ptolemy.data.Token]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token 'present' to the type string because the type of the token is higher or incomparable with the given type.}}
+
+
+
+test StringToken-13.9 {Test convert from an AWTImageToken} {
+    set t [java::new ptolemy.data.AWTImageToken [java::null]]
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.AWTImageToken '{type="class ptolemy.data.AWTImageToken" width="-1" height="-1"}' to the type string because the type of the token is higher or incomparable with the given type.}}
+
+
 
 test StringToken-14.1 {Test embedded double quotes} {
     set tok1 [java::new {ptolemy.data.StringToken} {has embedded "}]
