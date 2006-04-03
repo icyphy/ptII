@@ -68,7 +68,7 @@ import ptolemy.math.FixPoint;
  @author Yuhong Xiong, Mudit Goel, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
+2 @Pt.ProposedRating Green (neuendor)
  @Pt.AcceptedRating Green (yuhong)
  */
 public abstract class ScalarToken extends Token implements
@@ -702,7 +702,7 @@ public abstract class ScalarToken extends Token implements
      */
     public ScalarToken leftShift(int bits) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("leftShift", this,
-                this));
+                new IntToken(bits) ));
     }
 
     /** Returns a token representing the result of shifting the bits
@@ -719,7 +719,7 @@ public abstract class ScalarToken extends Token implements
     public ScalarToken logicalRightShift(int bits)
             throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage(
-                "logicalRightShift", this, this));
+                "logicalRightShift", this, new IntToken(bits)));
     }
 
     /** Return the value of this token as a long integer.
@@ -966,7 +966,7 @@ public abstract class ScalarToken extends Token implements
      */
     public ScalarToken rightShift(int bits) throws IllegalActionException {
         throw new IllegalActionException(notSupportedMessage("rightShift",
-                this, this));
+                this, new IntToken(bits)));
     }
 
     /** Set the unit category this token belongs to.  This method is
