@@ -48,8 +48,8 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test EventToken-1.0 {Create an instance} {
     set p [java::new ptolemy.data.EventToken]
-    $p toString
-} {present}
+    list [$p toString] [[$p getType] toString]
+} {present event}
 
 ######################################################################
 ####
