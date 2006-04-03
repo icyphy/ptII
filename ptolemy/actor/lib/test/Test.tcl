@@ -282,6 +282,49 @@ test Test-2.1 {Test the Test actor in an SDF model with two ramps} {
 } {{{{0.0, 0.0}, {1.0, 2.0}, {2.0, 4.0}, {3.0, 6.0}, {4.0, 8.0}}}}
 
 
+######################################################################
+#### 
+#
+test Test-2.2 {Test the Test actor in an SDF model with a const that produces an array} {
+    set e22 [sdfModel 2]
+    set const [java::new ptolemy.actor.lib.Const $e22 const]
+    set test [java::new ptolemy.actor.lib.Test $e22 test]
+    $e22 connect \
+	[java::field [java::cast ptolemy.actor.lib.Source $const] output] \
+	[java::field [java::cast ptolemy.actor.lib.Sink $test] input]
+
+
+    set value [getParameter $const value]
+    $value setToken [java::new ptolemy.data.ArrayToken "{1.0, 2.0, 3.0}"]
+
+    set trainingMode [getParameter $test trainingMode]
+    $trainingMode setExpression "true" 
+
+    puts " The next command will produce a warning about training mode,"
+    puts "   which may be ignored."
+    [$e22 getManager] execute
+
+    set trainingMode [getParameter $test trainingMode]
+    $trainingMode setExpression "false" 
+
+    [$e22 getManager] execute
+    set correctValues [getParameter $test correctValues]
+    list [$correctValues getExpression]
+} {{{{{1.0, 2.0, 3.0}}, {{1.0, 2.0, 3.0}}}}}
+
+
+######################################################################
+#### 
+#
+test Test-2.2.2 {Fail the array test} {
+    # Uses 2.2 above
+    set value [getParameter $const value]
+    $value setToken [java::new ptolemy.data.ArrayToken "{1.0, 42.0, 3.0}"]
+    catch {[$e22 getManager] execute} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
+Value was: {1.0, 42.0, 3.0}. Should have been: {1.0, 2.0, 3.0}
+  in .top.test}}
 
 # Reset the isRunningNightlyBuild property
 java::call System setProperty "ptolemy.ptII.isRunningNightlyBuild" \

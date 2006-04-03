@@ -347,7 +347,12 @@ public class NonStrictTest extends Sink {
 
             if (width == 1) {
                 for (int i = 0; i < newValues.length; i++) {
-                    newTokens[i] = (Token) newValues[i];
+                    if (newValues[i] instanceof Token []) {
+                        // Handle width of 1, ArrayToken
+                        newTokens[i] = new ArrayToken((Token [])newValues[i]);
+                    } else {
+                        newTokens[i] = (Token) newValues[i];
+                    }
                 }
             } else {
                 for (int i = 0; i < newValues.length; i++) {
