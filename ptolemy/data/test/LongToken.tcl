@@ -465,9 +465,10 @@ test LongToken-17.0 {logicalRightShift} {
 ######################################################################
 ####
 # 
-test LongToken-18.0 {rightShift} {
+test LongToken-19.0 {truncatedUnsignedByteValue} {
     # Uses 16.0 above
-    list [[$p rightShift 1] toString] \
-	[[$p2 rightShift 1] toString] \
-	[[$nil rightShift 1] isNil]
-} {1L -1L 1}
+    catch {[[$p2 truncatedUnsignedByteValue] toString]} errMsg
+    list [[$p truncatedUnsignedByteValue] toString] \
+	$errMsg \
+	[[$nil truncatedUnsignedByteValue] isNil]
+} {2ub {ptolemy.kernel.util.IllegalActionException: Value cannot be represented as an unsigned Byte} 1}
