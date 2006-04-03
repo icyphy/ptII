@@ -43,12 +43,14 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-#test StringToken-1.5 {Create a nil Token from a null token} {
-#    set p [java::new {ptolemy.data.StringToken ptolemy.data.Token} [java::null]]
-#    set p2 [java::new ptolemy.data.Token [java::null]]
-#    set p3 [java::new ptolemy.data.StringToken $p2]
-#    list [$p toString] [$p3 toString] [$p isNil] [$p3 isNil]
-#} {nil nil 1 1}
+test StringToken-1.5 {Create a nil Token from a null token} {
+    set nil [java::field ptolemy.data.StringToken NIL]
+    set p2 [java::new ptolemy.data.StringToken "nil"]
+    set p3 [java::new ptolemy.data.StringToken [java::null]]
+    list [$nil toString] [$nil stringValue] [$nil isNil] \
+	[$p2 toString] [$p2 stringValue] [$p2 isNil] \
+	[$p2 toString] [$p3 stringValue] [$p3 isNil]
+} {nil nil 1 {"nil"} nil 0 {"nil"} {} 0}
 
 ######################################################################
 ####
