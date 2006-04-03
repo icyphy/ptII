@@ -150,11 +150,13 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                             portNumber++;
                         }
                     }
-                    // If the refinement's local director is HDFDirector
-                    // or HDFFSMDirector, set the firings per global iteration
-                    // of the refinemenet the same as the firings per global
-                    // iteration of the container. This way we can relay the
-                    // information of firings per global iteration to the inside.
+                    // If the refinement's local director is
+                    // HDFDirector or HDFFSMDirector, set the firings
+                    // per global iteration of the refinement the same
+                    // as the firings per global iteration of the
+                    // container. This way we can relay the
+                    // information of firings per global iteration to
+                    // the inside.
                     if (actors[0] instanceof CompositeActor) {
                         ptolemy.actor.Director localDirector = actors[0]
                                 .getDirector();
@@ -235,7 +237,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 .append(containerHelper
                         .processCode("if ($actorSymbol(fired)) {\n"));
         // generate code for non-preemptive transition
-        code.append("\n/* Nonpreepmtive Transition */\n\n");
+        code.append("\n/* Nonpreemptive Transition */\n\n");
         controllerHelper.generateTransitionCode(code,
                 new TransitionRetriever() {
                     public Iterator retrieveTransitions(State state) {
