@@ -696,6 +696,7 @@ void funcIf() #void :
 {}
 {
    (
+
            logicalOr() ( <QUESTION> logicalOr() <COLON> logicalOr() )?
    ) #PtFunctionalIfNode(>1)
 }
@@ -1151,6 +1152,9 @@ String tidied, x;
   |   LOOKAHEAD(<OPENUNION>)
       unionConstruct()
 
+  |   LOOKAHEAD( <OPENBRACE> <CLOSEBRACE>)
+      nilArrayConstruct()
+
   |   LOOKAHEAD( <OPENBRACE> )
       arrayConstruct()
 
@@ -1301,9 +1305,16 @@ void arrayConstruct() #PtArrayConstructNode :
 {
     <OPENBRACE>
     funcIf()
-    (
-      <COMMA>
+    (<COMMA>
       funcIf()
-    )*
+      )*
     <CLOSEBRACE>
+}
+
+void nilArrayConstruct() #PtArrayConstructNode :
+{
+}
+{
+    <OPENBRACE>
+     <CLOSEBRACE>
 }

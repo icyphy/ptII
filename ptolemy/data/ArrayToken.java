@@ -49,7 +49,7 @@ import ptolemy.kernel.util.IllegalActionException;
  to the least upper bound of their input types and zero length array
  tokens cannot be created.
 
- @author Yuhong Xiong, Steve Neuendorffer
+ @author Yuhong Xiong, Steve Neuendorffer, Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Yellow (cxh)
@@ -72,10 +72,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         // _initialize() for the benefit of the code generator.
         // Otherwise type inference has to propagate through the
         // _initialize method correctly, which is hard.
-        if (value.length == 0) {
-            throw new IllegalActionException("The "
-                    + "length of the specified array is zero.");
-        }
 
         Type elementType = null;
         int length = value.length;
@@ -90,11 +86,15 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             nonNilIndex++;
         }
         if (elementType == null) {
-            // Did not find a non-nil element, use the 0th.
-            nonNilIndex = 0;
-            elementType = value[0].getType();
-            _elementPrototype = value[0];
-
+            if (value.length > 0) {
+                // Did not find a non-nil element, use the 0th.
+                nonNilIndex = 0;
+                elementType = value[0].getType();
+                _elementPrototype = value[0];
+            } else {
+                elementType = BaseType.NIL;
+                _elementPrototype = Token.NIL;
+            }
         }
 
         // It would be nice to have this, but the Code generator cannot
@@ -482,6 +482,17 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         return _elementPrototype.hashCode();
     }
 
+    /** Return true if the token is nil, (aka null or missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token is the {@link #NIL} token.
+     */
+    public boolean isNil() {
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        // Can't use equals() here, or we'll go into an infinite loop.
+        return this == ArrayToken.NIL;
+    }
+
     /** Return the length of the contained token array.
      *  @return The length of the contained token array.
      */
@@ -597,6 +608,24 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+ 
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     */
+    public static final ArrayToken NIL;
+    static {
+        try { 
+            NIL = new ArrayToken(new Token[0]);
+        } catch (IllegalActionException ex) {
+            throw new ExceptionInInitializerError(ex);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Return a new token whose value is the value of the argument
@@ -692,6 +721,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected BooleanToken _isEqualTo(Token token)
             throws IllegalActionException {
+        if (isNil() || token.isNil()) {
+            return BooleanToken.FALSE;
+        }
+
         _checkArgumentLength(token);
 
         ArrayToken rightArray = (ArrayToken) token;
@@ -793,11 +826,6 @@ public class ArrayToken extends AbstractNotConvertibleToken {
 
     // initialize this token using the specified array.
     private void _initialize(Token[] value) throws IllegalActionException {
-        if (value.length == 0) {
-            throw new IllegalActionException("The "
-                    + "length of the specified array is zero.");
-        }
-
         Type elementType = null;
         int length = value.length;
         int nonNilIndex = 0;
@@ -811,11 +839,15 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             nonNilIndex++;
         }
         if (elementType == null) {
-            // Did not find a non-nil element, use the 0th.
-            nonNilIndex = 0;
-            elementType = value[0].getType();
-            _elementPrototype = value[0];
-
+            if (value.length > 0) {
+                // Did not find a non-nil element, use the 0th.
+                nonNilIndex = 0;
+                elementType = value[0].getType();
+                _elementPrototype = value[0];
+            } else {
+                elementType = BaseType.NIL;
+                _elementPrototype = Token.NIL;
+            }
         }
 
         // It would be nice to have this, but the Code generator cannot

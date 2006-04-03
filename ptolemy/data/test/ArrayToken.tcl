@@ -60,12 +60,12 @@ test ArrayToken-1.1 {Create an int array using expression} {
     $valToken toString
 } {{1, 2, 3}}
 
-test ArrayToken-1.2 {trigger exception when creating empty array using wrong constructor} {
+test ArrayToken-1.2 {ArrayTokens of length 0 are supported} {
+    # This used to trigger an exception when creating empty array
     set valArray [java::new {ptolemy.data.Token[]} 0 ]
-    catch {java::new {ptolemy.data.ArrayToken} $valArray} msg
-
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The length of the specified array is zero.}}
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+    list [$valToken toString] [$valToken isNil]
+} {{{}} 0}
 
 ######################################################################
 ####
@@ -442,3 +442,18 @@ test ArrayToken-9.0 {subarray} {
     set r2 [$t subarray 2 2]
     list $errMsg [$r1 toString] [$r2 toString]
 } {{ptolemy.kernel.util.IllegalActionException: index argument of subarray() must be non-negative.} {{}} {{3, 4}}}
+
+######################################################################
+####
+# 
+test ArrayToken-10.0 {Construct an ArrayToken with 0 elements: a nil ArrayToken} { 
+    set t [java::new {ptolemy.data.ArrayToken String} "{}"]
+    list [$t toString] [[$t getType] toString] [[$t getElementType] toString] \
+	[[$t zero] toString] [$t isNil]
+} {{{}} {{niltype}} niltype {{}} 0}
+
+test ArrayToken-10.1 {nil ArrayToken equals methods} {
+    set t [java::new {ptolemy.data.ArrayToken String} "{}"]
+    list [$t equals $t] [$t length] [[$t isEqualTo $t] toString] [$t isNil]
+} {1 0 true 0}
+
