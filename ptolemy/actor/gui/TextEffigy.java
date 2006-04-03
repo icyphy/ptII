@@ -69,6 +69,10 @@ public class TextEffigy extends Effigy {
     /** Create a new effigy in the given directory with the given name.
      *  @param container The directory that contains this effigy.
      *  @param name The name of this effigy.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public TextEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -80,6 +84,7 @@ public class TextEffigy extends Effigy {
 
     /** Return the document that this is an effigy of.
      *  @return The document, or null if none has been set.
+     *  @see #setDocument(Document)
      */
     public Document getDocument() {
         return _doc;
@@ -218,6 +223,7 @@ public class TextEffigy extends Effigy {
 
     /** Set the document that this is an effigy of.
      *  @param document The document
+     *  @see #getDocument()
      */
     public void setDocument(Document document) {
         _doc = document;

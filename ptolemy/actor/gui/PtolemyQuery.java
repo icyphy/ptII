@@ -728,6 +728,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  instance of Parameter and it is in string mode, then a light
      *  blue is returned.
      *  @param object The object to be edited.
+     *  @return the preferred background color.
      */
     public static Color preferredBackgroundColor(Object object) {
         Color background = Color.white;
@@ -745,6 +746,7 @@ public class PtolemyQuery extends Query implements QueryListener,
      *  object.  This returns Color.black, but in the future this might
      *  be changed to use color for some informative purpose.
      *  @param object The object to be edited.
+     *  @return the preferred foreground color.
      */
     public static Color preferredForegroundColor(Object object) {
         Color foreground = Color.black;

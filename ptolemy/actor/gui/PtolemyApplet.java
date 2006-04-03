@@ -363,6 +363,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  is also created.  Derived classes may override this method to add
      *  additional controls, or to create a panel with a different layout.
      *  @param numberOfButtons How many buttons to create.
+     *  @return The run control panel.
      *  @deprecated Use the <i>control</i> applet parameter.
      */
     protected JPanel _createRunControls(int numberOfButtons) {

@@ -147,7 +147,8 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     }
 
     /** Return the target.
-     * @return The target.
+     *  @return The target.
+     *  @see #setTarget(Entity)
      */
     public Entity getTarget() {
         return _target;
@@ -181,6 +182,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
 
     /** Set the target of this dialog.
      * @param entity Target of this dialog.
+     *  @see #getTarget()
      */
     public void setTarget(Entity entity) {
         _target = entity;
@@ -233,10 +235,10 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
     }
 
     /** Set the boolean that determines if the GUI has a change that has not
-     *  applied to the system
-     * @param b True if the GUI has a change that has not been applied.
+     *  applied to the system.
+     * @param dirty True if the GUI has a change that has not been applied.
      */
-    protected void _setDirty(boolean b) {
+    protected void _setDirty(boolean dirty) {
         _dirty = b;
     }
 

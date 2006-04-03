@@ -279,8 +279,8 @@ public class PlotTableauFrame extends TableauFrame {
         }
     }
 
-    /** Write the plot to the specified file in PlotML syntax
-     *  @param file The file to write to.
+    /** Write the plot to the specified file in PlotML syntax.
+     *  @param file The file to which to write.
      *  @exception IOException If the write fails.
      */
     protected void _writeFile(File file) throws IOException {

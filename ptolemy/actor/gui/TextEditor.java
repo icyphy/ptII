@@ -115,6 +115,7 @@ public class TextEditor extends TableauFrame implements DocumentListener {
 
     /** Get the background color.
      *  @return The background color of the scroll pane.
+     *  @see #setBackground(Color)
      */
     public Color getBackground() {
         return _scrollPane.getBackground();
@@ -142,6 +143,7 @@ public class TextEditor extends TableauFrame implements DocumentListener {
     /** Set background color.  This overrides the base class to set the
      *  background of contained scroll pane and text area.
      *  @param background The background color.
+     *  @see #getBackground()
      */
     public void setBackground(Color background) {
         super.setBackground(background);

@@ -183,6 +183,7 @@ public class TableauFrame extends Top {
 
     /** Get the tableau associated with this frame.
      *  @return The tableau associated with this frame.
+     *  @see #setTableau(Tableau)
      */
     public Tableau getTableau() {
         return _tableau;
@@ -223,6 +224,7 @@ public class TableauFrame extends Top {
 
     /** Set the tableau associated with this frame.
      *  @param tableau The tableau associated with this frame.
+     *  @see #getTableau()
      */
     public void setTableau(Tableau tableau) {
         _tableau = tableau;
@@ -521,6 +523,8 @@ public class TableauFrame extends Top {
      *   tableau.
      *  @param file The file to write to.
      *  @return True if it is OK to write the model to the file.
+     *  @exception MalformedURLException  If the file cannot be converted
+     *  to a URL.
      */
     protected boolean _confirmFile(Entity model, File file)
             throws MalformedURLException {
@@ -905,7 +909,7 @@ public class TableauFrame extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The initial filename to use in the SaveAs dialog */
+    /** The initial filename to use in the SaveAs dialog. */
     protected String _initialSaveAsFileName = null;
 
     /** The view menu. Note that this is only created if there are multiple
