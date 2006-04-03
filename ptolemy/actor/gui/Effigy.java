@@ -146,6 +146,7 @@ public class Effigy extends CompositeEntity {
      *  the title of all contained Tableaux to the value of the parameter;
      *  if the argument is the <i>uri</i> parameter, then check to see
      *  whether it is writable, and call setModifiable() appropriately.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeChanged(Attribute attribute)
@@ -225,8 +226,8 @@ public class Effigy extends CompositeEntity {
      *  used to create visual renditions of or editors for the
      *  associated model.  It can be used to find out what sorts of
      *  views are available for the model.
-     *  @see #setTableauFactory(TableauFactory)
      *  @return A tableau factory offering multiple views.
+     *  @see #setTableauFactory(TableauFactory)
      */
     public TableauFactory getTableauFactory() {
         return _factory;
@@ -420,14 +421,16 @@ public class Effigy extends CompositeEntity {
     /** Set the effigy to be a system effigy if the given flag is true.
      *  System effigies are not removed automatically if they have no
      *  tableaux.
+     *  @param isSystemEffigy True if this is to be a system effigy.
      */
-    public void setSystemEffigy(boolean flag) {
-        _isSystemEffigy = flag;
+    public void setSystemEffigy(boolean isSystemEffigy) {
+        _isSystemEffigy = isSystemEffigy;
     }
 
     /** Specify a tableau factory that offers multiple views of this effigy.
      *  This can be used by a contained tableau to set up a View menu.
      *  @param factory A tableau factory offering multiple views.
+     *  @see #getTableauFactory()
      */
     public void setTableauFactory(TableauFactory factory) {
         _factory = factory;
