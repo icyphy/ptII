@@ -278,7 +278,7 @@ public class CompositeActorApplication {
      *  </ul>
      *  Otherwise, the argument is ignored and false is returned.
      *
-     *  @param arg The argument to be parse.d
+     *  @param arg The argument to be parse.
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
