@@ -87,10 +87,17 @@ test LongToken-1.5 {Create a nil Token from a null token} {
 ####
 # 
 test LongToken-1.6 {Create a nil Token from an String} {
-    catch {java::new {ptolemy.data.DoubleToken String} nil} errMsg
+    catch {java::new {ptolemy.data.LongeToken String} nil} errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with DoubleToken("nil") is not supported.  Use Token.NIL instead.}}
 
+
+######################################################################
+####
+# 
+test LongToken-1.7 {nil toString} {
+    list [[java::field ptolemy.data.LongToken NIL] toString]
+} {nil}
 
 ######################################################################
 ####
