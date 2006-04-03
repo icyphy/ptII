@@ -459,6 +459,9 @@ test PetiteToken-13.0 {Test convert from BooleanToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.BooleanToken 'false' to the type petite.}}
 
+######################################################################
+####
+# 
 test PetiteToken-13.1 {Test convert from UnsignedByteToken} {
     set t [java::new {ptolemy.data.UnsignedByteToken byte} 1]
     set msg {}
@@ -467,6 +470,9 @@ test PetiteToken-13.1 {Test convert from UnsignedByteToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.UnsignedByteToken '1ub' to the type petite.}}
 
+######################################################################
+####
+# 
 test PetiteToken-13.2 {Test convert from ComplexToken} {
     set o [java::new {ptolemy.math.Complex} 1.0 1.0]
     set t [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $o]
@@ -476,6 +482,9 @@ test PetiteToken-13.2 {Test convert from ComplexToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '1.0 + 1.0i' to the type petite.}}
 
+######################################################################
+####
+# 
 test PetiteToken-13.3 {Test convert from PetiteToken} {
     set t [java::new {ptolemy.data.PetiteToken double} 1.0]
     set msg {}
@@ -484,6 +493,9 @@ test PetiteToken-13.3 {Test convert from PetiteToken} {
     list $msg
 } {1.0p}
 
+######################################################################
+####
+# 
 test PetiteToken-13.4 {Test convert from FixToken} {
     set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
     set msg {}
@@ -492,6 +504,9 @@ test PetiteToken-13.4 {Test convert from FixToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(1.0,8,4)' to the type petite.}}
 
+######################################################################
+####
+# 
 test PetiteToken-13.5 {Test convert from IntToken} {
     set t [java::new {ptolemy.data.IntToken int} -1]
     set msg {}
@@ -500,6 +515,9 @@ test PetiteToken-13.5 {Test convert from IntToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '-1' to the type petite.}}
 
+######################################################################
+####
+# 
 test PetiteToken-13.6 {Test convert from LongToken} {
     set t [java::new {ptolemy.data.LongToken long} 1]
     set msg {}
@@ -508,6 +526,9 @@ test PetiteToken-13.6 {Test convert from LongToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1L' to the type petite.}}
 
+######################################################################
+####
+# 
 test PetiteToken-13.7 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
     set msg {}
@@ -516,3 +537,21 @@ test PetiteToken-13.7 {Test convert from StringToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type petite.}}
     
+
+######################################################################
+####
+test PetiteToken-14.0 {absolute} {
+    set p2 [java::new {ptolemy.data.PetiteToken double} 0.55]
+    set p3 [java::new {ptolemy.data.PetiteToken double} -0.56]
+    list [[$p2 absolute] toString] [[$p3 absolute] toString]
+} {0.55p 0.56p}
+
+######################################################################
+####
+######################################################################
+####
+test PetiteToken-15.0 {isLessThan} {
+    set p2 [java::new {ptolemy.data.PetiteToken double} 0.55]
+    set p3 [java::new {ptolemy.data.PetiteToken double} -0.56]
+    list [[$p2 isLessThan $p3] toString] [[$p3 isLessThan $p2] toString]
+} {false true}
