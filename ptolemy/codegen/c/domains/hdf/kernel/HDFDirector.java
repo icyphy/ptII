@@ -86,7 +86,8 @@ public class HDFDirector extends SDFDirector {
      *  offset variables.
 
      */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         ptolemy.domains.hdf.kernel.HDFDirector director = (ptolemy.domains.hdf.kernel.HDFDirector) getComponent();
@@ -267,7 +268,8 @@ public class HDFDirector extends SDFDirector {
 
                     int count = firing.getIterationCount();
                     if (count > 1) {
-                        code.append("for (i = 0; i < " + count + " ; i++) {\n");
+                        code.append("for (i = 0; i < "
+                                + count + " ; i++) {\n");
                     }
 
                     code.append(CodeGeneratorHelper
@@ -598,7 +600,8 @@ public class HDFDirector extends SDFDirector {
                 }
             }
 
-            // The offset of the input port itself is updated by outside director.
+            // The offset of the input port itself is updated by
+            // outside director.
             _updateConnectedPortsOffset(inputPort, code, rate);
 
             code.append("break;\n");
@@ -612,7 +615,8 @@ public class HDFDirector extends SDFDirector {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code)
             throws IllegalActionException {
 
         code.append(_codeGenerator.comment(1, "HDFDirector: "
@@ -719,7 +723,7 @@ public class HDFDirector extends SDFDirector {
             throws IllegalActionException {
 
         // FIXME: we could record total number of tokens transferred
-        // in each port for each schedule and then check if a variale
+        // in each port for each schedule and then check if a variable
         // is needed for each offset.  For now we always use
         // variables.
 
