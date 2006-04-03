@@ -126,6 +126,16 @@ test ComplexMatrixToken-2.5 {Test additive identity} {
     set token [$p zero] 
     list [$token toString]
 } {{[0.0 + 0.0i, 0.0 + 0.0i; 0.0 + 0.0i, 0.0 + 0.0i]}}
+
+
+######################################################################
+####
+# 
+test ComplexMatrixToken-2.5.1 {Test oneRight} {
+    set token [$p oneRight] 
+    list [$token toString]
+} {{[1.0 + 0.0i, 0.0 + 0.0i; 0.0 + 0.0i, 1.0 + 0.0i]}}
+
 ######################################################################
 ####
 # 
