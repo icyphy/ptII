@@ -115,3 +115,30 @@ test ObjectToken-4.0 {Test hashCode} {
 #     $n {append String} " bar"
 #     list [$p toString] [$q toString]
 # } {{foo bar} {foo bar}}
+
+######################################################################
+####
+# 
+test ObjectToken-13.0 {Test convert from ObjectToken} {
+    set i1 [java::new {java.lang.Integer int} 1]
+    set t1 [java::new {ptolemy.data.ObjectToken Object} $i1]
+
+    set i2 [java::new {java.lang.Integer int} 2]
+    set t2 [java::new {ptolemy.data.ObjectToken Object} $i2]
+    
+    set r1 [$t1 convert $t2] 
+    list [$r1 toString]
+} {object(2)}
+
+######################################################################
+####
+# 
+test ObjectToken-13.0 {Test convert from IntToken} {
+    set t1 [java::new ptolemy.data.IntToken 1]
+
+    set i2 [java::new {java.lang.Integer int} 2]
+    set t2 [java::new {ptolemy.data.ObjectToken Object} $i2]
+    
+    catch {$t2 convert $t1} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '1' to the type object.}}
