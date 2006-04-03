@@ -145,6 +145,12 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
+        if (tokens.length == 0) {
+            _evaluatedChildToken = ArrayToken.NIL;
+            node.setToken(_evaluatedChildToken);
+            return;
+        }
+
         int numChildren = node.jjtGetNumChildren();
 
         // Convert up to LUB.

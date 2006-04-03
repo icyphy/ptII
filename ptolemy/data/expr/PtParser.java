@@ -1810,8 +1810,10 @@ String tidied, x;
       } else if (jj_2_6(2147483647)) {
         unionConstruct();
       } else if (jj_2_7(2147483647)) {
-        arrayConstruct();
+        nilArrayConstruct();
       } else if (jj_2_8(2147483647)) {
+        arrayConstruct();
+      } else if (jj_2_9(2147483647)) {
         function();
       } else {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -2339,6 +2341,21 @@ String tidied, x;
     }
   }
 
+  final public void nilArrayConstruct() throws ParseException {
+ /*@bgen(jjtree) PtArrayConstructNode */
+  ASTPtArrayConstructNode jjtn000 = new ASTPtArrayConstructNode(JJTPTARRAYCONSTRUCTNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      jj_consume_token(OPENBRACE);
+      jj_consume_token(CLOSEBRACE);
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+  }
+
   final private boolean jj_2_1(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_1(); }
@@ -2395,14 +2412,26 @@ String tidied, x;
     finally { jj_save(7, xla); }
   }
 
-  final private boolean jj_3_6() {
-    if (jj_scan_token(OPENUNION)) return true;
+  final private boolean jj_2_9(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_9(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(8, xla); }
+  }
+
+  final private boolean jj_3_8() {
+    if (jj_scan_token(OPENBRACE)) return true;
     return false;
   }
 
-  final private boolean jj_3_1() {
-    if (jj_scan_token(ID)) return true;
-    if (jj_scan_token(SETEQUALS)) return true;
+  final private boolean jj_3_7() {
+    if (jj_scan_token(OPENBRACE)) return true;
+    if (jj_scan_token(CLOSEBRACE)) return true;
+    return false;
+  }
+
+  final private boolean jj_3_6() {
+    if (jj_scan_token(OPENUNION)) return true;
     return false;
   }
 
@@ -2419,23 +2448,24 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3_8() {
-    if (jj_scan_token(ID)) return true;
-    if (jj_scan_token(OPENPAREN)) return true;
-    return false;
-  }
-
   final private boolean jj_3_4() {
     if (jj_scan_token(OPENBRACKET)) return true;
     return false;
   }
 
-  final private boolean jj_3_7() {
-    if (jj_scan_token(OPENBRACE)) return true;
+  final private boolean jj_3_3() {
+    if (jj_scan_token(OPENPAREN)) return true;
     return false;
   }
 
-  final private boolean jj_3_3() {
+  final private boolean jj_3_1() {
+    if (jj_scan_token(ID)) return true;
+    if (jj_scan_token(SETEQUALS)) return true;
+    return false;
+  }
+
+  final private boolean jj_3_9() {
+    if (jj_scan_token(ID)) return true;
     if (jj_scan_token(OPENPAREN)) return true;
     return false;
   }
@@ -2467,7 +2497,7 @@ String tidied, x;
    private static void jj_la1_2() {
       jj_la1_2 = new int[] {0xa,0x0,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0xa,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0xa,0x0,0x0,0xa,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[8];
+  final private JJCalls[] jj_2_rtns = new JJCalls[9];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
@@ -2693,7 +2723,7 @@ String tidied, x;
 
   final private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 9; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -2708,6 +2738,7 @@ String tidied, x;
             case 5: jj_3_6(); break;
             case 6: jj_3_7(); break;
             case 7: jj_3_8(); break;
+            case 8: jj_3_9(); break;
           }
         }
         p = p.next;

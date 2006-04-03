@@ -898,6 +898,7 @@ void funcIf()       :
    try {
 /*@egen*/
    (
+
            logicalOr() ( <QUESTION> logicalOr() <COLON> logicalOr() )?
    )/*@bgen(jjtree)*/
    } catch (Throwable jjte001) {
@@ -1915,6 +1916,9 @@ String tidied, x;
   |   LOOKAHEAD(<OPENUNION>)
       unionConstruct()
 
+  |   LOOKAHEAD( <OPENBRACE> <CLOSEBRACE>)
+      nilArrayConstruct()
+
   |   LOOKAHEAD( <OPENBRACE> )
       arrayConstruct()
 
@@ -2250,10 +2254,9 @@ void arrayConstruct()                       :
 /*@egen*/
     <OPENBRACE>
     funcIf()
-    (
-      <COMMA>
+    (<COMMA>
       funcIf()
-    )*
+      )*
     <CLOSEBRACE>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
@@ -2269,6 +2272,26 @@ void arrayConstruct()                       :
         throw (ParseException)jjte000;
       }
       throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
+
+void nilArrayConstruct()                       :
+{/*@bgen(jjtree) PtArrayConstructNode */
+  ASTPtArrayConstructNode jjtn000 = new ASTPtArrayConstructNode(JJTPTARRAYCONSTRUCTNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/
+}
+{/*@bgen(jjtree) PtArrayConstructNode */
+    try {
+/*@egen*/
+    <OPENBRACE>
+     <CLOSEBRACE>/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
