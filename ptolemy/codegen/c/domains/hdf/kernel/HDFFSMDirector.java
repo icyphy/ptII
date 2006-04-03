@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (cxh)  Cleanup, then review
+ @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (zgang)
  */
 public class HDFFSMDirector extends MultirateFSMDirector {
@@ -213,8 +213,9 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         return code.toString();
     }
 
-    /** Generate mode transition code. The mode transition code generated in this
-     *  method is executed after each global iteration.
+    /** Generate mode transition code. The mode transition code
+     *  generated in this method is executed after each global
+     *  iteration.
      *
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If the director helper throws it
