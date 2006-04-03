@@ -445,28 +445,29 @@ test LongToken-13.7 {Test convert from StringToken} {
 test LongToken-16.0 {leftShift} {
     set p [java::new ptolemy.data.LongToken 2]
     set p2 [java::new ptolemy.data.LongToken [java::field Long MAX_VALUE]]
+    set nil [java::field ptolemy.data.LongToken NIL]
     list [[$p leftShift 1] toString] \
-	[[$p2 leftShift 1] toString]
-
-} {{4L -2L}}
+	[[$p2 leftShift 1] toString] \
+	[[$nil leftShift 1] isNil]
+} {4L -2L 1}
 
 ######################################################################
 ####
 # 
 test LongToken-17.0 {logicalRightShift} {
-    set p [java::new ptolemy.data.LongToken 2]
-    set p2 [java::new ptolemy.data.LongToken [java::field Long MAX_VALUE]]
+    # Uses 16.0 above
     list [[$p logicalRightShift 1] toString] \
-	[[$p logicalRightShift 1] toString]
-} {{1L 1L}}
+	[[$p logicalRightShift 1] toString] \
+	[[$nil logicalRightShift 1] isNil]
+} {1L 1L 1}
 
 
 ######################################################################
 ####
 # 
 test LongToken-18.0 {rightShift} {
-    set p [java::new ptolemy.data.LongToken 2]
-    set p2 [java::new ptolemy.data.LongToken [java::field Long MAX_VALUE]]
+    # Uses 16.0 above
     list [[$p rightShift 1] toString] \
-	[[$p2 rightShift 1] toString]
-} {1L -1L}
+	[[$p2 rightShift 1] toString] \
+	[[$nil rightShift 1] isNil]
+} {1L -1L 1}
