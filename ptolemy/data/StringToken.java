@@ -110,7 +110,7 @@ public class StringToken extends AbstractConvertibleToken {
      *  If the argument is already an instance of StringToken,
      *  it is returned without any change. 
      *  If the argument is null or a nil token, then 
-     *  {@link ptolemy.data.Token#NIL} is returned
+     *  {@link #NIL} is returned.
      *  Otherwise, if the argument is below StringToken in the type
      *  hierarchy, it is converted to an instance of StringToken or
      *  one of the subclasses of StringToken and returned. If none of
@@ -127,7 +127,7 @@ public class StringToken extends AbstractConvertibleToken {
         }
 
         if (token == null || token.isNil()) {
-            return (StringToken) Token.NIL;
+            return StringToken.NIL;
         }
 
         int compare = TypeLattice.compare(BaseType.STRING, token);
@@ -188,6 +188,17 @@ public class StringToken extends AbstractConvertibleToken {
         return _value.hashCode();
     }
 
+    /** Return true if the token is nil, (aka null or missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token is the {@link #NIL} token.
+     */
+    public boolean isNil() {
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        // Can't use equals() here, or we'll go into an infinite loop.
+        return this == StringToken.NIL;
+    }
+
     /** Return the string that this token contains.  Note that this is
      *  different than the toString method, which returns a string expression
      *  that has double quotes around it.
@@ -221,6 +232,18 @@ public class StringToken extends AbstractConvertibleToken {
     public Token zero() {
         return new StringToken("");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  The toString() method on a nil token returns the string "nil".
+     */
+    public static final StringToken NIL = new StringToken("nil");
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
