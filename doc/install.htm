@@ -119,6 +119,14 @@ the applets with the JDK <CODE>appletviewer</CODE> command.
 
 <h2><a name="shippedPackages">Optional packages that are shipped with Ptolemy</a></h2>
 
+<h3>Colt</h3>
+ Colt is the 'Open Source Libraries for High Performance
+ Scientific and Technical Computing in Java'.
+ <br>For more information, see 
+<a href="http://hoschek.home.cern.ch/hoschek/colt/"><code>http://hoschek.home.cern.ch/hoschek/colt/</code></a>
+
+<p>We include a subset of Colt, based on Colt 1.0.3, in <code>$PTII/lib/ptcolt.jar</code>
+
 <h3><a name="Diva">Diva</a></h3>
 Diva is a visualization package used by some of the demos and by
 vergil, the Ptolemy II user interface.
@@ -217,25 +225,6 @@ cd $PTII/vendors/cm
 # Download http://www-sor.inria.fr/~java/tools/cmkit/embed.zip
 jar -xf embed.zip
 </pre>
-
-<h3>Colt</h3>
- Colt is the 'Open Source Libraries for High Performance
- Scientific and Technical Computing in Java'.
- <br>For more information, see 
-<a href="http://hoschek.home.cern.ch/hoschek/colt/"><code>http://hoschek.home.cern.ch/hoschek/colt/</code></a>
-
-<p>You need not download Colt unless you are planning on using
-the Colt actors or running the demonstrations in ptolemy/actor/lib/colt.
-
-<p>We verified that Colt 1.0.3 works with these actors.
-
-<ol>
-<li> Download Colt from
-<a href="http://hoschek.home.cern.ch/hoschek/colt/download.htm"><code>http://hoschek.home.cern.ch/hoschek/colt/download.htm</code></a>
-<li> Unzip it in <code>$PTII/vendors/misc/colt</code>
-<li> Copy <code>$PTII/vendors/misc/colt/colt.jar</code>
-to <code>$PTII/lib/</code>
-</ol>
 
 <h3>GC</h3>
 The Copernicus C code generator uses the Boehm Garbarge Collector,
