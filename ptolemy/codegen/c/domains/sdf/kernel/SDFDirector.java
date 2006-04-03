@@ -81,7 +81,8 @@ public class SDFDirector extends Director {
      *  @exception IllegalActionException If thrown while creating
      *  offset variables.
      */
-    public String createOffsetVariablesIfNeeded() throws IllegalActionException {
+    public String createOffsetVariablesIfNeeded()
+            throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_createOffsetVariablesIfNeeded());
         code.append(super.createOffsetVariablesIfNeeded());
@@ -269,7 +270,8 @@ public class SDFDirector extends Director {
      *  @param code The string buffer that the generated code is appended to.
      *  @exception IllegalActionException If thrown while transferring tokens.
      */
-    public void generateTransferOutputsCode(IOPort outputPort, StringBuffer code)
+    public void generateTransferOutputsCode(IOPort outputPort,
+            StringBuffer code)
             throws IllegalActionException {
         code.append(_codeGenerator.comment(2, "SDFDirector: "
                 + "Transfer tokens to the outside."));
@@ -440,10 +442,11 @@ public class SDFDirector extends Director {
                 for (int i = 0; i < inputPort.getWidth(); i++) {
                     int readTokens = 0;
                     int writeTokens = 0;
-                    // If each actor firing is inlined in the code, then read
-                    // and write positions in the buffer must return to the 
-                    // previous values after one iteration of the container actor
-                    // in order to avoid using read and write offset variables.
+                    // If each actor firing is inlined in the code,
+                    // then read and write positions in the buffer
+                    // must return to the previous values after one
+                    // iteration of the container actor in order to
+                    // avoid using read and write offset variables.
                     if (inline) {
                         Variable firings = (Variable) ((NamedObj) actor)
                                 .getAttribute("firingsPerIteration");
@@ -452,11 +455,14 @@ public class SDFDirector extends Director {
                         readTokens = DFUtilities.getRate(inputPort)
                                 * firingsPerIteration;
                         writeTokens = readTokens;
-                        // If each actor firing is wrapped in a function, then read
-                        // and write positions in the buffer must return to the 
-                        // previous values after one firing of this actor or one
-                        // firing of the actor that produces tokens consumed by 
-                        // this actor in order to avoid using read and write offset 
+
+                        // If each actor firing is wrapped in a
+                        // function, then read and write positions in
+                        // the buffer must return to the previous
+                        // values after one firing of this actor or
+                        // one firing of the actor that produces
+                        // tokens consumed by this actor in order to
+                        // avoid using read and write offset
                         // variables.
                     } else {
                         readTokens = DFUtilities.getRate(inputPort);
