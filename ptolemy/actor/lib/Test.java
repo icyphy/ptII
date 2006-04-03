@@ -168,7 +168,13 @@ public class Test extends NonStrictTest {
 
             if (width == 1) {
                 if (input.hasToken(0)) {
-                    _trainingTokens.add(input.get(0));
+                    Token token = input.get(0);
+                    if (token instanceof ArrayToken) {
+                        Token [] innerArrayToken = { (ArrayToken) token};
+                        _trainingTokens.add(innerArrayToken);
+                    } else {
+                        _trainingTokens.add(token);
+                    }
                 }
             } else {
                 ArrayList arrayList = new ArrayList();
