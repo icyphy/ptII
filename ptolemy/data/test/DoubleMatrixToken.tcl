@@ -133,6 +133,7 @@ test DoubleMatrixToken-2.5.1 {Test oneRight} {
     set token [$p oneRight] 
     list [$token toString]
 } {{[1.0, 0.0; 0.0, 1.0]}}
+
 ######################################################################
 ####
 # 
