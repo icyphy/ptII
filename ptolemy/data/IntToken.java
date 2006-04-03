@@ -48,7 +48,7 @@ import ptolemy.math.Complex;
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Yellow (cxh) nil token, ONE, ZERO
- @Pt.ProposedRating Yellow (cxh)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class IntToken extends ScalarToken {
     /** Construct a token with integer 0.
