@@ -129,6 +129,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  This can be a CompositeEntity or an EditorIcon, and possibly
      *  other Ptolemy II objects.
      *  @return The associated model or object.
+     *  @see #setModel(NamedObj)
      */
     public NamedObj getModel() {
         return _model;
@@ -138,6 +139,7 @@ public abstract class PtolemyFrame extends TableauFrame {
      *  the model that results in model errors throwing an exception
      *  and associates an undo stack with the model.
      *  @param model The associated model.
+     *  @see #getModel()
      */
     public void setModel(NamedObj model) {
         _model = model;
