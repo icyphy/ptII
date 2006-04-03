@@ -344,6 +344,9 @@ test IntToken-13.0 {Test convert from BooleanToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.BooleanToken 'false' to the type int because the type of the token is higher or incomparable with the given type.}}
 
+######################################################################
+####
+# 
 test IntToken-13.1 {Test convert from UnsignedByteToken} {
     set t [java::new {ptolemy.data.UnsignedByteToken byte} 1]
     set msg {}
@@ -352,7 +355,9 @@ test IntToken-13.1 {Test convert from UnsignedByteToken} {
     list $msg
 } {1}
 
-
+######################################################################
+####
+# 
 test IntToken-13.2 {Test convert from ComplexToken} {
     set o [java::new {ptolemy.math.Complex} 1.0 1.0]
     set t [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $o]
@@ -363,6 +368,9 @@ test IntToken-13.2 {Test convert from ComplexToken} {
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '1.0 + 1.0i' to the type int because the type of the token is higher or incomparable with the given type.}}
 
 
+######################################################################
+####
+# 
 test IntToken-13.3 {Test convert from DoubleToken} {
     set t [java::new {ptolemy.data.DoubleToken double} 1.0]
     set msg {}
@@ -372,6 +380,9 @@ test IntToken-13.3 {Test convert from DoubleToken} {
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.DoubleToken '1.0' to the type int because the type of the token is higher or incomparable with the given type.}}
 
 
+######################################################################
+####
+# 
 test IntToken-13.4 {Test convert from FixToken} {
     set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
     set msg {}
@@ -380,6 +391,9 @@ test IntToken-13.4 {Test convert from FixToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(1.0,8,4)' to the type int because the type of the token is higher or incomparable with the given type.}}
 
+######################################################################
+####
+# 
 test IntToken-13.5 {Test convert from IntToken} {
     set t [java::new {ptolemy.data.IntToken int} 1]
     set msg {}
@@ -389,6 +403,9 @@ test IntToken-13.5 {Test convert from IntToken} {
 } {1}
 
 
+######################################################################
+####
+# 
 test IntToken-13.6 {Test convert from LongToken} {
     set t [java::new {ptolemy.data.LongToken long} 1]
     set msg {}
@@ -397,6 +414,9 @@ test IntToken-13.6 {Test convert from LongToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1L' to the type int because the type of the token is higher or incomparable with the given type.}}
 
+######################################################################
+####
+# 
 test IntToken-13.7 {Test convert from StringToken} {
     set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
     set msg {}
@@ -405,3 +425,30 @@ test IntToken-13.7 {Test convert from StringToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type int because the type of the token is higher or incomparable with the given type.}}
     
+######################################################################
+####
+# 
+test IntToken-14.0 {call byteValue and get coverage in the parent class} {
+    set p [java::new {ptolemy.data.IntToken int} 5]
+    catch {$p byteValue} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '5' to the type byte.}}
+
+
+######################################################################
+####
+# 
+test IntToken-15.0 {call fixValue and get coverage in the parent class} {
+    set p [java::new {ptolemy.data.IntToken int} 5]
+    catch {$p fixValue} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '5' to the type fixedpoint.}}
+
+
+######################################################################
+####
+# 
+test IntToken-20.0 {call unitsString and get coverage in the parent class} {
+    set p [java::new {ptolemy.data.IntToken int} 5]
+    list [$p unitsString]
+} {}

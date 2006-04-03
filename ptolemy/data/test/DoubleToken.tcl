@@ -541,3 +541,30 @@ test DoubleToken-13.7 {Test convert from StringToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type double because the type of the token is higher or incomparable with the given type.}}
     
+######################################################################
+####
+# 
+test DoubleToken-16.0 {call leftShift and get coverage in the parent class} {
+    set p [java::new {ptolemy.data.DoubleToken double} 16.16]
+    catch {$p leftShift 1} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: leftShift operation not supported between ptolemy.data.DoubleToken '16.16' and ptolemy.data.IntToken '1'}}
+
+######################################################################
+####
+# 
+test DoubleToken-17.0 {call logicalRightShift and get coverage in the parent class} {
+    set p [java::new {ptolemy.data.DoubleToken double} 16.16]
+    catch {$p logicalRightShift 1} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: logicalRightShift operation not supported between ptolemy.data.DoubleToken '16.16' and ptolemy.data.IntToken '1'}}
+
+
+######################################################################
+####
+# 
+test DoubleToken-18.0 {call rightShift and get coverage in the parent class} {
+    set p [java::new {ptolemy.data.DoubleToken double} 16.16]
+    catch {$p rightShift 1} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: rightShift operation not supported between ptolemy.data.DoubleToken '16.16' and ptolemy.data.IntToken '1'}}
