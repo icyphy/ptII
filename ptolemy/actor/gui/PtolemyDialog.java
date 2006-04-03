@@ -239,7 +239,7 @@ public abstract class PtolemyDialog extends JFrame implements ActionListener {
      * @param dirty True if the GUI has a change that has not been applied.
      */
     protected void _setDirty(boolean dirty) {
-        _dirty = b;
+        _dirty = dirty;
     }
 
     /** Display the help URL.
