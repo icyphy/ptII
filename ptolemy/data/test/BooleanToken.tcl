@@ -282,3 +282,87 @@ test BooleanToken-13.7 {Test convert from StringToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type boolean because the type of the token is higher or incomparable with the given type.}}
     
+
+test BooleanToken-14.0 {Test bitwiseAnd} {
+    set binaryOperation bitwiseAnd
+    set results [java::cast ptolemy.data.BooleanToken \
+        [$trueToken $binaryOperation $trueToken]]
+
+    set results1 [java::cast ptolemy.data.BooleanToken \
+        [$trueToken $binaryOperation $falseToken]]
+
+    set results2 [java::cast ptolemy.data.BooleanToken \
+        [$falseToken $binaryOperation $falseToken]]
+
+    set results3 [java::cast ptolemy.data.BooleanToken \
+        [$falseToken $binaryOperation $trueToken]]
+
+    list \
+        [$results toString] \
+	[$results1 toString] \
+	[$results2 toString] \
+	[$results3 toString]
+} {true false false false}
+
+test BooleanToken-14.1 {Test bitwise ops with Token} {
+    set token [java::new ptolemy.data.Token]
+    catch {$trueToken bitwiseAnd $token} errMsg
+    catch {$trueToken bitwiseOr $token} errMsg1
+    catch {$trueToken bitwiseXor $token} errMsg2
+    list $errMsg $errMsg1 $errMsg2
+} {{ptolemy.kernel.util.IllegalActionException: bitwiseAnd method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {"\n"} {ptolemy.kernel.util.IllegalActionException: bitwiseOr method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {"\n"} {ptolemy.kernel.util.IllegalActionException: bitwiseXor method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.}}
+
+test BooleanToken-15.0 {Test bitwiseOr} {
+    set binaryOperation bitwiseOr
+    set results [java::cast ptolemy.data.BooleanToken \
+        [$trueToken $binaryOperation $trueToken]]
+
+    set results1 [java::cast ptolemy.data.BooleanToken \
+        [$trueToken $binaryOperation $falseToken]]
+
+    set results2 [java::cast ptolemy.data.BooleanToken \
+        [$falseToken $binaryOperation $falseToken]]
+
+    set results3 [java::cast ptolemy.data.BooleanToken \
+        [$falseToken $binaryOperation $trueToken]]
+
+    list \
+        [$results toString] \
+	[$results1 toString] \
+	[$results2 toString] \
+	[$results3 toString]
+} {true true false true}
+
+test BooleanToken-16.0 {Test bitwiseXor} {
+    set binaryOperation bitwiseXor
+    set results [java::cast ptolemy.data.BooleanToken \
+        [$trueToken $binaryOperation $trueToken]]
+
+    set results1 [java::cast ptolemy.data.BooleanToken \
+        [$trueToken $binaryOperation $falseToken]]
+
+    set results2 [java::cast ptolemy.data.BooleanToken \
+        [$falseToken $binaryOperation $falseToken]]
+
+    set results3 [java::cast ptolemy.data.BooleanToken \
+        [$falseToken $binaryOperation $trueToken]]
+
+    list \
+        [$results toString] \
+	[$results1 toString] \
+	[$results2 toString] \
+	[$results3 toString]
+} {true true false true}
+
+test BooleanToken-17.0 {Test bitwiseNot} {
+    set results [java::cast ptolemy.data.BooleanToken \
+		     [$trueToken bitwiseNot]]
+
+    set results1 [java::cast ptolemy.data.BooleanToken \
+		      [$falseToken bitwiseNot]]
+    list \
+        [$results toString] \
+	[$results1 toString]
+
+} {false true}
+
