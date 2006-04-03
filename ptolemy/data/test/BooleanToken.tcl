@@ -148,7 +148,7 @@ test BooleanToken-6.0 {Test equality test} {
 
 ######################################################################
 ####
-# Test modulo operator between ints and ints.
+# Test modulo operator between booleans
 test BooleanToken-6.1 {Test modulo between boolean.} {
     catch {$falseToken modulo $trueToken} errMsg
     list $errMsg
@@ -310,7 +310,7 @@ test BooleanToken-14.1 {Test bitwise ops with Token} {
     catch {$trueToken bitwiseOr $token} errMsg1
     catch {$trueToken bitwiseXor $token} errMsg2
     list $errMsg $errMsg1 $errMsg2
-} {{ptolemy.kernel.util.IllegalActionException: bitwiseAnd method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {"\n"} {ptolemy.kernel.util.IllegalActionException: bitwiseOr method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {"\n"} {ptolemy.kernel.util.IllegalActionException: bitwiseXor method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.}}
+} {{ptolemy.kernel.util.IllegalActionException: bitwiseAnd method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: bitwiseOr method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: bitwiseXor method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.}}
 
 test BooleanToken-15.0 {Test bitwiseOr} {
     set binaryOperation bitwiseOr
