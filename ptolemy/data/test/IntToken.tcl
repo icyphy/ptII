@@ -451,4 +451,4 @@ test IntToken-15.0 {call fixValue and get coverage in the parent class} {
 test IntToken-20.0 {call unitsString and get coverage in the parent class} {
     set p [java::new {ptolemy.data.IntToken int} 5]
     list [$p unitsString]
-} {}
+} {{}}
