@@ -470,7 +470,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
     /** Return the horizontal pixels by reading the horizontalPixels parameter.
      *  @return the horizontal pixels.   
-     *  @exception IllegalActionExcption If thrown while reading the parameter.
+     *  @exception IllegalActionException If thrown while reading the
+     *  parameter.
      */
     protected int _getHorizontalPixels() throws IllegalActionException {
         return ((IntToken) horizontalPixels.getToken()).intValue();
@@ -478,7 +479,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
     /** Return the vertical pixels by reading the verticalPixels parameter. 
      *  @return the vertical pixels.
-     *  @exception IllegalActionExcption If thrown while reading the parameter.
+     *  @exception IllegalActionException If thrown while reading the
+     *  parameter.
      */
     protected int _getVerticalPixels() throws IllegalActionException {
         return ((IntToken) verticalPixels.getToken()).intValue();
@@ -487,7 +489,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
     /** Return the value of the rotatable parameter.
      *  @return The value of the rotatable parameter.
-     *  @exception IllegalActionExcption If thrown while reading the parameter.
+     *  @exception IllegalActionException If thrown while reading the
+     *  parameter.
      */
     protected boolean _isRotatable() throws IllegalActionException {
         return ((BooleanToken) rotatable.getToken()).booleanValue();
@@ -495,7 +498,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
     /** Return the value of the scalable parameter.
      *  @return The value of the scalable parameter.
-     *  @exception IllegalActionExcption If thrown while reading the parameter.
+     *  @exception IllegalActionException If thrown while reading the
+     *  parameter.
      */
     protected boolean _isScalable() throws IllegalActionException {
         return ((BooleanToken) scalable.getToken()).booleanValue();
@@ -503,7 +507,8 @@ public class ViewScreen2D extends GRActor2D implements Placeable,
 
     /** Return the value of the translatable parameter.
      *  @return The value of the tranlatable parameter.
-     *  @exception IllegalActionExcption If thrown while reading the parameter.
+     *  @exception IllegalActionException If thrown while reading the
+     *  parameter.
      */
     protected boolean _isTranslatable() throws IllegalActionException {
         return ((BooleanToken) translatable.getToken()).booleanValue();
