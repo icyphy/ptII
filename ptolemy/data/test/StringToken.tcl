@@ -223,6 +223,16 @@ test StringToken-4.0 {Test isEqualTo} {
 
 ######################################################################
 ####
+# Test divide operator between strings
+test StringToken-4.1 {Test divide between strings.} {
+    set t1 [java::new {ptolemy.data.StringToken} 5]
+    set t2 [java::new {ptolemy.data.StringToken} 2]
+    catch {$t1 divide $t2} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.StringToken '"5"' and ptolemy.data.StringToken '"2"'}}
+
+######################################################################
+####
 # 
 test StringToken-5.0 {Test equals} {
     set t1 [java::new {ptolemy.data.StringToken} foo]
@@ -240,6 +250,16 @@ test StringToken-5.0 {Test hashCode} {
     set t3 [java::new {ptolemy.data.StringToken} 5]
     list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
 } {51 51 53}
+
+######################################################################
+####
+# Test modulo operator between strings
+test StringToken-6.1 {Test modulo between string.} {
+    set t1 [java::new {ptolemy.data.StringToken} 5]
+    set t2 [java::new {ptolemy.data.StringToken} 2]
+    catch {$t1 modulo $t2} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.StringToken '"5"' and ptolemy.data.StringToken '"2"'}}
 
 ######################################################################
 ####
