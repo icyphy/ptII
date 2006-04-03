@@ -196,8 +196,12 @@ public class LongToken extends ScalarToken {
      *  least significant bits with zeros.
      *  @param bits The number of bits to shift.
      *  @return The left shift.
+     *  If this token is nil, then {@link #NIL} is returned.
      */
     public ScalarToken leftShift(int bits) {
+        if (isNil()) {
+            return IntToken.NIL;
+        }
         return new LongToken(_value << bits);
     }
 
@@ -208,8 +212,12 @@ public class LongToken extends ScalarToken {
      *  sign of the value.
      *  @param bits The number of bits to shift.
      *  @return The logical right shift.
+     *  If this token is nil, then {@link #NIL} is returned.
      */
     public ScalarToken logicalRightShift(int bits) {
+        if (isNil()) {
+            return IntToken.NIL;
+        }
         return new LongToken(_value >>> bits);
     }
 
@@ -232,8 +240,12 @@ public class LongToken extends ScalarToken {
      *  the sign of the result.
      *  @param bits The number of bits to shift.
      *  @return The right shift.
+     *  If this token is nil, then {@link #NIL} is returned.
      */
     public ScalarToken rightShift(int bits) {
+        if (isNil()) {
+            return IntToken.NIL;
+        }
         return new LongToken(_value >> bits);
     }
 
@@ -263,6 +275,9 @@ public class LongToken extends ScalarToken {
      */
     public UnsignedByteToken truncatedUnsignedByteValue()
             throws IllegalActionException {
+        if (isNil()) {
+            return UnsignedByteToken.NIL;
+        }
         if ((_value < 0) || (_value > 255)) {
             throw new IllegalActionException("Value cannot be represented"
                     + " as an unsigned Byte");
