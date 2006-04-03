@@ -146,6 +146,14 @@ test BooleanToken-6.0 {Test equality test} {
 } {true false false true}
 
 
+######################################################################
+####
+# Test modulo operator between ints and ints.
+test BooleanToken-6.1 {Test modulo between boolean.} {
+    catch {$falseToken modulo $trueToken} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.BooleanToken 'false' and ptolemy.data.BooleanToken 'true'}}
+
 test BooleanToken-7.0 {Test multiplication} {
     set r1 [$falseToken multiply $falseToken]
     set r2 [$trueToken multiply $falseToken]
