@@ -51,7 +51,7 @@ test CodeStream-1.1 {Constructor that takes a CodeGeneratorHelper} {
 			$cgHelper]
     $codeStream append "Test 1.1"
     list [$codeStream toString] \
-	[[$codeStream description] toString]
+	[$codeStream description]
 } {{Test 1.1} {}}
 
 #####
