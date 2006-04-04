@@ -602,9 +602,10 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.UNKNOWN, unionRep);
 
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.NIL);
-            _basicLattice.addEdge(BaseType.NIL, BaseType.INT);
             _basicLattice.addEdge(BaseType.NIL, BaseType.DOUBLE);
+            _basicLattice.addEdge(BaseType.NIL, BaseType.INT);
             _basicLattice.addEdge(BaseType.NIL, BaseType.LONG);
+            _basicLattice.addEdge(BaseType.NIL, BaseType.UNSIGNED_BYTE);
 
             // FIXME: Replace this with an assert when we move to 1.5
             if (!_basicLattice.isLattice()) {
