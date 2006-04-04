@@ -125,7 +125,9 @@ the applets with the JDK <CODE>appletviewer</CODE> command.
  <br>For more information, see 
 <a href="http://hoschek.home.cern.ch/hoschek/colt/"><code>http://hoschek.home.cern.ch/hoschek/colt/</code></a>
 
-<p>We include a subset of Colt, based on Colt 1.0.3, in <code>$PTII/lib/ptcolt.jar</code>
+<p>We include a subset of Colt, based on Colt 1.0.3, in <code>$PTII/lib/ptcolt.jar</code>.
+<p>Colt is covered by a 
+<a href="../ptolemy/actor/lib/colt/colt-copyright.htm">Colt specific copyright</a>.
 
 <h3><a name="Diva">Diva</a></h3>
 Diva is a visualization package used by some of the demos and by
@@ -273,26 +275,15 @@ Web Start users might want to try the
 The 
 <a href="../ptolemy/domains/gr/doc/body.htm" target="body">3-D graphics (GR)</a>
 domain demos require Java3d, which can be installed from
-<a href="http://java.sun.com/products/java-media/3D/" target="_top"><CODE>http://java.sun.com/products/java-media/3D/</CODE></a>.
+<a href="http://java3d.dev.java.net/" target="_top"><CODE>http://java3d.dev.java.net/</CODE></a>.
 
 You need not install Java3d if you are not planning on using GR domain.
 
  <p>If you plan on recompiling the GR domain, then install the Java 3D SDK
 and runtime.  If you plan on only running the GR domain demos, then
 installing only the Java 3D runtime should be sufficient.
-We have verified the demos with the Java 3D 1.3.1 SDK (DirectX Version).
-
-<p>Note that JDK1.4.0 requires Java 3D 1.2.1_04 or later.  If you run
-with Java 3D 1.2.1_03 and JDK1.4.0, the GR demos will fail to initialize
-and you will see the message:
-<pre>
-Fail to create back buffer - DDERR_INALIDPARAM
-</pre>
-The Java 3D 1.2.1_04 release notes say that this bug:
-<pre>
-4470749 Java3D fail to initialize underlying OGL/D3D library in jdk1.4
-</pre>
-was fixed in Java 3D 1.2.1_04
+We have verified the demos with the 
+<code>java3d-1_4_0-windows-i586</code> installer.
 
 
 <h3>Joystick</h3>
@@ -421,9 +412,7 @@ The <a hreg="codedoc/ptolemy/domains/gr/lib/quicktime/package-summary.html">Quic
 <p>To use these actors, install QuickTime with the "QuickTime For Java"
 option from 
 <a href="http://developer.apple.com/quicktime/qtjava/" target="_top"><code>http://developer.apple.com/quicktime/qtjava/</code></a>
- <p>There is a standalone installer with QuickTime For Java at
- <a href="http://www.apple.com/quicktime/download/standalone/" target="_top"><CODE>http://www.apple.com/quicktime/download/standalone/</CODE></a>
-(This page seems to have problems with Firefox, try IE).
+
 <br>During installation, choose "custom" and then "select all".
 This drops <code>QTJava.zip</code> into the lib/ext of all your installed JREs.
 Then you have to copy this zip file to the jre/lib/ext directory
