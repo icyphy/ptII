@@ -249,7 +249,7 @@ public class FixedPointReceiver extends AbstractReceiver {
     /** Return true if this receiver changes from unknown to known status.
      *  @return True if this receiver changes from unknown to known status.
      */
-    protected boolean _becomesKnown() {
+    protected boolean _statusChanged() {
         if (_lastKnown != _known) {
             _lastKnown = _known;
             return true;
