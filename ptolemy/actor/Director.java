@@ -711,6 +711,29 @@ public class Director extends Attribute implements Executable {
     public void invalidateSchedule() {
     }
 
+    /** Return false. This director iterates actors in its fire()
+     *  method, which includes an invocation of their postfire()
+     *  methods, so its fire method changes the state of the model.
+     *  
+     *  @return False.
+     */
+    public boolean isFireFunctional() {
+        return false;
+    }
+
+    /** Return true. The transferInputs() method does not check whether
+     *  the inputs are known before calling hasToken(), and consequently
+     *  will throw an exception if inputs are not known. Thus, this
+     *  director requires that inputs be known in order to be able to
+     *  iterate.  Derived classes that can tolerate unknown inputs
+     *  should override this method to return false.
+     *  
+     *  @return True.
+     */
+    public boolean isStrict() {
+        return true;
+    }
+
     /** Return true if stop has been requested.
      *  @return True if stop() has been called.
      *  @see #stop()

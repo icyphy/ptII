@@ -82,6 +82,30 @@ public interface Executable {
      */
     public void initialize() throws IllegalActionException;
 
+    /** Return true if this executable does not change state in either
+     *  the prefire() or the fire() method. A class that returns true
+     *  is said to obey the <i>actor abstract semantics</i>. In particular,
+     *  such an actor can be used in domains that have a fixed point
+     *  semantics and may repeatedly fire the actor before committing
+     *  to state changes.
+     *  
+     *  @return True if this executable only updates its states during
+     *   an iteration in the postfire() method.
+     */
+    public boolean isFireFunctional();
+
+    /** Return true if this executable is strict, meaning all inputs must
+     *  be known before iteration. Normally, classes that implement this
+     *  interface are strict, so this method will return true.
+     *  However, some classes can perform an iteration even if some
+     *  inputs are not known (i.e., these classes tolerate a return value
+     *  of false from the isKnown() method of Receiver).
+     *  
+     *  @return True if this executable is strict, meaning all inputs must
+     *   be known before iteration.
+     */
+    public boolean isStrict();
+
     /** Invoke a specified number of iterations of the actor. An
      *  iteration is equivalent to invoking prefire(), fire(), and
      *  postfire(), in that order. In an iteration, if prefire()

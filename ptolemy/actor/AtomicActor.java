@@ -149,7 +149,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     }
 
     /** Do nothing.  Derived classes override this method to define their
-     *  their primary run-time action.
+     *  primary run-time action.
      *
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -275,6 +275,29 @@ public class AtomicActor extends ComponentEntity implements Actor {
         }
 
         return _cachedInputPorts;
+    }
+
+    /** Return true. Most actors are written so that the prefire() and
+     *  fire() methods do not change the state of the actor. Hence, for
+     *  convenience, this base class by default returns true. An actor
+     *  that does change state in prefire() or fire() must override
+     *  this method to return false.
+     *  
+     *  @return True.
+     */
+    public boolean isFireFunctional() {
+        return true;
+    }
+
+    /** Return true in this base class. By default, actors do not
+     *  check their inputs to see whether they are known.  They assume
+     *  they are known.  A derived class that can tolerate unknown
+     *  inputs should override this method to return false.
+     *  
+     *  @return True always in this base class.
+     */
+    public boolean isStrict() {
+        return true;
     }
 
     /** Invoke a specified number of iterations of the actor. An
