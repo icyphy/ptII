@@ -53,7 +53,7 @@ import ptolemy.util.MessageHandler;
  
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
- @since Ptolemy II 5.1
+ @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (reviewModerator)
  */
@@ -91,7 +91,8 @@ public class FixedPointScheduler extends Scheduler {
      *   schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
+        StaticSchedulingDirector director = 
+            (StaticSchedulingDirector) getContainer();
 
         if (director == null) {
             throw new NotSchedulableException(this, "FixedPointScheduler "
