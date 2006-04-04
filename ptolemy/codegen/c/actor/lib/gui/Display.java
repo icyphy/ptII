@@ -40,12 +40,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (mankit)
  */
 public class Display extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Display helper.
+     * Construct a Display helper.
      * @param actor The associated actor.
      */
     public Display(ptolemy.actor.lib.gui.Display actor) {
@@ -56,8 +56,7 @@ public class Display extends CCodeGeneratorHelper {
      * Generate fire code.
      * The method reads in <code>printInt</code>, <code>printArray</code>,
      * <code>printString</code>, or <code>printDouble</code> from Display.c,
-     * replaces macros with their values and appends the processed code
-     * block to the given code buffer.
+     * replaces macros with their values and returns the results.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

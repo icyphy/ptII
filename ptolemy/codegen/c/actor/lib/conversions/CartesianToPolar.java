@@ -37,15 +37,15 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * A helper class for ptolemy.actor.lib.conversions.CartesianToPolar.
  *
- * @author Jackie
+ * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (mankit)
  */
 public class CartesianToPolar extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the CartesianToPolar helper.
+     * Construct a CartesianToPolar helper.
      * @param actor the associated actor
      */
     public CartesianToPolar(ptolemy.actor.lib.conversions.CartesianToPolar actor) {

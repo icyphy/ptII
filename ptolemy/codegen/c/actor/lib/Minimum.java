@@ -39,12 +39,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung, Gang Zhou
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (cxh)
+ * @Pt.AcceptedRating Green (mankit)
  */
 public class Minimum extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Minimum helper.
+     * Construct a Minimum helper.
      * @param actor the associated actor
      */
     public Minimum(ptolemy.actor.lib.Minimum actor) {
@@ -54,8 +54,8 @@ public class Minimum extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Minimum.c,
-     * replaces macros with their values and appends the processed code
-     * block to the given code buffer.
+     * replaces macros with their values and returns the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -66,7 +66,7 @@ public class Minimum extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Minimum actor = (ptolemy.actor.lib.Minimum) getComponent();
 
         _codeStream.appendCodeBlock("fireInitBlock");
-        // FIXME: we need to resolve the token type in the future
+        // FIXME: we need to resolve other ScalarTokens like Complex.
         for (int i = 1; i < actor.input.getWidth(); i++) {
             ArrayList args = new ArrayList();
             args.add(new Integer(i));

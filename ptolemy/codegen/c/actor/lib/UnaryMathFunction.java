@@ -40,12 +40,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Yellow (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (mankit)
  */
 public class UnaryMathFunction extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the UnaryMathFunction helper.
+     * Construct the UnaryMathFunction helper.
      * @param actor the associated actor
      */
     public UnaryMathFunction(ptolemy.actor.lib.UnaryMathFunction actor) {
@@ -58,7 +58,7 @@ public class UnaryMathFunction extends CCodeGeneratorHelper {
      * <code>signBlock</code>, <code>squareBlock</code>, or
      * <code>sqrtBlock</code> from UnaryMathFunction.c depending on the
      * function parameter specified, replaces macros with their values
-     * and appends the processed code block to the given code buffer.
+     * and returns the the processed code block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).

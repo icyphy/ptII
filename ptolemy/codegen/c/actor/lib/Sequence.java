@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Sequence extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Sequence helper.
+     * Construct a Sequence helper.
      * @param actor the associated actor
      */
     public Sequence(ptolemy.actor.lib.Sequence actor) {
@@ -55,8 +55,7 @@ public class Sequence extends CCodeGeneratorHelper {
      * Generate fire code.
      * The method reads in <code>codeBlock1</code>, <code>codeBlock2</code>,
      * and <code>codeBlock3</code> from Sequence.c, replaces macros with
-     * their values and appends the processed code block to the given code
-     * buffer.
+     * their values and returns the processed code block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
