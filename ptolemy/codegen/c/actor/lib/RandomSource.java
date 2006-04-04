@@ -113,7 +113,6 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
     ////                         protected methods                 ////
 
     /** Generate code for producing a new random number.
-     *  @param code The code that to which we append the random number code.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected abstract String _generateRandomNumber() 
