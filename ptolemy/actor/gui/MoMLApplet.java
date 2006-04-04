@@ -181,6 +181,14 @@ public class MoMLApplet extends PtolemyApplet {
             parser.addMoMLFilter(new RemoveGraphicalClasses());
         }
 
+        // Exclude the code generator 
+        RemoveGraphicalClasses removeNonAppletClasses = new RemoveGraphicalClasses();
+        removeNonAppletClasses.clear();
+        removeNonAppletClasses.put("ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
+                "ptolemy.kernel.util.Attribute");
+        parser.addMoMLFilter(removeNonAppletClasses);
+
+
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, _modelURL);
         _manager = null;
