@@ -29,6 +29,7 @@ package ptolemy.codegen.c.actor;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
@@ -258,7 +259,8 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      */
     public Set getSharedCode() throws IllegalActionException {
 
-        Set sharedCode = new HashSet();
+        // Use LinkedHashSet to give order to the shared code.
+        Set sharedCode = new LinkedHashSet();
         sharedCode.addAll(super.getSharedCode());
 
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())

@@ -37,6 +37,7 @@ import ptolemy.data.BitwiseOperationToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
@@ -678,10 +679,11 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
                 // In C, Strings should have \n tags substituted. 
                 // See Test 17.2
                 _fireCode.append(escapeForTargetLanguage(_evaluatedChildToken.toString()));
+            } else if (_evaluatedChildToken instanceof LongToken) {
+                _fireCode.append(((LongToken) _evaluatedChildToken).longValue() + "LL");
             } else {
                 _fireCode.append(_evaluatedChildToken.toString());
             }
-
             return;
         }
 

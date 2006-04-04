@@ -1,4 +1,3 @@
 /*** randomBlock ***/
-    $ref(output) = (RandomSource_nextDouble() * ($val(upperValue) - $val(lowerValue))) + $val(lowerValue);
+    $ref(output) = (RandomSource_nextDouble(&$actorSymbol(seed)) * ($val(upperBound) - $val(lowerBound))) + $val(lowerBound);
 /**/
-

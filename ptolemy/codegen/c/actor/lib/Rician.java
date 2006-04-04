@@ -1,6 +1,5 @@
-/* A helper class for actor.lib.Gaussian
-
- @Copyright (c) 2005-2006 The Regents of the University of California.
+/* A code generation helper class for actor.lib.Rician
+ @Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -14,16 +13,15 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ PROVIDED HEREUNDER IS ON AN \"AS IS\" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
  ENHANCEMENTS, OR MODIFICATIONS.
 
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
-
 
  */
 package ptolemy.codegen.c.actor.lib;
@@ -35,27 +33,28 @@ import java.util.Set;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * A helper class for ptolemy.actor.lib.Gaussian.
- *
- * @author Man-Kit Leung
- * @version $Id$
- * @since Ptolemy II 6.0
- * @Pt.ProposedRating Yellow (mankit)
- * @Pt.AcceptedRating Yellow (mankit)
+ A code generation helper class for ptolemy.actor.lib.Rician. 
+
+ @author Man-Kit Leung
+ @version $Id$
+ @since Ptolemy II 5.1
+ @Pt.ProposedRating Red (mankit) 
+ @Pt.AcceptedRating Red (mankit)
  */
-public class Gaussian extends RandomSource {
+public class Rician extends RandomSource {
+
     /**
-     * Constructor method for the Gaussian helper.
-     * @param actor the associated actor
+     * Constructor method for the Rician helper.
+     * @param actor The associated actor.
      */
-    public Gaussian(ptolemy.actor.lib.Gaussian actor) {
+    public Rician(ptolemy.actor.lib.Rician actor) {
         super(actor);
     }
 
     /**
-     * Generate shared code.
-     * Read from Gaussian.c, replace macros with their values and
-     * return the processed code string.
+     * Get shared code.
+     * Read the <code>gaussianBlock</code> from Rician.c,
+     * replace macros with their values and return the processed code string.
      * @return The processed code string.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
@@ -66,7 +65,7 @@ public class Gaussian extends RandomSource {
         // shared code blocks.
         Set sharedCode = new LinkedHashSet();
         sharedCode.addAll(super.getSharedCode());
-
+        
         // gaussianBlock is from the RandomSource parent class.
         sharedCode.add(_generateBlockCode("gaussianBlock"));
         return sharedCode;
@@ -74,9 +73,9 @@ public class Gaussian extends RandomSource {
 
     /**
      * Get the files needed by the code generated for the
-     * Gaussian actor.
-     * @return A set of Strings that are names of the files
-     *  needed by the code generated for the Gaussian actor.
+     * Rician actor.
+     * @return A set of Strings that are names of the header files
+     *  needed by the code generated for the Rician actor.
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
