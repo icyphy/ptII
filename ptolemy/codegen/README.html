@@ -159,16 +159,46 @@ iterates through the actors.
      <br>And then comments  about the state of that class
 
 <pre>
+ptolemy.codegen.kernel.StaticSchedulingCodeGenerator
+    AdaptiveCoding
+    Blending
+    Butterfly
+    Case
+    Fibonacci
+    Hysteresis
+    Merge
+    ModalBSC
+     *  @Pt.ProposedRating Yellow (eal)
+     *  @Pt.AcceptedRating Red (cxh) Needs class documentation
+ *  FIXME: need documentation on the following:
+ *  1. Define static-scheduling,
+ *  2. what should the subclasses do.
+ *  3. Define body code, wrapup, initialize section.
 
-7 ptolemy.codegen.c.kernel.CParseTreeCodeGenerator
-AdaptiveCoding
-Butterfly
-Hysteresis
-Merge
-ModalBSC
-SynthesizedVoice
- @Pt.ProposedRating Red
- @Pt.AcceptedRating Red
+ptolemy.codegen.kernel.ParseTreeCodeGenerator
+    AdaptiveCoding
+    Blending
+    Butterfly
+    Case
+    Fibonacci
+    Hysteresis
+    Merge
+    ModalBSC
+     @Pt.ProposedRating Red
+     @Pt.AcceptedRating Red
+
+
+ptolemy.codegen.c.kernel.CParseTreeCodeGenerator
+    AdaptiveCoding
+    Blending
+    Butterfly
+    Case
+    Fibonacci
+    Hysteresis
+    Merge
+    ModalBSC
+     @Pt.ProposedRating Red
+     @Pt.AcceptedRating Red
  Has these limitations, will not be Yellow for release.
  * It is a copy of ParseTreeCodeGenerator from data/expr and thus
    has lots of code for evaluating expressions, which we don't need
@@ -179,245 +209,271 @@ SynthesizedVoice
 
 
 
-7 ptolemy.codegen.c.kernel.CCodeGeneratorHelper
-AdaptiveCoding
-Butterfly
-Hysteresis
-Merge
-ModalBSC
-SynthesizedVoice
- @Pt.ProposedRating Red (mankit)
- @Pt.AcceptedRating Red (mankit)
- Need to look for c code in actor super classes.
+ptolemy.codegen.c.kernel.CCodeGeneratorHelper
+    AdaptiveCoding
+    Blending
+    Butterfly
+    Case
+    Fibonacci
+    Hysteresis
+    Merge
+    ModalBSC
+     @Pt.ProposedRating Red (mankit) Need to look for c code in actor super classes.
+     @Pt.AcceptedRating Red (mankit)
+
+ptolemy.codegen.gui.CodeGeneratorGUI
+    AdaptiveCoding
+    Blending
+    Butterfly
+    Case
+    Fibonacci
+    Hysteresis
+    Merge
+    ModalBSC
+     @Pt.ProposedRating Red (eal)
+     @Pt.AcceptedRating Red (eal)
+
+ptolemy.codegen.c.actor.TypedCompositeActor
+    AdaptiveCoding
+    Blending
+    Butterfly
+    Case
+    Fibonacci
+    Hysteresis
+    Merge
+    ModalBSC
+     @Pt.ProposedRating Yellow (cxh)
+     @Pt.AcceptedRating Red (zgang)
 
 
-7 ptolemy.codegen.c.actor.TypedCompositeActor
-AdaptiveCoding
-Butterfly
-Hysteresis
-Merge
-ModalBSC
-SynthesizedVoice
- @Pt.ProposedRating Yellow (cxh)
- @Pt.AcceptedRating Red (zgang)
- Ready for review
-
-6 ptolemy.codegen.c.domains.sdf.kernel.SDFDirector
-AdaptiveCoding
-Butterfly
-Hysteresis
-Merge
-ModalBSC
-SynthesizedVoice
+ptolemy.codegen.c.domains.sdf.kernel.SDFDirector
+    AdaptiveCoding
+    Blending
+    Butterfly
+    Case
+    Hysteresis
+    Merge
+    ModalBSC
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (eal)
  Ready for review, though it has: 
  FIXME: Should associated with a static scheduling code generator.
 
-5 ptolemy.codegen.c.domains.fsm.kernel.FSMActor
-AdaptiveCoding
-Hysteresis
-Merge
-ModalBSC
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
+ptolemy.codegen.kernel.CodeGeneratorUtilities
+    AdaptiveCoding
+    Blending
+    Case
+    Hysteresis
+    Merge
+    ModalBSC
+     @Pt.ProposedRating Red (cxh)
+     @Pt.AcceptedRating Red (cxh)
+
+ptolemy.codegen.c.domains.fsm.kernel.FSMActor
+    AdaptiveCoding
+    Blending
+    Fibonacci
+    Hysteresis
+    Merge
+    ModalBSC
+     @Pt.ProposedRating Red (zgang)
+     @Pt.AcceptedRating Red (zgang)
+
+
+ptolemy.codegen.c.domains.fsm.kernel.FSMDirector
+    AdaptiveCoding
+    Blending
+    Hysteresis
+    Merge
+    ModalBSC
+     @Pt.ProposedRating Red (zgang)
+     @Pt.AcceptedRating Red (zgang)
  Gang: we reviewed this on March 7, can you update the tag?
 
-4 ptolemy.codegen.c.domains.fsm.kernel.FSMDirector
-AdaptiveCoding
-Hysteresis
-Merge
-ModalBSC
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
- Gang: we reviewed this on March 7, can you update the tag?
-
-3 ptolemy.codegen.c.actor.lib.Ramp
-AdaptiveCoding
-Butterfly
-Hysteresis
+ptolemy.codegen.c.actor.lib.Ramp
+    AdaptiveCoding
+    Blending
+    Butterfly
+    Case
+    Hysteresis
  @Pt.ProposedRating Red (cxh) String, Complex, Fix, Matrix and Array inputs are not supported
  @Pt.AcceptedRating Red (mankit) 
  Jackie: Add support for String and Array
 
-3 ptolemy.codegen.c.actor.lib.MultiplyDivide
-AdaptiveCoding
-Butterfly
-SynthesizedVoice
- @Pt.ProposedRating Red (mankit)
- @Pt.AcceptedRating Red (mankit)
- Complex, Fix, Matrix and Array inputs are not supported
+ptolemy.codegen.c.actor.lib.Const
+    Blending
+    Hysteresis
+    ModalBSC
+     * @Pt.ProposedRating Red (mankit) Need to test with Strings, Arrays before shipping, What about Fix, Matrix?
+     * @Pt.AcceptedRating Red (mankit)
 
-3 ptolemy.codegen.c.actor.lib.Const
-Butterfly
-Hysteresis
-ModalBSC
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
- Need to test with Strings, Arrays before shipping
- What about Fix, Matrix
-
-2 ptolemy.codegen.c.domains.hdf.kernel.HDFFSMDirector
-AdaptiveCoding
-Merge
- @Pt.ProposedRating Yellow (cxh)
- @Pt.AcceptedRating Red (zgang)
- Read for review
-
-2 ptolemy.codegen.c.domains.hdf.kernel.HDFDirector
-AdaptiveCoding
-Merge
- @Pt.ProposedRating Yellow (cxh)
- @Pt.AcceptedRating Red (zgang)
+ptolemy.codegen.c.domains.hdf.kernel.HDFFSMDirector
+    AdaptiveCoding
+    Merge
+     @Pt.ProposedRating Yellow (cxh)
+     @Pt.AcceptedRating Red (zgang)
  Ready for review
 
-2 ptolemy.codegen.c.domains.fsm.kernel.MultirateFSMDirector
-AdaptiveCoding
-Merge
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
+ptolemy.codegen.c.domains.hdf.kernel.HDFDirector
+    AdaptiveCoding
+    Merge
+     @Pt.ProposedRating Yellow (cxh)
+     @Pt.AcceptedRating Red (zgang)
+ Ready for review
+
+ptolemy.codegen.c.domains.fsm.kernel.MultirateFSMDirector
+    AdaptiveCoding
+    Merge
+     @Pt.ProposedRating Red (zgang)
+     @Pt.AcceptedRating Red (zgang)
  Gang: we reviewed this on March 7, can you update the tag?
 
-2 ptolemy.codegen.c.domains.fsm.kernel.FSMDirector
-AdaptiveCoding
-Hysteresis
-Merge
-ModalBSC
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
- Gang: we reviewed this on March 7, can you update the tag?
+ptolemy.codegen.c.actor.lib.gui.SequencePlotter
+    Blending
+    Case
+    Hysteresis
+    ModalBSC
+     @Pt.ProposedRating Red (mankit) Need to handle plot configuration info
+     @Pt.AcceptedRating Red (mankit)
 
-2 ptolemy.codegen.c.actor.lib.gui.SequencePlotter
-Hysteresis
-ModalBSC
- @Pt.ProposedRating Red (zgang) Need to handle plot configuration info
- @Pt.AcceptedRating Red (zgang)
- Need to handle plot configuration info
+ptolemy.codegen.c.actor.lib.Expression
+    Blending
+    Butterfly
+     * @Pt.ProposedRating Red (mankit)
+     * @Pt.AcceptedRating Red (mankit)
 
-2 ptolemy.codegen.c.actor.lib.conversions.BooleanToAnything
-AdaptiveCoding
-ModalBSC
- @Pt.ProposedRating Green (zgang)
- @Pt.AcceptedRating Green (zgang)
+ptolemy.codegen.c.actor.lib.conversions.BooleanToAnything
+    AdaptiveCoding
+    ModalBSC
+     @Pt.ProposedRating Green (zgang)
+     @Pt.AcceptedRating Green (zgang)
  Need tests for Array before shipping.
 
-2 ptolemy.codegen.c.actor.lib.RandomSource
-AdaptiveCoding
-ModalBSC
- @Pt.ProposedRating Red (zgang)
- @Pt.AcceptedRating Red (zgang)
-  
+ptolemy.codegen.c.actor.lib.RandomSource
+    AdaptiveCoding
+    Hysteresis
+    ModalBSC
+     @Pt.ProposedRating Red (zgang)
+     @Pt.AcceptedRating Red (zgang)
  Gang:  ProposedRating tag
 
-2 ptolemy.codegen.c.actor.lib.Gaussian
-Hysteresis
-SynthesizedVoice
- * @Pt.ProposedRating Red (cxh) Extend RandomSource, move code to RandomSource
- * @Pt.AcceptedRating Red (mankit)
+ptolemy.codegen.c.actor.lib.Gaussian
+    Hysteresis
+     * @Pt.ProposedRating Yellow (mankit)
+     * @Pt.AcceptedRating Yellow (mankit)
  Extend RandomSource, move code to RandomSource
 
-2 ptolemy.codegen.c.actor.lib.AddSubtract
-Butterfly
-Hysteresis
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (eal)
+ptolemy.codegen.c.actor.lib.AddSubtract
+    Blending
+    Hysteresis
+     @Pt.ProposedRating Red (eal)
+     @Pt.AcceptedRating Red (eal)
  Complex, Fix, Matrix and Array inputs are not supported
 
-1 ptolemy.codegen.c.actor.lib.io.FileReader
-SynthesizedVoice
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
- Ready for review?
+ptolemy.codegen.c.domains.sdf.lib.SampleDelay
+    Merge
+     @Pt.ProposedRating Green (cxh)
+     @Pt.AcceptedRating Green (cxh)
 
-1 ptolemy.codegen.c.actor.lib.gui.XYPlotter
-Butterfly
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
- Need to handle plot configuration info
+ptolemy.codegen.c.domains.fsm.modal.TransitionRefinement
+    ModalBSC
+     @Pt.ProposedRating Green (cxh)
+     @Pt.AcceptedRating Green (cxh)
 
-1 ptolemy.codegen.c.actor.lib.gui.Display
-Merge
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ptolemy.codegen.c.actor.lib.hoc.Refinement
+    Case
+     @Pt.ProposedRating Red (zgang)
+     @Pt.AcceptedRating Red (zgang)
+
+ptolemy.codegen.c.actor.lib.hoc.MultiCompositeActor
+    Case
+     @Pt.ProposedRating Red (zgang)
+     @Pt.AcceptedRating Red (zgang)
+
+ptolemy.codegen.c.actor.lib.hoc.CaseDirector
+    Case
+     @Pt.ProposedRating Red (zgang)
+     @Pt.AcceptedRating Red (zgang)
+ptolemy.codegen.c.actor.lib.hoc.Case
+    Case
+     @Pt.ProposedRating Red (zgang)
+     @Pt.AcceptedRating Red (zgang)
+
+ptolemy.codegen.c.actor.lib.gui.XYPlotter
+    Butterfly
+     * @Pt.ProposedRating Red (mankit) Need to handle plot configuration info
+     * @Pt.AcceptedRating Red (mankit)
+
+ptolemy.codegen.c.actor.lib.gui.Display
+    Merge
+     * @Pt.ProposedRating Red (mankit)
+     * @Pt.AcceptedRating Red (mankit)
  Jackie, this handles Ints, Doubles, Strings and Tokens, is it ready
  for review? 
 
-1 ptolemy.codegen.c.actor.lib.conversions.PolarToCartesian
-Butterfly
- * @Pt.ProposedRating Yellow (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ptolemy.codegen.c.actor.lib.conversions.PolarToCartesian
+    Butterfly
+     * @Pt.ProposedRating Yellow (mankit)
+     * @Pt.AcceptedRating Red (mankit)
  Ready for review
 
-1 ptolemy.codegen.c.actor.lib.UnaryMathFunction
-Butterfly
- * @Pt.ProposedRating Yellow (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ptolemy.codegen.c.actor.lib.UnaryMathFunction
+    Case
+     * @Pt.ProposedRating Yellow (mankit)
+     * @Pt.AcceptedRating Red (mankit)
  Ready for review
-
-1 ptolemy.codegen.c.actor.lib.Scale
-ModalBSC
- @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (zgang)
-  Complex, Fix, Matrix and Array inputs are not supported.
-
-1 ptolemy.codegen.c.actor.lib.Pulse
-Merge
- @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (zgang)
-  Complex, Fix, Matrix and Array inputs might work, though it needs tests.
+ptolemy.codegen.c.actor.lib.Sequence
+    Case
+     @Pt.ProposedRating Red (eal)
+     @Pt.AcceptedRating Red (eal)
 
 
-1 ptolemy.codegen.c.actor.lib.MonitorValue
-AdaptiveCoding
- *  @Pt.ProposedRating Yellow (zgang)
- *  @Pt.AcceptedRating Red (zgang)
- Works with ints, doubles, strings
+ptolemy.codegen.c.actor.lib.Scale
+    Blending
+    Case
+    ModalBSC
+     @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported.
+     @Pt.AcceptedRating Red (zgang)
+
+ptolemy.codegen.c.actor.lib.MultiplyDivide
+    AdaptiveCoding
+     @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
+     @Pt.AcceptedRating Red (cxh)
  Complex, Fix, Matrix and Array inputs are not supported
+
+ptolemy.codegen.c.actor.lib.Pulse
+    Merge
+     @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported: Needs tests for these
+     @Pt.AcceptedRating Red (zgang)
+
+
+ptolemy.codegen.c.actor.lib.MonitorValue
+    AdaptiveCoding
+     *  @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
+     *  @Pt.AcceptedRating Red (zgang)
  Needs to work with Array to be shipped 
 
-1 ptolemy.codegen.c.actor.lib.Minimum
-Merge
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
+ptolemy.codegen.c.actor.lib.Minimum
+    Merge
+     * @Pt.ProposedRating Yellow (cxh)
+     * @Pt.AcceptedRating Red (mankit)
  Ready for review
 
-1 ptolemy.codegen.c.actor.lib.Maximum
-Merge
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
+ptolemy.codegen.c.actor.lib.Maximum
+    Merge
+     * @Pt.ProposedRating Yellow (cxh)
+     * @Pt.AcceptedRating Red (mankit)
  Ready for review
 
-1 ptolemy.codegen.c.actor.lib.LookupTable
-ModalBSC
- @Pt.ProposedRating Yellow (zgang)
- @Pt.AcceptedRating Red (zgang)
- Will this work with strings? 
- Before Yellow, need test for array and String
+ptolemy.codegen.c.actor.lib.LookupTable
+    ModalBSC
+     @Pt.ProposedRating Yellow (zgang) Before Yellow, need test for array and String
+     @Pt.AcceptedRating Red (zgang)
 
-1 ptolemy.codegen.c.actor.lib.GradientAdaptiveLattice
-SynthesizedVoice
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
-
-1 ptolemy.codegen.c.actor.lib.Accumulator
-AdaptiveCoding
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (zgang)
- Ready for review, does this work on strings?
-
-1 ptolemy.codegen.c.actor.lib.AbsoluteValue
-SynthesizedVoice
- * @Pt.ProposedRating Yellow (cxh)
- * @Pt.AcceptedRating Red (mankit)
- Ready for review
-
-StaticSchedulingCodeGenerator
- *  @Pt.ProposedRating Yellow (eal)
- *  @Pt.AcceptedRating Red (cxh) Needs class documentation
- *  FIXME: need documentation on the following:
- *  1. Define static-scheduling,
- *  2. what should the subclasses do.
- *  3. Define body code, wrapup, initialize section.
+ptolemy.codegen.c.actor.lib.Accumulator
+    AdaptiveCoding
+     * @Pt.ProposedRating Red (cxh) String, Complex, Fix, Matrix and Array inputs are not supported.
+     * @Pt.AcceptedRating Red (zgang)
 </pre>
 
 Edward wrote:
