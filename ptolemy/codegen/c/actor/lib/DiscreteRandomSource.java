@@ -1,5 +1,5 @@
 /* A code generation helper class for actor.lib.DiscreteRandomSource
- @Copyright (c) 2005 The Regents of the University of California.
+ @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -30,17 +30,17 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A code generation helper class for ptolemy.actor.lib.DiscreteRandomSource. 
-
+ 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (mankit) 
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Red (mankit) Only works if params are all of same type (like Ramp)
  @Pt.AcceptedRating Red (mankit)
  */
 public class DiscreteRandomSource extends RandomSource {
 
     /**
-     * Constructor method for the DiscreteRandomSource helper.
+     * Construct a DiscreteRandomSource helper.
      * @param actor The associated actor.
      */
     public DiscreteRandomSource(ptolemy.actor.lib.DiscreteRandomSource actor) {
