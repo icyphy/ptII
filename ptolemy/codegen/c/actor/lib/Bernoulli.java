@@ -35,11 +35,8 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  A helper class for ptolemy.actor.lib.Bernoulli.
- <p>Note that this class will generate different random numbers than
- the Java version.  To change this, RandomSource would need to be updated
- to generate numbers using the same algorithm as Java.
 
- @author Gang Zhou
+ @author Gang Zhou, Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
  @Pt.ProposedRating Green (cxh)
