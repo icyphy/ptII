@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Gaussian extends RandomSource {
     /**
-     * Constructor method for the Gaussian helper.
+     * Construct a Gaussian helper.
      * @param actor the associated actor
      */
     public Gaussian(ptolemy.actor.lib.Gaussian actor) {

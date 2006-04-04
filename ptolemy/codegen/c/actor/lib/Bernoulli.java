@@ -43,7 +43,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Green (cxh)
  */
 public class Bernoulli extends RandomSource {
-    /** Constructor method for the Bernoulli helper.
+    /** Constructor a Bernoulli helper.
      *  @param actor the associated actor.
      */
     public Bernoulli(ptolemy.actor.lib.Bernoulli actor) {
