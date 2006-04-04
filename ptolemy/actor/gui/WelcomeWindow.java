@@ -128,6 +128,8 @@ public class WelcomeWindow extends HTMLViewer {
 
         _closePanel.add(_startupCheck, BorderLayout.WEST);
         _closePanel.add(_closeButton, BorderLayout.EAST);
+
+        super.hideMenuBar();
     }
 
     ///////////////////////////////////////////////////////////////////
