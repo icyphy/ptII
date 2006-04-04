@@ -47,7 +47,7 @@ import ptolemy.util.MessageHandler;
 //// FixedPointScheduler
 
 /**
- A scheduler for the Fixed Point (FP) domain.  This scheduler constructs
+ A scheduler for the FixedPointDirector.  This scheduler constructs
  a static schedule for a model by performing a topological sort on the port 
  dependency graph of that model.  
  
