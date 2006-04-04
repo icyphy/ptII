@@ -27,6 +27,8 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Bernoulli
@@ -49,5 +51,16 @@ public class Bernoulli extends RandomSource {
      */
     public Bernoulli(ptolemy.actor.lib.Bernoulli actor) {
         super(actor);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate code for producing a new random number.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected String _generateRandomNumber()
+            throws IllegalActionException {
+        return _generateBlockCode("randomBlock");
     }
 }

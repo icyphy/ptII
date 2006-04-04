@@ -1,11 +1,12 @@
+// The algorithm of generating the Bernoulli distribution
+// is based on source code from Java.util.Random. Given the same seed, it
+// generates the same list of random numbers as the java.util.Random object.
+
 /***randomBlock***/
-   /* Note that this code will generate different random numbers than
-    * the Java version.  To change this, RandomSource would need to be updated
-    * to generate numbers using the same algorithm as Java.
-    */ 
-    if (rand_r(&$actorSymbol(seed)) < $val(trueProbability) * RAND_MAX) {
-        $ref(output) = 1;
+    if (RandomSource_nextDouble(&$actorSymbol(seed)) < $val(trueProbability)) {
+        $ref(output) = true;
     } else {
-        $ref(output) = 0;	
+        $ref(output) = false;	
     } 	
 /**/
+

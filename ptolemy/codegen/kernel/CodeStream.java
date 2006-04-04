@@ -30,11 +30,18 @@ package ptolemy.codegen.kernel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
+import ptolemy.codegen.kernel.CodeGeneratorHelper.Channel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
@@ -91,8 +98,6 @@ public class CodeStream {
      */
     public CodeStream(CodeGeneratorHelper helper) {
         _helper = helper;
-        String classNamePath = helper.getClass().getName().replace('.', '/');
-        _filePath = "$CLASSPATH/" + classNamePath + ".c";
     }
 
     /**
@@ -199,9 +204,8 @@ public class CodeStream {
 
             for (int i = 0; i < blocks.length; i++) {
                 if (blockName.matches(blocks[i])) {
-                    throw new IllegalActionException(
-                            blockName
-                                    + " -- is a code block that is appended by default.");
+                    throw new IllegalActionException(blockName + 
+                            " -- is a code block that is appended by default.");
                 }
             }
         }
@@ -209,52 +213,27 @@ public class CodeStream {
         // First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
-        if (_codeBlockTable == null) {
+        if (_declarations == null) {
             _constructCodeTable(mayNotExist);
         }
 
-        StringBuffer codeBlock = (StringBuffer) _codeBlockTable.get(blockName);
+        Signature signature = new Signature(blockName, arguments.size());
+        
+        StringBuffer codeBlock = _declarations.getCode(signature);
 
-        ArrayList errors = new ArrayList();
+        ArrayList parameters = _declarations.getParameters(signature);
+
+        // Cannot find a code block with the matching signature.
         if (codeBlock == null) {
-            errors.add("Cannot find code block: " + blockName + " in "
-                    + _filePath + ".");
-        }
-
-        ArrayList parameters = (ArrayList) _parameterTable.get(blockName);
-
-        if (parameters == null) {
-            if (arguments.size() != 0) {
-                errors.add(blockName + " in " + _filePath
-                        + " does not take any arguments.");
-            }
-        } else {
-            // Check if there are more parameters than arguments.
-            if ((parameters.size() - arguments.size()) < 0) {
-                errors.add(blockName + " in " + _filePath + " only takes "
-                        + parameters.size() + " arguments.");
-            }
-            // Check if there are more arguments than parameters.
-            else if ((parameters.size() - arguments.size()) > 0) {
-                for (int i = arguments.size(); i < parameters.size(); i++) {
-                    errors
-                            .add(blockName + " in " + _filePath
-                                    + " expects parameter ("
-                                    + parameters.get(i) + ").");
-                }
-            }
-        }
-
-        if (errors.size() > 0) {
             if (mayNotExist) {
                 return;
             } else {
-                // FIXME: search for parent code blocks.
-                throw new IllegalActionException((String) errors.get(0));
+                throw new IllegalActionException(
+                        "Cannot find code block: " + signature + ".\n" + description() );
             }
         }
 
-        // substitute for each parameters
+        // Text-substitute for each parameters.
         for (int i = 0; i < arguments.size(); i++) {
             String replaceString = arguments.get(i).toString();
             try {
@@ -262,10 +241,10 @@ public class CodeStream {
                         _checkParameterName(parameters.get(i).toString()),
                         replaceString));
             } catch (IllegalArgumentException ex) {
-                throw new IllegalActionException(null, ex, blockName + " in "
-                        + _filePath + " problems replacing \""
-                        + parameters.get(i).toString() + "\" with \""
-                        + replaceString + "\"");
+                throw new IllegalActionException(null, ex, signature + " in "
+                    + _declarations.getFilePath(signature)
+                    + " problems replacing \"" + parameters.get(i).toString()
+                    + "\" with \"" + replaceString + "\"");
             }
         }
 
@@ -285,15 +264,16 @@ public class CodeStream {
         // First, it checks if the code file is parsed already.
         // If so, it gets the code block from the well-constructed code
         // block table.  If not, it has to construct the table.
-        if (_codeBlockTable == null) {
+        if (_declarations == null) {
             _constructCodeTable(true);
-        }
-
-        Enumeration allBlockNames = _codeBlockTable.keys();
-        while (allBlockNames.hasMoreElements()) {
-            String name = (String) allBlockNames.nextElement();
-            if (name.matches(nameExpression)) {
-                _stream.append(_codeBlockTable.get(name));
+        }        
+        
+        Iterator allSignatures = _declarations.keys();
+        while (allSignatures.hasNext()) {
+             Signature signature = (Signature) allSignatures.next();
+            if (signature.numParameters == 0 && 
+                    signature.functionName.matches(nameExpression)) {
+                _stream.append(_declarations.getCode(signature));
             }
         }
     }
@@ -311,19 +291,20 @@ public class CodeStream {
      * @return The content from parsing the helper .c file.
      * @exception IllegalActionException If an error occurs during parsing.
      */
-    public StringBuffer description() throws IllegalActionException {
+    public String description() throws IllegalActionException {
         StringBuffer buffer = new StringBuffer();
 
-        if (_codeBlockTable == null) {
+        if (_declarations == null) {
             _constructCodeTable(true);
         }
 
-        for (Iterator keys = _codeBlockTable.keySet().iterator(); keys
-                .hasNext();) {
-            String key = (String) keys.next();
-            buffer.append(key);
+        for (Iterator keys = _declarations.keys(); 
+                keys.hasNext();) {
+            Signature signature = (Signature) keys.next();
+            buffer.append(signature.functionName);
 
-            ArrayList parameters = (ArrayList) _parameterTable.get(key);
+            ArrayList parameters = 
+                (ArrayList) _declarations.getParameters(signature);
 
             if ((parameters != null) && (parameters.size() > 0)) {
                 for (int i = 0; i < parameters.size(); i++) {
@@ -338,11 +319,11 @@ public class CodeStream {
             }
 
             buffer.append(":\n");
-            buffer.append((StringBuffer) _codeBlockTable.get(key));
+            buffer.append((StringBuffer) _declarations.getCode(signature));
             buffer.append("\n-------------------------------\n\n");
         }
 
-        return buffer;
+        return buffer.toString();
     }
 
     /**
@@ -354,15 +335,23 @@ public class CodeStream {
      * @exception IllegalActionException If an error occurs during parsing
      *  the helper .c file.
      */
-    //     public static void main(String[] args) throws IOException,
-    //             IllegalActionException {
-    //         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    //         System.out.println("----------Testing-------------------------------");
-    //         System.out.print("please input file path: ");
-    //         String filePath = in.readLine();
-    //         System.out.println("\n----------Result------------------------------");
-    //         System.out.println(new CodeStream(filePath).description());
-    //     }
+     public static void main(String[] args) throws IOException,
+             IllegalActionException {
+         //BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+         //System.out.println("----------Testing-------------------------------");
+         //System.out.print("please input file path: ");
+         //String filePath = in.readLine();
+         String filePath = "D:\\Eclipse_Workspace\\ptII\\ptolemy\\codegen\\c\\actor\\lib\\RandomSource.c";
+         CodeStream code = new CodeStream(filePath);
+         
+         System.out.println("\n----------Result------------------------------");
+         System.out.println(code.description());
+         System.out.println("\n----------Result------------------------------\n");
+         
+         code.appendCodeBlocks(".*shared.*");
+         System.out.println(code);
+     }
+         
     /**
      * Return the string representation of the code stream.
      * @return The string representation of this code stream.
@@ -416,49 +405,72 @@ public class CodeStream {
     }
 
     /**
-     * Read the helper .c file identified by the _filePath and construct the
-     * code block table and parameter table.
+     * Read the given helper .c file and construct the code block table and
+     * parameter table.
      * @param mayNotExist Indicate if the file is required to exist.
+     * @param filePath The given .c file to read from.
      * @exception IllegalActionException If an error occurs when parsing the
      *  helper .c file.
      */
     private void _constructCodeTable(boolean mayNotExist)
             throws IllegalActionException {
-        _codeBlockTable = new Hashtable();
-        _parameterTable = new Hashtable();
 
-        BufferedReader reader = null;
+        _declarations = new CodeBlockTable();
 
+        if (_filePath != null) {
+            // Use the pre-specified file path.
+            _constructCodeTableHelper(mayNotExist);            
+        } else {        
+            for (Class helperClass = _helper.getClass(); helperClass != null;
+                helperClass = helperClass.getSuperclass()) {
+
+                _filePath = _getPath(helperClass);
+
+                _constructCodeTableHelper(mayNotExist);
+
+                mayNotExist = true;     // Superclass
+            }
+        }
+    }
+
+    private void _constructCodeTableHelper(boolean mayNotExist)
+        throws IllegalActionException {
+        BufferedReader reader = null;    
+        
         try {
-            // open the .c file for reading
-            reader = FileUtilities.openForReading(_filePath, null, null);
+            // Open the .c file for reading.
+            reader = FileUtilities.openForReading(
+                    _filePath, null, null);
 
             StringBuffer codeInFile = new StringBuffer();
 
             // FIXME: is there a better way to read the entire file?
             // create a string of all code in the file
-            for (String line = reader.readLine(); line != null; line = reader
-                    .readLine()) {
+            for (String line = reader.readLine(); 
+                line != null; line = reader.readLine()) {
                 codeInFile.append(line + "\n");
             }
+
+            _declarations.addScope();
 
             // repeatedly parse the file
             while (_parseCodeBlock(codeInFile) != null) {
                 ;
             }
+
         } catch (IllegalActionException ex) {
-            _codeBlockTable = null;
+            _declarations = null;
             throw ex;
         } catch (IOException ex) {
             if (reader == null) {
                 if (mayNotExist) {
                 } else {
-                    _codeBlockTable = null;
+                    _declarations = null;
                     throw new IllegalActionException(null, ex,
                             "Cannot open file: " + _filePath);
                 }
             } else {
-                _codeBlockTable = null;
+                _declarations = null;
                 throw new IllegalActionException(null, ex,
                         "Error reading file: " + _filePath);
             }
@@ -471,9 +483,19 @@ public class CodeStream {
                 throw new IllegalActionException(null, ex,
                         "Error closing file: " + _filePath);
             }
-        }
+        }                
     }
-
+    
+    /**
+     * Get the file path for the helper .c file associated with the given
+     * helper class.
+     * @param helperClass The given helper class
+     * @return Path for the helper .c file.
+     */
+    private String _getPath (Class helperClass) {
+        return "$CLASSPATH/" + helperClass.getName().replace('.', '/') + ".c";
+    }
+    
     /**
      * Parse from the _parseIndex and return the next code block
      * body from the given StringBuffer. This method recursively
@@ -511,20 +533,20 @@ public class CodeStream {
                     + _filePath);
         }
 
-        StringBuffer body = new StringBuffer(codeInFile.substring(_parseIndex,
-                endIndex));
+        StringBuffer body = new StringBuffer(
+                codeInFile.substring(_parseIndex, endIndex));
 
         // Recursively parsing for nested code blocks
-        for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
+        //for (String subBlockKey = _parseCodeBlock(body); subBlockKey != null;) {
             // FIXME: do we include the nested code block into 
             // the current block??
             //body.append((StringBuffer) _codeBlockTable.get(subBlockKey));
             // FIXME: take away the nested code block from
             // the current code block
             // reset the parse index to parse the body from the beginning
-            _parseIndex = 0;
-            subBlockKey = _parseCodeBlock(body);
-        }
+            //_parseIndex = 0;
+            //subBlockKey = _parseCodeBlock(body);
+        //}
 
         _parseIndex = _BLOCKEND.length() + endIndex;
         return body;
@@ -542,22 +564,17 @@ public class CodeStream {
      * @see parseHeader(StringBuffer)
      * @see parseBody(StringBuffer)
      */
-    private String _parseCodeBlock(StringBuffer codeInFile)
+    private Signature _parseCodeBlock(StringBuffer codeInFile) 
             throws IllegalActionException {
-        String name = _parseHeader(codeInFile);
+        
+        Signature signature = _parseHeader(codeInFile);
 
-        if (name != null) {
-            if (_codeBlockTable.containsKey(name)) {
-                throw new IllegalActionException(
-                        "Multiple code blocks have the same name: " + name
-                                + " in " + _filePath);
-            }
-
+        if (signature != null) {
             StringBuffer body = _parseBody(codeInFile);
-            _codeBlockTable.put(name, body);
+            _declarations.putCode(signature, _filePath, body);
         }
 
-        return name;
+        return signature;
     }
 
     /**
@@ -578,9 +595,10 @@ public class CodeStream {
      * @see _HEADEREND
      * @see _parameterTable
      */
-    private String _parseHeader(StringBuffer codeInFile)
+    private Signature _parseHeader(StringBuffer codeInFile)
             throws IllegalActionException {
-        String name;
+        Signature signature;
+        
         _parseIndex = codeInFile.indexOf(_BLOCKSTART, _parseIndex);
 
         // Check to see if there are no more code block start headers.
@@ -599,43 +617,192 @@ public class CodeStream {
 
         int parameterIndex = codeInFile.indexOf("(", _parseIndex);
 
-        if ((parameterIndex != -1) && (parameterIndex < endIndex)) {
-            name = _checkCodeBlockName(codeInFile.substring(_parseIndex,
+        if ((parameterIndex == -1) || (parameterIndex >= endIndex)) {
+            String name = _checkCodeBlockName(
+                    codeInFile.substring(_parseIndex, endIndex));
+
+            signature = new Signature(name, 0);
+        } else {
+            String name = _checkCodeBlockName(codeInFile.substring(_parseIndex,
                     parameterIndex));
 
             int parameterEndIndex = codeInFile.indexOf(")", _parseIndex);
 
-            if (_parameterTable.get(name) == null) {
-                _parameterTable.put(name, new ArrayList());
-            }
+            ArrayList parameterList = new ArrayList();
 
-            ArrayList parameterList = (ArrayList) _parameterTable.get(name);
+            // Keep parsing for extra parameters.
+            for (int commaIndex = codeInFile.indexOf(",", _parseIndex); 
+            commaIndex != -1 && (commaIndex < parameterEndIndex);
+            commaIndex = codeInFile.indexOf(",", commaIndex + 1)) {
+                
+                String newParameter = 
+                    codeInFile.substring(parameterIndex + 1, commaIndex);
 
-            // keep parsing for extra parameters
-            for (int commaIndex = codeInFile.indexOf(",", _parseIndex); commaIndex != -1
-                    && (commaIndex < parameterEndIndex); commaIndex = codeInFile
-                    .indexOf(",", commaIndex + 1)) {
-                String newParameter = codeInFile.substring(parameterIndex + 1,
-                        commaIndex);
                 parameterList.add(newParameter.trim());
                 parameterIndex = commaIndex;
             }
 
-            String newParameter = codeInFile.substring(parameterIndex + 1,
-                    parameterEndIndex);
+            String newParameter = 
+                codeInFile.substring(parameterIndex + 1, parameterEndIndex);
             parameterList.add(newParameter.trim());
-        } else {
-            name = _checkCodeBlockName(codeInFile.substring(_parseIndex,
-                    endIndex));
-        }
 
+            signature = new Signature(name, parameterList.size());
+
+            _declarations.putParameters(signature, parameterList);            
+        }
+        
         _parseIndex = _HEADEREND.length() + endIndex;
-        return name;
+        return signature;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
+    private class CodeBlockTable {
+        
+        public CodeBlockTable() {}
+
+        public Iterator keys() {
+            HashSet signatures = new HashSet();
+            Iterator files = _codeTableList.iterator();
+
+            while (files.hasNext()) {
+                Hashtable table = (Hashtable) files.next();
+                signatures.addAll(table.keySet());
+            }
+            return signatures.iterator();
+        }
+        
+        public String getFilePath (Signature signature)
+                throws IllegalActionException {
+            Iterator files = _codeTableList.iterator();
+
+            while (files.hasNext()) {
+                Hashtable table = (Hashtable) files.next();
+                if (table.containsKey(signature)) {
+                    return (String) 
+                    ((Object[]) table.get(signature))[0];
+                }
+            }
+            throw new IllegalActionException(
+                    "Cannot find code block " + signature + ".\n");
+        }
+
+        public StringBuffer getCode (Signature signature)
+                throws IllegalActionException {
+            Iterator files = _codeTableList.iterator();
+
+            while (files.hasNext()) {
+            
+                Hashtable table = (Hashtable) files.next();
+                
+                if (table.containsKey(signature)) {
+                    return (StringBuffer) 
+                    ((Object[]) table.get(signature))[1];
+                }
+            }
+            return null;
+        }
+        
+        public void putCode (Signature signature, String filePath,
+                StringBuffer code) throws IllegalActionException {
+            Object[] codeBlock = new Object[2];
+            
+            codeBlock[0] = filePath;
+            codeBlock[1] = code;
+            
+            Hashtable currentScope = (Hashtable) _codeTableList.getLast(); 
+            
+            if (currentScope.containsKey(signature)) {
+                throw new IllegalActionException(
+                        "Multiple code blocks have the same signature: "
+                        + signature + " in " + _filePath);                
+            } 
+            
+            currentScope.put(signature, codeBlock);                
+        }
+        
+        public ArrayList getParameters (Signature signature) {
+            return (ArrayList) _parameterTable.get(signature);
+        }
+        
+        public void addScope () {
+            _codeTableList.addLast(new Hashtable());
+        }
+
+        public void putParameters (Signature signature, ArrayList parameters) {
+            _parameterTable.put(signature, parameters);
+        }
+        
+        /**
+         * LinkedList of Hashtable of code blocks. Each index of the
+         * LinkedList represents a separate helper .c code block file. 
+         */
+        private LinkedList _codeTableList = new LinkedList();
+
+        /**
+         * The code block table that stores the code block parameters
+         * (ArrayList) with the code block names (Signature) as key.
+         */
+        private Hashtable _parameterTable = new Hashtable();        
+        
+    }
+    
+    private class Signature {
+
+        /**
+         * 
+         * @param functionName
+         * @param numParameters
+         * @throws IllegalActionException
+         */
+        public Signature(String functionName, int numParameters) 
+            throws IllegalActionException {
+            
+            if (functionName == null || numParameters < 0) {
+                throw new IllegalActionException (
+                        "Bad code block signature: (" + functionName +
+                        ") with " + numParameters + " parameters.");
+            }
+            
+            this.functionName = functionName;
+
+            this.numParameters = numParameters;
+        }
+
+        public boolean equals(Object object) {
+            return object instanceof Signature
+                && functionName.equals(((Signature) object).functionName)
+                && numParameters == ((Signature) object).numParameters;
+        }
+
+        /**
+         * Return the hash code for this channel. Implementing this method
+         * is required for comparing the equality of channels.
+         * @return Hash code for this channel.
+         */
+        public int hashCode() {
+            return functionName.hashCode() + numParameters;
+        }
+
+        /**
+         * Return the string format of this code block signature.
+         */
+        public String toString() {
+            String result = functionName + "(";
+            for (int i = 0; i < numParameters; i++) {
+                if (i != 0) {
+                    result += ", ";
+                }
+                result += "$";
+            }
+            return result += ")";
+        }
+        
+        public String functionName;
+
+        public int numParameters;
+    }
     /**
      * String pattern which represents the end of a code block.
      * Both _BLOCKSTART and _BLOCKEND cannot be the prefix of the other.
@@ -653,26 +820,22 @@ public class CodeStream {
     private static final String _HEADEREND = "***/";
 
     /**
-     * The code block table that stores the code block body (StringBuffer)
-     * with the code block name (String) as key.
+     * The code block table that stores the code blocks information,
+     * like the code body (StringBuffer), signatures, .c helper class
+     * associated with the code blocks. It uses code block Signature
+     * as keys.
      */
-    private Hashtable _codeBlockTable = null;
+    private CodeBlockTable _declarations = null;
 
     /**
-     * File path to the .c files associated with this CodeStream's helper.
+     * The path of the current .c file being parsed.
      */
-    private String _filePath;
-
+    private String _filePath = null;
+    
     /**
      * The helper associated with this code stream.
      */
     private CodeGeneratorHelper _helper = null;
-
-    /**
-     * The code block table that stores the code block parameters
-     * (ArrayList) with the code block names (String) as key.
-     */
-    private Hashtable _parameterTable = null;
 
     /**
      * Index pointer that indicates the current location

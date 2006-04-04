@@ -52,44 +52,6 @@ public class Gaussian extends RandomSource {
     }
 
     /**
-     * Generate initialize code.
-     * Parse the seed parameter of the actor. If the seed equals zero, then
-     * append code that sets the seed variable to the sum of the current time
-     * and the actor hashCode (This is what the original ptolemy actor does).
-     * Otherwise, read the <code>setSeedBlock</code> from Gaussian.c,
-     * replace macros with their values and return the processed code string.
-     * @return The processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        ptolemy.actor.lib.Gaussian actor = (ptolemy.actor.lib.Gaussian) getComponent();
-
-        _codeStream.clear();
-
-        long seedValue;
-        String seedString = actor.seed.getExpression();
-
-        if (Character.isDigit(seedString.charAt(seedString.length() - 1))) {
-            seedValue = Long.parseLong(seedString);
-        } else {
-            seedValue = Long.parseLong(seedString.substring(0, seedString
-                    .length() - 1));
-        }
-
-        if (seedValue == 0) {
-            _codeStream.append("$actorSymbol(seed) = time (NULL) + "
-                    + actor.hashCode() + ";");
-        } else {
-            _codeStream.appendCodeBlock("setSeedBlock");
-        }
-
-        return processCode(_codeStream.toString());
-    }
-
-    /**
      * Get the files needed by the code generated for the
      * Gaussian actor.
      * @return A set of Strings that are names of the files
@@ -97,10 +59,20 @@ public class Gaussian extends RandomSource {
      * @exception IllegalActionException Not Thrown in this subclass.
      */
     public Set getHeaderFiles() throws IllegalActionException {
-        super.getHeaderFiles();
         Set files = new HashSet();
-        files.add("<time.h>");
+        files.addAll(super.getHeaderFiles());
         files.add("<math.h>");
         return files;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate code for producing a new random number.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected String _generateRandomNumber()
+            throws IllegalActionException {
+        return _generateBlockCode("randomBlock");
     }
 }

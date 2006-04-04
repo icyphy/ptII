@@ -225,8 +225,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     public String generateFireCode() throws IllegalActionException {
         _codeStream.clear();
+        
+        String composite = (getComponent() instanceof CompositeActor) ? 
+                "Composite Actor " : "";
+        
         _codeStream.append(_codeGenerator.comment(2, "fire "
-                + getComponent().getName()));
+                + composite + getComponent().getName()));
+        
         _codeStream.appendCodeBlock(_defaultBlocks[2], true); // fireBlock
         return processCode(_codeStream.toString());
     }
@@ -1117,7 +1122,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public Set getSharedCode() throws IllegalActionException {
         Set sharedCode = new HashSet();
         _codeStream.clear();
-        _codeStream.appendCodeBlocks(_defaultBlocks[4]); // .*shared.*
+        _codeStream.appendCodeBlocks(".*shared.*"); 
         sharedCode.add(processCode(_codeStream.toString()));
         return sharedCode;
     }
@@ -1486,19 +1491,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             channelNumber = channel;
         }
 
-        /** The port that contains this channel.
-         */
-        public IOPort port;
-
-        /** The channel number of this channel.
-         */
-        public int channelNumber;
-
         /** 
          * Whether this channel is the same as the given object.
          * @param object The given object.
          * @return True if this channel is the same reference as the given
-         * 	object, otherwise false;
+         *  object, otherwise false;
          */
         public boolean equals(Object object) {
             return object instanceof Channel
@@ -1514,6 +1511,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         public int hashCode() {
             return port.hashCode() + channelNumber;
         }
+
+        /** The port that contains this channel.
+         */
+        public IOPort port;
+
+        /** The channel number of this channel.
+         */
+        public int channelNumber;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2075,8 +2080,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * The code block table that stores the code block body (StringBuffer)
      * with the code block name (String) as key.
      */
-    private static final String[] _defaultBlocks = { "preinitBlock",
-            "initBlock", "fireBlock", "wrapupBlock", ".*shared.*" };
+    private static final String[] _defaultBlocks = { 
+        "preinitBlock", "initBlock", "fireBlock", "wrapupBlock" };
 
     /** A hashset that keeps track of parameters that are referenced for
      *  the associated actor.

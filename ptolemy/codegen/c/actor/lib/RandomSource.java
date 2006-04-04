@@ -27,6 +27,7 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,6 +55,18 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
         super(actor);
     }
 
+    /** Generate fire code.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();        
+        code.append(super.generateFireCode());
+        code.append(_generateRandomNumber());
+        return processCode(code.toString());
+    }
+
     /** Generate the code for initializing the random number generator
      *  with the seed, if it has been given.  A seed of zero is interpreted
      *  to mean that no seed is specified.  In such cases, a seed based on
@@ -65,29 +78,23 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        ptolemy.actor.lib.RandomSource actor = (ptolemy.actor.lib.RandomSource) getComponent();
+        ptolemy.actor.lib.RandomSource actor = 
+            (ptolemy.actor.lib.RandomSource) getComponent();
 
-        long sd = ((LongToken) (actor.seed.getToken())).longValue();
+        long seedValue = ((LongToken) (actor.seed.getToken())).longValue();
 
-        if (sd != 0) {
-            _codeStream.append("    $actorSymbol(seed) = " + sd + ";\n");
-        } else {
-            _codeStream.append("    $actorSymbol(seed) = (time(0) + "
-                    + actor.hashCode() + ");\n");
+        if (seedValue == 0) {
+            
+            ArrayList args = new ArrayList();
+            args.add(new Integer(actor.hashCode()));
+
+            _codeStream.appendCodeBlock("setSeedBlock0", args);
+            
+        } else {    // Use fixed seed.
+            _codeStream.appendCodeBlock("setSeedBlock1");
         }
 
         return processCode(_codeStream.toString());
-    }
-
-    /** Generate the preinitialize code.
-     *  @return The preinitialize code of this actor.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generatePreinitializeCode());
-        code.append("unsigned int $actorSymbol(seed);\n");
-        return processCode(code.toString());
     }
 
     /** Get the files needed by the code generated for the RandomSource actor.
@@ -101,4 +108,14 @@ public abstract class RandomSource extends CCodeGeneratorHelper {
         files.add("<time.h>");
         return files;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Generate code for producing a new random number.
+     *  @param code The code that to which we append the random number code.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected abstract String _generateRandomNumber() 
+        throws IllegalActionException;
 }
