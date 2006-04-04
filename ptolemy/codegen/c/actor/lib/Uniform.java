@@ -28,11 +28,6 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
-import ptolemy.codegen.kernel.CodeStream;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -44,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */
-public class Uniform extends CCodeGeneratorHelper {
+public class Uniform extends RandomSource {
     /**
      * Constructor method for the Uniform helper.
      * @param actor the associated actor
@@ -52,43 +47,12 @@ public class Uniform extends CCodeGeneratorHelper {
     public Uniform(ptolemy.actor.lib.Uniform actor) {
         super(actor);
     }
-
-    /**
-     * Generate initialize code.
-     * This method reads the <code>setSeedBlock</code> from Uniform.c,
-     * replaces macros with their values and returns the processed code string.
-     * @exception IllegalActionException If the code stream encounters an
-     *  error in processing the specified code block(s).
-     * @return The processed code string.
+    
+    /** Generate code for producing a new random number.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
-    public String generateInitializeCode() throws IllegalActionException {
-        super.generateInitializeCode();
-
-        ptolemy.actor.lib.Uniform actor = (ptolemy.actor.lib.Uniform) getComponent();
-
-        CodeStream _codeStream = new CodeStream(this);
-
-        if (Long.parseLong(actor.seed.getExpression()) == 0) {
-            _codeStream.append("$actorSymbol(seed) = time (NULL) + "
-                    + actor.hashCode() + ";");
-        } else {
-            _codeStream.appendCodeBlock("setSeedBlock");
-        }
-
-        return processCode(_codeStream.toString());
-    }
-
-    /**
-     * Get the files needed by the code generated for the
-     * Uniform actor.
-     * @return A set of strings that are names of the files
-     *  needed by the code generated for the Uniform actor.
-     * @exception IllegalActionException Not Thrown in this subclass.
-     */
-    public Set getHeaderFiles() throws IllegalActionException {
-        Set files = new HashSet();
-        files.add("\"time.h\"");
-        files.add("\"math.h\"");
-        return files;
+    protected String _generateRandomNumber()
+            throws IllegalActionException {
+        return _generateBlockCode("randomBlock");
     }
 }
