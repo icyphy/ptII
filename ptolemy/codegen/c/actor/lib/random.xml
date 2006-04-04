@@ -11,9 +11,6 @@
 	  <doc>Create a sequence of bernoulli random variables</doc>
 	</entity>
 
-	<entity name="DiscreteRandomSource" class="ptolemy.actor.lib.DiscreteRandomSource">
-       	</entity>
-
 	<entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
 	  <doc>Create a sequence of gaussian random variables</doc>
 	</entity>
