@@ -34,8 +34,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit) Only works if params are all of same type (like Ramp)
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Green (mankit)
+ @Pt.AcceptedRating Green (mankit)
  */
 public class DiscreteRandomSource extends RandomSource {
 

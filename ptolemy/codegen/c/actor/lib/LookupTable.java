@@ -37,11 +37,11 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (zgang) Before Yellow, need test for array and String
- @Pt.AcceptedRating Red (zgang)
+ @Pt.ProposedRating Green (mankit)
+ @Pt.AcceptedRating Green (zgang)
  */
 public class LookupTable extends CCodeGeneratorHelper {
-    /** Constructor method for the LookupTable helper.
+    /** Construct a LookupTable helper.
      *  @param actor the associated actor.
      */
     public LookupTable(ptolemy.actor.lib.LookupTable actor) {
