@@ -34,8 +34,8 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit Leung
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Green (mankit)
- @Pt.AcceptedRating Green (mankit)
+ @Pt.ProposedRating Red (mankit) Expression parser has problems if params are not of the same type.
+ @Pt.AcceptedRating Red (mankit)
  */
 public class DiscreteRandomSource extends RandomSource {
 
