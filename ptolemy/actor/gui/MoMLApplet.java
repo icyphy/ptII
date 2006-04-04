@@ -185,7 +185,7 @@ public class MoMLApplet extends PtolemyApplet {
         RemoveGraphicalClasses removeNonAppletClasses = new RemoveGraphicalClasses();
         removeNonAppletClasses.clear();
         removeNonAppletClasses.put("ptolemy.codegen.kernel.StaticSchedulingCodeGenerator",
-                "ptolemy.kernel.util.Attribute");
+                null);
         parser.addMoMLFilter(removeNonAppletClasses);
 
 
