@@ -58,7 +58,7 @@ import ptolemy.kernel.util.NamedObj;
  @author Ye Zhou, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (cxh) Cleanup, then review.
+ @Pt.ProposedRating Yellow (zgang)  FIXME: Should associated with a static scheduling code generator. Cleanup, then review.
  @Pt.AcceptedRating Red (eal)
  */
 public class SDFDirector extends Director {
