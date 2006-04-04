@@ -132,10 +132,12 @@ OTHER_FILES_TO_BE_JARED = \
 	UnaryMathFunction.c \
 	Uniform.c \
 	genericsinks.xml \
+	genericsources.xml \
 	math.xml \
 	random.xml \
 	signalprocessing.xml \
-	sinks.xml
+	sinks.xml \
+	sources.xml
 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
