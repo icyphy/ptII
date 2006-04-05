@@ -145,7 +145,6 @@ public class FixedPointScheduler extends Scheduler {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
 
-        Actor lastActor = null;
         Actor actor = null;
 
         for (int i = 0; i < sort.length; i++) {
@@ -165,19 +164,6 @@ public class FixedPointScheduler extends Scheduler {
             // should not be listed in the schedule.
             if (actor == compositeActor) {
                 continue;
-            }
-
-            // We record the information of last actor.
-            // If some consecutive ports belong to the
-            // same actor, we only schedule that actor once.
-            if (lastActor == null) {
-                lastActor = actor;
-            } else {
-                if (lastActor.equals(actor)) {
-                    continue;
-                } else {
-                    lastActor = actor;
-                }
             }
 
             Firing firing = new Firing(actor);
