@@ -51,9 +51,19 @@ test AWTImageToken-1.0 {Create a nil AWTImageToken} {
 ######################################################################
 ####
 # 
-test AWTImageToken-1.0 {Create a  AWTImageToken} {
+test AWTImageToken-1.1 {Create a  AWTImageToken} {
     set image [java::new java.awt.image.BufferedImage 1 1 \
 	[java::field java.awt.image.BufferedImage TYPE_INT_RGB]]
     set a [java::new ptolemy.data.AWTImageToken $image]
-    $a toString
-} {{type="class ptolemy.data.AWTImageToken" width="1" height="1"}}
+    list [$a toString] [[$a getType] toString]
+} {{{type="class ptolemy.data.AWTImageToken" width="1" height="1"}} object}
+
+######################################################################
+####
+# 
+test AWTImageToken-2.0 {asAWTImage, getValue} {
+    # Uses 1.1 above
+    list [[$a asAWTImage] equals $image] \
+	[[$a getValue] equals $image]
+
+} {1 1}
