@@ -44,7 +44,7 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 
-set types [list DoubleToken IntToken LongToken]
+set types [list DoubleToken IntToken LongToken UnsignedByteToken]
 foreach type $types {
     puts -nonewline "$type"
     # Perform binary operations on nil types
