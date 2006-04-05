@@ -44,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public class ThrowException extends Sink {
 
     /**
-     * Constructor method for the ThrowException helper.
+     * Constructs a ThrowException helper.
      * @param actor The associated actor.
      */
     public ThrowException(ptolemy.actor.lib.ThrowException actor) {
