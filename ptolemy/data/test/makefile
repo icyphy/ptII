@@ -71,7 +71,8 @@ JSIMPLE_TESTS = \
 	RecordToken.tcl \
 	StringToken.tcl \
 	Token.tcl \
-	UnsignedByteToken.tcl
+	UnsignedByteToken.tcl \
+	XMLToken.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
