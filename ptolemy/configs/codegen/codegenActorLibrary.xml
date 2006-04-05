@@ -2,10 +2,10 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <group>
-  <!-- input source="ptolemy/actor/lib/sources.xml"/-->
-  <!-- input source="ptolemy/actor/lib/sinks.xml"/-->
+  <input source="ptolemy/actor/lib/sources.xml"/>
+  <input source="ptolemy/actor/lib/sinks.xml"/>
   <!-- input source="ptolemy/actor/lib/array.xml"/-->
-  <!-- input source="ptolemy/actor/lib/conversions/conversions.xml"/-->
+  <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
   <!-- input source="ptolemy/actor/lib/flowcontrol.xml"/-->
   <!-- input source="ptolemy/actor/lib/hoc/hoc.xml"/-->
   <!-- input source="ptolemy/actor/lib/io/io.xml"/-->
