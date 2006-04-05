@@ -108,7 +108,7 @@ public class UnsignedByteToken extends ScalarToken {
     public UnsignedByteToken(String init) throws IllegalActionException {
         if (init == null || init.equals("nil")) {
             throw new IllegalActionException(notSupportedNullNilStringMessage(
-                    "IntToken", init));
+                    "UnsignedByteToken", init));
         }
         try {
             // Note that Byte.parseByte performs signed conversion,
