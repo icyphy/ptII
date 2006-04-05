@@ -229,7 +229,7 @@ test IntToken-8.0 {Test subtract operator between ints.} {
 
 ######################################################################
 ####
-# Test subtract operator between ints and ints.
+# Test shift operator between ints and ints.
 test IntToken-8.1 {Test shift operator between ints.} {
     set tok1 [java::new {ptolemy.data.IntToken int} 7]
     set tok2 [java::new {ptolemy.data.IntToken int} -7]
