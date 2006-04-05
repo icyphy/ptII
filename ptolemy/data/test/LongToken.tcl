@@ -103,7 +103,18 @@ test LongToken-1.6 {Create a nil Token from an String} {
 ######################################################################
 ####
 # 
-test LongToken-1.7 {nil toString} {
+test IntToken-1.7 {Create a bogus Token from a bogus String} {
+    catch {java::new {ptolemy.data.IntToken String} "not-a-number"} \
+	errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Failed to parse "not-a-number" as a number.
+Because:
+For input string: "not-a-number"}}
+
+######################################################################
+####
+# 
+test LongToken-1.8 {nil toString} {
     list [[java::field ptolemy.data.LongToken NIL] toString]
 } {nil}
 
@@ -328,7 +339,7 @@ test LongToken-8.0 {Test subtract operator between longs.} {
 ######################################################################
 ####
 # 
-test LongToken-8.1 {Test subtract operator between longs and ints.} {
+test LongToken-8.1.1 {Test subtract operator between longs and ints.} {
     set tok1 [java::new {ptolemy.data.LongToken long} 7]
     set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
@@ -339,6 +350,44 @@ test LongToken-8.1 {Test subtract operator between longs and ints.} {
    
     list [$res1 toString] [$res2 toString] [$res3 toString] 
 } {4L -4L -4L}
+
+######################################################################
+####
+# 
+test LongToken-8.2 {leftShift} {
+    set p [java::new ptolemy.data.LongToken 2]
+    set p2 [java::new ptolemy.data.LongToken [java::field Long MAX_VALUE]]
+    set nil [java::field ptolemy.data.LongToken NIL]
+    list [[$p leftShift 1] toString] \
+	[[$p2 leftShift 1] toString] \
+	[[$nil leftShift 1] isNil]
+} {4L -2L 1}
+
+######################################################################
+####
+# 
+test LongToken-8.3 {logicalRightShift} {
+    # Uses 8.2 above
+    list [[$p logicalRightShift 1] toString] \
+	[[$p logicalRightShift 1] toString] \
+	[[$nil logicalRightShift 1] isNil]
+} {1L 1L 1}
+
+
+######################################################################
+####
+# Test shift operator between NIL unsigned bytes
+test LongToken-8.4 {Test shift operator between ints.} {
+    set nil [java::field ptolemy.data.LongToken NIL]
+
+    set res1 [$nil leftShift 1]
+    set res2 [$nil rightShift 1]
+    set res3 [$nil logicalRightShift 1]
+
+    list [$res1 isNil] [$res2 isNil] [$res3 isNil]
+} {1 1 1}
+
+
 
 ######################################################################
 ####
@@ -459,31 +508,8 @@ test LongToken-13.7 {Test convert from StringToken} {
 ######################################################################
 ####
 # 
-test LongToken-16.0 {leftShift} {
-    set p [java::new ptolemy.data.LongToken 2]
-    set p2 [java::new ptolemy.data.LongToken [java::field Long MAX_VALUE]]
-    set nil [java::field ptolemy.data.LongToken NIL]
-    list [[$p leftShift 1] toString] \
-	[[$p2 leftShift 1] toString] \
-	[[$nil leftShift 1] isNil]
-} {4L -2L 1}
-
-######################################################################
-####
-# 
-test LongToken-17.0 {logicalRightShift} {
-    # Uses 16.0 above
-    list [[$p logicalRightShift 1] toString] \
-	[[$p logicalRightShift 1] toString] \
-	[[$nil logicalRightShift 1] isNil]
-} {1L 1L 1}
-
-
-######################################################################
-####
-# 
 test LongToken-19.0 {truncatedUnsignedByteValue} {
-    # Uses 16.0 above
+    set p2 [java::new ptolemy.data.LongToken [java::field Long MAX_VALUE]]
     catch {[[$p2 truncatedUnsignedByteValue] toString]} errMsg
     list [[$p truncatedUnsignedByteValue] toString] \
 	$errMsg \
