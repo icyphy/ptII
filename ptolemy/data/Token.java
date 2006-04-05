@@ -572,6 +572,7 @@ public class Token implements Serializable {
             String init) {
         return "Creating a nil token with " + type + "("
                 + (init == null ? "null" : "\"" + init + "\"")
-                + ") is not supported.  Use Token.NIL instead.";
+                + ") is not supported.  Use " + type + ".NIL, or "
+                + " the nil Constant.";
     }
 }
