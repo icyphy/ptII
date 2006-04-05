@@ -114,7 +114,12 @@ class for you:
 $PTII/bin/ptcg $PTII/ptolemy/codegen/c/actor/lib/test/auto/Ramp.xml
 </pre>
 
+<h2>Macro description</h2>
+<i>FIXME</i>
+
 <h2>Helper writer style guide</h2>
+<i>FIXME: Include details about running template generator</i>
+
 <menu>
 <li> Be sure to add and @see tag to the base actor
 
@@ -209,6 +214,9 @@ ptolemy.codegen.c.kernel.CParseTreeCodeGenerator
 
 
 
+ptolemy.codegen.c.CodeGeneratorHelper
+    fire etc. methods need to mention what blocks are read in
+
 ptolemy.codegen.c.kernel.CCodeGeneratorHelper
     AdaptiveCoding
     Blending
@@ -218,7 +226,7 @@ ptolemy.codegen.c.kernel.CCodeGeneratorHelper
     Hysteresis
     Merge
     ModalBSC
-     @Pt.ProposedRating Red (mankit) Need to look for c code in actor super classes.
+     @Pt.ProposedRating Red (mankit) Remove mostly empty methods, add info about writing actors.
      @Pt.AcceptedRating Red (mankit)
 
 ptolemy.codegen.gui.CodeGeneratorGUI
@@ -230,7 +238,7 @@ ptolemy.codegen.gui.CodeGeneratorGUI
     Hysteresis
     Merge
     ModalBSC
-     @Pt.ProposedRating Red (eal)
+     @Pt.ProposedRating Red (eal) cxh: clean up code in prep for review.
      @Pt.AcceptedRating Red (eal)
 
 ptolemy.codegen.c.actor.TypedCompositeActor
@@ -244,7 +252,7 @@ ptolemy.codegen.c.actor.TypedCompositeActor
     ModalBSC
      @Pt.ProposedRating Yellow (cxh)
      @Pt.AcceptedRating Red (zgang)
-
+     cxh: cleanup and prep for review
 
 ptolemy.codegen.c.domains.sdf.kernel.SDFDirector
     AdaptiveCoding
@@ -268,6 +276,7 @@ ptolemy.codegen.kernel.CodeGeneratorUtilities
     ModalBSC
      @Pt.ProposedRating Red (cxh)
      @Pt.AcceptedRating Red (cxh)
+     cxh: cleanup and prep for review
 
 ptolemy.codegen.c.domains.fsm.kernel.FSMActor
     AdaptiveCoding
@@ -299,13 +308,6 @@ ptolemy.codegen.c.actor.lib.Ramp
  @Pt.ProposedRating Red (cxh) String, Complex, Fix, Matrix and Array inputs are not supported
  @Pt.AcceptedRating Red (mankit) 
  Jackie: Add support for String and Array
-
-ptolemy.codegen.c.actor.lib.Const
-    Blending
-    Hysteresis
-    ModalBSC
-     * @Pt.ProposedRating Red (mankit) Need to test with Strings, Arrays before shipping, What about Fix, Matrix?
-     * @Pt.AcceptedRating Red (mankit)
 
 ptolemy.codegen.c.domains.hdf.kernel.HDFFSMDirector
     AdaptiveCoding
@@ -339,29 +341,15 @@ ptolemy.codegen.c.actor.lib.gui.SequencePlotter
 ptolemy.codegen.c.actor.lib.Expression
     Blending
     Butterfly
-     * @Pt.ProposedRating Red (mankit)
+     * @Pt.ProposedRating Red (mankit)Needs 2nd pass for array children of different types
      * @Pt.AcceptedRating Red (mankit)
 
 ptolemy.codegen.c.actor.lib.conversions.BooleanToAnything
     AdaptiveCoding
     ModalBSC
-     @Pt.ProposedRating Green (zgang)
-     @Pt.AcceptedRating Green (zgang)
+     @Pt.ProposedRating Yellow (mankit) Works w/Array, but has problems if params are not of the same type
+     @Pt.AcceptedRating Red (cxh)
  Need tests for Array before shipping.
-
-ptolemy.codegen.c.actor.lib.RandomSource
-    AdaptiveCoding
-    Hysteresis
-    ModalBSC
-     @Pt.ProposedRating Red (zgang)
-     @Pt.AcceptedRating Red (zgang)
- Gang:  ProposedRating tag
-
-ptolemy.codegen.c.actor.lib.Gaussian
-    Hysteresis
-     * @Pt.ProposedRating Yellow (mankit)
-     * @Pt.AcceptedRating Yellow (mankit)
- Extend RandomSource, move code to RandomSource
 
 ptolemy.codegen.c.actor.lib.AddSubtract
     Blending
@@ -374,11 +362,14 @@ ptolemy.codegen.c.domains.sdf.lib.SampleDelay
     Merge
      @Pt.ProposedRating Green (cxh)
      @Pt.AcceptedRating Green (cxh)
+DONEDONEDONEDONEDONE
 
 ptolemy.codegen.c.domains.fsm.modal.TransitionRefinement
     ModalBSC
      @Pt.ProposedRating Green (cxh)
      @Pt.AcceptedRating Green (cxh)
+DONEDONEDONEDONEDONE
+
 
 ptolemy.codegen.c.actor.lib.hoc.Refinement
     Case
@@ -394,6 +385,7 @@ ptolemy.codegen.c.actor.lib.hoc.CaseDirector
     Case
      @Pt.ProposedRating Red (zgang)
      @Pt.AcceptedRating Red (zgang)
+
 ptolemy.codegen.c.actor.lib.hoc.Case
     Case
      @Pt.ProposedRating Red (zgang)
@@ -403,30 +395,6 @@ ptolemy.codegen.c.actor.lib.gui.XYPlotter
     Butterfly
      * @Pt.ProposedRating Red (mankit) Need to handle plot configuration info
      * @Pt.AcceptedRating Red (mankit)
-
-ptolemy.codegen.c.actor.lib.gui.Display
-    Merge
-     * @Pt.ProposedRating Red (mankit)
-     * @Pt.AcceptedRating Red (mankit)
- Jackie, this handles Ints, Doubles, Strings and Tokens, is it ready
- for review? 
-
-ptolemy.codegen.c.actor.lib.conversions.PolarToCartesian
-    Butterfly
-     * @Pt.ProposedRating Yellow (mankit)
-     * @Pt.AcceptedRating Red (mankit)
- Ready for review
-
-ptolemy.codegen.c.actor.lib.UnaryMathFunction
-    Case
-     * @Pt.ProposedRating Yellow (mankit)
-     * @Pt.AcceptedRating Red (mankit)
- Ready for review
-ptolemy.codegen.c.actor.lib.Sequence
-    Case
-     @Pt.ProposedRating Red (eal)
-     @Pt.AcceptedRating Red (eal)
-
 
 ptolemy.codegen.c.actor.lib.Scale
     Blending
@@ -451,24 +419,8 @@ ptolemy.codegen.c.actor.lib.MonitorValue
     AdaptiveCoding
      *  @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
      *  @Pt.AcceptedRating Red (zgang)
+ Set up common base class, share with Display
  Needs to work with Array to be shipped 
-
-ptolemy.codegen.c.actor.lib.Minimum
-    Merge
-     * @Pt.ProposedRating Yellow (cxh)
-     * @Pt.AcceptedRating Red (mankit)
- Ready for review
-
-ptolemy.codegen.c.actor.lib.Maximum
-    Merge
-     * @Pt.ProposedRating Yellow (cxh)
-     * @Pt.AcceptedRating Red (mankit)
- Ready for review
-
-ptolemy.codegen.c.actor.lib.LookupTable
-    ModalBSC
-     @Pt.ProposedRating Yellow (zgang) Before Yellow, need test for array and String
-     @Pt.AcceptedRating Red (zgang)
 
 ptolemy.codegen.c.actor.lib.Accumulator
     AdaptiveCoding
@@ -508,7 +460,8 @@ are important:
 
 
 <li>  DiscreteRandomSource.java
- <br>      Don't have a helper yet (jackie)
+ <br>     Have Helper, has same issues and Ramp
+Expression parser has problems if params are not of the same type.
 
 
 <li>  Distributor.java
