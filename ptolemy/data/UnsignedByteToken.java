@@ -263,7 +263,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     public ScalarToken leftShift(int bits) {
         if (isNil()) {
-            return IntToken.NIL;
+            return UnsignedByteToken.NIL;
         }
         return new UnsignedByteToken(_value << bits);
     }
@@ -279,7 +279,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     public ScalarToken logicalRightShift(int bits) {
         if (isNil()) {
-            return IntToken.NIL;
+            return UnsignedByteToken.NIL;
         }
         return new UnsignedByteToken(_value >>> bits);
     }
@@ -308,7 +308,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     public ScalarToken rightShift(int bits) {
         if (isNil()) {
-            return IntToken.NIL;
+            return UnsignedByteToken.NIL;
         }
         // Note that this performs a logicalRightShift, since we are
         // interpreting the byte to always be unsigned.
