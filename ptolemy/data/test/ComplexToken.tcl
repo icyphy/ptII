@@ -71,6 +71,15 @@ test ComplexToken-1.2 {Create a non-empty instance from an String} {
 ######################################################################
 ####
 # 
+test ComplexToken-1.7 {Create a bogus Token from a bogus String} {
+    catch {java::new {ptolemy.data.ComplexToken String} "\"A String\""} \
+	errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: A ComplexToken cannot be created from the expression '"A String"'}}
+
+######################################################################
+####
+# 
 test ComplexToken-2.0 {Test complexValue} {
     set c [java::new {ptolemy.math.Complex double double} 3.3 4.4]
     set p [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c]
@@ -555,3 +564,19 @@ test ComplexToken-13.7 {Test convert from StringToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type complex because the type of the token is higher or incomparable with the given type.}}
     
+######################################################################
+####
+# 
+test BooleanToken-14.1 {Test bitwise ops} {
+    set token [java::new ptolemy.data.ComplexToken]
+    catch {$token bitwiseAnd $token} errMsg
+    catch {$token bitwiseOr $token} errMsg1
+    catch {$token bitwiseXor $token} errMsg2
+    catch {$token bitwiseNot} errMsg3
+    list "$errMsg\n $errMsg1\n $errMsg2\n $errMsg3"
+} {{ptolemy.kernel.util.IllegalActionException: bitwiseAnd operation not supported between ptolemy.data.ComplexToken '0.0 + 0.0i' and ptolemy.data.ComplexToken '0.0 + 0.0i'
+ ptolemy.kernel.util.IllegalActionException: bitwiseOr operation not supported between ptolemy.data.ComplexToken '0.0 + 0.0i' and ptolemy.data.ComplexToken '0.0 + 0.0i'
+ ptolemy.kernel.util.IllegalActionException: bitwiseXor operation not supported between ptolemy.data.ComplexToken '0.0 + 0.0i' and ptolemy.data.ComplexToken '0.0 + 0.0i'
+ ptolemy.kernel.util.IllegalActionException: bitwiseNot operation not supported between ptolemy.data.ComplexToken '0.0 + 0.0i' and ptolemy.data.ComplexToken '0.0 + 0.0i'}}
+
+

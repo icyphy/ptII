@@ -110,6 +110,17 @@ test DoubleToken-1.6 {Create a nil Token from an String} {
 ######################################################################
 ####
 # 
+test DoubleToken-1.7 {Create a bogus Token from a bogus String} {
+    catch {java::new {ptolemy.data.DoubleToken String} "not-a-number"} \
+	errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Failed to parse "not-a-number" as a number.
+Because:
+For input string: "not-a-number"}}
+
+######################################################################
+####
+# 
 test DoubleToken-2.0 {Create a non-empty instance and query its value as a Complex} {
     set p [java::new {ptolemy.data.DoubleToken double} 3.3]
     set res [$p complexValue]
@@ -466,11 +477,12 @@ test DoubleToken-11.0 {Test equals} {
 ####
 # 
 test DoubleToken-11.1 {Test equals on nil} {
-    set u [java::field ptolemy.data.DoubleToken NIL]
-    set u2 [java::new ptolemy.data.DoubleToken 2]
+    set tu [java::field ptolemy.data.DoubleToken NIL]
+    set t2 [java::new ptolemy.data.DoubleToken 2]
     set t [java::field ptolemy.data.Token NIL]
-    list [$u equals $u] [$u equals $u2] [$u2 equals $u] [$t equals $u] [$u equals $t]
-} {0 0 0 0 0} 
+    list [$tu equals $tu] [$tu equals $t2] [$t2 equals $tu] \
+	[$t2 equals $t2] [$t equals $tu] [$tu equals $t]
+} {0 0 0 1 0 0} 
 
 ######################################################################
 ####
@@ -550,6 +562,18 @@ test DoubleToken-13.7 {Test convert from StringToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type double because the type of the token is higher or incomparable with the given type.}}
     
+######################################################################
+####
+# 
+test DoubleToken-13.8 {Test convert from PetiteToken} {
+    set t [java::new {ptolemy.data.PetiteToken double} 0.1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {0.1p}
+
+
 ######################################################################
 ####
 # 

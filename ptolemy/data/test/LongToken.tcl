@@ -371,11 +371,12 @@ test LongToken-11.0 {Test equals} {
 ####
 # 
 test LongToken-11.1 {Test equals on nil} {
-    set u [java::field ptolemy.data.LongToken NIL]
-    set u2 [java::new ptolemy.data.LongToken 2]
+    set tu [java::field ptolemy.data.LongToken NIL]
+    set t2 [java::new ptolemy.data.LongToken 2]
     set t [java::field ptolemy.data.Token NIL]
-    list [$u equals $u] [$u equals $u2] [$u2 equals $u] [$t equals $u] [$u equals $t]
-} {0 0 0 0 0} 
+    list [$tu equals $tu] [$tu equals $t2] [$t2 equals $tu] \
+	[$t2 equals $t2] [$t equals $tu] [$tu equals $t]
+} {0 0 0 1 0 0} 
 
 ######################################################################
 ####

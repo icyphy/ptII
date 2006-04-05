@@ -537,7 +537,6 @@ test PetiteToken-13.7 {Test convert from StringToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type petite.}}
     
-
 ######################################################################
 ####
 test PetiteToken-14.0 {absolute} {
