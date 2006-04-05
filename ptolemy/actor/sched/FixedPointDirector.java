@@ -204,15 +204,19 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // _fireActor is also responsible for checking that the actor is
         // ready to fire (sufficient known inputs are available) via
         // _isFiringAllowed method.
+        
+        // Keep firng actors until the iteration converges based on the
+        // current inputs.
         do {
             Iterator firingIterator = schedule.firingIterator();
             while (firingIterator.hasNext() && !_stopRequested) {
                 Actor actor = ((Firing) firingIterator.next()).getActor();
                 if (_actorsNotAllowedToIterate.contains(actor)) {
                     // The postfire() method of this actor returned false in
-                    // a previous iteration, so here, for the benefit of
+                    // some previous iteration, so here, for the benefit of
                     // connected actors, we need to explicitly call the
                     // sendClear() method of all of its output ports.
+                    // Note that all output ports should be unknown.
                     _sendClearToAllUnknownOutputsOf(actor);
                 } else {
                     _fireActor(actor);
@@ -534,6 +538,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 if (actor.prefire()) {
                     _actorsAllowedToFire.add(actor);
                 } else {
+                    // Note that if an actor (always) returns false in
+                    // its prefire() method, such as the Undefined actor,
+                    // the fire() and postfire() methods will never be invoked. 
+                    // Consequently, the output of this actor is undefined.
                     return;
                 }
             }
@@ -562,6 +570,12 @@ public class FixedPointDirector extends StaticSchedulingDirector {
                 // it will have no new inputs to react to.  Thus, we
                 // can assume that any unknown outputs of this actor
                 // are actually absent.
+                // Note that even if an opaque composite actor containing a 
+                // feedback actor, which nees 2 or more iterations to 
+                // resolve all the inputs and outputs, the do-while loop in
+                // the fire() method guarantees that inside inputs and outputs
+                // of the opaque composite actor are resolved (based on the
+                // provided external inputs).
                 if (allInputsKnownBeforeFiring) {
                     _sendClearToAllUnknownOutputsOf(actor);
                 }
@@ -648,18 +662,24 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     private boolean _isFinishedFiring(Actor actor)
             throws IllegalActionException {
 
-        // Actors that have not fired in this iteration are not finished.
-        // The purpose of this implementation is to reduce the cost for 
+        // Actors that have not been fired in this iteration are not finished.
+        // The purpose of this check is to reduce the cost for 
         // finding a fixed point.
         if (!_actorsFired.contains(actor)) {
             return false;
         }
         
-        // Nonstrict actors should fire in every phase in case more inputs
-        // become available (the inputs might be, for example, cached and
-        // used in a subsequent iteration).
-        if (!actor.isStrict()) {
-            // if all the inputs and outputs are known, and
+        if (actor.isStrict()) {
+            // For a strict actor, if all outputs have been resolved,
+            // then its inputs must have been resolved too and this actor has 
+            // finished firing.
+            return _areAllOutputsKnown(actor);
+        } else {
+            // Nonstrict actors should fire in every phase in case more inputs
+            // become available (the inputs might be, for example, cached and
+            // used in a subsequent iteration).
+
+            // If all the inputs and outputs are known, and
             // the inputs have not just changed from unknown to known,
             // it is unnecessary to fire the actor again,
             // because according to the FP semantics, the
@@ -670,29 +690,24 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             // the cached information.
             Iterator inputPorts = actor.inputPortList().iterator();
             boolean changed = false;
-
+            
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort) inputPorts.next();
                 Receiver[][] receivers = inputPort.getReceivers();
-
+                
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
                         changed |= ((FixedPointReceiver) receivers[i][j])
-                                ._statusChanged();
+                        ._statusChanged();
                     }
                 }
             }
-
+            
             if (_areAllInputsKnown(actor) && _areAllOutputsKnown(actor)) {
                 return !changed;
             } else {
                 return false;
             }
-        } else {
-            // otherwise, for a strict actor, if all outputs have been resolved,
-            // then its inputs must have been resolved too and this actor has 
-            // finished firing.
-            return _areAllOutputsKnown(actor);
         }
     }
 
@@ -744,25 +759,21 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     private void _sendClearToAllUnknownOutputsOf(Actor actor)
             throws IllegalActionException {
-        // A strict actor, if its firing has finished and some of its 
+        // An actor, if its firing has finished but some of its 
         // outputs are still unknown, clear these outputs.
         // However, there is nothing need to do if this actor has 
         // resolved all of its outputs.
-        // A nonstrict actor may intend to output undefined values.
-        if (actor.isStrict() && !_isFinishedFiring(actor)) {
-
-            if (_debugging) {
-                _debug("  FixedPointDirector is calling sendClear() on the " +
-                        "output ports of " + ((Nameable) actor).getName());
-            }
-
-            Iterator outputPorts = actor.outputPortList().iterator();
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) outputPorts.next();
-                for (int j = 0; j < outputPort.getWidth(); j++) {
-                    if (!outputPort.isKnown(j)) {
-                        outputPort.sendClear(j);
-                    }
+        if (_debugging) {
+            _debug("  FixedPointDirector is calling sendClear() on the " +
+                    "output ports of " + ((Nameable) actor).getName());
+        }
+        
+        Iterator outputPorts = actor.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort outputPort = (IOPort) outputPorts.next();
+            for (int j = 0; j < outputPort.getWidth(); j++) {
+                if (!outputPort.isKnown(j)) {
+                    outputPort.sendClear(j);
                 }
             }
         }
