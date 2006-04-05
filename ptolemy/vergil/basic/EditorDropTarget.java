@@ -296,6 +296,11 @@ public class EditorDropTarget extends DropTarget {
             request.setUndoable(true);
             container.requestChange(request);
             dtde.dropComplete(true); //success!
+        
+            //Added by MB 5Apr06 - without this, tooltips don't work 
+            //after first actor is dragged to canvas from library, until
+            //pane loses & regains focus
+            pane.repaint();
         }
 
         /** Accept the event if the data is a known key.
