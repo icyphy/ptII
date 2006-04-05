@@ -42,9 +42,10 @@ import ptolemy.kernel.util.NameDuplicationException;
  For example, if the input is itself a string token, the output will be a
  new string token whose value is the value of the input string token surrounded
  by double quotation marks. The input data type is undeclared, so this actor
- can accept any input.
+ can accept any input. If the input known to be absent, this actor outputs
+ a string "absent".
 
- @author  Steve Neuendorffer
+ @author  Steve Neuendorffer, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.1
  @Pt.ProposedRating Yellow (neuendor)
@@ -71,24 +72,17 @@ public class TokenToExpression extends Converter {
     ////                         public methods                    ////
 
     /** Output a string token whose value is an expression representing
-     *  the value of the input token.
+     *  the value of the input token. If the input known to be absent, 
+     *  this actor outputs a string "absent".
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        String string = input.get(0).toString();
-        output.broadcast(new StringToken(string));
-    }
-
-    /** Return true if and only if an input is present.
-     *  @exception IllegalActionException If there is no director, or
-     *   if no connection has been made to the input.
-     */
-    public boolean prefire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            return super.prefire();
+            String string = input.get(0).toString();
+            output.broadcast(new StringToken(string));
         } else {
-            return false;
+            output.broadcast(new StringToken("absent"));
         }
     }
 }
