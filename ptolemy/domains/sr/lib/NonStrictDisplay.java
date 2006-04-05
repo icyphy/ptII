@@ -32,7 +32,6 @@ import javax.swing.text.BadLocationException;
 import ptolemy.actor.lib.gui.Display;
 import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -67,11 +66,19 @@ public class NonStrictDisplay extends Display {
     public NonStrictDisplay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Attribute(this, "_nonStrictMarker");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return false. This actor displays "undefined" when the input 
+     *  receiver has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
+    }
 
     /** Read at most one token from each input channel and display its
      *  string value along with the current time on the screen.  Each

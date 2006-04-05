@@ -32,7 +32,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -44,7 +43,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  multiport, and two output ports, which are single ports.  All of the ports
  are of type int, and inputs are outputs are single bits.  An exception is
  thrown if a number other than 0 or 1 is received as an input, or if there
- are not exactly three three channels connected to the input port.  This actor
+ are not exactly three channels connected to the input port.  This actor
  adds the three input bits, and outputs the result to the lowBit and highBit
  ports.  Only two of the inputs must be known for highBit to be determined.
  All inputs are necessary for lowBit to be determined.  An absence of a token
@@ -70,7 +69,6 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
     public NonStrictThreeBitAdder(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Attribute(this, "_nonStrictMarker");
         inputBits = new TypedIOPort(this, "inputBits", true, false);
         inputBits.setMultiport(true);
         highBit = new TypedIOPort(this, "highBit", false, true);
@@ -165,6 +163,15 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
         if (low != null) {
             lowBit.send(0, low);
         }
+    }
+
+    /** Return false. This actor can produce some output at the highBit
+     *  output port even if not all the inputs have status known.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 
     /** Override the base class to declare that the <i>highBit</i>

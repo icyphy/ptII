@@ -30,7 +30,6 @@ package ptolemy.domains.sr.lib;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
@@ -75,7 +74,6 @@ public class Default extends TypedAtomicActor {
     public Default(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Attribute(this, "_nonStrictMarker");
 
         preferred = new TypedIOPort(this, "preferred", true, false);
         alternate = new TypedIOPort(this, "alternate", true, false);
@@ -135,6 +133,14 @@ public class Default extends TypedAtomicActor {
                 }
             }
         }
+    }
+
+    /** Return false. This actor is non-strict in that it can produce 
+     *  an output even if alternate input is unknown.
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 
     /** Override the base class to declare that the <i>output</i>

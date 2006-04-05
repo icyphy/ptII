@@ -36,7 +36,6 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -78,7 +77,6 @@ public class EnabledComposite extends TypedCompositeActor {
 
         // NOTE: this might be non-strict because it may
         // contain actors that are non-strict.
-        new Attribute(this, "_nonStrictMarker");
 
         enable = new TypedIOPort(this, "enable", true, false);
         enable.setTypeEquals(BaseType.BOOLEAN);

@@ -34,7 +34,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -75,8 +74,6 @@ public class NonStrictDelay extends Transformer {
     public NonStrictDelay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Attribute(this, "_nonStrictMarker");
-
         initialValue = new Parameter(this, "initialValue");
     }
 
@@ -129,6 +126,15 @@ public class NonStrictDelay extends Transformer {
         _previousToken = initialValue.getToken();
         _currentToken = null;
         super.initialize();
+    }
+
+    /** Return false. This actor can produce some output event the input 
+     *  receiver has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 
     /** Update the state of the actor.

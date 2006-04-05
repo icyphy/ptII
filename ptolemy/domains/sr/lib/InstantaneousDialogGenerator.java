@@ -32,7 +32,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -66,12 +65,9 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
     public InstantaneousDialogGenerator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Attribute(this, "_nonStrictMarker");
-
         dataInput = new TypedIOPort(this, "dataInput", true, false);
         indexOutput = new TypedIOPort(this, "indexOutput", false, true);
         dataOutput = new TypedIOPort(this, "dataOutput", false, true);
-
         indexOutput.setTypeEquals(BaseType.INT);
     }
 
@@ -116,6 +112,15 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _index = 0;
+    }
+
+    /** Return false. This actor can produce some output at the indexOutput
+     *  output port even if the input dataInput has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 
     /** Increment the index number.

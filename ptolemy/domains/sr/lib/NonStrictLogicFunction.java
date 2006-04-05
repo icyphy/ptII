@@ -30,7 +30,6 @@ package ptolemy.domains.sr.lib;
 import ptolemy.actor.lib.logic.LogicFunction;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -87,7 +86,6 @@ public class NonStrictLogicFunction extends LogicFunction {
     public NonStrictLogicFunction(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        new Attribute(this, "_nonStrictMarker");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -135,6 +133,15 @@ public class NonStrictLogicFunction extends LogicFunction {
 
             output.send(0, value);
         }
+    }
+
+    /** Return false. This actor can produce some output event the input 
+     *  receiver has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 
     /** Override the base class to declare that the <i>output</i>

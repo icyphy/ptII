@@ -62,7 +62,6 @@ public class Undefined extends Source {
     public Undefined(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Attribute(this, "_nonStrictMarker");
         outputType = new StringAttribute(this, "outputType");
         outputType.setExpression("int");
         attributeChanged(outputType);
@@ -99,4 +98,16 @@ public class Undefined extends Source {
      *  that defaults to "int".
      */
     public StringAttribute outputType;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
+    /** Return false. This actor can produce some output event the input 
+     *  receiver has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
+    }
 }
