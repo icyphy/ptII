@@ -194,8 +194,6 @@ test InterfaceAutomaton-8.1 {test generating moml} {
     </property>
     <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
     </property>
-    <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-    </property>
     <property name="c" class="ptolemy.data.expr.Parameter">
     </property>
     <entity name="s0" class="ptolemy.domains.fsm.kernel.State">
