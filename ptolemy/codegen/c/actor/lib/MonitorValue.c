@@ -1,11 +1,19 @@
-/***intBlock($arg, $name)***/
-    printf("$name: %d\n", $ref(input#$arg));
-/**/ 
-
-/***doubleBlock($arg, $name)***/
-    printf("$name: %f\n", $ref(input#$arg));
+/*** IntPrintBlock($name, $channel) ***/
+    printf("$name: %d\n", $ref(input#$channel));
 /**/
 
-/***stringBlock($arg, $name)***/
-    printf("$name: %s\n", $ref(input#$arg));
+/*** DoublePrintBlock($name, $channel) ***/
+    printf("$name: %g\n", $ref(input#$channel));
+/**/
+
+/*** StringPrintBlock($name, $channel) ***/
+    printf("$name: %s\n", $ref(input#$channel));
+/**/
+
+/*** BooleanPrintBlock($name, $channel) ***/
+	printf($ref(input#$channel) ? "$name: true\n" : "$name: false\n");
+/**/
+
+/*** TokenPrintBlock($name, $channel) ***/
+    printf("$name: %s\n", $typeFunc($ref(input#$channel)::toString()).payload.String);
 /**/

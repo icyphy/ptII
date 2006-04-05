@@ -64,27 +64,29 @@ public class MonitorValue extends CCodeGeneratorHelper {
      *  the type is not supported.
      */
     public String generateFireCode() throws IllegalActionException {
-        super.generateFireCode();
+        // Note: this actor have the exact same functionality as Display.
+        StringBuffer code = new StringBuffer();
+        code.append(super.generateFireCode());
 
         ptolemy.actor.lib.MonitorValue actor = (ptolemy.actor.lib.MonitorValue) getComponent();
-        Type type = actor.input.getType();
-        for (int i = 0; i < actor.input.getWidth(); i++) {
-            ArrayList args = new ArrayList();
-            args.add(new Integer(i));
-            args.add(actor.getName());
-            if (type == BaseType.INT || type == BaseType.BOOLEAN) {
-                _codeStream.appendCodeBlock("intBlock", args);
-            } else if (type == BaseType.DOUBLE) {
-                _codeStream.appendCodeBlock("doubleBlock", args);
-            } else if (type == BaseType.STRING) {
-                _codeStream.appendCodeBlock("stringBlock", args);
-            } else {
-                throw new IllegalActionException(actor, "The type: " + type
-                        + " is not supported for now.");
-            }
+        _codeStream.clear();
+
+        String type = "";
+        type = codeGenType(actor.input.getType());
+        if (!isPrimitiveType(type)) {
+            type = "Token";
         }
 
-        return processCode(_codeStream.toString());
+        ArrayList args = new ArrayList();
+        args.add(actor.getName());
+        args.add(new Integer(0));
+        for (int i = 0; i < actor.input.getWidth(); i++) {
+            args.set(1, Integer.toString(i));
+            _codeStream.appendCodeBlock(type + "PrintBlock", args);
+        }
+        code.append(processCode(_codeStream.toString()));
+
+        return code.toString();
     }
 
     /** Get the files needed by the code generated for the actor.
