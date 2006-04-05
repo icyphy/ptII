@@ -32,6 +32,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -76,6 +77,9 @@ public class FileReader extends Source {
         fileOrURLPort = new TypedIOPort(this, "fileOrURL", true, false);
         fileOrURLPort.setTypeEquals(BaseType.STRING);
 
+        newline = new Parameter(this, "newLine");
+        newline.setExpression("property(\"file.separarator\")");
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -97,6 +101,11 @@ public class FileReader extends Source {
      *  type string.
      */
     public TypedIOPort fileOrURLPort;
+
+    /** The end of line character(s).  The default value is the value
+     *  of the line.separator property
+     */
+    public Parameter newline;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -128,7 +137,10 @@ public class FileReader extends Source {
             reader = fileOrURL.openForReading();
 
             StringBuffer lineBuffer = new StringBuffer();
-            String newline = System.getProperty("line.separator");
+            String newlineValue = ((StringToken) newline.getToken())
+                .stringValue();
+            System.out.println("lineseparator" + ptolemy.util.StringUtilities.getProperty("line.separator") + " newlineValue: \"" + newlineValue + "\" length: "
+                    + newlineValue.length());
 
             while (true) {
                 String line = reader.readLine();
@@ -138,7 +150,7 @@ public class FileReader extends Source {
                 }
 
                 lineBuffer = lineBuffer.append(line);
-                lineBuffer = lineBuffer.append(newline);
+                lineBuffer = lineBuffer.append(newlineValue);
             }
 
             output.broadcast(new StringToken(lineBuffer.toString()));
