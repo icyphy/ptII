@@ -1,5 +1,6 @@
 /* A code generation helper class for actor.lib.ThrowModelError
- @Copyright (c) 2005 The Regents of the University of California.
+
+ @Copyright (c) 2006 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,14 +38,14 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Man-Kit Leung
  @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (mankit) 
+ @since Ptolemy II 6.0
+ @Pt.ProposedRating Red (mankit) This implementation is incomplete, a complete implementation is non-obvious.
  @Pt.AcceptedRating Red (mankit)
  */
 public class ThrowModelError extends Sink {
 
     /**
-     * Constructor method for the ThrowModelError helper.
+     * Constructs a ThrowModelError helper.
      * @param actor The associated actor.
      */
     public ThrowModelError(ptolemy.actor.lib.ThrowModelError actor) {
