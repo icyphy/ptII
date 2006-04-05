@@ -70,6 +70,14 @@ test BooleanToken-1.2 {Create an instance from a string value} {
 ######################################################################
 ####
 # 
+#test BooleanToken-1.3 {NIL} { 
+#    set nil [java::field ptolemy.data.BooleanToken NIL]
+#    list [$nil toString]
+#} {nil}
+
+######################################################################
+####
+# 
 test BooleanToken-2.0 {Create a non-empty instance and query its value} {
     set token [java::new {ptolemy.data.BooleanToken boolean} false]
     $token booleanValue
@@ -193,6 +201,15 @@ test BooleanToken-11.0 {Test reverse subtraction of booleans} {
 } {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.BooleanToken 'false' and ptolemy.data.BooleanToken 'false'}}
 
 
+######################################################################
+####
+# 
+#test BooleanToken-11.1 {Test equals on nil} {
+#    set u [java::field ptolemy.data.BooleanToken NIL]
+#    set u2 [java::new ptolemy.data.BooleanToken true]
+#    set t [java::field ptolemy.data.Token NIL]
+#    list [$u equals $u] [$u equals $u2] [$u2 equals $u] [$t equals $u] [$u equals $t]
+#} {0 0 0 0 0} 
 
 ######################################################################
 ####

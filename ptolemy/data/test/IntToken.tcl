@@ -70,6 +70,14 @@ test IntToken-1.2 {Create a non-empty instance from an String} {
 ######################################################################
 ####
 # 
+test IntToken-1.3 {NIL} { 
+    set nil [java::field ptolemy.data.IntToken NIL]
+    list [$nil toString]
+} {nil}
+
+######################################################################
+####
+# 
 test IntToken-1.5 {Create a nil Token from a null token} {
     catch {java::new ptolemy.data.IntToken [java::null]} errMsg
     list $errMsg
@@ -316,12 +324,12 @@ test IntToken-11.0 {Test equals} {
 ######################################################################
 ####
 # 
-#test IntToken-11.1 {Test equals on nil} {
-#    set p5 [java::new ptolemy.data.IntToken [java::null]]
-#    set p6 [java::new ptolemy.data.Token [java::null]]
-#    set p7 [java::new ptolemy.data.IntToken $p6]
-#    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
-#} {0 0 0 0}
+test IntToken-11.1 {Test equals on nil} {
+    set u [java::field ptolemy.data.IntToken NIL]
+    set u2 [java::new ptolemy.data.IntToken 2]
+    set t [java::field ptolemy.data.Token NIL]
+    list [$u equals $u] [$u equals $u2] [$u2 equals $u] [$t equals $u] [$u equals $t]
+} {0 0 0 0 0} 
 
 ######################################################################
 ####

@@ -70,6 +70,14 @@ test DoubleToken-1.2 {Create a non-empty instance from an String} {
 ######################################################################
 ####
 # 
+test DoubleToken-1.3.1 {NIL} { 
+    set nil [java::field ptolemy.data.DoubleToken NIL]
+    list [$nil toString]
+} {nil}
+
+######################################################################
+####
+# 
 test DoubleToken-1.3 {Create a non-empty instance from an String} {
     set p [java::new {ptolemy.data.DoubleToken String} "7.56E-10"]
     $p toString
@@ -446,27 +454,28 @@ test DoubleToken-8.1 {Test subtract operator between doubles and ints.} {
 ######################################################################
 ####
 # 
-test DoubleToken-9.0 {Test equals} {
+test DoubleToken-11.0 {Test equals} {
     set t1 [java::new {ptolemy.data.DoubleToken double} 3.5]
     set t2 [java::new {ptolemy.data.DoubleToken double} 3.5]
     set t3 [java::new {ptolemy.data.DoubleToken double} -8.0]
     list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
 } {1 1 0}
 
-######################################################################
-####
-# 
-#test DoubleToken-9.1 {Test equals on nil} {
-#    set p5 [java::new ptolemy.data.DoubleToken [java::null]]
-#    set p6 [java::new ptolemy.data.Token [java::null]]
-#    set p7 [java::new ptolemy.data.DoubleToken $p6]
-#    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
-#} {0 0 0 0}
 
 ######################################################################
 ####
 # 
-test DoubleToken-10.0 {Test hashCode} {
+test DoubleToken-11.1 {Test equals on nil} {
+    set u [java::field ptolemy.data.DoubleToken NIL]
+    set u2 [java::new ptolemy.data.DoubleToken 2]
+    set t [java::field ptolemy.data.Token NIL]
+    list [$u equals $u] [$u equals $u2] [$u2 equals $u] [$t equals $u] [$u equals $t]
+} {0 0 0 0 0} 
+
+######################################################################
+####
+# 
+test DoubleToken-12.0 {Test hashCode} {
     set t1 [java::new {ptolemy.data.DoubleToken double} 3.5]
     set t2 [java::new {ptolemy.data.DoubleToken double} 3.5]
     set t3 [java::new {ptolemy.data.DoubleToken double} -8.0]

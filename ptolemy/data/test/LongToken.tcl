@@ -70,10 +70,18 @@ test LongToken-1.2 {Create an instance from a string value} {
 ######################################################################
 ####
 # 
-test LongToken-1.2 {Create an instance from a string value} {
+test LongToken-1.2.1 {Create an instance from a string value} {
     set token [java::new {ptolemy.data.LongToken String} "5L"]
     $token toString
 } {5L}
+
+######################################################################
+####
+# 
+test LongToken-1.3 {NIL} { 
+    set nil [java::field ptolemy.data.LongToken NIL]
+    list [$nil toString]
+} {nil}
 
 ######################################################################
 ####
@@ -351,32 +359,33 @@ test LongToken-9.0 {Create an non-empty instance and add it to Strings} {
 ######################################################################
 ####
 # 
-test LongToken-10.0 {Test equals} {
+test LongToken-11.0 {Test equals} {
     set t1 [java::new {ptolemy.data.LongToken long} 1]
     set t2 [java::new {ptolemy.data.LongToken long} 1]
     set t3 [java::new {ptolemy.data.LongToken long} 2]
     list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
 } {1 1 0}
 
+
 ######################################################################
 ####
 # 
-test LongToken-11.0 {Test hashCode} {
+test LongToken-11.1 {Test equals on nil} {
+    set u [java::field ptolemy.data.LongToken NIL]
+    set u2 [java::new ptolemy.data.LongToken 2]
+    set t [java::field ptolemy.data.Token NIL]
+    list [$u equals $u] [$u equals $u2] [$u2 equals $u] [$t equals $u] [$u equals $t]
+} {0 0 0 0 0} 
+
+######################################################################
+####
+# 
+test LongToken-12.0 {Test hashCode} {
     set t1 [java::new {ptolemy.data.LongToken long} 1]
     set t2 [java::new {ptolemy.data.LongToken long} 1]
     set t3 [java::new {ptolemy.data.LongToken long} 2]
     list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
 } {1 1 2}
-
-######################################################################
-####
-# 
-#test LongToken-11.1 {Test equals on nil} {
-#    set p5 [java::new ptolemy.data.LongToken [java::null]]
-#    set p6 [java::new ptolemy.data.Token [java::null]]
-#    set p7 [java::new ptolemy.data.LongToken $p6]
-#    list [$p5 equals $p5] [$p7 equals $p7] [$p5 equals $p7] [$p7 equals $p5]
-#} {0 0 0 0}
 
 ######################################################################
 ####
