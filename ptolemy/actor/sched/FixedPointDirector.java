@@ -33,17 +33,16 @@ import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,26 +52,26 @@ import ptolemy.kernel.util.Workspace;
  A base class for directors that have fixed point semantics at each
  iteration. An iteration consists of repeated firings of the
  actors controlled by this director until a fixed point is reached.
+ An iteration has converged if firing actors will not change signal 
+ status any more. 
+ <p>
+ At the beginning of each iteration, this director resets the status of
+ all signals to unknown. Upon firing an actor, the status of its output
+ signals may become known.  Once the status of
+ a signal becomes known, it cannot be changed back to unknown in the 
+ iteration. This monotonicity constraint ensures the existence and
+ uniqueness of the fixed point.
  During an iteration, the prefire() and fire() methods of the controlled 
  actors may be repeatedly invoked, but the postfire() method will be 
  invoked exactly once after the fixed point has been found.
  <p>
- An iteration <i>has converged</i> if all signal values are known and the 
- number of actors that are allowed to fire have converged.  Since further 
- execution would not result in more defined values, and the iteration has 
- converged.
- <p>
- At the beginning of each iteration, this director resets the values of
- all signals to unknown. To ensure that an iteration converges in after
- a finite number of firings, the values of signals can only change from 
- unknown to known, but not the other way around.  Once the value of
- a signal becomes known, it cannot be changed in the rest of the same 
- iteration.
- <p>
  Although this director does not require any specific ordering of actor 
- firings, a scheduler is used to specify a particular ordering in order
- to reduce the computation time required for a given iteration to converge. 
+ firings, a scheduler is used to choose an efficient ordering. 
  <p>
+ By default, actors are <i>strict</i>, which means that all their
+ input signals must be known before the actor can be fired. Such actors
+ will be fired only once in an iteration. 
+ 
  An actor is considered <i>ready to fire</i> if sufficient known inputs are
  available.  In a sense, an actor firing is triggered by these known inputs,
  because the director only fires an actor if it is ready to fire.  Unless an
@@ -246,8 +245,46 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         _resetAllReceivers();
 
+        _cachedFunctionalProperty = true;
+        _functionalPropertyVersion = -1;
         _realCost = 0;
         _roughCost = 0;
+    }
+
+    /** Return true if all the controlled actors' isFireFunctional()
+     *  methods return true. Otherwise, return false.
+     *  
+     *  @return True if all controlled actors are functional.
+     */
+    public boolean isFireFunctional() {
+        if (workspace().getVersion() == _functionalPropertyVersion) {
+            return _cachedFunctionalProperty;
+        }
+
+        boolean result = true;
+
+        Iterator actors = ((CompositeActor) getContainer()).
+            deepEntityList().iterator();
+
+        while (result && actors.hasNext() && !_stopRequested) {
+            Actor actor = (Actor) actors.next();
+            result = actor.isFireFunctional() && result;
+        }
+        
+        _cachedFunctionalProperty = result;
+        _functionalPropertyVersion = workspace().getVersion();
+
+        return result;
+    }
+
+    /** Return false. The transferInputs() method checks whether
+     *  the inputs are known before calling hasToken().
+     *  Thus this derictor tolerate unknown inputs.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 
     /** Return a new FPReceiver.
@@ -372,23 +409,25 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  If there is no data on the specified input port, then
      *  set the ports on the inside to absent by calling sendClearInside().
      *  This method delegates the data transfer
-     *  operation to the same method on IOPort,
-     *  so that the subclass of IOPort, TypedIOPort, can override this method
-     *  to perform run-time type conversion.
+     *  operation to the transferInputs method of the super class.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
-     *  @return True if at least one data token is transferred.
-     *  @see IOPort#transferInputs
+     *  @return True.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         for (int i = 0; i < port.getWidth(); i++) {
-            if (port.isKnown(i) && !port.hasToken(i)) {
-                port.sendClearInside(i);
+            if (port.isKnown(i)) {
+                if (port.hasToken(i)) {
+                    super.transferInputs(port);
+                } else {
+                    port.sendClearInside(i);
+                }
             }
         }
-        return super.transferInputs(port);
+        // The returned value does not matter. We simply return true.
+        return true;
     }
 
     /** Transfer data from the specified output port of the
@@ -396,21 +435,25 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  If there is no data on the specified output port, then
      *  set the ports on the outside to absent by calling sendClear().
      *  This method delegates the data transfer
-     *  operation to the same method on IOPort.
+     *  operation to the transferOutputs method of the super class.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
-     *  @return True if at least one data token is transferred.
-     *  @see IOPort#transferOutputs
+     *  @return True.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         for (int i = 0; i < port.getWidthInside(); i++) {
-            if (port.isKnownInside(i) && !port.hasTokenInside(i)) {
-                port.sendClear(i);
+            if (port.isKnownInside(i)) {
+                if (port.hasTokenInside(i)) {
+                    super.transferOutputs(port);
+                } else {
+                    port.sendClear(i);
+                }
             }
         }
-        return super.transferOutputs(port);
+        // The returned value does not matter. We simply return true.
+        return true; 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -615,7 +658,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // Nonstrict actors should fire in every phase in case more inputs
         // become available (the inputs might be, for example, cached and
         // used in a subsequent iteration).
-        if (_isNonStrict(actor)) {
+        if (!actor.isStrict()) {
             // if all the inputs and outputs are known, and
             // the inputs have not just changed from unknown to known,
             // it is unnecessary to fire the actor again,
@@ -653,24 +696,12 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Return true if the specified actor is a nonstrict actor.
-     */
-    private boolean _isNonStrict(Actor actor) {
-        // This information is not cached, since there is no semantic reason
-        // that the strictness of an actor could not change during execution,
-        // so long as that change happened between iterations.
-        Attribute nonStrictAttribute = ((NamedObj) actor)
-                .getAttribute(NON_STRICT_ATTRIBUTE_NAME);
-
-        return (nonStrictAttribute != null);
-    }
-
     /** Return true if the specified actor is ready to fire.  An actor is
      *  ready to fire if sufficient known inputs are available, or the actor
      *  is a nonstrict actor..
      */
     private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
-        return _isNonStrict(actor) || _areAllInputsKnown(actor);
+        return !actor.isStrict() || _areAllInputsKnown(actor);
     }
 
     /** Return the result of the postfire() method of the specified actor
@@ -718,7 +749,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // However, there is nothing need to do if this actor has 
         // resolved all of its outputs.
         // A nonstrict actor may intend to output undefined values.
-        if (!(_isNonStrict(actor) || _isFinishedFiring(actor))) {
+        if (actor.isStrict() && !_isFinishedFiring(actor)) {
 
             if (_debugging) {
                 _debug("  FixedPointDirector is calling sendClear() on the " +
@@ -761,11 +792,17 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     // The set of actors that have all outputs known in the given iteration.
     private Set _cachedAllOutputsKnown;
 
+    // The cache of the functional property of the container of this director
+    private boolean _cachedFunctionalProperty;
+    
     // The current number of receivers with known state.
     private int _currentNumberOfKnownReceivers;
 
     // The count of iterations executed.
     private int _currentIteration;
+
+    // Version number for the cached functional property
+    private transient long _functionalPropertyVersion = -1L;
 
     // The number of actors that were fired on the last phase of
     // actor firings.
@@ -790,7 +827,4 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     // The sum of the cost of all instants is the cost of
     // the whole execution.
     private int _roughCost;
-
-    // The name of an attribute that marks an actor as nonstrict.
-    private static final String NON_STRICT_ATTRIBUTE_NAME = "_nonStrictMarker";
 }
