@@ -267,7 +267,7 @@ test IntToken-8.1 {Test shift operator between ints.} {
 ####
 # Test shift operator between NIL unsigned bytes
 test UnsignedByteToken-8.1 {Test shift operator between ints.} {
-    set nil [java::field ptolemy.data.IntToken NIL]
+    set nil [java::field ptolemy.data.UnsignedByteToken NIL]
 
     set res1 [$nil leftShift 1]
     set res2 [$nil rightShift 1]
