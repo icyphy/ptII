@@ -42,12 +42,12 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @author Gang Zhou
  *  @version $Id$
  *  @since Ptolemy II 5.2
- *  @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
- *  @Pt.AcceptedRating Red (zgang)
+ *  @Pt.ProposedRating Red (mankit)
+ *  @Pt.AcceptedRating Red (cxh)
  */
 public class MonitorValue extends CCodeGeneratorHelper {
 
-    /** Constructor method for the MonitorValue helper.
+    /** Construct a MonitorValue helper.
      *  @param actor the associated actor
      */
     public MonitorValue(ptolemy.actor.lib.MonitorValue actor) {
@@ -56,11 +56,12 @@ public class MonitorValue extends CCodeGeneratorHelper {
 
     /** Generate fire code.
      *  The method reads in <code>fireBlock</code> from MonitorValue.c,
-     *  replaces macros with their values and appends the processed code
-     *  block to the given code buffer.
+     *  replaces macros with their values and returns the processed code
+     *  block.
      *  @return The generated code.
-     *  @exception IllegalActionException If the code stream encounters an
-     *   error in processing the specified code blocks or the type is not supported.
+     *  @exception IllegalActionException If the code stream
+     *  encounters an error in processing the specified code blocks or
+     *  the type is not supported.
      */
     public String generateFireCode() throws IllegalActionException {
         super.generateFireCode();
