@@ -270,9 +270,11 @@ test StringToken-5.2 {Test hashCode} {
 test StringToken-6.1 {Test modulo between string.} {
     set t1 [java::new {ptolemy.data.StringToken} 5]
     set t2 [java::new {ptolemy.data.StringToken} 2]
-    catch {$t1 modulo $t2} errMsg
-    list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.StringToken '"5"' and ptolemy.data.StringToken '"2"'}}
+    catch {$t1 modulo $t2} errMsg1
+    catch {$t1 moduloReverse $t2} errMsg2
+    list "$errMsg1 \n $errMsg2"
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.StringToken '"5"' and ptolemy.data.StringToken '"2"' 
+ ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.StringToken '"2"' and ptolemy.data.StringToken '"5"'}}
 
 ######################################################################
 ####
