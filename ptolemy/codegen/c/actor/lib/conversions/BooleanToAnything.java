@@ -38,8 +38,8 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Green (zgang)
- @Pt.AcceptedRating Green (zgang)
+ @Pt.ProposedRating Yellow (mankit) Works w/Array, but has problems if params are not of the same type
+ @Pt.AcceptedRating Red (cxh)
  */
 public class BooleanToAnything extends CCodeGeneratorHelper {
     /** Constructor method for the BooleanToAnything helper.
