@@ -30,9 +30,7 @@
                $ref(correctValues, $actorSymbol(numberOfTokensSeen));
                
         if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-                && fabs($ref(input#$channel)
-                        - $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Int)
-                > $ref(tolerance)) {
+                && $ref(input#$channel) != $actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Int) {
             printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was: %d. Should have been: %d\n",
                     $actorSymbol(numberOfTokensSeen),
                     $ref(input#$channel),
@@ -148,7 +146,7 @@
 
 /***TokenBlock($channel)***/
         $actorSymbol(numberOfTokensSeen)++;
-        if (!$typeFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen))))) {
+        if (!$typeFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean) {
             printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been: %s.\n",
                     $actorSymbol(numberOfTokensSeen),
                     $typeFunc($ref(input#$channel)::toString()),
@@ -165,7 +163,7 @@
         Token $actorSymbol(correctValuesThisFiring)_$channel =
                Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen));
 		if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-	                && !$typeFunc($ref(input#$channel)::equals(Array_get($actorSymbol(correctValuesThisFiring)_$channel, $channel)))) {
+	                && !$typeFunc($ref(input#$channel)::equals(Array_get($actorSymbol(correctValuesThisFiring)_$channel, $channel))).payload.Boolean) {
 	            printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
 	                    $actorSymbol(numberOfTokensSeen),
 	                    $typeFunc($ref(input#$channel)::toString()),
