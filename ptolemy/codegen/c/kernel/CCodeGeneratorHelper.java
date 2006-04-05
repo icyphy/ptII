@@ -48,8 +48,8 @@ import ptolemy.util.StringUtilities;
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit) Need to look for c code in actor super classes.
- @Pt.AcceptedRating Red (mankit)
+ @Pt.ProposedRating Red (mankit)
+ @Pt.AcceptedRating Red (cxh)
  */
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /**
@@ -67,7 +67,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /**
      * Generate the fire code. In this base class, do nothing. Subclasses
      * may extend this method to generate the fire code of the associated
-     * component and append the code to the given string buffer.
+     * component and return it.
      * @return The generated code.
      * @exception IllegalActionException Not thrown in this base class.
      */
@@ -78,8 +78,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /**
      * Generate the initialize code. In this base class, return an empty
      * string. Subclasses may extend this method to generate the initialize
-     * code of the associated component and append the code to the given
-     * string buffer.
+     * code of the associated component and return it.
      * @return The initialize code of the containing composite actor.
      * @exception IllegalActionException Not thrown in this base class.
      */
@@ -136,7 +135,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
      * of all, so any resets of variables of this helper should be done
      * in this method. In this base class, do nothing. Subclasses may extend
      * this method to generate the wrapup code of the associated component
-     * and append the code to the given string buffer.
+     * and return it.
      * @return code The given string buffer.
      * @exception IllegalActionException Not thrown in this base class.
      */
