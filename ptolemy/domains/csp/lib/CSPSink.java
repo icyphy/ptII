@@ -27,10 +27,9 @@
  */
 package ptolemy.domains.csp.lib;
 
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -53,19 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (nsmyth)
  @Pt.AcceptedRating Red (cxh)
  */
-public class CSPSink extends AtomicActor {
-    /** Construct a CSPSink in the default workspace with an
-     *  empty string as a name.
-     *  @exception IllegalActionException If there is an error
-     *   with instantiation of the tokenLimit parameter.
-     *  @exception NameDuplicationException If there is an error
-     *   with instantiation of the tokenLimit parameter.
-     */
-    public CSPSink() throws IllegalActionException, NameDuplicationException {
-        super();
-        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(-1)));
-    }
-
+public class CSPSink extends Sink {
     /** Construct a CSPSink with the specified container and the
      *  specified name. The name must be unique within the container
      *  or an exception is thrown. The container argument must not be
@@ -83,16 +70,12 @@ public class CSPSink extends AtomicActor {
     public CSPSink(CompositeActor container, String name, int limit)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new IOPort(this, "input", true, false);
         tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
+        input.setMultiport(false);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The input port.
-     */
-    public IOPort input;
 
     /** The number of tokens produced by this actor. If this limit
      *  is set to -1, then produce output tokens indefinitely. The

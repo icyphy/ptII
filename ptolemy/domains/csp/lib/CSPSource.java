@@ -27,9 +27,8 @@
  */
 package ptolemy.domains.csp.lib;
 
-import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.IOPort;
+import ptolemy.actor.lib.Source;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -54,37 +53,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.AcceptedRating Red (cxh)
 
  */
-public class CSPSource extends AtomicActor {
-    /** Construct a CSPSource in the default workspace with an
-     *  empty string as a name.
-     *  @exception IllegalActionException If there is an error
-     *   with instantiation of the tokenLimit parameter.
-     *  @exception NameDuplicationException If there is an error
-     *   with instantiation of the tokenLimit parameter.
-     */
-    public CSPSource() throws IllegalActionException, NameDuplicationException {
-        super();
-        tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(-1)));
-    }
-
-    /** Construct a CSPSource with the specified container and the
-     *  specified name. The name must be unique within the container
-     *  or an exception is thrown. The container argument must not be
-     *  null, or a NullPointerException will be thrown.
-     *  @param container The container of this actor.
-     *  @param name The name of this actor.
-     *  @exception IllegalActionException If the superclass throws it
-     *   or if there is an error with instantiation of the tokenLimit
-     *   parameter.
-     *  @exception NameDuplicationException If the name of the actor
-     *   or the tokenLimit parameter is not unique within the
-     *   container.
-     */
-    public CSPSource(CompositeActor container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        this(container, name, -1, 0);
-    }
-
+public class CSPSource extends Source {
     /** Construct a CSPSource with the specified container and the
      *  specified name. The name must be unique within the container
      *  or an exception is thrown. The container argument must not be
@@ -111,15 +80,10 @@ public class CSPSource extends AtomicActor {
         super(container, name);
         _value = initValue;
         tokenLimit = new Parameter(this, "tokenLimit", (new IntToken(limit)));
-        output = new IOPort(this, "output", false, true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-
-    /** The output port.
-     */
-    public IOPort output;
 
     /** The number of tokens produced by this actor. If this limit
      *  is set to -1, then produce output tokens indefinitely. The
