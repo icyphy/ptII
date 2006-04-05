@@ -77,7 +77,8 @@ public class IntToken extends ScalarToken {
         try {
             _value = Integer.parseInt(init);
         } catch (NumberFormatException e) {
-            throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException(null, e, 
+                    "Failed to parse \"" + init + "\" as a number.");
         }
     }
 
