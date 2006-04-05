@@ -7,6 +7,9 @@
       <group>
   <doc>Arithmetic and mathematical functions</doc>
 
+  <entity name="LookupTable" class="ptolemy.actor.lib.LookupTable">
+  </entity>
+
   <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
   </entity>
 
