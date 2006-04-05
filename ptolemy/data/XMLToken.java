@@ -110,38 +110,6 @@ public class XMLToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Test for closeness of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  StringToken.
-     *  @param rightArgument The token to compare to.
-     *  @param epsilon The distance, ignored by this method for this class.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
-            throws IllegalActionException {
-        return _isEqualTo(rightArgument);
-    }
-
-    /** Test for equality of the values of this Token and the argument
-     *  Token.  It is assumed that the type of the argument is
-     *  StringToken.
-     *  @param rightArgument The token to compare to.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A BooleanToken containing the result.
-     */
-    protected BooleanToken _isEqualTo(Token rightArgument)
-            throws IllegalActionException {
-        StringToken convertedArgument = (StringToken) rightArgument;
-        return BooleanToken.getInstance(toString().compareTo(
-                convertedArgument.toString()) == 0);
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private Document _doc;
 
