@@ -274,7 +274,7 @@ test StringToken-6.1 {Test modulo between string.} {
     catch {$t1 moduloReverse $t2} errMsg2
     list "$errMsg1 \n $errMsg2"
 } {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.StringToken '"5"' and ptolemy.data.StringToken '"2"' 
- ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.StringToken '"2"' and ptolemy.data.StringToken '"5"'}}
+ ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.StringToken '"2"' and ptolemy.data.StringToken '"5"'}} 
 
 ######################################################################
 ####
