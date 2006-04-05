@@ -1,0 +1,37 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SequenceSources" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+<doc>Sources of sequences of values. </doc>
+
+<entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
+<doc>Produce strings from an interactive shell on the screen</doc>
+</entity>
+
+<entity name="Interpolator" class="ptolemy.actor.lib.Interpolator">
+</entity>
+
+<entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+</entity>
+
+<entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+<doc>Create a sequence of tokens with increasing value</doc>
+</entity>
+
+<entity name="Sequence" class="ptolemy.actor.lib.Sequence"/>
+
+<entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
+
+<entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource">
+<doc>Create values from a sketch on the screen</doc>
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
+
+

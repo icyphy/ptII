@@ -4,7 +4,7 @@
 <entity name="Sources" class="ptolemy.moml.EntityLibrary">
   <input source="ptolemy/actor/lib/genericsources.xml"/>
   <!-- ptolemy/actor/lib/timedsources.xml -->
-  <!-- ptolemy/actor/lib/sequencesources.xml -->
+  <input source="ptolemy/actor/lib/sequencesources.xml"/>
 </entity>
  
 
