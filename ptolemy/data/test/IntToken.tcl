@@ -95,6 +95,17 @@ test IntToken-1.6 {Create a nil Token from an String} {
 ######################################################################
 ####
 # 
+test IntToken-1.7 {Create a bogus Token from a bogus String} {
+    catch {java::new {ptolemy.data.IntToken String} "not-a-number"} \
+	errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Failed to parse "not-a-number" as a number.
+Because:
+For input string: "not-a-number"}}
+
+######################################################################
+####
+# 
 test IntToken-2.0 {Create a non-empty instance and query its value as an int} {
     set p [java::new {ptolemy.data.IntToken int} 3]
     set res1 [$p intValue]
@@ -251,6 +262,20 @@ test IntToken-8.1 {Test shift operator between ints.} {
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString] [$res6 toString]
 } {14 -14 3 -4 3 2147483644}
+
+######################################################################
+####
+# Test shift operator between NIL unsigned bytes
+test UnsignedByteToken-8.1 {Test shift operator between ints.} {
+    set nil [java::field ptolemy.data.IntToken NIL]
+
+    set res1 [$nil leftShift 1]
+    set res2 [$nil rightShift 1]
+    set res3 [$nil logicalRightShift 1]
+
+    list [$res1 isNil] [$res2 isNil] [$res3 isNil]
+} {1 1 1}
+
 
 ######################################################################
 ####
