@@ -41,12 +41,14 @@ import ptolemy.kernel.util.StringAttribute;
 
 /**
  This actor outputs no values.  It produces no tokens.  In domains such as
- SR, the output will never converge to a defined value.
+ SR, the output will never converge to a defined value. This actor is
+ different from the {@link ptolemy.domains.sr.lib.Absent} actor, which
+ produces an <i>absent</i> value. 
 
- @author Paul Whitaker
+ @author Paul Whitaker, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.0
- @Pt.ProposedRating Red (pwhitake)
+ @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (pwhitake)
  */
 public class Undefined extends Source {
@@ -68,7 +70,15 @@ public class Undefined extends Source {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                     ports and parameters                  ////
+
+    /** The type for the output port.  This is a string-valued attribute
+     *  that defaults to "int".
+     */
+    public StringAttribute outputType;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
 
     /** Override the base class to change the type of the output port.
      *  @param attribute The attribute that changed.
@@ -91,23 +101,24 @@ public class Undefined extends Source {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-    /** The type for the output port.  This is a string-valued attribute
-     *  that defaults to "int".
+    /** Do nothing.
+     *  @exception IllegalActionException not thrown in this class.
      */
-    public StringAttribute outputType;
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    public void fire() throws IllegalActionException {
+        // Do nothing.
+        // We could have just used the fire() method of the super class, 
+        // because it is never called anyway. However, we explicitly
+        // override the method with an empty body to illstrate the difference.
+    }
 
-    /** Return false. This actor can produce some output event the input 
-     *  receiver has status unknown.
-     *  
+    /** Return false. This actor never fires. Note that in the fire() 
+     *  method of the FixedPointDirector, if an actor returns false in
+     *  its prefire() method, the fire() and postfire() methods are never
+     *  invoked. Consequently, the output of this actor is undefined.
+     * 
      *  @return False.
      */
-    public boolean isStrict() {
+    public boolean prefire() throws IllegalActionException {
         return false;
     }
 }

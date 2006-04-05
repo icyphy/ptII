@@ -37,12 +37,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  This actor outputs absent values.  That is, it produces no tokens,
  and it calls the sendClear() method of the output port on each
- firing.
+ firing. This actor is different from the 
+ {@link ptolemy.domains.sr.lib.Undefined} class, which produces undefined
+ values.
 
- @author Paul Whitaker
+ @author Paul Whitaker, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 2.0
- @Pt.ProposedRating Red (pwhitake)
+ @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (pwhitake)
  */
 public class Absent extends Undefined {
@@ -63,13 +65,29 @@ public class Absent extends Undefined {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return false. This actor can produce some output event the input 
+     *  receiver has status unknown.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
+    }
+
     /** Output an absent value by calling the sendClear() method of the
      *  output port.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
         output.sendClear(0);
+    }
+
+    /** Return true. This actor always fires.
+     * 
+     *  @return True.
+     */
+    public boolean prefire() throws IllegalActionException {
+        return true;
     }
 
     /** Override the base class to declare that the <i>output</i>
