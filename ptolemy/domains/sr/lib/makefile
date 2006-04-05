@@ -60,7 +60,6 @@ JSRCS = \
 	NonStrictDisplay.java \
 	NonStrictLogicFunction.java \
 	NonStrictThreeBitAdder.java \
-	NonStrictTokenToExpression.java \
 	Pre.java \
 	SingleTokenDistributor.java \
 	SingleTokenCommutator.java \
