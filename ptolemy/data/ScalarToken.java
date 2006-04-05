@@ -91,7 +91,7 @@ public abstract class ScalarToken extends Token implements
      */
     public final ScalarToken absolute() {
         if (isNil()) {
-            return (ScalarToken) Token.NIL;
+            return this;
         }
         ScalarToken result = _absolute();
         result._unitCategoryExponents = _copyOfCategoryExponents();
