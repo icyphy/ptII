@@ -1,4 +1,4 @@
-/*
+/* A helper class for ptolemy.actor.lib.Remainder.
  @Copyright (c) 2005-2006 The Regents of the University of California.
  All rights reserved.
 
@@ -40,12 +40,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class Remainder extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Remainder helper.
+     * Construct a Remainder helper.
      * @param actor the associated actor.
      */
     public Remainder(ptolemy.actor.lib.Remainder actor) {

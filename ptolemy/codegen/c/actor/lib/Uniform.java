@@ -36,12 +36,12 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
- * @Pt.AcceptedRating Red (mankit)
+ * @Pt.ProposedRating Green (mankit)
+ * @Pt.AcceptedRating Green (cxh)
  */
 public class Uniform extends RandomSource {
     /**
-     * Constructor method for the Uniform helper.
+     * Construct a Uniform helper.
      * @param actor the associated actor
      */
     public Uniform(ptolemy.actor.lib.Uniform actor) {
