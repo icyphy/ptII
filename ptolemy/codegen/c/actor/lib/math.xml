@@ -7,6 +7,12 @@
       <group>
   <doc>Arithmetic and mathematical functions</doc>
 
+  <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
+  </entity>
+
+  <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
+  </entity>
+
   <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         <property name="attributeName" value="function"/>
