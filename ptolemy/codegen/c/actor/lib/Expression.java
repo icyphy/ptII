@@ -52,7 +52,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit)
+ * @Pt.ProposedRating Red (mankit) Needs 2nd pass for array children of different types
  * @Pt.AcceptedRating Red (mankit)
  */
 public class Expression extends CCodeGeneratorHelper {
