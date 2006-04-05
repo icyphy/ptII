@@ -81,7 +81,7 @@ test LongToken-1.2 {Create an instance from a string value} {
 test LongToken-1.5 {Create a nil Token from a null token} {
     catch {java::new ptolemy.data.LongToken [java::null]} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with LongToken(null) is not supported.  Use Token.NIL instead.}}
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with LongToken(null) is not supported.  Use LongToken.NIL, or the nil Constant.}}
 
 ######################################################################
 ####
@@ -89,7 +89,7 @@ test LongToken-1.5 {Create a nil Token from a null token} {
 test LongToken-1.6 {Create a nil Token from an String} {
     catch {java::new {ptolemy.data.LongToken String} nil} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with LongToken("nil") is not supported.  Use Token.NIL instead.}}
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with LongToken("nil") is not supported.  Use LongToken.NIL, or the nil Constant.}}
 
 
 ######################################################################

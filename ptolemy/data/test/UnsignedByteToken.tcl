@@ -73,6 +73,22 @@ test UnsignedByteToken-1.2 {Create an instance from a string value} {
 ######################################################################
 ####
 # 
+test UnsignedByteToken-1.5 {Create a nil Token from a null token} {
+    catch {java::new ptolemy.data.UnsignedByteToken [java::null]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with IntToken(null) is not supported.  Use IntToken.NIL, or the nil Constant.}}
+
+######################################################################
+####
+# 
+test UnsignedByteToken-1.6 {Create a nil Token from an String} {
+    catch {java::new {ptolemy.data.UnsignedByteToken String} nil} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with IntToken("nil") is not supported.  Use IntToken.NIL, or the nil Constant.}}
+
+######################################################################
+####
+# 
 test UnsignedByteToken-2.0 {Create a non-empty instance and query its value} {
     set token [java::new {ptolemy.data.UnsignedByteToken byte} 4]
     $token byteValue

@@ -73,15 +73,15 @@ test IntToken-1.2 {Create a non-empty instance from an String} {
 test IntToken-1.5 {Create a nil Token from a null token} {
     catch {java::new ptolemy.data.IntToken [java::null]} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with IntToken(null) is not supported.  Use Token.NIL instead.}}
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with IntToken(null) is not supported.  Use IntToken.NIL, or the nil Constant.}}
 
 ######################################################################
 ####
 # 
 test IntToken-1.6 {Create a nil Token from an String} {
-    catch {java::new {ptolemy.data.DoubleToken String} nil} errMsg
+    catch {java::new {ptolemy.data.IntToken String} nil} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with DoubleToken("nil") is not supported.  Use Token.NIL instead.}}
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with IntToken("nil") is not supported.  Use IntToken.NIL, or the nil Constant.}}
 
 
 ######################################################################

@@ -89,7 +89,7 @@ test DoubleToken-1.4 {Create a non-empty instance from an String} {
 test DoubleToken-1.5 {Create a nil Token from a null token} {
     catch {java::new ptolemy.data.DoubleToken [java::null]} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with DoubleToken(null) is not supported.  Use Token.NIL instead.}}
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with DoubleToken(null) is not supported.  Use DoubleToken.NIL, or the nil Constant.}}
 
 ######################################################################
 ####
@@ -97,7 +97,7 @@ test DoubleToken-1.5 {Create a nil Token from a null token} {
 test DoubleToken-1.6 {Create a nil Token from an String} {
     catch {java::new {ptolemy.data.DoubleToken String} nil} errMsg
     list $errMsg
-} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with DoubleToken("nil") is not supported.  Use Token.NIL instead.}}
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with DoubleToken("nil") is not supported.  Use DoubleToken.NIL, or the nil Constant.}}
 
 ######################################################################
 ####
