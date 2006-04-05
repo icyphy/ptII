@@ -16,6 +16,9 @@
   <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
   </entity>
 
+  <entity name="Remainder" class="ptolemy.actor.lib.Remainder">
+  </entity>
+
   <entity name="TrigFunction" class="ptolemy.actor.lib.TrigFunction">
     <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         <property name="attributeName" value="function"/>
