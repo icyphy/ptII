@@ -1370,7 +1370,7 @@ public class DEDirector extends Director implements TimedDirector {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
 
-        // Allocate a new hash table with the equal to the
+        // Allocate a new hash table with the size equal to the
         // number of IO ports sorted.
         // This composite actor is set to the highest depth
         // (the lowest priority).
