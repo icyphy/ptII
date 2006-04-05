@@ -258,8 +258,10 @@ public class FSMActor extends CompositeEntity implements TypedActor,
      *   transition enabled.
      */
     public void fire() throws IllegalActionException {
+        // NOTE: this method is not called in the FSMDirector class.
+        // This FSMActor is a mealy machine in that it produces outputs
+        // when taking transitions.
         _readInputs();
-
         List transitionList = _currentState.outgoingPort.linkedRelationList();
         _chooseTransition(transitionList);
     }
@@ -516,10 +518,30 @@ public class FSMActor extends CompositeEntity implements TypedActor,
         return _cachedInputPorts;
     }
 
+    /** Return false. During the fire() method, if a transition is enabled,
+     *  it will be taken and the actions associated with this transition are 
+     *  executed. We assume the actions will change states of this actor.
+     *  
+     *  @return False.
+     */
+    public boolean isFireFunctional() {
+        return false;
+    }
+
     /** Return true.
      *  @return True.
      */
     public boolean isOpaque() {
+        return true;
+    }
+
+    /** Return true. This actor does not tolerate unknown inputs.
+     *  This actor does not check their inputs to see whether they 
+     *  are known.  They assume they are known.
+     *  
+     *  @return True.
+     */
+    public boolean isStrict() {
         return true;
     }
 
@@ -1253,6 +1275,8 @@ public class FSMActor extends CompositeEntity implements TypedActor,
                 }
             }
         } else {
+            // If we assume this actor is strict, we do not need to handle
+            // unknowns.
             // FIXME how to deal with unknown?
             //             shadowVariables[channel][0].setUnknown(true);
             //             shadowVariables[channel][1].setUnknown(true);
@@ -1419,7 +1443,6 @@ public class FSMActor extends CompositeEntity implements TypedActor,
             initialStateName.setExpression("");
             finalStateNames = new StringAttribute(this, "finalStateNames");
             finalStateNames.setExpression("");
-            new Attribute(this, "_nonStrictMarker");
         } catch (KernelException ex) {
             // This should never happen.
             throw new InternalErrorException("Constructor error "
