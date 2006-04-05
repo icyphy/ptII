@@ -8,6 +8,7 @@
 <doc>Sinks that are time based. </doc>
 
 <entity name="Discard" class="ptolemy.actor.lib.Discard"/>
+<entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
 
       </group>
     ?>
