@@ -19,6 +19,10 @@
           <doc>Create an array of rician random variables</doc>
         </entity>
 
+	<entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+	  <doc>Create a sequence of uniformly distributed random numbers</doc>
+	</entity>
+
       </group>
     ?>
   </configure>
