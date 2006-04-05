@@ -77,9 +77,6 @@
 <entity name="NonStrictThreeBitAdder" class="ptolemy.domains.sr.lib.NonStrictThreeBitAdder">
 </entity>
 
-<entity name="NonStrictTokenToExpression" class="ptolemy.domains.sr.lib.NonStrictTokenToExpression">
-</entity>
-
 <entity name="Pre" class="ptolemy.domains.sr.lib.Pre">
 </entity>
 

@@ -2,9 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NonStrictDelay2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
         <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
@@ -13,12 +15,10 @@
                 </property>
             </property>
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 60.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={131, 33, 815, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={131, 33, 815, 507}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -54,13 +54,13 @@
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;absent&quot;, &quot;0&quot;, &quot;1&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 205.0">
         </property>
     </entity>
-    <entity name="NonStrictTokenToExpression" class="ptolemy.domains.sr.lib.NonStrictTokenToExpression">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 150.0">
+    <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 150.0]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -72,10 +72,12 @@
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="410.0, 150.0">
+        <vertex name="vertex1" value="{410.0, 150.0}">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation2"/>
@@ -85,6 +87,6 @@
     <link port="Ramp.output" relation="relation2"/>
     <link port="NonStrictTest.input" relation="relation3"/>
     <link port="NonStrictTest2.input" relation="relation"/>
-    <link port="NonStrictTokenToExpression.input" relation="relation5"/>
-    <link port="NonStrictTokenToExpression.output" relation="relation"/>
+    <link port="TokenToExpression.input" relation="relation5"/>
+    <link port="TokenToExpression.output" relation="relation"/>
 </entity>

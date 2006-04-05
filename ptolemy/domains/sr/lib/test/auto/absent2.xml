@@ -2,9 +2,11 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="absent2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
         <property name="scheduler" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
@@ -13,14 +15,10 @@
                 </property>
             </property>
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="5">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 65.0">
         </property>
-        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
-        </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 386, 271}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 507}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -61,26 +59,30 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="105.0, 165.0">
         </property>
     </entity>
-    <entity name="NonStrictTokenToExpression" class="ptolemy.domains.sr.lib.NonStrictTokenToExpression">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 165.0">
-        </property>
-    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;absent&quot;, &quot;absent&quot;, &quot;absent&quot;, &quot;absent&quot;, &quot;absent&quot;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 225.0">
         </property>
     </entity>
+    <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 165.0]">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="Absent.output" relation="relation"/>
+    <link port="Absent.output" relation="relation4"/>
     <link port="Absent.trigger" relation="relation2"/>
     <link port="Const.output" relation="relation2"/>
-    <link port="NonStrictTokenToExpression.input" relation="relation"/>
-    <link port="NonStrictTokenToExpression.output" relation="relation3"/>
-    <link port="NonStrictTest.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="TokenToExpression.input" relation="relation4"/>
+    <link port="TokenToExpression.output" relation="relation"/>
 </entity>
