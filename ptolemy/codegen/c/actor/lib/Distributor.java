@@ -29,6 +29,8 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -66,16 +68,32 @@ public class Distributor extends CCodeGeneratorHelper {
 
         ArrayList args = new ArrayList();
         args.add(new Integer(0));
-        String type = codeGenType(actor.input.getType());
-        args.add(type);
+        Type inputType = actor.input.getType();
+        args.add(inputType);
         for (int i = 0; i < actor.output.getWidth(); i++) {
             args.set(0, new Integer(i));
-            String codeBlock;
-            if (isPrimitiveType(type) && 
+
+            String codeBlock = "";
+            if (isPrimitiveType(inputType) && 
                     !isPrimitiveType(actor.output.getType())) {
-                codeBlock = "upgradeFireBlock";
+                codeBlock = "toTokenBlock";
             } else {
-                codeBlock = "assignFireBlock";
+                if (actor.output.getType() == BaseType.STRING) {
+                    if (inputType == BaseType.INT) {
+                        codeBlock = "IntToStringBlock";
+                    } else if (inputType == BaseType.DOUBLE) {
+                        codeBlock = "DoubleToStringBlock";                        
+                    } else if (inputType == BaseType.LONG) {
+                        codeBlock = "LongToStringBlock";                        
+                    } else if (inputType == BaseType.BOOLEAN) {
+                        codeBlock = "BooleanToStringBlock";
+                    } else {
+                        throw new IllegalActionException(
+                                "Unhandled input type to string");
+                    }
+                } else {
+                    codeBlock = "assignBlock";                    
+                }
             }
             _codeStream.appendCodeBlock(codeBlock, args);
         }
