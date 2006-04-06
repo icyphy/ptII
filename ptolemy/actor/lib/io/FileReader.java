@@ -139,9 +139,6 @@ public class FileReader extends Source {
             StringBuffer lineBuffer = new StringBuffer();
             String newlineValue = ((StringToken) newline.getToken())
                 .stringValue();
-            System.out.println("lineseparator" + ptolemy.util.StringUtilities.getProperty("line.separator") + " newlineValue: \"" + newlineValue + "\" length: "
-                    + newlineValue.length());
-
             while (true) {
                 String line = reader.readLine();
 
