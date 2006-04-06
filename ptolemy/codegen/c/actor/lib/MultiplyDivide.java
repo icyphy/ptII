@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit (Jackie) Leung, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
+ @Pt.ProposedRating Red (mankit)  TODO:  $ref(something#i) to specify variables for different channels would make the code cleaner
  @Pt.AcceptedRating Red (cxh)
  */
 public class MultiplyDivide extends CCodeGeneratorHelper {
