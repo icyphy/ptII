@@ -68,7 +68,7 @@ import ptolemy.util.MessageHandler;
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (eal)
+ @Pt.ProposedRating Red (cxh) clean up code in prep for review.
  @Pt.AcceptedRating Red (eal)
  */
 public class CodeGeneratorGUI extends PtolemyFrame {
