@@ -602,6 +602,7 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.UNKNOWN, unionRep);
 
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.NIL);
+            _basicLattice.addEdge(BaseType.NIL, BaseType.BOOLEAN);
             _basicLattice.addEdge(BaseType.NIL, BaseType.DOUBLE);
             _basicLattice.addEdge(BaseType.NIL, BaseType.INT);
             _basicLattice.addEdge(BaseType.NIL, BaseType.LONG);
