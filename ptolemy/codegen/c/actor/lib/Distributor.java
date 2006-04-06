@@ -59,30 +59,26 @@ public class Distributor extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        super.generateFireCode();
 
-        ptolemy.actor.lib.Distributor actor = (ptolemy.actor.lib.Distributor) getComponent();
+        ptolemy.actor.lib.Distributor actor = 
+            (ptolemy.actor.lib.Distributor) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add("");
+        args.add(new Integer(0));
         String type = codeGenType(actor.input.getType());
         args.add(type);
         for (int i = 0; i < actor.output.getWidth(); i++) {
             args.set(0, new Integer(i));
             String codeBlock;
-            if (isPrimitiveType(type)) {
-                if (isPrimitiveType(actor.output.getType())) {
-                    codeBlock = "primitiveToPrimitiveFireBlock";
-                } else {
-                    codeBlock = "primitiveToTokenFireBlock";
-                }
+            if (isPrimitiveType(type) && 
+                    !isPrimitiveType(actor.output.getType())) {
+                codeBlock = "upgradeFireBlock";
             } else {
-                codeBlock = "tokenFireBlock";
+                codeBlock = "assignFireBlock";
             }
-            code.append("/* " + codeBlock + " */");
-            code.append(_generateBlockCode(codeBlock, args));
+            _codeStream.appendCodeBlock(codeBlock, args);
         }
-        return processCode(code.toString());
+        return processCode(_codeStream.toString());
     }
 }
