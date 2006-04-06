@@ -77,7 +77,7 @@ public class FileReader extends Source {
         fileOrURLPort = new TypedIOPort(this, "fileOrURL", true, false);
         fileOrURLPort.setTypeEquals(BaseType.STRING);
 
-        newline = new Parameter(this, "newLine");
+        newline = new Parameter(this, "newline");
         newline.setExpression("property(\"file.separarator\")");
 
         _attachText("_iconDescription", "<svg>\n"
