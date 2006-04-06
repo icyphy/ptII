@@ -93,21 +93,21 @@ foreach type $types {
     }
 
 
-#    # Perform unary operations on nil types
-#    set unaryOperations \
-#	[list absolute]
-#    foreach unaryOperation $unaryOperations {
-#	test "$type-$unaryOperation" "Test $unaryOperation unary op on $type" {
-#	    puts -nonewline " $unaryOperation"
-#	    #set nil [java::new ptolemy.data.$type [java::null]] 
-#	    set nil [java::field ptolemy.data.Token NIL]
-#	    set results [$nil $unaryOperation]
-#	    set resultsClassName [[$results getClass] getName] 
-#	    list [$results toString] \
-#		[$results isNil] \
-#		[expr {"$resultsClassName" == "ptolemy.data.$type"}]
-#	} {nil 1 1}
-#    }
+    # Perform unary operations on nil types
+    set unaryOperations \
+	[list absolute]
+    foreach unaryOperation $unaryOperations {
+	test "$type-$unaryOperation" "Test $unaryOperation unary op on $type" {
+	    puts -nonewline " $unaryOperation"
+	    #set nil [java::new ptolemy.data.$type [java::null]] 
+	    set nil [java::field ptolemy.data.$type NIL]
+	    set results [$nil $unaryOperation]
+	    set resultsClassName [[$results getClass] getName] 
+	    list [$results toString] \
+		[$results isNil] \
+		[expr {"$resultsClassName" == "ptolemy.data.$type"}]
+	} {nil 1 1}
+    }
 
     # Perform isEqualTo on nil types.  isEqualTo always returns false
     set relationalOperations [list isEqualTo]
