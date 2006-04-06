@@ -42,7 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Distributor extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Distributor helper.
+     * Construct the Distributor helper.
      * @param actor The associated actor.
      */
     public Distributor(ptolemy.actor.lib.Distributor actor) {
@@ -52,8 +52,8 @@ public class Distributor extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * Read the <code>fireBlock</code> from Distributor.c,
-     * replace macros with their values and append the processed code
-     * block to the given code buffer.
+     * replace macros with their values and return the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
