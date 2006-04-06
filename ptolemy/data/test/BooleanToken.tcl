@@ -161,7 +161,7 @@ test BooleanToken-6.1 {Test modulo between boolean.} {
     catch {$falseToken modulo $trueToken} errMsg1
     catch {$falseToken moduloReverse $trueToken} errMsg2
     list "$errMsg1\n $errMsg2"
-} {{ptolemy.kernel.util.IllegalActionException: bitwiseAnd method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.BooleanToken 'false' and ptolemy.data.BooleanToken 'true'
  ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.BooleanToken 'false'}}
 
 test BooleanToken-7.0 {Test multiplication} {
