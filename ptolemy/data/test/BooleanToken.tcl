@@ -1,6 +1,6 @@
 # Tests for the BooleanToken class
 #
-# @Author: Neil Smyth, Yuhong Xiong
+# @Author: Neil Smyth, Yuhong Xiong, Christopher Brooks
 #
 # @Version $Id$
 #
@@ -70,10 +70,28 @@ test BooleanToken-1.2 {Create an instance from a string value} {
 ######################################################################
 ####
 # 
-#test BooleanToken-1.3 {NIL} { 
-#    set nil [java::field ptolemy.data.BooleanToken NIL]
-#    list [$nil toString]
-#} {nil}
+test BooleanToken-1.3 {NIL} { 
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    list [$nil toString]
+} {nil}
+
+######################################################################
+####
+# 
+test BooleanToken-1.5 {Create a nil Token from a null token} {
+    catch {java::new ptolemy.data.BooleanToken [java::null]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with BooleanToken(null) is not supported.  Use BooleanToken.NIL, or the nil Constant.}}
+
+
+######################################################################
+####
+# 
+test BooleanToken-1.6 {Create a nil Token from an String} {
+    catch {java::new {ptolemy.data.BooleanToken String} nil} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: Creating a nil token with BooleanToken("nil") is not supported.  Use BooleanToken.NIL, or the nil Constant.}}
+
 
 ######################################################################
 ####
@@ -206,12 +224,12 @@ test BooleanToken-11.0 {Test reverse subtraction of booleans} {
 ######################################################################
 ####
 # 
-#test BooleanToken-11.1 {Test equals on nil} {
-#    set u [java::field ptolemy.data.BooleanToken NIL]
-#    set u2 [java::new ptolemy.data.BooleanToken true]
-#    set t [java::field ptolemy.data.Token NIL]
-#    list [$u equals $u] [$u equals $u2] [$u2 equals $u] [$t equals $u] [$u equals $t]
-#} {0 0 0 0 0} 
+test BooleanToken-11.1 {Test equals on nil} {
+    set u [java::field ptolemy.data.BooleanToken NIL]
+    set u2 [java::new ptolemy.data.BooleanToken true]
+    set t [java::field ptolemy.data.Token NIL]
+    list [$u equals $u] [$u equals $u2] [$u2 equals $u] [$t equals $u] [$u equals $t]
+} {0 0 0 0 0} 
 
 ######################################################################
 ####

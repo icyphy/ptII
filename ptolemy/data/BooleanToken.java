@@ -45,11 +45,11 @@ import ptolemy.kernel.util.IllegalActionException;
  it is highly recommended that the getInstance() method be used, instead of
  the constructor that takes a boolean argument.
 
- @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Steve Neuendorffer
+ @author Neil Smyth, Yuhong Xiong, Edward A. Lee, Steve Neuendorffer, Christopher Brooks
  @version $Id$
  @since Ptolemy II 0.2
- @Pt.ProposedRating Green (neuendor)
- @Pt.AcceptedRating Green (wbwu)
+ @Pt.ProposedRating Yellow (cxh) nil token
+ @Pt.AcceptedRating Red (cxh)
  */
 public class BooleanToken extends AbstractConvertibleToken implements
         BitwiseOperationToken {
@@ -74,17 +74,12 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *   be created with the given String.
      */
     public BooleanToken(String init) throws IllegalActionException {
+        if (init == null || init.equals("nil")) {
+            throw new IllegalActionException(notSupportedNullNilStringMessage(
+                    "BooleanToken", init));
+        }
         _value = init.toLowerCase().equals("true");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** True-valued token. */
-    public static final BooleanToken TRUE = new BooleanToken(true);
-
-    /** False-valued token. */
-    public static final BooleanToken FALSE = new BooleanToken(false);
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -175,8 +170,10 @@ public class BooleanToken extends AbstractConvertibleToken implements
 
     /** Convert the specified token into an instance of BooleanToken.
      *  This method does lossless conversion, which in the case of
-     *  booleans, means that the argument can only be already
-     *  an instance of BooleanToken.  It is returned unchanged.
+     *  booleans, means that the argument can only be already an
+     *  instance of BooleanToken.  It is returned unchanged.  If the
+     *  argument is null or a nil token, then {@link #NIL} is
+     *  returned.
      *  @param token The token to be converted to a BooleanToken.
      *  @return A BooleanToken.
      *  @exception IllegalActionException If the argument is not
@@ -186,6 +183,9 @@ public class BooleanToken extends AbstractConvertibleToken implements
             throws IllegalActionException {
         if (token instanceof BooleanToken) {
             return (BooleanToken) token;
+        }
+        if (token == null || token.isNil()) {
+            return BooleanToken.NIL;
         }
 
         int compare = TypeLattice.compare(BaseType.BOOLEAN, token);
@@ -202,12 +202,17 @@ public class BooleanToken extends AbstractConvertibleToken implements
     /** Return true if the argument's class is BooleanToken and it has the
      *  same values as this token.
      *  @param object An instance of Object.
-     *  @return True if the argument is a BooleanToken with the
-     *  same value.
+     *  @return True if the argument is a BooleanToken with the same
+     *  value. If either this object or the argument is a nil Token,
+     *  return false.
      */
     public boolean equals(Object object) {
         // This test rules out subclasses.
         if (object.getClass() != getClass()) {
+            return false;
+        }
+
+        if (isNil() || ((BooleanToken) object).isNil()) {
             return false;
         }
 
@@ -252,11 +257,25 @@ public class BooleanToken extends AbstractConvertibleToken implements
         return 0;
     }
 
+    /** Return true if the token is nil, (aka null or missing).
+     *  Nil or missing tokens occur when a data source is sparsely populated.
+     *  @return True if the token is the {@link #NIL} token.
+     */
+    public boolean isNil() {
+        // We use a method here so that we can easily change how
+        // we determine if a token is nil without modify lots of classes.
+        // Can't use equals() here, or we'll go into an infinite loop.
+        return this == BooleanToken.NIL;
+    }
+
     /** Return a new BooleanToken with the logical not of the value
      *  stored in this token.
      *  @return The logical converse of this token.
      */
     public BooleanToken not() {
+        if (isNil()) {
+            return BooleanToken.NIL;
+        }
         if (booleanValue()) {
             return FALSE;
         } else {
@@ -277,6 +296,9 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  @return A new BooleanToken containing the result.
      */
     public BooleanToken or(BooleanToken rightArgument) {
+        if (isNil()) {
+            return BooleanToken.NIL;
+        }
         if (_value || rightArgument.booleanValue()) {
             return TRUE;
         } else {
@@ -290,6 +312,9 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  string "false" if it represents false.
      */
     public String toString() {
+        if (isNil()) {
+            return super.toString();
+        }
         if (booleanValue()) {
             return "true";
         } else {
@@ -303,6 +328,9 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  @return A new BooleanToken containing the result.
      */
     public BooleanToken xor(BooleanToken rightArgument) {
+        if (isNil()) {
+            return BooleanToken.NIL;
+        }
         if (_value ^ rightArgument.booleanValue()) {
             return TRUE;
         } else {
@@ -316,6 +344,24 @@ public class BooleanToken extends AbstractConvertibleToken implements
     public Token zero() {
         return FALSE;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** True-valued token. */
+    public static final BooleanToken TRUE = new BooleanToken(true);
+
+    /** A token that represents a missing value.
+     *  Null or missing tokens are common in analytical systems
+     *  like R and SAS where they are used to handle sparsely populated data
+     *  sources.  In database parlance, missing tokens are sometimes called
+     *  null tokens.  Since null is a Java keyword, we use the term "nil".
+     *  The toString() method on a nil token returns the string "nil".
+     */
+    public static final BooleanToken NIL = new BooleanToken(false);
+
+    /** False-valued token. */
+    public static final BooleanToken FALSE = new BooleanToken(false);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
