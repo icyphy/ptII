@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @author Man-Kit (Jackie) Leung, Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (eal)
+ @Pt.ProposedRating Red (mankit) TODO: need $ref(something#i) to specify variables for different channels
  @Pt.AcceptedRating Red (eal)
  */
 public class AddSubtract extends CCodeGeneratorHelper {
