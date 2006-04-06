@@ -38,7 +38,7 @@ import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
  @author Gang Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported.
+ @Pt.ProposedRating Red (mankit) TODO: handle ArrayToken as input
  @Pt.AcceptedRating Red (zgang)
  */
 public class Scale extends CCodeGeneratorHelper {
