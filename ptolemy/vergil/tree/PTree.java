@@ -114,10 +114,11 @@ public class PTree extends JTree {
 
                 // If we didn't select anything.. then don't drag.
                 if (path == null) {
-                    if (path.getLastPathComponent() instanceof EntityLibrary) {
-                        //this prevents a user from dragging a folder.
-                        return;
-                    }
+                    return;
+                }
+
+                if (path.getLastPathComponent() instanceof EntityLibrary) {
+                    //this prevents a user from dragging a folder.
                     return;
                 }
 
