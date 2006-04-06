@@ -341,7 +341,7 @@ ptolemy.codegen.c.actor.lib.gui.SequencePlotter
 ptolemy.codegen.c.actor.lib.Expression
     Blending
     Butterfly
-     * @Pt.ProposedRating Red (mankit)Needs 2nd pass for array children of different types
+     * @Pt.ProposedRating Red (mankit) Needs 2nd pass for array childreno f different types
      * @Pt.AcceptedRating Red (mankit)
 
 ptolemy.codegen.c.actor.lib.conversions.BooleanToAnything
@@ -354,7 +354,7 @@ ptolemy.codegen.c.actor.lib.conversions.BooleanToAnything
 ptolemy.codegen.c.actor.lib.AddSubtract
     Blending
     Hysteresis
-     @Pt.ProposedRating Red (eal)
+     @Pt.ProposedRating Red (mankit) TODO: need $ref(something#i) to specify variables for different channels
      @Pt.AcceptedRating Red (eal)
  Complex, Fix, Matrix and Array inputs are not supported
 
@@ -363,7 +363,6 @@ ptolemy.codegen.c.domains.fsm.modal.TransitionRefinement
      @Pt.ProposedRating Green (cxh)
      @Pt.AcceptedRating Green (cxh)
 DONEDONEDONEDONEDONE
-
 
 ptolemy.codegen.c.actor.lib.hoc.Refinement
     Case
@@ -394,12 +393,12 @@ ptolemy.codegen.c.actor.lib.Scale
     Blending
     Case
     ModalBSC
-     @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported.
+     @Pt.ProposedRating Red (mankit) TODO: handle ArrayToken as input
      @Pt.AcceptedRating Red (zgang)
 
 ptolemy.codegen.c.actor.lib.MultiplyDivide
     AdaptiveCoding
-     @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
+     @Pt.ProposedRating Red (mankit)  TODO:  $ref(something#i) to specify variables for different channels would make the code cleaner
      @Pt.AcceptedRating Red (cxh)
  Complex, Fix, Matrix and Array inputs are not supported
 
@@ -407,18 +406,18 @@ ptolemy.codegen.c.actor.lib.Pulse
     Merge
      @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported: Needs tests for these
      @Pt.AcceptedRating Red (zgang)
-
+DONEDONEDONEDONEDONEDONEDONE
 
 ptolemy.codegen.c.actor.lib.MonitorValue
     AdaptiveCoding
      *  @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
      *  @Pt.AcceptedRating Red (zgang)
- Set up common base class, share with Display
  Needs to work with Array to be shipped 
+DONEDONEDONEDONEDONEDONEDONE
 
 ptolemy.codegen.c.actor.lib.Accumulator
     AdaptiveCoding
-     * @Pt.ProposedRating Red (cxh) String, Complex, Fix, Matrix and Array inputs are not supported.
+     * @Pt.ProposedRating Red (mankit) TODO: Needs to work with String, ArrayToken.  Similar to Ramp
      * @Pt.AcceptedRating Red (zgang)
 
 These are done:
