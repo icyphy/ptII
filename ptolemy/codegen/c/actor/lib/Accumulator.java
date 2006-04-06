@@ -41,13 +41,13 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung, Gang Zhou
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (cxh) String, Complex, Fix, Matrix and Array inputs are not supported.
+ * @Pt.ProposedRating Red (mankit) TODO: Needs to work with String, ArrayToken.  Similar to Ramp
  * @Pt.AcceptedRating Red (zgang)
  */
 public class Accumulator extends CCodeGeneratorHelper {
     /**
-     * Constructor method for the Accumulator helper.
-     * @param actor the associated actor
+     * Construct an Accumulator helper.
+     * @param actor the associated actor.
      */
     public Accumulator(ptolemy.actor.lib.Accumulator actor) {
         super(actor);
@@ -56,8 +56,8 @@ public class Accumulator extends CCodeGeneratorHelper {
     /**
      * Generate fire code.
      * The method reads in <code>fireBlock</code> from Accumulator.c,
-     * replaces macros with their values and appends the processed code
-     * block to the given code buffer.
+     * replaces macros with their values and returns the processed code
+     * block.
      * @return The generated code.
      * @exception IllegalActionException If the code stream encounters an
      *  error in processing the specified code block(s).
