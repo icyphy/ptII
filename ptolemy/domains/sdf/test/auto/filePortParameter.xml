@@ -79,10 +79,10 @@
         <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
             <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$fileName">
             </property>
-            <property name="newLine" class="ptolemy.data.expr.Parameter" value="&quot;\n\r&quot;">
+            <property name="newline" class="ptolemy.data.expr.Parameter" value="&quot;\n\r&quot;">
             </property>
             <doc>Read an entire file and output as a string</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 155.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 155.0}">
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
