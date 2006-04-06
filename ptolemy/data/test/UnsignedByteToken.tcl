@@ -231,7 +231,7 @@ test UnsignedByteToken-11.1 {Test equals on nil} {
     set tu [java::field ptolemy.data.UnsignedByteToken NIL]
     set t2 [java::new ptolemy.data.UnsignedByteToken 2]
     set t [java::field ptolemy.data.Token NIL]
-    list [$tu equals $tu] [$tu equals $u2] [$t2 equals $tu] \
+    list [$tu equals $tu] [$tu equals $t2] [$t2 equals $tu] \
 	[$t2 equals $t2] [$t equals $tu] [$tu equals $t]
 } {0 0 0 1 0 0} 
 
