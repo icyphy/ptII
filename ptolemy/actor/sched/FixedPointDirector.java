@@ -175,7 +175,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  An iteration converges when all the receivers have status known.  
      *  This method also calls the prefire() method of an actor before it 
      *  is fired for the first time. 
-     *  // FIXME: prefire() may be called each time the fire() method is called?
      *  @exception IllegalActionException If an actor attempts to modify
      *   a known value.
      */
