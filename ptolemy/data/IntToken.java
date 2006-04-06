@@ -287,7 +287,7 @@ public class IntToken extends ScalarToken {
         return Integer.toString(_value) + unitString;
     }
 
-    /** Returns anIntToken with value 0.
+    /** Returns an IntToken with value 0.
      *  @return An IntToken with value 0.
      */
     public Token zero() {
