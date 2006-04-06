@@ -42,8 +42,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @author Gang Zhou
  *  @version $Id$
  *  @since Ptolemy II 5.2
- *  @Pt.ProposedRating Red (mankit)
- *  @Pt.AcceptedRating Red (cxh)
+ *  @Pt.ProposedRating Green (mankit)
+ *  @Pt.AcceptedRating Green (cxh)
  */
 public class MonitorValue extends CCodeGeneratorHelper {
 
@@ -65,14 +65,14 @@ public class MonitorValue extends CCodeGeneratorHelper {
      */
     public String generateFireCode() throws IllegalActionException {
         // Note: this actor have the exact same functionality as Display.
+        // We want to mirror the Ptolemy actor.lib code structure.
+        // The .c files need to remain separate anyway.
         StringBuffer code = new StringBuffer();
         code.append(super.generateFireCode());
 
         ptolemy.actor.lib.MonitorValue actor = (ptolemy.actor.lib.MonitorValue) getComponent();
-        _codeStream.clear();
 
-        String type = "";
-        type = codeGenType(actor.input.getType());
+        String type = codeGenType(actor.input.getType());
         if (!isPrimitiveType(type)) {
             type = "Token";
         }
