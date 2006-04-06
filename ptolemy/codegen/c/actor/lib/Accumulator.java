@@ -41,7 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @author Man-Kit Leung, Gang Zhou
  * @version $Id$
  * @since Ptolemy II 6.0
- * @Pt.ProposedRating Red (mankit) TODO: Needs to work with String, ArrayToken.  Similar to Ramp
+ * @Pt.ProposedRating Red (mankit) TODO: Needs to work with String, ArrayToken.  Similar to Ramp, Can use $ref(something#i) to specify variables for different channels would make the code cleaner
  * @Pt.AcceptedRating Red (zgang)
  */
 public class Accumulator extends CCodeGeneratorHelper {
