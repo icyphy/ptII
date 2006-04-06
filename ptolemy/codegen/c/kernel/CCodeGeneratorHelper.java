@@ -48,7 +48,7 @@ import ptolemy.util.StringUtilities;
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (mankit)
+ @Pt.ProposedRating Red (cxh) Remove mostly empty methods, add info about writing actors.
  @Pt.AcceptedRating Red (cxh)
  */
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
