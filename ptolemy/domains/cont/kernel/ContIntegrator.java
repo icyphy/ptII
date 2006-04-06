@@ -30,7 +30,6 @@ package ptolemy.domains.cont.kernel;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import ptolemy.actor.TimedActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -107,8 +106,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see ODESolver
  @see CTDirector
  */
-public class ContIntegrator extends TypedAtomicActor implements TimedActor,
-        ContStepSizeControlActor {
+public class ContIntegrator extends TypedAtomicActor implements 
+    ContStatefulActor, ContStepSizeControlActor {
 
     /** Construct an integrator with the specified name and a container.
      *  The integrator is in the same workspace as the container.

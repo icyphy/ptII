@@ -1,6 +1,6 @@
 /* Explicit variable step size Runge-Kutta 2(3) ODE solver.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,9 +29,9 @@ package ptolemy.domains.cont.kernel.solver;
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
-import ptolemy.domains.ct.kernel.CTBaseIntegrator;
-import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.ODESolver;
+import ptolemy.domains.cont.kernel.ContDirector;
+import ptolemy.domains.cont.kernel.ContIntegrator;
+import ptolemy.domains.cont.kernel.ODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -75,15 +75,6 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Green (hyzheng)
  */
 public class ExplicitRK23Solver extends ODESolver {
-    /** Construct a solver in the default workspace.
-     *  The solver is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
-     *  The name of the solver is set to "CT_Runge_Kutta_2_3_Solver".
-     */
-    public ExplicitRK23Solver() {
-        this(null);
-    }
-
     /** Construct a solver in the given workspace.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -105,38 +96,27 @@ public class ExplicitRK23Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire dynamic actors. Advance the model time. The amount of the
-     *  increment is decided by the number of the round counter and
-     *  the current step size.  In particular, at the first round,
-     *  time is incremented by 1/2 of the current step size; at the
-     *  second round, time is incremented by another 1/4 of the
-     *  current step size; in the third round, time gets incremented
-     *  by the last 1/4 of the current step size.
-     *  @exception IllegalActionException If thrown in the super class or the
-     *  model time can not be set.
+    /** Fire all continuous actors. Derived classes may advance the model time.
+     *  The amount of time increment depends on the solving algorithms.
+     *  @exception IllegalActionException If schedule can not be found or
+     *  continuous actors throw it from their fire() methods.
      */
-    public void fireDynamicActors() throws IllegalActionException {
-        super.fireDynamicActors();
+    public void fire() throws IllegalActionException {
+        ContDirector director = (ContDirector) getContainer();
+        double currentStepSize = director.getCurrentStepSize();
 
-        CTDirector director = (CTDirector) getContainer();
+        if (currentStepSize == 0) {
+            _setConverged(true);
+            return;
+        }
 
         // NOTE: why is the current model time changed here?
         // Some state transition actors may be some functions
         // defined on the current time, such as the CurrentTime actor.
         Time iterationBeginTime = director.getIterationBeginTime();
-        double currentStepSize = director.getCurrentStepSize();
         director.setModelTime(iterationBeginTime.add(currentStepSize
                 * _timeInc[_getRoundCount()]));
-    }
 
-    /** Fire state transition actors. Increment the round count.
-     *  If the current round is the third round, set converged flag to
-     *  true indicating a fixed-point states have been reached. Reset
-     *  the round count if the current round is the last one.
-     *  @exception IllegalActionException If thrown in the super class.
-     */
-    public void fireStateTransitionActors() throws IllegalActionException {
-        super.fireStateTransitionActors();
         _incrementRoundCount();
 
         if (_getRoundCount() == _timeInc.length) {
@@ -167,9 +147,9 @@ public class ExplicitRK23Solver extends ODESolver {
      *  @exception IllegalActionException If there is no director, or can not
      *  read input, or can not send output.
      */
-    public void integratorFire(CTBaseIntegrator integrator)
+    public void integratorFire(ContIntegrator integrator)
             throws IllegalActionException {
-        CTDirector director = (CTDirector) getContainer();
+        ContDirector director = (ContDirector) getContainer();
         int r = _getRoundCount();
         double xn = integrator.getState();
         double outvalue;
@@ -180,7 +160,7 @@ public class ExplicitRK23Solver extends ODESolver {
         case 0:
 
             // Get the derivative at t;
-            double k0 = integrator.getDerivative();
+            double k0 = ((DoubleToken) integrator.input.get(0)).doubleValue();
             integrator.setAuxVariables(0, k0);
             outvalue = xn + (h * k0 * _B[0][0]);
             break;
@@ -216,14 +196,15 @@ public class ExplicitRK23Solver extends ODESolver {
      *  @param integrator The integrator of that calls this method.
      *  @return True if the integration is successful.
      */
-    public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
+    public boolean integratorIsAccurate(ContIntegrator integrator) {
         try {
-            CTDirector director = (CTDirector) getContainer();
+            ContDirector director = (ContDirector) getContainer();
             double tolerance = director.getErrorTolerance();
             double h = director.getCurrentStepSize();
             double f = ((DoubleToken) integrator.input.get(0)).doubleValue();
-            integrator.setTentativeDerivative(f);
 
+            // FIXME: check the equation for error calculation... It is a 
+            // little bit strange comparing to that of the RK45 solver.
             double[] k = integrator.getAuxVariables();
             double error = h
                     * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
@@ -258,8 +239,8 @@ public class ExplicitRK23Solver extends ODESolver {
      *  @param integrator The integrator of that calls this method.
      *  @return The next step size suggested by the given integrator.
      */
-    public double integratorPredictedStepSize(CTBaseIntegrator integrator) {
-        CTDirector director = (CTDirector) getContainer();
+    public double integratorPredictedStepSize(ContIntegrator integrator) {
+        ContDirector director = (ContDirector) getContainer();
         double error = (integrator.getAuxVariables())[3];
         double h = director.getCurrentStepSize();
         double tolerance = director.getErrorTolerance();
@@ -274,6 +255,15 @@ public class ExplicitRK23Solver extends ODESolver {
         _debug("integrator: " + integrator.getName()
                 + " suggests next step size = " + newh);
         return newh;
+    }
+
+    /** Return the number of firings required to resolve a state.
+     *  The number is the same as the order of this solver.
+     *  For this solver, the values is 3.
+     *  @return The number of firings required to resolve a state.
+     */
+    public int NumberOfFiringsRequired() {
+        return _order;
     }
 
     ///////////////////////////////////////////////////////////////////

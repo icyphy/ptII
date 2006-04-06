@@ -27,13 +27,8 @@
  */
 package ptolemy.domains.cont.kernel;
 
-import java.util.Iterator;
-
-import ptolemy.actor.Actor;
-import ptolemy.actor.sched.Schedule;
 import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 
@@ -115,22 +110,7 @@ public abstract class ODESolver extends NamedObj {
      *  @exception IllegalActionException If schedule can not be found or
      *  actors throw it from their fire() methods.
      */
-    public void fire() throws IllegalActionException {
-        if (_debugging) {
-            _debug(getFullName() + " firing actors ...");
-        }
-
-        Schedule schedule = _getSchedule();
-        Iterator actors = schedule.actorIterator();
-
-        while (actors.hasNext()) {
-            Actor next = (Actor) actors.next();
-            if (_debugging) {
-                _debug("  firing..." + ((Nameable) next).getFullName());
-            }
-            next.fire();
-        }
-    }
+    public abstract void fire() throws IllegalActionException;
 
     /** Return the amount of history information needed by this solver.
      *  Some solvers need history information from each integrator.
@@ -205,28 +185,6 @@ public abstract class ODESolver extends NamedObj {
      */
     protected int _getRoundCount() {
         return _roundCount;
-    }
-
-    /** Get the current schedule.
-     *  @return The current schedule.
-     *  @exception IllegalActionException If this solver is not contained by
-     *  a CT director, or the director does not have a scheduler.
-     */
-    protected Schedule _getSchedule() throws IllegalActionException {
-        ContDirector director = (ContDirector) getContainer();
-
-        if (director == null) {
-            throw new IllegalActionException(this, " must have a CT director.");
-        }
-
-        ContScheduler scheduler = (ContScheduler) director.getScheduler();
-
-        if (scheduler == null) {
-            throw new IllegalActionException(director,
-                    " does not contain a valid scheduler.");
-        }
-
-        return scheduler.getSchedule();
     }
 
     /** Increase the round counter by one. In general, the round counter

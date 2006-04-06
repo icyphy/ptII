@@ -1,6 +1,6 @@
 /* Interface for actors that control integration step sizes.
 
- Copyright (c) 1998-2006 The Regents of the University of California.
+ Copyright (c) 1998-2005 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,8 +27,6 @@
  */
 package ptolemy.domains.cont.kernel;
 
-import ptolemy.actor.Actor;
-
 //////////////////////////////////////////////////////////////////////////
 //// ContStepSizeControlActor
 
@@ -49,7 +47,7 @@ import ptolemy.actor.Actor;
  the numerical integration error is less than the error tolerance and
  there is no (unpredictable) breakpoints within this step.
  Actors that use this mechanism need to implement this interface.
- At the end of each integration step, each ContStepSizeControlActor
+ At the end of each integration step, each CTStepSizeControlActor
  will be asked whether this step is accurate by calling its
  isOutputAccurate() or isStateAccurate() method. If either method returns
  false, that actor will then be asked to suggest a refined step size. If
@@ -68,13 +66,13 @@ import ptolemy.actor.Actor;
  from these steps when there is a predictable breakpoint that does not
  coincide with one of these steps.
 
- @author  Haiyang Zheng and Edward A. Lee
+ @author  Jie Liu, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.2
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public interface ContStepSizeControlActor extends Actor {
+public interface ContStepSizeControlActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -105,12 +103,4 @@ public interface ContStepSizeControlActor extends Actor {
      *  @return The refined step size.
      */
     public double refinedStepSize();
-
-    //    /** Implementations of this method should return
-    //     *  the suggested next step size. If the actor that implements 
-    //     *  this interface does not have any constraints, it should
-    //     *  return java.lang.Double.MAX_VALUE.
-    //     *  @return The predicted next step size.
-    //     */
-    //    public double suggestedStepSize();
 }

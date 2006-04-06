@@ -27,16 +27,12 @@
  */
 package ptolemy.domains.cont.kernel;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
-import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
+import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.Time;
@@ -113,7 +109,7 @@ import ptolemy.kernel.util.Settable;
 
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
- @since Ptolemy II 5.2
+ @since Ptolemy II 6.0
  @Pt.ProposedRating Yellow (hyzheng)
  @Pt.AcceptedRating Red (hyzheng)
  */
@@ -279,9 +275,73 @@ public class ContDirector extends FixedPointDirector implements
      *  override this method for concrete implementation.
      */
     public void fire() throws IllegalActionException {
+        // Choose a suggested step size, which is a guess.
+        setCurrentStepSize(getSuggestedNextStepSize());
+
+        // Refine the correct step size for the continuous phase execution
+        // with respect to the breakpoint table.
+        setCurrentStepSize(_refinedStepWRTBreakpoints());
+
+        if (_debugging) {
+            _debug("execute the system from " + getModelTime()
+                    + " with a step size " + getCurrentStepSize());
+        }
+
+        // Resolve the initial states at a future time
+        // (the current time plus the current step size).
+        while (!_stopRequested) {
+            // Reset the round counts and the convergencies to false.
+            // NOTE: some solvers have their convergencies depending on
+            // the round counts. For example, it takes 3 rounds for a
+            // RK-23 solver to solve states.
+            _currentSolver._resetRoundCount();
+            _currentSolver._setConverged(false);
+
+            // repeating resolving states until states converge, or the
+            // maximum iterations for finding states have been reached.
+            while (!_currentSolver._isConverged() 
+                    && _currentSolver.resolveStates()) {
+                _currentSolver.fire();
+                super.fire();
+            }
+            
+            // If event generators are not satisfied with the current step
+            // size, refine the step size to a smaller one.
+            if (!_isOutputAccurate()) {
+                setCurrentStepSize(_refinedStepWRTOutput());
+
+                // Restore the save starting time of this integration.
+                setModelTime(getIterationBeginTime());
+
+                // Restore the saved state of the stateful actors.
+                // FIXME: may generate StatefulActor set for more 
+                // efficient execution.
+                Schedule schedule = getScheduler().getSchedule();
+                Iterator firingIterator = schedule.firingIterator();
+                while (firingIterator.hasNext() && !_stopRequested) {
+                    Actor actor = ((Firing) firingIterator.next()).getActor();
+                    if (actor instanceof ContStatefulActor) {
+                        if (_debugging) {
+                            _debug("Restore states " + actor);
+                        }
+                        ((ContStatefulActor) actor).goToMarkedState();
+                    }
+                }
+
+                if (_debugging && _verbose) {
+                    _debug("Refine the current step size"
+                            + " with a smaller one " + getCurrentStepSize());
+                }
+            } else {
+                // outputs are generated successfully.
+                break;
+            }
+        }
+
     }
 
-    /** Handle firing requests from the contained actors.
+    /** Handle firing requests from the contained actors by registrating
+     *  breakpoints.
      *  If the specified time is earlier than the current time, or the
      *  breakpoint table is null, throw an exception. Otherwise, insert
      *  the specified time into the breakpoint table.
@@ -444,19 +504,14 @@ public class ContDirector extends FixedPointDirector implements
      *  In addition to calling the initialize() method of the super class,
      *  this method records the current system time as the "real" starting
      *  time of the execution. This starting time is used when the
-     *  execution is synchronized to real time. This method also resets
-     *  the protected variables of this director.
+     *  execution is synchronized to real time.
      *
      *  @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
-        // Reset _postFireReturns to true.
-        _postfireReturns = true;
-
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
-
         // set current time and initialize actors.
         super.initialize();
     }
@@ -468,24 +523,10 @@ public class ContDirector extends FixedPointDirector implements
         return _discretePhase;
     }
 
-    /** Return a new CTReceiver.
-     *  @return A new CTReceiver.
-     */
-    public Receiver newReceiver() {
-        Receiver receiver = new ContReceiver(this);
-
-        if (_receivers == null) {
-            _receivers = new LinkedList();
-        }
-
-        _receivers.add(receiver);
-        return receiver;
-    }
-
-    /** If the stop() method has not been called and all the actors return
-     *  true at postfire, return true. Otherwise, return false.
-     *  If this director is not at the top level and the breakpoint table
+    /** If this director is not at the top level and the breakpoint table
      *  is not empty, request a refiring at the first breakpoint.
+     *  Call the super.postfire() method and return its result.
+     *  
      *  @return True if the Director wants to be fired again in the future.
      *  @exception IllegalActionException If refiring can not be granted.
      */
@@ -495,50 +536,7 @@ public class ContDirector extends FixedPointDirector implements
             CompositeActor container = (CompositeActor) getContainer();
             container.getExecutiveDirector().fireAt(container, time);
         }
-
-        boolean postfireReturns = _postfireReturns && !_stopRequested;
-
-        if (_debugging && _verbose) {
-            _debug("Postfire returns " + postfireReturns + " at: "
-                    + getModelTime());
-        }
-
-        return postfireReturns;
-    }
-
-    /** Invoke prefire() on all DYNAMIC_ACTORS, such as integrators,
-     *  and emit their current states.
-     *  Return true if all the prefire() methods return true and stop()
-     *  is not called. Otherwise, return false.
-     *  @return True if all dynamic actors return true from their prefire()
-     *  methods and stop() is called.
-     *  @exception IllegalActionException If scheduler throws it, or dynamic
-     *  actors throw it in their prefire() method, or they can not be prefired.
-     */
-    public boolean prefire() throws IllegalActionException {
-        // NOTE: We will also treat dynamic actors as waveform generators.
-        // This is crucial to implement Dirac function.
-        Schedule schedule = getScheduler().getSchedule();
-        Iterator actors = schedule.actorIterator();
-
-        boolean ready = true;
-
-        while (actors.hasNext() && !_stopRequested) {
-            Actor actor = (Actor) actors.next();
-
-            if (_debugging && _verbose) {
-                _debug("Prefire dynamic actor: " + ((Nameable) actor).getName());
-            }
-
-            ready &= actor.prefire();
-
-            if (_debugging && _verbose) {
-                _debug("Prefire of " + ((Nameable) actor).getName()
-                        + " returns " + ready);
-            }
-        }
-
-        return ready && !_stopRequested;
+        return super.postfire();
     }
 
     /** Preinitialize the model for an execution. This method is
@@ -558,34 +556,23 @@ public class ContDirector extends FixedPointDirector implements
      *  or there is no scheduler.
      */
     public void preinitialize() throws IllegalActionException {
-        if (_debugging) {
-            _debug(getFullName(), "preinitializing.");
-        }
-
+        // MINORISSUE: should this check go to the Director class?
         // Verify that this director resides in an appropriate level
         // of hierarchy.
         Nameable nameable = getContainer();
-
         if (!(nameable instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-                    "has no CompositeActor container.");
+                    " has no CompositeActor container.");
         }
-
-        // Construct a scheduler.
-        ContScheduler ContScheduler = (ContScheduler) getScheduler();
-
-        if (ContScheduler == null) {
-            throw new IllegalActionException(this, "has no ContScheduler.");
-        }
-
-        // Invalidate schedule and force a reconstructition of the schedule.
-        ContScheduler.setValid(false);
-
-        // Initialize the local variables except the time objects.
-        _initializeLocalVariables();
 
         super.preinitialize();
 
+        // FIXME: can we put the time objects into the 
+        // _initializeLocalVariables method?
+        
+        // Initialize the local variables except the time objects.
+        _initializeLocalVariables();
+        
         // Time objects can only be initialized at the end of this method after
         // the time scale and time resolution are evaluated.
         // NOTE: Time resolution is provided by the preinitialize() method in
@@ -600,17 +587,6 @@ public class ContDirector extends FixedPointDirector implements
         _iterationEndTime = _stopTime;
     }
 
-    /** React to the change in receiver status by incrementing the count of
-     *  known receivers.
-     *  @param receiver This parameter is ignored, in this method we do
-     *  not make use of the value of the receiver itself; instead we
-     *  increment an internal counter.
-     */
-    public void receiverChanged(Receiver receiver) {
-        // In this implementation, we do not make use of the receiver itself.
-        _currentNumberOfKnownReceivers++;
-    }
-
     /** Set the current step size. Only CT directors can call this method.
      *  Solvers and actors must not call this method.
      *  @param stepSize The step size to be set.
@@ -622,15 +598,6 @@ public class ContDirector extends FixedPointDirector implements
         }
 
         _currentStepSize = stepSize;
-    }
-
-    /** Mark the specified actor as having been prefired in the current
-     *  iteration.
-     *  @see #isPrefireComplete(Actor)
-     *  @param actor The actor to be marked.
-     */
-    public void setPrefireComplete(Actor actor) {
-        _prefiredActors.add(actor);
     }
 
     /** Set the suggested next step size. If the argument is larger than
@@ -709,6 +676,7 @@ public class ContDirector extends FixedPointDirector implements
             synchronizeToRealTime.setTypeEquals(BaseType.BOOLEAN);
 
             timeResolution.setVisibility(Settable.FULL);
+            iterations.setVisibility(Settable.NONE);
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error: " + e);
@@ -812,6 +780,7 @@ public class ContDirector extends FixedPointDirector implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
     // Initialize the local variables of this ContDirector. This is called in
     // the preinitialize method.
     // NOTE: Time objects are not initialized here. They are initialized at
@@ -825,21 +794,20 @@ public class ContDirector extends FixedPointDirector implements
         _minStepSize = ((DoubleToken) minStepSize.getToken()).doubleValue();
         _valueResolution = ((DoubleToken) valueResolution.getToken())
                 .doubleValue();
-
+    
         _currentSolver = null;
-        _prefiredActors = new HashSet();
         _currentStepSize = _initStepSize;
         _suggestedNextStepSize = _initStepSize;
-
+    
         // A simulation always starts with a discrete phase execution.
         _discretePhase = true;
-
+    
         // clear the existing breakpoint table or
         // create a breakpoint table if necessary
         if (_debugging) {
             _debug(getFullName(), "create/clear break point table.");
         }
-
+    
         if (_breakpoints != null) {
             _breakpoints.clear();
         } else {
@@ -847,13 +815,161 @@ public class ContDirector extends FixedPointDirector implements
         }
     }
 
+    /** Return true if all step size control actors in the output
+     *  schedule agree that the current step is accurate.
+     *  @return True if all step size control actors agree with the current
+     *  step size.
+     */
+    private boolean _isOutputAccurate() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Check accuracy for output step size control actors:");
+        }
+    
+        // FIXME: During the initialize() method, the step size is 0.
+        // No step size refinement is needed. What is a better solution?
+        if (getCurrentStepSize() == 0) {
+            return true;
+        }
+    
+        boolean accurate = true;
+    
+        // Get all the output step size control actors.
+        Schedule schedule = getScheduler().getSchedule();
+        Iterator firingIterator = schedule.firingIterator();
+        while (firingIterator.hasNext() && !_stopRequested) {
+            Actor actor = ((Firing) firingIterator.next()).getActor();
+            // Ask -ALL- the actors whether the current step size is accurate.
+            // THIS IS VERY IMPORTANT!!!
+            // NOTE: all actors are guranteed to be asked once even if some
+            // actors already set the "accurate" variable to false.
+            // The reason is that event generators do not check the step size
+            // accuracy in their fire emthods and they need to check the existence
+            // of events in the special isOutputAccurate() method.
+            // FIXME: may generate StepSizeControlActor set for more 
+            // efficient execution.
+            if (actor instanceof ContStepSizeControlActor) {
+                boolean thisAccurate = 
+                    ((ContStepSizeControlActor) actor).isStepSizeAccurate();
+                if (_debugging) {
+                    _debug("  Checking output step size control actor: "
+                            + actor.getName() + ", which returns "
+                            + thisAccurate);
+                }
+                accurate = accurate && thisAccurate;
+            }
+        }
+    
+        if (_debugging) {
+            _debug("Overall output accuracy result: " + accurate);
+        }
+    
+        return accurate;
+    }
+
+    // Return the refined step size with respect to the breakpoints.
+    // If the current time plus the current step size exceeds the
+    // time of the next breakpoint, reduce the step size such that the next
+    // breakpoint is the end time of the current iteration.
+    private double _refinedStepWRTBreakpoints() {
+        double currentStepSize = getCurrentStepSize();
+        Time iterationEndTime = getModelTime().add(currentStepSize);
+        _setIterationEndTime(iterationEndTime);
+    
+        if ((_breakpoints != null) && !_breakpoints.isEmpty()) {
+            if (_debugging && _verbose) {
+                _debug("The first breakpoint in the breakpoint list is at "
+                        + _breakpoints.first());
+            }
+    
+            // Adjust step size so that the first breakpoint is
+            // not in the middle of this step.
+            // NOTE: the breakpoint table is not changed.
+            Time point = ((Time) _breakpoints.first());
+    
+            if (iterationEndTime.compareTo(point) > 0) {
+                currentStepSize = point.subtract(getModelTime())
+                        .getDoubleValue();
+    
+                if (_debugging && _verbose) {
+                    _debug("Refining the current step size w.r.t. "
+                            + "the next breakpoint to " + currentStepSize);
+                }
+    
+                _setIterationEndTime(point);
+            }
+        }
+    
+        return currentStepSize;
+    }
+
+    /** Return the refined step size with respect to the output actors.
+     *  All the step size control actors in the output schedule are queried for
+     *  a refined step size. The smallest one is returned.
+     *  @return The refined step size.
+     *  @exception IllegalActionException If the scheduler throws it or the
+     *  refined step size is less than the time resolution.
+     */
+    private double _refinedStepWRTOutput() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Refining the current step size w.r.t. all output actors:");
+        }
+    
+        double timeResolution = getTimeResolution();
+        double refinedStep = getCurrentStepSize();
+    
+        // FIXME: may generate StepSizeControlActor set for more 
+        // efficient execution.
+        Schedule schedule = getScheduler().getSchedule();
+        Iterator firingIterator = schedule.firingIterator();
+        while (firingIterator.hasNext() && !_stopRequested) {
+            Actor actor = ((Firing) firingIterator.next()).getActor();
+            if (actor instanceof ContStepSizeControlActor) {
+                refinedStep = Math.min(refinedStep, 
+                        ((ContStepSizeControlActor) actor).refinedStepSize());
+            }
+        }
+    
+        if (refinedStep < (0.5 * timeResolution)) {
+            if (_triedTheMinimumStepSize) {
+                if (_debugging) {
+                    _debug("The previous step size is the time"
+                            + " resolution. The refined step size is less than"
+                            + " the time resolution. We can not refine the step"
+                            + " size more.");
+                }
+    
+                throw new IllegalActionException(this,
+                        "The refined step size is less than the minimum time "
+                                + "resolution, at time " + getModelTime());
+            } else {
+                if (_debugging) {
+                    _debug("The previous step size is bigger than the time"
+                            + " resolution. The refined step size is less than"
+                            + " the time resolution, try setting the step size"
+                            + " to the time resolution.");
+                }
+    
+                refinedStep = timeResolution;
+                _triedTheMinimumStepSize = true;
+            }
+        } else {
+            _triedTheMinimumStepSize = false;
+        }
+    
+        if (_debugging && _verbose) {
+            _debug(getFullName(), "refine step with respect to output to"
+                    + refinedStep);
+        }
+    
+        _setIterationEndTime(getModelTime().add(refinedStep));
+        return refinedStep;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
     // A table for breakpoints.
     private TotallyOrderedSet _breakpoints;
-
-    // The current number of receivers with known state.
-    private int _currentNumberOfKnownReceivers;
 
     // NOTE: all the following private variables are initialized
     // in the _initializeLocalVariables() method before their usage.
@@ -886,9 +1002,6 @@ public class ContDirector extends FixedPointDirector implements
 
     private double _minStepSize;
 
-    // Collection of actors that have been prefired()
-    private Set _prefiredActors = new HashSet();
-
     // Local copies of parameters.
     private Time _startTime;
 
@@ -900,8 +1013,7 @@ public class ContDirector extends FixedPointDirector implements
 
     private double _suggestedNextStepSize;
 
-    // List of all receivers this director has created.
-    private List _receivers;
+    private boolean _triedTheMinimumStepSize = false;
 
     private double _valueResolution;
 }
