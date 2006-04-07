@@ -80,6 +80,15 @@ test ArrayToken-1.1.2 {One element is the wrong type} {
 ######################################################################
 ####
 # 
+test ArrayToken-1.1.3 {first element is nil} {
+    # coverage in _initialize
+    set valToken [java::new {ptolemy.data.ArrayToken String} "{nil, 2, 3}"]
+    $valToken toString
+} {{nil, 2, 3}}
+
+######################################################################
+####
+# 
 test ArrayToken-1.2 {ArrayTokens of length 0 are supported} {
     # This used to trigger an exception when creating empty array
     set valArray [java::new {ptolemy.data.Token[]} 0 ]
@@ -689,8 +698,9 @@ test ArrayToken-9.0 {subarray} {
     catch {$t subarray -1 1} errMsg
     set r1 [$t subarray 5 3]
     set r2 [$t subarray 2 2]
-    list $errMsg [$r1 toString] [$r2 toString]
-} {{ptolemy.kernel.util.IllegalActionException: index argument of subarray() must be non-negative.} {{}} {{3, 4}}}
+    set r3 [$t subarray 1 8]
+    list $errMsg [$r1 toString] [$r2 toString] [$r3 toString]
+} {{ptolemy.kernel.util.IllegalActionException: index argument of subarray() must be non-negative.} {{}} {{3, 4}} {{2, 3, 4}}}
 
 ######################################################################
 ####
