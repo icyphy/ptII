@@ -26,7 +26,6 @@
 
  FIXME: things to review:
  setDirector throws NameDuplicationException
- fire: call transferOutputs on local, not executive director.
  preinitialize: validate attributes of this composite and
  the attributes of its ports.
  setDirector invalidatesSchedule of executiveDirector.
