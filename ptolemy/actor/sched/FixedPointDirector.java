@@ -246,7 +246,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _cachedAllInputsKnown = new HashSet();
         _cachedAllOutputsKnown = new HashSet();
 
-        _resetAllReceivers();
+        resetAllReceivers();
 
         _cachedFunctionalProperty = true;
         _functionalPropertyVersion = -1;
@@ -354,7 +354,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // the prefire() method will not work.  By doing this at the end of
         // each iteration, all receivers are guaranteed to be reset, even in
         // a hierarchical model.
-        _resetAllReceivers();
+        resetAllReceivers();
         
         if (_debugging) {
             _debug("FixedPointDirector: Instant " + _currentIteration
@@ -391,6 +391,25 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _lastNumberOfKnownReceivers = -1;
 
         return super.prefire();
+    }
+
+    /** Reset all receivers to allow a new firing of the director.
+     */
+    public void resetAllReceivers() {
+        if (_debugging) {
+            _debug("    FixedPointDirector is resetting all receivers");
+        }
+    
+        _currentNumberOfKnownReceivers = 0;
+    
+        if (_receivers == null) {
+            _receivers = new LinkedList();
+        }
+    
+        Iterator receiverIterator = _receivers.iterator();
+        while (receiverIterator.hasNext()) {
+            ((FixedPointReceiver) receiverIterator.next()).reset();
+        }
     }
 
     /** Return an array of suggested directors to be used with
@@ -725,32 +744,11 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     private boolean _postfireActor(Actor actor) throws IllegalActionException {
         if (_actorsAllowedToFire.contains(actor)) {
-            if (_debugging) {
-                _debug("    FixedPointDirector is postfiring",
-                        ((Nameable) actor).getName());
-            }
+            _debug("    FixedPointDirector is postfiring",
+                    ((Nameable) actor).getName());
             return actor.postfire();
         }
         return true;
-    }
-
-    /** Reset all receivers to allow a new firing of the director.
-     */
-    private void _resetAllReceivers() {
-        if (_debugging) {
-            _debug("    FixedPointDirector is resetting all receivers");
-        }
-
-        _currentNumberOfKnownReceivers = 0;
-
-        if (_receivers == null) {
-            _receivers = new LinkedList();
-        }
-
-        Iterator receiverIterator = _receivers.iterator();
-        while (receiverIterator.hasNext()) {
-            ((FixedPointReceiver) receiverIterator.next()).reset();
-        }
     }
 
     /** Call the sendClear() method of each of the output ports of the
@@ -762,16 +760,14 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // outputs are still unknown, clear these outputs.
         // However, there is nothing need to do if this actor has 
         // resolved all of its outputs.
-        if (_debugging) {
-            _debug("  FixedPointDirector is calling sendClear() on the " +
-                    "output ports of " + ((Nameable) actor).getName());
-        }
         
         Iterator outputPorts = actor.outputPortList().iterator();
         while (outputPorts.hasNext()) {
             IOPort outputPort = (IOPort) outputPorts.next();
             for (int j = 0; j < outputPort.getWidth(); j++) {
                 if (!outputPort.isKnown(j)) {
+                    _debug("  FixedPointDirector is calling sendClear() on " +
+                            "the output port " + outputPort.getName());
                     outputPort.sendClear(j);
                 }
             }
