@@ -1,4 +1,4 @@
-/* A scheduler for the Fixed Point domain.
+/* A scheduler for fixed point directors.
 
  Copyright (c) 2000-2006 The Regents of the University of California.
  All rights reserved.
@@ -60,8 +60,7 @@ import ptolemy.util.MessageHandler;
 public class FixedPointScheduler extends Scheduler {
     /** Construct a scheduler in the given container with the given name.
      *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This attribute will use the
-     *  workspace of the container for synchronization and version counts.
+     *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
      *  @param container The container.
@@ -79,20 +78,17 @@ public class FixedPointScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Return the scheduling sequence.
-     *  Overrides _getSchedule() method in the base class.
-     *
-     *  This method should not be called directly, rather the getSchedule()
+    /** Return the schedule.
+     *  This method should not be called directly, but rather the getSchedule()
      *  method (which is defined in the superclass) will call it when the
      *  schedule is invalid.  This method is not synchronized on the workspace.
      *
-     *  @return A schedule representing the scheduling sequence.
-     *  @exception NotSchedulableException If the CompositeActor is not
+     *  @return A schedule.
+     *  @exception NotSchedulableException If the model is not
      *   schedulable.
      */
     protected Schedule _getSchedule() throws NotSchedulableException {
-        StaticSchedulingDirector director = 
-            (StaticSchedulingDirector) getContainer();
+        StaticSchedulingDirector director = (StaticSchedulingDirector) getContainer();
 
         if (director == null) {
             throw new NotSchedulableException(this, "FixedPointScheduler "
@@ -142,7 +138,7 @@ public class FixedPointScheduler extends Scheduler {
         Object[] sort = dependencyGraph.topologicalSort();
 
         if (_debugging) {
-            _debug("## Result of topological sort (highest depth to lowest):");
+            _debug("## Schedule generated:");
         }
 
         Actor actor = null;
@@ -150,8 +146,7 @@ public class FixedPointScheduler extends Scheduler {
         for (int i = 0; i < sort.length; i++) {
             IOPort ioPort = (IOPort) sort[i];
 
-            // If this ioPort is input but has no connections,
-            // we ignore it.
+            // If this ioPort is an input but has no connections, ignore it.
             if (ioPort.isInput() && (ioPort.numLinks() == 0)) {
                 continue;
             }
@@ -170,12 +165,13 @@ public class FixedPointScheduler extends Scheduler {
             schedule.add(firing);
 
             if (_debugging) {
-                _debug(((Nameable) actor).getFullName(), "depth: " + i);
+                _debug(actor.getFullName()
+                        + " scheduled at position: " + i);
             }
         }
 
         if (_debugging) {
-            _debug("## End of topological sort.");
+            _debug("## End of schedule.");
         }
 
         // Set the schedule to be valid.
