@@ -187,7 +187,13 @@ public class ComplexToken extends ScalarToken {
      *  @return A String formed using java.lang.Complex.toString().
      */
     public String toString() {
-        return _value.toString();
+        String unitString = "";
+
+        if (!_isUnitless()) {
+            unitString = " * " + unitsString();
+        }
+
+        return _value.toString() + unitString;
     }
 
     /** Returns a new ComplexToken with value Complex.ZERO.
