@@ -86,10 +86,15 @@ public class BooleanToken extends AbstractConvertibleToken implements
 
     /** Return a new token whose value is the logical AND of the value
      *  of this token and the the value of the argument token.
+     *  If this token is nil, or the argument is nil,
+     *  then {@link #NIL} is returned.
      *  @param rightArgument The BooleanToken to OR with this one.
      *  @return A new BooleanToken containing the result.
      */
     public BooleanToken and(BooleanToken rightArgument) {
+        if (isNil() || rightArgument.isNil()) {
+            return BooleanToken.NIL;
+        }
         if (_value && rightArgument.booleanValue()) {
             return TRUE;
         } else {
@@ -106,6 +111,9 @@ public class BooleanToken extends AbstractConvertibleToken implements
      */
     public BitwiseOperationToken bitwiseAnd(Token rightArgument)
             throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return BooleanToken.NIL;
+        }
         if (!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(notSupportedIncomparableMessage(
                     "bitwiseAnd", this, rightArgument));
@@ -123,6 +131,8 @@ public class BooleanToken extends AbstractConvertibleToken implements
 
     /** Returns a token representing the bitwise OR of this token and
      *  the given token.
+     *  If this token is nil, or the argument is nil,
+     *  then {@link #NIL} is returned.
      *  @param rightArgument The BooleanToken to bitwise OR with this one
      *  @return The boolean OR.
      *  @exception IllegalActionException If the rightArgument is not a 
@@ -130,6 +140,9 @@ public class BooleanToken extends AbstractConvertibleToken implements
      */
     public BitwiseOperationToken bitwiseOr(Token rightArgument)
             throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return BooleanToken.NIL;
+        }
         if (!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(notSupportedIncomparableMessage(
                     "bitwiseOr", this, rightArgument));
@@ -146,6 +159,8 @@ public class BooleanToken extends AbstractConvertibleToken implements
 
     /** Returns a token representing the bitwise XOR of this token and
      *  the given token.
+     *  If this token is nil, or the argument is nil,
+     *  then {@link #NIL} is returned.
      *  @param rightArgument The BooleanToken to bitwise XOR with this one
      *  @return The boolean XOR.
      *  @exception IllegalActionException If the rightArgument is not a 
@@ -153,6 +168,9 @@ public class BooleanToken extends AbstractConvertibleToken implements
      */
     public BitwiseOperationToken bitwiseXor(Token rightArgument)
             throws IllegalActionException {
+        if (isNil() || rightArgument.isNil()) {
+            return BooleanToken.NIL;
+        }
         if (!(rightArgument instanceof BooleanToken)) {
             throw new IllegalActionException(notSupportedIncomparableMessage(
                     "bitwiseXor", this, rightArgument));
@@ -292,11 +310,13 @@ public class BooleanToken extends AbstractConvertibleToken implements
 
     /** Return a new token whose value is the logical OR of the value
      *  of this token and the the value of the argument token.
+     *  If this token is nil, or the argument is nil,
+     *  then {@link #NIL} is returned.
      *  @param rightArgument The BooleanToken to OR with this one.
      *  @return A new BooleanToken containing the result.
      */
     public BooleanToken or(BooleanToken rightArgument) {
-        if (isNil()) {
+        if (isNil() || rightArgument.isNil()) {
             return BooleanToken.NIL;
         }
         if (_value || rightArgument.booleanValue()) {
@@ -324,11 +344,13 @@ public class BooleanToken extends AbstractConvertibleToken implements
 
     /** Return a new token whose value is the logical XOR of the value
      *  of this token and the the value of the argument token.
+     *  If this token is nil, or the argument is nil,
+     *  then {@link #NIL} is returned.
      *  @param rightArgument The BooleanToken to XOR with this one.
      *  @return A new BooleanToken containing the result.
      */
     public BooleanToken xor(BooleanToken rightArgument) {
-        if (isNil()) {
+        if (isNil() || rightArgument.isNil()) {
             return BooleanToken.NIL;
         }
         if (_value ^ rightArgument.booleanValue()) {
@@ -392,6 +414,9 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  FALSE.
      */
     protected Token _divide(Token rightArgument) throws IllegalActionException {
+        if (isNil() || ((BooleanToken) rightArgument).isNil()) {
+            return BooleanToken.NIL;
+        }
         boolean denomValue = ((BooleanToken) rightArgument).booleanValue();
 
         if (denomValue) {
@@ -418,10 +443,15 @@ public class BooleanToken extends AbstractConvertibleToken implements
      *  It is assumed that the type of the argument is BooleanToken.
      *  @param token The token to compare to this token.
      *  @return A token containing the result.
+     *  If either this object or the argument is a nil Token, return
+     *  false.
      */
     protected BooleanToken _isEqualTo(Token token) {
-        boolean argumentValue = ((BooleanToken) token).booleanValue();
+        if (isNil() || ((BooleanToken) token).isNil()) {
+            return BooleanToken.NIL;
+        }
 
+        boolean argumentValue = ((BooleanToken) token).booleanValue();
         if (_value == argumentValue) {
             return TRUE;
         } else {
