@@ -119,9 +119,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  @return The result of evaluation.
      *  @exception IllegalActionException If an parse error occurs.
      */
-    public ptolemy.data.Token visit(ASTPtRootNode node)
+    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
             throws IllegalActionException {
-        return visit(node, null);
+        return evaluateParseTree(node, null);
     }
 
     /** Evaluate the parse tree with the specified root node using
@@ -132,7 +132,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public ptolemy.data.Token visit(ASTPtRootNode node,
+    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
 
         // Make a first pass to evaluate constants and type convert.
