@@ -251,7 +251,7 @@ test StringToken-5.2 {Test equals on a nil} {
     set nil [java::field ptolemy.data.StringToken NIL]
     set t1 [java::new {ptolemy.data.StringToken} 3]
 
-    list [$nil equals $nil] [$t1 equals $nil] [$nil equals $t]
+    list [$nil equals $nil] [$t1 equals $nil] [$nil equals $t1]
 } {0 0 0}
 
 ######################################################################
@@ -361,7 +361,6 @@ test StringToken-13.9 {Test convert from Token} {
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token 'present' to the type string because the type of the token is higher or incomparable with the given type.}}
 
 
-
 test StringToken-13.9 {Test convert from an AWTImageToken} {
     set t [java::new ptolemy.data.AWTImageToken [java::null]]
     set result {}
@@ -369,6 +368,29 @@ test StringToken-13.9 {Test convert from an AWTImageToken} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.AWTImageToken '{type="class ptolemy.data.AWTImageToken" width="-1" height="-1"}' to the type string because the type of the token is higher or incomparable with the given type.}}
 
+test StringToken-13.10 {Test convert from ArrayToken} {
+    set t [java::new {ptolemy.data.ArrayToken String} "{1.0, 2.0}"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ArrayToken '{1.0, 2.0}' to the type string because the type of the token is higher or incomparable with the given type.}}
+
+test StringToken-13.11 {Test convert from IntMatrixToken} {
+    set t [java::new {ptolemy.data.IntMatrixToken String} "\[5, 4; 3, 2\]"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{"[5, 4; 3, 2]"}}
+
+test StringToken-13.12 {Test convert from RecordToken} {
+    set t [java::new {ptolemy.data.RecordToken String} "{name = \"bar\", value = 6}"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.RecordToken '{name = "bar", value = 6}' to the type string because the type of the token is higher or incomparable with the given type.}}
 
 
 test StringToken-14.1 {Test embedded double quotes} {
