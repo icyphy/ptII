@@ -38,6 +38,7 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.util.GeneralComparator;
@@ -48,7 +49,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
@@ -164,6 +164,12 @@ public class ContDirector extends FixedPointDirector implements
      */
     public Parameter minStepSize;
 
+    /**
+     * The class name of the normal ODE solver used in iterations 
+     * for integration. 
+     */
+    public Parameter ODESolver;
+
     /** Starting time of the simulation. The default value is 0.0,
      *  and the type is double.
      */
@@ -196,9 +202,7 @@ public class ContDirector extends FixedPointDirector implements
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (_debugging) {
-            _debug("Updating ContDirector parameter: ", attribute.getName());
-        }
+        _debug("Updating ContDirector parameter: ", attribute.getName());
 
         if (attribute == startTime) {
             double startTimeValue = ((DoubleToken) startTime.getToken())
@@ -265,6 +269,23 @@ public class ContDirector extends FixedPointDirector implements
             }
 
             _maxIterations = value;
+        } else if (attribute == ODESolver) {
+            if (_debugging) {
+                _debug(getFullName() + " updating ODE solver...");
+            }
+
+            String newSolverClassName = ((StringToken) ODESolver.getToken())
+                    .stringValue().trim();
+
+            if (newSolverClassName.trim().startsWith(_solverClasspath)) {
+                // The old solver name is a parameter starts with
+                // "ptolemy.domains.cont.kernel.solver."
+                _ODESolverClassName = newSolverClassName;
+            } else {
+                _ODESolverClassName = _solverClasspath + newSolverClassName;
+            }
+
+            _ODESolver = _instantiateODESolver(_ODESolverClassName);
         } else {
             super.attributeChanged(attribute);
         }
@@ -275,45 +296,64 @@ public class ContDirector extends FixedPointDirector implements
      *  override this method for concrete implementation.
      */
     public void fire() throws IllegalActionException {
+        
+        ////////////////////////////////////////////////////////////
+        // Find an appropriate step size, which may be refined later.
+        ////////////////////////////////////////////////////////////
+
         // Choose a suggested step size, which is a guess.
         setCurrentStepSize(getSuggestedNextStepSize());
-
+        
         // Refine the correct step size for the continuous phase execution
         // with respect to the breakpoint table.
         setCurrentStepSize(_refinedStepWRTBreakpoints());
-
-        if (_debugging) {
-            _debug("execute the system from " + getModelTime()
-                    + " with a step size " + getCurrentStepSize());
-        }
+        
+        _debug("execute the system from " + getModelTime()
+                + " with a step size " + getCurrentStepSize());
 
         // Resolve the initial states at a future time
         // (the current time plus the current step size).
         while (!_stopRequested) {
+
+            ////////////////////////////////////////////////////////////
+            // Resolve states with the chosen step size.
+            ////////////////////////////////////////////////////////////
+
             // Reset the round counts and the convergencies to false.
             // NOTE: some solvers have their convergencies depending on
             // the round counts. For example, it takes 3 rounds for a
             // RK-23 solver to solve states.
-            _currentSolver._resetRoundCount();
-            _currentSolver._setConverged(false);
+            // FIXME: the following statement may not be necessary since
+            // the ODE solvers reset the round count in their fire() methods.
+            _ODESolver._resetRoundCount();
+            _ODESolver._setConverged(false);
 
             // repeating resolving states until states converge, or the
             // maximum iterations for finding states have been reached.
-            while (!_currentSolver._isConverged() 
-                    && _currentSolver.resolveStates()) {
-                _currentSolver.fire();
+            // FIXME: this design does not support hierarchical execution yet.
+            while (!_ODESolver._isConverged() && _ODESolver.resolvedStates()) {
+                _ODESolver.fire();
                 super.fire();
             }
             
-            // If event generators are not satisfied with the current step
-            // size, refine the step size to a smaller one.
-            if (!_isOutputAccurate()) {
-                setCurrentStepSize(_refinedStepWRTOutput());
+            ////////////////////////////////////////////////////////////
+            // Refine the step size if necessary.
+            ////////////////////////////////////////////////////////////
 
-                // Restore the save starting time of this integration.
+            if (_isStepSizeAccurate()) {
+                // all actors agree with the current step size
+                break;
+            } else {
+                // If any step size control actor is unsatisfied with the 
+                // current step size, refine the step size to a smaller one.
+                setCurrentStepSize(_refinedStepSize());
+                _debug("Refine the current step size"
+                        + " with a smaller one " + getCurrentStepSize());
+                
+                // Restore the saved state of the stateful actors, 
+                // including the save starting time of this integration.
                 setModelTime(getIterationBeginTime());
-
-                // Restore the saved state of the stateful actors.
+                
                 // FIXME: may generate StatefulActor set for more 
                 // efficient execution.
                 Schedule schedule = getScheduler().getSchedule();
@@ -321,20 +361,10 @@ public class ContDirector extends FixedPointDirector implements
                 while (firingIterator.hasNext() && !_stopRequested) {
                     Actor actor = ((Firing) firingIterator.next()).getActor();
                     if (actor instanceof ContStatefulActor) {
-                        if (_debugging) {
-                            _debug("Restore states " + actor);
-                        }
+                        _debug("Restoring states of " + actor);
                         ((ContStatefulActor) actor).goToMarkedState();
                     }
                 }
-
-                if (_debugging && _verbose) {
-                    _debug("Refine the current step size"
-                            + " with a smaller one " + getCurrentStepSize());
-                }
-            } else {
-                // outputs are generated successfully.
-                break;
             }
         }
 
@@ -352,36 +382,25 @@ public class ContDirector extends FixedPointDirector implements
      *  the current time, or the breakpoint table is null.
      */
     public void fireAt(Actor actor, Time time) throws IllegalActionException {
+        _debug("----> " + actor.getName() + " requests refiring at " + time);
+
         // Check if the request time is earlier than the current time.
         Time currentTime = getModelTime();
-
         if (time.compareTo(currentTime) < 0) {
-            throw new IllegalActionException(actor, "Requested fire time: "
-                    + time + " is earlier than" + " the current time."
-                    + currentTime);
-        }
-
-        // check the validity of breakpoint table
-        if (_breakpoints == null) {
-            throw new IllegalActionException(
-                    "Breakpoint table can not be null!");
-        }
-
-        if (_debugging) {
-            String name = ((Nameable) actor).getName();
-            _debug("----> " + name + " requests refiring at " + time);
+            throw new IllegalActionException(actor, "Requested time: " + time 
+                    + " is earlier than the current time: " + currentTime);
         }
 
         // insert a new breakpoint into the breakpoint table.
         _breakpoints.insert(time);
     }
 
-    /** Return the current ODE solver used to resolve states by the director.
-     *  @return The current ODE solver used to resolve states by the director.
+    /** Return the ODE solver used to resolve states by the director.
+     *  @return The ODE solver used to resolve states by the director.
      */
-    public final ODESolver getCurrentODESolver() {
+    public final ContODESolver getODESolver() {
         // This method is final for performance reason.
-        return _currentSolver;
+        return _ODESolver;
     }
 
     /** Return the current integration step size.
@@ -531,7 +550,7 @@ public class ContDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If refiring can not be granted.
      */
     public boolean postfire() throws IllegalActionException {
-        if (!_isTopLevel() && (_breakpoints.size() > 0)) {
+        if (_isEmbedded() && (_breakpoints.size() > 0)) {
             Time time = (Time) _breakpoints.removeFirst();
             CompositeActor container = (CompositeActor) getContainer();
             container.getExecutiveDirector().fireAt(container, time);
@@ -556,15 +575,6 @@ public class ContDirector extends FixedPointDirector implements
      *  or there is no scheduler.
      */
     public void preinitialize() throws IllegalActionException {
-        // MINORISSUE: should this check go to the Director class?
-        // Verify that this director resides in an appropriate level
-        // of hierarchy.
-        Nameable nameable = getContainer();
-        if (!(nameable instanceof CompositeActor)) {
-            throw new IllegalActionException(this,
-                    " has no CompositeActor container.");
-        }
-
         super.preinitialize();
 
         // FIXME: can we put the time objects into the 
@@ -585,6 +595,9 @@ public class ContDirector extends FixedPointDirector implements
         _stopTime = new Time(this, _stopTimeValue);
         _iterationBeginTime = _startTime;
         _iterationEndTime = _stopTime;
+        
+        // Instantiate an ODE solver.
+        _ODESolver = _instantiateODESolver(_ODESolverClassName);
     }
 
     /** Set the current step size. Only CT directors can call this method.
@@ -593,10 +606,7 @@ public class ContDirector extends FixedPointDirector implements
      *  @see #getCurrentStepSize
      */
     public void setCurrentStepSize(double stepSize) {
-        if (_debugging) {
-            _debug("----- Setting the current step size to " + stepSize);
-        }
-
+        _debug("----- Setting the current step size to " + stepSize);
         _currentStepSize = stepSize;
     }
 
@@ -677,6 +687,20 @@ public class ContDirector extends FixedPointDirector implements
 
             timeResolution.setVisibility(Settable.FULL);
             iterations.setVisibility(Settable.NONE);
+
+            _ODESolverClassName = 
+                "ptolemy.domains.cont.kernel.solver.ExplicitRK45Solver";
+            ODESolver = new Parameter(this, "ODESolver", new StringToken(
+            "ExplicitRK45Solver"));
+            ODESolver.setTypeEquals(BaseType.STRING);
+            ODESolver.addChoice(new StringToken("ExplicitRK23Solver")
+                    .toString());
+            ODESolver.addChoice(new StringToken("ExplicitRK45Solver")
+                    .toString());
+            ODESolver.addChoice(new StringToken("BackwardEulerSolver")
+                    .toString());
+            ODESolver.addChoice(new StringToken("ForwardEulerSolver")
+                    .toString());
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
             throw new InternalErrorException("Parameter creation error: " + e);
@@ -693,17 +717,15 @@ public class ContDirector extends FixedPointDirector implements
      *  @return a new ODE solver.
      *  @exception IllegalActionException If the solver can not be created.
      */
-    protected final ODESolver _instantiateODESolver(String className)
+    protected final ContODESolver _instantiateODESolver(String className)
             throws IllegalActionException {
-        ODESolver newSolver;
+        _debug("instantiating solver..." + className);
 
-        if (_debugging) {
-            _debug("instantiating solver..." + className);
-        }
-
+        ContODESolver newSolver;
+        
         try {
             Class solver = Class.forName(className);
-            newSolver = (ODESolver) solver.newInstance();
+            newSolver = (ContODESolver) solver.newInstance();
         } catch (ClassNotFoundException e) {
             throw new IllegalActionException(this, "ODESolver: " + className
                     + " is not found.");
@@ -719,15 +741,13 @@ public class ContDirector extends FixedPointDirector implements
         return newSolver;
     }
 
-    /** Set the current ODE solver to be the given ODE solver.
+    /** Set the ODE solver to be the given ODE solver.
      *  @param solver The solver to set.
      *  @exception  IllegalActionException Not thrown in this base class.
-     *  It may be thrown by the derived classes if the solver is not
-     *  appropriate.
      */
-    protected final void _setCurrentODESolver(ODESolver solver)
+    protected final void _setODESolver(ContODESolver solver)
             throws IllegalActionException {
-        _currentSolver = solver;
+        _ODESolver = solver;
     }
 
     /** Set the current phase of execution as a discrete phase. The value
@@ -757,22 +777,17 @@ public class ContDirector extends FixedPointDirector implements
      *  @param time The iteration end time.
      */
     protected final void _setIterationEndTime(Time time) {
+        // This check may be redundant, but it is put here anyway.
         if (time.compareTo(getModelTime()) < 0) {
             throw new InvalidStateException(this, " Iteration end time" + time
                     + " is earlier than" + " the current time."
                     + getModelTime());
         }
-
         _iterationEndTime = time;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-
-    /** This flag will be set to false if any actor returns false from
-     *  its postfire().
-     */
-    protected boolean _postfireReturns = true;
 
     /** The real starting time in term of system millisecond counts.
      */
@@ -795,7 +810,7 @@ public class ContDirector extends FixedPointDirector implements
         _valueResolution = ((DoubleToken) valueResolution.getToken())
                 .doubleValue();
     
-        _currentSolver = null;
+        _ODESolver = null;
         _currentStepSize = _initStepSize;
         _suggestedNextStepSize = _initStepSize;
     
@@ -804,9 +819,7 @@ public class ContDirector extends FixedPointDirector implements
     
         // clear the existing breakpoint table or
         // create a breakpoint table if necessary
-        if (_debugging) {
-            _debug(getFullName(), "create/clear break point table.");
-        }
+        _debug(getFullName(), " create/clear break point table.");
     
         if (_breakpoints != null) {
             _breakpoints.clear();
@@ -820,10 +833,8 @@ public class ContDirector extends FixedPointDirector implements
      *  @return True if all step size control actors agree with the current
      *  step size.
      */
-    private boolean _isOutputAccurate() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Check accuracy for output step size control actors:");
-        }
+    private boolean _isStepSizeAccurate() throws IllegalActionException {
+        _debug("Check accuracy for output step size control actors:");
     
         // FIXME: During the initialize() method, the step size is 0.
         // No step size refinement is needed. What is a better solution?
@@ -850,18 +861,13 @@ public class ContDirector extends FixedPointDirector implements
             if (actor instanceof ContStepSizeControlActor) {
                 boolean thisAccurate = 
                     ((ContStepSizeControlActor) actor).isStepSizeAccurate();
-                if (_debugging) {
-                    _debug("  Checking output step size control actor: "
-                            + actor.getName() + ", which returns "
-                            + thisAccurate);
-                }
+                _debug("  Checking output step size control actor: "
+                        + actor.getName() + ", which returns " + thisAccurate);
                 accurate = accurate && thisAccurate;
             }
         }
     
-        if (_debugging) {
-            _debug("Overall output accuracy result: " + accurate);
-        }
+        _debug("Overall output accuracy result: " + accurate);
     
         return accurate;
     }
@@ -870,35 +876,19 @@ public class ContDirector extends FixedPointDirector implements
     // If the current time plus the current step size exceeds the
     // time of the next breakpoint, reduce the step size such that the next
     // breakpoint is the end time of the current iteration.
+    // NOTE: the breakpoint table is not modified.
     private double _refinedStepWRTBreakpoints() {
         double currentStepSize = getCurrentStepSize();
-        Time iterationEndTime = getModelTime().add(currentStepSize);
-        _setIterationEndTime(iterationEndTime);
-    
-        if ((_breakpoints != null) && !_breakpoints.isEmpty()) {
-            if (_debugging && _verbose) {
-                _debug("The first breakpoint in the breakpoint list is at "
-                        + _breakpoints.first());
-            }
-    
-            // Adjust step size so that the first breakpoint is
-            // not in the middle of this step.
-            // NOTE: the breakpoint table is not changed.
+        if (!_breakpoints.isEmpty()) {
             Time point = ((Time) _breakpoints.first());
-    
-            if (iterationEndTime.compareTo(point) > 0) {
-                currentStepSize = point.subtract(getModelTime())
-                        .getDoubleValue();
-    
-                if (_debugging && _verbose) {
-                    _debug("Refining the current step size w.r.t. "
-                            + "the next breakpoint to " + currentStepSize);
-                }
-    
-                _setIterationEndTime(point);
+            _debug("The first breakpoint is at " + point);
+            double maximumAllowedStepSize = 
+                point.subtract(getModelTime()).getDoubleValue();
+            if (currentStepSize > maximumAllowedStepSize) {
+                currentStepSize = maximumAllowedStepSize;
             }
         }
-    
+        _setIterationEndTime(getModelTime().add(currentStepSize));
         return currentStepSize;
     }
 
@@ -909,10 +899,8 @@ public class ContDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If the scheduler throws it or the
      *  refined step size is less than the time resolution.
      */
-    private double _refinedStepWRTOutput() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Refining the current step size w.r.t. all output actors:");
-        }
+    private double _refinedStepSize() throws IllegalActionException {
+        _debug("Refining the current step size WRT step size control actors:");
     
         double timeResolution = getTimeResolution();
         double refinedStep = getCurrentStepSize();
@@ -931,34 +919,23 @@ public class ContDirector extends FixedPointDirector implements
     
         if (refinedStep < (0.5 * timeResolution)) {
             if (_triedTheMinimumStepSize) {
-                if (_debugging) {
-                    _debug("The previous step size is the time"
-                            + " resolution. The refined step size is less than"
-                            + " the time resolution. We can not refine the step"
-                            + " size more.");
-                }
-    
+                _debug("The previous step size is the time"
+                        + " resolution. The refined step size is less than"
+                        + " the time resolution. We can not refine the step"
+                        + " size more.");
                 throw new IllegalActionException(this,
                         "The refined step size is less than the minimum time "
                                 + "resolution, at time " + getModelTime());
             } else {
-                if (_debugging) {
-                    _debug("The previous step size is bigger than the time"
-                            + " resolution. The refined step size is less than"
-                            + " the time resolution, try setting the step size"
-                            + " to the time resolution.");
-                }
-    
+                _debug("The previous step size is bigger than the time"
+                        + " resolution. The refined step size is less than"
+                        + " the time resolution, try setting the step size"
+                        + " to the time resolution.");
                 refinedStep = timeResolution;
                 _triedTheMinimumStepSize = true;
             }
         } else {
             _triedTheMinimumStepSize = false;
-        }
-    
-        if (_debugging && _verbose) {
-            _debug(getFullName(), "refine step with respect to output to"
-                    + refinedStep);
         }
     
         _setIterationEndTime(getModelTime().add(refinedStep));
@@ -974,7 +951,7 @@ public class ContDirector extends FixedPointDirector implements
     // NOTE: all the following private variables are initialized
     // in the _initializeLocalVariables() method before their usage.
     // Current ODE solver.
-    private ODESolver _currentSolver = null;
+    private ContODESolver _ODESolver = null;
 
     // Simulation step sizes.
     private double _currentStepSize;
@@ -1002,6 +979,11 @@ public class ContDirector extends FixedPointDirector implements
 
     private double _minStepSize;
 
+    private String _ODESolverClassName;
+    
+    private static String _solverClasspath = 
+        "ptolemy.domains.cont.kernel.solver.";
+    
     // Local copies of parameters.
     private Time _startTime;
 

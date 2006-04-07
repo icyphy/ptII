@@ -31,7 +31,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.domains.cont.kernel.ContDirector;
 import ptolemy.domains.cont.kernel.ContIntegrator;
-import ptolemy.domains.cont.kernel.ODESolver;
+import ptolemy.domains.cont.kernel.ContODESolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -74,7 +74,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public class ExplicitRK23Solver extends ODESolver {
+public class ExplicitRK23Solver extends ContODESolver {
     /** Construct a solver in the given workspace.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -106,6 +106,7 @@ public class ExplicitRK23Solver extends ODESolver {
         double currentStepSize = director.getCurrentStepSize();
 
         if (currentStepSize == 0) {
+            _resetRoundCount();
             _setConverged(true);
             return;
         }

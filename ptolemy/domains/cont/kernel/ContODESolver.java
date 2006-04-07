@@ -73,7 +73,7 @@ import ptolemy.kernel.util.Workspace;
  #_voteForConverged} are defined to let CT directors know the status
  of resolved states. If multiple integrators exist, only when all of
  them vote true for converged, will the _isConverged() return
- true. Another related method is {@link #resolveStates()}, which
+ true. Another related method is {@link #resolvedStates()}, which
  always returns true in this base class. However, in the solvers
  that implement the implicit solving methods, this method may return
  false if the maximum number of iterations is reached but states
@@ -90,7 +90,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Green (hyzheng)
  @Pt.AcceptedRating Green (hyzheng)
  */
-public abstract class ODESolver extends NamedObj {
+public abstract class ContODESolver extends NamedObj {
     /** Construct a solver in the given workspace with a null string name.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -98,7 +98,7 @@ public abstract class ODESolver extends NamedObj {
      *
      *  @param workspace Object for synchronization and version tracking
      */
-    public ODESolver(Workspace workspace) {
+    public ContODESolver(Workspace workspace) {
         super(workspace);
     }
 
@@ -110,8 +110,8 @@ public abstract class ODESolver extends NamedObj {
      *  @exception IllegalActionException If schedule can not be found or
      *  actors throw it from their fire() methods.
      */
-    public abstract void fire() throws IllegalActionException;
-
+    public abstract void fire() throws IllegalActionException; 
+    
     /** Return the amount of history information needed by this solver.
      *  Some solvers need history information from each integrator.
      *  The derived class should implement this method to return the
@@ -173,7 +173,7 @@ public abstract class ODESolver extends NamedObj {
      *  @return True If states of the system have been resolved successfully.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public boolean resolveStates() throws IllegalActionException {
+    public boolean resolvedStates() throws IllegalActionException {
         return true;
     }
 

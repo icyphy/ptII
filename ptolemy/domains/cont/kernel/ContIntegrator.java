@@ -36,12 +36,14 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.hs.kernel.ODESolver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContIntegrator
@@ -121,12 +123,11 @@ public class ContIntegrator extends TypedAtomicActor implements
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // FIXME
-        //      impulseInput = new TypedIOPort(this, "impulseInput", true, false);
-        //      impulseInput.setTypeEquals(BaseType.DOUBLE);
-        //      StringAttribute cardinality
-        //            = new StringAttribute(impulseInput, "_cardinal");
-        //      cardinality.setExpression("SOUTH");
+        impulseInput = new TypedIOPort(this, "impulseInput", true, false);
+        impulseInput.setTypeEquals(BaseType.DOUBLE);
+        StringAttribute cardinality = new StringAttribute(impulseInput,
+                "_cardinal");
+        cardinality.setExpression("SOUTH");
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -142,10 +143,9 @@ public class ContIntegrator extends TypedAtomicActor implements
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    // FIXME
-    //  /** The impulse input port. This is a single port of type double.
-    //  */
-    // public TypedIOPort impulseInput;
+    /** The impulse input port. This is a single port of type double.
+     */
+    public TypedIOPort impulseInput;
 
     /** The input port. This is a single port of type double.
      */
@@ -194,22 +194,27 @@ public class ContIntegrator extends TypedAtomicActor implements
         output.send(0, new DoubleToken(_tentativeState));
     }
 
-    /** Delegate to the integratorFire() method of the current ODE solver.
-     *  The existence of a director and an ODE solver is not checked because
-     *  it is checked in the prefire() method.
+    /** If the step size is bigger than 0, delegate to the integratorFire() 
+     *  method of the current ODE solver. If the step size is 0, assign the
+     *  double value of the ImpulseInput port to the current state. 
      *
      *  @exception IllegalActionException If thrown by integratorFire()
      *  of the solver.
      */
     public void fire() throws IllegalActionException {
         ContDirector dir = (ContDirector) getDirector();
-        ODESolver solver = dir.getCurrentODESolver();
-
-        if (_debugging) {
-            _debug(getName() + "fire using solver: ", solver.getName());
+        if (dir.getCurrentStepSize() == 0) {
+            if (impulseInput.isKnown()) {
+                if (impulseInput.hasToken(0)) {
+                    double currentState = 
+                        ((DoubleToken) impulseInput.get(0)).doubleValue();
+                    setTentativeState(currentState);
+                }
+            }
+            output.broadcast(new DoubleToken(getTentativeState()));
+        } else {
+            dir.getODESolver().integratorFire(this);
         }
-
-        solver.integratorFire(this);
     }
 
     /** Return the auxiliary variables in a double array.
@@ -327,7 +332,7 @@ public class ContIntegrator extends TypedAtomicActor implements
             throw new IllegalActionException(this, " no director available");
         }
 
-        ODESolver solver = dir.getCurrentODESolver();
+        ContODESolver solver = dir.getODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this, " no ODE solver available");
@@ -368,9 +373,19 @@ public class ContIntegrator extends TypedAtomicActor implements
                     + e.getMessage());
         }
 
-        ODESolver solver = ((ContDirector) getDirector()).getCurrentODESolver();
+        ContODESolver solver = ((ContDirector) getDirector()).getODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
+    }
+
+    /** Return false. This actor can produce some outputs even the inputs
+     *  are unknown. This actor is crucial at breaking feedback loops during
+     *  simuation.
+     *  
+     *  @return False.
+     */
+    public boolean isStrict() {
+        return false;
     }
 
     /** Mark and remember the current state. This remembered state can be
@@ -408,7 +423,7 @@ public class ContIntegrator extends TypedAtomicActor implements
      *  @return The predicteded next step size.
      */
     public double predictedStepSize() {
-        ODESolver solver = ((ContDirector) getDirector()).getCurrentODESolver();
+        ContODESolver solver = ((ContDirector) getDirector()).getODESolver();
         return solver.integratorPredictedStepSize(this);
     }
 
@@ -430,7 +445,7 @@ public class ContIntegrator extends TypedAtomicActor implements
             throw new IllegalActionException(this, " does not have a director.");
         }
 
-        ODESolver solver = dir.getCurrentODESolver();
+        ContODESolver solver = dir.getODESolver();
 
         if (solver == null) {
             throw new IllegalActionException(this,
