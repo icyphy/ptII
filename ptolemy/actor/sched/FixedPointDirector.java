@@ -339,7 +339,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _cachedAllInputsKnown.clear();
         _cachedAllOutputsKnown.clear();
 
-        _lastNumberOfActorsAllowedToFire = -1;
         _lastNumberOfKnownReceivers = -1;
 
         return super.prefire();
@@ -463,29 +462,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         }
 
         _cachedAllInputsKnown.add(actor);
-        return true;
-    }
-
-    /** Return true if all the outputs of the specified actor are known.
-     */
-    private boolean _areAllOutputsKnown(Actor actor)
-            throws IllegalActionException {
-
-        if (_cachedAllOutputsKnown.contains(actor)) {
-            return true;
-        }
-
-        Iterator outputPorts = actor.outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            IOPort outputPort = (IOPort) outputPorts.next();
-
-            if (!outputPort.isKnown()) {
-                return false;
-            }
-        }
-
-        _cachedAllOutputsKnown.add(actor);
         return true;
     }
 
@@ -646,10 +622,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
     // Version number for the cached functional property
     private transient long _functionalPropertyVersion = -1L;
-
-    // The number of actors that were fired on the last phase of
-    // actor firings.
-    private int _lastNumberOfActorsAllowedToFire;
 
     // The number of receivers with known state on the last phase of
     // actor firings.
