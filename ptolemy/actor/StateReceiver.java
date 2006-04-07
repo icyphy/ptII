@@ -43,7 +43,6 @@ package ptolemy.actor;
  the current token is returned and it is also removed from the receiver.
 
  @see ptolemy.domains.giotto.kernel.GiottoReceiver
- @see ptolemy.domains.sr.kernel.SRReceiver
  @author Haiyang Zheng
  @version $Id$
  @since Ptolemy II 4.1
