@@ -320,6 +320,24 @@ test BooleanToken-13.7 {Test convert from StringToken} {
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type boolean because the type of the token is higher or incomparable with the given type.}}
     
 
+test BooleanToken-13.8 {Test convert from nil IntToken} {
+    set t [java::field ptolemy.data.IntToken NIL]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {nil}
+
+
+test BooleanToken-13.9 {Test convert from Token} {
+    set t [java::new ptolemy.data.Token]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token 'present' to the type boolean because the type of the token is higher or incomparable with the given type.}}
+    
+
 test BooleanToken-14.0 {Test bitwiseAnd} {
     set binaryOperation bitwiseAnd
     set results [java::cast ptolemy.data.BooleanToken \
