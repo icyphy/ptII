@@ -335,7 +335,7 @@ public class ContDirector extends FixedPointDirector implements
             while (!_ODESolver._isConverged() && _ODESolver.resolvedStates()) {
                 _ODESolver.fire();
 //                _ODESolver._incrementRoundCount();
-                resetAllReceivers();
+                _resetAllReceivers();
                 super.prefire();
                 super.fire();
             }
