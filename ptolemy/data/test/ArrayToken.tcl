@@ -658,6 +658,15 @@ test ArrayToken-7.2 {extract, wrong type} {
 ######################################################################
 ####
 # 
+test ArrayToken-7.3 {extract nothing, increase code coverage} {
+    set r1 [$t extract [java::new {ptolemy.data.ArrayToken String} \
+			    "{false, false, false}"]]
+    list [$r1 toString] [[$r1 getElementType] toString]
+} {{{}} string}
+
+######################################################################
+####
+# 
 test ArrayToken-8.0 {getElementPrototype} {
     set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
     [[$valToken getElementPrototype] getType] toString
