@@ -63,8 +63,8 @@ import ptolemy.kernel.util.InvalidStateException;
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (hyzheng)
- @Pt.AcceptedRating Red (reviewModerator)
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Yellow (eal)
  */
 public class FixedPointReceiver extends AbstractReceiver {
 
@@ -240,36 +240,17 @@ public class FixedPointReceiver extends AbstractReceiver {
     public void reset() {
         _token = null;
         _known = false;
-        _lastKnown = false;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return true if this receiver changes from unknown to known status.
-     *  @return True if this receiver changes from unknown to known status.
-     */
-    protected boolean _statusChanged() {
-        if (_lastKnown != _known) {
-            _lastKnown = _known;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // The director of this receiver.
+    /** The director of this receiver. */
     private FixedPointDirector _director;
 
-    // A flag indicating whether this receiver has status known.  
+    /** A flag indicating whether this receiver has status known. */  
     private boolean _known = false;
 
-    // A flag indicating whether the receiver has status known already.
-    private boolean _lastKnown = false;
-
-    // The token held.
+    /** The token held. */
     private Token _token = null;
 }

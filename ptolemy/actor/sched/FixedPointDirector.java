@@ -53,54 +53,49 @@ import ptolemy.kernel.util.Workspace;
  iteration. An iteration consists of repeated firings of the
  actors controlled by this director until a fixed point is reached.
  An iteration has converged if firing actors will not change signal 
- status any more. 
+ status any more.
  <p>
- At the beginning of each iteration, this director resets the status of
- all signals to unknown. Upon firing an actor, the status of its output
- signals may become known.  Once the status of
+ At the beginning of each iteration, the status of
+ all inputs and outputs is unknown. Upon firing an actor,
+ the status of its output signals may become known.  Once the status of
  a signal becomes known, it cannot be changed back to unknown in the 
  iteration. This monotonicity constraint ensures the existence and
  uniqueness of the fixed point.
  During an iteration, the prefire() and fire() methods of the controlled 
  actors may be repeatedly invoked, but the postfire() method will be 
  invoked exactly once after the fixed point has been found.
+ The postfire() methods of the contained actors are invoked only
+ in the postfire() method of this director, and they are invoked
+ in arbitrary order.
  <p>
  Although this director does not require any specific ordering of actor 
  firings, a scheduler is used to choose an efficient ordering. 
  <p>
  By default, actors are <i>strict</i>, which means that all their
- input signals must be known before the actor can be fired. Such actors
- will be fired only once in an iteration. 
- 
- An actor is considered <i>ready to fire</i> if sufficient known inputs are
- available.  In a sense, an actor firing is triggered by these known inputs,
- because the director only fires an actor if it is ready to fire.  Unless an
- actor contains an attribute called "_nonStrictMarker", it is assumed to be a
- strict actor, meaning that it requires all of its inputs to be known before
- it is fired.  This is very important since once an actor defines a particular
- output, it is not allowed to change that value in a subsequent firing in the
- course of the iteration.  A nonstrict actor can fire even if no inputs are
- known, and may fire any number of times in the course of an iteration.  Thus,
- a nonstrict actor can be used to produce an initial token in a cyclic graph.
- Since strict actors are only fired if all of their inputs are known, a given
- strict actor is only fired once in a given iteration.  An actor <i>has
- completed firing</i> if it has defined all of its outputs.
+ input signals must be known before the actor can be fired. Here,
+ what we mean by "fired" is that prefire() is invoked, and if it
+ returns true, then fire() is invoked. Such actors
+ will be fired only once in an iteration. A non-strict actor can
+ be fired regardless of the status of its inputs, and may be fired
+ repeatedly in an iteration if some of the inputs are unknown.
+ Once an actor is fired with all its inputs known, it will not
+ be fired again in the same iteration.
+ A composite actor containing this director is a non-strict actor.
  <p>
- An actor is considered <i>allowed to fire</i> if its prefire()
- method has returned true.  An actor is considered <i>allowed to iterate</i>
- if its postfire() method has not returned false.
+ For an actor to be used under the control of this director, it must
+ either be strict, or if it is non-strict, it must be monotonic.
+ Montonicity implies two constraints on the actor. First, if prefire()
+ ever returns true during an iteration, then it will return true
+ on all subsequent invocations in the same iteration().
+ Second, if either prefire() or fire() call clear() on an output port,
+ then no subsequent invocation in the same iteration can call
+ put() on the port. If prefire() or fire() call put() on an
+ output port with some token, then no subsequent invocation in
+ the same iteration can call clear() or put() with a token with
+ a different value.
+ These constraints ensure determinacy.
  <p>
- For an actor to be used under the control of , its prefire() method must be
- monotonic.  In other words, once the prefire() method of an actor returns
- true in a given iteration, this method must not return false if it were to be
- called again in the same iteration.  It is only possible for the number of
- known inputs of an actor to increase in a given iteration, so, for example,
- if the prefire() method of an actor returns true and then more inputs become
- known, the method must return true if it were to be called again.  If this
- were not the case, the behavior of the model would be nondeterministic since
- the execution results would depend on the order of the schedule.
- <p>
- This class is based on the original SRReceiver, written by Paul Whitaker.
+ This class is based on the original SRDirector, written by Paul Whitaker.
  
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
@@ -161,7 +156,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     ////                         parameters                        ////
 
     /** The number of times that postfire may be called before it
-     *  returns false. The type must be IntToken, and the value
+     *  returns false. The type must be int, and the value
      *  defaults to zero. If the value is less than or equal to zero,
      *  then the execution will never return false in postfire, and
      *  thus the execution can continue forever.
@@ -171,77 +166,56 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Keep firing contained actors until the current iteration converges.
-     *  An iteration converges when all the receivers have status known.  
-     *  This method also calls the prefire() method of an actor before it 
-     *  is fired for the first time. 
-     *  @exception IllegalActionException If an actor attempts to modify
-     *   a known value.
+    /** Prefire and fire actors in the order given by the scheduler
+     *  until the iteration converges.
+     *  An iteration converges when a pass through the schedule does
+     *  not change the status of any receiver.
+     *  @exception IllegalActionException If an actor violates the
+     *   monotonicity constraints, or the prefire() or fire() method
+     *   of the actor throws it.
      */
     public void fire() throws IllegalActionException {
         Schedule schedule = getScheduler().getSchedule();
-
-        // we compute the rough cost of the execution in the following way.
-        // Assume the cost of one evaluation of an actor is 1,
-        // the cost of the execution to reach a fixed point is
-        // the number of actors in the schedule times the
-        // iterations of the schedule at that instant.
-        // The sum of the cost of all instants is the cost of
-        // the whole execution.
         int iterationCount = 0;
-        int numberOfActors = schedule.size();
-
-        // also, we calculate the real cost, which excludes the
-        // overhead caused by not-firing-allowed actors.
-        // Here we need to check for each actor that iteration is allowed
-        // (in other words, that the actor has not returned false in
-        // postfire()).
-        // _fireActor and _postfireActor are responsible for checking that
-        // firing is allowed (in other words, the director will not call
-        // fire() or postfire() on an actor until the actor returns true
-        // in prefire()).
-        // _fireActor is also responsible for checking that the actor is
-        // ready to fire (sufficient known inputs are available) via
-        // _isFiringAllowed method.
-        
-        // Keep firng actors until the iteration converges based on the
-        // current inputs.
         do {
             Iterator firingIterator = schedule.firingIterator();
             while (firingIterator.hasNext() && !_stopRequested) {
                 Actor actor = ((Firing) firingIterator.next()).getActor();
-                if (_actorsNotAllowedToIterate.contains(actor)) {
+                // If the actor has previously returned false in postfire(),
+                // do not fire it.
+                if (!_actorsFinished.contains(actor)) {
+                    _fireActor(actor);
+                } else {
                     // The postfire() method of this actor returned false in
                     // some previous iteration, so here, for the benefit of
                     // connected actors, we need to explicitly call the
-                    // sendClear() method of all of its output ports.
-                    // Note that all output ports should be unknown.
+                    // sendClear() method of all of its output ports,
+                    // which indicates that a signal is known to be absent.
                     _sendClearToAllUnknownOutputsOf(actor);
-                } else {
-                    _fireActor(actor);
                 }
             }
             iterationCount++;
         } while (!_hasIterationConverged() && !_stopRequested);
 
         if (_debugging) {
-            _debug("It takes " + iterationCount
-                    + " iterations to find a fixed point.");
+            _debug(this.getFullName()
+                    + ": Fixed point found after "
+                    + iterationCount
+                    + " iterations.");
         }
-        _roughCost += (iterationCount * numberOfActors);
     }
 
     /** Initialize the director and all deeply contained actors by calling
-     *  the super.initialize() method. Reset all private variables.
+     *  the super.initialize() method. Reset all private variables and set
+     *  all the receivers to status unknown.
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _currentIteration = 0;
 
-        _actorsNotAllowedToIterate = new HashSet();
         _actorsAllowedToFire = new HashSet();
-        _actorsFired = new HashSet();
+        _actorsFinishedFiring = new HashSet();
         _actorsPostfired = new HashSet();
         _cachedAllInputsKnown = new HashSet();
         _cachedAllOutputsKnown = new HashSet();
@@ -250,8 +224,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
         _cachedFunctionalProperty = true;
         _functionalPropertyVersion = -1;
-        _realCost = 0;
-        _roughCost = 0;
+        _numberOfActorsFired = 0;
     }
 
     /** Return true if all the controlled actors' isFireFunctional()
@@ -290,8 +263,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return false;
     }
 
-    /** Return a new FPReceiver.
-     *  @return A new FPReceiver.
+    /** Return a new FixedPointReceiver.
+     *  @return A new FixedPointReceiver.
      */
     public Receiver newReceiver() {
         Receiver receiver = new FixedPointReceiver(this);
@@ -308,59 +281,38 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  has finished executing, either by reaching the iteration limit, or if
      *  no actors in the model return true in postfire(), or if stop has
      *  been requested. This method is called only once for each iteration.
+     *  Note that actors are postfired in arbitrary order.
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
-
         _postfireReturns = false;
-
-        // Actors are postfired here since updating the state of contained
-        // actors inherently updates the state of a composite actor.
-        // They are postfired in the order specified by the schedule,
-        // but only on their first appearance in the schedule. (An actor
-        // may appear in the schedule multiple times.)
-        // FIXME: this requirement is necessary to avoid duplicate outputs
-        // in display? TESTIT.
-        
-        // Note that the _actorsPostfired set is used to prevent an actor 
-        // from being postfired more than once in one iteration, while 
-        // the _actorsNotAlledToIterated set is used to provent an actor from
-        // being iterated in the rest of EXECUTION if it returns false from its
-        // postfire() method. The _actorsPostfired set gets cleared at the 
-        // beginning of each iteration, the prefire() method.
-        
-        Schedule schedule = getScheduler().getSchedule();
-        Iterator firingIterator = schedule.firingIterator();
-        while (firingIterator.hasNext() && !_stopRequested) {
-            Actor actor = ((Firing) firingIterator.next()).getActor();
-            if (!_actorsNotAllowedToIterate.contains(actor)) {
-                if (!_actorsPostfired.contains(actor)) {
-                    _actorsPostfired.add(actor);
-                    if (_postfireActor(actor)) {
-                        _postfireReturns = true;
-                    } else {
-                        _actorsNotAllowedToIterate.add(actor);
-                    }
+        Iterator actors = ((CompositeActor) getContainer()).deepEntityList().iterator();
+        while (actors.hasNext() && !_stopRequested) {
+            Actor actor = (Actor)actors.next();
+            if (!_actorsFinished.contains(actor)) {
+                if (_postfireActor(actor)) {
+                    _postfireReturns = true;
+                } else {
+                    // postfire() returned false, so prevent the actor
+                    // from iterating again.
+                    _actorsFinished.add(actor);
                 }
             }
         }
 
-        // Question: why not resetting receivers in the prefire() method?
-        // All receivers must be reset before any actors are executed in the
-        // next iteration.  Since some domains (including SR) might fire one
-        // actor before prefiring another actor, resetting the receivers in
-        // the prefire() method will not work.  By doing this at the end of
-        // each iteration, all receivers are guaranteed to be reset, even in
-        // a hierarchical model.
+        // Reset all the receivers, which sets their status to unknown.
+        // We do this here rather than in prefire() because prefire()
+        // may be invoked more than once in an iteration, during fixed
+        // point convergence.
         resetAllReceivers();
         
         if (_debugging) {
-            _debug("FixedPointDirector: Instant " + _currentIteration
+            _debug(this.getFullName()
+                    + "Iteration " + _currentIteration
                     + " is complete.");
-            _debug("So far, the rough cost is " + _roughCost
-                    + "; and the real cost is " + _realCost + ".");
+            _debug("Total number of actor firings: " + _numberOfActorsFired);
         }
 
         // Check if the current execution has reached its iteration limit. 
@@ -381,7 +333,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     public boolean prefire() throws IllegalActionException {
         _actorsAllowedToFire.clear();
-        _actorsFired.clear();
+        _actorsFinishedFiring.clear();
         _actorsPostfired.clear();
 
         _cachedAllInputsKnown.clear();
@@ -393,7 +345,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return super.prefire();
     }
 
-    /** Reset all receivers to allow a new firing of the director.
+    /** Reset all receivers to unknown status.
      */
     public void resetAllReceivers() {
         if (_debugging) {
@@ -537,127 +489,69 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return true;
     }
 
-    /** Fire the specified actor if the actor is ready to fire.  If the
-     *  prefire() method of this actor has not returned true in the current
-     *  iteration, the prefire() method will be called first.
+    /** If the actor is ready to fire, call its prefire() method, and
+     *  if that returns true, call its fire() method.
+     *  @exception IllegalActionException If the prefire() method
+     *   returns false having previously returned true in the same
+     *   iteration, or if the prefire() or fire() method of the actor
+     *   throws it.
      */
     private void _fireActor(Actor actor) throws IllegalActionException {
         if (_isReadyToFire(actor) && !_stopRequested) {
-            // If the actor is nonstrict or all the inputs are known,
-            // it is ready to fire.
-            if (!_actorsAllowedToFire.contains(actor)) {
-                // However, the actor is not in the actorsAllowToFire set.
-                // The actor is prefired such that it can be added into
-                // the set if its prefire method returns true.
-                if (_debugging) {
-                    _debug("    FixedPointDirector is prefiring",
-                            ((Nameable) actor).getName());
-                }
-                if (actor.prefire()) {
-                    _actorsAllowedToFire.add(actor);
-                } else {
-                    // Note that if an actor (always) returns false in
-                    // its prefire() method, such as the Undefined actor,
-                    // the fire() and postfire() methods will never be invoked. 
-                    // Consequently, the output of this actor is undefined.
-                    return;
-                }
+            if (_debugging) {
+                _debug(getFullName() + " is prefiring",
+                        ((Nameable) actor).getFullName());
             }
-            // If an actor has finished firing, meaning that all inputs and 
-            // outputs have been resolved, there is no need to fire the actor
-            // again. The purpose of this implementation is to reduce the cost
-            // for finding a fixed point.
-            if (!_isFinishedFiring(actor)) {
+            // Prefire the actor.
+            boolean prefireReturns = actor.prefire();
+            // Check monotonicity constraint.
+            if (prefireReturns
+                    && _actorsAllowedToFire.contains(actor)) {
+                throw new IllegalActionException(actor,
+                        "prefire() method returns false, but it" +
+                        " has previously returned true in this iteration.");
+            }
+            if (prefireReturns) {
+                _actorsAllowedToFire.add(actor);
                 if (_debugging) {
-                    _debug("    FixedPointDirector is firing",
+                    _debug(getFullName() + " is firing",
                             ((Nameable) actor).getName());
                 }
-
+                
                 // Whether all inputs are known must be checked before
                 // firing to handle cases with self-loops, because the
                 // current firing may change the status of some input
                 // receivers from unknown to known.
                 boolean allInputsKnownBeforeFiring = _areAllInputsKnown(actor);
                 actor.fire();
-                // Record the fired actor into the _actorFired set
-                _actorsFired.add(actor);
-
-                // If all of the inputs of this actor are known, firing
+                // If all of the inputs of this actor were known before firing, firing
                 // the actor again in the current iteration is not necessary.
-                // The actor will not produce any more outputs because
-                // it will have no new inputs to react to.  Thus, we
-                // can assume that any unknown outputs of this actor
-                // are actually absent.
-                // Note that even if an opaque composite actor containing a 
-                // feedback actor, which nees 2 or more iterations to 
-                // resolve all the inputs and outputs, the do-while loop in
-                // the fire() method guarantees that inside inputs and outputs
-                // of the opaque composite actor are resolved (based on the
-                // provided external inputs).
                 if (allInputsKnownBeforeFiring) {
+                    _actorsFinishedFiring.add(actor);
                     _sendClearToAllUnknownOutputsOf(actor);
                 }
-
-                _realCost++;
+                _numberOfActorsFired++;
             }
         }
     }
 
     /** Return true if this iteration has converged.  The iteration has
-     *  converged if both the number of known receivers has converged and
-     *  the number of actors to fire has converged.
+     *  converged if both the number of known receivers
+     *  has not changed since the previous invocation of this method.
      */
     private boolean _hasIterationConverged() {
-        // Get the previous values for local use.
-        int previousNumberOfActorsAllowedToFire = _lastNumberOfActorsAllowedToFire;
-        int previousNumberOfKnownReceivers = _lastNumberOfKnownReceivers;
-
-        // Get the current values for local use.
-        int currentNumberOfActorsAllowedToFire = _actorsAllowedToFire.size();
-        int currentNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
-
-        // Update the previous values for use the next time this method
-        // is called.
-        _lastNumberOfActorsAllowedToFire = currentNumberOfActorsAllowedToFire;
-        _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
-
         if (_debugging) {
-            _debug("  previousNumberOfActorsAllowedToFire is "
-                    + previousNumberOfActorsAllowedToFire);
-            _debug("  currentNumberOfActorsAllowedToFire is "
-                    + currentNumberOfActorsAllowedToFire);
-            _debug("  previousNumberOfKnownReceivers is "
-                    + previousNumberOfKnownReceivers);
-            _debug("  currentNumberOfKnownReceivers is "
-                    + currentNumberOfKnownReceivers);
+            _debug(this.getFullName()
+                    + ":\n Number of receivers known previously is "
+                    + _lastNumberOfKnownReceivers
+                    + ":\n Number of receivers known now is "
+                    + _currentNumberOfKnownReceivers);
         }
-
-        // Note that having zero actors to fire is not sufficient for
-        // convergence.  Some actors may fire in the next phase if
-        // the director calls sendClear() on any output ports.
-        // Note that all receivers having known state is not sufficient
-        // for convergence.  After the values are present, each actor must
-        // have the opportunity to fire before the end of the iteration.
-        // This is the first phase of actor firings.
-        if (previousNumberOfKnownReceivers == -1) {
-            return false;
-        }
-
-        // The number of actors to fire has not converged, so the
-        // iteration has not converged.
-        if (previousNumberOfActorsAllowedToFire != currentNumberOfActorsAllowedToFire) {
-            return false;
-        }
-
         // The number of known receivers has not converged, so the
         // iteration has not converged.
-        if (previousNumberOfKnownReceivers != currentNumberOfKnownReceivers) {
-            return false;
-        }
-
-        // The number of actors to fire and the number of known receivers
-        // have both converged, so the iteration has converged.
-        return true;
+        boolean converged = _lastNumberOfKnownReceivers == _currentNumberOfKnownReceivers;
+        _lastNumberOfKnownReceivers = _currentNumberOfKnownReceivers;
+        return converged;
     }
 
     /** Initialize the director by creating the parameters and setting their
@@ -672,69 +566,15 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         setScheduler(scheduler);
     }
 
-    /** Return true if the specified actor is finished firing.  An actor
-     *  has finished firing if it is strict and has defined all of its outputs,
-     *  or if it is nonstrict, with all inputs and outputs known, and no
-     *  inputs just change from unknown to knonwn.
-     */
-    private boolean _isFinishedFiring(Actor actor)
-            throws IllegalActionException {
-
-        // Actors that have not been fired in this iteration are not finished.
-        // The purpose of this check is to reduce the cost for 
-        // finding a fixed point.
-        if (!_actorsFired.contains(actor)) {
-            return false;
-        }
-        
-        if (actor.isStrict()) {
-            // For a strict actor, if all outputs have been resolved,
-            // then its inputs must have been resolved too and this actor has 
-            // finished firing.
-            return _areAllOutputsKnown(actor);
-        } else {
-            // Nonstrict actors should fire in every phase in case more inputs
-            // become available (the inputs might be, for example, cached and
-            // used in a subsequent iteration).
-
-            // If all the inputs and outputs are known, and
-            // the inputs have not just changed from unknown to known,
-            // it is unnecessary to fire the actor again,
-            // because according to the FP semantics, the
-            // the inputs, which are the outputs from other
-            // actors, can not change.
-            // Check whether the inputs have changed.
-            // Note, the _statusChanged method forces the receivers to update
-            // the cached information.
-            Iterator inputPorts = actor.inputPortList().iterator();
-            boolean changed = false;
-            
-            while (inputPorts.hasNext()) {
-                IOPort inputPort = (IOPort) inputPorts.next();
-                Receiver[][] receivers = inputPort.getReceivers();
-                
-                for (int i = 0; i < receivers.length; i++) {
-                    for (int j = 0; j < receivers[i].length; j++) {
-                        changed |= ((FixedPointReceiver) receivers[i][j])
-                        ._statusChanged();
-                    }
-                }
-            }
-            
-            if (_areAllInputsKnown(actor) && _areAllOutputsKnown(actor)) {
-                return !changed;
-            } else {
-                return false;
-            }
-        }
-    }
-
     /** Return true if the specified actor is ready to fire.  An actor is
-     *  ready to fire if sufficient known inputs are available, or the actor
-     *  is a nonstrict actor..
+     *  ready to fire if it has not previously finished firing in this iteration
+     *  and either it is strict and all inputs are known or it is nonstrict.
+     *  Note that this ignores whether the actor has previously returned
+     *  false in postfire().
      */
     private boolean _isReadyToFire(Actor actor) throws IllegalActionException {
-        return !actor.isStrict() || _areAllInputsKnown(actor);
+        return !_actorsFinishedFiring.contains(actor) &&
+                (!actor.isStrict() || _areAllInputsKnown(actor));
     }
 
     /** Return the result of the postfire() method of the specified actor
@@ -776,18 +616,15 @@ public class FixedPointDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The set of actors that have returned false in their postfire() methods.
-    // Events destined for these actors are discarded and the actors are
-    // never fired.
-    private Set _actorsNotAllowedToIterate;
 
-    // The set of actors that have returned true in their prefire() methods
-    // on the given iteration.
+    /** The set of actors that have returned true in their prefire() methods
+     *  in the current iteration.
+     */
     private Set _actorsAllowedToFire;
 
-    // The set of actors that have been fired once or more in the given
-    // iteration.
-    private Set _actorsFired;
+    // The set of actors that have been fired in this iteration with
+    // all inputs known.
+    private Set _actorsFinishedFiring;
 
     // The set of actors that have been postfired in the given iteration.
     private Set _actorsPostfired;
@@ -821,16 +658,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     // List of all receivers this director has created.
     private List _receivers;
 
-    // We calculate the real cost, which excludes the
-    // overhead caused by not-firing-allowed actors.
-    private int _realCost;
-
-    // we compute the rough cost of the execution in this way.
-    // Assume the cost of one evaluation of an actor is 1,
-    // the cost of the execution to reach a fixed point is
-    // the number of actors in the schedule times the
-    // iterations of the schedule at that instant.
-    // The sum of the cost of all instants is the cost of
-    // the whole execution.
-    private int _roughCost;
+    // The number of actors fired since initialize().
+    private int _numberOfActorsFired;
 }

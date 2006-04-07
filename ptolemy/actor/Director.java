@@ -32,7 +32,9 @@
  */
 package ptolemy.actor;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -332,13 +334,12 @@ public class Director extends Attribute implements Executable {
         return wasTransferred;
     }
 
-    /** Invoke an iteration on all of the deeply contained actors of the
-     *  container of this director.  In general, this may be called more
-     *  than once in the same iteration of the director's container.
-     *  An iteration is defined as multiple invocations of prefire(), until
-     *  it returns true, any number of invocations of fire(),
-     *  followed by one invocation of postfire().  If stop() is called
-     *  during this execution, the stop iterating actors immediately.
+    /** Iterate all the deeply contained actors of the
+     *  container of this director exactly once. This method is not functional,
+     *  since an iteration of the deeply contained actors may change
+     *  state in their postfire() method. The actors are iterated
+     *  in the order that they appear on the list returned by deepEntityList(),
+     *  which is normally the order in which they were created.
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -629,8 +630,9 @@ public class Director extends Attribute implements Executable {
             _debug("Called initialize().");
         }
 
-        Nameable container = getContainer();
+        _actorsFinished = new HashSet();
 
+        Nameable container = getContainer();
         if (container instanceof CompositeActor) {
             Nameable containersContainer = container.getContainer();
 
@@ -819,7 +821,6 @@ public class Director extends Attribute implements Executable {
         if (_debugging) {
             _debug("Called postfire().");
         }
-
         return !_stopRequested;
     }
 
@@ -1316,6 +1317,11 @@ public class Director extends Attribute implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
+    /** Set of actors that have returned false from  postfire(),
+     *  indicating that they do not wish to be iterated again.
+     */
+    protected Set _actorsFinished;
+    
     /** The current time of the model. */
     protected Time _currentTime;
 

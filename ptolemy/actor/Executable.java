@@ -38,16 +38,14 @@ import ptolemy.kernel.util.IllegalActionException;
  the preinitialize() and initialize() methods should be
  invoked exactly once, followed by any number of iterations, followed
  by exactly one invocation of the wrapup() method. An <i>iteration</i>
- is defined to be one firing of the prefire() method, followed by
- any number of firings of the fire() method, followed by one firing
- of the postfire() method.
- The prefire() method returns true to indicate that firing
- can occur.  The postfire() method returns false if no further firings
+ is defined to be any number of invocations of prefire() and fire(),
+ where fire() is invoked only if prefire() returns true, followed by
+ exactly one invocation of the postfire() method.
+ The postfire() method returns false if no further iterations
  should occur. The initialize(), fire() and postfire() methods may produce
- output data.  The initialize() method runs after the topology has
- stabilized (all higher-order function actors have executed) and
- type resolution has been done.  The preinitialize() method runs
- before these have happened.
+ output data.  The preinitialize() method runs
+ before type resolution has been done, and is permitted to make
+ changes in the topology of the model.
 
  @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
  @version $Id$
@@ -56,6 +54,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating Green (davisj)
  */
 public interface Executable {
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -107,7 +106,7 @@ public interface Executable {
     public boolean isStrict();
 
     /** Invoke a specified number of iterations of the actor. An
-     *  iteration is equivalent to invoking prefire(), fire(), and
+     *  iteration here is equivalent to invoking prefire(), fire(), and
      *  postfire(), in that order. In an iteration, if prefire()
      *  returns true, then fire() will be called once, followed by
      *  postfire(). Otherwise, if prefire() returns false, fire()
@@ -120,6 +119,10 @@ public interface Executable {
      *  actually invoke prefire(), fire(), and postfire(). An
      *  implementation of this method must, however,
      *  perform the equivalent operations.
+     *  <p>
+     *  Note that this method for iterating an actor should
+     *  be used only in domains where a single invocation of
+     *  prefire() and fire() is sufficient in an iteration.
      *
      *  @param count The number of iterations to perform.
      *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
@@ -129,25 +132,24 @@ public interface Executable {
     public int iterate(int count) throws IllegalActionException;
 
     /** This method should be invoked once per iteration, after the last
-     *  invocation of fire() in that iteration. It may produce output data.
+     *  invocation of fire() in that iteration. The postfire() method should
+     *  not produce output data on output ports of the actor.
      *  It returns true if the execution can proceed into the next iteration,
      *  false if the actor does not wish to be fired again.
      *  This method typically wraps up an iteration, which may involve
-     *  updating local state. In an opaque, non-atomic entity, it may also
-     *  transfer output data. The execution of this method is bounded.
+     *  updating local state or updating displays.
      *
      *  @return True if the execution can continue.
      *  @exception IllegalActionException If postfiring is not permitted.
      */
     public boolean postfire() throws IllegalActionException;
 
-    /** This method should be invoked once per iteration, before the first
-     *  invocation of fire() in that iteration.  It returns true if the
-     *  iteration can proceed (the fire() method can be invoked). Thus
-     *  this method will typically check preconditions for an iteration, if
+    /** This method should be invoked prior to each invocation of fire().
+     *  It returns true if the the fire() method can be invoked, given the
+     *  current status of the inputs and parameters of the actor. Thus
+     *  this method will typically check preconditions for a firing, if
      *  there are any. In an opaque, non-atomic entity,
      *  it may move data into an inner subsystem.
-     *  The execution of this method is bounded.
      *
      *  @return True if the iteration can proceed.
      *  @exception IllegalActionException If prefiring is not permitted.

@@ -240,7 +240,7 @@ public class StaticSchedulingDirector extends Director {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-        return _postfireReturns && !_stopRequested;
+        return super.postfire() && _postfireReturns;
     }
 
     /** Return true if the director is ready to fire. This method is
