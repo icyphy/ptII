@@ -100,8 +100,8 @@ import ptolemy.kernel.util.Workspace;
  @author Haiyang Zheng and Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Yellow (hyzheng)
- @Pt.AcceptedRating Red (reviewModerator)
+ @Pt.ProposedRating Green (hyzheng)
+ @Pt.AcceptedRating Yellow (eal)
  */
 public class FixedPointDirector extends StaticSchedulingDirector {
 
@@ -267,11 +267,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     public Receiver newReceiver() {
         Receiver receiver = new FixedPointReceiver(this);
-
-        if (_receivers == null) {
-            _receivers = new LinkedList();
-        }
-
         _receivers.add(receiver);
         return receiver;
     }
@@ -283,13 +278,18 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  Note that actors are postfired in arbitrary order.
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
-     *   not have a valid token.
+     *   not have a valid token, or if there still some unknown inputs (which
+     *   indicates a causality loop).
      */
     public boolean postfire() throws IllegalActionException {
         _postfireReturns = false;
         Iterator actors = ((CompositeActor) getContainer()).deepEntityList().iterator();
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor)actors.next();
+            if (!_areAllInputsKnown(actor)) {
+                throw new IllegalActionException(actor,
+                        "Unknown inputs remain. Possible causality loop.");
+            }
             if (!_actorsFinished.contains(actor)) {
                 if (_postfireActor(actor)) {
                     _postfireReturns = true;
@@ -339,6 +339,16 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return super.prefire();
     }
 
+    /** Overrride the superclass to keep track of receivers that are created
+     *  during preinitialize().
+     *  @exception IllegalActionException If the preinitialize() method of
+     *   one of the associated actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        _receivers.clear();
+        super.preinitialize();
+    }
+    
     /** Return an array of suggested directors to be used with
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default
@@ -363,20 +373,20 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
-     *  @return True.
+     *  @return True if at least one token is transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
+        boolean result = false;
         for (int i = 0; i < port.getWidth(); i++) {
             if (port.isKnown(i)) {
                 if (port.hasToken(i)) {
-                    super.transferInputs(port);
+                    result = super.transferInputs(port) || result;
                 } else {
                     port.sendClearInside(i);
                 }
             }
         }
-        // The returned value does not matter. We simply return true.
-        return true;
+        return result;
     }
 
     /** Transfer data from the specified output port of the
@@ -389,20 +399,20 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
-     *  @return True.
+     *  @return True if at least one token is transferred.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
+        boolean result = false;
         for (int i = 0; i < port.getWidthInside(); i++) {
             if (port.isKnownInside(i)) {
                 if (port.hasTokenInside(i)) {
-                    super.transferOutputs(port);
+                    result = super.transferOutputs(port) || result;
                 } else {
                     port.sendClear(i);
                 }
             }
         }
-        // The returned value does not matter. We simply return true.
-        return true; 
+        return result; 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -422,10 +432,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             _debug("    FixedPointDirector is resetting all receivers");
         }
         _currentNumberOfKnownReceivers = 0;
-    
-        if (_receivers == null) {
-            _receivers = new LinkedList();
-        }
     
         Iterator receiverIterator = _receivers.iterator();
         while (receiverIterator.hasNext()) {
@@ -475,7 +481,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             // Prefire the actor.
             boolean prefireReturns = actor.prefire();
             // Check monotonicity constraint.
-            if (prefireReturns
+            if (!prefireReturns
                     && _actorsAllowedToFire.contains(actor)) {
                 throw new IllegalActionException(actor,
                         "prefire() method returns false, but it" +
@@ -623,7 +629,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     private int _lastNumberOfKnownReceivers;
 
     /** List of all receivers this director has created. */
-    private List _receivers;
+    private List _receivers = new LinkedList();
 
     /** The number of actors fired since initialize(). */
     private int _numberOfActorsFired;
