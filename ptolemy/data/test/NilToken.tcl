@@ -44,14 +44,19 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 
-set types [list DoubleToken IntToken LongToken UnsignedByteToken]
+
+# Test Token, which does not support non-nil one and zero
+
+set types [list Token DoubleToken IntToken LongToken UnsignedByteToken]
 foreach type $types {
     puts -nonewline "$type"
     # Perform binary operations on nil types
     # bitwiseAnd bitwiseOr bitwiseXor are excluded, they only work on scalars?
     set binaryOperations \
-	[list add \
-	     divide modulo multiply subtract]
+	[list add addReverse \
+	     divide divideReverse modulo moduloReverse \
+	     multiply multiplyReverse subtract subtractReverse ]
+
     foreach binaryOperation $binaryOperations {
 	test "$type-$binaryOperation" "Test $binaryOperation binary op on $type" {
 
@@ -59,7 +64,11 @@ foreach type $types {
 	    #set nil [java::new ptolemy.data.$type [java::null]] 
 	    set nil [java::field ptolemy.data.Token NIL]
 	    set typeToken [java::new ptolemy.data.$type] 
-	    set one [java::cast ptolemy.data.$type [$typeToken one]]
+	    if { "$type" == "Token" } {
+		set one $typeToken
+   	    } else {
+	        set one [java::cast ptolemy.data.$type [$typeToken one]]
+            }
 
 	    # Try the binaryop with both args nil
 	    set results [java::cast ptolemy.data.Token \
@@ -93,38 +102,40 @@ foreach type $types {
     }
 
 
-    # Perform unary operations on nil types
-    set unaryOperations \
-	[list absolute]
-    foreach unaryOperation $unaryOperations {
-	test "$type-$unaryOperation" "Test $unaryOperation unary op on $type" {
-	    puts -nonewline " $unaryOperation"
-	    #set nil [java::new ptolemy.data.$type [java::null]] 
-	    set nil [java::field ptolemy.data.$type NIL]
-	    set results [$nil $unaryOperation]
-	    set resultsClassName [[$results getClass] getName] 
-	    list [$results toString] \
-		[$results isNil] \
-		[expr {"$resultsClassName" == "ptolemy.data.$type"}]
-	} {nil 1 1}
-    }
+    
+    if { "$type" != "Token" } {
+	# Perform unary operations on nil types
+	set unaryOperations \
+	    [list absolute]
+	foreach unaryOperation $unaryOperations {
+	    test "$type-$unaryOperation" "Test $unaryOperation unary op on $type" {
+		puts -nonewline " $unaryOperation"
+		#set nil [java::new ptolemy.data.$type [java::null]] 
+		set nil [java::field ptolemy.data.$type NIL]
+		set results [$nil $unaryOperation]
+		set resultsClassName [[$results getClass] getName] 
+		list [$results toString] \
+		    [$results isNil] \
+		    [expr {"$resultsClassName" == "ptolemy.data.$type"}]
+	    } {nil 1 1}
+	}
 
-    # Perform isEqualTo on nil types.  isEqualTo always returns false
-    set relationalOperations [list isEqualTo]
-    foreach relationalOperation $relationalOperations {
-	test "$type-$relationalOperation" "Test $relationalOperation on $type" {
-	    puts -nonewline " $relationalOperation"
-	    #set nil [java::new ptolemy.data.$type [java::null]] 
-	    set nil [java::field ptolemy.data.Token NIL]
-	    set typeToken [java::new ptolemy.data.$type] 
-	    set one [java::cast ptolemy.data.$type [$typeToken one]]
-	    set result [$nil $relationalOperation $nil]
-	    set result2 [$one $relationalOperation $nil]
-	    set result3 [$nil $relationalOperation $one]
-	    set result4 [$one $relationalOperation $one]
-	    list [$result toString] [$result2 toString] \
-		[$result3 toString] [$result4 toString]
-	} {false false false true}
+	# Perform isEqualTo on nil types.  isEqualTo always returns false
+	set relationalOperations [list isEqualTo]
+	foreach relationalOperation $relationalOperations {
+	    test "$type-$relationalOperation" "Test $relationalOperation on $type" {
+		puts -nonewline " $relationalOperation"
+		#set nil [java::new ptolemy.data.$type [java::null]] 
+		set nil [java::field ptolemy.data.Token NIL]
+		set typeToken [java::new ptolemy.data.$type] 
+		set result [$nil $relationalOperation $nil]
+		set result2 [$one $relationalOperation $nil]
+		set result3 [$nil $relationalOperation $one]
+		set result4 [$one $relationalOperation $one]
+		list [$result toString] [$result2 toString] \
+		    [$result3 toString] [$result4 toString]
+	    } {false false false true}
+	}
     }
 
 #    # Perform isLessThan on nil types. isLessThan throws an exception
