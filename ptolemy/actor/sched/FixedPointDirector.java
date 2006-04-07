@@ -218,9 +218,8 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _actorsFinishedFiring = new HashSet();
         _actorsPostfired = new HashSet();
         _cachedAllInputsKnown = new HashSet();
-        _cachedAllOutputsKnown = new HashSet();
 
-        resetAllReceivers();
+        _resetAllReceivers();
 
         _cachedFunctionalProperty = true;
         _functionalPropertyVersion = -1;
@@ -306,7 +305,7 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         // We do this here rather than in prefire() because prefire()
         // may be invoked more than once in an iteration, during fixed
         // point convergence.
-        resetAllReceivers();
+        _resetAllReceivers();
         
         if (_debugging) {
             _debug(this.getFullName()
@@ -335,32 +334,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         _actorsAllowedToFire.clear();
         _actorsFinishedFiring.clear();
         _actorsPostfired.clear();
-
         _cachedAllInputsKnown.clear();
-        _cachedAllOutputsKnown.clear();
-
         _lastNumberOfKnownReceivers = -1;
-
         return super.prefire();
-    }
-
-    /** Reset all receivers to unknown status.
-     */
-    public void resetAllReceivers() {
-        if (_debugging) {
-            _debug("    FixedPointDirector is resetting all receivers");
-        }
-    
-        _currentNumberOfKnownReceivers = 0;
-    
-        if (_receivers == null) {
-            _receivers = new LinkedList();
-        }
-    
-        Iterator receiverIterator = _receivers.iterator();
-        while (receiverIterator.hasNext()) {
-            ((FixedPointReceiver) receiverIterator.next()).reset();
-        }
     }
 
     /** Return an array of suggested directors to be used with
@@ -437,6 +413,24 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     protected void _receiverChanged() {
         _currentNumberOfKnownReceivers++;
+    }
+    
+    /** Reset all receivers to unknown status.
+     */
+    protected void _resetAllReceivers() {
+        if (_debugging) {
+            _debug("    FixedPointDirector is resetting all receivers");
+        }
+        _currentNumberOfKnownReceivers = 0;
+    
+        if (_receivers == null) {
+            _receivers = new LinkedList();
+        }
+    
+        Iterator receiverIterator = _receivers.iterator();
+        while (receiverIterator.hasNext()) {
+            ((FixedPointReceiver) receiverIterator.next()).reset();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -560,8 +554,9 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      */
     private boolean _postfireActor(Actor actor) throws IllegalActionException {
         if (_actorsAllowedToFire.contains(actor)) {
-            _debug("    FixedPointDirector is postfiring",
-                    ((Nameable) actor).getName());
+            _debug(getFullName()
+                    + " is postfiring "
+                    + ((Nameable) actor).getFullName());
             return actor.postfire();
         }
         return true;
@@ -594,42 +589,42 @@ public class FixedPointDirector extends StaticSchedulingDirector {
     ////                         private variables                 ////
 
     /** The set of actors that have returned true in their prefire() methods
-     *  in the current iteration.
+     *  in the current iteration. This is used only to check monotonicity
+     *  constraints.
      */
     private Set _actorsAllowedToFire;
 
-    // The set of actors that have been fired in this iteration with
-    // all inputs known.
+    /** The set of actors that have been fired in this iteration with
+     *  all inputs known.
+     */
     private Set _actorsFinishedFiring;
 
-    // The set of actors that have been postfired in the given iteration.
+    /** The set of actors that have been postfired in the given iteration. */
     private Set _actorsPostfired;
     
-    // The set of actors that have all inputs known in the given iteration.
+    /** The set of actors that have all inputs known in the given iteration. */
     private Set _cachedAllInputsKnown;
 
-    // The set of actors that have all outputs known in the given iteration.
-    private Set _cachedAllOutputsKnown;
-
-    // The cache of the functional property of the container of this director
+    /** The cache of the functional property of the container of this director. */
     private boolean _cachedFunctionalProperty;
     
-    // The current number of receivers with known state.
+    /** The current number of receivers with known state. */
     private int _currentNumberOfKnownReceivers;
 
-    // The count of iterations executed.
+    /** The count of iterations executed. */
     private int _currentIteration;
 
-    // Version number for the cached functional property
+    /** Version number for the cached functional property. */
     private transient long _functionalPropertyVersion = -1L;
 
-    // The number of receivers with known state on the last phase of
-    // actor firings.
+    /** The number of receivers with known state on the last phase of
+     *  actor firings.
+     */
     private int _lastNumberOfKnownReceivers;
 
-    // List of all receivers this director has created.
+    /** List of all receivers this director has created. */
     private List _receivers;
 
-    // The number of actors fired since initialize().
+    /** The number of actors fired since initialize(). */
     private int _numberOfActorsFired;
 }
