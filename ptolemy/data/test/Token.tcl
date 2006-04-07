@@ -61,6 +61,7 @@ test Token-2.0 {Test add} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
+
 ######################################################################
 ####
 # 
@@ -70,6 +71,7 @@ test Token-2.1 {Test addReverse} {
     catch {$p1 addReverse $p2} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: addReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
+
 
 ######################################################################
 ####
@@ -187,8 +189,12 @@ test Token-2.12 {Test subtractReverse} {
 test Token-3.0 {Test one} {
     set p [java::new ptolemy.data.Token]
     catch {$p1 one} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Multiplicative identity not supported on ptolemy.data.Token.}}
+
+    set nil [java::field ptolemy.data.Token NIL]
+    set r1 [$nil one]
+
+    list $msg [$r1 isNil]
+} {{ptolemy.kernel.util.IllegalActionException: Multiplicative identity not supported on ptolemy.data.Token.} 1}
 
 ######################################################################
 ####
@@ -196,8 +202,11 @@ test Token-3.0 {Test one} {
 test Token-3.1 {Test zero} {
     set p [java::new ptolemy.data.Token]
     catch {$p1 zero} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Additive identity not supported on ptolemy.data.Token.}}
+
+    set nil [java::field ptolemy.data.Token NIL]
+    set r1 [$nil zero]
+    list $msg [$r1 isNil]
+} {{ptolemy.kernel.util.IllegalActionException: Additive identity not supported on ptolemy.data.Token.} 1}
 
 ######################################################################
 ####
