@@ -697,3 +697,17 @@ test ArrayToken-10.1 {nil ArrayToken equals methods} {
     list [$t equals $t] [$t length] [[$t isEqualTo $t] toString] [$t isNil]
 } {1 0 true 0}
 
+######################################################################
+####
+# 
+test ArrayToken-20.1 {elementMultiplyReturnType} {
+    set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    set t1 [java::call ptolemy.data.ArrayToken elementMultiplyReturnType \
+		[$valToken getType] [$valToken getType]]
+    set intToken [java::new ptolemy.data.IntToken 2]
+    set t2 [java::call ptolemy.data.ArrayToken elementMultiplyReturnType \
+		[$valToken getType] [$intToken getType]]
+    set t3 [java::call ptolemy.data.ArrayToken elementMultiplyReturnType \
+		[$intToken getType] [$valToken getType]]
+    list [$t1 toString] [$t2 toString] [$t3 toString]
+} {{{general}} {{int}} {{unknown}}}
