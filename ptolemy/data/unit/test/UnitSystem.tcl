@@ -115,3 +115,19 @@ test UnitSystem-1.2 {Add another UnitCategory twice} {
     list [expr {$index1 == $index2}] $name1 $name2 \
 	[java::call ptolemy.data.unit.UnitUtilities summarizeUnitCategories]
 } {1 seconds seconds {The registered categories are: 2 [meters, seconds]}}
+
+
+######################################################################
+####
+# 
+test UnitSystem-1.3 {Create Scalar tokens with units} {
+    # uses 1.2 above
+    set scalarTypes {ComplexToken DoubleToken FixToken IntToken LongToken UnsignedByteToken}
+    set results {}
+    foreach type $scalarTypes {
+	set t [java::new ptolemy.data.$type]
+	$t setUnitCategory 1
+	lappend results [$t toString]
+    }
+    list $results
+} {{{0.0 + 0.0i * seconds} {0.0 * seconds} {fix(0,2,2) * seconds} {0 * seconds} {0L * seconds} {0ub * seconds}}}
