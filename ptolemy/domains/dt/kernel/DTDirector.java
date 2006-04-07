@@ -684,7 +684,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
                 // We probably have something like DE on the outside...
                 // Transfer one token and wait for refiring to transfer
                 // the others.
-                return domainPolymorphicTransferOutputs(port);
+                return _transferOutputs(port);
             }
         } else {
             return false;

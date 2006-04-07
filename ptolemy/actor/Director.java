@@ -226,114 +226,6 @@ public class Director extends Attribute implements Executable {
         super.attributeChanged(attribute);
     }
 
-    /** Transfer at most one data token from the given input port of
-     *  the container to the ports it is connected to on the inside.
-     *  This method delegates the operation to the IOPort, so that the
-     *  subclass of IOPort, TypedIOPort, can override this method to
-     *  perform run-time type conversion.
-     *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if at least one data token is transferred.
-     *  @see IOPort#transferInputs
-     */
-    public boolean domainPolymorphicTransferInputs(IOPort port)
-            throws IllegalActionException {
-        if (_debugging) {
-            _debug("Calling transferInputs on port: " + port.getFullName());
-        }
-
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferInputs on a port is not an opaque"
-                            + "input port.");
-        }
-
-        boolean wasTransferred = false;
-
-        for (int i = 0; i < port.getWidth(); i++) {
-            try {
-                if (i < port.getWidthInside()) {
-                    if (port.hasToken(i)) {
-                        Token t = port.get(i);
-
-                        if (_debugging) {
-                            _debug(getName(), "transferring input from "
-                                    + port.getName());
-                        }
-
-                        port.sendInside(i, t);
-                        wasTransferred = true;
-                    }
-                } else {
-                    // No inside connection to transfer tokens to.
-                    // In this case, consume one input token if there is one.
-                    if (_debugging) {
-                        _debug(getName(), "Dropping single input from "
-                                + port.getName());
-                    }
-
-                    if (port.hasToken(i)) {
-                        port.get(i);
-                    }
-                }
-            } catch (NoTokenException ex) {
-                // this shouldn't happen.
-                throw new InternalErrorException(this, ex, null);
-            }
-        }
-
-        return wasTransferred;
-    }
-
-    /** Transfer at most one data token from the given output port of
-     *  the container to the ports it is connected to on the outside.
-     *  This method delegates the operation to the same method on
-     *  IOPort.
-     *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if at least one data token is transferred.
-     *  @see IOPort#transferOutputs
-     */
-    public boolean domainPolymorphicTransferOutputs(IOPort port)
-            throws IllegalActionException {
-        if (_debugging) {
-            _debug("Calling transferOutputs on port: " + port.getFullName());
-        }
-
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "Attempted to transferOutputs on a port that "
-                            + "is not an opaque input port.");
-        }
-
-        boolean wasTransferred = false;
-
-        for (int i = 0; i < port.getWidthInside(); i++) {
-            try {
-                if (port.hasTokenInside(i)) {
-                    Token t = port.getInside(i);
-
-                    if (_debugging) {
-                        _debug(getName(), "transferring output from "
-                                + port.getName());
-                    }
-
-                    port.send(i, t);
-                    wasTransferred = true;
-                }
-            } catch (NoTokenException ex) {
-                // this shouldn't happen.
-                throw new InternalErrorException(this, ex, null);
-            }
-        }
-
-        return wasTransferred;
-    }
-
     /** Iterate all the deeply contained actors of the
      *  container of this director exactly once. This method is not functional,
      *  since an iteration of the deeply contained actors may change
@@ -1179,8 +1071,7 @@ public class Director extends Attribute implements Executable {
 
     /** Transfer data from an input port of the container to the ports
      *  it is connected to on the inside.  The implementation in this
-     *  base class defers to the domainPolymorphicTransferInputs
-     *  method to transfer at most one token.  Derived classes may override
+     *  base class transfers at most one token.  Derived classes may override
      *  this method to transfer a domain-specific number of tokens.
      *
      *  @exception IllegalActionException If the port is not an opaque
@@ -1189,23 +1080,25 @@ public class Director extends Attribute implements Executable {
      *  @return True if at least one data token is transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-        return domainPolymorphicTransferInputs(port);
+        // Use a strategy pattern here so that the code that transfers
+        // at most one token is available to any derived class.
+        return _transferInputs(port);
     }
 
     /** Transfer data from an output port of the container to the
      *  ports it is connected to on the outside.  The implementation
-     *  in this base class defers to the
-     *  domainPolymorphicTransferOutputs method to transfer at most
-     *  one token.  Derived classes may override this method to
-     *  transfer a domain-specific number of tokens.
-     *
+     *  in this base class transfers at most
+     *  one token, but derived classes may transfer more than one
+     *  token.
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
-        return domainPolymorphicTransferOutputs(port);
+        // Use a strategy pattern here so that the code that transfers
+        // at most one token is available to any derived class.
+        return _transferOutputs(port);
     }
 
     /** Invoke the wrapup() method of all the actors contained in the
@@ -1312,6 +1205,107 @@ public class Director extends Attribute implements Executable {
         }
 
         return true;
+    }
+
+    /** Transfer at most one data token from the given input port of
+     *  the container to the ports it is connected to on the inside.
+     *  This method delegates the operation to the IOPort, so that the
+     *  subclass of IOPort, TypedIOPort, can override this method to
+     *  perform run-time type conversion.
+     *
+     *  @exception IllegalActionException If the port is not an opaque
+     *   input port.
+     *  @param port The port to transfer tokens from.
+     *  @return True if at least one data token is transferred.
+     *  @see IOPort#transferInputs
+     */
+    protected boolean _transferInputs(IOPort port)
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug("Calling transferInputs on port: " + port.getFullName());
+        }
+
+        if (!port.isInput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferInputs on a port is not an opaque"
+                            + "input port.");
+        }
+
+        boolean wasTransferred = false;
+
+        for (int i = 0; i < port.getWidth(); i++) {
+            try {
+                if (i < port.getWidthInside()) {
+                    if (port.hasToken(i)) {
+                        Token t = port.get(i);
+
+                        if (_debugging) {
+                            _debug(getName(), "transferring input from "
+                                    + port.getName());
+                        }
+
+                        port.sendInside(i, t);
+                        wasTransferred = true;
+                    }
+                } else {
+                    // No inside connection to transfer tokens to.
+                    // In this case, consume one input token if there is one.
+                    if (_debugging) {
+                        _debug(getName(), "Dropping single input from "
+                                + port.getName());
+                    }
+
+                    if (port.hasToken(i)) {
+                        port.get(i);
+                    }
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+
+        return wasTransferred;
+    }
+
+    /** Transfer at most one data token from the given output port of
+     *  the container to the ports it is connected to on the outside.
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
+     *  @param port The port to transfer tokens from.
+     */
+    protected boolean _transferOutputs(IOPort port)
+            throws IllegalActionException {
+        boolean result = false;
+        if (_debugging) {
+            _debug("Calling transferOutputs on port: " + port.getFullName());
+        }
+
+        if (!port.isOutput() || !port.isOpaque()) {
+            throw new IllegalActionException(this, port,
+                    "Attempted to transferOutputs on a port that "
+                            + "is not an opaque input port.");
+        }
+
+        for (int i = 0; i < port.getWidthInside(); i++) {
+            try {
+                if (port.hasTokenInside(i)) {
+                    Token t = port.getInside(i);
+
+                    if (_debugging) {
+                        _debug(getName(), "transferring output from "
+                                + port.getName());
+                    }
+
+                    port.send(i, t);
+                    result = true;
+                }
+            } catch (NoTokenException ex) {
+                // this shouldn't happen.
+                throw new InternalErrorException(this, ex, null);
+            }
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
