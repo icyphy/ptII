@@ -36,6 +36,7 @@ import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.FixedPointDirector;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.util.Time;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
@@ -333,6 +334,9 @@ public class ContDirector extends FixedPointDirector implements
             // FIXME: this design does not support hierarchical execution yet.
             while (!_ODESolver._isConverged() && _ODESolver.resolvedStates()) {
                 _ODESolver.fire();
+//                _ODESolver._incrementRoundCount();
+                resetAllReceivers();
+                super.prefire();
                 super.fire();
             }
             
@@ -531,8 +535,13 @@ public class ContDirector extends FixedPointDirector implements
         // Record starting point of the real time (the computer system time)
         // in case the director is synchronized to the real time.
         _timeBase = System.currentTimeMillis();
+        
         // set current time and initialize actors.
         super.initialize();
+
+        // register the stop time as a breakpoint.
+        _debug("Set the stop time as a breakpoint: " + getModelStopTime());
+        fireAt((Actor) getContainer(), getModelStopTime());
     }
 
     /** Return true if this is the discrete phase of execution.
@@ -550,12 +559,56 @@ public class ContDirector extends FixedPointDirector implements
      *  @exception IllegalActionException If refiring can not be granted.
      */
     public boolean postfire() throws IllegalActionException {
+        // postfire all continuous actors to commit their states.
+        // Note that event generators are postfired.
+        _markStates();
+
+        // Now, the current time is equal to the stop time.
+        // If the breakpoints table does not contain the current model time,
+        // which means no events are and will be generated,
+        // the execution stops by returning false in this postfire method.
+        if (getModelTime().equals(getModelStopTime())
+                && !_breakpoints.contains(getModelTime())) {
+            return false;
+        }
+
+        // predict the next step size.
+        setSuggestedNextStepSize(_predictNextStepSize());
+
         if (_isEmbedded() && (_breakpoints.size() > 0)) {
             Time time = (Time) _breakpoints.removeFirst();
             CompositeActor container = (CompositeActor) getContainer();
             container.getExecutiveDirector().fireAt(container, time);
         }
         return super.postfire();
+    }
+
+    /** Call the prefire() method of the super class and return its value.
+     *  Record the current model time as the beginning time of the current
+     *  iteration.
+     *  @return True if this director is ready to fire.
+     *  @exception IllegalActionException If thrown by the super class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // NOTE: super.prefire() has to be called at the very beginning because
+        // it synchronizes the model time with that of the executive director.
+        boolean prefireReturns = super.prefire();
+    
+        // No actors are prefired here. Depending on the phase of execution,
+        // actors may be prefired (discrete phase) or not (continuous phase).
+        // Record the start time of the current iteration.
+        // The begin time of an iteration can be changed only by directors.
+        // On the other hand, the model time may be changed by ODE solvers.
+        // One example solver is the RK23 solver. It resolves the states in
+        // three steps, and it increment the model time at each step. If
+        // the CurrentTime actor is involved as one of the state transition
+        // actors, it needs to report the model time at each intermediate steps.
+        // (The CurrentTime actor reports the model time.)
+        // The iterationBegintime will be used for roll back when the current
+        // step size is incorrect.
+        _setIterationBeginTime(getModelTime());
+    
+        return prefireReturns;
     }
 
     /** Preinitialize the model for an execution. This method is
@@ -608,6 +661,23 @@ public class ContDirector extends FixedPointDirector implements
     public void setCurrentStepSize(double stepSize) {
         _debug("----- Setting the current step size to " + stepSize);
         _currentStepSize = stepSize;
+    }
+
+    /** Set a new value to the current time of the model, where the new
+     *  time can be earlier than the current time to support rollback.
+     *  This overrides the setCurrentTime() in the Director base class.
+     *  This is a critical parameter in an execution, and the
+     *  actors are not supposed to call it.
+     *  @param newTime The new current simulation time.
+     */
+    public final void setModelTime(Time newTime) {
+        // This method is final for performance reason.
+        // NOTE: this method is public because ODE solvers need to advance time.
+        if (_debugging) {
+            _debug("----- Setting current time to " + newTime);
+        }
+    
+        _currentTime = newTime;
     }
 
     /** Set the suggested next step size. If the argument is larger than
@@ -731,7 +801,7 @@ public class ContDirector extends FixedPointDirector implements
                     + " is not found.");
         } catch (InstantiationException e) {
             throw new IllegalActionException(this, "ODESolver: " + className
-                    + " instantiation failed.");
+                    + " instantiation failed." + e);
         } catch (IllegalAccessException e) {
             throw new IllegalActionException(this, "ODESolver: " + className
                     + " is not accessible.");
@@ -739,6 +809,102 @@ public class ContDirector extends FixedPointDirector implements
 
         newSolver._makeSolverOf(this);
         return newSolver;
+    }
+
+    /** The current states are marked as a known good checkpoint.
+     *  <p>
+     *  If the <i>synchronizeToRealTime</i> parameter is <i>true</i>,
+     *  then this method will block execution until the real time catches
+     *  up with current model time. The units for time are seconds.
+     *
+     *  @exception IllegalActionException If the synchronizeToRealTime
+     *  parameter does not have a valid token, or the sleep is interrupted,
+     *  or there is not a schedule, or any of the actors in the schedule can
+     *  not be postfired.
+     */
+    protected void _markStates() throws IllegalActionException {
+        // Mark the current state of the stateful actors.
+        // FIXME: may generate StatefulActor set for more 
+        // efficient execution.
+        Schedule schedule = getScheduler().getSchedule();
+        Iterator firingIterator = schedule.firingIterator();
+        while (firingIterator.hasNext() && !_stopRequested) {
+            Actor actor = ((Firing) firingIterator.next()).getActor();
+            if (actor instanceof ContStatefulActor) {
+                _debug("Saving states of " + actor);
+                ((ContStatefulActor) actor).markState();
+            }
+        }
+
+        // Synchronize to real time if necessary.
+        if (((BooleanToken) synchronizeToRealTime.getToken()).booleanValue()) {
+            long realTime = System.currentTimeMillis() - _timeBase;
+            long simulationTime = (long) ((getModelTime().subtract(
+                    getModelStartTime()).getDoubleValue()) * 1000);
+    
+            _debug("real time " + realTime + " and simulation time "
+                    + simulationTime);
+    
+            long timeDifference = simulationTime - realTime;
+    
+            if (timeDifference > 20) {
+                try {
+                    _debug("Sleep for " + timeDifference + "ms");
+                    Thread.sleep(timeDifference - 20);
+                } catch (Exception e) {
+                    throw new IllegalActionException(this, "Sleep Interrupted"
+                            + e.getMessage());
+                }
+            } else {
+                _debug("Warning: " + getFullName(),
+                        " cannot achieve real-time performance"
+                        + " at simulation time " + getModelTime());
+            }
+        }
+    }
+
+    /** Predict the next step size. If the current integration step is accurate,
+     *  estimate the step size for the next iteration. The predicted step size
+     *  is the minimum of predictions from all step size control actors,
+     *  and it never exceeds 10 times of the current step size.
+     *  If there are no step-size control actors at all, then return
+     *  the current step size times 5. However, it never exceeds the maximum
+     *  step size.
+     *  @return the prediced next step size.
+     *  @exception IllegalActionException If the scheduler throws it.
+     */
+    protected double _predictNextStepSize() throws IllegalActionException {
+        double predictedStep = getCurrentStepSize();
+    
+        if (predictedStep == 0.0) {
+            // The current step size is 0.0. Predict a positive value to let
+            // time advance.
+            predictedStep = getInitialStepSize();
+        } else {
+            predictedStep = 10.0 * getCurrentStepSize();
+    
+            // FIXME: may generate StatefulActor set for more 
+            // efficient execution.
+            Schedule schedule = getScheduler().getSchedule();
+            Iterator firingIterator = schedule.firingIterator();
+            while (firingIterator.hasNext() && !_stopRequested) {
+                Actor actor = ((Firing) firingIterator.next()).getActor();
+                if (actor instanceof ContStepSizeControlActor) {
+                    _debug("Saving states of " + actor);
+                    double suggestedStepSize = 
+                        ((ContStepSizeControlActor) actor).predictedStepSize();
+                        if (predictedStep > suggestedStepSize) {
+                            predictedStep = suggestedStepSize;
+                        }
+                }
+            }
+    
+            if (predictedStep > getMaxStepSize()) {
+                predictedStep = getMaxStepSize();
+            }
+        }
+    
+        return predictedStep;
     }
 
     /** Set the ODE solver to be the given ODE solver.
@@ -876,7 +1042,8 @@ public class ContDirector extends FixedPointDirector implements
     // If the current time plus the current step size exceeds the
     // time of the next breakpoint, reduce the step size such that the next
     // breakpoint is the end time of the current iteration.
-    // NOTE: the breakpoint table is not modified.
+    // NOTE: if the current time is a breakpoint, that breakpoint is
+    // removed. Otherwise, the breakpoint table is left unmodified.
     private double _refinedStepWRTBreakpoints() {
         double currentStepSize = getCurrentStepSize();
         if (!_breakpoints.isEmpty()) {
@@ -884,6 +1051,9 @@ public class ContDirector extends FixedPointDirector implements
             _debug("The first breakpoint is at " + point);
             double maximumAllowedStepSize = 
                 point.subtract(getModelTime()).getDoubleValue();
+            if (maximumAllowedStepSize == 0.0) {
+                _breakpoints.removeFirst();
+            }
             if (currentStepSize > maximumAllowedStepSize) {
                 currentStepSize = maximumAllowedStepSize;
             }

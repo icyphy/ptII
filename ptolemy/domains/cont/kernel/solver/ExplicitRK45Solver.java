@@ -89,6 +89,17 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Green (hyzheng)
  */
 public class ExplicitRK45Solver extends ContODESolver {
+    // NOTE: this constructor is necessary for the director to instantiate
+    // an instance of a solver.
+    /** Construct a solver in the default workspace.
+     *  The solver is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_Runge_Kutta_4_5_Solver".
+     */
+    public ExplicitRK45Solver() {
+        this(null);
+    }
+
     /** Construct a solver in the given workspace.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -175,7 +186,7 @@ public class ExplicitRK45Solver extends ContODESolver {
         case 0:
 
             // Get the derivative at t;
-            double k0 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            double k0 = integrator.getTentativeDerivative();
             integrator.setAuxVariables(0, k0);
             outputValue = xn + (h * k0 * _B[0][0]);
             break;

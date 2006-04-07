@@ -203,6 +203,13 @@ public class ContIntegrator extends TypedAtomicActor implements
      */
     public void fire() throws IllegalActionException {
         ContDirector dir = (ContDirector) getDirector();
+        if (input.isKnown()) {
+            if (input.hasToken(0)) {
+                double currentDerivative = 
+                    ((DoubleToken) input.get(0)).doubleValue();
+                setTentativeDerivative(currentDerivative);
+            }
+        }
         if (dir.getCurrentStepSize() == 0) {
             if (impulseInput.isKnown()) {
                 if (impulseInput.hasToken(0)) {
@@ -212,7 +219,7 @@ public class ContIntegrator extends TypedAtomicActor implements
                 }
             }
             output.broadcast(new DoubleToken(getTentativeState()));
-        } else {
+        } else if (!output.isKnown()) {
             dir.getODESolver().integratorFire(this);
         }
     }
@@ -311,6 +318,8 @@ public class ContIntegrator extends TypedAtomicActor implements
      *  restored (reconstructed) too.
      */
     public void goToMarkedState() {
+        _derivative = _storedDerivative;
+        setTentativeDerivative(_storedDerivative);
         _state = _storedState;
         setTentativeState(_storedState);
     }
@@ -358,19 +367,14 @@ public class ContIntegrator extends TypedAtomicActor implements
      *  @return True if the state is resolved successfully.
      */
     public boolean isStepSizeAccurate() {
-        try {
-            // We check the validity of the input
-            // If it is NaN, or Infinity, an exception is thrown.
-            double f_dot = ((DoubleToken) input.get(0)).doubleValue();
-
-            if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
-                throw new InternalErrorException("The input of " + getName()
-                        + " is not valid because"
-                        + " it is a result of divide-by-zero.");
-            }
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(getName() + " can't read input."
-                    + e.getMessage());
+        // We check the validity of the input
+        // If it is NaN, or Infinity, an exception is thrown.
+        double f_dot = getTentativeDerivative();
+        
+        if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
+            throw new InternalErrorException("The input of " + getName()
+                    + " is not valid because"
+                    + " it is a result of divide-by-zero.");
         }
 
         ContODESolver solver = ((ContDirector) getDirector()).getODESolver();
@@ -395,6 +399,7 @@ public class ContIntegrator extends TypedAtomicActor implements
      */
     public void markState() {
         _storedState = getState();
+        _storedDerivative = getDerivative();
     }
 
     /** Update the state and its derivative, and push them into history if
@@ -566,6 +571,9 @@ public class ContIntegrator extends TypedAtomicActor implements
 
     // State.
     private double _state;
+
+    // The derivative stored, may be used for rollback execution.
+    private double _storedDerivative;
 
     // The state stored, may be used for rollback execution.
     private double _storedState;

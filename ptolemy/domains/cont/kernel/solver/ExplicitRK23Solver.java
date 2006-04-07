@@ -75,6 +75,17 @@ import ptolemy.kernel.util.Workspace;
  @Pt.AcceptedRating Green (hyzheng)
  */
 public class ExplicitRK23Solver extends ContODESolver {
+    // NOTE: this constructor is necessary for the director to instantiate
+    // an instance of a solver.
+    /** Construct a solver in the default workspace.
+     *  The solver is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     *  The name of the solver is set to "CT_Runge_Kutta_2_3_Solver".
+     */
+    public ExplicitRK23Solver() {
+        this(null);
+    }
+
     /** Construct a solver in the given workspace.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
@@ -161,24 +172,25 @@ public class ExplicitRK23Solver extends ContODESolver {
         case 0:
 
             // Get the derivative at t;
-            double k0 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            double k0 = integrator.getTentativeDerivative();
             integrator.setAuxVariables(0, k0);
             outvalue = xn + (h * k0 * _B[0][0]);
             break;
 
         case 1:
 
-            double k1 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            double k1 = integrator.getTentativeDerivative();
             integrator.setAuxVariables(1, k1);
             outvalue = xn + (h * ((k[0] * _B[1][0]) + (k1 * _B[1][1])));
             break;
 
         case 2:
 
-            double k2 = ((DoubleToken) integrator.input.get(0)).doubleValue();
+            double k2 = integrator.getTentativeDerivative();
             integrator.setAuxVariables(2, k2);
             outvalue = xn
-                    + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) + (k2 * _B[2][2])));
+                    + (h * ((k[0] * _B[2][0]) + (k[1] * _B[2][1]) 
+                            + (k2 * _B[2][2])));
             integrator.setTentativeState(outvalue);
             break;
 
@@ -198,37 +210,31 @@ public class ExplicitRK23Solver extends ContODESolver {
      *  @return True if the integration is successful.
      */
     public boolean integratorIsAccurate(ContIntegrator integrator) {
-        try {
-            ContDirector director = (ContDirector) getContainer();
-            double tolerance = director.getErrorTolerance();
-            double h = director.getCurrentStepSize();
-            double f = ((DoubleToken) integrator.input.get(0)).doubleValue();
-
-            // FIXME: check the equation for error calculation... It is a 
-            // little bit strange comparing to that of the RK45 solver.
-            double[] k = integrator.getAuxVariables();
-            double error = h
-                    * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
-                            + (f * _E[3]));
-
-            //k[3] is Local Truncation Error
-            integrator.setAuxVariables(3, error);
+        ContDirector director = (ContDirector) getContainer();
+        double tolerance = director.getErrorTolerance();
+        double h = director.getCurrentStepSize();
+        double f = integrator.getTentativeDerivative();
+        
+        // FIXME: check the equation for error calculation... It is a 
+        // little bit strange comparing to that of the RK45 solver.
+        double[] k = integrator.getAuxVariables();
+        double error = h
+        * Math.abs((k[0] * _E[0]) + (k[1] * _E[1]) + (k[2] * _E[2])
+                + (f * _E[3]));
+        
+        //k[3] is Local Truncation Error
+        integrator.setAuxVariables(3, error);
+        _debug("Integrator: " + integrator.getName()
+                + " local truncation error = " + error);
+        
+        if (error < tolerance) {
             _debug("Integrator: " + integrator.getName()
-                    + " local truncation error = " + error);
-
-            if (error < tolerance) {
-                _debug("Integrator: " + integrator.getName()
-                        + " report a success.");
-                return true;
-            } else {
-                _debug("Integrator: " + integrator.getName()
-                        + " reports a failure.");
-                return false;
-            }
-        } catch (IllegalActionException e) {
-            //should never happen.
-            throw new InternalErrorException(integrator.getName()
-                    + " can't read input." + e.getMessage());
+                    + " report a success.");
+            return true;
+        } else {
+            _debug("Integrator: " + integrator.getName()
+                    + " reports a failure.");
+            return false;
         }
     }
 
