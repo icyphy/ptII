@@ -58,7 +58,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.domains.fsm.modal.ModalController;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -109,7 +108,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
              *  @exception IllegalActionException If an error occurs during
              *   evaluation.
              */
-            public ptolemy.data.Token visit(ASTPtRootNode node,
+            public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
                     ParserScope scope) {
                 return new Token();
             }
@@ -725,15 +724,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
                 ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
                 if (variable.isStringMode()) {
-                    return "\"" + parseTreeCodeGenerator.escapeForTargetLanguage(
-                            variable.getExpression()) + "\"";
+                    return "\"" + parseTreeCodeGenerator.escapeForTargetLanguage(variable.getExpression()) + "\"";
                 }
 
                 PtParser parser = new PtParser();
-                ASTPtRootNode parseTree = parser.generateParseTree(
-                        getParameterExpression(variable));
-                        //variable.getExpression());
-                parseTreeCodeGenerator.visit(parseTree,
+                ASTPtRootNode parseTree = parser.generateParseTree(variable
+                        .getExpression());
+                parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new HelperScope(variable));
                 return processCode(parseTreeCodeGenerator.generateFireCode());
             } else if (attribute instanceof Settable) {
@@ -764,52 +761,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
     }
 
-    /**
-     * Get the expression of the given parameter. Sub-classes should
-     * override this method if they want to convert the parameter to
-     * a different type. 
-     * @param variable The given parameter.
-     * @return The expression of the parameter.
-     */
-    public String getParameterExpression(Variable variable) {
-        return variable.getExpression();
-    }
-
     /** Return the parse tree to use with expressions.
      *  @return the parse tree to use with expressions.
      */
     public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
         return _parseTreeCodeGenerator;
-    }
-
-    /**
-     * Get the port associated with the given reference name.
-     * @param refName The given reference name.
-     * @return The associated port, or null if none is found.
-     */
-    public IOPort getPort(String refName) {
-        Actor actor = (Actor) _component;        
-
-        Iterator inputPorts = actor.inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-
-            if (inputPort.getName().equals(refName)) {
-                return inputPort;
-            }
-        }
-
-        Iterator outputPorts = actor.outputPortList().iterator();
-
-        while (outputPorts.hasNext()) {
-            IOPort outputPort = (IOPort) outputPorts.next();
-
-            if (outputPort.getName().equals(refName)) {
-                return outputPort;
-            }
-        }
-        return null;
     }
 
     /** Return the associated actor's rates for all configurations of
@@ -860,6 +816,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         name = processCode(name);
 
         StringBuffer result = new StringBuffer();
+        Actor actor = (Actor) _component;
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
         if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
@@ -890,7 +847,33 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             refName = refName.substring(1);
         }
 
-        IOPort port = getPort(refName);
+        IOPort port = null;
+
+        Iterator inputPorts = actor.inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort) inputPorts.next();
+
+            // The channel is specified as $ref(port#channelNumber).
+            if (inputPort.getName().equals(refName)) {
+                port = inputPort;
+                break;
+            }
+        }
+
+        if (port == null) {
+            Iterator outputPorts = actor.outputPortList().iterator();
+
+            while (outputPorts.hasNext()) {
+                IOPort outputPort = (IOPort) outputPorts.next();
+
+                // The channel is specified as $ref(port#channelNumber).
+                if (outputPort.getName().equals(refName)) {
+                    port = outputPort;
+                    break;
+                }
+            }
+        }
 
         String[] channelAndOffset = _getChannelAndOffset(name);
 
@@ -1118,9 +1101,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 result.append(" ," + channelAndOffset[1] + ")" + ".payload.");
                 Type elementType = ((ArrayType) ((Parameter) attribute)
                         .getType()).getElementType();
-                if (isPrimitiveType(elementType)) {
-                    result.append(codeGenType(elementType));
-                }
+                result.append(codeGenType(elementType));
             }
 
             return result.toString();
@@ -1196,11 +1177,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return sinkChannels;
     }
 
-    /** Get the size of a parameter or the width of a port. The size
-     *  of a parameter is the length of its array if the parameter's
-     *  type is array, and 1 otherwise.
-     *  @param name The name of the parameter or port.
-     *  @return The size of the parameter or width of the port.
+    /** Get the size of a parameter. The size of a parameter
+     *  is the length of its array if the parameter's type is array,
+     *  and 1 otherwise.
+     *  @param name The name of the parameter.
+     *  @return The size of a parameter.
      *  @exception IllegalActionException If no port or parameter of
      *   the given name is found.
      */
@@ -1208,7 +1189,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         // Try if the name is a parameter.
         Attribute attribute = _component.getAttribute(name);
-        
+
         if (attribute != null) {
             // FIXME:  Could it be something other than variable?
             if (attribute instanceof Variable) {
@@ -1219,14 +1200,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
 
                 return 1;
-            } else {
-                throw new IllegalActionException(_component, 
-                        name + "is a attribute but not a variable.");
-            }
-        } else {
-            IOPort port = getPort(name);
-            if (port != null) {
-                return port.getWidth();                
             }
         }
 
@@ -1666,13 +1639,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             }
         } else if (sinkType == BaseType.STRING) {
             if (sourceType == BaseType.BOOLEAN) {
-                result += "myBtoa(" + sourceRef + ")";
+                result += "btoa(" + sourceRef + ")";
             } else if (sourceType == BaseType.INT) {
-                result += "myItoa(" + sourceRef + ")";
+                result += "itoa(" + sourceRef + ")";
             } else if (sourceType == BaseType.LONG) {
-                result += "myLtoa(" + sourceRef + ")";
+                result += "ltoa(" + sourceRef + ")";
             } else if (sourceType == BaseType.DOUBLE) {
-                result += "myFtoa(" + sourceRef + ")";
+                result += "ftoa(" + sourceRef + ")";
             } else {
                 throw new IllegalActionException(
                         "Conversion not handled. Converting from '"
