@@ -112,6 +112,7 @@ public class EnabledComposite extends TypedCompositeActor {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public boolean prefire() throws IllegalActionException {
+        boolean returnValue = super.prefire();
         if (!enable.isKnown(0)) {
             // Do nothing, which will leave the outputs unknown.
             if (_debugging) {
@@ -138,7 +139,7 @@ public class EnabledComposite extends TypedCompositeActor {
             return false;
         } else {
             // Actor is enabled. Delegate to the superclass.
-            return super.prefire();
+            return returnValue;
         }
     }
 }
