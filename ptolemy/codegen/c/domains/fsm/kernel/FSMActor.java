@@ -231,7 +231,7 @@ public class FSMActor extends CCodeGeneratorHelper {
                     ASTPtRootNode guardParseTree = parser
                             .generateParseTree(guard);
                     ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
-                    parseTreeCodeGenerator.visit(guardParseTree,
+                    parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                             _scope);
                     codeBuffer
                             .append(parseTreeCodeGenerator.generateFireCode());
@@ -320,7 +320,8 @@ public class FSMActor extends CCodeGeneratorHelper {
                         }
 
                         ParseTreeCodeGenerator parseTreeCodeGenerator = getParseTreeCodeGenerator();
-                        parseTreeCodeGenerator.visit(parseTree, _scope);
+                        parseTreeCodeGenerator.evaluateParseTree(parseTree,
+                                _scope);
                         codeBuffer.append(parseTreeCodeGenerator
                                 .generateFireCode());
                         codeBuffer.append(";\n");

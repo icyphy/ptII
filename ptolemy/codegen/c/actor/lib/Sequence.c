@@ -1,12 +1,12 @@
 /***preinitBlock***/
     int $actorSymbol(currentIndex) = 0;
-    boolean $actorSymbol(outputProduced) = false;
+    int $actorSymbol(outputProduced) = 0;
 /**/
 
 /***codeBlock1***/
     if ($actorSymbol(currentIndex) < $size(values)) {
         $ref(output) = $ref(values, $actorSymbol(currentIndex));
-        $actorSymbol(outputProduced) = true;
+        $actorSymbol(outputProduced) = 1;
     };
 /**/
 
@@ -14,14 +14,14 @@
 /***codeBlock2***/
     if ($ref(enable) != 0 && $actorSymbol(currentIndex) < $size(values)) {
         $ref(output) = $ref(values, $actorSymbol(currentIndex));
-        $actorSymbol(outputProduced) = true;
+        $actorSymbol(outputProduced) = 1;
     }
 /**/
 
 
 /***codeBlock3***/
-    if ($actorSymbol(outputProduced)) {
-        $actorSymbol(outputProduced) = false;
+    if ($actorSymbol(outputProduced) != 0) {
+        $actorSymbol(outputProduced) = 0;
         $actorSymbol(currentIndex) += 1;
         if ($actorSymbol(currentIndex) >= $size(values)) {
             if ($val(repeat)) {

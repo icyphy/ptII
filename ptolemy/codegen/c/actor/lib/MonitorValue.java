@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /** A helper class for ptolemy.actor.lib.MonitorValue.

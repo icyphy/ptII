@@ -33,12 +33,6 @@ Token Boolean_equals(Token thisToken, ...) {
 }
 /**/
 
-/***cloneBlock***/
-Token Boolean_clone(Token thisToken, ...) {
-	return thisToken;
-}
-/**/
-
 
 /***convertBlock***/
 Token Boolean_convert(Token token, ...) {
@@ -61,7 +55,7 @@ Token Boolean_print(Token thisToken, ...) {
 
 /***toStringBlock***/
 Token Boolean_toString(Token thisToken, ...) {
-	return String_new(myBtoa(thisToken.payload.Boolean));
+	return String_new(btoa(thisToken.payload.Boolean));
 }
 /**/
 

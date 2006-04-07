@@ -86,8 +86,8 @@
                         && !$ref(input#$channel)) ) {
             printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
                     $actorSymbol(numberOfTokensSeen),
-                    myBtoa($ref(input#$channel)),
-                    myBtoa($ref(correctValues, $actorSymbol(numberOfTokensSeen))));
+                    btoa($ref(input#$channel)),
+                    btoa($ref(correctValues, $actorSymbol(numberOfTokensSeen))));
             exit(-1);    		
 		}
 /**/
@@ -106,8 +106,8 @@
                                 && !$ref(input#$channel)))) {
             printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
                     $actorSymbol(numberOfTokensSeen),
-                    myBtoa($ref(input#$channel)),
-                    myBtoa($actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Boolean));
+                    btoa($ref(input#$channel)),
+                    btoa($actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Boolean));
             exit(-1);    
         }
 /**/

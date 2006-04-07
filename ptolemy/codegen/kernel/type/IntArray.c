@@ -127,7 +127,7 @@ Token IntArray_toString(Token thisToken, ...) {
         if (i != 0) {
 			strcat(string, ", ");
         }
-        elementString = myItoa(thisToken.payload.IntArray->elements[i]);
+        elementString = itoa(thisToken.payload.IntArray->elements[i]);
 		currentSize += strlen(elementString.payload.String);
         if (currentSize > allocatedSize) {
         	allocatedSize *= 2;

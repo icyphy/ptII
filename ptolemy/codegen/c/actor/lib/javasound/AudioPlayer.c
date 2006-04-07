@@ -12,8 +12,11 @@
     };
     
     // FIXME: how should we determine the buffer size??
-    #define $actorClass(BUFFER_SIZE) 16384   // ~50 KB buffer size
+    #define $actorClass(BUFFER_SIZE) 8192   // ~50 KB buffer size
 
+    // FIXME: what should we set the audio buffer size in samples equals to??
+    #define $actorClass(SAMPLE_BUFFER_SIZE) 8192
+    
     double $actorClass(clip) (double num) {
         return num > 1.0 ? 1.0 : num < -1.0 ? -1.0 : num;
     }
@@ -200,7 +203,7 @@
     $actorSymbol(fmt).freq = $val(sampleRate);
     $actorSymbol(fmt).format = AUDIO_U$val(bitsPerSample);
     $actorSymbol(fmt).channels = $val(channels);
-    $actorSymbol(fmt).samples = $actorClass(BUFFER_SIZE);    
+    $actorSymbol(fmt).samples = $actorClass(SAMPLE_BUFFER_SIZE);    
     $actorSymbol(fmt).callback = $actorSymbol(mixaudio);
     $actorSymbol(fmt).userdata = NULL;
 

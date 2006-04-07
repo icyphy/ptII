@@ -651,7 +651,7 @@ public class MultirateFSMDirector extends FSMDirector {
             ASTPtRootNode guardParseTree = parser.generateParseTree(guard);
             ParseTreeCodeGenerator parseTreeCodeGenerator = controllerHelper
                     .getParseTreeCodeGenerator();
-            parseTreeCodeGenerator.visit(guardParseTree,
+            parseTreeCodeGenerator.evaluateParseTree(guardParseTree,
                     controllerHelper._scope);
             codeBuffer.append(parseTreeCodeGenerator.generateFireCode());
             codeBuffer.append(") {\n");
@@ -682,10 +682,10 @@ public class MultirateFSMDirector extends FSMDirector {
                     }
                     parseTreeCodeGenerator = controllerHelper
                             .getParseTreeCodeGenerator();
-                    parseTreeCodeGenerator.visit(
-                            parseTree, controllerHelper._scope);
-                    codeBuffer.append(
-                            parseTreeCodeGenerator.generateFireCode());
+                    parseTreeCodeGenerator.evaluateParseTree(parseTree,
+                            controllerHelper._scope);
+                    codeBuffer
+                            .append(parseTreeCodeGenerator.generateFireCode());
                     codeBuffer.append(";\n");
                 }
             }
