@@ -119,13 +119,12 @@ public class DoubleToken extends ScalarToken {
     public static DoubleToken convert(Token token)
             throws IllegalActionException {
         if (token instanceof DoubleToken) {
+            // Since PetiteToken extends DoubleToken, if the token arg
+            // is a Petite, then we will return a Double from here.
             return (DoubleToken) token;
         }
         if (token == null || token.isNil()) {
             return DoubleToken.NIL;
-        }
-        if (token instanceof PetiteToken) {
-            return (DoubleToken) token;
         }
         int compare = TypeLattice.compare(BaseType.DOUBLE, token);
 
