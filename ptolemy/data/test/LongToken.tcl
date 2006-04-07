@@ -103,8 +103,8 @@ test LongToken-1.6 {Create a nil Token from an String} {
 ######################################################################
 ####
 # 
-test IntToken-1.7 {Create a bogus Token from a bogus String} {
-    catch {java::new {ptolemy.data.IntToken String} "not-a-number"} \
+test LongToken-1.7 {Create a bogus Token from a bogus String} {
+    catch {java::new {ptolemy.data.LongToken String} "not-a-number"} \
 	errMsg
     list $errMsg
 } {{ptolemy.kernel.util.IllegalActionException: Failed to parse "not-a-number" as a number.
