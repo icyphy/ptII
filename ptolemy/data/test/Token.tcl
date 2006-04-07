@@ -123,6 +123,18 @@ test Token-2.6.1 {Test isCloseTo} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: isCloseTo operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
+
+######################################################################
+####
+# 
+test Token-2.6.2 {Test isCloseTo with nils} {
+    set p1 [java::new ptolemy.data.Token]
+    set nil [java::field ptolemy.data.Token NIL]
+    set r1 [$p1 isCloseTo $nil] 
+    set r2 [$nil isCloseTo $p1] 
+    list [$r1 toString] [$r2 toString]
+} {false false}
+
 ######################################################################
 ####
 # 
