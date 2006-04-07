@@ -61,6 +61,16 @@ import ptolemy.math.Rounding;
  @Pt.AcceptedRating Yellow (kienhuis)
  */
 public class FixToken extends ScalarToken {
+
+    /** Construct a token with integer 0.
+     *  This method calls the {@link ptolemy.math.FixPoint#FixPoint(int)}
+     *  constructor, so the precision and quantization are the what ever
+     *  is defined for that constructor
+     */
+    public FixToken() {
+        _value = new FixPoint(0);
+    }
+
     /** Construct a FixToken with the supplied FixPoint value.
      *  @param value A FixPoint value.
      */
@@ -256,9 +266,15 @@ public class FixToken extends ScalarToken {
      *  @return A String representing of this Token.
      */
     public String toString() {
+        String unitString = "";
+
+        if (!_isUnitless()) {
+            unitString = " * " + unitsString();
+        }
+
         Precision precision = _value.getPrecision();
         return "fix(" + _value.toString() + "," + precision.getNumberOfBits()
-                + "," + precision.getIntegerBitLength() + ")";
+                + "," + precision.getIntegerBitLength() + ")" + unitString;
     }
 
     /** Return a new token representing the additive identity with
