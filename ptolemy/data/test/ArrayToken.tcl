@@ -700,6 +700,38 @@ test ArrayToken-10.1 {nil ArrayToken equals methods} {
 ######################################################################
 ####
 # 
+test ArrayToken-11.0 {Test equals} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{1}"]
+    set t3 [java::new {ptolemy.data.ArrayToken String} "{2}"]
+    set t4 [java::new {ptolemy.data.ArrayToken String} "{1, 2}"]
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3] [$t3 equals $t4]
+} {1 1 0 0}
+
+######################################################################
+####
+# 
+test ArrayToken-11.1 {Test equals on nil} {
+    set tu [java::field ptolemy.data.ArrayToken NIL]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{2}"]
+    set t [java::field ptolemy.data.Token NIL]
+    list [$tu equals $tu] [$tu equals $t2] [$t2 equals $tu] \
+	[$t2 equals $t2] [$t equals $tu] [$tu equals $t]
+} {0 0 0 1 0 0} 
+
+######################################################################
+####
+# 
+test ArrayToken-12.0 {Test hashCode} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{2}"]
+    set t3 [java::new {ptolemy.data.ArrayToken String} "{3, nil}"]
+    list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
+} {1 2 3}
+
+######################################################################
+####
+# 
 test ArrayToken-20.1 {elementMultiplyReturnType} {
     set valToken [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
     set t1 [java::call ptolemy.data.ArrayToken elementMultiplyReturnType \
