@@ -45,7 +45,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @see ptolemy.data.expr.ASTPtRootNode
  */
 public interface ParseTreeCodeGenerator {
-    /** Evaluate the parse tree with the specified root node using
+    /** Visit the parse tree with the specified root node using
      *  the specified scope to resolve the values of variables.
      *  @param node The root of the parse tree.
      *  @param scope The scope for evaluation.
@@ -53,7 +53,7 @@ public interface ParseTreeCodeGenerator {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
+    public ptolemy.data.Token visit(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException;
 
     /** Given a string, escape special characters as necessary for the

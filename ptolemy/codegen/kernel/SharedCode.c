@@ -25,25 +25,25 @@ $types
 //double atof (char* s);          // standard c function.
 //long atol (char* s);            // standard c function.
     
-char* itoa (int i) {
+char* myItoa (int i) {
     char* string = (char*) malloc(sizeof(char) * 12);
     sprintf((char*) string, "%d", i);
     return string;       
 }
 
-char* ltoa (long l) {
+char* myLtoa (long l) {
     char* string = (char*) malloc(sizeof(char) * 22);
     sprintf((char*) string, "%d", l);
     return string;       
 }
 
-char* ftoa (double d) {
+char* myFtoa (double d) {
     char* string = (char*) malloc(sizeof(char) * 12);
     sprintf((char*) string, "%g", d);
     return string;       
 }
 
-char* btoa (char b) {
+char* myBtoa (char b) {
     char* string = (char*) malloc(sizeof(char) * 6);
     if (b) {
         strcpy(string, "true");
@@ -52,11 +52,11 @@ char* btoa (char b) {
     }
 }
 
-int ftoi (double d) {
+int myFtoi (double d) {
     return floor(d);
 }
 
-double itof (int i) {
+double myItof (int i) {
     return (double) i;
 }
 /**/

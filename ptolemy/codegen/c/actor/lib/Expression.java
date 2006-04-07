@@ -131,10 +131,10 @@ public class Expression extends CCodeGeneratorHelper {
             // cases the expression doesn't change, and the parser
             // requires a large amount of memory.
             PtParser parser = new PtParser();
-            ASTPtRootNode parseTree = parser.generateParseTree(actor.expression
-                    .getExpression());
+            ASTPtRootNode parseTree = parser.generateParseTree(
+                    actor.expression.getExpression());
 
-            result = _cParseTreeCodeGenerator.evaluateParseTree(parseTree,
+            result = _cParseTreeCodeGenerator.visit(parseTree,
                     new VariableScope(actor));
         } catch (IllegalActionException ex) {
             // Chain exceptions to get the actor that threw the exception.

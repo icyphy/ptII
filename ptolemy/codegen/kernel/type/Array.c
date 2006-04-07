@@ -56,6 +56,19 @@ Token Array_delete(Token token, ...) {
 }
 /**/
 
+/***cloneBlock***/
+Token Array_clone(Token thisToken, ...) {
+	int i;
+	Token result = Array_new(thisToken.payload.Array->size, 0);
+
+	for (i = 0; i < thisToken.payload.Array->size; i++) {
+		result.payload.Array->elements[i] = functionTable[Array_get(thisToken, i).type][FUNC_clone](Array_get(thisToken, i));
+	}
+	
+	return result;
+}
+/**/
+
 
 /***equalsBlock***/
 Token Array_equals(Token thisToken, ...) {

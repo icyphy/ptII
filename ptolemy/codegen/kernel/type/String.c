@@ -33,6 +33,12 @@ Token String_equals(Token thisToken, ...) {
 }
 /**/
 
+/***cloneBlock***/
+Token Boolean_clone(Token thisToken, ...) {
+	thisToken.payload.String = strdup(thisToken.payload.String);
+	return thisToken;
+}
+/**/
 
 /***convertBlock***/
 Token String_convert(Token token, ...) {

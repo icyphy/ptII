@@ -102,7 +102,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @return The result of evaluation.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
-    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node)
+    public ptolemy.data.Token visit(ASTPtRootNode node)
             throws IllegalActionException {
         return evaluateParseTree(node, null);
     }
@@ -115,7 +115,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  @exception IllegalActionException If an error occurs during
      *   evaluation.
      */
-    public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
+    public ptolemy.data.Token visit(ASTPtRootNode node,
             ParserScope scope) throws IllegalActionException {
         _scope = scope;
 
@@ -124,7 +124,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         // and return it.
         _scope = null;
-        return _evaluatedChildToken;
+        return _evaluatedChildNode;
     }
 
     /** Trace the evaluation of the parse tree with the specified root
@@ -169,7 +169,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -193,10 +193,10 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             tokens[i] = elementType.convert(tokens[i]);
         }
 
-        _evaluatedChildToken = (new ArrayToken(tokens));
+        _evaluatedChildNode = (new ArrayToken(tokens));
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -208,7 +208,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitBitwiseNode(ASTPtBitwiseNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -252,10 +252,10 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = ((ptolemy.data.Token) bitwiseResult);
+        _evaluatedChildNode = ((ptolemy.data.Token) bitwiseResult);
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -314,7 +314,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             // Save the resulting value.
             _evaluateChild(node, i + 1);
 
-            ptolemy.data.Token token = _evaluatedChildToken;
+            ptolemy.data.Token token = _evaluatedChildNode;
             argValues[i] = token;
             argTypes[i] = token.getType();
         }
@@ -368,7 +368,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
                                 + value.toString());
             }
 
-            _evaluatedChildToken = (result);
+            _evaluatedChildNode = (result);
             return;
         }
 
@@ -388,7 +388,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
                     // in the same scope as this parse tree.
                     tree.visit(this);
 
-                    //  _evaluatedChildToken = (tree.getToken());
+                    //  _evaluatedChildNode = (tree.getToken());
                     // FIXME cache?
                     return;
                 }
@@ -402,14 +402,14 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
         if (node.getFunctionName().compareTo("matlab") == 0) {
             _evaluateChild(node, 1);
 
-            ptolemy.data.Token token = _evaluatedChildToken;
+            ptolemy.data.Token token = _evaluatedChildNode;
 
             if (token instanceof StringToken) {
                 String expression = ((StringToken) token).stringValue();
                 ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
                 Set freeVariables = collector
                         .collectFreeVariables(node, _scope);
-                _evaluatedChildToken = MatlabUtilities.evaluate(expression,
+                _evaluatedChildNode = MatlabUtilities.evaluate(expression,
                         freeVariables, _scope);
                 return;
             } else {
@@ -425,7 +425,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
         // If not a special function, then reflect the name of the function.
         ptolemy.data.Token result = _functionCall(node.getFunctionName(),
                 argTypes, argValues);
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
     }
 
     /** Define a function, where the children specify the argument types
@@ -453,7 +453,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
         ExpressionFunction definedFunction = new ExpressionFunction(node
                 .getArgumentNameList(), node.getArgumentTypes(), cloneTree);
         FunctionToken result = new FunctionToken(definedFunction, type);
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
         return;
     }
 
@@ -466,7 +466,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -483,7 +483,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
         // evaluate the first sub-expression
         _evaluateChild(node, 0);
 
-        ptolemy.data.Token test = _evaluatedChildToken;
+        ptolemy.data.Token test = _evaluatedChildNode;
 
         if (!(test instanceof BooleanToken)) {
             throw new IllegalActionException(
@@ -513,17 +513,17 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         tokenChild.visit(this);
 
-        ptolemy.data.Token token = _evaluatedChildToken;
+        ptolemy.data.Token token = _evaluatedChildNode;
         Type type = _typeInference.inferTypes(typeChild, _scope);
 
         Type conversionType = (Type) TypeLattice.lattice().leastUpperBound(
                 type, token.getType());
 
         token = conversionType.convert(token);
-        _evaluatedChildToken = (token);
+        _evaluatedChildNode = (token);
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -535,7 +535,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
      */
     public void visitLeafNode(ASTPtLeafNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -557,7 +557,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         // Set the value, if we found one.
         if (value != null) {
-            _evaluatedChildToken = value;
+            _evaluatedChildNode = value;
             return;
         }
 
@@ -572,7 +572,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -586,7 +586,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         _evaluateChild(node, 0);
 
-        ptolemy.data.Token result = _evaluatedChildToken;
+        ptolemy.data.Token result = _evaluatedChildNode;
 
         if (!(result instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot perform logical "
@@ -610,7 +610,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             child.visit(this);
 
             // Get its value.
-            ptolemy.data.Token nextToken = _evaluatedChildToken;
+            ptolemy.data.Token nextToken = _evaluatedChildNode;
 
             if (!(nextToken instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
@@ -619,17 +619,17 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
 
             if (flag != ((BooleanToken) nextToken).booleanValue()) {
-                _evaluatedChildToken = (BooleanToken.getInstance(!flag));
+                _evaluatedChildNode = (BooleanToken.getInstance(!flag));
 
                 // Note short-circuit eval.
                 return;
             }
         }
 
-        _evaluatedChildToken = (BooleanToken.getInstance(flag));
+        _evaluatedChildNode = (BooleanToken.getInstance(flag));
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -641,7 +641,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -694,10 +694,10 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -720,7 +720,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             RecordToken record = (RecordToken) tokens[0];
 
             if (record.labelSet().contains(node.getMethodName())) {
-                _evaluatedChildToken = (record.get(node.getMethodName()));
+                _evaluatedChildNode = (record.get(node.getMethodName()));
                 return;
             }
         }
@@ -740,7 +740,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token result = _methodCall(node.getMethodName(), argTypes,
                 argValues);
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
     }
 
     /** Evaluate the power operator on the children of the specified node.
@@ -750,7 +750,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -792,10 +792,10 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             result = result.pow(times);
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -806,7 +806,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -836,10 +836,10 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -851,7 +851,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -866,17 +866,17 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
         String[] labels = (String[]) node.getFieldNames().toArray(
                 new String[numChildren]);
 
-        _evaluatedChildToken = (new RecordToken(labels, tokens));
+        _evaluatedChildNode = (new RecordToken(labels, tokens));
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -919,10 +919,10 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -933,7 +933,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -981,10 +981,10 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
                     + "the right operand to have an integer value.");
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -994,7 +994,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
      */
     public void visitSumNode(ASTPtSumNode node) throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -1022,10 +1022,10 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -1036,7 +1036,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node;
             return;
         }
 
@@ -1069,10 +1069,10 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             _assert(false, node, "Unrecognized unary node");
         }
 
-        _evaluatedChildToken = (result);
+        _evaluatedChildNode = (result);
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -1084,7 +1084,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     public void visitUnionConstructNode(ASTPtUnionConstructNode node)
             throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
-            _evaluatedChildToken = node.getToken();
+            _evaluatedChildNode = node.getToken();
             return;
         }
 
@@ -1105,12 +1105,12 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
         //If there is more than one members in the union, take the first
         //member value as the value of the union.
         if (labels.length > 0) {
-            _evaluatedChildToken = (new UnionToken(labels[0], tokens[0]));
+            _evaluatedChildNode = (new UnionToken(labels[0], tokens[0]));
         }
-        _evaluatedChildToken = (new UnionToken(labels[0], tokens[0]));
+        _evaluatedChildNode = (new UnionToken(labels[0], tokens[0]));
 
         if (node.isConstant()) {
-            node.setToken(_evaluatedChildToken);
+            node.setToken(_evaluatedChildNode);
         }
     }
 
@@ -1199,7 +1199,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
         _traceEnter(child);
         child.visit(this);
         _traceLeave(child);
-        return _evaluatedChildToken;
+        return _evaluatedChildNode;
     }
 
     /** Evaluate the Matrix index operation represented by the given node.
@@ -1343,7 +1343,7 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
 
             _trace.append("Node " + node.getClass().getName()
-                    + " evaluated to " + _evaluatedChildToken + "\n");
+                    + " evaluated to " + _evaluatedChildNode + "\n");
         }
     }
 
@@ -1353,12 +1353,12 @@ public class CParseTreeEvaluator extends AbstractParseTreeVisitor {
     /** Temporary storage for the result of evaluating a child node.
      *  This is protected so that derived classes can access it.
      */   
-    protected ptolemy.data.Token _evaluatedChildToken = null;
+    protected ASTPtRootNode _evaluatedChildNode = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private ParserScope _scope = null;
+    //private ParserScope _scope = null;
 
     private ParseTreeTypeInference _typeInference = null;
 

@@ -31,6 +31,11 @@ Token Int_equals(Token thisToken, ...) {
 Token Int_delete(Token token, ...) {}    
 /**/
 
+/***cloneBlock***/
+Token Int_clone(Token thisToken, ...) {
+	return thisToken;
+}
+/**/
 
 /***convertBlock***/
 Token Int_convert(Token token, ...) {
@@ -76,7 +81,7 @@ Token Int_print(Token thisToken, ...) {
 
 /***toStringBlock***/
 Token Int_toString(Token thisToken, ...) {
-	return String_new(itoa(thisToken.payload.Int));
+	return String_new(myItoa(thisToken.payload.Int));
 }
 /**/
 

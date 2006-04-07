@@ -31,6 +31,12 @@ Token Double_equals(Token thisToken, ...) {
 }
 /**/
 
+/***cloneBlock***/
+Token Double_clone(Token thisToken, ...) {
+	return thisToken;
+}
+/**/
+
 /***convertBlock***/
 Token Double_convert(Token token, ...) {
     switch (token.type) {
@@ -60,7 +66,7 @@ Token Double_print(Token thisToken, ...) {
 
 /***toStringBlock***/
 Token Double_toString(Token thisToken, ...) {
-	return String_new(ftoa(thisToken.payload.Double));
+	return String_new(myFtoa(thisToken.payload.Double));
 }
 /**/
 

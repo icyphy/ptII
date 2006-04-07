@@ -83,8 +83,7 @@ public class Ramp extends CCodeGeneratorHelper {
 
         //actor.init.getType().;
 
-        String type = codeGenType(TypeLattice.leastUpperBound(actor.init
-                .getType(), actor.step.getType()));
+        String type = codeGenType(actor.output.getType());
         if (!isPrimitiveType(type)) {
             type = "Token";
         }
@@ -100,7 +99,7 @@ public class Ramp extends CCodeGeneratorHelper {
      * 
      *
      */
-    private void _typeConvert() {
+    public void getParameterValueExp() {
 
     }
 }

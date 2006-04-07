@@ -7,17 +7,17 @@
 /**/
 
 /*** IntToStringBlock($channel, $type) ***/
-    $ref(output#$channel) = itoa($ref(input));
+    $ref(output#$channel) = myItoa($ref(input));
 /**/
 
 /*** DoubleToStringBlock($channel, $type) ***/
-    $ref(output#$channel) = ftoa($ref(input));
+    $ref(output#$channel) = myFtoa($ref(input));
 /**/
 
 /*** LongToStringBlock($channel, $type) ***/
-    $ref(output#$channel) = ltoa($ref(input));
+    $ref(output#$channel) = myLtoa($ref(input));
 /**/
 
 /*** BooleanToStringBlock($channel, $type) ***/
-    $ref(output#$channel) = btoa($ref(input));
+    $ref(output#$channel) = myBtoa($ref(input));
 /**/
