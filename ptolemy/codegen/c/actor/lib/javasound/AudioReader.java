@@ -66,6 +66,9 @@ public class AudioReader extends AudioSDLActor {
 
         ptolemy.actor.lib.javasound.AudioReader actor = (ptolemy.actor.lib.javasound.AudioReader) getComponent();
         String fileNameString = FileReader.getFileName(actor.fileOrURL);
+        
+        // FIXME: What is the proper regular expression for "%20"?
+        fileNameString.replaceAll("%20", " ");
         ArrayList args = new ArrayList();
         args.add(fileNameString);
         _codeStream.appendCodeBlock("initBlock", args);
