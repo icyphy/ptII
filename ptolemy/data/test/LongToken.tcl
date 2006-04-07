@@ -353,6 +353,23 @@ test LongToken-8.1.1 {Test subtract operator between longs and ints.} {
 
 ######################################################################
 ####
+# Test shift operator between ints and ints.
+test IntToken-8.1 {Test shift operator between ints.} {
+    set tok1 [java::new {ptolemy.data.LongToken long} 7]
+    set tok2 [java::new {ptolemy.data.LongToken long} -7]
+
+    set res1 [$tok1 leftShift 1]
+    set res2 [$tok2 leftShift 1]
+    set res3 [$tok1 rightShift 1]
+    set res4 [$tok2 rightShift 1]
+    set res5 [$tok1 logicalRightShift 1]
+    set res6 [$tok2 logicalRightShift 1]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString] [$res6 toString]
+} {14L -14L 3L -4L 3L 9223372036854775804L}
+
+######################################################################
+####
 # 
 test LongToken-8.2 {leftShift} {
     set p [java::new ptolemy.data.LongToken 2]
