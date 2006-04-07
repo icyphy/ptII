@@ -54,6 +54,8 @@ import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 import diva.util.UserObjectContainer;
+import javax.swing.ToolTipManager;
+import javax.swing.JComponent;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorDropTarget
@@ -296,11 +298,14 @@ public class EditorDropTarget extends DropTarget {
             request.setUndoable(true);
             container.requestChange(request);
             dtde.dropComplete(true); //success!
-        
-            //Added by MB 5Apr06 - without this, tooltips don't work 
+
+            //Added by MB 6Apr06 - without this, tooltips don't work
             //after first actor is dragged to canvas from library, until
             //pane loses & regains focus
-            pane.repaint();
+            JComponent comp = (JComponent)getComponent();
+            if (comp!=null) {
+              ToolTipManager.sharedInstance().registerComponent(comp);
+            }
         }
 
         /** Accept the event if the data is a known key.
