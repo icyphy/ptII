@@ -89,7 +89,8 @@ public class LongToken extends ScalarToken {
         try {
             _value = Long.parseLong(init);
         } catch (NumberFormatException e) {
-            throw new IllegalActionException(e.getMessage());
+            throw new IllegalActionException(null, e, 
+                    "Failed to parse \"" + init + "\" as a number.");
         }
     }
 
