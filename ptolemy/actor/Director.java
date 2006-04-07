@@ -452,6 +452,13 @@ public class Director extends Attribute implements Executable {
      *  before the model is running.
      */
     public void fireAtCurrentTime(Actor actor) throws IllegalActionException {
+        fireAt(actor, getModelTime());
+        // FIXME: the following is not necessary and incorrect. 
+        // When a controlled actor call this method, this director handles
+        // that actor only. Whether the container of this director needs to
+        // fire at the current time is another issue. In fact, the postfire()
+        // method of this director is responsible to check whether a refiring
+        // at the current time is necessary. Check the DEDirector for example.
         if (_isEmbedded()) {
             CompositeActor container = (CompositeActor) getContainer();
             container.getExecutiveDirector().fireAtCurrentTime(container);
