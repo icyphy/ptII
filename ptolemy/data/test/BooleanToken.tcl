@@ -151,17 +151,34 @@ test BooleanToken-5.1 {Test division by zero} {
 } {{ptolemy.kernel.util.IllegalActionException: BooleanToken: division by false-valued token (analogous to division by zero).} {ptolemy.kernel.util.IllegalActionException: BooleanToken: division by false-valued token (analogous to division by zero).}}
 
 test BooleanToken-5.2 {Test reverse division of booleans} {
-    set r3 [$trueToken divideReverse $falseToken]
-    set r4 [$trueToken divideReverse $trueToken]
+    set r1 [$trueToken divideReverse $falseToken]
+    set r2 [$trueToken divideReverse $trueToken]
     list [$r1 toString] [$r2 toString]
 } {false true}
 
-test BooleanToken-5.3 {Test division by zero} {
+test BooleanToken-5.3 {Test reverse division by zero} {
     catch {[$falseToken divideReverse $falseToken]} msg1
     catch {[$falseToken divideReverse $trueToken]} msg2
     list $msg1 $msg2
 } {{ptolemy.kernel.util.IllegalActionException: BooleanToken: division by false-valued token (analogous to division by zero).} {ptolemy.kernel.util.IllegalActionException: BooleanToken: division by false-valued token (analogous to division by zero).}}
 
+test BooleanToken-5.4 {Test division of nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    set r1 [$nil divide $trueToken]
+    set r2 [$nil divide $falseToken]
+    set r3 [$trueToken divide $nil]
+    set r4 [$falseToken divide $nil]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
+} {nil nil nil nil}
+
+test BooleanToken-5.5 {Test divideReverse of nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    set r1 [$nil divideReverse $trueToken]
+    set r2 [$nil divideReverse $falseToken]
+    set r3 [$trueToken divideReverse $nil]
+    set r4 [$falseToken divideReverse $nil]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
+} {nil nil nil nil}
 
 test BooleanToken-6.0 {Test equality test} {
     set r1 [$falseToken isEqualTo $falseToken]
@@ -170,6 +187,15 @@ test BooleanToken-6.0 {Test equality test} {
     set r4 [$trueToken isEqualTo $trueToken]
     list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {true false false true}
+
+test BooleanToken-6.1 {Test equality test on nils} {
+    set r1 [$falseToken isEqualTo $nil]
+    set r2 [$trueToken isEqualTo $nil]
+    set r3 [$nil isEqualTo $falseToken]
+    set r4 [$nil isEqualTo $trueToken]
+    set r5 [$nil isEqualTo $nil]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString] [$r5 toString]
+} {nil nil nil nil nil}
 
 
 ######################################################################
@@ -203,6 +229,39 @@ test BooleanToken-8.0 {Test not} {
     set r2 [$trueToken not]
     list [$r1 toString] [$r2 toString]
 } {true false}
+
+test BooleanToken-8.1 {Test not on nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    set r1 [$nil not]
+    list [$r1 toString]
+} {nil}
+
+test BooleanToken-8.2 {Test or on nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    set r1 [$nil or $trueToken]
+    set r2 [$nil or $falseToken]
+    set r3 [$trueToken or $nil]
+    set r4 [$falseToken or $nil]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
+} {nil nil nil nil}
+
+test BooleanToken-8.3 {Test and on nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    set r1 [$nil or $trueToken]
+    set r2 [$nil or $falseToken]
+    set r3 [$trueToken or $nil]
+    set r4 [$falseToken or $nil]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
+} {nil nil nil nil}
+
+test BooleanToken-8.4 {Test xor on nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    set r1 [$nil or $trueToken]
+    set r2 [$nil or $falseToken]
+    set r3 [$trueToken or $nil]
+    set r4 [$falseToken or $nil]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
+} {nil nil nil nil}
 
 test BooleanToken-9.0 {Test identities} {
     set r1 [$falseToken one]
@@ -328,7 +387,6 @@ test BooleanToken-13.8 {Test convert from nil IntToken} {
     list $msg
 } {nil}
 
-
 test BooleanToken-13.9 {Test convert from Token} {
     set t [java::new ptolemy.data.Token]
     set msg {}
@@ -367,6 +425,33 @@ test BooleanToken-14.1 {Test bitwise ops with Token} {
     list $errMsg $errMsg1 $errMsg2
 } {{ptolemy.kernel.util.IllegalActionException: bitwiseAnd method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: bitwiseOr method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.} {ptolemy.kernel.util.IllegalActionException: bitwiseXor method not supported between ptolemy.data.BooleanToken 'true' and ptolemy.data.Token 'present' because the types are incomparable.}}
 
+test BooleanToken-14.2 {Test bitwiseAnd on nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    set binaryOperation bitwiseAnd
+    set results [java::cast ptolemy.data.BooleanToken \
+        [$trueToken $binaryOperation $nil]]
+
+    set results1 [java::cast ptolemy.data.BooleanToken \
+        [$nil $binaryOperation $trueToken]]
+
+    set results2 [java::cast ptolemy.data.BooleanToken \
+        [$falseToken $binaryOperation $nil]]
+
+    set results3 [java::cast ptolemy.data.BooleanToken \
+        [$nil $binaryOperation $falseToken]]
+
+    set results4 [java::cast ptolemy.data.BooleanToken \
+        [$nil $binaryOperation $nil]]
+
+    list \
+        [$results toString] \
+	[$results1 toString] \
+	[$results2 toString] \
+	[$results3 toString] \
+	[$results4 toString]
+} {nil nil nil nil nil}
+
+
 test BooleanToken-15.0 {Test bitwiseOr} {
     set binaryOperation bitwiseOr
     set results [java::cast ptolemy.data.BooleanToken \
@@ -387,6 +472,32 @@ test BooleanToken-15.0 {Test bitwiseOr} {
 	[$results2 toString] \
 	[$results3 toString]
 } {true true false true}
+
+test BooleanToken-15.2 {Test bitwiseOr on nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    set binaryOperation bitwiseOr
+    set results [java::cast ptolemy.data.BooleanToken \
+        [$trueToken $binaryOperation $nil]]
+
+    set results1 [java::cast ptolemy.data.BooleanToken \
+        [$nil $binaryOperation $trueToken]]
+
+    set results2 [java::cast ptolemy.data.BooleanToken \
+        [$falseToken $binaryOperation $nil]]
+
+    set results3 [java::cast ptolemy.data.BooleanToken \
+        [$nil $binaryOperation $falseToken]]
+
+    set results4 [java::cast ptolemy.data.BooleanToken \
+        [$nil $binaryOperation $nil]]
+
+    list \
+        [$results toString] \
+	[$results1 toString] \
+	[$results2 toString] \
+	[$results3 toString] \
+	[$results4 toString]
+} {nil nil nil nil nil}
 
 test BooleanToken-16.0 {Test bitwiseXor} {
     set binaryOperation bitwiseXor
@@ -409,6 +520,34 @@ test BooleanToken-16.0 {Test bitwiseXor} {
 	[$results3 toString]
 } {true true false true}
 
+test BooleanToken-16.2 {Test bitwiseXor on nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+    set binaryOperation bitwiseAnd
+    set results [java::cast ptolemy.data.BooleanToken \
+        [$trueToken $binaryOperation $nil]]
+
+    set results1 [java::cast ptolemy.data.BooleanToken \
+        [$nil $binaryOperation $trueToken]]
+
+    set results2 [java::cast ptolemy.data.BooleanToken \
+        [$falseToken $binaryOperation $nil]]
+
+    set results3 [java::cast ptolemy.data.BooleanToken \
+        [$nil $binaryOperation $falseToken]]
+
+    set results4 [java::cast ptolemy.data.BooleanToken \
+        [$nil $binaryOperation $nil]]
+
+    list \
+        [$results toString] \
+	[$results1 toString] \
+	[$results2 toString] \
+	[$results3 toString] \
+	[$results4 toString]
+} {nil nil nil nil nil}
+
+
+
 test BooleanToken-17.0 {Test bitwiseNot} {
     set results [java::cast ptolemy.data.BooleanToken \
 		     [$trueToken bitwiseNot]]
@@ -420,4 +559,15 @@ test BooleanToken-17.0 {Test bitwiseNot} {
 	[$results1 toString]
 
 } {false true}
+
+test BooleanToken-17.2 {Test bitwiseNot on nil} {
+    set nil [java::field ptolemy.data.BooleanToken NIL]
+
+    set results [java::cast ptolemy.data.BooleanToken \
+		     [$nil bitwiseNot]]
+    list \
+        [$results toString]
+} {nil}
+
+
 
