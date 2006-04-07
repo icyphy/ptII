@@ -365,6 +365,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             return false;
         }
 
+        if (this.isNil() || ((ArrayToken) object).isNil()) {
+            return false;
+        }
+
         ArrayToken arrayArgument = (ArrayToken) object;
         int length = arrayArgument.length();
 
