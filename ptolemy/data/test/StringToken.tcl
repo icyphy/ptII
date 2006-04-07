@@ -241,8 +241,11 @@ test StringToken-5.0 {Test equals} {
     set t1 [java::new {ptolemy.data.StringToken} foo]
     set t2 [java::new {ptolemy.data.StringToken} foo]
     set t3 [java::new {ptolemy.data.StringToken} bar]
-    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3]
-} {1 1 0}
+    set t4 [java::new ptolemy.data.StringToken "1"]
+    set t5 [java::new ptolemy.data.IntToken 1]
+    list [$t1 equals $t1] [$t1 equals $t2] [$t1 equals $t3] [$t4 equals $t5]
+} {1 1 0 0}
+
 
 ######################################################################
 ####
