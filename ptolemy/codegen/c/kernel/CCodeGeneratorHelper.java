@@ -40,15 +40,23 @@ import ptolemy.util.StringUtilities;
 //// CCodeGeneratorHelper
 
 /**
- Base class for C code generator helper. It overrides the
+ Base class for C code generator helper. 
+ <p>Actor helpers extend this class and optionally define
  generateFireCode(), generateInitializeCode(), generatePreinitializeCode(),
- and generateWrapupCode() methods by appending a corresponding code block.
- Subclasses may override these methods if they have to do fancier things.
-
+ and generateWrapupCode() methods.  In derived classes, these methods,
+ if present, make actor specific changes to the corresponding code.
+ If these methods are not present, then the parent class will automatically
+ read the corresponding .c file and subsitute in the corresponding code
+ block.  For example, generateInitializeCode() reads the
+ <code>initBlock</code>, processes the macros and adds the resulting
+ code block to the output.
+ <p>For a complete list of methods to define, see 
+ {@link ptolemy.codegen.kernel.CodeGeneratorHelper}.
+ 
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (cxh) Remove mostly empty methods, add info about writing actors.
+o @Pt.ProposedRating Red (cxh) Remove mostly empty methods, add info about writing actors.
  @Pt.AcceptedRating Red (cxh)
  */
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
@@ -63,28 +71,6 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /**
-     * Generate the fire code. In this base class, do nothing. Subclasses
-     * may extend this method to generate the fire code of the associated
-     * component and return it.
-     * @return The generated code.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateFireCode() throws IllegalActionException {
-        return super.generateFireCode();
-    }
-
-    /**
-     * Generate the initialize code. In this base class, return an empty
-     * string. Subclasses may extend this method to generate the initialize
-     * code of the associated component and return it.
-     * @return The initialize code of the containing composite actor.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateInitializeCode() throws IllegalActionException {
-        return super.generateInitializeCode();
-    }
 
     /** Generate the main entry point.
      *  @return In this base class, return a comment.  Subclasses
@@ -106,97 +92,11 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return _INDENT1 + "exit(0);\n}\n";
     }
 
-    /**
-     * Generate the preinitialize code. In this base class, return an empty
-     * string. This method generally does not generate any execution code
-     * and returns an empty string. Subclasses may generate code for variable
-     * declaration, defining constants, etc.
-     * @return A string of the preinitialize code for the helper.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generatePreinitializeCode() throws IllegalActionException {
-        return super.generatePreinitializeCode();
-    }
-
-    /**
-     * Generate the shared code. This is the FIRST generate method invoked out
-     * of all, so any initializations of variables of this helper should be
-     * done in this method. In this base class, return an empty set. Subclasses
-     * may generate code for variable declaration, defining constants, etc.
-     * @return An empty set in this base class.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public Set getSharedCode() throws IllegalActionException {
-        return super.getSharedCode();
-    }
-
-    /**
-     * Generate the wrapup code. This is the LAST generate method invoked out
-     * of all, so any resets of variables of this helper should be done
-     * in this method. In this base class, do nothing. Subclasses may extend
-     * this method to generate the wrapup code of the associated component
-     * and return it.
-     * @return code The given string buffer.
-     * @exception IllegalActionException Not thrown in this base class.
-     */
-    public String generateWrapupCode() throws IllegalActionException {
-        return super.generateWrapupCode();
-    }
-
-    /** Return the parse tree to use with expressions.
-     *  @return the parse tree to use with expressions.
+    /** Return a new parse tree to use with expressions.
+     *  @return the new parse tree to use with expressions.
      */
     public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
         _parseTreeCodeGenerator = new CParseTreeCodeGenerator();
         return _parseTreeCodeGenerator;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Given a block name, generate code for that block.
-     *  This method is called by actors helpers that have simple blocks
-     *  that do not take parameters or have widths.
-     *  @param blockName The name of the block.
-     *  @return The code for the given block.
-     *  @exception IllegalActionException If illegal macro names are
-     *  found, or if there is a problem parsing the code block from
-     *  the helper .c file.
-     */
-    protected String _generateBlockCode(String blockName)
-            throws IllegalActionException {
-        // We use this method to reduce code duplication for simple blocks.
-        return _generateBlockCode(blockName, new ArrayList());
-    }
-
-    /** Given a block name, generate code for that block.
-     *  This method is called by actors helpers that have simple blocks
-     *  that do not take parameters or have widths.
-     *  @param blockName The name of the block.
-     *  @param args The arguments for the block.
-     *  @return The code for the given block.
-     *  @exception IllegalActionException If illegal macro names are
-     *  found, or if there is a problem parsing the code block from
-     *  the helper .c file.
-     */
-    protected String _generateBlockCode(String blockName, ArrayList args)
-            throws IllegalActionException {
-        // We use this method to reduce code duplication for simple blocks.
-        _codeStream.clear();
-        _codeStream.appendCodeBlock(blockName, args);
-        return processCode(_codeStream.toString());
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** Indent string for indent level 1.
-     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
-     */
-    protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
-
-    /** Indent string for indent level 2.
-     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
-     */
-    protected static String _INDENT2 = StringUtilities.getIndentPrefix(2);
 }

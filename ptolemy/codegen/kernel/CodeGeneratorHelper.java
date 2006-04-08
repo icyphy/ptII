@@ -1577,6 +1577,39 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         }
     }
 
+    /** Given a block name, generate code for that block.
+     *  This method is called by actors helpers that have simple blocks
+     *  that do not take parameters or have widths.
+     *  @param blockName The name of the block.
+     *  @return The code for the given block.
+     *  @exception IllegalActionException If illegal macro names are
+     *  found, or if there is a problem parsing the code block from
+     *  the helper .c file.
+     */
+    protected String _generateBlockCode(String blockName)
+            throws IllegalActionException {
+        // We use this method to reduce code duplication for simple blocks.
+        return _generateBlockCode(blockName, new ArrayList());
+    }
+
+    /** Given a block name, generate code for that block.
+     *  This method is called by actors helpers that have simple blocks
+     *  that do not take parameters or have widths.
+     *  @param blockName The name of the block.
+     *  @param args The arguments for the block.
+     *  @return The code for the given block.
+     *  @exception IllegalActionException If illegal macro names are
+     *  found, or if there is a problem parsing the code block from
+     *  the helper .c file.
+     */
+    protected String _generateBlockCode(String blockName, ArrayList args)
+            throws IllegalActionException {
+        // We use this method to reduce code duplication for simple blocks.
+        _codeStream.clear();
+        _codeStream.appendCodeBlock(blockName, args);
+        return processCode(_codeStream.toString());
+    }
+
     /**
      * Generate the type conversion statement for the two given channels.
      * @param source The given source channel.
@@ -1684,6 +1717,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** Indent string for indent level 1.
+     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
+     */
+    protected static String _INDENT1 = StringUtilities.getIndentPrefix(1);
+
+    /** Indent string for indent level 2.
+     *  @see ptolemy.util.StringUtilities#getIndentPrefix(int)
+     */
+    protected static String _INDENT2 = StringUtilities.getIndentPrefix(2);
 
     /** This class implements a scope, which is used to generate the
      *  parsed expressions in target language.
