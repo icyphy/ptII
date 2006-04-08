@@ -33,6 +33,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.data.Token;
+import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Workspace;
 
@@ -151,6 +152,14 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
         }
 
         return result;
+    }
+
+    /** Return the director in charge of this receiver, or null
+     *  if there is none.
+     *  @return The director in charge of this receiver.
+     */
+    public ProcessDirector getDirector() {
+        return _director;
     }
 
     /** Return true if this receiver is connected to a boundary port.
@@ -367,28 +376,32 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
 
-        Actor actor = (Actor) port.getContainer();
-        Director director;
-
-        // For a composite actor,
-        // the receiver type of an input port is decided by
-        // the executive director.
-        // While the receiver type of an output is decided by the director.
-        // NOTE: getExecutiveDirector() and getDirector() yield the same
-        // result for actors that do not contain directors.
-        if (port.isInput()) {
-            director = actor.getExecutiveDirector();
+        if (port == null) {
+            _director = null;
         } else {
-            director = actor.getDirector();
+            Actor actor = (Actor) port.getContainer();
+            Director director;
+            
+            // For a composite actor,
+            // the receiver type of an input port is decided by
+            // the executive director.
+            // While the receiver type of an output is decided by the director.
+            // NOTE: getExecutiveDirector() and getDirector() yield the same
+            // result for actors that do not contain directors.
+            if (port.isInput()) {
+                director = actor.getExecutiveDirector();
+            } else {
+                director = actor.getDirector();
+            }
+            
+            if (!(director instanceof ProcessDirector)) {
+                throw new IllegalActionException(port,
+                        "Cannot use an instance of PNQueueReceiver "
+                        + "since the director is not a PNDirector.");
+            }
+            
+            _director = (ProcessDirector) director;
         }
-
-        if (!(director instanceof ProcessDirector)) {
-            throw new IllegalActionException(port,
-                    "Cannot use an instance of PNQueueReceiver "
-                            + "since the director is not a PNDirector.");
-        }
-
-        _director = (ProcessDirector) director;
     }
 
     ///////////////////////////////////////////////////////////////////

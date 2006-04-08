@@ -108,29 +108,32 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      */
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
-
-        Actor actor = (Actor) port.getContainer();
-        Director director;
-
-        // For a composite actor,
-        // the receiver type of an input port is decided by
-        // the executive director.
-        // While the receiver type of an output is decided by the director.
-        // NOTE: getExecutiveDirector() and getDirector() yield the same
-        // result for actors that do not contain directors.
-        if (port.isInput()) {
-            director = actor.getExecutiveDirector();
+        if (port == null) {
+            _director = null;
         } else {
-            director = actor.getDirector();
+            Actor actor = (Actor) port.getContainer();
+            Director director;
+            
+            // For a composite actor,
+            // the receiver type of an input port is decided by
+            // the executive director.
+            // While the receiver type of an output is decided by the director.
+            // NOTE: getExecutiveDirector() and getDirector() yield the same
+            // result for actors that do not contain directors.
+            if (port.isInput()) {
+                director = actor.getExecutiveDirector();
+            } else {
+                director = actor.getDirector();
+            }
+            
+            if (!(director instanceof PNDirector)) {
+                throw new IllegalActionException(port,
+                        "Cannot use an instance of PNQueueReceiver "
+                        + "since the director is not a PNDirector.");
+            }
+            
+            _director = (PNDirector) director;
         }
-
-        if (!(director instanceof PNDirector)) {
-            throw new IllegalActionException(port,
-                    "Cannot use an instance of PNQueueReceiver "
-                            + "since the director is not a PNDirector.");
-        }
-
-        _director = (PNDirector) director;
     }
 
     /** Get a token from this receiver. If the receiver is empty then
@@ -184,6 +187,14 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         }
 
         return result;
+    }
+    
+    /** Return the director in charge of this receiver, or null
+     *  if there is none.
+     *  @return The director in charge of this receiver.
+     */
+    public PNDirector getDirector() {
+        return _director;
     }
 
     /** Return true, since a channel in the Kahn process networks
