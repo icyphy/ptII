@@ -587,6 +587,17 @@ test ArrayToken-4.1 {test isCloseTo on an array of Complexes} {
 
 ######################################################################
 ####
+#
+test ArrayToken-4.2 {test isCloseTo on two different types} {
+    # Cover blocks in AbstractNotConvertibleToken
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2}"]
+    set t2 [java::new ptolemy.data.IntToken 1]
+    catch {$t1 {isEqualTo} $t2} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: isEqualTo method not supported between ptolemy.data.ArrayToken '{1, 2}' and ptolemy.data.IntToken '1' because the tokens have different classes.}}
+
+######################################################################
+####
 # 
 test ArrayToken-5.1 {Construct an array of doubles with a nil} {
     set t [java::new {ptolemy.data.ArrayToken String} "{1.0, nil, 2.0, NaN}"]
