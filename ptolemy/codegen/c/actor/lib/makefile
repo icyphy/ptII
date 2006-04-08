@@ -132,6 +132,7 @@ OTHER_FILES_TO_BE_JARED = \
 	UnaryMathFunction.c \
 	Uniform.c \
 	executioncontrol.xml \
+	flowcontrol.xml \
 	genericsinks.xml \
 	genericsources.xml \
 	math.xml \
