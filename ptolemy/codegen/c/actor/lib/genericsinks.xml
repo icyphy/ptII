@@ -10,6 +10,15 @@
 <entity name="Discard" class="ptolemy.actor.lib.Discard"/>
 <entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
 
+<entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
+<doc>Monitor and display values</doc>
+   <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20"/>
+   <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="displayWidth"/>
+   </property>
+</entity>
+
       </group>
     ?>
   </configure>
