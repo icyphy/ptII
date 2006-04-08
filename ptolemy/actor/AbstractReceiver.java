@@ -328,6 +328,14 @@ public abstract class AbstractReceiver implements Receiver {
         _container = port;
     }
 
+    /** Return the class name and the full name of the object,
+     *  with syntax "className {fullName}".
+     *  @return The class name and the full name. */
+    public String toString() {
+        return getClass().getName() + " {" 
+            + getContainer().getFullName() + ".receiver }";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     // The container.
