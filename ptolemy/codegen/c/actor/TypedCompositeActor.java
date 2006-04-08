@@ -65,9 +65,11 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
     }
 
     /**
-     * 
-     * @throws IllegalActionException Thrown if any of the helpers of the
+     * For each actor in this typed composite actor, determine which ports
+     * need type conversion.
+     * @exception IllegalActionException Thrown if any of the helpers of the
      * inside actors is unavailable.
+     * @see ptolemy.codegen.kernel.CodeGeneratorHelper#analyzeTypeConvert
      */
     public void analyzeTypeConvert() throws IllegalActionException {
         Iterator actors = ((ptolemy.actor.CompositeActor) getComponent())
@@ -88,27 +90,26 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *   or the director helper throws it.
      */
     public String createOffsetVariablesIfNeeded() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-
         Director directorHelper = (Director) _getHelper(((ptolemy.actor.CompositeActor) getComponent())
                 .getDirector());
-        code.append(directorHelper.createOffsetVariablesIfNeeded());
-        return code.toString();
+        return directorHelper.createOffsetVariablesIfNeeded();
     }
 
-    /** Generate the fire code of the associated composite actor. It first 
-     *  generates code for transferring any data from the input ports of this 
-     *  composite to the ports connected on the inside by calling the 
-     *  generateTransferInputsCode() method of the local director helper. It 
-     *  then invokes the generateFireCode() method of its local director helper.
-     *  After the generateFireCode() method of the director helper returns, 
-     *  generate code for transferring any output data created by calling the 
-     *  local director helper's generateTransferOutputsCode() method.
+    /** Generate the fire code of the associated composite actor. This method
+     *  first generates code for transferring any data from the input
+     *  ports of this composite to the ports connected on the inside
+     *  by calling the generateTransferInputsCode() method of the
+     *  local director helper. It then invokes the generateFireCode()
+     *  method of its local director helper.  After the
+     *  generateFireCode() method of the director helper returns,
+     *  generate code for transferring any output data created by
+     *  calling the local director helper's
+     *  generateTransferOutputsCode() method.
      *  @return The generated fire code.
-     *  @exception IllegalActionException If the helper associated with
-     *   an actor throws it while generating fire code for the actor, or
-     *   the director helper throws it while generating code for transferring
-     *   data.
+     *  @exception IllegalActionException If the helper associated
+     *  with an actor throws it while generating fire code for the
+     *  actor, or the director helper throws it while generating code
+     *  for transferring data.
      */
     public String generateFireCode() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
@@ -128,6 +129,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
                 PortParameter portParameter = ((ParameterPort) inputPort)
                         .getParameter();
                 code.append(generateVariableName(portParameter));
+                // FIXME: The = sign is language specific.
                 code.append(" = ");
                 code.append(getReference(inputPort.getName()));
                 code.append(";\n");
@@ -162,9 +164,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return code.toString();
     }
 
-    /** Generate The fire function code. This method is called when the firing
-     *  code of each actor is not inlined. Each actor's firing code is in a 
-     *  function with the same name as that of the actor.
+    /** Generate The fire function code. This method is called when
+     *  the firing code of each actor is not inlined. Each actor's
+     *  firing code is in a function with the same name as that of the
+     *  actor.
      * 
      *  @return The fire function code.
      *  @exception IllegalActionException If thrown while generating fire code.
@@ -362,10 +365,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return files;
     }
 
-    /** Return an int array of firings per global iteration. For each internal 
-     *  configuration of this composite actor, the array contains a corresponding 
-     *  element representing the number of firings of this composite actor per 
-     *  global iteration.  
+    /** Return an int array of firings per global iteration. For each
+     *  internal configuration of this composite actor, the array
+     *  contains a corresponding element representing the number of
+     *  firings of this composite actor per global iteration.
      * 
      *  @return An int array of firings per global iteration.
      *  @see #setFiringsPerGlobalIteration(int[])
@@ -374,10 +377,10 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
         return _firingsPerGlobalIteration;
     }
 
-    /** Return a set of parameters that will be modified during the execution
-     *  of the model. These parameters are those returned by getModifiedVariables()
-     *  method of directors or actors that implement ExplicitChangeContext
-     *  interface. 
+    /** Return a set of parameters that will be modified during the
+     *  execution of the model. These parameters are those returned by
+     *  getModifiedVariables() method of directors or actors that
+     *  implement ExplicitChangeContext interface.
      * 
      *  @return a set of parameters that will be modified.
      *  @exception IllegalActionException If the helper associated with an actor 
@@ -477,7 +480,7 @@ public class TypedCompositeActor extends CCodeGeneratorHelper {
      *  The corresponding value is an array of buffer sizes or an 
      *  array of offsets. The i-th element in the array corresponds to 
      *  the i-th channel of that IOPort.
-
+     *
      * @exception IllegalActionException If thrown while getting helper
      *  or buffer size.
      */
