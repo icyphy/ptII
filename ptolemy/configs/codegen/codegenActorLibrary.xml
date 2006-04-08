@@ -6,7 +6,7 @@
   <input source="ptolemy/codegen/c/actor/lib/sinks.xml"/>
   <!-- input source="ptolemy/actor/lib/array.xml"/-->
   <input source="ptolemy/codegen/c/actor/lib/conversions/conversions.xml"/>
-  <!-- input source="ptolemy/actor/lib/flowcontrol.xml"/-->
+  <input source="ptolemy/codegen/c/actor/lib/flowcontrol.xml"/>
   <!-- input source="ptolemy/actor/lib/hoc/hoc.xml"/-->
   <!-- input source="ptolemy/actor/lib/io/io.xml"/-->
   <input source="ptolemy/codegen/c/actor/lib/logic/logic.xml"/>
