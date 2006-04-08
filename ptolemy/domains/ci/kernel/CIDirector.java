@@ -264,7 +264,6 @@ public class CIDirector extends Director {
      */
     public Receiver newReceiver() {
         Receiver r = new CIReceiver(this);
-        _receivers.add(r);
         return r;
     }
 
@@ -330,7 +329,6 @@ public class CIDirector extends Director {
         _actorManagers.clear();
         _pauseRequested = false;
         _iteratingStarted = false;
-        _receivers.clear();
 
         Parameter interval = (Parameter) getAttribute("interval");
 
@@ -759,9 +757,6 @@ public class CIDirector extends Director {
 
     // The set of actors being pulled.
     private HashSet _pulledActors = new HashSet();
-
-    // List of CI receivers.
-    private LinkedList _receivers = new LinkedList();
 
     // Flag that indicates that an iteration is started.
     private boolean _iteratingStarted;
