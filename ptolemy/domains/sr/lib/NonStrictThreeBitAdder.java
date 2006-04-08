@@ -139,6 +139,7 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
         IntToken high = null;
         IntToken low = null;
 
+        // Need to know all three to know the low-order bit.
         if (numKnown == 3) {
             if ((numOnes == 0) || (numOnes == 2)) {
                 low = new IntToken(0);
@@ -146,16 +147,14 @@ public class NonStrictThreeBitAdder extends TypedAtomicActor {
                 low = new IntToken(1);
             }
         }
-
-        // numZeros = numKnown - numOnes
-        if ((numKnown - numOnes) >= 2) {
-            high = new IntToken(0);
+        if (numKnown >= 2) {
+            // We have enough information to determine the high-order bit.
+            if (numOnes >= 2) {
+                high = new IntToken(1);
+            } else {
+                high = new IntToken(0);
+            }
         }
-
-        if (numOnes >= 2) {
-            high = new IntToken(1);
-        }
-
         if (high != null) {
             highBit.send(0, high);
         }
