@@ -50,10 +50,10 @@ import ptolemy.util.StringUtilities;
 
 /**
  Utilities that are useful for code generators.
- @author Christopher Hylands
+ @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (cxh)
+ @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class CodeGeneratorUtilities {
@@ -90,12 +90,6 @@ public class CodeGeneratorUtilities {
             }
         }
 
-        //         System.out.println("The map for " + namedObj +":");
-        //         Iterator keys = substituteMap.keySet().iterator();
-        //         while (keys.hasNext()) {
-        //             String key = (String)keys.next();
-        //             System.out.println(key + "\t" + (String)substituteMap.get(key));
-        //         }
         return substituteMap;
     }
 
