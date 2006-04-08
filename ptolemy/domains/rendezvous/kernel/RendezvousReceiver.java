@@ -102,7 +102,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public void clear() {
         reset();
     }
-
+    
     /**
      * Get a token from this receiver. This method does not return until the
      * rendezvous has been completed. This method is internally synchronized on
@@ -137,9 +137,10 @@ public class RendezvousReceiver extends AbstractReceiver implements
             RendezvousDirector director) throws TerminateProcessException {
         Map result = null;
         try {
-            result = _getOrPutTokens(receivers, null, director, null,
+            result = _getOrPutTokens(receivers, null, director, null, null,
                     GET_FROM_ALL);
         } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
         }
 
         Token[][] tokens = new Token[receivers.length][];
@@ -180,7 +181,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public static void getFromAllPutToAll(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director)
             throws IllegalActionException, TerminateProcessException {
-        _getOrPutTokens(getReceivers, putReceivers, director, null,
+        _getOrPutTokens(getReceivers, putReceivers, director, null, null,
                 GET_FROM_ALL_PUT_TO_ALL);
     }
 
@@ -200,7 +201,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
             RendezvousDirector director) throws TerminateProcessException {
         Map result = null;
         try {
-            result = _getOrPutTokens(receivers, null, director, null,
+            result = _getOrPutTokens(receivers, null, director, null, null,
                     GET_FROM_ANY);
         } catch (IllegalActionException ex) {
         }
@@ -240,7 +241,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public static void getFromAnyPutToAll(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director)
             throws IllegalActionException, TerminateProcessException {
-        _getOrPutTokens(getReceivers, putReceivers, director, null,
+        _getOrPutTokens(getReceivers, putReceivers, director, null, null,
                 GET_FROM_ANY_PUT_TO_ALL);
     }
 
@@ -536,7 +537,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public static void putToAll(Token[][] tokens, Receiver[][] receivers,
             RendezvousDirector director) throws IllegalActionException,
             TerminateProcessException {
-        _getOrPutTokens(null, receivers, director, tokens, PUT_TO_ALL);
+        _getOrPutTokens(null, receivers, director, null, tokens, PUT_TO_ALL);
     }
 
     /**
@@ -556,7 +557,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
     public static void putToAny(Token token, Receiver[][] receivers,
             RendezvousDirector director) throws IllegalActionException,
             TerminateProcessException {
-        _getOrPutTokens(null, receivers, director, token, PUT_TO_ANY);
+        _getOrPutTokens(null, receivers, director, token, null, PUT_TO_ANY);
     }
 
     /**
@@ -944,34 +945,28 @@ public class RendezvousReceiver extends AbstractReceiver implements
 
     /**
      * Get or put token(s) to the array of receivers, or both put and
-     * get at the same time. This method is commonly used by {@link
-     * #getFromAll(Receiver[][], RendezvousDirector)}, {@link
-     * #getFromAny(Receiver[][], RendezvousDirector)}, {@link
-     * #putToAll(Token[][], Receiver[][], RendezvousDirector)}, {@link
-     * #putToAny(Token, Receiver[][], RendezvousDirector)}, and {@link
-     * #getFromAnyPutToAll(Receiver[][], Receiver[][],
-     * RendezvousDirector). The operation that it performs depends on
+     * get at the same time. The operation that it performs depends on
      * the flag parameter. If a get is requested in the flag,
      * getReceivers should contain the receivers to receive tokens;
      * otherwise, getReceivers is ignored. If a put is requested in
      * the flag, putReceivers should contain the receivers to put
-     * tokens to.  The tokens are stored in the tokens parameter. If
-     * the put is to any of the receivers, the tokens parameter is the
-     * single token to put (of type {@link Token}); if the put is to
-     * all of the receivers, the tokens parameter is a two-dimensional
-     * array of tokens (of type {@link Token}[][]), one corresponding
-     * to a receiver in the two-dimensional array putReceivers. This
-     * method does not return until the requested operation is
-     * finished.
+     * tokens to.  The tokens are stored either in the token parameter
+     * or the tokenArray parameter, depending on the operation. If
+     * the put is to any of the receivers, the token parameter is the
+     * single token to put, and the tokenArray parameter is ignored; if
+     * the put is to all of the receivers, the tokenArray parameter is
+     * the two-dimensional array of tokens, one corresponding
+     * to a receiver in the two-dimensional array putReceivers, and the
+     * token parameter is ignored. This method does not return until the
+     * requested operation is finished.
      *
      * @param getReceivers The receivers from with tokens are
      * received.
-     * @param putReceivers The receivers to which tokens are put to.
+     * @param putReceivers The receivers to which tokens are put.
      * @param director The director.
-     * @param tokens A token if the operation is to put to any of the
-     * receivers. A two-dimensional array of tokens if the operation
-     * is to put to all of the receivers. Ignored if the operation is
-     * to get tokens from the getReceivers only.
+     * @param token The token of the put to any operation, or null.
+     * @param tokenArray The token array of the put to all operation, or
+     * null.
      * @param flag The flag representing the operation to be
      * performed.
      * @return The map of results on the receivers that participate in
@@ -985,7 +980,7 @@ public class RendezvousReceiver extends AbstractReceiver implements
      */
     private static Map _getOrPutTokens(Receiver[][] getReceivers,
             Receiver[][] putReceivers, RendezvousDirector director,
-            Object tokens, int flag) throws IllegalActionException,
+            Token token, Token[][] tokenArray, int flag) throws IllegalActionException,
             TerminateProcessException {
 
         // Extract information from the flag.
@@ -998,12 +993,6 @@ public class RendezvousReceiver extends AbstractReceiver implements
         Map result = null;
         synchronized (director) {
             Thread theThread = Thread.currentThread();
-
-            // The token of the put to any operation, or null.
-            Token token = tokens instanceof Token ? (Token) tokens : null;
-            // The token array of the put to all operation, or null.
-            Token[][] tokenArray = tokens instanceof Token[][] ? (Token[][]) tokens
-                    : null;
 
             // Test whether the cardinality of a "put to all and get from all"
             // operation is correct. If there are more channels to put to than
