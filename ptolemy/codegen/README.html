@@ -19,8 +19,10 @@ the resulting file.
 Open <a href="demo/Ramp/Ramp.xml"><code>$PTII/ptolemy/codegen/Demo/Ramp/Ramp.xml</code></a>
 <li> Click on the StaticSchedulingCodeGeneratorIcon.
 <li> A dialog box will appear, click on "Generate"
-<li> The code will be generated, conpiled, run and the results displayed.
+<li> The code will be generated, compiled, run and the results displayed.
 </ol>
+
+<a href="../configs/codegen/demos.htm">Other Codegen Demonstrations</a>
 
 <h2>How it works</h2>
 This code generator uses reflection to find helper classes that in
@@ -155,6 +157,24 @@ iterates through the actors.
 </menu>
 
 
+<h2>Limitations</h2>
+This is a highly preliminary code generator facility, with many 
+limitations.  It is best viewed as a concept demonstration.
+
+<ul>
+<li> Only SDF, FSM and HDF domains are supported
+<li> Only IntToken, DoubleToken, StringToken and ArrayToken are supported.
+Other tokens are not supported at this time.
+<li> A limited number of actors have supporting helper code.
+The easiest way to build models that only the actors that have
+code generation support is to run
+<pre>
+$PTII/bin/vergil -codegen
+</pre>
+
+<ul>
+
+
 <h2>Status of individual classes</h2>
 
 
@@ -226,8 +246,9 @@ ptolemy.codegen.c.kernel.CCodeGeneratorHelper
     Hysteresis
     Merge
     ModalBSC
-    @Pt.ProposedRating Red (cxh) Remove mostly empty methods, add info about writing actors.
+    @Pt.ProposedRating Yellow (cxh) Ready for review
    @Pt.AcceptedRating Red (cxh)
+
 
 ptolemy.codegen.gui.CodeGeneratorGUI
     AdaptiveCoding
@@ -238,8 +259,9 @@ ptolemy.codegen.gui.CodeGeneratorGUI
     Hysteresis
     Merge
     ModalBSC
-     @Pt.ProposedRating Red (eal) cxh: clean up code in prep for review.
+     @Pt.ProposedRating Green (eal)
      @Pt.AcceptedRating Red (eal)
+    Ready for review
 
 ptolemy.codegen.c.actor.TypedCompositeActor
     AdaptiveCoding
@@ -252,7 +274,7 @@ ptolemy.codegen.c.actor.TypedCompositeActor
     ModalBSC
      @Pt.ProposedRating Yellow (cxh)
      @Pt.AcceptedRating Red (zgang)
-     cxh: cleanup and prep for review
+    Ready for review
 
 ptolemy.codegen.c.domains.sdf.kernel.SDFDirector
     AdaptiveCoding
@@ -274,9 +296,9 @@ ptolemy.codegen.kernel.CodeGeneratorUtilities
     Hysteresis
     Merge
     ModalBSC
-     @Pt.ProposedRating Red (cxh)
+     @Pt.ProposedRating Green (cxh)
      @Pt.AcceptedRating Red (cxh)
-     cxh: cleanup and prep for review
+    Ready for review
 
 ptolemy.codegen.c.domains.fsm.kernel.FSMActor
     AdaptiveCoding
@@ -402,27 +424,10 @@ ptolemy.codegen.c.actor.lib.MultiplyDivide
      @Pt.AcceptedRating Red (cxh)
  Complex, Fix, Matrix and Array inputs are not supported
 
-ptolemy.codegen.c.actor.lib.Pulse
-    Merge
-     @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported: Needs tests for these
-     @Pt.AcceptedRating Red (zgang)
-DONEDONEDONEDONEDONEDONEDONE
-
-ptolemy.codegen.c.actor.lib.MonitorValue
-    AdaptiveCoding
-     *  @Pt.ProposedRating Red (cxh) Complex, Fix, Matrix and Array inputs are not supported
-     *  @Pt.AcceptedRating Red (zgang)
- Needs to work with Array to be shipped 
-DONEDONEDONEDONEDONEDONEDONE
-
 ptolemy.codegen.c.actor.lib.Accumulator
     AdaptiveCoding
      * @Pt.ProposedRating Red (mankit) TODO: Needs to work with String, ArrayToken.  Similar to Ramp
      * @Pt.AcceptedRating Red (zgang)
-
-These are done:
-   Stop
-   ThrowException
 </pre>
 
 
