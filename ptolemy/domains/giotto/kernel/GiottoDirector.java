@@ -334,11 +334,15 @@ public class GiottoDirector extends StaticSchedulingDirector implements
         _expectedNextIterationTime = getModelTime();
 
         // The receivers should be reset before their initialization.
-        Iterator receivers = _receivers.iterator();
-
+        ListIterator receivers = _receivers.listIterator();
         while (receivers.hasNext()) {
             GiottoReceiver receiver = (GiottoReceiver) receivers.next();
-            receiver.reset();
+            if (receiver.getContainer() != null) {
+                receiver.reset();
+            } else {
+                // Receiver is no longer in use.
+                receivers.remove();
+            }
         }
 
         // FIXME: SampleDelay does not call update().
@@ -694,8 +698,6 @@ public class GiottoDirector extends StaticSchedulingDirector implements
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime", new BooleanToken(false));
 
-            _receivers = new LinkedList();
-
             timeResolution.setVisibility(Settable.FULL);
         } catch (KernelException ex) {
             throw new InternalErrorException("Cannot initialize director: "
@@ -737,7 +739,7 @@ public class GiottoDirector extends StaticSchedulingDirector implements
     private long _realStartTime = 0;
 
     // List of all receivers this director has created.
-    private LinkedList _receivers;
+    private LinkedList _receivers = new LinkedList();
 
     // Schedule to be executed.
     private Schedule _schedule;
