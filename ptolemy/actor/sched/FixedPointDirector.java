@@ -348,7 +348,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *   one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        _receivers.clear();
+        // NOTE: Do not clear the list of receivers because
+        // inside receivers of output ports were created earlier
+        // during preinitialize of the container.
+        // _receivers.clear();
         super.preinitialize();
     }
     

@@ -28,6 +28,7 @@
 package ptolemy.actor.sched;
 
 import ptolemy.actor.AbstractReceiver;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -240,6 +241,22 @@ public class FixedPointReceiver extends AbstractReceiver {
     public void reset() {
         _token = null;
         _known = false;
+    }
+    
+    /** Set the container. This overrides the base class so that
+     *  if the container is being set to null, it removes the receiver
+     *  from the list in the director.
+     *  @param port The container.
+     *  @exception IllegalActionException If the container is not of
+     *   an appropriate subclass of IOPort. Not thrown in this base class,
+     *   but may be thrown in derived classes.
+     *  @see #getContainer()
+     */
+    public void setContainer(IOPort port) throws IllegalActionException {
+        if (port == null && _director != null) {
+            _director._receivers.remove(this);
+        }
+        super.setContainer(port);
     }
     
     ///////////////////////////////////////////////////////////////////
