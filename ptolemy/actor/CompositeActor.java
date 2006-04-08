@@ -528,6 +528,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
+            // The initialize() method of the local director must be called
+            // after the ports are cleared, because the FixedPointDirector
+            // relies on this to reset the status of its receivers.
             getDirector().initialize();
         } finally {
             _workspace.doneReading();
