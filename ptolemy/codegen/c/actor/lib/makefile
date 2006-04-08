@@ -131,6 +131,7 @@ OTHER_FILES_TO_BE_JARED = \
 	TrigFunction.c \
 	UnaryMathFunction.c \
 	Uniform.c \
+	executioncontrol.xml \
 	genericsinks.xml \
 	genericsources.xml \
 	math.xml \
