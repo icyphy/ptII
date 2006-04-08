@@ -306,8 +306,15 @@ public class PNDirector extends CompositeProcessDirector {
                 receivers.remove();
             } else {
                 PNQueueReceiver receiver = (PNQueueReceiver) reference.get();
-                receiver.clear();
-                receiver.setCapacity(capacity);
+                if (receiver.getDirector() == this) {
+                    receiver.clear();
+                    receiver.setCapacity(capacity);
+                } else {
+                    // If the director is not this, then
+                    // the receiver is no longer in use and
+                    // can be removed.
+                    receivers.remove();
+                }
             }
         }
     }
