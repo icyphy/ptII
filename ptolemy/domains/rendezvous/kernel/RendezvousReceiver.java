@@ -632,14 +632,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
             RendezvousReceiver castReceiver = (RendezvousReceiver) sort.next();
             result.put(castReceiver, castReceiver._token);
 
-            if (director.getThreadData(castReceiver._getWaiting) == null) {
+            if (director._getResultMap(castReceiver._getWaiting) == null) {
                 director.threadUnblocked(castReceiver._getWaiting, null);
-                director.setThreadData(castReceiver._getWaiting, result);
+                director._setResultMap(castReceiver._getWaiting, result);
             }
 
-            if (director.getThreadData(castReceiver._putWaiting) == null) {
+            if (director._getResultMap(castReceiver._putWaiting) == null) {
                 director.threadUnblocked(castReceiver._putWaiting, null);
-                director.setThreadData(castReceiver._putWaiting, result);
+                director._setResultMap(castReceiver._putWaiting, result);
             }
         }
 
@@ -1079,14 +1079,14 @@ public class RendezvousReceiver extends AbstractReceiver implements
                 director.threadBlocked(theThread, null);
                 while (result == null) {
                     waitForChange(director);
-                    result = (Map) director.getThreadData(theThread);
+                    result = director._getResultMap(theThread);
                 }
-                director.setThreadData(theThread, null);
+                director._setResultMap(theThread, null);
             } else {
                 // A rendezvous is formed, so commit the rendezvous, and wake
                 // up the other threads in this rendezvous.
                 _commitRendezvous(rendezvousReceivers, director);
-                result = (Map) director.setThreadData(theThread, null);
+                result = director._setResultMap(theThread, null);
             }
         }
         return result;

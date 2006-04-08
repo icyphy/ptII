@@ -30,6 +30,7 @@ package ptolemy.domains.rendezvous.kernel;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
@@ -103,16 +104,6 @@ public class RendezvousDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the data associated to the thread.
-     *
-     *  @param thread The thread.
-     *  @return The data associated with the thread, or null.
-     *  @see #setThreadData(Thread, Object)
-     */
-    public Object getThreadData(Thread thread) {
-        return _threadData.get(thread);
-    }
-
     /** Return a new instance of RendezvousReceiver compatible with
      *  this director.
      *  @return A new instance of RendezvousReceiver.
@@ -124,27 +115,17 @@ public class RendezvousDirector extends CompositeProcessDirector {
     /** Return false if the model should not continue to execute.
      *  @return False if no more execution is possible, and true otherwise.
      */
-    public boolean postfire() {
-        // FIXME: Should this call super.postfire?
+    public boolean postfire() throws IllegalActionException {
+        if (!super.postfire()) {
+            return false;
+        }
+        
         List ports = ((CompositeActor) getContainer()).inputPortList();
 
         if (ports.iterator().hasNext()) {
             return !_stopRequested;
         }
         return _notDone && !_stopRequested;
-    }
-
-    /** Set the data associated with the thread.
-     *
-     *  @param thread The thread.
-     *  @param data The data.
-     *  @return The data previously associated with the thread, or null.
-     *  @see #getThreadData(Thread)
-     */
-    public Object setThreadData(Thread thread, Object data) {
-        Object oldData = _threadData.get(thread);
-        _threadData.put(thread, data);
-        return oldData;
     }
 
     /** Return an array of suggested directors to be used with ModalModel.
@@ -159,7 +140,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
         // in the array.
         String[] defaultSuggestions = new String[] {
                 "ptolemy.domains.fsm.kernel.FSMDirector",
-                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector" };
+                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector"
+        };
         return defaultSuggestions;
     }
 
@@ -197,6 +179,21 @@ public class RendezvousDirector extends CompositeProcessDirector {
         return false;
     }
 
+    /** Return the map of results for the given thread. This result is returned
+     *  from a committed rendezvous. The thread that commits the rendezvous is
+     *  responsible for setting the maps for other threads in the rendezvous.
+     *  
+     *  In the map, the keys are receivers, and the values are the tokens on
+     *  those receivers, if any.
+     *
+     *  @param thread The thread.
+     *  @return The result map associated with that thread.
+     *  @see #_setResultMap(Thread, Map)
+     */
+    protected Map _getResultMap(Thread thread) {
+        return (Map)_resultMaps.get(thread);
+    }
+
     /** If the model is deadlocked, report the deadlock if parameter
      *  "SuppressDeadlockReporting" is not set to boolean true, and
      *  return false.  Otherwise, return true. Deadlock occurs if the
@@ -228,6 +225,22 @@ public class RendezvousDirector extends CompositeProcessDirector {
         return true;
     }
 
+    /** Set the map of results for the given thread.
+     *  
+     *  In the map, the keys are receivers, and the values are the tokens on
+     *  those receivers, if any.
+     *
+     *  @param thread The thread.
+     *  @param map The result map to be associated with that thread.
+     *  @return The map previously associated with that thread, or null.
+     *  @see #_getResultMap(Thread)
+     */
+    protected Map _setResultMap(Thread thread, Map map) {
+        Map oldMap = (Map)_resultMaps.get(thread);
+        _resultMaps.put(thread, map);
+        return oldMap;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -241,8 +254,8 @@ public class RendezvousDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                          private variables                ////
 
-    /** The map that records the data associated to the threads, which
-     *  are used by the actors in this model.
+    /** The map that records the result maps for the threads. Keys are the
+     *  threads, and values are the result maps associated with those threads.
      */
-    private HashMap _threadData = new HashMap();
+    private HashMap _resultMaps = new HashMap();
 }
