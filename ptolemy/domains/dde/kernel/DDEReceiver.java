@@ -37,6 +37,7 @@ import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
+import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
@@ -185,6 +186,14 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
             _hasTokenCache = false;
             return token;
         }
+    }
+
+    /** Return the director in charge of this receiver, or null
+     *  if there is none.
+     *  @return The director in charge of this receiver.
+     */
+    public DDEDirector getDirector() {
+        return _director;
     }
 
     /** Return true if the receiver has room for putting the given number of
@@ -589,28 +598,32 @@ public class DDEReceiver extends PrioritizedTimedQueue implements
     public void setContainer(IOPort port) throws IllegalActionException {
         super.setContainer(port);
 
-        Actor actor = (Actor) port.getContainer();
-        Director director;
-
-        // For a composite actor,
-        // the receiver type of an input port is decided by
-        // the executive director.
-        // While the receiver type of an output is decided by the director.
-        // NOTE: getExecutiveDirector() and getDirector() yield the same
-        // result for actors that do not contain directors.
-        if (port.isInput()) {
-            director = actor.getExecutiveDirector();
+        if (port == null) {
+            _director = null;
         } else {
-            director = actor.getDirector();
+            Actor actor = (Actor) port.getContainer();
+            Director director;
+            
+            // For a composite actor,
+            // the receiver type of an input port is decided by
+            // the executive director.
+            // While the receiver type of an output is decided by the director.
+            // NOTE: getExecutiveDirector() and getDirector() yield the same
+            // result for actors that do not contain directors.
+            if (port.isInput()) {
+                director = actor.getExecutiveDirector();
+            } else {
+                director = actor.getDirector();
+            }
+            
+            if (!(director instanceof DDEDirector)) {
+                throw new IllegalActionException(port,
+                        "Cannot use an instance of PNQueueReceiver "
+                        + "since the director is not a PNDirector.");
+            }
+            
+            _director = (DDEDirector) director;
         }
-
-        if (!(director instanceof DDEDirector)) {
-            throw new IllegalActionException(port,
-                    "Cannot use an instance of PNQueueReceiver "
-                            + "since the director is not a PNDirector.");
-        }
-
-        _director = (DDEDirector) director;
     }
 
     ///////////////////////////////////////////////////////////////////
