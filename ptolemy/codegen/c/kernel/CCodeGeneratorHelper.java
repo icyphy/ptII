@@ -41,6 +41,7 @@ import ptolemy.util.StringUtilities;
 
 /**
  Base class for C code generator helper. 
+
  <p>Actor helpers extend this class and optionally define
  generateFireCode(), generateInitializeCode(), generatePreinitializeCode(),
  and generateWrapupCode() methods.  In derived classes, these methods,
@@ -50,13 +51,16 @@ import ptolemy.util.StringUtilities;
  block.  For example, generateInitializeCode() reads the
  <code>initBlock</code>, processes the macros and adds the resulting
  code block to the output.
+
  <p>For a complete list of methods to define, see 
  {@link ptolemy.codegen.kernel.CodeGeneratorHelper}.
- 
+
+ <p>For further details, see <code>$PTII/ptolemy/codegen/README.html</code>
+
  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
  @version $Id$
  @since Ptolemy II 6.0
-o @Pt.ProposedRating Red (cxh) Remove mostly empty methods, add info about writing actors.
+o @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class CCodeGeneratorHelper extends CodeGeneratorHelper {
@@ -92,10 +96,13 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
         return _INDENT1 + "exit(0);\n}\n";
     }
 
-    /** Return a new parse tree to use with expressions.
-     *  @return the new parse tree to use with expressions.
+    /** Return a new parse tree code generator to use with expressions.
+     *  @return the parse tree code generator to use with expressions.
      */
     public ParseTreeCodeGenerator getParseTreeCodeGenerator() {
+        // FIXME: We need to create new ParseTreeCodeGenerator each time
+        // here or else we get lots of test failures.  It would be better
+        // if we could use the same CParseTreeCodeGenerator over and over.
         _parseTreeCodeGenerator = new CParseTreeCodeGenerator();
         return _parseTreeCodeGenerator;
     }
