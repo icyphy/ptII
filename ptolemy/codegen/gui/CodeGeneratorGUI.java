@@ -72,12 +72,12 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Red (eal)
  */
 public class CodeGeneratorGUI extends PtolemyFrame {
-    /** Construct a frame to control code generation for
-     *  the specified Ptolemy II model.
-     *  After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
-     *  This is typically accomplished by calling show() on
-     *  enclosing tableau.
+
+    /** Construct a frame to control code generation for the specified
+     *  Ptolemy II model.  After constructing this, it is necessary to
+     *  call setVisible(true) to make the frame appear.  This is
+     *  typically accomplished by calling show() on enclosing tableau.
+     *
      *  @param codeGenerator The codeGenerator to put in this frame,
      *  or null if none.
      *  @param tableau The tableau responsible for this frame.
@@ -144,12 +144,6 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 4));
 
-        // Button panel first.
-        JButton parametersButton = new JButton("Parameters");
-        parametersButton.setToolTipText("Sanity check the Parameters and then "
-                + "display a summary.");
-        buttonPanel.add(parametersButton);
-
         JButton goButton = new JButton("Generate");
         goButton.setToolTipText("Generate code");
         buttonPanel.add(goButton);
@@ -190,21 +184,6 @@ public class CodeGeneratorGUI extends PtolemyFrame {
         splitPane.setDividerLocation(preferred.width + 20);
 
         getContentPane().add(splitPane, BorderLayout.CENTER);
-
-        // ActionListeners for the buttons
-        parametersButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                try {
-                    // FIXME: What should go here?
-                    // options.sanityCheckAndUpdateParameters(null);
-                } catch (Exception ex) {
-                    exec.appendJTextArea(ex.toString());
-                }
-
-                // FIXME: Print out all parameter values
-                // exec.appendJTextArea(options.toString());
-            }
-        });
 
         stopButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
