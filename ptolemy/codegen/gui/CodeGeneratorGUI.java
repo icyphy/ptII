@@ -65,10 +65,10 @@ import ptolemy.util.MessageHandler;
  generator. This UI will be invoked when you double click on the
  code generator.
 
- @author Edward A. Lee
+ @author Edward A. Lee, Christopher Brooks
  @version $Id$
  @since Ptolemy II 6.0
- @Pt.ProposedRating Red (cxh) clean up code in prep for review.
+ @Pt.ProposedRating Green (cxh)
  @Pt.AcceptedRating Red (eal)
  */
 public class CodeGeneratorGUI extends PtolemyFrame {
