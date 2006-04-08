@@ -464,7 +464,15 @@ public class IOPort extends ComponentPort {
         }
 
         // Create the hashtable of lists of receivers in this port, keyed by
-        // relation.  This replaces any previous table.
+        // relation.  This replaces any previous table, so we first remove
+        // the receivers that are currently in the table.
+        if (_localReceiversTable != null) {
+            Iterator relations = _localReceiversTable.keySet().iterator();
+            while(relations.hasNext()) {
+                Relation relation = (Relation)relations.next();
+                _removeReceivers(relation);
+            }
+        }
         _localReceiversTable = new HashMap();
 
         boolean input = isInput();
@@ -2912,6 +2920,7 @@ public class IOPort extends ComponentPort {
             Relation toDelete = (Relation) _relationsList.get(index);
 
             if ((toDelete != null) && (_localReceiversTable != null)) {
+                _removeReceivers(toDelete);
                 _localReceiversTable.remove(toDelete);
             }
 
@@ -2940,6 +2949,7 @@ public class IOPort extends ComponentPort {
             super.unlink(relation);
 
             if (_localReceiversTable != null) {
+                _removeReceivers(relation);
                 _localReceiversTable.remove(relation);
             }
 
@@ -2969,6 +2979,7 @@ public class IOPort extends ComponentPort {
                     Relation relation = (Relation) relations.next();
 
                     if (!isInsideLinked(relation)) {
+                        _removeReceivers(relation);
                         _localReceiversTable.remove(relation);
                     }
                 }
@@ -3001,6 +3012,7 @@ public class IOPort extends ComponentPort {
                     Relation relation = (Relation) relations.next();
 
                     if (isInsideLinked(relation)) {
+                        _removeReceivers(relation);
                         _localReceiversTable.remove(relation);
                     }
                 }
@@ -3032,6 +3044,7 @@ public class IOPort extends ComponentPort {
 
             if (toDelete != null) {
                 if (_localReceiversTable != null) {
+                    _removeReceivers(toDelete);
                     _localReceiversTable.remove(toDelete);
                 }
             }
@@ -3057,6 +3070,7 @@ public class IOPort extends ComponentPort {
             super.unlinkInside(relation);
 
             if (_localReceiversTable != null) {
+                _removeReceivers(relation);
                 _localReceiversTable.remove(relation);
             }
 
@@ -3602,6 +3616,38 @@ public class IOPort extends ComponentPort {
         Receiver receiver = container.newReceiver();
         receiver.setContainer(this);
         return receiver;
+    }
+    
+    /** Remove the receivers associated with the specified
+     *  relation, if there are any.  This sets the container
+     *  of each receiver to null.
+     *  @param relation The relation.
+     */
+    protected void _removeReceivers(Relation relation) {
+        if (_localReceiversTable != null) {
+            List receivers = (List)_localReceiversTable.get(relation);
+            if (receivers != null) {
+                Iterator iterator = receivers.iterator();
+                while (iterator.hasNext()) {
+                    Receiver[][] receiverArray = (Receiver[][])iterator.next();
+                    for (int i = 0; i < receiverArray.length; i++) {
+                        if (receiverArray[i] != null) {
+                            for (int j = 0; j < receiverArray[i].length; j++) {
+                                if (receiverArray[i][j] != null) {
+                                    try {
+                                        receiverArray[i][j].setContainer(null);
+                                    } catch (IllegalActionException e) {
+                                        // This should not happen because we are setting
+                                        // the container to null.
+                                        throw new InternalErrorException(e);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /** Send a token sent event to all token sent listeners that 
