@@ -262,7 +262,10 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return false;
     }
 
-    /** Return a new FixedPointReceiver.
+    /** Return a new FixedPointReceiver. If a subclass overrides this
+     *  method, the receiver it creates must be a subclass of FixedPointReceiver,
+     *  and it must add the receiver to the _receivers list (a protected
+     *  member of this class).
      *  @return A new FixedPointReceiver.
      */
     public Receiver newReceiver() {
@@ -438,6 +441,12 @@ public class FixedPointDirector extends StaticSchedulingDirector {
             ((FixedPointReceiver) receiverIterator.next()).reset();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** List of all receivers this director has created. */
+    protected List _receivers = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -627,9 +636,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
      *  actor firings.
      */
     private int _lastNumberOfKnownReceivers;
-
-    /** List of all receivers this director has created. */
-    private List _receivers = new LinkedList();
 
     /** The number of actors fired since initialize(). */
     private int _numberOfActorsFired;
