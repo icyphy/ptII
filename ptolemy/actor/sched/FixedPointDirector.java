@@ -342,19 +342,6 @@ public class FixedPointDirector extends StaticSchedulingDirector {
         return super.prefire();
     }
 
-    /** Overrride the superclass to keep track of receivers that are created
-     *  during preinitialize().
-     *  @exception IllegalActionException If the preinitialize() method of
-     *   one of the associated actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        // NOTE: Do not clear the list of receivers because
-        // inside receivers of output ports were created earlier
-        // during preinitialize of the container.
-        // _receivers.clear();
-        super.preinitialize();
-    }
-    
     /** Return an array of suggested directors to be used with
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default
