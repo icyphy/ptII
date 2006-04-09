@@ -1202,7 +1202,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
         super._addRelation(relation);
     }
 
-    /**  Create receivers for each input port.
+    /** Create receivers for each port. If the port is an
+     *  input port, then receivers are created for outside
+     *  connections. If it is an output port, then receivers
+     *  are created for inside connections. This method replaces
+     *  any pre-existing receivers, so any data they contain
+     *  will be lost.
      *  @exception IllegalActionException If any port throws it.
      */
     protected void _createReceivers() throws IllegalActionException {
