@@ -1068,12 +1068,13 @@ else
     if test -d "$ECLIPSE_DIR"; then
 	AC_MSG_RESULT([$ECLIPSE_DIR])
 	AC_MSG_CHECKING([for jars used by backtracking])
-	jars="jdtcore.jar osgi.jar resources.jar runtime.jar" 
+	# jars="jdt.core osgi resources runtime" 
+	jars="jdt.core core.runtime"
 	eclipsejarpath=
 	for jar in $jars
 	do
 	    echo $ECHO_N "$jar "
-	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name $jar | head -1`
+	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
    	    if test -f "$jarpath"; then
 	        # Keep track of the jars so we can use them while building
 		# with make.
