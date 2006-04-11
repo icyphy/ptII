@@ -27,20 +27,16 @@
  */
 package ptolemy.backtrack.plugin;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import org.eclipse.core.runtime.CoreException;
-
 import org.eclipse.jface.resource.ImageDescriptor;
-
 import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-
 import org.osgi.framework.BundleContext;
 
 import ptolemy.backtrack.plugin.console.OutputConsole;
-
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 /**
  * The main plugin class to be used in the desktop.

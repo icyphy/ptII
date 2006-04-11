@@ -28,14 +28,12 @@
 package ptolemy.backtrack.plugin.console;
 
 import org.eclipse.swt.graphics.Color;
-
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleListener;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
-import org.eclipse.ui.internal.console.ConsoleManager;
 
 import ptolemy.backtrack.plugin.EclipsePlugin;
 

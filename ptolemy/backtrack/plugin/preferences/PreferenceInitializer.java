@@ -27,6 +27,8 @@
  */
 package ptolemy.backtrack.plugin.preferences;
 
+import java.util.LinkedList;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -34,17 +36,11 @@ import org.eclipse.core.runtime.IBundleGroup;
 import org.eclipse.core.runtime.IBundleGroupProvider;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
-
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
-
 import org.eclipse.swt.graphics.RGB;
 
-import org.eclipse.ui.internal.about.AboutBundleGroupData;
-
 import ptolemy.backtrack.plugin.EclipsePlugin;
-
-import java.util.LinkedList;
 
 /**
  * Class used to initialize default preference values.
