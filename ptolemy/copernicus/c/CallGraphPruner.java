@@ -290,6 +290,19 @@ public class CallGraphPruner {
         source = Scene.v().getSootClass("java.io.PrintStream");
         compulsoryNodes.add(source);
 
+        // See https://svn.sable.mcgill.ca/wiki/index.php/ClassResolver
+        Scene.v().tryLoadClass("java.lang.ref.WeakReference", SootClass.DANGLING);
+        source = Scene.v().getSootClass("java.lang.ref.WeakReference");
+        compulsoryNodes.add(source);
+
+        Scene.v().tryLoadClass("sun.reflect.LangReflectAccess", SootClass.DANGLING);
+        source = Scene.v().getSootClass("sun.reflect.LangReflectAccess");
+        compulsoryNodes.add(source);
+
+        Scene.v().tryLoadClass("java.util.AbstractSet", SootClass.SIGNATURES);
+        source = Scene.v().getSootClass("java.util.AbstractSet");
+        compulsoryNodes.add(source);
+
         return compulsoryNodes;
     }
 
