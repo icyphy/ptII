@@ -149,7 +149,7 @@ public class BacktrackTransformer {
 
         public void filterEndElement(NamedObj container, String elementName) {
             if ((elementName.equals("entity") || elementName.equals("property"))
-                    && container.getClassName() != null) {
+                    && container != null && container.getClassName() != null) {
                 _classStack.pop();
             }
         }
