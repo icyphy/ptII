@@ -35,13 +35,11 @@ DIRS = \
 	AntennaPattern \
 	CircularRange \
 	Collisions \
-	CooperativeTerminals \
 	EvaderAndPursuer \
 	MatlabWirelessSoundDetection \
 	PowerVariability \
 	SmallWorld \
 	SmartParking \
-	Submarines \
 	TerrainModel \
 	WirelessSoundDetection
 
@@ -70,13 +68,11 @@ PTCLASSALLJARS = \
 	AntennaPattern/AntennaPattern.jar \
 	CircularRange/CircularRange.jar \
 	Collisions/Collisions.jar \
-	CooperativeTerminals/CooperativeTerminals.jar \
 	EvaderAndPursuer/EvaderAndPursuer.jar \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
 	PowerVariability/PowerVariability.jar \
 	SmallWorld/SmallWorld.jar \
 	SmartParking/SmartParking.jar \
-	Submarines/Submarines.jar \
 	TerrainModel/TerrainModel.jar \
 	WirelessSoundDetection/WirelessSoundDetection.jar
 
