@@ -86,8 +86,8 @@
                         && !$ref(input#$channel)) ) {
             printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
                     $actorSymbol(numberOfTokensSeen),
-                    btoa($ref(input#$channel)),
-                    btoa($ref(correctValues, $actorSymbol(numberOfTokensSeen))));
+                    BooleantoString($ref(input#$channel)),
+                    BooleantoString($ref(correctValues, $actorSymbol(numberOfTokensSeen))));
             exit(-1);    		
 		}
 /**/
@@ -106,8 +106,8 @@
                                 && !$ref(input#$channel)))) {
             printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a boolean of value: %s. Should have been a boolean of value: %s\n",
                     $actorSymbol(numberOfTokensSeen),
-                    btoa($ref(input#$channel)),
-                    btoa($actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Boolean));
+                    BooleantoString($ref(input#$channel)),
+                    BooleantoString($actorSymbol(correctValuesThisFiring)_$channel->elements[$channel].payload.Boolean));
             exit(-1);    
         }
 /**/
@@ -146,11 +146,11 @@
 
 /***TokenBlock($channel)***/
         $actorSymbol(numberOfTokensSeen)++;
-        if (!$typeFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean) {
+        if (!$tokenFunc($ref(input#$channel)::equals($ref(correctValues, $actorSymbol(numberOfTokensSeen)))).payload.Boolean) {
             printf("\nTest $actorSymbol($channel) fails in interation %d.\n Value was: %s. Should have been: %s.\n",
                     $actorSymbol(numberOfTokensSeen),
-                    $typeFunc($ref(input#$channel)::toString()),
-                    $typeFunc($ref(correctValues, $actorSymbol(numberOfTokensSeen))::toString()));
+                    $tokenFunc($ref(input#$channel)::toString()).payload.String,
+                    $tokenFunc($ref(correctValues, $actorSymbol(numberOfTokensSeen))::toString()).payload.String);
             exit(-1);    				
 		}
 /**/
@@ -163,11 +163,11 @@
         Token $actorSymbol(correctValuesThisFiring)_$channel =
                Array_get($ref(correctValues), $actorSymbol(numberOfTokensSeen));
 		if ($actorSymbol(numberOfTokensSeen) < $size(correctValues)
-	                && !$typeFunc($ref(input#$channel)::equals(Array_get($actorSymbol(correctValuesThisFiring)_$channel, $channel))).payload.Boolean) {
+	                && !$tokenFunc($ref(input#$channel)::equals(Array_get($actorSymbol(correctValuesThisFiring)_$channel, $channel))).payload.Boolean) {
 	            printf("\nTest $actorSymbol($channel) fails in iteration %d.\n Value was a String: \"%s\". Should have been a String: \"%s\"\n",
 	                    $actorSymbol(numberOfTokensSeen),
-	                    $typeFunc($ref(input#$channel)::toString()),
-	                    $typeFunc(Array_get($actorSymbol(correctValuesThisFiring)_$channel, $channel)::toString()));
+	                    $tokenFunc($ref(input#$channel)::toString()).payload.String,
+	                    $tokenFunc(Array_get($actorSymbol(correctValuesThisFiring)_$channel, $channel)::toString()).payload.String);
 	            exit(-1);
 		}
 /**/
