@@ -258,6 +258,8 @@ public class CallGraphPruner {
         compulsoryNodes.addAll(source.getFields());
 
         // Add java.lang.System.initializeSystemClass()
+        // Soot-2.2.2 required tryLoadClass()
+        Scene.v().tryLoadClass("java.lang.System", SootClass.SIGNATURES);
         source = Scene.v().getSootClass("java.lang.System");
         method = source.getMethodByName("initializeSystemClass");
         compulsoryNodes.add(method);
