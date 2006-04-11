@@ -205,7 +205,7 @@ Simple:
 		$(JAVA) -Dj2c_lib=\j2c_lib ptolemy.copernicus.c.JavaToC \
 		".$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)" -v -singleClass Simple
 	@echo "Compiling the generated C with 'gcc -c'..."
-	gcc -c -I../runtime Simple.c
+	gcc -c -I../runtime -Ij2c_lib Simple.c
 	@echo "Compilation finished."
 	@echo "The generated source files are Simple.c, Simple.i.h, and "
 	@echo "Simple.h. The resulting object file is Simple.o"
