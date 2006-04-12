@@ -1040,16 +1040,17 @@ fi
 #       If not, look for for $PTII/vendors/eclipse
 #--------------------------------------------------------------------
 
-# PTBACKTRACK_DIR is set to backtrack and used in
-# $PTII/ptolemy/makefile if Eclipse was found and the jar files were found
-PTBACKTRACK_DIR=
+# PTBACKTRACK_ECLIPSE_DIR is set to eclipse and used in
+# $PTII/ptolemy/backtrack/makefile if Eclipse was found
+# and the jar files were found
+PTBACKTRACK_ECLIPSE_DIR=
 
-# Jar files used by ptolemy/backtrack
+# Jar files used by ptolemy/backtrack/eclipse
 PTBACKTRACK_JARS=
 
-# We only need to look for Eclipse if $PTII/ptolemy/backtrack exists
-if test ! -d "$PTII/ptolemy/backtrack"; then
-    AC_MSG_RESULT([$PTII/ptolemy/backtrack is not present,
+# We only need to look for Eclipse if $PTII/ptolemy/backtrack/eclipse exists
+if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
+    AC_MSG_RESULT([$PTII/ptolemy/backtrack/eclipse is not present,
     so we need not find Eclipse.])
 else
     AC_MSG_CHECKING([for Eclipse installation])
@@ -1093,15 +1094,15 @@ else
 	done	
 	if test ! -z "$eclipsejarpath"; then 
 	    AC_MSG_RESULT([ok])
-	    # Set to backtrack and used in
-	    # $PTII/ptolemy/make if Eclipse jar files were found
-	    PTBACKTRACK_DIR=backtrack
-   	    # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
-	    PTBACKTRACK_PACKAGES="ptolemy.backtrack.ast ptolemy.backtrack.ast.transform ptolemy.backtrack.util ptolemy.backtrack.xmlparser"
+	    # Set to eclipse and used in
+	    # $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
+	    PTBACKTRACK_ECLIPSE_DIR=backtrack
+   	    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
+	    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
 	    PTBACKTRACK_JARS=$eclipsejarpath
         fi
     fi	
-    if test "$PTBACKTRACK_DIR" = ""; then
+    if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
         AC_MSG_WARN([Failed to find Eclipse
     perhaps the Eclipse is not installed?
     You need not download Eclipse unless you
@@ -1112,7 +1113,7 @@ else
     fi
 fi
 
-if test -z "$PTBACKTRACK_DIR"; then
+if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/backtrack/|ptolemy/backtrack/ast/"
 fi 
 
@@ -3139,14 +3140,14 @@ AC_SUBST(MATLAB_LIBDIR)
 AC_SUBST(PSDF_DIR)
 
 # Set to backtrack if Eclipse was found
-AC_SUBST(PTBACKTRACK_DIR)
+AC_SUBST(PTBACKTRACK_ECLIPSE_DIR)
 
 # Eclipse jar files used by ptolemy/backtrack 
-AC_SUBST(PTBACKTRACK_JARS)
+AC_SUBST(PTBACKTRACK_ECLIPSE_JARS)
 
 # Ptolemy II packages that use Eclipse
 # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
-AC_SUBST(PTBACKTRACK_PACKAGES)
+AC_SUBST(PTBACKTRACK_ECLIPSE_PACKAGES)
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include
 # if we found boost/static_assert.hpp (mescal)
