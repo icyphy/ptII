@@ -294,6 +294,18 @@ VISUALSENSEPACKAGES = \
 #			ptolemy.domains.wireless.lib.network \
 #			ptolemy.domains.wireless.lib.network.mac
 
+# PTBACKTRACK_ECLIPSE_PACKAGES is set by configure
+PTBACKTRACK_PACKAGES =
+			ptolemy.backtrack \
+			ptolemy.backtrack.automatic.ptolemy.actor.lib \
+			ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib \
+			ptolemy.backtrack.manual.ptolemy.domains.ct.kernel \
+			ptolemy.backtrack.manual.ptolemy.actor.lib \
+			ptolemy.backtrack.ui \
+			ptolemy.backtrack.util \
+			ptolemy.backtrack.xmlparser \
+			$(PTBACKTRACK_ECLIPSE_PACKAGES) 
+
 # All the Java 1.4 packages
 ALL1_4PACKAGES =	$(COMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
