@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_DIR PTBACKTRACK_JARS PTBACKTRACK_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_ECLIPSE_DIR PTBACKTRACK_ECLIPSE_JARS PTBACKTRACK_ECLIPSE_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4433,18 +4433,19 @@ fi
 #       If not, look for for $PTII/vendors/eclipse
 #--------------------------------------------------------------------
 
-# PTBACKTRACK_DIR is set to backtrack and used in
-# $PTII/ptolemy/makefile if Eclipse was found and the jar files were found
-PTBACKTRACK_DIR=
+# PTBACKTRACK_ECLIPSE_DIR is set to eclipse and used in
+# $PTII/ptolemy/backtrack/makefile if Eclipse was found
+# and the jar files were found
+PTBACKTRACK_ECLIPSE_DIR=
 
-# Jar files used by ptolemy/backtrack
+# Jar files used by ptolemy/backtrack/eclipse
 PTBACKTRACK_JARS=
 
-# We only need to look for Eclipse if $PTII/ptolemy/backtrack exists
-if test ! -d "$PTII/ptolemy/backtrack"; then
-    echo "$as_me:$LINENO: result: $PTII/ptolemy/backtrack is not present,
+# We only need to look for Eclipse if $PTII/ptolemy/backtrack/eclipse exists
+if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
+    echo "$as_me:$LINENO: result: $PTII/ptolemy/backtrack/eclipse is not present,
     so we need not find Eclipse." >&5
-echo "${ECHO_T}$PTII/ptolemy/backtrack is not present,
+echo "${ECHO_T}$PTII/ptolemy/backtrack/eclipse is not present,
     so we need not find Eclipse." >&6
 else
     echo "$as_me:$LINENO: checking for Eclipse installation" >&5
@@ -4472,12 +4473,13 @@ echo $ECHO_N "checking for $PTII/vendors/eclipse... $ECHO_C" >&6
 echo "${ECHO_T}$ECLIPSE_DIR" >&6
 	echo "$as_me:$LINENO: checking for jars used by backtracking" >&5
 echo $ECHO_N "checking for jars used by backtracking... $ECHO_C" >&6
-	jars="jdtcore.jar osgi.jar resources.jar runtime.jar"
+	# jars="jdt.core osgi resources runtime"
+	jars="jdt.core core.runtime"
 	eclipsejarpath=
 	for jar in $jars
 	do
 	    echo $ECHO_N "$jar "
-	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name $jar | head -1`
+	    jarpath=`$FIND "$ECLIPSE_DIR/plugins" -name "*${jar}*.jar" | head -1`
    	    if test -f "$jarpath"; then
 	        # Keep track of the jars so we can use them while building
 		# with make.
@@ -4498,15 +4500,15 @@ echo "$as_me: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&2;}
 	if test ! -z "$eclipsejarpath"; then
 	    echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-	    # Set to backtrack and used in
-	    # $PTII/ptolemy/make if Eclipse jar files were found
-	    PTBACKTRACK_DIR=backtrack
-   	    # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
-	    PTBACKTRACK_PACKAGES="ptolemy.backtrack.ast ptolemy.backtrack.ast.transform ptolemy.backtrack.util ptolemy.backtrack.xmlparser"
+	    # Set to eclipse and used in
+	    # $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
+	    PTBACKTRACK_ECLIPSE_DIR=backtrack
+   	    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
+	    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
 	    PTBACKTRACK_JARS=$eclipsejarpath
         fi
     fi
-    if test "$PTBACKTRACK_DIR" = ""; then
+    if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
         { echo "$as_me:$LINENO: WARNING: Failed to find Eclipse
     perhaps the Eclipse is not installed?
     You need not download Eclipse unless you
@@ -4523,7 +4525,7 @@ echo "$as_me: WARNING: Failed to find Eclipse
     fi
 fi
 
-if test -z "$PTBACKTRACK_DIR"; then
+if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/backtrack/|ptolemy/backtrack/ast/"
 fi
 
@@ -8504,10 +8506,9 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
-  #    will be set to the directory where LIBOBJS objects are built.
-  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
@@ -9094,9 +9095,9 @@ s,@MAJOR_OS_NAME@,$MAJOR_OS_NAME,;t t
 s,@MATLAB_DIR@,$MATLAB_DIR,;t t
 s,@MATLAB_LIBDIR@,$MATLAB_LIBDIR,;t t
 s,@PSDF_DIR@,$PSDF_DIR,;t t
-s,@PTBACKTRACK_DIR@,$PTBACKTRACK_DIR,;t t
-s,@PTBACKTRACK_JARS@,$PTBACKTRACK_JARS,;t t
-s,@PTBACKTRACK_PACKAGES@,$PTBACKTRACK_PACKAGES,;t t
+s,@PTBACKTRACK_ECLIPSE_DIR@,$PTBACKTRACK_ECLIPSE_DIR,;t t
+s,@PTBACKTRACK_ECLIPSE_JARS@,$PTBACKTRACK_ECLIPSE_JARS,;t t
+s,@PTBACKTRACK_ECLIPSE_PACKAGES@,$PTBACKTRACK_ECLIPSE_PACKAGES,;t t
 s,@PTBOOST_INCLUDE@,$PTBOOST_INCLUDE,;t t
 s,@PTCALTROP_DIR@,$PTCALTROP_DIR,;t t
 s,@PTCHIC_DIR@,$PTCHIC_DIR,;t t
