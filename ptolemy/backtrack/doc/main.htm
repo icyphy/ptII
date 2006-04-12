@@ -10,5 +10,12 @@
 <P>
 Backtracking mechanism allows to record the execution state of the model, and
 roll back to a record state later in the execution.
+<P>
+An incremental checkpointing technique is used for backtracking. It requires to
+record only the state changes during the execution, but not the complete state
+(also known as snapshot) of the whole model. Actors to be backtracked must be
+transformed with the Ptolemy backtracking transformer. The models that uses
+these actors acquire the ability to record their states in checkpoints, and
+later to roll back to those checkpoints.
 </body>
 </html>
