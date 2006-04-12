@@ -182,7 +182,7 @@ test CParseTreeCodeGenerator-16.2 {visitFunctionApplicationNode} {
   Invoking public static ptolemy.data.ArrayToken ptolemy.data.expr.UtilityFunctions.map(ptolemy.data.FunctionToken,ptolemy.data.ArrayToken) throws ptolemy.kernel.util.IllegalActionException
   as map((function(a0:int) int), {int})
 Node ptolemy.data.expr.ASTPtFunctionApplicationNode evaluated to {3, 5, 6}
-} {map(, $new(Array(3, 3, $new(Int(0)), $new(Int(2)), $new(Int(3)))))}}
+} {map(, $new(Array(3, 3, $new(Int(0)), $new(Int(2)), $new(Int(3)), TYPE_Int)))}}
 
 test CParseTreeCodeGenerator-16.3 {visitFunctionApplicationNode} {
     set ptParser [java::new ptolemy.data.expr.PtParser]
@@ -245,7 +245,7 @@ test CParseTreeCodeGenerator-17.2 {Construct arrays with newline strings in them
   Node ptolemy.data.expr.ASTPtLeafNode evaluated to "\(regex\)"
 Node ptolemy.data.expr.ASTPtArrayConstructNode evaluated to {"this is
  a test", "test two", "\(regex\)"}
-} {$new(Array(3, 3, $new(String("this is\n a test")), $new(String("test two")), $new(String("\\(regex\\)"))))}}
+} {$new(Array(3, 3, $new(String("this is\n a test")), $new(String("test two")), $new(String("\\(regex\\)")), TYPE_String))}}
 
 
 # I've commented this out. The ParseTreeCodeGenerator should not be 
