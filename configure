@@ -4439,7 +4439,7 @@ fi
 PTBACKTRACK_ECLIPSE_DIR=
 
 # Jar files used by ptolemy/backtrack/eclipse
-PTBACKTRACK_JARS=
+PTBACKTRACK_ECLIPSE_JARS=
 
 # We only need to look for Eclipse if $PTII/ptolemy/backtrack/eclipse exists
 if test ! -d "$PTII/ptolemy/backtrack/eclipse"; then
@@ -4505,7 +4505,7 @@ echo "${ECHO_T}ok" >&6
 	    PTBACKTRACK_ECLIPSE_DIR=backtrack
    	    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
 	    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
-	    PTBACKTRACK_JARS=$eclipsejarpath
+	    PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
         fi
     fi
     if test "$PTBACKTRACK_ECLIPSE_DIR" = ""; then
@@ -4521,7 +4521,7 @@ echo "$as_me: WARNING: Failed to find Eclipse
     plan on using the backtracking facility in ptolemy.backtrack
     Eclipse may be downloaded from
     http://www.eclipse.org/" >&2;}
-	PTBACKTRACK_JARS=
+	PTBACKTRACK_ECLIPSE_JARS=
     fi
 fi
 
@@ -8506,9 +8506,10 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Add them.
-  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
+  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
+  #    will be set to the directory where LIBOBJS objects are built.
+  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
