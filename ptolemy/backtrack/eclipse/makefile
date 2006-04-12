@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/backtrack
+ME =		ptolemy/backtrack/eclipse
 
-DIRS =		eclipse manual util xmlparser demo
+DIRS =		ast
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,13 +45,11 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	backtrack
+PTPACKAGE = 	eclipse
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = Checkpoint.java \
-        CheckpointState.java \
-        Rollbackable.java
+JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -65,9 +63,7 @@ MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
+OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
 

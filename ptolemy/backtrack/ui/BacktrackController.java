@@ -49,6 +49,27 @@ import ptolemy.backtrack.Rollbackable;
  @Pt.AcceptedRating Red (tfeng)
  */
 public class BacktrackController {
+    public void commit(long handle) {
+        Iterator handles = _checkpoints.keySet().iterator();
+        while (handles.hasNext()) {
+            Long handleKey = (Long)handles.next();
+            if (handleKey.longValue() <= handle) {
+                HashMap checkpointsAndHandles =
+                    (HashMap)_checkpoints.get(handleKey);
+                Iterator checkpoints =
+                    checkpointsAndHandles.keySet().iterator();
+                while (checkpoints.hasNext()) {
+                    Checkpoint checkpoint = (Checkpoint)checkpoints.next();
+                    long timestamp =
+                        ((Long)checkpointsAndHandles.get(checkpoint)).
+                                longValue();
+                    checkpoint.commit(timestamp);
+                }
+            }
+            handles.remove();
+        }
+    }
+    
     public synchronized long createCheckpoint(CompositeActor container) {
         HashMap checkpointsAndHandles = new HashMap();
         Iterator objectsIterator = container.containedObjectsIterator();
@@ -85,7 +106,7 @@ public class BacktrackController {
         }
     }
     
-    private long _currentHandle = 0;
-    
     private HashMap _checkpoints = new HashMap();
+    
+    private long _currentHandle = 0;
 }

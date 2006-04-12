@@ -95,7 +95,7 @@ public class BacktrackControllerTableau extends Tableau {
                 public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) {
                     super.changeSelection(rowIndex, columnIndex, toggle, extend);
                     _rollbackButton.setEnabled(true);
-                    _discardButton.setEnabled(true);
+                    _commitButton.setEnabled(true);
                 }
             };
             _handleTable.getColumnModel().getColumn(0).setPreferredWidth(30);
@@ -124,17 +124,28 @@ public class BacktrackControllerTableau extends Tableau {
             _rollbackButton.setEnabled(false);
             bottomPanel.add(_rollbackButton);
             
-            _discardButton = new JButton("discard");
-            _discardButton.addActionListener(new ActionListener() {
+            _commitButton = new JButton("commit");
+            _commitButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
+                    commit();
                 }
             });
-            _discardButton.setEnabled(false);
-            bottomPanel.add(_discardButton);
+            _commitButton.setEnabled(false);
+            bottomPanel.add(_commitButton);
             
             pack();
             
             refreshModelSelector();
+        }
+        
+        public synchronized void commit() {
+            int selectedRow = _handleTable.getSelectedRow();
+            Long handle = (Long)
+                _handleTableModel.getValueAt(selectedRow, 0);
+            _controller.commit(handle.longValue());
+            for (int i = 0; i <= selectedRow; i++) {
+                _handleTableModel.removeElement(0);
+            }
         }
         
         public synchronized void createCheckpoint() {
@@ -184,9 +195,9 @@ public class BacktrackControllerTableau extends Tableau {
         
         private JButton _checkpointButton;
         
-        private BacktrackController _controller = new BacktrackController();
+        private JButton _commitButton;
 
-        private JButton _discardButton;
+        private BacktrackController _controller = new BacktrackController();
 
         private JTable _handleTable;
         
@@ -266,6 +277,11 @@ public class BacktrackControllerTableau extends Tableau {
                     HandleTableElement element) {
                 _data.add(element);
                 fireTableRowsInserted(_data.size() - 1, _data.size() - 1);
+            }
+            
+            public synchronized void removeElement(int position) {
+                _data.remove(position);
+                this.fireTableRowsDeleted(position, position);
             }
             
             private String[] _columnNames = new String[] {

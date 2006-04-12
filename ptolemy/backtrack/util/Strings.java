@@ -27,7 +27,7 @@
  */
 package ptolemy.backtrack.util;
 
-import ptolemy.backtrack.ast.UnknownASTException;
+import ptolemy.backtrack.eclipse.ast.UnknownASTException;
 
 import java.io.File;
 import java.net.MalformedURLException;

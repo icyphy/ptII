@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// Backtrack
@@ -92,6 +93,11 @@ public class Backtrack extends TypedAtomicActor {
         
         _handle = new TypedIOPort(this, "handle", false, true);
         _handle.setTypeEquals(BaseType.LONG);
+        
+        // Put the rollback input on the bottom of the actor.
+        StringAttribute rollbackCardinal = new StringAttribute(_rollback,
+                "_cardinal");
+        rollbackCardinal.setExpression("SOUTH");
     }
     
     ///////////////////////////////////////////////////////////////////

@@ -1,4 +1,4 @@
-/* 
+/* Model transformer for backtracking.
 
 Copyright (c) 2005-2006 The Regents of the University of California.
 All rights reserved.
@@ -40,17 +40,31 @@ import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
-//// ModelTransformer
+//// BacktrackTransformer
 /**
+   Model transformer for backtracking. This class parses the MoML of the given
+   model, and applies a renaming filter to the MoML. The actors with their
+   backtracking versions will be replaced. Actors without existing backtracking
+   versions will remain unchanged. Other entities in the model, such as
+   relations between ports, are kept. The resulting model supports backtracking
+   for the transformed actors.
 
-
- @author Thomas Feng
- @version $Id$
- @since Ptolemy II 5.1
- @Pt.ProposedRating Red (tfeng)
- @Pt.AcceptedRating Red (tfeng)
- */
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class BacktrackTransformer {
+    
+    /** Transform a model by replacing the actors with existing backtracking
+     *  versions, and return the resulting model.
+     *  
+     *  @param model The model to be transformed.
+     *  @return The transformed model.
+     *  @throws IllegalActionException If the parser fails to parse the
+     *  transformed model.
+     */
     public static NamedObj transformModel(NamedObj model)
             throws IllegalActionException {
         StringWriter moml = new StringWriter();
@@ -69,6 +83,19 @@ public class BacktrackTransformer {
         }
     }
     
+    //////////////////////////////////////////////////////////////////////////
+    //// RenameClassMoMLFilter
+    /**
+       The MoML filter that renames the actor classes in the model, if there are
+       backtracking versions for them. No change is done on the actor classes
+       that do not have backtracking versions.
+    
+       @author Thomas Feng
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (tfeng)
+       @Pt.AcceptedRating Red (tfeng)
+    */
     private static class RenameClassMoMLFilter implements MoMLFilter {
 
         public String filterAttributeValue(NamedObj container, String element,
@@ -156,6 +183,7 @@ public class BacktrackTransformer {
 
         public static final String AUTOMATIC_PREFIX =
             "ptolemy.backtrack.automatic";
+        
         public static final String MANUAL_PREFIX =
             "ptolemy.backtrack.manual";
         
@@ -193,9 +221,13 @@ public class BacktrackTransformer {
         }
 
         private String _classAfterChange = null;
+        
         private String _classBeforeChange = null;
+
         private Stack _classStack = new Stack();
+        
         private String _iconPropertyName = null;
+        
         private MoMLParser _parser = null;
     }
 }
