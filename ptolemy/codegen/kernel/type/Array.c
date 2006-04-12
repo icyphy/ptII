@@ -241,3 +241,9 @@ Token Array_convert(Token token, ...) {
     return result;
 }    
 /**/
+
+/***zeroBlock***/
+Token Array_zero(Token token, ...) {
+	return Array_new(0, 0);
+}
+/**/

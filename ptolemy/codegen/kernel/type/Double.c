@@ -96,3 +96,9 @@ Token Double_convert(Token token, ...) {
     return token;
 }
 /**/
+
+/***zeroBlock***/
+Token Double_zero(Token token, ...) {
+	return Double_new(0.0);
+}
+/**/

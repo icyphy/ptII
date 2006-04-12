@@ -120,3 +120,9 @@ Token String_convert(Token token, ...) {
     return token;
 }    
 /**/
+
+/***zeroBlock***/
+Token String_zero(Token token, ...) {
+	return String_new("");
+}
+/**/

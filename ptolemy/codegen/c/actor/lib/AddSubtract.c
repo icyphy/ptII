@@ -1,5 +1,5 @@
 /***preinitBlock***/
-	int $actorSymbol(i);
+	//int $actorSymbol(i);
 	int $actorSymbol(length);
 	Token $actorSymbol(result);
 /**/
@@ -39,7 +39,7 @@
 
 
 /***BooleanAddBlock($channel)***/
-	$ref(output) |= $ref(plus#$actorSymbol(i));
+	$ref(output) |= $ref(plus#$channel);
 /**/
 
 

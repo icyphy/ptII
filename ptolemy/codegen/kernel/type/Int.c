@@ -65,7 +65,7 @@ Token Int_substract(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
 	Token otherToken = va_arg(argp, Token);	
-	return Double_new(this.payload.Int - otherToken.payload.Int);
+	return Int_new(this.payload.Int - otherToken.payload.Int);
 }
 /**/
 
@@ -98,4 +98,10 @@ Token Int_convert(Token token, ...) {
     token.type = TYPE_Int;
     return token;
 }    
+/**/
+
+/***zeroBlock***/
+Token Int_zero(Token token, ...) {
+	return Int_new(0);
+}
 /**/

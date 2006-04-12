@@ -31,6 +31,7 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
@@ -53,7 +54,7 @@ public class Differential extends CCodeGeneratorHelper {
 
     /**
      * Generate fire code.
-     * Read the <code>fireBlock</code> from Commutator.c,
+     * Read the <code>fireBlock</code> from Differential.c,
      * replace macros with their values and append the processed code
      * block to the given code buffer.
      * @return The generated code.
@@ -66,24 +67,40 @@ public class Differential extends CCodeGeneratorHelper {
         ptolemy.actor.lib.Differential actor = 
             (ptolemy.actor.lib.Differential) getComponent();
 
-        ArrayList args = new ArrayList();
-        args.add("");
-        String type = codeGenType(actor.input.getType());
-        args.add(type);
-        for (int i = 0; i < actor.input.getWidth(); i++) {
-            args.set(0, new Integer(i));
-            String codeBlock;
-            if (isPrimitive(type)) {
-                if (isPrimitive(actor.output.getType())) {
-                    codeBlock = "primitiveToPrimitiveFireBlock";
-                } else {
-                    codeBlock = "primitiveToTokenFireBlock";
-                }
-            } else {
-                codeBlock = "tokenFireBlock";
-            }
-            _codeStream.appendCodeBlock(codeBlock, args);
+        if (isPrimitive(actor.output.getType())) {
+            _codeStream.appendCodeBlock("CommonFireBlock");
+        } else {
+            _codeStream.appendCodeBlock("TokenFireBlock");            
         }
+        
+        return processCode(_codeStream.toString());
+    }
+
+    /**
+     * Generate preinitialize code.
+     * Read the <code>preinitBlock</code> from Differential.c,
+     * replace macros with their values and append the processed code
+     * block to the given code buffer.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
+
+        ptolemy.actor.lib.Differential actor = 
+            (ptolemy.actor.lib.Differential) getComponent();
+
+        ArrayList args = new ArrayList();
+        
+        Type type = actor.output.getType();
+        if (isPrimitive(type)) {
+            args.add(cType(type));
+            _codeStream.appendCodeBlock("CommonPreinitBlock", args);
+        } else {
+            _codeStream.appendCodeBlock("TokenPreinitBlock");            
+        }
+        
         return processCode(_codeStream.toString());
     }
 }

@@ -89,3 +89,8 @@ Token Boolean_convert(Token token, ...) {
 }    
 /**/
 
+/***zeroBlock***/
+Token Boolean_zero(Token token, ...) {
+	return Boolean_new(false);
+}
+/**/
