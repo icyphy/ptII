@@ -2,8 +2,12 @@
 static $declaredType $actorSymbol(state);
 /**/
 
-/***initBlock***/
+/***CommonInitBlock***/
     $actorSymbol(state) = $val(init);
+/**/
+
+/***StringInitBlock***/
+    $actorSymbol(state) = strdup($val(init));
 /**/
 
 /***IntFireBlock***/
@@ -11,14 +15,14 @@ static $declaredType $actorSymbol(state);
     $actorSymbol(state) += $val(step);
 /**/
 
-/***BooleanFireBlock***/
+/***DoubleFireBlock***/
     $ref(output) = $actorSymbol(state);
     $actorSymbol(state) += $val(step);
 /**/
 
-/***DoubleFireBlock***/
+/***BooleanFireBlock***/
     $ref(output) = $actorSymbol(state);
-    $actorSymbol(state) += $val(step);
+    $actorSymbol(state) |= $val(step);
 /**/
 
 /***StringFireBlock***/
@@ -30,5 +34,5 @@ static $declaredType $actorSymbol(state);
 
 /***TokenFireBlock***/
     $ref(output) = $actorSymbol(state);
-	$actorSymbol(state) = $typeFunc($ref(output)::add($val(step)));
+	$actorSymbol(state) = $tokenFunc($ref(output)::add($val(step)));
 /**/

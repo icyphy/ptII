@@ -6,12 +6,12 @@
 /**/
 
 /***funcHeaderBlock ($function)***/
-Token $function (Token thisToken, ...);
+Token $function (Token this, ...);
 /**/
 
 /***tokenDeclareBlock ($types)***/
 struct token {                  // Base type for tokens.
-    unsigned char type;         // TYPE field has to be the first field.
+    char type;         // TYPE field has to be the first field.
     union typeMembers {
         // type member declarations [i.e. Type1Token Type1;]
 $types                 
@@ -24,26 +24,32 @@ $types
 //int atoi (char* s);             // standard c function.
 //double atof (char* s);          // standard c function.
 //long atol (char* s);            // standard c function.
-    
-char* itoa (int i) {
+
+#define StringtoInt atoi
+#define StringtoDouble atof
+#define StringtoLong atol
+#define DoubletoInt floor
+#define InttoDouble (double)
+
+char* InttoString (int i) {
     char* string = (char*) malloc(sizeof(char) * 12);
     sprintf((char*) string, "%d", i);
     return string;       
 }
 
-char* ltoa (long l) {
+char* LongtoString (long l) {
     char* string = (char*) malloc(sizeof(char) * 22);
     sprintf((char*) string, "%d", l);
     return string;       
 }
 
-char* ftoa (double d) {
+char* DoubletoString (double d) {
     char* string = (char*) malloc(sizeof(char) * 12);
     sprintf((char*) string, "%g", d);
     return string;       
 }
 
-char* btoa (char b) {
+char* BooleantoString (char b) {
     char* string = (char*) malloc(sizeof(char) * 6);
     if (b) {
         strcpy(string, "true");
@@ -52,11 +58,4 @@ char* btoa (char b) {
     }
 }
 
-int ftoi (double d) {
-    return floor(d);
-}
-
-double itof (int i) {
-    return (double) i;
-}
 /**/

@@ -30,6 +30,7 @@ package ptolemy.codegen.c.kernel;
 import java.util.List;
 import java.util.Set;
 
+import ptolemy.codegen.kernel.CodeGenerator;
 import ptolemy.codegen.kernel.CodeGeneratorHelper;
 import ptolemy.codegen.kernel.ParseTreeCodeGenerator;
 import ptolemy.data.ArrayToken;
@@ -273,7 +274,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
 
             Type valueType = tokens[i].getType();
 
-            if (CodeGeneratorHelper.isPrimitiveType(valueType)) {
+            if (CodeGeneratorHelper.isPrimitive(valueType)) {
                 _fireCode.insert(nextIndex, "$new("
                         + CodeGeneratorHelper.codeGenType(valueType) + "(");
                 _fireCode.append("))");
@@ -289,13 +290,17 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor implements
             tokens[i] = elementType.convert(tokens[i]);
         }
 
+        // Insert the elementType of the array as the last argument.
+        _fireCode.append(", TYPE_" + 
+                CodeGeneratorHelper.codeGenType(elementType));
+        _fireCode.append("))");
+        
         _evaluatedChildToken = (new ArrayToken(tokens));
 
         if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
 
-        _fireCode.append("))");
     }
 
     /** Evaluate a bitwise operator on the children of the specified

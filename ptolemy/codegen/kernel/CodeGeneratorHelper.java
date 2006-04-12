@@ -192,6 +192,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return result;
     }
 
+    /**
+     * Constraint the type of the given expression. Sub classes would override
+     * this method to constraint the type of the parameter expression.
+     * In this base, return the given expression.
+     * @param variable the given variable.
+     * @param expression The string expression of the given variable.
+     * @return The given expression.
+     */
+    public String constraintType(Variable variable, String expression)
+            throws IllegalActionException {
+        return expression;
+    }
+
     /** Generate code for declaring read and write offset variables if needed.
      *  Return empty string in this base class. 
      * 
@@ -728,11 +741,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 }
 
                 PtParser parser = new PtParser();
-                ASTPtRootNode parseTree = parser.generateParseTree(variable
-                        .getExpression());
+                ASTPtRootNode parseTree = parser.generateParseTree(variable.getExpression());
                 parseTreeCodeGenerator.evaluateParseTree(parseTree,
                         new HelperScope(variable));
-                return processCode(parseTreeCodeGenerator.generateFireCode());
+                
+                return constraintType(variable, processCode(
+                        parseTreeCodeGenerator.generateFireCode()));
+
             } else if (attribute instanceof Settable) {
                 return ((Settable) attribute).getExpression();
             }
@@ -816,7 +831,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         name = processCode(name);
 
         StringBuffer result = new StringBuffer();
-        Actor actor = (Actor) _component;
         StringTokenizer tokenizer = new StringTokenizer(name, "#,", true);
 
         if ((tokenizer.countTokens() != 1) && (tokenizer.countTokens() != 3)
@@ -847,34 +861,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             refName = refName.substring(1);
         }
 
-        IOPort port = null;
-
-        Iterator inputPorts = actor.inputPortList().iterator();
-
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-
-            // The channel is specified as $ref(port#channelNumber).
-            if (inputPort.getName().equals(refName)) {
-                port = inputPort;
-                break;
-            }
-        }
-
-        if (port == null) {
-            Iterator outputPorts = actor.outputPortList().iterator();
-
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) outputPorts.next();
-
-                // The channel is specified as $ref(port#channelNumber).
-                if (outputPort.getName().equals(refName)) {
-                    port = outputPort;
-                    break;
-                }
-            }
-        }
-
+        IOPort port = getPort(refName);
+        
         String[] channelAndOffset = _getChannelAndOffset(name);
 
         if (port != null) {
@@ -1098,10 +1086,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             if (!channelAndOffset[1].equals("")) {
                 //result.append("[" + channelAndOffset[1] + "]");
                 result.insert(0, "Array_get(");
-                result.append(" ," + channelAndOffset[1] + ")" + ".payload.");
-                Type elementType = ((ArrayType) ((Parameter) attribute)
-                        .getType()).getElementType();
-                result.append(codeGenType(elementType));
+                result.append(" ," + channelAndOffset[1] + ")");
+                
+                Type elementType = ((ArrayType) 
+                        ((Parameter) attribute).getType()).getElementType();
+                
+                if (isPrimitive(elementType)) {
+                    result.append(".payload." + codeGenType(elementType));
+                }
             }
 
             return result.toString();
@@ -1109,6 +1101,39 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
         throw new IllegalActionException(_component, "Reference not found: "
                 + name);
+    }
+
+    /**
+     * Get the port that has the given name.
+     * @param refName The given name.
+     * @return The port that has the given name.
+     */
+    public TypedIOPort getPort(String refName) {
+        Actor actor = (Actor) _component;
+
+        Iterator inputPorts = actor.inputPortList().iterator();
+
+        while (inputPorts.hasNext()) {
+            TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
+
+            // The channel is specified as $ref(port#channelNumber).
+            if (inputPort.getName().equals(refName)) {
+                return inputPort;
+            }
+        }
+
+        Iterator outputPorts = actor.outputPortList().iterator();
+
+        while (outputPorts.hasNext()) {
+            TypedIOPort outputPort = (TypedIOPort) outputPorts.next();
+
+            // The channel is specified as $ref(port#channelNumber).
+            if (outputPort.getName().equals(refName)) {
+                return outputPort;
+            }
+        }
+        
+        return null;
     }
 
     /**
@@ -1207,17 +1232,17 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 + name);
     }
 
-    /** Return the translated type function invocation string.
-     *  @param functionString The string within the $typeFunc() macro.
+    /** Return the translated token instance function invocation string.
+     *  @param functionString The string within the $tokenFunc() macro.
      *  @return The translated type function invocation string.
      *  @exception IllegalActionException The given function string is
      *   not well-formed.
      */
-    public String getTypeFuncInvocation(String functionString)
+    public String getFunctionInvocation(String functionString, boolean isStatic)
             throws IllegalActionException {
         functionString = processCode(functionString);
 
-        // i.e. "$typeFunc(token::add(arg1, arg2, ...))"
+        // i.e. "$tokenFunc(token::add(arg1, arg2, ...))"
         // this transforms to ==> 
         // "functionTable[token.type][FUNC_add] (token, arg1, arg2, ...)"
         // FIXME: we need to do some more smart parsing to find the following
@@ -1230,26 +1255,41 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         if ((commaIndex == -1) || (openFuncParenIndex == -1)
                 || (closeFuncParenIndex != (functionString.length() - 1))) {
             throw new IllegalActionException(
-                    "Bad Syntax with the $typeFunc() macro. "
-                            + "[i.e. -- $typeFunc(token::func(arg1, arg2, ...))]");
+                    "Bad Syntax with the $tokenFunc / $typeFunc macro. "
+                            + "[i.e. -- $tokenFunc(typeOrToken::func(arg1, ...))]");
         }
 
-        String typedToken = functionString.substring(0, commaIndex).trim();
+        String typeOrToken = functionString.substring(0, commaIndex).trim();
         String functionName = functionString.substring(commaIndex + 2,
                 openFuncParenIndex).trim();
 
-        // Record the referenced type function in the infoTable.
-        _codeGenerator._typeFuncUsed.add(functionName);
+        String argumentList = 
+            functionString.substring(openFuncParenIndex + 1).trim();
+        
+        if (isStatic) {
+            // Record the referenced type function in the infoTable.
+            _codeGenerator._typeFuncUsed.add(functionName);
 
-        String argumentList = functionString.substring(openFuncParenIndex + 1)
-                .trim();
-        // if it is more than just a closing paren
-        if (argumentList.length() > 1) {
-            argumentList = ", " + argumentList;
+            if (argumentList.length() == 0) {
+                throw new IllegalActionException(
+                "Static type function requires at least one argument(s).");        
+            }
+            
+            return "functionTable[" + typeOrToken + "][FUNC_" + functionName
+            + "](" + argumentList;
+            
+        } else {
+            // Record the referenced type function in the infoTable.
+            _codeGenerator._tokenFuncUsed.add(functionName);
+
+            // if it is more than just a closing paren
+            if (argumentList.length() > 1) {
+                argumentList = ", " + argumentList;
+            }
+            
+            return "functionTable[" + typeOrToken + ".type][FUNC_" +
+            functionName + "](" + typeOrToken + argumentList;            
         }
-
-        return "functionTable[" + typedToken + ".type][FUNC_" + functionName
-                + "](" + typedToken + argumentList;
     }
 
     /** Get the write offset in the buffer of a given channel to which a token
@@ -1281,7 +1321,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @exception IllegalActionException Thrown if there is no
      *  corresponding codegen type.
      */
-    public static boolean isPrimitiveType(Type ptType)
+    public static boolean isPrimitive(Type ptType)
             throws IllegalActionException {
         return CodeGenerator._primitiveTypes.contains(codeGenType(ptType));
     }
@@ -1291,7 +1331,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      * @param cgType The given codegen type.
      * @return true if the given type is primitive, otherwise false.
      */
-    public static boolean isPrimitiveType(String cgType) {
+    public static boolean isPrimitive(String cgType) {
         return CodeGenerator._primitiveTypes.contains(cgType);
     }
 
@@ -1350,8 +1390,12 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (macro.equals("ref")) {
                     result.append(getReference(name));
                 } else if (macro.equals("type")) {
-                    // FIXME: we should be able to resolve the type in compile time.
-                    result.append(getReference(name) + ".payload.type");
+                    TypedIOPort port = getPort(name);
+                    if (port == null) { 
+                        throw new IllegalActionException(name + 
+                        " is not a port. $type macro takes in a port.");
+                    }
+                    result.append("TYPE_" + codeGenType(port.getType()));
                 } else if (macro.equals("val")) {
                     result.append(getParameterValue(name, _component));
                 } else if (macro.equals("size")) {
@@ -1364,8 +1408,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     result.append("_" + name);
                 } else if (macro.equals("new")) {
                     result.append(getNewInvocation(name));
+                } else if (macro.equals("tokenFunc")) {
+                    result.append(getFunctionInvocation(name, false));
                 } else if (macro.equals("typeFunc")) {
-                    result.append(getTypeFuncInvocation(name));
+                    result.append(getFunctionInvocation(name, true));
                 } else {
                     // This macro is not handled.
                     throw new IllegalActionException("Macro is not handled.");
@@ -1660,43 +1706,31 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             return "";
         }
 
-        String result = sinkRef + " = ";
+        String result = sourceRef;
 
-        if (sinkType == BaseType.DOUBLE) {
-            if (sourceType == BaseType.INT) {
-                result += "(double) " + sourceRef;
-            } else {
-                throw new IllegalActionException(
-                        "Conversion not handled. Converting from '"
-                                + sourceType + "' to '" + sinkType + "'\n");
+        if (sinkType != sourceType) {
+            if (isPrimitive(sinkType)) {
+
+                result = codeGenType(sourceType) + "to" + 
+                codeGenType(sinkType) + "(" + result + ")"; 
+                
+            } else if (isPrimitive(sourceType)) {
+                result = "$new(" + codeGenType(sourceType) +
+                "(" + result + "))";
             }
-        } else if (sinkType == BaseType.STRING) {
-            if (sourceType == BaseType.BOOLEAN) {
-                result += "btoa(" + sourceRef + ")";
-            } else if (sourceType == BaseType.INT) {
-                result += "itoa(" + sourceRef + ")";
-            } else if (sourceType == BaseType.LONG) {
-                result += "ltoa(" + sourceRef + ")";
-            } else if (sourceType == BaseType.DOUBLE) {
-                result += "ftoa(" + sourceRef + ")";
-            } else {
-                throw new IllegalActionException(
-                        "Conversion not handled. Converting from '"
-                                + sourceType + "' to '" + sinkType + "'\n");
+            
+            if (sinkType != BaseType.GENERAL && !isPrimitive(sinkType)) {
+                if (sinkType instanceof ArrayType) {
+                    result = "$typeFunc(TYPE_" + codeGenType(sinkType) +
+                    "::convert(" + result + ", (int) TYPE_" +
+                    codeGenType(((ArrayType) sinkType).getElementType())+ "))";                    
+                } else {
+                    result = "$typeFunc(TYPE_" + codeGenType(sinkType) +
+                                "::convert(" + result + "))";
+                }
             }
-        } else if (sinkType == BaseType.GENERAL) {
-            if (isPrimitiveType(sourceType)) {
-                result += "$new(" + codeGenType(sourceType) + "(" + sourceRef
-                        + "))";
-            } else {
-                //It is a Token type, so we can just assign directly.
-                result += sourceRef;
-            }
-        } else {
-            // Use function table to convert between specific Token types.
-            result += "$typeFunc(sinkRef::convert(sourceRef))";
         }
-        return processCode(result) + ";\n";
+        return processCode(sinkRef + " = " + result + ";\n");
     }
 
     /** Get the code generator helper associated with the given component.

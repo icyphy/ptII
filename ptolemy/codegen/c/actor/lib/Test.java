@@ -84,7 +84,7 @@ public class Test extends CCodeGeneratorHelper {
         }
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, new Integer(i));
-            if (CodeGeneratorHelper.isPrimitiveType(actor.input.getType())) {
+            if (CodeGeneratorHelper.isPrimitive(actor.input.getType())) {
                 inputType = CodeGeneratorHelper.codeGenType(actor.input
                         .getType());
             } else {

@@ -18,12 +18,12 @@ Token Int_new(int i) {
 /**/
 
 /***equalsBlock***/
-Token Int_equals(Token thisToken, ...) {
+Token Int_equals(Token this, ...) {
     va_list argp; 
     Token otherToken; 
-    va_start(argp, thisToken);
+    va_start(argp, this);
 	otherToken = va_arg(argp, Token);
-	return Boolean_new(thisToken.payload.Int == otherToken.payload.Int);
+	return Boolean_new(this.payload.Int == otherToken.payload.Int);
 }
 /**/
 
@@ -31,70 +31,71 @@ Token Int_equals(Token thisToken, ...) {
 Token Int_delete(Token token, ...) {}    
 /**/
 
-
-/***convertBlock***/
-Token Int_convert(Token token, ...) {
-    switch (token.type) {
-#ifdef TYPE_String
-    case TYPE_String:
-        fprintf(stderr,
-                "Int_convert(): Converting an String (%s) to an Int is not supported.\n",
-                token.payload.String);
-        break;
-#endif
-#ifdef TYPE_Double
-    case TYPE_Double:
-        token.payload.Int = floor(token.payload.Double);
-        break;
-#endif
-        
-    case TYPE_Int:
-        fprintf(stderr,
-                "Int_convert(): Converting an Int (%d) to an Int?\n",
-                token.payload.Int);
-        break;
-
-        // FIXME: not finished
-    default: 
-        {
-            char * typeNames[] = {"String", "Double", "Array", "Boolean",
-                                  "Int"};
-            fprintf(stderr, "Int_convert(): Conversion from an unsupported type. (%d: %s)\n", token.type, (token.type <= 5 ? typeNames[token.type] : "Unknown?") );
-        }
-        break;
-    }    
-    token.type = TYPE_Int;
-    return token;
-}    
-/**/
-
 /***printBlock***/
-Token Int_print(Token thisToken, ...) {
-    printf("%d", thisToken.payload.Int);
+Token Int_print(Token this, ...) {
+    printf("%d", this.payload.Int);
 }
 /**/
 
 /***toStringBlock***/
-Token Int_toString(Token thisToken, ...) {
-	return String_new(itoa(thisToken.payload.Int));
+Token Int_toString(Token this, ...) {
+	return String_new(InttoString(this.payload.Int));
 }
 /**/
 
 /***toExpressionBlock***/
-Token Int_toExpression(Token thisToken, ...) {
-	return Int_toString(thisToken);
+Token Int_toExpression(Token this, ...) {
+	return Int_toString(this);
 }
 /**/
 
 
 /***addBlock***/
-Token Int_add(Token thisToken, ...) {
+Token Int_add(Token this, ...) {
     va_list argp; 
-    va_start(argp, thisToken);
+    va_start(argp, this);
 	Token otherToken = va_arg(argp, Token);
 	
-	return Int_new(thisToken.payload.Int + otherToken.payload.Int);
+	return Int_new(this.payload.Int + otherToken.payload.Int);
+}
+/**/
+
+/***substractBlock***/
+Token Int_substract(Token this, ...) {
+    va_list argp; 
+    va_start(argp, this);
+	Token otherToken = va_arg(argp, Token);	
+	return Double_new(this.payload.Int - otherToken.payload.Int);
 }
 /**/
 
 
+/***negateBlock***/
+Token Int_negate(Token this, ...) {
+	this.payload.Int = -this.payload.Int;
+	return this;
+}
+/**/
+
+
+---------------- static functions -----------------------
+
+/***convertBlock***/
+Token Int_convert(Token token, ...) {
+    switch (token.type) {
+
+		#ifdef TYPE_Double
+		    case TYPE_Double:
+		        token.payload.Int = DoubletoInt(token.payload.Double);
+		        break;
+		#endif
+	
+	    // FIXME: not finished
+	    default: 
+	        fprintf(stderr, "Int_convert(): Conversion from an unsupported type. (%d)\n", token.type);
+	        break;
+    }    
+    token.type = TYPE_Int;
+    return token;
+}    
+/**/

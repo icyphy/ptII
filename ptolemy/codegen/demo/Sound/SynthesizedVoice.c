@@ -81,23 +81,23 @@ struct token {                  // Base type for tokens.
 };
 
 Token String_convert(Token token);
-Token String_print(Token thisToken);
+Token String_print(Token this);
 
 Token Array_convert(Token token);
-Token Array_print(Token thisToken);
+Token Array_print(Token this);
 
 Token Array_get(Token token, int i) {   
     return token.payload.Array->elements[i];
 }
 
 Token Double_convert(Token token);
-Token Double_print(Token thisToken);
+Token Double_print(Token this);
 
 Token Boolean_convert(Token token);
-Token Boolean_print(Token thisToken);
+Token Boolean_print(Token this);
 
 Token Int_convert(Token token);
-Token Int_print(Token thisToken);
+Token Int_print(Token this);
 
 //int atoi (char* s);             // standard c function.
 //double atof (char* s);          // standard c function.

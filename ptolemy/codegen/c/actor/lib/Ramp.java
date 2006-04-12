@@ -29,6 +29,9 @@ package ptolemy.codegen.c.actor.lib;
 import java.util.ArrayList;
 
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -56,15 +59,31 @@ public class Ramp extends CCodeGeneratorHelper {
      *  @return The preinitialize code.
      *  @exception IllegalActionException
      */
+    public String generateInitializeCode() throws IllegalActionException {
+        super.generateInitializeCode();
+
+        ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
+
+        if (actor.output.getType() == BaseType.STRING) {
+            _codeStream.appendCodeBlock("StringInitBlock");            
+        } else {
+            _codeStream.appendCodeBlock("CommonInitBlock");                        
+        }
+        
+        return processCode(_codeStream.toString());
+    }
+
+    /** Generate the preinitialize code. Declare the variable state.
+     *  @return The preinitialize code.
+     *  @exception IllegalActionException
+     */
     public String generatePreinitializeCode() throws IllegalActionException {
-        // FIXME: so far the code only works for primitive types.
         super.generatePreinitializeCode();
 
         ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
 
         ArrayList args = new ArrayList();
-        args.add(cType(TypeLattice.leastUpperBound(actor.init.getType(),
-                actor.step.getType())));
+        args.add(cType(actor.output.getType()));
 
         _codeStream.appendCodeBlock("preinitBlock", args);
         return processCode(_codeStream.toString());
@@ -81,11 +100,8 @@ public class Ramp extends CCodeGeneratorHelper {
 
         ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
 
-        //actor.init.getType().;
-
-        String type = codeGenType(TypeLattice.leastUpperBound(actor.init
-                .getType(), actor.step.getType()));
-        if (!isPrimitiveType(type)) {
+        String type = codeGenType(actor.output.getType());
+        if (!isPrimitive(type)) {
             type = "Token";
         }
 
@@ -93,14 +109,29 @@ public class Ramp extends CCodeGeneratorHelper {
         return processCode(_codeStream.toString());
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     /**
-     * 
-     *
+     * Constraint the type of the "init" and "step" parameters to equals
+     * to the type of the output port.
+     * @param variable The given parameter.
+     * @param expression The string expression of the given variable.
      */
-    private void _typeConvert() {
+    public String constraintType (Variable variable, String expression)
+            throws IllegalActionException {
+        ptolemy.actor.lib.Ramp actor = (ptolemy.actor.lib.Ramp) getComponent();
 
+        if ("init".equals(variable.getName()) || 
+            "step".equals(variable.getName())) {
+
+            Type outputType = actor.output.getType();
+            if (variable.getType() != outputType) {
+                if (isPrimitive(outputType)) {
+
+                    return codeGenType(variable.getType()) + "to" +
+                           codeGenType(outputType) +
+                           "(" + expression + ")";
+                }
+            }
+        }
+        return expression;
     }
 }

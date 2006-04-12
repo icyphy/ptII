@@ -1,8 +1,7 @@
-/***fireBlock***/
-    if ($ref(increment)) {
-        $ref(output)++;
-    } 
-    else if ($ref(decrement)) {
-        $ref(output)--;
-    }
+/***incrementBlock***/
+    $ref(output)++;
+/**/
+
+/***decrementBlock***/
+    $ref(output)--;
 /**/

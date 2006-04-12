@@ -74,8 +74,8 @@ public class Distributor extends CCodeGeneratorHelper {
             args.set(0, new Integer(i));
 
             String codeBlock = "";
-            if (isPrimitiveType(inputType) && 
-                    !isPrimitiveType(actor.output.getType())) {
+            if (isPrimitive(inputType) && 
+                    !isPrimitive(actor.output.getType())) {
                 codeBlock = "toTokenBlock";
             } else {
                 if (actor.output.getType() == BaseType.STRING) {

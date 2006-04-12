@@ -77,20 +77,20 @@ Token Matrix_new(int row, int column, int given, ...) {
 /**/
 
 /***equalsBlock***/
-Token Matrix_equals(Token thisToken, ...) {
+Token Matrix_equals(Token this, ...) {
 	int i, j;
     va_list argp; 
     Token otherToken; 
-    va_start(argp, thisToken);
+    va_start(argp, this);
 	otherToken = va_arg(argp, Token);
 
-	if (( thisToken.payload.Matrix->row != otherToken.payload.Matrix->row ) ||
-		( thisToken.payload.Matrix->column != otherToken.payload.Matrix->column )) {
+	if (( this.payload.Matrix->row != otherToken.payload.Matrix->row ) ||
+		( this.payload.Matrix->column != otherToken.payload.Matrix->column )) {
 			return Boolean_new(false);
 	}
-	for (i = 0; i < thisToken.payload.Matrix->column; i++) { 
-		for (j = 0; j < thisToken.payload.Matrix->row; j++) { 
-		 	if (!functionTable[Matrix_get(token, j, i).type][FUNC_equals](Matrix_get(thisToken, j, i), Matrix_get(otherToken, j, i))).payload.Boolean) {
+	for (i = 0; i < this.payload.Matrix->column; i++) { 
+		for (j = 0; j < this.payload.Matrix->row; j++) { 
+		 	if (!functionTable[Matrix_get(token, j, i).type][FUNC_equals](Matrix_get(this, j, i), Matrix_get(otherToken, j, i))).payload.Boolean) {
 				return Boolean_new(false);
 		 	}
 		 }
@@ -101,22 +101,22 @@ Token Matrix_equals(Token thisToken, ...) {
 
 
 /***printBlock***/
-Token Matrix_print(Token thisToken, ...) {
-	// Token string = Matrix_toString(thisToken);
+Token Matrix_print(Token this, ...) {
+	// Token string = Matrix_toString(this);
 	// printf(string.payload.String);
 	// free(string.payload.String);
 
     int i, j;
     printf("[");
-    for (i = 0; i < thisToken.payload.Matrix->column; i++) {
+    for (i = 0; i < this.payload.Matrix->column; i++) {
         if (i != 0) {
             printf("; ");
         }
-	    for (j = 0; j < thisToken.payload.Matrix->row; j++) {
+	    for (j = 0; j < this.payload.Matrix->row; j++) {
 	        if (j != 0) {
 	            printf(", ");
 	        }
-	        functionTable[thisToken.payload.Matrix->elements[i * thisToken.payload.Matrix->row + j].type][FUNC_print](thisToken.payload.Matrix->elements[i]);
+	        functionTable[this.payload.Matrix->elements[i * this.payload.Matrix->row + j].type][FUNC_print](this.payload.Matrix->elements[i]);
 	    }
 	}
     printf("]");
@@ -125,7 +125,7 @@ Token Matrix_print(Token thisToken, ...) {
 
 
 /***toStringBlock***/
-Token Matrix_toString(Token thisToken, ...) {
+Token Matrix_toString(Token this, ...) {
     int i, j;
     int currentSize;
     int allocatedSize;
@@ -137,15 +137,15 @@ Token Matrix_toString(Token thisToken, ...) {
 	string[0] = '[';
 	string[1] = '\0';
 	currentSize = 2;
-    for (i = 0; i < thisToken.payload.Matrix->column; i++) {
+    for (i = 0; i < this.payload.Matrix->column; i++) {
         if (i != 0) {
 			strcat(string, "; ");
         }
-	    for (j = 0; j < thisToken.payload.Matrix->row; j++) {
+	    for (j = 0; j < this.payload.Matrix->row; j++) {
 	        if (j != 0) {
 				strcat(string, ", ");
 	        }
-	        elementString = functionTable[Matrix_get(thisToken, j, i).type][FUNC_toString](Matrix_get(thisToken, j, i));
+	        elementString = functionTable[Matrix_get(this, j, i).type][FUNC_toString](Matrix_get(this, j, i));
 			currentSize += strlen(elementString.payload.String);
 	        if (currentSize > allocatedSize) {
 	        	allocatedSize *= 2;
@@ -162,8 +162,8 @@ Token Matrix_toString(Token thisToken, ...) {
 /**/
 
 /***toExpressionBlock***/
-Token Matrix_toExpression(Token thisToken, ...) {
-	return Matrix_toString(thisToken);
+Token Matrix_toExpression(Token this, ...) {
+	return Matrix_toString(this);
 }
 /**/
 

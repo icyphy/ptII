@@ -73,7 +73,7 @@ public class MonitorValue extends CCodeGeneratorHelper {
         ptolemy.actor.lib.MonitorValue actor = (ptolemy.actor.lib.MonitorValue) getComponent();
 
         String type = codeGenType(actor.input.getType());
-        if (!isPrimitiveType(type)) {
+        if (!isPrimitive(type)) {
             type = "Token";
         }
 

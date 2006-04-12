@@ -27,7 +27,11 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,37 +65,48 @@ public class AddSubtract extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        super.generateFireCode();
 
-        ptolemy.actor.lib.AddSubtract actor = (ptolemy.actor.lib.AddSubtract) getComponent();
-        StringBuffer codeBuffer = new StringBuffer();
-        codeBuffer.append("\n    ");
-        codeBuffer.append("$ref(output) = ");
+        ptolemy.actor.lib.AddSubtract actor = 
+            (ptolemy.actor.lib.AddSubtract) getComponent();
 
-        for (int i = 0; i < actor.plus.getWidth(); i++) {
-            codeBuffer.append("$ref(plus#" + i + ")");
+        Type type = actor.output.getType(); 
+        boolean minusOnly = actor.plus.getWidth() == 0;
 
-            if (i < (actor.plus.getWidth() - 1)) {
-                codeBuffer.append(" + ");
+        ArrayList args = new ArrayList();
+        args.add(new Integer(0));
+        
+        if (type == BaseType.STRING) {
+            _codeStream.appendCodeBlock("StringPreFireBlock");
+            for (int i = 0; i < actor.plus.getWidth(); i++) {
+                args.set(0, new Integer(i));
+                _codeStream.appendCodeBlock("StringLengthBlock", args);
             }
+            _codeStream.appendCodeBlock("StringAllocBlock");
+        } else {
+            String blockType = isPrimitive(type) ? "" : "Token";
+            String blockPort = (minusOnly) ? "Minus" : "";
+            
+            _codeStream.appendCodeBlock(
+                    blockType + blockPort + "PreFireBlock");
         }
 
-        if (actor.minus.getWidth() > 0) {
-            codeBuffer.append(" - ");
+        String blockType = isPrimitive(type) ? codeGenType(type) : "Token";
+
+        for (int i = 1; i < actor.plus.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            _codeStream.appendCodeBlock(blockType + "AddBlock", args);
         }
 
-        for (int i = 0; i < actor.minus.getWidth(); i++) {
-            codeBuffer.append("$ref(minus#" + i + ")");
-
-            if (i < (actor.minus.getWidth() - 1)) {
-                codeBuffer.append(" - ");
-            }
+        for (int i = minusOnly ? 1 : 0; i < actor.minus.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            _codeStream.appendCodeBlock(blockType + "MinusBlock", args);
         }
 
-        codeBuffer.append(";\n");
-        code.append(processCode(codeBuffer.toString()));
-
-        return code.toString();
+        if (!isPrimitive(type)) {
+            _codeStream.appendCodeBlock("TokenPostFireBlock");
+        }
+        
+        return processCode(_codeStream.toString());
     }
 }

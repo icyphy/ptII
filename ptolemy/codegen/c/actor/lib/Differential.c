@@ -1,7 +1,17 @@
-/***preinitBlock***/
-    double $actorSymbol(previousInput) = 0;
+/***preinitBlock($type)***/
+    $type $actorSymbol(previousInput);
 /**/
 
-/***fireBlock***/
-    $ref(output) = $ref(input) - $actorSymbol(previousInput);
+/***initBlock***/
+	$actorSymbol(previousInput) = $ref(input);
+/**/
+
+/***CommonFireBlock***/
+    $actorSymbol(previousInput) =  - $actorSymbol(previousInput);
+    $ref(output) = $actorSymbol(previousInput); 
+/**/
+
+/***CommonFireBlock***/
+    $actorSymbol(previousInput) = $ref(input) - $actorSymbol(previousInput);
+    $ref(output) = $actorSymbol(previousInput);
 /**/

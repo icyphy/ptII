@@ -71,8 +71,8 @@ public class ElementsToArray extends CCodeGeneratorHelper {
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, new Integer(i));
             String codeBlock;
-            if (isPrimitiveType(type)) {
-                if (isPrimitiveType(actor.output.getType())) {
+            if (isPrimitive(type)) {
+                if (isPrimitive(actor.output.getType())) {
                     codeBlock = "primitiveToPrimitiveFireBlock";
                 } else {
                     codeBlock = "primitiveToTokenFireBlock";

@@ -574,6 +574,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         functions.add("delete");
         functions.add("toString");
         functions.addAll(_typeFuncUsed);
+        functions.addAll(_tokenFuncUsed);
 
         // Determine the total number of referenced types.
         HashSet types = new HashSet();
@@ -591,7 +592,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // Generate type map.
         String typeMembers = new String();
-        for (int i = 0; i < types.size(); i++) {
+        for (int i = 0; i < typesArray.length; i++) {
             // Open the .c file for each type.
             typeStreams[i] = new CodeStream(
                     "$CLASSPATH/ptolemy/codegen/kernel/type/" + typesArray[i]
@@ -608,7 +609,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         Object[] functionsArray = functions.toArray();
 
         // Generate function map.
-        for (int i = 0; i < functions.size(); i++) {
+        for (int i = 0; i < functionsArray.length; i++) {
             // FIXME: This is C specific and should be moved elsewhere
             code.append("#define FUNC_" + functionsArray[i] + " " + i + "\n");
         }
@@ -616,7 +617,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         code.append("typedef struct token Token;");
 
         // Generate type and function definitions.
-        for (int i = 0; i < types.size(); i++) {
+        for (int i = 0; i < typesArray.length; i++) {
             // The "declareBlock" contains all necessary declarations for the
             // type; thus, it is always read into the code stream when
             // accessing this particular type.
@@ -637,7 +638,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         for (int i = 0; i < types.size(); i++) {
             // The "funcDeclareBlock" contains all function declarations for
             // the type.
-            for (int j = 0; j < functions.size(); j++) {
+            for (int j = 0; j < functionsArray.length; j++) {
                 args.set(0, typesArray[i] + "_" + functionsArray[j]);
                 sharedStream.appendCodeBlock("funcHeaderBlock", args);
             }
@@ -646,7 +647,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
         // Append functions that are specified used by this type (without
         // going through the function table).
-        for (int i = 0; i < types.size(); i++) {
+        for (int i = 0; i < typesArray.length; i++) {
             typeStreams[i].clear();
             typeStreams[i].appendCodeBlock("funcDeclareBlock");
             code.append(typeStreams[i].toString());
@@ -659,34 +660,15 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         sharedStream.appendCodeBlock("convertPrimitivesBlock");
         code.append(sharedStream.toString());
 
-        // Generate function table.
-        if (functions.size() > 0 && types.size() > 0) {
-            // FIXME: This is C specific and should be moved elsewhere
-            code.append("#define NUM_TYPE " + types.size() + "\n");
-            code.append("#define NUM_FUNC " + functions.size() + "\n");
-            code.append("Token (*functionTable"
-                    + "[NUM_TYPE][NUM_FUNC])(Token, ...)= {\n");
+        // Generate function type and token table.
+        code.append(_generateFunctionTable(typesArray, functionsArray));
 
-            for (int i = 0; i < types.size(); i++) {
-                code.append("\t");
-                for (int j = 0; j < functions.size(); j++) {
-                    code.append(typesArray[i] + "_" + functionsArray[j]);
-                    if ((i != (types.size() - 1))
-                            || (j != (functions.size() - 1))) {
-                        code.append(", ");
-                    }
-                }
-                code.append("\n");
-            }
-            // FIXME: This is C specific and should be moved elsewhere
-            code.append("};\n");
-        }
 
-        for (int i = 0; i < types.size(); i++) {
+        for (int i = 0; i < typesArray.length; i++) {
             typeStreams[i].clear();
             typeStreams[i].appendCodeBlock("newBlock");
 
-            for (int j = 0; j < functions.size(); j++) {
+            for (int j = 0; j < functionsArray.length; j++) {
                 // The code block declaration has to follow this convention:
                 // /*** [function name]Block ***/ 
                 //     .....
@@ -707,6 +689,33 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
                 }
             }
             code.append(typeStreams[i].toString());
+        }
+        return code.toString();
+    }
+
+    private Object _generateFunctionTable(Object[] types, Object[] functions) {
+        StringBuffer code = new StringBuffer(); 
+
+        if (functions.length > 0 && types.length > 0) {
+            // FIXME: This is C specific and should be moved elsewhere
+            code.append("#define NUM_TYPE " + types.length + "\n");
+            code.append("#define NUM_FUNC " + functions.length + "\n");
+            code.append("Token (*functionTable[NUM_TYPE][NUM_FUNC])" +
+                    "(Token, ...)= {\n");
+
+            for (int i = 0; i < types.length; i++) {
+                code.append("\t");
+                for (int j = 0; j < functions.length; j++) {
+                    code.append(types[i] + "_" + functions[j]);
+                    if ((i != (types.length - 1))
+                            || (j != (functions.length - 1))) {
+                        code.append(", ");
+                    }
+                }
+                code.append("\n");
+            }
+            // FIXME: This is C specific and should be moved elsewhere
+            code.append("};\n");
         }
         return code.toString();
     }
@@ -963,9 +972,9 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     /** 
      * A static list of all macros supported by the code generator. 
      */
-    protected static final List _macros = Arrays.asList(new String[] { "ref",
-            "val", "type", "typeFunc", "actorSymbol", "actorClass", "new",
-            "size" });
+    protected static final List _macros = Arrays.asList(new String[] { 
+            "ref", "val", "size", "type", "tokenFunc", "typeFunc",
+            "actorSymbol", "actorClass", "new" });
 
     /** 
      * A static list of all primitive types supported by the code generator. 
@@ -973,8 +982,14 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     protected static final List _primitiveTypes = Arrays.asList(new String[] {
             "Int", "Double", "String", "Long", "Boolean" });
 
+    /** A HashSet that contains all token functions referenced in the model.
+     *  When the codegen kernel processes a $tokenFunc() macro, it would add
+     *  the type function to this set. 
+     */
+    protected HashSet _tokenFuncUsed = new HashSet();
+
     /** A HashSet that contains all type functions referenced in the model.
-     *  When the codegen kernel processes a $typeFunc() macro, it would add
+     *  When the codegen kernel processes a $tokenFunc() macro, it would add
      *  the type function to this set. 
      */
     protected HashSet _typeFuncUsed = new HashSet();

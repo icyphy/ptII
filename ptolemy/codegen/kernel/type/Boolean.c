@@ -22,18 +22,60 @@ Token Boolean_delete(Token token, ...) {}
 /**/
 
 /***equalsBlock***/
-Token Boolean_equals(Token thisToken, ...) {
+Token Boolean_equals(Token this, ...) {
     va_list argp; 
     Token otherToken; 
-    va_start(argp, thisToken);
+    va_start(argp, this);
 	otherToken = va_arg(argp, Token);
 	return Boolean_new(
-	( thisToken.payload.Boolean && otherToken.payload.Boolean ) || 
-	( !thisToken.payload.Boolean && !otherToken.payload.Boolean ));
+	( this.payload.Boolean && otherToken.payload.Boolean ) || 
+	( !this.payload.Boolean && !otherToken.payload.Boolean ));
 }
 /**/
 
 
+/***printBlock***/
+Token Boolean_print(Token this, ...) {
+    printf((this.payload.Boolean) ? "true" : "false");
+}
+/**/
+
+/***toStringBlock***/
+Token Boolean_toString(Token this, ...) {
+	return String_new(BooleantoString(this.payload.Boolean));
+}
+/**/
+
+/***toExpressionBlock***/
+Token Boolean_toExpression(Token this, ...) {
+	return Boolean_toString(this);
+}
+/**/
+
+/***addBlock***/
+Token Boolean_add(Token this, ...) {
+    va_list argp; 
+    va_start(argp, this);
+	Token otherToken = va_arg(argp, Token);
+	return Boolean_new(this.payload.Boolean || otherToken.payload.Boolean);
+}
+/**/
+
+/***substractBlock***/
+Token Boolean_substract(Token this, ...) {
+	fprintf(stderr, "Boolean_substract not supported");
+	exit(1);
+}
+/**/
+
+/***negateBlock***/
+Token Boolean_negate(Token this, ...) {
+	this.payload.Boolean = !this.payload.Boolean;
+	return this;
+}
+/**/
+
+--------------------- static functions ------------------------------
 /***convertBlock***/
 Token Boolean_convert(Token token, ...) {
     switch (token.type) {
@@ -41,36 +83,9 @@ Token Boolean_convert(Token token, ...) {
         default:
             fprintf(stderr, "Boolean_convert(): Conversion from an unsupported type. (%d)", token.type);
             break;
-    }    
+    }
     token.type = TYPE_Boolean;
     return token;
 }    
-/**/
-
-/***printBlock***/
-Token Boolean_print(Token thisToken, ...) {
-    printf((thisToken.payload.Boolean) ? "true" : "false");
-}
-/**/
-
-/***toStringBlock***/
-Token Boolean_toString(Token thisToken, ...) {
-	return String_new(btoa(thisToken.payload.Boolean));
-}
-/**/
-
-/***toExpressionBlock***/
-Token Boolean_toExpression(Token thisToken, ...) {
-	return Boolean_toString(thisToken);
-}
-/**/
-
-/***addBlock***/
-Token Boolean_add(Token thisToken, ...) {
-    va_list argp; 
-    va_start(argp, thisToken);
-	Token otherToken = va_arg(argp, Token);
-	return Boolean_new(thisToken.payload.Boolean || otherToken.payload.Boolean);
-}
 /**/
 

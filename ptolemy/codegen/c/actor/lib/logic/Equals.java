@@ -67,7 +67,7 @@ public class Equals extends CCodeGeneratorHelper {
 
         String type = "";
         type = codeGenType(actor.input.getType());
-        if (!isPrimitiveType(type)) {
+        if (!isPrimitive(type)) {
             type = "Token";
         }
 

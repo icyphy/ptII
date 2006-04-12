@@ -25,7 +25,7 @@
 	$actorSymbol(length) = 0;
 	for ($actorSymbol(i) = 0; $actorSymbol(i) < $size(input); $actorSymbol(i)++) {
 		for ($actorSymbol(j) = 0; $actorSymbol(j) < $ref(input#$actorSymbol(i)).payload.Array->size; $actorSymbol(j)++, $actorSymbol(length)++) {
-			$ref(output).payload.Array->elements[$actorSymbol(length)] = functionTable[Array_get($ref(input#$actorSymbol(i)), $actorSymbol(length)).type][FUNC_clone](Array_get($ref(input#$actorSymbol(i)), $actorSymbol(length)));
+			$ref(output).payload.Array->elements[$actorSymbol(length)] = $tokenFunc(Array_get($ref(input#$actorSymbol(i)), $actorSymbol(length))::clone());
 		}
 	}
 	

@@ -59,8 +59,7 @@ public class Commutator extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        super.generateFireCode();
 
         ptolemy.actor.lib.Commutator actor = (ptolemy.actor.lib.Commutator) getComponent();
 
@@ -71,8 +70,8 @@ public class Commutator extends CCodeGeneratorHelper {
         for (int i = 0; i < actor.input.getWidth(); i++) {
             args.set(0, new Integer(i));
             String codeBlock;
-            if (isPrimitiveType(type)) {
-                if (isPrimitiveType(actor.output.getType())) {
+            if (isPrimitive(type)) {
+                if (isPrimitive(actor.output.getType())) {
                     codeBlock = "primitiveToPrimitiveFireBlock";
                 } else {
                     codeBlock = "primitiveToTokenFireBlock";
@@ -80,8 +79,8 @@ public class Commutator extends CCodeGeneratorHelper {
             } else {
                 codeBlock = "tokenFireBlock";
             }
-            code.append(_generateBlockCode(codeBlock, args));
+            _codeStream.appendCodeBlock(codeBlock, args);
         }
-        return processCode(code.toString());
+        return processCode(_codeStream.toString());
     }
 }

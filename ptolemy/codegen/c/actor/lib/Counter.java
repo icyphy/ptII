@@ -28,7 +28,10 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * A helper class for ptolemy.actor.lib.Counter.
@@ -46,5 +49,34 @@ public class Counter extends CCodeGeneratorHelper {
      */
     public Counter(ptolemy.actor.lib.Counter actor) {
         super(actor);
+    }
+    
+    /**
+     * Generate fire code.
+     * If both the increment and decrement ports are connected, the counter
+     * is offseted. Otherwise, if either the increment port or decrement port
+     * is connected, read in the <code>incrementBlock</code> or 
+     * <code>decrementBlock</code> from Counter.c respectively. Replace macros
+     * with their values and append the processed code block to the given code
+     * buffer.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generateFireCode() throws IllegalActionException {
+        super.generateFireCode();
+
+        ptolemy.actor.lib.Counter actor = 
+            (ptolemy.actor.lib.Counter) getComponent();
+
+        boolean doDecrement = actor.decrement.getWidth() > 0;
+        boolean doIncrement = actor.increment.getWidth() > 0;
+        
+        if (doDecrement && !doIncrement) {
+            _codeStream.appendCodeBlock("decrementBlock");
+        } else if (!doDecrement && doIncrement) {
+            _codeStream.appendCodeBlock("incrementBlock");
+        }
+        return processCode(_codeStream.toString());
     }
 }

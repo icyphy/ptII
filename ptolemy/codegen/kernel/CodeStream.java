@@ -229,7 +229,7 @@ public class CodeStream {
                 return;
             } else {
                 throw new IllegalActionException(
-                        "Cannot find code block: " + signature + ".\n" + description() );
+                        "Cannot find code block: " + signature + ".\n" );
             }
         }
 
