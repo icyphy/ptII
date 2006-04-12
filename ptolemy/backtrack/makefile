@@ -33,7 +33,9 @@
 
 ME =		ptolemy/backtrack
 
-DIRS =		eclipse manual util xmlparser demo
+# PTBACKTRACK_ECLIPSE_DIR is set to eclipse by configure in $PTII/mk/ptII.mk
+# if the eclipse jar files were found.
+DIRS =		$(PT_BACKTRACK_ECLIPSE_DIR) manual util xmlparser demo
 
 # Root of the Java directory
 ROOT =		../..
