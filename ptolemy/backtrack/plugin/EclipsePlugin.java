@@ -1,4 +1,4 @@
-/*
+/* Main class for the Eclipse plugin.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -30,7 +30,6 @@ package ptolemy.backtrack.plugin;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -38,51 +37,80 @@ import org.osgi.framework.BundleContext;
 
 import ptolemy.backtrack.plugin.console.OutputConsole;
 
+//////////////////////////////////////////////////////////////////////////
+//// EclipsePlugin
 /**
- * The main plugin class to be used in the desktop.
- */
+   Main class for the Eclipse plugin. This class initializes the Eclipse plugin.
+
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class EclipsePlugin extends AbstractUIPlugin {
-    //The shared instance.
-    private static EclipsePlugin plugin;
 
-    //Resource bundle.
-    private ResourceBundle resourceBundle;
-
-    /**
-     * The constructor.
+    /** Construct a plugin object. Within one Eclipse process, there should be
+     *  only one such plugin object
      */
     public EclipsePlugin() {
         super();
-        plugin = this;
+        _plugin = this;
     }
 
-    /**
-     * This method is called upon plug-in activation
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Return the console for this plugin.
+     * 
+     *  @return The console.
      */
-    public void start(BundleContext context) throws Exception {
-        super.start(context);
-        _console = new OutputConsole();
+    public OutputConsole getConsole() {
+        return _console;
     }
 
-    /**
-     * This method is called when the plug-in is stopped
-     */
-    public void stop(BundleContext context) throws Exception {
-        super.stop(context);
-        plugin = null;
-        resourceBundle = null;
-    }
-
-    /**
-     * Returns the shared instance.
+    /** Return the only instance of this plugin.
+     * 
+     *  @return The instance of this plugin created in the current Eclipse
+     *  process.
      */
     public static EclipsePlugin getDefault() {
-        return plugin;
+        return _plugin;
     }
 
-    /**
-     * Returns the string from the plugin's resource bundle,
-     * or 'key' if not found.
+    /** Return an image descriptor for the image file at the given plugin
+     *  relative path.
+     *
+     *  @param path The path to the image descriptor.
+     *  @return The image descriptor
+     */
+    public static ImageDescriptor getImageDescriptor(String path) {
+        return AbstractUIPlugin.imageDescriptorFromPlugin("ptolemy.backtrack",
+                path);
+    }
+
+    /** Return the plugin's resource bundle.
+     * 
+     *  @return The resource bundle for this plugin, or null if none.
+     */
+    public ResourceBundle getResourceBundle() {
+        try {
+            if (_resourceBundle == null) {
+                _resourceBundle = ResourceBundle
+                        .getBundle("test.TestPluginResources");
+            }
+        } catch (MissingResourceException x) {
+            _resourceBundle = null;
+        }
+
+        return _resourceBundle;
+    }
+
+    /** Return the string from the plugin's resource bundle, or key.toString()
+     *  if not found.
+     *  
+     *  @param The key of the resource string.
+     *  @param The resource string, or key.toString().
      */
     public static String getResourceString(String key) {
         ResourceBundle bundle = EclipsePlugin.getDefault().getResourceBundle();
@@ -94,42 +122,11 @@ public class EclipsePlugin extends AbstractUIPlugin {
         }
     }
 
-    /**
-     * Returns the plugin's resource bundle,
+    /** Return the current Eclipse process's standard display. This standard
+     *  display can be used to synchronize user interface operations.
+     *  
+     *  @return The standard display.
      */
-    public ResourceBundle getResourceBundle() {
-        try {
-            if (resourceBundle == null) {
-                resourceBundle = ResourceBundle
-                        .getBundle("test.TestPluginResources");
-            }
-        } catch (MissingResourceException x) {
-            resourceBundle = null;
-        }
-
-        return resourceBundle;
-    }
-
-    /**
-     * Returns an image descriptor for the image file at the given
-     * plug-in relative path.
-     *
-     * @param path the path
-     * @return the image descriptor
-     */
-    public static ImageDescriptor getImageDescriptor(String path) {
-        return AbstractUIPlugin.imageDescriptorFromPlugin("ptolemy.backtrack",
-                path);
-    }
-
-    public OutputConsole getConsole() {
-        return _console;
-    }
-
-    public void startup() throws CoreException {
-        super.startup();
-    }
-
     public static Display getStandardDisplay() {
         Display display = Display.getCurrent();
 
@@ -140,5 +137,43 @@ public class EclipsePlugin extends AbstractUIPlugin {
         return display;
     }
 
+    /** Start the plugin. This method is called upon plugin activation.
+     * 
+     *  @param context The context where this plugin is started.
+     *  @exception Exception If the start method of the superclass throws an
+     *  Exception.
+     */
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        _console = new OutputConsole();
+    }
+
+    /** Stop the plugin. This method is called when the plugin is stopped. After
+     *  the plugin is stopped, it cannot be started again, unless a new instance
+     *  of plugin is created.
+     *  
+     *  @param context The context where this plugin has been started.
+     *  @exception Exception If the stop method of the superclass throws an
+     *  Exception.
+     */
+    public void stop(BundleContext context) throws Exception {
+        super.stop(context);
+        _plugin = null;
+        _resourceBundle = null;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
+
+    /** The console for this plugin.
+     */
     private OutputConsole _console;
+
+    /** The globally unique plugin object.
+     */
+    private static EclipsePlugin _plugin;
+
+    /** The resource bundle.
+     */
+    private ResourceBundle _resourceBundle;
 }
