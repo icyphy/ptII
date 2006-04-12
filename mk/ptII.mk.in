@@ -141,11 +141,15 @@ LEJOS_DIR = @LEJOS_DIR@
 
 ########## You should not have to change anything below this line ######
 
-# Set to backtrack and used in ptolemy/makefile if Eclipse was found
-PTBACKTRACK_DIR =	@PTBACKTRACK_DIR@
+# Set to eclipse and used in ptolemy/backtrack/makefile if Eclipse was found
+PTBACKTRACK_ECLIPSE_DIR =	@PTBACKTRACK_ECLIPSE_DIR@
 
 # Eclipse jar files used by ptolemy/backtrack 
-PTBACKTRACK_JARS =	@PTBACKTRACK_JARS@
+PTBACKTRACK_ECLIPSE_JARS =	@PTBACKTRACK_ECLIPSE_JARS@
+
+# Ptolemy II packages that use backtrack/eclipse packages
+# PTBACKTRACK_ECLIPSE_PACKAGES is used in $PTII/doc/makefile
+PTBACKTRACK_ECLIPSE_PACKAGES =  @PTBACKTRACK_ECLIPSE_PACKAGES@
 
 # Used by Mescal. Set to -I$PTII/mescal/include or -I/usr/local/include
 # if we found boost/static_assert.hpp
