@@ -295,7 +295,7 @@ VISUALSENSEPACKAGES = \
 #			ptolemy.domains.wireless.lib.network.mac
 
 # PTBACKTRACK_ECLIPSE_PACKAGES is set by configure
-PTBACKTRACK_PACKAGES =
+PTBACKTRACK_PACKAGES = \
 			ptolemy.backtrack \
 			ptolemy.backtrack.automatic.ptolemy.actor.lib \
 			ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib \
