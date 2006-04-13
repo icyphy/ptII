@@ -1070,7 +1070,7 @@ else
 	AC_MSG_RESULT([$ECLIPSE_DIR])
 	AC_MSG_CHECKING([for jars used by backtracking])
 	# jars="jdt.core osgi resources runtime" 
-	jars="jdt.core core.runtime"
+	jars="jdt.core core.runtime_"
 	eclipsejarpath=
 	for jar in $jars
 	do
