@@ -4474,7 +4474,7 @@ echo "${ECHO_T}$ECLIPSE_DIR" >&6
 	echo "$as_me:$LINENO: checking for jars used by backtracking" >&5
 echo $ECHO_N "checking for jars used by backtracking... $ECHO_C" >&6
 	# jars="jdt.core osgi resources runtime"
-	jars="jdt.core core.runtime"
+	jars="jdt.core core.runtime_"
 	eclipsejarpath=
 	for jar in $jars
 	do
