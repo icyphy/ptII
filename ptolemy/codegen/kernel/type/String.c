@@ -29,6 +29,8 @@ Token String_equals(Token this, ...) {
     Token otherToken; 
     va_start(argp, this);
 	otherToken = va_arg(argp, Token);
+
+    va_end(argp);
 	return Boolean_new(!strcmp(this.payload.String, otherToken.payload.String));
 }
 /**/
@@ -67,6 +69,8 @@ Token String_add(Token this, ...) {
 	char* result = (char*) malloc(sizeof(char) * (1 + strlen(this.payload.String) + strlen(otherToken.payload.String)));
 	strcpy(result, this.payload.String);
 	strcat(result, otherToken.payload.String);
+
+    va_end(argp);
 	return String_new(result);
 }
 /**/
@@ -78,10 +82,38 @@ Token String_substract(Token this, ...) {
 }
 /**/
 
+/***multiplyBlock***/
+Token String_multiply(Token this, ...) {
+	fprintf(stderr, "String_multiply not supported");
+	exit(1);
+}
+/**/
+
+/***divideBlock***/
+Token String_divide(Token this, ...) {
+	fprintf(stderr, "String_divide not supported");
+	exit(1);
+}
+/**/
+
 /***negateBlock***/
 Token String_negate(Token this, ...) {
 }	
 /**/
+
+/***zeroBlock***/
+Token String_zero(Token token, ...) {
+	return String_new("");
+}
+/**/
+
+/***oneBlock***/
+Token String_one(Token this, ...) {
+	fprintf(stderr, "String_one not supported");
+	exit(1);
+}
+/**/
+
 
 
 
@@ -121,8 +153,3 @@ Token String_convert(Token token, ...) {
 }    
 /**/
 
-/***zeroBlock***/
-Token String_zero(Token token, ...) {
-	return String_new("");
-}
-/**/

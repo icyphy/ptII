@@ -1,15 +1,15 @@
-/***preinitBlock***/
+/***preinitBlock($type)***/
 	//int $actorSymbol(i);
 	int $actorSymbol(length);
-	Token $actorSymbol(result);
+	$type $actorSymbol(result);
 /**/
 
 /***PreFireBlock***/
-	$ref(output) = $ref(plus#0);
+	$actorSymbol(result) = $ref(plus#0);
 /**/
 
 /***MinusPreFireBlock***/
-	$ref(output) = -$ref(minus#0);
+	$actorSymbol(result) = -$ref(minus#0);
 /**/
 
 /***TokenPreFireBlock***/
@@ -22,24 +22,24 @@
 
 
 /***IntAddBlock($channel)***/
-	$ref(output) += $ref(plus#$channel);
+	$actorSymbol(result) += $ref(plus#$channel);
 /**/
 
 /***IntMinusBlock($channel)***/
-	$ref(output) -= $ref(minus#$channel);
+	$actorSymbol(result) -= $ref(minus#$channel);
 /**/
 
 /***DoubleAddBlock($channel)***/
-	$ref(output) += $ref(plus#$channel);
+	$actorSymbol(result) += $ref(plus#$channel);
 /**/
 
 /***DoubleMinusBlock($channel)***/
-	$ref(output) -= $ref(minus#$channel);
+	$actorSymbol(result) -= $ref(minus#$channel);
 /**/
 
 
 /***BooleanAddBlock($channel)***/
-	$ref(output) |= $ref(plus#$channel);
+	$actorSymbol(result) |= $ref(plus#$channel);
 /**/
 
 
@@ -53,13 +53,13 @@
 /**/
 
 /***StringAllocBlock***/
-	$ref(output) = (char*) realloc($ref(output), $actorSymbol(length));
-	strcpy($ref(output), $ref(plus#0));	
+	$actorSymbol(result) = (char*) realloc($ref(output), $actorSymbol(length));
+	strcpy($actorSymbol(result), $ref(plus#0));	
 /**/
 
 
 /***StringAddBlock($channel)***/
-	strcat($ref(output), $ref(plus#$channel));
+	strcat($actorSymbol(result), $ref(plus#$channel));
 /**/
 
 
@@ -72,7 +72,7 @@
 	$actorSymbol(result) = $tokenFunc($actorSymbol(result)::substract($ref(minus#$channel)));
 /**/
 
-/***TokenPostFireBlock***/
+/***PostFireBlock***/
 	$ref(output) = $actorSymbol(result);
 /**/
 

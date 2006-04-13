@@ -27,7 +27,11 @@
  */
 package ptolemy.codegen.c.actor.lib;
 
+import java.util.ArrayList;
+
 import ptolemy.codegen.c.kernel.CCodeGeneratorHelper;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,39 +65,70 @@ public class MultiplyDivide extends CCodeGeneratorHelper {
      *  error in processing the specified code block(s).
      */
     public String generateFireCode() throws IllegalActionException {
-        StringBuffer code = new StringBuffer();
-        code.append(super.generateFireCode());
+        super.generateFireCode();
 
-        ptolemy.actor.lib.MultiplyDivide actor = (ptolemy.actor.lib.MultiplyDivide) getComponent();
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("$ref(output) = ");
+        ptolemy.actor.lib.MultiplyDivide actor = 
+            (ptolemy.actor.lib.MultiplyDivide) getComponent();
 
-        for (int i = 0; i < actor.multiply.getWidth(); i++) {
-            buffer.append("$ref(multiply#" + i + ")");
+        Type type = actor.output.getType(); 
+        boolean divideOnly = actor.multiply.getWidth() == 0;
 
-            if (i < (actor.multiply.getWidth() - 1)) {
-                buffer.append(" * ");
-            } else if (actor.divide.getWidth() > 0) {
-                buffer.append(" / ");
-            }
+        ArrayList args = new ArrayList();
+        args.add(new Integer(0));
+        
+        String blockType = isPrimitive(type) ? "" : "Token";
+        
+        if (!divideOnly) {
+            _codeStream.appendCodeBlock("SetNumeratorBlock");
+        } else {
+            _codeStream.appendCodeBlock(blockType + "SetNumeratorOneBlock");            
+        }
+        
+        if (actor.divide.getWidth() > 0) {
+            _codeStream.appendCodeBlock("SetDenominatorBlock");
+        }
+        
+        for (int i = 1; i < actor.multiply.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            _codeStream.appendCodeBlock(blockType + "MultiplyBlock", args);
         }
 
-        // assume numerator of 1, if no input is connected to
-        // the multiply ports
-        if (actor.multiply.getWidth() == 0) {
-            buffer.append(" 1.0 / ");
+        for (int i = 1; i < actor.divide.getWidth(); i++) {
+            args.set(0, new Integer(i));
+            _codeStream.appendCodeBlock(blockType + "DivideBlock", args);
         }
 
-        for (int i = 0; i < actor.divide.getWidth(); i++) {
-            buffer.append("$ref(divide#" + i + ")");
-
-            if (i < (actor.divide.getWidth() - 1)) {
-                buffer.append(" / ");
-            }
+        if (actor.divide.getWidth() == 0) {
+            _codeStream.appendCodeBlock("NumeratorOutputBlock");
+        } else {
+            _codeStream.appendCodeBlock(blockType + "OutputBlock");
         }
+        
+        return processCode(_codeStream.toString());
+    }
+    
+    
+    /**
+     * Generate preinitialize code.
+     * Read the <code>preinitBlock</code> from MultiplyDivide.c,
+     * replace macros with their values and append the processed code
+     * block to the given code buffer.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
 
-        buffer.append(";\n");
-        code.append(processCode(buffer.toString()));
-        return code.toString();
+        ptolemy.actor.lib.MultiplyDivide actor = 
+            (ptolemy.actor.lib.MultiplyDivide) getComponent();
+
+        ArrayList args = new ArrayList();
+        
+        Type type = actor.output.getType();
+        args.add(cType(type));
+        _codeStream.appendCodeBlock("preinitBlock", args);
+        
+        return processCode(_codeStream.toString());
     }
 }

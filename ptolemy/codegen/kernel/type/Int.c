@@ -23,6 +23,8 @@ Token Int_equals(Token this, ...) {
     Token otherToken; 
     va_start(argp, this);
 	otherToken = va_arg(argp, Token);
+
+    va_end(argp);
 	return Boolean_new(this.payload.Int == otherToken.payload.Int);
 }
 /**/
@@ -55,7 +57,8 @@ Token Int_add(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
 	Token otherToken = va_arg(argp, Token);
-	
+
+    va_end(argp);
 	return Int_new(this.payload.Int + otherToken.payload.Int);
 }
 /**/
@@ -65,15 +68,50 @@ Token Int_substract(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
 	Token otherToken = va_arg(argp, Token);	
+
+    va_end(argp);
 	return Int_new(this.payload.Int - otherToken.payload.Int);
 }
 /**/
 
+/***multiplyBlock***/
+Token Int_multiply(Token this, ...) {
+    va_list argp; 
+    va_start(argp, this);
+	Token otherToken = va_arg(argp, Token);	
+
+    va_end(argp);
+	return Int_new(this.payload.Int * otherToken.payload.Int);
+}
+/**/
+
+/***divideBlock***/
+Token Int_divide(Token this, ...) {
+    va_list argp; 
+    va_start(argp, this);
+	Token otherToken = va_arg(argp, Token);	
+
+    va_end(argp);
+	return Int_new(this.payload.Int / otherToken.payload.Int);
+}
+/**/
 
 /***negateBlock***/
 Token Int_negate(Token this, ...) {
 	this.payload.Int = -this.payload.Int;
 	return this;
+}
+/**/
+
+/***zeroBlock***/
+Token Int_zero(Token token, ...) {
+	return Int_new(0);
+}
+/**/
+
+/***oneBlock***/
+Token Int_one(Token token, ...) {
+	return Int_new(1);
 }
 /**/
 
@@ -100,8 +138,3 @@ Token Int_convert(Token token, ...) {
 }    
 /**/
 
-/***zeroBlock***/
-Token Int_zero(Token token, ...) {
-	return Int_new(0);
-}
-/**/

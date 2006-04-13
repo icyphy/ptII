@@ -85,6 +85,8 @@ Token Array_equals(Token this, ...) {
 			return Boolean_new(false);
 	 	}
 	}
+
+    va_end(argp);
 	return Boolean_new(true);
 }
 /**/
@@ -162,6 +164,8 @@ Token Array_add(Token this, ...) {
     for (i = 0; i < this.payload.Array->size; i++) {
 	  	result.payload.Array->elements[i] = functionTable[Array_get(this, i).type][FUNC_add](Array_get(this, i), Array_get(otherToken, i));
 	}
+
+    va_end(argp);
 	return result;
 }
 /**/
@@ -184,10 +188,60 @@ Token Array_substract(Token this, ...) {
     for (i = 0; i < this.payload.Array->size; i++) {
 	  	result.payload.Array->elements[i] = functionTable[Array_get(this, i).type][FUNC_substract](Array_get(this, i), Array_get(otherToken, i));
 	}
+
+    va_end(argp);
 	return result;
 }
 /**/
 
+
+/***multiplyBlock***/
+// Assume the given otherToken is array type.
+// Return a new Array token.
+Token Array_multiply(Token this, ...) {
+	int i;
+    va_list argp; 
+	Token result; 
+	Token otherToken;
+	
+    va_start(argp, this);
+	otherToken = va_arg(argp, Token);
+
+	result = Array_new(this.payload.Array->size, 0);
+	
+    for (i = 0; i < this.payload.Array->size; i++) {
+	  	result.payload.Array->elements[i] = functionTable[Array_get(this, i).type][FUNC_multiply](Array_get(this, i), Array_get(otherToken, i));
+	}
+
+    va_end(argp);
+	return result;
+}
+/**/
+
+/***divideBlock***/
+// Assume the given otherToken is array type.
+// Return a new Array token.
+Token Array_divide(Token this, ...) {
+	int i;
+    va_list argp; 
+	Token result; 
+	Token otherToken;
+	Token element;
+	
+    va_start(argp, this);
+	otherToken = va_arg(argp, Token);
+
+	result = Array_new(this.payload.Array->size, 0);
+	
+    for (i = 0; i < this.payload.Array->size; i++) {
+    	element = Array_get(this, i);
+	  	result.payload.Array->elements[i] = functionTable[element.type][FUNC_divide](element, Array_get(otherToken, i));
+	}
+
+    va_end(argp);
+	return result;
+}
+/**/
 
 /***negateBlock***/
 // Return a new Array token.
@@ -204,7 +258,35 @@ Token Array_negate(Token this, ...) {
 }
 /**/
 
+/***zeroBlock***/
+Token Array_zero(Token token, ...) {
+	Token result;
+	Token element;
+	int i;
+	
+	result = Array_new(token.payload.Array->size, 0);
+	for (i = 0; i < token.payload.Array->size; i++) {
+		element = Array_get(token, i);
+		result.payload.Array->elements[i] = functionTable[element.type][FUNC_zero](element);
+	}
+	return result;
+}
+/**/
 
+/***oneBlock***/
+Token Array_one(Token token, ...) {
+	Token result;
+	Token element;
+	int i;
+	
+	result = Array_new(token.payload.Array->size, 0);
+	for (i = 0; i < token.payload.Array->size; i++) {
+		element = Array_get(token, i);
+		result.payload.Array->elements[i] = functionTable[element.type][FUNC_one](element);
+	}
+	return result;
+}
+/**/
 
 
 
@@ -238,12 +320,9 @@ Token Array_convert(Token token, ...) {
 			}
 		}
 	}
+
+    va_end(argp);
     return result;
 }    
 /**/
 
-/***zeroBlock***/
-Token Array_zero(Token token, ...) {
-	return Array_new(0, 0);
-}
-/**/

@@ -103,9 +103,31 @@ public class AddSubtract extends CCodeGeneratorHelper {
             _codeStream.appendCodeBlock(blockType + "MinusBlock", args);
         }
 
-        if (!isPrimitive(type)) {
-            _codeStream.appendCodeBlock("TokenPostFireBlock");
-        }
+        _codeStream.appendCodeBlock("PostFireBlock");
+        
+        return processCode(_codeStream.toString());
+    }
+    
+    /**
+     * Generate preinitialize code.
+     * Read the <code>preinitBlock</code> from AddSubtract.c,
+     * replace macros with their values and append the processed code
+     * block to the given code buffer.
+     * @return The generated code.
+     * @exception IllegalActionException If the code stream encounters an
+     *  error in processing the specified code block(s).
+     */
+    public String generatePreinitializeCode() throws IllegalActionException {
+        super.generatePreinitializeCode();
+
+        ptolemy.actor.lib.AddSubtract actor = 
+            (ptolemy.actor.lib.AddSubtract) getComponent();
+
+        ArrayList args = new ArrayList();
+        
+        Type type = actor.output.getType();
+        args.add(cType(type));
+        _codeStream.appendCodeBlock("preinitBlock", args);
         
         return processCode(_codeStream.toString());
     }

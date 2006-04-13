@@ -27,6 +27,8 @@ Token Boolean_equals(Token this, ...) {
     Token otherToken; 
     va_start(argp, this);
 	otherToken = va_arg(argp, Token);
+
+    va_end(argp);
 	return Boolean_new(
 	( this.payload.Boolean && otherToken.payload.Boolean ) || 
 	( !this.payload.Boolean && !otherToken.payload.Boolean ));
@@ -57,6 +59,7 @@ Token Boolean_add(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
 	Token otherToken = va_arg(argp, Token);
+    va_end(argp);
 	return Boolean_new(this.payload.Boolean || otherToken.payload.Boolean);
 }
 /**/
@@ -68,12 +71,40 @@ Token Boolean_substract(Token this, ...) {
 }
 /**/
 
+/***multiplyBlock***/
+Token Boolean_multiply(Token this, ...) {
+	fprintf(stderr, "Boolean_multiply not supported");
+	exit(1);
+}
+/**/
+
+/***divideBlock***/
+Token Boolean_divide(Token this, ...) {
+	fprintf(stderr, "Boolean_divide not supported");
+	exit(1);
+}
+/**/
 /***negateBlock***/
 Token Boolean_negate(Token this, ...) {
 	this.payload.Boolean = !this.payload.Boolean;
 	return this;
 }
 /**/
+
+/***zeroBlock***/
+Token Boolean_zero(Token token, ...) {
+	return Boolean_new(false);
+}
+/**/
+
+/***oneBlock***/
+Token Boolean_one(Token token, ...) {
+	return Boolean_new(true);
+}
+/**/
+
+
+
 
 --------------------- static functions ------------------------------
 /***convertBlock***/
@@ -89,8 +120,3 @@ Token Boolean_convert(Token token, ...) {
 }    
 /**/
 
-/***zeroBlock***/
-Token Boolean_zero(Token token, ...) {
-	return Boolean_new(false);
-}
-/**/

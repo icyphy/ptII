@@ -27,7 +27,11 @@ Token Double_equals(Token this, ...) {
     Token otherToken; 
     va_start(argp, this);
 	otherToken = va_arg(argp, Token);
-	return Boolean_new(this.payload.Double == otherToken.payload.Double);
+
+    va_end(argp);
+    
+    // Give tolerance for testing.
+	return Boolean_new(1.0E-6 > this.payload.Double - otherToken.payload.Double);
 }
 /**/
 
@@ -54,6 +58,8 @@ Token Double_add(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
 	Token otherToken = va_arg(argp, Token);	
+
+    va_end(argp);
 	return Double_new(this.payload.Double + otherToken.payload.Double);
 }
 /**/
@@ -63,10 +69,33 @@ Token Double_substract(Token this, ...) {
     va_list argp; 
     va_start(argp, this);
 	Token otherToken = va_arg(argp, Token);	
+
+    va_end(argp);
 	return Double_new(this.payload.Double - otherToken.payload.Double);
 }
 /**/
 
+/***multiplyBlock***/
+Token Double_multiply(Token this, ...) {
+    va_list argp; 
+    va_start(argp, this);
+	Token otherToken = va_arg(argp, Token);	
+
+    va_end(argp);
+	return Double_new(this.payload.Double * otherToken.payload.Double);
+}
+/**/
+
+/***divideBlock***/
+Token Double_divide(Token this, ...) {
+    va_list argp; 
+    va_start(argp, this);
+	Token otherToken = va_arg(argp, Token);	
+
+    va_end(argp);
+	return Double_new(this.payload.Double / otherToken.payload.Double);
+}
+/**/
 
 /***negateBlock***/
 Token Double_negate(Token this, ...) {
@@ -74,6 +103,22 @@ Token Double_negate(Token this, ...) {
 	return this;
 }
 /**/
+
+/***zeroBlock***/
+Token Double_zero(Token token, ...) {
+	return Double_new(0.0);
+}
+/**/
+
+/***oneBlock***/
+Token Double_one(Token token, ...) {
+	return Double_new(1.0);
+}
+/**/
+
+
+
+
 
 
 --------------------- static functions --------------------------
@@ -97,8 +142,3 @@ Token Double_convert(Token token, ...) {
 }
 /**/
 
-/***zeroBlock***/
-Token Double_zero(Token token, ...) {
-	return Double_new(0.0);
-}
-/**/
