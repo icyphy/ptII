@@ -157,7 +157,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     /** Visit the leaf node. It is evaluated the same way as normal parse tree
      *  evaluator, except that if the the result is a boolean token, the
      *  information about the node (the difference and relationType) is either
-     *  added into the relation list or used to update the according element
+     *  added into the relation list or used to update the corresponding element
      *  in the relation list, depending on the evaluator mode.
      *  @param node The leaf node to be evaluated.
      *  @exception IllegalActionException If the super class method
@@ -320,7 +320,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     /** Visit the relation node. The evaluation part is the same as normal
      *  parseTreeEvaluator, except that information about each relation (the
      *  difference and relationType) is either added into the relation list or
-     *  used to update the according element in the relation list, depending
+     *  used to update the corresponding element in the relation list, depending
      *  on the evaluator mode.
      *  @param node The relation node to be evaluated.
      *  @exception IllegalActionException If the super class method
