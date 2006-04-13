@@ -7411,7 +7411,7 @@ JAVAX_CRYPTO_JAR='${PTJAVA_HOME}/lib/jce.jar'
 # to the right default is in ptII.mk and the user can just change
 # SOOT_DIR or JAVA_SYSTEM_JAR
 # Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
-SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
+SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/polyglotclasses-1.3.2.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
@@ -7438,13 +7438,19 @@ echo "${ECHO_T}$SOOT_DIR" >&6
         echo "$as_me:$LINENO: checking for \$SOOT_DIR/sootclasses.jar" >&5
 echo $ECHO_N "checking for \$SOOT_DIR/sootclasses.jar... $ECHO_C" >&6
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
-	    echo "$as_me:$LINENO: result: $SOOT_DIR/sootclasses.jar" >&5
-echo "${ECHO_T}$SOOT_DIR/sootclasses.jar" >&6
+	    echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
 	    echo "$as_me:$LINENO: checking for \$SOOT_DIR/jasminclasses.jar" >&5
 echo $ECHO_N "checking for \$SOOT_DIR/jasminclasses.jar... $ECHO_C" >&6
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
-                echo "$as_me:$LINENO: result: $SOOT_DIR/jasminclasses.jar" >&5
-echo "${ECHO_T}$SOOT_DIR/jasminclasses.jar" >&6
+                echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+            fi
+	    echo "$as_me:$LINENO: checking for \$SOOT_DIR/polyglotclasses-1.3.2.jar" >&5
+echo $ECHO_N "checking for \$SOOT_DIR/polyglotclasses-1.3.2.jar... $ECHO_C" >&6
+  	    if test -f "$SOOT_DIR/polyglotclasses-1.3.2.jar"; then
+                echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
             fi
 	    echo "$as_me:$LINENO: result: $SOOT_CLASSES" >&5
 echo "${ECHO_T}$SOOT_CLASSES" >&6
@@ -7517,6 +7523,7 @@ if test -z "$PTCOPERNICUS_DIR"; then
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$SOOT_DIR/sootclasses.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/polyglotclasses-1.3.2.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$SOOT_DIR/jasminclasses.jar\"/>"
     # What about JAVA_SYSTEM_JAR?
 fi
@@ -8506,10 +8513,9 @@ for ac_i in : $LIBOBJS; do test "x$ac_i" = x: && continue
   # 1. Remove the extension, and $U if already installed.
   ac_i=`echo "$ac_i" |
 	 sed 's/\$U\././;s/\.o$//;s/\.obj$//'`
-  # 2. Prepend LIBOBJDIR.  When used with automake>=1.10 LIBOBJDIR
-  #    will be set to the directory where LIBOBJS objects are built.
-  ac_libobjs="$ac_libobjs \${LIBOBJDIR}$ac_i\$U.$ac_objext"
-  ac_ltlibobjs="$ac_ltlibobjs \${LIBOBJDIR}$ac_i"'$U.lo'
+  # 2. Add them.
+  ac_libobjs="$ac_libobjs $ac_i\$U.$ac_objext"
+  ac_ltlibobjs="$ac_ltlibobjs $ac_i"'$U.lo'
 done
 LIBOBJS=$ac_libobjs
 
