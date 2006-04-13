@@ -29,18 +29,16 @@ package ptolemy.actor.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JCheckBox;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.gui.MessageHandler;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.SingletonParameter;
+import ptolemy.gui.MessageHandler;
 
 //////////////////////////////////////////////////////////////////////////
 //// WelcomeWindow
@@ -165,6 +163,12 @@ public class WelcomeWindow extends HTMLViewer {
 
         if (_showWelcomeWindowAtStartup != null
                 && !_showWelcomeWindowAtStartup.booleanValue()) {
+            // Call super.close() because _close() expects that the window has been
+            // rendered via successful completion of show() and that we can query the
+            // checkbox.  There was a bug where if user started Kepler, unchecked
+            // "Show this Window at Startup" and then restarted Kepler, Kepler would 
+            // not exit.
+            super._close();
             return;
         }
         super.show();
@@ -173,7 +177,7 @@ public class WelcomeWindow extends HTMLViewer {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Read the"Show this dialog on startup" checkbox, update the
+    /** Read the "Show this dialog on startup" checkbox, update the
      *  preferences if necessary and then call the super class and close
      *  this window.  This method is called by {@link ptolemy.gui.Top#close()}.
      */
