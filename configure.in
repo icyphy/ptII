@@ -2580,7 +2580,7 @@ JAVAX_CRYPTO_JAR='${PTJAVA_HOME}/lib/jce.jar'
 # to the right default is in ptII.mk and the user can just change
 # SOOT_DIR or JAVA_SYSTEM_JAR	
 # Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
-SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
+SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/polyglotclasses-1.3.2.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}${CLASSPATHSEPARATOR}${JAVAX_CRYPTO_JAR}'
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
@@ -2598,10 +2598,14 @@ else
 	AC_MSG_RESULT([$SOOT_DIR])
         AC_MSG_CHECKING([for \$SOOT_DIR/sootclasses.jar])
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
-	    AC_MSG_RESULT([$SOOT_DIR/sootclasses.jar])
+	    AC_MSG_RESULT([ok])
 	    AC_MSG_CHECKING([for \$SOOT_DIR/jasminclasses.jar])
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
-                AC_MSG_RESULT([$SOOT_DIR/jasminclasses.jar])
+                AC_MSG_RESULT([ok])
+            fi
+	    AC_MSG_CHECKING([for \$SOOT_DIR/polyglotclasses-1.3.2.jar])
+  	    if test -f "$SOOT_DIR/polyglotclasses-1.3.2.jar"; then
+                AC_MSG_RESULT([ok])
             fi
 	    AC_MSG_RESULT([$SOOT_CLASSES])
         else
@@ -2655,6 +2659,7 @@ if test -z "$PTCOPERNICUS_DIR"; then
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
     <classpathentry kind=\"lib\" path=\"$SOOT_DIR/sootclasses.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$SOOT_DIR/polyglotclasses-1.3.2.jar\"/> \
     <classpathentry kind=\"lib\" path=\"$SOOT_DIR/jasminclasses.jar\"/>"
     # What about JAVA_SYSTEM_JAR?
 fi 
