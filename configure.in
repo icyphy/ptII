@@ -1096,7 +1096,7 @@ else
 	    AC_MSG_RESULT([ok])
 	    # Set to eclipse and used in
 	    # $PTII/ptolemy/backtrack/makefile if Eclipse jar files were found
-	    PTBACKTRACK_ECLIPSE_DIR=backtrack
+	    PTBACKTRACK_ECLIPSE_DIR=eclipse
    	    # PTBACKTRACK_ECLIPSE_PACKAGES is used in ptII/doc/makefile
 	    PTBACKTRACK_ECLIPSE_PACKAGES="ptolemy.backtrack.eclipse.ast ptolemy.backtrack.eclipse.ast.transform ptolemy.backtrack.eclipse.plugin ptolemy.backtrack.eclipse.plugin.actions ptolemy.backtrack.eclipse.plugin.editor ptolemy.backtrack.eclipse.plugin.preferences ptolemy.backtrack.eclipse.plugin.util"
 	    PTBACKTRACK_ECLIPSE_JARS=$eclipsejarpath
