@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/backtrack/demo/TrialModuleHack
+ME =		ptolemy/backtrack/demo/TrialModule
 
 DIRS =
 
@@ -39,7 +39,7 @@ ROOT =		../../../..
 CLASSPATH =	$(ROOT)
 
 # Used to build jar files
-PTPACKAGE = 	TrialModuleHack
+PTPACKAGE = 	TrialModule
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Get configuration info
@@ -77,10 +77,10 @@ demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer Eye.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" TrialModuleHack.xml
+	"$(PTII)/bin/ptolemy" TrialModule.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" TrialModuleHack.xml
+	"$(PTII)/bin/vergil" TrialModule.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

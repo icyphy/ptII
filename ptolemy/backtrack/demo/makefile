@@ -31,7 +31,7 @@
 
 ME =		ptolemy/backtrack/demo
 
-DIRS =	TrialModuleHack
+DIRS =	TrialModule
 
 # Root of the Java directory
 ROOT =		../../..
@@ -48,7 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		TrialModuleHack/TrialModuleHack.jar
+		TrialModule/TrialModule.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
