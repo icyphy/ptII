@@ -78,7 +78,7 @@ public class FileReader extends Source {
         fileOrURLPort.setTypeEquals(BaseType.STRING);
 
         newline = new Parameter(this, "newline");
-        newline.setExpression("property(\"file.separarator\")");
+        newline.setExpression("property(\"line.separator\")");
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" " + "width=\"50\" height=\"40\" "
