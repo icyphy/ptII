@@ -877,6 +877,14 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _createReceivers();
 
             if (!isOpaque()) {
+                if (getContainer() == null
+                        && deepEntityList().size() == 0) {
+                    // If the user runs an empty model, they get
+                    // this error message.
+                    throw new IllegalActionException(this,
+                            "Cannot preinitialize an empty model, "
+                            + "please add actors and a director.");
+                }
                 throw new IllegalActionException(this,
                         "Cannot preinitialize a non-opaque actor.");
             }
