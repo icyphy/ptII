@@ -253,8 +253,11 @@ public class HSFSMDirector extends FSMDirector implements CTTransparentDirector 
                 actor.fire();
             }
 
+            // The controller needs to know the most updated outputs from
+            // the firing of the enabled refinements.
+            _ctrl._readOutputsFromRefinement();
+
             if (!visited) {
-                _ctrl._readOutputsFromRefinement();
                 _currentState.setVisited(true);
             }
 
