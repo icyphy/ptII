@@ -1273,6 +1273,9 @@ public class Director extends Attribute implements Executable {
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
+     *  @return True if the port has an inside token that was successfully
+     *  transferred.  Otherwise return false (or throw an exception).
+     *  
      */
     protected boolean _transferOutputs(IOPort port)
             throws IllegalActionException {
