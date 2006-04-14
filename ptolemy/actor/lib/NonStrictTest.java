@@ -118,7 +118,7 @@ public class NonStrictTest extends Sink {
         correctValues.setExpression("{true}");
         correctValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
-        tolerance = new Parameter(this, "tolerance");
+        tolerance = new SharedParameter(this, "tolerance");
         tolerance.setExpression("1.0E-9");
         tolerance.setTypeEquals(BaseType.DOUBLE);
 
@@ -139,9 +139,11 @@ public class NonStrictTest extends Sink {
 
     /** A double specifying how close the input has to be to the value
      *  given by <i>correctValues</i>.  This is a DoubleToken, with default
-     *  value 10<sup>-9</sup>.
+     *  value 10<sup>-9</sup>. It is a shared parameter, meaning
+     *  that changing it for any one instance in a model will change
+     *  it for all instances in the model.
      */
-    public Parameter tolerance;
+    public SharedParameter tolerance;
 
     /** If true, then do not check inputs, but rather collect them into
      *  the <i>correctValues</i> array.  This parameter is a boolean,
