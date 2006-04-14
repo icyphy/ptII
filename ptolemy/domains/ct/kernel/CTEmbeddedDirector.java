@@ -182,10 +182,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector implements
             super.fireEventGenerators();
         } else if (executionPhase == CTExecutionPhase.FIRING_STATE_TRANSITION_ACTORS_PHASE) {
             getCurrentODESolver().fireStateTransitionActors();
-
-            // There is not a seperate state for producing output,
-            // because a CT subsystem needs to produce output
-            // if it works as a state transition actor.
+            // a CT subsystem needs to transfer its internal outputs
+            // to outside if it works as a state transition actor.
+            super.produceOutput();
+        } else if (executionPhase == CTExecutionPhase.PRODUCING_OUTPUTS_PHASE) {
             super.produceOutput();
         } else if (executionPhase == CTExecutionPhase.GENERATING_EVENTS_PHASE) {
             super._iterateEventGenerators(schedule);
