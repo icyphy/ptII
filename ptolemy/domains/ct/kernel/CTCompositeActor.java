@@ -27,8 +27,12 @@
  */
 package ptolemy.domains.ct.kernel;
 
+import java.util.Iterator;
+
+import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.lib.Source;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -73,8 +77,8 @@ import ptolemy.kernel.util.Workspace;
  @see CTTransparentDirector
  */
 public class CTCompositeActor extends TypedCompositeActor implements
-        CTDynamicActor, CTEventGenerator, CTStatefulActor,
-        CTStepSizeControlActor, CTWaveformGenerator {
+        CTEventGenerator, CTStatefulActor, CTStepSizeControlActor,
+        CTDynamicActor, CTWaveformGenerator {
     /** Construct a CTCompositeActor in the default workspace with
      *  no container and an empty string as its name. Add the actor
      *  to the workspace directory.
@@ -127,6 +131,41 @@ public class CTCompositeActor extends TypedCompositeActor implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return true if this CTCompositeActor contains dynamic actors.
+     *  @return True if this CTCompositeActor contains dynamic actors.
+     */
+    public boolean containsDynamicActors() {
+        boolean result = false;
+        Iterator actors = deepEntityList().iterator();
+        while (!result && actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor instanceof CTCompositeActor) {
+                result = ((CTCompositeActor) actor).containsDynamicActors();
+            } else if (actor instanceof CTDynamicActor) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    /** Return true if this CTCompositeActor contains waveform generators.
+     *  @return True if this CTCompositeActor contains waveform generators.
+     */
+    public boolean containsWaveformGenerators() {
+        boolean result = false;
+        Iterator actors = deepEntityList().iterator();
+        while (!result && actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor instanceof CTCompositeActor) {
+                result = ((CTCompositeActor) actor).containsWaveformGenerators();
+            } else if ((actor instanceof CTWaveformGenerator) || 
+                    (actor instanceof Source)) {
+                result = true;
+            }
+        }
+        return result;
+    }
 
     /** Call the emitCurrentStates() method of the local director if the
      *  local director is an instance of CTTransparentDirector. Otherwise,
