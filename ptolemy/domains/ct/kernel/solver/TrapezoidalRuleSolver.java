@@ -122,15 +122,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         // changed via calling _voteForConverged() by that integrator.
         _setConverged(true);
 
-        CTDirector director = (CTDirector) getContainer();
         super.fireDynamicActors();
-
-        if (_getRoundCount() == 0) {
-            _recalculatingWithTwoSteps = false;
-            _firstStep = true;
-            director.setModelTime(director.getModelTime().add(
-                    director.getCurrentStepSize()));
-        }
 
         if (_isConverged()) {
             // Resolved states have converged.
@@ -330,6 +322,24 @@ public class TrapezoidalRuleSolver extends ODESolver {
         }
 
         return super.resolveStates();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the method in the base abstract class to advance the 
+     *  model time. Advance the model time to the current model time
+     *  plus the current step size on the first round. 
+     *  @exception IllegalActionException If thrown in the super class or the
+     *  model time can not be set.
+     */
+    protected void _advanceModelTime() throws IllegalActionException {
+        if (_getRoundCount() == 0) {
+            // At the first round, advance the time with the current step size.
+            CTDirector director = (CTDirector) getContainer();
+            director.setModelTime(director.getModelTime().add(
+                    director.getCurrentStepSize()));
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

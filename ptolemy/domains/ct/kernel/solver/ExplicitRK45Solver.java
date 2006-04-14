@@ -119,26 +119,6 @@ public class ExplicitRK45Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire dynamic actors. Advance the model time. The amount of the
-     *  increment is decided by the number of the round counter and
-     *  the current step size.
-     *  @exception IllegalActionException If thrown in the super class or the
-     *  model time can not be set.
-     */
-    public void fireDynamicActors() throws IllegalActionException {
-        super.fireDynamicActors();
-
-        CTDirector director = (CTDirector) getContainer();
-
-        // NOTE: why is the current model time changed here?
-        // Some state transition actors may be some functions
-        // defined on the current time, such as the CurrentTime actor.
-        Time iterationBeginTime = director.getIterationBeginTime();
-        double currentStepSize = director.getCurrentStepSize();
-        director.setModelTime(iterationBeginTime.add(currentStepSize
-                * _timeInc[_getRoundCount()]));
-    }
-
     /** Fire state transition actors. Increment the round count.
      *  If the current round is the last (sixth) round, set converged flag to
      *  true indicating the fixed-point states have been reached. Reset
@@ -322,6 +302,27 @@ public class ExplicitRK45Solver extends ODESolver {
         }
 
         return newh;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the method in the base abstract class to advance the 
+     *  model time. The amount of the
+     *  increment is decided by the number of the round counter and
+     *  the current step size. 
+     *  @exception IllegalActionException If thrown in the super class or the
+     *  model time can not be set.
+     */
+    protected void _advanceModelTime() throws IllegalActionException {
+        CTDirector director = (CTDirector) getContainer();
+        // NOTE: why is the current model time changed here?
+        // Some state transition actors may be some functions
+        // defined on the current time, such as the CurrentTime actor.
+        Time iterationBeginTime = director.getIterationBeginTime();
+        double currentStepSize = director.getCurrentStepSize();
+        director.setModelTime(iterationBeginTime.add(currentStepSize
+                * _timeInc[_getRoundCount()]));
     }
 
     ///////////////////////////////////////////////////////////////////

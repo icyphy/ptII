@@ -73,13 +73,6 @@ public abstract class FixedStepSolver extends ODESolver {
         // changed via calling _voteForConverged() by that integrator.
         _setConverged(true);
         super.fireDynamicActors();
-
-        if (_getRoundCount() == 0) {
-            // At the first round, advance the time with the current step size.
-            CTDirector director = (CTDirector) getContainer();
-            director.setModelTime(director.getModelTime().add(
-                    director.getCurrentStepSize()));
-        }
     }
 
     /** Fire state transition actors. Increment the round count. If the states
@@ -127,5 +120,23 @@ public abstract class FixedStepSolver extends ODESolver {
     public final double integratorPredictedStepSize(CTBaseIntegrator integrator) {
         CTDirector director = (CTDirector) getContainer();
         return director.getCurrentStepSize();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the method in the base abstract class to advance the 
+     *  model time. Advance the model time to the current model time
+     *  plus the current step size on the first round. 
+     *  @exception IllegalActionException If thrown in the super class or the
+     *  model time can not be set.
+     */
+    protected void _advanceModelTime() throws IllegalActionException {
+        if (_getRoundCount() == 0) {
+            // At the first round, advance the time with the current step size.
+            CTDirector director = (CTDirector) getContainer();
+            director.setModelTime(director.getModelTime().add(
+                    director.getCurrentStepSize()));
+        }
     }
 }

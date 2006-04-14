@@ -131,6 +131,9 @@ public abstract class ODESolver extends NamedObj {
 
             next.fire();
         }
+        
+        // Time must be advanced after all dynamic actors are fired.
+        _advanceModelTime();
     }
 
     /** Fire state transition actors. See {@link CTScheduler} for
@@ -150,13 +153,18 @@ public abstract class ODESolver extends NamedObj {
 
         while (actors.hasNext()) {
             Actor next = (Actor) actors.next();
-            _prefireIfNecessary(next);
-
-            if (_debugging) {
-                _debug("  firing..." + ((Nameable) next).getFullName());
+            if (!next.prefire()) {
+                throw new IllegalActionException(
+                        next,
+                        "Expected prefire() to return true!\n"
+                                + "Perhaps a continuous input is being driven by a "
+                                + "discrete output?");
+            } else {
+                if (_debugging) {
+                    _debug("  firing..." + ((Nameable) next).getFullName());
+                }
+                next.fire();
             }
-
-            next.fire();
         }
     }
 
@@ -229,6 +237,13 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Advance the current model time. In this abstract base class, nothing
+     *  is done. The derived classes specify the detailed implementations. 
+     * @throws IllegalActionException Not thrown in this abstract base class.
+     */
+    protected void _advanceModelTime() throws IllegalActionException {
+    }
+
     /** Return the number of the round counter.
      *  @return The number of the round counter.
      */
@@ -284,34 +299,6 @@ public abstract class ODESolver extends NamedObj {
 
         if (director != null) {
             workspace().remove(this);
-        }
-    }
-
-    /** If the specified actor has not been prefired in the current
-     *  iteration, then prefire it.
-     *  @param actor The actor to be prefired.
-     *  @exception IllegalActionException If the actor returns false from the
-     *  prefire method.
-     */
-    protected void _prefireIfNecessary(Actor actor)
-            throws IllegalActionException {
-        CTDirector director = (CTDirector) getContainer();
-
-        if (!director.isPrefireComplete(actor)) {
-            if (_debugging) {
-                _debug(getFullName() + " is prefiring: "
-                        + ((Nameable) actor).getName());
-            }
-
-            if (!actor.prefire()) {
-                throw new IllegalActionException(
-                        actor,
-                        "Expected prefire() to return true!\n"
-                                + "Perhaps a continuous input is being driven by a "
-                                + "discrete output?");
-            }
-
-            director.setPrefireComplete(actor);
         }
     }
 
