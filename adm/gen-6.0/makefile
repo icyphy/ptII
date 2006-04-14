@@ -1169,7 +1169,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/xslt \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/util \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack/xmlparser \
-	$(REMOTE1PTIIDIST)/ptolemy/backtrack/ast \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/eclipse/ast \
 	$(REMOTE1PTIIDIST)/ptolemy/backtrack \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/actor \
