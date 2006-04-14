@@ -395,36 +395,29 @@ public class CTMultiSolverDirector extends CTDirector {
             while (eventGenerators.hasNext() && !_stopRequested) {
                 Actor actor = (Actor) eventGenerators.next();
 
-                // FIXME: if all actors are prefired before being fired, the
-                // checking for prefiring is unnecessary.
-                if (!isPrefireComplete(actor)) {
-                    if (_debugging && _verbose) {
-                        _debug("Prefire event generator: "
-                                + ((Nameable) actor).getName() + " at time "
-                                + getModelTime());
-                    }
-
-                    if (!actor.prefire()) {
-                        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
-                        throw new IllegalActionException(
-                                actor,
-                                "Actor is not ready to fire. In the CT domain, "
-                                        + "all event generators should be ready to fire"
-                                        + " at all times.\n"
-                                        + "Does the actor only operate on sequence "
-                                        + "of tokens?");
-                    }
-
-                    setPrefireComplete(actor);
-                }
-
-                if (_debugging) {
-                    _debug("Fire event generator : "
+                if (_debugging && _verbose) {
+                    _debug("Prefire event generator: "
                             + ((Nameable) actor).getName() + " at time "
                             + getModelTime());
                 }
-
-                actor.fire();
+                
+                if (!actor.prefire()) {
+                    _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+                    throw new IllegalActionException(
+                            actor,
+                            "Actor is not ready to fire. In the CT domain, "
+                            + "all event generators should be ready to fire"
+                            + " at all times.\n"
+                            + "Does the actor only operate on sequence "
+                            + "of tokens?");
+                } else {
+                    if (_debugging) {
+                        _debug("Fire event generator : "
+                                + ((Nameable) actor).getName() + " at time "
+                                + getModelTime());
+                    }
+                    actor.fire();
+                }
             }
         } finally {
             _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
@@ -694,32 +687,27 @@ public class CTMultiSolverDirector extends CTDirector {
         while (outputActors.hasNext() && !_stopRequested) {
             Actor actor = (Actor) outputActors.next();
 
-            if (!isPrefireComplete(actor)) {
-                setPrefireComplete(actor);
-
-                if (_debugging && _verbose) {
-                    _debug("Prefire output actor: "
-                            + ((Nameable) actor).getName() + " at time "
-                            + getModelTime());
-                }
-
-                if (!actor.prefire()) {
-                    throw new IllegalActionException(
-                            actor,
-                            "Actor is not ready to fire. In the CT domain, "
-                                    + "all continuous actors should be ready to fire "
-                                    + "at all times.\n"
-                                    + "Does the actor only operate on sequence "
-                                    + "of tokens?");
-                }
+            if (_debugging && _verbose) {
+                _debug("Prefire output actor: "
+                        + ((Nameable) actor).getName() + " at time "
+                        + getModelTime());
             }
-
-            if (_debugging) {
-                _debug("Fire output actor: " + ((Nameable) actor).getName()
-                        + " at time " + getModelTime());
+            
+            if (!actor.prefire()) {
+                throw new IllegalActionException(
+                        actor,
+                        "Actor is not ready to fire. In the CT domain, "
+                        + "all continuous actors should be ready to fire "
+                        + "at all times.\n"
+                        + "Does the actor only operate on sequence "
+                        + "of tokens?");
+            } else {
+                if (_debugging) {
+                    _debug("Fire output actor: " + ((Nameable) actor).getName()
+                            + " at time " + getModelTime());
+                }
+                actor.fire();
             }
-
-            actor.fire();
         }
 
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
