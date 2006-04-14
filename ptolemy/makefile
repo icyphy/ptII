@@ -52,7 +52,7 @@ ME =		ptolemy
 #
 DIRS = util kernel plot graph moml data actor gui math media	\
 	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) \
-	vergil hsif backtrack $(PTCHIC_DIR) codegen component \
+	vergil hsif $(PTCHIC_DIR) codegen component \
 	$(PTDISTRIBUTED_DIR) ptp apps $(PTCALTROP_DIR) configs demo
 
 # Root of Ptolemy II directory
