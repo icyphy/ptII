@@ -38,7 +38,9 @@ DIRS =		array1 random1 test1 test2
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+# PTBACKTRACK_ECLIPSE_JARS is set in $PTII/mk/ptII.mk
+# PTBACKTRACK_ECLIPSE_JARS always has a leading CLASSPATHSEPARATOR
+CLASSPATH =	$(ROOT)$(PTBACKTRACK_ECLIPSE_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
