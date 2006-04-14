@@ -68,7 +68,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 255.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 305.0]">
         </property>
     </entity>
     <entity name="Not Rollback" class="ptolemy.actor.lib.Const">
@@ -81,7 +81,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 340.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -118,7 +118,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[722, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 255.0]">
         </property>
     </entity>
     <entity name="TrialModule" class="ptolemy.actor.TypedCompositeActor">
@@ -438,7 +438,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[245.0, 300.0]">
+        <vertex name="vertex1" value="[245.0, 355.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -448,7 +448,7 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <vertex name="vertex1" value="[160.0, 360.0]">
+        <vertex name="vertex1" value="[170.0, 295.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
