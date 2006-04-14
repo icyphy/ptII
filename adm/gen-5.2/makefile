@@ -1015,6 +1015,12 @@ remote1distjavadocs:
 #	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/huffman
 # it hangs
 #
+# # Remove backtrack temporarily
+#	$(REMOTE1PTIIDIST)/ptolemy/backtrack/util 
+#	$(REMOTE1PTIIDIST)/ptolemy/backtrack/xmlparser 
+#	$(REMOTE1PTIIDIST)/ptolemy/backtrack/ast 
+#	$(REMOTE1PTIIDIST)/ptolemy/backtrack 
+
 JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/util/testsuite \
 	$(REMOTE1PTIIDIST)/ptolemy/util \
@@ -1104,10 +1110,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/security \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/xslt \
-	$(REMOTE1PTIIDIST)/ptolemy/backtrack/util \
-	$(REMOTE1PTIIDIST)/ptolemy/backtrack/xmlparser \
-	$(REMOTE1PTIIDIST)/ptolemy/backtrack/ast \
-	$(REMOTE1PTIIDIST)/ptolemy/backtrack \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/c/kernel \
