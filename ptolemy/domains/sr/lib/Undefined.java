@@ -117,6 +117,7 @@ public class Undefined extends Source {
      *  invoked. Consequently, the output of this actor is undefined.
      * 
      *  @return False.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
         return false;

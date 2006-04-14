@@ -114,6 +114,7 @@ public class RendezvousDirector extends CompositeProcessDirector {
 
     /** Return false if the model should not continue to execute.
      *  @return False if no more execution is possible, and true otherwise.
+     *  @exception IllegalActionException If thrown by the parent class.
      */
     public boolean postfire() throws IllegalActionException {
         if (!super.postfire()) {

@@ -83,6 +83,7 @@ public class Absent extends Undefined {
     /** Return true. This actor always fires.
      * 
      *  @return True.
+     *  @exception IllegalActionException Not thrown in this base class.   
      */
     public boolean prefire() throws IllegalActionException {
         return true;

@@ -110,10 +110,13 @@ public class Ramp extends CCodeGeneratorHelper {
     }
 
     /**
-     * Constraint the type of the "init" and "step" parameters to equals
+     * Constrain the type of the "init" and "step" parameters to equal
      * to the type of the output port.
      * @param variable The given parameter.
      * @param expression The string expression of the given variable.
+     * @return A string that is a method call that constrains the variable.
+     * @exception IllegalActionException If there is a problem 
+     * getting the type.
      */
     public String constraintType (Variable variable, String expression)
             throws IllegalActionException {
