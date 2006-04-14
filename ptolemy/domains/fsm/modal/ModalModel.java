@@ -29,6 +29,7 @@ package ptolemy.domains.fsm.modal;
 import java.lang.reflect.Constructor;
 import java.util.Iterator;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.data.expr.StringParameter;
@@ -267,6 +268,40 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         }
 
         return newModel;
+    }
+
+    /** Return true if all refinements contain at least one dynamic actor.
+     *  @return True if all refinements contain at least one dynamic actor.
+     */
+    public boolean containsDynamicActors() {
+        boolean result = true;
+        Iterator actors = deepEntityList().iterator();
+        while (result && actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor instanceof FSMActor) {
+                continue;
+            }
+            // Since the rest of actors must be refinements.
+            result &= ((CTCompositeActor) actor).containsDynamicActors();
+        }
+        return result;
+    }
+
+    /** Return true if all refinements contain at least one event generator.
+     *  @return True if all refinements contain at least one event generator.
+     */
+    public boolean containsWaveformGenerators() {
+        boolean result = true;
+        Iterator actors = deepEntityList().iterator();
+        while (result && actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor instanceof FSMActor) {
+                continue;
+            }
+            // Since the rest of actors must be refinements.
+            result &= ((CTCompositeActor) actor).containsWaveformGenerators();
+        }
+        return result;
     }
 
     /** Return an instance of DirectedGraph, where the nodes are IOPorts,
