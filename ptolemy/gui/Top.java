@@ -390,6 +390,7 @@ public abstract class Top extends JFrame {
                 if (_centering) {
                     centerOnScreen();
                 }
+                setPackThreadFinished();
             }
         };
 
@@ -869,6 +870,23 @@ public abstract class Top extends JFrame {
         return fileDialog;
     }
 
+
+    /** Return true if the thread invoked in the pack() method has finished
+     * execution.
+     * <p>The pack() method invokes a thread to build the menus etc; therefore,
+     * it is difficult to ascertain whether a frame has packed and finished
+     * rendering - a condition that is required by some Kepler additions. This
+     * method therefore provides a single point of access for dependent code to
+     * make this determination.</p>
+     *
+     * @return true if the thread invoked in the pack() method has finished
+     * execution; false otherwise.
+     */
+    public synchronized boolean isPackThreadFinished() {
+        return _isPackThreadFinished;
+    }
+
+
     /** Write the model to the specified file.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
@@ -954,6 +972,10 @@ public abstract class Top extends JFrame {
     // A flag indicating whether or not to center the window.
     private boolean _centering = true;
 
+    // Indicator that the pack() method's thread has finished execution.
+    private boolean _isPackThreadFinished = false;
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     // Execute all actions pending on the deferred action list.
@@ -978,6 +1000,24 @@ public abstract class Top extends JFrame {
             }
         }
     }
+
+
+    /** set to <code>true</code> the boolean flag that tracks whether the thread
+     * invoked in the pack() method has finished execution.
+     * <p>The pack() method invokes a thread to build the menus etc; consequently,
+     * it is difficult to ascertain whether a frame has packed and finished
+     * rendering - a condition that is required by some Kepler additions. This
+     * method therefore provides a synchronized way for pack() threads to set
+     * the flag that is returned by the "isPackThreadFinished()" method.</p>
+     * @see isPackThreadFinished()
+     *
+     * @param boolean flag - true if the thread invoked in the pack() method has
+     *                       finished execution; false otherwise.
+     */
+    private synchronized void setPackThreadFinished() {
+        _isPackThreadFinished = true;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
