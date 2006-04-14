@@ -564,15 +564,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         return _discretePhase;
     }
 
-    /** Return true if the actor has been prefired in the current iteration.
-     *  @param actor The actor about which we are querying.
-     *  @return True if the actor has been prefired.
-     *  @see #setPrefireComplete(Actor)
-     */
-    public boolean isPrefireComplete(Actor actor) {
-        return _prefiredActors.contains(actor);
-    }
-
     /** Return a new CTReceiver.
      *  @return A new CTReceiver.
      */
@@ -772,15 +763,6 @@ public abstract class CTDirector extends StaticSchedulingDirector implements
         }
 
         _currentStepSize = stepSize;
-    }
-
-    /** Mark the specified actor as having been prefired in the current
-     *  iteration.
-     *  @see #isPrefireComplete(Actor)
-     *  @param actor The actor to be marked.
-     */
-    public void setPrefireComplete(Actor actor) {
-        _prefiredActors.add(actor);
     }
 
     /** Set the suggested next step size. If the argument is larger than
