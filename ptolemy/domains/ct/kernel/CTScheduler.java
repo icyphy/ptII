@@ -471,11 +471,22 @@ public class CTScheduler extends Scheduler {
             if (a instanceof CompositeActor) {
                 if (a instanceof CTCompositeActor) {
                     // the actor is a CT subsystem
-                    dynamicActors.add(a);
+                    // We do not blindly add a CT sub system into the list
+                    // of dynamic actors or the list of waveform generators.
+                    // Instead, we check whether it contains some dynamic
+                    // actors or waveform generators inside. 
+                    // The reason is that if a CT subsystem does not contain 
+                    // any of the above two actors, it cannot be treated as
+                    // a source actor. 
+                    if (((CTCompositeActor)a).containsDynamicActors()) {
+                        dynamicActors.add(a);
+                    }
                     arithmeticActors.add(a);
                     ctSubsystems.add(a);
-                    statefulActorSchedule.add(new Firing(a)); //????
-                    waveformGenerators.add(a);
+                    statefulActorSchedule.add(new Firing(a));
+                    if (((CTCompositeActor)a).containsWaveformGenerators()) {
+                        waveformGenerators.add(a);
+                    }
                     eventGenerators.add(a);
                 } else {
                     // The actor is a subsystem but not a CT one,
@@ -943,8 +954,8 @@ public class CTScheduler extends Scheduler {
                     stateTransitionActors.add(dynamicActor);
                 }
             }
-        }
-
+        } 
+        
         // Create StateTransitionActorSchedule.
         Iterator stActors = stateTransitionActors.iterator();
 
@@ -958,6 +969,7 @@ public class CTScheduler extends Scheduler {
         sinkActors.removeAll(stateRelatedActors);
 
         // NOTE: Sink actors also include all the CT subsystems.
+        sinkActors.removeAll(ctSubsystems);
         sinkActors.addAll(ctSubsystems);
 
         // Create a schedule for the sink actors.
