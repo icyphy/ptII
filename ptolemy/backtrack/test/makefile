@@ -107,7 +107,7 @@ transform:
 	  rm -f ptolemy/backtrack/test/$$x/*.java; \
 	  "$(JAVA)" \
 	    -classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTBACKTRACK_JARS)$(AUXCLASSPATH)" \
-	    ptolemy.backtrack.ast.Transformer \
+	    ptolemy.backtrack.eclipse.ast.Transformer \
 	    -prefix ptolemy.backtrack.test \
 	    -output "$(ROOT)" \
 	    $$x/*.java; \
