@@ -92,6 +92,8 @@ public class SharedParameter extends Parameter {
     /** Construct a parameter with the given container and name.
      *  The container class will be used to determine which other
      *  instances of SharedParameter are shared with this one.
+     *  NOTE: Do not use this constructor if you plan to set
+     *  a default value. Use the four argument constructor instead.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @exception IllegalActionException If the parameter is not of an
@@ -107,6 +109,8 @@ public class SharedParameter extends Parameter {
     /** Construct a parameter with the given container, name, and
      *  container class. The specified class will be used to determine
      *  which other instances of SharedParameter are shared with this one.
+     *  NOTE: Do not use this constructor if you plan to set
+     *  a default value. Use the four argument constructor instead.
      *  @param container The container.
      *  @param name The name of the parameter.
      *  @param containerClass The class used to determine shared instances.
@@ -120,8 +124,10 @@ public class SharedParameter extends Parameter {
         this(container, name, containerClass, "");
     }
 
-    /** Construct a parameter with the given container, name, and
-     *  container class. The specified class will be used to determine
+    /** Construct a parameter with the given container, name,
+     *  container class, and default value.  This is the preferred
+     *  constructor to use.
+     *  The specified class will be used to determine
      *  which other instances of SharedParameter are shared with this one.
      *  @param container The container.
      *  @param name The name of the parameter.
