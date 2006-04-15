@@ -270,36 +270,36 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         return newModel;
     }
 
-    /** Return true if all refinements contain at least one dynamic actor.
-     *  @return True if all refinements contain at least one dynamic actor.
+    /** Return true if any refinements contain at least one dynamic actor.
+     *  @return True if any refinements contain at least one dynamic actor.
      */
     public boolean containsDynamicActors() {
-        boolean result = true;
+        boolean result = false;
         Iterator actors = deepEntityList().iterator();
-        while (result && actors.hasNext()) {
+        while (!result && actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof FSMActor) {
                 continue;
             }
             // Since the rest of actors must be refinements.
-            result &= ((CTCompositeActor) actor).containsDynamicActors();
+            result |= ((CTCompositeActor) actor).containsDynamicActors();
         }
         return result;
     }
 
-    /** Return true if all refinements contain at least one event generator.
-     *  @return True if all refinements contain at least one event generator.
+    /** Return true if any refinements contain at least one event generator.
+     *  @return True if any refinements contain at least one event generator.
      */
     public boolean containsWaveformGenerators() {
-        boolean result = true;
+        boolean result = false;
         Iterator actors = deepEntityList().iterator();
-        while (result && actors.hasNext()) {
+        while (!result && actors.hasNext()) {
             Actor actor = (Actor) actors.next();
             if (actor instanceof FSMActor) {
                 continue;
             }
             // Since the rest of actors must be refinements.
-            result &= ((CTCompositeActor) actor).containsWaveformGenerators();
+            result |= ((CTCompositeActor) actor).containsWaveformGenerators();
         }
         return result;
     }
