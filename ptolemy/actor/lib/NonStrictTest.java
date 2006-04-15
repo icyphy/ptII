@@ -118,8 +118,7 @@ public class NonStrictTest extends Sink {
         correctValues.setExpression("{true}");
         correctValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
-        tolerance = new SharedParameter(this, "tolerance");
-        tolerance.setExpression("1.0E-9");
+        tolerance = new SharedParameter(this, "tolerance", NonStrictTest.class, "1.0E-9");
         tolerance.setTypeEquals(BaseType.DOUBLE);
 
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
