@@ -104,6 +104,18 @@ public class ExpressionReader extends LineReader {
         _expressionEvaluator.setExpression(_currentLine);
         output.setTypeEquals(_expressionEvaluator.getType());
     }
+    
+    /** Override the base class to clear memory of any
+     *  possibly erroneous expression.
+     */
+    public void wrapup() throws IllegalActionException {
+        super.wrapup();
+        // This is necessary because if there is an
+        // invalid expression here, then validate() will
+        // fail when the model is next run.
+        // Thanks to Adriana Ricchiuti for diagnosing this.
+        _expressionEvaluator.setExpression("");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
