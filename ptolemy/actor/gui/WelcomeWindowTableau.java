@@ -25,8 +25,13 @@
  */
 package ptolemy.actor.gui;
 
+import java.io.IOException;
+import java.net.URL;
+
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// WelcomeWindowTableau
@@ -61,5 +66,23 @@ public class WelcomeWindowTableau extends HTMLViewerTableau {
         WelcomeWindow frame = new WelcomeWindow();
         setFrame(frame);
         frame.setTableau(this);
+    }
+    
+    /** Handle cases where the <i>url</i> attribute is changed,
+     *  yet there is no frame. If the argument is the <i>url</i> parameter,
+     *  and there is no frame, then do nothing.  Otherwise, call the same 
+     *  method in the super class.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Thrown by the parent class 
+     *  if the URL cannot be opened, or if the base class throws it.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == url) {
+            if (getFrame() == null) {
+                return;
+            }
+        }
+        super.attributeChanged(attribute);
     }
 }
