@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_ECLIPSE_DIR PTBACKTRACK_ECLIPSE_JARS PTBACKTRACK_ECLIPSE_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH FIND JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS IMAGEJ_JAR JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JAVAX_CRYPTO_JAR JDOCBREAKITERATOR JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_ECLIPSE_DIR PTBACKTRACK_ECLIPSE_JARS PTBACKTRACK_ECLIPSE_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDISTRIBUTED_DIR PTDISTRIBUTED_JARS PTDISTRIBUTED_PACKAGES PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJNI_LIBRARIES PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTSVG_DIR PTSVG_JAR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTTINYOS_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE TOSDIR_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -896,6 +896,8 @@ Optional Packages:
                           defaults to \$PTII/lib
   --with-javasystemjar=DIR       use rt.lib from DIR,
                           defaults to JRE java.home property with lib/rt.jar appended
+  --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
+                          defaults to \$KEPLER/lib/jar/batik-all-1.6.jar
   --with-tini=DIR       use TINI from DIR,
                           defaults to \$PTII/vendors/dalsemi/tini
   --with-giotto=DIR       use GiottoSDF from DIR,
@@ -4474,6 +4476,7 @@ echo "${ECHO_T}$ECLIPSE_DIR" >&6
 	echo "$as_me:$LINENO: checking for jars used by backtracking" >&5
 echo $ECHO_N "checking for jars used by backtracking... $ECHO_C" >&6
 	# jars="jdt.core osgi resources runtime"
+	# jdt.core core.runtime_ are needed to build backtrack
 	# osgi_ and resources_ are needed to run the tests in backtrack
 	jars="jdt.core core.runtime_ osgi_ core.resources_"
 	eclipsejarpath=
@@ -7530,6 +7533,62 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       The Batik SVG toolkit is used by Kepler so we include Batik
+#	support in Diva.  See
+#	http://xmlgraphics.apache.org/batik/
+#       See if there was a command-line option for where Batikc
+#       is
+#       If not, look for for $PTII/vendors/eclipse
+#--------------------------------------------------------------------
+
+# PTSVG_DIR is set to svg and used in
+# $PTII/diva/util/java2d/makefile if Batik SVG jar files were found
+PTSVG_DIR=
+
+# Jar file used by diva/util/java2d/svg/makefile
+PTSVG_JAR=
+
+# We only need to look for Batik if $PTII/diva/util/java2d/svg exists
+if test ! -d "$PTII/diva/util/java2d/svg"; then
+    echo "$as_me:$LINENO: result: $PTII/diva/util/java2d/svg is not present,
+    so we need not find Batik SVG." >&5
+echo "${ECHO_T}$PTII/diva/util/java2d/svg is not present,
+    so we need not find Batik SVG." >&6
+else
+    echo "$as_me:$LINENO: checking for Batik SVG" >&5
+echo $ECHO_N "checking for Batik SVG... $ECHO_C" >&6
+
+# Check whether --with-batikjar or --without-batikjar was given.
+if test "${with_batikjar+set}" = set; then
+  withval="$with_batikjar"
+  PTSVG_JAR=$withval
+else
+  PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.6.jar
+fi;
+
+    if test -f "$PTSVG_JAR"; then
+	echo "$as_me:$LINENO: result: $PTSVG_JAR" >&5
+echo "${ECHO_T}$PTSVG_JAR" >&6
+	PTSVG_DIR=svg
+    fi
+    if test "$PTSVG_JAR" = ""; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find Batik Jar file
+    You need only have Batik if you are planning on rebuilding diva.jar
+    for use with Kepler.
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/" >&5
+echo "$as_me: WARNING: Failed to find Batik Jar file
+    You need only have Batik if you are planning on rebuilding diva.jar
+    for use with Kepler.
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/" >&2;}
+	PTSVG_JAR=
+    fi
+fi
+
+if test -z "$PTSVG_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|diva/util/java2d/svg/"
+fi
+
+#--------------------------------------------------------------------
 #       TINI is the JDK for Dallas Tini board, see
 #	www.ibutton.com
 #	See if there was a command-line option for where
@@ -8305,6 +8364,13 @@ fi
 
 # Set to psdf and used in $PTII/ptolemy/domains/makefile if
 # $PTII/lib/mapss.jar was found
+
+
+# PTSVG_DIR is set to svg and used in
+# $PTII/diva/util/java2d/makefile if Batik SVG jar files were found
+
+
+# Jar file used by diva/util/java2d/svg/makefile
 
 
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
@@ -9157,6 +9223,8 @@ s,@PTMATLAB_DIR@,$PTMATLAB_DIR,;t t
 s,@PTMATLAB_LD_ARGS@,$PTMATLAB_LD_ARGS,;t t
 s,@PTMESCAL_DIR@,$PTMESCAL_DIR,;t t
 s,@PTPSDF_DIR@,$PTPSDF_DIR,;t t
+s,@PTSVG_DIR@,$PTSVG_DIR,;t t
+s,@PTSVG_JAR@,$PTSVG_JAR,;t t
 s,@PTQUICKTIME_DIR@,$PTQUICKTIME_DIR,;t t
 s,@PTQUICKTIME_PACKAGES@,$PTQUICKTIME_PACKAGES,;t t
 s,@PTTINI_DIR@,$PTTINI_DIR,;t t
