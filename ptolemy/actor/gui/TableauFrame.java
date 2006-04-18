@@ -52,6 +52,7 @@ import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
@@ -670,23 +671,46 @@ public class TableauFrame extends Top {
         }
     }
 
-    /** Return the default icon image, or null if there is none.
-     *  Note that Frame.setIconImage(null) will set the image to the
-     *  default platform dependent image for us.
+    /** Return the default icon image, or null if there is none.  Note
+     *  that Frame.setIconImage(null) will set the image to the
+     *  default platform dependent image for us.  If the configuration
+     *  contains a FileAttribute called _applicationIcon, then the
+     *  value of the _applicationIcon is used.  Otherwise, the default
+     *  value is ptolemy/actor/gui/PtolemyIISmallIcon.gif, which
+     *  is looked for in the classpath.
      *  @return The default icon image, or null if there is none.
      */
     protected Image _getDefaultIconImage() {
         if (_defaultIconImage == null) {
-            // Note that PtolemyIISmallIcon.gif is also in doc/img.
-            // We place a duplicate copy here to make it easy to ship
-            // jar files that contain all the appropriate images.
-            URL url = getClass().getResource(
+            URL url = null;
+            try {
+                Configuration configuration = getConfiguration();
+                FileParameter iconAttribute = (FileParameter) configuration
+                    .getAttribute("_applicationIcon", FileParameter.class);
+
+                if (iconAttribute != null) {
+                    url = iconAttribute.asURL();
+                } 
+            } catch (IllegalActionException ex) {
+                // Note that PtolemyIISmallIcon.gif is also in doc/img.
+                // We place a duplicate copy here to make it easy to ship
+                // jar files that contain all the appropriate images.
+                url = getClass().getResource(
                     "/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
 
+            }
             if (url == null) {
                 return null;
             }
 
+            // FIXME: For awhile under kepler if we had no _applicationIcon
+            // parameter and the PtolemyIISmallIcon.gif image was somewhere
+            // not in the ptolemy tree but still in the classpath, the
+            // icon would only partially render.  This could be because
+            // in Kepler, VergilApplication does not run everything in
+            // the Swing Event thread.  Nandita suggested using this as
+            // a workaround:
+            // setIconImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
             Toolkit tk = Toolkit.getDefaultToolkit();
             _defaultIconImage = tk.createImage(url);
         }
