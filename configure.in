@@ -2696,6 +2696,8 @@ else
     if test -f "$PTSVG_JAR"; then
 	AC_MSG_RESULT([$PTSVG_JAR])
 	PTSVG_DIR=svg
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$PTSVG_JAR\"/>"
     fi	
     if test "$PTSVG_JAR" = ""; then
         AC_MSG_WARN([Failed to find Batik Jar file
