@@ -7570,6 +7570,8 @@ fi;
 	echo "$as_me:$LINENO: result: $PTSVG_JAR" >&5
 echo "${ECHO_T}$PTSVG_JAR" >&6
 	PTSVG_DIR=svg
+        ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+        <classpathentry kind=\"lib\" path=\"$PTSVG_JAR\"/>"
     fi
     if test "$PTSVG_JAR" = ""; then
         { echo "$as_me:$LINENO: WARNING: Failed to find Batik Jar file
