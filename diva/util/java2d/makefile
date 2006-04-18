@@ -49,6 +49,8 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	svg/svg.jar
 
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
 JSRCS = \
 	AbstractPaintedGraphic.java \
 	PaintedGraphic.java \
