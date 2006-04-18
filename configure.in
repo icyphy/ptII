@@ -2667,6 +2667,50 @@ else
 fi 
 
 #--------------------------------------------------------------------
+#       The Batik SVG toolkit is used by Kepler so we include Batik
+#	support in Diva.  See
+#	http://xmlgraphics.apache.org/batik/
+#       See if there was a command-line option for where Batikc
+#       is
+#       If not, look for for $PTII/vendors/eclipse
+#--------------------------------------------------------------------
+
+# PTSVG_DIR is set to svg and used in
+# $PTII/diva/util/java2d/makefile if Batik SVG jar files were found
+PTSVG_DIR=
+
+# Jar file used by diva/util/java2d/svg/makefile
+PTSVG_JAR=
+
+# We only need to look for Batik if $PTII/diva/util/java2d/svg exists
+if test ! -d "$PTII/diva/util/java2d/svg"; then
+    AC_MSG_RESULT([$PTII/diva/util/java2d/svg is not present,
+    so we need not find Batik SVG.])
+else
+    AC_MSG_CHECKING([for Batik SVG])
+    AC_ARG_WITH(batikjar, [  --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
+                          defaults to \$KEPLER/lib/jar/batik-all-1.6.jar],
+	PTSVG_JAR=$withval,
+	PTSVG_JAR=$KEPLER/lib/jar/batik-all-1.6.jar)
+
+    if test -f "$PTSVG_JAR"; then
+	AC_MSG_RESULT([$PTSVG_JAR])
+	PTSVG_DIR=svg
+    fi	
+    if test "$PTSVG_JAR" = ""; then
+        AC_MSG_WARN([Failed to find Batik Jar file
+    You need only have Batik if you are planning on rebuilding diva.jar
+    for use with Kepler.
+    Batik can be downloaded from http://xmlgraphics.apache.org/batik/])
+	PTSVG_JAR=
+    fi
+fi
+
+if test -z "$PTSVG_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|diva/util/java2d/svg/"
+fi 
+
+#--------------------------------------------------------------------
 #       TINI is the JDK for Dallas Tini board, see
 #	www.ibutton.com
 #	See if there was a command-line option for where
@@ -3349,6 +3393,13 @@ AC_SUBST(PTMESCAL_DIR)
 # Set to psdf and used in $PTII/ptolemy/domains/makefile if
 # $PTII/lib/mapss.jar was found
 AC_SUBST(PTPSDF_DIR)
+
+# PTSVG_DIR is set to svg and used in
+# $PTII/diva/util/java2d/makefile if Batik SVG jar files were found
+AC_SUBST(PTSVG_DIR)
+
+# Jar file used by diva/util/java2d/svg/makefile
+AC_SUBST(PTSVG_JAR)
 
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
 # QuickTime for Java was found.

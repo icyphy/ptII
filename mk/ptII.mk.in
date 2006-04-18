@@ -519,6 +519,13 @@ PTMESCAL_DIR=	@PTMESCAL_DIR@
 # $PTII/lib/mapss.jar was found
 PTPSDF_DIR =	@PTPSDF_DIR@
 
+# PTSVG_DIR is set to svg and used in
+# $PTII/diva/util/java2d/makefile if Batik SVG jar files were found
+PTSVG_DIR =	@PTSVG_DIR@
+
+# Jar file used by diva/util/java2d/svg/makefile
+PTSVG_JAR =	@PTSVG_JAR@
+
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
 # QuickTime for Java was found.
 PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@

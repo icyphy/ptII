@@ -30,7 +30,7 @@
 
 ME =		diva/util/java2d
 
-DIRS =
+DIRS =		svg
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -43,7 +43,11 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	java2d
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	svg/svg.jar
 
 JSRCS = \
 	AbstractPaintedGraphic.java \
