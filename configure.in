@@ -2699,7 +2699,7 @@ else
         ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
         <classpathentry kind=\"lib\" path=\"$PTSVG_JAR\"/>"
     fi	
-    if test "$PTSVG_JAR" = ""; then
+    if test "$PTSVG_DIR" = ""; then
         AC_MSG_WARN([Failed to find Batik Jar file
     You need only have Batik if you are planning on rebuilding diva.jar
     for use with Kepler.
