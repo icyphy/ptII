@@ -146,7 +146,7 @@ test RemoveGraphicalClasses-1.2 {filterAttributeValue} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MoMLFilter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.0-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -210,7 +210,7 @@ RemoveGraphicalClasses.</text></svg></configure>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,1.0,1.0,1.0,1.0}">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        <property name="tolerance" class="ptolemy.moml.SharedParameter" value="1.0E-9">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 165.0">
         </property>
