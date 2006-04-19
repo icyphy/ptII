@@ -45,13 +45,15 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	java2d
-PTCLASSJAR =
+PTCLASSJAR =	$(PTPACKAGE).jar
 
+# FIXME: since svg is optional, we can't easily include
+# it here.
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	svg/svg.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSALLJARS =
+#	#svg/svg.jar
+#
+#PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AbstractPaintedGraphic.java \
