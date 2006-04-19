@@ -691,7 +691,7 @@ public class TableauFrame extends Top {
                 if (iconAttribute != null) {
                     url = iconAttribute.asURL();
                 } 
-            } catch (IllegalActionException ex) {
+            } catch (Throwable ex) {
                 // Note that PtolemyIISmallIcon.gif is also in doc/img.
                 // We place a duplicate copy here to make it easy to ship
                 // jar files that contain all the appropriate images.
