@@ -272,6 +272,15 @@ public abstract class Top extends JFrame {
         _hideMenuBar = true;
     }
 
+    /** Return true if the menu of this window has been populated.
+     *  The menu is populated as a side effect of the first invocation to
+     *  the pack() method.
+     *  @return True if the menu bar has been populated.
+     */
+    public synchronized boolean isMenuPopulated() {
+        return _menuPopulated;
+    }
+
     /** Return true if the data associated with this window has been
      *  modified since it was first read or last saved.  This returns
      *  the value set by calls to setModified(), or false if that method
@@ -294,9 +303,10 @@ public abstract class Top extends JFrame {
      *  that must know whether subsequent executions have completed.
      *  @return true if the thread invoked in the pack() method has finished
      *   execution; false otherwise.
+     *  @deprecated Use isMenuPopulated()
      */
     public synchronized boolean isPackThreadFinished() {
-        return _isPackThreadFinished;
+        return _menuPopulated;
     }
 
     /** Size this window to its preferred size and make it
@@ -313,9 +323,9 @@ public abstract class Top extends JFrame {
     public void pack() {
         Runnable doPack = new Runnable() {
             public void run() {
+                // NOTE: This always runs in the swing thread,
+                // so there is no need to synchronize.
                 if (!_menuPopulated) {
-                    _menuPopulated = true;
-
                     // Set up the menus.
                     _fileMenu.setMnemonic(KeyEvent.VK_F);
                     _helpMenu.setMnemonic(KeyEvent.VK_H);
@@ -407,7 +417,7 @@ public abstract class Top extends JFrame {
                 if (_centering) {
                     centerOnScreen();
                 }
-                _isPackThreadFinished = true;
+                _menuPopulated = true;
             }
         };
 
@@ -971,9 +981,6 @@ public abstract class Top extends JFrame {
 
     // A flag indicating whether or not to center the window.
     private boolean _centering = true;
-
-    // Indicator that the pack() method's thread has finished execution.
-    private boolean _isPackThreadFinished = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
