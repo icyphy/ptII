@@ -425,9 +425,9 @@ public class GeneratorAttribute extends SingletonAttribute implements
                 StringBuffer value = new StringBuffer("\n Value:         ");
 
                 try {
-                    value.append(((Parameter) attribute).getToken());
+                    value.append(((Parameter) attribute).getToken().toString());
                 } catch (Exception ex) {
-                    value.append(ex);
+                    value.append(ex.toString());
                 }
 
                 String className = "Parameter";

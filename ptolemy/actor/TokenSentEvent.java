@@ -159,7 +159,7 @@ public class TokenSentEvent {
             buffer.append(_vectorLength);
             buffer.append(" tokens ");
         } else {
-            buffer.append(_token);
+            buffer.append(_token.toString());
         }
         if (_channel != -1) {
             buffer.append(" to channel " + _channel + ".");
