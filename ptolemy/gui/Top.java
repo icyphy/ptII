@@ -291,23 +291,6 @@ public abstract class Top extends JFrame {
         return _modified;
     }
 
-    /** Return true if the thread invoked in the pack() method has finished
-     *  its first execution. 
-     *  The pack() method invokes a thread to build the menus etc.; therefore,
-     *  it is difficult to ascertain whether a frame has packed and finished
-     *  rendering - a condition that is required by some Kepler additions. This
-     *  method therefore provides a single point of access for dependent code to
-     *  make this determination.
-     *  Note that this always returns true after the very first execution
-     *  of pack() has completed. Thus, it is not useful for anything
-     *  that must know whether subsequent executions have completed.
-     *  @return true if the thread invoked in the pack() method has finished
-     *   execution; false otherwise.
-     *  @deprecated Use isMenuPopulated()
-     */
-    public synchronized boolean isPackThreadFinished() {
-        return _menuPopulated;
-    }
 
     /** Size this window to its preferred size and make it
      *  displayable, and override the base class to populate the menu
