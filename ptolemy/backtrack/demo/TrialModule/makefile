@@ -50,7 +50,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	TrialModule.xml \
-	TrialModuleNonBacktracking.xml
+	TrialModuleNonBacktrack.xml
 
 EXTRA_SRCS =	$(OTHER_FILES_TO_BE_JARED)
 
