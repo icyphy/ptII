@@ -5067,7 +5067,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @param context The context into which to load the file.
      *  @return True if a file was found.
      *  @exception Exception If the file exists but cannot be read
-     *   for some reason.
+     *   for some reason or if there is some other problem loading
+     *   the icon.
      *  @see #setIconLoader(IconLoader)
      *  @see ptolemy.moml.IconLoader
      */
