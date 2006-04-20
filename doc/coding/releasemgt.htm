@@ -219,15 +219,15 @@ For more information about CVS, see the
  <p>To make a branch for 5.1-devel, use the following command:
 <pre>
 cd $PTII
-cvs tag -b rel-5.1-devel
+cvs tag -b rel-5-1-devel
 </pre>
 Then check out the release branch  with
 <pre>
 cd ~/src
-cvs co -r rel-5.1-devel ptII
-mv ptII ptII5.1-devel
+cvs co -r rel-5-1-devel ptII
+mv ptII ptII5-1-devel
 </pre>
-
+<I>Note that you should avoid dots in the tag name</I>
 <li> Update the version numbers, see
 <code>$PTII/makefile</code> and <code>$PTII/ptolemy/plot/makefile</code>.
 
