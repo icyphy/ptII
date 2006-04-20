@@ -58,6 +58,7 @@ JSRCS =	Documentation.java \
 	EntityLibrary.java \
 	ErrorHandler.java \
 	HandlesInternalLinks.java \
+	IconLoader.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
 	LibraryBuilder.java \
