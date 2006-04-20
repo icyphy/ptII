@@ -51,6 +51,9 @@ public interface IconLoader {
      *  to be loaded.
      *  @param context The context in which the icon is loaded.
      *  @return true if the icon was successfully loaded.
+     *  @exception IllegalActionException If there is a problem adding
+     *  the icon.
      */
-    public boolean loadIconForClass(String className, NamedObj context);
+    public boolean loadIconForClass(String className, NamedObj context)
+            throws IllegalActionException;
 }
