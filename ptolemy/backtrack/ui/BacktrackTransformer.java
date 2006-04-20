@@ -37,15 +37,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
-import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelRuntimeException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
-import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// BacktrackTransformer
@@ -68,6 +63,9 @@ public class BacktrackTransformer {
     /** Transform a model by replacing the actors with existing backtracking
      *  versions, and return the resulting model.
      *  
+     *  Each transformed actor has a "_decorate" attribute. It adds a small
+     *  backtracking decoration to the actor's icon.
+     *  
      *  @param model The model to be transformed.
      *  @return The transformed model.
      *  @throws IllegalActionException If the parser fails to parse the
@@ -88,6 +86,25 @@ public class BacktrackTransformer {
             Iterator entitiesToRename = filter.entitiesToRename();
             while (entitiesToRename.hasNext()) {
                 NamedObj entity = (NamedObj)entitiesToRename.next();
+                
+                // Add a little visual effect to the transformed entity.
+                String imageMoML =
+                    "<property name=\"_decorate\" " +
+                    "class=\"ptolemy.data.expr.FileParameter\" " +
+                    "value=\"$CLASSPATH/ptolemy/backtrack/manual/ptolemy/" +
+                    "actor/lib/BacktrackIconSmall.gif\">\n" +
+                    "</property>";
+                parser.setContext(entity);
+                try {
+                    parser.parse(null, imageMoML);
+                    MoMLParser.setModified(true);
+                } catch (Exception ex) {
+                    throw new IllegalActionException("Unable to parse\n" +
+                            imageMoML);
+                }
+               
+                /* Do not modify the actor names any more.
+                // Add "(B)" to the end of the entity's name.
                 String oldName = entity.getName();
                 try {
                     entity.setName(oldName + " (B)");
@@ -102,12 +119,11 @@ public class BacktrackTransformer {
                         }
                         i++;
                     }
-                }
+                }*/
             }
             
             return topLevel;
         } catch (Exception e) {
-            e.printStackTrace();
             throw new IllegalActionException(e.toString());
         }
     }
@@ -139,14 +155,10 @@ public class BacktrackTransformer {
                     if (_classAfterChange != null) {
                         MoMLParser.setModified(true);
                         _classBeforeChange = attributeValue;
-    
-                        _iconPropertyName = _getIconPropertyName(_classBeforeChange);
-    
                         _classStack.push(_classBeforeChange);
                         return _classAfterChange;
                     } else {
                         _classBeforeChange = null;
-                        _iconPropertyName = null;
                         _classStack.push(null);
                         return attributeValue;
                     }
@@ -178,8 +190,8 @@ public class BacktrackTransformer {
                     && container != null && container.getClassName() != null) {
                 if (_classStack.peek() != null &&
                         container.getClassName().contains((String)_classStack.peek())) {
-                    // Modify the actor icon with a backtrack arrow added to it.
-                    _replaceIcon(container, false);
+                    // Copy the original icon to the MoML.
+                    _copyIcon(container);
                     
                     // Add "(B)" to the actor's name later.
                     _entitiesToRename.add(container);
@@ -223,18 +235,6 @@ public class BacktrackTransformer {
             }
         }
         
-        private static String _getIconPropertyName(String className) {
-            String iconPropertyName;
-            int lastDot = className.lastIndexOf('.');
-            if (lastDot == -1) {
-                iconPropertyName = className;
-            } else {
-                iconPropertyName = className.substring(lastDot + 1);
-            }
-            iconPropertyName += "Icon";
-            return iconPropertyName;
-        }
-        
         private static String _newClassName(String oldClassName) {
             String automaticClass = AUTOMATIC_PREFIX + "." + oldClassName;
             String manualClass = MANUAL_PREFIX + "." + oldClassName;
@@ -259,12 +259,10 @@ public class BacktrackTransformer {
             return result;
         }
         
-        private void _replaceIcon(NamedObj container, boolean modify)
+        private void _copyIcon(NamedObj container)
                 throws IllegalActionException {
             String iconFileName =
                 ((String)_classStack.peek()).replace('.', '/') + "Icon.xml";
-            String iconPropertyName =
-                _getIconPropertyName((String)_classStack.peek());
 
             URL iconFile = getClass().getClassLoader()
                     .getResource(iconFileName);
@@ -278,61 +276,6 @@ public class BacktrackTransformer {
                     throw new IllegalActionException(e.toString());
                 }
             }
-
-            if (modify) {
-                double width = 0.0;
-                double height = 0.0;
-                List editorIcons = container.attributeList(EditorIcon.class);
-                if (!editorIcons.isEmpty()) {
-                    EditorIcon editorIcon = (EditorIcon)editorIcons.get(0);
-                    List rectangleAttrs =
-                        editorIcon.attributeList(RectangleAttribute.class);
-                    if (!rectangleAttrs.isEmpty()) {
-                        RectangleAttribute rectangleAttr =
-                            (RectangleAttribute)rectangleAttrs.get(0);
-                        String widthString =
-                            ((Parameter)rectangleAttr.getAttribute("width")).
-                                    getExpression();
-                        width = Double.parseDouble(widthString);
-                        String heightString =
-                            ((Parameter)rectangleAttr.getAttribute("height")).
-                                    getExpression();
-                        height = Double.parseDouble(heightString);
-                    }
-                }
-                // Add a little visual effect to the transformed entity.
-                String imageMoML =
-                    "<property name=\"" + iconPropertyName + "\" " +
-                    "class=\"ptolemy.vergil.icon.EditorIcon\">" +
-                    "    <property name=\"image\" class=\"ptolemy.vergil." +
-                    "kernel.attributes.ImageAttribute\">" +
-                    "        <property name=\"source\" class=\"ptolemy.data." +
-                    "expr.FileParameter\" value=\"$CLASSPATH/ptolemy/" +
-                    "backtrack/manual/ptolemy/actor/lib/BacktrackIconSmall." +
-                    "gif\">" +
-                    "        </property>" +
-                    "        <property name=\"_location\" class=\"ptolemy." +
-                    "kernel.util.Location\" value=\"[" + -(width+16)/2 + ", " +
-                    -(height-16)/2 + "]\">" +
-                    "        </property>" +
-                    "    </property>" +
-                    "</property>";
-    
-                if (_imageParser == null) {
-                    _imageParser = new MoMLParser();
-                }
-                _imageParser.setContext(container);
-                try {
-                    // Do not call parse(moml) here, since that method
-                    // will fail if we are in an applet because it tries
-                    // to read user.dir
-                    _imageParser.parse(null, imageMoML);
-                    MoMLParser.setModified(true);
-                } catch (Exception ex) {
-                    throw new KernelRuntimeException(ex, "Unable to parse\n" +
-                            imageMoML);
-                }
-            }
         }
 
         private String _classAfterChange = null;
@@ -340,8 +283,6 @@ public class BacktrackTransformer {
         private String _classBeforeChange = null;
 
         private Stack _classStack = new Stack();
-        
-        private String _iconPropertyName = null;
         
         private MoMLParser _parser = null;
         

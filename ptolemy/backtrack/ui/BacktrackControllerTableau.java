@@ -140,11 +140,14 @@ public class BacktrackControllerTableau extends Tableau {
         
         public synchronized void commit() {
             int selectedRow = _handleTable.getSelectedRow();
-            Long handle = (Long)
-                _handleTableModel.getValueAt(selectedRow, 0);
+            Long handle = (Long)_handleTableModel.getValueAt(selectedRow, 0);
             _controller.commit(handle.longValue());
             for (int i = 0; i <= selectedRow; i++) {
                 _handleTableModel.removeElement(0);
+            }
+            if (_handleTable.getSelectedRow() < 0) {
+                _commitButton.setEnabled(false);
+                _rollbackButton.setEnabled(false);
             }
         }
         
@@ -188,9 +191,16 @@ public class BacktrackControllerTableau extends Tableau {
         }
         
         public synchronized void rollback() {
-            Long handle = (Long)
-                _handleTableModel.getValueAt(_handleTable.getSelectedRow(), 0);
+            int selectedRow = _handleTable.getSelectedRow();
+            Long handle = (Long)_handleTableModel.getValueAt(selectedRow, 0);
             _controller.rollback(handle.longValue(), true);
+            while (_handleTableModel.getRowCount() > selectedRow) {
+                _handleTableModel.removeElement(selectedRow);
+            }
+            if (_handleTable.getSelectedRow() < 0) {
+                _commitButton.setEnabled(false);
+                _rollbackButton.setEnabled(false);
+            }
         }
         
         private JButton _checkpointButton;
