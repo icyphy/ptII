@@ -4779,6 +4779,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         arguments[1] = propertyName;
                         property = _createInstance(newClass, arguments);
 
+                        if (property instanceof ptolemy.actor.Director) {
+                            _loadIconForClass(className, property);
+                        }
                         // Check that the result is an instance of Attribute.
                         if (!(property instanceof Attribute)) {
                             // NOTE: Need to get rid of the object.
