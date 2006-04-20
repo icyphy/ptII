@@ -1680,6 +1680,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _handler = handler;
     }
 
+    /** Set the icon loader for all MoMLParsers
+     *  @param loader The IconLoader for all MoMLParsers.
+     */
+      public static void setIconLoader(IconLoader loader) {
+         _iconLoader = loader;
+     }
+
     /**  Set the list of MoMLFilters used to translate names.
      *  Note that this method is static.  The specified MoMLFilters
      *  will filter all MoML for any instances of this class.
@@ -5044,7 +5051,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /** Look for a MoML file associated with the specified class
      *  name, and if it exists, parse it in the context of the
-     *  specified instance. The file name is constructed from
+     *  specified instance. 
+     *  If {@link #setIconLoader(IconLoader) has been called with
+     *  a non-null argument, then invoke the 
+     *  {@link ptolemy.moml.IconLoader#loadIconForClass(String, NamedObj)}
+     *  method.  If {@link #setIconLoader(IconLoader) has <b>not</b>
+     *  been called, or was called with a null argument, then 
+     *  The file name is constructed from
      *  the class name by replacing periods with file separators
      *  ("/") and appending "Icon.xml".  So, for example, for
      *  the class name "ptolemy.actor.lib.Ramp", if there is a
@@ -5055,11 +5068,18 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @return True if a file was found.
      *  @exception Exception If the file exists but cannot be read
      *   for some reason.
+     *  @see #setIconLoader(IconLoader)
+     *  @see ptolemy.moml.IconLoader
      */
     private boolean _loadIconForClass(String className, NamedObj context)
             throws Exception {
-        String fileName = className.replace('.', '/') + "Icon.xml";
-        return _loadFileInContext(fileName, context);
+        if (_iconLoader != null) {
+             return _iconLoader.loadIconForClass(className, context);
+         } else {
+             // Default behavior if no icon loader has been specified.
+             String fileName = className.replace('.', '/') + "Icon.xml";
+             return _loadFileInContext(fileName, context);
+         }
     }
 
     /** Mark the contents as being derived objects at a depth
@@ -6163,6 +6183,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // elements.  These filters will filter all MoML for all instances
     // of this class.
     private static List _filterList = null;
+
+    /** IconLoader used to load icons. */
+    private static IconLoader _iconLoader;
 
     // List of weak references to
     // top-level entities imported via import element,
