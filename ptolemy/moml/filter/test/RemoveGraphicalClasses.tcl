@@ -210,7 +210,7 @@ RemoveGraphicalClasses.</text></svg></configure>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,1.0,1.0,1.0,1.0}">
         </property>
-        <property name="tolerance" class="ptolemy.moml.SharedParameter" value="1.0E-9">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 165.0">
         </property>
