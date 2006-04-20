@@ -79,8 +79,8 @@ test Manager-8.1 {Test type checking} {
     $p1 link $r1
     $p2 link $r1
 
-    $director preinitialize
-    $manager resolveTypes
+    $manager preinitializeAndResolveTypes
+
     set rt1 [[$p1 getType] toString]
     set rt2 [[$p2 getType] toString]
     list $rt1 $rt2
@@ -92,7 +92,6 @@ test Manager-8.1 {Test type checking} {
 test Manager-8.2 {Test run-time type checking, TypedIOPort.broadcast(token)} {
     #use setup above
     set token [java::new {ptolemy.data.IntToken int} 3]
-    $director preinitialize
 
     # cover debug() clause in TypedIOPort.broadcast
     set stream [java::new java.io.ByteArrayOutputStream]
@@ -118,7 +117,7 @@ test Manager-8.2 {Test run-time type checking, TypedIOPort.broadcast(token)} {
 ######################################################################
 ####
 #
-test Manager-8.2 {Test run-time type checking, TypedIOPort.broadcast(token)} {
+test Manager-8.2.1 {Test run-time type checking, TypedIOPort.broadcast(token)} {
 
     #use setup above
     set tokenArray [java::new {ptolemy.data.IntToken[]} 3 \
@@ -126,9 +125,6 @@ test Manager-8.2 {Test run-time type checking, TypedIOPort.broadcast(token)} {
 	    [java::new  {ptolemy.data.IntToken int} 0]  \
 	    [java::new  {ptolemy.data.IntToken int} 1]  \
 	    [java::new  {ptolemy.data.IntToken int} 2]]]
-
-
-    $director preinitialize
 
     # cover debug() clause in TypedIOPort.broadcast
     set stream [java::new java.io.ByteArrayOutputStream]
