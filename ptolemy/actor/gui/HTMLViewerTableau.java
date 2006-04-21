@@ -83,10 +83,11 @@ public class HTMLViewerTableau extends Tableau {
         super(container, name);
 
         url = new StringAttribute(this, "url");
-
-        HTMLViewer frame = new HTMLViewer();
+        // Set the tableau so that we can get the Configuration and Kepler icon.
+        HTMLViewer frame = new HTMLViewer(this);
         setFrame(frame);
         frame.setTableau(this);
+        
     }
 
     ///////////////////////////////////////////////////////////////////
