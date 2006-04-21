@@ -68,7 +68,7 @@ public class BacktrackTransformer {
      *  
      *  @param model The model to be transformed.
      *  @return The transformed model.
-     *  @throws IllegalActionException If the parser fails to parse the
+     *  @exception IllegalActionException If the parser fails to parse the
      *  transformed model.
      */
     public static NamedObj transformModel(NamedObj model)
@@ -83,12 +83,12 @@ public class BacktrackTransformer {
             NamedObj topLevel = parser.parse(null, moml.toString());
             parser.getMoMLFilters().remove(filter);
             
-            Iterator entitiesToRename = filter.entitiesToRename();
+            Iterator entitiesToRename = filter.entitiesChanged();
             while (entitiesToRename.hasNext()) {
                 NamedObj entity = (NamedObj)entitiesToRename.next();
                 
                 // Add a little visual effect to the transformed entity.
-                String imageMoML =
+                String imageMoML = 
                     "<property name=\"_decorate\" " +
                     "class=\"ptolemy.data.expr.FileParameter\" " +
                     "value=\"$CLASSPATH/ptolemy/backtrack/manual/ptolemy/" +
@@ -143,7 +143,16 @@ public class BacktrackTransformer {
     */
     private static class RenameClassMoMLFilter implements MoMLFilter {
 
-        public String filterAttributeValue(NamedObj container, String element,
+        /** Filter the value of the attribute. If the attribute corresponds to
+         *  a Ptolemy actor with a backtracking version, its class name is
+         *  changed to the class name of its backtracking version.
+         *  
+         *  @param container The container of the attribute.
+         *  @param element The XML element.
+         *  @param attributeName The attribute name.
+         *  @param attributeValue The attribute value.
+         */
+        public String filterAttributeValue(NamedObj container, String element, 
                 String attributeName, String attributeValue) {
             if (attributeValue == null) {
                 return null;
@@ -151,14 +160,13 @@ public class BacktrackTransformer {
 
             if (attributeName.equals("class")) {
                 if (element.equals("entity")) {
-                    _classAfterChange = _newClassName(attributeValue);
-                    if (_classAfterChange != null) {
+                    String classAfterChange = _newClassName(attributeValue);
+                    if (classAfterChange != null) {
                         MoMLParser.setModified(true);
-                        _classBeforeChange = attributeValue;
-                        _classStack.push(_classBeforeChange);
-                        return _classAfterChange;
+                        String classBeforeChange = attributeValue;
+                        _classStack.push(classBeforeChange);
+                        return classAfterChange;
                     } else {
-                        _classBeforeChange = null;
                         _classStack.push(null);
                         return attributeValue;
                     }
@@ -184,32 +192,58 @@ public class BacktrackTransformer {
             }
         }
 
+        /** Further process the XML element when it is closed with an end tag.
+         *  If the element corresponds to a Ptolemy actor that has been changed
+         *  to its backtracking version, the MoML description of the original
+         *  actor's icon is copied to the new model, because the backtracking
+         *  version does not have an icon associated with it.
+         *  
+         *  @param container The container of the element.
+         *  @param The XML element to be closed.
+         *  @exception IllegalActionException If the MoML of the original
+         *   actor's icon cannot be read and inserted into the new model.
+         */
         public void filterEndElement(NamedObj container, String elementName)
                 throws IllegalActionException {
             if ((elementName.equals("entity") || elementName.equals("property"))
                     && container != null && container.getClassName() != null) {
                 if (_classStack.peek() != null &&
-                        container.getClassName().contains((String)_classStack.peek())) {
+                        container.getClassName().equals(
+                                _newClassName((String) _classStack.peek()))) {
                     // Copy the original icon to the MoML.
                     _copyIcon(container);
                     
                     // Add "(B)" to the actor's name later.
-                    _entitiesToRename.add(container);
+                    _entitiesChanged.add(container);
                 }
                 _classStack.pop();
             }
         }
         
-        public Iterator entitiesToRename() {
-            return _entitiesToRename.iterator();
+        /** Return the entities that are changed during the last XML parsing.
+         * 
+         *  @return The entities that are changed.
+         */
+        public Iterator entitiesChanged() {
+            return _entitiesChanged.iterator();
         }
 
-        public static final String AUTOMATIC_PREFIX =
+        /** The prefix to the automatically generated backtracking version of
+         *  actors.
+         */
+        public static final String AUTOMATIC_PREFIX = 
             "ptolemy.backtrack.automatic";
         
-        public static final String MANUAL_PREFIX =
+        /** The prefix to the manually written backtracking version of actors.
+         */
+        public static final String MANUAL_PREFIX = 
             "ptolemy.backtrack.manual";
         
+        /** Test whether a class with the given name can be found.
+         * 
+         *  @param className The name of the class.
+         *  @return true if the class is found; false, otherwise.
+         */
         private static boolean _classExists(String className) {
             try {
                 Class.forName(className);
@@ -219,22 +253,17 @@ public class BacktrackTransformer {
             }
         }
         
-        private static String _findLastModifiedClassName(Stack classStack) {
-            if (classStack.isEmpty()) {
-                return null;
-            }
-            
-            String peek = (String)classStack.peek();
-            if (peek != null) {
-                return peek;
-            } else {
-                classStack.pop();
-                String result = _findLastModifiedClassName(classStack);
-                classStack.push(peek);
-                return result;
-            }
-        }
-        
+        /** Get the new name for class to be changed to its backtracking
+         *  version. If the class has a manually written backtracking version, 
+         *  the name of that backtracking version will be returned; if there is
+         *  no manually written backtracking version for it, but there is an
+         *  automatically generated backtracking version, the automatically
+         *  name of the generated version will be returned; otherwise, null will
+         *  be returned.
+         *  
+         *  @param oldClassName The name of the class before change.
+         *  @return The new class name, or null.
+         */
         private static String _newClassName(String oldClassName) {
             String automaticClass = AUTOMATIC_PREFIX + "." + oldClassName;
             String manualClass = MANUAL_PREFIX + "." + oldClassName;
@@ -247,6 +276,13 @@ public class BacktrackTransformer {
             }
         }
         
+        /** Parse the content in the reader within the context of the container.
+         * 
+         *  @param reader The reader to be read from.
+         *  @param container The context of the parsing.
+         *  @return The NamedObj returned by the parser.
+         *  @exception Exception If the parsing is not successful.
+         */
         private NamedObj _parse(Reader reader, NamedObj container)
                 throws Exception {
             if (_parser == null) {
@@ -259,16 +295,22 @@ public class BacktrackTransformer {
             return result;
         }
         
+        /** Copy the icon of the last modified class (of a Ptolemy actor) to the
+         *  MoML within the container's context.
+         *  
+         *  @param container The container.
+         *  @exception IllegalActionException If the parsing is not successful.
+         */
         private void _copyIcon(NamedObj container)
                 throws IllegalActionException {
-            String iconFileName =
+            String iconFileName = 
                 ((String)_classStack.peek()).replace('.', '/') + "Icon.xml";
 
             URL iconFile = getClass().getClassLoader()
                     .getResource(iconFileName);
             if (iconFile != null) {
                 try {
-                    Reader reader =
+                    Reader reader = 
                         new InputStreamReader(iconFile.openStream());
                     _parse(reader, container);
                     reader.close();
@@ -278,16 +320,16 @@ public class BacktrackTransformer {
             }
         }
 
-        private String _classAfterChange = null;
-        
-        private String _classBeforeChange = null;
-
+        /** The stack of the name of the classes that have been changed.
+         */
         private Stack _classStack = new Stack();
         
+        /** The list of entities changed during the parsing.
+         */
+        private List _entitiesChanged = new LinkedList();
+
+        /** The parser to parse extra content (e.g., icon MoML).
+         */
         private MoMLParser _parser = null;
-        
-        private MoMLParser _imageParser = null;
-        
-        private List _entitiesToRename = new LinkedList();
     }
 }
