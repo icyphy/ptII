@@ -226,7 +226,7 @@ test Test-1.5 {Export} {
     <entity name="test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3, 4}">
         </property>
-        <property name="tolerance" class="ptolemy.moml.SharedParameter" value="1.0E-9">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.moml.SharedParameter" value="false">
         </property>
