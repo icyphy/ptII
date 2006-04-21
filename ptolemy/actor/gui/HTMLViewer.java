@@ -93,6 +93,24 @@ public class HTMLViewer extends TableauFrame implements Printable,
         _scroller = new JScrollPane(pane);
         _addMainPane();
     }
+    
+    /** Construct an empty top-level frame managed by the specified
+     *  tableau and the default status bar. After constructing this,
+     *  it is necessary to call setVisible(true) to make the frame appear.
+     *  It may also be desirable to call centerOnScreen().
+     *  @param tableau The managing tableau.
+     */
+    public HTMLViewer(Tableau tableau) {
+        super(tableau);
+        getContentPane().setLayout(
+                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        pane.setContentType("text/html");
+        pane.setEditable(false);
+        pane.addHyperlinkListener(this);
+        _scroller = new JScrollPane(pane);
+        _addMainPane();
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
