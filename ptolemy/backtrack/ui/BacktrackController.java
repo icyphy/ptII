@@ -70,13 +70,13 @@ public class BacktrackController {
         while (handles.hasNext()) {
             Long handleKey = (Long)handles.next();
             if (handleKey.longValue() <= handle) {
-                HashMap checkpointsAndHandles =
+                HashMap checkpointsAndHandles = 
                     (HashMap)_checkpoints.get(handleKey);
-                Iterator checkpoints =
+                Iterator checkpoints = 
                     checkpointsAndHandles.keySet().iterator();
                 while (checkpoints.hasNext()) {
                     Checkpoint checkpoint = (Checkpoint)checkpoints.next();
-                    long timestamp =
+                    long timestamp = 
                         ((Long)checkpointsAndHandles.get(checkpoint)).
                                 longValue();
                     checkpoint.commit(timestamp);
@@ -91,7 +91,7 @@ public class BacktrackController {
      *  
      *  This checkpoint handle is different from the checkpoint handles returned
      *  by {@link Checkpoint#createCheckpoint()}, which are the internal
-     *  representations of checkpoint timestamps. This checkpoint handle,
+     *  representations of checkpoint timestamps. This checkpoint handle, 
      *  however, refers to a collection of checkpoint timestamps for different
      *  checkpoint objects that manage different entities in the container.
      *  
@@ -125,7 +125,7 @@ public class BacktrackController {
      *  given handle.
      *  
      *  If the checkpoint objects that monitor the entities in the composite
-     *  actor are not changed since the time when the checkpoint was created,
+     *  actor are not changed since the time when the checkpoint was created, 
      *  this rollback only affects that composite actor and its children. This
      *  is true in most of the cases, but it is not guaranteed.
      * 
@@ -137,7 +137,7 @@ public class BacktrackController {
      *  @return Whether the given handle is valid.
      */
     public boolean rollback(long handle, boolean trim) {
-        HashMap checkpointsAndHandles =
+        HashMap checkpointsAndHandles = 
             (HashMap)_checkpoints.get(new Long(handle));
         if (checkpointsAndHandles == null) {
             return false;
@@ -145,7 +145,7 @@ public class BacktrackController {
             Iterator checkpoints = checkpointsAndHandles.keySet().iterator();
             while (checkpoints.hasNext()) {
                 Checkpoint checkpoint = (Checkpoint)checkpoints.next();
-                long timestamp =
+                long timestamp = 
                     ((Long)checkpointsAndHandles.get(checkpoint)).longValue();
                 checkpoint.rollback(timestamp, trim);
             }
