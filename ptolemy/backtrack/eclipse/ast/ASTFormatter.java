@@ -232,6 +232,7 @@ public class ASTFormatter extends ASTVisitor {
      *  output.
      *
      *  @param args The names of Java source files.
+     *  @exception Exception If error occurs.
      */
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
@@ -254,6 +255,10 @@ public class ASTFormatter extends ASTVisitor {
         }
     }
 
+    /** Handle an AST node before it is visited.
+     * 
+     *  @param node The AST node.
+     */
     public void postVisit(ASTNode node) {
         super.postVisit(node);
 
@@ -262,6 +267,10 @@ public class ASTFormatter extends ASTVisitor {
         }
     }
 
+    /** Handle an AST node after it is visited.
+     * 
+     *  @param node The AST node.
+     */
     public void preVisit(ASTNode node) {
         if (!(node instanceof BlockComment || node instanceof LineComment)) {
             _checkComments(node.getStartPosition());
@@ -270,8 +279,11 @@ public class ASTFormatter extends ASTVisitor {
         super.preVisit(node);
     }
 
-    /*
-     * @see ASTVisitor#visit(AnnotationTypeDeclaration)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(AnnotationTypeDeclaration node) {
         if (node.getJavadoc() != null) {
@@ -294,9 +306,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(AnnotationTypeMemberDeclaration)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(AnnotationTypeMemberDeclaration node) {
         if (node.getJavadoc() != null) {
@@ -319,8 +333,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(AnonymousClassDeclaration)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(AnonymousClassDeclaration node) {
         _output(" ");
@@ -336,8 +353,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ArrayAccess)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ArrayAccess node) {
         node.getArray().accept(this);
@@ -347,8 +367,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ArrayCreation)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ArrayCreation node) {
         _output("new ");
@@ -383,8 +406,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ArrayInitializer)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ArrayInitializer node) {
         _output(" ");
@@ -408,8 +434,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ArrayType)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ArrayType node) {
         node.getComponentType().accept(this);
@@ -417,8 +446,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(AssertStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(AssertStatement node) {
         _output(_indent);
@@ -434,8 +466,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(Assignment)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(Assignment node) {
         node.getLeftHandSide().accept(this);
@@ -444,8 +479,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(Block)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(Block node) {
         boolean newLineAfterBlock = _newLineAfterBlock;
@@ -468,9 +506,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(BlockComment)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(BlockComment node) {
         _output(_indent);
@@ -478,8 +518,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(BooleanLiteral)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(BooleanLiteral node) {
         if (node.booleanValue() == true) {
@@ -491,8 +534,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(BreakStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(BreakStatement node) {
         _output(_indent);
@@ -507,8 +553,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(CastExpression)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(CastExpression node) {
         _output("(");
@@ -518,8 +567,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(CatchClause)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(CatchClause node) {
         _output(" catch (");
@@ -529,16 +581,22 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(CharacterLiteral)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(CharacterLiteral node) {
         _output(node.getEscapedValue());
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ClassInstanceCreation)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ClassInstanceCreation node) {
         if (node.getExpression() != null) {
@@ -593,8 +651,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(CompilationUnit)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(CompilationUnit node) {
         // Set up the comment iterator.
@@ -649,8 +710,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ConditionalExpression)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ConditionalExpression node) {
         node.getExpression().accept(this);
@@ -661,8 +725,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ConstructorInvocation)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ConstructorInvocation node) {
         _output(_indent);
@@ -701,8 +768,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ContinueStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ContinueStatement node) {
         _output(_indent);
@@ -717,8 +787,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(DoStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(DoStatement node) {
         _output(_indent);
@@ -746,8 +819,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(EmptyStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(EmptyStatement node) {
         _output(_indent);
@@ -755,9 +831,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(EnhancedForStatement)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(EnhancedForStatement node) {
         _output(_indent);
@@ -770,9 +848,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(EnumConstantDeclaration)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(EnumConstantDeclaration node) {
         if (node.getJavadoc() != null) {
@@ -812,9 +892,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(EnumDeclaration)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(EnumDeclaration node) {
         if (node.getJavadoc() != null) {
@@ -872,8 +954,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ExpressionStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ExpressionStatement node) {
         _output(_indent);
@@ -882,8 +967,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(FieldAccess)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(FieldAccess node) {
         node.getExpression().accept(this);
@@ -892,8 +980,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(FieldDeclaration)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(FieldDeclaration node) {
         if (node.getJavadoc() != null) {
@@ -928,8 +1019,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ForStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ForStatement node) {
         _output(_indent);
@@ -978,8 +1072,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(IfStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(IfStatement node) {
         Statement thenStatement = node.getThenStatement();
@@ -1032,8 +1129,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ImportDeclaration)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ImportDeclaration node) {
         _output(_indent);
@@ -1055,8 +1155,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(InfixExpression)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(InfixExpression node) {
         node.getLeftOperand().accept(this);
@@ -1075,8 +1178,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(InstanceofExpression)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(InstanceofExpression node) {
         node.getLeftOperand().accept(this);
@@ -1085,8 +1191,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(Initializer)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(Initializer node) {
         if (node.getJavadoc() != null) {
@@ -1107,8 +1216,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(Javadoc)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(Javadoc node) {
         _output(_indent);
@@ -1126,8 +1238,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(LabeledStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(LabeledStatement node) {
         _output(_indent);
@@ -1137,9 +1252,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(LineComment)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(LineComment node) {
         _output(_indent);
@@ -1147,9 +1264,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(MarkerAnnotation)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(MarkerAnnotation node) {
         _output("@");
@@ -1157,9 +1276,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(MemberRef)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(MemberRef node) {
         if (node.getQualifier() != null) {
@@ -1171,9 +1292,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(MemberValuePair)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(MemberValuePair node) {
         node.getName().accept(this);
@@ -1182,9 +1305,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(MethodRef)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(MethodRef node) {
         if (node.getQualifier() != null) {
@@ -1208,9 +1333,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(MethodRefParameter)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(MethodRefParameter node) {
         node.getType().accept(this);
@@ -1223,8 +1350,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(MethodDeclaration)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(MethodDeclaration node) {
         if (node.getJavadoc() != null) {
@@ -1319,8 +1449,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(MethodInvocation)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(MethodInvocation node) {
         if (node.getExpression() != null) {
@@ -1363,18 +1496,22 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(Modifier)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(Modifier node) {
         _output(node.getKeyword().toString());
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(NormalAnnotation)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(NormalAnnotation node) {
         _output("@");
@@ -1394,24 +1531,33 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(NullLiteral)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(NullLiteral node) {
         _output("null");
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(NumberLiteral)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(NumberLiteral node) {
         _output(node.getToken());
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(PackageDeclaration)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(PackageDeclaration node) {
         if (node.getAST().apiLevel() >= AST.JLS3) {
@@ -1436,9 +1582,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ParameterizedType)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ParameterizedType node) {
         node.getType().accept(this);
@@ -1457,8 +1605,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ParenthesizedExpression)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ParenthesizedExpression node) {
         _output("(");
@@ -1467,8 +1618,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(PostfixExpression)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(PostfixExpression node) {
         node.getOperand().accept(this);
@@ -1476,8 +1630,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(PrefixExpression)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(PrefixExpression node) {
         _output(node.getOperator().toString());
@@ -1485,16 +1642,22 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(PrimitiveType)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(PrimitiveType node) {
         _output(node.getPrimitiveTypeCode().toString());
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(QualifiedName)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(QualifiedName node) {
         node.getQualifier().accept(this);
@@ -1503,9 +1666,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(QualifiedType)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(QualifiedType node) {
         node.getQualifier().accept(this);
@@ -1514,8 +1679,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ReturnStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ReturnStatement node) {
         _output(_indent);
@@ -1530,24 +1698,32 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(SimpleName)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SimpleName node) {
         _output(node.getIdentifier());
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(SimpleType)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SimpleType node) {
         return true;
     }
 
-    /*
-     * @see ASTVisitor#visit(SingleMemberAnnotation)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SingleMemberAnnotation node) {
         _output("@");
@@ -1558,8 +1734,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(SingleVariableDeclaration)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SingleVariableDeclaration node) {
         if (node.getAST().apiLevel() == AST.JLS2) {
@@ -1593,16 +1772,22 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(StringLiteral)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(StringLiteral node) {
         _output(node.getEscapedValue());
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(SuperConstructorInvocation)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SuperConstructorInvocation node) {
         _output(_indent);
@@ -1646,8 +1831,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(SuperFieldAccess)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SuperFieldAccess node) {
         if (node.getQualifier() != null) {
@@ -1660,8 +1848,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(SuperMethodInvocation)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SuperMethodInvocation node) {
         if (node.getQualifier() != null) {
@@ -1706,8 +1897,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(SwitchCase)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SwitchCase node) {
         if (node.isDefault()) {
@@ -1723,8 +1917,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(SwitchStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SwitchStatement node) {
         _output(_indent);
@@ -1752,8 +1949,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(SynchronizedStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(SynchronizedStatement node) {
         _output(_indent);
@@ -1764,9 +1964,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(TagElement)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(TagElement node) {
         if (node.isNested()) {
@@ -1822,17 +2024,22 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(TextElement)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(TextElement node) {
         _output(node.getText());
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ThisExpression)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ThisExpression node) {
         if (node.getQualifier() != null) {
@@ -1844,8 +2051,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(ThrowStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(ThrowStatement node) {
         _output(_indent);
@@ -1855,8 +2065,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(TryStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(TryStatement node) {
         _output(_indent);
@@ -1879,8 +2092,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(TypeDeclaration)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(TypeDeclaration node) {
         Javadoc javadoc = node.getJavadoc();
@@ -2007,8 +2223,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(TypeDeclarationStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(TypeDeclarationStatement node) {
         if (node.getAST().apiLevel() == AST.JLS2) {
@@ -2022,8 +2241,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(TypeLiteral)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(TypeLiteral node) {
         node.getType().accept(this);
@@ -2031,9 +2253,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(TypeParameter)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(TypeParameter node) {
         node.getName().accept(this);
@@ -2054,8 +2278,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(VariableDeclarationExpression)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(VariableDeclarationExpression node) {
         if (node.getAST().apiLevel() == AST.JLS2) {
@@ -2082,8 +2309,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(VariableDeclarationFragment)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(VariableDeclarationFragment node) {
         node.getName().accept(this);
@@ -2100,8 +2330,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(VariableDeclarationStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(VariableDeclarationStatement node) {
         _output(_indent);
@@ -2131,9 +2364,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(WildcardType)
-     * @since 3.0
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(WildcardType node) {
         _output("?");
@@ -2153,8 +2388,11 @@ public class ASTFormatter extends ASTVisitor {
         return false;
     }
 
-    /*
-     * @see ASTVisitor#visit(WhileStatement)
+    /** Visit an ast node, and return whether its children should be further
+     *  visited.
+     *  
+     *  @param node The AST node.
+     *  @return Whether its children should be further visited.
      */
     public boolean visit(WhileStatement node) {
         _output(_indent);
@@ -2178,6 +2416,24 @@ public class ASTFormatter extends ASTVisitor {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
+
+    /** Check the comments from the start position.
+     * 
+     *  @param startPosition The start position.
+     */
+    private void _checkComments(int startPosition) {
+        while ((_comment != null) && (_commentStartPosition <= startPosition)) {
+            // Output the comment.
+            _comment.accept(this);
+            startPosition = _comment.getStartPosition() + _comment.getLength();
+
+            try {
+                _nextComment();
+            } catch (IOException e) {
+                throw new ASTIORuntimeException(e);
+            }
+        }
+    }
 
     /** Output a closing brase and a new line character after it, and
      *  also decrease the indent amount.
@@ -2211,10 +2467,89 @@ public class ASTFormatter extends ASTVisitor {
         _indent.setLength(_indent.length() - 4);
     }
 
+    /** Return the source code from the start position of the given length.
+     * 
+     *  @param startPosition The start position.
+     *  @param length The length.
+     *  @return The source code.
+     *  @exception IOException If error occurs while reading from the source.
+     */
+    private String _getSource(int startPosition, int length)
+            throws IOException {
+        if (_sourceStream != null) {
+            byte[] skipContent;
+
+            if (_sourceStreamPosition < startPosition) {
+                int skipLength = startPosition - _sourceStreamPosition;
+                skipContent = new byte[skipLength];
+                _sourceStream.read(skipContent);
+            } else {
+                skipContent = new byte[0];
+            }
+
+            byte[] buffer = new byte[length];
+            int readCount = _sourceStream.read(buffer);
+            _sourceStreamPosition = startPosition + readCount;
+            _commentStartPosition = startPosition;
+
+            for (int i = skipContent.length - 1; i >= 0; i--) {
+                if ((skipContent[i] == ' ') || (skipContent[i] == '\t')
+                        || (skipContent[i] == '\n') || (skipContent[i] == '\r')) {
+                    _commentStartPosition--;
+                } else {
+                    break;
+                }
+            }
+
+            return new String(buffer);
+        } else if (_source != null) {
+            _commentStartPosition = startPosition;
+
+            for (int i = startPosition - 1; i >= 0; i--) {
+                if ((_source[i] == ' ') || (_source[i] == '\t')
+                        || (_source[i] == '\n') || (_source[i] == '\r')) {
+                    _commentStartPosition--;
+                } else {
+                    break;
+                }
+            }
+
+            return new String(_source, startPosition, length);
+        }
+
+        return null;
+    }
+
     /** Increase the indent amount.
      */
     private void _increaseIndent() {
         _indent.append("    ");
+    }
+
+    /** Output the next comment.
+     * 
+     *  @exception IOException If error occurs while writing to the output.
+     */
+    private void _nextComment() throws IOException {
+        // Get the next comment.
+        if (_commentIterator.hasNext()) {
+            _comment = (Comment) _commentIterator.next();
+
+            while (_comment instanceof Javadoc && _commentIterator.hasNext()) {
+                _comment = (Comment) _commentIterator.next();
+            }
+
+            if (_comment instanceof Javadoc) {
+                _comment = null;
+                _commentIterator = null;
+            } else {
+                _commentString = _getSource(_comment.getStartPosition(),
+                        _comment.getLength());
+            }
+        } else {
+            _comment = null;
+            _commentIterator = null;
+        }
     }
 
     /** Output an open brace and increase the indent amount.
@@ -2337,101 +2672,33 @@ public class ASTFormatter extends ASTVisitor {
         }
     }
 
-    private void _checkComments(int startPosition) {
-        while ((_comment != null) && (_commentStartPosition <= startPosition)) {
-            // Output the comment.
-            _comment.accept(this);
-            startPosition = _comment.getStartPosition() + _comment.getLength();
-
-            try {
-                _nextComment();
-            } catch (IOException e) {
-                throw new ASTIORuntimeException(e);
-            }
-        }
-    }
-
-    private void _nextComment() throws IOException {
-        // Get the next comment.
-        if (_commentIterator.hasNext()) {
-            _comment = (Comment) _commentIterator.next();
-
-            while (_comment instanceof Javadoc && _commentIterator.hasNext()) {
-                _comment = (Comment) _commentIterator.next();
-            }
-
-            if (_comment instanceof Javadoc) {
-                _comment = null;
-                _commentIterator = null;
-            } else {
-                _commentString = _getSource(_comment.getStartPosition(),
-                        _comment.getLength());
-            }
-        } else {
-            _comment = null;
-            _commentIterator = null;
-        }
-    }
-
-    private String _getSource(int startPosition, int length) throws IOException {
-        if (_sourceStream != null) {
-            byte[] skipContent;
-
-            if (_sourceStreamPosition < startPosition) {
-                int skipLength = startPosition - _sourceStreamPosition;
-                skipContent = new byte[skipLength];
-                _sourceStream.read(skipContent);
-            } else {
-                skipContent = new byte[0];
-            }
-
-            byte[] buffer = new byte[length];
-            int readCount = _sourceStream.read(buffer);
-            _sourceStreamPosition = startPosition + readCount;
-            _commentStartPosition = startPosition;
-
-            for (int i = skipContent.length - 1; i >= 0; i--) {
-                if ((skipContent[i] == ' ') || (skipContent[i] == '\t')
-                        || (skipContent[i] == '\n') || (skipContent[i] == '\r')) {
-                    _commentStartPosition--;
-                } else {
-                    break;
-                }
-            }
-
-            return new String(buffer);
-        } else if (_source != null) {
-            _commentStartPosition = startPosition;
-
-            for (int i = startPosition - 1; i >= 0; i--) {
-                if ((_source[i] == ' ') || (_source[i] == '\t')
-                        || (_source[i] == '\n') || (_source[i] == '\r')) {
-                    _commentStartPosition--;
-                } else {
-                    break;
-                }
-            }
-
-            return new String(_source, startPosition, length);
-        }
-
-        return null;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                       private fields                      ////
-
-    /** The current indentation, a string of spaces.
-     */
-    private StringBuffer _indent = new StringBuffer();
 
     /** The string buffer, where the output is added to.
      */
     private StringBuffer _buffer;
 
-    /** The writer, where the output is written to.
+    /** The next comment to be output, or <tt>null</tt> if there is no more
+     *  comment.
      */
-    private Writer _writer;
+    private Comment _comment;
+
+    /** The iterator of comments in the whole program.
+     */
+    private Iterator _commentIterator;
+
+    /** The start position of the comment.
+     */
+    private int _commentStartPosition;
+
+    /** The content of the next comment.
+     */
+    private String _commentString;
+
+    /** The current indentation, a string of spaces.
+     */
+    private StringBuffer _indent = new StringBuffer();
 
     /** Whether to indent the next if statement. It is
      *  <tt>false</tt> if the if statement is preceded by
@@ -2445,6 +2712,11 @@ public class ASTFormatter extends ASTVisitor {
      */
     private boolean _newLineAfterBlock = true;
 
+    /** The array that contains Java source, if not <tt>null</tt>. It is used
+     *  to generate comments.
+     */
+    private char[] _source;
+
     /** The Java source input stream, if not <tt>null</tt>. It is used to
      *  generate comments.
      */
@@ -2454,25 +2726,7 @@ public class ASTFormatter extends ASTVisitor {
      */
     private int _sourceStreamPosition = 0;
 
-    /** The array that contains Java source, if not <tt>null</tt>. It is used
-     *  to generate comments.
+    /** The writer, where the output is written to.
      */
-    private char[] _source;
-
-    /** The iterator of comments in the whole program.
-     */
-    private Iterator _commentIterator;
-
-    /** The next comment to be output, or <tt>null</tt> if there is no more
-     *  comment.
-     */
-    private Comment _comment;
-
-    /** The start position of the comment.
-     */
-    private int _commentStartPosition;
-
-    /** The content of the next comment.
-     */
-    private String _commentString;
+    private Writer _writer;
 }
