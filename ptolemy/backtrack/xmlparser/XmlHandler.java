@@ -1,4 +1,4 @@
-/*
+/* The XML element handler that builds the XML tree.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -31,32 +31,150 @@ import java.io.StringReader;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import ptolemy.moml.MoMLParser;
+
+//////////////////////////////////////////////////////////////////////////
+//// XmlHandler
 /**
- * @author tfeng
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+   The XML element handler that builds the XML tree.
+
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class XmlHandler implements com.microstar.xml.XmlHandler {
-    XmlHandler(ConfigXmlTree tree, String systemId) {
-        currentTree = this.tree = tree;
-        this.systemId = systemId;
-    }
-
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#startDocument()
+    
+    /** Construct an XML handler with the given XML tree as the current tree.
+     * 
+     *  @param tree The initial XML tree.
+     *  @param systemId The system ID of the document type.
      */
-    public void startDocument() throws Exception {
+    XmlHandler(ConfigXmlTree tree, String systemId) {
+        _currentTree = tree;
+        this._systemId = systemId;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Handle an attribute. Its name and value will be recorded in the hash
+     *  table of attributes.
+     *  
+     *  @param name The name of the attribute.
+     *  @param value The value of the attribute.
+     *  @param isSpecified true if the value was specified, false if it was
+     *   defaulted from the DTD.
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void attribute(String name, String value, boolean isSpecified)
+            throws Exception {
+        if (value != null) {
+            _currentAttributes.put(name, value);
+        }
     }
 
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#endDocument()
+    /** Handle a chunk of char data.
+     * 
+     *  @param ch The character data.
+     *  @param start The starting position in the array.
+     *  @param length The number of characters available.
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void charData(char[] ch, int start, int length) throws Exception {
+    }
+
+    /** Handle a document type declaration.
+     * 
+     *  @param name The document type name.
+     *  @param publicId The public identifier, or null if unspecified.
+     *  @param systemId The system identifier, or null if unspecified.
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void doctypeDecl(String name, String publicId, String systemId)
+            throws Exception {
+    }
+
+    /** Handle the end of the XML document.
      */
     public void endDocument() throws Exception {
     }
 
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#resolveEntity(java.lang.String, java.lang.String)
+    /** Handle the end of an XML element.
+     * 
+     *  @param elementName The name of the element.
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void endElement(String elementName) throws Exception {
+        _currentTree = _currentTree.getParent();
+    }
+
+    /** Handle the end of an external entity.
+     * 
+     *  @param systemId The system ID of the external entity.
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void endExternalEntity(String systemId) throws Exception {
+    }
+
+    /** Signal an error message.
+     * 
+     *  @param message The error message.
+     *  @param systemId The system ID of the XML document that contains the
+     *   error.
+     *  @param line The line number of the error.
+     *  @param column The column number of the error.
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void error(String message, String systemId, int line, int column)
+            throws Exception {
+    }
+
+    /** Return the current XML tree.
+     * 
+     *  @return The current XML tree.
+     */
+    public ConfigXmlTree getCurrentTree() {
+        return _currentTree;
+    }
+    
+    /** Return the system ID of the XML document.
+     * 
+     *  @return The system ID.
+     */
+    public String getSystemId() {
+        return _systemId;
+    }
+
+    /** Handle consecutive ignorable white spaces.
+     * 
+     *  @param ch The literal whitespace characters.
+     *  @param start The starting position in the array.
+     *  @param length The number of whitespace characters available.
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void ignorableWhitespace(char[] ch, int start, int length)
+            throws Exception {
+    }
+
+    /** Handle a processing instruction.
+     * 
+     *  @param target The target (the name at the start of the processing
+     *   instruction).
+     *  @param data The data, if any (the rest of the processing instruction).
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void processingInstruction(String target, String data)
+            throws Exception {
+    }
+
+    /** Resolve an external entity.
+     * 
+     *  @param publicId The public ID, or null if none was supplied.
+     *  @param systemId The system ID.
+     *  @return The replacement system identifier, or null to use the default.
+     *  @exception Exception Not thrown in this base class.
      */
     public Object resolveEntity(String publicId, String systemId)
             throws Exception {
@@ -67,93 +185,43 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
         }
     }
 
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#startExternalEntity(java.lang.String)
+    /** Handle the start of the XML document.
+     * 
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void startDocument() throws Exception {
+    }
+
+    /** Handle the start of an XML element.
+     *  
+     *  @param elementName The name of the XML element.
+     *  @exception Exception Not thrown in this base class.
+     */
+    public void startElement(String elementName) throws Exception {
+        ConfigXmlTree newtree = new ConfigXmlTree(elementName);
+        newtree._setParent(_currentTree);
+        _currentTree = newtree;
+
+        Enumeration attrenu = _currentAttributes.keys();
+
+        while (attrenu.hasMoreElements()) {
+            String attr = (String) attrenu.nextElement();
+            _currentTree.setAttribute(attr, (String) _currentAttributes.get(attr));
+        }
+
+        _currentAttributes.clear();
+    }
+
+    /** Handle the start of an external entity.
+     * 
+     *  @param systemId The system ID of the external entity.
+     *  @exception Exception Not thrown in this base class.
      */
     public void startExternalEntity(String systemId) throws Exception {
     }
 
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#endExternalEntity(java.lang.String)
-     */
-    public void endExternalEntity(String systemId) throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#doctypeDecl(java.lang.String, java.lang.String, java.lang.String)
-     */
-    public void doctypeDecl(String name, String publicId, String systemId)
-            throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#attribute(java.lang.String, java.lang.String, boolean)
-     */
-    public void attribute(String aname, String value, boolean isSpecified)
-            throws Exception {
-        if (value != null) {
-            currentAttrs.put(aname, value);
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#startElement(java.lang.String)
-     */
-    public void startElement(String elname) throws Exception {
-        ConfigXmlTree newtree = new ConfigXmlTree(elname);
-        newtree.setParent(currentTree);
-        currentTree = newtree;
-
-        Enumeration attrenu = currentAttrs.keys();
-
-        while (attrenu.hasMoreElements()) {
-            String attr = (String) attrenu.nextElement();
-            currentTree.setAttribute(attr, (String) currentAttrs.get(attr));
-        }
-
-        currentAttrs.clear();
-    }
-
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#endElement(java.lang.String)
-     */
-    public void endElement(String elname) throws Exception {
-        currentTree = currentTree.getParent();
-        totalElements++;
-    }
-
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#charData(char[], int, int)
-     */
-    public void charData(char[] ch, int start, int length) throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#ignorableWhitespace(char[], int, int)
-     */
-    public void ignorableWhitespace(char[] ch, int start, int length)
-            throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#processingInstruction(java.lang.String, java.lang.String)
-     */
-    public void processingInstruction(String target, String data)
-            throws Exception {
-    }
-
-    /* (non-Javadoc)
-     * @see com.microstar.xml.XmlHandler#error(java.lang.String, java.lang.String, int, int)
-     */
-    public void error(String message, String systemId, int line, int column)
-            throws Exception {
-    }
-
-    public int getTotalElements() {
-        return totalElements;
-    }
-
-    // Copied from ptolemy.moml.MoMLParser.
+    ///////////////////////////////////////////////////////////////////
+    ////                        public fields                      ////
 
     /** The standard MoML DTD, represented as a string.  This is used
      *  to parse MoML data when a compatible PUBLIC DTD is specified.
@@ -162,20 +230,24 @@ public class XmlHandler implements com.microstar.xml.XmlHandler {
      *  chapter of the Ptolemy II design document for a view of the
      *  current (nondeprecated) DTD.
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | property | relation | rename | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED source CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | doc | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA \"_doc\"><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED source CDATA #IMPLIED><!ELEMENT group ANY><!ATTLIST group name CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT input EMPTY><!ATTLIST input source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED insertInsideAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #IMPLIED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property | rename)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property | rename)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (configure | doc | property | rename | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rename EMPTY><!ATTLIST rename name CDATA #REQUIRED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #IMPLIED><!ELEMENT vertex (configure | doc | location | property | rename)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED value CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = MoMLParser.MoML_DTD_1;
 
-    // Copied from ptolemy.moml.MoMLParser.
+    /** The public ID for version 1 MoML.
+     */
+    public static String MoML_PUBLIC_ID_1 = MoMLParser.MoML_PUBLIC_ID_1;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
-    /** The public ID for version 1 MoML. */
-    public static String MoML_PUBLIC_ID_1 = "-//UC Berkeley//DTD MoML 1//EN";
+    /** The attributes of the current XML node.
+     */
+    private Hashtable _currentAttributes = new Hashtable();
 
-    protected ConfigXmlTree tree;
+    /** XML tree starting from the current node.
+     */
+    private ConfigXmlTree _currentTree;
 
-    protected String systemId;
-
-    protected Hashtable currentAttrs = new Hashtable();
-
-    protected ConfigXmlTree currentTree;
-
-    private int totalElements = 0;
+    /** The system ID of the XML document.
+     */
+    private String _systemId;
 }
