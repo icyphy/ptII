@@ -285,7 +285,6 @@ public class TypeAnalyzerState {
     /** Set the current scope to be a class scope (a scope opened by
      *  a class declaration).
      *
-     *  @param scope The scope to be set.
      *  @see #unsetClassScope()
      */
     public void setClassScope() {
@@ -296,7 +295,7 @@ public class TypeAnalyzerState {
      *
      *  @param currentClass The current class, or <tt>null</tt> if there
      *   is no current class.
-     *  @see #setCurrentClass(Class)
+     *  @see #getCurrentClass()
      */
     public void setCurrentClass(Class currentClass) {
         _currentClass = currentClass;
@@ -333,7 +332,6 @@ public class TypeAnalyzerState {
      *  <p>
      *  A class scope should be unset when removed from the scope stack.
      *
-     *  @param scope The scope to be set.
      *  @see #setClassScope()
      */
     public void unsetClassScope() {

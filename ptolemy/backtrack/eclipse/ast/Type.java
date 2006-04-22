@@ -48,8 +48,8 @@ import java.util.Set;
  This class represents primitive Java types (<tt>boolean</tt>, <tt>byte</tt>,
  <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, <tt>int</tt>, <tt>long</tt>,
  and <tt>short</tt>) as well as object types (including arrays). It
- treats <tt>null</tt> and </tt>void</tt> (the "return value" of a
- <tt>void</tt> method) as </tt>null</tt> type, which is also considered as
+ treats <tt>null</tt> and <tt>void</tt> (the "return value" of a
+ <tt>void</tt> method) as <tt>null</tt> type, which is also considered as
  primitive.
  <p>
  Manipulation can also be done on those types by means of the given
@@ -265,7 +265,7 @@ public class Type {
      *  They full name of the type given can be any of the primitive types as
      *  well as <tt>null</tt> or <tt>void</tt>. When it is the name of an array
      *  type, both source representation (as "<tt>char[]</tt>") or run-time
-     *  representation (as "<tt>[C<tt>") are accepted.
+     *  representation (as "<tt>[C</tt>") are accepted.
      *
      *  @param fullName The full name of the type.
      *  @return The type object with the given name. No error is returned when
@@ -302,6 +302,7 @@ public class Type {
 
     /** Count the number of dimensions of an array type.
      *
+     *  @param type The array type.
      *  @return The number of dimensions (>0) if the type is an array;
      *   otherwise, return 0 (scalar).
      *  @see #dimensions()
@@ -457,6 +458,7 @@ public class Type {
      *  @param node The node with an owner associated with it.
      *  @return The owner. <tt>null</tt> if the node is not a class
      *   member or there is no owner associated with it.
+     *  @see #setOwner(ASTNode, Type)
      */
     public static Type getOwner(ASTNode node) {
         return (Type) node.getProperty("owner");
@@ -573,7 +575,7 @@ public class Type {
      *
      *  @param node The node with an owner associated with it.
      *  @param owner The type of the owner.
-     *  @see #setOwner(ASTNode, Type)
+     *  @see #getOwner(ASTNode)
      */
     public static void setOwner(ASTNode node, Type owner) {
         node.setProperty("owner", owner);

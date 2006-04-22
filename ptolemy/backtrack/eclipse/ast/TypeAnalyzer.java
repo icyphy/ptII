@@ -154,6 +154,8 @@ public class TypeAnalyzer extends ASTVisitor {
     /** Construct an analyzer with with an array of explicit class
      *  paths for its class loader (an instanceof {@link
      *  LocalClassLoader}).
+     *  
+     *  @param classPaths The class paths.
      */
     public TypeAnalyzer(String[] classPaths) {
         _state.setClassLoader(new LocalClassLoader(classPaths));
@@ -205,7 +207,8 @@ public class TypeAnalyzer extends ASTVisitor {
 
     /** End the visit of an anonymous class declaration and close its
      *  scope. The current class is set back to the last visited class.
-     *  @param node
+     *  
+     *  @param node The node to be visited.
      */
     public void endVisit(AnonymousClassDeclaration node) {
         if (_handlers.hasClassHandler()) {

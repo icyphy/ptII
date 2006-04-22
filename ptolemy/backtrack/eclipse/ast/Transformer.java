@@ -474,6 +474,8 @@ public class Transformer {
     /** Output the Java source from the current AST with {@link ASTFormatter}.
      *
      *  @param writer The writer where the output is written to.
+     *  @param fileName The file name of the writer.
+     *  @exception IOException If error occurs while writing to the writer.
      */
     protected void _outputSource(Writer writer, String fileName)
             throws IOException {
