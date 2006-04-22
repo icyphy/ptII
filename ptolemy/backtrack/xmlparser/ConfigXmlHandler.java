@@ -1,4 +1,4 @@
-/*
+/* XML handler that generates the library description for backtracking actors.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -38,31 +38,126 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+//////////////////////////////////////////////////////////////////////////
+//// ConfigXmlHandler
 /**
- * @author tfeng
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-public class ConfigXmlHandler extends XmlHandler {
+   XML handler that generates the library description for backtracking actors.
+
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
+class ConfigXmlHandler extends XmlHandler {
+
+    /** Construct an XML handler.
+     * 
+     *  @param tree The XML tree to be scanned.
+     *  @param systemId The system ID representing the location of the original
+     *   XML document.
+     *  @param includedClasses The classes in the original XML document that
+     *   should be transformed in the new XML document.
+     */
     ConfigXmlHandler(ConfigXmlTree tree, String systemId, Set includedClasses) {
         super(tree, systemId);
 
-        this.includedClasses = includedClasses;
+        this._includedClasses = includedClasses;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                       public methods                      ////
+
+    /** Exclude the specified XML document from the scan.
+     * 
+     *  @param canonicalPath The canonical path of the XML document to be
+     *   excluded.
+     */
     public void addExcludedFile(String canonicalPath) {
         _excludedFiles.add(canonicalPath);
     }
 
+    /** Exclude the specified XML documents from the scan.
+     * 
+     *  @param canonicalPaths The canonical paths of the XML documents to be
+     *   excluded.
+     */
     public void addExcludedFiles(Collection canonicalPaths) {
         _excludedFiles.addAll(canonicalPaths);
     }
 
-    public void startElement(String elname) throws Exception {
-        super.startElement(elname);
+    /** Handle the end tag of an XML element. This method tests whether the XML
+     *  element has a "class" attribute, whose value is a class name in the set
+     *  of classes to keep. If so, the element is kept in the transformed XML
+     *  document. Otherwise, the element is not output to the transformed XML
+     *  document.
+     *  
+     *  @param elementName The name of the XML element.
+     *  @exception Exception If the overrided method in the superclass throws an
+     *   Exception.
+     */
+    public void endElement(String elementName) throws Exception {
+        boolean keep =
+                _includedClasses == null
+                    // If null, every element is kept.
+                || !currentTree.isLeaf()
+                    // If not leaf, at least a descendant is kept.
+                || (currentTree.hasAttribute("class") && _includedClasses
+                        .contains(currentTree.getAttribute("class")));
+                    // A match in the set.
 
-        if (elname.equals("input")) {
+        if (keep) {
+            String className = currentTree.getAttribute("class");
+
+            if (_REMOVED_ELEMENT_SET.contains(elementName)
+                    || (className != null) && _REMOVED_CLASS_SET.contains(
+                            className)) {
+                // Omit this "input" element.
+                currentTree.startTraverseChildren();
+
+                while (currentTree.hasMoreChildren()) {
+                    currentTree.getParent().addChild(currentTree.nextChild());
+                }
+            } else {
+                currentTree.getParent().addChild(currentTree);
+            }
+        }
+
+        super.endElement(elementName);
+    }
+
+    /** Process the instruction given in the data. This method only handles
+     *  the "moml" target type.
+     *  
+     *  @param target The target (the name at the start of the processing
+     *   instruction).
+     *  @param data The data, if any (the rest of the processing instruction).
+     */
+    public void processingInstruction(String target, String data)
+            throws Exception {
+        if (target.equals("moml")) {
+            StringReader dataReader = new StringReader(data);
+            XmlParser newParser = new XmlParser();
+            ConfigXmlHandler newHandler = new ConfigXmlHandler(currentTree,
+                    systemId, _includedClasses);
+            newHandler.addExcludedFiles(_excludedFiles);
+            newParser.setHandler(newHandler);
+            newParser.parse(systemId, null, dataReader);
+            dataReader.close();
+        }
+    }
+
+    /** Handle the start tag of an XML element. If the element is an "input"
+     *  element, the source referred to is parsed.
+     * 
+     *  @param elementName The name of the XML element.
+     *  @exception Exception If the overrided method in the superclass throws an
+     *   Exception.
+     */
+    public void startElement(String elementName) throws Exception {
+        super.startElement(elementName);
+
+        if (elementName.equals("input")) {
             String fileName = currentTree.getAttribute("source");
 
             try {
@@ -80,70 +175,57 @@ public class ConfigXmlHandler extends XmlHandler {
                 if (!_excludedFiles.contains(canonicalPath)) {
                     ConfigParser subparser = new ConfigParser(currentTree);
                     subparser.addExcludedFiles(_excludedFiles);
-                    subparser.parseConfigFile(newName, includedClasses, false);
+                    subparser.parseConfigFile(newName, _includedClasses, false);
                 }
             } catch (Exception e) {
-                // FIXME: For the time being...
+                // By default, do not change the element.
             }
         }
     }
 
-    public void endElement(String elname) throws Exception {
-        boolean keep = (includedClasses == null) // If null, every element is kept.
-                || !currentTree.isLeaf() // If not leaf, at least a descendant is kept.
-                || ( // A match in the set.
-                currentTree.hasAttribute("class") && includedClasses
-                        .contains(currentTree.getAttribute("class")));
+    ///////////////////////////////////////////////////////////////////
+    ////                       private fields                      ////
 
-        if (keep) {
-            String className = currentTree.getAttribute("class");
-
-            if (REMOVE_ELEMENT_SET.contains(elname)
-                    || ((className != null) && REMOVE_CLASS_SET
-                            .contains(className))) { // Omit this "input" element.
-                currentTree.startTraverseChildren();
-
-                while (currentTree.hasMoreChildren()) {
-                    currentTree.getParent().addChild(currentTree.nextChild());
-                }
-            } else {
-                currentTree.getParent().addChild(currentTree);
-            }
-        }
-
-        super.endElement(elname);
-    }
-
-    public void processingInstruction(String target, String data)
-            throws Exception {
-        if (target.equals("moml")) {
-            StringReader dataReader = new StringReader(data);
-            XmlParser newParser = new XmlParser();
-            ConfigXmlHandler newHandler = new ConfigXmlHandler(currentTree,
-                    systemId, includedClasses);
-            newHandler.addExcludedFiles(_excludedFiles);
-            newParser.setHandler(newHandler);
-            newParser.parse(systemId, null, dataReader);
-            dataReader.close();
-        }
-    }
-
-    public static final String[] REMOVE_ELEMENTS = new String[] { "configure",
-            "input" };
-
-    public static final String[] REMOVE_CLASSES = new String[] {
-            "ptolemy.kernel.CompositeEntity", "ptolemy.actor.gui.Configuration" };
-
+    /** The canonical paths of the XML documents that should be excluded from
+     *  the parsing.
+     */
     private Set _excludedFiles = new HashSet();
 
-    private static Set REMOVE_ELEMENT_SET = new HashSet();
+    /** The names of the classes that should be kept in the transformed XML
+     *  document. If it is null, all classes will be kept.
+     */
+    private Set _includedClasses;
 
-    private static Set REMOVE_CLASS_SET = new HashSet();
+    /** The class in the original XML document that should be removed when it
+     *  is transformed to the library description of backtracking actors.
+     */
+    private static final String[] _REMOVED_CLASSES = new String[] {
+        "ptolemy.kernel.CompositeEntity", 
+        "ptolemy.actor.gui.Configuration"
+    };
 
-    private Set includedClasses; // If null, every element matches.
+    /** The class in the original XML document that should be removed when it
+     *  is transformed to the library description of backtracking actors.
+     */
+    private static Set _REMOVED_CLASS_SET = new HashSet();
+
+    /** The elements in the original XML document that should be removed when it
+     *  is transformed to the library description of backtracking actors.
+     */
+    private static final String[] _REMOVED_ELEMENTS = new String[] {
+        "configure", "input"
+    };
+
+    /** The elements in the original XML document that should be removed when it
+     *  is transformed to the library description of backtracking actors.
+     */
+    private static Set _REMOVED_ELEMENT_SET = new HashSet();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  static class initializer                 ////
 
     static {
-        REMOVE_ELEMENT_SET.addAll(Arrays.asList(REMOVE_ELEMENTS));
-        REMOVE_CLASS_SET.addAll(Arrays.asList(REMOVE_CLASSES));
+        _REMOVED_ELEMENT_SET.addAll(Arrays.asList(_REMOVED_ELEMENTS));
+        _REMOVED_CLASS_SET.addAll(Arrays.asList(_REMOVED_CLASSES));
     }
 }
