@@ -1,4 +1,4 @@
-/*
+/* XML output from its tree representation.
 
  Copyright (c) 2005 The Regents of the University of California.
  All rights reserved.
@@ -31,13 +31,25 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Enumeration;
 
+//////////////////////////////////////////////////////////////////////////
+//// XmlOutput
 /**
- * @author tfeng
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+   XML output from its tree representation.
+
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class XmlOutput {
+    
+    /** Output an XML tree to the writer.
+     * 
+     *  @param tree The XML tree.
+     *  @param writer The writer.
+     *  @exception IOException If there is an IO exception during the output.
+     */
     public static void outputXmlTree(ConfigXmlTree tree, Writer writer)
             throws IOException {
         tree.startTraverseChildren();
@@ -45,12 +57,32 @@ public class XmlOutput {
         // DTD header
         writer.write(DTD_HEAD1 + tree.getElementName() + DTD_HEAD2);
 
-        outputXmlSubtree(tree, writer, 0);
+        _outputXmlSubtree(tree, writer, 0);
     }
 
-    protected static void outputXmlSubtree(ConfigXmlTree tree, Writer writer,
+    /** DTD header before the root element name.
+     */
+    public static final String DTD_HEAD1 =
+        "<?xml version=\"1.0\" standalone=\"no\"?>\n" +
+        "<!DOCTYPE ";
+
+    /** DTD header after the root element name.
+     */
+    public static final String DTD_HEAD2 =
+        " PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n" +
+        "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n";
+
+    /** Output the sub-tree to the writer with the specified number of
+     *  indentations.
+     *  
+     *  @param tree The sub-tree.
+     *  @param writer The writer.
+     *  @param indent The number of indentations.
+     *  @exception IOException If there is an IO exception during the output.
+     */
+    protected static void _outputXmlSubtree(ConfigXmlTree tree, Writer writer,
             int indent) throws IOException {
-        String indentString = createIndent(indent);
+        String indentString = _createIndent(indent);
         String elementName = tree.getElementName();
 
         // Starting tag
@@ -81,7 +113,7 @@ public class XmlOutput {
             tree.startTraverseChildren();
 
             while (tree.hasMoreChildren()) {
-                outputXmlSubtree(tree.nextChild(), writer, indent + 2);
+                _outputXmlSubtree(tree.nextChild(), writer, indent + 2);
             }
 
             // Ending tag
@@ -89,7 +121,12 @@ public class XmlOutput {
         }
     }
 
-    private static String createIndent(int indent) {
+    /** Return a string with the specified number of white spaces.
+     * 
+     *  @param indent The number of white spaces.
+     *  @return A string with the specified number of white spaces.
+     */
+    private static String _createIndent(int indent) {
         StringBuffer buffer = new StringBuffer(indent);
 
         for (int i = 0; i < indent; i++) {
@@ -98,10 +135,4 @@ public class XmlOutput {
 
         return buffer.toString();
     }
-
-    public static final String DTD_HEAD1 = "<?xml version=\"1.0\" standalone=\"no\"?>\n"
-            + "<!DOCTYPE ";
-
-    public static final String DTD_HEAD2 = " PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
-            + "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n";
 }
