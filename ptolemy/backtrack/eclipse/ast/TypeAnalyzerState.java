@@ -211,6 +211,11 @@ public class TypeAnalyzerState {
         return _variableStack;
     }
 
+    /** Return whether a name refers to a variable in the variable stack.
+     * 
+     *  @param name The name.
+     *  @return true if the name refers to a defined variable.
+     */
     public boolean isVariable(String name) {
         int i = _variableStack.size() - 1;
 

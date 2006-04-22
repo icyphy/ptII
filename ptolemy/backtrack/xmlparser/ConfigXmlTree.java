@@ -96,6 +96,7 @@ public class ConfigXmlTree {
      * 
      *  @param name The attribute name.
      *  @return The value of the attribute, or null if not found.
+     *  @see #setAttribute(String, String)
      */
     public String getAttribute(String name) {
         return (String) _attributes.get(name);
@@ -168,6 +169,7 @@ public class ConfigXmlTree {
      *  
      *  @param name The attribute name.
      *  @param value The attribute value.
+     *  @see #getAttribute(String)
      */
     public void setAttribute(String name, String value) {
         if (value != null) {

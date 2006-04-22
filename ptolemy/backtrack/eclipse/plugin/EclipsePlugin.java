@@ -109,8 +109,8 @@ public class EclipsePlugin extends AbstractUIPlugin {
     /** Return the string from the plugin's resource bundle, or key.toString()
      *  if not found.
      *  
-     *  @param The key of the resource string.
-     *  @param The resource string, or key.toString().
+     *  @param key The key of the resource string.
+     *  @return The resource string, or key.toString().
      */
     public static String getResourceString(String key) {
         ResourceBundle bundle = EclipsePlugin.getDefault().getResourceBundle();
